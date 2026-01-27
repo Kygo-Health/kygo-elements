@@ -216,24 +216,32 @@ class CaloriesInAnything extends HTMLElement {
 
   render() {
     const remaining = this.getRemainingUses();
-    
+
     this.innerHTML = `
       <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
+        /* =============================================
+           MOBILE-FIRST RESPONSIVE STYLES
+           Base styles = mobile, then scale up via min-width
+           ============================================= */
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         .calories-app {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           background: linear-gradient(180deg, #0a0f1a 0%, #111827 50%, #0a0f1a 100%);
           min-height: 100%;
           color: #e2e8f0;
           line-height: 1.6;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
-        
+
+        /* HEADER - Mobile First */
         .header {
           background: rgba(10, 15, 26, 0.95);
           backdrop-filter: blur(12px);
           border-bottom: 1px solid rgba(16, 185, 129, 0.1);
-          padding: 14px 24px;
+          padding: 12px 16px;
           position: sticky;
           top: 0;
           z-index: 50;
@@ -248,39 +256,41 @@ class CaloriesInAnything extends HTMLElement {
         .logo {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 8px;
           font-weight: 600;
-          font-size: 18px;
+          font-size: 14px;
           color: #f1f5f9;
           text-decoration: none;
         }
-        .logo-img { height: 36px; width: auto; }
+        .logo-img { height: 28px; width: auto; }
         .header-link {
           color: #10b981;
           text-decoration: none;
-          font-size: 14px;
+          font-size: 13px;
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 4px;
           transition: all 0.2s;
         }
         .header-link:hover { color: #34d399; }
         .header-link svg { stroke: currentColor; }
-        
+
+        /* MAIN CONTAINER - Mobile First */
         .main {
           max-width: 768px;
           margin: 0 auto;
-          padding: 48px 24px;
+          padding: 24px 16px;
         }
-        
-        .hero { text-align: center; margin-bottom: 40px; }
+
+        /* HERO - Mobile First */
+        .hero { text-align: center; margin-bottom: 24px; }
         .hero h1 {
-          font-size: 40px;
+          font-size: 28px;
           font-weight: 800;
           color: #f8fafc;
-          margin-bottom: 16px;
-          letter-spacing: -1px;
-          line-height: 1.1;
+          margin-bottom: 12px;
+          letter-spacing: -0.5px;
+          line-height: 1.15;
         }
         .hero h1 span {
           background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
@@ -289,34 +299,37 @@ class CaloriesInAnything extends HTMLElement {
           background-clip: text;
         }
         .hero p {
-          font-size: 18px;
+          font-size: 15px;
           color: #94a3b8;
           max-width: 560px;
           margin: 0 auto;
+          line-height: 1.6;
         }
-        
-        .toggle-container { display: flex; justify-content: center; margin-bottom: 32px; }
+
+        /* MODE TOGGLE - Mobile First */
+        .toggle-container { display: flex; justify-content: center; margin-bottom: 20px; }
         .toggle {
           background: rgba(17, 24, 39, 0.8);
           border: 1px solid rgba(255,255,255,0.08);
           border-radius: 50px;
-          padding: 6px;
+          padding: 4px;
           display: flex;
           gap: 4px;
         }
         .toggle-btn {
-          padding: 12px 24px;
+          padding: 10px 16px;
           border-radius: 50px;
           border: none;
           cursor: pointer;
           font-weight: 600;
-          font-size: 14px;
+          font-size: 13px;
           transition: all 0.3s;
           background: transparent;
           color: #64748b;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
+          font-family: inherit;
         }
         .toggle-btn:hover { color: #e2e8f0; }
         .toggle-btn.active {
@@ -325,21 +338,23 @@ class CaloriesInAnything extends HTMLElement {
           box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
         }
         .toggle-btn svg { stroke: currentColor; }
-        
+
+        /* CARD - Mobile First */
         .card {
           background: rgba(17, 24, 39, 0.6);
-          border-radius: 24px;
+          border-radius: 20px;
           border: 1px solid rgba(255,255,255,0.06);
           overflow: hidden;
           backdrop-filter: blur(10px);
           box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
-        
-        .upload-section { padding: 48px; }
+
+        /* UPLOAD SECTION - Mobile First */
+        .upload-section { padding: 24px 16px; }
         .upload-zone {
           border: 2px dashed rgba(100, 116, 139, 0.3);
-          border-radius: 20px;
-          padding: 56px 32px;
+          border-radius: 16px;
+          padding: 32px 20px;
           text-align: center;
           cursor: pointer;
           transition: all 0.3s;
@@ -348,7 +363,6 @@ class CaloriesInAnything extends HTMLElement {
         .upload-zone:hover {
           border-color: #10b981;
           background: rgba(16, 185, 129, 0.05);
-          transform: translateY(-2px);
         }
         .upload-zone.drag-over {
           border-color: #10b981;
@@ -356,37 +370,40 @@ class CaloriesInAnything extends HTMLElement {
           transform: scale(1.02);
         }
         .upload-icon {
-          width: 80px;
-          height: 80px;
+          width: 64px;
+          height: 64px;
           background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 100%);
-          border-radius: 24px;
+          border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 24px;
+          margin: 0 auto 20px;
           transition: all 0.3s;
           color: #10b981;
         }
-        .upload-icon svg { width: 36px; height: 36px; stroke: currentColor; }
+        .upload-icon svg { width: 28px; height: 28px; stroke: currentColor; }
         .upload-zone:hover .upload-icon {
           transform: scale(1.1);
           box-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
         }
-        .upload-text { font-size: 22px; font-weight: 700; color: #f1f5f9; margin-bottom: 8px; }
-        .upload-hint { color: #64748b; font-size: 15px; margin-bottom: 28px; }
-        .upload-formats { color: #475569; font-size: 13px; margin-top: 24px; }
-        
+        .upload-text { font-size: 18px; font-weight: 700; color: #f1f5f9; margin-bottom: 6px; }
+        .upload-hint { color: #64748b; font-size: 14px; margin-bottom: 20px; }
+        .upload-formats { color: #475569; font-size: 12px; margin-top: 20px; }
+
+        /* BUTTONS - Mobile First */
         .btn {
-          padding: 14px 28px;
-          border-radius: 14px;
+          padding: 12px 20px;
+          border-radius: 12px;
           border: none;
           cursor: pointer;
           font-weight: 600;
-          font-size: 15px;
+          font-size: 14px;
           transition: all 0.2s;
           display: inline-flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
+          font-family: inherit;
+          -webkit-tap-highlight-color: transparent;
         }
         .btn svg { stroke: currentColor; }
         .btn-primary {
@@ -397,6 +414,7 @@ class CaloriesInAnything extends HTMLElement {
           transform: translateY(-2px);
           box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
         }
+        .btn-primary:active { transform: translateY(0); }
         .btn-secondary {
           background: rgba(255,255,255,0.08);
           color: #e2e8f0;
@@ -405,61 +423,65 @@ class CaloriesInAnything extends HTMLElement {
         .btn-secondary:hover {
           background: rgba(255,255,255,0.12);
         }
-        .btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
         .btn-icon { display: flex; align-items: center; }
         .hidden-input { display: none; }
-        
+
+        /* RATE NOTICE - Mobile First */
         .rate-notice {
           text-align: center;
-          padding: 16px;
+          padding: 14px;
           background: rgba(251, 191, 36, 0.1);
           border: 1px solid rgba(251, 191, 36, 0.2);
-          border-radius: 14px;
-          font-size: 14px;
+          border-radius: 12px;
+          font-size: 13px;
           color: #fbbf24;
           margin-top: 16px;
         }
         .rate-notice a { color: #fbbf24; font-weight: 600; text-decoration: underline; }
-        
+
+        /* ERROR BOX - Mobile First */
         .error-box {
           background: rgba(239, 68, 68, 0.1);
           border: 1px solid rgba(239, 68, 68, 0.2);
-          border-radius: 20px;
-          padding: 48px;
+          border-radius: 16px;
+          padding: 32px 20px;
           text-align: center;
-          margin: 32px;
+          margin: 20px;
         }
-        .error-icon { color: #ef4444; margin-bottom: 16px; display: flex; justify-content: center; }
+        .error-icon { color: #ef4444; margin-bottom: 12px; display: flex; justify-content: center; }
         .error-icon svg { stroke: currentColor; }
-        .error-text { color: #ef4444; font-weight: 600; font-size: 18px; margin-bottom: 8px; }
-        .error-hint { color: #94a3b8; font-size: 15px; margin-bottom: 24px; }
-        
-        .analyzing { padding: 80px 32px; text-align: center; }
+        .error-text { color: #ef4444; font-weight: 600; font-size: 16px; margin-bottom: 6px; }
+        .error-hint { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+
+        /* ANALYZING STATE - Mobile First */
+        .analyzing { padding: 48px 20px; text-align: center; }
         .analyzing-icon {
-          width: 88px;
-          height: 88px;
+          width: 72px;
+          height: 72px;
           background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.05) 100%);
-          border-radius: 28px;
+          border-radius: 24px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 28px;
+          margin: 0 auto 24px;
           color: #10b981;
           animation: pulse 2s infinite;
         }
-        .analyzing-icon svg { stroke: currentColor; width: 40px; height: 40px; }
+        .analyzing-icon svg { stroke: currentColor; width: 32px; height: 32px; }
         @keyframes pulse {
           0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
           50% { transform: scale(1.05); box-shadow: 0 0 0 25px rgba(16, 185, 129, 0); }
         }
-        .analyzing-text { font-size: 22px; font-weight: 700; color: #f1f5f9; margin-bottom: 8px; }
-        .analyzing-hint { color: #64748b; font-size: 15px; }
+        .analyzing-text { font-size: 18px; font-weight: 700; color: #f1f5f9; margin-bottom: 6px; }
+        .analyzing-hint { color: #64748b; font-size: 14px; }
         .progress-bar {
-          width: 280px;
-          height: 6px;
+          width: 100%;
+          max-width: 240px;
+          height: 5px;
           background: rgba(255,255,255,0.1);
           border-radius: 3px;
-          margin: 28px auto 0;
+          margin: 24px auto 0;
           overflow: hidden;
         }
         .progress-fill {
@@ -474,18 +496,18 @@ class CaloriesInAnything extends HTMLElement {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(200%); }
         }
-        
-        /* COMPACT RESULT STYLES - fits in same space as upload zone */
+
+        /* RESULT SECTION - Mobile First */
         .result-compact {
-          padding: 32px;
+          padding: 20px 16px;
           position: relative;
         }
         .result-share-btn {
           position: absolute;
-          top: 24px;
-          right: 24px;
-          width: 36px;
-          height: 36px;
+          top: 16px;
+          right: 16px;
+          width: 40px;
+          height: 40px;
           border-radius: 10px;
           background: rgba(255,255,255,0.08);
           border: 1px solid rgba(255,255,255,0.1);
@@ -496,37 +518,38 @@ class CaloriesInAnything extends HTMLElement {
           justify-content: center;
           transition: all 0.2s;
           z-index: 10;
+          -webkit-tap-highlight-color: transparent;
         }
         .result-share-btn:hover { background: rgba(16, 185, 129, 0.2); color: #10b981; }
         .result-share-btn svg { stroke: currentColor; }
-        
+
         .result-top-row {
           display: flex;
           align-items: center;
-          gap: 16px;
-          margin-bottom: 20px;
-          padding-right: 48px;
+          gap: 12px;
+          margin-bottom: 16px;
+          padding-right: 44px;
         }
         .result-img {
-          width: 72px;
-          height: 72px;
-          border-radius: 16px;
+          width: 60px;
+          height: 60px;
+          border-radius: 14px;
           object-fit: cover;
           border: 2px solid rgba(16, 185, 129, 0.3);
           flex-shrink: 0;
         }
         .result-header-info { flex: 1; min-width: 0; }
         .result-item-name {
-          font-size: 20px;
+          font-size: 16px;
           font-weight: 700;
           color: #f8fafc;
-          margin-bottom: 4px;
+          margin-bottom: 2px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
         .result-intro-text {
-          font-size: 13px;
+          font-size: 12px;
           color: #64748b;
           font-style: italic;
           display: -webkit-box;
@@ -534,58 +557,58 @@ class CaloriesInAnything extends HTMLElement {
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
-        
+
         .result-calories-row {
           background: rgba(16, 185, 129, 0.1);
-          border-radius: 14px;
-          padding: 16px 20px;
+          border-radius: 12px;
+          padding: 14px 16px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 16px;
+          margin-bottom: 12px;
+          flex-wrap: wrap;
+          gap: 8px;
         }
         .result-cal-number {
-          font-size: 36px;
+          font-size: 32px;
           font-weight: 800;
           color: #10b981;
           line-height: 1;
         }
-        .result-cal-unit { font-size: 16px; color: #64748b; font-weight: 400; margin-left: 4px; }
+        .result-cal-unit { font-size: 14px; color: #64748b; font-weight: 400; margin-left: 2px; }
         .result-digest-badge {
           background: rgba(16, 185, 129, 0.15);
           border: 1px solid rgba(16, 185, 129, 0.25);
           color: #10b981;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 600;
-          padding: 6px 12px;
+          padding: 5px 10px;
           border-radius: 20px;
         }
-        
+
+        /* MACROS GRID - Mobile First (2 columns) */
         .result-macros-grid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(2, 1fr);
           gap: 8px;
-          margin-bottom: 16px;
-        }
-        @media (max-width: 480px) {
-          .result-macros-grid { grid-template-columns: repeat(2, 1fr); }
+          margin-bottom: 12px;
         }
         .result-macro {
           background: rgba(255,255,255,0.04);
           border: 1px solid rgba(255,255,255,0.06);
           border-radius: 10px;
-          padding: 12px 8px;
+          padding: 10px 8px;
           text-align: center;
         }
-        .result-macro-value { font-size: 16px; font-weight: 700; color: #10b981; }
-        .result-macro-label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
-        
+        .result-macro-value { font-size: 15px; font-weight: 700; color: #10b981; }
+        .result-macro-label { font-size: 9px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
         .result-verdict-box {
           background: rgba(16, 185, 129, 0.08);
           border: 1px solid rgba(16, 185, 129, 0.15);
           border-radius: 12px;
-          padding: 14px 16px;
-          margin-bottom: 20px;
+          padding: 12px 14px;
+          margin-bottom: 16px;
         }
         .result-verdict-label {
           font-size: 10px;
@@ -593,18 +616,18 @@ class CaloriesInAnything extends HTMLElement {
           color: #10b981;
           text-transform: uppercase;
           letter-spacing: 1px;
-          margin-bottom: 6px;
+          margin-bottom: 4px;
           display: flex;
           align-items: center;
           gap: 6px;
         }
         .result-verdict-label svg { width: 14px; height: 14px; stroke: currentColor; }
         .result-verdict-text {
-          font-size: 14px;
+          font-size: 13px;
           color: #d1fae5;
           line-height: 1.5;
         }
-        
+
         .result-action-btn {
           width: 100%;
           justify-content: center;
@@ -615,69 +638,73 @@ class CaloriesInAnything extends HTMLElement {
         .result-action-btn:hover {
           background: rgba(255,255,255,0.1);
         }
-        
-        /* Disclaimer */
+
+        /* DISCLAIMER - Mobile First */
         .disclaimer {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           gap: 8px;
-          padding: 12px 24px;
+          padding: 10px 16px;
           background: rgba(17, 24, 39, 0.8);
           border-top: 1px solid rgba(255,255,255,0.05);
-          font-size: 11px;
+          font-size: 10px;
           color: #64748b;
+          line-height: 1.4;
         }
-        .disclaimer svg { stroke: currentColor; flex-shrink: 0; }
-        
-        /* CTA Section */
+        .disclaimer svg { stroke: currentColor; flex-shrink: 0; margin-top: 1px; }
+
+        /* CTA SECTION - Mobile First */
         .cta-section {
           background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.02) 100%);
           border: 1px solid rgba(16, 185, 129, 0.15);
-          border-radius: 24px;
-          padding: 56px 40px;
+          border-radius: 20px;
+          padding: 32px 20px;
           text-align: center;
-          margin-top: 48px;
+          margin-top: 32px;
         }
         .cta-icon {
-          width: 64px;
-          height: 64px;
+          width: 56px;
+          height: 56px;
           background: rgba(16, 185, 129, 0.15);
-          border-radius: 20px;
+          border-radius: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 24px;
+          margin: 0 auto 20px;
           color: #10b981;
         }
         .cta-icon svg { stroke: currentColor; }
         .cta-section h2 {
-          font-size: 28px;
+          font-size: 22px;
           font-weight: 800;
           color: #f8fafc;
-          margin-bottom: 12px;
+          margin-bottom: 10px;
+          line-height: 1.2;
         }
         .cta-section > p {
           color: #94a3b8;
-          margin-bottom: 32px;
+          margin-bottom: 24px;
           max-width: 480px;
           margin-left: auto;
           margin-right: auto;
-          font-size: 16px;
+          font-size: 14px;
+          line-height: 1.6;
         }
         .cta-features {
           display: flex;
+          flex-direction: column;
           justify-content: center;
-          gap: 32px;
-          margin-top: 24px;
-          font-size: 14px;
+          gap: 12px;
+          margin-top: 20px;
+          font-size: 13px;
           color: #64748b;
         }
-        .cta-feature { display: flex; align-items: center; gap: 8px; }
+        .cta-feature { display: flex; align-items: center; justify-content: center; gap: 8px; }
         .cta-check { color: #10b981; display: flex; }
         .cta-check svg { stroke: currentColor; }
-        
-        /* Examples */
-        .examples-section { margin-top: 48px; }
+
+        /* EXAMPLES SECTION - Mobile First (single column) */
+        .examples-section { margin-top: 32px; }
         .examples-title {
           font-size: 11px;
           font-weight: 700;
@@ -685,69 +712,69 @@ class CaloriesInAnything extends HTMLElement {
           text-transform: uppercase;
           letter-spacing: 2px;
           text-align: center;
-          margin-bottom: 24px;
+          margin-bottom: 20px;
         }
         .examples-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-        }
-        @media (max-width: 600px) {
-          .examples-grid { grid-template-columns: 1fr; }
+          grid-template-columns: 1fr;
+          gap: 12px;
         }
         .example-card {
           background: rgba(17, 24, 39, 0.6);
           border: 1px solid rgba(255,255,255,0.05);
-          border-radius: 20px;
-          padding: 28px;
+          border-radius: 16px;
+          padding: 20px;
           text-align: center;
           transition: all 0.3s;
           cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 16px;
         }
         .example-card:hover {
           border-color: rgba(16, 185, 129, 0.3);
-          transform: translateY(-4px);
           box-shadow: 0 12px 40px rgba(0,0,0,0.3);
         }
         .example-icon {
-          width: 56px;
-          height: 56px;
+          width: 48px;
+          height: 48px;
           background: rgba(255,255,255,0.05);
-          border-radius: 16px;
+          border-radius: 14px;
           display: flex;
           align-items: center;
           justify-content: center;
-          margin: 0 auto 16px;
           color: #94a3b8;
           transition: all 0.3s;
+          flex-shrink: 0;
         }
         .example-card:hover .example-icon {
           background: rgba(16, 185, 129, 0.1);
           color: #10b981;
         }
         .example-icon svg { stroke: currentColor; }
-        .example-label { font-weight: 600; color: #f1f5f9; margin-bottom: 4px; }
-        .example-calories { color: #10b981; font-weight: 800; font-size: 20px; }
-        
-        /* FAQ */
-        .faq-section { margin-top: 48px; }
+        .example-info { text-align: left; }
+        .example-label { font-weight: 600; color: #f1f5f9; margin-bottom: 2px; font-size: 14px; }
+        .example-calories { color: #10b981; font-weight: 800; font-size: 18px; }
+
+        /* FAQ SECTION - Mobile First */
+        .faq-section { margin-top: 32px; }
         .faq-title {
-          font-size: 28px;
+          font-size: 22px;
           font-weight: 800;
           color: #f8fafc;
           text-align: center;
-          margin-bottom: 28px;
+          margin-bottom: 20px;
         }
-        .faq-list { display: flex; flex-direction: column; gap: 12px; }
+        .faq-list { display: flex; flex-direction: column; gap: 10px; }
         .faq-item {
           background: rgba(17, 24, 39, 0.6);
           border: 1px solid rgba(255,255,255,0.05);
-          border-radius: 16px;
+          border-radius: 14px;
           overflow: hidden;
         }
         .faq-question {
           width: 100%;
-          padding: 24px;
+          padding: 18px 16px;
           background: none;
           border: none;
           text-align: left;
@@ -755,53 +782,217 @@ class CaloriesInAnything extends HTMLElement {
           justify-content: space-between;
           align-items: center;
           cursor: pointer;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           color: #f1f5f9;
           font-family: inherit;
           transition: background 0.2s;
+          gap: 12px;
+          -webkit-tap-highlight-color: transparent;
         }
         .faq-question:hover { background: rgba(255,255,255,0.02); }
-        .faq-arrow { color: #64748b; transition: transform 0.3s; display: flex; }
+        .faq-arrow { color: #64748b; transition: transform 0.3s; display: flex; flex-shrink: 0; }
         .faq-arrow svg { stroke: currentColor; }
         .faq-arrow.open { transform: rotate(180deg); }
         .faq-answer {
-          padding: 0 24px 24px;
+          padding: 0 16px 18px;
           color: #94a3b8;
-          font-size: 15px;
+          font-size: 13px;
           line-height: 1.7;
         }
         .faq-answer a { color: #10b981; text-decoration: none; }
         .faq-answer a:hover { text-decoration: underline; }
-        
+
+        /* FOOTER - Mobile First */
         .footer {
-          margin-top: 48px;
-          padding-top: 32px;
+          margin-top: 32px;
+          padding-top: 24px;
           border-top: 1px solid rgba(255,255,255,0.05);
           text-align: center;
         }
         .footer-brand {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
+          gap: 8px;
           color: #f1f5f9;
           font-weight: 600;
           text-decoration: none;
-          margin-bottom: 8px;
+          margin-bottom: 6px;
+          font-size: 14px;
         }
         .footer-brand:hover { color: #10b981; }
-        .footer-logo { height: 28px; }
-        .footer-tagline { color: #64748b; font-size: 14px; margin-bottom: 16px; }
+        .footer-logo { height: 24px; }
+        .footer-tagline { color: #64748b; font-size: 12px; margin-bottom: 12px; }
         .footer-links {
           display: flex;
           justify-content: center;
-          gap: 24px;
-          font-size: 14px;
-          margin-bottom: 16px;
+          gap: 16px;
+          font-size: 12px;
+          margin-bottom: 12px;
+          flex-wrap: wrap;
         }
         .footer-links a { color: #64748b; text-decoration: none; }
         .footer-links a:hover { color: #f1f5f9; }
-        .footer-copyright { color: #475569; font-size: 13px; }
+        .footer-copyright { color: #475569; font-size: 11px; }
+
+        /* =============================================
+           TABLET BREAKPOINT (min-width: 480px)
+           ============================================= */
+        @media (min-width: 480px) {
+          .main { padding: 32px 20px; }
+
+          .hero { margin-bottom: 28px; }
+          .hero h1 { font-size: 32px; }
+          .hero p { font-size: 16px; }
+
+          .toggle-btn { padding: 10px 20px; font-size: 14px; }
+
+          .upload-section { padding: 32px 24px; }
+          .upload-zone { padding: 40px 28px; }
+          .upload-icon { width: 72px; height: 72px; }
+          .upload-icon svg { width: 32px; height: 32px; }
+          .upload-text { font-size: 20px; }
+
+          .result-compact { padding: 24px; }
+          .result-img { width: 68px; height: 68px; }
+          .result-item-name { font-size: 18px; }
+          .result-cal-number { font-size: 34px; }
+
+          /* 4-column macros on larger phones */
+          .result-macros-grid { grid-template-columns: repeat(4, 1fr); }
+
+          .analyzing { padding: 64px 24px; }
+          .analyzing-icon { width: 80px; height: 80px; }
+          .analyzing-icon svg { width: 36px; height: 36px; }
+          .analyzing-text { font-size: 20px; }
+
+          .error-box { padding: 40px 28px; margin: 24px; }
+          .error-text { font-size: 17px; }
+        }
+
+        /* =============================================
+           SMALL TABLET BREAKPOINT (min-width: 600px)
+           ============================================= */
+        @media (min-width: 600px) {
+          /* Examples grid becomes 3 columns */
+          .examples-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+          }
+          .example-card {
+            flex-direction: column;
+            padding: 24px;
+            gap: 12px;
+          }
+          .example-info { text-align: center; }
+          .example-icon { width: 52px; height: 52px; margin: 0; }
+          .example-label { font-size: 15px; }
+          .example-calories { font-size: 20px; }
+
+          .cta-features {
+            flex-direction: row;
+            gap: 24px;
+          }
+        }
+
+        /* =============================================
+           TABLET/DESKTOP BREAKPOINT (min-width: 768px)
+           ============================================= */
+        @media (min-width: 768px) {
+          .header { padding: 14px 24px; }
+          .logo { font-size: 18px; gap: 12px; }
+          .logo-img { height: 36px; }
+          .header-link { font-size: 14px; gap: 6px; }
+
+          .main { padding: 48px 24px; }
+
+          .hero { margin-bottom: 40px; }
+          .hero h1 { font-size: 40px; letter-spacing: -1px; margin-bottom: 16px; }
+          .hero p { font-size: 18px; }
+
+          .toggle-container { margin-bottom: 32px; }
+          .toggle-btn { padding: 12px 24px; }
+
+          .card { border-radius: 24px; }
+
+          .upload-section { padding: 48px; }
+          .upload-zone { padding: 56px 32px; border-radius: 20px; }
+          .upload-zone:hover { transform: translateY(-2px); }
+          .upload-icon { width: 80px; height: 80px; border-radius: 24px; margin-bottom: 24px; }
+          .upload-icon svg { width: 36px; height: 36px; }
+          .upload-text { font-size: 22px; margin-bottom: 8px; }
+          .upload-hint { font-size: 15px; margin-bottom: 28px; }
+          .upload-formats { font-size: 13px; margin-top: 24px; }
+
+          .btn { padding: 14px 28px; border-radius: 14px; font-size: 15px; gap: 10px; }
+          .btn-row { gap: 12px; }
+
+          .result-compact { padding: 32px; }
+          .result-share-btn { top: 24px; right: 24px; }
+          .result-top-row { gap: 16px; margin-bottom: 20px; padding-right: 48px; }
+          .result-img { width: 72px; height: 72px; border-radius: 16px; }
+          .result-item-name { font-size: 20px; margin-bottom: 4px; }
+          .result-intro-text { font-size: 13px; }
+          .result-calories-row { padding: 16px 20px; border-radius: 14px; margin-bottom: 16px; }
+          .result-cal-number { font-size: 36px; }
+          .result-cal-unit { font-size: 16px; margin-left: 4px; }
+          .result-digest-badge { font-size: 12px; padding: 6px 12px; }
+          .result-macros-grid { margin-bottom: 16px; }
+          .result-macro { padding: 12px 8px; }
+          .result-macro-value { font-size: 16px; }
+          .result-macro-label { font-size: 10px; }
+          .result-verdict-box { padding: 14px 16px; margin-bottom: 20px; }
+          .result-verdict-text { font-size: 14px; }
+
+          .disclaimer { padding: 12px 24px; font-size: 11px; }
+
+          .analyzing { padding: 80px 32px; }
+          .analyzing-icon { width: 88px; height: 88px; border-radius: 28px; margin-bottom: 28px; }
+          .analyzing-icon svg { width: 40px; height: 40px; }
+          .analyzing-text { font-size: 22px; margin-bottom: 8px; }
+          .analyzing-hint { font-size: 15px; }
+          .progress-bar { max-width: 280px; height: 6px; margin-top: 28px; }
+
+          .error-box { border-radius: 20px; padding: 48px; margin: 32px; }
+          .error-text { font-size: 18px; margin-bottom: 8px; }
+          .error-hint { font-size: 15px; margin-bottom: 24px; }
+
+          .cta-section { border-radius: 24px; padding: 56px 40px; margin-top: 48px; }
+          .cta-icon { width: 64px; height: 64px; border-radius: 20px; margin-bottom: 24px; }
+          .cta-section h2 { font-size: 28px; margin-bottom: 12px; }
+          .cta-section > p { font-size: 16px; margin-bottom: 32px; }
+          .cta-features { gap: 32px; margin-top: 24px; font-size: 14px; }
+
+          .examples-section { margin-top: 48px; }
+          .examples-title { margin-bottom: 24px; }
+          .example-card { border-radius: 20px; padding: 28px; }
+          .example-card:hover { transform: translateY(-4px); }
+          .example-icon { width: 56px; height: 56px; border-radius: 16px; }
+
+          .faq-section { margin-top: 48px; }
+          .faq-title { font-size: 28px; margin-bottom: 28px; }
+          .faq-list { gap: 12px; }
+          .faq-item { border-radius: 16px; }
+          .faq-question { padding: 24px; font-size: 16px; gap: 16px; }
+          .faq-answer { padding: 0 24px 24px; font-size: 15px; }
+
+          .footer { margin-top: 48px; padding-top: 32px; }
+          .footer-brand { gap: 10px; font-size: 16px; margin-bottom: 8px; }
+          .footer-logo { height: 28px; }
+          .footer-tagline { font-size: 14px; margin-bottom: 16px; }
+          .footer-links { gap: 24px; font-size: 14px; margin-bottom: 16px; }
+          .footer-copyright { font-size: 13px; }
+        }
+
+        /* =============================================
+           REDUCED MOTION
+           ============================================= */
+        @media (prefers-reduced-motion: reduce) {
+          .upload-zone, .btn, .example-card, .faq-arrow { transition: none; }
+          .upload-zone:hover, .example-card:hover { transform: none; }
+          .btn-primary:hover { transform: none; }
+          .analyzing-icon, .progress-fill { animation: none; }
+        }
       </style>
       
       <div class="calories-app">
@@ -868,18 +1059,24 @@ class CaloriesInAnything extends HTMLElement {
             <div class="examples-grid">
               <div class="example-card">
                 <div class="example-icon">${Icons.armchair}</div>
-                <div class="example-label">KALLAX Shelf</div>
-                <div class="example-calories">12,847 cal</div>
+                <div class="example-info">
+                  <div class="example-label">KALLAX Shelf</div>
+                  <div class="example-calories">12,847 cal</div>
+                </div>
               </div>
               <div class="example-card">
                 <div class="example-icon">${Icons.footprints}</div>
-                <div class="example-label">Running Shoe</div>
-                <div class="example-calories">3,200 cal</div>
+                <div class="example-info">
+                  <div class="example-label">Running Shoe</div>
+                  <div class="example-calories">3,200 cal</div>
+                </div>
               </div>
               <div class="example-card">
                 <div class="example-icon">${Icons.smartphone}</div>
-                <div class="example-label">iPhone 15 Pro</div>
-                <div class="example-calories">847 cal</div>
+                <div class="example-info">
+                  <div class="example-label">iPhone 15 Pro</div>
+                  <div class="example-calories">847 cal</div>
+                </div>
               </div>
             </div>
           </div>
