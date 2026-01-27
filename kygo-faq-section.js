@@ -8,12 +8,24 @@ class KygoFaqSection extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._settings = {};
+    this._searchIndex = []; // Cached search data
+    this._domCache = {};    // Cached DOM references
+    this._searchDebounceTimer = null;
+    this._eventsBound = false;
   }
 
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._buildSearchIndex();
     this._setupEventDelegation();
+  }
+
+  disconnectedCallback() {
+    // Clean up timers
+    if (this._searchDebounceTimer) {
+      clearTimeout(this._searchDebounceTimer);
+    }
   }
 
   _parseWixAttributes() {
@@ -35,16 +47,52 @@ class KygoFaqSection extends HTMLElement {
     if (oldValue === newValue) return;
     if (name === 'wixsettings') this._parseWixAttributes();
     this.render();
-    this._setupEventDelegation();
+    this._buildSearchIndex();
+    // Only setup events once (they use delegation so survive re-renders)
+    if (!this._eventsBound) {
+      this._setupEventDelegation();
+    }
   }
 
   _getSetting(key, fallback) {
     return this._settings[key] || this.getAttribute(key) || fallback;
   }
 
-  _setupEventDelegation() {
+  _buildSearchIndex() {
     const shadow = this.shadowRoot;
     if (!shadow) return;
+
+    // Cache DOM references
+    this._domCache.categoryBtns = shadow.querySelectorAll('.category-btn');
+    this._domCache.allCategoryBtn = shadow.querySelector('.category-btn[data-category="all"]');
+    this._domCache.faqSections = shadow.querySelectorAll('.faq-section');
+    this._domCache.faqItems = shadow.querySelectorAll('.faq-item');
+
+    // Pre-compute search index (lowercase text for each item)
+    this._searchIndex = [];
+    this._domCache.faqSections.forEach(section => {
+      const sectionData = {
+        element: section,
+        category: section.dataset.category,
+        items: []
+      };
+      section.querySelectorAll('.faq-item').forEach(item => {
+        sectionData.items.push({
+          element: item,
+          searchText: (
+            item.querySelector('.faq-question').textContent + ' ' +
+            item.querySelector('.faq-answer').textContent
+          ).toLowerCase()
+        });
+      });
+      this._searchIndex.push(sectionData);
+    });
+  }
+
+  _setupEventDelegation() {
+    const shadow = this.shadowRoot;
+    if (!shadow || this._eventsBound) return;
+    this._eventsBound = true;
 
     // Use event delegation on shadow root for clicks
     shadow.addEventListener('click', (e) => {
@@ -54,10 +102,13 @@ class KygoFaqSection extends HTMLElement {
         const item = question.closest('.faq-item');
         const section = item.closest('.faq-section');
         const wasOpen = item.classList.contains('open');
-        
-        // Close all items in this section
-        section.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-        
+
+        // Close all items in this section (use cached section items)
+        const sectionItems = section.querySelectorAll('.faq-item');
+        for (let i = 0; i < sectionItems.length; i++) {
+          sectionItems[i].classList.remove('open');
+        }
+
         // Toggle clicked item
         if (!wasOpen) item.classList.add('open');
         return;
@@ -67,61 +118,86 @@ class KygoFaqSection extends HTMLElement {
       const categoryBtn = e.target.closest('.category-btn');
       if (categoryBtn) {
         const category = categoryBtn.dataset.category;
-        
-        // Update active state
-        shadow.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+
+        // Update active state using cached buttons
+        const btns = this._domCache.categoryBtns;
+        for (let i = 0; i < btns.length; i++) {
+          btns[i].classList.remove('active');
+        }
         categoryBtn.classList.add('active');
-        
-        // Show/hide sections
-        shadow.querySelectorAll('.faq-section').forEach(section => {
-          if (category === 'all' || section.dataset.category === category) {
-            section.style.display = 'block';
-          } else {
-            section.style.display = 'none';
+
+        // Show/hide sections using cached data
+        for (let i = 0; i < this._searchIndex.length; i++) {
+          const section = this._searchIndex[i];
+          const show = category === 'all' || section.category === category;
+          section.element.style.display = show ? 'block' : 'none';
+
+          // Reset all items to visible
+          for (let j = 0; j < section.items.length; j++) {
+            section.items[j].element.style.display = 'block';
           }
-        });
-        
-        // Reset all items to visible
-        shadow.querySelectorAll('.faq-item').forEach(item => {
-          item.style.display = 'block';
-        });
+        }
         return;
       }
     });
 
-    // Search input listener
+    // Search input listener with debouncing
     const searchInput = shadow.getElementById('faq-search');
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase().trim();
-        
-        // Reset category buttons
-        shadow.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-        shadow.querySelector('.category-btn[data-category="all"]').classList.add('active');
-        
-        if (query.length < 2) {
-          // Show all
-          shadow.querySelectorAll('.faq-section').forEach(s => s.style.display = 'block');
-          shadow.querySelectorAll('.faq-item').forEach(i => i.style.display = 'block');
-          return;
+        // Clear existing debounce timer
+        if (this._searchDebounceTimer) {
+          clearTimeout(this._searchDebounceTimer);
         }
-        
-        // Filter items
-        shadow.querySelectorAll('.faq-section').forEach(section => {
-          let hasVisibleItem = false;
-          section.querySelectorAll('.faq-item').forEach(item => {
-            const questionText = item.querySelector('.faq-question').textContent.toLowerCase();
-            const answerText = item.querySelector('.faq-answer').textContent.toLowerCase();
-            if (questionText.includes(query) || answerText.includes(query)) {
-              item.style.display = 'block';
-              hasVisibleItem = true;
-            } else {
-              item.style.display = 'none';
-            }
-          });
-          section.style.display = hasVisibleItem ? 'block' : 'none';
-        });
+
+        // Debounce search by 150ms
+        this._searchDebounceTimer = setTimeout(() => {
+          this._performSearch(e.target.value);
+        }, 150);
       });
+    }
+  }
+
+  _performSearch(value) {
+    const query = value.toLowerCase().trim();
+
+    // Reset category buttons using cached references
+    const btns = this._domCache.categoryBtns;
+    for (let i = 0; i < btns.length; i++) {
+      btns[i].classList.remove('active');
+    }
+    if (this._domCache.allCategoryBtn) {
+      this._domCache.allCategoryBtn.classList.add('active');
+    }
+
+    if (query.length < 2) {
+      // Show all using cached data
+      for (let i = 0; i < this._searchIndex.length; i++) {
+        const section = this._searchIndex[i];
+        section.element.style.display = 'block';
+        for (let j = 0; j < section.items.length; j++) {
+          section.items[j].element.style.display = 'block';
+        }
+      }
+      return;
+    }
+
+    // Filter items using pre-computed search index
+    for (let i = 0; i < this._searchIndex.length; i++) {
+      const section = this._searchIndex[i];
+      let hasVisibleItem = false;
+
+      for (let j = 0; j < section.items.length; j++) {
+        const item = section.items[j];
+        // Use pre-computed lowercase text
+        if (item.searchText.includes(query)) {
+          item.element.style.display = 'block';
+          hasVisibleItem = true;
+        } else {
+          item.element.style.display = 'none';
+        }
+      }
+      section.element.style.display = hasVisibleItem ? 'block' : 'none';
     }
   }
 
@@ -173,14 +249,14 @@ class KygoFaqSection extends HTMLElement {
         .category-btn.active { background: var(--green); border-color: var(--green); color: white; }
 
         .faq-sections { padding: 60px 0; }
-        .faq-section { max-width: 800px; margin: 0 auto 60px; }
+        .faq-section { max-width: 800px; margin: 0 auto 60px; contain: content; }
         .faq-section:last-child { margin-bottom: 0; }
         .faq-section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid var(--gray-200); }
         .faq-section-icon { width: 48px; height: 48px; background: var(--green-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .faq-section-icon svg { width: 24px; height: 24px; color: var(--green); }
         .faq-section-header h2 { font-size: 24px; color: var(--dark); }
         .faq-list { display: flex; flex-direction: column; gap: 12px; }
-        .faq-item { background: white; border: 1px solid var(--gray-200); border-radius: 16px; overflow: hidden; transition: all 0.2s; }
+        .faq-item { background: white; border: 1px solid var(--gray-200); border-radius: 16px; overflow: hidden; transition: all 0.2s; contain: layout style; }
         .faq-item:hover { border-color: var(--gray-400); }
         .faq-item.open { border-color: var(--green); box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1); }
         .faq-question { padding: 20px 24px; font-weight: 600; font-size: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; gap: 16px; user-select: none; }
