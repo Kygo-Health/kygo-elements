@@ -127,7 +127,7 @@ class KygoFaqSection extends HTMLElement {
 
   render() {
     const appStoreUrl = this._getSetting('app-store-url', '#');
-    const email = this._getSetting('email', 'support@kygohealth.com');
+    const email = this._getSetting('email', 'support@kygo.app');
 
     this.shadowRoot.innerHTML = `
       <style>
