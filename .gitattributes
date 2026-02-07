@@ -1,0 +1,3 @@
+# Force GitHub to classify all JS files as JavaScript (not HTML)
+# Some files contain large HTML template literals that confuse language detection
+*.js linguist-language=JavaScript

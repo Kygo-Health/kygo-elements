@@ -3,6 +3,16 @@
  * Tag name: kygo-hiw-hero
  */
 
+/** Injects accessible text into light DOM so crawlers and AI tools can read component content */
+function __seo(el, text) {
+  if (el.querySelector('[data-seo]')) return;
+  const d = document.createElement('div');
+  d.setAttribute('data-seo', '');
+  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+  d.textContent = text;
+  el.appendChild(d);
+}
+
 class KygoHiwHero extends HTMLElement {
   constructor() {
     super();
@@ -13,6 +23,7 @@ class KygoHiwHero extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    __seo(this, 'How Kygo Health Works \u2014 Three simple steps to understand how food affects your body. Connect wearables, log nutrition, and discover personalized health insights.');
   }
 
   _parseWixAttributes() {
@@ -229,6 +240,7 @@ class KygoHiwPhaseConnect extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
+    __seo(this, 'Step 1: Connect your wearables \u2014 Sync Apple Watch, Oura Ring, WHOOP, Garmin, and more with Kygo Health for automatic health data tracking.');
   }
 
   disconnectedCallback() {
@@ -775,6 +787,7 @@ class KygoHiwPhaseLog extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
+    __seo(this, 'Step 2: Log your nutrition \u2014 Use AI-powered food scanning to log meals in seconds. Snap a photo or search for foods to track calories, macros, and nutrients.');
   }
 
   disconnectedCallback() {
@@ -1481,6 +1494,7 @@ class KygoHiwPhaseDiscover extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
+    __seo(this, 'Step 3: Discover insights \u2014 See how your food choices affect your sleep quality, HRV, energy levels, and recovery with Kygo AI-powered analysis.');
   }
 
   disconnectedCallback() {
@@ -2096,6 +2110,7 @@ class KygoHiwTimeline extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
+    __seo(this, 'Your Kygo Health Timeline \u2014 Track how nutrition impacts your health metrics over your first two weeks and beyond with personalized trend analysis.');
   }
 
   disconnectedCallback() {
@@ -2464,6 +2479,7 @@ class KygoHiwObjections extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
+    __seo(this, 'Why Kygo Health? Built for real life \u2014 Answers to common questions about nutrition tracking, data privacy, and how Kygo compares to other health apps.');
   }
 
   disconnectedCallback() {
@@ -2817,6 +2833,7 @@ class KygoHiwFinalCta extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
+    __seo(this, 'Start your health journey with Kygo \u2014 Download free on iOS. Connect nutrition with wearable data for insights you cannot get anywhere else. Free forever plan available.');
   }
 
   disconnectedCallback() {

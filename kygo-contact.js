@@ -3,6 +3,16 @@
  * Tag name: kygo-contact-section
  */
 
+/** Injects accessible text into light DOM so crawlers and AI tools can read component content */
+function __seo(el, text) {
+  if (el.querySelector('[data-seo]')) return;
+  const d = document.createElement('div');
+  d.setAttribute('data-seo', '');
+  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+  d.textContent = text;
+  el.appendChild(d);
+}
+
 class KygoContactSection extends HTMLElement {
   constructor() {
     super();
@@ -15,6 +25,7 @@ class KygoContactSection extends HTMLElement {
     this.render();
     this._attachEventListeners();
     this._setupScrollAnimations();
+    __seo(this, 'Contact Kygo Health \u2014 Get in touch with our team for questions about nutrition tracking, wearable integration, or the Kygo app.');
   }
 
   disconnectedCallback() {

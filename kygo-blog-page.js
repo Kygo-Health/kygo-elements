@@ -1,7 +1,7 @@
 /**
  * Kygo Health - Blog Section Custom Element for Wix
  * Tag name: kygo-blog
- * 
+ *
  * Usage in Wix:
  * 1. Upload this file to same location as kygo-hero-section.js
  * 2. Add Custom Element widget in Wix Editor
@@ -9,6 +9,16 @@
  * 4. Set Tag Name to: kygo-blog
  * 5. Add Page Code to pass blog posts (see bottom of file)
  */
+
+/** Injects accessible text into light DOM so crawlers and AI tools can read component content */
+function __seo(el, text) {
+  if (el.querySelector('[data-seo]')) return;
+  const d = document.createElement('div');
+  d.setAttribute('data-seo', '');
+  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+  d.textContent = text;
+  el.appendChild(d);
+}
 
 class KygoBlog extends HTMLElement {
   constructor() {
@@ -22,6 +32,7 @@ class KygoBlog extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    __seo(this, 'Kygo Health Blog \u2014 Latest articles and guides on nutrition tracking, health optimization, and wearable data insights.');
   }
 
   disconnectedCallback() {

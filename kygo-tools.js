@@ -4,6 +4,17 @@
  * Displays all Kygo free tools in a branded grid layout
  * Tools are configurable via the 'tools' attribute (JSON array)
  */
+
+/** Injects accessible text into light DOM so crawlers and AI tools can read component content */
+function __seo(el, text) {
+  if (el.querySelector('[data-seo]')) return;
+  const d = document.createElement('div');
+  d.setAttribute('data-seo', '');
+  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+  d.textContent = text;
+  el.appendChild(d);
+}
+
 class KygoToolsPage extends HTMLElement {
   constructor() {
     super();
@@ -16,6 +27,7 @@ class KygoToolsPage extends HTMLElement {
     this._parseTools();
     this.render();
     this._setupAnimations();
+    __seo(this, 'Kygo Health Free Tools \u2014 AI-powered nutrition and health tools. Food Scanner: snap a photo of any meal for instant calories, macros, and health score. No signup required.');
   }
 
   disconnectedCallback() {
