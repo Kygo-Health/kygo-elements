@@ -27,7 +27,7 @@ class KygoToolsPage extends HTMLElement {
     this._parseTools();
     this.render();
     this._setupAnimations();
-    __seo(this, 'Kygo Health Free Tools \u2014 AI-powered nutrition and health tools. Food Scanner: snap a photo of any meal for instant calories, macros, and health score. No signup required.');
+    __seo(this, 'Kygo Health Free Tools \u2014 AI-powered nutrition and health tools. Food Scanner: snap a photo of any meal for instant calories, macros, and health score. Wearable Accuracy: compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research. No signup required.');
   }
 
   disconnectedCallback() {
@@ -63,6 +63,15 @@ class KygoToolsPage extends HTMLElement {
         badge: 'Most Popular',
         url: '/calories-in-anything',
         features: ['Instant calorie count', 'Macro & vitamin breakdown', 'Health score 1\u201310']
+      },
+      {
+        slug: 'wearable-accuracy',
+        title: 'Wearable Accuracy',
+        description: 'Compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research.',
+        icon: 'activity',
+        badge: 'New',
+        url: '/wearable-accuracy',
+        features: ['17+ peer-reviewed studies', 'Head-to-head comparison', 'Full bias disclosure']
       }
     ];
   }
