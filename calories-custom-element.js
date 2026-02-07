@@ -32,7 +32,7 @@ class CaloriesInAnything extends HTMLElement {
     this.error = null;
     this.openFaq = null;
     this.dailyLimit = 20;
-    this.supportedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic'];
+    this.supportedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
     this.maxFileSizeMB = 10;
     this.logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     this.uploadedImageData = null;
@@ -97,8 +97,9 @@ class CaloriesInAnything extends HTMLElement {
 
   validateFile(file) {
     if (!file) return { valid: false, error: 'No file selected' };
-    if (!this.supportedTypes.includes(file.type) && !file.name.toLowerCase().endsWith('.heic')) {
-      return { valid: false, error: 'Please upload a JPG, PNG, or WebP image' };
+    const fileName = file.name.toLowerCase();
+    if (!this.supportedTypes.includes(file.type) && !fileName.endsWith('.heic') && !fileName.endsWith('.heif')) {
+      return { valid: false, error: 'Please upload a JPG, PNG, WebP, or HEIC image' };
     }
     const sizeMB = file.size / (1024 * 1024);
     if (sizeMB > this.maxFileSizeMB) {
@@ -108,12 +109,26 @@ class CaloriesInAnything extends HTMLElement {
   }
 
   async compressImage(file) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
+      reader.onerror = () => reject(new Error('Failed to read file'));
       reader.onload = (event) => {
+        const dataUrl = event.target.result;
+        const rawBase64 = dataUrl.split(',')[1];
+
+        // HEIC/HEIF: browsers (Chrome, Firefox) can't decode via canvas
+        // Send raw base64 directly — Gemini handles HEIC natively
+        const lowerName = file.name.toLowerCase();
+        if (lowerName.endsWith('.heic') || lowerName.endsWith('.heif') ||
+            file.type === 'image/heic' || file.type === 'image/heif') {
+          resolve(rawBase64);
+          return;
+        }
+
         const img = new Image();
-        img.src = event.target.result;
+        img.src = dataUrl;
+        img.onerror = () => resolve(rawBase64); // fallback if decode fails
         img.onload = () => {
           const canvas = document.createElement('canvas');
           let width = img.width;
@@ -162,8 +177,37 @@ class CaloriesInAnything extends HTMLElement {
   }
 
   toggleFaq(index) {
+    const prevIndex = this.openFaq;
     this.openFaq = this.openFaq === index ? null : index;
-    this.render();
+
+    // Close previously open FAQ
+    if (prevIndex !== null && prevIndex !== index) {
+      const prevItem = this.querySelector(`.faq-item[data-index="${prevIndex}"]`);
+      if (prevItem) {
+        const prevAnswer = prevItem.querySelector('.faq-answer');
+        const prevArrow = prevItem.querySelector('.faq-arrow');
+        if (prevAnswer) prevAnswer.remove();
+        if (prevArrow) prevArrow.classList.remove('open');
+      }
+    }
+
+    // Toggle current FAQ
+    const item = this.querySelector(`.faq-item[data-index="${index}"]`);
+    if (!item) return;
+    const arrow = item.querySelector('.faq-arrow');
+    const existingAnswer = item.querySelector('.faq-answer');
+
+    if (existingAnswer) {
+      existingAnswer.remove();
+      if (arrow) arrow.classList.remove('open');
+    } else {
+      const answerText = item.getAttribute('data-answer');
+      const answerDiv = document.createElement('div');
+      answerDiv.className = 'faq-answer';
+      answerDiv.innerHTML = answerText;
+      item.appendChild(answerDiv);
+      if (arrow) arrow.classList.add('open');
+    }
   }
 
   shareResult() {
@@ -883,16 +927,17 @@ class CaloriesInAnything extends HTMLElement {
         .example-icon {
           width: 48px;
           height: 48px;
-          background: var(--green-light);
+          background: linear-gradient(135deg, var(--green), var(--green-dark));
           border-radius: 14px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--green);
+          color: white;
           transition: all 0.3s;
           flex-shrink: 0;
-          font-size: 22px;
+          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
         }
+        .example-icon svg { width: 22px; height: 22px; stroke: currentColor; }
         .example-info { text-align: left; }
         .example-label { font-weight: 600; color: var(--dark); margin-bottom: 2px; font-size: 14px; }
         .example-calories { color: var(--green-dark); font-weight: 700; font-size: 16px; }
@@ -1009,6 +1054,7 @@ class CaloriesInAnything extends HTMLElement {
           .example-card { flex-direction: column; padding: 24px; gap: 12px; }
           .example-info { text-align: center; }
           .example-icon { width: 52px; height: 52px; margin: 0; }
+          .example-icon svg { width: 24px; height: 24px; }
           .example-label { font-size: 15px; }
           .example-calories { font-size: 18px; }
           .cta-features { flex-direction: row; gap: 24px; }
@@ -1072,6 +1118,7 @@ class CaloriesInAnything extends HTMLElement {
           .example-card { border-radius: 20px; padding: 28px; }
           .example-card:hover { transform: translateY(-4px); }
           .example-icon { width: 56px; height: 56px; border-radius: 16px; }
+          .example-icon svg { width: 26px; height: 26px; }
           .faq-section { margin-top: 48px; }
           .faq-title { font-size: 28px; margin-bottom: 28px; }
           .faq-list { gap: 12px; }
@@ -1172,15 +1219,15 @@ class CaloriesInAnything extends HTMLElement {
           <div class="cta-section animate-on-scroll">
             <div class="cta-section-content">
               <div class="cta-icon">${Icons.activity}</div>
-              <h2>See how food affects your body</h2>
-              <p>Kygo connects your nutrition with sleep, HRV, and recovery data from Oura, Fitbit, Garmin & Apple Watch. Discover which foods help you perform best.</p>
-              <a href="https://kygo.app" class="cta-btn-white" target="_blank">
+              <h2>Go beyond calories. See cause and effect.</h2>
+              <p>Kygo connects your meals with sleep, HRV, and recovery data from Oura, Fitbit, Garmin & Apple Watch to reveal which foods help you perform best.</p>
+              <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn-white" target="_blank">
                 ${Icons.apple}
                 Download Free on iOS
               </a>
               <div class="cta-features">
                 <span class="cta-feature"><span class="cta-check">${Icons.check}</span> Free forever plan</span>
-                <span class="cta-feature"><span class="cta-check">${Icons.check}</span> Syncs with wearables</span>
+                <span class="cta-feature"><span class="cta-check">${Icons.check}</span> Syncs with 4+ wearables</span>
                 <span class="cta-feature"><span class="cta-check">${Icons.check}</span> AI food logging</span>
               </div>
             </div>
@@ -1190,7 +1237,7 @@ class CaloriesInAnything extends HTMLElement {
             <h3 class="examples-title">Popular Scans</h3>
             <div class="examples-grid">
               <div class="example-card">
-                <div class="example-icon">🥑</div>
+                <div class="example-icon">${Icons.salad}</div>
                 <div class="example-info">
                   <div class="example-label">Avocado Toast</div>
                   <div class="example-calories">420 cal</div>
@@ -1198,7 +1245,7 @@ class CaloriesInAnything extends HTMLElement {
                 </div>
               </div>
               <div class="example-card">
-                <div class="example-icon">🥗</div>
+                <div class="example-icon">${Icons.utensils}</div>
                 <div class="example-info">
                   <div class="example-label">Chicken Salad</div>
                   <div class="example-calories">380 cal</div>
@@ -1206,7 +1253,7 @@ class CaloriesInAnything extends HTMLElement {
                 </div>
               </div>
               <div class="example-card">
-                <div class="example-icon">🫐</div>
+                <div class="example-icon">${Icons.leaf}</div>
                 <div class="example-info">
                   <div class="example-label">Acai Bowl</div>
                   <div class="example-calories">510 cal</div>
@@ -1217,21 +1264,23 @@ class CaloriesInAnything extends HTMLElement {
           </div>
 
           <div class="faq-section">
-            <h2 class="faq-title">Frequently Asked Questions</h2>
+            <h2 class="faq-title">Questions & Answers</h2>
             <div class="faq-list">
-              ${this.renderFaqItem(0, "How accurate is the food scanner?", "Our AI uses advanced image recognition to identify ingredients, estimate portion sizes, and calculate nutritional content. While no AI tool is 100% accurate, our scanner provides reliable estimates that are useful for daily tracking. For precise dietary needs, consult a registered dietitian.")}
-              ${this.renderFaqItem(1, "What nutritional info do I get?", "Each scan provides calories, macronutrients (protein, carbs, fat, fiber), key vitamins and minerals with daily value percentages, dietary tags (like high protein, heart healthy), a health score from 1-10, and personalized health insights about how the food may affect your energy, sleep, and recovery.")}
-              ${this.renderFaqItem(2, "Can I use this for food tracking?", "This scanner is great for quick checks! For comprehensive daily tracking that shows how your meals affect sleep, HRV, and recovery over time, try <a href=\"https://kygo.app\" target=\"_blank\">Kygo</a> — our full app that connects nutrition with your wearable data to find your personal patterns.")}
-              ${this.renderFaqItem(3, "Is this free? Do I need to sign up?", "100% free, no sign-up required. You get ${this.dailyLimit} scans per day. For unlimited scanning and full nutrition tracking with wearable correlations, check out the Kygo app.")}
+              ${this.renderFaqItem(0, "How accurate are the nutrition estimates?", "Our AI identifies ingredients and estimates portion sizes using visual analysis. Results are reliable for everyday tracking and meal awareness. For clinical dietary planning, we recommend pairing this with a registered dietitian. Accuracy improves with well-lit, overhead photos of plated meals.")}
+              ${this.renderFaqItem(1, "What info does each scan include?", "Every scan returns calories, six macronutrients (protein, carbs, fat, fiber, sugar, sodium), a 1\u201310 health score, key vitamins and minerals with % daily value, dietary tags like <strong>High Protein</strong> or <strong>Heart Healthy</strong>, and actionable health insights specific to that food.")}
+              ${this.renderFaqItem(2, "What photo formats are supported?", "JPG, PNG, WebP, and HEIC (iPhone photos). You can upload from your camera roll, take a photo directly, or drag and drop. Images are compressed client-side before analysis\u2014your original photo never leaves your device.")}
+              ${this.renderFaqItem(3, "How does this connect to the Kygo app?", "This scanner gives you instant one-off nutrition checks. The <a href=\"https://kygo.app\" target=\"_blank\">Kygo app</a> takes it further\u2014log meals daily and connect your wearable (Oura, Apple Watch, Fitbit, Garmin) to discover how specific foods affect your sleep, HRV, energy, and recovery over time.")}
+              ${this.renderFaqItem(4, "Is there a daily limit?", "You get ${this.dailyLimit} free scans per day with no sign-up required. The Kygo app includes unlimited AI-powered food logging along with wearable correlations and a free forever plan.")}
+              ${this.renderFaqItem(5, "What if I scan something that isn't food?", "The AI will detect non-food items and let you know. You'll see a notice that the image doesn't appear to be food, along with a prompt to try again with a meal photo.")}
             </div>
           </div>
 
           <footer class="footer">
             <a href="https://kygo.app" class="footer-brand" target="_blank">
-              <img src="${this.logoUrl}" alt="Kygo" class="footer-logo" />
-              Kygo
+              <img src="${this.logoUrl}" alt="Kygo Health" class="footer-logo" />
+              Kygo Health
             </a>
-            <p class="footer-tagline">Nutrition meets wearable intelligence</p>
+            <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
             <div class="footer-links">
               <a href="https://kygo.app" target="_blank">Kygo App</a>
               <a href="https://kygo.app/privacy" target="_blank">Privacy</a>
@@ -1261,9 +1310,9 @@ class CaloriesInAnything extends HTMLElement {
               <span class="btn-icon">${Icons.camera}</span> Take Photo
             </button>
           </div>
-          <input type="file" id="fileInput" class="hidden-input" accept="image/jpeg,image/png,image/webp,image/heic">
+          <input type="file" id="fileInput" class="hidden-input" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif">
           <input type="file" id="cameraInput" class="hidden-input" accept="image/*" capture="environment">
-          <p class="upload-formats">JPG, PNG, WebP &bull; Max ${this.maxFileSizeMB}MB</p>
+          <p class="upload-formats">JPG, PNG, WebP, HEIC &bull; iPhone photos supported &bull; Max ${this.maxFileSizeMB}MB</p>
         </div>
       </div>
     `;
@@ -1405,8 +1454,9 @@ class CaloriesInAnything extends HTMLElement {
 
   renderFaqItem(index, question, answer) {
     const isOpen = this.openFaq === index;
+    const escapedAnswer = answer.replace(/"/g, '&quot;');
     return `
-      <div class="faq-item">
+      <div class="faq-item" data-index="${index}" data-answer="${escapedAnswer}">
         <button class="faq-question" data-faq="${index}">
           ${question}
           <span class="faq-arrow ${isOpen ? 'open' : ''}">${Icons.chevronDown}</span>

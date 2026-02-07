@@ -398,26 +398,26 @@ class KygoBlog extends HTMLElement {
         /* Category tabs stagger entrance */
         .category-tab {
           opacity: 0;
-          animation: slideInDown 0.4s ease-out forwards;
+          animation: slideInDown 0.3s ease-out forwards;
         }
-        .category-tab:nth-child(1) { animation-delay: 0.05s; }
-        .category-tab:nth-child(2) { animation-delay: 0.1s; }
-        .category-tab:nth-child(3) { animation-delay: 0.15s; }
-        .category-tab:nth-child(4) { animation-delay: 0.2s; }
-        .category-tab:nth-child(5) { animation-delay: 0.25s; }
-        .category-tab:nth-child(6) { animation-delay: 0.3s; }
-        .category-tab:nth-child(7) { animation-delay: 0.35s; }
-        .category-tab:nth-child(8) { animation-delay: 0.4s; }
+        .category-tab:nth-child(1) { animation-delay: 0.02s; }
+        .category-tab:nth-child(2) { animation-delay: 0.05s; }
+        .category-tab:nth-child(3) { animation-delay: 0.08s; }
+        .category-tab:nth-child(4) { animation-delay: 0.11s; }
+        .category-tab:nth-child(5) { animation-delay: 0.14s; }
+        .category-tab:nth-child(6) { animation-delay: 0.17s; }
+        .category-tab:nth-child(7) { animation-delay: 0.2s; }
+        .category-tab:nth-child(8) { animation-delay: 0.23s; }
 
         /* Blog card - container animation */
         .blog-card {
           opacity: 0;
-          transform: translateY(20px);
+          transform: translateY(15px);
         }
         .blog-card.visible {
           opacity: 1;
           transform: translateY(0);
-          transition: opacity 0.5s ease-out, transform 0.5s ease-out, box-shadow 0.2s, border-color 0.2s;
+          transition: opacity 0.35s ease-out, transform 0.35s ease-out, box-shadow 0.2s, border-color 0.2s;
         }
 
         /* Blog card children - cascade within each card */
@@ -427,23 +427,23 @@ class KygoBlog extends HTMLElement {
         .blog-card .blog-card-title,
         .blog-card .blog-card-excerpt {
           opacity: 0;
-          transform: translateY(10px);
+          transform: translateY(8px);
         }
 
         .blog-card.visible .blog-card-image {
-          animation: fadeInUp 0.4s ease-out 0.1s forwards;
+          animation: fadeInUp 0.3s ease-out 0.03s forwards;
         }
         .blog-card.visible .blog-card-meta {
-          animation: fadeInUp 0.4s ease-out 0.15s forwards;
+          animation: fadeInUp 0.3s ease-out 0.06s forwards;
         }
         .blog-card.visible .blog-card-category {
-          animation: fadeInUp 0.4s ease-out 0.2s forwards;
+          animation: fadeInUp 0.3s ease-out 0.09s forwards;
         }
         .blog-card.visible .blog-card-title {
-          animation: fadeInUp 0.4s ease-out 0.25s forwards;
+          animation: fadeInUp 0.3s ease-out 0.12s forwards;
         }
         .blog-card.visible .blog-card-excerpt {
-          animation: fadeInUp 0.4s ease-out 0.3s forwards;
+          animation: fadeInUp 0.3s ease-out 0.15s forwards;
         }
 
         /* Reduced motion */
@@ -563,7 +563,7 @@ class KygoBlog extends HTMLElement {
           if (entry.isIntersecting) {
             const card = entry.target;
             const index = Array.from(card.parentElement.children).indexOf(card);
-            setTimeout(() => card.classList.add('visible'), index * 100);
+            setTimeout(() => card.classList.add('visible'), index * 60);
             this._observer.unobserve(card);
           }
         });
