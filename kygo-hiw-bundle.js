@@ -576,8 +576,64 @@ class KygoHiwPhaseConnect extends HTMLElement {
           animation-delay: 0.5s;
         }
 
+        /* Override parent containers - children cascade individually */
+        .phase-info.animate-on-scroll,
+        .phase-visual.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        /* Phase info children - start hidden */
+        .phase-info .phase-header,
+        .phase-info .phase-title,
+        .phase-info .phase-time,
+        .phase-info .phase-description,
+        .phase-info .feature-item,
+        .phase-info .immediate-value {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        /* Phase info children - cascade on scroll */
+        .phase-info.visible .phase-header { animation: fadeInUp 0.5s ease-out forwards; }
+        .phase-info.visible .phase-title { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
+        .phase-info.visible .phase-time { animation: fadeInUp 0.5s ease-out 0.15s forwards; }
+        .phase-info.visible .phase-description { animation: fadeInUp 0.5s ease-out 0.25s forwards; }
+        .phase-info.visible .feature-item { animation: fadeInUp 0.5s ease-out forwards; }
+        .phase-info.visible .feature-item:nth-child(1) { animation-delay: 0.35s; }
+        .phase-info.visible .feature-item:nth-child(2) { animation-delay: 0.45s; }
+        .phase-info.visible .feature-item:nth-child(3) { animation-delay: 0.55s; }
+        .phase-info.visible .immediate-value { animation: fadeInUp 0.5s ease-out 0.65s forwards; }
+
+        /* Visual panel children - staggered slide up */
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .phase-visual .connect-step {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        .phase-visual.visible .connect-step { animation: slideUp 0.5s ease-out forwards; }
+        .phase-visual.visible .connect-step:nth-child(1) { animation-delay: 0.15s; }
+        .phase-visual.visible .connect-step:nth-child(2) { animation-delay: 0.25s; }
+        .phase-visual.visible .connect-step:nth-child(3) { animation-delay: 0.35s; }
+        .phase-visual.visible .connect-step:nth-child(4) { animation-delay: 0.45s; }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
+          .phase-info .phase-header,
+          .phase-info .phase-title,
+          .phase-info .phase-time,
+          .phase-info .phase-description,
+          .phase-info .feature-item,
+          .phase-info .immediate-value,
+          .phase-visual .connect-step {
+            opacity: 1;
+            transform: none;
+          }
         }
       </style>
 
@@ -1178,8 +1234,88 @@ class KygoHiwPhaseLog extends HTMLElement {
           animation-delay: 0.5s;
         }
 
+        /* Override parent containers - children cascade individually */
+        .phase-info.animate-on-scroll,
+        .phase-visual.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        /* Phase info children - start hidden */
+        .phase-info .phase-header,
+        .phase-info .phase-title,
+        .phase-info .phase-time,
+        .phase-info .phase-description,
+        .phase-info .feature-item,
+        .phase-info .immediate-value {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        /* Phase info children - cascade on scroll */
+        .phase-info.visible .phase-header { animation: fadeInUp 0.5s ease-out forwards; }
+        .phase-info.visible .phase-title { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
+        .phase-info.visible .phase-time { animation: fadeInUp 0.5s ease-out 0.15s forwards; }
+        .phase-info.visible .phase-description { animation: fadeInUp 0.5s ease-out 0.25s forwards; }
+        .phase-info.visible .feature-item { animation: fadeInUp 0.5s ease-out forwards; }
+        .phase-info.visible .feature-item:nth-child(1) { animation-delay: 0.35s; }
+        .phase-info.visible .feature-item:nth-child(2) { animation-delay: 0.45s; }
+        .phase-info.visible .feature-item:nth-child(3) { animation-delay: 0.55s; }
+        .phase-info.visible .feature-item:nth-child(4) { animation-delay: 0.65s; }
+        .phase-info.visible .immediate-value { animation: fadeInUp 0.5s ease-out 0.75s forwards; }
+
+        /* Visual panel children - staggered slide up */
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .phase-visual .log-input-area,
+        .phase-visual .log-result {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        .phase-visual.visible .log-input-area { animation: slideUp 0.6s ease-out 0.1s forwards; }
+        .phase-visual.visible .log-result { animation: slideUp 0.6s ease-out 0.35s forwards; }
+
+        /* Log method icons stagger */
+        .phase-visual .log-method {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        .phase-visual.visible .log-method { animation: slideUp 0.4s ease-out forwards; }
+        .phase-visual.visible .log-method:nth-child(1) { animation-delay: 0.2s; }
+        .phase-visual.visible .log-method:nth-child(2) { animation-delay: 0.3s; }
+        .phase-visual.visible .log-method:nth-child(3) { animation-delay: 0.4s; }
+        .phase-visual.visible .log-method:nth-child(4) { animation-delay: 0.5s; }
+
+        /* Log result breakdown items stagger */
+        .phase-visual .log-breakdown-item {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        .phase-visual.visible .log-breakdown-item { animation: slideUp 0.4s ease-out forwards; }
+        .phase-visual.visible .log-breakdown-item:nth-child(1) { animation-delay: 0.5s; }
+        .phase-visual.visible .log-breakdown-item:nth-child(2) { animation-delay: 0.6s; }
+        .phase-visual.visible .log-breakdown-item:nth-child(3) { animation-delay: 0.7s; }
+        .phase-visual.visible .log-breakdown-item:nth-child(4) { animation-delay: 0.8s; }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
+          .phase-info .phase-header,
+          .phase-info .phase-title,
+          .phase-info .phase-time,
+          .phase-info .phase-description,
+          .phase-info .feature-item,
+          .phase-info .immediate-value,
+          .phase-visual .log-input-area,
+          .phase-visual .log-result,
+          .phase-visual .log-method,
+          .phase-visual .log-breakdown-item {
+            opacity: 1;
+            transform: none;
+          }
         }
       </style>
 
@@ -1719,8 +1855,78 @@ class KygoHiwPhaseDiscover extends HTMLElement {
           animation-delay: 0.5s;
         }
 
+        /* Override parent containers - children cascade individually */
+        .phase-info.animate-on-scroll,
+        .phase-visual.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        /* Phase info children - start hidden */
+        .phase-info .phase-header,
+        .phase-info .phase-title,
+        .phase-info .phase-time,
+        .phase-info .phase-description,
+        .phase-info .feature-item,
+        .phase-info .immediate-value {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        /* Phase info children - cascade on scroll */
+        .phase-info.visible .phase-header { animation: fadeInUp 0.5s ease-out forwards; }
+        .phase-info.visible .phase-title { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
+        .phase-info.visible .phase-time { animation: fadeInUp 0.5s ease-out 0.15s forwards; }
+        .phase-info.visible .phase-description { animation: fadeInUp 0.5s ease-out 0.25s forwards; }
+        .phase-info.visible .feature-item { animation: fadeInUp 0.5s ease-out forwards; }
+        .phase-info.visible .feature-item:nth-child(1) { animation-delay: 0.35s; }
+        .phase-info.visible .feature-item:nth-child(2) { animation-delay: 0.45s; }
+        .phase-info.visible .feature-item:nth-child(3) { animation-delay: 0.55s; }
+        .phase-info.visible .immediate-value { animation: fadeInUp 0.5s ease-out 0.65s forwards; }
+
+        /* Visual panel children - staggered slide up */
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(16px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .phase-visual .correlation-example {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        .phase-visual.visible .correlation-example { animation: slideUp 0.5s ease-out forwards; }
+        .phase-visual.visible .correlation-example:nth-child(1) { animation-delay: 0.1s; }
+        .phase-visual.visible .correlation-example:nth-child(2) { animation-delay: 0.25s; }
+        .phase-visual.visible .correlation-example:nth-child(3) { animation-delay: 0.4s; }
+
+        /* Metric bar grow animation */
+        @keyframes barGrow {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+
+        .phase-visual .correlation-metric-fill {
+          transform: scaleX(0);
+          transform-origin: left;
+        }
+        .phase-visual.visible .correlation-example:nth-child(1) .correlation-metric-fill { animation: barGrow 0.8s ease-out 0.4s forwards; }
+        .phase-visual.visible .correlation-example:nth-child(2) .correlation-metric-fill { animation: barGrow 0.8s ease-out 0.55s forwards; }
+        .phase-visual.visible .correlation-example:nth-child(3) .correlation-metric-fill { animation: barGrow 0.8s ease-out 0.7s forwards; }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
+          .phase-info .phase-header,
+          .phase-info .phase-title,
+          .phase-info .phase-time,
+          .phase-info .phase-description,
+          .phase-info .feature-item,
+          .phase-info .immediate-value,
+          .phase-visual .correlation-example,
+          .phase-visual .correlation-metric-fill {
+            opacity: 1;
+            transform: none;
+          }
         }
       </style>
 
@@ -2124,8 +2330,65 @@ class KygoHiwTimeline extends HTMLElement {
         .animate-on-scroll.delay-1 { transition-delay: 0.15s; }
         .animate-on-scroll.delay-2 { transition-delay: 0.3s; }
 
+        /* Timeline day badge pulse */
+        @keyframes pulse {
+          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
+          50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.5); }
+        }
+
+        .animate-on-scroll.visible .timeline-day {
+          animation: pulse 2s ease-in-out infinite;
+          animation-delay: 0.3s;
+        }
+
+        /* Timeline feature badges cascade */
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .timeline-feature {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        .animate-on-scroll.visible .timeline-feature { animation: slideUp 0.4s ease-out forwards; }
+        .animate-on-scroll.visible .timeline-feature:nth-child(1) { animation-delay: 0.3s; }
+        .animate-on-scroll.visible .timeline-feature:nth-child(2) { animation-delay: 0.4s; }
+        .animate-on-scroll.visible .timeline-feature:nth-child(3) { animation-delay: 0.5s; }
+
+        /* Timeline item internal elements cascade */
+        .timeline-item h3,
+        .timeline-item p {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        .animate-on-scroll.visible h3 { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
+        .animate-on-scroll.visible p { animation: fadeInUp 0.5s ease-out 0.2s forwards; }
+
+        /* Section header children cascade */
+        .section-header.animate-on-scroll.visible h2 { animation: fadeInUp 0.5s ease-out forwards; }
+        .section-header.animate-on-scroll.visible p { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
+        .section-header h2,
+        .section-header p {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        .section-header.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
+          .timeline-feature,
+          .timeline-item h3,
+          .timeline-item p,
+          .section-header h2,
+          .section-header p {
+            opacity: 1;
+            transform: none;
+          }
         }
       </style>
 
@@ -2407,8 +2670,60 @@ class KygoHiwObjections extends HTMLElement {
         .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
         .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
 
+        /* Section header children cascade */
+        .section-header.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+        .section-header h2,
+        .section-header p {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        .section-header.animate-on-scroll.visible h2 { animation: fadeInUp 0.5s ease-out forwards; }
+        .section-header.animate-on-scroll.visible p { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
+
+        /* Objection card hover lift */
+        .objection-card.animate-on-scroll:hover {
+          transform: translateY(-4px);
+        }
+
+        /* Objection card internal elements cascade */
+        @keyframes slideUp {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .objection-header,
+        .objection-point {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        .animate-on-scroll.visible .objection-header { animation: slideUp 0.5s ease-out 0.1s forwards; }
+        .animate-on-scroll.visible .objection-point { animation: slideUp 0.4s ease-out forwards; }
+        .animate-on-scroll.visible .objection-point:nth-child(1) { animation-delay: 0.25s; }
+        .animate-on-scroll.visible .objection-point:nth-child(2) { animation-delay: 0.4s; }
+
+        /* Objection icon pulse */
+        @keyframes pulse {
+          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2); }
+          50% { box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4); }
+        }
+        .animate-on-scroll.visible .objection-icon {
+          animation: pulse 2.5s ease-in-out infinite;
+          animation-delay: 0.5s;
+        }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
+          .section-header h2,
+          .section-header p,
+          .objection-header,
+          .objection-point {
+            opacity: 1;
+            transform: none;
+          }
         }
       </style>
 
@@ -2675,8 +2990,57 @@ class KygoHiwFinalCta extends HTMLElement {
           transform: translateY(0);
         }
 
+        /* Internal element cascade within CTA */
+        .final-cta-inner.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        @keyframes ctaSlideUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes ctaScaleIn {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+        }
+
+        .final-cta-inner h2,
+        .final-cta-content > p,
+        .cta-primary,
+        .risk-reversal {
+          opacity: 0;
+        }
+        .final-cta-inner h2 { transform: translateY(20px); }
+        .final-cta-content > p { transform: translateY(15px); }
+        .cta-primary { transform: scale(0.9); }
+        .risk-reversal { transform: translateY(10px); }
+
+        .final-cta-inner.visible h2 { animation: ctaSlideUp 0.6s ease-out 0.1s forwards; }
+        .final-cta-inner.visible .final-cta-content > p { animation: ctaSlideUp 0.5s ease-out 0.25s forwards; }
+        .final-cta-inner.visible .cta-primary { animation: ctaScaleIn 0.5s ease-out 0.4s forwards; }
+        .final-cta-inner.visible .risk-reversal { animation: ctaSlideUp 0.5s ease-out 0.55s forwards; }
+
+        /* CTA button glow pulse */
+        @keyframes ctaPulse {
+          0%, 100% { box-shadow: 0 4px 15px rgba(255,255,255,0.3); }
+          50% { box-shadow: 0 8px 30px rgba(255,255,255,0.5); }
+        }
+        .final-cta-inner.visible .cta-primary {
+          animation: ctaScaleIn 0.5s ease-out 0.4s forwards, ctaPulse 2s ease-in-out 1s infinite;
+        }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
+          .final-cta-inner h2,
+          .final-cta-content > p,
+          .cta-primary,
+          .risk-reversal {
+            opacity: 1;
+            transform: none;
+          }
         }
       </style>
 
