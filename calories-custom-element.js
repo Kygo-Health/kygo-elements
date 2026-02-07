@@ -109,12 +109,26 @@ class CaloriesInAnything extends HTMLElement {
   }
 
   async compressImage(file) {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
+      reader.onerror = () => reject(new Error('Failed to read file'));
       reader.onload = (event) => {
+        const dataUrl = event.target.result;
+        const rawBase64 = dataUrl.split(',')[1];
+
+        // HEIC/HEIF: browsers (Chrome, Firefox) can't decode via canvas
+        // Send raw base64 directly — Gemini handles HEIC natively
+        const lowerName = file.name.toLowerCase();
+        if (lowerName.endsWith('.heic') || lowerName.endsWith('.heif') ||
+            file.type === 'image/heic' || file.type === 'image/heif') {
+          resolve(rawBase64);
+          return;
+        }
+
         const img = new Image();
-        img.src = event.target.result;
+        img.src = dataUrl;
+        img.onerror = () => resolve(rawBase64); // fallback if decode fails
         img.onload = () => {
           const canvas = document.createElement('canvas');
           let width = img.width;
@@ -163,8 +177,37 @@ class CaloriesInAnything extends HTMLElement {
   }
 
   toggleFaq(index) {
+    const prevIndex = this.openFaq;
     this.openFaq = this.openFaq === index ? null : index;
-    this.render();
+
+    // Close previously open FAQ
+    if (prevIndex !== null && prevIndex !== index) {
+      const prevItem = this.querySelector(`.faq-item[data-index="${prevIndex}"]`);
+      if (prevItem) {
+        const prevAnswer = prevItem.querySelector('.faq-answer');
+        const prevArrow = prevItem.querySelector('.faq-arrow');
+        if (prevAnswer) prevAnswer.remove();
+        if (prevArrow) prevArrow.classList.remove('open');
+      }
+    }
+
+    // Toggle current FAQ
+    const item = this.querySelector(`.faq-item[data-index="${index}"]`);
+    if (!item) return;
+    const arrow = item.querySelector('.faq-arrow');
+    const existingAnswer = item.querySelector('.faq-answer');
+
+    if (existingAnswer) {
+      existingAnswer.remove();
+      if (arrow) arrow.classList.remove('open');
+    } else {
+      const answerText = item.getAttribute('data-answer');
+      const answerDiv = document.createElement('div');
+      answerDiv.className = 'faq-answer';
+      answerDiv.innerHTML = answerText;
+      item.appendChild(answerDiv);
+      if (arrow) arrow.classList.add('open');
+    }
   }
 
   shareResult() {
@@ -1411,8 +1454,9 @@ class CaloriesInAnything extends HTMLElement {
 
   renderFaqItem(index, question, answer) {
     const isOpen = this.openFaq === index;
+    const escapedAnswer = answer.replace(/"/g, '&quot;');
     return `
-      <div class="faq-item">
+      <div class="faq-item" data-index="${index}" data-answer="${escapedAnswer}">
         <button class="faq-question" data-faq="${index}">
           ${question}
           <span class="faq-arrow ${isOpen ? 'open' : ''}">${Icons.chevronDown}</span>
