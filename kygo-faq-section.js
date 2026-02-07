@@ -351,6 +351,150 @@ class KygoFaqSection extends HTMLElement {
           transform: translateY(0);
         }
 
+        /* ===== Granular Cascading Animations ===== */
+
+        /* Category nav buttons - stagger on load */
+        @keyframes slideInDown {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .category-btn {
+          opacity: 0;
+          animation: slideInDown 0.4s ease-out forwards;
+        }
+        .category-btn:nth-child(1) { animation-delay: 0.1s; }
+        .category-btn:nth-child(2) { animation-delay: 0.15s; }
+        .category-btn:nth-child(3) { animation-delay: 0.2s; }
+        .category-btn:nth-child(4) { animation-delay: 0.25s; }
+        .category-btn:nth-child(5) { animation-delay: 0.3s; }
+        .category-btn:nth-child(6) { animation-delay: 0.35s; }
+        .category-btn:nth-child(7) { animation-delay: 0.4s; }
+
+        /* Override FAQ section containers - children cascade individually */
+        .faq-section.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        /* Section header children - start hidden */
+        .faq-section .faq-section-icon,
+        .faq-section .faq-section-header h2 {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+
+        /* Section header children - cascade when section visible */
+        .faq-section.visible .faq-section-icon {
+          animation: fadeInUp 0.5s ease-out forwards;
+        }
+        .faq-section.visible .faq-section-header h2 {
+          animation: fadeInUp 0.5s ease-out 0.1s forwards;
+        }
+
+        /* Section icon pulse after appearing */
+        @keyframes iconPulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.08); }
+        }
+        .faq-section.visible .faq-section-icon {
+          animation: fadeInUp 0.5s ease-out forwards, iconPulse 2s ease-in-out 0.8s infinite;
+        }
+
+        /* Override still-questions container - children cascade */
+        .still-questions-inner.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+        .still-questions-inner h2,
+        .still-questions-inner > p,
+        .still-questions-inner .contact-options {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        .still-questions-inner.visible h2 {
+          animation: fadeInUp 0.5s ease-out forwards;
+        }
+        .still-questions-inner.visible > p {
+          animation: fadeInUp 0.5s ease-out 0.1s forwards;
+        }
+        .still-questions-inner.visible .contact-options {
+          animation: fadeInUp 0.5s ease-out 0.2s forwards;
+        }
+
+        /* Contact option hover lift enhancement */
+        .still-questions-inner.visible .contact-option {
+          opacity: 0;
+          animation: fadeInUp 0.5s ease-out 0.3s forwards;
+        }
+
+        /* Override final CTA container - children cascade */
+        .final-cta-inner.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        @keyframes ctaSlideUp {
+          from { opacity: 0; transform: translateY(25px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes ctaScaleIn {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+        }
+
+        .final-cta-content h2,
+        .final-cta-content > p,
+        .final-cta-content .cta-primary,
+        .final-cta-content .risk-reversal {
+          opacity: 0;
+        }
+        .final-cta-inner.visible .final-cta-content h2 {
+          animation: ctaSlideUp 0.6s ease-out forwards;
+        }
+        .final-cta-inner.visible .final-cta-content > p {
+          animation: ctaSlideUp 0.6s ease-out 0.1s forwards;
+        }
+        .final-cta-inner.visible .final-cta-content .cta-primary {
+          animation: ctaScaleIn 0.5s ease-out 0.25s forwards;
+        }
+        .final-cta-inner.visible .final-cta-content .risk-reversal {
+          animation: fadeInUp 0.5s ease-out 0.4s forwards;
+        }
+
+        /* CTA button glow pulse */
+        @keyframes ctaGlow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+          50% { box-shadow: 0 0 20px 4px rgba(255,255,255,0.2); }
+        }
+        .final-cta-inner.visible .cta-primary {
+          animation: ctaScaleIn 0.5s ease-out 0.25s forwards, ctaGlow 2.5s ease-in-out 1s infinite;
+        }
+
+        /* Reduced motion for all new animations */
+        @media (prefers-reduced-motion: reduce) {
+          .category-btn {
+            opacity: 1;
+            animation: none;
+          }
+          .faq-section .faq-section-icon,
+          .faq-section .faq-section-header h2,
+          .still-questions-inner h2,
+          .still-questions-inner > p,
+          .still-questions-inner .contact-options,
+          .still-questions-inner .contact-option,
+          .final-cta-content h2,
+          .final-cta-content > p,
+          .final-cta-content .cta-primary,
+          .final-cta-content .risk-reversal {
+            opacity: 1;
+            transform: none;
+            animation: none;
+          }
+        }
+
         .still-questions { padding: 60px 0; background: var(--gray-50); }
         .still-questions-inner { max-width: 600px; margin: 0 auto; text-align: center; }
         .still-questions h2 { font-size: 28px; margin-bottom: 12px; }
