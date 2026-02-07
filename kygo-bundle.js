@@ -575,7 +575,7 @@ class KygoFeaturesSection extends HTMLElement {
         .feature-card-header p{color:var(--gray-600);font-size:clamp(13px,3.5vw,14px);line-height:1.5}
         .logging-methods,.device-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
         .log-method{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:16px 12px;text-align:center;transition:all 0.25s ease;cursor:pointer}
-        .log-method:hover{background:var(--green-light);border-color:var(--green);transform:scale(1.02)}
+        .log-method:hover{background:white;border-color:var(--green);transform:scale(1.02)}
         .log-method-icon{width:44px;height:44px;background:white;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.25s ease}
         .log-method:hover .log-method-icon{box-shadow:0 4px 12px rgba(34,197,94,0.2)}
         .log-method-icon svg{width:22px;height:22px;color:var(--green)}
@@ -1045,15 +1045,17 @@ class KygoFounderCta extends HTMLElement {
         .final-cta-content{position:relative;z-index:1}
         .final-cta h2{font-size:32px;color:white;margin-bottom:12px}
         .final-cta-content>p{color:rgba(255,255,255,0.8);margin-bottom:28px;font-size:17px}
-        .cta-primary{background:white;color:var(--green-dark);padding:16px 28px;border-radius:12px;font-weight:600;font-size:16px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit}
+        .cta-primary{background:white;color:var(--green-dark);padding:16px 28px;border-radius:12px;font-weight:600;font-size:16px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
         .cta-primary:hover{background:var(--light);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+        .cta-primary:active,.cta-primary:focus{background:white;color:var(--green-dark);outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(0,0,0,0.15)}
         .cta-primary svg{width:18px;height:18px}
         .risk-reversal{margin-top:20px;color:rgba(255,255,255,0.7);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:13px}
         .risk-reversal span{display:inline-flex;align-items:center}
         .android-waitlist{margin-top:32px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.2)}
         .android-waitlist p{color:rgba(255,255,255,0.7);font-size:14px;margin-bottom:16px}
-        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit}
+        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
         .cta-android:hover{background:var(--light);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+        .cta-android:active,.cta-android:focus{background:white;color:var(--green-dark);outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(0,0,0,0.15)}
         .cta-android svg{width:18px;height:18px}
         .android-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;visibility:hidden;transition:all 0.3s}
         .android-modal.active{opacity:1;visibility:visible}
