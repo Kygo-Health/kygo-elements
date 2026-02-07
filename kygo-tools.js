@@ -56,7 +56,7 @@ class KygoToolsPage extends HTMLElement {
     // Default tools if none provided
     this._tools = [
       {
-        slug: 'food-scanner',
+        slug: 'calories-in-anything',
         title: 'Food Scanner',
         description: 'Snap a photo of any meal and get instant calories, macros, health score, and nutrition insights powered by AI.',
         icon: 'camera',
