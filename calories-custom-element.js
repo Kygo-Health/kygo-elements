@@ -1277,10 +1277,10 @@ class CaloriesInAnything extends HTMLElement {
 
           <footer class="footer">
             <a href="https://kygo.app" class="footer-brand" target="_blank">
-              <img src="${this.logoUrl}" alt="Kygo" class="footer-logo" />
-              Kygo
+              <img src="${this.logoUrl}" alt="Kygo Health" class="footer-logo" />
+              Kygo Health
             </a>
-            <p class="footer-tagline">Nutrition meets wearable intelligence</p>
+            <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
             <div class="footer-links">
               <a href="https://kygo.app" target="_blank">Kygo App</a>
               <a href="https://kygo.app/privacy" target="_blank">Privacy</a>
