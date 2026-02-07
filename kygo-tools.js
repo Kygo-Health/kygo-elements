@@ -61,7 +61,7 @@ class KygoToolsPage extends HTMLElement {
         description: 'Snap a photo of any meal and get instant calories, macros, health score, and nutrition insights powered by AI.',
         icon: 'camera',
         badge: 'Most Popular',
-        url: '/tools/food-scanner',
+        url: '/calories-in-anything',
         features: ['Instant calorie count', 'Macro & vitamin breakdown', 'Health score 1\u201310']
       }
     ];
@@ -593,7 +593,7 @@ class KygoToolsPage extends HTMLElement {
                 ` : ''}
                 <div class="tool-card-action">
                   <a href="${tool.url || '#'}" class="tool-btn">
-                    Try it free
+                    Try it now
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                   </a>
                 </div>
