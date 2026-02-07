@@ -19,6 +19,7 @@ class KygoFaqSection extends HTMLElement {
     this.render();
     this._buildSearchIndex();
     this._setupEventDelegation();
+    this._setupScrollAnimations();
   }
 
   disconnectedCallback() {
@@ -26,6 +27,8 @@ class KygoFaqSection extends HTMLElement {
     if (this._searchDebounceTimer) {
       clearTimeout(this._searchDebounceTimer);
     }
+    if (this._observer) this._observer.disconnect();
+    if (this._faqObserver) this._faqObserver.disconnect();
   }
 
   _parseWixAttributes() {
@@ -158,6 +161,37 @@ class KygoFaqSection extends HTMLElement {
     }
   }
 
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!elements.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      elements.forEach(el => this._observer.observe(el));
+
+      // Animate FAQ items with stagger
+      const faqItems = this.shadowRoot.querySelectorAll('.faq-item');
+      const faqObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const item = entry.target;
+            const index = Array.from(item.parentElement.children).indexOf(item);
+            setTimeout(() => item.classList.add('visible'), index * 80);
+            faqObserver.unobserve(item);
+          }
+        });
+      }, { threshold: 0.1 });
+      faqItems.forEach(item => faqObserver.observe(item));
+      this._faqObserver = faqObserver;
+    });
+  }
+
   _performSearch(value) {
     const query = value.toLowerCase().trim();
 
@@ -276,6 +310,47 @@ class KygoFaqSection extends HTMLElement {
         .answer-highlight { background: var(--green-light); border-left: 3px solid var(--green); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 14px; }
         .answer-highlight strong { color: var(--green-dark); }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .hero-subtitle {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out 0.15s forwards;
+        }
+        .search-container {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out 0.3s forwards;
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+
+        .faq-item {
+          opacity: 0;
+          transform: translateY(15px);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .faq-item.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
         .still-questions { padding: 60px 0; background: var(--gray-50); }
         .still-questions-inner { max-width: 600px; margin: 0 auto; text-align: center; }
         .still-questions h2 { font-size: 28px; margin-bottom: 12px; }
@@ -339,7 +414,7 @@ class KygoFaqSection extends HTMLElement {
       <div class="faq-sections">
         <div class="container">
 
-          <section class="faq-section" data-category="getting-started">
+          <section class="faq-section animate-on-scroll" data-category="getting-started">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
@@ -386,7 +461,7 @@ class KygoFaqSection extends HTMLElement {
             </div>
           </section>
 
-          <section class="faq-section" data-category="logging">
+          <section class="faq-section animate-on-scroll" data-category="logging">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
@@ -424,7 +499,7 @@ class KygoFaqSection extends HTMLElement {
             </div>
           </section>
 
-          <section class="faq-section" data-category="correlations">
+          <section class="faq-section animate-on-scroll" data-category="correlations">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-6"/></svg>
@@ -474,7 +549,7 @@ class KygoFaqSection extends HTMLElement {
             </div>
           </section>
 
-          <section class="faq-section" data-category="devices">
+          <section class="faq-section animate-on-scroll" data-category="devices">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
@@ -523,7 +598,7 @@ class KygoFaqSection extends HTMLElement {
             </div>
           </section>
 
-          <section class="faq-section" data-category="pricing">
+          <section class="faq-section animate-on-scroll" data-category="pricing">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M8 14h8"/></svg>
@@ -567,7 +642,7 @@ class KygoFaqSection extends HTMLElement {
             </div>
           </section>
 
-          <section class="faq-section" data-category="privacy">
+          <section class="faq-section animate-on-scroll" data-category="privacy">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -615,11 +690,11 @@ class KygoFaqSection extends HTMLElement {
 
       <section class="still-questions">
         <div class="container">
-          <div class="still-questions-inner">
+          <div class="still-questions-inner animate-on-scroll">
             <h2>Still have questions?</h2>
             <p>We're here to help. Reach out and we'll get back to you as soon as possible.</p>
             <div class="contact-options">
-              <a href="mailto:${email}" class="contact-option">
+              <a href="mailto:${email}" class="contact-option animate-on-scroll">
                 <div class="contact-option-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
                 </div>
@@ -635,7 +710,7 @@ class KygoFaqSection extends HTMLElement {
 
       <section class="final-cta">
         <div class="container">
-          <div class="final-cta-inner">
+          <div class="final-cta-inner animate-on-scroll">
             <div class="final-cta-content">
               <h2>Ready to understand your body?</h2>
               <p>Stop guessing. Start seeing the correlations between what you eat and how you feel.</p>

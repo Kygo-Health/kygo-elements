@@ -12,6 +12,10 @@ class KygoBlog extends HTMLElement {
     this.render();
   }
 
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+  }
+
   _parseWixAttributes() {
     try {
       const wixconfig = this.getAttribute('wixconfig');
@@ -364,6 +368,26 @@ class KygoBlog extends HTMLElement {
           .blog-card-excerpt { font-size: 13px; }
         }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .blog-header {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .blog-card {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        .blog-card.visible {
+          opacity: 1;
+          transform: translateY(0);
+          transition: opacity 0.5s ease-out, transform 0.5s ease-out, box-shadow 0.2s, border-color 0.2s;
+        }
+
         /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
           .blog-card { transition: none; }
@@ -450,6 +474,26 @@ class KygoBlog extends HTMLElement {
 
     this.shadowRoot.querySelectorAll('.blog-card').forEach(card => {
       card.addEventListener('click', () => this._handlePostClick(card.dataset.slug));
+    });
+
+    this._setupScrollAnimations();
+  }
+
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const cards = this.shadowRoot.querySelectorAll('.blog-card');
+      if (!cards.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const card = entry.target;
+            const index = Array.from(card.parentElement.children).indexOf(card);
+            setTimeout(() => card.classList.add('visible'), index * 100);
+            this._observer.unobserve(card);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      cards.forEach(card => this._observer.observe(card));
     });
   }
 }

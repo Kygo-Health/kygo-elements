@@ -142,6 +142,40 @@ class KygoHiwHero extends HTMLElement {
           .hero-stats { gap: 40px; }
         }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-badge {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .hero h1 {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out 0.1s forwards;
+        }
+
+        .hero-subtitle {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out 0.2s forwards;
+        }
+
+        .hero-stats {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out 0.3s forwards;
+        }
+
+        .hero-stat {
+          opacity: 0;
+          animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        .hero-stat:nth-child(1) { animation-delay: 0.3s; }
+        .hero-stat:nth-child(2) { animation-delay: 0.4s; }
+        .hero-stat:nth-child(3) { animation-delay: 0.5s; }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
         }
@@ -194,6 +228,11 @@ class KygoHiwPhaseConnect extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
+  }
+
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
 
   _parseWixAttributes() {
@@ -205,6 +244,22 @@ class KygoHiwPhaseConnect extends HTMLElement {
     } catch (e) {
       console.warn('KygoHiwPhaseConnect: Could not parse Wix attributes', e);
     }
+  }
+
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!elements.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      elements.forEach(el => this._observer.observe(el));
+    });
   }
 
   static get observedAttributes() {
@@ -493,6 +548,34 @@ class KygoHiwPhaseConnect extends HTMLElement {
           .phase-visual { padding: 32px; }
         }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+
+        @keyframes pulse {
+          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
+          50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.5); }
+        }
+
+        .animate-on-scroll.visible .phase-number {
+          animation: pulse 2s ease-in-out infinite;
+          animation-delay: 0.5s;
+        }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
         }
@@ -501,7 +584,7 @@ class KygoHiwPhaseConnect extends HTMLElement {
       <section class="phase-section">
         <div class="container">
           <div class="phase-content">
-            <div class="phase-info">
+            <div class="phase-info animate-on-scroll">
               <div class="phase-header">
                 <div class="phase-number">1</div>
                 <div class="phase-label">Phase One</div>
@@ -557,7 +640,7 @@ class KygoHiwPhaseConnect extends HTMLElement {
               </div>
             </div>
 
-            <div class="phase-visual">
+            <div class="phase-visual animate-on-scroll delay-2">
               <div class="connect-flow">
                 <div class="connect-step active">
                   <div class="connect-step-icon">
@@ -635,6 +718,11 @@ class KygoHiwPhaseLog extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
+  }
+
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
 
   _parseWixAttributes() {
@@ -646,6 +734,22 @@ class KygoHiwPhaseLog extends HTMLElement {
     } catch (e) {
       console.warn('KygoHiwPhaseLog: Could not parse Wix attributes', e);
     }
+  }
+
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!elements.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      elements.forEach(el => this._observer.observe(el));
+    });
   }
 
   static get observedAttributes() {
@@ -1046,6 +1150,34 @@ class KygoHiwPhaseLog extends HTMLElement {
           .phase-visual { order: -1; padding: 32px; }
         }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+
+        @keyframes pulse {
+          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
+          50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.5); }
+        }
+
+        .animate-on-scroll.visible .phase-number {
+          animation: pulse 2s ease-in-out infinite;
+          animation-delay: 0.5s;
+        }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
         }
@@ -1054,7 +1186,7 @@ class KygoHiwPhaseLog extends HTMLElement {
       <section class="phase-section">
         <div class="container">
           <div class="phase-content">
-            <div class="phase-info">
+            <div class="phase-info animate-on-scroll">
               <div class="phase-header">
                 <div class="phase-number">2</div>
                 <div class="phase-label">Phase Two</div>
@@ -1119,7 +1251,7 @@ class KygoHiwPhaseLog extends HTMLElement {
               </div>
             </div>
 
-            <div class="phase-visual">
+            <div class="phase-visual animate-on-scroll delay-2">
               <div class="log-demo">
                 <div class="log-input-area">
                   <div class="log-input-methods">
@@ -1212,6 +1344,11 @@ class KygoHiwPhaseDiscover extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
+  }
+
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
 
   _parseWixAttributes() {
@@ -1223,6 +1360,22 @@ class KygoHiwPhaseDiscover extends HTMLElement {
     } catch (e) {
       console.warn('KygoHiwPhaseDiscover: Could not parse Wix attributes', e);
     }
+  }
+
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!elements.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      elements.forEach(el => this._observer.observe(el));
+    });
   }
 
   static get observedAttributes() {
@@ -1538,6 +1691,34 @@ class KygoHiwPhaseDiscover extends HTMLElement {
           .phase-visual { padding: 32px; }
         }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+
+        @keyframes pulse {
+          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
+          50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.5); }
+        }
+
+        .animate-on-scroll.visible .phase-number {
+          animation: pulse 2s ease-in-out infinite;
+          animation-delay: 0.5s;
+        }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
         }
@@ -1546,7 +1727,7 @@ class KygoHiwPhaseDiscover extends HTMLElement {
       <section class="phase-section">
         <div class="container">
           <div class="phase-content">
-            <div class="phase-info">
+            <div class="phase-info animate-on-scroll">
               <div class="phase-header">
                 <div class="phase-number">3</div>
                 <div class="phase-label">Phase Three</div>
@@ -1602,7 +1783,7 @@ class KygoHiwPhaseDiscover extends HTMLElement {
               </div>
             </div>
 
-            <div class="phase-visual">
+            <div class="phase-visual animate-on-scroll delay-2">
               <div class="discover-demo">
                 <div class="correlation-example">
                   <div class="correlation-example-header">
@@ -1708,6 +1889,11 @@ class KygoHiwTimeline extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
+  }
+
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
 
   _parseWixAttributes() {
@@ -1719,6 +1905,22 @@ class KygoHiwTimeline extends HTMLElement {
     } catch (e) {
       console.warn('KygoHiwTimeline: Could not parse Wix attributes', e);
     }
+  }
+
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!elements.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      elements.forEach(el => this._observer.observe(el));
+    });
   }
 
   static get observedAttributes() {
@@ -1905,6 +2107,23 @@ class KygoHiwTimeline extends HTMLElement {
           }
         }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .animate-on-scroll.delay-1 { transition-delay: 0.15s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.3s; }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
         }
@@ -1912,7 +2131,7 @@ class KygoHiwTimeline extends HTMLElement {
 
       <section class="timeline-section">
         <div class="container">
-          <div class="section-header">
+          <div class="section-header animate-on-scroll">
             <h2>Your first two weeks</h2>
             <p>You get value from day one—correlations are the bonus</p>
           </div>
@@ -1923,7 +2142,7 @@ class KygoHiwTimeline extends HTMLElement {
             </div>
             
             <div class="timeline-items">
-              <div class="timeline-item">
+              <div class="timeline-item animate-on-scroll">
                 <div class="timeline-day">Day 1</div>
                 <h3>Value right away</h3>
                 <p>See unified health trends from all your devices. Track detailed nutrition with full macro and micro breakdowns. Log your weight.</p>
@@ -1934,7 +2153,7 @@ class KygoHiwTimeline extends HTMLElement {
                 </div>
               </div>
 
-              <div class="timeline-item active">
+              <div class="timeline-item animate-on-scroll delay-1 active">
                 <div class="timeline-day">Day 7</div>
                 <h3>First correlations</h3>
                 <p>With a week of nutrition and wearable data, Kygo starts identifying patterns between what you eat and how your body responds.</p>
@@ -1945,7 +2164,7 @@ class KygoHiwTimeline extends HTMLElement {
                 </div>
               </div>
 
-              <div class="timeline-item">
+              <div class="timeline-item animate-on-scroll delay-2">
                 <div class="timeline-day">Day 14+</div>
                 <h3>Higher confidence</h3>
                 <p>More data means stronger correlations and new patterns. The more you put in, the more you get out.</p>
@@ -1981,6 +2200,11 @@ class KygoHiwObjections extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
+  }
+
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
 
   _parseWixAttributes() {
@@ -1992,6 +2216,22 @@ class KygoHiwObjections extends HTMLElement {
     } catch (e) {
       console.warn('KygoHiwObjections: Could not parse Wix attributes', e);
     }
+  }
+
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!elements.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      elements.forEach(el => this._observer.observe(el));
+    });
   }
 
   static get observedAttributes() {
@@ -2150,6 +2390,23 @@ class KygoHiwObjections extends HTMLElement {
           }
         }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
         }
@@ -2157,13 +2414,13 @@ class KygoHiwObjections extends HTMLElement {
 
       <section class="objections-section">
         <div class="container">
-          <div class="section-header">
+          <div class="section-header animate-on-scroll">
             <h2>Built for real life</h2>
             <p>We know you've tried tracking before. Here's why this time is different.</p>
           </div>
 
           <div class="objections-grid">
-            <div class="objection-card">
+            <div class="objection-card animate-on-scroll">
               <div class="objection-header">
                 <div class="objection-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -2182,7 +2439,7 @@ class KygoHiwObjections extends HTMLElement {
               </div>
             </div>
 
-            <div class="objection-card">
+            <div class="objection-card animate-on-scroll delay-1">
               <div class="objection-header">
                 <div class="objection-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -2201,7 +2458,7 @@ class KygoHiwObjections extends HTMLElement {
               </div>
             </div>
 
-            <div class="objection-card">
+            <div class="objection-card animate-on-scroll delay-2">
               <div class="objection-header">
                 <div class="objection-icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
@@ -2244,6 +2501,11 @@ class KygoHiwFinalCta extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
+  }
+
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
 
   _parseWixAttributes() {
@@ -2255,6 +2517,22 @@ class KygoHiwFinalCta extends HTMLElement {
     } catch (e) {
       console.warn('KygoHiwFinalCta: Could not parse Wix attributes', e);
     }
+  }
+
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!elements.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      elements.forEach(el => this._observer.observe(el));
+    });
   }
 
   static get observedAttributes() {
@@ -2382,6 +2660,21 @@ class KygoHiwFinalCta extends HTMLElement {
           .final-cta h2 { font-size: 44px; }
         }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
         }
@@ -2389,7 +2682,7 @@ class KygoHiwFinalCta extends HTMLElement {
 
       <section class="final-cta">
         <div class="container">
-          <div class="final-cta-inner">
+          <div class="final-cta-inner animate-on-scroll">
             <div class="final-cta-content">
               <h2>Ready to understand your body?</h2>
               <p>Stop guessing. Start seeing the correlations between what you eat and how you feel.</p>
