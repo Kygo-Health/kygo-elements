@@ -1,3 +1,13 @@
+/** Injects accessible text into light DOM so crawlers and AI tools can read component content */
+function __seo(el, text) {
+  if (el.querySelector('[data-seo]')) return;
+  const d = document.createElement('div');
+  d.setAttribute('data-seo', '');
+  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+  d.textContent = text;
+  el.appendChild(d);
+}
+
 class KygoBlog extends HTMLElement {
   constructor() {
     super();
@@ -10,6 +20,7 @@ class KygoBlog extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    __seo(this, 'Kygo Health Blog \u2014 Articles on nutrition, health optimization, wearable technology, and food science.');
   }
 
   disconnectedCallback() {

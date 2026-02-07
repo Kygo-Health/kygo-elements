@@ -1,5 +1,15 @@
 console.log('Kygo Food Scanner custom element loaded!');
 
+/** Injects accessible text into light DOM so crawlers and AI tools can read component content */
+function __seo(el, text) {
+  if (el.querySelector('[data-seo]')) return;
+  const d = document.createElement('div');
+  d.setAttribute('data-seo', '');
+  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+  d.textContent = text;
+  el.appendChild(d);
+}
+
 // SVG Icons
 const Icons = {
   flame: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`,
@@ -40,6 +50,7 @@ class CaloriesInAnything extends HTMLElement {
 
   connectedCallback() {
     this.render();
+    __seo(this, 'Kygo Food Scanner \u2014 Free AI-powered tool by Kygo Health. Snap a photo of any meal to get instant calories, macros, health score, and detailed nutrition insights. No signup required.');
   }
 
   static get observedAttributes() {

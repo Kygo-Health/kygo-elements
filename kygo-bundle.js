@@ -4,6 +4,16 @@
  * Host on GitHub + jsDelivr CDN
  */
 
+/** Injects accessible text into light DOM so crawlers and AI tools can read component content */
+function __seo(el, text) {
+  if (el.querySelector('[data-seo]')) return;
+  const d = document.createElement('div');
+  d.setAttribute('data-seo', '');
+  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+  d.textContent = text;
+  el.appendChild(d);
+}
+
 /* ========================================
    1. KYGO HERO SECTION
    Tag: kygo-hero-section
@@ -16,6 +26,7 @@ class KygoHeroSection extends HTMLElement {
   connectedCallback() {
     this.render();
     this.setupEvents();
+    __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. Track nutrition alongside wearable data with the free Kygo app for iOS.');
   }
   setupEvents() {
     const androidBtn = this.shadowRoot.querySelector('.cta-android');
@@ -285,6 +296,7 @@ class KygoSocialProofSection extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts their wellness metrics.');
   }
   _parseWixAttributes() {
     try {
@@ -377,6 +389,7 @@ class KygoProblemSection extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    __seo(this, 'Stop guessing how food affects your body. Kygo Health uses AI to connect your nutrition data with wearable health insights for personalized recommendations.');
   }
   _parseWixAttributes() {
     try {
@@ -492,6 +505,7 @@ class KygoFeaturesSection extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupIntersectionObserver();
+    __seo(this, 'Kygo Health Features \u2014 AI food logging, wearable sync with Apple Watch, Oura Ring, and WHOOP. Nutrition insights, health score tracking, and personalized recommendations.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
@@ -713,6 +727,7 @@ class KygoInsightsSteps extends HTMLElement {
   connectedCallback() {
     this.render();
     this.setupAnimations();
+    __seo(this, 'How Kygo works: Step 1 \u2014 Log your food with AI photo scanning. Step 2 \u2014 Sync your wearable data automatically. Step 3 \u2014 Discover how food affects your sleep, HRV, energy, and recovery.');
   }
   disconnectedCallback() {
     if (this.animationObserver) this.animationObserver.disconnect();
@@ -889,6 +904,7 @@ class KygoFaq extends HTMLElement {
     this.render();
     this.setupAccordion();
     this.setupIntersectionObserver();
+    __seo(this, 'Frequently asked questions about Kygo Health \u2014 nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights.');
   }
   setupAccordion() {
     const questions = this.shadowRoot.querySelectorAll('.faq-question');
@@ -981,6 +997,7 @@ class KygoFounderCta extends HTMLElement {
     this.render();
     this.setupIntersectionObserver();
     this.setupEvents();
+    __seo(this, 'Download Kygo Health free on iOS. Connect nutrition with wearable data for personalized health insights. Free forever plan available.');
   }
   setupIntersectionObserver() {
     const observer = new IntersectionObserver((entries) => {
