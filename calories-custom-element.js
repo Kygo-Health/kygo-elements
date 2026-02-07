@@ -984,6 +984,56 @@ class CaloriesInAnything extends HTMLElement {
           .footer-copyright { font-size: 13px; }
         }
 
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .toggle-container {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out 0.15s forwards;
+        }
+
+        .card {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out 0.3s forwards;
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .example-card {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        .example-card.visible {
+          opacity: 1;
+          transform: translateY(0);
+          transition: opacity 0.5s ease-out, transform 0.5s ease-out, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .faq-item {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        .faq-item.visible {
+          opacity: 1;
+          transform: translateY(0);
+          transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+
         /* =============================================
            REDUCED MOTION
            ============================================= */
@@ -1041,7 +1091,7 @@ class CaloriesInAnything extends HTMLElement {
             </div>
           ` : ''}
           
-          <div class="cta-section">
+          <div class="cta-section animate-on-scroll">
             <div class="cta-icon">${Icons.activity}</div>
             <h2>${this.mode === 'anything' ? 'Want to track what you actually eat?' : 'See how food affects your body'}</h2>
             <p>Kygo connects your nutrition with sleep, HRV, and recovery data from Oura, Fitbit, Garmin & Apple Watch.</p>
@@ -1054,7 +1104,7 @@ class CaloriesInAnything extends HTMLElement {
             </div>
           </div>
           
-          <div class="examples-section">
+          <div class="examples-section animate-on-scroll">
             <h3 class="examples-title">Popular Scans</h3>
             <div class="examples-grid">
               <div class="example-card">
@@ -1218,6 +1268,49 @@ class CaloriesInAnything extends HTMLElement {
     `;
   }
 
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const elements = this.querySelectorAll('.animate-on-scroll');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      elements.forEach(el => observer.observe(el));
+
+      // Stagger example cards
+      const exampleCards = this.querySelectorAll('.example-card');
+      const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const card = entry.target;
+            const index = Array.from(card.parentElement.children).indexOf(card);
+            setTimeout(() => card.classList.add('visible'), index * 100);
+            cardObserver.unobserve(card);
+          }
+        });
+      }, { threshold: 0.1 });
+      exampleCards.forEach(card => cardObserver.observe(card));
+
+      // Stagger FAQ items
+      const faqItems = this.querySelectorAll('.faq-item');
+      const faqObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const item = entry.target;
+            const index = Array.from(item.parentElement.children).indexOf(item);
+            setTimeout(() => item.classList.add('visible'), index * 80);
+            faqObserver.unobserve(item);
+          }
+        });
+      }, { threshold: 0.1 });
+      faqItems.forEach(item => faqObserver.observe(item));
+    });
+  }
+
   attachEventListeners() {
     this.querySelectorAll('.toggle-btn').forEach(btn => {
       btn.addEventListener('click', () => this.handleModeChange(btn.dataset.mode));
@@ -1266,6 +1359,9 @@ class CaloriesInAnything extends HTMLElement {
     this.querySelectorAll('.faq-question').forEach(btn => {
       btn.addEventListener('click', () => this.toggleFaq(parseInt(btn.dataset.faq, 10)));
     });
+
+    // Scroll animations
+    this._setupScrollAnimations();
   }
 }
 

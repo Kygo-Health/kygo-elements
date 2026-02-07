@@ -14,6 +14,27 @@ class KygoContactSection extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._attachEventListeners();
+    this._setupScrollAnimations();
+  }
+
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+  }
+
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!elements.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      elements.forEach(el => this._observer.observe(el));
+    });
   }
 
   _parseWixAttributes() {
@@ -295,6 +316,33 @@ class KygoContactSection extends HTMLElement {
         .response-card-icon svg { width: 24px; height: 24px; color: var(--green); }
         .response-card h3 { font-size: 15px; margin-bottom: 4px; }
         .response-card p { color: var(--gray-600); font-size: 13px; }
+
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .hero-subtitle {
+          opacity: 0;
+          animation: fadeInUp 0.6s ease-out 0.15s forwards;
+        }
+
+        .animate-on-scroll {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
       </style>
 
       <section class="hero">
@@ -307,7 +355,7 @@ class KygoContactSection extends HTMLElement {
       <section class="contact-section">
         <div class="container">
           <div class="contact-grid">
-            <div class="contact-info">
+            <div class="contact-info animate-on-scroll">
               <h2>Let's talk</h2>
               <p>Whether you have a question about features, ideas, or anything else, I'm here to chat.</p>
               <div class="contact-methods">
@@ -364,7 +412,7 @@ class KygoContactSection extends HTMLElement {
                 <a href="${faqUrl}" class="view-all-faqs">View all FAQs<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
               </div>
             </div>
-            <div class="contact-form-container">
+            <div class="contact-form-container animate-on-scroll delay-1">
               <div class="contact-form">
                 <h2>Send a message</h2>
                 <form id="contact-form">
@@ -425,15 +473,15 @@ class KygoContactSection extends HTMLElement {
             <h2>What to expect</h2>
             <p>I read every message and do our best to respond quickly.</p>
             <div class="response-cards">
-              <div class="response-card">
+              <div class="response-card animate-on-scroll">
                 <div class="response-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
                 <h3>Response time</h3><p>Usually within 24 hours</p>
               </div>
-              <div class="response-card">
+              <div class="response-card animate-on-scroll delay-1">
                 <div class="response-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
                 <h3>Real human</h3><p>It's just me. Maybe 48 hours</p>
               </div>
-              <div class="response-card">
+              <div class="response-card animate-on-scroll delay-2">
                 <div class="response-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></div>
                 <h3>Feedback</h3><p>Seriously I might add it</p>
               </div>
