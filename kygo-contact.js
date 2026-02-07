@@ -416,7 +416,7 @@ class KygoContactSection extends HTMLElement {
         /* Form children - start hidden */
         .contact-form h2,
         .contact-form .form-row,
-        .contact-form .form-group,
+        .contact-form > form > .form-group,
         .contact-form .form-submit,
         .contact-form .form-note {
           opacity: 0;
@@ -430,13 +430,13 @@ class KygoContactSection extends HTMLElement {
         .contact-form-container.visible .contact-form .form-row {
           animation: fadeInUp 0.5s ease-out 0.2s forwards;
         }
-        .contact-form-container.visible .contact-form .form-group:nth-of-type(2) {
+        .contact-form-container.visible .contact-form > form > .form-group:nth-of-type(2) {
           animation: fadeInUp 0.5s ease-out 0.3s forwards;
         }
-        .contact-form-container.visible .contact-form .form-group:nth-of-type(3) {
+        .contact-form-container.visible .contact-form > form > .form-group:nth-of-type(3) {
           animation: fadeInUp 0.5s ease-out 0.35s forwards;
         }
-        .contact-form-container.visible .contact-form .form-group:nth-of-type(4) {
+        .contact-form-container.visible .contact-form > form > .form-group:nth-of-type(4) {
           animation: fadeInUp 0.5s ease-out 0.4s forwards;
         }
         .contact-form-container.visible .contact-form .form-submit {
@@ -491,7 +491,7 @@ class KygoContactSection extends HTMLElement {
           .contact-info .quick-answers,
           .contact-form h2,
           .contact-form .form-row,
-          .contact-form .form-group,
+          .contact-form > form > .form-group,
           .contact-form .form-submit,
           .contact-form .form-note,
           .response-card .response-card-icon,
