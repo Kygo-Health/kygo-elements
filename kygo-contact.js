@@ -19,6 +19,7 @@ class KygoContactSection extends HTMLElement {
 
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
+    if (this._cardObserver) this._cardObserver.disconnect();
   }
 
   _setupScrollAnimations() {
@@ -34,6 +35,23 @@ class KygoContactSection extends HTMLElement {
         });
       }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
       elements.forEach(el => this._observer.observe(el));
+
+      // Stagger response cards
+      const cards = this.shadowRoot.querySelectorAll('.response-card');
+      if (cards.length) {
+        const cardObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const card = entry.target;
+              const index = Array.from(card.parentElement.children).indexOf(card);
+              setTimeout(() => card.classList.add('visible'), index * 150);
+              cardObserver.unobserve(card);
+            }
+          });
+        }, { threshold: 0.1 });
+        cards.forEach(card => cardObserver.observe(card));
+        this._cardObserver = cardObserver;
+      }
     });
   }
 
@@ -343,6 +361,147 @@ class KygoContactSection extends HTMLElement {
         .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
         .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
         .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
+
+        /* ===== Granular Cascading Animations ===== */
+
+        /* Override contact-info container - children cascade individually */
+        .contact-info.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        /* Contact info children - start hidden */
+        .contact-info h2,
+        .contact-info > p,
+        .contact-info .contact-method,
+        .contact-info .quick-answers {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+
+        /* Contact info children - cascade on scroll */
+        .contact-info.visible h2 {
+          animation: fadeInUp 0.5s ease-out forwards;
+        }
+        .contact-info.visible > p {
+          animation: fadeInUp 0.5s ease-out 0.1s forwards;
+        }
+        .contact-info.visible .contact-method:nth-child(1) {
+          animation: fadeInUp 0.5s ease-out 0.2s forwards;
+        }
+        .contact-info.visible .contact-method:nth-child(2) {
+          animation: fadeInUp 0.5s ease-out 0.3s forwards;
+        }
+        .contact-info.visible .quick-answers {
+          animation: fadeInUp 0.5s ease-out 0.4s forwards;
+        }
+
+        /* Contact method icon pulse */
+        @keyframes iconPulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.08); }
+        }
+        .contact-info.visible .contact-method-icon {
+          animation: iconPulse 2s ease-in-out 1s infinite;
+        }
+
+        /* Override contact form container - children cascade */
+        .contact-form-container.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        /* Form children - start hidden */
+        .contact-form h2,
+        .contact-form .form-row,
+        .contact-form .form-group,
+        .contact-form .form-submit,
+        .contact-form .form-note {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+
+        /* Form children - cascade on scroll */
+        .contact-form-container.visible .contact-form h2 {
+          animation: fadeInUp 0.5s ease-out 0.1s forwards;
+        }
+        .contact-form-container.visible .contact-form .form-row {
+          animation: fadeInUp 0.5s ease-out 0.2s forwards;
+        }
+        .contact-form-container.visible .contact-form .form-group:nth-of-type(2) {
+          animation: fadeInUp 0.5s ease-out 0.3s forwards;
+        }
+        .contact-form-container.visible .contact-form .form-group:nth-of-type(3) {
+          animation: fadeInUp 0.5s ease-out 0.35s forwards;
+        }
+        .contact-form-container.visible .contact-form .form-group:nth-of-type(4) {
+          animation: fadeInUp 0.5s ease-out 0.4s forwards;
+        }
+        .contact-form-container.visible .contact-form .form-submit {
+          animation: fadeInUp 0.5s ease-out 0.5s forwards;
+        }
+        .contact-form-container.visible .contact-form .form-note {
+          animation: fadeInUp 0.4s ease-out 0.6s forwards;
+        }
+
+        /* Override response cards - children cascade within each */
+        .response-card.animate-on-scroll {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        .response-card .response-card-icon,
+        .response-card h3,
+        .response-card p {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+
+        .response-card.visible .response-card-icon {
+          animation: fadeInUp 0.4s ease-out forwards, iconPulse 2s ease-in-out 0.8s infinite;
+        }
+        .response-card.visible h3 {
+          animation: fadeInUp 0.4s ease-out 0.1s forwards;
+        }
+        .response-card.visible p {
+          animation: fadeInUp 0.4s ease-out 0.15s forwards;
+        }
+
+        /* Second and third response cards have existing delays via delay-1/delay-2.
+           Since we overrode .animate-on-scroll on these, we need the observer
+           to still trigger .visible. Add stagger via the observer instead. */
+
+        /* CTA-like form submit button glow */
+        @keyframes submitGlow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.3); }
+          50% { box-shadow: 0 0 15px 3px rgba(34, 197, 94, 0.15); }
+        }
+        .contact-form-container.visible .form-submit {
+          animation: fadeInUp 0.5s ease-out 0.5s forwards, submitGlow 2.5s ease-in-out 1.2s infinite;
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+          .contact-info h2,
+          .contact-info > p,
+          .contact-info .contact-method,
+          .contact-info .quick-answers,
+          .contact-form h2,
+          .contact-form .form-row,
+          .contact-form .form-group,
+          .contact-form .form-submit,
+          .contact-form .form-note,
+          .response-card .response-card-icon,
+          .response-card h3,
+          .response-card p {
+            opacity: 1;
+            transform: none;
+            animation: none;
+          }
+        }
       </style>
 
       <section class="hero">
