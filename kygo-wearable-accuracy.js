@@ -46,7 +46,8 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Apple Watch',
         short: 'Apple Watch',
         color: '#A2AAAD',
-        icon: this._appleWatchIcon(),
+        imageUrl: 'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
+        icon: '<img src="https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png" alt="Apple Watch" loading="lazy" />',
         bestFor: 'Active HR, SpO2, Sleep (independent), FDA features',
         subscription: 'None required',
         strengths: ['Best active HR (86.3%)', 'Best SpO2 (MAE 2.2%)', 'Top independent sleep \u03BA=0.53', 'Best wake detection (52.2%)', 'Best REM detection (68.6%)', 'FDA-cleared ECG & sleep apnea'],
@@ -58,7 +59,8 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Oura Ring',
         short: 'Oura Ring',
         color: '#C4A97D',
-        icon: this._ouraIcon(),
+        imageUrl: 'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
+        icon: '<img src="https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png" alt="Oura Ring" loading="lazy" />',
         bestFor: 'HRV, Resting HR, Skin Temp, Recovery',
         subscription: '$5.99/mo required',
         strengths: ['Best HRV accuracy (CCC 0.99)', 'Best resting HR (CCC 0.98)', 'Best skin temp (r\u00B2>0.99)', 'Comfortable sleep wear'],
@@ -70,7 +72,8 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Garmin',
         short: 'Garmin',
         color: '#007CC3',
-        icon: this._garminIcon(),
+        imageUrl: 'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
+        icon: '<img src="https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png" alt="Garmin" loading="lazy" />',
         bestFor: 'Steps, GPS, Outdoor Sports, VO2 Max, Battery',
         subscription: 'None required',
         strengths: ['Best step accuracy (82.6%)', 'Best VO2 max (MAPE 7.05%)', 'Best GPS & battery life', 'Multi-sport tracking'],
@@ -82,7 +85,8 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'WHOOP',
         short: 'WHOOP',
         color: '#44B78B',
-        icon: this._whoopIcon(),
+        imageUrl: 'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
+        icon: '<img src="https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png" alt="WHOOP" loading="lazy" />',
         bestFor: 'Recovery, Strain, Deep Sleep, Athlete Training',
         subscription: '$30/mo (12-month)',
         strengths: ['Best deep sleep detection (69.6%)', 'Good HRV (CCC 0.94)', 'Best TST agreement (-1.4 min)', '99.7% HR during sleep'],
@@ -94,7 +98,8 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Fitbit',
         short: 'Fitbit',
         color: '#00B0B9',
-        icon: this._fitbitIcon(),
+        imageUrl: 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
+        icon: '<img src="https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png" alt="Fitbit" loading="lazy" />',
         bestFor: 'General Fitness, Sleep Basics, Affordability',
         subscription: 'Premium optional ($9.99/mo)',
         strengths: ['Moderate sleep accuracy (\u03BA=0.42\u20130.55)', 'Decent deep sleep sensitivity (61.7%)', 'FDA-cleared irregular rhythm', 'Affordable entry point'],
@@ -106,7 +111,8 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Samsung Galaxy Watch',
         short: 'Samsung',
         color: '#1428A0',
-        icon: this._samsungIcon(),
+        imageUrl: 'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
+        icon: '<img src="https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png" alt="Samsung Galaxy Watch" loading="lazy" />',
         bestFor: 'Android Users, Sleep Apnea Screening, SpO2',
         subscription: 'None required',
         strengths: ['FDA-cleared sleep apnea detection', 'Validated respiratory rate (RMSE 1.13)', 'FDA-cleared ECG', 'Good Android integration'],
@@ -385,23 +391,16 @@ class KygoWearableAccuracy extends HTMLElement {
 
   // ── Icons ─────────────────────────────────────────────────────────────
 
-  _appleWatchIcon() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="2" width="12" height="20" rx="3"/><rect x="8" y="5" width="8" height="11" rx="1" fill="currentColor" opacity="0.15"/><line x1="10" y1="20" x2="14" y2="20"/></svg>'; }
-  _ouraIcon() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="5" stroke-dasharray="2 2"/></svg>'; }
-  _garminIcon() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 16 14"/></svg>'; }
-  _whoopIcon() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="8" cy="12" r="1.5" fill="currentColor"/></svg>'; }
-  _fitbitIcon() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="2" width="10" height="20" rx="3"/><circle cx="12" cy="10" r="3"/><line x1="12" y1="7" x2="12" y2="10"/><line x1="12" y1="10" x2="14" y2="11.5"/></svg>'; }
-  _samsungIcon() { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 3C14 8 14 16 12 21"/><path d="M12 3C10 8 10 16 12 21"/><line x1="3" y1="12" x2="21" y2="12"/></svg>'; }
-
   _getUseCaseIcon(name) {
     const icons = {
       moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
       heartPulse: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/></svg>',
       activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
-      steps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6S11.97 5.28 12 8c.03 2.5-1 3.5-1 5.62V16"/><path d="M12 16v-2.38c0-2.12-1.03-3.12-1-5.62.03-2.72 1.49-6 4.5-6S19.97 5.28 20 8c.03 2.5-1 3.5-1 5.62V16"/></svg>',
-      lungs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.081 20C2.732 20 2 17.667 2 16.167c0-2.667 1.333-5 4.333-3l2-3.834C7.56 7.778 6.64 5.112 8.227 3.5 9.814 1.889 12 3.5 12 6v6"/><path d="M17.919 20C21.268 20 22 17.667 22 16.167c0-2.667-1.333-5-4.333-3l-2-3.834c.773-1.555 1.693-4.221.106-5.833C14.186 1.889 12 3.5 12 6v6"/></svg>',
+      steps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="4" r="2"/><path d="M9.5 21 12 15l2 3 3.5-7"/><path d="M6 16l3-5 3.5 1"/></svg>',
+      lungs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
       droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>',
       shieldPlus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="9" y1="12" x2="15" y2="12"/></svg>',
-      dumbbell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5h11M6 12h12M7 6.5V17M17 6.5V17M4.5 9V15M19.5 9V15M2 10v4M22 10v4"/></svg>'
+      dumbbell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>'
     };
     return icons[name] || icons.activity;
   }
@@ -512,6 +511,19 @@ class KygoWearableAccuracy extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
+      <!-- Header -->
+      <header class="header">
+        <div class="header-inner">
+          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
+            Wearable Accuracy
+          </a>
+          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
+            Get Kygo App <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </header>
+
       <!-- Hero -->
       <section class="hero">
         <div class="container">
@@ -564,10 +576,12 @@ class KygoWearableAccuracy extends HTMLElement {
             ${this._useCases.map((uc, i) => `
               <div class="rec-row" style="--delay:${i * 100}ms">
                 <div class="rec-icon">${this._getUseCaseIcon(uc.icon)}</div>
-                <div class="rec-label">${uc.label}</div>
-                <div class="rec-devices">${uc.devices.map(dk => `<span class="rec-device" style="--dc:${devices[dk].color}">${devices[dk].short}</span>`).join('')}</div>
+                <div class="rec-info">
+                  <div class="rec-label">${uc.label}</div>
+                  <div class="rec-note">${uc.note}</div>
+                </div>
                 <div class="rec-confidence ${uc.confidence.toLowerCase()}">${uc.confidence}</div>
-                <div class="rec-note">${uc.note}</div>
+                <div class="rec-devices">${uc.devices.map(dk => `<img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="rec-device-img" title="${devices[dk].short}" />`).join('')}</div>
               </div>
             `).join('')}
           </div>
@@ -635,18 +649,38 @@ class KygoWearableAccuracy extends HTMLElement {
       <section class="cta-section">
         <div class="container">
           <div class="cta-box animate-on-scroll">
-            <img src="${logoUrl}" alt="Kygo Health" class="cta-logo" width="48" height="48" loading="lazy"/>
-            <h2>Get More From Your Wearable</h2>
-            <p>Kygo Health syncs with your wearable data to deliver personalized nutrition and recovery insights.</p>
-            <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn" target="_blank" rel="noopener">Download Kygo Health</a>
+            <div class="cta-box-content">
+              <div class="cta-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
+              <h2>Go beyond accuracy data. See cause and effect.</h2>
+              <p>Kygo connects your wearable data with nutrition to reveal which foods help you sleep, recover, and perform best.</p>
+              <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn-white" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                Download Free on iOS
+              </a>
+              <div class="cta-features">
+                <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Free forever plan</span>
+                <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Syncs with 4+ wearables</span>
+                <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> AI food logging</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       <footer class="tool-footer">
         <div class="container">
-          <p>Data last updated February 2025. All accuracy claims sourced from peer-reviewed research with full bias disclosure. This tool is for informational purposes only and does not constitute medical advice.</p>
-          <p>\u00A9 ${new Date().getFullYear()} Kygo Health. All rights reserved.</p>
+          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" />
+            Kygo Health
+          </a>
+          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
+          <div class="footer-links">
+            <a href="https://kygo.app" target="_blank" rel="noopener">Kygo App</a>
+            <a href="https://kygo.app/privacy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://kygo.app/terms" target="_blank" rel="noopener">Terms</a>
+          </div>
+          <p class="footer-copyright">Data last updated February 2025. All accuracy claims sourced from peer-reviewed research with full bias disclosure.</p>
+          <p class="footer-copyright">\u00A9 ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
     `;
@@ -693,12 +727,50 @@ class KygoWearableAccuracy extends HTMLElement {
       }
       .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
+      /* ── Header ── */
+      .header {
+        background: white;
+        border-bottom: 1px solid var(--gray-200);
+        padding: 12px 16px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .header-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--dark);
+        text-decoration: none;
+      }
+      .logo-img { height: 28px; width: auto; }
+      .header-link {
+        color: var(--green);
+        text-decoration: none;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+      .header-link:hover { color: var(--green-dark); }
+
       /* Animations */
       .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; transition-delay: var(--delay, 0ms); }
       .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
       /* ── Hero ── */
-      .hero { padding: 48px 0 40px; text-align: center; background: linear-gradient(180deg, #f0fdf4 0%, var(--light) 100%); }
+      .hero { padding: 48px 0 40px; text-align: center; }
       .hero-badge { display: inline-block; padding: 8px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 16px; }
       .hero h1 { font-size: clamp(28px, 7vw, 36px); margin-bottom: 16px; color: var(--dark); }
       .hero-sub { font-size: clamp(16px, 4vw, 18px); color: var(--gray-600); max-width: 640px; margin: 0 auto; line-height: 1.7; }
@@ -717,10 +789,10 @@ class KygoWearableAccuracy extends HTMLElement {
       .vs-badge { width: 40px; height: 40px; border-radius: 50%; background: var(--dark); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 16px; }
 
       .device-summary-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-      .device-summary-card { padding: 20px; border-radius: var(--radius); background: var(--gray-50); border: 2px solid var(--gray-200); text-align: center; transition: all 0.3s ease; }
-      .device-summary-card:hover { border-color: var(--green); box-shadow: var(--shadow-hover); transform: translateY(-4px); }
-      .device-summary-card .ds-icon { width: 40px; height: 40px; margin: 0 auto 8px; color: var(--accent); }
-      .device-summary-card .ds-icon svg { width: 100%; height: 100%; }
+      .device-summary-card { padding: 20px; border-radius: var(--radius); background: white; border: 1px solid var(--gray-200); text-align: center; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+      .device-summary-card:hover { border-color: var(--green); box-shadow: 0 12px 32px rgba(0,0,0,0.08); transform: translateY(-4px); }
+      .device-summary-card .ds-icon { width: 48px; height: 48px; margin: 0 auto 8px; }
+      .device-summary-card .ds-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
       .device-summary-card h3 { font-size: 16px; margin-bottom: 4px; }
       .ds-best-for { font-size: 12px; color: var(--gray-600); margin-bottom: 4px; }
       .ds-sub { font-size: 11px; color: var(--gray-400); }
@@ -733,7 +805,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .metric-tab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
 
       /* Metric Detail */
-      .metric-detail { background: var(--gray-50); border-radius: var(--radius); padding: 24px; border: 2px solid var(--gray-200); }
+      .metric-detail { background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--gray-200); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
       .md-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
       .md-header h3 { font-size: 20px; }
       .md-gold { font-size: 12px; color: var(--gray-400); background: var(--gray-100); padding: 4px 10px; border-radius: 6px; }
@@ -758,29 +830,30 @@ class KygoWearableAccuracy extends HTMLElement {
 
       /* ── Quick Recommendations ── */
       .recommendations { padding: 48px 0; }
-      .rec-list { display: flex; flex-direction: column; gap: 0; background: #fff; border-radius: var(--radius); border: 2px solid var(--gray-200); overflow: hidden; box-shadow: var(--shadow); }
-      .rec-row { display: grid; grid-template-columns: 32px 1fr; grid-template-rows: auto auto; align-items: center; gap: 4px 12px; padding: 14px 16px; border-bottom: 1px solid var(--gray-100); transition: background 0.2s; }
+      .rec-list { display: flex; flex-direction: column; gap: 0; background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+      .rec-row { display: grid; grid-template-columns: 36px 1fr auto auto; align-items: center; gap: 12px; padding: 16px 16px; border-bottom: 1px solid var(--gray-100); transition: background 0.2s; }
       .rec-row:last-child { border-bottom: none; }
       .rec-row:hover { background: var(--gray-50); }
-      .rec-icon { grid-row: 1 / 3; width: 28px; height: 28px; color: var(--green-dark); }
+      .rec-icon { width: 32px; height: 32px; color: var(--green-dark); display: flex; align-items: center; justify-content: center; background: var(--green-light); border-radius: 8px; padding: 4px; }
       .rec-icon svg { width: 100%; height: 100%; }
-      .rec-label { font-size: 14px; font-weight: 600; color: var(--dark); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-      .rec-devices { display: inline-flex; gap: 4px; }
-      .rec-device { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; background: color-mix(in srgb, var(--dc) 12%, white); color: var(--dc); }
-      .rec-confidence { font-size: 11px; font-weight: 600; }
-      .rec-confidence.high { color: var(--green-dark); }
-      .rec-confidence.moderate { color: #D97706; }
-      .rec-confidence.low { color: #DC2626; }
-      .rec-note { grid-column: 2; font-size: 12px; color: var(--gray-400); }
+      .rec-info { min-width: 0; }
+      .rec-label { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
+      .rec-note { font-size: 12px; color: var(--gray-400); line-height: 1.4; }
+      .rec-confidence { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
+      .rec-confidence.high { color: var(--green-dark); background: rgba(34,197,94,0.1); }
+      .rec-confidence.moderate { color: #D97706; background: rgba(251,191,36,0.1); }
+      .rec-confidence.low { color: #DC2626; background: rgba(239,68,68,0.1); }
+      .rec-devices { display: flex; gap: 4px; align-items: center; }
+      .rec-device-img { width: 28px; height: 28px; border-radius: 8px; object-fit: contain; border: 1px solid var(--gray-200); background: #fff; }
 
       /* ── Device Deep Dives ── */
       .deep-dives { padding: 48px 0; background: #fff; }
       .dd-grid { display: flex; flex-direction: column; gap: 12px; }
-      .dd-card { background: var(--gray-50); border-radius: var(--radius); border: 2px solid var(--gray-200); overflow: hidden; transition: all 0.3s ease; box-shadow: var(--shadow); }
+      .dd-card { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
       .dd-card:hover { border-color: var(--green); box-shadow: var(--shadow-hover); transform: translateY(-4px); }
       .dd-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; cursor: pointer; }
-      .dd-icon { width: 36px; height: 36px; flex-shrink: 0; color: var(--accent); }
-      .dd-icon svg { width: 100%; height: 100%; }
+      .dd-icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; overflow: hidden; }
+      .dd-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 10px; }
       .dd-info { flex: 1; min-width: 0; }
       .dd-info h3 { font-size: 16px; margin-bottom: 2px; }
       .dd-bestfor { font-size: 12px; color: var(--gray-400); }
@@ -823,33 +896,124 @@ class KygoWearableAccuracy extends HTMLElement {
 
       /* ── CTA ── */
       .cta-section { padding: 48px 0; }
-      .cta-box { text-align: center; padding: 40px 24px; background: linear-gradient(135deg, #f0fdf4, #dcfce7); border-radius: var(--radius); border: 1px solid #BBF7D0; }
-      .cta-logo { width: 48px; height: 48px; border-radius: 12px; margin-bottom: 16px; }
-      .cta-box h2 { font-size: clamp(20px, 5vw, 24px); margin-bottom: 8px; }
-      .cta-box p { font-size: 15px; color: var(--gray-600); margin-bottom: 20px; max-width: 400px; margin-left: auto; margin-right: auto; line-height: 1.6; }
-      .cta-btn { display: inline-block; padding: 14px 28px; border-radius: 12px; background: var(--green); color: #fff; font-family: inherit; font-size: 15px; font-weight: 600; text-decoration: none; transition: all 0.2s; box-shadow: 0 4px 14px rgba(34,197,94,0.3); }
-      .cta-btn:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(34,197,94,0.4); }
-      .cta-btn:active { transform: scale(0.97); }
+      .cta-box {
+        background: linear-gradient(135deg, var(--green), var(--green-dark));
+        border-radius: var(--radius);
+        padding: 32px 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-box::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+        pointer-events: none;
+      }
+      .cta-box-content { position: relative; z-index: 1; }
+      .cta-icon {
+        width: 56px;
+        height: 56px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        color: white;
+      }
+      .cta-box h2 { font-size: clamp(20px, 5vw, 24px); margin-bottom: 10px; color: white; }
+      .cta-box p { font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 24px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+      .cta-btn-white {
+        background: white;
+        color: var(--green-dark);
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 15px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .cta-btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+      .cta-features {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: rgba(255,255,255,0.8);
+      }
+      .cta-feature { display: flex; align-items: center; justify-content: center; gap: 8px; }
+      .cta-feature svg { color: white; flex-shrink: 0; }
 
       /* ── Footer ── */
       .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }
-      .tool-footer p { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; line-height: 1.6; }
+      .footer-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--dark);
+        font-weight: 600;
+        text-decoration: none;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+      .footer-brand:hover { color: var(--green); }
+      .footer-logo { height: 24px; width: auto; }
+      .footer-tagline { color: var(--gray-600); font-size: 12px; margin-bottom: 12px; }
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        font-size: 12px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      .footer-links a { color: var(--gray-400); text-decoration: none; }
+      .footer-links a:hover { color: var(--dark); }
+      .footer-copyright { font-size: 11px; color: var(--gray-400); margin-bottom: 4px; line-height: 1.6; }
 
       /* ── Tablet (768px) ── */
       @media (min-width: 768px) {
+        .header { padding: 14px 24px; }
+        .logo { font-size: 16px; gap: 10px; }
+        .logo-img { height: 32px; }
+        .header-link { font-size: 14px; gap: 6px; }
         .hero h1 { font-size: clamp(36px, 5vw, 48px); }
         .hero-sub { font-size: 18px; }
         .section-title { font-size: 32px; }
         .comparison, .recommendations, .deep-dives, .caveats, .cta-section { padding: 64px 0; }
         .device-summary-card { padding: 24px; }
+        .device-summary-card .ds-icon { width: 52px; height: 52px; }
         .metric-detail { padding: 28px; }
-        .rec-row { grid-template-columns: 32px auto 1fr auto auto; grid-template-rows: auto; gap: 12px; padding: 12px 20px; }
-        .rec-note { grid-column: auto; }
-        .rec-label { font-size: 14px; }
+        .rec-row { grid-template-columns: 40px 1fr auto auto auto; gap: 16px; padding: 14px 20px; }
+        .rec-icon { width: 36px; height: 36px; }
+        .rec-label { font-size: 15px; }
+        .rec-device-img { width: 32px; height: 32px; }
         .dd-header { padding: 18px 24px; }
+        .dd-icon { width: 44px; height: 44px; }
         .dd-body { padding: 0 24px; }
         .dd-card.expanded .dd-body { padding: 0 24px 24px; }
         .caveat-box { padding: 40px 32px; }
+        .cta-box { padding: 48px 32px; }
+        .cta-box h2 { font-size: 28px; }
+        .cta-box p { font-size: 16px; }
+        .cta-features { flex-direction: row; gap: 24px; font-size: 14px; }
+        .footer-brand { font-size: 16px; gap: 10px; }
+        .footer-logo { height: 28px; }
+        .footer-tagline { font-size: 14px; }
+        .footer-links { gap: 24px; font-size: 14px; }
       }
 
       /* ── Desktop (1024px) ── */
@@ -857,11 +1021,16 @@ class KygoWearableAccuracy extends HTMLElement {
         .hero { padding: 80px 0 64px; }
         .comparison, .recommendations, .deep-dives, .caveats, .cta-section { padding: 80px 0; }
         .device-summary-card { padding: 28px; }
+        .device-summary-card .ds-icon { width: 56px; height: 56px; }
         .metric-detail { padding: 32px; }
         .md-bar-row { grid-template-columns: 1fr 80px 160px; }
+        .rec-row { padding: 16px 24px; }
+        .rec-device-img { width: 36px; height: 36px; border-radius: 10px; }
         .dd-header { padding: 20px 28px; }
+        .dd-icon { width: 48px; height: 48px; border-radius: 12px; }
         .dd-body { padding: 0 28px; }
         .dd-card.expanded .dd-body { padding: 0 28px 28px; }
+        .cta-box { padding: 56px 40px; border-radius: 24px; }
       }
 
       /* ── Reduced Motion ── */
