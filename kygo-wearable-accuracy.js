@@ -129,7 +129,7 @@ class KygoWearableAccuracy extends HTMLElement {
       'samsung': {
         name: 'Samsung Galaxy Watch',
         short: 'Samsung',
-        color: '#1428A0',
+        color: '#F59E0B',
         imageUrl: 'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
         icon: '<img src="https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png" alt="Samsung Galaxy Watch" loading="lazy" />',
         bestFor: 'Android Users, Sleep Apnea Screening, SpO2',
@@ -152,17 +152,18 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Sleep Staging',
         desc: 'How accurately the device classifies sleep into Wake, Light, Deep, and REM stages compared to polysomnography (PSG).',
         unit: "Cohen's \u03BA",
+        unitExplainer: '\u03BA (kappa) measures agreement with lab sleep study \u2014 0 = random chance, 1 = perfect match',
         goldStandard: 'Polysomnography (PSG)',
         higherBetter: true,
         scale: { min: 0, max: 0.8 },
         data: {
           'apple-watch': [
-            { value: 0.60, label: '\u03BA=0.60', study: 'Robbins 2024', biased: true },
+            { value: 0.60, label: '\u03BA=0.60', study: 'Robbins 2024', biased: true, funder: 'Oura' },
             { value: 0.53, label: '\u03BA=0.53', study: 'Schyvens 2025', biased: false },
             { value: 0.3, label: '\u03BA=0.2\u20130.4', study: 'Park 2023', biased: false }
           ],
           'oura': [
-            { value: 0.65, label: '\u03BA=0.65', study: 'Robbins 2024', biased: true },
+            { value: 0.65, label: '\u03BA=0.65', study: 'Robbins 2024', biased: true, funder: 'Oura' },
             { value: 0.3, label: '\u03BA=0.2\u20130.4', study: 'Park 2023', biased: false }
           ],
           'garmin': [
@@ -172,7 +173,7 @@ class KygoWearableAccuracy extends HTMLElement {
             { value: 0.37, label: '\u03BA=0.37', study: 'Schyvens 2025', biased: false }
           ],
           'fitbit': [
-            { value: 0.55, label: '\u03BA=0.55', study: 'Robbins 2024', biased: true },
+            { value: 0.55, label: '\u03BA=0.55', study: 'Robbins 2024', biased: true, funder: 'Oura' },
             { value: 0.42, label: '\u03BA=0.42', study: 'Schyvens 2025', biased: false },
             { value: 0.5, label: '\u03BA=0.4\u20130.6', study: 'Park 2023', biased: false }
           ],
@@ -186,6 +187,7 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Nocturnal HRV',
         desc: 'Heart rate variability measured during sleep \u2014 a key recovery and stress indicator.',
         unit: 'CCC',
+        unitExplainer: 'CCC measures correlation with chest-strap ECG \u2014 0 = no agreement, 1 = perfect match',
         goldStandard: 'Polar H10 ECG chest strap',
         higherBetter: true,
         scale: { min: 0.7, max: 1.0 },
@@ -210,6 +212,7 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Resting Heart Rate',
         desc: 'How accurately the device measures resting heart rate during sleep.',
         unit: 'CCC',
+        unitExplainer: 'CCC measures correlation with chest-strap ECG \u2014 0 = no agreement, 1 = perfect match',
         goldStandard: 'Polar H10 ECG chest strap',
         higherBetter: true,
         scale: { min: 0.7, max: 1.0 },
@@ -232,6 +235,7 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Active Heart Rate',
         desc: 'Heart rate accuracy during exercise and physical activity.',
         unit: 'Accuracy %',
+        unitExplainer: 'Percentage of readings within acceptable range of chest-strap ECG',
         goldStandard: 'ECG chest strap',
         higherBetter: true,
         scale: { min: 40, max: 100 },
@@ -255,6 +259,7 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Blood Oxygen (SpO2)',
         desc: 'Blood oxygen saturation measurement accuracy. Important for detecting sleep apnea and respiratory issues.',
         unit: 'MAE %',
+        unitExplainer: 'Mean Absolute Error \u2014 average error in percentage points vs. medical device. Lower is better',
         goldStandard: 'Medical-grade pulse oximeter',
         higherBetter: false,
         scale: { min: 0, max: 8 },
@@ -270,7 +275,7 @@ class KygoWearableAccuracy extends HTMLElement {
           'whoop': [],
           'fitbit': [],
           'samsung': [
-            { value: 3.0, label: 'Reliable', study: 'J Clin Sleep Med 2024', biased: true }
+            { value: 3.0, label: 'Reliable', study: 'J Clin Sleep Med 2024', biased: true, funder: 'Samsung' }
           ]
         },
         insight: 'Apple Watch leads with MAE of 2.2%, but only 58% of readings fall within clinical accuracy range. Skin pigmentation and tattoos affect all SpO2 sensors. No wearable SpO2 is medical-grade.'
@@ -279,6 +284,7 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Step Counting',
         desc: 'How accurately the device counts steps during daily activity.',
         unit: 'Accuracy %',
+        unitExplainer: 'Percentage accuracy compared to manual counting by researchers',
         goldStandard: 'Manual counting / research pedometer',
         higherBetter: true,
         scale: { min: 40, max: 100 },
@@ -304,6 +310,7 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Calorie / Energy',
         desc: 'How accurately the device estimates energy expenditure (calories burned).',
         unit: 'Accuracy %',
+        unitExplainer: 'Percentage accuracy compared to lab calorimetry measurement',
         goldStandard: 'Indirect calorimetry',
         higherBetter: true,
         scale: { min: 30, max: 100 },
@@ -329,6 +336,7 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'VO2 Max',
         desc: 'Estimated maximal oxygen uptake \u2014 a key indicator of cardiovascular fitness.',
         unit: 'MAPE %',
+        unitExplainer: 'Mean Absolute Percentage Error \u2014 average % off from lab test. Lower is better',
         goldStandard: 'Laboratory metabolic cart',
         higherBetter: false,
         scale: { min: 0, max: 20 },
@@ -352,14 +360,15 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Skin Temperature',
         desc: 'Skin temperature measurement accuracy \u2014 useful for illness detection and menstrual cycle tracking.',
         unit: 'r\u00B2',
+        unitExplainer: 'r\u00B2 measures how well readings track lab sensors \u2014 0 = no correlation, 1 = perfect fit',
         goldStandard: 'iButton research-grade sensors',
         higherBetter: true,
         scale: { min: 0.8, max: 1.0 },
         data: {
           'apple-watch': [],
           'oura': [
-            { value: 0.99, label: 'r\u00B2>0.99 (lab)', study: 'Oura 2024', biased: true },
-            { value: 0.92, label: 'r\u00B2>0.92 (real-world)', study: 'Oura 2024', biased: true }
+            { value: 0.99, label: 'r\u00B2>0.99 (lab)', study: 'Oura 2024', biased: true, funder: 'Oura' },
+            { value: 0.92, label: 'r\u00B2>0.92 (real-world)', study: 'Oura 2024', biased: true, funder: 'Oura' }
           ],
           'garmin': [],
           'whoop': [],
@@ -445,7 +454,13 @@ class KygoWearableAccuracy extends HTMLElement {
   }
 
   _renderMetricTabs() {
-    return Object.entries(this._metrics).map(([k, m]) =>
+    const available = Object.entries(this._metrics).filter(([k, m]) =>
+      this._selectedDevices.some(dk => m.data[dk] && m.data[dk].length > 0)
+    );
+    if (!available.some(([k]) => k === this._activeMetric) && available.length) {
+      this._activeMetric = available[0][0];
+    }
+    return available.map(([k, m]) =>
       `<button class="metric-tab ${k === this._activeMetric ? 'active' : ''}" data-metric="${k}" role="tab">${m.name}</button>`
     ).join('');
   }
@@ -459,6 +474,7 @@ class KygoWearableAccuracy extends HTMLElement {
         <span class="md-gold">Gold Standard: ${metric.goldStandard}</span>
       </div>
       <p class="md-desc">${metric.desc}</p>
+      ${metric.unitExplainer ? `<div class="md-unit-explainer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg> <span>${metric.unitExplainer}</span></div>` : ''}
       <div class="md-bars">
         ${this._selectedDevices.map(dk => {
           const d = devices[dk];
@@ -481,7 +497,7 @@ class KygoWearableAccuracy extends HTMLElement {
                   <div class="md-bar-fill ${e.biased ? 'biased' : ''}" style="width:${clamped}%;background:${d.color}"></div>
                 </div>
                 <div class="md-bar-value">${e.label}</div>
-                <div class="md-bar-study ${e.biased ? 'biased-text' : ''}">${e.study}${e.biased ? ' <span class="funded-badge">funded</span>' : ''}</div>
+                <div class="md-bar-study ${e.biased ? 'biased-text' : ''}">${e.study}${e.biased ? ' <span class="funded-badge">' + (e.funder || 'Industry') + ' Funded</span>' : ''}</div>
               </div>`;
             }).join('')}
           </div>`;
@@ -505,8 +521,8 @@ class KygoWearableAccuracy extends HTMLElement {
         <h4>Research Sources</h4>
         ${relevant.map(s => `
           <div class="dd-study-row ${s.independent ? '' : 'dd-study-funded'}">
-            <span class="dd-study-badge ${s.independent ? 'independent' : 'funded'}">${s.independent ? 'Independent' : 'Funded'}</span>
-            <span class="dd-study-cite">${s.authors} (${s.year}). ${s.journal}${s.n ? ', n=' + s.n : ''}${!s.independent ? ' \u2014 ' + s.funder : ''}</span>
+            <span class="dd-study-badge ${s.independent ? 'independent' : 'funded'}">${s.independent ? 'Independent' : (s.funder ? s.funder.replace(/ Inc\.$/, '') + ' Funded' : 'Funded')}</span>
+            <span class="dd-study-cite">${s.authors} (${s.year}). ${s.journal}${s.n ? ', n=' + s.n : ''}</span>
           </div>
         `).join('')}
       </div>
@@ -590,27 +606,6 @@ class KygoWearableAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <!-- Quick Recommendations -->
-      <section class="recommendations">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Best Wearable by Use Case</h2>
-          <p class="section-sub animate-on-scroll">What matters most to you? Here's what the research says.</p>
-          <div class="rec-list animate-on-scroll">
-            ${this._useCases.map((uc, i) => `
-              <div class="rec-row" style="--delay:${i * 100}ms">
-                <div class="rec-icon">${this._getUseCaseIcon(uc.icon)}</div>
-                <div class="rec-info">
-                  <div class="rec-label">${uc.label}</div>
-                  <div class="rec-note">${uc.note}</div>
-                </div>
-                <div class="rec-confidence ${uc.confidence.toLowerCase()}">${uc.confidence}</div>
-                <div class="rec-devices">${uc.devices.map(dk => `<img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="rec-device-img" title="${devices[dk].short}" />`).join('')}</div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>
-
       <!-- Device Deep Dives -->
       <section class="deep-dives">
         <div class="container">
@@ -662,22 +657,43 @@ class KygoWearableAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <!-- Quick Recommendations -->
+      <section class="recommendations">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Best Wearable by Use Case</h2>
+          <p class="section-sub animate-on-scroll">What matters most to you? Here's what the research says.</p>
+          <div class="rec-list animate-on-scroll">
+            ${this._useCases.map((uc, i) => `
+              <div class="rec-row" style="--delay:${i * 100}ms">
+                <div class="rec-icon">${this._getUseCaseIcon(uc.icon)}</div>
+                <div class="rec-info">
+                  <div class="rec-label">${uc.label}</div>
+                  <div class="rec-note">${uc.note}</div>
+                </div>
+                <div class="rec-confidence ${uc.confidence.toLowerCase()}">${uc.confidence}</div>
+                <div class="rec-devices">${uc.devices.map(dk => `<img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="rec-device-img" title="${devices[dk].short}" />`).join('')}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </section>
+
       <!-- Caveats -->
       <section class="caveats">
         <div class="container">
-          <div class="caveat-box animate-on-scroll">
-            <h2>Important Things to Know</h2>
-            <div class="caveat-list">
-              ${this._caveats.map((c, i) => `
-                <div class="caveat-item ${this._expandedCaveats.has(i) ? 'open' : ''}" data-caveat="${i}">
-                  <div class="caveat-header">
-                    <span class="caveat-title">${c.title}</span>
-                    <span class="caveat-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
-                  </div>
-                  <div class="caveat-body"><p>${c.body}</p></div>
+          <h2 class="section-title animate-on-scroll">Important Things to Know</h2>
+          <p class="section-sub animate-on-scroll">Context for interpreting wearable accuracy data.</p>
+          <div class="caveat-grid animate-on-scroll">
+            ${this._caveats.map((c, i) => `
+              <div class="caveat-card ${this._expandedCaveats.has(i) ? 'open' : ''}" data-caveat="${i}">
+                <div class="caveat-header">
+                  <span class="caveat-num">${i + 1}</span>
+                  <span class="caveat-title">${c.title}</span>
+                  <span class="caveat-toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
                 </div>
-              `).join('')}
-            </div>
+                <div class="caveat-body"><p>${c.body}</p></div>
+              </div>
+            `).join('')}
           </div>
         </div>
       </section>
@@ -824,7 +840,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .selector-group label { display: block; font-size: 12px; font-weight: 600; color: var(--gray-400); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
       .selector-wrap select { padding: 10px 16px; border-radius: var(--radius-sm); border: 2px solid var(--gray-200); font-family: inherit; font-size: 15px; font-weight: 600; background: var(--gray-50); color: var(--dark); cursor: pointer; min-width: 140px; appearance: auto; transition: border-color 0.2s; }
       .selector-wrap select:focus { outline: none; border-color: var(--green); }
-      .vs-badge { width: 40px; height: 40px; border-radius: 50%; background: var(--dark); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 16px; }
+      .vs-badge { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 16px; box-shadow: 0 2px 8px rgba(34,197,94,0.3); }
 
       .device-summary-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
       .device-summary-card { padding: 20px; border-radius: var(--radius); background: white; border: 1px solid var(--gray-200); text-align: center; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
@@ -840,14 +856,16 @@ class KygoWearableAccuracy extends HTMLElement {
       .metric-tabs::-webkit-scrollbar { display: none; }
       .metric-tab { padding: 8px 14px; border-radius: 50px; border: 2px solid var(--gray-200); background: #fff; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; white-space: nowrap; transition: all 0.2s; }
       .metric-tab:hover { border-color: var(--gray-300); color: var(--dark); }
-      .metric-tab.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+      .metric-tab.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); font-weight: 600; }
 
       /* Metric Detail */
       .metric-detail { background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--gray-200); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
       .md-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
       .md-header h3 { font-size: 20px; }
       .md-gold { font-size: 12px; color: var(--gray-400); background: var(--gray-100); padding: 4px 10px; border-radius: 6px; }
-      .md-desc { font-size: 14px; color: var(--gray-600); margin-bottom: 20px; line-height: 1.6; }
+      .md-desc { font-size: 14px; color: var(--gray-600); margin-bottom: 12px; line-height: 1.6; }
+      .md-unit-explainer { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--green-dark); background: var(--green-light); padding: 8px 12px; border-radius: 8px; margin-bottom: 20px; line-height: 1.4; }
+      .md-unit-explainer svg { flex-shrink: 0; color: var(--green); }
 
       .md-bars { display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px; }
       .md-bar-label { font-size: 14px; font-weight: 600; margin-bottom: 8px; padding-left: 2px; color: var(--accent); }
@@ -867,11 +885,12 @@ class KygoWearableAccuracy extends HTMLElement {
       .md-insight p { font-size: 13px; color: #92400E; line-height: 1.6; }
 
       /* ── Quick Recommendations ── */
-      .recommendations { padding: 48px 0; }
+      .recommendations { padding: 48px 0; background: #fff; }
       .rec-list { display: flex; flex-direction: column; gap: 0; background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-      .rec-row { display: grid; grid-template-columns: 36px 1fr auto auto; align-items: center; gap: 12px; padding: 16px 16px; border-bottom: 1px solid var(--gray-100); transition: background 0.2s; }
+      .rec-row { display: grid; grid-template-columns: 36px 1fr auto auto; align-items: center; gap: 12px; padding: 16px 16px; border-bottom: 1px solid var(--gray-100); border-left: 3px solid transparent; transition: all 0.2s; }
       .rec-row:last-child { border-bottom: none; }
-      .rec-row:hover { background: var(--gray-50); }
+      .rec-row:hover { background: var(--gray-50); border-left-color: var(--green); transform: translateX(2px); }
+      .rec-row:hover .rec-label { color: var(--green-dark); }
       .rec-icon { width: 32px; height: 32px; color: var(--green-dark); display: flex; align-items: center; justify-content: center; background: var(--green-light); border-radius: 8px; padding: 4px; }
       .rec-icon svg { width: 100%; height: 100%; }
       .rec-info { min-width: 0; }
@@ -885,10 +904,11 @@ class KygoWearableAccuracy extends HTMLElement {
       .rec-device-img { width: 28px; height: 28px; border-radius: 8px; object-fit: contain; border: 1px solid var(--gray-200); background: #fff; }
 
       /* ── Device Deep Dives ── */
-      .deep-dives { padding: 48px 0; background: #fff; }
-      .dd-grid { display: flex; flex-direction: column; gap: 12px; }
+      .deep-dives { padding: 48px 0; background: var(--gray-50); }
+      .dd-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
       .dd-card { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-      .dd-card:hover { border-color: var(--green); box-shadow: var(--shadow-hover); transform: translateY(-4px); }
+      .dd-card:hover { border-color: var(--green); box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+      .dd-card.expanded { grid-column: 1 / -1; border-color: var(--green); box-shadow: 0 8px 24px rgba(34,197,94,0.12); }
       .dd-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; cursor: pointer; }
       .dd-icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; overflow: hidden; }
       .dd-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 10px; }
@@ -949,19 +969,19 @@ class KygoWearableAccuracy extends HTMLElement {
       .dd-buy-cta svg { flex-shrink: 0; }
 
       /* ── Caveats ── */
-      .caveats { padding: 48px 0; }
-      .caveat-box { background: linear-gradient(135deg, #1E293B, #334155); border-radius: var(--radius); padding: 32px 20px; color: #fff; }
-      .caveat-box h2 { font-size: clamp(20px, 5vw, 24px); margin-bottom: 20px; text-align: center; }
-      .caveat-list { display: flex; flex-direction: column; gap: 8px; }
-      .caveat-item { background: rgba(255,255,255,0.06); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); overflow: hidden; transition: background 0.2s; }
-      .caveat-item:hover { background: rgba(255,255,255,0.09); }
-      .caveat-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; cursor: pointer; gap: 8px; }
-      .caveat-title { font-size: 14px; font-weight: 600; color: #fff; }
-      .caveat-toggle { flex-shrink: 0; color: rgba(255,255,255,0.4); transition: transform 0.3s; }
-      .caveat-item.open .caveat-toggle { transform: rotate(180deg); }
-      .caveat-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 16px; }
-      .caveat-item.open .caveat-body { max-height: 200px; padding: 0 16px 14px; }
-      .caveat-body p { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+      .caveats { padding: 48px 0; background: var(--gray-50); }
+      .caveat-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      .caveat-card { background: #fff; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); overflow: hidden; transition: all 0.2s; }
+      .caveat-card:hover { border-color: var(--gray-300); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+      .caveat-header { display: flex; align-items: center; padding: 12px 14px; cursor: pointer; gap: 10px; }
+      .caveat-num { width: 24px; height: 24px; border-radius: 50%; background: var(--green-light); color: var(--green-dark); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+      .caveat-title { font-size: 13px; font-weight: 600; color: var(--dark); flex: 1; }
+      .caveat-toggle { flex-shrink: 0; color: var(--gray-400); transition: transform 0.3s; }
+      .caveat-card.open .caveat-toggle { transform: rotate(180deg); }
+      .caveat-card.open .caveat-num { background: var(--green); color: #fff; }
+      .caveat-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 14px; }
+      .caveat-card.open .caveat-body { max-height: 200px; padding: 0 14px 12px; }
+      .caveat-body p { font-size: 12px; color: var(--gray-600); line-height: 1.6; padding-left: 34px; }
 
       /* ── CTA ── */
       .cta-section { padding: 48px 0; }
@@ -1071,11 +1091,12 @@ class KygoWearableAccuracy extends HTMLElement {
         .rec-icon { width: 36px; height: 36px; }
         .rec-label { font-size: 15px; }
         .rec-device-img { width: 32px; height: 32px; }
+        .dd-grid { grid-template-columns: 1fr 1fr; }
         .dd-header { padding: 18px 24px; }
         .dd-icon { width: 44px; height: 44px; }
         .dd-body { padding: 0 24px; }
         .dd-card.expanded .dd-body { padding: 0 24px 24px; }
-        .caveat-box { padding: 40px 32px; }
+        .caveat-grid { grid-template-columns: 1fr 1fr; }
         .cta-box { padding: 48px 32px; }
         .cta-box h2 { font-size: 28px; }
         .cta-box p { font-size: 16px; }
@@ -1096,6 +1117,7 @@ class KygoWearableAccuracy extends HTMLElement {
         .md-bar-row { grid-template-columns: 1fr 80px 160px; }
         .rec-row { padding: 16px 24px; }
         .rec-device-img { width: 36px; height: 36px; border-radius: 10px; }
+        .dd-grid { grid-template-columns: 1fr 1fr 1fr; }
         .dd-header { padding: 20px 28px; }
         .dd-icon { width: 48px; height: 48px; border-radius: 12px; }
         .dd-body { padding: 0 28px; }
@@ -1153,7 +1175,7 @@ class KygoWearableAccuracy extends HTMLElement {
       // Caveat expand/collapse
       const caveatHeader = e.target.closest('.caveat-header');
       if (caveatHeader) {
-        const item = caveatHeader.closest('.caveat-item');
+        const item = caveatHeader.closest('.caveat-card') || caveatHeader.closest('.caveat-item');
         const idx = parseInt(item.dataset.caveat, 10);
         if (this._expandedCaveats.has(idx)) {
           this._expandedCaveats.delete(idx);
