@@ -53,7 +53,11 @@ class KygoWearableAccuracy extends HTMLElement {
         strengths: ['Best active HR (86.3%)', 'Best SpO2 (MAE 2.2%)', 'Top independent sleep \u03BA=0.53', 'Best wake detection (52.2%)', 'Best REM detection (68.6%)', 'FDA-cleared ECG & sleep apnea'],
         weaknesses: ['VO2 max 13\u201316% error', 'Underestimates deep sleep', 'Daily charging needed'],
         researchNote: null,
-        studyIds: ['robbins2024', 'schyvens2025', 'park2023', 'wellnesspulse2025', 'caserman2024', 'lambe2025']
+        studyIds: ['robbins2024', 'schyvens2025', 'park2023', 'wellnesspulse2025', 'caserman2024', 'lambe2025'],
+        affiliateLinks: [
+          { name: 'Apple Watch Series 10', url: 'https://amzn.to/4kw5Uaa' },
+          { name: 'Apple Watch Ultra 2', url: 'https://amzn.to/4kqQi7K' }
+        ]
       },
       'oura': {
         name: 'Oura Ring',
@@ -66,7 +70,10 @@ class KygoWearableAccuracy extends HTMLElement {
         strengths: ['Best HRV accuracy (CCC 0.99)', 'Best resting HR (CCC 0.98)', 'Best skin temp (r\u00B2>0.99)', 'Comfortable sleep wear'],
         weaknesses: ['Poor step counting (~50% error)', 'No active HR during exercise', 'No GPS, no screen'],
         researchNote: 'Sleep \u03BA=0.65 is from an Oura-funded study. Independent studies found \u03BA=0.2\u20130.4.',
-        studyIds: ['robbins2024', 'dial2025', 'park2023']
+        studyIds: ['robbins2024', 'dial2025', 'park2023'],
+        affiliateLinks: [
+          { name: 'Oura Ring Gen 4', url: 'https://amzn.to/4klINic' }
+        ]
       },
       'garmin': {
         name: 'Garmin',
@@ -79,7 +86,12 @@ class KygoWearableAccuracy extends HTMLElement {
         strengths: ['Best step accuracy (82.6%)', 'Best VO2 max (MAPE 7.05%)', 'Best GPS & battery life', 'Multi-sport tracking'],
         weaknesses: ['Poor sleep staging (\u03BA=0.21)', 'Poor wake detection (27.6%)', 'Lower HRV (CCC 0.87)', 'Worst calorie tracking (48%)'],
         researchNote: 'HRV/sleep studies used Fenix 6 / Vivosmart 4 (older models). Current devices may perform better.',
-        studyIds: ['schyvens2025', 'dial2025', 'wellnesspulse2025']
+        studyIds: ['schyvens2025', 'dial2025', 'wellnesspulse2025'],
+        affiliateLinks: [
+          { name: 'Garmin Venu 3', url: 'https://amzn.to/3ZUWQ50' },
+          { name: 'Garmin Fenix 8', url: 'https://amzn.to/4qp6dEU' },
+          { name: 'Garmin Forerunner 265', url: 'https://amzn.to/4r7eC0M' }
+        ]
       },
       'whoop': {
         name: 'WHOOP',
@@ -92,7 +104,10 @@ class KygoWearableAccuracy extends HTMLElement {
         strengths: ['Best deep sleep detection (69.6%)', 'Good HRV (CCC 0.94)', 'Best TST agreement (-1.4 min)', '99.7% HR during sleep'],
         weaknesses: ['Moderate sleep staging (\u03BA=0.37)', 'Overestimates REM by ~21 min', 'Poor wake detection (32.5%)', 'No screen, expensive subscription'],
         researchNote: null,
-        studyIds: ['schyvens2025', 'dial2025', 'khodr2024']
+        studyIds: ['schyvens2025', 'dial2025', 'khodr2024'],
+        affiliateLinks: [
+          { name: 'WHOOP 4.0', url: 'https://amzn.to/3Zmzkh8', note: '12-month subscription included' }
+        ]
       },
       'fitbit': {
         name: 'Fitbit',
@@ -105,7 +120,11 @@ class KygoWearableAccuracy extends HTMLElement {
         strengths: ['Moderate sleep accuracy (\u03BA=0.42\u20130.55)', 'Decent deep sleep sensitivity (61.7%)', 'FDA-cleared irregular rhythm', 'Affordable entry point'],
         weaknesses: ['Below leaders in most metrics', 'Declining validation research since Google acquisition'],
         researchNote: null,
-        studyIds: ['robbins2024', 'schyvens2025', 'park2023', 'wellnesspulse2025']
+        studyIds: ['robbins2024', 'schyvens2025', 'park2023', 'wellnesspulse2025'],
+        affiliateLinks: [
+          { name: 'Fitbit Charge 6', url: 'https://amzn.to/4chbzyr' },
+          { name: 'Fitbit Sense 2', url: 'https://amzn.to/4ck9W33' }
+        ]
       },
       'samsung': {
         name: 'Samsung Galaxy Watch',
@@ -118,7 +137,11 @@ class KygoWearableAccuracy extends HTMLElement {
         strengths: ['FDA-cleared sleep apnea detection', 'Validated respiratory rate (RMSE 1.13)', 'FDA-cleared ECG', 'Good Android integration'],
         weaknesses: ['Limited independent accuracy studies', 'Less validation data than Apple/Oura'],
         researchNote: null,
-        studyIds: ['park2023', 'park2023resp', 'lanfranchi2024']
+        studyIds: ['park2023', 'park2023resp', 'lanfranchi2024'],
+        affiliateLinks: [
+          { name: 'Galaxy Watch 7', url: 'https://amzn.to/3Owp4R1' },
+          { name: 'Galaxy Watch Ultra', url: 'https://amzn.to/3ZqzKmE' }
+        ]
       }
     };
   }
@@ -618,6 +641,20 @@ class KygoWearableAccuracy extends HTMLElement {
                   <div class="dd-sub">${d.subscription}</div>
                   ${d.researchNote ? `<div class="dd-research-note"><strong>Research Note:</strong> ${d.researchNote}</div>` : ''}
                   ${this._renderStudiesForDevice(k)}
+                  ${d.affiliateLinks ? `
+                  <div class="dd-buy">
+                    <h4>Where to Buy</h4>
+                    <div class="dd-buy-links">
+                      ${d.affiliateLinks.map(l => `
+                        <a href="${l.url}" class="dd-buy-link" target="_blank" rel="noopener sponsored">
+                          <span class="dd-buy-name">${l.name}</span>
+                          ${l.note ? `<span class="dd-buy-note">${l.note}</span>` : ''}
+                          <span class="dd-buy-cta">Check Price<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                        </a>
+                      `).join('')}
+                    </div>
+                  </div>
+                  ` : ''}
                 </div>
               </div>
             `).join('')}
@@ -680,6 +717,7 @@ class KygoWearableAccuracy extends HTMLElement {
             <a href="https://kygo.app/terms" target="_blank" rel="noopener">Terms</a>
           </div>
           <p class="footer-copyright">Data last updated February 2025. All accuracy claims sourced from peer-reviewed research with full bias disclosure.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
           <p class="footer-copyright">\u00A9 ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -860,7 +898,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .dd-toggle { flex-shrink: 0; color: var(--gray-400); transition: transform 0.3s; }
       .dd-card.expanded .dd-toggle { transform: rotate(180deg); }
       .dd-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s cubic-bezier(0.4, 0, 0.2, 1); padding: 0 20px; }
-      .dd-card.expanded .dd-body { max-height: 800px; padding: 0 20px 20px; }
+      .dd-card.expanded .dd-body { max-height: 1200px; padding: 0 20px 20px; }
       .dd-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 12px; }
       .dd-col h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'DM Sans', sans-serif; }
       .dd-col ul { list-style: none; }
@@ -878,6 +916,37 @@ class KygoWearableAccuracy extends HTMLElement {
       .dd-study-badge.funded { background: #FEF3C7; color: #92400E; }
       .dd-study-cite { font-size: 12px; color: var(--gray-400); line-height: 1.5; }
       .dd-study-funded .dd-study-cite { color: #D97706; }
+
+      /* ── Where to Buy (Affiliate) ── */
+      .dd-buy { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray-200); }
+      .dd-buy h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'DM Sans', sans-serif; }
+      .dd-buy-links { display: flex; flex-direction: column; gap: 6px; }
+      .dd-buy-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        background: var(--gray-50);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        color: var(--dark);
+        transition: all 0.2s;
+      }
+      .dd-buy-link:hover { border-color: var(--green); background: var(--green-light); }
+      .dd-buy-name { font-size: 13px; font-weight: 600; }
+      .dd-buy-note { font-size: 11px; color: var(--gray-400); }
+      .dd-buy-cta {
+        margin-left: auto;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--green-dark);
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        white-space: nowrap;
+      }
+      .dd-buy-cta svg { flex-shrink: 0; }
 
       /* ── Caveats ── */
       .caveats { padding: 48px 0; }
@@ -983,6 +1052,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .footer-links a { color: var(--gray-400); text-decoration: none; }
       .footer-links a:hover { color: var(--dark); }
       .footer-copyright { font-size: 11px; color: var(--gray-400); margin-bottom: 4px; line-height: 1.6; }
+      .footer-affiliate { font-style: italic; }
 
       /* ── Tablet (768px) ── */
       @media (min-width: 768px) {
