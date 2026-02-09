@@ -84,7 +84,7 @@ class KygoHiwHero extends HTMLElement {
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
         .hero {
-          padding: 48px 0 64px;
+          padding: 40px 0 48px;
           text-align: center;
         }
 
@@ -326,27 +326,27 @@ class KygoHiwPhaseConnect extends HTMLElement {
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        .phase-section { padding: 64px 0; }
+        .phase-section { padding: 48px 0; }
 
         .phase-header {
           display: flex;
           align-items: center;
-          gap: 16px;
-          margin-bottom: 16px;
+          gap: 12px;
+          margin-bottom: 12px;
         }
 
         .phase-number {
-          width: 48px;
-          height: 48px;
+          width: 40px;
+          height: 40px;
           background: var(--green);
           color: white;
-          border-radius: 14px;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
           font-family: 'Space Grotesk', sans-serif;
           font-weight: 700;
-          font-size: 20px;
+          font-size: 18px;
           flex-shrink: 0;
         }
 
@@ -359,9 +359,9 @@ class KygoHiwPhaseConnect extends HTMLElement {
         }
 
         .phase-title {
-          font-size: clamp(26px, 6vw, 32px);
+          font-size: clamp(24px, 6vw, 32px);
           color: var(--dark);
-          margin-bottom: 8px;
+          margin-bottom: 6px;
         }
 
         .phase-time {
@@ -369,37 +369,77 @@ class KygoHiwPhaseConnect extends HTMLElement {
           align-items: center;
           gap: 6px;
           background: var(--gray-100);
-          padding: 6px 12px;
+          padding: 5px 12px;
           border-radius: 20px;
           font-size: 13px;
           color: var(--gray-600);
-          margin-bottom: 24px;
+          margin-bottom: 16px;
         }
 
         .phase-time svg { width: 14px; height: 14px; }
 
-        .phase-content { display: grid; gap: 40px; }
+        .phase-content { display: grid; gap: 28px; }
 
         .phase-description {
-          font-size: 17px;
+          font-size: 15px;
           color: var(--gray-600);
-          line-height: 1.7;
-          margin-bottom: 32px;
+          line-height: 1.6;
+          margin-bottom: 20px;
           max-width: 560px;
         }
 
-        .feature-list { display: flex; flex-direction: column; gap: 16px; }
+        .feature-list { display: flex; flex-direction: column; gap: 12px; }
 
         .feature-item {
           display: flex;
-          gap: 14px;
+          gap: 12px;
           align-items: flex-start;
         }
 
         .feature-icon {
-          width: 40px;
-          height: 40px;
-          background: var(--green-light);
+          width: 36px;
+          height: 36px;
+          background: linear-gradient(135deg, var(--green), var(--green-dark));
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+        }
+
+        .feature-icon svg {
+          width: 18px;
+          height: 18px;
+          color: white;
+        }
+
+        .feature-text h4 {
+          font-size: 15px;
+          color: var(--dark);
+          margin-bottom: 1px;
+        }
+
+        .feature-text p {
+          font-size: 13px;
+          color: var(--gray-600);
+          line-height: 1.5;
+        }
+
+        .immediate-value {
+          background: linear-gradient(135deg, var(--dark), var(--gray-700));
+          border-radius: 14px;
+          padding: 14px 16px;
+          margin-top: 16px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .immediate-value-icon {
+          width: 36px;
+          height: 36px;
+          background: var(--green);
           border-radius: 10px;
           display: flex;
           align-items: center;
@@ -407,48 +447,9 @@ class KygoHiwPhaseConnect extends HTMLElement {
           flex-shrink: 0;
         }
 
-        .feature-icon svg {
-          width: 20px;
-          height: 20px;
-          color: var(--green);
-        }
-
-        .feature-text h4 {
-          font-size: 16px;
-          color: var(--dark);
-          margin-bottom: 2px;
-        }
-
-        .feature-text p {
-          font-size: 14px;
-          color: var(--gray-600);
-          line-height: 1.5;
-        }
-
-        .immediate-value {
-          background: linear-gradient(135deg, var(--dark), var(--gray-700));
-          border-radius: 16px;
-          padding: 20px 24px;
-          margin-top: 24px;
-          display: flex;
-          align-items: center;
-          gap: 14px;
-        }
-
-        .immediate-value-icon {
-          width: 44px;
-          height: 44px;
-          background: var(--green);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
         .immediate-value-icon svg {
-          width: 22px;
-          height: 22px;
+          width: 18px;
+          height: 18px;
           color: white;
         }
 
@@ -463,14 +464,14 @@ class KygoHiwPhaseConnect extends HTMLElement {
         }
 
         .immediate-value-text p {
-          font-size: 15px;
+          font-size: 14px;
           margin-top: 2px;
         }
 
         .phase-visual {
           background: var(--dark);
-          border-radius: 24px;
-          padding: 24px;
+          border-radius: 20px;
+          padding: 18px;
           position: relative;
           overflow: hidden;
         }
@@ -491,14 +492,16 @@ class KygoHiwPhaseConnect extends HTMLElement {
         .connect-step {
           background: var(--dark-surface);
           border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 16px;
-          padding: 14px 18px;
-          margin-bottom: 12px;
+          border-radius: 14px;
+          padding: 12px 14px;
+          margin-bottom: 10px;
           display: flex;
           align-items: center;
-          gap: 14px;
+          gap: 12px;
           transition: all 0.3s;
         }
+
+        .connect-step:last-child { margin-bottom: 0; }
 
         .connect-step.active {
           border-color: var(--green);
@@ -506,9 +509,9 @@ class KygoHiwPhaseConnect extends HTMLElement {
         }
 
         .connect-step-icon {
-          width: 44px;
-          height: 44px;
-          border-radius: 12px;
+          width: 38px;
+          height: 38px;
+          border-radius: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -527,37 +530,58 @@ class KygoHiwPhaseConnect extends HTMLElement {
 
         .connect-step-content strong {
           color: white;
-          font-size: 15px;
+          font-size: 14px;
           display: block;
-          margin-bottom: 2px;
+          margin-bottom: 1px;
         }
 
         .connect-step-content span {
           color: var(--gray-400);
-          font-size: 13px;
+          font-size: 12px;
         }
 
         .connect-step-status {
           display: flex;
           align-items: center;
-          gap: 6px;
-          font-size: 12px;
+          gap: 5px;
+          font-size: 11px;
           font-weight: 500;
           flex-shrink: 0;
         }
 
         .connect-step-status.connected { color: var(--green); }
         .connect-step-status.pending { color: var(--gray-400); }
-        .connect-step-status svg { width: 16px; height: 16px; }
+        .connect-step-status svg { width: 14px; height: 14px; }
 
         @media (min-width: 768px) {
           .phase-section { padding: 80px 0; }
+          .phase-header { gap: 16px; margin-bottom: 16px; }
+          .phase-number { width: 48px; height: 48px; border-radius: 14px; font-size: 20px; }
+          .phase-title { font-size: 32px; margin-bottom: 8px; }
+          .phase-time { margin-bottom: 24px; }
+          .phase-description { font-size: 17px; line-height: 1.7; margin-bottom: 32px; }
+          .feature-list { gap: 16px; }
+          .feature-item { gap: 14px; }
+          .feature-icon { width: 40px; height: 40px; }
+          .feature-icon svg { width: 20px; height: 20px; }
+          .feature-text h4 { font-size: 16px; margin-bottom: 2px; }
+          .feature-text p { font-size: 14px; }
+          .immediate-value { padding: 20px 24px; margin-top: 24px; border-radius: 16px; gap: 14px; }
+          .immediate-value-icon { width: 44px; height: 44px; border-radius: 12px; }
+          .immediate-value-icon svg { width: 22px; height: 22px; }
+          .immediate-value-text p { font-size: 15px; }
           .phase-content {
             grid-template-columns: 1fr 1fr;
             align-items: center;
             gap: 64px;
           }
-          .phase-visual { padding: 32px; }
+          .phase-visual { padding: 28px; border-radius: 24px; }
+          .connect-step { padding: 14px 18px; border-radius: 16px; gap: 14px; margin-bottom: 12px; }
+          .connect-step-icon { width: 44px; height: 44px; border-radius: 12px; }
+          .connect-step-content strong { font-size: 15px; }
+          .connect-step-content span { font-size: 13px; }
+          .connect-step-status { font-size: 12px; gap: 6px; }
+          .connect-step-status svg { width: 16px; height: 16px; }
         }
 
         @keyframes fadeInUp {
@@ -872,27 +896,27 @@ class KygoHiwPhaseLog extends HTMLElement {
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        .phase-section { padding: 64px 0; }
+        .phase-section { padding: 48px 0; }
 
         .phase-header {
           display: flex;
           align-items: center;
-          gap: 16px;
-          margin-bottom: 16px;
+          gap: 12px;
+          margin-bottom: 12px;
         }
 
         .phase-number {
-          width: 48px;
-          height: 48px;
+          width: 40px;
+          height: 40px;
           background: var(--green);
           color: white;
-          border-radius: 14px;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
           font-family: 'Space Grotesk', sans-serif;
           font-weight: 700;
-          font-size: 20px;
+          font-size: 18px;
           flex-shrink: 0;
         }
 
@@ -905,9 +929,9 @@ class KygoHiwPhaseLog extends HTMLElement {
         }
 
         .phase-title {
-          font-size: clamp(26px, 6vw, 32px);
+          font-size: clamp(24px, 6vw, 32px);
           color: var(--dark);
-          margin-bottom: 8px;
+          margin-bottom: 6px;
         }
 
         .phase-time {
@@ -915,37 +939,77 @@ class KygoHiwPhaseLog extends HTMLElement {
           align-items: center;
           gap: 6px;
           background: var(--gray-100);
-          padding: 6px 12px;
+          padding: 5px 12px;
           border-radius: 20px;
           font-size: 13px;
           color: var(--gray-600);
-          margin-bottom: 24px;
+          margin-bottom: 16px;
         }
 
         .phase-time svg { width: 14px; height: 14px; }
 
-        .phase-content { display: grid; gap: 40px; }
+        .phase-content { display: grid; gap: 28px; }
 
         .phase-description {
-          font-size: 17px;
+          font-size: 15px;
           color: var(--gray-600);
-          line-height: 1.7;
-          margin-bottom: 32px;
+          line-height: 1.6;
+          margin-bottom: 20px;
           max-width: 560px;
         }
 
-        .feature-list { display: flex; flex-direction: column; gap: 16px; }
+        .feature-list { display: flex; flex-direction: column; gap: 12px; }
 
         .feature-item {
           display: flex;
-          gap: 14px;
+          gap: 12px;
           align-items: flex-start;
         }
 
         .feature-icon {
-          width: 40px;
-          height: 40px;
-          background: var(--green-light);
+          width: 36px;
+          height: 36px;
+          background: linear-gradient(135deg, var(--green), var(--green-dark));
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+        }
+
+        .feature-icon svg {
+          width: 18px;
+          height: 18px;
+          color: white;
+        }
+
+        .feature-text h4 {
+          font-size: 15px;
+          color: var(--dark);
+          margin-bottom: 1px;
+        }
+
+        .feature-text p {
+          font-size: 13px;
+          color: var(--gray-600);
+          line-height: 1.5;
+        }
+
+        .immediate-value {
+          background: linear-gradient(135deg, var(--dark), var(--gray-700));
+          border-radius: 14px;
+          padding: 14px 16px;
+          margin-top: 16px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .immediate-value-icon {
+          width: 36px;
+          height: 36px;
+          background: var(--green);
           border-radius: 10px;
           display: flex;
           align-items: center;
@@ -953,48 +1017,9 @@ class KygoHiwPhaseLog extends HTMLElement {
           flex-shrink: 0;
         }
 
-        .feature-icon svg {
-          width: 20px;
-          height: 20px;
-          color: var(--green);
-        }
-
-        .feature-text h4 {
-          font-size: 16px;
-          color: var(--dark);
-          margin-bottom: 2px;
-        }
-
-        .feature-text p {
-          font-size: 14px;
-          color: var(--gray-600);
-          line-height: 1.5;
-        }
-
-        .immediate-value {
-          background: linear-gradient(135deg, var(--dark), var(--gray-700));
-          border-radius: 16px;
-          padding: 20px 24px;
-          margin-top: 24px;
-          display: flex;
-          align-items: center;
-          gap: 14px;
-        }
-
-        .immediate-value-icon {
-          width: 44px;
-          height: 44px;
-          background: var(--green);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
         .immediate-value-icon svg {
-          width: 22px;
-          height: 22px;
+          width: 18px;
+          height: 18px;
           color: white;
         }
 
@@ -1009,14 +1034,14 @@ class KygoHiwPhaseLog extends HTMLElement {
         }
 
         .immediate-value-text p {
-          font-size: 15px;
+          font-size: 14px;
           margin-top: 2px;
         }
 
         .phase-visual {
           background: var(--dark);
-          border-radius: 24px;
-          padding: 24px;
+          border-radius: 20px;
+          padding: 16px;
           position: relative;
           overflow: hidden;
         }
@@ -1037,23 +1062,23 @@ class KygoHiwPhaseLog extends HTMLElement {
         .log-input-area {
           background: var(--dark-surface);
           border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 16px;
-          padding: 18px;
-          margin-bottom: 16px;
+          border-radius: 14px;
+          padding: 14px;
+          margin-bottom: 12px;
         }
 
         .log-input-methods {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 8px;
-          margin-bottom: 16px;
+          gap: 6px;
+          margin-bottom: 12px;
         }
 
         .log-method {
           background: rgba(255,255,255,0.05);
           border: 1px solid rgba(255,255,255,0.08);
           border-radius: 10px;
-          padding: 12px 8px;
+          padding: 10px 6px;
           text-align: center;
           transition: all 0.2s;
           cursor: pointer;
@@ -1066,10 +1091,10 @@ class KygoHiwPhaseLog extends HTMLElement {
         }
 
         .log-method svg {
-          width: 20px;
-          height: 20px;
+          width: 18px;
+          height: 18px;
           color: var(--gray-400);
-          margin-bottom: 4px;
+          margin-bottom: 3px;
         }
 
         .log-method:hover svg,
@@ -1086,20 +1111,20 @@ class KygoHiwPhaseLog extends HTMLElement {
 
         .log-example {
           background: rgba(255,255,255,0.03);
-          border-radius: 12px;
-          padding: 14px;
+          border-radius: 10px;
+          padding: 12px;
         }
 
         .log-example-header {
           display: flex;
           align-items: center;
           gap: 8px;
-          margin-bottom: 10px;
+          margin-bottom: 8px;
         }
 
         .log-example-header svg {
-          width: 16px;
-          height: 16px;
+          width: 14px;
+          height: 14px;
           color: var(--green);
         }
 
@@ -1111,47 +1136,48 @@ class KygoHiwPhaseLog extends HTMLElement {
 
         .log-example-text {
           color: white;
-          font-size: 14px;
+          font-size: 13px;
           font-style: italic;
+          line-height: 1.5;
         }
 
         .log-result {
           background: var(--dark-surface);
           border: 1px solid var(--green);
-          border-radius: 16px;
-          padding: 16px;
+          border-radius: 14px;
+          padding: 14px;
           box-shadow: 0 0 20px var(--green-glow);
         }
 
         .log-result-header {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 14px;
+          gap: 10px;
+          margin-bottom: 12px;
         }
 
         .log-result-image {
-          width: 52px;
-          height: 52px;
-          border-radius: 12px;
+          width: 44px;
+          height: 44px;
+          border-radius: 10px;
           background: linear-gradient(135deg, #4ade80, #22c55e);
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 24px;
+          font-size: 20px;
         }
 
         .log-result-info { flex: 1; }
 
         .log-result-info strong {
           color: white;
-          font-size: 16px;
+          font-size: 14px;
           display: block;
         }
 
         .log-result-info span {
           color: var(--gray-400);
-          font-size: 13px;
+          font-size: 12px;
         }
 
         .log-result-cals { text-align: right; }
@@ -1159,38 +1185,38 @@ class KygoHiwPhaseLog extends HTMLElement {
         .log-result-cals strong {
           color: var(--green);
           font-family: 'Space Grotesk', sans-serif;
-          font-size: 24px;
+          font-size: 22px;
           font-weight: 700;
         }
 
         .log-result-cals span {
           color: var(--gray-400);
-          font-size: 11px;
+          font-size: 10px;
           display: block;
         }
 
         .log-result-breakdown {
           display: flex;
-          gap: 8px;
+          gap: 6px;
         }
 
         .log-breakdown-item {
           flex: 1;
           background: rgba(255,255,255,0.03);
           border-radius: 8px;
-          padding: 10px;
+          padding: 8px 6px;
           text-align: center;
         }
 
         .log-breakdown-item strong {
           color: white;
-          font-size: 14px;
+          font-size: 13px;
           display: block;
         }
 
         .log-breakdown-item span {
           color: var(--gray-400);
-          font-size: 10px;
+          font-size: 9px;
           text-transform: uppercase;
         }
 
@@ -1201,22 +1227,60 @@ class KygoHiwPhaseLog extends HTMLElement {
           background: rgba(34, 197, 94, 0.15);
           border: 1px solid rgba(34, 197, 94, 0.3);
           color: var(--green);
-          padding: 8px 12px;
+          padding: 6px 10px;
           border-radius: 8px;
-          font-size: 12px;
-          margin-top: 14px;
+          font-size: 11px;
+          margin-top: 10px;
         }
 
-        .log-detail-badge svg { width: 14px; height: 14px; }
+        .log-detail-badge svg { width: 12px; height: 12px; }
 
         @media (min-width: 768px) {
           .phase-section { padding: 80px 0; }
+          .phase-header { gap: 16px; margin-bottom: 16px; }
+          .phase-number { width: 48px; height: 48px; border-radius: 14px; font-size: 20px; }
+          .phase-title { font-size: 32px; margin-bottom: 8px; }
+          .phase-time { margin-bottom: 24px; }
+          .phase-description { font-size: 17px; line-height: 1.7; margin-bottom: 32px; }
+          .feature-list { gap: 16px; }
+          .feature-item { gap: 14px; }
+          .feature-icon { width: 40px; height: 40px; }
+          .feature-icon svg { width: 20px; height: 20px; }
+          .feature-text h4 { font-size: 16px; margin-bottom: 2px; }
+          .feature-text p { font-size: 14px; }
+          .immediate-value { padding: 20px 24px; margin-top: 24px; border-radius: 16px; gap: 14px; }
+          .immediate-value-icon { width: 44px; height: 44px; border-radius: 12px; }
+          .immediate-value-icon svg { width: 22px; height: 22px; }
+          .immediate-value-text p { font-size: 15px; }
           .phase-content {
             grid-template-columns: 1fr 1fr;
             align-items: center;
             gap: 64px;
           }
-          .phase-visual { order: -1; padding: 32px; }
+          .phase-visual { order: -1; padding: 28px; border-radius: 24px; }
+          .log-input-area { padding: 18px; border-radius: 16px; margin-bottom: 16px; }
+          .log-input-methods { gap: 8px; margin-bottom: 16px; }
+          .log-method { padding: 12px 8px; }
+          .log-method svg { width: 20px; height: 20px; }
+          .log-example { padding: 14px; border-radius: 12px; }
+          .log-example-text { font-size: 14px; }
+          .log-result { padding: 16px; border-radius: 16px; }
+          .log-result-header { gap: 12px; margin-bottom: 14px; }
+          .log-result-image { width: 52px; height: 52px; font-size: 24px; border-radius: 12px; }
+          .log-result-info strong { font-size: 16px; }
+          .log-result-info span { font-size: 13px; }
+          .log-result-cals strong { font-size: 24px; }
+          .log-result-cals span { font-size: 11px; }
+          .log-result-breakdown { gap: 8px; }
+          .log-breakdown-item { padding: 10px; }
+          .log-breakdown-item strong { font-size: 14px; }
+          .log-breakdown-item span { font-size: 10px; }
+          .log-detail-badge { padding: 8px 12px; font-size: 12px; margin-top: 14px; }
+          .log-detail-badge svg { width: 14px; height: 14px; }
+          .connect-step { padding: 14px 18px; border-radius: 16px; gap: 14px; margin-bottom: 12px; }
+          .connect-step-icon { width: 44px; height: 44px; border-radius: 12px; }
+          .connect-step-content strong { font-size: 15px; }
+          .connect-step-content span { font-size: 13px; }
         }
 
         @keyframes fadeInUp {
@@ -1581,27 +1645,27 @@ class KygoHiwPhaseDiscover extends HTMLElement {
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        .phase-section { padding: 64px 0; }
+        .phase-section { padding: 48px 0; }
 
         .phase-header {
           display: flex;
           align-items: center;
-          gap: 16px;
-          margin-bottom: 16px;
+          gap: 12px;
+          margin-bottom: 12px;
         }
 
         .phase-number {
-          width: 48px;
-          height: 48px;
+          width: 40px;
+          height: 40px;
           background: var(--green);
           color: white;
-          border-radius: 14px;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
           font-family: 'Space Grotesk', sans-serif;
           font-weight: 700;
-          font-size: 20px;
+          font-size: 18px;
           flex-shrink: 0;
         }
 
@@ -1614,9 +1678,9 @@ class KygoHiwPhaseDiscover extends HTMLElement {
         }
 
         .phase-title {
-          font-size: clamp(26px, 6vw, 32px);
+          font-size: clamp(24px, 6vw, 32px);
           color: var(--dark);
-          margin-bottom: 8px;
+          margin-bottom: 6px;
         }
 
         .phase-time {
@@ -1624,37 +1688,77 @@ class KygoHiwPhaseDiscover extends HTMLElement {
           align-items: center;
           gap: 6px;
           background: var(--gray-100);
-          padding: 6px 12px;
+          padding: 5px 12px;
           border-radius: 20px;
           font-size: 13px;
           color: var(--gray-600);
-          margin-bottom: 24px;
+          margin-bottom: 16px;
         }
 
         .phase-time svg { width: 14px; height: 14px; }
 
-        .phase-content { display: grid; gap: 40px; }
+        .phase-content { display: grid; gap: 28px; }
 
         .phase-description {
-          font-size: 17px;
+          font-size: 15px;
           color: var(--gray-600);
-          line-height: 1.7;
-          margin-bottom: 32px;
+          line-height: 1.6;
+          margin-bottom: 20px;
           max-width: 560px;
         }
 
-        .feature-list { display: flex; flex-direction: column; gap: 16px; }
+        .feature-list { display: flex; flex-direction: column; gap: 12px; }
 
         .feature-item {
           display: flex;
-          gap: 14px;
+          gap: 12px;
           align-items: flex-start;
         }
 
         .feature-icon {
-          width: 40px;
-          height: 40px;
-          background: var(--green-light);
+          width: 36px;
+          height: 36px;
+          background: linear-gradient(135deg, var(--green), var(--green-dark));
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+        }
+
+        .feature-icon svg {
+          width: 18px;
+          height: 18px;
+          color: white;
+        }
+
+        .feature-text h4 {
+          font-size: 15px;
+          color: var(--dark);
+          margin-bottom: 1px;
+        }
+
+        .feature-text p {
+          font-size: 13px;
+          color: var(--gray-600);
+          line-height: 1.5;
+        }
+
+        .immediate-value {
+          background: linear-gradient(135deg, var(--dark), var(--gray-700));
+          border-radius: 14px;
+          padding: 14px 16px;
+          margin-top: 16px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .immediate-value-icon {
+          width: 36px;
+          height: 36px;
+          background: var(--green);
           border-radius: 10px;
           display: flex;
           align-items: center;
@@ -1662,48 +1766,9 @@ class KygoHiwPhaseDiscover extends HTMLElement {
           flex-shrink: 0;
         }
 
-        .feature-icon svg {
-          width: 20px;
-          height: 20px;
-          color: var(--green);
-        }
-
-        .feature-text h4 {
-          font-size: 16px;
-          color: var(--dark);
-          margin-bottom: 2px;
-        }
-
-        .feature-text p {
-          font-size: 14px;
-          color: var(--gray-600);
-          line-height: 1.5;
-        }
-
-        .immediate-value {
-          background: linear-gradient(135deg, var(--dark), var(--gray-700));
-          border-radius: 16px;
-          padding: 20px 24px;
-          margin-top: 24px;
-          display: flex;
-          align-items: center;
-          gap: 14px;
-        }
-
-        .immediate-value-icon {
-          width: 44px;
-          height: 44px;
-          background: var(--green);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
         .immediate-value-icon svg {
-          width: 22px;
-          height: 22px;
+          width: 18px;
+          height: 18px;
           color: white;
         }
 
@@ -1718,14 +1783,14 @@ class KygoHiwPhaseDiscover extends HTMLElement {
         }
 
         .immediate-value-text p {
-          font-size: 15px;
+          font-size: 14px;
           margin-top: 2px;
         }
 
         .phase-visual {
           background: var(--dark);
-          border-radius: 24px;
-          padding: 24px;
+          border-radius: 20px;
+          padding: 16px;
           position: relative;
           overflow: hidden;
         }
@@ -1746,11 +1811,13 @@ class KygoHiwPhaseDiscover extends HTMLElement {
         .correlation-example {
           background: var(--dark-surface);
           border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 16px;
-          padding: 18px;
-          margin-bottom: 12px;
+          border-radius: 14px;
+          padding: 14px;
+          margin-bottom: 10px;
           transition: all 0.3s;
         }
+
+        .correlation-example:last-child { margin-bottom: 0; }
 
         .correlation-example:hover {
           border-color: var(--green);
@@ -1760,34 +1827,35 @@ class KygoHiwPhaseDiscover extends HTMLElement {
         .correlation-example-header {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 14px;
+          gap: 10px;
+          margin-bottom: 10px;
         }
 
         .correlation-example-icon {
-          width: 44px;
-          height: 44px;
-          background: rgba(34, 197, 94, 0.15);
-          border-radius: 12px;
+          width: 38px;
+          height: 38px;
+          background: linear-gradient(135deg, var(--green), var(--green-dark));
+          border-radius: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
+          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
         }
 
         .correlation-example-icon svg {
-          width: 22px;
-          height: 22px;
-          color: var(--green);
+          width: 18px;
+          height: 18px;
+          color: white;
         }
 
         .correlation-example-content { flex: 1; min-width: 0; }
 
         .correlation-example-content strong {
           color: white;
-          font-size: 15px;
+          font-size: 14px;
           display: block;
-          margin-bottom: 2px;
+          margin-bottom: 1px;
         }
 
         .correlation-example-content strong span {
@@ -1796,26 +1864,26 @@ class KygoHiwPhaseDiscover extends HTMLElement {
 
         .correlation-example-content p {
           color: var(--gray-400);
-          font-size: 13px;
+          font-size: 12px;
         }
 
         .correlation-metrics {
           display: flex;
-          gap: 16px;
+          gap: 12px;
         }
 
         .correlation-metric { flex: 1; }
 
         .correlation-metric-label {
-          font-size: 10px;
+          font-size: 9px;
           color: var(--gray-400);
           text-transform: uppercase;
           letter-spacing: 0.5px;
-          margin-bottom: 6px;
+          margin-bottom: 5px;
         }
 
         .correlation-metric-bar {
-          height: 6px;
+          height: 5px;
           background: var(--gray-700);
           border-radius: 3px;
           overflow: hidden;
@@ -1833,12 +1901,36 @@ class KygoHiwPhaseDiscover extends HTMLElement {
 
         @media (min-width: 768px) {
           .phase-section { padding: 80px 0; }
+          .phase-header { gap: 16px; margin-bottom: 16px; }
+          .phase-number { width: 48px; height: 48px; border-radius: 14px; font-size: 20px; }
+          .phase-title { font-size: 32px; margin-bottom: 8px; }
+          .phase-time { margin-bottom: 24px; }
+          .phase-description { font-size: 17px; line-height: 1.7; margin-bottom: 32px; }
+          .feature-list { gap: 16px; }
+          .feature-item { gap: 14px; }
+          .feature-icon { width: 40px; height: 40px; }
+          .feature-icon svg { width: 20px; height: 20px; }
+          .feature-text h4 { font-size: 16px; margin-bottom: 2px; }
+          .feature-text p { font-size: 14px; }
+          .immediate-value { padding: 20px 24px; margin-top: 24px; border-radius: 16px; gap: 14px; }
+          .immediate-value-icon { width: 44px; height: 44px; border-radius: 12px; }
+          .immediate-value-icon svg { width: 22px; height: 22px; }
+          .immediate-value-text p { font-size: 15px; }
           .phase-content {
             grid-template-columns: 1fr 1fr;
             align-items: center;
             gap: 64px;
           }
-          .phase-visual { padding: 32px; }
+          .phase-visual { padding: 28px; border-radius: 24px; }
+          .correlation-example { padding: 18px; border-radius: 16px; margin-bottom: 12px; }
+          .correlation-example-header { gap: 12px; margin-bottom: 14px; }
+          .correlation-example-icon { width: 44px; height: 44px; border-radius: 12px; }
+          .correlation-example-icon svg { width: 22px; height: 22px; }
+          .correlation-example-content strong { font-size: 15px; }
+          .correlation-example-content p { font-size: 13px; }
+          .correlation-metrics { gap: 16px; }
+          .correlation-metric-label { font-size: 10px; margin-bottom: 6px; }
+          .correlation-metric-bar { height: 6px; }
         }
 
         @keyframes fadeInUp {
@@ -2202,22 +2294,22 @@ class KygoHiwTimeline extends HTMLElement {
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        .timeline-section { padding: 64px 0; position: relative; z-index: 1; }
+        .timeline-section { padding: 48px 0; position: relative; z-index: 1; }
 
         .section-header {
           text-align: center;
-          margin-bottom: 48px;
+          margin-bottom: 32px;
         }
 
         .section-header h2 {
           color: white;
-          font-size: clamp(28px, 7vw, 36px);
-          margin-bottom: 12px;
+          font-size: clamp(24px, 7vw, 36px);
+          margin-bottom: 10px;
         }
 
         .section-header p {
           color: var(--gray-400);
-          font-size: 17px;
+          font-size: 15px;
           max-width: 500px;
           margin: 0 auto;
         }
@@ -2252,14 +2344,14 @@ class KygoHiwTimeline extends HTMLElement {
 
         .timeline-items {
           display: grid;
-          gap: 20px;
+          gap: 14px;
         }
 
         .timeline-item {
           background: rgba(255,255,255,0.05);
           border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 20px;
-          padding: 24px;
+          border-radius: 16px;
+          padding: 20px;
           text-align: center;
           transition: all 0.3s;
         }
@@ -2279,53 +2371,62 @@ class KygoHiwTimeline extends HTMLElement {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 56px;
-          height: 56px;
+          width: 48px;
+          height: 48px;
           background: var(--green);
           color: white;
           border-radius: 50%;
           font-family: 'Space Grotesk', sans-serif;
           font-weight: 700;
-          font-size: 14px;
-          margin-bottom: 16px;
+          font-size: 13px;
+          margin-bottom: 12px;
         }
 
         .timeline-item h3 {
           color: white;
-          font-size: 18px;
-          margin-bottom: 8px;
+          font-size: 17px;
+          margin-bottom: 6px;
         }
 
         .timeline-item p {
           color: var(--gray-400);
-          font-size: 14px;
-          line-height: 1.6;
+          font-size: 13px;
+          line-height: 1.5;
         }
 
         .timeline-features {
           display: flex;
           flex-wrap: wrap;
-          gap: 8px;
+          gap: 6px;
           justify-content: center;
-          margin-top: 16px;
+          margin-top: 12px;
         }
 
         .timeline-feature {
           background: rgba(34, 197, 94, 0.15);
           color: var(--green);
-          padding: 6px 12px;
+          padding: 4px 10px;
           border-radius: 20px;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 500;
         }
 
         @media (min-width: 768px) {
           .timeline-section { padding: 80px 0; }
+          .section-header { margin-bottom: 48px; }
+          .section-header h2 { font-size: 36px; }
+          .section-header p { font-size: 17px; }
           .timeline-line { display: none; }
           .timeline-items {
             grid-template-columns: repeat(3, 1fr);
             gap: 24px;
           }
+          .timeline-item { padding: 24px; border-radius: 20px; }
+          .timeline-day { width: 56px; height: 56px; font-size: 14px; margin-bottom: 16px; }
+          .timeline-item h3 { font-size: 18px; margin-bottom: 8px; }
+          .timeline-item p { font-size: 14px; line-height: 1.6; }
+          .timeline-features { gap: 8px; margin-top: 16px; }
+          .timeline-feature { padding: 6px 12px; font-size: 12px; }
         }
 
         @keyframes fadeInUp {
@@ -2559,27 +2660,27 @@ class KygoHiwObjections extends HTMLElement {
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        .objections-section { padding: 64px 0; }
+        .objections-section { padding: 48px 0; }
 
         .section-header {
           text-align: center;
-          margin-bottom: 48px;
+          margin-bottom: 32px;
         }
 
         .section-header h2 {
-          font-size: clamp(28px, 7vw, 36px);
+          font-size: clamp(24px, 7vw, 36px);
           color: var(--dark);
-          margin-bottom: 12px;
+          margin-bottom: 10px;
         }
 
         .section-header p {
           color: var(--gray-600);
-          font-size: 17px;
+          font-size: 15px;
         }
 
         .objections-grid {
           display: grid;
-          gap: 24px;
+          gap: 16px;
           max-width: 1000px;
           margin: 0 auto;
         }
@@ -2587,10 +2688,10 @@ class KygoHiwObjections extends HTMLElement {
         .objection-card {
           background: var(--gray-50);
           border: 1px solid var(--gray-200);
-          border-radius: 20px;
-          padding: 28px;
+          border-radius: 16px;
+          padding: 20px;
           display: grid;
-          gap: 24px;
+          gap: 16px;
           transition: all 0.3s;
         }
 
@@ -2602,55 +2703,56 @@ class KygoHiwObjections extends HTMLElement {
         .objection-header {
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 12px;
         }
 
         .objection-icon {
-          width: 56px;
-          height: 56px;
-          background: var(--green-light);
-          border-radius: 16px;
+          width: 44px;
+          height: 44px;
+          background: linear-gradient(135deg, var(--green), #16A34A);
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
           flex-shrink: 0;
+          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
         }
 
         .objection-icon svg {
-          width: 28px;
-          height: 28px;
-          color: var(--green);
+          width: 22px;
+          height: 22px;
+          color: white;
         }
 
         .objection-header h3 {
-          font-size: 20px;
+          font-size: 17px;
           color: var(--dark);
         }
 
         .objection-content {
           display: flex;
           flex-direction: column;
-          gap: 12px;
+          gap: 10px;
         }
 
         .objection-point {
           display: flex;
           align-items: flex-start;
-          gap: 12px;
+          gap: 10px;
         }
 
         .objection-point svg {
-          width: 20px;
-          height: 20px;
+          width: 18px;
+          height: 18px;
           color: var(--green);
           flex-shrink: 0;
           margin-top: 2px;
         }
 
         .objection-point p {
-          font-size: 15px;
+          font-size: 14px;
           color: var(--gray-600);
-          line-height: 1.6;
+          line-height: 1.5;
         }
 
         .objection-point strong {
@@ -2659,14 +2761,28 @@ class KygoHiwObjections extends HTMLElement {
 
         @media (min-width: 768px) {
           .objections-section { padding: 80px 0; }
+          .section-header { margin-bottom: 48px; }
+          .section-header h2 { font-size: 36px; }
+          .section-header p { font-size: 17px; }
           .objections-grid {
             grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
           }
           .objection-card {
             display: flex;
             flex-direction: column;
-            padding: 32px;
+            padding: 28px;
+            gap: 20px;
+            border-radius: 20px;
           }
+          .objection-header { gap: 16px; }
+          .objection-icon { width: 52px; height: 52px; border-radius: 14px; }
+          .objection-icon svg { width: 26px; height: 26px; }
+          .objection-header h3 { font-size: 20px; }
+          .objection-content { gap: 12px; }
+          .objection-point { gap: 12px; }
+          .objection-point svg { width: 20px; height: 20px; }
+          .objection-point p { font-size: 15px; line-height: 1.6; }
         }
 
         @keyframes fadeInUp {
@@ -2909,12 +3025,12 @@ class KygoHiwFinalCta extends HTMLElement {
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        .final-cta { padding: 64px 0; }
+        .final-cta { padding: 48px 0; }
 
         .final-cta-inner {
           background: linear-gradient(135deg, var(--green), var(--green-dark));
-          border-radius: 24px;
-          padding: 48px 24px;
+          border-radius: 20px;
+          padding: 40px 20px;
           text-align: center;
           position: relative;
           overflow: hidden;
@@ -2988,7 +3104,7 @@ class KygoHiwFinalCta extends HTMLElement {
 
         @media (min-width: 768px) {
           .final-cta { padding: 80px 0; }
-          .final-cta-inner { padding: 64px 48px; }
+          .final-cta-inner { padding: 64px 48px; border-radius: 24px; }
           .final-cta h2 { font-size: 44px; }
         }
 
