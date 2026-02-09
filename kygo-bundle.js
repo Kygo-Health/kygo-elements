@@ -1063,7 +1063,7 @@ class KygoFounderCta extends HTMLElement {
         .final-cta h2{font-size:32px;color:white;margin-bottom:12px}
         .final-cta-content>p{color:rgba(255,255,255,0.8);margin-bottom:28px;font-size:17px}
         .cta-primary{background:white;color:var(--green-dark);padding:16px 28px;border-radius:12px;font-weight:600;font-size:16px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
-        .cta-primary:hover{background:var(--light);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+        .cta-primary:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
         .cta-primary:active,.cta-primary:focus{background:white;color:var(--green-dark);outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(0,0,0,0.15)}
         .cta-primary svg{width:18px;height:18px}
         .risk-reversal{margin-top:20px;color:rgba(255,255,255,0.7);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:13px}
@@ -1071,7 +1071,7 @@ class KygoFounderCta extends HTMLElement {
         .android-waitlist{margin-top:32px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.2)}
         .android-waitlist p{color:rgba(255,255,255,0.7);font-size:14px;margin-bottom:16px}
         .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
-        .cta-android:hover{background:var(--light);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+        .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
         .cta-android:active,.cta-android:focus{background:white;color:var(--green-dark);outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(0,0,0,0.15)}
         .cta-android svg{width:18px;height:18px}
         .android-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;visibility:hidden;transition:all 0.3s}
