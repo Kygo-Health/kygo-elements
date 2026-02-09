@@ -20,7 +20,7 @@ class KygoWearableAccuracy extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this._observer = null;
     this._selectedDevices = ['apple-watch', 'oura'];
-    this._activeMetric = 'sleep';
+    this._activeMetric = 'overview';
     this._expandedDevice = null;
     this._expandedCaveats = new Set();
     this._eventsBound = false;
@@ -437,16 +437,25 @@ class KygoWearableAccuracy extends HTMLElement {
     return icons[name] || icons.activity;
   }
 
+  _getAffiliateUrl(deviceKey) {
+    const d = this._devices[deviceKey];
+    return (d && d.affiliateLinks && d.affiliateLinks.length) ? d.affiliateLinks[0].url : null;
+  }
+
   // ── Render Helpers ─────────────────────────────────────────────────────
 
   _renderDeviceSummaryRow() {
     const devices = this._devices;
     return this._selectedDevices.map(dk => {
       const d = devices[dk];
+      const affUrl = this._getAffiliateUrl(dk);
+      const nameHtml = affUrl
+        ? `<a href="${affUrl}" class="ds-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>`
+        : d.name;
       return `
       <div class="device-summary-card" style="--accent:${d.color}">
         <div class="ds-icon">${d.icon}</div>
-        <h3>${d.name}</h3>
+        <h3>${nameHtml}</h3>
         <div class="ds-best-for">${d.bestFor}</div>
         <div class="ds-sub">${d.subscription}</div>
       </div>`;
@@ -457,15 +466,106 @@ class KygoWearableAccuracy extends HTMLElement {
     const available = Object.entries(this._metrics).filter(([k, m]) =>
       this._selectedDevices.some(dk => m.data[dk] && m.data[dk].length > 0)
     );
-    if (!available.some(([k]) => k === this._activeMetric) && available.length) {
-      this._activeMetric = available[0][0];
+    if (this._activeMetric !== 'overview' && !available.some(([k]) => k === this._activeMetric) && available.length) {
+      this._activeMetric = 'overview';
     }
-    return available.map(([k, m]) =>
+    const overviewTab = `<button class="metric-tab ${this._activeMetric === 'overview' ? 'active' : ''}" data-metric="overview" role="tab">Overview</button>`;
+    return overviewTab + available.map(([k, m]) =>
       `<button class="metric-tab ${k === this._activeMetric ? 'active' : ''}" data-metric="${k}" role="tab">${m.name}</button>`
     ).join('');
   }
 
+  _renderOverview() {
+    const devices = this._devices;
+    const metrics = this._metrics;
+    const dk1 = this._selectedDevices[0];
+    const dk2 = this._selectedDevices[1];
+    const d1 = devices[dk1];
+    const d2 = devices[dk2];
+
+    const available = Object.entries(metrics).filter(([k, m]) =>
+      [dk1, dk2].some(dk => m.data[dk] && m.data[dk].length > 0)
+    );
+
+    const rows = available.map(([k, m]) => {
+      const e1 = m.data[dk1] || [];
+      const e2 = m.data[dk2] || [];
+      const best1 = e1.length ? (m.higherBetter ? e1.reduce((a, b) => a.value > b.value ? a : b) : e1.reduce((a, b) => a.value < b.value ? a : b)) : null;
+      const best2 = e2.length ? (m.higherBetter ? e2.reduce((a, b) => a.value > b.value ? a : b) : e2.reduce((a, b) => a.value < b.value ? a : b)) : null;
+
+      let winner = 'tie';
+      if (best1 && best2) {
+        if (m.higherBetter) winner = best1.value > best2.value ? 'dev1' : best1.value < best2.value ? 'dev2' : 'tie';
+        else winner = best1.value < best2.value ? 'dev1' : best1.value > best2.value ? 'dev2' : 'tie';
+      } else if (best1 && !best2) {
+        winner = 'dev1';
+      } else if (!best1 && best2) {
+        winner = 'dev2';
+      }
+
+      const val1 = best1 ? best1.label : '—';
+      const val2 = best2 ? best2.label : '—';
+      const biased1 = best1 && best1.biased;
+      const biased2 = best2 && best2.biased;
+
+      return `<div class="ov-row">
+        <div class="ov-metric">${m.name}</div>
+        <div class="ov-val ${winner === 'dev1' ? 'ov-winner' : ''}" style="--accent:${d1.color}">${val1}${biased1 ? '<span class="ov-biased">*</span>' : ''}</div>
+        <div class="ov-val ${winner === 'dev2' ? 'ov-winner' : ''}" style="--accent:${d2.color}">${val2}${biased2 ? '<span class="ov-biased">*</span>' : ''}</div>
+      </div>`;
+    }).join('');
+
+    // Count wins
+    let wins1 = 0, wins2 = 0;
+    available.forEach(([k, m]) => {
+      const e1 = m.data[dk1] || [];
+      const e2 = m.data[dk2] || [];
+      const best1 = e1.length ? (m.higherBetter ? e1.reduce((a, b) => a.value > b.value ? a : b) : e1.reduce((a, b) => a.value < b.value ? a : b)) : null;
+      const best2 = e2.length ? (m.higherBetter ? e2.reduce((a, b) => a.value > b.value ? a : b) : e2.reduce((a, b) => a.value < b.value ? a : b)) : null;
+      if (best1 && best2) {
+        if (m.higherBetter) { if (best1.value > best2.value) wins1++; else if (best2.value > best1.value) wins2++; }
+        else { if (best1.value < best2.value) wins1++; else if (best2.value < best1.value) wins2++; }
+      } else if (best1 && !best2) wins1++;
+      else if (!best1 && best2) wins2++;
+    });
+
+    const summaryText = wins1 > wins2
+      ? `${d1.short} leads in ${wins1} of ${available.length} comparable metrics.`
+      : wins2 > wins1
+      ? `${d2.short} leads in ${wins2} of ${available.length} comparable metrics.`
+      : `Both devices are evenly matched across ${available.length} metrics.`;
+
+    return `
+      <div class="ov-header">
+        <h3>Quick Overview</h3>
+        <span class="ov-summary">${summaryText}</span>
+      </div>
+      <div class="ov-table">
+        <div class="ov-row ov-row-header">
+          <div class="ov-metric">Metric</div>
+          <div class="ov-val ov-val-header" style="--accent:${d1.color}"><img src="${d1.imageUrl}" alt="${d1.short}" class="ov-device-icon" /> ${d1.short}</div>
+          <div class="ov-val ov-val-header" style="--accent:${d2.color}"><img src="${d2.imageUrl}" alt="${d2.short}" class="ov-device-icon" /> ${d2.short}</div>
+        </div>
+        ${rows}
+      </div>
+      <div class="ov-footer">
+        <span class="ov-biased-note">* Value from industry-funded study</span>
+      </div>
+      <div class="ov-strengths">
+        <div class="ov-str-col">
+          <h4 style="color:${d1.color}">${d1.short} Best For</h4>
+          <p>${d1.bestFor}</p>
+        </div>
+        <div class="ov-str-col">
+          <h4 style="color:${d2.color}">${d2.short} Best For</h4>
+          <p>${d2.bestFor}</p>
+        </div>
+      </div>
+    `;
+  }
+
   _renderMetricDetail() {
+    if (this._activeMetric === 'overview') return this._renderOverview();
     const devices = this._devices;
     const metric = this._metrics[this._activeMetric];
     return `
@@ -617,7 +717,7 @@ class KygoWearableAccuracy extends HTMLElement {
                 <div class="dd-header">
                   <div class="dd-icon">${d.icon}</div>
                   <div class="dd-info">
-                    <h3>${d.name}</h3>
+                    <h3>${d.affiliateLinks && d.affiliateLinks.length ? `<a href="${d.affiliateLinks[0].url}" class="dd-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>` : d.name}</h3>
                     <span class="dd-bestfor">${d.bestFor}</span>
                   </div>
                   <div class="dd-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
@@ -638,13 +738,13 @@ class KygoWearableAccuracy extends HTMLElement {
                   ${this._renderStudiesForDevice(k)}
                   ${d.affiliateLinks ? `
                   <div class="dd-buy">
-                    <h4>Where to Buy</h4>
+                    <h4>Available on Amazon</h4>
                     <div class="dd-buy-links">
                       ${d.affiliateLinks.map(l => `
                         <a href="${l.url}" class="dd-buy-link" target="_blank" rel="noopener sponsored">
                           <span class="dd-buy-name">${l.name}</span>
                           ${l.note ? `<span class="dd-buy-note">${l.note}</span>` : ''}
-                          <span class="dd-buy-cta">Check Price<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+                          <span class="dd-buy-cta">View on Amazon<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
                         </a>
                       `).join('')}
                     </div>
@@ -670,7 +770,6 @@ class KygoWearableAccuracy extends HTMLElement {
                   <div class="rec-label">${uc.label}</div>
                   <div class="rec-note">${uc.note}</div>
                 </div>
-                <div class="rec-confidence ${uc.confidence.toLowerCase()}">${uc.confidence}</div>
                 <div class="rec-devices">${uc.devices.map(dk => `<img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="rec-device-img" title="${devices[dk].short}" />`).join('')}</div>
               </div>
             `).join('')}
@@ -843,13 +942,15 @@ class KygoWearableAccuracy extends HTMLElement {
       .vs-badge { width: 40px; height: 40px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 16px; box-shadow: 0 2px 8px rgba(34,197,94,0.3); }
 
       .device-summary-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
-      .device-summary-card { padding: 20px; border-radius: var(--radius); background: white; border: 1px solid var(--gray-200); text-align: center; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+      .device-summary-card { padding: 20px; border-radius: var(--radius); background: white; border: 1px solid var(--gray-200); text-align: center; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.06); display: flex; flex-direction: column; align-items: center; }
       .device-summary-card:hover { border-color: var(--green); box-shadow: 0 12px 32px rgba(0,0,0,0.08); transform: translateY(-4px); }
-      .device-summary-card .ds-icon { width: 48px; height: 48px; margin: 0 auto 8px; }
+      .device-summary-card .ds-icon { width: 48px; height: 48px; margin: 0 auto 8px; flex-shrink: 0; }
       .device-summary-card .ds-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
       .device-summary-card h3 { font-size: 16px; margin-bottom: 4px; }
-      .ds-best-for { font-size: 12px; color: var(--gray-600); margin-bottom: 4px; }
+      .ds-best-for { font-size: 12px; color: var(--gray-600); margin-bottom: 4px; flex: 1; }
       .ds-sub { font-size: 11px; color: var(--gray-400); }
+      .ds-name-link { color: inherit; text-decoration: underline; text-decoration-color: var(--gray-300); text-underline-offset: 2px; transition: text-decoration-color 0.2s; }
+      .ds-name-link:hover { text-decoration-color: var(--green); }
 
       /* Metric Tabs */
       .metric-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 20px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -869,16 +970,37 @@ class KygoWearableAccuracy extends HTMLElement {
 
       .md-bars { display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px; }
       .md-bar-label { font-size: 14px; font-weight: 600; margin-bottom: 8px; padding-left: 2px; color: var(--accent); }
-      .md-bar-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 10px; margin-bottom: 6px; }
-      .md-bar-track { height: 28px; background: var(--gray-200); border-radius: 6px; overflow: hidden; }
+      .md-bar-row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 6px; margin-bottom: 6px; }
+      .md-bar-track { height: 28px; background: var(--gray-200); border-radius: 6px; overflow: hidden; min-width: 0; }
       .md-bar-fill { height: 100%; border-radius: 6px; transition: width 0.6s ease-out; min-width: 8px; }
       .md-bar-fill.biased { opacity: 0.5; background-image: repeating-linear-gradient(135deg, transparent, transparent 4px, rgba(255,255,255,0.3) 4px, rgba(255,255,255,0.3) 8px) !important; }
-      .md-bar-value { font-size: 13px; font-weight: 700; white-space: nowrap; min-width: 70px; text-align: right; }
-      .md-bar-study { font-size: 11px; color: var(--gray-400); white-space: nowrap; min-width: 90px; display: flex; align-items: center; gap: 4px; }
+      .md-bar-value { font-size: 13px; font-weight: 700; white-space: nowrap; min-width: 60px; text-align: right; }
+      .md-bar-study { font-size: 11px; color: var(--gray-400); white-space: nowrap; display: flex; align-items: center; gap: 4px; grid-column: 1 / -1; }
       .md-bar-study.biased-text { color: #D97706; }
       .md-no-data { padding: 12px 16px; background: var(--gray-100); border-radius: 8px; font-size: 13px; color: var(--gray-400); font-style: italic; }
 
       .funded-badge { font-size: 10px; font-weight: 600; color: #92400E; background: #FEF3C7; padding: 1px 6px; border-radius: 4px; }
+
+      /* ── Overview Tab ── */
+      .ov-header { margin-bottom: 16px; }
+      .ov-header h3 { font-size: 20px; margin-bottom: 4px; }
+      .ov-summary { font-size: 14px; color: var(--gray-600); }
+      .ov-table { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 12px; }
+      .ov-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border-bottom: 1px solid var(--gray-100); }
+      .ov-row:last-child { border-bottom: none; }
+      .ov-row-header { background: var(--gray-50); font-weight: 600; }
+      .ov-metric { padding: 10px 12px; font-size: 13px; font-weight: 600; color: var(--dark); display: flex; align-items: center; }
+      .ov-val { padding: 10px 12px; font-size: 13px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 4px; border-left: 1px solid var(--gray-100); }
+      .ov-val-header { font-size: 12px; font-weight: 600; color: var(--accent); }
+      .ov-device-icon { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; }
+      .ov-winner { background: var(--green-light); font-weight: 700; color: var(--green-dark); }
+      .ov-biased { font-size: 10px; color: #D97706; }
+      .ov-footer { margin-bottom: 16px; }
+      .ov-biased-note { font-size: 11px; color: var(--gray-400); font-style: italic; }
+      .ov-strengths { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .ov-str-col { padding: 14px 16px; background: var(--gray-50); border-radius: var(--radius-sm); border: 1px solid var(--gray-200); }
+      .ov-str-col h4 { font-size: 13px; margin-bottom: 4px; }
+      .ov-str-col p { font-size: 12px; color: var(--gray-600); line-height: 1.5; }
 
       .md-insight { display: flex; gap: 10px; padding: 14px 16px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: var(--radius-sm); }
       .md-insight-icon { flex-shrink: 0; color: #D97706; margin-top: 2px; }
@@ -887,7 +1009,7 @@ class KygoWearableAccuracy extends HTMLElement {
       /* ── Quick Recommendations ── */
       .recommendations { padding: 48px 0; background: #fff; }
       .rec-list { display: flex; flex-direction: column; gap: 0; background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-      .rec-row { display: grid; grid-template-columns: 36px 1fr auto auto; align-items: center; gap: 12px; padding: 16px 16px; border-bottom: 1px solid var(--gray-100); border-left: 3px solid transparent; transition: all 0.2s; }
+      .rec-row { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px; padding: 16px 16px; border-bottom: 1px solid var(--gray-100); border-left: 3px solid transparent; transition: all 0.2s; }
       .rec-row:last-child { border-bottom: none; }
       .rec-row:hover { background: var(--gray-50); border-left-color: var(--green); transform: translateX(2px); }
       .rec-row:hover .rec-label { color: var(--green-dark); }
@@ -896,24 +1018,22 @@ class KygoWearableAccuracy extends HTMLElement {
       .rec-info { min-width: 0; }
       .rec-label { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
       .rec-note { font-size: 12px; color: var(--gray-400); line-height: 1.4; }
-      .rec-confidence { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
-      .rec-confidence.high { color: var(--green-dark); background: rgba(34,197,94,0.1); }
-      .rec-confidence.moderate { color: #D97706; background: rgba(251,191,36,0.1); }
-      .rec-confidence.low { color: #DC2626; background: rgba(239,68,68,0.1); }
-      .rec-devices { display: flex; gap: 4px; align-items: center; }
-      .rec-device-img { width: 28px; height: 28px; border-radius: 8px; object-fit: contain; border: 1px solid var(--gray-200); background: #fff; }
+      .rec-devices { display: flex; gap: 6px; align-items: center; }
+      .rec-device-img { width: 36px; height: 36px; border-radius: 10px; object-fit: contain; border: 1px solid var(--gray-200); background: #fff; }
 
       /* ── Device Deep Dives ── */
       .deep-dives { padding: 48px 0; background: var(--gray-50); }
       .dd-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
       .dd-card { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
       .dd-card:hover { border-color: var(--green); box-shadow: var(--shadow-hover); transform: translateY(-2px); }
-      .dd-card.expanded { grid-column: 1 / -1; border-color: var(--green); box-shadow: 0 8px 24px rgba(34,197,94,0.12); }
+      .dd-card.expanded { border-color: var(--green); box-shadow: 0 8px 24px rgba(34,197,94,0.12); }
       .dd-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; cursor: pointer; }
       .dd-icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; overflow: hidden; }
       .dd-icon img { width: 100%; height: 100%; object-fit: contain; border-radius: 10px; }
       .dd-info { flex: 1; min-width: 0; }
       .dd-info h3 { font-size: 16px; margin-bottom: 2px; }
+      .dd-name-link { color: inherit; text-decoration: underline; text-decoration-color: var(--gray-300); text-underline-offset: 2px; transition: text-decoration-color 0.2s; }
+      .dd-name-link:hover { text-decoration-color: var(--green); }
       .dd-bestfor { font-size: 12px; color: var(--gray-400); }
       .dd-toggle { flex-shrink: 0; color: var(--gray-400); transition: transform 0.3s; }
       .dd-card.expanded .dd-toggle { transform: rotate(180deg); }
@@ -937,7 +1057,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .dd-study-cite { font-size: 12px; color: var(--gray-400); line-height: 1.5; }
       .dd-study-funded .dd-study-cite { color: #D97706; }
 
-      /* ── Where to Buy (Affiliate) ── */
+      /* ── Available on Amazon (Affiliate) ── */
       .dd-buy { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--gray-200); }
       .dd-buy h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-family: 'DM Sans', sans-serif; }
       .dd-buy-links { display: flex; flex-direction: column; gap: 6px; }
@@ -1087,10 +1207,12 @@ class KygoWearableAccuracy extends HTMLElement {
         .device-summary-card { padding: 24px; }
         .device-summary-card .ds-icon { width: 52px; height: 52px; }
         .metric-detail { padding: 28px; }
-        .rec-row { grid-template-columns: 40px 1fr auto auto auto; gap: 16px; padding: 14px 20px; }
+        .md-bar-row { grid-template-columns: 1fr auto auto; gap: 10px; }
+        .md-bar-study { grid-column: auto; min-width: 90px; }
+        .rec-row { grid-template-columns: 40px 1fr auto; gap: 16px; padding: 14px 20px; }
         .rec-icon { width: 36px; height: 36px; }
         .rec-label { font-size: 15px; }
-        .rec-device-img { width: 32px; height: 32px; }
+        .rec-device-img { width: 40px; height: 40px; }
         .dd-grid { grid-template-columns: 1fr 1fr; }
         .dd-header { padding: 18px 24px; }
         .dd-icon { width: 44px; height: 44px; }
@@ -1115,8 +1237,9 @@ class KygoWearableAccuracy extends HTMLElement {
         .device-summary-card .ds-icon { width: 56px; height: 56px; }
         .metric-detail { padding: 32px; }
         .md-bar-row { grid-template-columns: 1fr 80px 160px; }
+        .md-bar-study { grid-column: auto; }
         .rec-row { padding: 16px 24px; }
-        .rec-device-img { width: 36px; height: 36px; border-radius: 10px; }
+        .rec-device-img { width: 44px; height: 44px; border-radius: 12px; }
         .dd-grid { grid-template-columns: 1fr 1fr 1fr; }
         .dd-header { padding: 20px 28px; }
         .dd-icon { width: 48px; height: 48px; border-radius: 12px; }
@@ -1160,7 +1283,8 @@ class KygoWearableAccuracy extends HTMLElement {
         return;
       }
 
-      // Device deep dive toggle
+      // Device deep dive toggle (ignore clicks on affiliate links)
+      if (e.target.closest('.dd-name-link') || e.target.closest('.ds-name-link')) return;
       const ddHeader = e.target.closest('.dd-header');
       if (ddHeader) {
         const card = ddHeader.closest('.dd-card');
