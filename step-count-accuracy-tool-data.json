@@ -1,0 +1,567 @@
+{
+  "meta": {
+    "title": "Step Count Accuracy by Wearable Device — Tool Data",
+    "description": "Consolidated research data for building a step count accuracy comparison tool on kygo.app",
+    "last_updated": "2026-02-17",
+    "total_studies_analyzed": "20+",
+    "study_date_range": "2020–2026",
+    "source_notes": "All data sourced from peer-reviewed studies unless marked. 'WellnessPulse (2025)' and 'AIM7 (2025)' are consumer-facing data aggregations, not peer-reviewed journals — treat as supplementary."
+  },
+
+  "devices": [
+    {
+      "name": "Garmin",
+      "rank": 1,
+      "rank_label": "🥇 Most Accurate Step Counter",
+      "wear_location": "Wrist",
+      "sensors": "3-axis accelerometer (all models); barometric altimeter (some); gyroscope (higher-end)",
+      "overall_accuracy_pct": 82.6,
+      "mape_lab_range": "0.6–3.5%",
+      "mape_free_living_range": "10–17.8%",
+      "bias_direction": "Underestimates",
+      "bias_detail": "Consistently undercounts on treadmill at most speeds. Significant undercounting at very slow speeds (<1.6 km/h). May overcount during incline walking.",
+      "algorithm_type": "Threshold-based peak detection with 10-step minimum bout filter",
+      "key_differentiator": "10-step minimum bout threshold: watch does not register steps until 10+ consecutive step-like patterns detected, then retroactively credits all 10. Dramatically reduces phantom steps but misses very short walking bursts (<10 steps).",
+      "false_step_triggers": ["Driving (road vibrations)", "Brushing teeth", "Showering", "Crocheting", "Vigorous hand gestures"],
+      "best_for": "Step count accuracy, especially runners",
+      "weaknesses": "Undercounts at very slow speeds; can count driving vibrations; entry-level models lack gyroscope",
+      "model_data": [
+        {
+          "model": "Vivoactive 4",
+          "mape": "<2%",
+          "condition": "Exercise testing",
+          "source": "Nature Scientific Reports (2024)",
+          "doi": "10.1038/s41598-024-74140-x"
+        },
+        {
+          "model": "Vivosmart HR+",
+          "mape": "≤5% (treadmill), ≤10% (free motion)",
+          "condition": "All conditions",
+          "source": "Roos et al. (2020)",
+          "doi": "10.3390/ijerph17207123"
+        },
+        {
+          "model": "Vivosmart HR",
+          "mape": "0.61–1.27%",
+          "condition": "Treadmill (3.2–4.8 km/h)",
+          "source": "Feehan et al. (2020)",
+          "doi": "10.7717/peerj.9381"
+        },
+        {
+          "model": "Vivosmart",
+          "mape": "1.2–3.5%",
+          "condition": "Three treadmill speeds",
+          "source": "Garmin validity review (2020)",
+          "doi": "10.3390/ijerph17134269"
+        },
+        {
+          "model": "Forerunner 265",
+          "mape": "0.3% (15 steps off / 5,000)",
+          "condition": "Walking test",
+          "source": "Android Central (2023)",
+          "doi": null,
+          "note": "Consumer testing, not peer-reviewed"
+        },
+        {
+          "model": "Vivofit",
+          "mape": "17.8%",
+          "condition": "Free-living (at home)",
+          "source": "Garmin validity review (2020)",
+          "doi": "10.3390/ijerph17134269"
+        }
+      ]
+    },
+    {
+      "name": "Apple Watch",
+      "rank": 2,
+      "rank_label": "🥈 Best All-Around Consistency",
+      "wear_location": "Wrist",
+      "sensors": "3-axis accelerometer, 3-axis gyroscope, always-on motion coprocessor, GPS",
+      "overall_accuracy_pct": 81.1,
+      "mape_lab_range": "0.9–3.4%",
+      "mape_free_living_range": "6.4–10%",
+      "bias_direction": "Slight underestimate",
+      "bias_detail": "Slight overestimate at slow speeds, slight underestimate at jogging pace. Near-perfect overall (0.034% total error across all speeds in one study).",
+      "algorithm_type": "ML-enhanced peak detection via Core Motion framework",
+      "key_differentiator": "High dynamic range gyroscope (Ultra); GPS-calibrated stride length over time; arm-swing pattern recognition with rotation data; always-on motion coprocessor offloads CPU for 24/7 tracking.",
+      "false_step_triggers": ["Driving", "Desk work (newer models improved filtering)"],
+      "best_for": "All-around step tracking with highest consistency across speeds and activity types",
+      "weaknesses": "Higher error at slow walking (23.9% MAPE for light-intensity); some phantom steps while driving",
+      "accuracy_by_activity": [
+        {"activity": "Moderate-to-vigorous walking", "mape": "3.0%"},
+        {"activity": "Non-treadmill walking", "mape": "<10%"},
+        {"activity": "Treadmill", "mape": "10.1%"},
+        {"activity": "Light-intensity / slow walking", "mape": "23.9%"}
+      ],
+      "accuracy_by_age": [
+        {"group": "Age <40", "mape": "4.3%"},
+        {"group": "Age ≥40", "mape": "10.9%"}
+      ],
+      "model_data": [
+        {
+          "model": "Series 6",
+          "mape": "6.4%",
+          "condition": "Free-living (24h vs ActivPAL)",
+          "correlation": "r=0.99",
+          "source": "Kim et al. (2024)",
+          "doi": "10.3390/s24144658"
+        },
+        {
+          "model": "Series 8",
+          "mape": "~81% overall accuracy",
+          "condition": "Meta-analysis aggregate",
+          "source": "WellnessPulse (2025)",
+          "doi": null,
+          "note": "Consumer aggregation, not peer-reviewed"
+        },
+        {
+          "model": "Ultra 2",
+          "mape": "Best in 10-watch test",
+          "condition": "10,000-step walk/jog",
+          "source": "Android Central (Dec 2025)",
+          "doi": null,
+          "note": "Consumer testing, not peer-reviewed"
+        },
+        {
+          "model": "Series 2",
+          "mape": "~18.5%",
+          "condition": "Mixed conditions",
+          "source": "Choe & Kang (2025)",
+          "doi": "10.1088/1361-6579/adca82"
+        }
+      ],
+      "notable_finding": "Apple Watch Series 6 achieved r=0.99 correlation against ActivPAL reference in a 24-hour free-living study — the highest independent correlation among consumer wearables tested."
+    },
+    {
+      "name": "Fitbit",
+      "rank": 3,
+      "rank_label": "🥉 Most-Studied, Mixed Results",
+      "wear_location": "Wrist",
+      "sensors": "MEMS tri-axial accelerometer",
+      "overall_accuracy_pct": 77.3,
+      "mape_lab_range": "~5–8%",
+      "mape_free_living_range": "10–25%",
+      "bias_direction": "Mixed (underestimates in lab, overestimates in free-living)",
+      "bias_detail": "Notable pattern: underestimates in lab conditions, overestimates in free-living. Meets acceptable accuracy approximately half the time. Within-brand variation: Fitbit Classic overestimates, Fitbit Charge underestimates.",
+      "algorithm_type": "MEMS tri-axial peak detection + ML model (evolving post-Google acquisition)",
+      "key_differentiator": "Most-validated brand with 144 studies across 12 models. Ankle placement dramatically improves accuracy: 5.9% error at 0.4 m/s vs. 48–75% error waist-worn.",
+      "false_step_triggers": ["Various non-walking arm movements"],
+      "best_for": "General fitness tracking; most validation research available",
+      "weaknesses": "Higher free-living error than Garmin/Apple; within-brand inconsistency between models",
+      "model_data": [
+        {
+          "model": "Sense",
+          "mape": "~8%",
+          "condition": "Exercise testing",
+          "source": "Nature Scientific Reports (2024)",
+          "doi": "10.1038/s41598-024-74140-x"
+        },
+        {
+          "model": "Charge 2",
+          "mape": "3.4% difference vs open-source algo",
+          "condition": "Clinical validation",
+          "source": "Straczkiewicz et al. (2023)",
+          "doi": "10.2196/47646"
+        },
+        {
+          "model": "Charge 2 / Alta",
+          "mape": "17.1–35.5%",
+          "condition": "24-hr free-living",
+          "source": "Giurgiu et al. (2023)",
+          "doi": "10.3390/technologies11010029"
+        },
+        {
+          "model": "Charge / Charge HR",
+          "mape": "<25%",
+          "condition": "20 studies (systematic review)",
+          "source": "Germini et al. (2022)",
+          "doi": "10.2196/30791"
+        }
+      ]
+    },
+    {
+      "name": "Samsung Galaxy Watch",
+      "rank": 4,
+      "rank_label": "Moderate — Overcounting Issues",
+      "wear_location": "Wrist",
+      "sensors": "Accelerometer + gyroscope (BioActive Sensor on Watch 4+)",
+      "overall_accuracy_pct": null,
+      "overall_accuracy_note": "Moderate (r=0.82 vs ActivPAL — lower than Apple Watch's r=0.99 in same study)",
+      "mape_lab_range": "Limited data",
+      "mape_free_living_range": "Limited data",
+      "bias_direction": "Overestimates",
+      "bias_detail": "User reports of 2,000–3,500+ phantom steps per day during desk work, driving, and stationary bike workouts. Gyroscope may be overly sensitive to non-walking arm movements.",
+      "algorithm_type": "Accelerometer + gyroscope via Samsung Health",
+      "key_differentiator": "BioActive Sensor integrates multiple sensors. Samsung Health can fuse phone + watch step data (may introduce discrepancies).",
+      "false_step_triggers": ["Desk work", "Driving", "Stationary bike"],
+      "best_for": "Android integration, general smartwatch functionality",
+      "weaknesses": "Fewer validation studies; user-reported phantom steps; weaker correlation than Apple Watch",
+      "model_data": [
+        {
+          "model": "Galaxy Watch 4",
+          "mape": null,
+          "correlation": "r=0.82 vs ActivPAL",
+          "condition": "24-hr free-living",
+          "source": "Kim et al. (2024)",
+          "doi": "10.3390/s24144658"
+        },
+        {
+          "model": "Galaxy Watch 5",
+          "mape": "~2% (~200 steps off / 10,000)",
+          "condition": "Walking test",
+          "source": "Android Central (2025)",
+          "doi": null,
+          "note": "Consumer testing, not peer-reviewed"
+        }
+      ]
+    },
+    {
+      "name": "COROS",
+      "rank": 5,
+      "rank_label": "Good — Running Focused",
+      "wear_location": "Wrist",
+      "sensors": "3-axis accelerometer + barometric altimeter",
+      "overall_accuracy_pct": null,
+      "overall_accuracy_note": "Good (~98.6% in walking test; near-exact for running)",
+      "mape_lab_range": "Limited data",
+      "mape_free_living_range": "Limited data",
+      "bias_direction": "Slight underestimate",
+      "bias_detail": "Requires continuous arm movement to trigger counting; filters out brief stops.",
+      "algorithm_type": "Peak detection with continuous-motion filter + barometric altimeter",
+      "key_differentiator": "Requires continuous arm movement to trigger counting. Excellent running step accuracy. Long battery life.",
+      "false_step_triggers": [],
+      "best_for": "Running-focused step/cadence tracking",
+      "weaknesses": "No peer-reviewed validation; filters out short walking bursts; requires continuous motion to count",
+      "model_data": [
+        {
+          "model": "APEX 2 Pro",
+          "mape": "1.6% (81 steps off / 5,000)",
+          "condition": "Walking test",
+          "source": "Android Central (2023)",
+          "doi": null,
+          "note": "Consumer testing, not peer-reviewed"
+        }
+      ]
+    },
+    {
+      "name": "Polar",
+      "rank": 6,
+      "rank_label": "Moderate to Poor — Not a Step Counter",
+      "wear_location": "Wrist",
+      "sensors": "3-axis accelerometer",
+      "overall_accuracy_pct": null,
+      "overall_accuracy_note": "Moderate to poor (53.2% in meta-analysis); overreports ~3.8%",
+      "mape_lab_range": "High",
+      "mape_free_living_range": "Overreports ~3.8%",
+      "bias_direction": "Overestimates",
+      "bias_detail": "Both peer-reviewed studies and consumer tests show Polar adds extra steps. High sensitivity to wrist movements with less aggressive false-positive filtering.",
+      "algorithm_type": "Proprietary peak detection on wrist accelerometer",
+      "key_differentiator": "Best known for heart rate monitoring (chest strap heritage), not step counting. Step tracking is secondary to HR/training load focus.",
+      "false_step_triggers": ["Non-walking wrist movements"],
+      "best_for": "Heart rate monitoring, training load — NOT step counting",
+      "weaknesses": "A360 found not valid for any walking condition; Vantage overreports; cannot replace research-grade accelerometers",
+      "model_data": [
+        {
+          "model": "A360",
+          "mape": null,
+          "condition": "Walking & jogging",
+          "validity": "Not valid for any condition",
+          "source": "Roos et al. (2020)",
+          "doi": "10.3390/ijerph17207123"
+        },
+        {
+          "model": "Vantage",
+          "mape": "High (not specified)",
+          "condition": "Free-living",
+          "bias": "Overreports steps",
+          "source": "Henriksen et al. (2022)",
+          "doi": null,
+          "journal": "JMIR Formative Research"
+        },
+        {
+          "model": "Vantage M3",
+          "mape": "+3.8% (379 extra steps / 10,000)",
+          "condition": "Walking test",
+          "source": "TechRadar (Jan 2025)",
+          "doi": null,
+          "note": "Consumer testing, not peer-reviewed"
+        }
+      ]
+    },
+    {
+      "name": "Oura Ring",
+      "rank": 7,
+      "rank_label": "Poor for Steps — Excellent for Sleep/HRV",
+      "wear_location": "Finger",
+      "sensors": "3-axis accelerometer, infrared PPG, skin temperature sensor",
+      "overall_accuracy_pct": null,
+      "overall_accuracy_note": "Poor (50.3% error real-world aggregate); acceptable in controlled walking (<10% MAPE)",
+      "mape_lab_range": "4.8% controlled",
+      "mape_free_living_range": "~25–50%",
+      "bias_direction": "Overestimates (from hand gestures)",
+      "bias_detail": "Acceptable lab accuracy but +2,124 ± 4,256 steps overestimate in free-living (14-day study). Phantom steps from hand activity are the primary issue.",
+      "algorithm_type": "ML step classifier on finger-worn accelerometer data",
+      "key_differentiator": "Finger placement detects hand motion as proxy for steps. Surprisingly good in controlled walking (within 12 steps of 5,000). Terrible in real-world conditions due to hand gestures.",
+      "false_step_triggers": ["Hand gestures / talking with hands", "Cooking / chopping / stirring", "Typing (some cases)", "Any repetitive hand motion mimicking walking cadence"],
+      "underestimation_triggers": ["Pushing a cart/stroller/lawnmower", "Walking with hands in pockets", "Carrying bags with arms still", "Short walking bursts (<10 steps)"],
+      "best_for": "Sleep, HRV, recovery — NOT step counting",
+      "weaknesses": "Phantom steps from hand movement (thousands per day); finger placement fundamentally limited for steps",
+      "oura_recommendation": "Use Oura for health trends, not step-count parity with wrist devices",
+      "model_data": [
+        {
+          "model": "Gen 3",
+          "mape": "<10%",
+          "condition": "Laboratory (combined activities)",
+          "source": "Kristiansson et al. (2023)",
+          "doi": "10.1186/s12874-023-01868-x"
+        },
+        {
+          "model": "Gen 3",
+          "mape": null,
+          "mean_difference": "+2,124 ± 4,256 steps",
+          "correlation": "r ≥ 0.76",
+          "condition": "Free-living (14 days)",
+          "source": "Kristiansson et al. (2023)",
+          "doi": "10.1186/s12874-023-01868-x"
+        },
+        {
+          "model": "Gen 3",
+          "mape": null,
+          "accuracy_note": "Within 12 steps of 5,000",
+          "condition": "Controlled walking (5,000 steps)",
+          "source": "Android Central (2023)",
+          "doi": null,
+          "note": "Consumer testing, not peer-reviewed"
+        }
+      ]
+    },
+    {
+      "name": "WHOOP",
+      "rank": 8,
+      "rank_label": "Unknown — No Validation Data",
+      "wear_location": "Wrist, bicep, or body (clothing)",
+      "sensors": "3-axis accelerometer + 3-axis gyroscope",
+      "overall_accuracy_pct": null,
+      "overall_accuracy_note": "Unknown — no published validation studies",
+      "mape_lab_range": "No published data",
+      "mape_free_living_range": "No published data",
+      "bias_direction": "Unknown (user reports suggest overcounting)",
+      "bias_detail": "Step counting only added October 2024 via firmware update. Hardware should theoretically enable good accuracy but no studies exist.",
+      "algorithm_type": "Accelerometer cadence + gyroscope rotational data (new algorithm, Oct 2024)",
+      "key_differentiator": "WHOOP intentionally positions Strain (cardiovascular load) as primary metric, with steps as supplementary. Newest step tracker on this list.",
+      "false_step_triggers": ["Driving", "Desk work (user-reported)"],
+      "best_for": "Strain/recovery tracking — step counting is new and unvalidated",
+      "weaknesses": "Feature launched Oct 2024; no peer-reviewed studies; WHOOP deprioritizes steps vs. Strain",
+      "model_data": []
+    }
+  ],
+
+  "accuracy_factors": {
+    "description": "Factors that affect step count accuracy across all devices, ranked by impact",
+    "factors": [
+      {
+        "factor": "Walking Speed",
+        "impact": "Highest — single biggest factor",
+        "detail": "Accuracy drops dramatically below 0.9 m/s. At very slow speeds, even best devices miss majority of steps.",
+        "data": [
+          {"speed": "<0.5 m/s (very slow / shuffling)", "accuracy": "Very poor (<50%)", "note": "All devices struggle; ankle placement helps"},
+          {"speed": "0.5–0.9 m/s (slow walking)", "accuracy": "Poor to moderate (50–80%)", "note": "Clinical/elderly populations most affected"},
+          {"speed": "0.9–1.3 m/s (normal walking)", "accuracy": "Good (>90%)", "note": "All devices perform acceptably"},
+          {"speed": "1.3–1.8 m/s (brisk walking)", "accuracy": "Excellent (>95%)", "note": "Sweet spot for wrist-worn accuracy"},
+          {"speed": ">1.8 m/s (jogging/running)", "accuracy": "Excellent (>95–99%)", "note": "Highest cadence = clearest signal"}
+        ]
+      },
+      {
+        "factor": "Sensor Placement (Wear Location)",
+        "impact": "Very High",
+        "detail": "Wrist devices detect arm swing as proxy for walking, not actual footfalls. This fundamental limitation creates systematic errors.",
+        "data": [
+          {"placement": "Ankle/Foot", "accuracy_rank": "🥇 Most accurate", "typical_error": "~2–6% MAPE", "best_for": "Slow walkers, elderly, clinical", "limitation": "Socially impractical; limited products"},
+          {"placement": "Hip/Waist", "accuracy_rank": "🥈 Very accurate", "typical_error": "~0.4–5% MAPE", "best_for": "Research-grade measurement", "limitation": "Less convenient; users forget to wear"},
+          {"placement": "Wrist", "accuracy_rank": "🥉 Moderate", "typical_error": "~5–25% MAPE", "best_for": "Daily convenience, 24/7 wear", "limitation": "Over/underestimates from arm motion"},
+          {"placement": "Finger", "accuracy_rank": "4th", "typical_error": "~10–50%+ MAPE", "best_for": "Sleep/HRV (not steps)", "limitation": "Phantom steps from hand gestures"}
+        ],
+        "key_finding": "Difference between wrist and hip step counts: 30% in young adults, nearly 50% in elderly"
+      },
+      {
+        "factor": "Arm Swing",
+        "impact": "High (critical for wrist-worn)",
+        "detail": "Restricted arm swing causes undercounting; exaggerated swing causes overcounting.",
+        "overestimation_triggers": {
+          "range": "+10% to +35%",
+          "examples": ["Animated hand gestures while talking", "Cooking, cleaning, manual work", "Clapping, drumming, repetitive hand motions"]
+        },
+        "underestimation_triggers": {
+          "range": "−35% to −95%",
+          "examples": ["Pushing shopping cart, stroller, wheelchair", "Walking with hands in pockets", "Carrying bags or holding objects", "Holding treadmill handrails"]
+        }
+      },
+      {
+        "factor": "Age",
+        "impact": "Significant",
+        "detail": "Apple Watch MAPE: 4.3% for age <40 vs. 10.9% for age ≥40. Age affects gait pattern, walking speed, and arm swing — all of which compound to reduce accuracy.",
+        "source": "Choe & Kang (2025); Modave et al. (2017)"
+      },
+      {
+        "factor": "Activity Type",
+        "impact": "Significant",
+        "detail": "Lab/controlled settings consistently show better accuracy than free-living. All devices perform ~5% MAPE in lab vs. >10% in real-world.",
+        "data": [
+          {"condition": "Normal walking (3–5 km/h)", "bias": "Near-accurate", "magnitude": "<5% error"},
+          {"condition": "Free-living (mixed activities)", "bias": "Overestimates", "magnitude": "+10–35%"},
+          {"condition": "Stationary (desk, driving)", "bias": "Phantom steps", "magnitude": "500–3,500+ per day"},
+          {"condition": "Arms stationary while walking", "bias": "Underestimates", "magnitude": "−35% to −95%"},
+          {"condition": "Stair climbing", "bias": "Underestimates", "magnitude": "Significant"},
+          {"condition": "Stepping-in-place", "bias": "Underestimates", "magnitude": "20–60% (Google Fit study, 2025)"}
+        ]
+      },
+      {
+        "factor": "Gait Pathology / Neurological Conditions",
+        "impact": "Severe",
+        "detail": "Algorithms trained on healthy gait detect only 11–47% of steps in individuals with neurological conditions (stroke, Parkinson's, etc.). Population-specific algorithms are essential.",
+        "source": "Sensors (2025), DOI not yet available; Lamont et al. (2018)"
+      },
+      {
+        "factor": "BMI / Body Composition",
+        "impact": "Moderate (indirect)",
+        "detail": "BMI itself does not directly impact step count device accuracy per Modave et al. (2017). However, obesity alters gait patterns (slower speed, shorter steps, wider stance, reduced arm swing) which indirectly reduces accuracy through the walking speed and arm swing factors.",
+        "source": "Modave et al. (2017), JMIR; Scataglini et al. (2025), Int J Obes"
+      },
+      {
+        "factor": "Device Fit / Band Tightness",
+        "impact": "Moderate",
+        "detail": "Loose band = more noise = more false positives. A snug (not tight) fit reduces signal noise."
+      },
+      {
+        "factor": "Surface Type",
+        "impact": "Minimal",
+        "detail": "Garmin validated across natural lawn, gravel, asphalt, linoleum, ceramic tile with acceptable MAPE on all surfaces.",
+        "source": "Garmin validity review (2020)"
+      },
+      {
+        "factor": "Incline / Terrain",
+        "impact": "Moderate",
+        "detail": "Garmin shown to overcount during incline walking. Changes in stride mechanics on hills can affect detection."
+      },
+      {
+        "factor": "Treadmill vs. Overground Walking",
+        "impact": "Moderate",
+        "detail": "Treadmill walking produces different arm-swing patterns than overground walking, leading to different accuracy profiles."
+      },
+      {
+        "factor": "Dominant vs. Non-Dominant Wrist",
+        "impact": "Minimal",
+        "detail": "Modave et al. (2017) found dominant hand does not significantly impact step count accuracy.",
+        "source": "Modave et al. (2017), JMIR"
+      }
+    ]
+  },
+
+  "bias_summary": {
+    "description": "Systematic bias direction by brand and condition",
+    "by_condition": [
+      {"condition": "Slow walking (<0.9 m/s)", "bias": "Underestimates", "magnitude": "Up to 74% missed steps", "most_affected": "All wrist/hip devices"},
+      {"condition": "Very slow walking (<0.5 m/s)", "bias": "Severe underestimate", "magnitude": "Up to 100% missed", "most_affected": "Waist-worn worst; ankle best"},
+      {"condition": "Normal walking (3–5 km/h)", "bias": "Near-accurate", "magnitude": "<5% error", "most_affected": "All devices perform well"},
+      {"condition": "Brisk walking / jogging", "bias": "Near-accurate to slight underestimate", "magnitude": "<3% error", "most_affected": "Apple Watch, Garmin best"},
+      {"condition": "Free-living (mixed)", "bias": "Overestimates", "magnitude": "+10–35%", "most_affected": "Wrist-worn devices"},
+      {"condition": "Stationary (desk, driving)", "bias": "Phantom steps", "magnitude": "500–3,500+ per day", "most_affected": "Oura (worst), Samsung, Polar"},
+      {"condition": "Arms stationary while walking", "bias": "Underestimates", "magnitude": "−35% to −95%", "most_affected": "All wrist-worn devices"},
+      {"condition": "Elderly / clinical", "bias": "Underestimates", "magnitude": "−40% to −160% (hip-worn)", "most_affected": "All devices at slow gait speeds"},
+      {"condition": "Stair climbing", "bias": "Underestimates", "magnitude": "Significant", "most_affected": "Wrist > hip > ankle (worst to best)"}
+    ],
+    "by_brand": [
+      {"device": "Apple Watch", "lab_bias": "Slight overestimate at slow speeds; slight underestimate jogging", "free_living_bias": "Slight underestimate overall", "pattern": "Generally accurate"},
+      {"device": "Garmin", "lab_bias": "Underestimates on treadmill", "free_living_bias": "Moderate underestimate", "pattern": "Conservative (undercounts)"},
+      {"device": "Fitbit", "lab_bias": "Underestimates in lab", "free_living_bias": "Overestimates in free-living", "pattern": "Context-dependent"},
+      {"device": "Samsung", "lab_bias": "Limited lab data", "free_living_bias": "Overestimates (user reports)", "pattern": "Tends to overcount"},
+      {"device": "Oura Ring", "lab_bias": "Acceptable in controlled walk", "free_living_bias": "Large overestimate (+2,124 steps avg)", "pattern": "Overcounts significantly"},
+      {"device": "Polar", "lab_bias": "—", "free_living_bias": "Overestimates (+3.8%)", "pattern": "Consistent overcount"},
+      {"device": "WHOOP", "lab_bias": "No data", "free_living_bias": "User-reported overcounting", "pattern": "Insufficient data"}
+    ]
+  },
+
+  "accuracy_metrics_explained": {
+    "description": "How step count accuracy is measured in research, ranked by informativeness",
+    "metrics": [
+      {"priority": 1, "name": "MAPE (Mean Absolute Percentage Error)", "what_it_measures": "Average of absolute % differences; prevents positive/negative errors canceling out", "why_it_matters": "Best single metric for accuracy"},
+      {"priority": 2, "name": "MPE (Mean Percentage Error)", "what_it_measures": "Average % difference; can mask errors if over/underestimates cancel", "why_it_matters": "Shows direction of bias but can appear falsely good"},
+      {"priority": 3, "name": "Mean Difference (Bias)", "what_it_measures": "Average raw difference in step count", "why_it_matters": "Simple but doesn't scale with step volume"},
+      {"priority": 4, "name": "Bland-Altman Mean Bias", "what_it_measures": "Systematic over/underestimation with 95% limits of agreement", "why_it_matters": "Shows spread of individual errors"},
+      {"priority": 5, "name": "Correlation (r or ICC)", "what_it_measures": "Measures relationship strength, not agreement", "why_it_matters": "High r doesn't mean accurate — a device consistently off by 2,000 steps can still have r=0.99"}
+    ],
+    "thresholds": [
+      {"metric": "MAPE (treadmill)", "acceptable": "<5%", "source": "Roos et al. (2020)"},
+      {"metric": "MAPE (free motion)", "acceptable": "<10%", "source": "Roos et al. (2020)"},
+      {"metric": "MAPE (free-living)", "acceptable": "<10%", "source": "Kristiansson et al. (2023)"},
+      {"metric": "MAPE (clinical trial use)", "acceptable": "≤5%", "source": "Johnston et al. (2021), INTERLIVE"},
+      {"metric": "MAPE (general population use)", "acceptable": "≤10–15%", "source": "Johnston et al. (2021), INTERLIVE"},
+      {"metric": "ICC", "acceptable": ">0.70", "source": "Roos et al. (2020)"},
+      {"metric": "Correlation (r)", "acceptable": ">0.90 (excellent)", "source": "General convention"}
+    ],
+    "example": "A device that overestimates by 500 steps half the time and underestimates by 500 steps the other half shows 0% MPE (appearing perfect) but 10%+ MAPE (revealing true error)."
+  },
+
+  "how_step_counting_works": {
+    "description": "Technical pipeline all consumer wearables use",
+    "steps": [
+      {"step": 1, "name": "Raw Signal Acquisition", "detail": "3-axis MEMS accelerometer captures acceleration in x, y, z at 25–100 Hz sampling rate"},
+      {"step": 2, "name": "Signal Preprocessing", "detail": "Compute vector magnitude √(x² + y² + z²) to combine all axes into single value"},
+      {"step": 3, "name": "Noise Filtering", "detail": "Low-pass filter (cutoff ~3–10 Hz) removes high-frequency noise; band-pass filter (0.5–3 Hz) isolates walking cadence range"},
+      {"step": 4, "name": "Step Detection", "detail": "Peak detection, zero-crossing, or autocorrelation identifies periodic patterns matching walking"},
+      {"step": 5, "name": "Validation Gate", "detail": "Time-window constraints (0.2s–2.0s between steps) filter false positives; minimum-bout thresholds (e.g., 10+ consecutive steps) reduce phantom counts"},
+      {"step": 6, "name": "Post-Processing", "detail": "Machine learning classifiers distinguish walking from non-walking activities"}
+    ],
+    "algorithm_categories": [
+      {"name": "Peak Detection", "accuracy": ">97% in controlled walking", "used_by": "Garmin, Fitbit, Polar, COROS", "note": "Most common, computationally lightweight"},
+      {"name": "ML-Enhanced Detection", "accuracy": "12.5% MAPE free-living, 1.3% underestimation", "used_by": "Apple Watch (Core Motion), Oura Ring", "note": "Classifies walking vs non-walking first, then applies peak detection"},
+      {"name": "Deep Learning (End-to-End)", "accuracy": "96–99% with gyroscope, ~60% accelerometer-only", "used_by": "Research/emerging", "note": "Neural networks trained directly on accelerometer data"},
+      {"name": "Zero-Crossing Detection", "accuracy": "Lower than peak detection", "used_by": "Earlier/simpler pedometers", "note": "Counts signal baseline crossings"},
+      {"name": "Autocorrelation Analysis", "accuracy": "Good cadence detection", "used_by": "Research/hybrid approaches", "note": "Identifies periodic patterns; more computationally intensive"}
+    ],
+    "fundamental_limitation": "Wrist-worn devices detect arm swing as a proxy for walking — not actual footfalls. This creates systematic errors no algorithm can fully eliminate.",
+    "gold_standard": "Manual hand-tally counting (controlled) or research-grade hip-worn accelerometers (ActiGraph, ActivPAL) for free-living"
+  },
+
+  "important_caveats": [
+    "Lab ≠ Real World. All devices: ~5% MAPE in lab vs. >10% in free-living.",
+    "Walking speed is the #1 confounder. Below 0.9 m/s, expect large undercounts.",
+    "Wrist placement measures arm motion, not footfalls. Push a cart = undercounting. Wave arms = overcounting.",
+    "Oura Ring is NOT a step counter despite showing acceptable lab accuracy.",
+    "WHOOP has zero validation data for steps (feature added Oct 2024).",
+    "Garmin's 10-step gate trades sensitivity for specificity — misses very short walking bursts.",
+    "Most validation studies used older device models. Current-gen may perform better but is unconfirmed.",
+    "Only ~11% of consumer wearables have been validated for any biometric. 249 studies = 3.5% of what's needed.",
+    "Check if device manufacturers funded the study. Independent studies sometimes differ.",
+    "For clinical/research use, hip-worn research-grade accelerometers (ActiGraph, ActivPAL) remain the standard.",
+    "Steps are algorithmic estimates, not direct footfall counts.",
+    "Individual variation is significant: gait, arm swing, BMI, age, speed all affect accuracy. Published MAPE values are population averages."
+  ],
+
+  "sources": [
+    {"id": 1, "citation": "Fuller D, et al. (2020). JMIR mHealth and uHealth, 8(9), e18694.", "doi": "10.2196/18694", "note": "144 Fitbit studies, 42 Garmin studies, 28 Apple studies"},
+    {"id": 2, "citation": "Germini F, et al. (2022). JMIR, 24(1), e30791.", "doi": "10.2196/30791"},
+    {"id": 3, "citation": "O'Driscoll R, et al. (2024). Sports Medicine.", "doi": "10.1007/s40279-024-02077-2", "note": "24 systematic reviews, 249 studies, 430,465 participants"},
+    {"id": 4, "citation": "Kim Y, et al. (2024). Sensors, 24(14), 4658.", "doi": "10.3390/s24144658", "note": "104 adults, 24-hr ActivPAL criterion"},
+    {"id": 5, "citation": "Kristiansson E, et al. (2023). BMC Medical Research Methodology, 23, 50.", "doi": "10.1186/s12874-023-01868-x", "note": "32 participants, 14-day free-living + lab"},
+    {"id": 6, "citation": "Choe S & Kang M (2025). Physiological Measurement.", "doi": "10.1088/1361-6579/adca82", "note": "56 studies, 270 effect sizes"},
+    {"id": 7, "citation": "npj Digital Medicine (2026). Living systematic review.", "doi": "10.1038/s41746-025-02238-1", "note": "82 studies, 430,052 participants, through Series 9 and Ultra 2"},
+    {"id": 8, "citation": "Garmin Validity Review (2020). PMC.", "doi": "10.3390/ijerph17134269"},
+    {"id": 9, "citation": "Feehan LM, et al. (2020). PeerJ.", "doi": "10.7717/peerj.9381"},
+    {"id": 10, "citation": "Roos L, et al. (2020). Int J Environ Res Public Health, 17(20), 7123.", "doi": "10.3390/ijerph17207123"},
+    {"id": 11, "citation": "Henriksen A, et al. (2022). JMIR Formative Research, 6(5), e27248."},
+    {"id": 12, "citation": "Giurgiu M, et al. (2023). Technologies, 11(1), 29.", "doi": "10.3390/technologies11010029"},
+    {"id": 13, "citation": "Straczkiewicz M, et al. (2023). JMIR Cancer.", "doi": "10.2196/47646"},
+    {"id": 14, "citation": "Small SR, et al. (2024). PMC / Nature Medicine.", "doi": "10.1038/s41591-024-03243-w"},
+    {"id": 15, "citation": "Oner C, et al. (2022). Sensors, 22(11), 3989.", "doi": "10.3390/s22113989"},
+    {"id": 16, "citation": "Nature Scientific Reports (2024).", "doi": "10.1038/s41598-024-74140-x", "note": "Garmin Vivoactive 4 vs Fitbit Sense"},
+    {"id": 17, "citation": "Niela-Vilén H, et al. (2022). Sensors, 22(7), 2585.", "doi": "10.3390/s22072585"},
+    {"id": 18, "citation": "Modave F, et al. (2017). JMIR mHealth and uHealth, 5(6), e88.", "doi": "10.2196/mhealth.7870", "note": "Age, BMI, dominant hand impact study"},
+    {"id": 19, "citation": "Scataglini S, et al. (2025). Int J Obes, 49(4), 541-553.", "doi": "10.1038/s41366-024-01659-4", "note": "Obesity gait pattern differences meta-analysis"},
+    {"id": 20, "citation": "Sensors (2025). Step counting in neurological conditions.", "note": "Algorithms detect only 11-47% of steps in neurological conditions"},
+    {"id": 21, "citation": "Johnston W, et al. (2021). Br J Sports Med, 55(14), 780-793.", "note": "INTERLIVE network expert statement on step count validity"},
+    {"id": 22, "citation": "WellnessPulse Meta-Analysis (2025). Aggregate data.", "note": "NOT peer-reviewed — consumer data aggregation"},
+    {"id": 23, "citation": "AIM7 (2025). Aggregate validation data.", "note": "NOT peer-reviewed — consumer data aggregation"},
+    {"id": 24, "citation": "Android Central (2023, 2025). Consumer testing.", "note": "NOT peer-reviewed — consumer testing"}
+  ]
+}
