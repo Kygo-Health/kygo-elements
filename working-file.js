@@ -57,6 +57,14 @@ class KygoStepCountAccuracy extends HTMLElement {
         strengths: ['Best overall step accuracy (82.6%)', 'MAPE 0.6–1.27% at normal walking speeds', 'Validated across lawn, gravel, asphalt, tile', '10-step filter eliminates most phantom steps', 'Best VO2 max & GPS tracking'],
         weaknesses: ['Undercounts at slow speeds (<1.6 km/h)', 'Vivofit free-living MAPE 17.8%', 'Can count driving/road vibrations', 'Entry models lack gyroscope'],
         falseSteps: ['Driving (road vibrations)', 'Brushing teeth', 'Showering', 'Crocheting', 'Vigorous hand gestures'],
+        modelData: [
+          { model: 'Vivoactive 4', mape: '<2%', condition: 'Exercise testing', source: 'Nature Scientific Reports (2024)' },
+          { model: 'Vivosmart HR+', mape: '≤5% treadmill, ≤10% free motion', condition: 'All conditions', source: 'Roos et al. (2020)' },
+          { model: 'Vivosmart HR', mape: '0.61–1.27%', condition: 'Treadmill 3.2–4.8 km/h', source: 'Feehan et al. (2020)' },
+          { model: 'Vivosmart', mape: '1.2–3.5%', condition: 'Three treadmill speeds', source: 'Garmin validity review (2020)' },
+          { model: 'Forerunner 265', mape: '0.3% (15 steps off / 5,000)', condition: 'Walking test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' },
+          { model: 'Vivofit', mape: '17.8%', condition: 'Free-living (at home)', source: 'Garmin validity review (2020)' }
+        ],
         studies: ['roos2020', 'feehan2020', 'natureSR2024'],
         affiliateLinks: [
           { name: 'Garmin Forerunner 265', url: 'https://amzn.to/4r7eC0M' },
@@ -81,6 +89,12 @@ class KygoStepCountAccuracy extends HTMLElement {
         strengths: ['81.1% overall accuracy', 'MAPE 6.4% free-living (r=0.99 vs ActivPAL)', '0.034% total error across all speeds (one study)', 'Best consistency across speed range', 'FDA-cleared ECG and sleep apnea detection'],
         weaknesses: ['23.9% MAPE for light-intensity / slow walking', '10.1% MAPE on treadmill', 'Age ≥40: 10.9% MAPE vs 4.3% for age <40', 'Some phantom steps while driving'],
         falseSteps: ['Driving', 'Desk work (newer models improved)'],
+        modelData: [
+          { model: 'Series 6', mape: '6.4%', condition: 'Free-living 24h vs ActivPAL', source: 'Kim et al. (2024)', note: 'r=0.99 correlation' },
+          { model: 'Series 8', mape: '~81% overall', condition: 'Meta-analysis aggregate', source: 'WellnessPulse (2025)', note: 'Consumer aggregation' },
+          { model: 'Ultra 2', mape: 'Best in 10-watch test', condition: '10,000-step walk/jog', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' },
+          { model: 'Series 2', mape: '~18.5%', condition: 'Mixed conditions', source: 'Choe & Kang (2025)' }
+        ],
         studies: ['kim2024', 'choekang2025', 'natureSR2024'],
         affiliateLinks: [
           { name: 'Apple Watch Series 10', url: 'https://amzn.to/4kw5Uaa' },
@@ -104,6 +118,12 @@ class KygoStepCountAccuracy extends HTMLElement {
         strengths: ['Most peer-reviewed validation (144 studies)', 'Charge 2: 3.4% difference vs gold standard', 'Ankle placement gives near-clinical accuracy', 'Most affordable entry point'],
         weaknesses: ['Free-living MAPE 17.1–35.5% (Charge 2/Alta)', 'Within-brand inconsistency between models', 'Meets acceptable accuracy only ~50% of the time'],
         falseSteps: ['Various non-walking arm movements'],
+        modelData: [
+          { model: 'Sense', mape: '~8%', condition: 'Exercise testing', source: 'Nature Scientific Reports (2024)' },
+          { model: 'Charge 2', mape: '3.4% diff vs gold standard', condition: 'Clinical validation', source: 'Straczkiewicz et al. (2023)' },
+          { model: 'Charge 2 / Alta', mape: '17.1–35.5%', condition: '24-hr free-living', source: 'Giurgiu et al. (2023)' },
+          { model: 'Charge / Charge HR', mape: '<25%', condition: '20 studies (systematic review)', source: 'Germini et al. (2022)' }
+        ],
         studies: ['roos2020', 'straczkiewicz2023', 'giurgiu2023', 'germini2022'],
         affiliateLinks: [
           { name: 'Fitbit Charge 6', url: 'https://amzn.to/4chbzyr' },
@@ -128,6 +148,10 @@ class KygoStepCountAccuracy extends HTMLElement {
         strengths: ['~2% MAPE in controlled walking test (Watch 5)', 'BioActive multi-sensor fusion', 'FDA-cleared ECG and sleep apnea detection', 'Strong Android ecosystem'],
         weaknesses: ['r=0.82 vs ActivPAL (vs Apple Watch r=0.99)', '2,000–3,500+ phantom steps/day at desk/driving', 'Fewer independent validation studies', 'Gyroscope may be overly sensitive to arm movements'],
         falseSteps: ['Desk work', 'Driving', 'Stationary bike'],
+        modelData: [
+          { model: 'Galaxy Watch 4', mape: null, condition: '24-hr free-living', source: 'Kim et al. (2024)', note: 'r=0.82 vs ActivPAL (lower than Apple Watch r=0.99 in same study)' },
+          { model: 'Galaxy Watch 5', mape: '~2% (~200 steps off / 10,000)', condition: 'Walking test', source: 'Android Central (2025)', note: 'Consumer test, not peer-reviewed' }
+        ],
         studies: ['kim2024'],
         affiliateLinks: [
           { name: 'Galaxy Watch 7', url: 'https://amzn.to/3Owp4R1' },
@@ -152,6 +176,9 @@ class KygoStepCountAccuracy extends HTMLElement {
         strengths: ['~98.6% accuracy in walking test', '1.6% MAPE (81 steps off / 5,000)', 'Excellent running cadence tracking', 'Long battery life', 'Barometric altimeter for elevation'],
         weaknesses: ['No peer-reviewed validation studies', 'Requires continuous arm motion to count', 'Undercounts short walking bursts (<10-step sprints)'],
         falseSteps: [],
+        modelData: [
+          { model: 'APEX 2 Pro', mape: '1.6% (81 steps off / 5,000)', condition: 'Walking test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' }
+        ],
         studies: [],
         affiliateLinks: null
       },
@@ -173,6 +200,11 @@ class KygoStepCountAccuracy extends HTMLElement {
         strengths: ['Best-in-class heart rate monitoring', 'Training load (RPE) features', 'Polar Vantage M3: only +3.8% error in consumer test'],
         weaknesses: ['A360: not valid for any walking condition (Roos 2020)', 'Vantage overreports steps consistently', '53.2% accuracy in meta-analysis', 'Cannot replace research-grade accelerometers', 'Not recommended for step count reliability'],
         falseSteps: ['Non-walking wrist movements'],
+        modelData: [
+          { model: 'A360', mape: null, condition: 'Walking & jogging', source: 'Roos et al. (2020)', note: 'Not valid for any walking condition' },
+          { model: 'Vantage', mape: 'High (not specified)', condition: 'Free-living', source: 'Henriksen et al. (2022), JMIR Formative Research', note: 'Overreports steps' },
+          { model: 'Vantage M3', mape: '+3.8% (379 extra steps / 10,000)', condition: 'Walking test', source: 'TechRadar (Jan 2025)', note: 'Consumer test, not peer-reviewed' }
+        ],
         studies: ['roos2020'],
         affiliateLinks: null
       },
@@ -194,6 +226,11 @@ class KygoStepCountAccuracy extends HTMLElement {
         strengths: ['Within 12 steps of 5,000 in controlled walk', 'MAPE <10% in lab combined activities', 'No sharp edges — comfortable 24/7 wear', 'Best HRV and sleep accuracy among all devices'],
         weaknesses: ['+2,124 avg phantom steps/day in free-living', 'Massive variance (±4,256 steps)', 'Hand gestures, cooking, typing = fake steps', 'Finger placement fundamentally limited for steps', '$5.99/mo subscription required'],
         falseSteps: ['Hand gestures / talking with hands', 'Cooking / chopping / stirring', 'Typing (some cases)', 'Any repetitive hand motion matching walking cadence'],
+        modelData: [
+          { model: 'Gen 3', mape: '<10%', condition: 'Laboratory (combined activities)', source: 'Kristiansson et al. (2023)' },
+          { model: 'Gen 3', mape: null, condition: 'Free-living (14 days)', source: 'Kristiansson et al. (2023)', note: 'Mean diff +2,124 ± 4,256 steps/day; r≥0.76' },
+          { model: 'Gen 3', mape: null, condition: 'Controlled walk (5,000 steps)', source: 'Android Central (2023)', note: 'Within 12 steps of 5,000 — consumer test' }
+        ],
         studies: ['kristiansson2023'],
         affiliateLinks: [
           { name: 'Oura Ring Gen 4', url: 'https://amzn.to/4klINic' }
@@ -217,6 +254,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         strengths: ['3-axis accelerometer + 3-axis gyroscope hardware', 'Flexible wear locations (wrist, bicep, body)', 'Excellent for recovery and HRV tracking', 'No screen distraction'],
         weaknesses: ['Step counting added Oct 2024 — no peer-reviewed studies', 'User-reported overcounting', 'WHOOP deprioritizes steps vs. Strain metric', 'Most expensive subscription on this list'],
         falseSteps: ['Driving (user-reported)', 'Desk work (user-reported)'],
+        modelData: [],
         studies: [],
         affiliateLinks: [
           { name: 'WHOOP 4.0', url: 'https://amzn.to/3Zmzkh8', note: '12-month subscription included' }
@@ -506,6 +544,7 @@ class KygoStepCountAccuracy extends HTMLElement {
                   <div class="dd-keydiff">
                     <strong>Key Differentiator:</strong> ${d.keyDiff}
                   </div>
+                  ${this._renderModelData(k)}
                   <div class="dd-cols">
                     <div class="dd-col">
                       <h4>Strengths</h4>
@@ -694,6 +733,29 @@ class KygoStepCountAccuracy extends HTMLElement {
     `;
   }
 
+  _renderModelData(deviceKey) {
+    const device = this._devices[deviceKey];
+    if (!device || !device.modelData || !device.modelData.length) return '';
+    return `
+      <div class="dd-model-data">
+        <h4>Model-Specific Research Data</h4>
+        <table class="model-table">
+          <thead><tr><th>Model</th><th>MAPE / Accuracy</th><th>Condition</th><th>Source</th></tr></thead>
+          <tbody>
+            ${device.modelData.map(m => `
+              <tr>
+                <td style="font-weight:600;white-space:nowrap">${m.model}</td>
+                <td>${m.mape || '—'}</td>
+                <td>${m.condition}</td>
+                <td>${m.source}${m.note ? `<br><span class="model-note">${m.note}</span>` : ''}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
   _renderStudiesForDevice(deviceKey) {
     const device = this._devices[deviceKey];
     if (!device || !device.studies || !device.studies.length) return '';
@@ -825,6 +887,13 @@ class KygoStepCountAccuracy extends HTMLElement {
       .dd-col li { display: flex; gap: 6px; align-items: flex-start; font-size: 12px; color: var(--gray-600); }
       .dd-check { color: var(--green); font-size: 14px; flex-shrink: 0; }
       .dd-x { color: var(--red); font-size: 14px; flex-shrink: 0; }
+      .dd-model-data { margin-bottom: 14px; }
+      .dd-model-data h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; }
+      .model-table { width: 100%; border-collapse: collapse; font-size: 12px; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--gray-200); }
+      .model-table thead th { background: var(--gray-100); padding: 6px 10px; text-align: left; font-size: 10px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.3px; }
+      .model-table td { padding: 7px 10px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); vertical-align: top; line-height: 1.4; }
+      .model-table tr:last-child td { border-bottom: none; }
+      .model-note { font-size: 10px; color: var(--gray-400); font-style: italic; }
       .dd-false-steps { margin-bottom: 12px; }
       .dd-false-steps h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; }
       .dd-tags { display: flex; flex-wrap: wrap; gap: 6px; }
