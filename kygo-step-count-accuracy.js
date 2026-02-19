@@ -22,6 +22,8 @@ class KygoStepCountAccuracy extends HTMLElement {
     this._expandedCaveats = new Set();
     this._expandedFactors = new Set();
     this._eventsBound = false;
+    this._selectedDevices = ['garmin', 'apple-watch'];
+    this._activeTab = 'overview';
   }
 
   connectedCallback() {
@@ -441,59 +443,41 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="rankings">
+      <section class="comparison" id="compare">
         <div class="container">
-          <h2 class="section-title animate-on-scroll">Step Count Accuracy Rankings</h2>
-          <p class="section-sub animate-on-scroll">Ranked by overall accuracy. MAPE = Mean Absolute Percentage Error — lower is better.</p>
-          <div class="table-wrap animate-on-scroll">
-            <table class="rankings-table">
-              <thead>
-                <tr>
-                  <th>Rank</th>
-                  <th>Device</th>
-                  <th>MAPE (Lab)</th>
-                  <th>MAPE (Free-Living)</th>
-                  <th>Bias</th>
-                  <th>Overall</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${deviceList.map(([k, d]) => `
-                  <tr class="rank-row" data-device="${k}" style="--accent:${d.color}">
-                    <td class="rank-num" style="color:${d.color}">${d.rank}</td>
-                    <td class="rank-name">
-                      <div class="rank-name-inner">
-                        ${d.imageUrl
-                          ? `<img src="${d.imageUrl}" alt="${d.name}" class="rank-img" />`
-                          : `<span class="rank-fallback" style="background:${d.color}">${d.short[0]}</span>`
-                        }
-                        <span>${d.name}</span>
-                      </div>
-                    </td>
-                    <td class="rank-mape">${d.mapeLab}</td>
-                    <td class="rank-free">${d.mapeFree}</td>
-                    <td>
-                      <span class="bias-tag bias-${d.bias.toLowerCase().includes('under') ? 'under' : d.bias.toLowerCase().includes('over') ? 'over' : d.bias.toLowerCase().includes('mixed') ? 'mixed' : 'unknown'}">${d.bias}</span>
-                    </td>
-                    <td class="rank-overall">
-                      ${d.overallPct
-                        ? `<div class="overall-bar-wrap"><div class="overall-bar" style="width:${d.overallPct}%;background:${d.color}"></div><span>${d.overallPct}%</span></div>`
-                        : `<span class="overall-na">${d.overallNote || 'See details'}</span>`
-                      }
-                    </td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
+          <h2 class="section-title animate-on-scroll">Head-to-Head Comparison</h2>
+          <p class="section-sub animate-on-scroll">Select two devices to compare side by side across accuracy metrics, bias, algorithm, and more.</p>
+          <div class="device-selectors animate-on-scroll">
+            <div class="selector-wrap">
+              <label class="selector-label">Device 1</label>
+              <select class="device-select" id="sc-device1">
+                ${deviceList.map(([k, d]) => `<option value="${k}" ${k === this._selectedDevices[0] ? 'selected' : ''}>${d.name}</option>`).join('')}
+              </select>
+            </div>
+            <div class="vs-badge">VS</div>
+            <div class="selector-wrap">
+              <label class="selector-label">Device 2</label>
+              <select class="device-select" id="sc-device2">
+                ${deviceList.map(([k, d]) => `<option value="${k}" ${k === this._selectedDevices[1] ? 'selected' : ''}>${d.name}</option>`).join('')}
+              </select>
+            </div>
           </div>
-          <p class="table-note animate-on-scroll">MAPE = Mean Absolute Percentage Error. Lower = more accurate. Free-living data reflects real-world daily wear conditions.</p>
+          <div class="device-summary-row animate-on-scroll">
+            ${this._renderDeviceSummaryRow()}
+          </div>
+          <div class="comp-tabs animate-on-scroll">
+            ${this._renderComparisonTabs()}
+          </div>
+          <div class="comp-detail">
+            ${this._renderComparisonDetail()}
+          </div>
         </div>
       </section>
 
       <section class="deep-dives">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Device Deep Dives</h2>
-          <p class="section-sub animate-on-scroll">Tap any device to see strengths, weaknesses, algorithm details, and research sources.</p>
+          <p class="section-sub animate-on-scroll">Tap any device to see strengths, weaknesses, and research sources.</p>
           <div class="dd-grid">
             ${deviceList.map(([k, d], i) => `
               <div class="dd-card animate-on-scroll ${this._expandedDevice === k ? 'expanded' : ''}" data-device="${k}" style="--accent:${d.color};--delay:${i * 80}ms">
@@ -742,6 +726,284 @@ class KygoStepCountAccuracy extends HTMLElement {
     `;
   }
 
+  // ── Comparison ────────────────────────────────────────────────────────
+
+  _parseMapeNum(s) {
+    if (!s || typeof s !== 'string') return null;
+    const lower = s.toLowerCase();
+    if (lower.includes('no published') || lower.includes('limited') || lower === 'high' || lower === '—' || lower === '-') return null;
+    const match = s.match(/[\d]+(?:\.[\d]+)?/);
+    return match ? parseFloat(match[0]) : null;
+  }
+
+  _updateComparison() {
+    const shadow = this.shadowRoot;
+    const summaryRow = shadow.querySelector('.device-summary-row');
+    if (summaryRow) summaryRow.innerHTML = this._renderDeviceSummaryRow();
+    const tabs = shadow.querySelector('.comp-tabs');
+    if (tabs) tabs.innerHTML = this._renderComparisonTabs();
+    const detail = shadow.querySelector('.comp-detail');
+    if (detail) detail.innerHTML = this._renderComparisonDetail();
+  }
+
+  _renderDeviceSummaryRow() {
+    const devices = this._devices;
+    return this._selectedDevices.map((key, i) => {
+      const d = devices[key];
+      if (!d) return '';
+      const linkName = d.affiliateLinks && d.affiliateLinks.length
+        ? `<a href="${d.affiliateLinks[0].url}" class="dsc-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>`
+        : d.name;
+      return `
+        <div class="device-summary-card" style="--accent:${d.color}">
+          <div class="dsc-num">${i + 1}</div>
+          ${d.imageUrl ? `<img src="${d.imageUrl}" alt="${d.name}" class="dsc-img" />` : `<span class="dsc-fallback" style="background:${d.color}">${d.short[0]}</span>`}
+          <div class="dsc-info">
+            <h3 class="dsc-name">${linkName}</h3>
+            <span class="dsc-bestfor">${d.bestFor}</span>
+            <span class="dsc-sub ${d.subscription === 'None required' ? 'dsc-sub-free' : 'dsc-sub-paid'}">${d.subscription}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  _renderComparisonTabs() {
+    const tabs = [
+      { id: 'overview', label: 'Overview' },
+      { id: 'lab', label: 'Lab Accuracy' },
+      { id: 'free-living', label: 'Free-Living' },
+      { id: 'bias', label: 'Bias & Direction' },
+      { id: 'speed', label: 'Speed Sensitivity' },
+      { id: 'phantom', label: 'Phantom Steps' }
+    ];
+    return tabs.map(t => `
+      <button class="comp-tab ${this._activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">${t.label}</button>
+    `).join('');
+  }
+
+  _renderComparisonDetail() {
+    switch (this._activeTab) {
+      case 'overview':    return this._renderOverviewTab();
+      case 'lab':         return this._renderLabTab();
+      case 'free-living': return this._renderFreeLivingTab();
+      case 'bias':        return this._renderBiasTab();
+      case 'speed':       return this._renderSpeedTab();
+      case 'phantom':     return this._renderPhantomTab();
+      default:            return this._renderOverviewTab();
+    }
+  }
+
+  _renderOverviewTab() {
+    const devices = this._devices;
+    const [k1, k2] = this._selectedDevices;
+    const d1 = devices[k1] || {};
+    const d2 = devices[k2] || {};
+
+    const rows = [
+      {
+        metric: 'Overall Accuracy', note: 'Higher is better',
+        v1: d1.overallPct ? `${d1.overallPct}%` : (d1.overallNote || '—'),
+        v2: d2.overallPct ? `${d2.overallPct}%` : (d2.overallNote || '—'),
+        winner: d1.overallPct && d2.overallPct ? (d1.overallPct >= d2.overallPct ? 1 : 2) : 0
+      },
+      {
+        metric: 'MAPE (Lab)', note: 'Lower is better',
+        v1: d1.mapeLab || '—', v2: d2.mapeLab || '—',
+        winner: (() => {
+          const n1 = this._parseMapeNum(d1.mapeLab), n2 = this._parseMapeNum(d2.mapeLab);
+          return (n1 !== null && n2 !== null) ? (n1 <= n2 ? 1 : 2) : 0;
+        })()
+      },
+      {
+        metric: 'MAPE (Free-Living)', note: 'Lower is better',
+        v1: d1.mapeFree || '—', v2: d2.mapeFree || '—',
+        winner: (() => {
+          const n1 = this._parseMapeNum(d1.mapeFree), n2 = this._parseMapeNum(d2.mapeFree);
+          return (n1 !== null && n2 !== null) ? (n1 <= n2 ? 1 : 2) : 0;
+        })()
+      },
+      {
+        metric: 'Bias Direction', note: '',
+        v1: d1.bias || '—', v2: d2.bias || '—', winner: 0
+      },
+      {
+        metric: 'Algorithm', note: '',
+        v1: d1.algorithm || '—', v2: d2.algorithm || '—', winner: 0
+      },
+      {
+        metric: 'Wear Location', note: '',
+        v1: d1.wearLocation || '—', v2: d2.wearLocation || '—', winner: 0
+      },
+      {
+        metric: 'Subscription', note: 'Free = win',
+        v1: d1.subscription || '—', v2: d2.subscription || '—',
+        winner: (() => {
+          const f1 = (d1.subscription || '').toLowerCase().includes('none');
+          const f2 = (d2.subscription || '').toLowerCase().includes('none');
+          return (f1 && !f2) ? 1 : (f2 && !f1) ? 2 : 0;
+        })()
+      }
+    ];
+
+    return `
+      <div class="ov-table-wrap">
+        <table class="ov-table">
+          <thead>
+            <tr>
+              <th class="ov-metric-col">Metric</th>
+              <th class="ov-dev-col" style="color:${d1.color || 'inherit'}">${d1.short || k1}</th>
+              <th class="ov-dev-col" style="color:${d2.color || 'inherit'}">${d2.short || k2}</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(r => `
+              <tr>
+                <td class="ov-metric">${r.metric}${r.note ? `<span class="ov-note">${r.note}</span>` : ''}</td>
+                <td class="ov-val ${r.winner === 1 ? 'ov-winner' : ''}">${r.v1}</td>
+                <td class="ov-val ${r.winner === 2 ? 'ov-winner' : ''}">${r.v2}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div class="ov-strengths">
+        ${this._selectedDevices.map(k => {
+          const d = devices[k] || {};
+          return `
+            <div class="ov-strengths-card" style="--accent:${d.color}">
+              <h4>Best For: ${d.short || k}</h4>
+              <p>${d.bestFor || '—'}</p>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  _renderLabTab() {
+    return `
+      <div class="comp-2col">
+        ${this._selectedDevices.map(k => {
+          const d = this._devices[k] || {};
+          return `
+            <div class="comp-col">
+              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              ${this._renderModelData(k) || '<p class="comp-no-data">No published lab data</p>'}
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <p class="comp-insight"><strong>Lab conditions:</strong> Treadmill or structured walking tests. MAPE = Mean Absolute Percentage Error; lower is better. See model-specific rows for study sources.</p>
+    `;
+  }
+
+  _renderFreeLivingTab() {
+    const devices = this._devices;
+    return `
+      <div class="comp-2col">
+        ${this._selectedDevices.map(k => {
+          const d = devices[k] || {};
+          return `
+            <div class="comp-col">
+              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              <div class="comp-stat-block">
+                <span class="comp-stat-label">MAPE (Free-Living)</span>
+                <span class="comp-stat-value">${d.mapeFree || '—'}</span>
+              </div>
+              ${d.strengths && d.strengths.length ? `<p class="comp-fl-note">${d.strengths.slice(0, 2).join(' · ')}</p>` : ''}
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div class="comp-insight-box">
+        <strong>Free-living vs. lab:</strong> Expect free-living MAPE to be 2–5× higher than lab MAPE. Oura Ring uniquely worsens due to hand gestures; Garmin underestimates at slow speeds. Apple Watch best balances lab and real-world performance.
+      </div>
+    `;
+  }
+
+  _renderBiasTab() {
+    const devices = this._devices;
+    return `
+      <div class="comp-2col">
+        ${this._selectedDevices.map(k => {
+          const d = devices[k] || {};
+          const biasDir = (d.bias || '').toLowerCase();
+          const biasClass = biasDir.includes('under') ? 'bias-under' : biasDir.includes('over') ? 'bias-over' : biasDir.includes('mixed') ? 'bias-mixed' : 'bias-unknown';
+          return `
+            <div class="comp-col">
+              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              <span class="bias-tag ${biasClass}" style="margin-bottom:12px;display:inline-block">${d.bias || '—'}</span>
+              <p class="comp-fl-note">${d.keyDiff || d.algorithm || '—'}</p>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div class="comp-insight-box">
+        <strong>Bias direction matters:</strong> Undercounting devices feel less motivating but give more honest data. Overcounting devices (Oura, Samsung) can create a false sense of activity. Garmin's 10-step filter biases toward undercounting — a deliberate accuracy trade-off that minimises phantom steps.
+      </div>
+    `;
+  }
+
+  _renderSpeedTab() {
+    const speedFactor = this._accuracyFactors[0];
+    const devices = this._devices;
+    const speedNotes = (key) => {
+      const d = devices[key] || {};
+      return [...(d.weaknesses || []), ...(d.strengths || [])]
+        .filter(s => /speed|slow|fast|km\/h|m\/s|walk/i.test(s))
+        .slice(0, 3);
+    };
+    return `
+      ${speedFactor && speedFactor.speeds ? `
+        <div class="speed-table-wrap">
+          <table class="speed-table">
+            <thead><tr><th>Walking Speed</th><th>Global Accuracy</th><th>Notes</th></tr></thead>
+            <tbody>${speedFactor.speeds.map(s => `<tr><td><strong>${s.speed}</strong></td><td>${s.accuracy}</td><td>${s.note}</td></tr>`).join('')}</tbody>
+          </table>
+        </div>
+      ` : ''}
+      <div class="comp-2col">
+        ${this._selectedDevices.map(k => {
+          const d = devices[k] || {};
+          const notes = speedNotes(k);
+          return `
+            <div class="comp-col">
+              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              ${notes.length ? `<ul class="comp-speed-list">${notes.map(n => `<li>${n}</li>`).join('')}</ul>` : '<p class="comp-no-data">No speed-specific data</p>'}
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div class="comp-insight-box">
+        <strong>Speed threshold:</strong> Below 0.9 m/s (~3.2 km/h), all consumer wearables produce unreliable step counts. Garmin's 10-step filter makes it miss more steps at very low speeds. Apple Watch has the most stable performance across the normal walking speed range.
+      </div>
+    `;
+  }
+
+  _renderPhantomTab() {
+    const devices = this._devices;
+    return `
+      <div class="comp-2col">
+        ${this._selectedDevices.map(k => {
+          const d = devices[k] || {};
+          return `
+            <div class="comp-col">
+              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              ${d.falseSteps && d.falseSteps.length
+                ? `<div class="dd-tags">${d.falseSteps.map(f => `<span class="dd-tag">${f}</span>`).join('')}</div>`
+                : '<p class="comp-no-data">No published data</p>'
+              }
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div class="comp-insight-box">
+        <strong>Phantom steps:</strong> Garmin's 10-step minimum bout filter provides the strongest defence against false counts. Oura Ring and Samsung generate the most phantom steps in daily use. Driving on rough roads affects most wrist-worn devices.
+      </div>
+    `;
+  }
+
   // ── Styles ────────────────────────────────────────────────────────────
 
   _styles() {
@@ -791,8 +1053,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       .hero h1 { font-size: clamp(28px, 6vw, 42px); margin-bottom: 16px; }
       .hero-sub { font-size: clamp(15px, 3.5vw, 18px); color: var(--gray-600); max-width: 640px; margin: 0 auto; line-height: 1.7; }
 
-      /* Rankings */
-      .rankings { padding: 56px 0; background: var(--light); }
+      /* Shared section utilities */
       .section-title { font-size: clamp(24px, 5vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { font-size: clamp(14px, 3.5vw, 16px); color: var(--gray-600); text-align: center; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
       .table-wrap { overflow-x: auto; border-radius: var(--radius); box-shadow: 0 4px 24px rgba(0,0,0,0.07); background: #fff; }
@@ -803,21 +1064,84 @@ class KygoStepCountAccuracy extends HTMLElement {
       .rank-row { border-bottom: 1px solid var(--gray-100); transition: background 0.15s; }
       .rank-row:hover { background: var(--gray-100); }
       .rank-row td { padding: 14px 16px; font-size: 14px; vertical-align: middle; }
-      .rank-num { font-size: 18px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
-      .rank-name-inner { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-      .rank-img { width: 32px; height: 32px; object-fit: contain; border-radius: 8px; flex-shrink: 0; }
-      .rank-fallback { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 14px; flex-shrink: 0; }
-      .rank-mape { font-weight: 600; color: var(--green-dark); }
       .bias-tag { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 600; white-space: nowrap; }
       .bias-under { background: rgba(34,197,94,0.12); color: #16A34A; }
       .bias-over { background: rgba(239,68,68,0.12); color: #DC2626; }
       .bias-mixed { background: rgba(251,191,36,0.15); color: #B45309; }
       .bias-unknown { background: var(--gray-100); color: var(--gray-600); }
-      .overall-bar-wrap { display: flex; align-items: center; gap: 8px; }
-      .overall-bar { height: 8px; border-radius: 4px; min-width: 4px; transition: width 0.8s ease; }
-      .overall-bar-wrap span { font-size: 13px; font-weight: 600; white-space: nowrap; }
-      .overall-na { font-size: 12px; color: var(--gray-400); }
       .table-note { font-size: 13px; color: var(--gray-400); text-align: center; margin-top: 12px; }
+
+      /* Comparison */
+      .comparison { padding: 56px 0; background: var(--light); }
+      .device-selectors { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 28px; flex-wrap: wrap; }
+      .selector-wrap { display: flex; flex-direction: column; gap: 6px; flex: 1; max-width: 280px; }
+      .selector-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-600); }
+      .device-select { padding: 10px 14px; border-radius: var(--radius-sm); border: 2px solid var(--gray-200); background: #fff; font-size: 14px; font-weight: 600; color: var(--dark); cursor: pointer; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+      .device-select:focus { outline: none; border-color: var(--green); }
+      .vs-badge { font-size: 14px; font-weight: 800; color: var(--gray-400); background: var(--gray-100); padding: 8px 16px; border-radius: 50px; flex-shrink: 0; }
+      .device-summary-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+      .device-summary-card { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #fff; border-radius: var(--radius); border: 2px solid var(--accent); position: relative; }
+      .dsc-num { position: absolute; top: 10px; right: 12px; font-size: 11px; font-weight: 700; color: var(--accent); }
+      .dsc-img { width: 44px; height: 44px; object-fit: contain; border-radius: 10px; flex-shrink: 0; }
+      .dsc-fallback { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; flex-shrink: 0; }
+      .dsc-info { flex: 1; min-width: 0; }
+      .dsc-name { font-size: 16px; margin-bottom: 4px; }
+      .dsc-name-link { color: inherit; text-decoration: underline; text-decoration-color: var(--gray-300); text-underline-offset: 2px; }
+      .dsc-name-link:hover { text-decoration-color: var(--accent); }
+      .dsc-bestfor { font-size: 12px; color: var(--gray-600); display: block; margin-bottom: 6px; }
+      .dsc-sub { display: inline-block; padding: 2px 8px; border-radius: 50px; font-size: 11px; font-weight: 600; }
+      .dsc-sub-free { background: var(--green-light); color: var(--green-dark); }
+      .dsc-sub-paid { background: rgba(239,68,68,0.08); color: #DC2626; }
+      .comp-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+      .comp-tab { padding: 8px 16px; border-radius: 50px; border: 2px solid var(--gray-200); background: #fff; font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all 0.2s; font-family: inherit; }
+      .comp-tab:hover { border-color: var(--green); color: var(--green-dark); }
+      .comp-tab.active { background: var(--green); border-color: var(--green); color: #fff; }
+      .comp-detail { background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); padding: 24px; min-height: 200px; }
+      /* Overview tab */
+      .ov-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+      .ov-table { width: 100%; border-collapse: collapse; min-width: 400px; }
+      .ov-table thead th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 2px solid var(--gray-200); color: var(--gray-600); }
+      .ov-metric-col { width: 40%; }
+      .ov-dev-col { width: 30%; }
+      .ov-table tbody tr { border-bottom: 1px solid var(--gray-100); transition: background 0.15s; }
+      .ov-table tbody tr:last-child { border-bottom: none; }
+      .ov-table tbody tr:hover { background: var(--gray-100); }
+      .ov-metric { padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--dark); }
+      .ov-note { display: block; font-size: 11px; font-weight: 400; color: var(--gray-400); margin-top: 2px; }
+      .ov-val { padding: 12px 16px; font-size: 14px; color: var(--gray-600); }
+      .ov-winner { background: rgba(34,197,94,0.08); color: var(--green-dark); font-weight: 700; }
+      .ov-strengths { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .ov-strengths-card { padding: 14px 18px; border-radius: var(--radius-sm); border-left: 3px solid var(--accent); background: var(--gray-100); }
+      .ov-strengths-card h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 4px; }
+      .ov-strengths-card p { font-size: 14px; font-weight: 600; color: var(--dark); margin: 0; }
+      /* Shared comp tab styles */
+      .comp-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+      .comp-col-title { font-size: 15px; margin-bottom: 12px; }
+      .comp-stat-block { padding: 12px 16px; background: var(--gray-100); border-radius: var(--radius-sm); margin-bottom: 10px; }
+      .comp-stat-label { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 4px; }
+      .comp-stat-value { font-size: 22px; font-weight: 700; color: var(--dark); font-family: 'Space Grotesk', sans-serif; }
+      .comp-fl-note { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin: 0; }
+      .comp-insight { font-size: 13px; color: var(--gray-400); font-style: italic; margin-top: 8px; }
+      .comp-insight-box { background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+      .comp-no-data { font-size: 13px; color: var(--gray-400); font-style: italic; }
+      /* Speed tab */
+      .speed-table-wrap { overflow-x: auto; margin-bottom: 16px; }
+      .speed-table { width: 100%; border-collapse: collapse; min-width: 400px; font-size: 13px; }
+      .speed-table thead th { background: var(--gray-100); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.3px; }
+      .speed-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); }
+      .speed-table tr:last-child td { border-bottom: none; }
+      .speed-table tr:hover td { background: var(--gray-100); }
+      .comp-speed-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+      .comp-speed-list li { font-size: 13px; color: var(--gray-600); padding-left: 14px; position: relative; line-height: 1.5; }
+      .comp-speed-list li::before { content: '•'; position: absolute; left: 0; color: var(--green); }
+      /* Model table (used in Lab tab via _renderModelData) */
+      .dd-model-data { margin-bottom: 16px; }
+      .dd-model-data h4 { font-size: 13px; color: var(--gray-600); margin-bottom: 8px; }
+      .model-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+      .model-table thead th { background: var(--gray-100); padding: 8px 10px; text-align: left; font-weight: 600; color: var(--gray-600); font-size: 11px; text-transform: uppercase; }
+      .model-table td { padding: 8px 10px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); vertical-align: top; }
+      .model-table tr:last-child td { border-bottom: none; }
+      .model-note { font-size: 10px; color: var(--gray-400); font-style: italic; }
 
       /* Deep Dives */
       .deep-dives { padding: 56px 0; background: #fff; }
@@ -958,6 +1282,11 @@ class KygoStepCountAccuracy extends HTMLElement {
         .factor-triggers { grid-template-columns: 1fr; }
         .cta-box { padding: 32px 20px; }
         .cta-features { gap: 12px; }
+        .device-selectors { flex-direction: column; align-items: stretch; }
+        .selector-wrap { max-width: 100%; }
+        .device-summary-row { grid-template-columns: 1fr; }
+        .comp-2col { grid-template-columns: 1fr; }
+        .ov-strengths { grid-template-columns: 1fr; }
       }
     `;
   }
@@ -969,9 +1298,27 @@ class KygoStepCountAccuracy extends HTMLElement {
     this._eventsBound = true;
     const shadow = this.shadowRoot;
 
+    shadow.addEventListener('change', (e) => {
+      if (e.target.id === 'sc-device1') {
+        this._selectedDevices = [e.target.value, this._selectedDevices[1]];
+        this._updateComparison();
+      } else if (e.target.id === 'sc-device2') {
+        this._selectedDevices = [this._selectedDevices[0], e.target.value];
+        this._updateComparison();
+      }
+    });
+
     shadow.addEventListener('click', (e) => {
+      // Comparison tabs
+      const compTab = e.target.closest('.comp-tab');
+      if (compTab) {
+        this._activeTab = compTab.dataset.tab;
+        this._updateComparison();
+        return;
+      }
+
       // Device card expand/collapse (ignore affiliate link clicks)
-      if (e.target.closest('.dd-name-link') || e.target.closest('.dd-buy-link')) return;
+      if (e.target.closest('.dd-name-link') || e.target.closest('.dd-buy-link') || e.target.closest('.dsc-name-link')) return;
       const ddHeader = e.target.closest('.dd-header');
       if (ddHeader) {
         const card = ddHeader.closest('.dd-card');
