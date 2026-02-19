@@ -21,6 +21,7 @@ class KygoStepCountAccuracy extends HTMLElement {
     this._expandedDevice = null;
     this._expandedCaveats = new Set();
     this._expandedFactors = new Set();
+    this._activeFactor = 0;
     this._eventsBound = false;
     this._selectedDevices = ['garmin', 'apple-watch'];
     this._activeTab = 'overview';
@@ -452,6 +453,44 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <section class="factors">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">What Affects Step Count Accuracy?</h2>
+          <p class="section-sub animate-on-scroll">These six factors apply to all devices. Select any to explore the research data.</p>
+          <div class="factor-selector animate-on-scroll">
+            ${this._accuracyFactors.slice(0, 6).map((f, i) => `
+              <button class="factor-tab ${i === this._activeFactor ? 'active' : ''}" data-factor-tab="${i}">
+                <span class="factor-tab-num">${i + 1}</span>
+                <span class="factor-tab-label">${f.factor}</span>
+              </button>
+            `).join('')}
+          </div>
+          <div class="factor-panel animate-on-scroll">
+            ${this._renderFactorPanel()}
+          </div>
+          <div class="animate-on-scroll">
+            <div class="factor-item ${this._expandedFactors.has('other') ? 'open' : ''}" data-factor="other">
+              <div class="factor-header">
+                <div class="factor-left">
+                  <span class="factor-name">Other Factors: Device Fit, BMI, Surface Type, Incline, Treadmill</span>
+                </div>
+                <span class="factor-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+              </div>
+              <div class="factor-body">
+                ${this._accuracyFactors.slice(6).map(f => `
+                  <div class="other-factor-row">
+                    <div class="other-factor-header">
+                      <strong class="other-factor-name">${f.factor}</strong>
+                    </div>
+                    <p class="other-factor-detail">${f.detail}${f.source ? ` <span class="factor-panel-source">${f.source}</span>` : ''}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="deep-dives">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Device Deep Dives</h2>
@@ -506,48 +545,6 @@ class KygoStepCountAccuracy extends HTMLElement {
                 </div>
               </div>
             `).join('')}
-          </div>
-        </div>
-      </section>
-
-      <section class="factors">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">What Affects Step Count Accuracy?</h2>
-          <p class="section-sub animate-on-scroll">These factors apply to all devices — tap any to see detail and research data.</p>
-          <div class="factor-acc-grid animate-on-scroll">
-            ${this._accuracyFactors.slice(0, 6).map((f, i) => `
-              <div class="factor-acc-card ${this._expandedFactors.has(i) ? 'open' : ''}" data-factor-acc="${i}">
-                <div class="factor-acc-header">
-                  <span class="factor-acc-num">${i + 1}</span>
-                  <span class="factor-acc-title">${f.factor}</span>
-                  <span class="factor-acc-toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
-                </div>
-                <div class="factor-acc-body">
-                  <p>${f.detail}</p>
-                  ${this._renderFactorAccDetail(f)}
-                </div>
-              </div>
-            `).join('')}
-          </div>
-          <div class="animate-on-scroll">
-            <div class="factor-item ${this._expandedFactors.has('other') ? 'open' : ''}" data-factor="other">
-              <div class="factor-header">
-                <div class="factor-left">
-                  <span class="factor-name">Other Factors: Device Fit, BMI, Surface Type, Incline, Treadmill</span>
-                </div>
-                <span class="factor-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
-              </div>
-              <div class="factor-body">
-                ${this._accuracyFactors.slice(6).map(f => `
-                  <div class="other-factor-row">
-                    <div class="other-factor-header">
-                      <strong class="other-factor-name">${f.factor}</strong>
-                    </div>
-                    <p class="other-factor-detail">${f.detail}${f.source ? ` <span class="factor-acc-source">${f.source}</span>` : ''}</p>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -654,59 +651,120 @@ class KygoStepCountAccuracy extends HTMLElement {
     `;
   }
 
-  // ── Factor accordion body ─────────────────────────────────────────────
+  // ── Factor interactive panel ──────────────────────────────────────────
 
-  _renderFactorAccDetail(f) {
-    const parts = [];
+  _renderFactorViz(f) {
     if (f.speeds) {
-      parts.push(`
-        <div class="factor-acc-table-wrap">
-          <table class="factor-acc-table">
-            <thead><tr><th>Walking Speed</th><th>Accuracy</th><th>Note</th></tr></thead>
-            <tbody>${f.speeds.map(s => `<tr><td><strong>${s.speed}</strong></td><td>${s.accuracy}</td><td>${s.note}</td></tr>`).join('')}</tbody>
-          </table>
+      const colors = ['#EF4444', '#F97316', '#EAB308', '#22C55E', '#16A34A'];
+      const widths = [35, 62, 90, 97, 99];
+      return `
+        <div class="fv-speed">
+          ${f.speeds.map((s, i) => `
+            <div class="fv-speed-row">
+              <div class="fv-speed-label">${s.speed}</div>
+              <div class="fv-bar-wrap"><div class="fv-bar" style="width:${widths[i]}%;background:${colors[i]}"></div></div>
+              <div class="fv-speed-acc">${s.accuracy}</div>
+            </div>
+          `).join('')}
+          <p class="fv-note">All devices lose accuracy below 0.9 m/s — the most critical threshold in this entire tool.</p>
         </div>
-      `);
+      `;
     }
     if (f.placements) {
-      parts.push(`
-        <div class="factor-acc-table-wrap">
-          <table class="factor-acc-table">
-            <thead><tr><th>Location</th><th>Rank</th><th>Typical Error</th><th>Best For</th></tr></thead>
-            <tbody>${f.placements.map(p => `<tr><td><strong>${p.placement}</strong></td><td>${p.rank.split(' ').slice(0, 2).join(' ')}</td><td>${p.error}</td><td>${p.bestFor}</td></tr>`).join('')}</tbody>
-          </table>
+      const barWidths = [88, 91, 68, 38];
+      const colors = ['#16A34A', '#22C55E', '#EAB308', '#EF4444'];
+      return `
+        <div class="fv-placements">
+          ${f.placements.map((p, i) => `
+            <div class="fv-placement-row">
+              <div class="fv-placement-rank">${p.rank.split(' ')[0]}</div>
+              <div class="fv-placement-info">
+                <div class="fv-placement-name">${p.placement}</div>
+                <div class="fv-bar-wrap"><div class="fv-bar" style="width:${barWidths[i]}%;background:${colors[i]}"></div></div>
+                <div class="fv-placement-error">${p.error} error</div>
+              </div>
+            </div>
+          `).join('')}
+          <p class="fv-note">${f.keyFinding}</p>
         </div>
-        <p class="factor-acc-source">Key finding: ${f.keyFinding}</p>
-      `);
+      `;
     }
     if (f.overTriggers) {
-      parts.push(`
-        <div class="factor-acc-triggers">
-          <div class="factor-acc-trigger-group">
-            <h5 class="trigger-over">Overcounting (${f.overTriggers.range})</h5>
+      return `
+        <div class="fv-triggers">
+          <div class="fv-trigger-col fv-trigger-col--over">
+            <div class="fv-trigger-head">Overcounting</div>
+            <div class="fv-trigger-range">${f.overTriggers.range}</div>
             <ul>${f.overTriggers.examples.map(ex => `<li>${ex}</li>`).join('')}</ul>
           </div>
-          <div class="factor-acc-trigger-group">
-            <h5 class="trigger-under">Undercounting (${f.underTriggers.range})</h5>
+          <div class="fv-trigger-col fv-trigger-col--under">
+            <div class="fv-trigger-head">Undercounting</div>
+            <div class="fv-trigger-range">${f.underTriggers.range}</div>
             <ul>${f.underTriggers.examples.map(ex => `<li>${ex}</li>`).join('')}</ul>
           </div>
         </div>
-      `);
+      `;
+    }
+    if (f.factor === 'Age') {
+      return `
+        <div class="fv-stats">
+          <div class="fv-stat-card fv-stat-card--good">
+            <div class="fv-stat-num">4.3%</div>
+            <div class="fv-stat-label">MAPE for under 40</div>
+          </div>
+          <div class="fv-stat-card fv-stat-card--warn">
+            <div class="fv-stat-num">10.9%</div>
+            <div class="fv-stat-label">MAPE for 40 and over</div>
+          </div>
+        </div>
+      `;
     }
     if (f.conditions) {
-      parts.push(`
-        <div class="factor-acc-table-wrap">
-          <table class="factor-acc-table">
-            <thead><tr><th>Condition</th><th>Bias</th><th>Magnitude</th></tr></thead>
-            <tbody>${f.conditions.map(c => `<tr><td>${c.condition}</td><td>${c.bias}</td><td>${c.magnitude}</td></tr>`).join('')}</tbody>
-          </table>
+      return `
+        <div class="fv-conditions">
+          ${f.conditions.map(c => `
+            <div class="fv-condition-row">
+              <div class="fv-condition-name">${c.condition}</div>
+              <div class="fv-condition-bias bias-tag ${
+                c.bias === 'Overestimates' || c.bias === 'Phantom steps' ? 'bias-over' :
+                c.bias === 'Underestimates' ? 'bias-under' : 'bias-mixed'
+              }">${c.bias}</div>
+              <div class="fv-condition-mag">${c.magnitude}</div>
+            </div>
+          `).join('')}
         </div>
-      `);
+      `;
     }
-    if (f.source) {
-      parts.push(`<p class="factor-acc-source">Source: ${f.source}</p>`);
-    }
-    return parts.join('');
+    // Gait Pathology fallback → alert card
+    return `
+      <div class="fv-alert">
+        <div class="fv-alert-stat">11–47%</div>
+        <div class="fv-alert-text">of steps detected in people with neurological conditions (stroke, Parkinson's, etc.)</div>
+        <p class="fv-alert-note">Consumer devices are NOT validated for clinical populations. Population-specific algorithms are required for any research use.</p>
+      </div>
+    `;
+  }
+
+  _renderFactorPanel() {
+    const f = this._accuracyFactors[this._activeFactor];
+    if (!f) return '';
+    return `
+      <div class="factor-panel-inner">
+        <h3 class="factor-panel-title">${f.factor}</h3>
+        <p class="factor-panel-text">${f.detail}</p>
+        ${this._renderFactorViz(f)}
+        ${f.source ? `<p class="factor-panel-source">Source: ${f.source}</p>` : ''}
+      </div>
+    `;
+  }
+
+  _updateFactors() {
+    const shadow = this.shadowRoot;
+    shadow.querySelectorAll('.factor-tab').forEach(tab => {
+      tab.classList.toggle('active', parseInt(tab.dataset.factorTab, 10) === this._activeFactor);
+    });
+    const panel = shadow.querySelector('.factor-panel');
+    if (panel) panel.innerHTML = this._renderFactorPanel();
   }
 
   // ── Comparison ────────────────────────────────────────────────────────
@@ -1013,6 +1071,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         color: var(--dark);
         line-height: 1.6;
         -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
       }
       *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
       h1, h2, h3, h4 { font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 600; line-height: 1.2; }
@@ -1118,7 +1177,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       .model-note { font-size: 10px; color: var(--gray-400); font-style: italic; }
 
       /* Deep Dives */
-      .deep-dives { padding: 56px 0; background: #fff; }
+      .deep-dives { padding: 56px 0; background: var(--light); }
       .dd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
       .dd-card { border-radius: var(--radius); border: 2px solid var(--gray-200); background: #fff; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }
       .dd-card:hover { border-color: var(--green); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
@@ -1162,32 +1221,81 @@ class KygoStepCountAccuracy extends HTMLElement {
       .dd-buy-note { font-size: 11px; color: var(--gray-400); }
       .dd-buy-cta { font-size: 12px; color: var(--green-dark); font-weight: 600; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
 
-      /* Factors — accordion grid (mirrors caveats pattern) */
-      .factors { padding: 56px 0; background: var(--light); }
-      .factor-acc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
-      .factor-acc-card { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
-      .factor-acc-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; cursor: pointer; transition: background 0.15s; }
-      .factor-acc-header:hover { background: var(--gray-100); }
-      .factor-acc-num { width: 24px; height: 24px; border-radius: 50%; background: var(--green-light); color: var(--green-dark); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-      .factor-acc-title { flex: 1; font-size: 15px; font-weight: 600; }
-      .factor-acc-toggle { color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
-      .factor-acc-card.open .factor-acc-toggle { transform: rotate(180deg); }
-      .factor-acc-body { display: none; padding: 0 20px 16px 56px; }
-      .factor-acc-card.open .factor-acc-body { display: block; }
-      .factor-acc-body p { font-size: 14px; color: var(--gray-600); line-height: 1.7; margin-bottom: 10px; }
-      .factor-acc-table-wrap { overflow-x: auto; margin: 4px 0 10px; }
-      .factor-acc-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 420px; }
-      .factor-acc-table thead th { background: var(--gray-100); padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.3px; }
-      .factor-acc-table td { padding: 8px 12px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); vertical-align: top; }
-      .factor-acc-table tr:last-child td { border-bottom: none; }
-      .factor-acc-source { font-size: 12px; color: var(--gray-400); font-style: italic; margin: 0; }
-      .factor-acc-triggers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 4px 0 10px; }
-      .factor-acc-trigger-group h5 { font-size: 12px; font-weight: 700; margin-bottom: 8px; padding: 4px 8px; border-radius: 4px; display: block; }
-      .factor-acc-trigger-group h5.trigger-over { color: #DC2626; background: rgba(239,68,68,0.06); }
-      .factor-acc-trigger-group h5.trigger-under { color: #B45309; background: rgba(251,191,36,0.1); }
-      .factor-acc-trigger-group ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-      .factor-acc-trigger-group li { font-size: 12px; color: var(--gray-600); padding-left: 12px; position: relative; }
-      .factor-acc-trigger-group li::before { content: '•'; position: absolute; left: 0; color: var(--gray-400); }
+      /* Factors — interactive tab-panel */
+      .factors { padding: 56px 0; background: #fff; }
+
+      /* Tab selector */
+      .factor-selector { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+      .factor-tab { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border: 2px solid var(--gray-200); border-radius: 50px; background: #fff; cursor: pointer; transition: border-color 0.2s, background 0.2s; font-family: inherit; text-align: left; }
+      .factor-tab:hover { border-color: var(--green); background: var(--gray-100); }
+      .factor-tab.active { border-color: var(--green); background: var(--green-light); }
+      .factor-tab-num { width: 22px; height: 22px; border-radius: 50%; background: var(--gray-200); color: var(--gray-600); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; transition: background 0.2s, color 0.2s; }
+      .factor-tab.active .factor-tab-num { background: var(--green); color: #fff; }
+      .factor-tab-label { font-size: 13px; font-weight: 600; color: var(--dark); white-space: nowrap; }
+
+      /* Content panel */
+      .factor-panel { background: var(--gray-100); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 12px; min-height: 200px; }
+      .factor-panel-inner { }
+      .factor-panel-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+      .factor-panel-text { font-size: 14px; color: var(--gray-600); line-height: 1.7; margin-bottom: 20px; }
+      .factor-panel-source { font-size: 12px; color: var(--gray-400); font-style: italic; margin-top: 12px; }
+
+      /* Speed viz */
+      .fv-speed { display: flex; flex-direction: column; gap: 10px; }
+      .fv-speed-row { display: grid; grid-template-columns: 200px 1fr 140px; align-items: center; gap: 12px; }
+      .fv-speed-label { font-size: 12px; font-weight: 600; color: var(--dark); }
+      .fv-bar-wrap { height: 10px; background: var(--gray-200); border-radius: 5px; overflow: hidden; }
+      .fv-bar { height: 100%; border-radius: 5px; transition: width 0.4s ease; }
+      .fv-speed-acc { font-size: 12px; color: var(--gray-600); }
+      .fv-note { font-size: 12px; color: var(--gray-600); font-style: italic; margin-top: 12px; padding: 8px 12px; background: rgba(34,197,94,0.06); border-left: 3px solid var(--green); border-radius: 0 4px 4px 0; }
+
+      /* Placement viz */
+      .fv-placements { display: flex; flex-direction: column; gap: 12px; }
+      .fv-placement-row { display: flex; align-items: flex-start; gap: 14px; }
+      .fv-placement-rank { font-size: 20px; flex-shrink: 0; width: 30px; }
+      .fv-placement-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+      .fv-placement-name { font-size: 14px; font-weight: 600; }
+      .fv-placement-error { font-size: 12px; color: var(--gray-600); }
+
+      /* Arm swing triggers */
+      .fv-triggers { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .fv-trigger-col { border-radius: var(--radius-sm); padding: 16px; }
+      .fv-trigger-col--over { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.15); }
+      .fv-trigger-col--under { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); }
+      .fv-trigger-head { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+      .fv-trigger-col--over .fv-trigger-head { color: #DC2626; }
+      .fv-trigger-col--under .fv-trigger-head { color: #B45309; }
+      .fv-trigger-range { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
+      .fv-trigger-col--over .fv-trigger-range { color: #DC2626; }
+      .fv-trigger-col--under .fv-trigger-range { color: #B45309; }
+      .fv-trigger-col ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+      .fv-trigger-col li { font-size: 13px; color: var(--gray-600); padding-left: 14px; position: relative; line-height: 1.4; }
+      .fv-trigger-col li::before { content: '•'; position: absolute; left: 0; color: var(--gray-400); }
+
+      /* Age stat cards */
+      .fv-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .fv-stat-card { border-radius: var(--radius-sm); padding: 20px 24px; text-align: center; }
+      .fv-stat-card--good { background: rgba(34,197,94,0.08); border: 2px solid rgba(34,197,94,0.25); }
+      .fv-stat-card--warn { background: rgba(239,68,68,0.06); border: 2px solid rgba(239,68,68,0.2); }
+      .fv-stat-num { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
+      .fv-stat-card--good .fv-stat-num { color: var(--green-dark); }
+      .fv-stat-card--warn .fv-stat-num { color: #DC2626; }
+      .fv-stat-label { font-size: 13px; color: var(--gray-600); font-weight: 500; }
+
+      /* Activity conditions */
+      .fv-conditions { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; }
+      .fv-condition-row { display: grid; grid-template-columns: 1fr auto 120px; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--gray-100); background: #fff; }
+      .fv-condition-row:last-child { border-bottom: none; }
+      .fv-condition-name { font-size: 13px; font-weight: 500; }
+      .fv-condition-bias { flex-shrink: 0; }
+      .fv-condition-mag { font-size: 12px; color: var(--gray-600); text-align: right; }
+
+      /* Gait alert */
+      .fv-alert { background: rgba(239,68,68,0.06); border: 2px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: 24px; text-align: center; }
+      .fv-alert-stat { font-size: 48px; font-weight: 800; color: #DC2626; margin-bottom: 8px; }
+      .fv-alert-text { font-size: 16px; font-weight: 600; color: var(--dark); margin-bottom: 12px; }
+      .fv-alert-note { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+
       /* "Other factors" collapsible */
       .factor-item { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
       .factor-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; gap: 12px; transition: background 0.15s; }
@@ -1244,6 +1352,9 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       /* Responsive */
       @media (max-width: 640px) {
+        /* Sections — reduce padding */
+        .comparison, .factors, .deep-dives, .caveats, .cta-section { padding: 40px 0; }
+
         /* Comparison */
         .device-selectors { flex-direction: column; align-items: stretch; }
         .vs-badge { align-self: center; }
@@ -1258,17 +1369,29 @@ class KygoStepCountAccuracy extends HTMLElement {
         .comp-2col { grid-template-columns: 1fr; }
         .comp-stat-value { font-size: 18px; }
         .ov-strengths { grid-template-columns: 1fr; }
+
+        /* Factors */
+        .factor-selector { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+        .factor-tab { flex-shrink: 0; }
+        .factor-panel { padding: 20px 16px; }
+        .fv-speed-row { grid-template-columns: 1fr; gap: 4px; }
+        .fv-speed-acc { font-size: 11px; }
+        .fv-triggers { grid-template-columns: 1fr; }
+        .fv-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+        .fv-stat-num { font-size: 28px; }
+        .fv-condition-row { grid-template-columns: 1fr; gap: 4px; }
+        .fv-condition-mag { text-align: left; }
+        .fv-alert-stat { font-size: 36px; }
+
         /* Deep Dives */
         .dd-grid { grid-template-columns: 1fr; }
         .dd-cols { grid-template-columns: 1fr; }
         .dd-header { padding: 14px; gap: 10px; }
         .dd-body { padding: 0 14px 14px; padding-top: 14px; }
-        /* Factors */
-        .factor-acc-grid { grid-template-columns: 1fr; }
-        .factor-acc-body { padding: 0 16px 14px 40px; }
-        .factor-acc-triggers { grid-template-columns: 1fr; }
+
         /* Caveats */
         .caveat-body { padding: 0 20px 16px 44px; }
+
         /* CTA + Footer */
         .cta-box { padding: 32px 20px; }
         .cta-features { gap: 12px; }
@@ -1315,18 +1438,11 @@ class KygoStepCountAccuracy extends HTMLElement {
         return;
       }
 
-      // Factor accordion cards (numbered 0-5)
-      const factorAccHeader = e.target.closest('.factor-acc-header');
-      if (factorAccHeader) {
-        const card = factorAccHeader.closest('.factor-acc-card');
-        const idx = parseInt(card.dataset.factorAcc, 10);
-        if (this._expandedFactors.has(idx)) {
-          this._expandedFactors.delete(idx);
-          card.classList.remove('open');
-        } else {
-          this._expandedFactors.add(idx);
-          card.classList.add('open');
-        }
+      // Factor selector tabs
+      const factorTab = e.target.closest('.factor-tab');
+      if (factorTab) {
+        this._activeFactor = parseInt(factorTab.dataset.factorTab, 10);
+        this._updateFactors();
         return;
       }
 
