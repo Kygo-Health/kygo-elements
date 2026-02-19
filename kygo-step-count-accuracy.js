@@ -55,7 +55,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         bestFor: 'Step accuracy, runners, outdoor sports',
         subscription: 'None required',
         strengths: ['Best overall step accuracy (82.6%)', 'MAPE 0.6–1.27% at normal walking speeds', 'Validated across lawn, gravel, asphalt, tile', '10-step filter eliminates most phantom steps', 'Best VO2 max & GPS tracking'],
-        weaknesses: ['Undercounts at slow speeds (<1.6 km/h)', 'Vivofit free-living MAPE 17.8%', 'Can count driving/road vibrations', 'Entry models lack gyroscope'],
+        weaknesses: ['Undercounts at slow speeds (<1.6 km/h)', '10-step gate misses very short bursts (<10 consecutive steps)', 'Vivofit free-living MAPE 17.8%', 'Can count driving/road vibrations', 'Entry models lack gyroscope'],
         falseSteps: ['Driving (road vibrations)', 'Brushing teeth', 'Showering', 'Crocheting', 'Vigorous hand gestures'],
         modelData: [
           { model: 'Vivoactive 4', mape: '<2%', condition: 'Exercise testing', source: 'Nature Scientific Reports (2024)' },
@@ -512,19 +512,6 @@ class KygoStepCountAccuracy extends HTMLElement {
                   </div>
                 </div>
                 <div class="dd-body">
-                  <div class="dd-meta-row">
-                    <div class="dd-meta"><span class="dd-meta-label">Wear Location</span><span>${d.wearLocation}</span></div>
-                    <div class="dd-meta"><span class="dd-meta-label">MAPE Lab</span><span>${d.mapeLab}</span></div>
-                    <div class="dd-meta"><span class="dd-meta-label">MAPE Free-Living</span><span>${d.mapeFree}</span></div>
-                    <div class="dd-meta"><span class="dd-meta-label">Subscription</span><span>${d.subscription}</span></div>
-                  </div>
-                  <div class="dd-algo">
-                    <strong>Algorithm:</strong> ${d.algorithm}
-                  </div>
-                  <div class="dd-keydiff">
-                    <strong>Key Differentiator:</strong> ${d.keyDiff}
-                  </div>
-                  ${this._renderModelData(k)}
                   <div class="dd-cols">
                     <div class="dd-col">
                       <h4>Strengths</h4>
@@ -851,24 +838,12 @@ class KygoStepCountAccuracy extends HTMLElement {
       .dd-card.expanded .dd-toggle { transform: rotate(180deg); }
       .dd-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--gray-100); padding-top: 16px; }
       .dd-card.expanded .dd-body { display: block; }
-      .dd-meta-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-      .dd-meta { background: var(--gray-100); border-radius: var(--radius-sm); padding: 8px 12px; }
-      .dd-meta-label { display: block; font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
-      .dd-algo { font-size: 13px; color: var(--gray-600); margin-bottom: 8px; padding: 10px 12px; background: var(--gray-100); border-radius: var(--radius-sm); }
-      .dd-keydiff { font-size: 13px; color: var(--gray-600); margin-bottom: 12px; padding: 10px 12px; background: rgba(34,197,94,0.06); border-left: 3px solid var(--green); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
       .dd-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
       .dd-col h4 { font-size: 13px; margin-bottom: 8px; color: var(--dark); }
       .dd-col ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
       .dd-col li { display: flex; gap: 6px; align-items: flex-start; font-size: 12px; color: var(--gray-600); }
       .dd-check { color: var(--green); font-size: 14px; flex-shrink: 0; }
       .dd-x { color: var(--red); font-size: 14px; flex-shrink: 0; }
-      .dd-model-data { margin-bottom: 14px; }
-      .dd-model-data h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; }
-      .model-table { width: 100%; border-collapse: collapse; font-size: 12px; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--gray-200); }
-      .model-table thead th { background: var(--gray-100); padding: 6px 10px; text-align: left; font-size: 10px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.3px; }
-      .model-table td { padding: 7px 10px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); vertical-align: top; line-height: 1.4; }
-      .model-table tr:last-child td { border-bottom: none; }
-      .model-note { font-size: 10px; color: var(--gray-400); font-style: italic; }
       .dd-false-steps { margin-bottom: 12px; }
       .dd-false-steps h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; }
       .dd-tags { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -980,7 +955,6 @@ class KygoStepCountAccuracy extends HTMLElement {
       @media (max-width: 640px) {
         .dd-grid { grid-template-columns: 1fr; }
         .dd-cols { grid-template-columns: 1fr; }
-        .dd-meta-row { grid-template-columns: 1fr 1fr; }
         .factor-triggers { grid-template-columns: 1fr; }
         .cta-box { padding: 32px 20px; }
         .cta-features { gap: 12px; }
