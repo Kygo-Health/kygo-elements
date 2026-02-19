@@ -400,18 +400,14 @@ class KygoStepCountAccuracy extends HTMLElement {
 
   get _caveats() {
     return [
-      { title: 'Lab ≠ Real World', body: 'All devices score ~5% MAPE in controlled lab testing. In free-living conditions, the same devices jump to >10% error. The controlled walking test showing your device is "98% accurate" tells you almost nothing about daily step count reliability.' },
+      { title: 'Lab ≠ Real World', body: 'All devices score ~5% MAPE in controlled lab testing. In free-living conditions, the same devices jump to >10% error. The controlled walking test showing your device is "98% accurate" tells you almost nothing about daily step count reliability. Individual variation compounds this further — your personal accuracy depends on your gait, arm swing, walking speed, age, and body composition.' },
       { title: 'Walking speed is the #1 confounder', body: 'Below 0.9 m/s, accuracy collapses on all devices. Elderly adults, post-surgical patients, and anyone using a walker or cane will see dramatically worse accuracy than published numbers suggest. This is the single most important caveat in this entire tool.' },
-      { title: 'Wrist placement measures arm swing, not footfalls', body: 'Every wrist-worn device is fundamentally counting arm movement as a proxy for walking. Push a stroller and it massively underestimates. Wave your hands while talking and it overcounts. No algorithm can fully eliminate this physical constraint.' },
-      { title: 'Oura Ring is NOT a step counter', body: 'Despite showing acceptable lab accuracy (<10% MAPE in controlled walks), the Oura Ring averages +2,124 extra phantom steps per day in free-living due to hand gestures. Its finger placement makes it fundamentally unsuited for daily step count reliability.' },
+      { title: 'Wrist devices measure arm swing, not footfalls', body: 'Every wrist-worn device is fundamentally counting arm movement as a proxy for walking. Push a stroller and it massively underestimates. Wave your hands while talking and it overcounts. No algorithm can fully eliminate this physical constraint — it is baked into the sensor placement.' },
+      { title: 'Oura Ring is NOT a step counter', body: 'Despite showing acceptable lab accuracy (<10% MAPE in controlled walks), the Oura Ring averages +2,124 extra phantom steps per day in free-living due to hand gestures. Its finger placement makes it fundamentally unsuited for daily step count reliability. Use it for sleep and HRV — not steps.' },
       { title: 'WHOOP has zero validation data for steps', body: 'Step counting was added to WHOOP via a firmware update in October 2024. The hardware is theoretically capable, but no peer-reviewed validation studies exist. WHOOP intentionally positions Strain (cardiovascular load) as its primary metric — not steps.' },
-      { title: 'Garmin\'s 10-step gate trades sensitivity for specificity', body: 'Garmin\'s 10-step minimum bout filter is a deliberate design choice: it eliminates phantom steps by refusing to count unless 10+ consecutive step-like patterns are detected. This reduces false positives but means very short walking bursts (<10 steps) are never recorded.' },
-      { title: 'Model generations matter — a lot', body: 'Studies on the Garmin Vivofit or Fitbit Charge HR may not reflect your current device\'s accuracy. Firmware updates and new sensor generations can dramatically change step counting behavior. Always check which model generation was studied before applying the data to your device.' },
+      { title: 'Model generations matter — a lot', body: 'Studies on the Garmin Vivofit or Fitbit Charge HR may not reflect your current device\'s accuracy. Firmware updates and new sensor generations can dramatically change step counting behavior. Always check which model generation was studied before applying data to your device.' },
       { title: 'The validation gap is massive', body: 'Only ~11% of consumer wearables have been independently validated for any biometric. An estimated 249 studies represent just 3.5% of what would be needed for comprehensive validation. Most devices on the market have no published accuracy data at all.' },
-      { title: 'Study funding shapes results', body: 'Check whether the device manufacturer funded the study. Industry-funded studies systematically favor the funder\'s product. All studies listed in this tool are independent, but when you see manufacturer-published accuracy claims, apply significant skepticism.' },
-      { title: 'Consumer devices are not clinical instruments', body: 'For research or clinical use requiring precise step counts, hip-worn research-grade accelerometers (ActiGraph, ActivPAL) remain the gold standard. No consumer wearable — including Garmin — should be used as a substitute in clinical trials without independent validation.' },
-      { title: 'Steps are algorithmic estimates', body: 'Your wearable does not directly detect footfalls. It detects acceleration patterns and infers steps from signal processing. Every step count you see is an estimate produced by an algorithm, not a direct physical measurement.' },
-      { title: 'Individual variation is significant', body: 'Published MAPE values are population averages. Your personal accuracy depends on your gait, arm swing, walking speed, age, and even body composition. Two people wearing the same device with the same settings may get systematically different accuracy.' }
+      { title: 'No device is accurate below 0.9 m/s', body: 'This threshold applies universally. Below 0.9 m/s — a slow shuffle — every consumer wearable produces unreliable step counts regardless of brand or price point. Clinical populations, elderly adults, and rehabilitation patients routinely walk at these speeds. Published accuracy figures almost never reflect this population.' }
     ];
   }
 
@@ -442,22 +438,6 @@ class KygoStepCountAccuracy extends HTMLElement {
           <div class="hero-badge animate-on-scroll">PEER-REVIEWED RESEARCH</div>
           <h1 class="animate-on-scroll">How Accurate Is Your Wearable's Step Count?</h1>
           <p class="hero-sub animate-on-scroll">We analyzed 20+ peer-reviewed studies to reveal which devices count steps most accurately — and what factors affect your count.</p>
-          <div class="hero-stats animate-on-scroll">
-            <div class="hero-stat">
-              <span class="hero-stat-num">82.6%</span>
-              <span class="hero-stat-label">Garmin overall accuracy</span>
-            </div>
-            <div class="hero-stat-div"></div>
-            <div class="hero-stat">
-              <span class="hero-stat-num">0.6%</span>
-              <span class="hero-stat-label">Best MAPE (Garmin lab)</span>
-            </div>
-            <div class="hero-stat-div"></div>
-            <div class="hero-stat">
-              <span class="hero-stat-num">+2,124</span>
-              <span class="hero-stat-label">Oura phantom steps/day</span>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -677,7 +657,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         <div class="container">
           <h2 class="section-title animate-on-scroll">Important Caveats</h2>
           <p class="section-sub animate-on-scroll">Context for interpreting step count accuracy data.</p>
-          <div class="caveat-grid animate-on-scroll">
+          <div class="caveat-grid animate-on-scroll" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px">
             ${this._caveats.map((c, i) => `
               <div class="caveat-card ${this._expandedCaveats.has(i) ? 'open' : ''}" data-caveat="${i}">
                 <div class="caveat-header">
@@ -822,12 +802,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       .hero { padding: 56px 0 48px; text-align: center; background: #fff; }
       .hero-badge { display: inline-block; padding: 8px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 16px; }
       .hero h1 { font-size: clamp(28px, 6vw, 42px); margin-bottom: 16px; }
-      .hero-sub { font-size: clamp(15px, 3.5vw, 18px); color: var(--gray-600); max-width: 640px; margin: 0 auto 32px; line-height: 1.7; }
-      .hero-stats { display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; background: var(--gray-100); border-radius: var(--radius); padding: 20px 32px; max-width: 600px; margin: 0 auto; }
-      .hero-stat { text-align: center; padding: 0 24px; }
-      .hero-stat-num { display: block; font-size: clamp(24px, 5vw, 32px); font-weight: 700; color: var(--green-dark); font-family: 'Space Grotesk', sans-serif; }
-      .hero-stat-label { display: block; font-size: 12px; color: var(--gray-600); margin-top: 2px; }
-      .hero-stat-div { width: 1px; height: 40px; background: var(--gray-200); }
+      .hero-sub { font-size: clamp(15px, 3.5vw, 18px); color: var(--gray-600); max-width: 640px; margin: 0 auto; line-height: 1.7; }
 
       /* Rankings */
       .rankings { padding: 56px 0; background: var(--light); }
@@ -965,7 +940,7 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       /* Caveats */
       .caveats { padding: 56px 0; background: #fff; }
-      .caveat-grid { display: flex; flex-direction: column; gap: 8px; }
+      .caveat-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
       .caveat-card { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
       .caveat-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; cursor: pointer; transition: background 0.15s; }
       .caveat-header:hover { background: var(--gray-100); }
@@ -1003,9 +978,6 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       /* Responsive */
       @media (max-width: 640px) {
-        .hero-stats { padding: 16px; gap: 0; }
-        .hero-stat { padding: 0 16px; }
-        .hero-stat-div { height: 32px; }
         .dd-grid { grid-template-columns: 1fr; }
         .dd-cols { grid-template-columns: 1fr; }
         .dd-meta-row { grid-template-columns: 1fr 1fr; }
