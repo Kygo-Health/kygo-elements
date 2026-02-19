@@ -378,28 +378,6 @@ class KygoStepCountAccuracy extends HTMLElement {
     ];
   }
 
-  get _pipeline() {
-    return {
-      steps: [
-        { n: 1, name: 'Raw Signal Acquisition', detail: '3-axis MEMS accelerometer captures acceleration in x, y, z at 25–100 Hz sampling rate.' },
-        { n: 2, name: 'Signal Preprocessing', detail: 'Compute vector magnitude √(x² + y² + z²) to combine all axes into a single value.' },
-        { n: 3, name: 'Noise Filtering', detail: 'Low-pass filter (cutoff ~3–10 Hz) removes high-frequency noise; band-pass filter (0.5–3 Hz) isolates walking cadence range.' },
-        { n: 4, name: 'Step Detection', detail: 'Peak detection, zero-crossing, or autocorrelation identifies periodic patterns matching walking cadence.' },
-        { n: 5, name: 'Validation Gate', detail: 'Time-window constraints (0.2s–2.0s between steps) filter false positives; minimum-bout thresholds (e.g., 10+ consecutive steps) reduce phantom counts.' },
-        { n: 6, name: 'Post-Processing', detail: 'Machine learning classifiers distinguish walking from non-walking activities and apply activity-specific corrections.' }
-      ],
-      algorithms: [
-        { name: 'Peak Detection', accuracy: '>97% controlled walking', usedBy: 'Garmin, Fitbit, Polar, COROS', note: 'Most common, computationally lightweight' },
-        { name: 'ML-Enhanced Detection', accuracy: '12.5% MAPE free-living, 1.3% underestimation', usedBy: 'Apple Watch (Core Motion), Oura Ring', note: 'Classifies walking vs. non-walking first, then applies peak detection' },
-        { name: 'Deep Learning (End-to-End)', accuracy: '96–99% with gyroscope, ~60% accel-only', usedBy: 'Research / emerging', note: 'Neural networks trained directly on accelerometer data' },
-        { name: 'Zero-Crossing Detection', accuracy: 'Lower than peak detection', usedBy: 'Earlier / simpler pedometers', note: 'Counts signal baseline crossings; less robust to noise' },
-        { name: 'Autocorrelation Analysis', accuracy: 'Good cadence detection', usedBy: 'Research / hybrid approaches', note: 'Identifies periodic patterns; more computationally intensive' }
-      ],
-      fundamentalLimit: 'Wrist-worn devices detect arm swing as a proxy for walking — not actual footfalls. This creates systematic errors no algorithm can fully eliminate.',
-      goldStandard: 'Manual hand-tally counting (controlled) or research-grade hip-worn accelerometers (ActiGraph, ActivPAL) for free-living studies.'
-    };
-  }
-
   get _caveats() {
     return [
       { title: 'Lab ≠ Real World', body: 'All devices score ~5% MAPE in controlled lab testing. In free-living conditions, the same devices jump to >10% error. The controlled walking test showing your device is "98% accurate" tells you almost nothing about daily step count reliability. Individual variation compounds this further — your personal accuracy depends on your gait, arm swing, walking speed, age, and body composition.' },
@@ -535,92 +513,39 @@ class KygoStepCountAccuracy extends HTMLElement {
       <section class="factors">
         <div class="container">
           <h2 class="section-title animate-on-scroll">What Affects Step Count Accuracy?</h2>
-          <p class="section-sub animate-on-scroll">These factors apply to all devices — understanding them helps you interpret your step count data correctly.</p>
-          <div class="factors-list animate-on-scroll">
-            ${this._accuracyFactors.map((f, i) => `
-              <div class="factor-item ${this._expandedFactors.has(i) ? 'open' : ''}" data-factor="${i}">
-                <div class="factor-header">
-                  <div class="factor-left">
-                    <span class="impact-pill impact-${f.impactLevel}">${f.impact}</span>
-                    <span class="factor-name">${f.factor}</span>
+          <p class="section-sub animate-on-scroll">These factors apply to all devices — understanding them helps you interpret your data.</p>
+          <div class="factor-cards animate-on-scroll">
+            ${this._accuracyFactors.slice(0, 6).map(f => `
+              <div class="factor-card factor-card-${f.impactLevel}">
+                <span class="impact-pill impact-${f.impactLevel}">${f.impact}</span>
+                <h3 class="factor-card-name">${f.factor}</h3>
+                <p class="factor-card-detail">${f.detail}</p>
+                ${this._renderFactorCardInsight(f)}
+              </div>
+            `).join('')}
+          </div>
+          <div class="other-factors-wrap animate-on-scroll">
+            <div class="factor-item ${this._expandedFactors.has('other') ? 'open' : ''}" data-factor="other">
+              <div class="factor-header">
+                <div class="factor-left">
+                  <span class="impact-pill impact-moderate">Moderate</span>
+                  <span class="factor-name">Other Factors: Device Fit, BMI, Surface Type, Incline, Treadmill</span>
+                </div>
+                <span class="factor-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+              </div>
+              <div class="factor-body">
+                ${this._accuracyFactors.slice(6).map(f => `
+                  <div class="other-factor-row">
+                    <div class="other-factor-header">
+                      <span class="impact-pill impact-${f.impactLevel}">${f.impact}</span>
+                      <strong class="other-factor-name">${f.factor}</strong>
+                    </div>
+                    <p class="other-factor-detail">${f.detail}${f.source ? ` <span class="fci-source">${f.source}</span>` : ''}</p>
                   </div>
-                  <span class="factor-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
-                </div>
-                <div class="factor-body">
-                  <p>${f.detail}</p>
-                  ${f.source ? `<p class="factor-source">Source: ${f.source}</p>` : ''}
-                  ${f.speeds ? `
-                    <table class="factor-table">
-                      <thead><tr><th>Speed</th><th>Accuracy</th><th>Note</th></tr></thead>
-                      <tbody>${f.speeds.map(s => `<tr><td>${s.speed}</td><td>${s.accuracy}</td><td>${s.note}</td></tr>`).join('')}</tbody>
-                    </table>` : ''}
-                  ${f.placements ? `
-                    <table class="factor-table">
-                      <thead><tr><th>Placement</th><th>Rank</th><th>Typical Error</th><th>Best For</th><th>Limitation</th></tr></thead>
-                      <tbody>${f.placements.map(p => `<tr><td>${p.placement}</td><td>${p.rank}</td><td>${p.error}</td><td>${p.bestFor}</td><td>${p.limit}</td></tr>`).join('')}</tbody>
-                    </table>
-                    <p class="factor-source">Key finding: ${f.keyFinding}</p>` : ''}
-                  ${f.overTriggers ? `
-                    <div class="factor-triggers">
-                      <div class="trigger-group">
-                        <h5 class="trigger-label over">Overcounting Triggers (${f.overTriggers.range})</h5>
-                        <ul>${f.overTriggers.examples.map(e => `<li>${e}</li>`).join('')}</ul>
-                      </div>
-                      <div class="trigger-group">
-                        <h5 class="trigger-label under">Undercounting Triggers (${f.underTriggers.range})</h5>
-                        <ul>${f.underTriggers.examples.map(e => `<li>${e}</li>`).join('')}</ul>
-                      </div>
-                    </div>` : ''}
-                  ${f.conditions ? `
-                    <table class="factor-table">
-                      <thead><tr><th>Condition</th><th>Bias Direction</th><th>Magnitude</th></tr></thead>
-                      <tbody>${f.conditions.map(c => `<tr><td>${c.condition}</td><td>${c.bias}</td><td>${c.magnitude}</td></tr>`).join('')}</tbody>
-                    </table>` : ''}
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>
-
-      <section class="pipeline">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">How Step Counting Actually Works</h2>
-          <p class="section-sub animate-on-scroll">Every consumer wearable uses variations of the same 6-step signal processing pipeline.</p>
-          <div class="pipeline-steps animate-on-scroll">
-            ${this._pipeline.steps.map(s => `
-              <div class="pipeline-step">
-                <div class="pipeline-num">${s.n}</div>
-                <div class="pipeline-content">
-                  <h4>${s.name}</h4>
-                  <p>${s.detail}</p>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-          <div class="pipeline-limit animate-on-scroll">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
-            <p><strong>Fundamental Limitation:</strong> ${this._pipeline.fundamentalLimit}</p>
-          </div>
-          <h3 class="pipeline-algo-title animate-on-scroll">Algorithm Types</h3>
-          <div class="table-wrap animate-on-scroll">
-            <table class="rankings-table">
-              <thead>
-                <tr><th>Algorithm</th><th>Accuracy</th><th>Used By</th><th>Note</th></tr>
-              </thead>
-              <tbody>
-                ${this._pipeline.algorithms.map(a => `
-                  <tr class="rank-row">
-                    <td style="font-weight:600">${a.name}</td>
-                    <td>${a.accuracy}</td>
-                    <td>${a.usedBy}</td>
-                    <td style="color:var(--gray-400);font-size:12px">${a.note}</td>
-                  </tr>
                 `).join('')}
-              </tbody>
-            </table>
+              </div>
+            </div>
           </div>
-          <p class="table-note animate-on-scroll">Gold standard: ${this._pipeline.goldStandard}</p>
         </div>
       </section>
 
@@ -724,6 +649,46 @@ class KygoStepCountAccuracy extends HTMLElement {
         `).join('')}
       </div>
     `;
+  }
+
+  // ── Factor card insight ───────────────────────────────────────────────
+
+  _renderFactorCardInsight(f) {
+    if (f.speeds) {
+      return `
+        <div class="fci-speed">
+          <div class="fci-speed-tier fci-speed-bad"><span class="fci-speed-label">&lt; 0.9 m/s</span><span class="fci-speed-note">Poor–Very poor (all devices fail)</span></div>
+          <div class="fci-speed-tier fci-speed-ok"><span class="fci-speed-label">0.9–1.3 m/s</span><span class="fci-speed-note">Good (&gt;90% accuracy)</span></div>
+          <div class="fci-speed-tier fci-speed-good"><span class="fci-speed-label">1.3–1.8 m/s</span><span class="fci-speed-note">Excellent (&gt;95% accuracy)</span></div>
+          <div class="fci-speed-tier fci-speed-good"><span class="fci-speed-label">&gt; 1.8 m/s</span><span class="fci-speed-note">Excellent (&gt;95–99%)</span></div>
+        </div>
+      `;
+    }
+    if (f.placements) {
+      return `
+        <div class="fci-list">
+          ${f.placements.map(p => `
+            <div class="fci-list-row">
+              <span class="fci-rank">${p.rank.split(' ')[0]}</span>
+              <strong>${p.placement}</strong>
+              <span class="fci-mape">${p.error}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    if (f.overTriggers) {
+      return `
+        <div class="fci-triggers">
+          <div class="fci-trigger fci-over"><strong>Overcounts ${f.overTriggers.range}:</strong> ${f.overTriggers.examples.slice(0, 2).join(', ')}</div>
+          <div class="fci-trigger fci-under"><strong>Undercounts ${f.underTriggers.range}:</strong> ${f.underTriggers.examples.slice(0, 2).join(', ')}</div>
+        </div>
+      `;
+    }
+    if (f.source) {
+      return `<p class="fci-source">Source: ${f.source}</p>`;
+    }
+    return '';
   }
 
   // ── Comparison ────────────────────────────────────────────────────────
@@ -1056,20 +1021,11 @@ class KygoStepCountAccuracy extends HTMLElement {
       /* Shared section utilities */
       .section-title { font-size: clamp(24px, 5vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { font-size: clamp(14px, 3.5vw, 16px); color: var(--gray-600); text-align: center; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
-      .table-wrap { overflow-x: auto; border-radius: var(--radius); box-shadow: 0 4px 24px rgba(0,0,0,0.07); background: #fff; }
-      .rankings-table { width: 100%; border-collapse: collapse; min-width: 640px; }
-      .rankings-table thead th { background: var(--dark); color: #fff; padding: 14px 16px; text-align: left; font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
-      .rankings-table thead th:first-child { border-radius: var(--radius-sm) 0 0 0; }
-      .rankings-table thead th:last-child { border-radius: 0 var(--radius-sm) 0 0; }
-      .rank-row { border-bottom: 1px solid var(--gray-100); transition: background 0.15s; }
-      .rank-row:hover { background: var(--gray-100); }
-      .rank-row td { padding: 14px 16px; font-size: 14px; vertical-align: middle; }
       .bias-tag { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 600; white-space: nowrap; }
       .bias-under { background: rgba(34,197,94,0.12); color: #16A34A; }
       .bias-over { background: rgba(239,68,68,0.12); color: #DC2626; }
       .bias-mixed { background: rgba(251,191,36,0.15); color: #B45309; }
       .bias-unknown { background: var(--gray-100); color: var(--gray-600); }
-      .table-note { font-size: 13px; color: var(--gray-400); text-align: center; margin-top: 12px; }
 
       /* Comparison */
       .comparison { padding: 56px 0; background: var(--light); }
@@ -1188,13 +1144,36 @@ class KygoStepCountAccuracy extends HTMLElement {
       .dd-buy-note { font-size: 11px; color: var(--gray-400); }
       .dd-buy-cta { font-size: 12px; color: var(--green-dark); font-weight: 600; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
 
-      /* Factors */
+      /* Factors — visual cards */
       .factors { padding: 56px 0; background: var(--light); }
-      .factors-list { display: flex; flex-direction: column; gap: 8px; }
-      .factor-item { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
-      .factor-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; gap: 12px; transition: background 0.15s; }
-      .factor-header:hover { background: var(--gray-100); }
-      .factor-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+      .factor-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; margin-bottom: 20px; }
+      .factor-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); padding: 20px 22px; border-top: 4px solid var(--gray-200); }
+      .factor-card-highest { border-top-color: #DC2626; }
+      .factor-card-very-high { border-top-color: #C2410C; }
+      .factor-card-high { border-top-color: #B45309; }
+      .factor-card-significant { border-top-color: #4338CA; }
+      .factor-card-severe { border-top-color: #991B1B; }
+      .factor-card-moderate { border-top-color: var(--green-dark); }
+      .factor-card-name { font-size: 16px; margin: 10px 0 8px; }
+      .factor-card-detail { font-size: 13px; color: var(--gray-600); line-height: 1.7; margin: 0 0 12px; }
+      /* Factor card insight widgets */
+      .fci-speed { display: flex; flex-direction: column; gap: 4px; }
+      .fci-speed-tier { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-radius: var(--radius-sm); font-size: 12px; }
+      .fci-speed-bad { background: rgba(239,68,68,0.08); color: #DC2626; }
+      .fci-speed-ok { background: rgba(251,191,36,0.1); color: #B45309; }
+      .fci-speed-good { background: rgba(34,197,94,0.08); color: var(--green-dark); }
+      .fci-speed-label { font-weight: 600; }
+      .fci-speed-note { font-size: 11px; }
+      .fci-list { display: flex; flex-direction: column; gap: 5px; }
+      .fci-list-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 6px 10px; background: var(--gray-100); border-radius: var(--radius-sm); }
+      .fci-rank { font-size: 14px; flex-shrink: 0; }
+      .fci-mape { margin-left: auto; color: var(--gray-600); white-space: nowrap; font-weight: 600; }
+      .fci-triggers { display: flex; flex-direction: column; gap: 6px; }
+      .fci-trigger { font-size: 12px; padding: 8px 10px; border-radius: var(--radius-sm); line-height: 1.5; }
+      .fci-over { background: rgba(239,68,68,0.06); color: #B91C1C; }
+      .fci-under { background: rgba(251,191,36,0.1); color: #92400E; }
+      .fci-source { font-size: 11px; color: var(--gray-400); font-style: italic; }
+      /* Other factors collapsible (reuses .factor-item accordion CSS) */
       .impact-pill { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
       .impact-highest { background: rgba(239,68,68,0.12); color: #DC2626; }
       .impact-very-high { background: rgba(251,146,60,0.12); color: #C2410C; }
@@ -1202,40 +1181,21 @@ class KygoStepCountAccuracy extends HTMLElement {
       .impact-significant { background: rgba(99,102,241,0.1); color: #4338CA; }
       .impact-severe { background: rgba(239,68,68,0.18); color: #991B1B; }
       .impact-moderate { background: rgba(34,197,94,0.1); color: var(--green-dark); }
+      .other-factors-wrap { }
+      .factor-item { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
+      .factor-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; gap: 12px; transition: background 0.15s; }
+      .factor-header:hover { background: var(--gray-100); }
+      .factor-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
       .factor-name { font-size: 15px; font-weight: 600; }
       .factor-toggle { color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
       .factor-item.open .factor-toggle { transform: rotate(180deg); }
-      .factor-body { display: none; padding: 0 20px 16px; }
+      .factor-body { display: none; padding: 4px 20px 16px; }
       .factor-item.open .factor-body { display: block; }
-      .factor-body p { font-size: 14px; color: var(--gray-600); line-height: 1.7; margin-bottom: 12px; }
-      .factor-source { font-size: 12px; color: var(--gray-400); font-style: italic; }
-      .factor-table { width: 100%; border-collapse: collapse; font-size: 13px; border-radius: var(--radius-sm); overflow: hidden; margin-top: 8px; }
-      .factor-table thead th { background: var(--gray-100); padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.3px; }
-      .factor-table td { padding: 8px 12px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); }
-      .factor-table tr:last-child td { border-bottom: none; }
-      .factor-triggers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
-      .trigger-group { border-radius: var(--radius-sm); padding: 12px; }
-      .trigger-label { font-size: 12px; font-weight: 700; margin-bottom: 8px; display: block; }
-      .trigger-label.over { color: #DC2626; background: rgba(239,68,68,0.06); padding: 4px 8px; border-radius: 4px; }
-      .trigger-label.under { color: #B45309; background: rgba(251,191,36,0.1); padding: 4px 8px; border-radius: 4px; }
-      .trigger-group ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-      .trigger-group li { font-size: 12px; color: var(--gray-600); padding-left: 12px; position: relative; }
-      .trigger-group li::before { content: '•'; position: absolute; left: 0; }
-
-      /* Pipeline */
-      .pipeline { padding: 56px 0; background: #fff; }
-      .pipeline-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 24px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--gray-200); }
-      .pipeline-step { display: flex; gap: 16px; align-items: flex-start; padding: 20px 24px; border-bottom: 1px solid var(--gray-100); background: #fff; transition: background 0.15s; }
-      .pipeline-step:last-child { border-bottom: none; }
-      .pipeline-step:hover { background: var(--gray-100); }
-      .pipeline-num { width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; font-family: 'Space Grotesk', sans-serif; }
-      .pipeline-content h4 { font-size: 15px; margin-bottom: 4px; }
-      .pipeline-content p { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin: 0; }
-      .pipeline-limit { display: flex; gap: 12px; align-items: flex-start; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 32px; color: #DC2626; }
-      .pipeline-limit svg { flex-shrink: 0; margin-top: 2px; }
-      .pipeline-limit p { font-size: 14px; color: var(--gray-600); margin: 0; line-height: 1.6; }
-      .pipeline-limit p strong { color: #DC2626; }
-      .pipeline-algo-title { font-size: 20px; margin-bottom: 16px; }
+      .other-factor-row { padding: 14px 0; border-bottom: 1px solid var(--gray-100); }
+      .other-factor-row:last-child { border-bottom: none; padding-bottom: 0; }
+      .other-factor-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+      .other-factor-name { font-size: 14px; }
+      .other-factor-detail { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin: 0; }
 
       /* Caveats */
       .caveats { padding: 56px 0; background: #fff; }
@@ -1330,16 +1290,16 @@ class KygoStepCountAccuracy extends HTMLElement {
         return;
       }
 
-      // Accuracy factors accordion
+      // Other factors collapsible
       const factorHeader = e.target.closest('.factor-header');
       if (factorHeader) {
         const item = factorHeader.closest('.factor-item');
-        const idx = parseInt(item.dataset.factor, 10);
-        if (this._expandedFactors.has(idx)) {
-          this._expandedFactors.delete(idx);
+        const key = item.dataset.factor === 'other' ? 'other' : parseInt(item.dataset.factor, 10);
+        if (this._expandedFactors.has(key)) {
+          this._expandedFactors.delete(key);
           item.classList.remove('open');
         } else {
-          this._expandedFactors.add(idx);
+          this._expandedFactors.add(key);
           item.classList.add('open');
         }
         return;
