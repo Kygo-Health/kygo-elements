@@ -67,9 +67,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020', 'feehan2020', 'natureSR2024'],
         affiliateLinks: [
-          { name: 'Garmin Forerunner 265', url: 'https://amzn.to/4r7eC0M' },
-          { name: 'Garmin Venu 3', url: 'https://amzn.to/3ZUWQ50' },
-          { name: 'Garmin Fenix 8', url: 'https://amzn.to/4qp6dEU' }
+          { name: 'Shop Garmin on Amazon', url: 'https://amzn.to/4aF8l5D' }
         ]
       },
       'apple-watch': {
@@ -97,8 +95,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kim2024', 'choekang2025', 'natureSR2024'],
         affiliateLinks: [
-          { name: 'Apple Watch Series 10', url: 'https://amzn.to/4kw5Uaa' },
-          { name: 'Apple Watch Ultra 2', url: 'https://amzn.to/4kqQi7K' }
+          { name: 'Shop Apple Watch on Amazon', url: 'https://amzn.to/4rUcGst' }
         ]
       },
       fitbit: {
@@ -126,8 +123,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020', 'straczkiewicz2023', 'giurgiu2023', 'germini2022'],
         affiliateLinks: [
-          { name: 'Fitbit Charge 6', url: 'https://amzn.to/4chbzyr' },
-          { name: 'Fitbit Sense 2', url: 'https://amzn.to/4ck9W33' }
+          { name: 'Shop Fitbit on Amazon', url: 'https://amzn.to/3ZPkHDc' }
         ]
       },
       samsung: {
@@ -154,8 +150,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kim2024'],
         affiliateLinks: [
-          { name: 'Galaxy Watch 7', url: 'https://amzn.to/3Owp4R1' },
-          { name: 'Galaxy Watch Ultra', url: 'https://amzn.to/3ZqzKmE' }
+          { name: 'Shop Samsung Galaxy Watch on Amazon', url: 'https://amzn.to/4aZkBPB' }
         ]
       },
       coros: {
@@ -180,7 +175,9 @@ class KygoStepCountAccuracy extends HTMLElement {
           { model: 'APEX 2 Pro', mape: '1.6% (81 steps off / 5,000)', condition: 'Walking test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' }
         ],
         studies: [],
-        affiliateLinks: null
+        affiliateLinks: [
+          { name: 'Shop COROS on Amazon', url: 'https://amzn.to/4rkOv6I' }
+        ]
       },
       polar: {
         name: 'Polar', short: 'Polar', rank: 6,
@@ -206,7 +203,9 @@ class KygoStepCountAccuracy extends HTMLElement {
           { model: 'Vantage M3', mape: '+3.8% (379 extra steps / 10,000)', condition: 'Walking test', source: 'TechRadar (Jan 2025)', note: 'Consumer test, not peer-reviewed' }
         ],
         studies: ['roos2020'],
-        affiliateLinks: null
+        affiliateLinks: [
+          { name: 'Shop Polar on Amazon', url: 'https://amzn.to/4rqpdnL' }
+        ]
       },
       oura: {
         name: 'Oura Ring', short: 'Oura Ring', rank: 7,
@@ -233,7 +232,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kristiansson2023'],
         affiliateLinks: [
-          { name: 'Oura Ring Gen 4', url: 'https://amzn.to/4klINic' }
+          { name: 'Shop Oura Ring on Amazon', url: 'https://amzn.to/4aF93jj' }
         ]
       },
       whoop: {
@@ -257,7 +256,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         modelData: [],
         studies: [],
         affiliateLinks: [
-          { name: 'WHOOP 4.0', url: 'https://amzn.to/3Zmzkh8', note: '12-month subscription included' }
+          { name: 'Shop WHOOP on Amazon', url: 'https://amzn.to/4rRoziQ' }
         ]
       }
     };
