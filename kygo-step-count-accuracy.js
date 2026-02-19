@@ -458,14 +458,14 @@ class KygoStepCountAccuracy extends HTMLElement {
           <p class="section-sub animate-on-scroll">Tap any device to see strengths, weaknesses, and research sources.</p>
           <div class="dd-grid">
             ${deviceList.map(([k, d], i) => `
-              <div class="dd-card animate-on-scroll ${this._expandedDevice === k ? 'expanded' : ''}" data-device="${k}" style="--accent:${d.color};--delay:${i * 80}ms">
+              <div class="dd-card animate-on-scroll ${this._expandedDevice === k ? 'expanded' : ''}" data-device="${k}" style="--delay:${i * 80}ms">
                 <div class="dd-header">
                   ${d.imageUrl
                     ? `<img src="${d.imageUrl}" alt="${d.name}" class="dd-img" />`
-                    : `<span class="dd-fallback" style="background:${d.color}">${d.short[0]}</span>`
+                    : `<span class="dd-fallback">${d.short[0]}</span>`
                   }
                   <div class="dd-info">
-                    <div class="dd-rank-label" style="color:${d.color}">${d.rankLabel}</div>
+                    <div class="dd-rank-label">${d.rankLabel}</div>
                     <h3>${d.affiliateLinks && d.affiliateLinks.length ? `<a href="${d.affiliateLinks[0].url}" class="dd-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>` : d.name}</h3>
                     <span class="dd-bestfor">${d.bestFor}</span>
                   </div>
@@ -738,9 +738,9 @@ class KygoStepCountAccuracy extends HTMLElement {
         ? `<a href="${d.affiliateLinks[0].url}" class="dsc-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>`
         : d.name;
       return `
-        <div class="device-summary-card" style="--accent:${d.color}">
+        <div class="device-summary-card">
           <div class="dsc-num">${i + 1}</div>
-          ${d.imageUrl ? `<img src="${d.imageUrl}" alt="${d.name}" class="dsc-img" />` : `<span class="dsc-fallback" style="background:${d.color}">${d.short[0]}</span>`}
+          ${d.imageUrl ? `<img src="${d.imageUrl}" alt="${d.name}" class="dsc-img" />` : `<span class="dsc-fallback">${d.short[0]}</span>`}
           <div class="dsc-info">
             <h3 class="dsc-name">${linkName}</h3>
             <span class="dsc-bestfor">${d.bestFor}</span>
@@ -835,8 +835,8 @@ class KygoStepCountAccuracy extends HTMLElement {
           <thead>
             <tr>
               <th class="ov-metric-col">Metric</th>
-              <th class="ov-dev-col" style="color:${d1.color || 'inherit'}">${d1.short || k1}</th>
-              <th class="ov-dev-col" style="color:${d2.color || 'inherit'}">${d2.short || k2}</th>
+              <th class="ov-dev-col">${d1.short || k1}</th>
+              <th class="ov-dev-col">${d2.short || k2}</th>
             </tr>
           </thead>
           <tbody>
@@ -854,7 +854,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ${this._selectedDevices.map(k => {
           const d = devices[k] || {};
           return `
-            <div class="ov-strengths-card" style="--accent:${d.color}">
+            <div class="ov-strengths-card">
               <h4>Best For: ${d.short || k}</h4>
               <p>${d.bestFor || '—'}</p>
             </div>
@@ -871,7 +871,7 @@ class KygoStepCountAccuracy extends HTMLElement {
           const d = this._devices[k] || {};
           return `
             <div class="comp-col">
-              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              <h4 class="comp-col-title">${d.short || k}</h4>
               ${this._renderModelData(k) || '<p class="comp-no-data">No published lab data</p>'}
             </div>
           `;
@@ -889,7 +889,7 @@ class KygoStepCountAccuracy extends HTMLElement {
           const d = devices[k] || {};
           return `
             <div class="comp-col">
-              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              <h4 class="comp-col-title">${d.short || k}</h4>
               <div class="comp-stat-block">
                 <span class="comp-stat-label">MAPE (Free-Living)</span>
                 <span class="comp-stat-value">${d.mapeFree || '—'}</span>
@@ -915,7 +915,7 @@ class KygoStepCountAccuracy extends HTMLElement {
           const biasClass = biasDir.includes('under') ? 'bias-under' : biasDir.includes('over') ? 'bias-over' : biasDir.includes('mixed') ? 'bias-mixed' : 'bias-unknown';
           return `
             <div class="comp-col">
-              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              <h4 class="comp-col-title">${d.short || k}</h4>
               <span class="bias-tag ${biasClass}" style="margin-bottom:12px;display:inline-block">${d.bias || '—'}</span>
               <p class="comp-fl-note">${d.keyDiff || d.algorithm || '—'}</p>
             </div>
@@ -952,7 +952,7 @@ class KygoStepCountAccuracy extends HTMLElement {
           const notes = speedNotes(k);
           return `
             <div class="comp-col">
-              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              <h4 class="comp-col-title">${d.short || k}</h4>
               ${notes.length ? `<ul class="comp-speed-list">${notes.map(n => `<li>${n}</li>`).join('')}</ul>` : '<p class="comp-no-data">No speed-specific data</p>'}
             </div>
           `;
@@ -972,7 +972,7 @@ class KygoStepCountAccuracy extends HTMLElement {
           const d = devices[k] || {};
           return `
             <div class="comp-col">
-              <h4 class="comp-col-title" style="color:${d.color || 'inherit'}">${d.short || k}</h4>
+              <h4 class="comp-col-title">${d.short || k}</h4>
               ${d.falseSteps && d.falseSteps.length
                 ? `<div class="dd-tags">${d.falseSteps.map(f => `<span class="dd-tag">${f}</span>`).join('')}</div>`
                 : '<p class="comp-no-data">No published data</p>'
@@ -1054,14 +1054,14 @@ class KygoStepCountAccuracy extends HTMLElement {
       .device-select:focus { outline: none; border-color: var(--green); }
       .vs-badge { font-size: 14px; font-weight: 800; color: var(--gray-400); background: var(--gray-100); padding: 8px 16px; border-radius: 50px; flex-shrink: 0; }
       .device-summary-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-      .device-summary-card { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #fff; border-radius: var(--radius); border: 2px solid var(--accent); position: relative; }
-      .dsc-num { position: absolute; top: 10px; right: 12px; font-size: 11px; font-weight: 700; color: var(--accent); }
+      .device-summary-card { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #fff; border-radius: var(--radius); border: 2px solid var(--green); position: relative; }
+      .dsc-num { position: absolute; top: 10px; right: 12px; font-size: 11px; font-weight: 700; color: var(--green-dark); }
       .dsc-img { width: 44px; height: 44px; object-fit: contain; border-radius: 10px; flex-shrink: 0; }
-      .dsc-fallback { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; flex-shrink: 0; }
+      .dsc-fallback { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; flex-shrink: 0; background: var(--green-dark); }
       .dsc-info { flex: 1; min-width: 0; }
       .dsc-name { font-size: 16px; margin-bottom: 4px; }
       .dsc-name-link { color: inherit; text-decoration: underline; text-decoration-color: var(--gray-300); text-underline-offset: 2px; }
-      .dsc-name-link:hover { text-decoration-color: var(--accent); }
+      .dsc-name-link:hover { text-decoration-color: var(--green); }
       .dsc-bestfor { font-size: 12px; color: var(--gray-600); display: block; margin-bottom: 6px; }
       .dsc-sub { display: inline-block; padding: 2px 8px; border-radius: 50px; font-size: 11px; font-weight: 600; }
       .dsc-sub-free { background: var(--green-light); color: var(--green-dark); }
@@ -1072,7 +1072,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       .comp-tab.active { background: var(--green); border-color: var(--green); color: #fff; }
       .comp-detail { background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); padding: 24px; min-height: 200px; }
       /* Overview tab */
-      .ov-table-wrap { overflow-x: auto; margin-bottom: 20px; }
+      .ov-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 20px; }
       .ov-table { width: 100%; border-collapse: collapse; min-width: 400px; }
       .ov-table thead th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 2px solid var(--gray-200); color: var(--gray-600); }
       .ov-metric-col { width: 40%; }
@@ -1085,7 +1085,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       .ov-val { padding: 12px 16px; font-size: 14px; color: var(--gray-600); }
       .ov-winner { background: rgba(34,197,94,0.05); color: var(--green-dark); font-weight: 700; }
       .ov-strengths { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-      .ov-strengths-card { padding: 14px 18px; border-radius: var(--radius-sm); border-left: 3px solid var(--accent); background: var(--gray-100); }
+      .ov-strengths-card { padding: 14px 18px; border-radius: var(--radius-sm); border-left: 3px solid var(--green); background: var(--gray-100); }
       .ov-strengths-card h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 4px; }
       .ov-strengths-card p { font-size: 14px; font-weight: 600; color: var(--dark); margin: 0; }
       /* Shared comp tab styles */
@@ -1099,7 +1099,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       .comp-insight-box { background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 13px; color: var(--gray-600); line-height: 1.6; }
       .comp-no-data { font-size: 13px; color: var(--gray-400); font-style: italic; }
       /* Speed tab */
-      .speed-table-wrap { overflow-x: auto; margin-bottom: 16px; }
+      .speed-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 16px; }
       .speed-table { width: 100%; border-collapse: collapse; min-width: 400px; font-size: 13px; }
       .speed-table thead th { background: var(--gray-100); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.3px; }
       .speed-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); }
@@ -1109,9 +1109,9 @@ class KygoStepCountAccuracy extends HTMLElement {
       .comp-speed-list li { font-size: 13px; color: var(--gray-600); padding-left: 14px; position: relative; line-height: 1.5; }
       .comp-speed-list li::before { content: '•'; position: absolute; left: 0; color: var(--green); }
       /* Model table (used in Lab tab via _renderModelData) */
-      .dd-model-data { margin-bottom: 16px; }
+      .dd-model-data { margin-bottom: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .dd-model-data h4 { font-size: 13px; color: var(--gray-600); margin-bottom: 8px; }
-      .model-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+      .model-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 440px; }
       .model-table thead th { background: var(--gray-100); padding: 8px 10px; text-align: left; font-weight: 600; color: var(--gray-600); font-size: 11px; text-transform: uppercase; }
       .model-table td { padding: 8px 10px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); vertical-align: top; }
       .model-table tr:last-child td { border-bottom: none; }
@@ -1121,17 +1121,17 @@ class KygoStepCountAccuracy extends HTMLElement {
       .deep-dives { padding: 56px 0; background: #fff; }
       .dd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
       .dd-card { border-radius: var(--radius); border: 2px solid var(--gray-200); background: #fff; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }
-      .dd-card:hover { border-color: var(--accent); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-      .dd-card.expanded { border-color: var(--accent); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+      .dd-card:hover { border-color: var(--green); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+      .dd-card.expanded { border-color: var(--green); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
       .dd-header { display: flex; align-items: center; gap: 12px; padding: 16px; }
       .dd-img { width: 40px; height: 40px; object-fit: contain; border-radius: 10px; flex-shrink: 0; }
-      .dd-fallback { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 18px; flex-shrink: 0; }
+      .dd-fallback { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 18px; flex-shrink: 0; background: var(--green-dark); }
       .dd-info { flex: 1; min-width: 0; }
-      .dd-rank-label { font-size: 11px; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 2px; }
+      .dd-rank-label { font-size: 11px; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 2px; color: var(--green-dark); }
       .dd-info h3 { font-size: 16px; margin-bottom: 2px; }
       .dd-bestfor { font-size: 12px; color: var(--gray-600); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .dd-name-link { color: inherit; text-decoration: underline; text-decoration-color: var(--gray-300); text-underline-offset: 2px; }
-      .dd-name-link:hover { text-decoration-color: var(--accent); }
+      .dd-name-link:hover { text-decoration-color: var(--green); }
       .dd-toggle { color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
       .dd-card.expanded .dd-toggle { transform: rotate(180deg); }
       .dd-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--gray-100); padding-top: 16px; }
@@ -1244,21 +1244,34 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       /* Responsive */
       @media (max-width: 640px) {
-        .dd-grid { grid-template-columns: 1fr; }
-        .dd-cols { grid-template-columns: 1fr; }
-        .factor-acc-grid { grid-template-columns: 1fr; }
-        .factor-acc-body { padding: 0 20px 16px 44px; }
-        .factor-acc-triggers { grid-template-columns: 1fr; }
-        .cta-box { padding: 32px 20px; }
-        .cta-features { gap: 12px; }
+        /* Comparison */
         .device-selectors { flex-direction: column; align-items: stretch; }
         .vs-badge { align-self: center; }
         .selector-wrap { max-width: 100%; }
         .device-summary-row { grid-template-columns: 1fr; }
+        .device-summary-card { gap: 10px; padding: 14px 16px; }
+        .dsc-img { width: 36px; height: 36px; }
+        .dsc-fallback { width: 36px; height: 36px; font-size: 16px; }
+        .comp-tabs { gap: 4px; }
+        .comp-tab { padding: 6px 12px; font-size: 12px; }
+        .comp-detail { padding: 14px; }
         .comp-2col { grid-template-columns: 1fr; }
-        .comp-detail { padding: 16px; }
+        .comp-stat-value { font-size: 18px; }
         .ov-strengths { grid-template-columns: 1fr; }
+        /* Deep Dives */
+        .dd-grid { grid-template-columns: 1fr; }
+        .dd-cols { grid-template-columns: 1fr; }
+        .dd-header { padding: 14px; gap: 10px; }
+        .dd-body { padding: 0 14px 14px; padding-top: 14px; }
+        /* Factors */
+        .factor-acc-grid { grid-template-columns: 1fr; }
+        .factor-acc-body { padding: 0 16px 14px 40px; }
+        .factor-acc-triggers { grid-template-columns: 1fr; }
+        /* Caveats */
         .caveat-body { padding: 0 20px 16px 44px; }
+        /* CTA + Footer */
+        .cta-box { padding: 32px 20px; }
+        .cta-features { gap: 12px; }
       }
     `;
   }
