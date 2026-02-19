@@ -315,18 +315,65 @@ class KygoStepCountAccuracy extends HTMLElement {
         impactLevel: 'moderate',
         detail: 'BMI itself does not directly impact step count accuracy. However, obesity alters gait patterns (slower speed, shorter steps, wider stance, reduced arm swing) which indirectly reduces accuracy through the walking speed and arm swing factors.',
         source: 'Modave et al. (2017), JMIR; Scataglini et al. (2025)'
+      },
+      {
+        factor: 'Surface Type',
+        impact: 'Minimal',
+        impactLevel: 'moderate',
+        detail: 'Garmin validated across natural lawn, gravel, asphalt, linoleum, and ceramic tile with acceptable MAPE on all surfaces. Surface type alone has minimal independent effect on step count accuracy — walking speed changes on surfaces are the more relevant factor.',
+        source: 'Garmin validity review (2020), DOI: 10.3390/ijerph17134269'
+      },
+      {
+        factor: 'Incline / Terrain',
+        impact: 'Moderate',
+        impactLevel: 'moderate',
+        detail: 'Garmin has been shown to overcount during incline walking. Changes in stride mechanics on hills — shorter strides, altered arm swing, and different cadence patterns — affect step detection algorithms calibrated for level-ground walking.'
+      },
+      {
+        factor: 'Treadmill vs. Overground Walking',
+        impact: 'Moderate',
+        impactLevel: 'moderate',
+        detail: 'Treadmill walking produces different arm-swing patterns than overground walking. Users often hold the handrails (severely reducing arm swing) or alter their gait to match belt speed. This leads to systematically different accuracy profiles — Apple Watch shows 10.1% MAPE on treadmill vs. <10% overground.'
       }
     ];
   }
 
+  get _pipeline() {
+    return {
+      steps: [
+        { n: 1, name: 'Raw Signal Acquisition', detail: '3-axis MEMS accelerometer captures acceleration in x, y, z at 25–100 Hz sampling rate.' },
+        { n: 2, name: 'Signal Preprocessing', detail: 'Compute vector magnitude √(x² + y² + z²) to combine all axes into a single value.' },
+        { n: 3, name: 'Noise Filtering', detail: 'Low-pass filter (cutoff ~3–10 Hz) removes high-frequency noise; band-pass filter (0.5–3 Hz) isolates walking cadence range.' },
+        { n: 4, name: 'Step Detection', detail: 'Peak detection, zero-crossing, or autocorrelation identifies periodic patterns matching walking cadence.' },
+        { n: 5, name: 'Validation Gate', detail: 'Time-window constraints (0.2s–2.0s between steps) filter false positives; minimum-bout thresholds (e.g., 10+ consecutive steps) reduce phantom counts.' },
+        { n: 6, name: 'Post-Processing', detail: 'Machine learning classifiers distinguish walking from non-walking activities and apply activity-specific corrections.' }
+      ],
+      algorithms: [
+        { name: 'Peak Detection', accuracy: '>97% controlled walking', usedBy: 'Garmin, Fitbit, Polar, COROS', note: 'Most common, computationally lightweight' },
+        { name: 'ML-Enhanced Detection', accuracy: '12.5% MAPE free-living, 1.3% underestimation', usedBy: 'Apple Watch (Core Motion), Oura Ring', note: 'Classifies walking vs. non-walking first, then applies peak detection' },
+        { name: 'Deep Learning (End-to-End)', accuracy: '96–99% with gyroscope, ~60% accel-only', usedBy: 'Research / emerging', note: 'Neural networks trained directly on accelerometer data' },
+        { name: 'Zero-Crossing Detection', accuracy: 'Lower than peak detection', usedBy: 'Earlier / simpler pedometers', note: 'Counts signal baseline crossings; less robust to noise' },
+        { name: 'Autocorrelation Analysis', accuracy: 'Good cadence detection', usedBy: 'Research / hybrid approaches', note: 'Identifies periodic patterns; more computationally intensive' }
+      ],
+      fundamentalLimit: 'Wrist-worn devices detect arm swing as a proxy for walking — not actual footfalls. This creates systematic errors no algorithm can fully eliminate.',
+      goldStandard: 'Manual hand-tally counting (controlled) or research-grade hip-worn accelerometers (ActiGraph, ActivPAL) for free-living studies.'
+    };
+  }
+
   get _caveats() {
     return [
-      { title: 'Lab accuracy ≠ real-world accuracy', body: 'All devices score ~5% MAPE in controlled lab testing. In free-living conditions, the same devices jump to >10% error. The controlled walking test that shows your device is "98% accurate" tells you almost nothing about daily step count reliability.' },
-      { title: 'Walking speed is everything', body: 'Below 0.9 m/s, accuracy collapses on all devices. Elderly adults, post-surgical patients, and anyone using a walker or cane will see dramatically worse accuracy than the published numbers suggest. This is the single most important caveat in this entire tool.' },
-      { title: 'Wrist placement measures arm swing, not steps', body: 'Every wrist-worn device is fundamentally counting arm movement as a proxy for walking. Push a stroller and it massively underestimates. Wave your hands while talking and it overcounts. No algorithm can fully eliminate this physical constraint.' },
-      { title: 'Free-living data is messy and limited', body: 'Most validation studies use short controlled walks (5–15 minutes) or single-day protocols. Multi-day free-living studies like Kristiansson (2023) reveal accuracy problems that lab studies completely miss. Treat short-duration accuracy claims with skepticism.' },
-      { title: 'Model generations matter — a lot', body: 'Studies on the Garmin Vivofit or Fitbit Charge HR may not reflect your newer device\'s accuracy. Firmware updates and new sensor generations can dramatically change step counting behavior. Always check which model generation was studied.' },
-      { title: 'The 10,000-step goal is not evidence-based', body: 'The 10,000 steps/day target originated from a 1960s Japanese marketing campaign for a pedometer, not clinical research. Research suggests 7,000–8,000 steps/day is associated with significant health benefits. The exact number matters less than the trend.' }
+      { title: 'Lab ≠ Real World', body: 'All devices score ~5% MAPE in controlled lab testing. In free-living conditions, the same devices jump to >10% error. The controlled walking test showing your device is "98% accurate" tells you almost nothing about daily step count reliability.' },
+      { title: 'Walking speed is the #1 confounder', body: 'Below 0.9 m/s, accuracy collapses on all devices. Elderly adults, post-surgical patients, and anyone using a walker or cane will see dramatically worse accuracy than published numbers suggest. This is the single most important caveat in this entire tool.' },
+      { title: 'Wrist placement measures arm swing, not footfalls', body: 'Every wrist-worn device is fundamentally counting arm movement as a proxy for walking. Push a stroller and it massively underestimates. Wave your hands while talking and it overcounts. No algorithm can fully eliminate this physical constraint.' },
+      { title: 'Oura Ring is NOT a step counter', body: 'Despite showing acceptable lab accuracy (<10% MAPE in controlled walks), the Oura Ring averages +2,124 extra phantom steps per day in free-living due to hand gestures. Its finger placement makes it fundamentally unsuited for daily step count reliability.' },
+      { title: 'WHOOP has zero validation data for steps', body: 'Step counting was added to WHOOP via a firmware update in October 2024. The hardware is theoretically capable, but no peer-reviewed validation studies exist. WHOOP intentionally positions Strain (cardiovascular load) as its primary metric — not steps.' },
+      { title: 'Garmin\'s 10-step gate trades sensitivity for specificity', body: 'Garmin\'s 10-step minimum bout filter is a deliberate design choice: it eliminates phantom steps by refusing to count unless 10+ consecutive step-like patterns are detected. This reduces false positives but means very short walking bursts (<10 steps) are never recorded.' },
+      { title: 'Model generations matter — a lot', body: 'Studies on the Garmin Vivofit or Fitbit Charge HR may not reflect your current device\'s accuracy. Firmware updates and new sensor generations can dramatically change step counting behavior. Always check which model generation was studied before applying the data to your device.' },
+      { title: 'The validation gap is massive', body: 'Only ~11% of consumer wearables have been independently validated for any biometric. An estimated 249 studies represent just 3.5% of what would be needed for comprehensive validation. Most devices on the market have no published accuracy data at all.' },
+      { title: 'Study funding shapes results', body: 'Check whether the device manufacturer funded the study. Industry-funded studies systematically favor the funder\'s product. All studies listed in this tool are independent, but when you see manufacturer-published accuracy claims, apply significant skepticism.' },
+      { title: 'Consumer devices are not clinical instruments', body: 'For research or clinical use requiring precise step counts, hip-worn research-grade accelerometers (ActiGraph, ActivPAL) remain the gold standard. No consumer wearable — including Garmin — should be used as a substitute in clinical trials without independent validation.' },
+      { title: 'Steps are algorithmic estimates', body: 'Your wearable does not directly detect footfalls. It detects acceleration patterns and infers steps from signal processing. Every step count you see is an estimate produced by an algorithm, not a direct physical measurement.' },
+      { title: 'Individual variation is significant', body: 'Published MAPE values are population averages. Your personal accuracy depends on your gait, arm swing, walking speed, age, and even body composition. Two people wearing the same device with the same settings may get systematically different accuracy.' }
     ];
   }
 
@@ -354,9 +401,9 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       <section class="hero">
         <div class="container">
-          <div class="hero-badge animate-on-scroll">20+ PEER-REVIEWED STUDIES</div>
-          <h1 class="animate-on-scroll">Which Wearable Counts Steps Most Accurately?</h1>
-          <p class="hero-sub animate-on-scroll">We analyzed the research so you don't have to. Compare step count accuracy across 8 popular wearables — with full bias disclosure and real-world caveats.</p>
+          <div class="hero-badge animate-on-scroll">PEER-REVIEWED RESEARCH</div>
+          <h1 class="animate-on-scroll">How Accurate Is Your Wearable's Step Count?</h1>
+          <p class="hero-sub animate-on-scroll">We analyzed 20+ peer-reviewed studies to reveal which devices count steps most accurately — and what factors affect your count.</p>
           <div class="hero-stats animate-on-scroll">
             <div class="hero-stat">
               <span class="hero-stat-num">82.6%</span>
@@ -546,6 +593,47 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <section class="pipeline">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">How Step Counting Actually Works</h2>
+          <p class="section-sub animate-on-scroll">Every consumer wearable uses variations of the same 6-step signal processing pipeline.</p>
+          <div class="pipeline-steps animate-on-scroll">
+            ${this._pipeline.steps.map(s => `
+              <div class="pipeline-step">
+                <div class="pipeline-num">${s.n}</div>
+                <div class="pipeline-content">
+                  <h4>${s.name}</h4>
+                  <p>${s.detail}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="pipeline-limit animate-on-scroll">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+            <p><strong>Fundamental Limitation:</strong> ${this._pipeline.fundamentalLimit}</p>
+          </div>
+          <h3 class="pipeline-algo-title animate-on-scroll">Algorithm Types</h3>
+          <div class="table-wrap animate-on-scroll">
+            <table class="rankings-table">
+              <thead>
+                <tr><th>Algorithm</th><th>Accuracy</th><th>Used By</th><th>Note</th></tr>
+              </thead>
+              <tbody>
+                ${this._pipeline.algorithms.map(a => `
+                  <tr class="rank-row">
+                    <td style="font-weight:600">${a.name}</td>
+                    <td>${a.accuracy}</td>
+                    <td>${a.usedBy}</td>
+                    <td style="color:var(--gray-400);font-size:12px">${a.note}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+          <p class="table-note animate-on-scroll">Gold standard: ${this._pipeline.goldStandard}</p>
+        </div>
+      </section>
+
       <section class="caveats">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Important Caveats</h2>
@@ -570,8 +658,8 @@ class KygoStepCountAccuracy extends HTMLElement {
           <div class="cta-box animate-on-scroll">
             <div class="cta-box-content">
               <div class="cta-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-              <h2>Go beyond step counts. See cause and effect.</h2>
-              <p>Kygo connects your wearable step data with nutrition to reveal which foods fuel your activity and recovery best.</p>
+              <h2>Your steps tell a story. Kygo reads it.</h2>
+              <p>Connect your wearable step data with nutrition to reveal which foods fuel your activity, sleep, and recovery best.</p>
               <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn" target="_blank" rel="noopener">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                 Download Free on iOS
@@ -791,6 +879,21 @@ class KygoStepCountAccuracy extends HTMLElement {
       .trigger-group li { font-size: 12px; color: var(--gray-600); padding-left: 12px; position: relative; }
       .trigger-group li::before { content: '•'; position: absolute; left: 0; }
 
+      /* Pipeline */
+      .pipeline { padding: 56px 0; background: #fff; }
+      .pipeline-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 24px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--gray-200); }
+      .pipeline-step { display: flex; gap: 16px; align-items: flex-start; padding: 20px 24px; border-bottom: 1px solid var(--gray-100); background: #fff; transition: background 0.15s; }
+      .pipeline-step:last-child { border-bottom: none; }
+      .pipeline-step:hover { background: var(--gray-100); }
+      .pipeline-num { width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; font-family: 'Space Grotesk', sans-serif; }
+      .pipeline-content h4 { font-size: 15px; margin-bottom: 4px; }
+      .pipeline-content p { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin: 0; }
+      .pipeline-limit { display: flex; gap: 12px; align-items: flex-start; background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 32px; color: #DC2626; }
+      .pipeline-limit svg { flex-shrink: 0; margin-top: 2px; }
+      .pipeline-limit p { font-size: 14px; color: var(--gray-600); margin: 0; line-height: 1.6; }
+      .pipeline-limit p strong { color: #DC2626; }
+      .pipeline-algo-title { font-size: 20px; margin-bottom: 16px; }
+
       /* Caveats */
       .caveats { padding: 56px 0; background: #fff; }
       .caveat-grid { display: flex; flex-direction: column; gap: 8px; }
@@ -920,7 +1023,8 @@ class KygoStepCountAccuracy extends HTMLElement {
 
   _injectStructuredData() {
     if (document.querySelector('script[data-kygo-step-ld]')) return;
-    const ld = {
+
+    const webApp = {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
       'name': 'Step Count Accuracy by Wearable Device — Kygo Health',
@@ -932,11 +1036,56 @@ class KygoStepCountAccuracy extends HTMLElement {
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygohealth.com' },
       'keywords': 'step count accuracy, wearable step counter accuracy, Garmin step count accuracy, Apple Watch step count accuracy, Fitbit step count accuracy, Samsung Galaxy Watch steps, Oura Ring step count, WHOOP step count, COROS accuracy, step counter comparison, pedometer accuracy'
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.setAttribute('data-kygo-step-ld', '');
-    script.textContent = JSON.stringify(ld);
-    document.head.appendChild(script);
+
+    const faq = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': [
+        {
+          '@type': 'Question',
+          'name': 'Which wearable has the most accurate step counter?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Garmin ranks #1 for step count accuracy with 82.6% overall accuracy and MAPE of 0.6–3.5% in lab conditions. Apple Watch ranks #2 with 81.1% overall accuracy and r=0.99 correlation against ActivPAL in 24-hour free-living testing. Both significantly outperform other devices.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'How accurate is the Apple Watch step counter?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch has 81.1% overall step count accuracy, with MAPE of 0.9–3.4% in lab conditions and 6.4–10% in free-living conditions. It achieved r=0.99 correlation against ActivPAL in a 24-hour free-living study. Accuracy drops to 23.9% MAPE for light-intensity or slow walking, and accuracy is lower for adults aged 40+ (10.9% MAPE vs 4.3% for under 40).' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Is the Oura Ring accurate for step counting?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. While the Oura Ring shows acceptable lab accuracy (<10% MAPE in controlled walking tests), it averages +2,124 phantom steps per day in free-living conditions due to hand gestures being misclassified as steps. The finger placement makes it fundamentally unsuited for reliable daily step counting. Use the Oura Ring for sleep and HRV, not step counts.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'What is the biggest factor affecting step count accuracy?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Walking speed is the single biggest factor. All wearables perform well at normal walking speeds (0.9–1.8 m/s) but accuracy drops dramatically below 0.9 m/s. At very slow speeds (<0.5 m/s), even the best devices miss the majority of steps. Sensor placement (ankle vs. wrist) and arm swing are the next most important factors.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Does Garmin overcount or undercount steps?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Garmin predominantly underestimates steps, especially at slow walking speeds and on treadmills. Its 10-step minimum bout filter — which waits for 10 consecutive step-like patterns before recording — eliminates phantom steps but causes it to miss very short walking bursts. In free-living conditions, MAPE ranges from 10–17.8% depending on the model.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'How does WHOOP count steps?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'WHOOP added step counting via a firmware update in October 2024. It uses a 3-axis accelerometer plus 3-axis gyroscope to detect step cadence. However, as of early 2026, no peer-reviewed validation studies exist for WHOOP step counting. WHOOP intentionally focuses on Strain (cardiovascular load) rather than steps.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Why does my wearable count steps when I\'m driving or sitting?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Wrist-worn devices detect arm motion as a proxy for walking. Road vibrations during driving, desk work, and repetitive hand movements can all trigger the step detection algorithm. Samsung and Oura users report the most phantom steps (2,000–3,500+ per day). Garmin\'s 10-step minimum bout filter provides the best defense against phantom steps.' }
+        }
+      ]
+    };
+
+    [webApp, faq].forEach((schema, i) => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      if (i === 0) script.setAttribute('data-kygo-step-ld', '');
+      script.textContent = JSON.stringify(schema);
+      document.head.appendChild(script);
+    });
   }
 }
 
