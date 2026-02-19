@@ -513,22 +513,26 @@ class KygoStepCountAccuracy extends HTMLElement {
       <section class="factors">
         <div class="container">
           <h2 class="section-title animate-on-scroll">What Affects Step Count Accuracy?</h2>
-          <p class="section-sub animate-on-scroll">These factors apply to all devices — understanding them helps you interpret your data.</p>
-          <div class="factor-cards animate-on-scroll">
-            ${this._accuracyFactors.slice(0, 6).map(f => `
-              <div class="factor-card factor-card-${f.impactLevel}">
-                <span class="impact-pill impact-${f.impactLevel}">${f.impact}</span>
-                <h3 class="factor-card-name">${f.factor}</h3>
-                <p class="factor-card-detail">${f.detail}</p>
-                ${this._renderFactorCardInsight(f)}
+          <p class="section-sub animate-on-scroll">These factors apply to all devices — tap any to see detail and research data.</p>
+          <div class="factor-acc-grid animate-on-scroll">
+            ${this._accuracyFactors.slice(0, 6).map((f, i) => `
+              <div class="factor-acc-card ${this._expandedFactors.has(i) ? 'open' : ''}" data-factor-acc="${i}">
+                <div class="factor-acc-header">
+                  <span class="factor-acc-num">${i + 1}</span>
+                  <span class="factor-acc-title">${f.factor}</span>
+                  <span class="factor-acc-toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="factor-acc-body">
+                  <p>${f.detail}</p>
+                  ${this._renderFactorAccDetail(f)}
+                </div>
               </div>
             `).join('')}
           </div>
-          <div class="other-factors-wrap animate-on-scroll">
+          <div class="animate-on-scroll">
             <div class="factor-item ${this._expandedFactors.has('other') ? 'open' : ''}" data-factor="other">
               <div class="factor-header">
                 <div class="factor-left">
-                  <span class="impact-pill impact-moderate">Moderate</span>
                   <span class="factor-name">Other Factors: Device Fit, BMI, Surface Type, Incline, Treadmill</span>
                 </div>
                 <span class="factor-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
@@ -537,10 +541,9 @@ class KygoStepCountAccuracy extends HTMLElement {
                 ${this._accuracyFactors.slice(6).map(f => `
                   <div class="other-factor-row">
                     <div class="other-factor-header">
-                      <span class="impact-pill impact-${f.impactLevel}">${f.impact}</span>
                       <strong class="other-factor-name">${f.factor}</strong>
                     </div>
-                    <p class="other-factor-detail">${f.detail}${f.source ? ` <span class="fci-source">${f.source}</span>` : ''}</p>
+                    <p class="other-factor-detail">${f.detail}${f.source ? ` <span class="factor-acc-source">${f.source}</span>` : ''}</p>
                   </div>
                 `).join('')}
               </div>
@@ -651,44 +654,59 @@ class KygoStepCountAccuracy extends HTMLElement {
     `;
   }
 
-  // ── Factor card insight ───────────────────────────────────────────────
+  // ── Factor accordion body ─────────────────────────────────────────────
 
-  _renderFactorCardInsight(f) {
+  _renderFactorAccDetail(f) {
+    const parts = [];
     if (f.speeds) {
-      return `
-        <div class="fci-speed">
-          <div class="fci-speed-tier fci-speed-bad"><span class="fci-speed-label">&lt; 0.9 m/s</span><span class="fci-speed-note">Poor–Very poor (all devices fail)</span></div>
-          <div class="fci-speed-tier fci-speed-ok"><span class="fci-speed-label">0.9–1.3 m/s</span><span class="fci-speed-note">Good (&gt;90% accuracy)</span></div>
-          <div class="fci-speed-tier fci-speed-good"><span class="fci-speed-label">1.3–1.8 m/s</span><span class="fci-speed-note">Excellent (&gt;95% accuracy)</span></div>
-          <div class="fci-speed-tier fci-speed-good"><span class="fci-speed-label">&gt; 1.8 m/s</span><span class="fci-speed-note">Excellent (&gt;95–99%)</span></div>
+      parts.push(`
+        <div class="factor-acc-table-wrap">
+          <table class="factor-acc-table">
+            <thead><tr><th>Walking Speed</th><th>Accuracy</th><th>Note</th></tr></thead>
+            <tbody>${f.speeds.map(s => `<tr><td><strong>${s.speed}</strong></td><td>${s.accuracy}</td><td>${s.note}</td></tr>`).join('')}</tbody>
+          </table>
         </div>
-      `;
+      `);
     }
     if (f.placements) {
-      return `
-        <div class="fci-list">
-          ${f.placements.map(p => `
-            <div class="fci-list-row">
-              <span class="fci-rank">${p.rank.split(' ')[0]}</span>
-              <strong>${p.placement}</strong>
-              <span class="fci-mape">${p.error}</span>
-            </div>
-          `).join('')}
+      parts.push(`
+        <div class="factor-acc-table-wrap">
+          <table class="factor-acc-table">
+            <thead><tr><th>Location</th><th>Rank</th><th>Typical Error</th><th>Best For</th></tr></thead>
+            <tbody>${f.placements.map(p => `<tr><td><strong>${p.placement}</strong></td><td>${p.rank.split(' ').slice(0, 2).join(' ')}</td><td>${p.error}</td><td>${p.bestFor}</td></tr>`).join('')}</tbody>
+          </table>
         </div>
-      `;
+        <p class="factor-acc-source">Key finding: ${f.keyFinding}</p>
+      `);
     }
     if (f.overTriggers) {
-      return `
-        <div class="fci-triggers">
-          <div class="fci-trigger fci-over"><strong>Overcounts ${f.overTriggers.range}:</strong> ${f.overTriggers.examples.slice(0, 2).join(', ')}</div>
-          <div class="fci-trigger fci-under"><strong>Undercounts ${f.underTriggers.range}:</strong> ${f.underTriggers.examples.slice(0, 2).join(', ')}</div>
+      parts.push(`
+        <div class="factor-acc-triggers">
+          <div class="factor-acc-trigger-group">
+            <h5 class="trigger-over">Overcounting (${f.overTriggers.range})</h5>
+            <ul>${f.overTriggers.examples.map(ex => `<li>${ex}</li>`).join('')}</ul>
+          </div>
+          <div class="factor-acc-trigger-group">
+            <h5 class="trigger-under">Undercounting (${f.underTriggers.range})</h5>
+            <ul>${f.underTriggers.examples.map(ex => `<li>${ex}</li>`).join('')}</ul>
+          </div>
         </div>
-      `;
+      `);
+    }
+    if (f.conditions) {
+      parts.push(`
+        <div class="factor-acc-table-wrap">
+          <table class="factor-acc-table">
+            <thead><tr><th>Condition</th><th>Bias</th><th>Magnitude</th></tr></thead>
+            <tbody>${f.conditions.map(c => `<tr><td>${c.condition}</td><td>${c.bias}</td><td>${c.magnitude}</td></tr>`).join('')}</tbody>
+          </table>
+        </div>
+      `);
     }
     if (f.source) {
-      return `<p class="fci-source">Source: ${f.source}</p>`;
+      parts.push(`<p class="factor-acc-source">Source: ${f.source}</p>`);
     }
-    return '';
+    return parts.join('');
   }
 
   // ── Comparison ────────────────────────────────────────────────────────
@@ -1065,7 +1083,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       .ov-metric { padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--dark); }
       .ov-note { display: block; font-size: 11px; font-weight: 400; color: var(--gray-400); margin-top: 2px; }
       .ov-val { padding: 12px 16px; font-size: 14px; color: var(--gray-600); }
-      .ov-winner { background: rgba(34,197,94,0.08); color: var(--green-dark); font-weight: 700; }
+      .ov-winner { background: rgba(34,197,94,0.05); color: var(--green-dark); font-weight: 700; }
       .ov-strengths { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
       .ov-strengths-card { padding: 14px 18px; border-radius: var(--radius-sm); border-left: 3px solid var(--accent); background: var(--gray-100); }
       .ov-strengths-card h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 4px; }
@@ -1144,43 +1162,33 @@ class KygoStepCountAccuracy extends HTMLElement {
       .dd-buy-note { font-size: 11px; color: var(--gray-400); }
       .dd-buy-cta { font-size: 12px; color: var(--green-dark); font-weight: 600; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
 
-      /* Factors — visual cards */
+      /* Factors — accordion grid (mirrors caveats pattern) */
       .factors { padding: 56px 0; background: var(--light); }
-      .factor-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 16px; margin-bottom: 20px; }
-      .factor-card { background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); padding: 20px 22px; border-top: 4px solid var(--gray-200); }
-      .factor-card-highest { border-top-color: #DC2626; }
-      .factor-card-very-high { border-top-color: #C2410C; }
-      .factor-card-high { border-top-color: #B45309; }
-      .factor-card-significant { border-top-color: #4338CA; }
-      .factor-card-severe { border-top-color: #991B1B; }
-      .factor-card-moderate { border-top-color: var(--green-dark); }
-      .factor-card-name { font-size: 16px; margin: 10px 0 8px; }
-      .factor-card-detail { font-size: 13px; color: var(--gray-600); line-height: 1.7; margin: 0 0 12px; }
-      /* Factor card insight widgets */
-      .fci-speed { display: flex; flex-direction: column; gap: 4px; }
-      .fci-speed-tier { display: flex; flex-direction: column; gap: 2px; padding: 6px 10px; border-radius: var(--radius-sm); font-size: 12px; }
-      .fci-speed-bad { background: rgba(239,68,68,0.08); color: #DC2626; }
-      .fci-speed-ok { background: rgba(251,191,36,0.1); color: #B45309; }
-      .fci-speed-good { background: rgba(34,197,94,0.08); color: var(--green-dark); }
-      .fci-speed-label { font-weight: 600; }
-      .fci-speed-note { font-size: 11px; opacity: 0.85; }
-      .fci-list { display: flex; flex-direction: column; gap: 5px; }
-      .fci-list-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 6px 10px; background: var(--gray-100); border-radius: var(--radius-sm); }
-      .fci-rank { font-size: 14px; flex-shrink: 0; }
-      .fci-mape { margin-left: auto; color: var(--gray-600); white-space: nowrap; font-weight: 600; }
-      .fci-triggers { display: flex; flex-direction: column; gap: 6px; }
-      .fci-trigger { font-size: 12px; padding: 8px 10px; border-radius: var(--radius-sm); line-height: 1.5; }
-      .fci-over { background: rgba(239,68,68,0.06); color: #DC2626; }
-      .fci-under { background: rgba(251,191,36,0.1); color: #B45309; }
-      .fci-source { font-size: 11px; color: var(--gray-400); font-style: italic; }
-      /* Other factors collapsible (reuses .factor-item accordion CSS) */
-      .impact-pill { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
-      .impact-highest { background: rgba(239,68,68,0.12); color: #DC2626; }
-      .impact-very-high { background: rgba(251,146,60,0.12); color: #C2410C; }
-      .impact-high { background: rgba(251,191,36,0.15); color: #B45309; }
-      .impact-significant { background: rgba(99,102,241,0.1); color: #4338CA; }
-      .impact-severe { background: rgba(239,68,68,0.18); color: #991B1B; }
-      .impact-moderate { background: rgba(34,197,94,0.1); color: var(--green-dark); }
+      .factor-acc-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
+      .factor-acc-card { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
+      .factor-acc-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; cursor: pointer; transition: background 0.15s; }
+      .factor-acc-header:hover { background: var(--gray-100); }
+      .factor-acc-num { width: 24px; height: 24px; border-radius: 50%; background: var(--green-light); color: var(--green-dark); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+      .factor-acc-title { flex: 1; font-size: 15px; font-weight: 600; }
+      .factor-acc-toggle { color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
+      .factor-acc-card.open .factor-acc-toggle { transform: rotate(180deg); }
+      .factor-acc-body { display: none; padding: 0 20px 16px 56px; }
+      .factor-acc-card.open .factor-acc-body { display: block; }
+      .factor-acc-body p { font-size: 14px; color: var(--gray-600); line-height: 1.7; margin-bottom: 10px; }
+      .factor-acc-table-wrap { overflow-x: auto; margin: 4px 0 10px; }
+      .factor-acc-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 420px; }
+      .factor-acc-table thead th { background: var(--gray-100); padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.3px; }
+      .factor-acc-table td { padding: 8px 12px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); vertical-align: top; }
+      .factor-acc-table tr:last-child td { border-bottom: none; }
+      .factor-acc-source { font-size: 12px; color: var(--gray-400); font-style: italic; margin: 0; }
+      .factor-acc-triggers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 4px 0 10px; }
+      .factor-acc-trigger-group h5 { font-size: 12px; font-weight: 700; margin-bottom: 8px; padding: 4px 8px; border-radius: 4px; display: block; }
+      .factor-acc-trigger-group h5.trigger-over { color: #DC2626; background: rgba(239,68,68,0.06); }
+      .factor-acc-trigger-group h5.trigger-under { color: #B45309; background: rgba(251,191,36,0.1); }
+      .factor-acc-trigger-group ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+      .factor-acc-trigger-group li { font-size: 12px; color: var(--gray-600); padding-left: 12px; position: relative; }
+      .factor-acc-trigger-group li::before { content: '•'; position: absolute; left: 0; color: var(--gray-400); }
+      /* "Other factors" collapsible */
       .factor-item { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
       .factor-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; gap: 12px; transition: background 0.15s; }
       .factor-header:hover { background: var(--gray-100); }
@@ -1190,9 +1198,9 @@ class KygoStepCountAccuracy extends HTMLElement {
       .factor-item.open .factor-toggle { transform: rotate(180deg); }
       .factor-body { display: none; padding: 4px 20px 16px; }
       .factor-item.open .factor-body { display: block; }
-      .other-factor-row { padding: 14px 0; border-bottom: 1px solid var(--gray-100); }
+      .other-factor-row { padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
       .other-factor-row:last-child { border-bottom: none; padding-bottom: 0; }
-      .other-factor-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+      .other-factor-header { margin-bottom: 4px; }
       .other-factor-name { font-size: 14px; }
       .other-factor-detail { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin: 0; }
 
@@ -1238,7 +1246,9 @@ class KygoStepCountAccuracy extends HTMLElement {
       @media (max-width: 640px) {
         .dd-grid { grid-template-columns: 1fr; }
         .dd-cols { grid-template-columns: 1fr; }
-        .factor-cards { grid-template-columns: 1fr; }
+        .factor-acc-grid { grid-template-columns: 1fr; }
+        .factor-acc-body { padding: 0 20px 16px 44px; }
+        .factor-acc-triggers { grid-template-columns: 1fr; }
         .cta-box { padding: 32px 20px; }
         .cta-features { gap: 12px; }
         .device-selectors { flex-direction: column; align-items: stretch; }
@@ -1292,16 +1302,30 @@ class KygoStepCountAccuracy extends HTMLElement {
         return;
       }
 
-      // Other factors collapsible
+      // Factor accordion cards (numbered 0-5)
+      const factorAccHeader = e.target.closest('.factor-acc-header');
+      if (factorAccHeader) {
+        const card = factorAccHeader.closest('.factor-acc-card');
+        const idx = parseInt(card.dataset.factorAcc, 10);
+        if (this._expandedFactors.has(idx)) {
+          this._expandedFactors.delete(idx);
+          card.classList.remove('open');
+        } else {
+          this._expandedFactors.add(idx);
+          card.classList.add('open');
+        }
+        return;
+      }
+
+      // "Other factors" collapsible
       const factorHeader = e.target.closest('.factor-header');
       if (factorHeader) {
         const item = factorHeader.closest('.factor-item');
-        const key = item.dataset.factor === 'other' ? 'other' : parseInt(item.dataset.factor, 10);
-        if (this._expandedFactors.has(key)) {
-          this._expandedFactors.delete(key);
+        if (this._expandedFactors.has('other')) {
+          this._expandedFactors.delete('other');
           item.classList.remove('open');
         } else {
-          this._expandedFactors.add(key);
+          this._expandedFactors.add('other');
           item.classList.add('open');
         }
         return;
