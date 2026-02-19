@@ -1158,20 +1158,20 @@ class KygoStepCountAccuracy extends HTMLElement {
       .factor-card-detail { font-size: 13px; color: var(--gray-600); line-height: 1.7; margin: 0 0 12px; }
       /* Factor card insight widgets */
       .fci-speed { display: flex; flex-direction: column; gap: 4px; }
-      .fci-speed-tier { display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; border-radius: var(--radius-sm); font-size: 12px; }
+      .fci-speed-tier { display: flex; flex-direction: column; gap: 2px; padding: 6px 10px; border-radius: var(--radius-sm); font-size: 12px; }
       .fci-speed-bad { background: rgba(239,68,68,0.08); color: #DC2626; }
       .fci-speed-ok { background: rgba(251,191,36,0.1); color: #B45309; }
       .fci-speed-good { background: rgba(34,197,94,0.08); color: var(--green-dark); }
       .fci-speed-label { font-weight: 600; }
-      .fci-speed-note { font-size: 11px; }
+      .fci-speed-note { font-size: 11px; opacity: 0.85; }
       .fci-list { display: flex; flex-direction: column; gap: 5px; }
       .fci-list-row { display: flex; align-items: center; gap: 8px; font-size: 12px; padding: 6px 10px; background: var(--gray-100); border-radius: var(--radius-sm); }
       .fci-rank { font-size: 14px; flex-shrink: 0; }
       .fci-mape { margin-left: auto; color: var(--gray-600); white-space: nowrap; font-weight: 600; }
       .fci-triggers { display: flex; flex-direction: column; gap: 6px; }
       .fci-trigger { font-size: 12px; padding: 8px 10px; border-radius: var(--radius-sm); line-height: 1.5; }
-      .fci-over { background: rgba(239,68,68,0.06); color: #B91C1C; }
-      .fci-under { background: rgba(251,191,36,0.1); color: #92400E; }
+      .fci-over { background: rgba(239,68,68,0.06); color: #DC2626; }
+      .fci-under { background: rgba(251,191,36,0.1); color: #B45309; }
       .fci-source { font-size: 11px; color: var(--gray-400); font-style: italic; }
       /* Other factors collapsible (reuses .factor-item accordion CSS) */
       .impact-pill { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
@@ -1181,7 +1181,6 @@ class KygoStepCountAccuracy extends HTMLElement {
       .impact-significant { background: rgba(99,102,241,0.1); color: #4338CA; }
       .impact-severe { background: rgba(239,68,68,0.18); color: #991B1B; }
       .impact-moderate { background: rgba(34,197,94,0.1); color: var(--green-dark); }
-      .other-factors-wrap { }
       .factor-item { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
       .factor-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; gap: 12px; transition: background 0.15s; }
       .factor-header:hover { background: var(--gray-100); }
@@ -1239,14 +1238,17 @@ class KygoStepCountAccuracy extends HTMLElement {
       @media (max-width: 640px) {
         .dd-grid { grid-template-columns: 1fr; }
         .dd-cols { grid-template-columns: 1fr; }
-        .factor-triggers { grid-template-columns: 1fr; }
+        .factor-cards { grid-template-columns: 1fr; }
         .cta-box { padding: 32px 20px; }
         .cta-features { gap: 12px; }
         .device-selectors { flex-direction: column; align-items: stretch; }
+        .vs-badge { align-self: center; }
         .selector-wrap { max-width: 100%; }
         .device-summary-row { grid-template-columns: 1fr; }
         .comp-2col { grid-template-columns: 1fr; }
+        .comp-detail { padding: 16px; }
         .ov-strengths { grid-template-columns: 1fr; }
+        .caveat-body { padding: 0 20px 16px 44px; }
       }
     `;
   }
