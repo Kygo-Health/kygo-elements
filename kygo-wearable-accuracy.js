@@ -55,8 +55,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: null,
         studyIds: ['robbins2024', 'schyvens2025', 'park2023', 'wellnesspulse2025', 'caserman2024', 'lambe2025'],
         affiliateLinks: [
-          { name: 'Apple Watch Series 10', url: 'https://amzn.to/4kw5Uaa' },
-          { name: 'Apple Watch Ultra 2', url: 'https://amzn.to/4kqQi7K' }
+          { name: 'Apple Watch', url: 'https://amzn.to/4rUcGst' }
         ]
       },
       'oura': {
@@ -72,7 +71,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: 'Sleep \u03BA=0.65 is from an Oura-funded study. Independent studies found \u03BA=0.2\u20130.4.',
         studyIds: ['robbins2024', 'dial2025', 'park2023'],
         affiliateLinks: [
-          { name: 'Oura Ring Gen 4', url: 'https://amzn.to/4klINic' }
+          { name: 'Oura Ring', url: 'https://amzn.to/4aF93jj' }
         ]
       },
       'garmin': {
@@ -88,9 +87,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: 'HRV/sleep studies used Fenix 6 / Vivosmart 4 (older models). Current devices may perform better.',
         studyIds: ['schyvens2025', 'dial2025', 'wellnesspulse2025'],
         affiliateLinks: [
-          { name: 'Garmin Venu 3', url: 'https://amzn.to/3ZUWQ50' },
-          { name: 'Garmin Fenix 8', url: 'https://amzn.to/4qp6dEU' },
-          { name: 'Garmin Forerunner 265', url: 'https://amzn.to/4r7eC0M' }
+          { name: 'Garmin', url: 'https://amzn.to/4aF8l5D' }
         ]
       },
       'whoop': {
@@ -106,7 +103,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: null,
         studyIds: ['schyvens2025', 'dial2025', 'khodr2024'],
         affiliateLinks: [
-          { name: 'WHOOP 4.0', url: 'https://amzn.to/3Zmzkh8', note: '12-month subscription included' }
+          { name: 'WHOOP', url: 'https://amzn.to/4rRoziQ' }
         ]
       },
       'fitbit': {
@@ -122,8 +119,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: null,
         studyIds: ['robbins2024', 'schyvens2025', 'park2023', 'wellnesspulse2025'],
         affiliateLinks: [
-          { name: 'Fitbit Charge 6', url: 'https://amzn.to/4chbzyr' },
-          { name: 'Fitbit Sense 2', url: 'https://amzn.to/4ck9W33' }
+          { name: 'Fitbit', url: 'https://amzn.to/3ZPkHDc' }
         ]
       },
       'samsung': {
@@ -139,8 +135,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: null,
         studyIds: ['park2023', 'park2023resp', 'lanfranchi2024'],
         affiliateLinks: [
-          { name: 'Galaxy Watch 7', url: 'https://amzn.to/3Owp4R1' },
-          { name: 'Galaxy Watch Ultra', url: 'https://amzn.to/3ZqzKmE' }
+          { name: 'Samsung Galaxy Watch', url: 'https://amzn.to/4aZkBPB' }
         ]
       }
     };

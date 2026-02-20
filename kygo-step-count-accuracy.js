@@ -1577,6 +1577,11 @@ class KygoStepCountAccuracy extends HTMLElement {
       ]
     };
 
+    // Remove any existing FAQPage LD+JSON to prevent Google "duplicate field" error
+    document.querySelectorAll('script[type="application/ld+json"]').forEach(function(s) {
+      try { if (JSON.parse(s.textContent)['@type'] === 'FAQPage') s.remove(); } catch(e) {}
+    });
+
     [webApp, faq].forEach((schema, i) => {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
