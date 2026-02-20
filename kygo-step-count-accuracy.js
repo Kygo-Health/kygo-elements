@@ -547,7 +547,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         <div class="container">
           <h2 class="section-title animate-on-scroll">Important Caveats</h2>
           <p class="section-sub animate-on-scroll">Context for interpreting step count accuracy data.</p>
-          <div class="caveat-grid animate-on-scroll" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px">
+          <div class="caveat-grid animate-on-scroll">
             ${this._caveats.map((c, i) => `
               <div class="caveat-card ${this._expandedCaveats.has(i) ? 'open' : ''}" data-caveat="${i}">
                 <div class="caveat-header">
@@ -1303,7 +1303,8 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       /* Caveats */
       .caveats { padding: 56px 0; background: #fff; }
-      .caveat-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      .caveat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      @media (max-width: 600px) { .caveat-grid { grid-template-columns: 1fr; } }
       .caveat-card { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
       .caveat-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; cursor: pointer; transition: background 0.15s; }
       .caveat-header:hover { background: var(--gray-100); }
