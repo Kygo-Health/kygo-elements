@@ -1354,13 +1354,13 @@ class KygoStepCountAccuracy extends HTMLElement {
       .cta-feature svg { color: var(--green); flex-shrink: 0; }
 
       /* Footer */
-      .tool-footer { background: var(--dark); padding: 40px 0; text-align: center; }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-weight: 600; margin-bottom: 8px; }
+      .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }
+      .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); text-decoration: none; font-weight: 600; margin-bottom: 8px; }
       .footer-logo { height: 28px; width: auto; }
       .footer-tagline { color: var(--gray-400); font-size: 13px; margin-bottom: 16px; }
       .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 16px; }
       .footer-links a { color: var(--gray-400); text-decoration: none; font-size: 13px; transition: color 0.2s; }
-      .footer-links a:hover { color: #fff; }
+      .footer-links a:hover { color: var(--dark); }
       .footer-copy { color: var(--gray-600); font-size: 12px; margin-bottom: 4px; }
       .footer-affiliate { color: var(--gray-600); }
 
