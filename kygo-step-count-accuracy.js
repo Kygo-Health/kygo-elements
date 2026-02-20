@@ -54,7 +54,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         mapeFree: '10–17.8%',
         bias: 'Underestimates',
         algorithm: 'Threshold-based peak detection with 10-step minimum bout filter',
-        keyDiff: '10-step minimum bout: does not register steps until 10+ consecutive step-like patterns detected, then retroactively credits all 10. Dramatically reduces phantom steps but misses very short bursts.',
+        keyDiff: '10-step minimum bout: does not register steps until 10+ consecutive step-like patterns detected, then retroactively credits all 10. Dramatically reduces phantom steps but misses very short bursts. FR970 tracked ~5,037 steps from a pocket in Dec 2025 testing.',
         bestFor: 'Step accuracy, runners, outdoor sports',
         subscription: 'None required',
         strengths: ['Best overall step accuracy (82.6%)', 'MAPE 0.6–1.27% at normal walking speeds', 'Validated across lawn, gravel, asphalt, tile', '10-step filter eliminates most phantom steps', 'Best VO2 max & GPS tracking'],
@@ -66,6 +66,7 @@ class KygoStepCountAccuracy extends HTMLElement {
           { model: 'Vivosmart HR', mape: '0.61–1.27%', condition: 'Treadmill 3.2–4.8 km/h', source: 'Feehan et al. (2020)' },
           { model: 'Vivosmart', mape: '1.2–3.5%', condition: 'Three treadmill speeds', source: 'Garmin validity review (2020)' },
           { model: 'Forerunner 265', mape: '0.3% (15 steps off / 5,000)', condition: 'Walking test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' },
+          { model: 'Forerunner 970', mape: 'Within 100 steps / 10,000', condition: 'Walk + jog test', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' },
           { model: 'Vivofit', mape: '17.8%', condition: 'Free-living (at home)', source: 'Garmin validity review (2020)' }
         ],
         studies: ['roos2020', 'feehan2020', 'natureSR2024'],
@@ -84,7 +85,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         mapeFree: '6.4–10%',
         bias: 'Slight underestimate',
         algorithm: 'ML-enhanced peak detection via Core Motion framework + always-on motion coprocessor',
-        keyDiff: 'High dynamic range gyroscope (Ultra); GPS-calibrated stride length; arm-swing pattern recognition with rotation data; always-on coprocessor for 24/7 tracking; r=0.99 correlation vs ActivPAL in free-living.',
+        keyDiff: 'High dynamic range gyroscope (Ultra); GPS-calibrated stride length; arm-swing pattern recognition with rotation data; always-on coprocessor for 24/7 tracking; r=0.99 correlation vs ActivPAL in free-living. Ultra 2 tracked ~5,088 steps from a pocket.',
         bestFor: 'All-around step tracking, consistency across speeds and activities',
         subscription: 'None required',
         strengths: ['81.1% overall accuracy', 'MAPE 6.4% free-living (r=0.99 vs ActivPAL)', '0.034% total error across all speeds (one study)', 'Best consistency across speed range', 'FDA-cleared ECG and sleep apnea detection'],
@@ -93,7 +94,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         modelData: [
           { model: 'Series 6', mape: '6.4%', condition: 'Free-living 24h vs ActivPAL', source: 'Kim et al. (2024)', note: 'r=0.99 correlation' },
           { model: 'Series 8', mape: '~81% overall', condition: 'Meta-analysis aggregate', source: 'WellnessPulse (2025)', note: 'Consumer aggregation' },
-          { model: 'Ultra 2', mape: 'Best in 10-watch test', condition: '10,000-step walk/jog', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' },
+          { model: 'Ultra 2', mape: 'Most consistent across all tests', condition: '10-watch comparison', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' },
           { model: 'Series 2', mape: '~18.5%', condition: 'Mixed conditions', source: 'Choe & Kang (2025)' }
         ],
         studies: ['kim2024', 'choekang2025', 'natureSR2024'],
@@ -112,7 +113,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         mapeFree: '10–25%',
         bias: 'Mixed (underestimates lab; overestimates free-living)',
         algorithm: 'MEMS tri-axial peak detection + ML model (evolving post-Google acquisition)',
-        keyDiff: 'Most-validated brand (144 studies, 12 models). Ankle placement dramatically improves accuracy: 5.9% error at 0.4 m/s vs. 48–75% error waist-worn. Fitbit Classic overestimates; Fitbit Charge underestimates.',
+        keyDiff: 'Most-validated brand (144 studies, 12 models). Ankle placement dramatically improves accuracy: 5.9% error at 0.4 m/s vs. 48–75% error waist-worn. Fitbit Classic overestimates; Fitbit Charge underestimates. Delobelle et al. (2024) confirmed reliable bout detection except at >120 steps/min in older adults. No Charge 6 validation published yet.',
         bestFor: 'General fitness tracking, most research validation available',
         subscription: 'Premium optional ($9.99/mo)',
         strengths: ['Most peer-reviewed validation (144 studies)', 'Charge 2: 3.4% difference vs gold standard', 'Ankle placement gives near-clinical accuracy', 'Most affordable entry point'],
@@ -122,9 +123,10 @@ class KygoStepCountAccuracy extends HTMLElement {
           { model: 'Sense', mape: '~8%', condition: 'Exercise testing', source: 'Nature Scientific Reports (2024)' },
           { model: 'Charge 2', mape: '3.4% diff vs gold standard', condition: 'Clinical validation', source: 'Straczkiewicz et al. (2023)' },
           { model: 'Charge 2 / Alta', mape: '17.1–35.5%', condition: '24-hr free-living', source: 'Giurgiu et al. (2023)' },
-          { model: 'Charge / Charge HR', mape: '<25%', condition: '20 studies (systematic review)', source: 'Germini et al. (2022)' }
+          { model: 'Charge / Charge HR', mape: '<25%', condition: '20 studies (systematic review)', source: 'Germini et al. (2022)' },
+          { model: 'Two models (wrist)', mape: 'Sensitivity >87%, Specificity >97%', condition: 'Short-bout stepping vs ActiGraph', source: 'Delobelle et al. (2024)' }
         ],
-        studies: ['roos2020', 'straczkiewicz2023', 'giurgiu2023', 'germini2022'],
+        studies: ['roos2020', 'straczkiewicz2023', 'giurgiu2023', 'germini2022', 'delobelle2024'],
         affiliateLinks: [
           { name: 'Shop Fitbit on Amazon', url: 'https://amzn.to/3ZPkHDc' }
         ]
@@ -141,15 +143,16 @@ class KygoStepCountAccuracy extends HTMLElement {
         mapeFree: 'Limited data',
         bias: 'Overestimates',
         algorithm: 'Accelerometer + gyroscope via Samsung Health',
-        keyDiff: 'BioActive Sensor integrates multiple sensors. Samsung Health can fuse phone + watch step data (may introduce discrepancies). Galaxy Watch 5: ~2% in controlled test but thousands of phantom steps reported daily.',
+        keyDiff: 'BioActive Sensor integrates multiple sensors. Samsung Health can fuse phone + watch step data (may introduce discrepancies). Galaxy Watch 5 Pro: ~1.9% in a 2023 controlled test but phantom steps remain a real-world issue. The Dec 2025 tester noted Samsung "has never done especially well in past step tests."',
         bestFor: 'Android integration, general smartwatch features',
         subscription: 'None required',
-        strengths: ['~2% MAPE in controlled walking test (Watch 5)', 'BioActive multi-sensor fusion', 'FDA-cleared ECG and sleep apnea detection', 'Strong Android ecosystem'],
-        weaknesses: ['r=0.82 vs ActivPAL (vs Apple Watch r=0.99)', '2,000–3,500+ phantom steps/day at desk/driving', 'Fewer independent validation studies', 'Gyroscope may be overly sensitive to arm movements'],
+        strengths: ['~1.9% MAPE in controlled test (Watch 5 Pro, 2023)', 'BioActive multi-sensor fusion', 'FDA-cleared ECG and sleep apnea detection', 'Strong Android ecosystem'],
+        weaknesses: ['r=0.82 vs ActivPAL (vs Apple Watch r=0.99)', 'Phantom steps during desk work/driving', 'Fewer independent validation studies', 'Gyroscope may be overly sensitive to arm movements'],
         falseSteps: ['Desk work', 'Driving', 'Stationary bike'],
         modelData: [
           { model: 'Galaxy Watch 4', mape: null, condition: '24-hr free-living', source: 'Kim et al. (2024)', note: 'r=0.82 vs ActivPAL (lower than Apple Watch r=0.99 in same study)' },
-          { model: 'Galaxy Watch 5', mape: '~2% (~200 steps off / 10,000)', condition: 'Walking test', source: 'Android Central (2025)', note: 'Consumer test, not peer-reviewed' }
+          { model: 'Galaxy Watch 5 Pro', mape: '~1.9% (113 steps off / 6,000)', condition: 'Walk + run test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' },
+          { model: 'Galaxy Watch 8 Classic', mape: '"More clearly off than expected"', condition: '10-watch walk/jog test', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' }
         ],
         studies: ['kim2024'],
         affiliateLinks: [
@@ -163,19 +166,20 @@ class KygoStepCountAccuracy extends HTMLElement {
         imageUrl: null,
         wearLocation: 'Wrist',
         overallPct: null,
-        overallNote: 'Good (~98.6% in walking test; near-exact for running)',
+        overallNote: 'Good (~98.6% in 2023 walking test; within 100 steps of 10,000 in Dec 2025 test)',
         mapeLab: '~1.6%',
         mapeFree: 'Limited data',
         bias: 'Slight underestimate',
         algorithm: 'Peak detection with continuous-motion filter + barometric altimeter',
-        keyDiff: 'Requires continuous arm movement to trigger counting — filters out brief stops, meaning it will undercount short walking bursts but excels at sustained activity. Best-in-class for running cadence.',
+        keyDiff: 'APEX 2 Pro: ~1.6% error (81 steps off / 5,000) in 2023 testing. APEX 4 improved significantly — within 100 steps of 10,000 in 2025, and tracked ~5,041 steps from a pocket. No peer-reviewed step validation for any COROS model.',
         bestFor: 'Running-focused step and cadence tracking',
         subscription: 'None required',
         strengths: ['~98.6% accuracy in walking test', '1.6% MAPE (81 steps off / 5,000)', 'Excellent running cadence tracking', 'Long battery life', 'Barometric altimeter for elevation'],
         weaknesses: ['No peer-reviewed validation studies', 'Requires continuous arm motion to count', 'Undercounts short walking bursts (<10-step sprints)'],
         falseSteps: [],
         modelData: [
-          { model: 'APEX 2 Pro', mape: '1.6% (81 steps off / 5,000)', condition: 'Walking test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' }
+          { model: 'APEX 2 Pro', mape: '1.6% (81 steps off / 5,000)', condition: 'Walking test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' },
+          { model: 'APEX 4', mape: 'Within 100 steps / 10,000', condition: 'Walk + jog test', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' }
         ],
         studies: [],
         affiliateLinks: [
@@ -194,16 +198,16 @@ class KygoStepCountAccuracy extends HTMLElement {
         mapeFree: 'Overreports ~3.8%',
         bias: 'Overestimates',
         algorithm: 'Proprietary peak detection on wrist accelerometer',
-        keyDiff: 'Best known for heart rate monitoring (chest strap heritage), not step counting. Polar A360 found not valid for any walking condition in peer-reviewed testing. Step tracking is secondary to HR/training load.',
+        keyDiff: 'A360 found "not valid for any walking condition" (Roos et al., 2020). Older Vantage models overreport (~+3.8%). However, the Vantage V3 performed well in Dec 2025 testing — within 100 steps of 10,000, in the "reliable tier." No peer-reviewed step validation for current models.',
         bestFor: 'Heart rate monitoring and training load — NOT step counting',
         subscription: 'Polar Flow free; Polar Premium optional',
-        strengths: ['Best-in-class heart rate monitoring', 'Training load (RPE) features', 'Polar Vantage M3: only +3.8% error in consumer test'],
+        strengths: ['Best-in-class heart rate monitoring', 'Training load (RPE) features', 'Vantage V3: within 100 steps / 10,000 in Dec 2025 test'],
         weaknesses: ['A360: not valid for any walking condition (Roos 2020)', 'Vantage overreports steps consistently', '53.2% accuracy in meta-analysis', 'Cannot replace research-grade accelerometers', 'Not recommended for step count reliability'],
         falseSteps: ['Non-walking wrist movements'],
         modelData: [
           { model: 'A360', mape: null, condition: 'Walking & jogging', source: 'Roos et al. (2020)', note: 'Not valid for any walking condition' },
           { model: 'Vantage', mape: 'High (not specified)', condition: 'Free-living', source: 'Henriksen et al. (2022), JMIR Formative Research', note: 'Overreports steps' },
-          { model: 'Vantage M3', mape: '+3.8% (379 extra steps / 10,000)', condition: 'Walking test', source: 'TechRadar (Jan 2025)', note: 'Consumer test, not peer-reviewed' }
+          { model: 'Vantage V3', mape: 'Within 100 steps / 10,000', condition: 'Walk + jog test', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' }
         ],
         studies: ['roos2020'],
         affiliateLinks: [
@@ -222,7 +226,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         mapeFree: '~25–50%',
         bias: 'Overestimates (hand gestures)',
         algorithm: 'ML step classifier on finger-worn accelerometer data',
-        keyDiff: 'Finger placement detects hand motion as proxy for steps. Surprisingly good in controlled walking (within 12 steps of 5,000-step test). Terrible in real-world due to hand gestures — average +2,124 ± 4,256 extra steps per day in free-living.',
+        keyDiff: 'Controlled walking is accurate; free-living is not — hand gestures, cooking, and stirring trigger phantom steps. In March 2025, Oura rolled out "Real Steps," an ML-based algorithm for Gen3/Ring 4 that better distinguishes walking from hand movement, cutting reported counts ~20%. Tom\'s Guide still found Ring 4 up to 1,000 steps off vs Apple Watch daily. A 2025 systematic review of 107 smart ring studies (Oura in 72%) found almost none examined step accuracy. No peer-reviewed validation of the new algorithm.',
         bestFor: 'Sleep, HRV, recovery tracking — NOT step counting',
         subscription: '$5.99/mo required',
         strengths: ['Within 12 steps of 5,000 in controlled walk', 'MAPE <10% in lab combined activities', 'No sharp edges — comfortable 24/7 wear', 'Best HRV and sleep accuracy among all devices'],
@@ -231,9 +235,10 @@ class KygoStepCountAccuracy extends HTMLElement {
         modelData: [
           { model: 'Gen 3', mape: '<10%', condition: 'Laboratory (combined activities)', source: 'Kristiansson et al. (2023)' },
           { model: 'Gen 3', mape: null, condition: 'Free-living (14 days)', source: 'Kristiansson et al. (2023)', note: 'Mean diff +2,124 ± 4,256 steps/day; r≥0.76' },
-          { model: 'Gen 3', mape: null, condition: 'Controlled walk (5,000 steps)', source: 'Android Central (2023)', note: 'Within 12 steps of 5,000 — consumer test' }
+          { model: 'Gen 3', mape: null, condition: 'Controlled walk (5,000 steps)', source: 'Android Central (2023)', note: 'Within 12 steps of 5,000 — consumer test' },
+          { model: 'Ring 4 / Gen 3', mape: '~20% decrease in reported steps', condition: 'Post "Real Steps" ML algorithm (Mar 2025)', source: 'Oura Blog (2025)', note: 'First-party source' }
         ],
-        studies: ['kristiansson2023'],
+        studies: ['kristiansson2023', 'gong2025'],
         affiliateLinks: [
           { name: 'Shop Oura Ring on Amazon', url: 'https://amzn.to/4aF93jj' }
         ]
@@ -250,7 +255,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         mapeFree: 'No published data',
         bias: 'Unknown (user reports suggest overcounting)',
         algorithm: 'Accelerometer cadence + gyroscope rotational data (new algorithm, Oct 2024)',
-        keyDiff: 'WHOOP added step counting October 2024 via firmware update. Hardware should theoretically enable good accuracy (3-axis accel + gyro) but zero peer-reviewed validation exists. WHOOP intentionally positions Strain (cardiovascular load) as primary metric.',
+        keyDiff: 'Step counting added October 2024. WHOOP claims steps "validated for on-wrist use" but has published zero peer-reviewed step validation. WHOOP 5.0/MG reportedly uses a new step algorithm. Steps are positioned as supplementary to Strain.',
         bestFor: 'Strain/recovery tracking — step counting is new and unvalidated',
         subscription: '$30/mo (12-month plan)',
         strengths: ['3-axis accelerometer + 3-axis gyroscope hardware', 'Flexible wear locations (wrist, bicep, body)', 'Excellent for recovery and HRV tracking', 'No screen distraction'],
@@ -261,6 +266,30 @@ class KygoStepCountAccuracy extends HTMLElement {
         affiliateLinks: [
           { name: 'Shop WHOOP on Amazon', url: 'https://amzn.to/4rRoziQ' }
         ]
+      },
+      'pixel-watch': {
+        name: 'Google Pixel Watch', short: 'Pixel Watch', rank: 9,
+        rankLabel: 'Unknown — Algorithm Issues',
+        color: '#4285F4',
+        imageUrl: null,
+        wearLocation: 'Wrist',
+        overallPct: null,
+        overallNote: 'Zero peer-reviewed validation; algorithm reverted after mass overcounting (Apr 2025)',
+        mapeLab: 'No published data',
+        mapeFree: 'No published data',
+        bias: 'Overcounted (post-update)',
+        algorithm: 'Wear OS step detection via Fitbit Health Services',
+        keyDiff: 'Zero peer-reviewed step validation. In March 2025, Wear OS 5.1 introduced an "enhanced step algorithm" for strollers/carts/hiking poles — it caused inflated counts across all Pixel Watch models. Google reverted the algorithm in April 2025. In Dec 2025 testing, Pixel Watch 4 initially performed well but the Fitbit app stopped tracking mid-test and subtracted ~4,000 steps.',
+        bestFor: 'Google ecosystem integration — step accuracy unverified',
+        subscription: 'None required',
+        strengths: ['Accelerometer + gyroscope hardware', 'Google/Fitbit ecosystem integration', 'Wear OS flexibility'],
+        weaknesses: ['Zero peer-reviewed step validation', 'Wear OS 5.1 caused mass overcounting — reverted April 2025', 'Pixel Watch 4 app stopped mid-test, subtracted ~4,000 steps (Dec 2025)', 'Algorithm reliability unproven'],
+        falseSteps: ['Algorithm-level overcounting post Wear OS 5.1 update'],
+        modelData: [
+          { model: 'Pixel Watch 4', mape: null, condition: '10-watch walk/jog test', source: 'Android Central (Dec 2025)', note: 'App stopped mid-test; ~4,000 steps subtracted — consumer test' }
+        ],
+        studies: ['googleWearOS2025'],
+        affiliateLinks: []
       }
     };
   }
@@ -275,7 +304,11 @@ class KygoStepCountAccuracy extends HTMLElement {
       natureSR2024: { authors: 'Nature Scientific Reports', year: 2024, title: 'Comparative Accuracy of Consumer Wearables (Garmin, Fitbit, Apple)', journal: 'Scientific Reports', doi: '10.1038/s41598-024-74140-x', independent: true },
       straczkiewicz2023: { authors: 'Straczkiewicz et al.', year: 2023, title: 'Clinical Validation of Fitbit Charge 2 Step Count', journal: 'JMIR mHealth', doi: '10.2196/47646', independent: true },
       giurgiu2023: { authors: 'Giurgiu et al.', year: 2023, title: '24-Hour Free-Living Step Count Validity of Fitbit', journal: 'Technologies', doi: '10.3390/technologies11010029', independent: true },
-      germini2022: { authors: 'Germini et al.', year: 2022, title: 'Accuracy of Fitbit Step Count: Systematic Review of 20 Studies', journal: 'JMIR mHealth', doi: '10.2196/30791', independent: true }
+      germini2022: { authors: 'Germini et al.', year: 2022, title: 'Accuracy of Fitbit Step Count: Systematic Review of 20 Studies', journal: 'JMIR mHealth', doi: '10.2196/30791', independent: true },
+      delobelle2024: { authors: 'Delobelle et al.', year: 2024, title: 'Validity of Fitbit Wrist Devices for Bout-Level Step Detection', journal: 'Digital Health', doi: '10.1177/20552076241262710', independent: true },
+      gong2025: { authors: 'Gong & Bang', year: 2025, title: 'Smart Ring Systematic Review (107 Studies)', journal: 'PMC', doi: null, independent: true },
+      ouraBlog2025: { authors: 'Oura Health', year: 2025, title: '"Real Steps" Algorithm Update', journal: 'Oura Blog', doi: null, independent: false },
+      googleWearOS2025: { authors: 'Google', year: 2025, title: 'Wear OS 5.1 Step Algorithm Enhancement and Revert', journal: 'Wear OS Release Notes', doi: null, independent: false }
     };
   }
 
@@ -312,14 +345,14 @@ class KygoStepCountAccuracy extends HTMLElement {
         impact: 'High (critical for wrist-worn)',
         impactLevel: 'high',
         detail: 'Wrist-worn devices measure arm swing, not footfalls. Restricted arm swing causes undercounting; exaggerated arm movement causes overcounting.',
-        overTriggers: { range: '+10% to +35%', examples: ['Animated hand gestures while talking', 'Cooking, cleaning, manual work', 'Clapping, drumming, repetitive hand motions'] },
+        overTriggers: { range: '+10% to +35%', examples: ['Animated hand gestures while talking', 'Cooking, cleaning, manual work', 'Clapping, drumming, repetitive hand motions', 'Pocket carry: Garmin FR970, COROS APEX 4, and Apple Ultra 2 each tracked ~5,000 steps from a pocket (Dec 2025)'] },
         underTriggers: { range: '−35% to −95%', examples: ['Pushing shopping cart, stroller, wheelchair', 'Walking with hands in pockets', 'Carrying bags or holding objects', 'Holding treadmill handrails'] }
       },
       {
         factor: 'Age',
         impact: 'Significant',
         impactLevel: 'significant',
-        detail: 'Apple Watch MAPE: 4.3% for age <40 vs. 10.9% for age ≥40. Age affects gait pattern, walking speed, and arm swing — all compound to reduce accuracy. Elderly at slow gait speeds see the worst accuracy of any group.',
+        detail: 'Apple Watch: 4.3% MAPE (<40) vs 10.9% (40+). Fitbit sensitivity drops at >120 steps/min in older adults. Age affects gait pattern, walking speed, and arm swing — all compound to reduce accuracy. Elderly at slow gait speeds see the worst accuracy of any group.',
         source: 'Choe & Kang (2025); Modave et al. (2017)'
       },
       {
@@ -363,18 +396,6 @@ class KygoStepCountAccuracy extends HTMLElement {
         detail: 'Garmin validated across natural lawn, gravel, asphalt, linoleum, and ceramic tile with acceptable MAPE on all surfaces. Surface type alone has minimal independent effect on step count accuracy — walking speed changes on surfaces are the more relevant factor.',
         source: 'Garmin validity review (2020), DOI: 10.3390/ijerph17134269'
       },
-      {
-        factor: 'Incline / Terrain',
-        impact: 'Moderate',
-        impactLevel: 'moderate',
-        detail: 'Garmin has been shown to overcount during incline walking. Changes in stride mechanics on hills — shorter strides, altered arm swing, and different cadence patterns — affect step detection algorithms calibrated for level-ground walking.'
-      },
-      {
-        factor: 'Treadmill vs. Overground Walking',
-        impact: 'Moderate',
-        impactLevel: 'moderate',
-        detail: 'Treadmill walking produces different arm-swing patterns than overground walking. Users often hold the handrails (severely reducing arm swing) or alter their gait to match belt speed. This leads to systematically different accuracy profiles — Apple Watch shows 10.1% MAPE on treadmill vs. <10% overground.'
-      }
     ];
   }
 
@@ -387,7 +408,9 @@ class KygoStepCountAccuracy extends HTMLElement {
       { title: 'WHOOP has zero validation data for steps', body: 'Step counting was added to WHOOP via a firmware update in October 2024. The hardware is theoretically capable, but no peer-reviewed validation studies exist. WHOOP intentionally positions Strain (cardiovascular load) as its primary metric — not steps.' },
       { title: 'Model generations matter — a lot', body: 'Studies on the Garmin Vivofit or Fitbit Charge HR may not reflect your current device\'s accuracy. Firmware updates and new sensor generations can dramatically change step counting behavior. Always check which model generation was studied before applying data to your device.' },
       { title: 'The validation gap is massive', body: 'Only ~11% of consumer wearables have been independently validated for any biometric. An estimated 249 studies represent just 3.5% of what would be needed for comprehensive validation. Most devices on the market have no published accuracy data at all.' },
-      { title: 'No device is accurate below 0.9 m/s', body: 'This threshold applies universally. Below 0.9 m/s — a slow shuffle — every consumer wearable produces unreliable step counts regardless of brand or price point. Clinical populations, elderly adults, and rehabilitation patients routinely walk at these speeds. Published accuracy figures almost never reflect this population.' }
+      { title: 'No device is accurate below 0.9 m/s', body: 'This threshold applies universally. Below 0.9 m/s — a slow shuffle — every consumer wearable produces unreliable step counts regardless of brand or price point. Clinical populations, elderly adults, and rehabilitation patients routinely walk at these speeds. Published accuracy figures almost never reflect this population.' },
+      { title: 'Algorithms change — and change back', body: 'Google reverted their Wear OS step algorithm in April 2025 after Wear OS 5.1 caused mass overcounting across all Pixel Watch models. Oura\'s "Real Steps" update (March 2025) dropped reported step counts ~20%. Your device\'s accuracy today may differ significantly from what any study tested.' },
+      { title: 'Smart rings are nearly unstudied for steps', body: 'A 2025 systematic review of 107 smart ring studies found 72% used Oura — but almost none examined step counting accuracy. The literature focuses overwhelmingly on sleep and heart rate. For any smart ring, step accuracy claims are largely unvalidated.' }
     ];
   }
 
