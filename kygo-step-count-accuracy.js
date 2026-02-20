@@ -45,7 +45,7 @@ class KygoStepCountAccuracy extends HTMLElement {
     return {
       garmin: {
         name: 'Garmin', short: 'Garmin', rank: 1,
-        rankLabel: '🥇 Most Accurate',
+        rankLabel: 'Most Accurate',
         color: '#007CC3',
         imageUrl: 'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
         wearLocation: 'Wrist',
@@ -70,14 +70,12 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020', 'feehan2020', 'natureSR2024'],
         affiliateLinks: [
-          { name: 'Garmin Forerunner 265', url: 'https://amzn.to/4r7eC0M' },
-          { name: 'Garmin Venu 3', url: 'https://amzn.to/3ZUWQ50' },
-          { name: 'Garmin Fenix 8', url: 'https://amzn.to/4qp6dEU' }
+          { name: 'Shop Garmin on Amazon', url: 'https://amzn.to/4aF8l5D' }
         ]
       },
       'apple-watch': {
         name: 'Apple Watch', short: 'Apple Watch', rank: 2,
-        rankLabel: '🥈 Best All-Around',
+        rankLabel: 'Best All-Around',
         color: '#A2AAAD',
         imageUrl: 'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
         wearLocation: 'Wrist',
@@ -100,13 +98,12 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kim2024', 'choekang2025', 'natureSR2024'],
         affiliateLinks: [
-          { name: 'Apple Watch Series 10', url: 'https://amzn.to/4kw5Uaa' },
-          { name: 'Apple Watch Ultra 2', url: 'https://amzn.to/4kqQi7K' }
+          { name: 'Shop Apple Watch on Amazon', url: 'https://amzn.to/4rUcGst' }
         ]
       },
       fitbit: {
         name: 'Fitbit', short: 'Fitbit', rank: 3,
-        rankLabel: '🥉 Most-Studied, Mixed Results',
+        rankLabel: 'Most-Studied, Mixed Results',
         color: '#00B0B9',
         imageUrl: 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
         wearLocation: 'Wrist',
@@ -129,8 +126,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020', 'straczkiewicz2023', 'giurgiu2023', 'germini2022'],
         affiliateLinks: [
-          { name: 'Fitbit Charge 6', url: 'https://amzn.to/4chbzyr' },
-          { name: 'Fitbit Sense 2', url: 'https://amzn.to/4ck9W33' }
+          { name: 'Shop Fitbit on Amazon', url: 'https://amzn.to/3ZPkHDc' }
         ]
       },
       samsung: {
@@ -157,8 +153,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kim2024'],
         affiliateLinks: [
-          { name: 'Galaxy Watch 7', url: 'https://amzn.to/3Owp4R1' },
-          { name: 'Galaxy Watch Ultra', url: 'https://amzn.to/3ZqzKmE' }
+          { name: 'Shop Samsung Galaxy Watch on Amazon', url: 'https://amzn.to/4aZkBPB' }
         ]
       },
       coros: {
@@ -183,7 +178,9 @@ class KygoStepCountAccuracy extends HTMLElement {
           { model: 'APEX 2 Pro', mape: '1.6% (81 steps off / 5,000)', condition: 'Walking test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' }
         ],
         studies: [],
-        affiliateLinks: null
+        affiliateLinks: [
+          { name: 'Shop COROS on Amazon', url: 'https://amzn.to/4rkOv6I' }
+        ]
       },
       polar: {
         name: 'Polar', short: 'Polar', rank: 6,
@@ -209,7 +206,9 @@ class KygoStepCountAccuracy extends HTMLElement {
           { model: 'Vantage M3', mape: '+3.8% (379 extra steps / 10,000)', condition: 'Walking test', source: 'TechRadar (Jan 2025)', note: 'Consumer test, not peer-reviewed' }
         ],
         studies: ['roos2020'],
-        affiliateLinks: null
+        affiliateLinks: [
+          { name: 'Shop Polar on Amazon', url: 'https://amzn.to/4rqpdnL' }
+        ]
       },
       oura: {
         name: 'Oura Ring', short: 'Oura Ring', rank: 7,
@@ -236,7 +235,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kristiansson2023'],
         affiliateLinks: [
-          { name: 'Oura Ring Gen 4', url: 'https://amzn.to/4klINic' }
+          { name: 'Shop Oura Ring on Amazon', url: 'https://amzn.to/4aF93jj' }
         ]
       },
       whoop: {
@@ -260,7 +259,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         modelData: [],
         studies: [],
         affiliateLinks: [
-          { name: 'WHOOP 4.0', url: 'https://amzn.to/3Zmzkh8', note: '12-month subscription included' }
+          { name: 'Shop WHOOP on Amazon', url: 'https://amzn.to/4rRoziQ' }
         ]
       }
     };
@@ -301,9 +300,9 @@ class KygoStepCountAccuracy extends HTMLElement {
         impactLevel: 'very-high',
         detail: 'Wrist devices detect arm swing as a proxy for walking — not actual footfalls. This fundamental limitation creates systematic errors no algorithm can fully eliminate.',
         placements: [
-          { placement: 'Ankle / Foot', rank: '🥇 Most accurate', error: '~2–6% MAPE', bestFor: 'Slow walkers, elderly, clinical', limit: 'Socially impractical; limited products' },
-          { placement: 'Hip / Waist', rank: '🥈 Very accurate', error: '~0.4–5% MAPE', bestFor: 'Research-grade measurement', limit: 'Less convenient; users forget to wear' },
-          { placement: 'Wrist', rank: '🥉 Moderate', error: '~5–25% MAPE', bestFor: 'Daily convenience, 24/7 wear', limit: 'Over/underestimates from arm motion' },
+          { placement: 'Ankle / Foot', rank: '1st Most accurate', error: '~2–6% MAPE', bestFor: 'Slow walkers, elderly, clinical', limit: 'Socially impractical; limited products' },
+          { placement: 'Hip / Waist', rank: '2nd Very accurate', error: '~0.4–5% MAPE', bestFor: 'Research-grade measurement', limit: 'Less convenient; users forget to wear' },
+          { placement: 'Wrist', rank: '3rd Moderate', error: '~5–25% MAPE', bestFor: 'Daily convenience, 24/7 wear', limit: 'Over/underestimates from arm motion' },
           { placement: 'Finger (Oura)', rank: '4th', error: '~10–50%+ MAPE', bestFor: 'Sleep/HRV (not steps)', limit: 'Phantom steps from hand gestures' }
         ],
         keyFinding: 'Wrist vs. hip step counts differ by 30% in young adults, nearly 50% in elderly.'
@@ -529,18 +528,13 @@ class KygoStepCountAccuracy extends HTMLElement {
                     <div class="dd-tags">${d.falseSteps.map(f => `<span class="dd-tag">${f}</span>`).join('')}</div>
                   </div>` : ''}
                   ${this._renderStudiesForDevice(k)}
-                  ${d.affiliateLinks ? `
+                  ${d.affiliateLinks && d.affiliateLinks.length ? `
                   <div class="dd-buy">
-                    <h4>Available on Amazon</h4>
-                    <div class="dd-buy-links">
-                      ${d.affiliateLinks.map(l => `
-                        <a href="${l.url}" class="dd-buy-link" target="_blank" rel="noopener sponsored">
-                          <span class="dd-buy-name">${l.name}</span>
-                          ${l.note ? `<span class="dd-buy-note">${l.note}</span>` : ''}
-                          <span class="dd-buy-cta">View on Amazon <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
-                        </a>
-                      `).join('')}
-                    </div>
+                    <a href="${d.affiliateLinks[0].url}" class="dd-buy-btn" target="_blank" rel="noopener sponsored">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                      Shop ${d.name} on Amazon
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </a>
                   </div>` : ''}
                 </div>
               </div>
@@ -553,7 +547,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         <div class="container">
           <h2 class="section-title animate-on-scroll">Important Caveats</h2>
           <p class="section-sub animate-on-scroll">Context for interpreting step count accuracy data.</p>
-          <div class="caveat-grid animate-on-scroll" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px">
+          <div class="caveat-grid animate-on-scroll">
             ${this._caveats.map((c, i) => `
               <div class="caveat-card ${this._expandedCaveats.has(i) ? 'open' : ''}" data-caveat="${i}">
                 <div class="caveat-header">
@@ -1212,14 +1206,9 @@ class KygoStepCountAccuracy extends HTMLElement {
       .dd-study-badge.independent { background: var(--green-light); color: var(--green-dark); }
       .dd-study-badge.funded { background: rgba(251,191,36,0.15); color: #B45309; }
       .dd-study-cite { color: var(--gray-600); line-height: 1.5; }
-      .dd-buy { margin-top: 8px; }
-      .dd-buy h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; }
-      .dd-buy-links { display: flex; flex-direction: column; gap: 6px; }
-      .dd-buy-link { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--gray-100); border-radius: var(--radius-sm); text-decoration: none; color: var(--dark); transition: background 0.2s; gap: 8px; }
-      .dd-buy-link:hover { background: var(--gray-200); }
-      .dd-buy-name { font-size: 13px; font-weight: 600; flex: 1; }
-      .dd-buy-note { font-size: 11px; color: var(--gray-400); }
-      .dd-buy-cta { font-size: 12px; color: var(--green-dark); font-weight: 600; display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+      .dd-buy { margin-top: 10px; }
+      .dd-buy-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; background: var(--green-light); border: 2px solid rgba(34,197,94,0.25); border-radius: var(--radius-sm); text-decoration: none; color: var(--green-dark); font-size: 13px; font-weight: 700; transition: background 0.2s, border-color 0.2s; }
+      .dd-buy-btn:hover { background: rgba(34,197,94,0.18); border-color: var(--green); }
 
       /* Factors — interactive tab-panel */
       .factors { padding: 56px 0; background: #fff; }
@@ -1314,7 +1303,8 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       /* Caveats */
       .caveats { padding: 56px 0; background: #fff; }
-      .caveat-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      .caveat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      @media (max-width: 600px) { .caveat-grid { grid-template-columns: 1fr; } }
       .caveat-card { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
       .caveat-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; cursor: pointer; transition: background 0.15s; }
       .caveat-header:hover { background: var(--gray-100); }
@@ -1363,8 +1353,8 @@ class KygoStepCountAccuracy extends HTMLElement {
         .device-summary-card { gap: 10px; padding: 14px 16px; }
         .dsc-img { width: 36px; height: 36px; }
         .dsc-fallback { width: 36px; height: 36px; font-size: 16px; }
-        .comp-tabs { gap: 4px; }
-        .comp-tab { padding: 6px 12px; font-size: 12px; }
+        .comp-tabs { gap: 4px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+        .comp-tab { padding: 6px 12px; font-size: 12px; flex-shrink: 0; }
         .comp-detail { padding: 14px; }
         .comp-2col { grid-template-columns: 1fr; }
         .comp-stat-value { font-size: 18px; }
@@ -1388,6 +1378,8 @@ class KygoStepCountAccuracy extends HTMLElement {
         .dd-cols { grid-template-columns: 1fr; }
         .dd-header { padding: 14px; gap: 10px; }
         .dd-body { padding: 0 14px 14px; padding-top: 14px; }
+        .model-table { min-width: 0; font-size: 11px; }
+        .model-table thead th:last-child, .model-table tbody td:last-child { display: none; }
 
         /* Caveats */
         .caveat-body { padding: 0 20px 16px 44px; }
@@ -1426,7 +1418,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       }
 
       // Device card expand/collapse (ignore affiliate link clicks)
-      if (e.target.closest('.dd-name-link') || e.target.closest('.dd-buy-link') || e.target.closest('.dsc-name-link')) return;
+      if (e.target.closest('.dd-name-link') || e.target.closest('.dd-buy-btn') || e.target.closest('.dsc-name-link')) return;
       const ddHeader = e.target.closest('.dd-header');
       if (ddHeader) {
         const card = ddHeader.closest('.dd-card');
