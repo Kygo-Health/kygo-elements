@@ -1143,11 +1143,12 @@ class KygoStepCountAccuracy extends HTMLElement {
       .ov-strengths-card p { font-size: 14px; font-weight: 600; color: var(--dark); margin: 0; }
       /* Shared comp tab styles */
       .comp-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+      .comp-col { min-width: 0; }
       .comp-col-title { font-size: 15px; margin-bottom: 12px; }
       .comp-stat-block { padding: 12px 16px; background: var(--gray-100); border-radius: var(--radius-sm); margin-bottom: 10px; }
       .comp-stat-label { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 4px; }
       .comp-stat-value { font-size: 22px; font-weight: 700; color: var(--dark); font-family: 'Space Grotesk', sans-serif; }
-      .comp-fl-note { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin: 0; }
+      .comp-fl-note { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin: 0; overflow-wrap: break-word; }
       .comp-insight { font-size: 13px; color: var(--gray-400); font-style: italic; margin-top: 8px; }
       .comp-insight-box { background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 13px; color: var(--gray-600); line-height: 1.6; }
       .comp-no-data { font-size: 13px; color: var(--gray-400); font-style: italic; }
@@ -1353,7 +1354,8 @@ class KygoStepCountAccuracy extends HTMLElement {
         .device-summary-card { gap: 10px; padding: 14px 16px; }
         .dsc-img { width: 36px; height: 36px; }
         .dsc-fallback { width: 36px; height: 36px; font-size: 16px; }
-        .comp-tabs { gap: 4px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+        .comp-tabs { gap: 4px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; scrollbar-width: none; -ms-overflow-style: none; }
+        .comp-tabs::-webkit-scrollbar { display: none; }
         .comp-tab { padding: 6px 12px; font-size: 12px; flex-shrink: 0; }
         .comp-detail { padding: 14px; }
         .comp-2col { grid-template-columns: 1fr; }
@@ -1361,14 +1363,17 @@ class KygoStepCountAccuracy extends HTMLElement {
         .ov-strengths { grid-template-columns: 1fr; }
 
         /* Factors */
-        .factor-selector { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+        .factor-selector { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; scrollbar-width: none; -ms-overflow-style: none; }
+        .factor-selector::-webkit-scrollbar { display: none; }
         .factor-tab { flex-shrink: 0; }
         .factor-panel { padding: 20px 16px; }
         .fv-speed-row { grid-template-columns: 1fr; gap: 4px; }
         .fv-speed-acc { font-size: 11px; }
         .fv-triggers { grid-template-columns: 1fr; }
         .fv-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
-        .fv-stat-num { font-size: 28px; }
+        .fv-stat-card { padding: 14px 14px; }
+        .fv-stat-num { font-size: 26px; }
+        .fv-stat-label { font-size: 12px; }
         .fv-condition-row { grid-template-columns: 1fr; gap: 4px; }
         .fv-condition-mag { text-align: left; }
         .fv-alert-stat { font-size: 36px; }
