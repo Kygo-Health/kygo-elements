@@ -1341,17 +1341,18 @@ class KygoStepCountAccuracy extends HTMLElement {
       .caveat-body p { font-size: 14px; color: var(--gray-600); line-height: 1.7; }
 
       /* CTA */
-      .cta-section { padding: 56px 0; background: var(--light); }
-      .cta-box { background: var(--dark); border-radius: var(--radius); padding: 48px 40px; text-align: center; }
-      .cta-box-content { max-width: 520px; margin: 0 auto; }
-      .cta-icon { color: var(--green); margin-bottom: 16px; }
+      .cta-section { padding: 56px 0; }
+      .cta-box { background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: var(--radius); padding: 48px 40px; text-align: center; position: relative; overflow: hidden; }
+      .cta-box::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%); pointer-events: none; }
+      .cta-box-content { max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
+      .cta-icon { width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; }
       .cta-box h2 { color: #fff; font-size: clamp(22px, 4vw, 30px); margin-bottom: 12px; }
-      .cta-box p { color: var(--gray-300); font-size: 16px; margin-bottom: 28px; line-height: 1.7; }
-      .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: #fff; color: var(--dark); padding: 14px 28px; border-radius: 50px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
-      .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+      .cta-box p { color: rgba(255,255,255,0.85); font-size: 16px; margin-bottom: 28px; line-height: 1.7; }
+      .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: #fff; color: var(--green-dark); padding: 14px 28px; border-radius: 12px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+      .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
       .cta-features { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
-      .cta-feature { display: flex; align-items: center; gap: 6px; color: var(--gray-300); font-size: 13px; }
-      .cta-feature svg { color: var(--green); flex-shrink: 0; }
+      .cta-feature { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.9); font-size: 13px; }
+      .cta-feature svg { color: white; flex-shrink: 0; }
 
       /* Footer */
       .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }
