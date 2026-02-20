@@ -45,7 +45,7 @@ class KygoStepCountAccuracy extends HTMLElement {
     return {
       garmin: {
         name: 'Garmin', short: 'Garmin', rank: 1,
-        rankLabel: '🥇 Most Accurate',
+        rankLabel: 'Most Accurate',
         color: '#007CC3',
         imageUrl: 'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
         wearLocation: 'Wrist',
@@ -75,7 +75,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       },
       'apple-watch': {
         name: 'Apple Watch', short: 'Apple Watch', rank: 2,
-        rankLabel: '🥈 Best All-Around',
+        rankLabel: 'Best All-Around',
         color: '#A2AAAD',
         imageUrl: 'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
         wearLocation: 'Wrist',
@@ -103,7 +103,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       },
       fitbit: {
         name: 'Fitbit', short: 'Fitbit', rank: 3,
-        rankLabel: '🥉 Most-Studied, Mixed Results',
+        rankLabel: 'Most-Studied, Mixed Results',
         color: '#00B0B9',
         imageUrl: 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
         wearLocation: 'Wrist',
@@ -300,9 +300,9 @@ class KygoStepCountAccuracy extends HTMLElement {
         impactLevel: 'very-high',
         detail: 'Wrist devices detect arm swing as a proxy for walking — not actual footfalls. This fundamental limitation creates systematic errors no algorithm can fully eliminate.',
         placements: [
-          { placement: 'Ankle / Foot', rank: '🥇 Most accurate', error: '~2–6% MAPE', bestFor: 'Slow walkers, elderly, clinical', limit: 'Socially impractical; limited products' },
-          { placement: 'Hip / Waist', rank: '🥈 Very accurate', error: '~0.4–5% MAPE', bestFor: 'Research-grade measurement', limit: 'Less convenient; users forget to wear' },
-          { placement: 'Wrist', rank: '🥉 Moderate', error: '~5–25% MAPE', bestFor: 'Daily convenience, 24/7 wear', limit: 'Over/underestimates from arm motion' },
+          { placement: 'Ankle / Foot', rank: '1st Most accurate', error: '~2–6% MAPE', bestFor: 'Slow walkers, elderly, clinical', limit: 'Socially impractical; limited products' },
+          { placement: 'Hip / Waist', rank: '2nd Very accurate', error: '~0.4–5% MAPE', bestFor: 'Research-grade measurement', limit: 'Less convenient; users forget to wear' },
+          { placement: 'Wrist', rank: '3rd Moderate', error: '~5–25% MAPE', bestFor: 'Daily convenience, 24/7 wear', limit: 'Over/underestimates from arm motion' },
           { placement: 'Finger (Oura)', rank: '4th', error: '~10–50%+ MAPE', bestFor: 'Sleep/HRV (not steps)', limit: 'Phantom steps from hand gestures' }
         ],
         keyFinding: 'Wrist vs. hip step counts differ by 30% in young adults, nearly 50% in elderly.'
