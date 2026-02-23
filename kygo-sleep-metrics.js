@@ -31,7 +31,7 @@ class KygoSleepMetrics extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Sleep Metrics Comparison Tool by Kygo Health. Compare every sleep metric tracked by Oura Ring, Fitbit, Apple Watch, and Garmin. 30 metrics across 10 categories: Composite Scores, Sleep Duration and Timing, Sleep Stages, Sleep Quality, Heart and Vitals, Temperature, Breathing and Apnea, Naps and Coaching, Monthly Profile Analytics, Stress and Recovery. Oura Ring tracks 22 metrics including Sleep Onset Latency, Sleep Efficiency, Circadian Alignment, Readiness Score, Recovery Index, and HRV Balance. Fitbit tracks 21 metrics including Sleep Profile with 10 monthly metrics, Sleep Animal Archetype, Sleep Schedule Variability, and Snoring Detection. Apple Watch tracks 20 metrics including FDA-authorized Sleep Apnea Notifications, Breathing Disturbances Detection, Nighttime Awakenings count, Interruptions Score, and Bedtime Consistency Score. Garmin tracks 21 metrics including Training Readiness, Body Battery Recharge, Stress Level During Sleep, Sleep Coach with Personalized Sleep Need, HRV Status, and Breathing Variations Classification. All four devices track sleep stages (Light/Core, Deep, REM, Awake), Heart Rate, HRV, SpO2, Respiratory Rate, Skin Temperature, and Nap Tracking. Data sourced from official manufacturer documentation.');
+    __seo(this, 'Sleep Metrics Comparison Tool by Kygo Health. Compare every sleep metric tracked by Oura Ring, Fitbit, Apple Watch, and Garmin. 38 metrics across 10 categories: Composite Scores, Sleep Duration and Timing, Sleep Stages, Sleep Quality, Heart and Vitals, Temperature, Breathing and Apnea, Naps and Coaching, Monthly Profile Analytics, Stress and Recovery. Oura Ring tracks 22 metrics including Sleep Onset Latency, Sleep Efficiency, Circadian Alignment, Readiness Score, Recovery Index, and HRV Balance. Fitbit tracks 21 metrics including Sleep Profile with 10 monthly metrics, Sleep Animal Archetype, Sleep Schedule Variability, and Snoring Detection. Apple Watch tracks 20 metrics including FDA-authorized Sleep Apnea Notifications, Breathing Disturbances Detection, Nighttime Awakenings count, Interruptions Score, and Bedtime Consistency Score. Garmin tracks 21 metrics including Training Readiness, Body Battery Recharge, Stress Level During Sleep, Sleep Coach with Personalized Sleep Need, HRV Status, and Breathing Variations Classification. All four devices track sleep stages (Light/Core, Deep, REM, Awake), Heart Rate, HRV, SpO2, Respiratory Rate, Skin Temperature, and Nap Tracking. Data sourced from official manufacturer documentation.');
   }
 
   disconnectedCallback() {
@@ -481,7 +481,7 @@ class KygoSleepMetrics extends HTMLElement {
     return keys.map(dk => {
       const d = devices[dk];
       return `<div class="stat-card">
-        <img src="${d.imageUrl}" alt="${d.name}" class="stat-img" loading="lazy" />
+        <img src="${d.imageUrl}" alt="${d.name}" class="stat-img" />
         <div class="stat-info">
           <span class="stat-name">${d.short}</span>
           <span class="stat-count">${d.totalMetrics} metrics</span>
@@ -492,7 +492,7 @@ class KygoSleepMetrics extends HTMLElement {
 
   _renderCategoryTabs() {
     return Object.entries(this._categories).map(([k, c]) =>
-      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab">
+      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab" aria-selected="${k === this._activeCategory}">
         <span class="cat-tab-icon">${this._icon(c.icon)}</span>
         <span>${c.name}</span>
       </button>`
@@ -510,7 +510,7 @@ class KygoSleepMetrics extends HTMLElement {
     return `
       <div class="grid-header">
         <div class="grid-metric-label">Metric</div>
-        ${deviceKeys.map(dk => `<div class="grid-device-header"><img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="grid-device-img" loading="lazy" /><span>${devices[dk].short}</span></div>`).join('')}
+        ${deviceKeys.map(dk => `<div class="grid-device-header"><img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="grid-device-img" /><span>${devices[dk].short}</span></div>`).join('')}
       </div>
       <div class="grid-body">
         ${metrics.map(m => {
@@ -518,7 +518,7 @@ class KygoSleepMetrics extends HTMLElement {
           const hasAnyDesc = deviceKeys.some(dk => m[dk].has && m[dk].desc);
           return `
             <div class="grid-row-wrap ${isExpanded ? 'expanded' : ''} ${hasAnyDesc ? 'expandable' : ''}" data-metric="${m.key}">
-              <div class="grid-row" role="button" tabindex="0">
+              <div class="grid-row"${hasAnyDesc ? ' role="button" tabindex="0" aria-expanded="' + (isExpanded ? 'true' : 'false') + '"' : ''}>
                 <div class="grid-metric-name">${m.name}${hasAnyDesc ? `<span class="grid-expand-icon">${this._icon('chevDown')}</span>` : ''}</div>
                 ${deviceKeys.map(dk => `<div class="grid-cell">${m[dk].has ? `<span class="cell-check">${this._icon('check')}</span>` : `<span class="cell-dash">${this._icon('minus')}</span>`}</div>`).join('')}
               </div>
@@ -544,7 +544,7 @@ class KygoSleepMetrics extends HTMLElement {
       const isExpanded = this._expandedExclusive === dk;
       return `
         <div class="excl-card ${isExpanded ? 'expanded' : ''}" data-exclusive="${dk}" style="--delay:${i * 100}ms">
-          <div class="excl-header">
+          <div class="excl-header" role="button" aria-expanded="${isExpanded}">
             <img src="${d.imageUrl}" alt="${d.name}" class="excl-img" loading="lazy" />
             <div class="excl-info">
               <h3><a href="${d.affiliateUrl}" class="excl-name-link" target="_blank" rel="noopener sponsored">${d.name}</a></h3>
@@ -589,7 +589,7 @@ class KygoSleepMetrics extends HTMLElement {
       const isExpanded = this._expandedSource === dk;
       return `
         <div class="src-card ${isExpanded ? 'open' : ''}" data-source="${dk}">
-          <div class="src-header">
+          <div class="src-header" role="button" aria-expanded="${isExpanded}">
             <img src="${d.imageUrl}" alt="${d.name}" class="src-img" loading="lazy" />
             <span class="src-name">${d.name}</span>
             <span class="src-count">${s.length} sources</span>
@@ -619,7 +619,10 @@ class KygoSleepMetrics extends HTMLElement {
     this._expandedMetric = this._expandedMetric === key ? null : key;
     const shadow = this.shadowRoot;
     shadow.querySelectorAll('.grid-row-wrap').forEach(row => {
-      row.classList.toggle('expanded', row.dataset.metric === this._expandedMetric);
+      const isExp = row.dataset.metric === this._expandedMetric;
+      row.classList.toggle('expanded', isExp);
+      const btn = row.querySelector('.grid-row[role="button"]');
+      if (btn) btn.setAttribute('aria-expanded', isExp);
     });
   }
 
@@ -635,7 +638,7 @@ class KygoSleepMetrics extends HTMLElement {
       <header class="header">
         <div class="header-inner">
           <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" loading="lazy" />
+            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Sleep Metrics
           </a>
           <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
@@ -1025,7 +1028,10 @@ class KygoSleepMetrics extends HTMLElement {
         const key = card.dataset.exclusive;
         this._expandedExclusive = this._expandedExclusive === key ? null : key;
         shadow.querySelectorAll('.excl-card').forEach(c => {
-          c.classList.toggle('expanded', c.dataset.exclusive === this._expandedExclusive);
+          const isExp = c.dataset.exclusive === this._expandedExclusive;
+          c.classList.toggle('expanded', isExp);
+          const hdr = c.querySelector('.excl-header');
+          if (hdr) hdr.setAttribute('aria-expanded', isExp);
         });
         return;
       }
@@ -1037,7 +1043,10 @@ class KygoSleepMetrics extends HTMLElement {
         const key = card.dataset.source;
         this._expandedSource = this._expandedSource === key ? null : key;
         shadow.querySelectorAll('.src-card').forEach(c => {
-          c.classList.toggle('open', c.dataset.source === this._expandedSource);
+          const isExp = c.dataset.source === this._expandedSource;
+          c.classList.toggle('open', isExp);
+          const hdr = c.querySelector('.src-header');
+          if (hdr) hdr.setAttribute('aria-expanded', isExp);
         });
         return;
       }
@@ -1085,7 +1094,7 @@ class KygoSleepMetrics extends HTMLElement {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
       'name': 'Sleep Metrics Comparison Tool',
-      'description': 'Compare every sleep metric tracked by Oura Ring, Fitbit, Apple Watch, and Garmin. 30 metrics across 10 categories including sleep stages, HRV, SpO2, respiratory rate, sleep apnea detection, and more. See what each device tracks, exclusive features, and how they measure each metric.',
+      'description': 'Compare every sleep metric tracked by Oura Ring, Fitbit, Apple Watch, and Garmin. 38 metrics across 10 categories including sleep stages, HRV, SpO2, respiratory rate, sleep apnea detection, and more. See what each device tracks, exclusive features, and how they measure each metric.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygohealth.com/sleep-metrics',
