@@ -27,7 +27,7 @@ class KygoToolsPage extends HTMLElement {
     this._parseTools();
     this.render();
     this._setupAnimations();
-    __seo(this, 'Kygo Health Free Tools \u2014 AI-powered nutrition and health tools. Food Scanner: snap a photo of any meal for instant calories, macros, and health score. Wearable Accuracy: compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research. No signup required.');
+    __seo(this, 'Kygo Health Free Tools \u2014 Free tools to understand your nutrition and health. Food Scanner: snap a photo of any meal for instant calories, macros, and health score. Wearable Accuracy: compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research. No signup required.');
   }
 
   disconnectedCallback() {
@@ -572,7 +572,7 @@ class KygoToolsPage extends HTMLElement {
             Free Health Tools
           </div>
           <h1>Tools to understand <span>your nutrition</span></h1>
-          <p>Free AI-powered tools to help you make smarter food choices. No signup required.</p>
+          <p>Free tools to help you understand your nutrition and health. No signup required.</p>
         </div>
       </section>
 
