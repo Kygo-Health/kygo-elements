@@ -818,15 +818,15 @@ class KygoSleepMetrics extends HTMLElement {
 
       /* Metric Grid */
       .metric-grid { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-      .grid-header { display: grid; grid-template-columns: 1fr repeat(4, 48px); gap: 0; background: var(--gray-50); border-bottom: 2px solid var(--gray-200); padding: 10px 14px; align-items: center; position: sticky; top: 56px; z-index: 5; }
+      .grid-header { display: grid; grid-template-columns: 1fr repeat(4, 36px); gap: 0; background: var(--gray-50); border-bottom: 2px solid var(--gray-200); padding: 10px 10px; align-items: center; position: sticky; top: 56px; z-index: 5; }
       .grid-metric-label { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; }
       .grid-device-header { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-      .grid-device-header span { font-size: 9px; font-weight: 600; color: var(--gray-600); text-align: center; line-height: 1.1; }
-      .grid-device-img { width: 24px; height: 24px; border-radius: 6px; object-fit: contain; }
+      .grid-device-header span { font-size: 9px; font-weight: 600; color: var(--gray-600); text-align: center; line-height: 1.1; display: none; }
+      .grid-device-img { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; }
 
       .grid-row-wrap { border-bottom: 1px solid var(--gray-100); }
       .grid-row-wrap:last-child { border-bottom: none; }
-      .grid-row { display: grid; grid-template-columns: 1fr repeat(4, 48px); gap: 0; padding: 12px 14px; align-items: center; transition: background 0.15s; }
+      .grid-row { display: grid; grid-template-columns: 1fr repeat(4, 36px); gap: 0; padding: 12px 10px; align-items: center; transition: background 0.15s; }
       .grid-row-wrap.expandable .grid-row { cursor: pointer; }
       .grid-row-wrap.expandable .grid-row:hover { background: var(--gray-50); }
       .grid-metric-name { font-size: 13px; font-weight: 500; color: var(--dark); display: flex; align-items: center; gap: 6px; padding-right: 8px; }
@@ -883,7 +883,7 @@ class KygoSleepMetrics extends HTMLElement {
       /* ── Use Cases ── */
       .usecase-section { padding: 48px 0; background: #fff; }
       .uc-list { display: flex; flex-direction: column; background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-      .uc-row { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--gray-100); border-left: 3px solid transparent; transition: all 0.2s; }
+      .uc-row { display: grid; grid-template-columns: 36px 1fr; align-items: start; gap: 8px 10px; padding: 14px 14px; border-bottom: 1px solid var(--gray-100); border-left: 3px solid transparent; transition: all 0.2s; }
       .uc-row:last-child { border-bottom: none; }
       .uc-row:hover { background: var(--gray-50); border-left-color: var(--green); transform: translateX(2px); }
       .uc-icon { width: 32px; height: 32px; color: var(--green-dark); display: flex; align-items: center; justify-content: center; background: var(--green-light); border-radius: 8px; padding: 5px; }
@@ -891,8 +891,8 @@ class KygoSleepMetrics extends HTMLElement {
       .uc-info { min-width: 0; }
       .uc-label { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 2px; }
       .uc-note { font-size: 12px; color: var(--gray-400); line-height: 1.4; }
-      .uc-devices { display: flex; gap: 6px; align-items: center; }
-      .uc-device-img { width: 32px; height: 32px; border-radius: 8px; object-fit: contain; border: 1px solid var(--gray-200); background: #fff; }
+      .uc-devices { display: flex; gap: 6px; align-items: center; grid-column: 2; }
+      .uc-device-img { width: 28px; height: 28px; border-radius: 8px; object-fit: contain; border: 1px solid var(--gray-200); background: #fff; }
 
       /* ── Sources ── */
       .sources-section { padding: 48px 0; background: var(--gray-50); }
@@ -957,15 +957,16 @@ class KygoSleepMetrics extends HTMLElement {
         .stat-name { font-size: 13px; }
         .stat-count { font-size: 12px; }
         .grid-header { grid-template-columns: 1fr repeat(4, 80px); padding: 12px 20px; }
-        .grid-device-header span { font-size: 10px; }
+        .grid-device-header span { font-size: 10px; display: block; }
         .grid-device-img { width: 28px; height: 28px; }
         .grid-row { grid-template-columns: 1fr repeat(4, 80px); padding: 14px 20px; }
         .grid-detail { padding: 0 20px; }
         .grid-row-wrap.expanded .grid-detail { padding: 0 20px 16px; }
         .grid-detail-cards { grid-template-columns: repeat(4, 1fr); }
         .excl-grid { grid-template-columns: 1fr 1fr; }
-        .uc-row { grid-template-columns: 40px 1fr auto; gap: 16px; padding: 14px 20px; }
+        .uc-row { grid-template-columns: 40px 1fr auto; gap: 16px; padding: 14px 20px; align-items: center; }
         .uc-label { font-size: 15px; }
+        .uc-devices { grid-column: auto; }
         .uc-device-img { width: 36px; height: 36px; border-radius: 10px; }
         .src-grid { grid-template-columns: 1fr 1fr; }
         .cta-box { padding: 48px 32px; }
