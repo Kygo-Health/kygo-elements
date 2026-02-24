@@ -3192,11 +3192,11 @@ class KygoHiwFinalCta extends HTMLElement {
               </a>
               
               <p class="risk-reversal">
-                <span>Free forever plan</span>
+                <span>Free forever—no card needed</span>
                 <span>•</span>
-                <span>No credit card required</span>
+                <span>Full logging &amp; wearables included</span>
                 <span>•</span>
-                <span>Upgrade anytime</span>
+                <span>Upgrade anytime for correlations</span>
               </p>
             </div>
           </div>
