@@ -153,6 +153,35 @@ class KygoFaqSection extends HTMLElement {
         }
         return;
       }
+
+      // Android modal — delegated so it survives re-renders
+      if (e.target.closest('.cta-android')) {
+        e.preventDefault();
+        shadow.querySelector('.android-modal').classList.add('active');
+        return;
+      }
+      if (e.target.closest('.modal-close')) {
+        shadow.querySelector('.android-modal').classList.remove('active');
+        return;
+      }
+      const _am = shadow.querySelector('.android-modal');
+      if (_am && e.target === _am) {
+        _am.classList.remove('active');
+        return;
+      }
+    });
+
+    // Android form submit — delegated so it survives re-renders
+    shadow.addEventListener('submit', (e) => {
+      if (e.target.closest('.android-form')) {
+        e.preventDefault();
+        const email = e.target.querySelector('input').value;
+        if (email) {
+          this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true }));
+          e.target.innerHTML = '<p class="success-msg">You\'re on the list!</p>';
+          setTimeout(() => shadow.querySelector('.android-modal').classList.remove('active'), 2000);
+        }
+      }
     });
 
     // Search input listener with debouncing
@@ -170,15 +199,6 @@ class KygoFaqSection extends HTMLElement {
         }, 150);
       });
     }
-
-    const _ab = shadow.querySelector('.cta-android');
-    const _am = shadow.querySelector('.android-modal');
-    const _mc = shadow.querySelector('.modal-close');
-    const _af = shadow.querySelector('.android-form');
-    if (_ab) _ab.addEventListener('click', e => { e.preventDefault(); _am.classList.add('active'); });
-    if (_mc) _mc.addEventListener('click', () => _am.classList.remove('active'));
-    if (_am) _am.addEventListener('click', e => { if (e.target === _am) _am.classList.remove('active'); });
-    if (_af) _af.addEventListener('submit', e => { e.preventDefault(); const email = _af.querySelector('input').value; if (email) { this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true })); _af.innerHTML = '<p class="success-msg">You\'re on the list!</p>'; setTimeout(() => _am.classList.remove('active'), 2000); } });
   }
 
   _setupScrollAnimations() {

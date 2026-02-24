@@ -27,14 +27,7 @@ class KygoToolsPage extends HTMLElement {
     this._parseTools();
     this.render();
     this._setupAnimations();
-    const _ab = this.shadowRoot.querySelector('.cta-android');
-    const _am = this.shadowRoot.querySelector('.android-modal');
-    const _mc = this.shadowRoot.querySelector('.modal-close');
-    const _af = this.shadowRoot.querySelector('.android-form');
-    if (_ab) _ab.addEventListener('click', e => { e.preventDefault(); _am.classList.add('active'); });
-    if (_mc) _mc.addEventListener('click', () => _am.classList.remove('active'));
-    if (_am) _am.addEventListener('click', e => { if (e.target === _am) _am.classList.remove('active'); });
-    if (_af) _af.addEventListener('submit', e => { e.preventDefault(); const email = _af.querySelector('input').value; if (email) { this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true })); _af.innerHTML = '<p class="success-msg">You\'re on the list!</p>'; setTimeout(() => _am.classList.remove('active'), 2000); } });
+    this._setupModalEvents();
     __seo(this, 'Kygo Health Free Tools \u2014 Free tools to understand your nutrition and health. Food Scanner: snap a photo of any meal for instant calories, macros, and health score. Wearable Accuracy: compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research. No signup required.');
   }
 
@@ -49,7 +42,19 @@ class KygoToolsPage extends HTMLElement {
       this._parseTools();
       this.render();
       this._setupAnimations();
+      this._setupModalEvents();
     }
+  }
+
+  _setupModalEvents() {
+    const _ab = this.shadowRoot.querySelector('.cta-android');
+    const _am = this.shadowRoot.querySelector('.android-modal');
+    const _mc = this.shadowRoot.querySelector('.modal-close');
+    const _af = this.shadowRoot.querySelector('.android-form');
+    if (_ab) _ab.addEventListener('click', e => { e.preventDefault(); _am.classList.add('active'); });
+    if (_mc) _mc.addEventListener('click', () => _am.classList.remove('active'));
+    if (_am) _am.addEventListener('click', e => { if (e.target === _am) _am.classList.remove('active'); });
+    if (_af) _af.addEventListener('submit', e => { e.preventDefault(); const email = _af.querySelector('input').value; if (email) { this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true })); _af.innerHTML = '<p class="success-msg">You\'re on the list!</p>'; setTimeout(() => _am.classList.remove('active'), 2000); } });
   }
 
   _parseTools() {
