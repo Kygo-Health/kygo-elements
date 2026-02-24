@@ -480,13 +480,13 @@ class KygoSleepMetrics extends HTMLElement {
     const keys = ['oura', 'fitbit', 'appleWatch', 'garmin'];
     return keys.map(dk => {
       const d = devices[dk];
-      return `<a href="${d.affiliateUrl}" class="stat-card" target="_blank" rel="noopener sponsored">
+      return `<div class="stat-card">
         <img src="${d.imageUrl}" alt="${d.name}" class="stat-img" />
         <div class="stat-info">
           <span class="stat-name">${d.short}</span>
           <span class="stat-count">${d.totalMetrics} metrics</span>
         </div>
-      </a>`;
+      </div>`;
     }).join('');
   }
 
@@ -797,7 +797,7 @@ class KygoSleepMetrics extends HTMLElement {
 
       /* ── Stats Bar ── */
       .stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 20px; }
-      .stat-card { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: white; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); transition: all 0.2s; text-decoration: none; color: inherit; cursor: pointer; }
+      .stat-card { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: white; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); transition: all 0.2s; }
       .stat-card:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
       .stat-img { width: 28px; height: 28px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
       .stat-info { display: flex; flex-direction: column; min-width: 0; }
