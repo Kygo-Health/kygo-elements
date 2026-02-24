@@ -480,13 +480,13 @@ class KygoSleepMetrics extends HTMLElement {
     const keys = ['oura', 'fitbit', 'appleWatch', 'garmin'];
     return keys.map(dk => {
       const d = devices[dk];
-      return `<div class="stat-card">
+      return `<a href="${d.affiliateUrl}" class="stat-card" target="_blank" rel="noopener sponsored">
         <img src="${d.imageUrl}" alt="${d.name}" class="stat-img" />
         <div class="stat-info">
           <span class="stat-name">${d.short}</span>
           <span class="stat-count">${d.totalMetrics} metrics</span>
         </div>
-      </div>`;
+      </a>`;
     }).join('');
   }
 
@@ -510,7 +510,7 @@ class KygoSleepMetrics extends HTMLElement {
     return `
       <div class="grid-header">
         <div class="grid-metric-label">Metric</div>
-        ${deviceKeys.map(dk => `<div class="grid-device-header"><img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="grid-device-img" /><span>${devices[dk].short}</span></div>`).join('')}
+        ${deviceKeys.map(dk => `<a href="${devices[dk].affiliateUrl}" class="grid-device-header" target="_blank" rel="noopener sponsored"><img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="grid-device-img" /><span>${devices[dk].short}</span></a>`).join('')}
       </div>
       <div class="grid-body">
         ${metrics.map(m => {
@@ -527,7 +527,7 @@ class KygoSleepMetrics extends HTMLElement {
                   ${deviceKeys.map(dk => {
                     const d = devices[dk];
                     if (!m[dk].has) return `<div class="detail-card unavailable"><div class="detail-header"><img src="${d.imageUrl}" alt="${d.short}" class="detail-icon" loading="lazy" /><span class="detail-device">${d.short}</span></div><span class="detail-na">Not available</span></div>`;
-                    return `<div class="detail-card"><div class="detail-header"><img src="${d.imageUrl}" alt="${d.short}" class="detail-icon" loading="lazy" /><span class="detail-device">${d.short}</span></div><p class="detail-desc">${m[dk].desc}</p></div>`;
+                    return `<div class="detail-card"><a href="${d.affiliateUrl}" class="detail-header" target="_blank" rel="noopener sponsored"><img src="${d.imageUrl}" alt="${d.short}" class="detail-icon" loading="lazy" /><span class="detail-device">${d.short}</span></a><p class="detail-desc">${m[dk].desc}</p></div>`;
                   }).join('')}
                 </div>
               </div>` : ''}
@@ -797,7 +797,7 @@ class KygoSleepMetrics extends HTMLElement {
 
       /* ── Stats Bar ── */
       .stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 20px; }
-      .stat-card { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: white; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); transition: all 0.2s; }
+      .stat-card { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: white; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); transition: all 0.2s; text-decoration: none; color: inherit; cursor: pointer; }
       .stat-card:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
       .stat-img { width: 28px; height: 28px; border-radius: 8px; object-fit: contain; flex-shrink: 0; }
       .stat-info { display: flex; flex-direction: column; min-width: 0; }
@@ -820,7 +820,8 @@ class KygoSleepMetrics extends HTMLElement {
       .metric-grid { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
       .grid-header { display: grid; grid-template-columns: 1fr repeat(4, 30px); gap: 0; background: var(--gray-50); border-bottom: 2px solid var(--gray-200); padding: 10px 10px; align-items: center; position: sticky; top: 56px; z-index: 5; border-radius: var(--radius) var(--radius) 0 0; }
       .grid-metric-label { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; }
-      .grid-device-header { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+      .grid-device-header { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; color: inherit; transition: transform 0.15s; }
+      .grid-device-header:hover { transform: scale(1.1); }
       .grid-device-header span { font-size: 9px; font-weight: 600; color: var(--gray-600); text-align: center; line-height: 1.1; display: none; }
       .grid-device-img { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; }
 
@@ -845,7 +846,7 @@ class KygoSleepMetrics extends HTMLElement {
       .grid-detail-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
       .detail-card { padding: 10px 12px; background: var(--gray-50); border-radius: 8px; border-left: 3px solid var(--green); }
       .detail-card.unavailable { border-left-color: var(--gray-200); opacity: 0.5; }
-      .detail-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+      .detail-header { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; text-decoration: none; color: inherit; }
       .detail-icon { width: 20px; height: 20px; border-radius: 5px; object-fit: contain; flex-shrink: 0; }
       .detail-device { font-size: 11px; font-weight: 700; color: var(--dark); text-transform: uppercase; letter-spacing: 0.3px; }
       .detail-card.unavailable .detail-device { color: var(--gray-400); }
