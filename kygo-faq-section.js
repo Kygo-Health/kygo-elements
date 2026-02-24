@@ -578,6 +578,14 @@ class KygoFaqSection extends HTMLElement {
             </div>
             <div class="faq-list">
               <div class="faq-item open">
+                <div class="faq-question"><span>I've tried food logging before and quit. Why would this be different?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p><strong>Because logging takes seconds, not minutes.</strong> We give you four ways to log—photo, voice, barcode, or natural text—so you can use whatever's fastest in the moment.</p>
+                  <p>Plus, our template system learns your eating habits. Your frequent meals become one-tap entries. <strong>Logging gets easier over time, not harder.</strong></p>
+                  <div class="answer-highlight">Most people quit tracking because it's tedious. We built Kygo specifically to solve that.</div>
+                </div>
+              </div>
+              <div class="faq-item">
                 <div class="faq-question"><span>How is Kygo different from MyFitnessPal?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
                   <p><strong>MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery.</strong></p>
@@ -603,14 +611,6 @@ class KygoFaqSection extends HTMLElement {
                     <li>Weight logging and trends</li>
                   </ul>
                   <p>Correlations are the bonus—not the only value.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>I've tried food tracking before and quit. Why would this be different?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Because logging takes seconds, not minutes.</strong> We give you four ways to log—photo, voice, barcode, or natural text—so you can use whatever's fastest in the moment.</p>
-                  <p>Plus, our template system learns your eating habits. Your frequent meals become one-tap entries. <strong>Logging gets easier over time, not harder.</strong></p>
-                  <div class="answer-highlight">Most people quit tracking because it's tedious. We built Kygo specifically to solve that.</div>
                 </div>
               </div>
             </div>
@@ -771,21 +771,20 @@ class KygoFaqSection extends HTMLElement {
                     <li>Health and nutrition trends</li>
                     <li>Detailed macro and micronutrient tracking</li>
                   </ul>
-                  <p>The correlation engine is a premium feature, but you get a <strong>14-day free trial</strong> to try it.</p>
+                  <p>The correlation engine is a premium feature—upgrade anytime to unlock personalized insights.</p>
                 </div>
               </div>
               <div class="faq-item">
                 <div class="faq-question"><span>How much does premium cost?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>$7.99/month or $50/year</strong> (save ~48% with annual).</p>
+                  <p><strong>$9.99/month or $39.99/year</strong> (save ~67% with annual).</p>
                   <p>Premium gives you access to the correlation engine—the feature that shows you how your food choices affect your sleep, HRV, and recovery.</p>
-                  <div class="answer-highlight">You get a 14-day free trial of premium. No credit card required to start.</div>
                 </div>
               </div>
               <div class="faq-item">
                 <div class="faq-question"><span>Do I need a credit card to start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>No.</strong> Download the app, start using it immediately. No credit card required. You only pay if you decide to continue with premium after your 14-day trial.</p>
+                  <p><strong>No.</strong> Download the app, start using it immediately. No credit card required. The free tier is yours to keep—you only pay if you decide to upgrade to premium.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -878,7 +877,7 @@ class KygoFaqSection extends HTMLElement {
                 <span>•</span>
                 <span>No credit card required</span>
                 <span>•</span>
-                <span>Correlations free for 14 days</span>
+                <span>Upgrade anytime</span>
               </p>
             </div>
           </div>

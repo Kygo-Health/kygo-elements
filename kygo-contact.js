@@ -568,7 +568,7 @@ class KygoContactSection extends HTMLElement {
                 <div class="faq-list">
                   <div class="faq-item">
                     <div class="faq-question">Is Kygo really free?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                    <div class="faq-answer"><div class="faq-answer-content"><p>Yes—there's a free tier that's free forever. It includes full food logging, all wearable connections, health trends, and macro/micronutrient tracking.</p><p>The correlation engine is premium, but you get a 14-day free trial.</p></div></div>
+                    <div class="faq-answer"><div class="faq-answer-content"><p>Yes—there's a free tier that's free forever. It includes full food logging, all wearable connections, health trends, and macro/micronutrient tracking.</p><p>The correlation engine is premium—upgrade anytime to unlock personalized insights.</p></div></div>
                   </div>
                   <div class="faq-item">
                     <div class="faq-question">How is Kygo different from MyFitnessPal?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>

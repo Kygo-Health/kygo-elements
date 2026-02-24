@@ -3196,7 +3196,7 @@ class KygoHiwFinalCta extends HTMLElement {
                 <span>•</span>
                 <span>No credit card required</span>
                 <span>•</span>
-                <span>Correlations free for 14 days</span>
+                <span>Upgrade anytime</span>
               </p>
             </div>
           </div>
