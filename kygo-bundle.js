@@ -969,7 +969,7 @@ class KygoFaq extends HTMLElement {
             </div>
             <div class="faq-item">
               <div class="faq-question">Is it really free?<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-              <div class="faq-answer"><div class="faq-answer-inner">Yes—and it's not a trial. Food logging, wearable sync, and trend tracking are all free forever, no strings attached. If you want to go further with personalized correlations showing how your food affects your sleep and recovery, that's premium at $9.99/month or $39.99/year.</div></div>
+              <div class="faq-answer"><div class="faq-answer-inner">Yes! Food logging, wearable sync, and trend tracking are free forever. The correlation engine is premium—$9.99/month or $39.99/year to unlock personalized insights.</div></div>
             </div>
             <div class="faq-item">
               <div class="faq-question">Is my health data secure?<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>

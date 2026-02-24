@@ -764,27 +764,27 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>Is Kygo really free?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes, and it's genuinely free—not a trial, not a watered-down version.</strong> Your free plan includes:</p>
+                  <p><strong>Yes—there's a free tier that's free forever.</strong> It includes:</p>
                   <ul>
                     <li>Full food logging (photo, voice, barcode, text)</li>
                     <li>All wearable connections and sync</li>
                     <li>Health and nutrition trends</li>
                     <li>Detailed macro and micronutrient tracking</li>
                   </ul>
-                  <p>Most people start with the free plan and get real value from it. If you want to go deeper, premium unlocks the correlation engine—showing you exactly how your food choices affect your sleep, HRV, and recovery.</p>
+                  <p>The correlation engine is a premium feature—upgrade anytime to unlock personalized insights.</p>
                 </div>
               </div>
               <div class="faq-item">
                 <div class="faq-question"><span>How much does premium cost?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>$9.99/month or $39.99/year</strong>—the annual plan works out to just $3.33/month.</p>
-                  <p>Premium unlocks the correlation engine: personalized insights that show you exactly how what you eat affects your sleep, HRV, energy, and recovery. It's built for people who want to go beyond tracking and actually understand why they feel the way they do.</p>
+                  <p><strong>$9.99/month or $39.99/year</strong> (save ~67% with annual).</p>
+                  <p>Premium gives you access to the correlation engine—the feature that shows you how your food choices affect your sleep, HRV, and recovery.</p>
                 </div>
               </div>
               <div class="faq-item">
                 <div class="faq-question"><span>Do I need a credit card to start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>No.</strong> Just download and go—no card, no commitment. The free plan is yours to keep forever. If you ever decide you want correlations, upgrading takes seconds from inside the app.</p>
+                  <p><strong>No.</strong> Download the app, start using it immediately. No credit card required. The free tier is yours to keep—you only pay if you decide to upgrade to premium.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -873,11 +873,11 @@ class KygoFaqSection extends HTMLElement {
                 Download Free on iOS
               </a>
               <p class="risk-reversal">
-                <span>Free forever—no card needed</span>
+                <span>Free forever plan</span>
                 <span>•</span>
-                <span>Full logging &amp; wearables included</span>
+                <span>No credit card required</span>
                 <span>•</span>
-                <span>Upgrade anytime for correlations</span>
+                <span>Upgrade anytime</span>
               </p>
             </div>
           </div>
