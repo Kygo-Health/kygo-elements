@@ -817,8 +817,8 @@ class KygoSleepMetrics extends HTMLElement {
       .cat-tab-icon svg { width: 100%; height: 100%; }
 
       /* Metric Grid */
-      .metric-grid { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-      .grid-header { display: grid; grid-template-columns: 1fr repeat(4, 36px); gap: 0; background: var(--gray-50); border-bottom: 2px solid var(--gray-200); padding: 10px 10px; align-items: center; position: sticky; top: 56px; z-index: 5; }
+      .metric-grid { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+      .grid-header { display: grid; grid-template-columns: 1fr repeat(4, 30px); gap: 0; background: var(--gray-50); border-bottom: 2px solid var(--gray-200); padding: 10px 10px; align-items: center; position: sticky; top: 56px; z-index: 5; border-radius: var(--radius) var(--radius) 0 0; }
       .grid-metric-label { font-size: 11px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; }
       .grid-device-header { display: flex; flex-direction: column; align-items: center; gap: 2px; }
       .grid-device-header span { font-size: 9px; font-weight: 600; color: var(--gray-600); text-align: center; line-height: 1.1; display: none; }
@@ -826,11 +826,11 @@ class KygoSleepMetrics extends HTMLElement {
 
       .grid-row-wrap { border-bottom: 1px solid var(--gray-100); }
       .grid-row-wrap:last-child { border-bottom: none; }
-      .grid-row { display: grid; grid-template-columns: 1fr repeat(4, 36px); gap: 0; padding: 12px 10px; align-items: center; transition: background 0.15s; }
+      .grid-row { display: grid; grid-template-columns: 1fr repeat(4, 30px); gap: 0; padding: 12px 10px; align-items: center; transition: background 0.15s; }
       .grid-row-wrap.expandable .grid-row { cursor: pointer; }
       .grid-row-wrap.expandable .grid-row:hover { background: var(--gray-50); }
-      .grid-metric-name { font-size: 13px; font-weight: 500; color: var(--dark); display: flex; align-items: center; gap: 6px; padding-right: 8px; }
-      .grid-expand-icon { width: 14px; height: 14px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; display: flex; }
+      .grid-metric-name { font-size: 12px; font-weight: 500; color: var(--dark); display: flex; align-items: center; gap: 4px; padding-right: 4px; }
+      .grid-expand-icon { width: 12px; height: 12px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; display: flex; }
       .grid-expand-icon svg { width: 100%; height: 100%; }
       .grid-row-wrap.expanded .grid-expand-icon { transform: rotate(180deg); }
       .grid-cell { display: flex; align-items: center; justify-content: center; }
@@ -960,6 +960,8 @@ class KygoSleepMetrics extends HTMLElement {
         .grid-device-header span { font-size: 10px; display: block; }
         .grid-device-img { width: 28px; height: 28px; }
         .grid-row { grid-template-columns: 1fr repeat(4, 80px); padding: 14px 20px; }
+        .grid-metric-name { font-size: 14px; gap: 6px; padding-right: 8px; }
+        .grid-expand-icon { width: 14px; height: 14px; }
         .grid-detail { padding: 0 20px; }
         .grid-row-wrap.expanded .grid-detail { padding: 0 20px 16px; }
         .grid-detail-cards { grid-template-columns: repeat(4, 1fr); }
