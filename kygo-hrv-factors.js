@@ -63,7 +63,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "Didn't boost HRV itself but stopped it from dropping like placebo did. Also cut fatigue nearly in half.",
           mechanism: 'Adaptogenic withanolides modulate cortisol and reduce sympathetic overdrive, preserving vagal tone under stress.',
           dosage: '200 mg twice daily (Witholytin extract)',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/', label: 'PMC10647917' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/', label: 'PMC10647917' },
+          affiliate: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }
         },
         {
           key: 'ashwa-zenroot', name: 'Ashwagandha (Zenroot)',
@@ -73,7 +74,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Quick early bump in HRV that faded. Stress and anxiety kept improving though, so still useful for mood.',
           mechanism: 'Initial vagal stimulation via cortisol reduction; tolerance may develop for HRV-specific effects.',
           dosage: '500 mg daily (Zenroot KSM-66 extract)',
-          source: { url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z', label: 'Springer 2025' }
+          source: { url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z', label: 'Springer 2025' },
+          affiliate: { url: 'https://amzn.to/4qYXjOD', label: 'KSM-66 Ashwagandha' }
         },
         {
           key: 'probiotics', name: 'Probiotics',
@@ -83,7 +85,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Your gut talks to your brain via the vagus nerve. Healthy gut bacteria may strengthen that connection and boost HRV.',
           mechanism: 'Gut-brain axis via vagus nerve afferents. Microbial metabolites (SCFAs) modulate inflammatory tone and autonomic signaling.',
           dosage: 'Multi-strain, CFU counts vary by product',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' },
+          affiliate: { url: 'https://amzn.to/40AsqFp', label: 'Multi-Strain Probiotic' }
         },
         {
           key: 'polyphenols', name: 'Polyphenols',
@@ -103,7 +106,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Like Ashwagandha Witholytin, it protected HRV from declining rather than actively raising it.',
           mechanism: 'Corrects subclinical micronutrient deficiencies that impair autonomic nerve function.',
           dosage: 'Standard daily multivitamin',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/4rM2eDY', label: 'Daily Multivitamin' }
         },
         {
           key: 'gaba', name: 'GABA',
@@ -113,7 +117,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "The brain's main 'calm down' chemical. Supplementing shifted the nervous system toward rest-and-recover mode.",
           mechanism: 'GABAergic inhibition of central sympathetic outflow shifts autonomic balance toward parasympathetic dominance.',
           dosage: '100–200 mg daily',
-          source: { url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262', label: 'Taylor & Francis 2024' }
+          source: { url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262', label: 'Taylor & Francis 2024' },
+          affiliate: { url: 'https://amzn.to/3OyDz7c', label: 'GABA Supplement' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine',
@@ -123,7 +128,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'The calming amino acid in green tea. Lowers cortisol and takes the edge off your fight-or-flight response.',
           mechanism: 'Crosses blood-brain barrier, increases alpha waves and GABA, reduces cortisol and sympathetic activation.',
           dosage: '200 mg daily',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/', label: 'PubMed 16930802' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/', label: 'PubMed 16930802' },
+          affiliate: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }
         },
         {
           key: 'beetroot', name: 'Beetroot Juice',
@@ -133,7 +139,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Nitrates boost nitric oxide, helping your body recover faster after workouts. Main benefit is quicker HRV bounce-back.',
           mechanism: 'Dietary nitrate → nitric oxide pathway enhances vascular function and parasympathetic reactivation post-exercise.',
           dosage: '~400 mg nitrate (70 mL concentrated juice)',
-          source: { url: 'https://www.mdpi.com/2227-9032/13/19/2496', label: 'Healthcare 2025' }
+          source: { url: 'https://www.mdpi.com/2227-9032/13/19/2496', label: 'Healthcare 2025' },
+          affiliate: { url: 'https://amzn.to/406okEX', label: 'Beetroot Juice Shots' }
         }
       ],
       lifestyle: [
@@ -155,7 +162,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "Breathing at 6 breaths per minute hits your body's 'resonance frequency' and maximizes HRV. 20 min/day works.",
           mechanism: 'Respiratory sinus arrhythmia at ~0.1 Hz resonance frequency maximizes baroreflex sensitivity and vagal output.',
           dosage: '20 minutes daily at 6 breaths/min',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/', label: 'PMC8924557' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/', label: 'PMC8924557' },
+          affiliate: { url: 'https://amzn.to/46scAQQ', label: 'Breathing Trainer' }
         },
         {
           key: 'cold-exposure', name: 'Cold Exposure',
@@ -165,7 +173,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Cold shocks your vagus nerve awake. Ice baths and cold showers give a big immediate HRV spike that fades in ~15 min.',
           mechanism: 'Cold-water face immersion triggers the diving reflex — strong vagal activation via trigeminal nerve afferents.',
           dosage: 'Cold shower or ice bath, 1–5 minutes',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' },
+          affiliate: { url: 'https://amzn.to/4aYRATe', label: 'Cold Plunge Tub' }
         },
         {
           key: 'meditation', name: 'Meditation',
@@ -175,7 +184,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Even 20 minutes of non-focused meditation shifts your nervous system toward calm. No special technique needed.',
           mechanism: 'Reduces cortisol, shifts autonomic balance toward parasympathetic via prefrontal-amygdala regulation.',
           dosage: '20+ minutes daily',
-          source: { url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142', label: 'Nesvold 2012' }
+          source: { url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142', label: 'Nesvold 2012' },
+          affiliate: { url: 'https://amzn.to/4tZ5Zr2', label: 'Meditation Cushion' }
         },
         {
           key: 'hrv-biofeedback', name: 'HRV Biofeedback',
@@ -349,7 +359,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Your nerves need B12 to work properly. Low B12 can quietly wreck your autonomic function before you notice anything else.',
           mechanism: 'Essential cofactor for myelin synthesis and nerve conduction. Deficiency causes demyelination of autonomic fibers.',
           dosage: 'Correct deficiency; RDA 2.4 mcg',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/4lbwIg3', label: 'Vitamin B12' }
         },
         {
           key: 'vitamin-d', name: 'Vitamin D',
@@ -359,7 +370,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Your heart literally has vitamin D receptors. Being deficient is linked to worse HRV and cardiovascular outcomes.',
           mechanism: 'VDR expression on cardiomyocytes and autonomic neurons; deficiency increases inflammatory cytokines.',
           dosage: 'Correct deficiency; target 30–50 ng/mL',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/4cm6d5m', label: 'Vitamin D3' }
         },
         {
           key: 'magnesium', name: 'Magnesium',
@@ -369,7 +381,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "Helps stabilize your heart's electrical activity. Results are inconsistent, likely because dose, form, and duration vary so much.",
           mechanism: 'Natural calcium channel blocker; stabilizes cardiac membrane potential and modulates NMDA receptors.',
           dosage: '200–400 mg elemental Mg daily',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
         },
         {
           key: 'omega3', name: 'Omega-3 (EPA/DHA)',
@@ -379,7 +392,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'The best-researched nutrient for HRV. Fish oil consistently boosts parasympathetic power in meta-analyses.',
           mechanism: 'Membrane incorporation alters ion channel kinetics; anti-inflammatory effects via resolvin/protectin pathways.',
           dosage: '1–2 g EPA+DHA daily',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' },
+          affiliate: { url: 'https://amzn.to/4cVnvGt', label: 'Omega-3 Fish Oil' }
         },
         {
           key: 'zinc', name: 'Zinc',
@@ -389,7 +403,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "Interesting but niche — zinc during pregnancy improved the baby's HRV for years. Limited adult data so far.",
           mechanism: 'Zinc-dependent enzymes in autonomic neurodevelopment; prenatal supplementation affects fetal ANS maturation.',
           dosage: 'RDA 8–11 mg; prenatal context',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/4760BIN', label: 'Zinc Picolinate' }
         }
       ],
       demographics: [
@@ -564,6 +579,10 @@ class KygoHrvFactors extends HTMLElement {
                 <span class="detail-label">Source</span>
                 <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
               </div>
+              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored">
+                <span>Check it out on Amazon</span>
+                <span class="factor-affiliate-arrow">${this._icon('externalLink')}</span>
+              </a>` : ''}
             </div>
           </div>
         </div>`;
@@ -853,6 +872,7 @@ class KygoHrvFactors extends HTMLElement {
             <a href="https://kygo.app/terms">Terms</a>
           </div>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated February 2026.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -993,6 +1013,10 @@ class KygoHrvFactors extends HTMLElement {
       .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green); font-weight: 500; font-size: 13px; }
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green-dark); }
+      .factor-affiliate { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: 12px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.2s; }
+      .factor-affiliate:hover { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
+      .factor-affiliate-arrow { width: 14px; height: 14px; display: flex; }
+      .factor-affiliate-arrow svg { width: 100%; height: 100%; }
 
 
       /* ── Sources (accordion) ── */
@@ -1093,6 +1117,7 @@ class KygoHrvFactors extends HTMLElement {
       .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; }
       .footer-links a:hover { color: var(--green); }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
+      .footer-affiliate { font-style: italic; }
 
       /* ── Responsive ── */
       @media (min-width: 768px) {
@@ -1157,7 +1182,7 @@ class KygoHrvFactors extends HTMLElement {
       }
 
       // Factor card expansion (skip source links)
-      if (e.target.closest('.source-link')) return;
+      if (e.target.closest('.source-link') || e.target.closest('.factor-affiliate')) return;
       const factorHeader = e.target.closest('.factor-header');
       if (factorHeader) {
         const card = factorHeader.closest('.factor-card');
