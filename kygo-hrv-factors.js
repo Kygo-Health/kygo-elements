@@ -539,13 +539,12 @@ class KygoHrvFactors extends HTMLElement {
                 <span class="badge-direction" style="color:${dir.color};background:${dir.bg}">
                   <span class="badge-icon">${this._icon(dir.icon)}</span>${dir.label}
                 </span>
-                <span class="badge-evidence" style="color:${ev.color};background:${ev.bg}">${ev.label}</span>
               </div>
               <div class="factor-toggle">${this._icon('chevDown')}</div>
             </div>
             <h3 class="factor-name">${f.name}</h3>
             <p class="factor-effect">${f.effect}</p>
-            <p class="factor-finding">${f.keyFinding}</p>
+            <p class="factor-evidence-text"><span class="evidence-label">Evidence:</span> ${ev.label}</p>
           </div>
           <div class="factor-body">
             <div class="factor-detail">
@@ -582,11 +581,11 @@ class KygoHrvFactors extends HTMLElement {
             <div class="pick-info">
               <span class="pick-label">${p.label}</span>
               <span class="pick-answer">${p.answer}</span>
-              ${p.stat ? `<span class="pick-stat">${p.stat}</span>` : ''}
             </div>
             <div class="pick-toggle">${this._icon('chevDown')}</div>
           </div>
           <div class="pick-body">
+            ${p.stat ? `<p class="pick-stat-detail"><span class="pick-stat-label">Key stat:</span> ${p.stat}</p>` : ''}
             <p class="pick-note">${p.note}</p>
             <span class="pick-cat">Category: ${p.category}</span>
           </div>
@@ -655,10 +654,12 @@ class KygoHrvFactors extends HTMLElement {
     if (tabs) tabs.innerHTML = this._renderCategoryTabs();
     if (cards) cards.innerHTML = this._renderFactorCards();
     if (sortBar) sortBar.innerHTML = `
-      <span class="sort-label">Sort by:</span>
-      <button class="sort-btn${this._sortMode === 'default' ? ' active' : ''}" data-sort="default">Default</button>
-      <button class="sort-btn${this._sortMode === 'evidence' ? ' active' : ''}" data-sort="evidence">Evidence Strength</button>
-      <button class="sort-btn${this._sortMode === 'direction' ? ' active' : ''}" data-sort="direction">Effect Direction</button>
+      <label class="sort-label" for="sort-select">Sort by:</label>
+      <select class="sort-select" id="sort-select">
+        <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
+        <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
+        <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
+      </select>
     `;
   }
 
@@ -730,44 +731,14 @@ class KygoHrvFactors extends HTMLElement {
           <h2 class="section-title animate-on-scroll">Explore All Factors</h2>
           <p class="section-sub animate-on-scroll">Tap any factor to see mechanism, dosage, and source.</p>
 
-          <!-- Inline Legend (collapsible) -->
-          <div class="legend-bar animate-on-scroll">
-            <button class="legend-toggle" aria-expanded="false">
-              <span class="legend-toggle-label">Legend</span>
-              <span class="legend-toggle-preview">
-                <span class="badge-direction" style="color:#22C55E;background:rgba(34,197,94,0.1)"><span class="badge-icon">${this._icon('arrowUp')}</span>Positive</span>
-                <span class="badge-direction" style="color:#EF4444;background:rgba(239,68,68,0.1)"><span class="badge-icon">${this._icon('arrowDown')}</span>Negative</span>
-                <span class="badge-evidence" style="color:#16A34A;background:rgba(34,197,94,0.15)">Strong</span>
-                <span class="badge-evidence" style="color:#D97706;background:rgba(251,191,36,0.15)">Moderate</span>
-                <span class="badge-evidence" style="color:#6366F1;background:rgba(99,102,241,0.15)">Emerging</span>
-              </span>
-              <span class="legend-chevron">${this._icon('chevDown')}</span>
-            </button>
-            <div class="legend-collapse">
-              <div class="legend-collapse-inner">
-                <div class="legend-row">
-                  <span class="legend-label">Direction</span>
-                  <span class="badge-direction" style="color:#22C55E;background:rgba(34,197,94,0.1)"><span class="badge-icon">${this._icon('arrowUp')}</span>Positive</span>
-                  <span class="badge-direction" style="color:#EF4444;background:rgba(239,68,68,0.1)"><span class="badge-icon">${this._icon('arrowDown')}</span>Negative</span>
-                  <span class="badge-direction" style="color:#FBBF24;background:rgba(251,191,36,0.1)"><span class="badge-icon">${this._icon('arrowLeftRight')}</span>Mixed</span>
-                  <span class="badge-direction" style="color:#94A3B8;background:rgba(148,163,184,0.1)"><span class="badge-icon">${this._icon('arrowLeftRight')}</span>Variable</span>
-                </div>
-                <div class="legend-row">
-                  <span class="legend-label">Evidence</span>
-                  <span class="badge-evidence" style="color:#16A34A;background:rgba(34,197,94,0.15)">Strong</span>
-                  <span class="badge-evidence" style="color:#D97706;background:rgba(251,191,36,0.15)">Moderate</span>
-                  <span class="badge-evidence" style="color:#6366F1;background:rgba(99,102,241,0.15)">Emerging</span>
-                </div>
-                <p class="legend-note">Strong = RCTs / meta-analyses. Moderate = smaller RCTs / observational. Emerging = mechanistic / preliminary.</p>
-              </div>
-            </div>
-          </div>
           <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
           <div class="sort-bar animate-on-scroll">
-            <span class="sort-label">Sort by:</span>
-            <button class="sort-btn${this._sortMode === 'default' ? ' active' : ''}" data-sort="default">Default</button>
-            <button class="sort-btn${this._sortMode === 'evidence' ? ' active' : ''}" data-sort="evidence">Evidence Strength</button>
-            <button class="sort-btn${this._sortMode === 'direction' ? ' active' : ''}" data-sort="direction">Effect Direction</button>
+            <label class="sort-label" for="sort-select">Sort by:</label>
+            <select class="sort-select" id="sort-select">
+              <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
+              <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
+              <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
+            </select>
           </div>
           <div class="factor-cards">${this._renderFactorCards()}</div>
 
@@ -965,10 +936,11 @@ class KygoHrvFactors extends HTMLElement {
       .pick-card.expanded .pick-toggle { transform: rotate(180deg); }
       .pick-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
       .pick-card.expanded .pick-body { max-height: 200px; padding: 0 20px 16px; }
-      .pick-stat { display: inline-block; font-size: 11px; font-weight: 600; color: var(--green-dark); background: var(--green-light); padding: 2px 8px; border-radius: 50px; margin-top: 4px; }
+      .pick-stat-detail { font-size: 13px; color: var(--dark); margin-bottom: 8px; font-weight: 500; }
+      .pick-stat-label { color: var(--gray-400); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
       .pick-warning { border-color: rgba(239,68,68,0.3); }
       .pick-warning .pick-icon { background: rgba(239,68,68,0.1); color: var(--red); }
-      .pick-warning .pick-stat { color: var(--red); background: rgba(239,68,68,0.1); }
+      .pick-warning .pick-stat-detail { color: var(--red); }
       .pick-note { font-size: 14px; color: var(--gray-600); margin-bottom: 6px; }
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
@@ -976,11 +948,10 @@ class KygoHrvFactors extends HTMLElement {
       .explore-section { padding: 48px 0 64px; }
 
       /* Sort bar */
-      .sort-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
-      .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; margin-right: 2px; }
-      .sort-btn { padding: 5px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff; font-size: 12px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; transition: all 0.2s; }
-      .sort-btn.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
-      .sort-btn:hover { border-color: var(--green); }
+      .sort-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+      .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; }
+      .sort-select { padding: 6px 28px 6px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance: none; appearance: none; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; transition: border-color 0.2s; }
+      .sort-select:hover, .sort-select:focus { border-color: var(--green); outline: none; }
 
       /* Category tabs */
       .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
@@ -1008,7 +979,8 @@ class KygoHrvFactors extends HTMLElement {
       .factor-card.expanded .factor-toggle { transform: rotate(180deg); }
       .factor-name { font-size: 18px; margin-bottom: 4px; color: var(--dark); }
       .factor-effect { font-size: 14px; font-weight: 600; color: var(--gray-600); margin-bottom: 2px; }
-      .factor-finding { font-size: 13px; color: var(--gray-400); }
+      .factor-evidence-text { font-size: 13px; color: var(--dark); }
+      .evidence-label { color: var(--gray-400); font-weight: 500; }
 
       /* Factor body (expandable) */
       .factor-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
@@ -1022,23 +994,6 @@ class KygoHrvFactors extends HTMLElement {
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green-dark); }
 
-      /* ── Legend (inline collapsible) ── */
-      .legend-bar { margin-bottom: 20px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); background: #fff; overflow: hidden; }
-      .legend-toggle { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 16px; background: none; border: none; cursor: pointer; font-family: inherit; }
-      .legend-toggle-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); flex-shrink: 0; }
-      .legend-toggle-preview { display: flex; gap: 6px; flex: 1; overflow: hidden; align-items: center; }
-      .legend-chevron { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; display: flex; }
-      .legend-chevron svg { width: 18px; height: 18px; }
-      .legend-bar.open .legend-chevron { transform: rotate(180deg); }
-      .legend-collapse { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
-      .legend-bar.open .legend-collapse { max-height: 200px; }
-      .legend-collapse-inner { padding: 0 16px 14px; }
-      .legend-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
-      .legend-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); margin-right: 4px; }
-      .legend-note { font-size: 11px; color: var(--gray-400); line-height: 1.4; }
-      @media (max-width: 767px) {
-        .legend-toggle-preview { display: none; }
-      }
 
       /* ── Sources (accordion) ── */
       .sources-section { padding: 48px 0; }
@@ -1179,17 +1134,6 @@ class KygoHrvFactors extends HTMLElement {
     const shadow = this.shadowRoot;
 
     shadow.addEventListener('click', (e) => {
-      // Legend toggle
-      const legendToggle = e.target.closest('.legend-toggle');
-      if (legendToggle) {
-        const bar = legendToggle.closest('.legend-bar');
-        if (bar) {
-          const isOpen = bar.classList.toggle('open');
-          legendToggle.setAttribute('aria-expanded', isOpen);
-        }
-        return;
-      }
-
       // Source group accordion
       const srcToggle = e.target.closest('.src-group-toggle');
       if (srcToggle) {
@@ -1201,13 +1145,8 @@ class KygoHrvFactors extends HTMLElement {
         return;
       }
 
-      // Sort buttons
-      const sortBtn = e.target.closest('.sort-btn');
-      if (sortBtn) {
-        this._sortMode = sortBtn.dataset.sort;
-        this._updateCategory();
-        return;
-      }
+      // Sort dropdown (handled via change event below)
+
 
       // Category tabs
       const tab = e.target.closest('.cat-tab');
@@ -1253,6 +1192,14 @@ class KygoHrvFactors extends HTMLElement {
       if (e.target.classList.contains('android-modal')) {
         e.target.classList.remove('active');
         return;
+      }
+    });
+
+    // Sort dropdown
+    shadow.addEventListener('change', (e) => {
+      if (e.target.classList.contains('sort-select')) {
+        this._sortMode = e.target.value;
+        this._updateCategory();
       }
     });
 
