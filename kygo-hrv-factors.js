@@ -22,6 +22,7 @@ class KygoHrvFactors extends HTMLElement {
     this._activeCategory = 'lifestyle';
     this._expandedFactor = null;
     this._expandedTopPick = null;
+    this._sortMode = 'default';
     this._eventsBound = false;
   }
 
@@ -450,12 +451,12 @@ class KygoHrvFactors extends HTMLElement {
 
   get _topPicks() {
     return [
-      { icon: 'trophy', label: 'Best Single Habit', answer: 'Sleep Quality', note: 'Top predictor of nocturnal HRV — nothing else comes close', category: 'Lifestyle' },
-      { icon: 'dumbbell', label: 'Best Exercise', answer: 'HIIT', note: '#1 across SDNN, RMSSD, and LF/HF in network meta-analysis of 29 RCTs', category: 'Exercise' },
-      { icon: 'pill', label: 'Best Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Strongest evidence — RCT, n=111, 12 weeks, preserved RMSSD', category: 'Supplements' },
-      { icon: 'droplet', label: 'Best Nutrient', answer: 'Omega-3 (EPA/DHA)', note: 'Most studied dietary HRV factor — consistent HF power improvements', category: 'Micronutrients' },
-      { icon: 'wind', label: 'Fastest Hack', answer: 'Slow Breathing (6/min)', note: 'Resonance frequency breathing maximizes HRV within minutes', category: 'Lifestyle' },
-      { icon: 'alert', label: 'Biggest HRV Killer', answer: 'Alcohol', note: 'RMSSD drops −2 to −13ms per dose — fitness doesn\'t protect you', category: 'Lifestyle' }
+      { icon: 'trophy', label: 'Best Single Habit', answer: 'Sleep Quality', note: 'Top predictor of nocturnal HRV — nothing else comes close', stat: '#1 predictor', category: 'Lifestyle' },
+      { icon: 'dumbbell', label: 'Best Exercise', answer: 'HIIT', note: '#1 across SDNN, RMSSD, and LF/HF in network meta-analysis of 29 RCTs', stat: 'NMA, 29 RCTs', category: 'Exercise' },
+      { icon: 'pill', label: 'Best Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Strongest evidence — RCT, n=111, 12 weeks, preserved RMSSD', stat: 'RCT, n=111', category: 'Supplements' },
+      { icon: 'droplet', label: 'Best Nutrient', answer: 'Omega-3 (EPA/DHA)', note: 'Most studied dietary HRV factor — consistent HF power improvements', stat: 'HF power ↑', category: 'Micronutrients' },
+      { icon: 'wind', label: 'Quickest Impact', answer: 'Slow Breathing (6/min)', note: 'Resonance frequency breathing maximizes HRV within minutes', stat: 'SDNN improved in 4 wks', category: 'Lifestyle' },
+      { icon: 'alert', label: 'Biggest HRV Killer', answer: 'Alcohol', note: 'RMSSD drops −2 to −13ms per dose — fitness doesn\'t protect you', stat: 'RMSSD −2 to −13ms', category: 'Lifestyle', warning: true }
     ];
   }
 
@@ -506,18 +507,6 @@ class KygoHrvFactors extends HTMLElement {
 
   // ── Render Helpers ──────────────────────────────────────────────────
 
-  _renderCategoryStats() {
-    return Object.entries(this._categories).map(([k, c]) =>
-      `<div class="stat-card ${k === this._activeCategory ? 'active' : ''}" data-stat-cat="${k}">
-        <div class="stat-icon">${this._icon(c.icon)}</div>
-        <div class="stat-info">
-          <span class="stat-name">${c.name}</span>
-          <span class="stat-count">${c.count} factors</span>
-        </div>
-      </div>`
-    ).join('');
-  }
-
   _renderCategoryTabs() {
     return Object.entries(this._categories).map(([k, c]) =>
       `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab" aria-selected="${k === this._activeCategory}">
@@ -529,8 +518,15 @@ class KygoHrvFactors extends HTMLElement {
   }
 
   _renderFactorCards() {
-    const factors = this._factors[this._activeCategory];
+    let factors = this._factors[this._activeCategory];
     if (!factors) return '<p class="no-data">No factors in this category.</p>';
+    if (this._sortMode === 'evidence') {
+      const rank = { strong: 0, moderate: 1, emerging: 2 };
+      factors = [...factors].sort((a, b) => (rank[a.evidence] ?? 9) - (rank[b.evidence] ?? 9));
+    } else if (this._sortMode === 'direction') {
+      const rank = { positive: 0, mixed: 1, variable: 2, negative: 3 };
+      factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
+    }
     return factors.map((f, i) => {
       const dir = this._directionConfig(f.direction);
       const ev = this._evidenceConfig(f.evidence);
@@ -578,13 +574,15 @@ class KygoHrvFactors extends HTMLElement {
   _renderTopPicks() {
     return this._topPicks.map((p, i) => {
       const isExpanded = this._expandedTopPick === i;
+      const warn = p.warning ? ' pick-warning' : '';
       return `
-        <div class="pick-card ${isExpanded ? 'expanded' : ''} animate-on-scroll" data-pick="${i}" style="--delay:${i * 80}ms">
+        <div class="pick-card ${isExpanded ? 'expanded' : ''}${warn} animate-on-scroll" data-pick="${i}" style="--delay:${i * 80}ms">
           <div class="pick-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
             <div class="pick-icon">${this._icon(p.icon)}</div>
             <div class="pick-info">
               <span class="pick-label">${p.label}</span>
               <span class="pick-answer">${p.answer}</span>
+              ${p.stat ? `<span class="pick-stat">${p.stat}</span>` : ''}
             </div>
             <div class="pick-toggle">${this._icon('chevDown')}</div>
           </div>
@@ -597,32 +595,52 @@ class KygoHrvFactors extends HTMLElement {
   }
 
   _renderSources() {
-    const sources = [
-      { label: 'Lopresti et al. 2024 — Ashwagandha Witholytin RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/' },
-      { label: 'Thakkar et al. 2025 — Ashwagandha Zenroot RCT', url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z' },
-      { label: 'Young & Benton 2018 — Gut-brain axis & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/' },
-      { label: 'Lopresti 2020 — Micronutrients & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/' },
-      { label: 'Badawy et al. 2024 — GABA supplementation RCT', url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262' },
-      { label: 'Kimura et al. 2007 — L-Theanine & stress', url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/' },
-      { label: 'Amiri et al. 2025 — Beetroot juice meta-analysis', url: 'https://www.mdpi.com/2227-9032/13/19/2496' },
-      { label: 'Nunan et al. 2024 — Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-      { label: 'Laborde et al. 2022 — Slow breathing & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/' },
-      { label: 'Mäkinen et al. 2008 — Cold exposure & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/' },
-      { label: 'Nesvold et al. 2012 — Meditation & HRV', url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142' },
-      { label: 'Lehrer & Gevirtz 2014 — HRV biofeedback review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10412682/' },
-      { label: 'Park et al. 2010 — Forest bathing & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/19568835/' },
-      { label: 'Moro et al. 2023 — Intermittent fasting & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/' },
-      { label: 'Pietilä et al. 2018 — Alcohol & HRV', url: 'https://mental.jmir.org/2018/1/e23' },
-      { label: 'Conner et al. 2023 — THC & nocturnal HRV', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
-      { label: 'Gonzalez et al. 2024 — Caffeine & HRV recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
-      { label: 'Brunt et al. 2025 — Sauna & HRV', url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449' },
-      { label: 'Yang et al. 2024 — Exercise NMA (29 RCTs)', url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009' },
-      { label: 'Amekran et al. 2024 — Aerobic exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11250637/' },
-      { label: 'Fronczyk et al. 2025 — Yoga & HRV review', url: 'https://www.frontiersin.org/journals/cardiovascular-medicine/articles/10.3389/fcvm.2025.1364905/full' },
-      { label: 'Bellenger et al. 2024 — Overtraining & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11204851/' }
-    ];
-    return `<div class="src-list">
-      ${sources.map(s => `<a href="${s.url}" class="src-item" target="_blank" rel="noopener"><span class="src-dot"></span><span class="src-text">${s.label}</span><span class="src-ext">${this._icon('externalLink')}</span></a>`).join('')}
+    const groups = {
+      'Supplements': [
+        { label: 'Lopresti et al. 2024 — Ashwagandha Witholytin RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/' },
+        { label: 'Thakkar et al. 2025 — Ashwagandha Zenroot RCT', url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z' },
+        { label: 'Badawy et al. 2024 — GABA supplementation RCT', url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262' },
+        { label: 'Kimura et al. 2007 — L-Theanine & stress', url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/' },
+        { label: 'Amiri et al. 2025 — Beetroot juice meta-analysis', url: 'https://www.mdpi.com/2227-9032/13/19/2496' }
+      ],
+      'Lifestyle': [
+        { label: 'Nunan et al. 2024 — Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
+        { label: 'Laborde et al. 2022 — Slow breathing & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/' },
+        { label: 'Mäkinen et al. 2008 — Cold exposure & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/' },
+        { label: 'Nesvold et al. 2012 — Meditation & HRV', url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142' },
+        { label: 'Lehrer & Gevirtz 2014 — HRV biofeedback review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10412682/' },
+        { label: 'Park et al. 2010 — Forest bathing & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/19568835/' },
+        { label: 'Moro et al. 2023 — Intermittent fasting & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/' },
+        { label: 'Pietilä et al. 2018 — Alcohol & HRV', url: 'https://mental.jmir.org/2018/1/e23' },
+        { label: 'Conner et al. 2023 — THC & nocturnal HRV', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
+        { label: 'Gonzalez et al. 2024 — Caffeine & HRV recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
+        { label: 'Brunt et al. 2025 — Sauna & HRV', url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449' }
+      ],
+      'Exercise': [
+        { label: 'Yang et al. 2024 — Exercise NMA (29 RCTs)', url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009' },
+        { label: 'Amekran et al. 2024 — Aerobic exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11250637/' },
+        { label: 'Fronczyk et al. 2025 — Yoga & HRV review', url: 'https://www.frontiersin.org/journals/cardiovascular-medicine/articles/10.3389/fcvm.2025.1364905/full' },
+        { label: 'Bellenger et al. 2024 — Overtraining & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11204851/' }
+      ],
+      'Nutrition & Micronutrients': [
+        { label: 'Young & Benton 2018 — Gut-brain axis & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/' },
+        { label: 'Lopresti 2020 — Micronutrients & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/' }
+      ]
+    };
+    const totalCount = Object.values(groups).reduce((sum, g) => sum + g.length, 0);
+    return `<div class="src-accordion">
+      <div class="src-count-badge">${totalCount} sources cited</div>
+      ${Object.entries(groups).map(([cat, items]) => `
+        <div class="src-group">
+          <button class="src-group-toggle" aria-expanded="false">
+            <span class="src-group-name">${cat}</span>
+            <span class="src-group-count">${items.length}</span>
+            <span class="src-group-chevron">${this._icon('chevDown')}</span>
+          </button>
+          <div class="src-group-body">
+            ${items.map(s => `<a href="${s.url}" class="src-item" target="_blank" rel="noopener"><span class="src-dot"></span><span class="src-text">${s.label}</span><span class="src-ext">${this._icon('externalLink')}</span></a>`).join('')}
+          </div>
+        </div>`).join('')}
     </div>`;
   }
 
@@ -632,11 +650,16 @@ class KygoHrvFactors extends HTMLElement {
     const shadow = this.shadowRoot;
     const tabs = shadow.querySelector('.cat-tabs');
     const cards = shadow.querySelector('.factor-cards');
-    const stats = shadow.querySelector('.stats-bar');
+    const sortBar = shadow.querySelector('.sort-bar');
     this._expandedFactor = null;
     if (tabs) tabs.innerHTML = this._renderCategoryTabs();
     if (cards) cards.innerHTML = this._renderFactorCards();
-    if (stats) stats.innerHTML = this._renderCategoryStats();
+    if (sortBar) sortBar.innerHTML = `
+      <span class="sort-label">Sort by:</span>
+      <button class="sort-btn${this._sortMode === 'default' ? ' active' : ''}" data-sort="default">Default</button>
+      <button class="sort-btn${this._sortMode === 'evidence' ? ' active' : ''}" data-sort="evidence">Evidence Strength</button>
+      <button class="sort-btn${this._sortMode === 'direction' ? ' active' : ''}" data-sort="direction">Effect Direction</button>
+    `;
   }
 
   _toggleFactor(key) {
@@ -701,43 +724,64 @@ class KygoHrvFactors extends HTMLElement {
         </div>
       </section>
 
-      <!-- Legend -->
-      <section class="legend-section">
-        <div class="container">
-          <div class="legend animate-on-scroll">
-            <h3 class="legend-title">How to Read This Tool</h3>
-            <div class="legend-grid">
-              <div class="legend-group">
-                <span class="legend-label">Direction of Effect</span>
-                <div class="legend-items">
-                  <span class="badge-direction" style="color:#22C55E;background:rgba(34,197,94,0.1)"><span class="badge-icon">${this._icon('arrowUp')}</span>Positive</span>
-                  <span class="badge-direction" style="color:#EF4444;background:rgba(239,68,68,0.1)"><span class="badge-icon">${this._icon('arrowDown')}</span>Negative</span>
-                  <span class="badge-direction" style="color:#FBBF24;background:rgba(251,191,36,0.1)"><span class="badge-icon">${this._icon('arrowLeftRight')}</span>Mixed</span>
-                  <span class="badge-direction" style="color:#94A3B8;background:rgba(148,163,184,0.1)"><span class="badge-icon">${this._icon('arrowLeftRight')}</span>Variable</span>
-                </div>
-              </div>
-              <div class="legend-group">
-                <span class="legend-label">Evidence Strength</span>
-                <div class="legend-items">
-                  <span class="badge-evidence" style="color:#16A34A;background:rgba(34,197,94,0.15)">Strong</span>
-                  <span class="badge-evidence" style="color:#D97706;background:rgba(251,191,36,0.15)">Moderate</span>
-                  <span class="badge-evidence" style="color:#6366F1;background:rgba(99,102,241,0.15)">Emerging</span>
-                </div>
-              </div>
-            </div>
-            <p class="legend-note">Strong = RCTs or meta-analyses with large samples. Moderate = smaller RCTs or consistent observational data. Emerging = mechanistic evidence or preliminary trials.</p>
-          </div>
-        </div>
-      </section>
-
       <!-- Primary Interactive: Category tabs + Factor cards -->
       <section class="explore-section" id="explore">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Explore All Factors</h2>
           <p class="section-sub animate-on-scroll">Tap any factor to see mechanism, dosage, and source.</p>
-          <div class="stats-bar animate-on-scroll">${this._renderCategoryStats()}</div>
+
+          <!-- Inline Legend (collapsible) -->
+          <div class="legend-bar animate-on-scroll">
+            <button class="legend-toggle" aria-expanded="false">
+              <span class="legend-toggle-label">Legend</span>
+              <span class="legend-toggle-preview">
+                <span class="badge-direction" style="color:#22C55E;background:rgba(34,197,94,0.1)"><span class="badge-icon">${this._icon('arrowUp')}</span>Positive</span>
+                <span class="badge-direction" style="color:#EF4444;background:rgba(239,68,68,0.1)"><span class="badge-icon">${this._icon('arrowDown')}</span>Negative</span>
+                <span class="badge-evidence" style="color:#16A34A;background:rgba(34,197,94,0.15)">Strong</span>
+                <span class="badge-evidence" style="color:#D97706;background:rgba(251,191,36,0.15)">Moderate</span>
+                <span class="badge-evidence" style="color:#6366F1;background:rgba(99,102,241,0.15)">Emerging</span>
+              </span>
+              <span class="legend-chevron">${this._icon('chevDown')}</span>
+            </button>
+            <div class="legend-collapse">
+              <div class="legend-collapse-inner">
+                <div class="legend-row">
+                  <span class="legend-label">Direction</span>
+                  <span class="badge-direction" style="color:#22C55E;background:rgba(34,197,94,0.1)"><span class="badge-icon">${this._icon('arrowUp')}</span>Positive</span>
+                  <span class="badge-direction" style="color:#EF4444;background:rgba(239,68,68,0.1)"><span class="badge-icon">${this._icon('arrowDown')}</span>Negative</span>
+                  <span class="badge-direction" style="color:#FBBF24;background:rgba(251,191,36,0.1)"><span class="badge-icon">${this._icon('arrowLeftRight')}</span>Mixed</span>
+                  <span class="badge-direction" style="color:#94A3B8;background:rgba(148,163,184,0.1)"><span class="badge-icon">${this._icon('arrowLeftRight')}</span>Variable</span>
+                </div>
+                <div class="legend-row">
+                  <span class="legend-label">Evidence</span>
+                  <span class="badge-evidence" style="color:#16A34A;background:rgba(34,197,94,0.15)">Strong</span>
+                  <span class="badge-evidence" style="color:#D97706;background:rgba(251,191,36,0.15)">Moderate</span>
+                  <span class="badge-evidence" style="color:#6366F1;background:rgba(99,102,241,0.15)">Emerging</span>
+                </div>
+                <p class="legend-note">Strong = RCTs / meta-analyses. Moderate = smaller RCTs / observational. Emerging = mechanistic / preliminary.</p>
+              </div>
+            </div>
+          </div>
           <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
+          <div class="sort-bar animate-on-scroll">
+            <span class="sort-label">Sort by:</span>
+            <button class="sort-btn${this._sortMode === 'default' ? ' active' : ''}" data-sort="default">Default</button>
+            <button class="sort-btn${this._sortMode === 'evidence' ? ' active' : ''}" data-sort="evidence">Evidence Strength</button>
+            <button class="sort-btn${this._sortMode === 'direction' ? ' active' : ''}" data-sort="direction">Effect Direction</button>
+          </div>
           <div class="factor-cards">${this._renderFactorCards()}</div>
+
+          <!-- Read Full Article (cross-link) -->
+          <div class="blog-link-wrap animate-on-scroll">
+            <a href="https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence" class="blog-link-card" target="_blank" rel="noopener">
+              <span class="blog-link-icon">${this._icon('book')}</span>
+              <div class="blog-link-text">
+                <span class="blog-link-title">Read the Full Article</span>
+                <span class="blog-link-desc">How to Improve HRV: 38 Factors Ranked by Evidence (2026)</span>
+              </div>
+              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -772,16 +816,6 @@ class KygoHrvFactors extends HTMLElement {
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
           <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
-          <div class="blog-link-wrap animate-on-scroll">
-            <a href="https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence" class="blog-link-card" target="_blank" rel="noopener">
-              <span class="blog-link-icon">${this._icon('book')}</span>
-              <div class="blog-link-text">
-                <span class="blog-link-title">Read the Full Article</span>
-                <span class="blog-link-desc">How to Improve HRV: 38 Factors Ranked by Evidence (2026)</span>
-              </div>
-              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
-            </a>
-          </div>
         </div>
       </section>
 
@@ -920,26 +954,25 @@ class KygoHrvFactors extends HTMLElement {
       .pick-card.expanded .pick-toggle { transform: rotate(180deg); }
       .pick-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
       .pick-card.expanded .pick-body { max-height: 200px; padding: 0 20px 16px; }
+      .pick-stat { display: inline-block; font-size: 11px; font-weight: 600; color: var(--green-dark); background: var(--green-light); padding: 2px 8px; border-radius: 50px; margin-top: 4px; }
+      .pick-warning { border-color: rgba(239,68,68,0.3); }
+      .pick-warning .pick-icon { background: rgba(239,68,68,0.1); color: var(--red); }
+      .pick-warning .pick-stat { color: var(--red); background: rgba(239,68,68,0.1); }
       .pick-note { font-size: 14px; color: var(--gray-600); margin-bottom: 6px; }
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
       /* ── Explore Section ── */
       .explore-section { padding: 48px 0 64px; }
 
-      /* Stats bar */
-      .stats-bar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 20px; }
-      .stats-bar::-webkit-scrollbar { display: none; }
-      .stat-card { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: #fff; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); cursor: pointer; white-space: nowrap; transition: border-color 0.2s, background 0.2s; flex-shrink: 0; }
-      .stat-card.active { border-color: var(--green); background: var(--green-light); }
-      .stat-card:hover { border-color: var(--green); }
-      .stat-icon { width: 32px; height: 32px; color: var(--green-dark); display: flex; align-items: center; justify-content: center; }
-      .stat-icon svg { width: 20px; height: 20px; }
-      .stat-info { display: flex; flex-direction: column; }
-      .stat-name { font-weight: 600; font-size: 13px; color: var(--dark); }
-      .stat-count { font-size: 12px; color: var(--gray-400); }
+      /* Sort bar */
+      .sort-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+      .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; margin-right: 2px; }
+      .sort-btn { padding: 5px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff; font-size: 12px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; transition: all 0.2s; }
+      .sort-btn.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
+      .sort-btn:hover { border-color: var(--green); }
 
       /* Category tabs */
-      .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 24px; }
+      .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
       .cat-tabs::-webkit-scrollbar { display: none; }
       .cat-tab { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 50px; border: 2px solid var(--gray-200); background: #fff; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
       .cat-tab.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
@@ -978,26 +1011,45 @@ class KygoHrvFactors extends HTMLElement {
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green-dark); }
 
-      /* ── Legend ── */
-      .legend-section { padding: 0 0 16px; }
-      .legend { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 24px; max-width: 720px; margin: 0 auto; }
-      .legend-title { font-size: 16px; margin-bottom: 16px; text-align: center; }
-      .legend-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 12px; }
-      .legend-group { display: flex; flex-direction: column; gap: 6px; }
-      .legend-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); }
-      .legend-items { display: flex; gap: 6px; flex-wrap: wrap; }
-      .legend-note { font-size: 12px; color: var(--gray-400); text-align: center; line-height: 1.5; }
+      /* ── Legend (inline collapsible) ── */
+      .legend-bar { margin-bottom: 20px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); background: #fff; overflow: hidden; }
+      .legend-toggle { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 16px; background: none; border: none; cursor: pointer; font-family: inherit; }
+      .legend-toggle-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); flex-shrink: 0; }
+      .legend-toggle-preview { display: flex; gap: 6px; flex: 1; overflow: hidden; align-items: center; }
+      .legend-chevron { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; display: flex; }
+      .legend-chevron svg { width: 18px; height: 18px; }
+      .legend-bar.open .legend-chevron { transform: rotate(180deg); }
+      .legend-collapse { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
+      .legend-bar.open .legend-collapse { max-height: 200px; }
+      .legend-collapse-inner { padding: 0 16px 14px; }
+      .legend-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+      .legend-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); margin-right: 4px; }
+      .legend-note { font-size: 11px; color: var(--gray-400); line-height: 1.4; }
+      @media (max-width: 767px) {
+        .legend-toggle-preview { display: none; }
+      }
 
-      /* ── Sources ── */
+      /* ── Sources (accordion) ── */
       .sources-section { padding: 48px 0; }
-      .src-list { display: grid; grid-template-columns: 1fr; gap: 6px; max-width: 720px; margin: 0 auto; }
-      .src-item { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-radius: var(--radius-sm); text-decoration: none; color: var(--gray-600); font-size: 13px; transition: background 0.2s; }
-      .src-item:hover { background: var(--gray-100); }
-      .src-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+      .src-accordion { max-width: 720px; margin: 0 auto; }
+      .src-count-badge { text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-400); margin-bottom: 16px; }
+      .src-group { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: #fff; }
+      .src-group-toggle { display: flex; align-items: center; width: 100%; padding: 12px 16px; background: none; border: none; cursor: pointer; font-family: inherit; gap: 8px; }
+      .src-group-name { flex: 1; text-align: left; font-size: 14px; font-weight: 600; color: var(--dark); }
+      .src-group-count { font-size: 11px; font-weight: 600; color: var(--gray-400); background: var(--gray-100); padding: 2px 8px; border-radius: 50px; }
+      .src-group-chevron { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; display: flex; }
+      .src-group-chevron svg { width: 18px; height: 18px; }
+      .src-group.open .src-group-chevron { transform: rotate(180deg); }
+      .src-group-body { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
+      .src-group.open .src-group-body { max-height: 600px; }
+      .src-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; text-decoration: none; color: var(--gray-600); font-size: 13px; transition: background 0.2s; }
+      .src-item:last-child { padding-bottom: 12px; }
+      .src-item:hover { background: var(--gray-50); }
+      .src-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
       .src-text { flex: 1; }
       .src-ext { width: 14px; height: 14px; color: var(--gray-400); flex-shrink: 0; }
       .src-ext svg { width: 14px; height: 14px; }
-      .blog-link-wrap { max-width: 720px; margin: 24px auto 0; }
+      .blog-link-wrap { max-width: 720px; margin: 32px auto 0; }
       .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); text-decoration: none; transition: box-shadow 0.3s; }
       .blog-link-card:hover { box-shadow: var(--shadow-hover); }
       .blog-link-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--green-dark); flex-shrink: 0; }
@@ -1097,18 +1149,40 @@ class KygoHrvFactors extends HTMLElement {
     const shadow = this.shadowRoot;
 
     shadow.addEventListener('click', (e) => {
-      // Category tabs
-      const tab = e.target.closest('.cat-tab');
-      if (tab) {
-        this._activeCategory = tab.dataset.category;
+      // Legend toggle
+      const legendToggle = e.target.closest('.legend-toggle');
+      if (legendToggle) {
+        const bar = legendToggle.closest('.legend-bar');
+        if (bar) {
+          const isOpen = bar.classList.toggle('open');
+          legendToggle.setAttribute('aria-expanded', isOpen);
+        }
+        return;
+      }
+
+      // Source group accordion
+      const srcToggle = e.target.closest('.src-group-toggle');
+      if (srcToggle) {
+        const group = srcToggle.closest('.src-group');
+        if (group) {
+          const isOpen = group.classList.toggle('open');
+          srcToggle.setAttribute('aria-expanded', isOpen);
+        }
+        return;
+      }
+
+      // Sort buttons
+      const sortBtn = e.target.closest('.sort-btn');
+      if (sortBtn) {
+        this._sortMode = sortBtn.dataset.sort;
         this._updateCategory();
         return;
       }
 
-      // Stats bar cards (also switch category)
-      const statCard = e.target.closest('.stat-card');
-      if (statCard && statCard.dataset.statCat) {
-        this._activeCategory = statCard.dataset.statCat;
+      // Category tabs
+      const tab = e.target.closest('.cat-tab');
+      if (tab) {
+        this._activeCategory = tab.dataset.category;
         this._updateCategory();
         return;
       }
