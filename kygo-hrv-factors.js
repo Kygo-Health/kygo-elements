@@ -821,23 +821,34 @@ class KygoHrvFactors extends HTMLElement {
 
       <!-- CTA Section -->
       <section class="cta-section">
-        <div class="cta-glow"></div>
         <div class="container">
-          <div class="cta-icon-wrap">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="32" height="32"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <div class="cta-card animate-on-scroll">
+            <div class="cta-card-badge">
+              <div class="cta-card-badge-dot"></div>
+              <span>Free on iOS</span>
+            </div>
+            <div class="cta-card-headline">Start optimizing your <span class="highlight">HRV</span> today</div>
+            <p class="cta-card-sub">Connect your wearable and see which of these 38 factors actually move your personal HRV numbers.</p>
+            <div class="cta-card-actions">
+              <a href="${iosUrl}" class="cta-card-btn" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                Download Free on iOS
+              </a>
+              <span class="cta-card-meta">
+                <span>2-min setup</span><span>•</span><span>Free forever plan</span><span>•</span><span>No credit card</span>
+              </span>
+            </div>
+            <div class="cta-card-devices">
+              <span class="cta-card-devices-label">Works with</span>
+              <div class="cta-card-device-tags">
+                <span class="cta-card-device-tag"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy">Oura</span>
+                <span class="cta-card-device-tag"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy">Apple</span>
+                <span class="cta-card-device-tag"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy">Fitbit</span>
+                <span class="cta-card-device-tag"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy">Garmin</span>
+              </div>
+            </div>
+            <button class="cta-android">Android — Join Beta</button>
           </div>
-          <h2 class="animate-on-scroll">Start Optimizing Your HRV Today</h2>
-          <p class="cta-desc animate-on-scroll">Connect your wearable and see which of these 38 factors actually move your personal HRV numbers.</p>
-          <a href="${iosUrl}" class="cta-ios" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-            Download Free on iOS
-          </a>
-          <div class="cta-features">
-            <div class="cta-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Syncs with Oura, Apple Watch, Garmin & Fitbit</div>
-            <div class="cta-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Track HRV, sleep, nutrition & more</div>
-            <div class="cta-feat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>See which habits actually move your numbers</div>
-          </div>
-          <button class="cta-android">Android — Join Beta</button>
         </div>
       </section>
 
@@ -1078,20 +1089,30 @@ class KygoHrvFactors extends HTMLElement {
       .blog-cta-tags span { color: var(--gray-400); font-size: 12px; }
       .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
 
-      /* ── CTA Section ── */
-      .cta-section { position: relative; background: linear-gradient(135deg, var(--green), var(--green-dark)); padding: 64px 0; text-align: center; color: #fff; overflow: hidden; }
-      .cta-glow { position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 400px; height: 400px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); pointer-events: none; }
-      .cta-icon-wrap { width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #fff; }
-      .cta-section h2 { font-size: clamp(24px, 6vw, 36px); margin-bottom: 12px; }
-      .cta-desc { font-size: 16px; opacity: 0.9; max-width: 480px; margin: 0 auto 24px; }
-      .cta-ios { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--dark); padding: 14px 28px; border-radius: var(--radius-sm); font-weight: 600; font-size: 16px; text-decoration: none; transition: transform 0.2s; }
-      .cta-ios:hover { transform: translateY(-2px); }
-      .cta-ios svg { width: 20px; height: 20px; }
-      .cta-features { display: flex; flex-direction: column; gap: 8px; margin-top: 24px; max-width: 400px; margin-left: auto; margin-right: auto; }
-      .cta-feat { display: flex; align-items: center; gap: 8px; font-size: 14px; opacity: 0.9; }
-      .cta-feat svg { width: 18px; height: 18px; flex-shrink: 0; }
-      .cta-android { margin-top: 20px; background: transparent; border: 2px solid rgba(255,255,255,0.4); color: #fff; padding: 10px 24px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: inherit; }
-      .cta-android:hover { background: rgba(255,255,255,0.1); }
+      /* ── CTA Section (card style) ── */
+      .cta-section { padding: 48px 0; }
+      .cta-card { width: 100%; max-width: 680px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 16px; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); padding: 24px 20px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 16px 40px rgba(30,41,59,0.25); }
+      .cta-card::before { content: ''; position: absolute; top: -50%; right: -30%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(34,197,94,0.3) 0%, transparent 70%); pointer-events: none; }
+      .cta-card-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); border-radius: 16px; padding: 4px 10px; margin-bottom: 16px; position: relative; z-index: 1; }
+      .cta-card-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: ctaPulse 2s ease-in-out infinite; }
+      @keyframes ctaPulse { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
+      .cta-card-badge span { font-size: 10px; font-weight: 600; color: var(--green); letter-spacing: 0.5px; text-transform: uppercase; }
+      .cta-card-headline { font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 20px; font-weight: 600; color: #fff; line-height: 1.25; margin-bottom: 10px; position: relative; z-index: 1; }
+      .cta-card-headline .highlight { color: var(--green); }
+      .cta-card-sub { font-size: 14px; color: #94A3B8; line-height: 1.65; margin-bottom: 20px; position: relative; z-index: 1; }
+      .cta-card-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; position: relative; z-index: 1; }
+      .cta-card-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; max-width: 280px; background: var(--green); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 24px; border-radius: 12px; transition: all 0.2s; box-shadow: 0 8px 20px rgba(34,197,94,0.3); }
+      .cta-card-btn:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(34,197,94,0.4); }
+      .cta-card-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+      .cta-card-meta { font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; }
+      .cta-card-devices { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); position: relative; z-index: 1; }
+      .cta-card-devices-label { font-size: 10px; font-weight: 500; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; }
+      .cta-card-device-tags { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
+      .cta-card-device-tag { font-size: 11px; font-weight: 500; color: #94A3B8; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 4px 8px; display: flex; align-items: center; gap: 5px; transition: all 0.2s; }
+      .cta-card-device-tag:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
+      .cta-card-device-tag img { width: 14px; height: 14px; border-radius: 3px; object-fit: contain; }
+      .cta-android { margin-top: 16px; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94A3B8; padding: 10px 24px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; position: relative; z-index: 1; }
+      .cta-android:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.25); color: #fff; }
 
       /* ── Android Modal ── */
       .android-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
@@ -1126,11 +1147,20 @@ class KygoHrvFactors extends HTMLElement {
         .picks-grid { grid-template-columns: 1fr 1fr; }
         .factor-cards { grid-template-columns: 1fr 1fr; }
         .picks-section, .explore-section { padding: 64px 0; }
-        .cta-section { padding: 80px 0; }
+        .cta-section { padding: 64px 0; }
+        .cta-card { padding: 32px 28px; border-radius: 18px; }
+        .cta-card-headline { font-size: 24px; }
+        .cta-card-sub { font-size: 15px; }
+        .cta-card-actions { flex-direction: row; align-items: center; gap: 16px; }
         .blog-cta { padding: 48px 40px; }
       }
       @media (min-width: 1024px) {
         .picks-grid { grid-template-columns: 1fr 1fr 1fr; }
+        .cta-section { padding: 80px 0; }
+        .cta-card { padding: 40px 36px; border-radius: 20px; }
+        .cta-card-badge { padding: 5px 12px; margin-bottom: 20px; }
+        .cta-card-headline { font-size: 26px; margin-bottom: 12px; }
+        .cta-card-sub { font-size: 15px; margin-bottom: 28px; max-width: 560px; }
         .explore-section { padding: 80px 0; }
       }
       @media (prefers-reduced-motion: reduce) {
