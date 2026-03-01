@@ -809,39 +809,6 @@ class KygoHrvFactors extends HTMLElement {
         </div>
       </section>
 
-      <!-- CTA Section -->
-      <section class="cta-section">
-        <div class="container">
-          <div class="cta-card animate-on-scroll">
-            <div class="cta-card-badge">
-              <div class="cta-card-badge-dot"></div>
-              <span>Free on iOS</span>
-            </div>
-            <div class="cta-card-headline">Start optimizing your <span class="highlight">HRV</span> today</div>
-            <p class="cta-card-sub">Connect your wearable and see which of these 38 factors actually move your personal HRV numbers.</p>
-            <div class="cta-card-actions">
-              <a href="${iosUrl}" class="cta-card-btn" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                Download Free on iOS
-              </a>
-              <span class="cta-card-meta">
-                <span>2-min setup</span><span>•</span><span>Free forever plan</span><span>•</span><span>No credit card</span>
-              </span>
-            </div>
-            <div class="cta-card-devices">
-              <span class="cta-card-devices-label">Works with</span>
-              <div class="cta-card-device-tags">
-                <span class="cta-card-device-tag"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy">Oura</span>
-                <span class="cta-card-device-tag"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy">Apple</span>
-                <span class="cta-card-device-tag"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy">Fitbit</span>
-                <span class="cta-card-device-tag"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy">Garmin</span>
-              </div>
-            </div>
-            <button class="cta-android">Android — Join Beta</button>
-          </div>
-        </div>
-      </section>
-
       <!-- Android Modal -->
       <div class="android-modal">
         <div class="modal-content">
@@ -871,6 +838,7 @@ class KygoHrvFactors extends HTMLElement {
             <a href="https://kygo.app/privacy">Privacy</a>
             <a href="https://kygo.app/terms">Terms</a>
           </div>
+          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated February 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
