@@ -63,7 +63,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "Didn't boost HRV itself but stopped it from dropping like placebo did. Also cut fatigue nearly in half.",
           mechanism: 'Adaptogenic withanolides modulate cortisol and reduce sympathetic overdrive, preserving vagal tone under stress.',
           dosage: '200 mg twice daily (Witholytin extract)',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/', label: 'PMC10647917' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/', label: 'PMC10647917' },
+          affiliate: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }
         },
         {
           key: 'ashwa-zenroot', name: 'Ashwagandha (Zenroot)',
@@ -73,7 +74,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Quick early bump in HRV that faded. Stress and anxiety kept improving though, so still useful for mood.',
           mechanism: 'Initial vagal stimulation via cortisol reduction; tolerance may develop for HRV-specific effects.',
           dosage: '500 mg daily (Zenroot KSM-66 extract)',
-          source: { url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z', label: 'Springer 2025' }
+          source: { url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z', label: 'Springer 2025' },
+          affiliate: { url: 'https://amzn.to/4qYXjOD', label: 'KSM-66 Ashwagandha' }
         },
         {
           key: 'probiotics', name: 'Probiotics',
@@ -83,7 +85,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Your gut talks to your brain via the vagus nerve. Healthy gut bacteria may strengthen that connection and boost HRV.',
           mechanism: 'Gut-brain axis via vagus nerve afferents. Microbial metabolites (SCFAs) modulate inflammatory tone and autonomic signaling.',
           dosage: 'Multi-strain, CFU counts vary by product',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' },
+          affiliate: { url: 'https://amzn.to/40AsqFp', label: 'Multi-Strain Probiotic' }
         },
         {
           key: 'polyphenols', name: 'Polyphenols',
@@ -103,7 +106,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Like Ashwagandha Witholytin, it protected HRV from declining rather than actively raising it.',
           mechanism: 'Corrects subclinical micronutrient deficiencies that impair autonomic nerve function.',
           dosage: 'Standard daily multivitamin',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/4rM2eDY', label: 'Daily Multivitamin' }
         },
         {
           key: 'gaba', name: 'GABA',
@@ -113,7 +117,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "The brain's main 'calm down' chemical. Supplementing shifted the nervous system toward rest-and-recover mode.",
           mechanism: 'GABAergic inhibition of central sympathetic outflow shifts autonomic balance toward parasympathetic dominance.',
           dosage: '100–200 mg daily',
-          source: { url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262', label: 'Taylor & Francis 2024' }
+          source: { url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262', label: 'Taylor & Francis 2024' },
+          affiliate: { url: 'https://amzn.to/3OyDz7c', label: 'GABA Supplement' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine',
@@ -123,7 +128,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'The calming amino acid in green tea. Lowers cortisol and takes the edge off your fight-or-flight response.',
           mechanism: 'Crosses blood-brain barrier, increases alpha waves and GABA, reduces cortisol and sympathetic activation.',
           dosage: '200 mg daily',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/', label: 'PubMed 16930802' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/', label: 'PubMed 16930802' },
+          affiliate: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }
         },
         {
           key: 'beetroot', name: 'Beetroot Juice',
@@ -133,7 +139,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Nitrates boost nitric oxide, helping your body recover faster after workouts. Main benefit is quicker HRV bounce-back.',
           mechanism: 'Dietary nitrate → nitric oxide pathway enhances vascular function and parasympathetic reactivation post-exercise.',
           dosage: '~400 mg nitrate (70 mL concentrated juice)',
-          source: { url: 'https://www.mdpi.com/2227-9032/13/19/2496', label: 'Healthcare 2025' }
+          source: { url: 'https://www.mdpi.com/2227-9032/13/19/2496', label: 'Healthcare 2025' },
+          affiliate: { url: 'https://amzn.to/406okEX', label: 'Beetroot Juice Shots' }
         }
       ],
       lifestyle: [
@@ -155,7 +162,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "Breathing at 6 breaths per minute hits your body's 'resonance frequency' and maximizes HRV. 20 min/day works.",
           mechanism: 'Respiratory sinus arrhythmia at ~0.1 Hz resonance frequency maximizes baroreflex sensitivity and vagal output.',
           dosage: '20 minutes daily at 6 breaths/min',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/', label: 'PMC8924557' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/', label: 'PMC8924557' },
+          affiliate: { url: 'https://amzn.to/46scAQQ', label: 'Breathing Trainer' }
         },
         {
           key: 'cold-exposure', name: 'Cold Exposure',
@@ -165,7 +173,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Cold shocks your vagus nerve awake. Ice baths and cold showers give a big immediate HRV spike that fades in ~15 min.',
           mechanism: 'Cold-water face immersion triggers the diving reflex — strong vagal activation via trigeminal nerve afferents.',
           dosage: 'Cold shower or ice bath, 1–5 minutes',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' },
+          affiliate: { url: 'https://amzn.to/4aYRATe', label: 'Cold Plunge Tub' }
         },
         {
           key: 'meditation', name: 'Meditation',
@@ -175,7 +184,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Even 20 minutes of non-focused meditation shifts your nervous system toward calm. No special technique needed.',
           mechanism: 'Reduces cortisol, shifts autonomic balance toward parasympathetic via prefrontal-amygdala regulation.',
           dosage: '20+ minutes daily',
-          source: { url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142', label: 'Nesvold 2012' }
+          source: { url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142', label: 'Nesvold 2012' },
+          affiliate: { url: 'https://amzn.to/4tZ5Zr2', label: 'Meditation Cushion' }
         },
         {
           key: 'hrv-biofeedback', name: 'HRV Biofeedback',
@@ -349,7 +359,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Your nerves need B12 to work properly. Low B12 can quietly wreck your autonomic function before you notice anything else.',
           mechanism: 'Essential cofactor for myelin synthesis and nerve conduction. Deficiency causes demyelination of autonomic fibers.',
           dosage: 'Correct deficiency; RDA 2.4 mcg',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/4lbwIg3', label: 'Vitamin B12' }
         },
         {
           key: 'vitamin-d', name: 'Vitamin D',
@@ -359,7 +370,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'Your heart literally has vitamin D receptors. Being deficient is linked to worse HRV and cardiovascular outcomes.',
           mechanism: 'VDR expression on cardiomyocytes and autonomic neurons; deficiency increases inflammatory cytokines.',
           dosage: 'Correct deficiency; target 30–50 ng/mL',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/4cm6d5m', label: 'Vitamin D3' }
         },
         {
           key: 'magnesium', name: 'Magnesium',
@@ -369,7 +381,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "Helps stabilize your heart's electrical activity. Results are inconsistent, likely because dose, form, and duration vary so much.",
           mechanism: 'Natural calcium channel blocker; stabilizes cardiac membrane potential and modulates NMDA receptors.',
           dosage: '200–400 mg elemental Mg daily',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
         },
         {
           key: 'omega3', name: 'Omega-3 (EPA/DHA)',
@@ -379,7 +392,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: 'The best-researched nutrient for HRV. Fish oil consistently boosts parasympathetic power in meta-analyses.',
           mechanism: 'Membrane incorporation alters ion channel kinetics; anti-inflammatory effects via resolvin/protectin pathways.',
           dosage: '1–2 g EPA+DHA daily',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' },
+          affiliate: { url: 'https://amzn.to/4cVnvGt', label: 'Omega-3 Fish Oil' }
         },
         {
           key: 'zinc', name: 'Zinc',
@@ -389,7 +403,8 @@ class KygoHrvFactors extends HTMLElement {
           whatThisMeans: "Interesting but niche — zinc during pregnancy improved the baby's HRV for years. Limited adult data so far.",
           mechanism: 'Zinc-dependent enzymes in autonomic neurodevelopment; prenatal supplementation affects fetal ANS maturation.',
           dosage: 'RDA 8–11 mg; prenatal context',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          affiliate: { url: 'https://amzn.to/4760BIN', label: 'Zinc Picolinate' }
         }
       ],
       demographics: [
@@ -539,13 +554,12 @@ class KygoHrvFactors extends HTMLElement {
                 <span class="badge-direction" style="color:${dir.color};background:${dir.bg}">
                   <span class="badge-icon">${this._icon(dir.icon)}</span>${dir.label}
                 </span>
-                <span class="badge-evidence" style="color:${ev.color};background:${ev.bg}">${ev.label}</span>
               </div>
               <div class="factor-toggle">${this._icon('chevDown')}</div>
             </div>
             <h3 class="factor-name">${f.name}</h3>
             <p class="factor-effect">${f.effect}</p>
-            <p class="factor-finding">${f.keyFinding}</p>
+            <p class="factor-evidence-text"><span class="evidence-label">Evidence:</span> ${ev.label}</p>
           </div>
           <div class="factor-body">
             <div class="factor-detail">
@@ -565,6 +579,10 @@ class KygoHrvFactors extends HTMLElement {
                 <span class="detail-label">Source</span>
                 <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
               </div>
+              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored">
+                <span>Check it out on Amazon</span>
+                <span class="factor-affiliate-arrow">${this._icon('externalLink')}</span>
+              </a>` : ''}
             </div>
           </div>
         </div>`;
@@ -582,11 +600,11 @@ class KygoHrvFactors extends HTMLElement {
             <div class="pick-info">
               <span class="pick-label">${p.label}</span>
               <span class="pick-answer">${p.answer}</span>
-              ${p.stat ? `<span class="pick-stat">${p.stat}</span>` : ''}
             </div>
             <div class="pick-toggle">${this._icon('chevDown')}</div>
           </div>
           <div class="pick-body">
+            ${p.stat ? `<p class="pick-stat-detail"><span class="pick-stat-label">Key stat:</span> ${p.stat}</p>` : ''}
             <p class="pick-note">${p.note}</p>
             <span class="pick-cat">Category: ${p.category}</span>
           </div>
@@ -655,10 +673,12 @@ class KygoHrvFactors extends HTMLElement {
     if (tabs) tabs.innerHTML = this._renderCategoryTabs();
     if (cards) cards.innerHTML = this._renderFactorCards();
     if (sortBar) sortBar.innerHTML = `
-      <span class="sort-label">Sort by:</span>
-      <button class="sort-btn${this._sortMode === 'default' ? ' active' : ''}" data-sort="default">Default</button>
-      <button class="sort-btn${this._sortMode === 'evidence' ? ' active' : ''}" data-sort="evidence">Evidence Strength</button>
-      <button class="sort-btn${this._sortMode === 'direction' ? ' active' : ''}" data-sort="direction">Effect Direction</button>
+      <label class="sort-label" for="sort-select">Sort by:</label>
+      <select class="sort-select" id="sort-select">
+        <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
+        <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
+        <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
+      </select>
     `;
   }
 
@@ -730,44 +750,14 @@ class KygoHrvFactors extends HTMLElement {
           <h2 class="section-title animate-on-scroll">Explore All Factors</h2>
           <p class="section-sub animate-on-scroll">Tap any factor to see mechanism, dosage, and source.</p>
 
-          <!-- Inline Legend (collapsible) -->
-          <div class="legend-bar animate-on-scroll">
-            <button class="legend-toggle" aria-expanded="false">
-              <span class="legend-toggle-label">Legend</span>
-              <span class="legend-toggle-preview">
-                <span class="badge-direction" style="color:#22C55E;background:rgba(34,197,94,0.1)"><span class="badge-icon">${this._icon('arrowUp')}</span>Positive</span>
-                <span class="badge-direction" style="color:#EF4444;background:rgba(239,68,68,0.1)"><span class="badge-icon">${this._icon('arrowDown')}</span>Negative</span>
-                <span class="badge-evidence" style="color:#16A34A;background:rgba(34,197,94,0.15)">Strong</span>
-                <span class="badge-evidence" style="color:#D97706;background:rgba(251,191,36,0.15)">Moderate</span>
-                <span class="badge-evidence" style="color:#6366F1;background:rgba(99,102,241,0.15)">Emerging</span>
-              </span>
-              <span class="legend-chevron">${this._icon('chevDown')}</span>
-            </button>
-            <div class="legend-collapse">
-              <div class="legend-collapse-inner">
-                <div class="legend-row">
-                  <span class="legend-label">Direction</span>
-                  <span class="badge-direction" style="color:#22C55E;background:rgba(34,197,94,0.1)"><span class="badge-icon">${this._icon('arrowUp')}</span>Positive</span>
-                  <span class="badge-direction" style="color:#EF4444;background:rgba(239,68,68,0.1)"><span class="badge-icon">${this._icon('arrowDown')}</span>Negative</span>
-                  <span class="badge-direction" style="color:#FBBF24;background:rgba(251,191,36,0.1)"><span class="badge-icon">${this._icon('arrowLeftRight')}</span>Mixed</span>
-                  <span class="badge-direction" style="color:#94A3B8;background:rgba(148,163,184,0.1)"><span class="badge-icon">${this._icon('arrowLeftRight')}</span>Variable</span>
-                </div>
-                <div class="legend-row">
-                  <span class="legend-label">Evidence</span>
-                  <span class="badge-evidence" style="color:#16A34A;background:rgba(34,197,94,0.15)">Strong</span>
-                  <span class="badge-evidence" style="color:#D97706;background:rgba(251,191,36,0.15)">Moderate</span>
-                  <span class="badge-evidence" style="color:#6366F1;background:rgba(99,102,241,0.15)">Emerging</span>
-                </div>
-                <p class="legend-note">Strong = RCTs / meta-analyses. Moderate = smaller RCTs / observational. Emerging = mechanistic / preliminary.</p>
-              </div>
-            </div>
-          </div>
           <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
           <div class="sort-bar animate-on-scroll">
-            <span class="sort-label">Sort by:</span>
-            <button class="sort-btn${this._sortMode === 'default' ? ' active' : ''}" data-sort="default">Default</button>
-            <button class="sort-btn${this._sortMode === 'evidence' ? ' active' : ''}" data-sort="evidence">Evidence Strength</button>
-            <button class="sort-btn${this._sortMode === 'direction' ? ' active' : ''}" data-sort="direction">Effect Direction</button>
+            <label class="sort-label" for="sort-select">Sort by:</label>
+            <select class="sort-select" id="sort-select">
+              <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
+              <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
+              <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
+            </select>
           </div>
           <div class="factor-cards">${this._renderFactorCards()}</div>
 
@@ -882,6 +872,7 @@ class KygoHrvFactors extends HTMLElement {
             <a href="https://kygo.app/terms">Terms</a>
           </div>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated February 2026.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -965,10 +956,11 @@ class KygoHrvFactors extends HTMLElement {
       .pick-card.expanded .pick-toggle { transform: rotate(180deg); }
       .pick-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
       .pick-card.expanded .pick-body { max-height: 200px; padding: 0 20px 16px; }
-      .pick-stat { display: inline-block; font-size: 11px; font-weight: 600; color: var(--green-dark); background: var(--green-light); padding: 2px 8px; border-radius: 50px; margin-top: 4px; }
+      .pick-stat-detail { font-size: 13px; color: var(--dark); margin-bottom: 8px; font-weight: 500; }
+      .pick-stat-label { color: var(--gray-400); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
       .pick-warning { border-color: rgba(239,68,68,0.3); }
       .pick-warning .pick-icon { background: rgba(239,68,68,0.1); color: var(--red); }
-      .pick-warning .pick-stat { color: var(--red); background: rgba(239,68,68,0.1); }
+      .pick-warning .pick-stat-detail { color: var(--red); }
       .pick-note { font-size: 14px; color: var(--gray-600); margin-bottom: 6px; }
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
@@ -976,11 +968,10 @@ class KygoHrvFactors extends HTMLElement {
       .explore-section { padding: 48px 0 64px; }
 
       /* Sort bar */
-      .sort-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
-      .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; margin-right: 2px; }
-      .sort-btn { padding: 5px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff; font-size: 12px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; transition: all 0.2s; }
-      .sort-btn.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
-      .sort-btn:hover { border-color: var(--green); }
+      .sort-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+      .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; }
+      .sort-select { padding: 6px 28px 6px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance: none; appearance: none; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; transition: border-color 0.2s; }
+      .sort-select:hover, .sort-select:focus { border-color: var(--green); outline: none; }
 
       /* Category tabs */
       .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
@@ -1008,7 +999,8 @@ class KygoHrvFactors extends HTMLElement {
       .factor-card.expanded .factor-toggle { transform: rotate(180deg); }
       .factor-name { font-size: 18px; margin-bottom: 4px; color: var(--dark); }
       .factor-effect { font-size: 14px; font-weight: 600; color: var(--gray-600); margin-bottom: 2px; }
-      .factor-finding { font-size: 13px; color: var(--gray-400); }
+      .factor-evidence-text { font-size: 13px; color: var(--dark); }
+      .evidence-label { color: var(--gray-400); font-weight: 500; }
 
       /* Factor body (expandable) */
       .factor-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
@@ -1021,24 +1013,11 @@ class KygoHrvFactors extends HTMLElement {
       .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green); font-weight: 500; font-size: 13px; }
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green-dark); }
+      .factor-affiliate { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: 12px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.2s; }
+      .factor-affiliate:hover { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
+      .factor-affiliate-arrow { width: 14px; height: 14px; display: flex; }
+      .factor-affiliate-arrow svg { width: 100%; height: 100%; }
 
-      /* ── Legend (inline collapsible) ── */
-      .legend-bar { margin-bottom: 20px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); background: #fff; overflow: hidden; }
-      .legend-toggle { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 16px; background: none; border: none; cursor: pointer; font-family: inherit; }
-      .legend-toggle-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); flex-shrink: 0; }
-      .legend-toggle-preview { display: flex; gap: 6px; flex: 1; overflow: hidden; align-items: center; }
-      .legend-chevron { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; display: flex; }
-      .legend-chevron svg { width: 18px; height: 18px; }
-      .legend-bar.open .legend-chevron { transform: rotate(180deg); }
-      .legend-collapse { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
-      .legend-bar.open .legend-collapse { max-height: 200px; }
-      .legend-collapse-inner { padding: 0 16px 14px; }
-      .legend-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
-      .legend-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); margin-right: 4px; }
-      .legend-note { font-size: 11px; color: var(--gray-400); line-height: 1.4; }
-      @media (max-width: 767px) {
-        .legend-toggle-preview { display: none; }
-      }
 
       /* ── Sources (accordion) ── */
       .sources-section { padding: 48px 0; }
@@ -1138,6 +1117,7 @@ class KygoHrvFactors extends HTMLElement {
       .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; }
       .footer-links a:hover { color: var(--green); }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
+      .footer-affiliate { font-style: italic; }
 
       /* ── Responsive ── */
       @media (min-width: 768px) {
@@ -1179,17 +1159,6 @@ class KygoHrvFactors extends HTMLElement {
     const shadow = this.shadowRoot;
 
     shadow.addEventListener('click', (e) => {
-      // Legend toggle
-      const legendToggle = e.target.closest('.legend-toggle');
-      if (legendToggle) {
-        const bar = legendToggle.closest('.legend-bar');
-        if (bar) {
-          const isOpen = bar.classList.toggle('open');
-          legendToggle.setAttribute('aria-expanded', isOpen);
-        }
-        return;
-      }
-
       // Source group accordion
       const srcToggle = e.target.closest('.src-group-toggle');
       if (srcToggle) {
@@ -1201,13 +1170,8 @@ class KygoHrvFactors extends HTMLElement {
         return;
       }
 
-      // Sort buttons
-      const sortBtn = e.target.closest('.sort-btn');
-      if (sortBtn) {
-        this._sortMode = sortBtn.dataset.sort;
-        this._updateCategory();
-        return;
-      }
+      // Sort dropdown (handled via change event below)
+
 
       // Category tabs
       const tab = e.target.closest('.cat-tab');
@@ -1218,7 +1182,7 @@ class KygoHrvFactors extends HTMLElement {
       }
 
       // Factor card expansion (skip source links)
-      if (e.target.closest('.source-link')) return;
+      if (e.target.closest('.source-link') || e.target.closest('.factor-affiliate')) return;
       const factorHeader = e.target.closest('.factor-header');
       if (factorHeader) {
         const card = factorHeader.closest('.factor-card');
@@ -1253,6 +1217,14 @@ class KygoHrvFactors extends HTMLElement {
       if (e.target.classList.contains('android-modal')) {
         e.target.classList.remove('active');
         return;
+      }
+    });
+
+    // Sort dropdown
+    shadow.addEventListener('change', (e) => {
+      if (e.target.classList.contains('sort-select')) {
+        this._sortMode = e.target.value;
+        this._updateCategory();
       }
     });
 
