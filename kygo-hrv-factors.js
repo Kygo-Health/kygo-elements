@@ -788,6 +788,7 @@ class KygoHrvFactors extends HTMLElement {
                 <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                 Download for iOS
               </a>
+              <button class="cta-android">Android — Join Beta</button>
               <div class="blog-cta-tags">
                 <span>Works with</span>
                 <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
@@ -1036,29 +1037,8 @@ class KygoHrvFactors extends HTMLElement {
       .blog-cta-tags span { color: var(--gray-400); font-size: 12px; }
       .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
 
-      /* ── CTA Section (card style) ── */
-      .cta-section { padding: 48px 0; }
-      .cta-card { width: 100%; max-width: 680px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 16px; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); padding: 24px 20px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 16px 40px rgba(30,41,59,0.25); }
-      .cta-card::before { content: ''; position: absolute; top: -50%; right: -30%; width: 260px; height: 260px; background: radial-gradient(circle, rgba(34,197,94,0.3) 0%, transparent 70%); pointer-events: none; }
-      .cta-card-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); border-radius: 16px; padding: 4px 10px; margin-bottom: 16px; position: relative; z-index: 1; }
-      .cta-card-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: ctaPulse 2s ease-in-out infinite; }
-      @keyframes ctaPulse { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
-      .cta-card-badge span { font-size: 10px; font-weight: 600; color: var(--green); letter-spacing: 0.5px; text-transform: uppercase; }
-      .cta-card-headline { font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 20px; font-weight: 600; color: #fff; line-height: 1.25; margin-bottom: 10px; position: relative; z-index: 1; }
-      .cta-card-headline .highlight { color: var(--green); }
-      .cta-card-sub { font-size: 14px; color: #94A3B8; line-height: 1.65; margin-bottom: 20px; position: relative; z-index: 1; }
-      .cta-card-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; position: relative; z-index: 1; }
-      .cta-card-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; max-width: 280px; background: var(--green); color: #fff; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 24px; border-radius: 12px; transition: all 0.2s; box-shadow: 0 8px 20px rgba(34,197,94,0.3); }
-      .cta-card-btn:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 12px 28px rgba(34,197,94,0.4); }
-      .cta-card-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
-      .cta-card-meta { font-size: 12px; color: #94A3B8; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; }
-      .cta-card-devices { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); position: relative; z-index: 1; }
-      .cta-card-devices-label { font-size: 10px; font-weight: 500; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; }
-      .cta-card-device-tags { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
-      .cta-card-device-tag { font-size: 11px; font-weight: 500; color: #94A3B8; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 4px 8px; display: flex; align-items: center; gap: 5px; transition: all 0.2s; }
-      .cta-card-device-tag:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.15); }
-      .cta-card-device-tag img { width: 14px; height: 14px; border-radius: 3px; object-fit: contain; }
-      .cta-android { margin-top: 16px; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94A3B8; padding: 10px 24px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; position: relative; z-index: 1; }
+      /* ── Android button (in Blog CTA) ── */
+      .cta-android { margin-top: 16px; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94A3B8; padding: 10px 24px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
       .cta-android:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.25); color: #fff; }
 
       /* ── Android Modal ── */
@@ -1085,6 +1065,7 @@ class KygoHrvFactors extends HTMLElement {
       .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; }
       .footer-links a:hover { color: var(--green); }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
+      .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
       .footer-affiliate { font-style: italic; }
 
       /* ── Responsive ── */
@@ -1095,20 +1076,10 @@ class KygoHrvFactors extends HTMLElement {
         .picks-grid { grid-template-columns: 1fr 1fr; }
         .factor-cards { grid-template-columns: 1fr 1fr; }
         .picks-section, .explore-section { padding: 64px 0; }
-        .cta-section { padding: 64px 0; }
-        .cta-card { padding: 32px 28px; border-radius: 18px; }
-        .cta-card-headline { font-size: 24px; }
-        .cta-card-sub { font-size: 15px; }
-        .cta-card-actions { flex-direction: row; align-items: center; gap: 16px; }
         .blog-cta { padding: 48px 40px; }
       }
       @media (min-width: 1024px) {
         .picks-grid { grid-template-columns: 1fr 1fr 1fr; }
-        .cta-section { padding: 80px 0; }
-        .cta-card { padding: 40px 36px; border-radius: 20px; }
-        .cta-card-badge { padding: 5px 12px; margin-bottom: 20px; }
-        .cta-card-headline { font-size: 26px; margin-bottom: 12px; }
-        .cta-card-sub { font-size: 15px; margin-bottom: 28px; max-width: 560px; }
         .explore-section { padding: 80px 0; }
       }
       @media (prefers-reduced-motion: reduce) {
