@@ -1,7 +1,7 @@
 /**
  * Kygo Health — HRV Factor Explorer
  * Tag: kygo-hrv-factors
- * Interactive tool exploring 38 research-backed factors that affect Heart Rate Variability across 5 categories
+ * Interactive tool exploring 44 research-backed factors that affect Heart Rate Variability across 5 categories
  */
 
 /** SEO helper — injects visible text outside Shadow DOM for crawlers */
@@ -31,7 +31,7 @@ class KygoHrvFactors extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'HRV Factor Explorer by Kygo Health. Explore 38 research-backed factors that affect Heart Rate Variability across 5 categories: Supplements, Lifestyle, Exercise, Micronutrients, and Demographics. Supplements include Ashwagandha Witholytin (RCT n=111), Ashwagandha Zenroot (RCT n=90), Probiotics, Polyphenols, Multivitamin, GABA (RCT n=30), L-Theanine, and Beetroot Juice (meta-analysis n=54). Lifestyle factors include Sleep Quality, Slow Breathing at 6 breaths per minute, Cold Exposure with 54-85% RMSSD increase, Meditation, HRV Biofeedback, Forest Bathing, Intermittent Fasting 16:8, Mediterranean Diet, Alcohol dose-dependent decrease, Smoking, THC Cannabis nocturnal decrease, Caffeine recovery delay, Chronic Stress, and Sauna. Exercise modalities ranked by Yang et al 2024 Network Meta-Analysis of 29 RCTs: HIIT is number 1 for SDNN RMSSD and LF/HF ratio, Aerobic Endurance training, Resistance Training number 1 for HF power, Combined training, Yoga Mind-Body, and Overtraining risk. Micronutrients include Vitamin B12, Vitamin D, Magnesium, Omega-3 EPA DHA most studied dietary HRV factor, and Zinc. Demographics include Age strongest predictor, Sex and Gender, Genetics inconclusive, Circadian Rhythm, and BMI Obesity. Each factor shows evidence strength (Strong Moderate Emerging), direction of effect (Positive Negative Mixed), mechanism of action, dosage when applicable, and peer-reviewed citations. How to improve HRV naturally. What affects HRV. Best supplements for HRV. Data sourced from peer-reviewed studies and meta-analyses.');
+    __seo(this, 'HRV Factor Explorer by Kygo Health. Explore 44 research-backed factors that affect Heart Rate Variability across 5 categories: Supplements, Lifestyle, Exercise, Micronutrients, and Demographics. Supplements include Ashwagandha Witholytin (RCT n=111), Ashwagandha Zenroot (RCT n=90), Probiotics, Polyphenols, Multivitamin, GABA (RCT n=30), L-Theanine, and Beetroot Juice (meta-analysis n=54). Lifestyle factors include Sleep Quality, Slow Breathing at 6 breaths per minute, Cold Exposure with 54-85% RMSSD increase, Meditation, HRV Biofeedback, Forest Bathing, Intermittent Fasting 16:8, Mediterranean Diet, Alcohol dose-dependent decrease, Smoking, THC Cannabis nocturnal decrease, Caffeine recovery delay, Chronic Stress, Sauna, Sexual Activity correlational, Altitude acute negative above 2500m, Caloric Restriction HRV 20 years younger, and Dehydration. Exercise modalities ranked by Yang et al 2024 Network Meta-Analysis of 29 RCTs: HIIT is number 1 for SDNN RMSSD and LF/HF ratio, Aerobic Endurance training, Resistance Training number 1 for HF power, Combined training, Yoga Mind-Body, and Overtraining risk. Micronutrients include Vitamin B12, Vitamin D, Magnesium, Omega-3 EPA DHA most studied dietary HRV factor, and Zinc. Demographics include Age strongest predictor, Sex and Gender, Genetics inconclusive, Circadian Rhythm, BMI Obesity, and Menstrual Cycle luteal phase HRV dip. Each factor shows evidence strength (Strong Moderate Emerging), direction of effect (Positive Negative Mixed), mechanism of action, dosage when applicable, and peer-reviewed citations. How to improve HRV naturally. What affects HRV. Best supplements for HRV. Data sourced from peer-reviewed studies and meta-analyses.');
   }
 
   disconnectedCallback() {
@@ -42,11 +42,11 @@ class KygoHrvFactors extends HTMLElement {
 
   get _categories() {
     return {
-      lifestyle: { name: 'Lifestyle', icon: 'sun', count: 14 },
+      lifestyle: { name: 'Lifestyle', icon: 'sun', count: 18 },
       supplements: { name: 'Supplements', icon: 'pill', count: 8 },
       exercise: { name: 'Exercise', icon: 'dumbbell', count: 6 },
       micronutrients: { name: 'Micronutrients', icon: 'droplet', count: 5 },
-      demographics: { name: 'Demographics', icon: 'users', count: 5 }
+      demographics: { name: 'Demographics', icon: 'users', count: 6 }
     };
   }
 
@@ -82,10 +82,10 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'emerging',
           effect: 'Positive (emerging)',
           keyFinding: 'Moderate — emerging data',
-          whatThisMeans: 'Your gut talks to your brain via the vagus nerve. Healthy gut bacteria may strengthen that connection and boost HRV.',
-          mechanism: 'Gut-brain axis via vagus nerve afferents. Microbial metabolites (SCFAs) modulate inflammatory tone and autonomic signaling.',
+          whatThisMeans: 'Your gut talks to your brain via the vagus nerve. Specific strains (L. paracasei LPC-37, L. rhamnosus HN001, L. acidophilus NCFM, B. lactis HN019) reduced inflammation markers that correlated with better HRV in hypertensive women. Higher gut microbial diversity is also associated with higher SDNN.',
+          mechanism: 'Probiotic-driven colonization produces SCFAs (butyrate, acetate, propionate) that reduce inflammation and engage the vagus nerve. Higher gut microbial diversity associated with higher SDNN.',
           dosage: 'Multi-strain, CFU counts vary by product',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' },
+          source: { url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full', label: 'Frontiers Neurosci 2025' },
           affiliate: { url: 'https://amzn.to/40AsqFp', label: 'Multi-Strain Probiotic' }
         },
         {
@@ -102,8 +102,8 @@ class KygoHrvFactors extends HTMLElement {
           key: 'multivitamin', name: 'Multivitamin',
           direction: 'positive', evidence: 'moderate',
           effect: 'Protective (prevents decline)',
-          keyFinding: 'Moderate — 1 RCT',
-          whatThisMeans: 'Like Ashwagandha Witholytin, it protected HRV from declining rather than actively raising it.',
+          keyFinding: 'Moderate/Weak — 1 RCT',
+          whatThisMeans: 'Like Ashwagandha Witholytin, it protected HRV from declining rather than actively raising it. Evidence is from a single RCT on hemodialysis patients, not healthy adults, so take it with a grain of salt.',
           mechanism: 'Corrects subclinical micronutrient deficiencies that impair autonomic nerve function.',
           dosage: 'Standard daily multivitamin',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
@@ -170,9 +170,9 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (acute)',
           keyFinding: 'RMSSD +54–85% post-session',
-          whatThisMeans: 'Cold shocks your vagus nerve awake. Ice baths and cold showers give a big immediate HRV spike that fades in ~15 min.',
+          whatThisMeans: "Cold shocks your vagus nerve awake. The +54-85% RMSSD spike is real but fades in 15-20 minutes and doesn't shift baseline HRV with chronic use alone. Best used as a recovery tool between training days, not a standalone HRV builder.",
           mechanism: 'Cold-water face immersion triggers the diving reflex — strong vagal activation via trigeminal nerve afferents.',
-          dosage: 'Cold shower or ice bath, 1–5 minutes',
+          dosage: 'Cold shower or ice bath, 1–5 minutes; best as recovery tool',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' },
           affiliate: { url: 'https://amzn.to/4aYRATe', label: 'Cold Plunge Tub' }
         },
@@ -286,6 +286,46 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Acute heat stress activates sympathetic response. Post-cooling parasympathetic rebound. Chronic adaptation unclear.',
           dosage: '15–20 min sessions, 80–100°C',
           source: { url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449', label: 'Physiol Reports 2025' }
+        },
+        {
+          key: 'sexual-activity', name: 'Sexual Activity',
+          direction: 'positive', evidence: 'emerging',
+          effect: 'Positive (correlational)',
+          keyFinding: 'Associated with higher resting HRV (n=120)',
+          whatThisMeans: "Associated with higher resting HRV but causation is unclear. Healthier people may simply have more sex. Interesting signal but don't read too much into it yet.",
+          mechanism: 'Possible oxytocin-mediated vagal activation and stress reduction. Confounded by overall health status.',
+          dosage: 'Observational — no dosage established',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/12659241/', label: 'Brody & Preut 2003' }
+        },
+        {
+          key: 'altitude', name: 'Altitude',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (acute)',
+          keyFinding: 'Sympathetic spike, HF drops above ~2,500m (meta-analysis)',
+          whatThisMeans: "Thinner air forces your body into fight-or-flight mode to keep oxygen flowing. HRV recovers when you come back to lower elevation. Don't panic about low readings at altitude — it's expected.",
+          mechanism: 'Hypoxia-driven sympathetic activation and reduced parasympathetic (HF) power. Chemoreceptor-mediated response to lower O₂ partial pressure.',
+          dosage: 'Effect begins above ~2,500m; reversible on descent',
+          source: { url: 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1502562/full', label: 'Frontiers Physiol 2025' }
+        },
+        {
+          key: 'caloric-restriction', name: 'Caloric Restriction',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive',
+          keyFinding: 'CR practitioners had HRV 20 years younger than age-matched controls (n=42)',
+          whatThisMeans: "Eating ~30% below caloric needs while staying nutritionally complete helps your autonomic nervous system stay younger. Mechanism is reduced inflammation and improved insulin sensitivity (hormesis). Not the same as starvation — a meta-analysis found moderate CR doesn't raise cortisol, only fasting/starvation does. Combined with exercise the effect is even stronger.",
+          mechanism: 'Reduced inflammation and improved insulin sensitivity via hormesis. Caloric restriction without malnutrition preserves vagal tone and autonomic flexibility.',
+          dosage: '~25-30% caloric reduction while maintaining full nutrition',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3598611/', label: 'PMC3598611' }
+        },
+        {
+          key: 'dehydration', name: 'Dehydration',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative',
+          keyFinding: 'HR +5-6 bpm, reduced parasympathetic activity; restores with rehydration',
+          whatThisMeans: "Being dehydrated shifts your nervous system toward stress mode. Replacing ≥60% of fluid lost restores HRV within 24 hours. Simple but easy to overlook.",
+          mechanism: 'Hypovolemia reduces venous return, triggering compensatory sympathetic activation and reduced parasympathetic outflow.',
+          dosage: 'Maintain hydration; replace ≥60% of fluid lost',
+          source: { url: 'https://www.nature.com/articles/s41598-019-51255-2', label: 'Nature Sci Rep 2019' }
         }
       ],
       exercise: [
@@ -294,7 +334,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'strong',
           effect: 'Strongest overall',
           keyFinding: '#1 for SDNN, RMSSD, LF/HF (NMA)',
-          whatThisMeans: 'The single best exercise type for improving HRV across every metric. Even better than steady-state cardio.',
+          whatThisMeans: "The single best exercise type for improving HRV across every metric. Even better than steady-state cardio. Effects are chronic adaptation over weeks. Expect a 24-48hr HRV dip after each session where RMSSD can drop significantly before rebounding above baseline. Don't misread the next-morning dip as negative adaptation.",
           mechanism: 'High-intensity intervals drive large cardiac output demands, stimulating vagal remodeling during recovery.',
           dosage: '2–3 sessions per week, with adequate recovery',
           source: { url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009', label: 'Yang et al. 2024' }
@@ -344,9 +384,9 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative',
           keyFinding: 'HRV declines signal overreaching',
-          whatThisMeans: 'If your HRV is trending down despite training, you\'re doing too much. Use HRV to guide rest days.',
+          whatThisMeans: "If your HRV is trending down despite training, you're doing too much. Use a 7-day rolling average, not single-day readings. A single low day is noise. 3+ consecutive days below your personal baseline by 8-10% is the real signal. Based on Plews et al. coefficient of variation approach.",
           mechanism: 'Excessive training load without recovery causes chronic sympathetic activation and vagal withdrawal.',
-          dosage: 'Monitor HRV trends to avoid',
+          dosage: 'Monitor 7-day rolling HRV average to avoid',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11204851/', label: 'PMC11204851' }
         }
       ],
@@ -457,6 +497,16 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Adipose-derived inflammatory cytokines impair vagal function; visceral fat particularly harmful via mechanical and hormonal effects.',
           dosage: 'Maintain healthy BMI; weight loss improves HRV',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' }
+        },
+        {
+          key: 'menstrual-cycle', name: 'Menstrual Cycle',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (luteal phase)',
+          keyFinding: 'HRV lowest ~1 week before period; progesterone suppresses vagal activity',
+          whatThisMeans: "Progesterone rises after ovulation and directly lowers HRV. Expect lowest readings about a week before your period — it's hormonal, not something you're doing wrong. Rebounds about a week after menses.",
+          mechanism: 'Progesterone suppresses vagal tone during the luteal phase. Estrogen in the follicular phase supports parasympathetic activity. Creates a predictable ~28-day HRV cycle.',
+          dosage: 'Non-modifiable; track cycle to contextualize HRV',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/', label: 'PMC7141121' }
         }
       ]
     };
@@ -617,6 +667,7 @@ class KygoHrvFactors extends HTMLElement {
       'Supplements': [
         { label: 'Lopresti et al. 2024 — Ashwagandha Witholytin RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/' },
         { label: 'Thakkar et al. 2025 — Ashwagandha Zenroot RCT', url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z' },
+        { label: 'Maia et al. 2025 — Probiotics & HRV in hypertensive women', url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full' },
         { label: 'Badawy et al. 2024 — GABA supplementation RCT', url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262' },
         { label: 'Kimura et al. 2007 — L-Theanine & stress', url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/' },
         { label: 'Amiri et al. 2025 — Beetroot juice meta-analysis', url: 'https://www.mdpi.com/2227-9032/13/19/2496' }
@@ -632,7 +683,11 @@ class KygoHrvFactors extends HTMLElement {
         { label: 'Pietilä et al. 2018 — Alcohol & HRV', url: 'https://mental.jmir.org/2018/1/e23' },
         { label: 'Conner et al. 2023 — THC & nocturnal HRV', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
         { label: 'Gonzalez et al. 2024 — Caffeine & HRV recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
-        { label: 'Brunt et al. 2025 — Sauna & HRV', url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449' }
+        { label: 'Brunt et al. 2025 — Sauna & HRV', url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449' },
+        { label: 'Brody & Preut 2003 — Sexual activity & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/12659241/' },
+        { label: 'Frontiers Physiol 2025 — Altitude & HRV meta-analysis', url: 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1502562/full' },
+        { label: 'Stein et al. 2012 — Caloric restriction & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3598611/' },
+        { label: 'Watso et al. 2019 — Dehydration & HRV', url: 'https://www.nature.com/articles/s41598-019-51255-2' }
       ],
       'Exercise': [
         { label: 'Yang et al. 2024 — Exercise NMA (29 RCTs)', url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009' },
@@ -643,6 +698,10 @@ class KygoHrvFactors extends HTMLElement {
       'Nutrition & Micronutrients': [
         { label: 'Young & Benton 2018 — Gut-brain axis & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/' },
         { label: 'Lopresti 2020 — Micronutrients & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/' }
+      ],
+      'Demographics': [
+        { label: 'Nunan et al. 2024 — Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
+        { label: 'Schmalenberger et al. 2019 — Menstrual cycle & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/' }
       ]
     };
     const totalCount = Object.values(groups).reduce((sum, g) => sum + g.length, 0);
@@ -729,7 +788,7 @@ class KygoHrvFactors extends HTMLElement {
       <!-- Hero -->
       <section class="hero">
         <div class="container">
-          <div class="hero-badge animate-on-scroll">38 FACTORS • 5 CATEGORIES • ALL PEER-REVIEWED</div>
+          <div class="hero-badge animate-on-scroll">44 FACTORS • 5 CATEGORIES • ALL PEER-REVIEWED</div>
           <h1 class="animate-on-scroll">What Actually Moves Your HRV?</h1>
           <p class="hero-sub animate-on-scroll">Every supplement, habit, exercise, and nutrient with proven HRV impact — ranked by evidence strength and direction of effect. No guessing, just data.</p>
         </div>
@@ -767,7 +826,7 @@ class KygoHrvFactors extends HTMLElement {
               <span class="blog-link-icon">${this._icon('book')}</span>
               <div class="blog-link-text">
                 <span class="blog-link-title">Read the Full Article</span>
-                <span class="blog-link-desc">How to Improve HRV: 38 Factors Ranked by Evidence (2026)</span>
+                <span class="blog-link-desc">How to Improve HRV: 44 Factors Ranked by Evidence (2026)</span>
               </div>
               <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
             </a>
@@ -1228,7 +1287,7 @@ class KygoHrvFactors extends HTMLElement {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
       'name': 'HRV Factor Explorer',
-      'description': 'Explore 38 research-backed factors that affect Heart Rate Variability — supplements, lifestyle habits, exercise, micronutrients, and demographics ranked by evidence strength.',
+      'description': 'Explore 44 research-backed factors that affect Heart Rate Variability — supplements, lifestyle habits, exercise, micronutrients, and demographics ranked by evidence strength.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/hrv-factors',
