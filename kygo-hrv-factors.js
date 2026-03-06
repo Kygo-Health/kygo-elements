@@ -1125,8 +1125,8 @@ class KygoHrvFactors extends HTMLElement {
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
-      .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; }
-      .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; }
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
+      .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; white-space: nowrap; }
       .footer-links a:hover { color: var(--green); }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
