@@ -5,13 +5,15 @@
  */
 
 /** SEO helper — injects visible text outside Shadow DOM for crawlers */
-function __seo(el, text) {
-  if (el.querySelector('[data-seo]')) return;
-  const d = document.createElement('div');
-  d.setAttribute('data-seo', '');
-  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
-  d.textContent = text;
-  el.appendChild(d);
+if (typeof __seo === 'undefined') {
+  var __seo = function(el, text) {
+    if (el.querySelector('[data-seo]')) return;
+    const d = document.createElement('div');
+    d.setAttribute('data-seo', '');
+    d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+    d.textContent = text;
+    el.appendChild(d);
+  };
 }
 
 class KygoHrvFactors extends HTMLElement {
@@ -894,7 +896,10 @@ class KygoHrvFactors extends HTMLElement {
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Kygo App</a>
+            <a href="https://kygo.app">Home</a>
+            <a href="https://kygo.app/how-it-works">How It Works</a>
+            <a href="https://kygo.app/blog">Blog</a>
+            <a href="https://kygo.app/contact">Contact</a>
             <a href="https://kygo.app/privacy">Privacy</a>
             <a href="https://kygo.app/terms">Terms</a>
           </div>
@@ -1303,4 +1308,6 @@ class KygoHrvFactors extends HTMLElement {
   }
 }
 
-customElements.define('kygo-hrv-factors', KygoHrvFactors);
+if (!customElements.get('kygo-hrv-factors')) {
+  customElements.define('kygo-hrv-factors', KygoHrvFactors);
+}

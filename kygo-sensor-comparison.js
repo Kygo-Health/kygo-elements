@@ -5,13 +5,28 @@
  */
 
 /** SEO helper — injects visible text outside Shadow DOM for crawlers */
-function __seo(el, text) {
-  if (el.querySelector('[data-seo]')) return;
-  const d = document.createElement('div');
-  d.setAttribute('data-seo', '');
-  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
-  d.textContent = text;
-  el.appendChild(d);
+if (typeof __seo === 'undefined') {
+  var __seo = function(el, text) {
+    if (el.querySelector('[data-seo]')) return;
+    const d = document.createElement('div');
+    d.setAttribute('data-seo', '');
+    d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+    d.textContent = text;
+    el.appendChild(d);
+  };
+}
+
+// Polyfill roundRect for older browsers
+if (typeof CanvasRenderingContext2D !== 'undefined' && !CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, radii) {
+    const r = typeof radii === 'number' ? radii : (Array.isArray(radii) ? radii[0] : 0);
+    this.moveTo(x + r, y);
+    this.arcTo(x + w, y, x + w, y + h, r);
+    this.arcTo(x + w, y + h, x, y + h, r);
+    this.arcTo(x, y + h, x, y, r);
+    this.arcTo(x, y, x + w, y, r);
+    this.closePath();
+  };
 }
 
 class KygoSensorComparison extends HTMLElement {
@@ -33,11 +48,12 @@ class KygoSensorComparison extends HTMLElement {
     this._setupAnimations();
     this._injectStructuredData();
     this._drawCharts();
-    __seo(this, 'Wearable Hardware and Software Differences Tool by Kygo Health. See exactly what makes Garmin Venu 4, Whoop 5.0, Oura Ring 4, Apple Watch Series 10, Apple Watch Ultra 3, and Fitbit Charge 6 different under the hood. Hardware differences across 16 sensor types: PPG optical heart rate, ECG, SpO2, skin temperature, EDA stress sensor, accelerometer, gyroscope, barometric altimeter, GPS, depth gauge. How hardware differences affect health metrics: HRV heart rate variability, sleep apnea detection, stress measurement, hypertension alerts, fall detection. Software differences across 25 proprietary algorithms: Garmin Body Battery and Training Readiness, Whoop Recovery Score and Strain Score and AI Coach, Oura Readiness Score and Cardiovascular Age, Apple Vitals App and Hearing Health, Fitbit Stress Management Score with EDA. Whoop vs Oura vs Garmin vs Apple Watch vs Fitbit — what is actually different about each wearable. Data verified March 2026.');
+    __seo(this, 'Wearable Hardware and Software Differences Tool by Kygo Health. See exactly what makes Garmin Venu 4, Whoop 5.0, Oura Ring 4, Apple Watch Series 10, Apple Watch Ultra 3, and Fitbit Charge 6 different under the hood. Sensor counts: Apple Watch Ultra 3 has 11 sensors (most), Garmin Venu 4 has 10, Apple Watch S10 has 10, Fitbit Charge 6 has 7, Whoop 5.0 has 4, Oura Ring 4 has 4. Hardware differences across 16 sensor types: PPG optical heart rate, ECG, SpO2, skin temperature, EDA stress sensor, accelerometer, gyroscope, barometric altimeter, GPS, depth gauge, NFC, mic/speaker, ambient light, noise level, LED flashlight, compass. Key hardware facts: Oura has 18-path PPG on the finger for best signal quality. Whoop has fastest PPG sampling at 26 Hz. Garmin has best GPS with multi-band GNSS L1/L5. Fitbit is the only device with a dedicated EDA stress sensor. Only Apple Watch detects sleep apnea using accelerometer (FDA-authorized). Only Apple Watch Ultra 3 has hypertension alerts via PPG pulse wave analysis. ECG available on Garmin, Apple Watch S10, Apple Watch Ultra 3, and Fitbit — not on Whoop 5.0 or Oura Ring 4. How hardware differences affect health metrics: HRV heart rate variability, sleep apnea detection, stress measurement, hypertension alerts, fall detection, blood oxygen SpO2, respiratory rate, skin temperature trends, cycle tracking. FDA-cleared features: Apple Watch Ultra 3 has 3 (ECG, Apnea, Hypertension), Apple Watch S10 has 2 (ECG, Apnea), Garmin has 1 (ECG/AFib), Fitbit has 1 (ECG/AFib), Whoop has 0, Oura has 0. Software differences across 25 proprietary algorithms: Garmin has 6 algorithms including Body Battery and Training Readiness and HRV Status and Health Status and Sleep Coach and Lifestyle Habit Logging. Whoop has 8 algorithms including Recovery Score and Strain Score and VO2 Max and Healthspan/Whoop Age and Hormonal Insights and Journal and Sleep Coach and Whoop Coach AI powered by OpenAI. Oura has 4 algorithms including Readiness Score and Cardiovascular Age and Cardio Capacity VO2 Max and Resilience. Apple has 4 algorithms including Sleep Score and Vitals App and Cardio Fitness VO2 Max and Hearing Health. Fitbit has 3 algorithms including Daily Readiness and Stress Management Score with EDA and Active Zone Minutes. Brand focus areas rated 0-10: Garmin strongest in Training (10) and Recovery (9). Whoop strongest in Recovery (10) and Longevity (10). Oura strongest in Sleep (10). Apple strongest in Medical (10). Fitbit strongest in Stress (9). Whoop vs Oura vs Garmin vs Apple Watch vs Fitbit — what is actually different about each wearable. Data verified March 2026.');
   }
 
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
+    if (this._resizeHandler) window.removeEventListener('resize', this._resizeHandler);
   }
 
   // ── Device Data ────────────────────────────────────────────────────────
@@ -282,17 +298,30 @@ class KygoSensorComparison extends HTMLElement {
   _drawCharts() {
     requestAnimationFrame(() => {
       setTimeout(() => {
-        this._drawSensorCountChart();
-        this._drawAlgoCountChart();
-        this._drawFdaChart();
-        this._drawBrandRadarChart();
+        this._drawAllCharts();
       }, 300);
     });
+    // Redraw on resize (debounced)
+    if (!this._resizeHandler) {
+      let resizeTimer;
+      this._resizeHandler = () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => this._drawAllCharts(), 200);
+      };
+      window.addEventListener('resize', this._resizeHandler);
+    }
+  }
+
+  _drawAllCharts() {
+    this._drawSensorCountChart();
+    this._drawAlgoCountChart();
+    this._drawFdaChart();
+    this._drawBrandRadarChart();
   }
 
   _drawSensorCountChart() {
     const canvas = this.shadowRoot.getElementById('sensorCountChart');
-    if (!canvas) return;
+    if (!canvas || !canvas.offsetWidth) return;
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     canvas.width = canvas.offsetWidth * dpr;
@@ -367,7 +396,7 @@ class KygoSensorComparison extends HTMLElement {
 
   _drawAlgoCountChart() {
     const canvas = this.shadowRoot.getElementById('algoCountChart');
-    if (!canvas) return;
+    if (!canvas || !canvas.offsetWidth) return;
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     canvas.width = canvas.offsetWidth * dpr;
@@ -426,7 +455,7 @@ class KygoSensorComparison extends HTMLElement {
 
   _drawFdaChart() {
     const canvas = this.shadowRoot.getElementById('fdaChart');
-    if (!canvas) return;
+    if (!canvas || !canvas.offsetWidth) return;
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     canvas.width = canvas.offsetWidth * dpr;
@@ -487,7 +516,7 @@ class KygoSensorComparison extends HTMLElement {
 
   _drawBrandRadarChart() {
     const canvas = this.shadowRoot.getElementById('brandRadarChart');
-    if (!canvas) return;
+    if (!canvas || !canvas.offsetWidth) return;
     const ctx = canvas.getContext('2d');
     const dpr = window.devicePixelRatio || 1;
     canvas.width = canvas.offsetWidth * dpr;
@@ -615,7 +644,7 @@ class KygoSensorComparison extends HTMLElement {
     return keys.map(dk => {
       const d = devices[dk];
       return `<div class="stat-card" style="--accent:${d.color}">
-        <img src="${d.imageUrl}" alt="${d.name}" class="stat-img" loading="lazy" />
+        <img src="${d.imageUrl}" alt="${d.name}" class="stat-img" loading="lazy" onerror="this.style.display='none'" />
         <div class="stat-info">
           <span class="stat-name">${d.short}</span>
           <span class="stat-count">${d.sensorCount} sensors</span>
@@ -721,7 +750,7 @@ class KygoSensorComparison extends HTMLElement {
       const isExpanded = this._expandedAlgo === bk;
       return `
         <div class="algo-card ${isExpanded ? 'expanded' : ''}" data-algo="${bk}" style="--delay:${i * 80}ms; --accent:${brandColors[bk]}">
-          <div class="algo-header" role="button" aria-expanded="${isExpanded}">
+          <div class="algo-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
             <div class="algo-brand">
               <span class="algo-dot" style="background:${brandColors[bk]}"></span>
               <h3>${brandNames[bk]}</h3>
@@ -766,7 +795,7 @@ class KygoSensorComparison extends HTMLElement {
       const brandColor = bk === 'apple' ? '#a855f7' : (devices[bk] ? devices[bk].color : '#6b7280');
       return `
         <div class="src-card ${isOpen ? 'open' : ''}" data-source="${bk}">
-          <div class="src-header" role="button" aria-expanded="${isOpen}">
+          <div class="src-header" role="button" tabindex="0" aria-expanded="${isOpen}">
             <span class="src-dot" style="background:${brandColor}"></span>
             <span class="src-brand">${bk === 'apple' ? 'Apple Watch' : (devices[bk] ? devices[bk].name : bk)}</span>
             <span class="src-count">${srcs.length} sources</span>
@@ -871,6 +900,22 @@ class KygoSensorComparison extends HTMLElement {
         </div>
       </section>
 
+      <!-- Blog Cross-Link -->
+      <section class="blog-link-section">
+        <div class="container">
+          <div class="blog-link-wrap animate-on-scroll">
+            <a href="https://www.kygo.app/post/wearable-hardware-vs-software-differences-2025" class="blog-link-card" target="_blank" rel="noopener">
+              <span class="blog-link-icon">${this._icon('externalLink')}</span>
+              <div class="blog-link-text">
+                <span class="blog-link-title">Read the Full Article</span>
+                <span class="blog-link-desc">Wearable Hardware vs Software Differences (2025)</span>
+              </div>
+              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <!-- Hardware Insights -->
       <section class="insights-section">
         <div class="container">
@@ -900,10 +945,10 @@ class KygoSensorComparison extends HTMLElement {
               <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" target="_blank" rel="noopener">Download for iOS</a>
               <div class="blog-cta-devices">
                 <span>Works with</span>
-                <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" onerror="this.style.display='none'" />
+                <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" onerror="this.style.display='none'" />
+                <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" onerror="this.style.display='none'" />
+                <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" onerror="this.style.display='none'" />
               </div>
             </div>
           </div>
@@ -962,10 +1007,14 @@ class KygoSensorComparison extends HTMLElement {
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Kygo App</a>
+            <a href="https://kygo.app">Home</a>
+            <a href="https://kygo.app/how-it-works">How It Works</a>
+            <a href="https://kygo.app/blog">Blog</a>
+            <a href="https://kygo.app/contact">Contact</a>
             <a href="https://kygo.app/privacy">Privacy</a>
             <a href="https://kygo.app/terms">Terms</a>
           </div>
+          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making health decisions based on wearable data.</p>
           <p class="footer-copyright">Data sourced from official manufacturer specs, support documentation, and independent reviews. Last updated March 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
@@ -1021,8 +1070,9 @@ class KygoSensorComparison extends HTMLElement {
       .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; max-width: 1200px; margin: 0 auto; }
       .logo { display: flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; }
       .logo-img { height: 28px; width: auto; }
-      .header-link { display: flex; align-items: center; gap: 6px; color: var(--green-dark); font-weight: 500; font-size: 14px; }
-      .header-link svg { width: 16px; height: 16px; }
+      .header-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #fff; background: var(--green); padding: 8px 16px; border-radius: 50px; text-decoration: none; transition: background 0.2s; }
+      .header-link:hover { background: var(--green-dark); }
+      .header-link svg { width: 14px; height: 14px; }
 
       /* Hero */
       .hero { padding: 60px 0 32px; text-align: center; }
@@ -1052,7 +1102,9 @@ class KygoSensorComparison extends HTMLElement {
       .tab-icon svg { width: 100%; height: 100%; }
 
       /* Data Table */
-      .table-scroll { overflow-x: auto; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); background: #fff; }
+      .table-scroll { overflow-x: auto; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); background: #fff; position: relative; -webkit-overflow-scrolling: touch; }
+      .table-scroll::after { content: 'Swipe to see all devices →'; display: block; text-align: center; font-size: 12px; color: var(--gray-400); padding: 8px; }
+      @media (min-width: 1024px) { .table-scroll::after { display: none; } }
       .data-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
       .data-table th { background: var(--gray-50); padding: 12px 14px; text-align: left; font-weight: 600; font-size: 12px; color: var(--gray-600); border-bottom: 1px solid var(--gray-200); white-space: nowrap; position: sticky; top: 0; z-index: 2; }
       .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
@@ -1078,7 +1130,7 @@ class KygoSensorComparison extends HTMLElement {
 
       /* Charts */
       .charts-section { padding: 48px 0; background: #fff; }
-      .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .charts-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
       .chart-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 20px; }
       .chart-card h3 { font-size: 15px; margin-bottom: 12px; color: var(--dark); }
       .chart-card canvas { width: 100%; height: auto; }
@@ -1138,6 +1190,19 @@ class KygoSensorComparison extends HTMLElement {
       .blog-cta-devices { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; font-size: 12px; color: var(--gray-400); }
       .blog-cta-devices img { height: 20px; width: auto; opacity: 0.7; }
 
+      /* Blog Cross-Link */
+      .blog-link-section { padding: 32px 0 0; }
+      .blog-link-wrap { max-width: 720px; margin: 0 auto; }
+      .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); text-decoration: none; transition: box-shadow 0.3s; }
+      .blog-link-card:hover { box-shadow: var(--shadow-hover); }
+      .blog-link-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--green-dark); flex-shrink: 0; }
+      .blog-link-icon svg { width: 24px; height: 24px; }
+      .blog-link-text { flex: 1; }
+      .blog-link-title { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--green-dark); letter-spacing: 0.3px; }
+      .blog-link-desc { display: block; font-size: 14px; font-weight: 500; color: var(--dark); margin-top: 2px; }
+      .blog-link-arrow { width: 20px; height: 20px; color: var(--green-dark); flex-shrink: 0; }
+      .blog-link-arrow svg { width: 20px; height: 20px; }
+
       /* Sources */
       .sources-section { padding: 48px 0; background: #fff; }
       .sources-list { display: flex; flex-direction: column; gap: 6px; }
@@ -1173,8 +1238,8 @@ class KygoSensorComparison extends HTMLElement {
       .cta-android:hover { border-color: #fff; }
 
       /* Android Modal */
-      .android-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
-      .android-modal.active { display: flex; }
+      .android-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+      .android-modal.active { opacity: 1; pointer-events: auto; }
       .modal-content { background: #fff; border-radius: var(--radius); padding: 32px; max-width: 400px; width: 100%; text-align: center; position: relative; color: var(--dark); }
       .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; color: var(--gray-400); cursor: pointer; }
       .modal-icon { width: 48px; height: 48px; margin: 0 auto 16px; color: var(--green); }
@@ -1195,14 +1260,13 @@ class KygoSensorComparison extends HTMLElement {
       .footer-links a { color: var(--gray-600); font-size: 13px; }
       .footer-links a:hover { color: var(--green-dark); }
       .footer-copyright { color: var(--gray-400); font-size: 12px; margin-top: 4px; }
+      .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
       .footer-affiliate { font-style: italic; }
 
       /* Responsive */
-      @media (max-width: 767px) {
-        .charts-grid { grid-template-columns: 1fr; }
-      }
       @media (min-width: 768px) {
         .hero { padding: 80px 0 40px; }
+        .charts-grid { grid-template-columns: 1fr 1fr; }
         .insights-grid { grid-template-columns: 1fr 1fr; }
         .fda-row { grid-template-columns: 200px 1fr 220px; }
       }
@@ -1326,14 +1390,55 @@ class KygoSensorComparison extends HTMLElement {
       'url': 'https://www.kygo.app/tools/sensor-comparison',
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'keywords': 'whoop vs oura vs garmin differences, apple watch vs whoop vs garmin, wearable hardware vs software, health wearable comparison 2025, garmin venu 4 vs apple watch, whoop 5.0 vs oura ring 4, fitbit charge 6 EDA stress, wearable health features differences, best health tracker comparison'
+      'keywords': 'whoop vs oura vs garmin differences, apple watch vs whoop vs garmin, wearable hardware vs software, health wearable comparison 2026, garmin venu 4 vs apple watch, whoop 5.0 vs oura ring 4, fitbit charge 6 EDA stress, wearable health features differences, best health tracker comparison 2026'
     };
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.setAttribute('data-kygo-sensor-comparison-ld', '');
     script.textContent = JSON.stringify(ld);
     document.head.appendChild(script);
+
+    // FAQ schema for rich snippets
+    if (document.querySelector('script[data-kygo-sensor-comparison-faq]')) return;
+    const faq = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': [
+        {
+          '@type': 'Question',
+          'name': 'Which wearable has the most sensors?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch Ultra 3 has the most sensors at 11, followed by Garmin Venu 4 and Apple Watch S10 at 10 each. Whoop 5.0 and Oura Ring 4 have 4 sensors each.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Which wearable has the most FDA-cleared features?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch Ultra 3 leads with 3 FDA-cleared features (ECG/AFib, Sleep Apnea, Hypertension). Apple Watch S10 has 2 (ECG, Apnea). Garmin and Fitbit each have 1 (ECG/AFib). Whoop and Oura have none.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'What is the difference between hardware and software features on wearables?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Hardware features are physical sensors (PPG, ECG, accelerometer, EDA) that collect raw biometric data. Software features are proprietary algorithms (Body Battery, Recovery Score, Readiness Score) that process sensor data into actionable health insights. The same sensor can produce very different results depending on the algorithm.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Which wearable is best for stress tracking?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Fitbit Charge 6 is the only device with a dedicated EDA (electrodermal activity) stress sensor that measures sweat gland activity — a direct nervous system signal. Garmin, Whoop, and Oura estimate stress indirectly from HRV. Apple Watch has no stress feature.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Which wearable has the best heart rate sensor?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Oura Ring 4 has the best PPG signal quality with its 18-path finger-based sensor (120% better signal vs Gen 3). Whoop 5.0 has the fastest sampling rate at 26 Hz. Garmin Elevate Gen 5 added multi-LED (green + red + IR) for better accuracy across skin tones.' }
+        }
+      ]
+    };
+    const faqScript = document.createElement('script');
+    faqScript.type = 'application/ld+json';
+    faqScript.setAttribute('data-kygo-sensor-comparison-faq', '');
+    faqScript.textContent = JSON.stringify(faq);
+    document.head.appendChild(faqScript);
   }
 }
 
-customElements.define('kygo-sensor-comparison', KygoSensorComparison);
+if (!customElements.get('kygo-sensor-comparison')) {
+  customElements.define('kygo-sensor-comparison', KygoSensorComparison);
+}
