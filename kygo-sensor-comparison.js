@@ -338,18 +338,19 @@ class KygoSensorComparison extends HTMLElement {
       { label: 'Oura', value: 4, color: '#C4A97D' }
     ];
 
+    const isMobile = w < 380;
     const maxVal = 12;
-    const barWidth = Math.min(48, (w - 80) / data.length - 12);
-    const chartLeft = 40;
-    const chartBottom = h - 36;
+    const barWidth = Math.min(48, (w - 80) / data.length - (isMobile ? 6 : 12));
+    const chartLeft = 32;
+    const chartBottom = isMobile ? h - 56 : h - 36;
     const chartTop = 16;
     const chartHeight = chartBottom - chartTop;
-    const gap = (w - chartLeft - 20) / data.length;
+    const gap = (w - chartLeft - 12) / data.length;
 
     // Grid lines
     ctx.strokeStyle = '#E2E8F0';
     ctx.lineWidth = 0.5;
-    ctx.font = '11px DM Sans, sans-serif';
+    ctx.font = `${isMobile ? 10 : 11}px DM Sans, sans-serif`;
     ctx.fillStyle = '#94A3B8';
     ctx.textAlign = 'right';
     for (let i = 0; i <= 4; i++) {
@@ -383,14 +384,24 @@ class KygoSensorComparison extends HTMLElement {
 
       // Value on bar
       ctx.fillStyle = '#1E293B';
-      ctx.font = 'bold 13px Space Grotesk, sans-serif';
+      ctx.font = `bold ${isMobile ? 11 : 13}px Space Grotesk, sans-serif`;
       ctx.textAlign = 'center';
       ctx.fillText(d.value.toString(), x + barWidth / 2, y - 5);
 
-      // Label
+      // Label — rotate on mobile to prevent overlap
       ctx.fillStyle = '#475569';
-      ctx.font = '11px DM Sans, sans-serif';
-      ctx.fillText(d.label, x + barWidth / 2, chartBottom + 16);
+      ctx.font = `${isMobile ? 10 : 11}px DM Sans, sans-serif`;
+      if (isMobile) {
+        ctx.save();
+        ctx.translate(x + barWidth / 2, chartBottom + 8);
+        ctx.rotate(-Math.PI / 4);
+        ctx.textAlign = 'right';
+        ctx.fillText(d.label, 0, 0);
+        ctx.restore();
+      } else {
+        ctx.textAlign = 'center';
+        ctx.fillText(d.label, x + barWidth / 2, chartBottom + 16);
+      }
     });
   }
 
@@ -472,44 +483,48 @@ class KygoSensorComparison extends HTMLElement {
       { label: 'Oura', value: 0, color: '#C4A97D', detail: 'None' }
     ];
 
+    const isMobile = w < 380;
     const maxVal = 3;
-    const barH = 22;
-    const gap = 8;
-    const chartLeft = 90;
-    const chartRight = w - 20;
-    const chartWidth = chartRight - chartLeft;
-    const startY = 20;
+    const barH = isMobile ? 20 : 22;
+    const gap = isMobile ? 6 : 8;
+    const labelFontSize = isMobile ? 10 : 12;
+    const chartLeft = isMobile ? 70 : 90;
+    const chartRight = w - 10;
+    // Reserve space for detail labels — use only ~45% of available width for bars
+    const maxBarWidth = (chartRight - chartLeft) * (isMobile ? 0.4 : 0.45);
+    const startY = 16;
 
     data.forEach((d, i) => {
       const y = startY + i * (barH + gap);
 
       // Label
       ctx.fillStyle = '#475569';
-      ctx.font = '12px DM Sans, sans-serif';
+      ctx.font = `${labelFontSize}px DM Sans, sans-serif`;
       ctx.textAlign = 'right';
-      ctx.fillText(d.label, chartLeft - 10, y + barH / 2 + 4);
+      ctx.fillText(d.label, chartLeft - 8, y + barH / 2 + 4);
 
       // Background bar
       ctx.fillStyle = '#F1F5F9';
       ctx.beginPath();
       const r = barH / 2;
-      ctx.roundRect(chartLeft, y, chartWidth, barH, r);
+      const bgWidth = chartRight - chartLeft;
+      ctx.roundRect(chartLeft, y, bgWidth, barH, r);
       ctx.fill();
 
       // Value bar
-      if (d.value > 0) {
-        const barW = (d.value / maxVal) * chartWidth;
+      const barW = d.value > 0 ? Math.max((d.value / maxVal) * maxBarWidth, barH) : 0;
+      if (barW > 0) {
         ctx.fillStyle = d.color;
         ctx.beginPath();
-        ctx.roundRect(chartLeft, y, Math.max(barW, barH), barH, r);
+        ctx.roundRect(chartLeft, y, barW, barH, r);
         ctx.fill();
       }
 
-      // Detail text
+      // Detail text — always positioned after bar area to prevent cutoff
       ctx.fillStyle = d.value > 0 ? '#1E293B' : '#94A3B8';
-      ctx.font = '11px DM Sans, sans-serif';
+      ctx.font = `${isMobile ? 10 : 11}px DM Sans, sans-serif`;
       ctx.textAlign = 'left';
-      const textX = d.value > 0 ? chartLeft + (d.value / maxVal) * chartWidth + 8 : chartLeft + 12;
+      const textX = d.value > 0 ? chartLeft + barW + 8 : chartLeft + 12;
       ctx.fillText(d.detail, textX, y + barH / 2 + 4);
     });
   }
@@ -905,7 +920,7 @@ class KygoSensorComparison extends HTMLElement {
         <div class="container">
           <div class="blog-link-wrap animate-on-scroll">
             <a href="https://www.kygo.app/post/wearable-hardware-vs-software-differences-2025" class="blog-link-card" target="_blank" rel="noopener">
-              <span class="blog-link-icon">${this._icon('externalLink')}</span>
+              <img src="https://static.wixstatic.com/media/273a63_d0b94a6b9cb54aff93a61cb4f2229b21~mv2.png" alt="Kygo" class="blog-link-logo" onerror="this.style.display='none'" />
               <div class="blog-link-text">
                 <span class="blog-link-title">Read the Full Article</span>
                 <span class="blog-link-desc">Wearable Hardware vs Software Differences (2025)</span>
@@ -949,6 +964,7 @@ class KygoSensorComparison extends HTMLElement {
                 <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" onerror="this.style.display='none'" />
                 <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" onerror="this.style.display='none'" />
                 <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" onerror="this.style.display='none'" />
+                <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Whoop" loading="lazy" onerror="this.style.display='none'" />
               </div>
             </div>
           </div>
@@ -1105,11 +1121,13 @@ class KygoSensorComparison extends HTMLElement {
       .table-scroll { overflow-x: auto; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); background: #fff; position: relative; -webkit-overflow-scrolling: touch; }
       .table-scroll::after { content: 'Swipe to see all devices →'; display: block; text-align: center; font-size: 12px; color: var(--gray-400); padding: 8px; }
       @media (min-width: 1024px) { .table-scroll::after { display: none; } }
-      .data-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 900px; }
+      .data-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; min-width: 900px; }
       .data-table th { background: var(--gray-50); padding: 12px 14px; text-align: left; font-weight: 600; font-size: 12px; color: var(--gray-600); border-bottom: 1px solid var(--gray-200); white-space: nowrap; position: sticky; top: 0; z-index: 2; }
       .data-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
       .data-table tr:last-child td { border-bottom: none; }
       .data-table tr:hover td { background: rgba(34,197,94,0.03); }
+      .data-table th:first-child, .data-table td:first-child { position: sticky; left: 0; z-index: 3; background: #fff; min-width: 140px; box-shadow: 2px 0 4px rgba(0,0,0,0.06); }
+      .data-table th:first-child { background: var(--gray-50); z-index: 4; }
       .col-label { min-width: 170px; }
       .col-sensor { min-width: 120px; color: var(--gray-400); font-size: 12px; }
       .col-device { min-width: 110px; }
@@ -1195,8 +1213,7 @@ class KygoSensorComparison extends HTMLElement {
       .blog-link-wrap { max-width: 720px; margin: 0 auto; }
       .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); text-decoration: none; transition: box-shadow 0.3s; }
       .blog-link-card:hover { box-shadow: var(--shadow-hover); }
-      .blog-link-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--green-dark); flex-shrink: 0; }
-      .blog-link-icon svg { width: 24px; height: 24px; }
+      .blog-link-logo { width: 36px; height: 36px; object-fit: contain; flex-shrink: 0; border-radius: 6px; }
       .blog-link-text { flex: 1; }
       .blog-link-title { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--green-dark); letter-spacing: 0.3px; }
       .blog-link-desc { display: block; font-size: 14px; font-weight: 500; color: var(--dark); margin-top: 2px; }
@@ -1256,8 +1273,8 @@ class KygoSensorComparison extends HTMLElement {
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { color: var(--gray-400); font-size: 13px; margin-bottom: 12px; }
-      .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 16px; }
-      .footer-links a { color: var(--gray-600); font-size: 13px; }
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
+      .footer-links a { color: var(--gray-600); font-size: 13px; white-space: nowrap; }
       .footer-links a:hover { color: var(--green-dark); }
       .footer-copyright { color: var(--gray-400); font-size: 12px; margin-top: 4px; }
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
