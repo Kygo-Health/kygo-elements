@@ -487,71 +487,54 @@ class KygoSensorComparison extends HTMLElement {
     ];
 
     const isMobile = w < 380;
-    const rowH = isMobile ? 32 : 36;
-    const gap = isMobile ? 4 : 6;
-    const startY = 12;
+    const maxVal = 3;
+    const barH = isMobile ? 20 : 22;
+    const gap = isMobile ? 6 : 8;
+    const labelFontSize = isMobile ? 10 : 12;
+    const chartLeft = isMobile ? 70 : 90;
+    const chartRight = w - 10;
+    const maxBarWidth = (chartRight - chartLeft) * (isMobile ? 0.35 : 0.4);
+    const startY = 16;
 
     data.forEach((d, i) => {
-      const y = startY + i * (rowH + gap);
+      const y = startY + i * (barH + gap);
 
-      // Device name
+      // Label
       ctx.fillStyle = '#475569';
-      ctx.font = `${isMobile ? 11 : 12}px DM Sans, sans-serif`;
-      ctx.textAlign = 'left';
+      ctx.font = `${labelFontSize}px DM Sans, sans-serif`;
+      ctx.textAlign = 'right';
       ctx.textBaseline = 'middle';
-      const nameX = 12;
-      const rowCy = y + rowH / 2;
+      ctx.fillText(d.label, chartLeft - 8, y + barH / 2);
 
-      // Color dot
-      ctx.fillStyle = d.color;
+      // Background bar
+      ctx.fillStyle = '#F1F5F9';
       ctx.beginPath();
-      ctx.arc(nameX + 4, rowCy, 4, 0, Math.PI * 2);
+      const r = barH / 2;
+      const bgWidth = chartRight - chartLeft;
+      ctx.roundRect(chartLeft, y, bgWidth, barH, r);
       ctx.fill();
 
-      // Name
-      ctx.fillStyle = '#1E293B';
-      ctx.font = `600 ${isMobile ? 11 : 12}px DM Sans, sans-serif`;
-      ctx.fillText(d.label, nameX + 14, rowCy);
-
-      // Count badge
-      const countX = isMobile ? w * 0.42 : w * 0.38;
-      const countSize = isMobile ? 20 : 22;
-      if (d.value > 0) {
+      // Value bar
+      const barW = d.value > 0 ? Math.max((d.value / maxVal) * maxBarWidth, barH) : 0;
+      if (barW > 0) {
         ctx.fillStyle = d.color;
         ctx.beginPath();
-        ctx.arc(countX, rowCy, countSize / 2, 0, Math.PI * 2);
+        ctx.roundRect(chartLeft, y, barW, barH, r);
         ctx.fill();
+
+        // Count number inside bar
         ctx.fillStyle = '#fff';
-        ctx.font = `bold ${isMobile ? 11 : 12}px Space Grotesk, sans-serif`;
+        ctx.font = `bold ${isMobile ? 10 : 11}px Space Grotesk, sans-serif`;
         ctx.textAlign = 'center';
-        ctx.fillText(d.value.toString(), countX, rowCy + 1);
-      } else {
-        ctx.fillStyle = '#E2E8F0';
-        ctx.beginPath();
-        ctx.arc(countX, rowCy, countSize / 2, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#94A3B8';
-        ctx.font = `${isMobile ? 10 : 11}px DM Sans, sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.fillText('0', countX, rowCy + 1);
+        ctx.fillText(d.value.toString(), chartLeft + barW / 2, y + barH / 2 + 1);
       }
 
-      // Detail text (features) — right-aligned area
-      const detailX = countX + countSize / 2 + 10;
+      // Detail text after bar
       ctx.fillStyle = d.value > 0 ? '#1E293B' : '#94A3B8';
       ctx.font = `${isMobile ? 10 : 11}px DM Sans, sans-serif`;
       ctx.textAlign = 'left';
-      ctx.fillText(d.detail, detailX, rowCy + 1);
-
-      // Subtle separator line
-      if (i < data.length - 1) {
-        ctx.strokeStyle = '#F1F5F9';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(12, y + rowH + gap / 2);
-        ctx.lineTo(w - 12, y + rowH + gap / 2);
-        ctx.stroke();
-      }
+      const textX = d.value > 0 ? chartLeft + barW + 8 : chartLeft + 12;
+      ctx.fillText(d.detail, textX, y + barH / 2 + 1);
     });
   }
 
@@ -1066,22 +1049,24 @@ class KygoSensorComparison extends HTMLElement {
       <!-- Blog CTA -->
       <section class="blog-cta-section">
         <div class="container">
-          <div class="blog-cta animate-on-scroll">
-            <div class="blog-cta-glow"></div>
-            <div class="blog-cta-content">
-              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-              <h2>Track <span class="highlight">Your Metrics</span> in One Place</h2>
-              <p>Kygo connects to your wearable and gives you a unified health dashboard — no matter which device you wear.</p>
-              <div class="blog-cta-buttons">
-                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" target="_blank" rel="noopener">Download for iOS</a>
-                <button class="blog-cta-android-btn">Android — Join Beta</button>
-              </div>
-              <div class="blog-cta-devices">
-                <span>Works with</span>
-                <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" onerror="this.style.display='none'" />
-                <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" onerror="this.style.display='none'" />
-                <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" onerror="this.style.display='none'" />
-                <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" onerror="this.style.display='none'" />
+          <div class="blog-cta-wrapper animate-on-scroll">
+            <div class="blog-cta">
+              <div class="blog-cta-glow"></div>
+              <div class="blog-cta-content">
+                <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
+                <h2>Your Wearable Tracks Everything — Except <span class="highlight">What You Eat</span></h2>
+                <p>Kygo Health connects your nutrition to your biometrics so you can finally see the full picture.</p>
+                <div class="blog-cta-buttons">
+                  <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" target="_blank" rel="noopener">Download for iOS</a>
+                  <button class="blog-cta-android-btn">Android — Join Beta</button>
+                </div>
+                <div class="blog-cta-devices">
+                  <span>Works with</span>
+                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" onerror="this.style.display='none'" />
+                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" onerror="this.style.display='none'" />
+                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" onerror="this.style.display='none'" />
+                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" onerror="this.style.display='none'" />
+                </div>
               </div>
             </div>
           </div>
@@ -1182,10 +1167,10 @@ class KygoSensorComparison extends HTMLElement {
 
       /* Header */
       .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; max-width: 1200px; margin: 0 auto; gap: 12px; }
-      .logo { display: flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; white-space: nowrap; }
-      .logo-img { height: 28px; width: auto; }
-      .header-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #fff; background: var(--green); padding: 8px 16px; border-radius: 50px; text-decoration: none; transition: background 0.2s; flex-shrink: 0; }
+      .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; max-width: 1200px; margin: 0 auto; gap: 10px; }
+      .logo { display: flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; min-width: 0; }
+      .logo-img { height: 28px; width: auto; flex-shrink: 0; }
+      .header-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #fff; background: var(--green); padding: 8px 16px; border-radius: 50px; text-decoration: none; transition: background 0.2s; flex-shrink: 0; white-space: nowrap; }
       .header-link:hover { background: var(--green-dark); }
       .header-link svg { width: 14px; height: 14px; }
 
@@ -1297,8 +1282,9 @@ class KygoSensorComparison extends HTMLElement {
       .algo-diff { font-size: 12px; color: var(--green-dark); background: var(--green-light); padding: 4px 8px; border-radius: 4px; display: inline-block; }
 
       /* Blog CTA */
-      .blog-cta-section { padding: 48px 0; }
-      .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 32px; max-width: 680px; margin: 0 auto; overflow: hidden; text-align: center; color: #fff; }
+      .blog-cta-section { padding: 48px 0; overflow: hidden; }
+      .blog-cta-wrapper { max-width: 680px; margin: 0 auto; }
+      .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 32px; overflow: hidden; text-align: center; color: #fff; }
       .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.15), transparent 70%); pointer-events: none; }
       .blog-cta-content { position: relative; z-index: 1; }
       .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 500; margin-bottom: 16px; }
@@ -1350,21 +1336,24 @@ class KygoSensorComparison extends HTMLElement {
       .src-body a svg { width: 12px; height: 12px; flex-shrink: 0; }
 
       /* Android Modal */
-      .android-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-      .android-modal.active { opacity: 1; pointer-events: auto; }
-      .modal-content { background: #fff; border-radius: var(--radius); padding: 32px; max-width: 400px; width: 100%; text-align: center; position: relative; color: var(--dark); }
+      .android-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.3s; padding: 20px; }
+      .android-modal.active { opacity: 1; visibility: visible; }
+      .modal-content { background: #fff; border-radius: var(--radius); padding: 32px; max-width: 380px; width: 90%; text-align: center; position: relative; color: var(--dark); transform: scale(0.9); transition: transform 0.3s; }
+      .android-modal.active .modal-content { transform: scale(1); }
       .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; color: var(--gray-400); cursor: pointer; }
       .modal-icon { width: 48px; height: 48px; margin: 0 auto 16px; color: var(--green); }
       .modal-icon svg { width: 100%; height: 100%; }
       .modal-content h3 { font-size: 20px; margin-bottom: 8px; }
       .modal-content > p { color: var(--gray-600); font-size: 14px; margin-bottom: 16px; }
-      .android-form { display: flex; gap: 8px; }
-      .android-form input { flex: 1; padding: 10px 14px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; }
-      .android-form button { background: var(--green); color: #fff; border: none; padding: 10px 20px; border-radius: var(--radius-sm); font-family: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
-      .success-msg { color: var(--green-dark); font-weight: 500; padding: 12px; }
+      .android-form { display: flex; flex-direction: column; gap: 12px; }
+      .android-form input { padding: 14px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-family: inherit; font-size: 15px; outline: none; transition: border-color 0.2s; }
+      .android-form input:focus { border-color: var(--green); }
+      .android-form button { background: var(--green); color: #fff; border: none; padding: 14px; border-radius: var(--radius-sm); font-family: inherit; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+      .android-form button:hover { background: var(--green-dark); }
+      .success-msg { color: var(--green-dark); font-weight: 600; padding: 20px 0; }
 
       /* Footer */
-      .tool-footer { padding: 40px 0; text-align: center; border-top: 1px solid var(--gray-200); }
+      .tool-footer { padding: 24px 0 16px; text-align: center; border-top: 1px solid var(--gray-200); }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { color: var(--gray-400); font-size: 13px; margin-bottom: 12px; }
@@ -1389,7 +1378,6 @@ class KygoSensorComparison extends HTMLElement {
       @media (max-width: 600px) {
         .fda-row { grid-template-columns: 1fr; gap: 6px; }
         .fda-bar-wrap { display: none; }
-        .android-form { flex-direction: column; }
       }
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
