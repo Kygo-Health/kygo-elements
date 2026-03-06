@@ -80,7 +80,7 @@ class KygoSensorComparison extends HTMLElement {
         algoCount: 8,
         fdaCount: 0,
         uniqueSensor: 'Fastest PPG sampling (26 Hz)',
-        affiliateUrl: 'https://www.whoop.com'
+        affiliateUrl: 'https://amzn.to/4suRaen'
       },
       oura: {
         name: 'Oura Ring 4',
@@ -711,6 +711,10 @@ class KygoSensorComparison extends HTMLElement {
                 }).join('')}
               </tr>
             `).join('')}
+            <tr class="amazon-row">
+              <td class="cell-label"></td>
+              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
+            </tr>
           </tbody>
         </table>
       </div>
@@ -748,6 +752,11 @@ class KygoSensorComparison extends HTMLElement {
                 }).join('')}
               </tr>
             `).join('')}
+            <tr class="amazon-row">
+              <td class="cell-label"></td>
+              <td></td>
+              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
+            </tr>
           </tbody>
         </table>
       </div>`;
@@ -804,15 +813,26 @@ class KygoSensorComparison extends HTMLElement {
   _renderSources() {
     const sources = this._sources;
     const devices = this._devices;
-    const brandMap = { garmin: 'garmin', whoop: 'whoop', oura: 'oura', apple: 'apple', fitbit: 'fitbit' };
+    const affiliateMap = {
+      garmin: devices.garmin.affiliateUrl,
+      whoop: devices.whoop.affiliateUrl,
+      oura: devices.oura.affiliateUrl,
+      apple: devices.appleS10.affiliateUrl,
+      fitbit: devices.fitbit.affiliateUrl
+    };
     return Object.entries(sources).map(([bk, srcs], i) => {
       const isOpen = this._expandedSource === bk;
       const brandColor = bk === 'apple' ? '#a855f7' : (devices[bk] ? devices[bk].color : '#6b7280');
+      const brandName = bk === 'apple' ? 'Apple Watch' : (devices[bk] ? devices[bk].name : bk);
+      const affUrl = affiliateMap[bk];
       return `
         <div class="src-card ${isOpen ? 'open' : ''}" data-source="${bk}">
           <div class="src-header" role="button" tabindex="0" aria-expanded="${isOpen}">
             <span class="src-dot" style="background:${brandColor}"></span>
-            <span class="src-brand">${bk === 'apple' ? 'Apple Watch' : (devices[bk] ? devices[bk].name : bk)}</span>
+            <div class="src-brand-wrap">
+              <span class="src-brand">${brandName}</span>
+              ${affUrl ? `<a href="${affUrl}" class="src-amazon-link" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>` : ''}
+            </div>
             <span class="src-count">${srcs.length} sources</span>
             <span class="src-toggle">${this._icon('chevDown')}</span>
           </div>
@@ -1128,6 +1148,11 @@ class KygoSensorComparison extends HTMLElement {
       .data-table tr:hover td { background: rgba(34,197,94,0.03); }
       .data-table th:first-child, .data-table td:first-child { position: sticky; left: 0; z-index: 3; background: #fff; min-width: 140px; box-shadow: 2px 0 4px rgba(0,0,0,0.06); }
       .data-table th:first-child { background: var(--gray-50); z-index: 4; }
+      .amazon-row td { border-top: 2px solid var(--gray-200); background: var(--gray-50) !important; padding: 12px 14px; }
+      .amazon-link { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; color: var(--green-dark); text-decoration: none; white-space: nowrap; transition: color 0.2s; }
+      .amazon-link:hover { color: var(--green); }
+      .amazon-arrow { display: inline-flex; }
+      .amazon-arrow svg { width: 14px; height: 14px; }
       .col-label { min-width: 170px; }
       .col-sensor { min-width: 120px; color: var(--gray-400); font-size: 12px; }
       .col-device { min-width: 110px; }
@@ -1225,8 +1250,12 @@ class KygoSensorComparison extends HTMLElement {
       .sources-list { display: flex; flex-direction: column; gap: 6px; }
       .src-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; }
       .src-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: pointer; font-size: 14px; font-weight: 500; }
+      .src-brand-wrap { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+      .src-amazon-link { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 600; color: var(--green-dark); text-decoration: none; transition: color 0.2s; }
+      .src-amazon-link:hover { color: var(--green); }
+      .src-amazon-link svg { width: 12px; height: 12px; }
       .src-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-      .src-count { font-size: 12px; color: var(--gray-400); margin-left: auto; }
+      .src-count { font-size: 12px; color: var(--gray-400); flex-shrink: 0; }
       .src-toggle { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; }
       .src-toggle svg { width: 100%; height: 100%; }
       .src-card.open .src-toggle { transform: rotate(180deg); }
