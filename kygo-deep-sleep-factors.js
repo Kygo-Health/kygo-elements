@@ -655,8 +655,8 @@ class KygoDeepSleepFactors extends HTMLElement {
 
   _renderSortBar() {
     return `
-      <span class="sort-label">Sort by</span>
-      <select class="sort-select">
+      <label class="sort-label" for="sort-select">Sort by:</label>
+      <select class="sort-select" id="sort-select">
         <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
         <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
         <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
@@ -714,7 +714,7 @@ class KygoDeepSleepFactors extends HTMLElement {
                 <span class="detail-label">Source</span>
                 <a href="${f.source.url}" class="source-link" target="_blank" rel="noopener">${f.source.label} ${this._icon('externalLink')}</a>
               </div>
-              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored"><span>${f.affiliate.label}</span><span>View on Amazon ${this._icon('externalLink')}</span></a>` : ''}
+              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored"><span>Check it out on Amazon</span><span class="factor-affiliate-arrow">${this._icon('externalLink')}</span></a>` : ''}
             </div>
           </div>
         </div>`;
@@ -831,7 +831,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       <header class="header">
         <div class="header-inner">
           <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" loading="lazy" />
+            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Deep Sleep Factors
           </a>
           <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
@@ -884,16 +884,24 @@ class KygoDeepSleepFactors extends HTMLElement {
       <!-- Blog CTA -->
       <section class="blog-cta-section">
         <div class="container">
-          <div class="blog-cta-card">
-            <div class="blog-cta-badge"><span class="pulse-dot"></span> Free on iOS</div>
-            <h2>Track Your <span class="highlight">Deep Sleep</span> Recovery</h2>
-            <p class="blog-cta-desc">Kygo connects your wearable data to nutrition and lifestyle — so you can see what actually improves your sleep.</p>
-            <a href="${iosUrl}" class="blog-cta-btn" target="_blank" rel="noopener">Download for iOS</a>
-            <div class="blog-cta-tags">
-              <span class="blog-cta-tag"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" /> Oura</span>
-              <span class="blog-cta-tag"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" /> Apple</span>
-              <span class="blog-cta-tag"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" /> Fitbit</span>
-              <span class="blog-cta-tag"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" /> Garmin</span>
+          <div class="blog-cta">
+            <div class="blog-cta-glow"></div>
+            <div class="blog-cta-content">
+              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free on iOS</div>
+              <h2>Track Your <span class="highlight">Deep Sleep</span> Recovery</h2>
+              <p>Kygo connects your wearable data to nutrition and lifestyle — so you can see what actually improves your sleep.</p>
+              <a href="${iosUrl}" class="blog-cta-btn" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                Download for iOS
+              </a>
+              <button class="cta-android">Android — Join Beta</button>
+              <div class="blog-cta-tags">
+                <span>Works with</span>
+                <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
+              </div>
             </div>
           </div>
         </div>
@@ -905,24 +913,6 @@ class KygoDeepSleepFactors extends HTMLElement {
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">Every claim backed by peer-reviewed research.</p>
           <div class="src-accordion animate-on-scroll">${this._renderSources()}</div>
-        </div>
-      </section>
-
-      <!-- CTA Section -->
-      <section class="cta-section">
-        <div class="container">
-          <div class="cta-inner">
-            <div class="cta-icon">${this._icon('moon')}</div>
-            <h2>Optimize Your Deep Sleep</h2>
-            <p>Track nutrition, supplements, and wearable data in one place. See what actually moves your deep sleep.</p>
-            <a href="${iosUrl}" class="cta-btn" target="_blank" rel="noopener">Download for iOS — Free</a>
-            <div class="cta-features">
-              <span class="cta-feature">${this._icon('heart')} Wearable Sync</span>
-              <span class="cta-feature">${this._icon('pill')} Supplement Tracking</span>
-              <span class="cta-feature">${this._icon('brain')} Sleep Insights</span>
-            </div>
-            <button class="cta-android">Android — Join Beta</button>
-          </div>
         </div>
       </section>
 
@@ -951,10 +941,14 @@ class KygoDeepSleepFactors extends HTMLElement {
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Kygo App</a>
+            <a href="https://kygo.app">Home</a>
+            <a href="https://kygo.app/how-it-works">How It Works</a>
+            <a href="https://kygo.app/blog">Blog</a>
+            <a href="https://kygo.app/contact">Contact</a>
             <a href="https://kygo.app/privacy">Privacy</a>
             <a href="https://kygo.app/terms">Terms</a>
           </div>
+          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated March 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
@@ -998,6 +992,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       }
       *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
       h1, h2, h3, h4 { font-family: 'Space Grotesk', -apple-system, sans-serif; font-weight: 600; line-height: 1.2; }
+      a { color: var(--green); text-decoration: none; }
       .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
       /* Animations */
@@ -1038,7 +1033,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .pick-toggle svg { width: 24px; height: 24px; }
       .pick-card.expanded .pick-toggle { transform: rotate(180deg); }
       .pick-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
-      .pick-card.expanded .pick-body { max-height: 200px; padding: 0 20px 16px; }
+      .pick-card.expanded .pick-body { max-height: 300px; padding: 0 20px 16px; }
       .pick-warning { border-color: rgba(239,68,68,0.3); }
       .pick-warning .pick-icon { background: rgba(239,68,68,0.1); color: var(--red); }
       .pick-stat-detail { font-size: 13px; color: var(--dark); margin-bottom: 8px; font-weight: 500; }
@@ -1093,6 +1088,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .factor-card.expanded .factor-body { max-height: 800px; padding: 0 20px 20px; }
       .factor-detail { border-top: 1px solid var(--gray-100); padding-top: 16px; }
       .detail-row { margin-bottom: 12px; }
+      .detail-row:last-child { margin-bottom: 0; }
       .detail-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); margin-bottom: 2px; }
       .detail-value { font-size: 14px; color: var(--gray-600); line-height: 1.5; }
       .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green); font-weight: 500; font-size: 13px; text-decoration: none; }
@@ -1100,7 +1096,8 @@ class KygoDeepSleepFactors extends HTMLElement {
       .source-link svg { width: 12px; height: 12px; }
       .factor-affiliate { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: 12px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.2s; }
       .factor-affiliate:hover { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
-      .factor-affiliate svg { width: 12px; height: 12px; }
+      .factor-affiliate-arrow { width: 14px; height: 14px; display: flex; }
+      .factor-affiliate-arrow svg { width: 100%; height: 100%; }
 
       /* Blog Cross-Link */
       .blog-link-wrap { max-width: 720px; margin: 32px auto 0; }
@@ -1116,19 +1113,21 @@ class KygoDeepSleepFactors extends HTMLElement {
 
       /* Blog CTA Section */
       .blog-cta-section { padding: 48px 0; }
-      .blog-cta-card { position: relative; max-width: 680px; margin: 0 auto; padding: 40px 32px; background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700) 100%); border-radius: var(--radius); text-align: center; color: #fff; overflow: hidden; }
-      .blog-cta-card::before { content: ''; position: absolute; top: -50%; right: -30%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(34,197,94,0.15), transparent 70%); pointer-events: none; }
-      .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: rgba(255,255,255,0.1); border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+      .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 28px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
+      .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
+      .blog-cta-content { position: relative; z-index: 1; }
+      .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
       .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
       @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-      .blog-cta-card h2 { font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
-      .highlight { color: var(--green); }
-      .blog-cta-desc { font-size: 15px; color: var(--gray-300); max-width: 480px; margin: 0 auto 20px; }
-      .blog-cta-btn { display: inline-block; padding: 12px 28px; background: var(--green); color: #fff; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 15px; transition: background 0.2s; }
+      .blog-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
+      .blog-cta .highlight { color: var(--green); }
+      .blog-cta p { color: var(--gray-400); font-size: 14px; margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
       .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-tags { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 20px; }
-      .blog-cta-tag { display: flex; align-items: center; gap: 4px; padding: 4px 10px; background: rgba(255,255,255,0.08); border-radius: 50px; font-size: 12px; font-weight: 500; }
-      .blog-cta-tag img { width: 16px; height: 16px; border-radius: 4px; }
+      .blog-cta-btn svg { width: 18px; height: 18px; }
+      .blog-cta-tags { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+      .blog-cta-tags span { color: var(--gray-400); font-size: 12px; }
+      .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
 
       /* Sources Section */
       .sources-section { padding: 48px 0; }
@@ -1151,25 +1150,13 @@ class KygoDeepSleepFactors extends HTMLElement {
       .src-ext { width: 14px; height: 14px; color: var(--gray-400); flex-shrink: 0; }
       .src-ext svg { width: 14px; height: 14px; }
 
-      /* CTA Section */
-      .cta-section { padding: 64px 0; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: #fff; text-align: center; position: relative; overflow: hidden; }
-      .cta-section::before { content: ''; position: absolute; top: 50%; left: 50%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255,255,255,0.1), transparent 70%); transform: translate(-50%, -50%); pointer-events: none; }
-      .cta-inner { position: relative; z-index: 1; }
-      .cta-icon { width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-      .cta-icon svg { width: 28px; height: 28px; }
-      .cta-section h2 { font-size: clamp(24px, 6vw, 36px); margin-bottom: 12px; }
-      .cta-section p { font-size: 16px; opacity: 0.9; max-width: 480px; margin: 0 auto 24px; }
-      .cta-btn { display: inline-block; padding: 14px 32px; background: #fff; color: var(--green-dark); text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 16px; transition: transform 0.2s, box-shadow 0.2s; }
-      .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
-      .cta-features { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-top: 20px; font-size: 14px; font-weight: 500; }
-      .cta-feature { display: flex; align-items: center; gap: 6px; opacity: 0.9; }
-      .cta-feature svg { width: 16px; height: 16px; }
-      .cta-android { display: inline-block; margin-top: 16px; padding: 10px 24px; background: transparent; border: 2px solid rgba(255,255,255,0.5); color: #fff; border-radius: 50px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
-      .cta-android:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+      /* Android button (in Blog CTA) */
+      .cta-android { margin-top: 16px; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94A3B8; padding: 10px 24px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+      .cta-android:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.25); color: #fff; }
 
       /* Android Modal */
-      .android-modal { display: none; position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; }
-      .android-modal.active { display: flex; }
+      .android-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+      .android-modal.active { opacity: 1; pointer-events: auto; }
       .modal-content { background: #fff; border-radius: var(--radius); padding: 32px; max-width: 400px; width: 90%; text-align: center; position: relative; color: var(--dark); }
       .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-400); }
       .modal-icon { width: 48px; height: 48px; background: var(--green-light); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; color: var(--green-dark); }
@@ -1177,21 +1164,22 @@ class KygoDeepSleepFactors extends HTMLElement {
       .modal-content h3 { margin-bottom: 8px; }
       .modal-content p { font-size: 14px; color: var(--gray-600); margin-bottom: 16px; }
       .android-form { display: flex; gap: 8px; }
-      .android-form input { flex: 1; padding: 10px 14px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; }
+      .android-form input { flex: 1; padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; font-family: inherit; outline: none; }
       .android-form input:focus { border-color: var(--green); outline: none; }
       .android-form button { padding: 10px 16px; background: var(--green); color: #fff; border: none; border-radius: var(--radius-sm); font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap; font-family: inherit; }
       .android-form button:hover { background: var(--green-dark); }
       .success-msg { color: var(--green-dark); font-weight: 600; padding: 12px 0; }
 
       /* Footer */
-      .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--dark); font-size: 16px; }
+      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
+      .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { font-size: 13px; color: var(--gray-400); margin: 8px 0; }
-      .footer-links { display: flex; justify-content: center; gap: 16px; margin: 12px 0; }
-      .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; }
+      .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
+      .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; white-space: nowrap; }
       .footer-links a:hover { color: var(--green); }
-      .footer-copyright { font-size: 12px; color: var(--gray-400); margin-top: 8px; }
+      .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
+      .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
       .footer-affiliate { font-style: italic; }
 
       /* Responsive */
@@ -1256,34 +1244,50 @@ class KygoDeepSleepFactors extends HTMLElement {
         srcToggle.setAttribute('aria-expanded', group.classList.contains('open'));
         return;
       }
+
+      // Android modal open
+      const androidBtn = e.target.closest('.cta-android');
+      if (androidBtn) {
+        e.preventDefault();
+        shadow.querySelector('.android-modal').classList.add('active');
+        return;
+      }
+
+      // Modal close
+      const modalClose = e.target.closest('.modal-close');
+      if (modalClose) {
+        shadow.querySelector('.android-modal').classList.remove('active');
+        return;
+      }
+
+      // Modal backdrop
+      if (e.target.classList.contains('android-modal')) {
+        e.target.classList.remove('active');
+        return;
+      }
     });
 
     // Sort select
     shadow.addEventListener('change', (e) => {
       if (e.target.classList.contains('sort-select')) {
         this._sortMode = e.target.value;
-        const cards = shadow.querySelector('.factor-cards');
-        if (cards) cards.innerHTML = this._renderFactorCards();
+        this._updateCategory();
       }
     });
 
-    // Android modal
-    const _ab = shadow.querySelector('.cta-android');
-    const _am = shadow.querySelector('.android-modal');
-    const _mc = shadow.querySelector('.modal-close');
-    const _af = shadow.querySelector('.android-form');
-    if (_ab) _ab.addEventListener('click', (e) => { e.preventDefault(); _am.classList.add('active'); });
-    if (_mc) _mc.addEventListener('click', () => _am.classList.remove('active'));
-    if (_am) _am.addEventListener('click', (e) => { if (e.target === _am) _am.classList.remove('active'); });
-    if (_af) _af.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = _af.querySelector('input').value;
-      if (email) {
-        this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true }));
-        _af.innerHTML = '<p class="success-msg">You\'re on the list!</p>';
-        setTimeout(() => _am.classList.remove('active'), 2000);
-      }
-    });
+    // Android form submit
+    const form = shadow.querySelector('.android-form');
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = form.querySelector('input').value;
+        if (email) {
+          this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true }));
+          form.innerHTML = '<p class="success-msg">You\'re on the list!</p>';
+          setTimeout(() => shadow.querySelector('.android-modal').classList.remove('active'), 2000);
+        }
+      });
+    }
 
     // Keyboard support
     shadow.addEventListener('keydown', (e) => {
@@ -1330,6 +1334,7 @@ class KygoDeepSleepFactors extends HTMLElement {
   _injectStructuredData() {
     const guardAttr = 'data-kygo-deep-sleep-factors-ld';
     if (document.querySelector(`script[${guardAttr}]`)) return;
+
     const ld = {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
@@ -1342,11 +1347,37 @@ class KygoDeepSleepFactors extends HTMLElement {
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
       'keywords': 'deep sleep factors, how to increase deep sleep, what affects deep sleep, best supplements for deep sleep, slow wave sleep, N3 sleep, how to get more deep sleep, deep sleep and exercise, caffeine deep sleep, deep sleep and age, SWS factors, improve deep sleep naturally'
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.setAttribute(guardAttr, '');
-    script.textContent = JSON.stringify(ld);
-    document.head.appendChild(script);
+
+    const faq = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': this._topPicks.map(p => ({
+        '@type': 'Question',
+        'name': p.label + '?',
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': p.answer + ' — ' + p.note
+        }
+      }))
+    };
+
+    const breadcrumb = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+        { '@type': 'ListItem', 'position': 3, 'name': 'Deep Sleep Factors', 'item': 'https://www.kygo.app/tools/deep-sleep-factors' }
+      ]
+    };
+
+    [ld, faq, breadcrumb].forEach(data => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute(guardAttr, '');
+      script.textContent = JSON.stringify(data);
+      document.head.appendChild(script);
+    });
   }
 }
 
