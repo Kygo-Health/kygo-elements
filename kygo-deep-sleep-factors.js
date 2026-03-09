@@ -605,7 +605,7 @@ class KygoDeepSleepFactors extends HTMLElement {
   _icon(name) {
     const icons = {
       sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
-      pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 1.5 3 3L5 13 2 10z"/><path d="m13.5 4.5 3 3"/><path d="m2 10 3 3"/></svg>',
+      pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 1.5 3 3L5.3 12.7a4.24 4.24 0 0 1-6-6L7.5 4.5l3-3z"/><path d="m9 9 6.4-6.4a4.24 4.24 0 0 1 6 6L15 15"/><line x1="14.5" y1="13.5" x2="10.5" y2="9.5"/></svg>',
       moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
       brain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A5.5 5.5 0 0 0 4 7.5c0 1.28.44 2.46 1.17 3.39A5.49 5.49 0 0 0 4 14.5 5.5 5.5 0 0 0 9.5 20h0a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 9.5 2z"/><path d="M14.5 2A5.5 5.5 0 0 1 20 7.5c0 1.28-.44 2.46-1.17 3.39A5.49 5.49 0 0 1 20 14.5 5.5 5.5 0 0 1 14.5 20h0a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 14.5 2z"/></svg>',
       users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
@@ -685,7 +685,6 @@ class KygoDeepSleepFactors extends HTMLElement {
 
     return factors.map((f, i) => {
       const dc = this._directionConfig(f.direction);
-      const ec = this._evidenceConfig(f.evidence);
       const isExp = this._expandedFactor === f.key;
       return `
         <div class="factor-card ${isExp ? 'expanded' : ''}" data-factor="${f.key}" style="--delay:${i * 60}ms">
@@ -695,7 +694,6 @@ class KygoDeepSleepFactors extends HTMLElement {
                 <span class="badge-direction" style="color:${dc.color};background:${dc.bg}">
                   <span class="badge-icon">${this._icon(dc.icon)}</span>${dc.label}
                 </span>
-                <span class="badge-evidence" style="color:${ec.color};background:${ec.bg}">${ec.label}</span>
               </div>
               <div class="factor-toggle">${this._icon('chevDown')}</div>
             </div>
@@ -732,7 +730,7 @@ class KygoDeepSleepFactors extends HTMLElement {
     return this._topPicks.map((p, i) => {
       const isExp = this._expandedTopPick === i;
       return `
-        <div class="pick-card ${isExp ? 'expanded' : ''} ${p.warning ? 'pick-warning' : ''}" data-pick="${i}">
+        <div class="pick-card ${isExp ? 'expanded' : ''} ${p.warning ? 'pick-warning' : ''} animate-on-scroll" data-pick="${i}" style="--delay:${i * 80}ms">
           <div class="pick-header" role="button" aria-expanded="${isExp}" tabindex="0">
             <div class="pick-icon"><span>${this._icon(p.icon)}</span></div>
             <div class="pick-info">
@@ -875,9 +873,9 @@ class KygoDeepSleepFactors extends HTMLElement {
           <div class="factor-cards animate-on-scroll">${this._renderFactorCards()}</div>
 
           <!-- Blog cross-link -->
-          <div class="blog-link-wrap">
+          <div class="blog-link-wrap animate-on-scroll">
             <a href="https://www.kygo.app/post/deep-sleep-influences" class="blog-link-card" target="_blank" rel="noopener">
-              <div class="blog-link-icon">${this._icon('book')}</div>
+              <div class="blog-link-icon"><img src="${logoUrl}" alt="Kygo" style="width:24px;height:24px;" /></div>
               <div class="blog-link-text">
                 <span class="blog-link-title">Deep Dive Article</span>
                 <span class="blog-link-desc">Read our full guide: What Influences Deep Sleep?</span>
@@ -891,7 +889,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       <!-- Blog CTA -->
       <section class="blog-cta-section">
         <div class="container">
-          <div class="blog-cta">
+          <div class="blog-cta animate-on-scroll">
             <div class="blog-cta-glow"></div>
             <div class="blog-cta-content">
               <div class="blog-cta-badge"><span class="pulse-dot"></span>Free on iOS</div>
@@ -928,7 +926,7 @@ class KygoDeepSleepFactors extends HTMLElement {
         <div class="modal-content">
           <button class="modal-close">&times;</button>
           <div class="modal-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36"><path d="M17.6 11.48V8a.5.5 0 0 0-1 0v3.48a4 4 0 0 1-2.1.58h-5a4 4 0 0 1-2.1-.58V8a.5.5 0 0 0-1 0v3.48A3.5 3.5 0 0 0 4 15v2.5a.5.5 0 0 0 1 0V15a2.5 2.5 0 0 1 1.4-2.24V16a2 2 0 0 0 2 2h7.2a2 2 0 0 0 2-2v-3.24A2.5 2.5 0 0 1 19 15v2.5a.5.5 0 0 0 1 0V15a3.5 3.5 0 0 0-2.4-3.52zM14.5 5.5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/></svg>
           </div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>
@@ -1011,7 +1009,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 12px 16px; }
       .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); }
       .logo-img { height: 28px; width: auto; }
-      .header-link { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--green); color: #fff; text-decoration: none; border-radius: 50px; font-size: 13px; font-weight: 600; transition: background 0.2s; }
+      .header-link { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--green); color: #fff; text-decoration: none; border-radius: 50px; font-size: 13px; font-weight: 600; transition: background 0.2s; white-space: nowrap; }
       .header-link:hover { background: var(--green-dark); }
       .header-link svg { width: 14px; height: 14px; }
 
