@@ -33,7 +33,7 @@ class KygoDeepSleepFactors extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Deep Sleep Factor Explorer by Kygo Health. Explore 38 research-backed factors that affect Deep Sleep N3 slow-wave sleep across 5 categories: Lifestyle and Behavior, Supplements and Micronutrients, Environment and Circadian, Stress and Mental Health, and Biology and Demographics. Lifestyle factors include Aerobic Exercise with 33 percent increase in SWS from moderate cardio, Exercise SWS Quality with increased delta power, Alcohol with mixed net negative effects front-loading then disrupting SWS, Caffeine 400mg reducing N3 by 29.7 minutes at 4 hours pre-bed, Fiber Intake predicting more SWS, High-Carb High-GI reducing sleep onset but not increasing SWS, Smoking and Nicotine reducing N3 by 32.3 minutes, Cannabis THC with net negative chronic effects on delta power, Dehydration reducing SWS by 24 minutes, Napping late afternoon reducing nighttime N3, and Sleep Consistency increasing SWS significantly. Supplements include Magnesium increasing SWS by 6.4 minutes in elderly, Glycine shortening latency to SWS, L-Theanine boosting delta waves, Ashwagandha increasing delta band power, Tart Cherry increasing total sleep time by 84 minutes, Passionflower increasing TST by 23 minutes, Melatonin promoting NREM via MT2 receptors, Omega-3 DHA improving sleep efficiency, and Vitamin D with inconclusive N3 evidence. Environment factors include Body Cooling adding 7.5 minutes N3, Ambient Temperature optimal 18-22C, Blue Light reducing frontal slow-wave activity, Aircraft Noise reducing N3 by 23 minutes, Closed-Loop Audio enhancing slow oscillations, Altitude reducing SWA by 15 percent at 2590m, and Bedroom CO2 linearly reducing SWS. Stress factors include Cortisol HPA Axis bidirectional relationship with SWS, Depression MDD with markedly decreased N3, Anxiety Disorders reducing deep SWS percentage, and Vipassana Meditation preserving SWS with meditators showing 10.63 percent vs 3.94 percent at age 50-60. Biology factors include Age with SWS declining from 18.9 to 3.4 percent, Sex with women maintaining more SWS, PER2 Gene variant reducing SWS by 22 percent, BMI Obesity inversely correlated with SWA, Neurodegeneration with bidirectional amyloid-beta relationship, and Gut Microbiome diversity correlating with sleep efficiency. How to increase deep sleep naturally. What affects deep sleep. Best supplements for deep sleep. How to get more slow wave sleep. What kills deep sleep. Data sourced from peer-reviewed studies and meta-analyses published through 2026.');
+    __seo(this, 'Deep Sleep Factor Explorer by Kygo Health. Explore 29 research-backed factors that affect Deep Sleep N3 slow-wave sleep across 5 categories: Lifestyle and Behavior, Supplements and Micronutrients, Environment and Circadian, Stress and Mental Health, and Biology and Demographics. Lifestyle factors include Exercise with 33 percent increase in SWS and increased delta power from moderate cardio, Alcohol with mixed net negative effects front-loading then disrupting SWS, Caffeine 400mg reducing N3 by 29.7 minutes at 4 hours pre-bed, Fiber Intake predicting more SWS, High-Carb High-GI with faster sleep onset but reduced SWS where low carb diets show more N3, Smoking and Nicotine with significant N3 reduction, Cannabis THC with net negative chronic effects on delta power, Dehydration reducing SWS by 24 minutes, Napping late afternoon reducing nighttime N3, and Sleep Consistency increasing SWS significantly. Supplements include Magnesium increasing SWS by 6.4 minutes in elderly, Glycine shortening latency to SWS, Tart Cherry increasing total sleep time by 84 minutes, and Melatonin helping via circadian and homeostatic pathways. Environment factors include Temperature with cooling mattress adding 7.5 minutes N3 and optimal room temp 18-22C, Blue Light reducing frontal slow-wave activity, Aircraft Noise reducing N3 by 23 minutes, Closed-Loop Audio enhancing slow oscillations, Altitude reducing SWA by 15 percent at 2590m, and Bedroom CO2 linearly reducing SWS. Stress factors include Depression MDD with markedly decreased N3, Anxiety Disorders reducing deep SWS percentage, and Vipassana Meditation preserving SWS with meditators showing 10.63 percent vs 3.94 percent at age 50-60. Biology factors include Age with SWS declining from 18.9 to 3.4 percent, Sex with women maintaining more SWS, PER2 Gene variant reducing SWS by 22 percent, BMI Obesity inversely correlated with SWA, and Gut Microbiome diversity correlating with sleep efficiency. Why deep sleep matters: SWS drives glymphatic clearance of amyloid-beta and tau proteins linked to neurodegeneration. How to increase deep sleep naturally. What affects deep sleep. Best supplements for deep sleep. How to get more slow wave sleep. What kills deep sleep. Data sourced from peer-reviewed studies and meta-analyses published through 2026.');
   }
 
   disconnectedCallback() {
@@ -44,11 +44,11 @@ class KygoDeepSleepFactors extends HTMLElement {
 
   get _categories() {
     return {
-      lifestyle: { name: 'Lifestyle & Behavior', icon: 'sun', count: 11 },
-      supplements: { name: 'Supplements & Micronutrients', icon: 'pill', count: 9 },
-      environment: { name: 'Environment & Circadian', icon: 'moon', count: 7 },
-      stress: { name: 'Stress & Mental Health', icon: 'brain', count: 4 },
-      biology: { name: 'Biology & Demographics', icon: 'users', count: 7 }
+      lifestyle: { name: 'Lifestyle & Behavior', icon: 'sun', count: 10 },
+      supplements: { name: 'Supplements & Micronutrients', icon: 'pill', count: 4 },
+      environment: { name: 'Environment & Circadian', icon: 'moon', count: 6 },
+      stress: { name: 'Stress & Mental Health', icon: 'brain', count: 3, intro: 'Stress and deep sleep form a vicious cycle: SWS suppresses cortisol via GABAergic hypothalamic pathways, but when deep sleep is reduced, next-day cortisol rises — making it harder to get deep sleep the following night. Breaking this cycle is the common thread across all stress-related factors below.' },
+      biology: { name: 'Biology & Demographics', icon: 'users', count: 6 }
     };
   }
 
@@ -58,28 +58,16 @@ class KygoDeepSleepFactors extends HTMLElement {
     return {
       lifestyle: [
         {
-          key: 'aerobic-exercise',
-          name: 'Aerobic Exercise',
+          key: 'exercise',
+          name: 'Exercise',
           direction: 'positive',
           evidence: 'strong',
           effect: 'Positive (strong)',
-          keyFinding: '33% SWS increase, meta-analysis',
-          whatThisMeans: 'Consistent moderate cardio is one of the most reliable ways to increase deep sleep. You don\'t need to go all-out — 3-4 sessions per week at moderate effort works.',
-          mechanism: 'Moderate aerobic exercise increases homeostatic sleep pressure (adenosine accumulation) and enhances thermoregulatory processes that promote SWS entry.',
-          dosage: 'Moderate intensity (40% VO2max), 3-4x/week, 8-12 weeks for sustained effect',
+          keyFinding: '+33% SWS; also increases delta power & stability',
+          whatThisMeans: 'Consistent moderate cardio is one of the most reliable ways to increase deep sleep. 3-4 sessions per week at moderate effort works. Beyond duration, exercise also improves deep sleep quality — increased delta power and more stable SWS architecture show up on EEG even when you don\'t subjectively feel a difference.',
+          mechanism: 'Moderate aerobic exercise increases homeostatic sleep pressure (adenosine accumulation) and enhances thermoregulatory processes that promote SWS entry. Also increases slow-wave activity (delta power) and stabilizes SWS architecture in early sleep cycles.',
+          dosage: 'Moderate intensity (40% VO2max), 3-4x/week, 8-12 weeks for sustained effect; effects strongest in early sleep cycles',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/31095458/', label: 'Aritake-Okada 2019' }
-        },
-        {
-          key: 'exercise-quality',
-          name: 'Exercise (SWS Quality)',
-          direction: 'positive',
-          evidence: 'moderate',
-          effect: 'Positive (delta power)',
-          keyFinding: 'Increased delta power & SWS stability',
-          whatThisMeans: 'Exercise improves deep sleep quality in ways you might not feel subjectively but that show up clearly on EEG. Even when you don\'t "feel" like you slept better, the data says you did.',
-          mechanism: 'Physical activity increases slow-wave activity (delta power) and stabilizes SWS architecture in early sleep cycles via enhanced adenosine signaling.',
-          dosage: 'Regular moderate exercise; effects strongest in early sleep cycles',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7904822/', label: 'Nature Sci Reports 2021' }
         },
         {
           key: 'alcohol',
@@ -122,11 +110,11 @@ class KygoDeepSleepFactors extends HTMLElement {
           name: 'High-Carb / High-GI',
           direction: 'mixed',
           evidence: 'moderate',
-          effect: 'Mixed',
-          keyFinding: 'Faster sleep onset but less SWS',
-          whatThisMeans: 'High-carb meals help you fall asleep faster but don\'t actually give you more deep sleep. They may even reduce it while increasing REM.',
-          mechanism: 'High-GI foods increase tryptophan uptake (reducing sleep latency) but insulin-mediated shifts in amino acid ratios may alter neurotransmitter balance away from SWS promotion.',
-          dosage: 'Effect is meal-dependent; timing matters more than total intake',
+          effect: 'Mixed (net negative for SWS)',
+          keyFinding: 'Faster sleep onset but reduced SWS. Low carb diets show more N3.',
+          whatThisMeans: 'High-carb meals help you fall asleep faster but actually reduce deep sleep. Low carbohydrate diets are associated with more N3/SWS. If deep sleep is your goal, cutting carbs — especially high-GI carbs at dinner — may help.',
+          mechanism: 'High-GI foods increase tryptophan uptake (reducing sleep latency) but insulin-mediated shifts in amino acid ratios alter neurotransmitter balance away from SWS promotion. Low carb intake preserves more delta-wave generating capacity.',
+          dosage: 'Low carb diets favor more SWS; effect is meal-dependent; timing matters more than total intake',
           source: { url: 'https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2022.933898/full', label: 'Frontiers Nutrition 2022' }
         },
         {
@@ -135,10 +123,10 @@ class KygoDeepSleepFactors extends HTMLElement {
           direction: 'negative',
           evidence: 'strong',
           effect: 'Negative',
-          keyFinding: 'NRT: −32.3 min N3 vs non-smokers',
-          whatThisMeans: 'Nicotine directly suppresses deep sleep. NRT patches are even worse than smoking for N3 (probably sustained nicotine delivery). Quitting restores it.',
+          keyFinding: 'NRT: significant N3 reduction vs non-smokers',
+          whatThisMeans: 'Nicotine directly suppresses deep sleep. NRT patches are even worse than smoking for N3 (probably sustained nicotine delivery). Quitting restores it. Note: the exact magnitude of reduction could not be independently verified from published abstracts; the general direction (smoking reduces N3, quitting restores it) is well-confirmed.',
           mechanism: 'Nicotinic acetylcholine receptor activation promotes cortical arousal and suppresses thalamocortical slow oscillations that generate delta waves.',
-          dosage: 'Any nicotine exposure; NRT patches worst due to sustained delivery',
+          dosage: 'Any nicotine exposure reduces N3; NRT patches worst due to sustained delivery; quitting restores deep sleep',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/41197178/', label: 'Tab-OSA Study 2025' }
         },
         {
@@ -220,32 +208,6 @@ class KygoDeepSleepFactors extends HTMLElement {
           affiliate: { url: 'https://amzn.to/3OyDz7c', label: 'Glycine Powder' }
         },
         {
-          key: 'l-theanine',
-          name: 'L-Theanine',
-          direction: 'positive',
-          evidence: 'moderate',
-          effect: 'Positive (delta power)',
-          keyFinding: 'Boosted delta waves; reversed caffeine suppression',
-          whatThisMeans: 'L-theanine (especially with magnesium) enhanced delta wave activity, but most studies use combination formulas so it\'s hard to isolate L-theanine\'s effect on N3.',
-          mechanism: 'Crosses blood-brain barrier, increases alpha waves and GABA release, reduces cortisol and sympathetic activation. May directly enhance delta-generating thalamocortical circuits.',
-          dosage: '200 mg daily, often combined with magnesium',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9017334/', label: 'PMC 2022' },
-          affiliate: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }
-        },
-        {
-          key: 'ashwagandha',
-          name: 'Ashwagandha',
-          direction: 'positive',
-          evidence: 'moderate',
-          effect: 'Positive (delta power)',
-          keyFinding: 'Delta power increase (p<0.001)',
-          whatThisMeans: 'Ashwagandha boosted delta brain waves in lab studies. The GABA mechanism makes sense but human polysomnography data specifically measuring N3 duration is limited.',
-          mechanism: 'Withanolides enhance GABAAρ1 receptor expression (1.38-1.94 fold), increasing GABAergic inhibition that promotes thalamocortical slow oscillations.',
-          dosage: '300-600 mg standardized extract daily',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9007714/', label: 'PMC 2022' },
-          affiliate: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }
-        },
-        {
           key: 'tart-cherry',
           name: 'Tart Cherry',
           direction: 'positive',
@@ -259,95 +221,43 @@ class KygoDeepSleepFactors extends HTMLElement {
           affiliate: { url: 'https://amzn.to/406okEX', label: 'Tart Cherry Juice' }
         },
         {
-          key: 'passionflower',
-          name: 'Passionflower',
-          direction: 'positive',
-          evidence: 'moderate',
-          effect: 'Positive (TST)',
-          keyFinding: '+23 min TST (p=0.049), n=110',
-          whatThisMeans: 'Passionflower added about 23 minutes of total sleep in the largest supplement RCT on this list. Effect on deep sleep specifically was not isolated.',
-          mechanism: 'Chrysin and other flavonoids bind GABAA receptors, promoting anxiolysis and sleep. MAOI activity may also increase serotonin availability for melatonin synthesis.',
-          dosage: 'Standardized extract; dose varies by product',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11026993/', label: 'PMC 2024 RCT' },
-          affiliate: { url: 'https://amzn.to/40AsqFp', label: 'Passionflower Extract' }
-        },
-        {
           key: 'melatonin',
           name: 'Melatonin',
           direction: 'positive',
           evidence: 'moderate',
           effect: 'Positive (via MT2 receptors)',
           keyFinding: 'MT2 activation → +31% NREM, +33% delta',
-          whatThisMeans: 'Melatonin mainly helps you fall asleep at the right time. It does appear to increase delta power through MT2 receptors, but its primary value is circadian regulation — not directly boosting deep sleep duration.',
+          whatThisMeans: 'Helps via circadian and homeostatic pathways. More about sleep timing than N3 depth. MT2 receptors do increase delta power, but melatonin\'s primary value is regulating when you sleep rather than how deep.',
           mechanism: 'Selective MT2 receptor activation in the reticular thalamic nucleus promotes NREM sleep and enhances delta power. MT1 receptors primarily regulate REM.',
           dosage: '0.5-3 mg, 30-60 min before bed; timing > dose',
           source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/jpi.13011', label: 'Comai et al. 2024' },
           affiliate: { url: 'https://amzn.to/4szGon9', label: 'Melatonin Supplement' }
-        },
-        {
-          key: 'omega-3',
-          name: 'Omega-3 (DHA)',
-          direction: 'positive',
-          evidence: 'moderate',
-          effect: 'Positive (efficiency)',
-          keyFinding: 'Sleep efficiency +1.88pp (meta)',
-          whatThisMeans: 'DHA improved overall sleep efficiency but the research doesn\'t isolate a specific N3/SWS effect. Benefits are likely indirect through inflammation reduction.',
-          mechanism: 'DHA incorporates into neuronal membranes, altering ion channel kinetics. Anti-inflammatory effects via resolvin/protectin pathways reduce autonomic disruption during sleep.',
-          dosage: 'DHA-rich oil; 26-week supplementation in studies',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11579846/', label: 'PMC 2024' },
-          affiliate: { url: 'https://amzn.to/4cVnvGt', label: 'Omega-3 Fish Oil' }
-        },
-        {
-          key: 'vitamin-d',
-          name: 'Vitamin D',
-          direction: 'variable',
-          evidence: 'emerging',
-          effect: 'Inconclusive for N3',
-          keyFinding: 'RCT n=189: no sleep improvement',
-          whatThisMeans: 'Being deficient in vitamin D is associated with worse sleep, but supplementing it doesn\'t clearly improve deep sleep based on current evidence.',
-          mechanism: 'VDR expression on hypothalamic neurons suggests a role in sleep regulation, but interventional data shows no direct effect on sleep architecture in non-deficient populations.',
-          dosage: 'Correct deficiency; target 30-50 ng/mL',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8912284/', label: 'PMC 2022' },
-          affiliate: { url: 'https://amzn.to/4d853un', label: 'Vitamin D3' }
         }
       ],
 
       environment: [
         {
-          key: 'body-cooling',
-          name: 'Body Cooling',
+          key: 'temperature',
+          name: 'Temperature',
           direction: 'positive',
           evidence: 'strong',
           effect: 'Positive (strong)',
-          keyFinding: '+7.5 min N3 (p=0.004), n=72',
-          whatThisMeans: 'Cooling your body (not just your room) reliably increases deep sleep. The research points to heat dissipation as the mechanism, not just feeling cold.',
-          mechanism: 'Increasing the core-to-skin temperature gradient via conductive cooling promotes hypothalamic thermoregulatory signaling that gates SWS entry and maintenance.',
-          dosage: 'High-heat-capacity cooling mattress; effect driven by core-to-skin gradient',
+          keyFinding: '+7.5 min N3 from cooling mattress; optimal room temp 18-22°C',
+          whatThisMeans: 'Cooling your body reliably increases deep sleep — a cooling mattress added 7.5 minutes of N3 per night. Keep your bedroom between 64-72°F (18-22°C). Going above 77°F starts cutting into deep sleep, particularly as you age.',
+          mechanism: 'Increasing the core-to-skin temperature gradient via conductive cooling promotes hypothalamic thermoregulatory signaling that gates SWS entry and maintenance. Heat exposure above 25°C triggers thermoregulatory arousal responses.',
+          dosage: 'Cooling mattress for body temp; bedroom 18-22°C (64-72°F); older adults more sensitive to heat',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/38409133/', label: 'Herberger et al. 2024' },
           affiliate: { url: 'https://amzn.to/4aYRATe', label: 'Cooling Mattress Pad' }
-        },
-        {
-          key: 'ambient-temp',
-          name: 'Ambient Temperature',
-          direction: 'variable',
-          evidence: 'strong',
-          effect: 'Optimal range',
-          keyFinding: '18-22°C optimal; >25°C reduces N3',
-          whatThisMeans: 'Keep your bedroom between 64-72°F. Going above 77°F starts cutting into deep sleep, particularly as you age.',
-          mechanism: 'Thermoneutral zone supports the natural core body temperature drop required for SWS. Heat exposure above 25°C triggers thermoregulatory arousal responses.',
-          dosage: '18-22°C (64-72°F); older adults more sensitive to heat',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6491874/', label: 'PMC Review 2023' },
-          affiliate: { url: 'https://amzn.to/40gYtKD', label: 'CO₂ & Temp Monitor' }
         },
         {
           key: 'blue-light',
           name: 'Blue Light (Evening)',
           direction: 'negative',
           evidence: 'moderate',
-          effect: 'Negative (frontal SWA)',
-          keyFinding: '6500K light reduced frontal SWA in cycle 1',
-          whatThisMeans: 'Evening screen use reduces deep sleep in the early part of the night. The individual study effects are real but the meta-analysis says the overall evidence is moderate, not overwhelming.',
-          mechanism: 'Blue-enriched light (6500K) suppresses melatonin via melanopsin-expressing ipRGCs and delays circadian phase, reducing frontal slow-wave activity in the first sleep cycle.',
+          effect: 'Negative (SWA reduction)',
+          keyFinding: '6500K light reduced frontal SWA',
+          whatThisMeans: 'Evening screen use reduces deep sleep. The individual study effects are real but the meta-analysis says the overall evidence is moderate, not overwhelming. Note: specific timing claims about which part of the night is most affected could not be verified.',
+          mechanism: 'Blue-enriched light (6500K) suppresses melatonin via melanopsin-expressing ipRGCs and delays circadian phase, reducing frontal slow-wave activity.',
           dosage: 'Avoid 6500K+ light 90 min before bed; blue-light filters help',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23509952/', label: 'Chellappa et al. 2013' },
           affiliate: { url: 'https://amzn.to/4cwMwI1', label: 'Blue Light Blocking Glasses' }
@@ -406,25 +316,13 @@ class KygoDeepSleepFactors extends HTMLElement {
 
       stress: [
         {
-          key: 'cortisol-hpa',
-          name: 'Cortisol / HPA Axis',
-          direction: 'mixed',
-          evidence: 'strong',
-          effect: 'Bidirectional',
-          keyFinding: 'SWS suppresses cortisol; deprivation raises it',
-          whatThisMeans: 'Deep sleep puts the brakes on your stress hormones. Less deep sleep = more cortisol the next day = worse sleep the next night. It\'s a vicious cycle that feeds itself.',
-          mechanism: 'SWS exerts inhibitory influence on HPA axis via GABAergic hypothalamic pathways. SWS deprivation removes this brake, elevating next-day cortisol and perpetuating the cycle.',
-          dosage: 'Manage stress; protect sleep schedule; break the cortisol-SWS cycle',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4397399/', label: 'PMC 2015' }
-        },
-        {
           key: 'depression',
           name: 'Depression (MDD)',
           direction: 'negative',
           evidence: 'strong',
           effect: 'Negative (strong)',
           keyFinding: '37% SWA reduction → 10% symptom improvement',
-          whatThisMeans: 'Depression profoundly disrupts deep sleep architecture. The first sleep cycle, which should be your deepest, is most affected.',
+          whatThisMeans: 'Depression profoundly disrupts deep sleep architecture. N3 reduction in MDD is well-confirmed, though specific claims about which sleep cycles are most affected could not be independently verified.',
           mechanism: 'Serotonergic dysregulation in MDD impairs thalamocortical slow-wave generation. Hyperarousal of the default mode network during NREM reduces delta consolidation.',
           dosage: 'Treat underlying depression; CBT-I as adjunctive therapy',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7866255/', label: 'PMC 2021' }
@@ -502,7 +400,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           whatThisMeans: 'About 1 in 3 people carry a clock gene variant that gives them ~20 fewer minutes of deep sleep. You can\'t change your genes but it explains some individual variation.',
           mechanism: 'PER2 rs6753456 minor allele alters circadian clock protein expression, shifting the timing and amplitude of the homeostatic SWS drive.',
           dosage: 'Non-modifiable; explains individual variation',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/27089043/', label: 'Parsons et al. 2016' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/27089043/', label: 'Chang et al., Chronobiology International 2016' }
         },
         {
           key: 'bmi-obesity',
@@ -515,18 +413,6 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Adipose-derived inflammatory cytokines (TNF-α, IL-6) impair thalamocortical slow-oscillation generation. OSA-induced arousals fragment N3.',
           dosage: 'Maintain healthy BMI; treat sleep apnea if present',
           source: { url: 'https://academic.oup.com/sleep/article/44/8/zsab031/6305987', label: 'Wisconsin Sleep Cohort' }
-        },
-        {
-          key: 'neurodegeneration',
-          name: 'Neurodegeneration',
-          direction: 'mixed',
-          evidence: 'strong',
-          effect: 'Bidirectional',
-          keyFinding: 'SWS disruption → amyloid-β ↑ (r=0.61)',
-          whatThisMeans: 'Deep sleep is when your brain takes out the trash (amyloid plaques). Less deep sleep = more Alzheimer\'s-related proteins building up. It\'s likely a vicious cycle.',
-          mechanism: 'SWS drives glymphatic clearance of amyloid-β and tau via perivascular CSF flow. Reduced SWS allows toxic protein accumulation, which further impairs SWS — a feedforward loop.',
-          dosage: 'Protect deep sleep; exercise, cooling, and stress management all help',
-          source: { url: 'https://academic.oup.com/brain/article/140/8/2104/3933862', label: 'Ju et al. 2017' }
         },
         {
           key: 'gut-microbiome',
@@ -551,8 +437,8 @@ class KygoDeepSleepFactors extends HTMLElement {
       {
         icon: 'trophy',
         label: 'Best Single Habit',
-        answer: 'Aerobic Exercise',
-        note: '33% increase in SWS — the most reliable, repeatable way to boost deep sleep',
+        answer: 'Exercise',
+        note: '33% increase in SWS plus enhanced delta power — the most reliable, repeatable way to boost deep sleep',
         stat: '33% SWS increase',
         category: 'Lifestyle'
       },
@@ -567,8 +453,8 @@ class KygoDeepSleepFactors extends HTMLElement {
       {
         icon: 'thermometer',
         label: 'Quickest Impact',
-        answer: 'Body Cooling',
-        note: '+7.5 min N3/night from a cooling mattress — works from night one',
+        answer: 'Temperature Control',
+        note: '+7.5 min N3/night from a cooling mattress — works from night one. Keep room at 18-22°C.',
         stat: '+7.5 min N3, p=0.004',
         category: 'Environment'
       },
@@ -674,6 +560,8 @@ class KygoDeepSleepFactors extends HTMLElement {
   _renderFactorCards() {
     let factors = this._factors[this._activeCategory];
     if (!factors) return '<p>No factors in this category.</p>';
+    const catInfo = this._categories[this._activeCategory];
+    const introHtml = catInfo && catInfo.intro ? `<div class="category-intro">${catInfo.intro}</div>` : '';
 
     if (this._sortMode === 'evidence') {
       const rank = { strong: 0, moderate: 1, emerging: 2 };
@@ -683,7 +571,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
     }
 
-    return factors.map((f, i) => {
+    return introHtml + factors.map((f, i) => {
       const dc = this._directionConfig(f.direction);
       const isExp = this._expandedFactor === f.key;
       return `
@@ -848,9 +736,12 @@ class KygoDeepSleepFactors extends HTMLElement {
       <!-- Hero -->
       <section class="hero">
         <div class="container">
-          <div class="hero-badge animate-on-scroll">38 FACTORS • 5 CATEGORIES • ALL PEER-REVIEWED</div>
+          <div class="hero-badge animate-on-scroll">29 FACTORS • 5 CATEGORIES • ALL PEER-REVIEWED</div>
           <h1 class="animate-on-scroll">What Actually Drives Your Deep Sleep?</h1>
           <p class="hero-sub animate-on-scroll">We dug into every credible study on slow-wave sleep — supplements, lifestyle, environment, stress, and biology — ranked by evidence strength. Here's what actually moves the needle and what doesn't.</p>
+          <div class="hero-callout animate-on-scroll">
+            <strong>Why deep sleep matters:</strong> SWS drives glymphatic clearance of amyloid-β and tau proteins via perivascular CSF flow. Reduced deep sleep allows toxic protein accumulation linked to neurodegeneration — and that accumulation further impairs SWS, creating a feedforward loop. Protecting your deep sleep is protecting your brain.
+          </div>
         </div>
       </section>
 
@@ -866,7 +757,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       <!-- Explore All Factors -->
       <section class="explore-section" id="explore">
         <div class="container">
-          <h2 class="section-title animate-on-scroll">Explore All 38 Factors</h2>
+          <h2 class="section-title animate-on-scroll">Explore All 29 Factors</h2>
           <p class="section-sub animate-on-scroll">Filter by category, sort by evidence or direction, and expand any card for full details.</p>
           <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
           <div class="sort-bar animate-on-scroll">${this._renderSortBar()}</div>
@@ -1018,6 +909,8 @@ class KygoDeepSleepFactors extends HTMLElement {
       .hero-badge { display: inline-block; padding: 6px 16px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; border-radius: 50px; margin-bottom: 16px; }
       .hero h1 { font-size: clamp(26px, 7vw, 40px); max-width: 700px; margin: 0 auto 16px; }
       .hero-sub { font-size: 16px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
+      .hero-callout { max-width: 640px; margin: 20px auto 0; padding: 16px 20px; background: rgba(99,102,241,0.08); border-left: 3px solid #6366F1; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 14px; color: var(--gray-600); text-align: left; line-height: 1.6; }
+      .hero-callout strong { color: var(--dark); }
 
       /* Section titles */
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
@@ -1066,6 +959,9 @@ class KygoDeepSleepFactors extends HTMLElement {
       .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; }
       .sort-select { padding: 6px 28px 6px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance: none; appearance: none; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; }
       .sort-select:hover, .sort-select:focus { border-color: var(--green); outline: none; }
+
+      /* Category Intro */
+      .category-intro { grid-column: 1 / -1; padding: 14px 18px; background: rgba(99,102,241,0.06); border-left: 3px solid #6366F1; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 14px; color: var(--gray-600); line-height: 1.6; margin-bottom: 4px; }
 
       /* Factor Cards Grid */
       .factor-cards { display: grid; grid-template-columns: 1fr; gap: 12px; }
@@ -1344,10 +1240,10 @@ class KygoDeepSleepFactors extends HTMLElement {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
       'name': 'Deep Sleep Factor Explorer',
-      'description': 'Explore 38 research-backed factors that affect deep sleep (N3/SWS) — lifestyle, supplements, environment, stress, and biology ranked by evidence strength.',
+      'description': 'Explore 29 research-backed factors that affect deep sleep (N3/SWS) — lifestyle, supplements, environment, stress, and biology ranked by evidence strength.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
-      'url': 'https://www.kygo.app/tools/deep-sleep-factors',
+      'url': 'https://kygo.app/tools/deep-sleep-factors',
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
       'keywords': 'deep sleep factors, how to increase deep sleep, what affects deep sleep, best supplements for deep sleep, slow wave sleep, N3 sleep, how to get more deep sleep, deep sleep and exercise, caffeine deep sleep, deep sleep and age, SWS factors, improve deep sleep naturally'
