@@ -33,7 +33,7 @@ class KygoDeepSleepFactors extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Deep Sleep Factor Explorer by Kygo Health. Explore 29 research-backed factors that affect Deep Sleep N3 slow-wave sleep across 5 categories: Lifestyle and Behavior, Supplements and Micronutrients, Environment and Circadian, Stress and Mental Health, and Biology and Demographics. Lifestyle factors include Exercise with 33 percent increase in SWS and increased delta power from moderate cardio, Alcohol with mixed net negative effects front-loading then disrupting SWS, Caffeine 400mg reducing N3 by 29.7 minutes at 4 hours pre-bed, Fiber Intake predicting more SWS, High-Carb High-GI with faster sleep onset but reduced SWS where low carb diets show more N3, Smoking and Nicotine with significant N3 reduction, Cannabis THC with net negative chronic effects on delta power, Dehydration reducing SWS by 24 minutes, Napping late afternoon reducing nighttime N3, and Sleep Consistency increasing SWS significantly. Supplements include Magnesium increasing SWS by 6.4 minutes in elderly, Glycine shortening latency to SWS, Tart Cherry increasing total sleep time by 84 minutes, and Melatonin helping via circadian and homeostatic pathways. Environment factors include Temperature with cooling mattress adding 7.5 minutes N3 and optimal room temp 18-22C, Blue Light reducing frontal slow-wave activity, Aircraft Noise reducing N3 by 23 minutes, Closed-Loop Audio enhancing slow oscillations, Altitude reducing SWA by 15 percent at 2590m, and Bedroom CO2 linearly reducing SWS. Stress factors include Depression MDD with markedly decreased N3, Anxiety Disorders reducing deep SWS percentage, and Vipassana Meditation preserving SWS with meditators showing 10.63 percent vs 3.94 percent at age 50-60. Biology factors include Age with SWS declining from 18.9 to 3.4 percent, Sex with women maintaining more SWS, PER2 Gene variant reducing SWS by 22 percent, BMI Obesity inversely correlated with SWA, and Gut Microbiome diversity correlating with sleep efficiency. Why deep sleep matters: SWS drives glymphatic clearance of amyloid-beta and tau proteins linked to neurodegeneration. How to increase deep sleep naturally. What affects deep sleep. Best supplements for deep sleep. How to get more slow wave sleep. What kills deep sleep. Data sourced from peer-reviewed studies and meta-analyses published through 2026.');
+    __seo(this, 'Deep Sleep Factor Explorer by Kygo Health. Explore 29 research-backed factors that affect Deep Sleep N3 slow-wave sleep across 5 categories: Lifestyle and Behavior, Supplements and Micronutrients, Environment and Circadian, Stress and Mental Health, and Biology and Demographics. Lifestyle factors include Exercise with 33 percent increase in SWS and increased delta power from moderate cardio, Alcohol with mixed net negative effects front-loading then disrupting SWS, Caffeine 400mg reducing N3 by 29.7 minutes at 4 hours pre-bed, Fiber Intake predicting more SWS, High-Carb High-GI with faster sleep onset but reduced SWS where low carb diets show more N3, Smoking and Nicotine with significant N3 reduction, Cannabis THC with net negative chronic effects on delta power, Dehydration reducing SWS by 24 minutes, Napping late afternoon reducing nighttime N3, and Sleep Consistency increasing SWS significantly. Supplements include Magnesium increasing SWS by 6.4 minutes in elderly, Glycine shortening latency to SWS, Tart Cherry increasing total sleep time by 84 minutes, and Melatonin helping via circadian and homeostatic pathways. Environment factors include Temperature with cooling mattress adding 7.5 minutes N3 and optimal room temp 18-22C, Blue Light reducing frontal slow-wave activity, Aircraft Noise reducing N3 by 23 minutes, Closed-Loop Audio enhancing slow oscillations, Altitude reducing SWA by 15 percent at 2590m, and Bedroom CO2 linearly reducing SWS. Stress factors include Depression MDD with markedly decreased N3, Anxiety Disorders reducing deep SWS percentage, and Vipassana Meditation preserving SWS with meditators showing 10.63 percent vs 3.94 percent at age 50-60. Biology factors include Age with SWS declining from 18.9 to 3.4 percent, Sex with women maintaining more SWS, PER2 Gene variant reducing SWS by 22 percent, BMI Obesity inversely correlated with SWA, and Gut Microbiome diversity correlating with sleep efficiency. How to increase deep sleep naturally. What affects deep sleep. Best supplements for deep sleep. How to get more slow wave sleep. What kills deep sleep. Data sourced from peer-reviewed studies and meta-analyses published through 2026.');
   }
 
   disconnectedCallback() {
@@ -739,9 +739,6 @@ class KygoDeepSleepFactors extends HTMLElement {
           <div class="hero-badge animate-on-scroll">29 FACTORS • 5 CATEGORIES • ALL PEER-REVIEWED</div>
           <h1 class="animate-on-scroll">What Actually Drives Your Deep Sleep?</h1>
           <p class="hero-sub animate-on-scroll">We dug into every credible study on slow-wave sleep — supplements, lifestyle, environment, stress, and biology — ranked by evidence strength. Here's what actually moves the needle and what doesn't.</p>
-          <div class="hero-callout animate-on-scroll">
-            <strong>Why deep sleep matters:</strong> SWS drives glymphatic clearance of amyloid-β and tau proteins via perivascular CSF flow. Reduced deep sleep allows toxic protein accumulation linked to neurodegeneration — and that accumulation further impairs SWS, creating a feedforward loop. Protecting your deep sleep is protecting your brain.
-          </div>
         </div>
       </section>
 
@@ -905,19 +902,17 @@ class KygoDeepSleepFactors extends HTMLElement {
       .header-link svg { width: 14px; height: 14px; }
 
       /* Hero */
-      .hero { padding: 48px 0 32px; text-align: center; }
+      .hero { padding: 48px 0 32px; text-align: center; background: #fff; }
       .hero-badge { display: inline-block; padding: 6px 16px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; border-radius: 50px; margin-bottom: 16px; }
       .hero h1 { font-size: clamp(26px, 7vw, 40px); max-width: 700px; margin: 0 auto 16px; }
       .hero-sub { font-size: 16px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
-      .hero-callout { max-width: 640px; margin: 20px auto 0; padding: 16px 20px; background: rgba(99,102,241,0.08); border-left: 3px solid #6366F1; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 14px; color: var(--gray-600); text-align: left; line-height: 1.6; }
-      .hero-callout strong { color: var(--dark); }
 
       /* Section titles */
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; font-size: 15px; color: var(--gray-600); max-width: 600px; margin: 0 auto 24px; }
 
       /* Quick Answers / Top Picks */
-      .picks-section { padding: 48px 0; }
+      .picks-section { padding: 48px 0; background: #fff; }
       .picks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
       .pick-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s; }
       .pick-card:hover { box-shadow: var(--shadow-hover); }
@@ -941,7 +936,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
       /* Explore Section */
-      .explore-section { padding: 48px 0; }
+      .explore-section { padding: 48px 0; background: var(--gray-50); }
 
       /* Category Tabs */
       .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
@@ -1013,7 +1008,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .blog-link-arrow svg { width: 20px; height: 20px; }
 
       /* Blog CTA Section */
-      .blog-cta-section { padding: 48px 0; }
+      .blog-cta-section { padding: 48px 0; background: var(--gray-50); }
       .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 28px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
       .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
       .blog-cta-content { position: relative; z-index: 1; }
@@ -1031,7 +1026,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
 
       /* Sources Section */
-      .sources-section { padding: 48px 0; }
+      .sources-section { padding: 48px 0; background: #fff; }
       .src-accordion { max-width: 720px; margin: 0 auto; }
       .src-count-badge { text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-400); margin-bottom: 16px; }
       .src-group { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: #fff; }
