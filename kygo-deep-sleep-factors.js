@@ -336,7 +336,8 @@ class KygoDeepSleepFactors extends HTMLElement {
           whatThisMeans: 'Keep your bedroom between 64-72°F. Going above 77°F starts cutting into deep sleep, particularly as you age.',
           mechanism: 'Thermoneutral zone supports the natural core body temperature drop required for SWS. Heat exposure above 25°C triggers thermoregulatory arousal responses.',
           dosage: '18-22°C (64-72°F); older adults more sensitive to heat',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6491874/', label: 'PMC Review 2023' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6491874/', label: 'PMC Review 2023' },
+          affiliate: { url: 'https://amzn.to/40gYtKD', label: 'CO₂ & Temp Monitor' }
         },
         {
           key: 'blue-light',
