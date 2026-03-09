@@ -905,7 +905,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .header-link svg { width: 14px; height: 14px; }
 
       /* Hero */
-      .hero { padding: 48px 0 32px; text-align: center; }
+      .hero { padding: 48px 0 32px; text-align: center; background: #fff; }
       .hero-badge { display: inline-block; padding: 6px 16px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; border-radius: 50px; margin-bottom: 16px; }
       .hero h1 { font-size: clamp(26px, 7vw, 40px); max-width: 700px; margin: 0 auto 16px; }
       .hero-sub { font-size: 16px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
@@ -917,7 +917,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .section-sub { text-align: center; font-size: 15px; color: var(--gray-600); max-width: 600px; margin: 0 auto 24px; }
 
       /* Quick Answers / Top Picks */
-      .picks-section { padding: 48px 0; }
+      .picks-section { padding: 48px 0; background: #fff; }
       .picks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
       .pick-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s; }
       .pick-card:hover { box-shadow: var(--shadow-hover); }
@@ -941,7 +941,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
       /* Explore Section */
-      .explore-section { padding: 48px 0; }
+      .explore-section { padding: 48px 0; background: var(--gray-50); }
 
       /* Category Tabs */
       .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
@@ -1013,7 +1013,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .blog-link-arrow svg { width: 20px; height: 20px; }
 
       /* Blog CTA Section */
-      .blog-cta-section { padding: 48px 0; }
+      .blog-cta-section { padding: 48px 0; background: var(--gray-50); }
       .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 28px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
       .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
       .blog-cta-content { position: relative; z-index: 1; }
@@ -1031,7 +1031,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
 
       /* Sources Section */
-      .sources-section { padding: 48px 0; }
+      .sources-section { padding: 48px 0; background: #fff; }
       .src-accordion { max-width: 720px; margin: 0 auto; }
       .src-count-badge { text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-400); margin-bottom: 16px; }
       .src-group { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: #fff; }
