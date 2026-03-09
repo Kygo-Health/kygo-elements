@@ -730,7 +730,7 @@ class KygoDeepSleepFactors extends HTMLElement {
     return this._topPicks.map((p, i) => {
       const isExp = this._expandedTopPick === i;
       return `
-        <div class="pick-card ${isExp ? 'expanded' : ''} ${p.warning ? 'pick-warning' : ''}" data-pick="${i}">
+        <div class="pick-card ${isExp ? 'expanded' : ''} ${p.warning ? 'pick-warning' : ''} animate-on-scroll" data-pick="${i}" style="--delay:${i * 80}ms">
           <div class="pick-header" role="button" aria-expanded="${isExp}" tabindex="0">
             <div class="pick-icon"><span>${this._icon(p.icon)}</span></div>
             <div class="pick-info">
@@ -873,9 +873,9 @@ class KygoDeepSleepFactors extends HTMLElement {
           <div class="factor-cards animate-on-scroll">${this._renderFactorCards()}</div>
 
           <!-- Blog cross-link -->
-          <div class="blog-link-wrap">
+          <div class="blog-link-wrap animate-on-scroll">
             <a href="https://www.kygo.app/post/deep-sleep-influences" class="blog-link-card" target="_blank" rel="noopener">
-              <div class="blog-link-icon">${this._icon('book')}</div>
+              <div class="blog-link-icon"><img src="${logoUrl}" alt="Kygo" style="width:24px;height:24px;" /></div>
               <div class="blog-link-text">
                 <span class="blog-link-title">Deep Dive Article</span>
                 <span class="blog-link-desc">Read our full guide: What Influences Deep Sleep?</span>
@@ -889,7 +889,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       <!-- Blog CTA -->
       <section class="blog-cta-section">
         <div class="container">
-          <div class="blog-cta">
+          <div class="blog-cta animate-on-scroll">
             <div class="blog-cta-glow"></div>
             <div class="blog-cta-content">
               <div class="blog-cta-badge"><span class="pulse-dot"></span>Free on iOS</div>
@@ -926,7 +926,7 @@ class KygoDeepSleepFactors extends HTMLElement {
         <div class="modal-content">
           <button class="modal-close">&times;</button>
           <div class="modal-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36"><path d="M17.6 11.48V8a.5.5 0 0 0-1 0v3.48a4 4 0 0 1-2.1.58h-5a4 4 0 0 1-2.1-.58V8a.5.5 0 0 0-1 0v3.48A3.5 3.5 0 0 0 4 15v2.5a.5.5 0 0 0 1 0V15a2.5 2.5 0 0 1 1.4-2.24V16a2 2 0 0 0 2 2h7.2a2 2 0 0 0 2-2v-3.24A2.5 2.5 0 0 1 19 15v2.5a.5.5 0 0 0 1 0V15a3.5 3.5 0 0 0-2.4-3.52zM14.5 5.5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/></svg>
           </div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>

@@ -825,7 +825,7 @@ class KygoHrvFactors extends HTMLElement {
           <!-- Read Full Article (cross-link) -->
           <div class="blog-link-wrap animate-on-scroll">
             <a href="https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence" class="blog-link-card" target="_blank" rel="noopener">
-              <span class="blog-link-icon">${this._icon('book')}</span>
+              <span class="blog-link-icon"><img src="${logoUrl}" alt="Kygo" style="width:24px;height:24px;" /></span>
               <div class="blog-link-text">
                 <span class="blog-link-title">Read the Full Article</span>
                 <span class="blog-link-desc">How to Improve HRV: 44 Factors Ranked by Evidence (2026)</span>
