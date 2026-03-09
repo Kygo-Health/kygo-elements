@@ -187,7 +187,8 @@ class KygoDeepSleepFactors extends HTMLElement {
           whatThisMeans: 'Going to bed and waking up at the same time reliably increases deep sleep. One of the most underappreciated and controllable factors — and irregular sleep patterns are independently linked to mortality risk.',
           mechanism: 'Consistent sleep timing strengthens circadian entrainment of the suprachiasmatic nucleus, optimizing the alignment between homeostatic sleep pressure and circadian SWS promotion windows.',
           dosage: 'Consistent bed/wake times; minimize weekend shift',
-          source: { url: 'https://www.whoop.com/us/en/press-center/whoop-study-published-in-sleep-finds/', label: 'WHOOP/SLEEP Study' }
+          source: { url: 'https://www.whoop.com/us/en/press-center/whoop-study-published-in-sleep-finds/', label: 'WHOOP/SLEEP Study' },
+          affiliate: { url: 'https://amzn.to/4saSeEc', label: 'Sunrise Alarm Clock' }
         }
       ],
 
@@ -280,7 +281,8 @@ class KygoDeepSleepFactors extends HTMLElement {
           whatThisMeans: 'Melatonin mainly helps you fall asleep at the right time. It does appear to increase delta power through MT2 receptors, but its primary value is circadian regulation — not directly boosting deep sleep duration.',
           mechanism: 'Selective MT2 receptor activation in the reticular thalamic nucleus promotes NREM sleep and enhances delta power. MT1 receptors primarily regulate REM.',
           dosage: '0.5-3 mg, 30-60 min before bed; timing > dose',
-          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/jpi.13011', label: 'Comai et al. 2024' }
+          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/jpi.13011', label: 'Comai et al. 2024' },
+          affiliate: { url: 'https://amzn.to/4szGon9', label: 'Melatonin Supplement' }
         },
         {
           key: 'omega-3',
@@ -305,7 +307,8 @@ class KygoDeepSleepFactors extends HTMLElement {
           whatThisMeans: 'Being deficient in vitamin D is associated with worse sleep, but supplementing it doesn\'t clearly improve deep sleep based on current evidence.',
           mechanism: 'VDR expression on hypothalamic neurons suggests a role in sleep regulation, but interventional data shows no direct effect on sleep architecture in non-deficient populations.',
           dosage: 'Correct deficiency; target 30-50 ng/mL',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8912284/', label: 'PMC 2022' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8912284/', label: 'PMC 2022' },
+          affiliate: { url: 'https://amzn.to/4d853un', label: 'Vitamin D3' }
         }
       ],
 
@@ -345,7 +348,8 @@ class KygoDeepSleepFactors extends HTMLElement {
           whatThisMeans: 'Evening screen use reduces deep sleep in the early part of the night. The individual study effects are real but the meta-analysis says the overall evidence is moderate, not overwhelming.',
           mechanism: 'Blue-enriched light (6500K) suppresses melatonin via melanopsin-expressing ipRGCs and delays circadian phase, reducing frontal slow-wave activity in the first sleep cycle.',
           dosage: 'Avoid 6500K+ light 90 min before bed; blue-light filters help',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23509952/', label: 'Chellappa et al. 2013' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23509952/', label: 'Chellappa et al. 2013' },
+          affiliate: { url: 'https://amzn.to/4cwMwI1', label: 'Blue Light Blocking Glasses' }
         },
         {
           key: 'aircraft-noise',
@@ -357,7 +361,8 @@ class KygoDeepSleepFactors extends HTMLElement {
           whatThisMeans: 'Environmental noise directly cuts into deep sleep. 23 minutes per night is a big loss. Earplugs prevented the reduction in the same study.',
           mechanism: 'Intermittent noise causes cortical arousals that disrupt the thalamocortical slow oscillations maintaining N3. Even sub-awakening arousals shift sleep from N3 to lighter stages.',
           dosage: 'Use earplugs or white noise if exposed to environmental noise',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/37947580/', label: 'Basner et al. SLEEP 2026' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/37947580/', label: 'Basner et al. SLEEP 2026' },
+          affiliate: { url: 'https://amzn.to/4bfT8bC', label: 'White Noise Machine' }
         },
         {
           key: 'closed-loop-audio',
@@ -393,7 +398,8 @@ class KygoDeepSleepFactors extends HTMLElement {
           whatThisMeans: 'Stuffy bedrooms with poor ventilation reduce deep sleep. CO₂ above 1,000 ppm starts degrading sleep quality. Opening a window or running a fan makes a measurable difference.',
           mechanism: 'Elevated CO₂ activates central chemoreceptors in the brainstem reticular formation, increasing respiratory drive and cortical arousal that fragments N3.',
           dosage: 'Keep CO₂ below 1,000 ppm; ventilate bedroom before and during sleep',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/32979003/', label: 'Xu et al. 2021' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/32979003/', label: 'Xu et al. 2021' },
+          affiliate: { url: 'https://amzn.to/40gYtKD', label: 'CO₂ Monitor' }
         }
       ],
 
