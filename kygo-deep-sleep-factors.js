@@ -762,7 +762,7 @@ class KygoDeepSleepFactors extends HTMLElement {
 
           <!-- Blog cross-link -->
           <div class="blog-link-wrap animate-on-scroll">
-            <a href="https://www.kygo.app/post/deep-sleep-influences" class="blog-link-card" target="_blank" rel="noopener">
+            <a href="https://www.kygo.app/post/how-to-increase-deep-sleep-factors-ranked" class="blog-link-card" target="_blank" rel="noopener">
               <div class="blog-link-icon"><img src="${logoUrl}" alt="Kygo" style="width:24px;height:24px;" /></div>
               <div class="blog-link-text">
                 <span class="blog-link-title">Deep Dive Article</span>
