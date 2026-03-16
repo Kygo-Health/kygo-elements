@@ -33,12 +33,14 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     this._setupEventDelegation();
     this._setupIntersectionObserver();
     this._injectStructuredData();
-    __seo(this, 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\\'s calorie burn estimate? Compare calorie burn accuracy of Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring across 7 activity types: steady-state cardio, running, walking, cycling, HIIT, strength training, and swimming. Enter your reported calorie burn and see the likely actual range based on peer-reviewed research. Apple Watch has 71% overall calorie accuracy with 27.96% MAPE. Fitbit averages 50-66% accuracy with consistent bias. Garmin uses Firstbeat Analytics with 6.7% MAPE at medium-hard intensity but 48% overall accuracy. WHOOP uses ACSM equations extended by heart rate analysis with variable accuracy. Oura Ring achieves 87% lab accuracy with r=0.93 correlation. Strength training and cycling are the least accurate activities across all devices (29-52% error). Steady-state cardio is most accurate (10-20% error). Factors affecting accuracy include skin tone, body composition, medications, tattoos, device fit, and caffeine. Data sourced from Choe & Kang 2025 Physiological Measurement meta-analysis, Chevance et al. 2022 JMIR, Kristiansson et al. 2023 BMC, Bellenger et al. 2021 Sensors, Murakami et al. 2019 JMIR, Stanford 2017, and Firstbeat IEEE EMBC 2016.');
+    __seo(this, 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\'s calorie burn estimate? Compare calorie burn accuracy of Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring across 7 activity types: steady-state cardio, running, walking, cycling, HIIT, strength training, and swimming. Enter your reported calorie burn and see the likely actual range based on peer-reviewed research. Apple Watch has 71% overall calorie accuracy with 27.96% MAPE. Fitbit averages 50-66% accuracy with consistent bias. Garmin uses Firstbeat Analytics with 6.7% MAPE at medium-hard intensity but 48% overall accuracy. WHOOP uses ACSM equations extended by heart rate analysis with variable accuracy. Oura Ring achieves 87% lab accuracy with r=0.93 correlation. Strength training and cycling are the least accurate activities across all devices (29-52% error). Steady-state cardio is most accurate (10-20% error). Factors affecting accuracy include skin tone, body composition, medications, tattoos, device fit, and caffeine. Data sourced from Choe & Kang 2025 Physiological Measurement meta-analysis, Chevance et al. 2022 JMIR, Kristiansson et al. 2023 BMC, Bellenger et al. 2021 Sensors, Murakami et al. 2019 JMIR, Stanford 2017, and Firstbeat IEEE EMBC 2016.');
   }
 
   _render() {
     this.shadowRoot.innerHTML = `
       <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+
         :host {
           --dark: #1E293B;
           --dark-card: #0F172A;
@@ -1488,6 +1490,15 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             padding: 32px 20px;
           }
         }
+
+        @media (min-width: 1024px) {
+          .brands-grid { grid-template-columns: 1fr 1fr 1fr; }
+          .calculator-section,
+          .accuracy-section,
+          .brands-section,
+          .factors-section,
+          .sources-section { padding: 80px 40px; }
+        }
       </style>
 
       <!-- HEADER -->
@@ -1522,14 +1533,14 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <div>
               <div class="form-group">
                 <label>Select Your Wearable Device</label>
-                <div class="device-buttons" data-control="device-selector">
+                <div class="device-buttons" data-control="device-selector" role="tablist">
                   ${this._renderDeviceButtons()}
                 </div>
               </div>
 
               <div class="form-group">
                 <label>Select Your Activity Type</label>
-                <div class="activity-buttons" data-control="activity-selector">
+                <div class="activity-buttons" data-control="activity-selector" role="tablist">
                   ${this._renderActivityButtons()}
                 </div>
               </div>
@@ -1611,16 +1622,16 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
                 <span class="blog-cta-brands-label">Works with:</span>
                 <div class="blog-cta-logos">
                   <div class="blog-cta-logo">
-                    <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura">
+                    <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy">
                   </div>
                   <div class="blog-cta-logo">
-                    <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple">
+                    <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy">
                   </div>
                   <div class="blog-cta-logo">
-                    <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit">
+                    <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy">
                   </div>
                   <div class="blog-cta-logo">
-                    <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin">
+                    <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy">
                   </div>
                 </div>
               </div>
@@ -1684,25 +1695,17 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <div class="footer-section">
               <h4>About</h4>
               <ul class="footer-links">
-                <li><a href="#privacy">Privacy Policy</a></li>
-                <li><a href="#terms">Terms of Service</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="https://kygo.app/privacy" target="_blank" rel="noopener">Privacy Policy</a></li>
+                <li><a href="https://kygo.app/terms" target="_blank" rel="noopener">Terms of Service</a></li>
+                <li><a href="https://kygo.app/contact" target="_blank" rel="noopener">Contact</a></li>
               </ul>
             </div>
             <div class="footer-section">
               <h4>Resources</h4>
               <ul class="footer-links">
-                <li><a href="#blog">Blog</a></li>
-                <li><a href="#research">Research</a></li>
-                <li><a href="#faq">FAQ</a></li>
-              </ul>
-            </div>
-            <div class="footer-section">
-              <h4>Connect</h4>
-              <ul class="footer-links">
-                <li><a href="#instagram">Instagram</a></li>
-                <li><a href="#twitter">Twitter</a></li>
-                <li><a href="#linkedin">LinkedIn</a></li>
+                <li><a href="https://kygo.app" target="_blank" rel="noopener">Home</a></li>
+                <li><a href="https://kygo.app/how-it-works" target="_blank" rel="noopener">How It Works</a></li>
+                <li><a href="https://kygo.app/blog" target="_blank" rel="noopener">Blog</a></li>
               </ul>
             </div>
           </div>
@@ -1722,7 +1725,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   _renderDeviceButtons() {
     return Object.entries(this._devices)
       .map(([key, device]) => `
-        <button class="device-button ${key === this._selectedDevice ? 'active' : ''}" data-device="${key}">
+        <button class="device-button ${key === this._selectedDevice ? 'active' : ''}" data-device="${key}" role="tab" aria-selected="${key === this._selectedDevice}">
           <img src="${device.imageUrl}" alt="${device.name}">
           ${device.short}
         </button>
@@ -1733,7 +1736,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   _renderActivityButtons() {
     return Object.entries(this._activities)
       .map(([key, activity]) => `
-        <button class="activity-button ${key === this._selectedActivity ? 'active' : ''}" data-activity="${key}">
+        <button class="activity-button ${key === this._selectedActivity ? 'active' : ''}" data-activity="${key}" role="tab" aria-selected="${key === this._selectedActivity}">
           ${activity.name}
         </button>
       `)
@@ -1785,7 +1788,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       </div>
 
       <div class="results-expandable">
-        <div class="expandable-header" data-expandable="how-calculated">
+        <div class="expandable-header" data-expandable="how-calculated" role="button" tabindex="0" aria-expanded="false">
           <span>How ${device.short} Calculated This</span>
           <div class="expandable-toggle">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -1804,7 +1807,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       </div>
 
       <div class="results-expandable">
-        <div class="expandable-header" data-expandable="activity-insight">
+        <div class="expandable-header" data-expandable="activity-insight" role="button" tabindex="0" aria-expanded="false">
           <span>Why ${activity.name} Is ${r.error < 20 ? 'Accurate' : r.error > 40 ? 'Unreliable' : 'Mixed'} for Accuracy</span>
           <div class="expandable-toggle">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -1874,7 +1877,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             </div>
 
             <div class="brand-expandable">
-              <div class="brand-expand-header" data-expandable="brand-${key}">
+              <div class="brand-expand-header" data-expandable="brand-${key}" role="button" tabindex="0" aria-expanded="false">
                 <span>How It Works</span>
                 <div class="brand-expand-toggle">
                   <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -1920,7 +1923,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     return this._studies
       .map((study, idx) => `
         <div class="accordion-item">
-          <div class="accordion-header" data-accordion="study-${idx}">
+          <div class="accordion-header" data-accordion="study-${idx}" role="button" tabindex="0" aria-expanded="false">
             <span>${study.label}</span>
             <div class="accordion-toggle">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -1977,27 +1980,16 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         this._hideResults();
       }
 
-      // Expandable headers
+      // Expandable headers (results panel + brand cards)
       const expandableHeader = e.target.closest('[data-expandable]');
       if (expandableHeader) {
         const id = expandableHeader.getAttribute('data-expandable');
         const content = this.shadowRoot.querySelector(`[data-expandable-content="${id}"]`);
-        const toggle = expandableHeader.querySelector('.expandable-toggle');
+        const toggle = expandableHeader.querySelector('.expandable-toggle') || expandableHeader.querySelector('.brand-expand-toggle');
         if (content && toggle) {
-          content.classList.toggle('open');
+          const isOpen = content.classList.toggle('open');
           toggle.classList.toggle('open');
-        }
-      }
-
-      // Brand expandable
-      const brandHeader = e.target.closest('[data-expandable]');
-      if (brandHeader && brandHeader.closest('.brand-card')) {
-        const id = brandHeader.getAttribute('data-expandable');
-        const content = this.shadowRoot.querySelector(`[data-expandable-content="${id}"]`);
-        const toggle = brandHeader.querySelector('.brand-expand-toggle');
-        if (content && toggle) {
-          content.classList.toggle('open');
-          toggle.classList.toggle('open');
+          expandableHeader.setAttribute('aria-expanded', isOpen);
         }
       }
 
@@ -2008,8 +2000,26 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         const content = this.shadowRoot.querySelector(`[data-accordion-content="${id}"]`);
         const toggle = accordionHeader.querySelector('.accordion-toggle');
         if (content && toggle) {
-          content.classList.toggle('open');
+          const isOpen = content.classList.toggle('open');
           toggle.classList.toggle('open');
+          accordionHeader.setAttribute('aria-expanded', isOpen);
+        }
+      }
+    });
+
+    // Keyboard navigation for expandables and accordions
+    this.shadowRoot.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        const expandable = e.target.closest('[data-expandable]');
+        if (expandable) {
+          e.preventDefault();
+          expandable.click();
+          return;
+        }
+        const accordion = e.target.closest('[data-accordion]');
+        if (accordion) {
+          e.preventDefault();
+          accordion.click();
         }
       }
     });
