@@ -311,6 +311,18 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .factor-impact.high { background: rgba(234, 88, 12, 0.1); color: #EA580C; }
         .factor-impact.moderate { background: rgba(202, 138, 4, 0.1); color: #CA8A04; }
 
+        /* ==================== BLOG LINK ==================== */
+        .blog-link-section { padding: 32px 0 0; }
+        .blog-link-wrap { max-width: 720px; margin: 0 auto; }
+        .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); text-decoration: none; transition: box-shadow 0.3s; }
+        .blog-link-card:hover { box-shadow: var(--shadow-hover); }
+        .blog-link-logo { width: 36px; height: 36px; object-fit: contain; flex-shrink: 0; border-radius: 6px; }
+        .blog-link-text { flex: 1; }
+        .blog-link-title { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--green-dark); letter-spacing: 0.3px; }
+        .blog-link-desc { display: block; font-size: 14px; font-weight: 500; color: var(--dark); margin-top: 2px; }
+        .blog-link-arrow { width: 20px; height: 20px; color: var(--green-dark); flex-shrink: 0; }
+        .blog-link-arrow svg { width: 20px; height: 20px; }
+
         /* ==================== BLOG CTA ==================== */
         .blog-cta-section { padding: 32px 0; }
         .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
@@ -527,6 +539,22 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <h2>Factors That Affect All Devices</h2>
           <div class="factors-grid">
             ${this._renderPopulationFactors()}
+          </div>
+        </div>
+      </section>
+
+      <!-- BLOG LINK -->
+      <section class="blog-link-section">
+        <div class="container">
+          <div class="blog-link-wrap animate-on-scroll">
+            <a href="https://www.kygo.app/blog/how-accurate-is-your-wearable-calorie-burn" class="blog-link-card" target="_blank" rel="noopener">
+              <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo" class="blog-link-logo" />
+              <div class="blog-link-text">
+                <span class="blog-link-title">Read the Full Article</span>
+                <span class="blog-link-desc">How Accurate Is Your Wearable's Calorie Burn?</span>
+              </div>
+              <span class="blog-link-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
           </div>
         </div>
       </section>
