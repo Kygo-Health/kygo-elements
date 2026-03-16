@@ -4,13 +4,14 @@
  * Interactive calculator showing how accurate your wearable's calorie burn estimate really is
  */
 
-/** SEO helper — injects visible text outside Shadow DOM for crawlers */
-function __seo(el, text) {
+/** SEO helper — injects semantic HTML outside Shadow DOM for crawlers and AI */
+function __seo(el, html) {
   if (el.querySelector('[data-seo]')) return;
-  const d = document.createElement('div');
+  const d = document.createElement('article');
   d.setAttribute('data-seo', '');
+  d.setAttribute('aria-hidden', 'true');
   d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
-  d.textContent = text;
+  d.innerHTML = html;
   el.appendChild(d);
 }
 
@@ -33,7 +34,60 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     this._setupEventDelegation();
     this._setupIntersectionObserver();
     this._injectStructuredData();
-    __seo(this, 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\'s calorie burn estimate? Compare calorie burn accuracy of Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring across 7 activity types: steady-state cardio, running, walking, cycling, HIIT, strength training, and swimming. Enter your reported calorie burn and see the likely actual range based on peer-reviewed research. Apple Watch has 71% overall calorie accuracy with 27.96% MAPE. Fitbit averages 50-66% accuracy with consistent bias. Garmin uses Firstbeat Analytics with 6.7% MAPE at medium-hard intensity but 48% overall accuracy. WHOOP uses ACSM equations extended by heart rate analysis with variable accuracy. Oura Ring achieves 87% lab accuracy with r=0.93 correlation. Strength training and cycling are the least accurate activities across all devices (29-52% error). Steady-state cardio is most accurate (10-20% error). Factors affecting accuracy include skin tone, body composition, medications, tattoos, device fit, and caffeine. Data sourced from Choe & Kang 2025 Physiological Measurement meta-analysis, Chevance et al. 2022 JMIR, Kristiansson et al. 2023 BMC, Bellenger et al. 2021 Sensors, Murakami et al. 2019 JMIR, Stanford 2017, and Firstbeat IEEE EMBC 2016.');
+    __seo(this, `
+      <h1>Calorie Burn Accuracy Calculator by Kygo Health</h1>
+      <p>How accurate is your wearable&rsquo;s calorie burn estimate? Compare calorie burn accuracy of Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring across 7 activity types using peer-reviewed research.</p>
+
+      <h2>Wearable Calorie Burn Accuracy Rankings</h2>
+      <ol>
+        <li><strong>Oura Ring</strong> &mdash; 87% lab accuracy, r=0.93 correlation. Best for resting metabolic rate. Limited active exercise tracking.</li>
+        <li><strong>WHOOP</strong> &mdash; 82% overall accuracy. Uses ACSM equations extended by HR analysis. Variable bias direction depending on activity.</li>
+        <li><strong>Apple Watch</strong> &mdash; 71% overall accuracy, 27.96% MAPE. Overestimates 58% of the time. Best consumer device for steady-state cardio.</li>
+        <li><strong>Fitbit</strong> &mdash; 50&ndash;66% accuracy. Consistent overestimate bias (27.4% average). Reliable for trend tracking.</li>
+        <li><strong>Garmin</strong> &mdash; 48% overall accuracy but Firstbeat Analytics achieves 6.7% MAPE at medium-hard intensity. Wide variance between activities.</li>
+      </ol>
+
+      <h2>Accuracy by Activity Type</h2>
+      <ul>
+        <li><strong>Steady-state cardio</strong> &mdash; Most accurate across all devices (10&ndash;20% error)</li>
+        <li><strong>Running</strong> &mdash; 15&ndash;25% error, Apple Watch and Garmin perform best</li>
+        <li><strong>Walking</strong> &mdash; High overestimate risk (Apple Watch: 26&ndash;61% overestimate)</li>
+        <li><strong>Cycling</strong> &mdash; 30&ndash;52% error, wrist-based sensors struggle without arm motion</li>
+        <li><strong>HIIT</strong> &mdash; 25&ndash;40% error, rapid HR changes confuse algorithms</li>
+        <li><strong>Strength training</strong> &mdash; Least accurate across all devices (29&ndash;52% error)</li>
+        <li><strong>Swimming</strong> &mdash; 20&ndash;35% error, water interferes with optical HR sensors</li>
+      </ul>
+
+      <h2>Factors Affecting Wearable Calorie Accuracy</h2>
+      <ul>
+        <li>Skin tone &mdash; darker pigmentation can reduce PPG sensor signal quality</li>
+        <li>Body composition &mdash; muscle-to-fat ratio affects metabolic rate but most devices cannot measure it</li>
+        <li>Medications &mdash; beta-blockers and stimulants alter heart rate response</li>
+        <li>Tattoos &mdash; ink can interfere with optical sensor readings</li>
+        <li>Device fit &mdash; loose bands create motion artifacts and signal noise</li>
+        <li>Caffeine &mdash; elevates resting heart rate, potentially inflating calorie estimates</li>
+        <li>Age, sex, and BMI &mdash; demographic factors affect baseline metabolic calculations</li>
+      </ul>
+
+      <h2>How to Use This Calculator</h2>
+      <ol>
+        <li>Select your wearable brand (Apple Watch, Fitbit, Garmin, WHOOP, or Oura Ring)</li>
+        <li>Choose your activity type from 7 categories</li>
+        <li>Enter the calorie burn your device reported</li>
+        <li>View your likely actual calorie range, best estimate, and bias direction</li>
+      </ol>
+
+      <h2>Research Sources</h2>
+      <ul>
+        <li>Choe &amp; Kang 2025 &mdash; Physiological Measurement meta-analysis of wearable energy expenditure accuracy</li>
+        <li>Chevance et al. 2022 &mdash; JMIR systematic review of consumer wearable accuracy</li>
+        <li>Kristiansson et al. 2023 &mdash; BMC Sports Science systematic review</li>
+        <li>Bellenger et al. 2021 &mdash; Sensors, WHOOP PPG HR/HRV validation</li>
+        <li>Murakami et al. 2019 &mdash; JMIR Fitbit validity meta-analysis</li>
+        <li>Stanford 2017 &mdash; Apple Watch energy expenditure accuracy study</li>
+        <li>Firstbeat IEEE EMBC 2016 &mdash; Garmin calorie algorithm validation</li>
+      </ul>
+    `);
   }
 
   _render() {
@@ -41,6 +95,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
 
+        /* ==================== BASE (MOBILE-FIRST) ==================== */
         :host {
           --dark: #1E293B;
           --dark-card: #0F172A;
@@ -65,1451 +120,271 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           display: block;
           background: var(--light);
           color: var(--dark);
-          font-family: 'DM Sans', system-ui, sans-serif;
-          overflow-x: hidden;
-        }
-
-        * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-        }
-
-        .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 20px;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-          font-family: 'Space Grotesk', system-ui, sans-serif;
-          font-weight: 600;
-          line-height: 1.2;
-        }
-
-        h1 {
-          font-size: clamp(26px, 7vw, 36px);
-          margin-bottom: 16px;
-        }
-
-        h2 {
-          font-size: clamp(22px, 5.5vw, 32px);
-          margin-bottom: 20px;
-          margin-top: 40px;
-        }
-
-        h3 {
-          font-size: clamp(18px, 4vw, 24px);
-          margin-bottom: 12px;
-        }
-
-        p, li {
-          font-size: 16px;
+          font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
           line-height: 1.6;
-          color: var(--gray-600);
+          overflow-x: hidden;
+          -webkit-font-smoothing: antialiased;
         }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        h1, h2, h3, h4 { font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 600; line-height: 1.2; }
+        h1 { font-size: clamp(26px, 7vw, 42px); margin-bottom: 16px; color: var(--dark); }
+        h2 { font-size: clamp(22px, 5.5vw, 32px); margin-bottom: 8px; text-align: center; }
+        h3 { font-size: clamp(18px, 4vw, 24px); margin-bottom: 12px; }
+        p, li { font-size: 16px; line-height: 1.6; color: var(--gray-600); }
+        a { color: var(--green); text-decoration: none; transition: color 0.2s; }
+        a:hover { color: var(--green-dark); }
+        button { cursor: pointer; border: none; font-family: inherit; font-weight: 600; transition: all 0.2s; }
 
-        a {
-          color: var(--green);
-          text-decoration: none;
-          transition: color 0.2s;
-        }
-
-        a:hover {
-          color: var(--green-dark);
-          text-decoration: underline;
-        }
-
-        button {
-          cursor: pointer;
-          border: none;
-          font-family: inherit;
-          transition: all 0.3s;
-          font-weight: 600;
-        }
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
         @media (prefers-reduced-motion: reduce) {
-          * {
-            animation: none !important;
-            transition: none !important;
-          }
+          .animate-on-scroll { opacity: 1; transform: none; transition: none; }
+          .expandable-content, .brand-expand-content, .accordion-content { transition: none; }
+          .pulse-dot { animation: none; }
+          * { animation-duration: 0s !important; }
         }
 
         /* ==================== HEADER ==================== */
-        .header {
-          position: sticky;
-          top: 0;
-          z-index: 100;
-          background: var(--light);
-          border-bottom: 1px solid var(--gray-200);
-          backdrop-filter: blur(10px);
-          background-color: rgba(248, 250, 252, 0.95);
-        }
-
-        .header-content {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 16px 20px;
-        }
-
-        .header-logo {
-          width: 48px;
-          height: auto;
-          display: block;
-        }
-
-        .header-cta {
-          background: var(--green);
-          color: white;
-          padding: 10px 20px;
-          border-radius: var(--radius-sm);
-          font-size: 14px;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-          transition: all 0.3s;
-        }
-
-        .header-cta:hover {
-          background: var(--green-dark);
-          box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
-          transform: translateY(-2px);
-        }
+        .header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid var(--gray-200); }
+        .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; max-width: 1200px; margin: 0 auto; }
+        .header-brand { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; }
+        .header-brand img { height: 28px; width: auto; }
+        .header-cta { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #fff; background: var(--green); padding: 8px 16px; border-radius: 50px; text-decoration: none; transition: background 0.2s; white-space: nowrap; }
+        .header-cta:hover { background: var(--green-dark); }
+        .header-cta svg { width: 14px; height: 14px; }
 
         /* ==================== HERO ==================== */
-        .hero {
-          padding: 60px 20px;
-          text-align: center;
-          background: linear-gradient(135deg, var(--light) 0%, var(--gray-100) 100%);
-        }
+        .hero { padding: 48px 0 32px; text-align: center; }
+        .hero-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; }
+        .hero-subtitle { font-size: 16px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
 
-        .hero-badge {
-          display: inline-block;
-          background: var(--green-light);
-          color: var(--green-dark);
-          padding: 8px 16px;
-          border-radius: 20px;
-          font-size: 13px;
-          font-weight: 600;
-          margin-bottom: 24px;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
+        /* ==================== SECTION TITLES ==================== */
+        .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
-        .hero h1 {
-          color: var(--dark);
-          margin-bottom: 16px;
-        }
+        /* ==================== CALCULATOR ==================== */
+        .calculator-section { padding: 48px 0; }
+        .calculator-section h2 { margin-bottom: 32px; }
+        .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+        .form-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+        .form-group label { font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-600); }
 
-        .hero-subtitle {
-          font-size: 18px;
-          color: var(--gray-600);
-          max-width: 600px;
-          margin: 0 auto 40px;
-          line-height: 1.6;
-        }
+        .device-buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .device-button { background: #fff; border: 2px solid var(--gray-200); padding: 10px 8px; border-radius: var(--radius-sm); display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; color: var(--gray-600); transition: all 0.2s; }
+        .device-button img { width: 28px; height: 28px; object-fit: contain; }
+        .device-button.active { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
+        .device-button:hover:not(.active) { border-color: var(--gray-300); background: var(--gray-50); }
 
-        @media (max-width: 768px) {
-          .hero {
-            padding: 40px 20px;
-          }
+        .activity-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .activity-button { background: #fff; border: 2px solid var(--gray-200); padding: 10px 12px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; color: var(--gray-600); text-align: center; transition: all 0.2s; }
+        .activity-button.active { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
+        .activity-button:hover:not(.active) { border-color: var(--gray-300); background: var(--gray-50); }
 
-          .hero h1 {
-            font-size: 28px;
-          }
-        }
+        .input-wrapper { display: flex; align-items: center; gap: 8px; background: #fff; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px 16px; transition: border-color 0.2s; }
+        .input-wrapper:focus-within { border-color: var(--green); }
+        .input-wrapper input { flex: 1; background: transparent; border: none; font-size: 16px; font-weight: 600; color: var(--dark); outline: none; font-family: inherit; }
+        .input-wrapper input::placeholder { color: var(--gray-400); }
+        .input-unit { font-size: 14px; color: var(--gray-600); font-weight: 600; }
 
-        /* ==================== CALCULATOR SECTION ==================== */
-        .calculator-section {
-          padding: 60px 20px;
-          background: white;
-          margin: 40px 0;
-          border-radius: var(--radius);
-          box-shadow: var(--shadow);
-          animation-name: fadeInUp;
-          animation-duration: 0.6s;
-          animation-fill-mode: both;
-        }
-
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .calculator-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 40px;
-          margin-bottom: 40px;
-        }
-
-        @media (max-width: 768px) {
-          .calculator-grid {
-            grid-template-columns: 1fr;
-            gap: 30px;
-          }
-        }
-
-        .form-group {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-
-        .form-group label {
-          font-weight: 600;
-          font-size: 14px;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          color: var(--gray-700);
-        }
-
-        .device-selector {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-
-        .device-buttons {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-          gap: 12px;
-        }
-
-        .device-button {
-          background: var(--gray-100);
-          border: 2px solid transparent;
-          padding: 12px 16px;
-          border-radius: var(--radius-sm);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 8px;
-          cursor: pointer;
-          transition: all 0.3s;
-          font-size: 13px;
-          font-weight: 600;
-          color: var(--gray-600);
-        }
-
-        .device-button img {
-          width: 32px;
-          height: 32px;
-          object-fit: contain;
-        }
-
-        .device-button.active {
-          background: var(--green-light);
-          border-color: var(--green);
-          color: var(--green-dark);
-        }
-
-        .device-button:hover {
-          background: var(--gray-200);
-          border-color: var(--gray-300);
-        }
-
-        .device-button.active:hover {
-          background: var(--green-light);
-          border-color: var(--green-dark);
-        }
-
-        .activity-buttons {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-          gap: 12px;
-        }
-
-        .activity-button {
-          background: var(--gray-100);
-          border: 2px solid transparent;
-          padding: 12px 16px;
-          border-radius: var(--radius-sm);
-          cursor: pointer;
-          transition: all 0.3s;
-          font-size: 13px;
-          font-weight: 600;
-          text-align: left;
-          color: var(--gray-600);
-        }
-
-        .activity-button.active {
-          background: var(--green-light);
-          border-color: var(--green);
-          color: var(--green-dark);
-        }
-
-        .activity-button:hover {
-          background: var(--gray-200);
-          border-color: var(--gray-300);
-        }
-
-        .activity-button.active:hover {
-          background: var(--green-light);
-          border-color: var(--green-dark);
-        }
-
-        .input-wrapper {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: var(--gray-100);
-          border: 2px solid var(--gray-200);
-          border-radius: var(--radius-sm);
-          padding: 12px 16px;
-          transition: all 0.3s;
-        }
-
-        .input-wrapper:focus-within {
-          border-color: var(--green);
-          background: white;
-        }
-
-        .input-wrapper input {
-          flex: 1;
-          background: transparent;
-          border: none;
-          font-size: 16px;
-          font-weight: 600;
-          color: var(--dark);
-          outline: none;
-        }
-
-        .input-wrapper input::placeholder {
-          color: var(--gray-400);
-        }
-
-        .input-unit {
-          font-size: 14px;
-          color: var(--gray-600);
-          font-weight: 600;
-        }
-
-        .calculate-button {
-          background: var(--green);
-          color: white;
-          padding: 16px 32px;
-          border-radius: var(--radius-sm);
-          font-size: 16px;
-          font-weight: 600;
-          width: 100%;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-          margin-top: 20px;
-          transition: all 0.3s;
-        }
-
-        .calculate-button:hover:not(:disabled) {
-          background: var(--green-dark);
-          box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
-          transform: translateY(-2px);
-        }
-
-        .calculate-button:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
+        .calculate-button { background: var(--green); color: white; padding: 14px 24px; border-radius: var(--radius-sm); font-size: 16px; width: 100%; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); margin-top: 8px; }
+        .calculate-button:hover { background: var(--green-dark); }
 
         /* ==================== RESULTS PANEL ==================== */
-        .results-panel {
-          background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark) 100%);
-          color: var(--light);
-          padding: 40px;
-          border-radius: var(--radius);
-          margin-top: 40px;
-          display: none;
-          animation: fadeInUp 0.6s ease-out;
-        }
+        .results-panel { background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark) 100%); color: var(--light); padding: 28px 20px; border-radius: var(--radius); display: none; }
+        .results-panel.show { display: block; animation: fadeInUp 0.4s ease-out; }
+        .results-header { text-align: center; margin-bottom: 24px; }
+        .results-label { font-size: 13px; color: var(--gray-300); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .results-best-estimate { font-size: clamp(40px, 10vw, 56px); font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; }
+        .results-subtext { font-size: 14px; color: var(--gray-300); }
+        .results-confidence { display: inline-flex; align-items: center; gap: 6px; background: rgba(34, 197, 94, 0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-top: 12px; }
 
-        .results-panel.show {
-          display: block;
-        }
+        .results-range-bar { background: rgba(255, 255, 255, 0.1); border-radius: 8px; height: 36px; position: relative; margin-top: 20px; overflow: visible; }
+        .range-fill { background: linear-gradient(90deg, var(--green-dark), var(--green)); height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px; min-width: 40px; transition: width 0.4s ease-out; }
+        .range-marker { position: absolute; top: -4px; width: 3px; height: calc(100% + 8px); background: var(--yellow); border-radius: 2px; z-index: 10; }
+        .range-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--gray-400); font-weight: 600; }
 
-        .results-header {
-          text-align: center;
-          margin-bottom: 40px;
-        }
+        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+        .results-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 16px; border-radius: var(--radius-sm); }
+        .results-card-label { font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .results-card-value { font-size: 22px; font-weight: 700; color: var(--green); font-family: 'Space Grotesk', sans-serif; }
 
-        .results-label {
-          font-size: 14px;
-          color: var(--gray-200);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 12px;
-        }
+        .results-tendency { display: inline-block; background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3); color: var(--yellow); padding: 6px 14px; border-radius: 50px; font-size: 13px; font-weight: 600; margin-top: 16px; }
 
-        .results-best-estimate {
-          font-size: 56px;
-          font-weight: 700;
-          color: var(--green);
-          margin-bottom: 8px;
-        }
-
-        .results-subtext {
-          font-size: 16px;
-          color: var(--gray-200);
-        }
-
-        .results-confidence {
-          display: inline-block;
-          background: var(--green-light);
-          color: var(--green-dark);
-          padding: 8px 16px;
-          border-radius: 20px;
-          font-size: 13px;
-          font-weight: 600;
-          margin-top: 16px;
-        }
-
-        .results-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
-          margin-top: 40px;
-        }
-
-        @media (max-width: 768px) {
-          .results-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        .results-card {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          padding: 20px;
-          border-radius: var(--radius-sm);
-        }
-
-        .results-card-label {
-          font-size: 13px;
-          color: var(--gray-200);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 8px;
-        }
-
-        .results-card-value {
-          font-size: 28px;
-          font-weight: 700;
-          color: var(--green);
-        }
-
-        .results-tendency {
-          display: inline-block;
-          background: rgba(251, 191, 36, 0.2);
-          border: 1px solid var(--yellow);
-          color: var(--yellow);
-          padding: 8px 16px;
-          border-radius: 20px;
-          font-size: 13px;
-          font-weight: 600;
-          margin-top: 20px;
-        }
-
-        .results-range-bar {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 8px;
-          height: 40px;
-          position: relative;
-          margin-top: 20px;
-          overflow: hidden;
-        }
-
-        .range-fill {
-          background: linear-gradient(90deg, var(--green-dark), var(--green));
-          height: 100%;
-          border-radius: 8px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-weight: 600;
-          font-size: 12px;
-          position: relative;
-          transition: width 0.4s ease-out;
-        }
-
-        .range-marker {
-          position: absolute;
-          top: 0;
-          width: 2px;
-          height: 100%;
-          background: var(--yellow);
-          z-index: 10;
-        }
-
-        .range-label {
-          position: absolute;
-          top: -24px;
-          font-size: 12px;
-          color: var(--gray-200);
-          font-weight: 600;
-        }
-
-        .results-expandable {
-          margin-top: 30px;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          padding-top: 30px;
-        }
-
-        .expandable-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          cursor: pointer;
-          user-select: none;
-          font-weight: 600;
-          color: var(--light);
-          transition: color 0.2s;
-        }
-
-        .expandable-header:hover {
-          color: var(--green);
-        }
-
-        .expandable-toggle {
-          width: 24px;
-          height: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: transform 0.3s;
-        }
-
-        .expandable-toggle.open {
-          transform: rotate(180deg);
-        }
-
-        .expandable-content {
-          display: none;
-          margin-top: 16px;
-          padding: 16px;
-          background: rgba(255, 255, 255, 0.05);
-          border-radius: var(--radius-sm);
-          font-size: 14px;
-          line-height: 1.6;
-          color: var(--gray-200);
-        }
-
-        .expandable-content.open {
-          display: block;
-        }
-
-        .insight-box {
-          background: rgba(251, 191, 36, 0.1);
-          border-left: 4px solid var(--yellow);
-          padding: 16px;
-          border-radius: var(--radius-sm);
-          margin-top: 20px;
-          font-size: 14px;
-          color: var(--gray-200);
-          line-height: 1.6;
-        }
+        .results-expandable { margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; }
+        .expandable-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; font-size: 14px; color: var(--gray-200); transition: color 0.2s; gap: 12px; }
+        .expandable-header:hover { color: var(--green); }
+        .expandable-toggle { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s; flex-shrink: 0; color: var(--gray-400); }
+        .expandable-toggle.open { transform: rotate(180deg); }
+        .expandable-content { display: none; margin-top: 12px; padding: 16px; background: rgba(255, 255, 255, 0.05); border-radius: var(--radius-sm); font-size: 14px; line-height: 1.6; color: var(--gray-300); }
+        .expandable-content.open { display: block; }
+        .insight-box { background: rgba(251, 191, 36, 0.1); border-left: 4px solid var(--yellow); padding: 14px; border-radius: var(--radius-sm); margin-top: 16px; font-size: 13px; color: var(--gray-300); line-height: 1.5; }
 
         /* ==================== ACCURACY TABLE ==================== */
-        .accuracy-section {
-          padding: 60px 20px;
-          background: white;
-          margin: 40px 0;
-          border-radius: var(--radius);
-          box-shadow: var(--shadow);
-        }
+        .accuracy-section { padding: 48px 0; }
+        .accuracy-section h2 { margin-bottom: 12px; }
+        .accuracy-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -20px; padding: 0 20px; }
+        .accuracy-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        .accuracy-table th { background: var(--gray-100); padding: 12px 10px; text-align: left; font-weight: 600; color: var(--dark); border-bottom: 2px solid var(--gray-200); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        .accuracy-table td { padding: 14px 10px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
+        .accuracy-table tbody tr:hover { background: var(--gray-50); }
+        .activity-name { font-weight: 600; color: var(--dark); font-size: 13px; white-space: nowrap; }
 
-        .accuracy-section h2 {
-          text-align: center;
-          margin-bottom: 40px;
-        }
+        .accuracy-bar-container { display: flex; align-items: center; gap: 8px; }
+        .accuracy-bar { position: relative; height: 22px; background: var(--gray-100); border-radius: 4px; overflow: hidden; flex: 1; min-width: 80px; }
+        .accuracy-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green-dark), var(--green)); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: 600; min-width: 32px; }
+        .accuracy-label { font-size: 11px; color: var(--gray-400); white-space: nowrap; }
 
-        .accuracy-table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-bottom: 30px;
-        }
-
-        .accuracy-table th {
-          background: var(--gray-100);
-          padding: 16px;
-          text-align: left;
-          font-weight: 600;
-          color: var(--dark);
-          border-bottom: 2px solid var(--gray-200);
-          font-size: 14px;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .accuracy-table td {
-          padding: 20px 16px;
-          border-bottom: 1px solid var(--gray-200);
-          vertical-align: middle;
-        }
-
-        .accuracy-table tbody tr:hover {
-          background: var(--gray-50);
-        }
-
-        .activity-name {
-          font-weight: 600;
-          color: var(--dark);
-          min-width: 140px;
-        }
-
-        .accuracy-bar-container {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          min-width: 300px;
-        }
-
-        .accuracy-bar {
-          position: relative;
-          height: 24px;
-          background: var(--gray-100);
-          border-radius: 4px;
-          overflow: hidden;
-          flex: 1;
-        }
-
-        .accuracy-bar-fill {
-          height: 100%;
-          background: linear-gradient(90deg, var(--green-dark), var(--green));
-          border-radius: 4px;
-          transition: width 0.4s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: white;
-          font-size: 11px;
-          font-weight: 600;
-        }
-
-        .accuracy-label {
-          font-size: 12px;
-          color: var(--gray-600);
-          min-width: 50px;
-          text-align: right;
-        }
-
-        .accuracy-insight {
-          background: rgba(251, 191, 36, 0.1);
-          border-left: 4px solid var(--yellow);
-          padding: 20px;
-          border-radius: var(--radius-sm);
-          margin-top: 30px;
-          color: var(--dark);
-          line-height: 1.6;
-        }
-
-        @media (max-width: 768px) {
-          .accuracy-table {
-            font-size: 13px;
-          }
-
-          .accuracy-table th,
-          .accuracy-table td {
-            padding: 12px 8px;
-          }
-
-          .accuracy-bar-container {
-            flex-direction: column;
-            gap: 12px;
-            min-width: auto;
-          }
-
-          .accuracy-bar {
-            width: 100%;
-          }
-
-          .activity-name {
-            min-width: auto;
-          }
-        }
+        .accuracy-insight { background: rgba(251, 191, 36, 0.1); border-left: 4px solid var(--yellow); padding: 16px; border-radius: var(--radius-sm); margin-top: 24px; color: var(--dark); font-size: 14px; line-height: 1.6; }
 
         /* ==================== BRAND CARDS ==================== */
-        .brands-section {
-          padding: 60px 20px;
-          background: white;
-          margin: 40px 0;
-          border-radius: var(--radius);
-          box-shadow: var(--shadow);
-        }
+        .brands-section { padding: 48px 0; }
+        .brands-section h2 { margin-bottom: 32px; }
+        .brands-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+        .brand-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s, border-color 0.3s; }
+        .brand-card:hover { box-shadow: var(--shadow-hover); border-color: var(--gray-300); }
 
-        .brands-section h2 {
-          text-align: center;
-          margin-bottom: 40px;
-        }
+        .brand-header { background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
+        .brand-image { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; }
+        .brand-title { font-size: 16px; font-weight: 600; color: var(--dark); margin: 0; }
+        .brand-content { padding: 20px; }
 
-        .brands-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 30px;
-        }
+        .brand-stat { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
+        .brand-stat:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .brand-stat-label { font-size: 12px; color: var(--gray-600); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .brand-stat-value { font-size: 16px; font-weight: 700; color: var(--green); }
+        .brand-accuracy { font-size: 20px; font-weight: 700; color: var(--green); font-family: 'Space Grotesk', sans-serif; }
 
-        .brand-card {
-          background: var(--gray-50);
-          border: 1px solid var(--gray-200);
-          border-radius: var(--radius);
-          overflow: hidden;
-          transition: all 0.3s;
-          cursor: pointer;
-        }
-
-        .brand-card:hover {
-          border-color: var(--green);
-          box-shadow: var(--shadow-hover);
-          transform: translateY(-4px);
-        }
-
-        .brand-header {
-          background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%);
-          padding: 20px;
-          display: flex;
-          align-items: center;
-          gap: 16px;
-        }
-
-        .brand-image {
-          width: 48px;
-          height: 48px;
-          object-fit: contain;
-          flex-shrink: 0;
-        }
-
-        .brand-title {
-          font-size: 18px;
-          font-weight: 600;
-          color: var(--dark);
-          margin: 0;
-        }
-
-        .brand-content {
-          padding: 24px;
-        }
-
-        .brand-stat {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 16px;
-          padding-bottom: 16px;
-          border-bottom: 1px solid var(--gray-200);
-        }
-
-        .brand-stat:last-child {
-          margin-bottom: 0;
-          padding-bottom: 0;
-          border-bottom: none;
-        }
-
-        .brand-stat-label {
-          font-size: 13px;
-          color: var(--gray-600);
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .brand-stat-value {
-          font-size: 18px;
-          font-weight: 700;
-          color: var(--green);
-        }
-
-        .brand-accuracy {
-          font-size: 24px;
-          font-weight: 700;
-          color: var(--green);
-        }
-
-        .brand-expandable {
-          margin-top: 20px;
-          padding-top: 20px;
-          border-top: 1px solid var(--gray-200);
-        }
-
-        .brand-expand-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          cursor: pointer;
-          user-select: none;
-          font-weight: 600;
-          color: var(--dark);
-          transition: color 0.2s;
-        }
-
-        .brand-expand-header:hover {
-          color: var(--green);
-        }
-
-        .brand-expand-toggle {
-          width: 20px;
-          height: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: transform 0.3s;
-        }
-
-        .brand-expand-toggle.open {
-          transform: rotate(180deg);
-        }
-
-        .brand-expand-content {
-          display: none;
-          margin-top: 16px;
-          padding: 16px;
-          background: white;
-          border-radius: var(--radius-sm);
-          border: 1px solid var(--gray-200);
-        }
-
-        .brand-expand-content.open {
-          display: block;
-        }
-
-        .brand-desc {
-          font-size: 14px;
-          color: var(--gray-600);
-          line-height: 1.6;
-          margin-bottom: 12px;
-        }
-
-        .brand-list {
-          font-size: 13px;
-          color: var(--gray-600);
-          list-style: none;
-          margin: 12px 0;
-        }
-
-        .brand-list li {
-          margin-bottom: 8px;
-          padding-left: 20px;
-          position: relative;
-        }
-
-        .brand-list li:before {
-          content: '✓';
-          position: absolute;
-          left: 0;
-          color: var(--green);
-          font-weight: 600;
-        }
+        .brand-expandable { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--gray-100); }
+        .brand-expand-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; font-size: 14px; color: var(--dark); transition: color 0.2s; }
+        .brand-expand-header:hover { color: var(--green); }
+        .brand-expand-toggle { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s; flex-shrink: 0; color: var(--gray-400); }
+        .brand-expand-toggle.open { transform: rotate(180deg); }
+        .brand-expand-content { display: none; margin-top: 12px; padding: 16px; background: var(--gray-50); border-radius: var(--radius-sm); }
+        .brand-expand-content.open { display: block; }
+        .brand-desc { font-size: 14px; color: var(--gray-600); line-height: 1.6; margin-bottom: 10px; }
+        .brand-list { font-size: 13px; color: var(--gray-600); list-style: none; margin: 8px 0; }
+        .brand-list li { margin-bottom: 6px; padding-left: 20px; position: relative; line-height: 1.5; }
+        .brand-list li:before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 600; }
 
         /* ==================== POPULATION FACTORS ==================== */
-        .factors-section {
-          padding: 60px 20px;
-          background: white;
-          margin: 40px 0;
-          border-radius: var(--radius);
-          box-shadow: var(--shadow);
-        }
-
-        .factors-section h2 {
-          text-align: center;
-          margin-bottom: 40px;
-        }
-
-        .factors-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: 24px;
-        }
-
-        .factor-card {
-          background: var(--gray-50);
-          border: 1px solid var(--gray-200);
-          border-radius: var(--radius-sm);
-          padding: 24px;
-          transition: all 0.3s;
-        }
-
-        .factor-card:hover {
-          border-color: var(--green);
-          box-shadow: var(--shadow-hover);
-        }
-
-        .factor-title {
-          font-weight: 600;
-          color: var(--dark);
-          margin-bottom: 8px;
-          font-size: 16px;
-        }
-
-        .factor-desc {
-          font-size: 14px;
-          color: var(--gray-600);
-          line-height: 1.6;
-          margin-bottom: 12px;
-        }
-
-        .factor-impact {
-          display: inline-block;
-          padding: 6px 12px;
-          border-radius: 12px;
-          font-size: 12px;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .factor-impact.high {
-          background: rgba(239, 68, 68, 0.1);
-          color: var(--red);
-        }
-
-        .factor-impact.moderate {
-          background: rgba(251, 191, 36, 0.1);
-          color: var(--yellow);
-        }
+        .factors-section { padding: 48px 0; }
+        .factors-section h2 { margin-bottom: 32px; }
+        .factors-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .factor-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 20px; transition: box-shadow 0.3s, border-color 0.3s; }
+        .factor-card:hover { border-color: var(--gray-300); box-shadow: var(--shadow-hover); }
+        .factor-title { font-weight: 600; color: var(--dark); margin-bottom: 6px; font-size: 15px; }
+        .factor-desc { font-size: 14px; color: var(--gray-600); line-height: 1.5; margin-bottom: 10px; }
+        .factor-impact { display: inline-block; padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .factor-impact.high { background: rgba(239, 68, 68, 0.1); color: var(--red); }
+        .factor-impact.moderate { background: rgba(251, 191, 36, 0.1); color: var(--yellow); }
 
         /* ==================== BLOG CTA ==================== */
-        .blog-cta {
-          position: relative;
-          background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700) 100%);
-          padding: 60px 40px;
-          border-radius: var(--radius);
-          color: white;
-          margin: 60px 0;
-          overflow: hidden;
-        }
-
-        .blog-cta::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          right: -10%;
-          width: 500px;
-          height: 500px;
-          background: radial-gradient(circle, rgba(34, 197, 94, 0.15), transparent);
-          border-radius: 50%;
-          pointer-events: none;
-        }
-
-        .blog-cta-content {
-          position: relative;
-          z-index: 2;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 40px;
-          align-items: center;
-        }
-
-        @media (max-width: 768px) {
-          .blog-cta-content {
-            grid-template-columns: 1fr;
-            gap: 24px;
-          }
-        }
-
-        .blog-cta-left h3 {
-          color: white;
-          margin-bottom: 16px;
-        }
-
-        .blog-cta-badge {
-          display: inline-block;
-          background: var(--green);
-          color: white;
-          padding: 8px 16px;
-          border-radius: 20px;
-          font-size: 12px;
-          font-weight: 600;
-          margin-bottom: 12px;
-          position: relative;
-        }
-
-        .blog-cta-badge::before {
-          content: '';
-          width: 8px;
-          height: 8px;
-          background: white;
-          border-radius: 50%;
-          display: inline-block;
-          margin-right: 8px;
-          animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-
-        .blog-cta-desc {
-          color: var(--gray-200);
-          font-size: 16px;
-          line-height: 1.6;
-          margin-bottom: 24px;
-        }
-
-        .blog-cta-brands {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          margin-bottom: 24px;
-        }
-
-        .blog-cta-brands-label {
-          font-size: 13px;
-          color: var(--gray-300);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          font-weight: 600;
-        }
-
-        .blog-cta-logos {
-          display: flex;
-          gap: 12px;
-        }
-
-        .blog-cta-logo {
-          width: 40px;
-          height: 40px;
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: var(--radius-sm);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 6px;
-        }
-
-        .blog-cta-logo img {
-          max-width: 100%;
-          max-height: 100%;
-          object-fit: contain;
-        }
-
-        .blog-cta-button {
-          background: var(--green);
-          color: white;
-          padding: 12px 24px;
-          border-radius: var(--radius-sm);
-          font-weight: 600;
-          font-size: 14px;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          transition: all 0.3s;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-        }
-
-        .blog-cta-button:hover {
-          background: var(--green-dark);
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
-        }
+        .blog-cta-section { padding: 48px 0; }
+        .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
+        .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34, 197, 94, 0.25) 0%, transparent 70%); pointer-events: none; }
+        .blog-cta-inner { position: relative; z-index: 1; }
+        .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34, 197, 94, 0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; display: inline-block; }
+        .blog-cta h3 { color: #fff; font-size: clamp(20px, 5vw, 28px); margin-bottom: 12px; }
+        .blog-cta-desc { color: var(--gray-400); font-size: 14px; margin-bottom: 24px; max-width: 480px; margin-left: auto; margin-right: auto; }
+        .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+        .blog-cta-btn:hover { background: var(--green-dark); color: #fff; }
+        .blog-cta-btn svg { width: 16px; height: 16px; }
+        .cta-android { display: block; margin: 16px auto 0; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); color: var(--gray-400); padding: 10px 24px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .cta-android:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); color: #fff; }
+        .blog-cta-tags { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+        .blog-cta-tags span { color: var(--gray-400); font-size: 12px; }
+        .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
 
         /* ==================== SOURCES ==================== */
-        .sources-section {
-          padding: 60px 20px;
-          background: white;
-          margin: 40px 0;
-          border-radius: var(--radius);
-          box-shadow: var(--shadow);
-        }
-
-        .sources-section h2 {
-          text-align: center;
-          margin-bottom: 40px;
-        }
-
-        .sources-accordion {
-          max-width: 800px;
-          margin: 0 auto;
-        }
-
-        .accordion-item {
-          border: 1px solid var(--gray-200);
-          border-radius: var(--radius-sm);
-          margin-bottom: 12px;
-          overflow: hidden;
-        }
-
-        .accordion-header {
-          background: var(--gray-100);
-          padding: 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          cursor: pointer;
-          user-select: none;
-          transition: background 0.2s;
-          font-weight: 600;
-          color: var(--dark);
-        }
-
-        .accordion-header:hover {
-          background: var(--gray-200);
-        }
-
-        .accordion-toggle {
-          width: 20px;
-          height: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: transform 0.3s;
-          flex-shrink: 0;
-        }
-
-        .accordion-toggle.open {
-          transform: rotate(180deg);
-        }
-
-        .accordion-content {
-          display: none;
-          padding: 20px;
-          background: white;
-          border-top: 1px solid var(--gray-200);
-          max-height: 0;
-          overflow: hidden;
-          transition: max-height 0.3s ease;
-        }
-
-        .accordion-content.open {
-          display: block;
-          max-height: 1000px;
-        }
-
-        .accordion-content p {
-          margin-bottom: 12px;
-          font-size: 14px;
-          color: var(--gray-600);
-        }
-
-        .sources-list {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 20px;
-          margin-top: 20px;
-        }
-
-        .source-link {
-          display: flex;
-          align-items: flex-start;
-          gap: 12px;
-          padding: 16px;
-          background: var(--gray-50);
-          border-radius: var(--radius-sm);
-          border: 1px solid var(--gray-200);
-          transition: all 0.3s;
-          cursor: pointer;
-        }
-
-        .source-link:hover {
-          border-color: var(--green);
-          background: white;
-          box-shadow: var(--shadow);
-        }
-
-        .source-icon {
-          width: 20px;
-          height: 20px;
-          color: var(--green);
-          flex-shrink: 0;
-          margin-top: 2px;
-        }
-
-        .source-link-text {
-          font-size: 13px;
-          color: var(--green);
-          font-weight: 600;
-          line-height: 1.4;
-        }
+        .sources-section { padding: 48px 0; }
+        .sources-section h2 { margin-bottom: 32px; }
+        .sources-accordion { max-width: 800px; margin: 0 auto; }
+        .accordion-item { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; }
+        .accordion-header { background: var(--gray-50); padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; font-size: 14px; color: var(--dark); transition: background 0.2s; gap: 12px; }
+        .accordion-header:hover { background: var(--gray-100); }
+        .accordion-header span { flex: 1; }
+        .accordion-toggle { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s; flex-shrink: 0; color: var(--gray-400); }
+        .accordion-toggle.open { transform: rotate(180deg); }
+        .accordion-content { display: none; padding: 16px; background: white; border-top: 1px solid var(--gray-100); }
+        .accordion-content.open { display: block; }
+        .accordion-content p { margin-bottom: 8px; font-size: 14px; color: var(--gray-600); }
 
         /* ==================== CTA SECTION ==================== */
-        .cta-section {
-          background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
-          color: white;
-          padding: 80px 40px;
-          border-radius: var(--radius);
-          text-align: center;
-          margin: 60px 0;
-        }
-
-        .cta-section h2 {
-          color: white;
-          margin-bottom: 20px;
-        }
-
-        .cta-section p {
-          color: rgba(255, 255, 255, 0.9);
-          font-size: 18px;
-          margin-bottom: 40px;
-          max-width: 600px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .cta-buttons {
-          display: flex;
-          gap: 16px;
-          justify-content: center;
-          flex-wrap: wrap;
-        }
-
-        .cta-button-primary {
-          background: white;
-          color: var(--green);
-          padding: 14px 32px;
-          border-radius: var(--radius-sm);
-          font-weight: 600;
-          font-size: 16px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-          transition: all 0.3s;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .cta-button-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .cta-button-secondary {
-          background: transparent;
-          color: white;
-          padding: 14px 32px;
-          border: 2px solid white;
-          border-radius: var(--radius-sm);
-          font-weight: 600;
-          font-size: 16px;
-          transition: all 0.3s;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          cursor: pointer;
-        }
-
-        .cta-button-secondary:hover {
-          background: white;
-          color: var(--green);
-        }
+        .cta-section { background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); color: white; padding: 48px 24px; border-radius: var(--radius); text-align: center; margin: 0 0 48px; }
+        .cta-section h2 { color: white; margin-bottom: 12px; }
+        .cta-section p { color: rgba(255, 255, 255, 0.9); font-size: 16px; margin-bottom: 28px; max-width: 520px; margin-left: auto; margin-right: auto; }
+        .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .cta-button-primary { background: white; color: var(--green); padding: 12px 28px; border-radius: var(--radius-sm); font-size: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: inline-flex; align-items: center; gap: 8px; }
+        .cta-button-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
+        .cta-button-secondary { background: transparent; color: white; padding: 12px 28px; border: 2px solid rgba(255, 255, 255, 0.4); border-radius: var(--radius-sm); font-size: 15px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+        .cta-button-secondary:hover { background: white; color: var(--green); border-color: white; }
 
         /* ==================== ANDROID MODAL ==================== */
-        .modal-overlay {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.6);
-          z-index: 1000;
-          align-items: center;
-          justify-content: center;
-          padding: 20px;
-        }
-
-        .modal-overlay.show {
-          display: flex;
-        }
-
-        .modal {
-          background: white;
-          border-radius: var(--radius);
-          padding: 40px;
-          max-width: 500px;
-          width: 100%;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-          position: relative;
-        }
-
-        .modal-close {
-          position: absolute;
-          top: 20px;
-          right: 20px;
-          width: 32px;
-          height: 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: var(--gray-100);
-          border-radius: 50%;
-          cursor: pointer;
-          transition: all 0.2s;
-          font-size: 20px;
-          color: var(--gray-600);
-        }
-
-        .modal-close:hover {
-          background: var(--gray-200);
-          color: var(--dark);
-        }
-
-        .modal h3 {
-          color: var(--dark);
-          margin-bottom: 12px;
-        }
-
-        .modal p {
-          color: var(--gray-600);
-          margin-bottom: 24px;
-        }
-
-        .modal-form {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        .modal-input {
-          padding: 12px 16px;
-          border: 2px solid var(--gray-200);
-          border-radius: var(--radius-sm);
-          font-size: 16px;
-          font-family: inherit;
-          transition: border-color 0.2s;
-        }
-
-        .modal-input:focus {
-          outline: none;
-          border-color: var(--green);
-        }
-
-        .modal-submit {
-          background: var(--green);
-          color: white;
-          padding: 12px 24px;
-          border-radius: var(--radius-sm);
-          font-weight: 600;
-          font-size: 16px;
-          cursor: pointer;
-          transition: all 0.3s;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
-        }
-
-        .modal-submit:hover {
-          background: var(--green-dark);
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
-        }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal-overlay.show { display: flex; }
+        .modal { background: white; border-radius: var(--radius); padding: 32px 24px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); position: relative; }
+        .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: var(--gray-100); border-radius: 50%; font-size: 20px; color: var(--gray-600); }
+        .modal-close:hover { background: var(--gray-200); color: var(--dark); }
+        .modal h3 { color: var(--dark); margin-bottom: 8px; }
+        .modal p { color: var(--gray-600); margin-bottom: 20px; font-size: 14px; }
+        .modal-form { display: flex; flex-direction: column; gap: 12px; }
+        .modal-input { padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 16px; font-family: inherit; transition: border-color 0.2s; }
+        .modal-input:focus { outline: none; border-color: var(--green); }
+        .modal-submit { background: var(--green); color: white; padding: 12px 24px; border-radius: var(--radius-sm); font-size: 16px; cursor: pointer; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
+        .modal-submit:hover { background: var(--green-dark); }
 
         /* ==================== FOOTER ==================== */
-        .footer {
-          background: var(--dark);
-          color: var(--gray-300);
-          padding: 60px 20px;
-          border-top: 1px solid var(--gray-700);
+        .footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
+        .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
+        .footer-brand img { height: 24px; width: auto; }
+        .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
+        .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
+        .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; white-space: nowrap; }
+        .footer-links a:hover { color: var(--green); }
+        .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
+        .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
+        .footer-affiliate { font-style: italic; }
+
+        /* ==================== TABLET (min-width: 768px) ==================== */
+        @media (min-width: 768px) {
+          .header-inner { padding: 14px 24px; }
+          .hero { padding: 64px 0 40px; }
+          .hero-subtitle { font-size: 17px; }
+          .calculator-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+          .device-buttons { grid-template-columns: repeat(5, 1fr); }
+          .activity-buttons { grid-template-columns: repeat(4, 1fr); }
+          .results-panel { padding: 36px; }
+          .brands-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+          .factors-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+          .blog-cta { padding: 48px 40px; }
+          .calculator-section, .accuracy-section, .brands-section, .factors-section, .sources-section { padding: 64px 0; }
+          .cta-section { padding: 64px 40px; }
         }
 
-        .footer-content {
-          max-width: 1200px;
-          margin: 0 auto;
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 40px;
-          margin-bottom: 40px;
-        }
-
-        .footer-section h4 {
-          color: white;
-          margin-bottom: 16px;
-          font-size: 14px;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .footer-links {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          list-style: none;
-        }
-
-        .footer-links a {
-          color: var(--gray-300);
-          font-size: 14px;
-          transition: color 0.2s;
-        }
-
-        .footer-links a:hover {
-          color: var(--green);
-        }
-
-        .footer-bottom {
-          border-top: 1px solid var(--gray-700);
-          padding-top: 20px;
-          text-align: center;
-          font-size: 13px;
-          color: var(--gray-400);
-        }
-
-        .footer-disclosure {
-          font-size: 12px;
-          color: var(--gray-500);
-          margin-top: 12px;
-          line-height: 1.5;
-        }
-
-        /* ==================== ANIMATIONS ==================== */
-        .animate-on-scroll {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-
-        .animate-on-scroll.visible {
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        @media (max-width: 768px) {
-          .container {
-            padding: 0 16px;
-          }
-
-          .calculator-section,
-          .accuracy-section,
-          .brands-section,
-          .factors-section,
-          .sources-section {
-            padding: 40px 20px;
-            margin: 30px 0;
-          }
-
-          .blog-cta {
-            padding: 40px 20px;
-            margin: 40px 0;
-          }
-
-          .cta-section {
-            padding: 40px 20px;
-            margin: 40px 0;
-          }
-
-          .modal {
-            padding: 32px 20px;
-          }
-        }
-
+        /* ==================== DESKTOP (min-width: 1024px) ==================== */
         @media (min-width: 1024px) {
           .brands-grid { grid-template-columns: 1fr 1fr 1fr; }
-          .calculator-section,
-          .accuracy-section,
-          .brands-section,
-          .factors-section,
-          .sources-section { padding: 80px 40px; }
+          .factors-grid { grid-template-columns: 1fr 1fr 1fr; }
+          .calculator-section, .accuracy-section, .brands-section, .factors-section, .sources-section { padding: 80px 0; }
+          .cta-section { padding: 80px 40px; }
         }
       </style>
 
       <!-- HEADER -->
       <header class="header">
-        <div class="header-content">
-          <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo Health" class="header-logo">
+        <div class="header-inner">
+          <a href="https://kygo.app" class="header-brand" target="_blank" rel="noopener">
+            <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo">
+            Calorie Burn
+          </a>
           <button class="header-cta" data-action="ios-download">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M13.5 5.5h-3V2h-4v3.5h-3a1.5 1.5 0 0 0-1.5 1.5v6a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5v-6a1.5 1.5 0 0 0-1.5-1.5z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            Download
+            Get Kygo App
+            <svg viewBox="0 0 20 20" fill="none" width="14" height="14"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
         </div>
       </header>
@@ -1569,6 +444,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       <section class="accuracy-section animate-on-scroll">
         <div class="container">
           <h2>Accuracy Varies Dramatically by Activity</h2>
+          <p class="section-sub">How each device performs across 7 common activity types, ranked by accuracy.</p>
           <div class="accuracy-table-wrapper">
             <table class="accuracy-table">
               <thead>
@@ -1609,40 +485,28 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       </section>
 
       <!-- BLOG CTA -->
-      <section class="blog-cta animate-on-scroll">
+      <section class="blog-cta-section animate-on-scroll">
         <div class="container">
-          <div class="blog-cta-content">
-            <div class="blog-cta-left">
-              <div class="blog-cta-badge">Free on iOS</div>
-              <h3>Track calories with science-backed recommendations.</h3>
+          <div class="blog-cta">
+            <div class="blog-cta-glow"></div>
+            <div class="blog-cta-inner">
+              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free on iOS</div>
+              <h3>Track Your <span style="color: var(--green);">Calorie Accuracy</span> Automatically</h3>
               <p class="blog-cta-desc">
-                Kygo corrects for wearable inaccuracies in real-time, giving you the confidence to trust your nutrition data.
+                Kygo syncs with your wearable and corrects for calorie inaccuracies in real-time — giving you data you can trust.
               </p>
-              <div class="blog-cta-brands">
-                <span class="blog-cta-brands-label">Works with:</span>
-                <div class="blog-cta-logos">
-                  <div class="blog-cta-logo">
-                    <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy">
-                  </div>
-                  <div class="blog-cta-logo">
-                    <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy">
-                  </div>
-                  <div class="blog-cta-logo">
-                    <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy">
-                  </div>
-                  <div class="blog-cta-logo">
-                    <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="blog-cta-right">
-              <button class="blog-cta-button" data-action="ios-download">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M2 8h8m0 0l-3-3m3 3l-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Get App on iOS
+              <button class="blog-cta-btn" data-action="ios-download">
+                <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Download for iOS
               </button>
+              <button class="cta-android" data-action="android-beta">Android — Join Beta</button>
+              <div class="blog-cta-tags">
+                <span>Works with</span>
+                <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy">
+                <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy">
+                <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy">
+                <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy">
+              </div>
             </div>
           </div>
         </div>
@@ -1691,32 +555,23 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       <!-- FOOTER -->
       <footer class="footer">
         <div class="container">
-          <div class="footer-content">
-            <div class="footer-section">
-              <h4>About</h4>
-              <ul class="footer-links">
-                <li><a href="https://kygo.app/privacy" target="_blank" rel="noopener">Privacy Policy</a></li>
-                <li><a href="https://kygo.app/terms" target="_blank" rel="noopener">Terms of Service</a></li>
-                <li><a href="https://kygo.app/contact" target="_blank" rel="noopener">Contact</a></li>
-              </ul>
-            </div>
-            <div class="footer-section">
-              <h4>Resources</h4>
-              <ul class="footer-links">
-                <li><a href="https://kygo.app" target="_blank" rel="noopener">Home</a></li>
-                <li><a href="https://kygo.app/how-it-works" target="_blank" rel="noopener">How It Works</a></li>
-                <li><a href="https://kygo.app/blog" target="_blank" rel="noopener">Blog</a></li>
-              </ul>
-            </div>
+          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+            <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo Health" loading="lazy">
+            Kygo Health
+          </a>
+          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
+          <div class="footer-links">
+            <a href="https://kygo.app">Home</a>
+            <a href="https://kygo.app/how-it-works">How It Works</a>
+            <a href="https://kygo.app/blog">Blog</a>
+            <a href="https://kygo.app/contact">Contact</a>
+            <a href="https://kygo.app/privacy">Privacy</a>
+            <a href="https://kygo.app/terms">Terms</a>
           </div>
-          <div class="footer-bottom">
-            <p>&copy; 2026 Kygo Health. All rights reserved.</p>
-            <p class="footer-disclosure">
-              This calculator is for educational purposes only and does not replace professional medical advice.
-              Wearable device accuracy varies by individual, environmental factors, and algorithm updates.
-              We may earn affiliate commissions through linked products.
-            </p>
-          </div>
+          <p class="footer-disclaimer">This calculator is for educational purposes only and does not replace professional medical advice. Wearable device accuracy varies by individual, environmental factors, and algorithm updates.</p>
+          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
+          <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
     `;
@@ -1764,12 +619,14 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       </div>
 
       <div class="results-range-bar">
-        <div class="range-fill" style="width: ${markerPercent}%;">
+        <div class="range-fill" style="width: ${Math.max(10, markerPercent)}%;">
           ${r.best}
         </div>
         <div class="range-marker" style="left: ${markerPercent}%;"></div>
-        <div class="range-label" style="left: 2px;">Low: ${r.low}</div>
-        <div class="range-label" style="right: 2px;">High: ${r.high}</div>
+      </div>
+      <div class="range-labels">
+        <span>Low: ${r.low}</span>
+        <span>High: ${r.high}</span>
       </div>
 
       <div class="results-grid" style="margin-top: 30px;">
@@ -2146,24 +1003,104 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   }
 
   _injectStructuredData() {
-    if (document.querySelector('script[data-kygo-calorie-burn-ld]')) return;
-    const ld = {
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      name: 'Calorie Burn Accuracy Calculator',
-      description: 'Enter your wearable\'s reported calorie burn and see the likely actual range. Compares Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring calorie burn accuracy across 7 activity types using peer-reviewed research.',
-      applicationCategory: 'HealthApplication',
-      operatingSystem: 'Web',
-      url: 'https://www.kygo.app/tools/calorie-burn-accuracy',
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      author: { '@type': 'Organization', name: 'Kygo Health', url: 'https://www.kygo.app' },
-      keywords: 'calorie burn accuracy, wearable calorie burn, Apple Watch calorie burn accuracy, Fitbit calorie burn accuracy, Garmin calorie burn accuracy, WHOOP calorie burn accuracy, Oura Ring calorie burn accuracy, fitness tracker energy expenditure error'
-    };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.setAttribute('data-kygo-calorie-burn-ld', '');
-    script.textContent = JSON.stringify(ld);
-    document.head.appendChild(script);
+    // WebApplication schema
+    if (!document.querySelector('script[data-kygo-calorie-burn-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'Calorie Burn Accuracy Calculator',
+        alternateName: 'Kygo Calorie Burn Accuracy Tool',
+        description: 'Enter your wearable\'s reported calorie burn and see the likely actual range. Compares Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring calorie burn accuracy across 7 activity types using peer-reviewed research from Choe & Kang 2025, Chevance et al. 2022, and Kristiansson et al. 2023.',
+        applicationCategory: 'HealthApplication',
+        operatingSystem: 'Web',
+        url: 'https://www.kygo.app/tools/calorie-burn-accuracy',
+        datePublished: '2026-03-01',
+        dateModified: '2026-03-16',
+        softwareVersion: '1.0',
+        inLanguage: 'en',
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        author: { '@type': 'Organization', name: 'Kygo Health', url: 'https://www.kygo.app', logo: 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+        publisher: { '@type': 'Organization', name: 'Kygo Health', url: 'https://www.kygo.app' },
+        featureList: 'Compare 5 wearable brands, 7 activity types, peer-reviewed accuracy data, personalized calorie range calculator, population factor adjustments',
+        keywords: 'calorie burn accuracy, wearable calorie burn, Apple Watch calorie burn accuracy, Fitbit calorie burn accuracy, Garmin calorie burn accuracy, WHOOP calorie burn accuracy, Oura Ring calorie burn accuracy, fitness tracker energy expenditure error, how accurate is Apple Watch calories, wearable calorie overestimate',
+        citation: [
+          { '@type': 'ScholarlyArticle', name: 'Choe & Kang 2025 — Physiological Measurement meta-analysis of wearable EE accuracy' },
+          { '@type': 'ScholarlyArticle', name: 'Chevance et al. 2022 — JMIR systematic review of consumer wearable accuracy' },
+          { '@type': 'ScholarlyArticle', name: 'Kristiansson et al. 2023 — BMC Sports Science systematic review' },
+          { '@type': 'ScholarlyArticle', name: 'Bellenger et al. 2021 — Sensors WHOOP PPG HR/HRV validation' },
+          { '@type': 'ScholarlyArticle', name: 'Stanford 2017 — Apple Watch energy expenditure accuracy study' }
+        ]
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-calorie-burn-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
+
+    // FAQPage schema for Google rich snippets
+    if (!document.querySelector('script[data-kygo-calorie-burn-faq]')) {
+      const faq = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'How accurate is Apple Watch calorie burn?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Apple Watch has approximately 71% overall calorie burn accuracy with a 27.96% Mean Absolute Percentage Error (MAPE). It tends to overestimate calories 58% of the time. It is most accurate during steady-state cardio (15% error) and least accurate during walking (26-61% overestimate) and strength training (40% error). Data from Stanford 2017 and Choe & Kang 2025 meta-analysis.' }
+          },
+          {
+            '@type': 'Question',
+            name: 'How accurate is Fitbit calorie burn?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Fitbit has approximately 50-66% overall calorie burn accuracy. Fitbit consistently overestimates calories burned, with a 27.4% average overestimate during controlled activities. It is most accurate during steady-state cardio (15-20% error) and least accurate during cycling (30% error) and HIIT (35% error). Data from Chevance et al. 2022 JMIR and Murakami et al. 2019.' }
+          },
+          {
+            '@type': 'Question',
+            name: 'Which wearable is most accurate for calorie burn tracking?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Oura Ring has the highest lab accuracy at 87% with r=0.93 correlation, but it has limited exercise tracking capabilities. For active calorie tracking, Apple Watch leads at 71% overall accuracy. WHOOP averages 82% accuracy. Garmin uses Firstbeat Analytics achieving 6.7% MAPE at medium-hard intensity. Accuracy varies significantly by activity type — steady-state cardio is most accurate across all devices (10-20% error), while strength training and cycling have the highest error rates (29-52%).' }
+          },
+          {
+            '@type': 'Question',
+            name: 'Why does my wearable overestimate or underestimate calories?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Wearables calculate calories using heart rate, motion data, and personal metrics, but several factors affect accuracy: (1) Skin tone — darker pigmentation can reduce PPG sensor accuracy; (2) Body composition — muscle-to-fat ratio affects metabolic rate but most devices cannot measure it; (3) Wrist vs finger placement — Oura Ring gets better PPG signals from the finger; (4) Activity type — arm-dominant exercises confuse wrist-based accelerometers; (5) Device fit — loose bands create signal noise. Most devices overestimate during low-intensity activities and underestimate during high-intensity exercise.' }
+          },
+          {
+            '@type': 'Question',
+            name: 'How do I calculate my actual calories burned from my wearable?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Use the Kygo Calorie Burn Accuracy Calculator: (1) Select your wearable brand (Apple Watch, Fitbit, Garmin, WHOOP, or Oura Ring), (2) Choose your activity type, (3) Enter the calorie burn your device reported. The tool applies peer-reviewed error rates from published studies to show your likely actual calorie range, best estimate, and the direction of bias (overestimate vs underestimate) specific to your device and activity combination.' }
+          }
+        ]
+      };
+      const faqScript = document.createElement('script');
+      faqScript.type = 'application/ld+json';
+      faqScript.setAttribute('data-kygo-calorie-burn-faq', '');
+      faqScript.textContent = JSON.stringify(faq);
+      document.head.appendChild(faqScript);
+    }
+
+    // HowTo schema for calculator steps
+    if (!document.querySelector('script[data-kygo-calorie-burn-howto]')) {
+      const howTo = {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: 'How to Check Your Wearable\'s Calorie Burn Accuracy',
+        description: 'Use peer-reviewed research data to find out how accurate your wearable\'s calorie burn estimate really is.',
+        totalTime: 'PT1M',
+        tool: { '@type': 'HowToTool', name: 'A wearable fitness tracker (Apple Watch, Fitbit, Garmin, WHOOP, or Oura Ring)' },
+        step: [
+          { '@type': 'HowToStep', position: 1, name: 'Select your wearable', text: 'Choose your wearable device brand from Apple Watch, Fitbit, Garmin, WHOOP, or Oura Ring.' },
+          { '@type': 'HowToStep', position: 2, name: 'Choose your activity', text: 'Select the activity type: steady-state cardio, running, walking, cycling, HIIT, strength training, or swimming.' },
+          { '@type': 'HowToStep', position: 3, name: 'Enter reported calories', text: 'Enter the calorie burn number your wearable reported for the activity.' },
+          { '@type': 'HowToStep', position: 4, name: 'View your actual range', text: 'The calculator shows your likely actual calorie burn range, best estimate, and whether your device tends to overestimate or underestimate for that activity.' }
+        ]
+      };
+      const howToScript = document.createElement('script');
+      howToScript.type = 'application/ld+json';
+      howToScript.setAttribute('data-kygo-calorie-burn-howto', '');
+      howToScript.textContent = JSON.stringify(howTo);
+      document.head.appendChild(howToScript);
+    }
   }
 
   get _devices() {
@@ -2232,7 +1169,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         overallAccuracy: 48,
         tendency: 'underestimate',
         accuracyByActivity: {
-          'steady-cardio': { error: 12, range: [7, 17], tendency: 'underestimate' },
+          'steady-cardio': { error: 10, range: [6, 17], tendency: 'underestimate' },
           'running': { error: 15, range: [10, 22], tendency: 'underestimate' },
           'walking': { error: 30, range: [20, 43], tendency: 'underestimate' },
           'cycling': { error: 40, range: [30, 52], tendency: 'underestimate' },
@@ -2247,14 +1184,14 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         name: 'WHOOP',
         short: 'WHOOP',
         color: '#44B4A6',
-        imageUrl: 'https://static.wixstatic.com/media/273a63_2e6b13f1ed8b4569b5e5b55e77c75cc1~mv2.png',
+        imageUrl: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
         affiliateUrl: 'https://join.whoop.com/',
         algorithm: 'ACSM metabolic equations extended by a 2005 South African HR-based energy expenditure study. Formula: Calories = BMR + f(Heart Rate). Activates when HR exceeds threshold above resting baseline. Recovery status affects calorie estimates — identical workouts show 80-120 kcal variance.',
         bmrMethod: 'Age, gender, height, weight; 5.0 adds 30-day personalized calibration',
         sensors: 'Advanced PPG (Maxim MAX86171 on 4.0), accelerometer, skin temperature, SpO2; 5.0 adds ~26 Hz sampling + respiratory rate',
         strengths: ['Transparent about limitations', 'Best for relative trend tracking', 'Recovery-aware calorie adjustment'],
         weaknesses: ['HIIT accuracy: -13.2% to +75%', 'Resistance training: ±29% error', 'WHOOP 5.0 users report calorie drops vs 4.0'],
-        overallAccuracy: 55,
+        overallAccuracy: 82,
         tendency: 'variable',
         accuracyByActivity: {
           'steady-cardio': { error: 12, range: [8, 18], tendency: 'mixed' },
@@ -2279,7 +1216,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         sensors: '18-path multi-wavelength PPG (6 sensors, red/infrared/green LEDs), 3D accelerometer, 2 precision thermistors',
         strengths: ['Best lab correlation (r=0.93)', 'Finger PPG = stronger signal at rest', '2024 HR integration cut error by 53%'],
         weaknesses: ['No GPS', 'Poor for cycling/elliptical (no hand movement)', 'Ring form factor limits exercise tracking'],
-        overallAccuracy: 72,
+        overallAccuracy: 87,
         tendency: 'underestimate',
         accuracyByActivity: {
           'steady-cardio': { error: 13, range: [8, 18], tendency: 'underestimate' },
@@ -2335,6 +1272,11 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       { label: 'WHOOP — How Calories Are Calculated', url: 'https://support.whoop.com/hc/en-us/articles/360033775513-How-does-WHOOP-calculate-calories-burned-' },
       { label: 'Oura — Activity Improvements (Nov 2024)', url: 'https://ouraring.com/blog/activity-improvements/' },
       { label: 'Apple — Heart Rate & Calorimetry White Paper', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
+      { label: 'WHOOP — Strain Explained', url: 'https://www.whoop.com/thelocker/understanding-strain/' },
+      { label: 'WHOOP — Calorie Tracking Science', url: 'https://www.whoop.com/thelocker/calorie-tracking-science/' },
+      { label: 'Oura — Ring 4 Technology', url: 'https://ouraring.com/blog/ring-4-technology/' },
+      { label: 'Oura — Finger-Worn Wearable Accuracy', url: 'https://ouraring.com/blog/finger-worn-wearable-accuracy/' },
+      { label: 'Firstbeat — Calorie Accuracy Blog', url: 'https://www.firstbeat.com/en/blog/how-accurate-are-calorie-counters/' },
       { label: 'WellnessPulse — Accuracy of Fitness Trackers (2025)', url: 'https://wellnesspulse.com/research/accuracy-of-fitness-trackers/' }
     ];
   }
