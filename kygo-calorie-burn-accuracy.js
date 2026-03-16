@@ -159,7 +159,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .header-cta svg { width: 14px; height: 14px; }
 
         /* ==================== HERO ==================== */
-        .hero { padding: 48px 0 32px; text-align: center; }
+        .hero { padding: 40px 0 20px; text-align: center; }
         .hero-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; }
         .hero-subtitle { font-size: 16px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
 
@@ -167,7 +167,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
         /* ==================== CALCULATOR ==================== */
-        .calculator-section { padding: 48px 0; }
+        .calculator-section { padding: 32px 0; }
         .calculator-section h2 { margin-bottom: 32px; }
         .calculator-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
         .form-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
@@ -194,37 +194,50 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .calculate-button:hover { background: var(--green-dark); }
 
         /* ==================== RESULTS PANEL ==================== */
-        .results-panel { background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark) 100%); color: var(--light); padding: 28px 20px; border-radius: var(--radius); display: none; }
-        .results-panel.show { display: block; animation: fadeInUp 0.4s ease-out; }
+        .results-panel { background: #fff; border: 1px solid var(--gray-200); color: var(--dark); padding: 28px 20px; border-radius: var(--radius); box-shadow: var(--shadow); }
+        .results-panel.show .results-placeholder { display: none; }
+        .results-panel .results-live { display: none; }
+        .results-panel.show .results-live { display: block; animation: fadeInUp 0.4s ease-out; }
         .results-header { text-align: center; margin-bottom: 24px; }
-        .results-label { font-size: 13px; color: var(--gray-300); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .results-label { font-size: 13px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
         .results-best-estimate { font-size: clamp(40px, 10vw, 56px); font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; }
-        .results-subtext { font-size: 14px; color: var(--gray-300); }
-        .results-confidence { display: inline-flex; align-items: center; gap: 6px; background: rgba(34, 197, 94, 0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-top: 12px; }
+        .results-subtext { font-size: 14px; color: var(--gray-400); }
+        .results-confidence { display: inline-flex; align-items: center; gap: 6px; background: var(--green-light); color: var(--green-dark); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-top: 12px; cursor: help; position: relative; }
+        .results-confidence-tip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 400; line-height: 1.4; width: 240px; text-align: left; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .results-confidence-tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--dark); }
+        .results-confidence:hover .results-confidence-tip { display: block; }
 
-        .results-range-bar { background: rgba(255, 255, 255, 0.1); border-radius: 8px; height: 36px; position: relative; margin-top: 20px; overflow: visible; }
+        .results-range-bar { background: var(--gray-100); border-radius: 8px; height: 36px; position: relative; margin-top: 20px; overflow: visible; }
         .range-fill { background: linear-gradient(90deg, var(--green-dark), var(--green)); height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px; min-width: 40px; transition: width 0.4s ease-out; }
         .range-marker { position: absolute; top: -4px; width: 3px; height: calc(100% + 8px); background: var(--yellow); border-radius: 2px; z-index: 10; }
         .range-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--gray-400); font-weight: 600; }
 
         .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
-        .results-card { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 16px; border-radius: var(--radius-sm); }
+        .results-card { background: var(--gray-50); border: 1px solid var(--gray-200); padding: 16px; border-radius: var(--radius-sm); }
         .results-card-label { font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .results-card-value { font-size: 22px; font-weight: 700; color: var(--green); font-family: 'Space Grotesk', sans-serif; }
+        .results-card-value { font-size: 22px; font-weight: 700; color: var(--dark); font-family: 'Space Grotesk', sans-serif; }
 
-        .results-tendency { display: inline-block; background: rgba(251, 191, 36, 0.15); border: 1px solid rgba(251, 191, 36, 0.3); color: var(--yellow); padding: 6px 14px; border-radius: 50px; font-size: 13px; font-weight: 600; margin-top: 16px; }
+        .results-tendency { display: inline-block; padding: 6px 14px; border-radius: 50px; font-size: 13px; font-weight: 600; margin-top: 16px; }
+        .results-tendency.overestimate { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--red); }
+        .results-tendency.underestimate { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); color: var(--green-dark); }
+        .results-tendency.variable { background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.2); color: #D97706; }
 
-        .results-expandable { margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; }
-        .expandable-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; font-size: 14px; color: var(--gray-200); transition: color 0.2s; gap: 12px; }
+        .results-expandable { margin-top: 20px; border-top: 1px solid var(--gray-200); padding-top: 20px; }
+        .expandable-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; font-size: 14px; color: var(--dark); transition: color 0.2s; gap: 12px; }
         .expandable-header:hover { color: var(--green); }
         .expandable-toggle { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; transition: transform 0.3s; flex-shrink: 0; color: var(--gray-400); }
         .expandable-toggle.open { transform: rotate(180deg); }
-        .expandable-content { display: none; margin-top: 12px; padding: 16px; background: rgba(255, 255, 255, 0.05); border-radius: var(--radius-sm); font-size: 14px; line-height: 1.6; color: var(--gray-300); }
+        .expandable-content { display: none; margin-top: 12px; padding: 16px; background: var(--gray-50); border-radius: var(--radius-sm); font-size: 14px; line-height: 1.6; color: var(--gray-600); }
         .expandable-content.open { display: block; }
-        .insight-box { background: rgba(251, 191, 36, 0.1); border-left: 4px solid var(--yellow); padding: 14px; border-radius: var(--radius-sm); margin-top: 16px; font-size: 13px; color: var(--gray-300); line-height: 1.5; }
+        .insight-box { background: rgba(251, 191, 36, 0.1); border-left: 4px solid var(--yellow); padding: 14px; border-radius: var(--radius-sm); margin-top: 16px; font-size: 13px; color: var(--gray-600); line-height: 1.5; }
+
+        .results-placeholder { text-align: center; padding: 48px 24px; }
+        .results-placeholder-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
+        .results-placeholder-title { font-size: 16px; font-weight: 600; color: var(--dark); margin-bottom: 8px; }
+        .results-placeholder-desc { font-size: 14px; color: var(--gray-400); line-height: 1.5; }
 
         /* ==================== ACCURACY TABLE ==================== */
-        .accuracy-section { padding: 48px 0; }
+        .accuracy-section { padding: 32px 0; }
         .accuracy-section h2 { margin-bottom: 12px; }
         .accuracy-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -20px; padding: 0 20px; }
         .accuracy-table { width: 100%; border-collapse: collapse; min-width: 700px; }
@@ -241,9 +254,10 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .accuracy-insight { background: rgba(251, 191, 36, 0.1); border-left: 4px solid var(--yellow); padding: 16px; border-radius: var(--radius-sm); margin-top: 24px; color: var(--dark); font-size: 14px; line-height: 1.6; }
 
         /* ==================== BRAND CARDS ==================== */
-        .brands-section { padding: 48px 0; }
+        .brands-section { padding: 32px 0; }
         .brands-section h2 { margin-bottom: 32px; }
         .brands-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+        .brand-card { width: 100%; }
         .brand-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s, border-color 0.3s; }
         .brand-card:hover { box-shadow: var(--shadow-hover); border-color: var(--gray-300); }
 
@@ -256,7 +270,10 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .brand-stat:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
         .brand-stat-label { font-size: 12px; color: var(--gray-600); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .brand-stat-value { font-size: 16px; font-weight: 700; color: var(--green); }
-        .brand-accuracy { font-size: 20px; font-weight: 700; color: var(--green); font-family: 'Space Grotesk', sans-serif; }
+        .brand-accuracy { font-size: 20px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
+        .brand-accuracy.high { color: var(--green); }
+        .brand-accuracy.medium { color: #D97706; }
+        .brand-accuracy.low { color: var(--red); }
 
         .brand-expandable { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--gray-100); }
         .brand-expand-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; font-size: 14px; color: var(--dark); transition: color 0.2s; }
@@ -271,7 +288,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .brand-list li:before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 600; }
 
         /* ==================== POPULATION FACTORS ==================== */
-        .factors-section { padding: 48px 0; }
+        .factors-section { padding: 32px 0; }
         .factors-section h2 { margin-bottom: 32px; }
         .factors-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
         .factor-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 20px; transition: box-shadow 0.3s, border-color 0.3s; }
@@ -279,11 +296,11 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .factor-title { font-weight: 600; color: var(--dark); margin-bottom: 6px; font-size: 15px; }
         .factor-desc { font-size: 14px; color: var(--gray-600); line-height: 1.5; margin-bottom: 10px; }
         .factor-impact { display: inline-block; padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .factor-impact.high { background: rgba(239, 68, 68, 0.1); color: var(--red); }
-        .factor-impact.moderate { background: rgba(251, 191, 36, 0.1); color: var(--yellow); }
+        .factor-impact.high { background: rgba(234, 88, 12, 0.1); color: #EA580C; }
+        .factor-impact.moderate { background: rgba(202, 138, 4, 0.1); color: #CA8A04; }
 
         /* ==================== BLOG CTA ==================== */
-        .blog-cta-section { padding: 48px 0; }
+        .blog-cta-section { padding: 32px 0; }
         .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
         .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34, 197, 94, 0.25) 0%, transparent 70%); pointer-events: none; }
         .blog-cta-inner { position: relative; z-index: 1; }
@@ -301,9 +318,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
 
         /* ==================== SOURCES ==================== */
-        .sources-section { padding: 48px 0; }
+        .sources-section { padding: 32px 0; }
         .sources-section h2 { margin-bottom: 32px; }
-        .sources-accordion { max-width: 800px; margin: 0 auto; }
+        .sources-accordion { max-width: 900px; margin: 0 auto; }
         .accordion-item { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; }
         .accordion-header { background: var(--gray-50); padding: 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; font-size: 14px; color: var(--dark); transition: background 0.2s; gap: 12px; }
         .accordion-header:hover { background: var(--gray-100); }
@@ -315,14 +332,14 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .accordion-content p { margin-bottom: 8px; font-size: 14px; color: var(--gray-600); }
 
         /* ==================== CTA SECTION ==================== */
-        .cta-section { background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); color: white; padding: 48px 24px; border-radius: var(--radius); text-align: center; margin: 0 0 48px; }
+        .cta-section { background: linear-gradient(135deg, var(--dark-card) 0%, var(--dark) 100%); color: white; padding: 32px 24px; border-radius: var(--radius); text-align: center; margin: 0 20px 32px; }
         .cta-section h2 { color: white; margin-bottom: 12px; }
-        .cta-section p { color: rgba(255, 255, 255, 0.9); font-size: 16px; margin-bottom: 28px; max-width: 520px; margin-left: auto; margin-right: auto; }
+        .cta-section p { color: var(--gray-300); font-size: 16px; margin-bottom: 28px; max-width: 520px; margin-left: auto; margin-right: auto; }
         .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .cta-button-primary { background: white; color: var(--green); padding: 12px 28px; border-radius: var(--radius-sm); font-size: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); display: inline-flex; align-items: center; gap: 8px; }
-        .cta-button-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); }
-        .cta-button-secondary { background: transparent; color: white; padding: 12px 28px; border: 2px solid rgba(255, 255, 255, 0.4); border-radius: var(--radius-sm); font-size: 15px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
-        .cta-button-secondary:hover { background: white; color: var(--green); border-color: white; }
+        .cta-button-primary { background: var(--green); color: white; padding: 12px 28px; border-radius: var(--radius-sm); font-size: 15px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); display: inline-flex; align-items: center; gap: 8px; }
+        .cta-button-primary:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4); }
+        .cta-button-secondary { background: transparent; color: var(--gray-300); padding: 12px 28px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-sm); font-size: 15px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+        .cta-button-secondary:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.3); color: white; }
 
         /* ==================== ANDROID MODAL ==================== */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
@@ -353,25 +370,28 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         /* ==================== TABLET (min-width: 768px) ==================== */
         @media (min-width: 768px) {
           .header-inner { padding: 14px 24px; }
-          .hero { padding: 64px 0 40px; }
+          .hero { padding: 48px 0 24px; }
           .hero-subtitle { font-size: 17px; }
           .calculator-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
           .device-buttons { grid-template-columns: repeat(5, 1fr); }
           .activity-buttons { grid-template-columns: repeat(4, 1fr); }
           .results-panel { padding: 36px; }
-          .brands-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
-          .factors-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+          .brands-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+          .brand-card { width: calc(50% - 10px); }
+          .factors-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+          .factor-card { width: calc(50% - 8px); }
           .blog-cta { padding: 48px 40px; }
-          .calculator-section, .accuracy-section, .brands-section, .factors-section, .sources-section { padding: 64px 0; }
-          .cta-section { padding: 64px 40px; }
+          .calculator-section, .accuracy-section, .brands-section, .factors-section, .sources-section { padding: 48px 0; }
+          .cta-section { padding: 48px 40px; }
         }
 
         /* ==================== DESKTOP (min-width: 1024px) ==================== */
         @media (min-width: 1024px) {
-          .brands-grid { grid-template-columns: 1fr 1fr 1fr; }
-          .factors-grid { grid-template-columns: 1fr 1fr 1fr; }
-          .calculator-section, .accuracy-section, .brands-section, .factors-section, .sources-section { padding: 80px 0; }
-          .cta-section { padding: 80px 40px; }
+          .brand-card { width: calc(33.333% - 14px); }
+          .factor-card { width: calc(33.333% - 11px); }
+          .sources-accordion { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; max-width: 1100px; }
+          .calculator-section, .accuracy-section, .brands-section, .factors-section, .sources-section { padding: 56px 0; }
+          .cta-section { padding: 56px 40px; }
         }
       </style>
 
@@ -423,7 +443,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
               <div class="form-group">
                 <label>Your Device Reported</label>
                 <div class="input-wrapper">
-                  <input type="number" placeholder="0" min="0" data-input="reported-calories">
+                  <input type="number" placeholder="e.g. 400" min="0" data-input="reported-calories">
                   <span class="input-unit">kcal</span>
                 </div>
               </div>
@@ -432,8 +452,15 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             </div>
 
             <div>
-              <div class="results-panel" data-section="results">
-                ${this._renderResultsPanel()}
+              <div class="results-panel${this._calculationResult ? ' show' : ''}" data-section="results">
+                <div class="results-placeholder">
+                  <div class="results-placeholder-icon">📊</div>
+                  <div class="results-placeholder-title">Your Results Will Appear Here</div>
+                  <div class="results-placeholder-desc">Select your wearable, choose an activity, enter calories, and tap calculate to see your likely actual burn.</div>
+                </div>
+                <div class="results-live">
+                  ${this._renderResultsPanel()}
+                </div>
               </div>
             </div>
           </div>
@@ -450,7 +477,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
               <thead>
                 <tr>
                   <th>Activity Type</th>
-                  <th colspan="5" style="text-align: center;">Device Accuracy (↓ = underestimates, ↑ = overestimates)</th>
+                  ${Object.values(this._devices).map(d => `<th style="text-align: center;">${d.short}</th>`).join('')}
                 </tr>
               </thead>
               <tbody>
@@ -599,14 +626,14 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   }
 
   _renderResultsPanel() {
-    if (!this._calculationResult) {
-      return '<p style="text-align: center; color: var(--gray-400); padding: 40px;">Select device, activity, and enter calories to see results</p>';
-    }
+    if (!this._calculationResult) return '';
 
     const r = this._calculationResult;
     const device = this._devices[this._selectedDevice];
     const activity = this._activities[this._selectedActivity];
     const markerPercent = ((r.best - r.low) / (r.high - r.low)) * 100;
+    const tendencyClass = r.tendency === 'overestimate' ? 'overestimate' : r.tendency === 'underestimate' ? 'underestimate' : 'variable';
+    const activityVerdict = r.error < 20 ? 'the Most Accurate Activity' : r.error > 40 ? 'One of the Least Accurate Activities' : 'a Mixed-Accuracy Activity';
 
     return `
       <div class="results-header">
@@ -615,6 +642,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         <div class="results-subtext">kcal</div>
         <div class="results-confidence">
           ${r.confidence}% Confidence
+          <div class="results-confidence-tip">Based on ${device.name}'s overall ${device.overallAccuracy}% accuracy rating from peer-reviewed research. Higher confidence = narrower error range for this activity.</div>
         </div>
       </div>
 
@@ -640,8 +668,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         </div>
       </div>
 
-      <div class="results-tendency">
-        ${r.tendency === 'overestimate' ? '⬆ Usually Overestimates' : r.tendency === 'underestimate' ? '⬇ Usually Underestimates' : '⟷ Highly Variable'}
+      <div class="results-tendency ${tendencyClass}">
+        ${r.tendency === 'overestimate' ? '↑ Usually Overestimates' : r.tendency === 'underestimate' ? '↓ Usually Underestimates' : '⟷ Highly Variable'}
       </div>
 
       <div class="results-expandable">
@@ -665,7 +693,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
 
       <div class="results-expandable">
         <div class="expandable-header" data-expandable="activity-insight" role="button" tabindex="0" aria-expanded="false">
-          <span>Why ${activity.name} Is ${r.error < 20 ? 'Accurate' : r.error > 40 ? 'Unreliable' : 'Mixed'} for Accuracy</span>
+          <span>Why ${activity.name} Is ${activityVerdict}</span>
           <div class="expandable-toggle">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -684,31 +712,29 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   }
 
   _renderAccuracyTable() {
+    const deviceKeys = Object.keys(this._devices);
     return Object.entries(this._activities)
       .map(([actKey, activity]) => {
-        const cols = Object.entries(this._devices)
-          .map(([devKey, device]) => {
-            const actData = device.accuracyByActivity[actKey];
-            const accuracy = 100 - actData.error;
-            return { device, accuracy, error: actData.error, tendency: actData.tendency };
-          })
-          .sort((a, b) => b.accuracy - a.accuracy);
-
         return `
           <tr>
             <td class="activity-name">${activity.name}</td>
-            ${cols.map(col => `
-              <td style="width: 20%;">
+            ${deviceKeys.map(devKey => {
+              const device = this._devices[devKey];
+              const actData = device.accuracyByActivity[actKey];
+              const accuracy = 100 - actData.error;
+              const color = accuracy >= 80 ? 'var(--green)' : accuracy >= 65 ? 'var(--yellow)' : 'var(--red)';
+              return `
+              <td>
                 <div class="accuracy-bar-container">
                   <div class="accuracy-bar">
-                    <div class="accuracy-bar-fill" style="width: ${col.accuracy}%;">
-                      ${col.accuracy}%
+                    <div class="accuracy-bar-fill" style="width: ${accuracy}%; background: ${color};">
+                      ${accuracy}%
                     </div>
                   </div>
-                  <div class="accuracy-label">${col.error}% err</div>
+                  <div class="accuracy-label">${actData.tendency === 'overestimate' ? '↑' : actData.tendency === 'underestimate' ? '↓' : '⟷'} ${actData.error}%</div>
                 </div>
-              </td>
-            `).join('')}
+              </td>`;
+            }).join('')}
           </tr>
         `;
       })
@@ -726,7 +752,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <div class="brand-content">
             <div class="brand-stat">
               <span class="brand-stat-label">Overall Accuracy</span>
-              <span class="brand-accuracy">${device.overallAccuracy}%</span>
+              <span class="brand-accuracy ${device.overallAccuracy >= 75 ? 'high' : device.overallAccuracy >= 60 ? 'medium' : 'low'}">${device.overallAccuracy}%</span>
             </div>
             <div class="brand-stat">
               <span class="brand-stat-label">Tendency</span>
@@ -965,7 +991,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   _showResults() {
     const panel = this.shadowRoot.querySelector('[data-section="results"]');
     if (panel) {
-      panel.innerHTML = this._renderResultsPanel();
+      const live = panel.querySelector('.results-live');
+      if (live) live.innerHTML = this._renderResultsPanel();
       panel.classList.add('show');
     }
   }
