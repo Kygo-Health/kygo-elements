@@ -33,12 +33,14 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     this._setupEventDelegation();
     this._setupIntersectionObserver();
     this._injectStructuredData();
-    __seo(this, 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\\'s calorie burn estimate? Compare calorie burn accuracy of Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring across 7 activity types: steady-state cardio, running, walking, cycling, HIIT, strength training, and swimming. Enter your reported calorie burn and see the likely actual range based on peer-reviewed research. Apple Watch has 71% overall calorie accuracy with 27.96% MAPE. Fitbit averages 50-66% accuracy with consistent bias. Garmin uses Firstbeat Analytics with 6.7% MAPE at medium-hard intensity but 48% overall accuracy. WHOOP uses ACSM equations extended by heart rate analysis with variable accuracy. Oura Ring achieves 87% lab accuracy with r=0.93 correlation. Strength training and cycling are the least accurate activities across all devices (29-52% error). Steady-state cardio is most accurate (10-20% error). Factors affecting accuracy include skin tone, body composition, medications, tattoos, device fit, and caffeine. Data sourced from Choe & Kang 2025 Physiological Measurement meta-analysis, Chevance et al. 2022 JMIR, Kristiansson et al. 2023 BMC, Bellenger et al. 2021 Sensors, Murakami et al. 2019 JMIR, Stanford 2017, and Firstbeat IEEE EMBC 2016.');
+    __seo(this, 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\'s calorie burn estimate? Compare calorie burn accuracy of Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring across 7 activity types: steady-state cardio, running, walking, cycling, HIIT, strength training, and swimming. Enter your reported calorie burn and see the likely actual range based on peer-reviewed research. Apple Watch has 71% overall calorie accuracy with 27.96% MAPE. Fitbit averages 50-66% accuracy with consistent bias. Garmin uses Firstbeat Analytics with 6.7% MAPE at medium-hard intensity but 48% overall accuracy. WHOOP uses ACSM equations extended by heart rate analysis with variable accuracy. Oura Ring achieves 87% lab accuracy with r=0.93 correlation. Strength training and cycling are the least accurate activities across all devices (29-52% error). Steady-state cardio is most accurate (10-20% error). Factors affecting accuracy include skin tone, body composition, medications, tattoos, device fit, and caffeine. Data sourced from Choe & Kang 2025 Physiological Measurement meta-analysis, Chevance et al. 2022 JMIR, Kristiansson et al. 2023 BMC, Bellenger et al. 2021 Sensors, Murakami et al. 2019 JMIR, Stanford 2017, and Firstbeat IEEE EMBC 2016.');
   }
 
   _render() {
     this.shadowRoot.innerHTML = `
       <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+
         :host {
           --dark: #1E293B;
           --dark-card: #0F172A;
