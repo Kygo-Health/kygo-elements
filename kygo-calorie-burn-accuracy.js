@@ -4,13 +4,14 @@
  * Interactive calculator showing how accurate your wearable's calorie burn estimate really is
  */
 
-/** SEO helper — injects visible text outside Shadow DOM for crawlers */
-function __seo(el, text) {
+/** SEO helper — injects semantic HTML outside Shadow DOM for crawlers and AI */
+function __seo(el, html) {
   if (el.querySelector('[data-seo]')) return;
-  const d = document.createElement('div');
+  const d = document.createElement('article');
   d.setAttribute('data-seo', '');
+  d.setAttribute('aria-hidden', 'true');
   d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
-  d.textContent = text;
+  d.innerHTML = html;
   el.appendChild(d);
 }
 
@@ -33,7 +34,60 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     this._setupEventDelegation();
     this._setupIntersectionObserver();
     this._injectStructuredData();
-    __seo(this, 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\'s calorie burn estimate? Compare calorie burn accuracy of Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring across 7 activity types: steady-state cardio, running, walking, cycling, HIIT, strength training, and swimming. Enter your reported calorie burn and see the likely actual range based on peer-reviewed research. Apple Watch has 71% overall calorie accuracy with 27.96% MAPE. Fitbit averages 50-66% accuracy with consistent bias. Garmin uses Firstbeat Analytics with 6.7% MAPE at medium-hard intensity but 48% overall accuracy. WHOOP uses ACSM equations extended by heart rate analysis with variable accuracy. Oura Ring achieves 87% lab accuracy with r=0.93 correlation. Strength training and cycling are the least accurate activities across all devices (29-52% error). Steady-state cardio is most accurate (10-20% error). Factors affecting accuracy include skin tone, body composition, medications, tattoos, device fit, and caffeine. Data sourced from Choe & Kang 2025 Physiological Measurement meta-analysis, Chevance et al. 2022 JMIR, Kristiansson et al. 2023 BMC, Bellenger et al. 2021 Sensors, Murakami et al. 2019 JMIR, Stanford 2017, and Firstbeat IEEE EMBC 2016.');
+    __seo(this, `
+      <h1>Calorie Burn Accuracy Calculator by Kygo Health</h1>
+      <p>How accurate is your wearable&rsquo;s calorie burn estimate? Compare calorie burn accuracy of Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring across 7 activity types using peer-reviewed research.</p>
+
+      <h2>Wearable Calorie Burn Accuracy Rankings</h2>
+      <ol>
+        <li><strong>Oura Ring</strong> &mdash; 87% lab accuracy, r=0.93 correlation. Best for resting metabolic rate. Limited active exercise tracking.</li>
+        <li><strong>WHOOP</strong> &mdash; 82% overall accuracy. Uses ACSM equations extended by HR analysis. Variable bias direction depending on activity.</li>
+        <li><strong>Apple Watch</strong> &mdash; 71% overall accuracy, 27.96% MAPE. Overestimates 58% of the time. Best consumer device for steady-state cardio.</li>
+        <li><strong>Fitbit</strong> &mdash; 50&ndash;66% accuracy. Consistent overestimate bias (27.4% average). Reliable for trend tracking.</li>
+        <li><strong>Garmin</strong> &mdash; 48% overall accuracy but Firstbeat Analytics achieves 6.7% MAPE at medium-hard intensity. Wide variance between activities.</li>
+      </ol>
+
+      <h2>Accuracy by Activity Type</h2>
+      <ul>
+        <li><strong>Steady-state cardio</strong> &mdash; Most accurate across all devices (10&ndash;20% error)</li>
+        <li><strong>Running</strong> &mdash; 15&ndash;25% error, Apple Watch and Garmin perform best</li>
+        <li><strong>Walking</strong> &mdash; High overestimate risk (Apple Watch: 26&ndash;61% overestimate)</li>
+        <li><strong>Cycling</strong> &mdash; 30&ndash;52% error, wrist-based sensors struggle without arm motion</li>
+        <li><strong>HIIT</strong> &mdash; 25&ndash;40% error, rapid HR changes confuse algorithms</li>
+        <li><strong>Strength training</strong> &mdash; Least accurate across all devices (29&ndash;52% error)</li>
+        <li><strong>Swimming</strong> &mdash; 20&ndash;35% error, water interferes with optical HR sensors</li>
+      </ul>
+
+      <h2>Factors Affecting Wearable Calorie Accuracy</h2>
+      <ul>
+        <li>Skin tone &mdash; darker pigmentation can reduce PPG sensor signal quality</li>
+        <li>Body composition &mdash; muscle-to-fat ratio affects metabolic rate but most devices cannot measure it</li>
+        <li>Medications &mdash; beta-blockers and stimulants alter heart rate response</li>
+        <li>Tattoos &mdash; ink can interfere with optical sensor readings</li>
+        <li>Device fit &mdash; loose bands create motion artifacts and signal noise</li>
+        <li>Caffeine &mdash; elevates resting heart rate, potentially inflating calorie estimates</li>
+        <li>Age, sex, and BMI &mdash; demographic factors affect baseline metabolic calculations</li>
+      </ul>
+
+      <h2>How to Use This Calculator</h2>
+      <ol>
+        <li>Select your wearable brand (Apple Watch, Fitbit, Garmin, WHOOP, or Oura Ring)</li>
+        <li>Choose your activity type from 7 categories</li>
+        <li>Enter the calorie burn your device reported</li>
+        <li>View your likely actual calorie range, best estimate, and bias direction</li>
+      </ol>
+
+      <h2>Research Sources</h2>
+      <ul>
+        <li>Choe &amp; Kang 2025 &mdash; Physiological Measurement meta-analysis of wearable energy expenditure accuracy</li>
+        <li>Chevance et al. 2022 &mdash; JMIR systematic review of consumer wearable accuracy</li>
+        <li>Kristiansson et al. 2023 &mdash; BMC Sports Science systematic review</li>
+        <li>Bellenger et al. 2021 &mdash; Sensors, WHOOP PPG HR/HRV validation</li>
+        <li>Murakami et al. 2019 &mdash; JMIR Fitbit validity meta-analysis</li>
+        <li>Stanford 2017 &mdash; Apple Watch energy expenditure accuracy study</li>
+        <li>Firstbeat IEEE EMBC 2016 &mdash; Garmin calorie algorithm validation</li>
+      </ul>
+    `);
   }
 
   _render() {
@@ -949,24 +1003,104 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   }
 
   _injectStructuredData() {
-    if (document.querySelector('script[data-kygo-calorie-burn-ld]')) return;
-    const ld = {
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      name: 'Calorie Burn Accuracy Calculator',
-      description: 'Enter your wearable\'s reported calorie burn and see the likely actual range. Compares Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring calorie burn accuracy across 7 activity types using peer-reviewed research.',
-      applicationCategory: 'HealthApplication',
-      operatingSystem: 'Web',
-      url: 'https://www.kygo.app/tools/calorie-burn-accuracy',
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-      author: { '@type': 'Organization', name: 'Kygo Health', url: 'https://www.kygo.app' },
-      keywords: 'calorie burn accuracy, wearable calorie burn, Apple Watch calorie burn accuracy, Fitbit calorie burn accuracy, Garmin calorie burn accuracy, WHOOP calorie burn accuracy, Oura Ring calorie burn accuracy, fitness tracker energy expenditure error'
-    };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.setAttribute('data-kygo-calorie-burn-ld', '');
-    script.textContent = JSON.stringify(ld);
-    document.head.appendChild(script);
+    // WebApplication schema
+    if (!document.querySelector('script[data-kygo-calorie-burn-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        name: 'Calorie Burn Accuracy Calculator',
+        alternateName: 'Kygo Calorie Burn Accuracy Tool',
+        description: 'Enter your wearable\'s reported calorie burn and see the likely actual range. Compares Apple Watch, Fitbit, Garmin, WHOOP, and Oura Ring calorie burn accuracy across 7 activity types using peer-reviewed research from Choe & Kang 2025, Chevance et al. 2022, and Kristiansson et al. 2023.',
+        applicationCategory: 'HealthApplication',
+        operatingSystem: 'Web',
+        url: 'https://www.kygo.app/tools/calorie-burn-accuracy',
+        datePublished: '2026-03-01',
+        dateModified: '2026-03-16',
+        softwareVersion: '1.0',
+        inLanguage: 'en',
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+        author: { '@type': 'Organization', name: 'Kygo Health', url: 'https://www.kygo.app', logo: 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+        publisher: { '@type': 'Organization', name: 'Kygo Health', url: 'https://www.kygo.app' },
+        featureList: 'Compare 5 wearable brands, 7 activity types, peer-reviewed accuracy data, personalized calorie range calculator, population factor adjustments',
+        keywords: 'calorie burn accuracy, wearable calorie burn, Apple Watch calorie burn accuracy, Fitbit calorie burn accuracy, Garmin calorie burn accuracy, WHOOP calorie burn accuracy, Oura Ring calorie burn accuracy, fitness tracker energy expenditure error, how accurate is Apple Watch calories, wearable calorie overestimate',
+        citation: [
+          { '@type': 'ScholarlyArticle', name: 'Choe & Kang 2025 — Physiological Measurement meta-analysis of wearable EE accuracy' },
+          { '@type': 'ScholarlyArticle', name: 'Chevance et al. 2022 — JMIR systematic review of consumer wearable accuracy' },
+          { '@type': 'ScholarlyArticle', name: 'Kristiansson et al. 2023 — BMC Sports Science systematic review' },
+          { '@type': 'ScholarlyArticle', name: 'Bellenger et al. 2021 — Sensors WHOOP PPG HR/HRV validation' },
+          { '@type': 'ScholarlyArticle', name: 'Stanford 2017 — Apple Watch energy expenditure accuracy study' }
+        ]
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-calorie-burn-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
+
+    // FAQPage schema for Google rich snippets
+    if (!document.querySelector('script[data-kygo-calorie-burn-faq]')) {
+      const faq = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'How accurate is Apple Watch calorie burn?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Apple Watch has approximately 71% overall calorie burn accuracy with a 27.96% Mean Absolute Percentage Error (MAPE). It tends to overestimate calories 58% of the time. It is most accurate during steady-state cardio (15% error) and least accurate during walking (26-61% overestimate) and strength training (40% error). Data from Stanford 2017 and Choe & Kang 2025 meta-analysis.' }
+          },
+          {
+            '@type': 'Question',
+            name: 'How accurate is Fitbit calorie burn?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Fitbit has approximately 50-66% overall calorie burn accuracy. Fitbit consistently overestimates calories burned, with a 27.4% average overestimate during controlled activities. It is most accurate during steady-state cardio (15-20% error) and least accurate during cycling (30% error) and HIIT (35% error). Data from Chevance et al. 2022 JMIR and Murakami et al. 2019.' }
+          },
+          {
+            '@type': 'Question',
+            name: 'Which wearable is most accurate for calorie burn tracking?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Oura Ring has the highest lab accuracy at 87% with r=0.93 correlation, but it has limited exercise tracking capabilities. For active calorie tracking, Apple Watch leads at 71% overall accuracy. WHOOP averages 82% accuracy. Garmin uses Firstbeat Analytics achieving 6.7% MAPE at medium-hard intensity. Accuracy varies significantly by activity type — steady-state cardio is most accurate across all devices (10-20% error), while strength training and cycling have the highest error rates (29-52%).' }
+          },
+          {
+            '@type': 'Question',
+            name: 'Why does my wearable overestimate or underestimate calories?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Wearables calculate calories using heart rate, motion data, and personal metrics, but several factors affect accuracy: (1) Skin tone — darker pigmentation can reduce PPG sensor accuracy; (2) Body composition — muscle-to-fat ratio affects metabolic rate but most devices cannot measure it; (3) Wrist vs finger placement — Oura Ring gets better PPG signals from the finger; (4) Activity type — arm-dominant exercises confuse wrist-based accelerometers; (5) Device fit — loose bands create signal noise. Most devices overestimate during low-intensity activities and underestimate during high-intensity exercise.' }
+          },
+          {
+            '@type': 'Question',
+            name: 'How do I calculate my actual calories burned from my wearable?',
+            acceptedAnswer: { '@type': 'Answer', text: 'Use the Kygo Calorie Burn Accuracy Calculator: (1) Select your wearable brand (Apple Watch, Fitbit, Garmin, WHOOP, or Oura Ring), (2) Choose your activity type, (3) Enter the calorie burn your device reported. The tool applies peer-reviewed error rates from published studies to show your likely actual calorie range, best estimate, and the direction of bias (overestimate vs underestimate) specific to your device and activity combination.' }
+          }
+        ]
+      };
+      const faqScript = document.createElement('script');
+      faqScript.type = 'application/ld+json';
+      faqScript.setAttribute('data-kygo-calorie-burn-faq', '');
+      faqScript.textContent = JSON.stringify(faq);
+      document.head.appendChild(faqScript);
+    }
+
+    // HowTo schema for calculator steps
+    if (!document.querySelector('script[data-kygo-calorie-burn-howto]')) {
+      const howTo = {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        name: 'How to Check Your Wearable\'s Calorie Burn Accuracy',
+        description: 'Use peer-reviewed research data to find out how accurate your wearable\'s calorie burn estimate really is.',
+        totalTime: 'PT1M',
+        tool: { '@type': 'HowToTool', name: 'A wearable fitness tracker (Apple Watch, Fitbit, Garmin, WHOOP, or Oura Ring)' },
+        step: [
+          { '@type': 'HowToStep', position: 1, name: 'Select your wearable', text: 'Choose your wearable device brand from Apple Watch, Fitbit, Garmin, WHOOP, or Oura Ring.' },
+          { '@type': 'HowToStep', position: 2, name: 'Choose your activity', text: 'Select the activity type: steady-state cardio, running, walking, cycling, HIIT, strength training, or swimming.' },
+          { '@type': 'HowToStep', position: 3, name: 'Enter reported calories', text: 'Enter the calorie burn number your wearable reported for the activity.' },
+          { '@type': 'HowToStep', position: 4, name: 'View your actual range', text: 'The calculator shows your likely actual calorie burn range, best estimate, and whether your device tends to overestimate or underestimate for that activity.' }
+        ]
+      };
+      const howToScript = document.createElement('script');
+      howToScript.type = 'application/ld+json';
+      howToScript.setAttribute('data-kygo-calorie-burn-howto', '');
+      howToScript.textContent = JSON.stringify(howTo);
+      document.head.appendChild(howToScript);
+    }
   }
 
   get _devices() {
@@ -1050,7 +1184,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         name: 'WHOOP',
         short: 'WHOOP',
         color: '#44B4A6',
-        imageUrl: 'https://static.wixstatic.com/media/273a63_2e6b13f1ed8b4569b5e5b55e77c75cc1~mv2.png',
+        imageUrl: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
         affiliateUrl: 'https://join.whoop.com/',
         algorithm: 'ACSM metabolic equations extended by a 2005 South African HR-based energy expenditure study. Formula: Calories = BMR + f(Heart Rate). Activates when HR exceeds threshold above resting baseline. Recovery status affects calorie estimates — identical workouts show 80-120 kcal variance.',
         bmrMethod: 'Age, gender, height, weight; 5.0 adds 30-day personalized calibration',
