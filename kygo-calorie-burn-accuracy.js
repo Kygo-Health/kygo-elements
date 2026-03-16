@@ -199,9 +199,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .results-panel .results-live { display: none; }
         .results-panel.show .results-live { display: block; animation: fadeInUp 0.4s ease-out; }
         .results-header { text-align: center; margin-bottom: 24px; }
-        .results-label { font-size: 13px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .results-label { font-size: 13px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
         .results-best-estimate { font-size: clamp(40px, 10vw, 56px); font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; }
-        .results-subtext { font-size: 14px; color: var(--gray-400); }
+        .results-subtext { font-size: 14px; color: var(--gray-600); }
         .results-confidence { display: inline-flex; align-items: center; gap: 6px; background: var(--green-light); color: var(--green-dark); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-top: 12px; cursor: help; position: relative; }
         .results-confidence-tip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 400; line-height: 1.4; width: 240px; text-align: left; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .results-confidence-tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--dark); }
@@ -209,12 +209,11 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
 
         .results-range-bar { background: var(--gray-100); border-radius: 8px; height: 36px; position: relative; margin-top: 20px; overflow: visible; }
         .range-fill { background: linear-gradient(90deg, var(--green-dark), var(--green)); height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px; min-width: 40px; transition: width 0.4s ease-out; }
-        .range-marker { position: absolute; top: -4px; width: 3px; height: calc(100% + 8px); background: var(--yellow); border-radius: 2px; z-index: 10; }
-        .range-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--gray-400); font-weight: 600; }
+        .range-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--gray-600); font-weight: 600; }
 
         .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
         .results-card { background: var(--gray-50); border: 1px solid var(--gray-200); padding: 16px; border-radius: var(--radius-sm); }
-        .results-card-label { font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .results-card-label { font-size: 11px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
         .results-card-value { font-size: 22px; font-weight: 700; color: var(--dark); font-family: 'Space Grotesk', sans-serif; }
 
         .results-tendency { display: inline-block; padding: 6px 14px; border-radius: 50px; font-size: 13px; font-weight: 600; margin-top: 16px; }
@@ -668,7 +667,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         <div class="range-fill" style="width: ${Math.max(10, markerPercent)}%;">
           ${r.best}
         </div>
-        <div class="range-marker" style="left: ${markerPercent}%;"></div>
       </div>
       <div class="range-labels">
         <span>Low: ${r.low}</span>
@@ -811,7 +809,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   }
 
   _renderPopulationFactors() {
-    return this._populationFactors
+    const order = { high: 0, moderate: 1, low: 2 };
+    return [...this._populationFactors]
+      .sort((a, b) => (order[a.impact] ?? 9) - (order[b.impact] ?? 9))
       .map(factor => `
         <div class="factor-card">
           <h4 class="factor-title">${factor.title}</h4>
@@ -835,10 +835,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             </div>
           </div>
           <div class="accordion-content" data-accordion-content="study-${idx}">
-            <p>Research study: <a href="${study.url}" target="_blank">${study.label}</a></p>
-            <p style="margin-top: 12px; font-size: 12px; color: var(--gray-500);">
-              External link. Please verify current availability and citation details.
-            </p>
+            <p><a href="${study.url}" target="_blank" rel="noopener">${study.label}</a></p>
           </div>
         </div>
       `)
