@@ -312,8 +312,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .factor-impact.moderate { background: rgba(202, 138, 4, 0.1); color: #CA8A04; }
 
         /* ==================== BLOG LINK ==================== */
-        .blog-link-section { padding: 32px 0 0; }
-        .blog-link-wrap { max-width: 720px; margin: 0 auto; }
+        .blog-link-wrap { max-width: 720px; margin: 32px auto 0; }
         .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); text-decoration: none; transition: box-shadow 0.3s; }
         .blog-link-card:hover { box-shadow: var(--shadow-hover); }
         .blog-link-logo { width: 36px; height: 36px; object-fit: contain; flex-shrink: 0; border-radius: 6px; }
@@ -530,22 +529,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <div class="brands-grid">
             ${this._renderBrandCards()}
           </div>
-        </div>
-      </section>
-
-      <!-- POPULATION FACTORS -->
-      <section class="factors-section section-alt animate-on-scroll">
-        <div class="container">
-          <h2>Factors That Affect All Devices</h2>
-          <div class="factors-grid">
-            ${this._renderPopulationFactors()}
-          </div>
-        </div>
-      </section>
-
-      <!-- BLOG LINK -->
-      <section class="blog-link-section">
-        <div class="container">
           <div class="blog-link-wrap animate-on-scroll">
             <a href="https://www.kygo.app/blog/how-accurate-is-your-wearable-calorie-burn" class="blog-link-card" target="_blank" rel="noopener">
               <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo" class="blog-link-logo" />
@@ -555,6 +538,16 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
               </div>
               <span class="blog-link-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
             </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- POPULATION FACTORS -->
+      <section class="factors-section section-alt animate-on-scroll">
+        <div class="container">
+          <h2>Factors That Affect All Devices</h2>
+          <div class="factors-grid">
+            ${this._renderPopulationFactors()}
           </div>
         </div>
       </section>
