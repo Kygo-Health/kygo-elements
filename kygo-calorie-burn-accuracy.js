@@ -163,6 +163,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .hero-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; }
         .hero-subtitle { font-size: 16px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
 
+        /* ==================== SECTION BACKGROUNDS ==================== */
+        .section-alt { background: #fff; }
+
         /* ==================== SECTION TITLES ==================== */
         .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
@@ -228,7 +231,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .expandable-toggle.open { transform: rotate(180deg); }
         .expandable-content { display: none; margin-top: 12px; padding: 16px; background: var(--gray-50); border-radius: var(--radius-sm); font-size: 14px; line-height: 1.6; color: var(--gray-600); }
         .expandable-content.open { display: block; }
-        .insight-box { background: rgba(251, 191, 36, 0.1); border-left: 4px solid var(--yellow); padding: 14px; border-radius: var(--radius-sm); margin-top: 16px; font-size: 13px; color: var(--gray-600); line-height: 1.5; }
+        .insight-box { background: #fff; border-left: 4px solid var(--green); padding: 14px; border-radius: var(--radius-sm); margin-top: 16px; font-size: 13px; color: var(--gray-600); line-height: 1.5; }
 
         .results-placeholder { text-align: center; padding: 48px 24px; }
         .results-placeholder-icon { margin-bottom: 16px; }
@@ -243,7 +246,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .accuracy-table th { background: var(--gray-100); padding: 12px 10px; text-align: center; font-weight: 600; color: var(--dark); border-bottom: 2px solid var(--gray-200); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
         .accuracy-table th:first-child { text-align: left; position: sticky; left: 0; z-index: 2; background: var(--gray-100); }
         .accuracy-table td { padding: 14px 10px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
-        .accuracy-table td:first-child { position: sticky; left: 0; z-index: 1; background: var(--light); }
+        .accuracy-table td:first-child { position: sticky; left: 0; z-index: 1; background: #fff; }
         .accuracy-table tbody tr:hover td { background: var(--gray-50); }
         .accuracy-table tbody tr:hover td:first-child { background: var(--gray-50); }
         .activity-name { font-weight: 600; color: var(--dark); font-size: 13px; white-space: nowrap; }
@@ -256,7 +259,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .accuracy-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: 600; min-width: 32px; }
         .accuracy-label { font-size: 11px; color: var(--gray-400); white-space: nowrap; }
 
-        .accuracy-insight { background: rgba(251, 191, 36, 0.1); border-left: 4px solid var(--yellow); padding: 16px; border-radius: var(--radius-sm); margin-top: 24px; color: var(--dark); font-size: 14px; line-height: 1.6; }
+        .accuracy-insight { background: #fff; border-left: 4px solid var(--green); padding: 16px; border-radius: var(--radius-sm); margin-top: 24px; color: var(--dark); font-size: 14px; line-height: 1.6; }
 
         /* ==================== BRAND CARDS ==================== */
         .brands-section { padding: 32px 0; }
@@ -277,11 +280,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .brand-stat { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
         .brand-stat:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
         .brand-stat-label { font-size: 12px; color: var(--gray-600); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .brand-stat-value { font-size: 16px; font-weight: 700; color: var(--green); }
-        .brand-accuracy { font-size: 20px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
-        .brand-accuracy.high { color: var(--green); }
-        .brand-accuracy.medium { color: #D97706; }
-        .brand-accuracy.low { color: var(--red); }
+        .brand-stat-value { font-size: 14px; font-weight: 700; color: var(--dark); }
+        .brand-best { color: var(--green-dark); }
+        .brand-worst { color: var(--red); }
 
         .brand-expandable { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--gray-100); }
         .brand-expand-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; font-weight: 600; font-size: 14px; color: var(--dark); transition: color 0.2s; }
@@ -309,6 +310,18 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .factor-impact { display: inline-block; padding: 4px 10px; border-radius: 50px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         .factor-impact.high { background: rgba(234, 88, 12, 0.1); color: #EA580C; }
         .factor-impact.moderate { background: rgba(202, 138, 4, 0.1); color: #CA8A04; }
+
+        /* ==================== BLOG LINK ==================== */
+        .blog-link-section { padding: 32px 0 0; }
+        .blog-link-wrap { max-width: 720px; margin: 0 auto; }
+        .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); text-decoration: none; transition: box-shadow 0.3s; }
+        .blog-link-card:hover { box-shadow: var(--shadow-hover); }
+        .blog-link-logo { width: 36px; height: 36px; object-fit: contain; flex-shrink: 0; border-radius: 6px; }
+        .blog-link-text { flex: 1; }
+        .blog-link-title { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--green-dark); letter-spacing: 0.3px; }
+        .blog-link-desc { display: block; font-size: 14px; font-weight: 500; color: var(--dark); margin-top: 2px; }
+        .blog-link-arrow { width: 20px; height: 20px; color: var(--green-dark); flex-shrink: 0; }
+        .blog-link-arrow svg { width: 20px; height: 20px; }
 
         /* ==================== BLOG CTA ==================== */
         .blog-cta-section { padding: 32px 0; }
@@ -487,7 +500,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       </section>
 
       <!-- ACCURACY BY ACTIVITY -->
-      <section class="accuracy-section animate-on-scroll">
+      <section class="accuracy-section section-alt animate-on-scroll">
         <div class="container">
           <h2>Accuracy Varies Dramatically by Activity</h2>
           <p class="section-sub">How each device performs across 7 common activity types, ranked by accuracy.</p>
@@ -505,7 +518,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             </table>
           </div>
           <div class="accuracy-insight">
-            💡 <strong>Key Insight:</strong> Steady-state cardio is the most accurate activity type across all devices. Cycling and strength training are the least accurate regardless of device, with errors ranging from 30–60%.
+            <strong>Key Insight:</strong> Steady-state cardio is the most accurate activity type across all devices. Cycling and strength training are the least accurate regardless of device, with errors ranging from 30–60%.
           </div>
         </div>
       </section>
@@ -521,11 +534,27 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       </section>
 
       <!-- POPULATION FACTORS -->
-      <section class="factors-section animate-on-scroll">
+      <section class="factors-section section-alt animate-on-scroll">
         <div class="container">
           <h2>Factors That Affect All Devices</h2>
           <div class="factors-grid">
             ${this._renderPopulationFactors()}
+          </div>
+        </div>
+      </section>
+
+      <!-- BLOG LINK -->
+      <section class="blog-link-section">
+        <div class="container">
+          <div class="blog-link-wrap animate-on-scroll">
+            <a href="https://www.kygo.app/blog/how-accurate-is-your-wearable-calorie-burn" class="blog-link-card" target="_blank" rel="noopener">
+              <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo" class="blog-link-logo" />
+              <div class="blog-link-text">
+                <span class="blog-link-title">Read the Full Article</span>
+                <span class="blog-link-desc">How Accurate Is Your Wearable's Calorie Burn?</span>
+              </div>
+              <span class="blog-link-arrow"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </a>
           </div>
         </div>
       </section>
@@ -559,7 +588,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       </section>
 
       <!-- SOURCES -->
-      <section class="sources-section animate-on-scroll">
+      <section class="sources-section section-alt animate-on-scroll">
         <div class="container">
           <h2>Research & Sources</h2>
           <div class="sources-accordion">
@@ -758,8 +787,18 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   }
 
   _renderBrandCards() {
+    const actNames = this._activities;
     return Object.entries(this._devices)
-      .map(([key, device]) => `
+      .map(([key, device]) => {
+        const acts = Object.entries(device.accuracyByActivity);
+        const sorted = [...acts].sort((a, b) => a[1].error - b[1].error);
+        const best = sorted[0];
+        const worst = sorted[sorted.length - 1];
+        const minErr = best[1].error;
+        const maxErr = worst[1].error;
+        const bestName = actNames[best[0]]?.name || best[0];
+        const worstName = actNames[worst[0]]?.name || worst[0];
+        return `
         <div class="brand-card">
           <div class="brand-header">
             <img src="${device.imageUrl}" alt="${device.name}" class="brand-image">
@@ -768,12 +807,16 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           </div>
           <div class="brand-content">
             <div class="brand-stat">
-              <span class="brand-stat-label">Overall Accuracy</span>
-              <span class="brand-accuracy ${device.overallAccuracy >= 75 ? 'high' : device.overallAccuracy >= 60 ? 'medium' : 'low'}">${device.overallAccuracy}%</span>
+              <span class="brand-stat-label">Typical Error Range</span>
+              <span class="brand-stat-value">${minErr}–${maxErr}% MAPE</span>
             </div>
             <div class="brand-stat">
-              <span class="brand-stat-label">Tendency</span>
-              <span class="brand-stat-value">${device.tendency === 'overestimate' ? '⬆ Overestimates' : device.tendency === 'underestimate' ? '⬇ Underestimates' : '⟷ Variable'}</span>
+              <span class="brand-stat-label">Best Activity</span>
+              <span class="brand-stat-value brand-best">${bestName} (~${minErr}%)</span>
+            </div>
+            <div class="brand-stat">
+              <span class="brand-stat-label">Worst Activity</span>
+              <span class="brand-stat-value brand-worst">${worstName} (~${maxErr}%)</span>
             </div>
 
             <div class="brand-expandable">
@@ -803,8 +846,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
               </div>
             </div>
           </div>
-        </div>
-      `)
+        </div>`;
+      })
       .join('');
   }
 
