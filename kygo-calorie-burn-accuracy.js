@@ -1035,7 +1035,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         overallAccuracy: 48,
         tendency: 'underestimate',
         accuracyByActivity: {
-          'steady-cardio': { error: 12, range: [7, 17], tendency: 'underestimate' },
+          'steady-cardio': { error: 10, range: [6, 17], tendency: 'underestimate' },
           'running': { error: 15, range: [10, 22], tendency: 'underestimate' },
           'walking': { error: 30, range: [20, 43], tendency: 'underestimate' },
           'cycling': { error: 40, range: [30, 52], tendency: 'underestimate' },
@@ -1057,7 +1057,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         sensors: 'Advanced PPG (Maxim MAX86171 on 4.0), accelerometer, skin temperature, SpO2; 5.0 adds ~26 Hz sampling + respiratory rate',
         strengths: ['Transparent about limitations', 'Best for relative trend tracking', 'Recovery-aware calorie adjustment'],
         weaknesses: ['HIIT accuracy: -13.2% to +75%', 'Resistance training: ±29% error', 'WHOOP 5.0 users report calorie drops vs 4.0'],
-        overallAccuracy: 55,
+        overallAccuracy: 82,
         tendency: 'variable',
         accuracyByActivity: {
           'steady-cardio': { error: 12, range: [8, 18], tendency: 'mixed' },
@@ -1082,7 +1082,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         sensors: '18-path multi-wavelength PPG (6 sensors, red/infrared/green LEDs), 3D accelerometer, 2 precision thermistors',
         strengths: ['Best lab correlation (r=0.93)', 'Finger PPG = stronger signal at rest', '2024 HR integration cut error by 53%'],
         weaknesses: ['No GPS', 'Poor for cycling/elliptical (no hand movement)', 'Ring form factor limits exercise tracking'],
-        overallAccuracy: 72,
+        overallAccuracy: 87,
         tendency: 'underestimate',
         accuracyByActivity: {
           'steady-cardio': { error: 13, range: [8, 18], tendency: 'underestimate' },
@@ -1138,6 +1138,11 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       { label: 'WHOOP — How Calories Are Calculated', url: 'https://support.whoop.com/hc/en-us/articles/360033775513-How-does-WHOOP-calculate-calories-burned-' },
       { label: 'Oura — Activity Improvements (Nov 2024)', url: 'https://ouraring.com/blog/activity-improvements/' },
       { label: 'Apple — Heart Rate & Calorimetry White Paper', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
+      { label: 'WHOOP — Strain Explained', url: 'https://www.whoop.com/thelocker/understanding-strain/' },
+      { label: 'WHOOP — Calorie Tracking Science', url: 'https://www.whoop.com/thelocker/calorie-tracking-science/' },
+      { label: 'Oura — Ring 4 Technology', url: 'https://ouraring.com/blog/ring-4-technology/' },
+      { label: 'Oura — Finger-Worn Wearable Accuracy', url: 'https://ouraring.com/blog/finger-worn-wearable-accuracy/' },
+      { label: 'Firstbeat — Calorie Accuracy Blog', url: 'https://www.firstbeat.com/en/blog/how-accurate-are-calorie-counters/' },
       { label: 'WellnessPulse — Accuracy of Fitness Trackers (2025)', url: 'https://wellnesspulse.com/research/accuracy-of-fitness-trackers/' }
     ];
   }
