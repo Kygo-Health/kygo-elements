@@ -199,9 +199,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .results-panel .results-live { display: none; }
         .results-panel.show .results-live { display: block; animation: fadeInUp 0.4s ease-out; }
         .results-header { text-align: center; margin-bottom: 24px; }
-        .results-label { font-size: 13px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .results-label { font-size: 13px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
         .results-best-estimate { font-size: clamp(40px, 10vw, 56px); font-weight: 700; color: var(--green); line-height: 1; margin-bottom: 4px; font-family: 'Space Grotesk', sans-serif; }
-        .results-subtext { font-size: 14px; color: var(--gray-400); }
+        .results-subtext { font-size: 14px; color: var(--gray-600); }
         .results-confidence { display: inline-flex; align-items: center; gap: 6px; background: var(--green-light); color: var(--green-dark); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-top: 12px; cursor: help; position: relative; }
         .results-confidence-tip { display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); background: var(--dark); color: #fff; padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 400; line-height: 1.4; width: 240px; text-align: left; z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .results-confidence-tip::after { content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); border: 6px solid transparent; border-top-color: var(--dark); }
@@ -209,12 +209,11 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
 
         .results-range-bar { background: var(--gray-100); border-radius: 8px; height: 36px; position: relative; margin-top: 20px; overflow: visible; }
         .range-fill { background: linear-gradient(90deg, var(--green-dark), var(--green)); height: 100%; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px; min-width: 40px; transition: width 0.4s ease-out; }
-        .range-marker { position: absolute; top: -4px; width: 3px; height: calc(100% + 8px); background: var(--yellow); border-radius: 2px; z-index: 10; }
-        .range-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--gray-400); font-weight: 600; }
+        .range-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12px; color: var(--gray-600); font-weight: 600; }
 
         .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
         .results-card { background: var(--gray-50); border: 1px solid var(--gray-200); padding: 16px; border-radius: var(--radius-sm); }
-        .results-card-label { font-size: 11px; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .results-card-label { font-size: 11px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
         .results-card-value { font-size: 22px; font-weight: 700; color: var(--dark); font-family: 'Space Grotesk', sans-serif; }
 
         .results-tendency { display: inline-block; padding: 6px 14px; border-radius: 50px; font-size: 13px; font-weight: 600; margin-top: 16px; }
@@ -232,23 +231,29 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .insight-box { background: rgba(251, 191, 36, 0.1); border-left: 4px solid var(--yellow); padding: 14px; border-radius: var(--radius-sm); margin-top: 16px; font-size: 13px; color: var(--gray-600); line-height: 1.5; }
 
         .results-placeholder { text-align: center; padding: 48px 24px; }
-        .results-placeholder-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
+        .results-placeholder-icon { margin-bottom: 16px; }
         .results-placeholder-title { font-size: 16px; font-weight: 600; color: var(--dark); margin-bottom: 8px; }
         .results-placeholder-desc { font-size: 14px; color: var(--gray-400); line-height: 1.5; }
 
         /* ==================== ACCURACY TABLE ==================== */
         .accuracy-section { padding: 32px 0; }
         .accuracy-section h2 { margin-bottom: 12px; }
-        .accuracy-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -20px; padding: 0 20px; }
-        .accuracy-table { width: 100%; border-collapse: collapse; min-width: 700px; }
-        .accuracy-table th { background: var(--gray-100); padding: 12px 10px; text-align: left; font-weight: 600; color: var(--dark); border-bottom: 2px solid var(--gray-200); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        .accuracy-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -20px; padding: 0 20px; position: relative; }
+        .accuracy-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 700px; }
+        .accuracy-table th { background: var(--gray-100); padding: 12px 10px; text-align: center; font-weight: 600; color: var(--dark); border-bottom: 2px solid var(--gray-200); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+        .accuracy-table th:first-child { text-align: left; position: sticky; left: 0; z-index: 2; background: var(--gray-100); }
         .accuracy-table td { padding: 14px 10px; border-bottom: 1px solid var(--gray-100); vertical-align: middle; }
-        .accuracy-table tbody tr:hover { background: var(--gray-50); }
+        .accuracy-table td:first-child { position: sticky; left: 0; z-index: 1; background: var(--light); }
+        .accuracy-table tbody tr:hover td { background: var(--gray-50); }
+        .accuracy-table tbody tr:hover td:first-child { background: var(--gray-50); }
         .activity-name { font-weight: 600; color: var(--dark); font-size: 13px; white-space: nowrap; }
+        .th-device { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .th-device img { width: 22px; height: 22px; object-fit: contain; border-radius: 4px; }
+        .th-device span { font-size: 10px; }
 
         .accuracy-bar-container { display: flex; align-items: center; gap: 8px; }
         .accuracy-bar { position: relative; height: 22px; background: var(--gray-100); border-radius: 4px; overflow: hidden; flex: 1; min-width: 80px; }
-        .accuracy-bar-fill { height: 100%; background: linear-gradient(90deg, var(--green-dark), var(--green)); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: 600; min-width: 32px; }
+        .accuracy-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: 600; min-width: 32px; }
         .accuracy-label { font-size: 11px; color: var(--gray-400); white-space: nowrap; }
 
         .accuracy-insight { background: rgba(251, 191, 36, 0.1); border-left: 4px solid var(--yellow); padding: 16px; border-radius: var(--radius-sm); margin-top: 24px; color: var(--dark); font-size: 14px; line-height: 1.6; }
@@ -263,7 +268,10 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
 
         .brand-header { background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%); padding: 16px 20px; display: flex; align-items: center; gap: 12px; }
         .brand-image { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; }
-        .brand-title { font-size: 16px; font-weight: 600; color: var(--dark); margin: 0; }
+        .brand-title { font-size: 16px; font-weight: 600; color: var(--dark); margin: 0; flex: 1; }
+        .brand-amazon { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 500; color: var(--gray-400); text-decoration: none; transition: color 0.2s; white-space: nowrap; }
+        .brand-amazon:hover { color: var(--dark); }
+        .brand-amazon svg { color: var(--green-dark); }
         .brand-content { padding: 20px; }
 
         .brand-stat { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
@@ -286,6 +294,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .brand-list { font-size: 13px; color: var(--gray-600); list-style: none; margin: 8px 0; }
         .brand-list li { margin-bottom: 6px; padding-left: 20px; position: relative; line-height: 1.5; }
         .brand-list li:before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 600; }
+        .amazon-link { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 500; color: var(--gray-600); text-decoration: none; transition: color 0.2s; }
+        .amazon-link:hover { color: var(--dark); }
+        .amazon-link svg { color: var(--green-dark); }
 
         /* ==================== POPULATION FACTORS ==================== */
         .factors-section { padding: 32px 0; }
@@ -454,7 +465,15 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <div>
               <div class="results-panel${this._calculationResult ? ' show' : ''}" data-section="results">
                 <div class="results-placeholder">
-                  <div class="results-placeholder-icon">📊</div>
+                  <div class="results-placeholder-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                      <rect x="6" y="24" width="8" height="18" rx="2" fill="var(--green)" opacity="0.3"/>
+                      <rect x="17" y="16" width="8" height="26" rx="2" fill="var(--green)" opacity="0.5"/>
+                      <rect x="28" y="20" width="8" height="22" rx="2" fill="var(--green)" opacity="0.7"/>
+                      <rect x="39" y="10" width="8" height="32" rx="2" fill="var(--green)" opacity="0.15"/>
+                      <path d="M4 42h44" stroke="var(--gray-300)" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </div>
                   <div class="results-placeholder-title">Your Results Will Appear Here</div>
                   <div class="results-placeholder-desc">Select your wearable, choose an activity, enter calories, and tap calculate to see your likely actual burn.</div>
                 </div>
@@ -477,7 +496,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
               <thead>
                 <tr>
                   <th>Activity Type</th>
-                  ${Object.values(this._devices).map(d => `<th style="text-align: center;">${d.short}</th>`).join('')}
+                  ${Object.values(this._devices).map(d => `<th><div class="th-device"><img src="${d.imageUrl}" alt="${d.short}"><span>${d.short}</span></div></th>`).join('')}
                 </tr>
               </thead>
               <tbody>
@@ -552,16 +571,14 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       <!-- CTA SECTION -->
       <section class="cta-section animate-on-scroll">
         <div class="container">
-          <h2>Ready to Fix Your Calorie Data?</h2>
-          <p>Get science-backed adjustments for your wearable device. Available now on iOS, coming soon to Android.</p>
+          <h2>Stop Guessing. Start Knowing.</h2>
+          <p>Kygo syncs with your wearable to correct calorie inaccuracies in real-time — so every workout counts. Free on iOS.</p>
           <div class="cta-buttons">
             <button class="cta-button-primary" data-action="ios-download">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M2 8h8m0 0l-3-3m3 3l-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Download on iOS
+              <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              Download for iOS
             </button>
-            <button class="cta-button-secondary" data-action="android-beta">Join Android Beta</button>
+            <button class="cta-button-secondary" data-action="android-beta">Android — Join Beta</button>
           </div>
         </div>
       </section>
@@ -650,7 +667,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         <div class="range-fill" style="width: ${Math.max(10, markerPercent)}%;">
           ${r.best}
         </div>
-        <div class="range-marker" style="left: ${markerPercent}%;"></div>
       </div>
       <div class="range-labels">
         <span>Low: ${r.low}</span>
@@ -748,6 +764,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <div class="brand-header">
             <img src="${device.imageUrl}" alt="${device.name}" class="brand-image">
             <h3 class="brand-title">${device.name}</h3>
+            <a href="${device.affiliateUrl}" class="brand-amazon" target="_blank" rel="noopener sponsored">View on Amazon <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
           </div>
           <div class="brand-content">
             <div class="brand-stat">
@@ -779,9 +796,10 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
                 <ul class="brand-list">
                   ${device.weaknesses.map(w => `<li>${w}</li>`).join('')}
                 </ul>
-                <a href="${device.sourceUrl}" target="_blank" style="margin-top: 12px; display: inline-block;">
-                  Read Study →
-                </a>
+                <div style="display: flex; gap: 16px; align-items: center; margin-top: 12px; flex-wrap: wrap;">
+                  <a href="${device.sourceUrl}" target="_blank" rel="noopener">Read Study →</a>
+                  <a href="${device.affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored">View on Amazon <svg width="12" height="12" viewBox="0 0 20 20" fill="none"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                </div>
               </div>
             </div>
           </div>
@@ -791,7 +809,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   }
 
   _renderPopulationFactors() {
-    return this._populationFactors
+    const order = { high: 0, moderate: 1, low: 2 };
+    return [...this._populationFactors]
+      .sort((a, b) => (order[a.impact] ?? 9) - (order[b.impact] ?? 9))
       .map(factor => `
         <div class="factor-card">
           <h4 class="factor-title">${factor.title}</h4>
@@ -815,10 +835,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             </div>
           </div>
           <div class="accordion-content" data-accordion-content="study-${idx}">
-            <p>Research study: <a href="${study.url}" target="_blank">${study.label}</a></p>
-            <p style="margin-top: 12px; font-size: 12px; color: var(--gray-500);">
-              External link. Please verify current availability and citation details.
-            </p>
+            <p><a href="${study.url}" target="_blank" rel="noopener">${study.label}</a></p>
           </div>
         </div>
       `)
