@@ -425,7 +425,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo">
             Calorie Burn
           </a>
-          <button class="header-cta" data-action="ios-download">
+          <button class="header-cta" data-action="ios-download" data-track-position="header">
             Get Kygo App
             <svg viewBox="0 0 20 20" fill="none" width="14" height="14"><path d="M5 10h10m0 0l-4-4m4 4l-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </button>
@@ -563,11 +563,11 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
               <p class="blog-cta-desc">
                 Kygo syncs with your wearable and corrects for calorie inaccuracies in real-time — giving you data you can trust.
               </p>
-              <button class="blog-cta-btn" data-action="ios-download">
+              <button class="blog-cta-btn" data-action="ios-download" data-track-position="article-cta">
                 <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Download for iOS
               </button>
-              <button class="cta-android" data-action="android-beta">Android — Join Beta</button>
+              <button class="cta-android" data-action="android-beta" data-track-position="article-cta">Android — Join Beta</button>
               <div class="blog-cta-tags">
                 <span>Works with</span>
                 <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy">
@@ -596,11 +596,11 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <h2>Stop Guessing. Start Knowing.</h2>
           <p>Kygo syncs with your wearable to correct calorie inaccuracies in real-time — so every workout counts. Free on iOS.</p>
           <div class="cta-buttons">
-            <button class="cta-button-primary" data-action="ios-download">
+            <button class="cta-button-primary" data-action="ios-download" data-track-position="footer-cta">
               <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
               Download for iOS
             </button>
-            <button class="cta-button-secondary" data-action="android-beta">Android — Join Beta</button>
+            <button class="cta-button-secondary" data-action="android-beta" data-track-position="footer-cta">Android — Join Beta</button>
           </div>
         </div>
       </section>
