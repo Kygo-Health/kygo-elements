@@ -51,6 +51,7 @@ class CaloriesInAnything extends HTMLElement {
   connectedCallback() {
     this.render();
     __seo(this, 'Kygo Food Scanner \u2014 Free AI-powered tool by Kygo Health. Snap a photo of any meal to get instant calories, macros, health score, and detailed nutrition insights. No signup required.');
+    this._injectStructuredData();
   }
 
   static get observedAttributes() {
@@ -1617,6 +1618,67 @@ class CaloriesInAnything extends HTMLElement {
     });
 
     this._setupScrollAnimations();
+  }
+
+  // ── Structured Data ───────────────────────────────────────────────────
+
+  _injectStructuredData() {
+    if (!document.querySelector('script[data-kygo-food-scanner-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        'name': 'Kygo AI Food Scanner',
+        'alternateName': 'Kygo Food Scanner — Free AI Nutrition Analyzer',
+        'description': 'Free AI-powered food scanner by Kygo Health. Take a photo of any meal and get instant calorie counts, macronutrient breakdown (protein, carbs, fat, fiber), and full micronutrient analysis. Powered by advanced image recognition trained on 5+ million foods from the USDA FoodData Central database.',
+        'applicationCategory': 'HealthApplication',
+        'operatingSystem': 'Web',
+        'url': 'https://www.kygo.app/food-scanner',
+        'datePublished': '2026-01-15',
+        'dateModified': '2026-03-18',
+        'softwareVersion': '1.0',
+        'inLanguage': 'en',
+        'isAccessibleForFree': true,
+        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+        'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+        'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+        'featureList': 'AI photo food recognition, instant calorie estimation, macronutrient breakdown, micronutrient analysis, USDA FoodData Central database, 5+ million foods, portion size estimation',
+        'keywords': 'AI food scanner, food photo calorie counter, nutrition analyzer, meal photo scanner, calorie estimator from photo, AI nutrition tracker, food recognition app, macro calculator from photo'
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-food-scanner-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
+
+    if (!document.querySelector('script[data-kygo-food-scanner-faq]')) {
+      const faqLd = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': 'How accurate is the AI food scanner?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'The Kygo AI food scanner identifies common foods with 85-95% accuracy for ingredient recognition. Calorie estimates are typically within 10-20% of actual values for standard portions. Accuracy improves with clear, well-lit photos showing the full plate. Complex mixed dishes and restaurant meals may have wider error ranges.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'What foods can the AI scanner recognize?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'The scanner recognizes most common foods including fruits, vegetables, meats, grains, dairy, packaged snacks, restaurant meals, and complex dishes with multiple ingredients. It can identify garnishes and toppings like olive oil drizzles, cracked pepper, and cheese. The database includes 5+ million foods from USDA FoodData Central.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Is the food scanner free to use?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, the Kygo AI food scanner is completely free to use on the web. No account or download required. For unlimited scans and meal history tracking, download the Kygo Health app.' }
+          }
+        ]
+      };
+      const faqScript = document.createElement('script');
+      faqScript.type = 'application/ld+json';
+      faqScript.setAttribute('data-kygo-food-scanner-faq', '');
+      faqScript.textContent = JSON.stringify(faqLd);
+      document.head.appendChild(faqScript);
+    }
   }
 }
 

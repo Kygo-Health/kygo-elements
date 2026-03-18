@@ -812,7 +812,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       <!-- Android Modal -->
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">&times;</button>
+          <button class="modal-close" aria-label="Close dialog">&times;</button>
           <div class="modal-icon">
             <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36"><path d="M17.6 11.48V8a.5.5 0 0 0-1 0v3.48a4 4 0 0 1-2.1.58h-5a4 4 0 0 1-2.1-.58V8a.5.5 0 0 0-1 0v3.48A3.5 3.5 0 0 0 4 15v2.5a.5.5 0 0 0 1 0V15a2.5 2.5 0 0 1 1.4-2.24V16a2 2 0 0 0 2 2h7.2a2 2 0 0 0 2-2v-3.24A2.5 2.5 0 0 1 19 15v2.5a.5.5 0 0 0 1 0V15a3.5 3.5 0 0 0-2.4-3.52zM14.5 5.5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/></svg>
           </div>
@@ -1238,9 +1238,17 @@ class KygoDeepSleepFactors extends HTMLElement {
       'description': 'Explore 29 research-backed factors that affect deep sleep (N3/SWS) — lifestyle, supplements, environment, stress, and biology ranked by evidence strength.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
-      'url': 'https://kygo.app/tools/deep-sleep-factors',
+      'url': 'https://www.kygo.app/tools/deep-sleep-factors',
+      'datePublished': '2026-02-15',
+      'dateModified': '2026-03-18',
+      'softwareVersion': '1.0',
+      'inLanguage': 'en',
+      'isAccessibleForFree': true,
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'alternateName': 'Kygo Deep Sleep Improvement Factors Tool',
+      'featureList': 'Explore 29 deep sleep factors, 5 evidence categories, supplement and lifestyle ranking, peer-reviewed citations, personalized recommendation engine',
       'keywords': 'deep sleep factors, how to increase deep sleep, what affects deep sleep, best supplements for deep sleep, slow wave sleep, N3 sleep, how to get more deep sleep, deep sleep and exercise, caffeine deep sleep, deep sleep and age, SWS factors, improve deep sleep naturally'
     };
 

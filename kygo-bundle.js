@@ -27,6 +27,7 @@ class KygoHeroSection extends HTMLElement {
     this.render();
     this.setupEvents();
     __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. Track nutrition alongside wearable data with the free Kygo app for iOS.');
+    this._injectStructuredData();
   }
   setupEvents() {
     const androidBtn = this.shadowRoot.querySelector('.cta-android');
@@ -252,8 +253,8 @@ class KygoHeroSection extends HTMLElement {
                       <div class="input-bar">
                         <span class="input-placeholder">What did you eat?</span>
                         <div class="input-actions">
-                          <button class="input-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M5 19l1 3 1-3 3-1-3-1-1-3-1 3-3 1 3 1z"/></svg></button>
-                          <button class="input-action"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></button>
+                          <button class="input-action" aria-label="AI food recognition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M5 19l1 3 1-3 3-1-3-1-1-3-1 3-3 1 3 1z"/></svg></button>
+                          <button class="input-action" aria-label="Voice meal logging"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></button>
                         </div>
                       </div>
                     </div>
@@ -267,7 +268,7 @@ class KygoHeroSection extends HTMLElement {
       </section>
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">×</button>
+          <button class="modal-close" aria-label="Close dialog">×</button>
           <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>
@@ -278,6 +279,55 @@ class KygoHeroSection extends HTMLElement {
         </div>
       </div>
     `;
+  }
+
+  // ── Structured Data ───────────────────────────────────────────────────
+
+  _injectStructuredData() {
+    if (!document.querySelector('script[data-kygo-bundle-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        'name': 'Kygo Health',
+        'alternateName': 'Kygo — See How Food Affects Your Health',
+        'description': 'Kygo Health is an AI-powered nutrition tracking app that correlates what you eat with your sleep, HRV, energy, and recovery using data from Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch. Log meals via photo, voice, barcode, or text and discover personalized food-body correlations after 7 days.',
+        'applicationCategory': 'HealthApplication',
+        'operatingSystem': 'iOS',
+        'url': 'https://www.kygo.app',
+        'datePublished': '2025-12-01',
+        'dateModified': '2026-03-18',
+        'inLanguage': 'en',
+        'isAccessibleForFree': true,
+        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD', 'description': 'Free with optional premium features' },
+        'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+        'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+        'featureList': 'AI photo meal logging, voice meal logging, barcode scanning, natural language food entry, food-sleep correlations, food-HRV correlations, food-energy correlations, 23+ micronutrient tracking, Apple Watch integration, Oura Ring integration, Garmin integration, WHOOP integration, Fitbit integration, Samsung Galaxy Watch integration',
+        'keywords': 'nutrition tracking app, food logging app, AI food scanner, calorie counter, macro tracker, food sleep correlation, food HRV correlation, wearable nutrition app, Kygo Health'
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-bundle-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
+
+    if (!document.querySelector('script[data-kygo-org-ld]')) {
+      const org = {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        'name': 'Kygo Health',
+        'url': 'https://www.kygo.app',
+        'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png',
+        'description': 'Kygo Health builds AI-powered tools that help people understand how food affects their sleep, energy, HRV, and recovery by correlating nutrition data with wearable health data.',
+        'foundingDate': '2025',
+        'contactPoint': { '@type': 'ContactPoint', 'contactType': 'customer support', 'email': 'support@kygo.app' }
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-org-ld', '');
+      script.textContent = JSON.stringify(org);
+      document.head.appendChild(script);
+    }
   }
 }
 customElements.define('kygo-hero-section', KygoHeroSection);
@@ -1142,7 +1192,7 @@ class KygoFounderCta extends HTMLElement {
       </section>
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">×</button>
+          <button class="modal-close" aria-label="Close dialog">×</button>
           <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>

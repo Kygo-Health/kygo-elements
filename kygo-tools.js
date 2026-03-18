@@ -31,6 +31,7 @@ class KygoToolsPage extends HTMLElement {
     this._setupAnimations();
     this._setupModalEvents();
     __seo(this, 'Kygo Health Free Tools \u2014 Free tools to understand your nutrition and health. Food Scanner: snap a photo of any meal for instant calories, macros, and health score. Wearable Accuracy: compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research. Hardware vs Software: see exactly what sensors, health metrics, and algorithms make each wearable different across 16 sensor types and 25 proprietary algorithms. HRV Factor Explorer: explore 44 research-backed factors that affect Heart Rate Variability ranked by evidence strength. Step Count Accuracy: compare step counter accuracy across 8+ wearables using 20+ peer-reviewed studies. Sleep Metrics: interactive comparison of sleep-tracking metrics across Oura, Fitbit, Apple Watch, and Garmin. No signup required.');
+    this._injectStructuredData();
   }
 
   disconnectedCallback() {
@@ -708,7 +709,7 @@ class KygoToolsPage extends HTMLElement {
       </section>
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">×</button>
+          <button class="modal-close" aria-label="Close dialog">×</button>
           <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>
@@ -738,6 +739,38 @@ class KygoToolsPage extends HTMLElement {
         </div>
       </footer>
     `;
+  }
+  // ── Structured Data ───────────────────────────────────────────────────
+
+  _injectStructuredData() {
+    if (!document.querySelector('script[data-kygo-tools-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        'name': 'Kygo Health Free Tools',
+        'description': 'Free research-backed health tools by Kygo Health. Compare wearable accuracy, explore sleep and HRV factors, analyze calorie burn accuracy, and more.',
+        'url': 'https://www.kygo.app/tools',
+        'mainEntity': {
+          '@type': 'ItemList',
+          'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': 'Wearable Accuracy Comparison', 'description': 'Compare accuracy of Oura Ring, Apple Watch, Garmin, WHOOP, Fitbit, and Samsung across 9 health metrics using 17+ peer-reviewed studies.', 'url': 'https://www.kygo.app/tools/wearable-accuracy' },
+            { '@type': 'ListItem', 'position': 2, 'name': 'Sleep Metrics Comparison', 'description': 'Compare 38 sleep metrics tracked by Oura Ring, Fitbit, Apple Watch, and Garmin across 10 categories.', 'url': 'https://www.kygo.app/tools/sleep-metrics' },
+            { '@type': 'ListItem', 'position': 3, 'name': 'Calorie Burn Accuracy Calculator', 'description': 'Enter your wearable calorie burn and see the likely actual range based on peer-reviewed research.', 'url': 'https://www.kygo.app/tools/calorie-burn-accuracy' },
+            { '@type': 'ListItem', 'position': 4, 'name': 'Step Count Accuracy Comparison', 'description': 'Compare step count accuracy across 8 wearable devices using data from 20+ peer-reviewed studies.', 'url': 'https://www.kygo.app/tools/step-count-accuracy' },
+            { '@type': 'ListItem', 'position': 5, 'name': 'Deep Sleep Factor Explorer', 'description': 'Explore 29 research-backed factors that affect deep sleep ranked by evidence strength.', 'url': 'https://www.kygo.app/tools/deep-sleep-factors' },
+            { '@type': 'ListItem', 'position': 6, 'name': 'HRV Factor Explorer', 'description': 'Explore 44 research-backed factors that affect Heart Rate Variability ranked by evidence strength.', 'url': 'https://www.kygo.app/tools/hrv-factors' },
+            { '@type': 'ListItem', 'position': 7, 'name': 'Sensor & Feature Comparison', 'description': 'Compare hardware sensors and software features across Garmin, WHOOP, Oura, Apple Watch, and Fitbit.', 'url': 'https://www.kygo.app/tools/sensor-comparison' },
+            { '@type': 'ListItem', 'position': 8, 'name': 'AI Food Scanner', 'description': 'Free AI-powered food scanner that identifies ingredients and provides full nutrition breakdown from a photo.', 'url': 'https://www.kygo.app/food-scanner' }
+          ]
+        },
+        'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' }
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-tools-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
   }
 }
 if (!customElements.get('kygo-tools-page')) {

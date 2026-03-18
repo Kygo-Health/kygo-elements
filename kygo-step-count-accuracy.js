@@ -641,7 +641,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       </section>
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">×</button>
+          <button class="modal-close" aria-label="Close dialog">×</button>
           <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>
@@ -1790,9 +1790,17 @@ class KygoStepCountAccuracy extends HTMLElement {
       'description': 'Compare step count accuracy across 8 wearable devices including Garmin, Apple Watch, Fitbit, Samsung Galaxy Watch, COROS, Polar, Oura Ring, and WHOOP. Data sourced from 20+ peer-reviewed studies with full bias disclosure.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
-      'url': 'https://www.kygohealth.com/step-count-accuracy',
+      'url': 'https://www.kygo.app/tools/step-count-accuracy',
+      'datePublished': '2026-02-15',
+      'dateModified': '2026-03-18',
+      'softwareVersion': '1.0',
+      'inLanguage': 'en',
+      'isAccessibleForFree': true,
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygohealth.com' },
+      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'alternateName': 'Kygo Step Count Accuracy Comparison Tool',
+      'featureList': 'Compare 8 wearable devices, lab vs free-living accuracy, peer-reviewed data from 20+ studies, bias direction analysis, walking speed impact analysis',
       'keywords': 'step count accuracy, wearable step counter accuracy, Garmin step count accuracy, Apple Watch step count accuracy, Fitbit step count accuracy, Samsung Galaxy Watch steps, Oura Ring step count, WHOOP step count, COROS accuracy, step counter comparison, pedometer accuracy'
     };
 
@@ -1843,7 +1851,17 @@ class KygoStepCountAccuracy extends HTMLElement {
       try { if (JSON.parse(s.textContent)['@type'] === 'FAQPage') s.remove(); } catch(e) {}
     });
 
-    [webApp, faq].forEach((schema, i) => {
+    const breadcrumb = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+        { '@type': 'ListItem', 'position': 3, 'name': 'Step Count Accuracy', 'item': 'https://www.kygo.app/tools/step-count-accuracy' }
+      ]
+    };
+
+    [webApp, faq, breadcrumb].forEach((schema, i) => {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
       if (i === 0) script.setAttribute('data-kygo-step-ld', '');

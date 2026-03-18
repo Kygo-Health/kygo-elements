@@ -1085,7 +1085,7 @@ class KygoSensorComparison extends HTMLElement {
       <!-- Android Modal -->
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">&times;</button>
+          <button class="modal-close" aria-label="Close dialog">&times;</button>
           <div class="modal-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
           </div>
@@ -1488,8 +1488,16 @@ class KygoSensorComparison extends HTMLElement {
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/sensor-comparison',
+      'datePublished': '2026-03-01',
+      'dateModified': '2026-03-18',
+      'softwareVersion': '1.0',
+      'inLanguage': 'en',
+      'isAccessibleForFree': true,
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'alternateName': 'Kygo Wearable Hardware & Software Comparison Tool',
+      'featureList': 'Compare 6 wearable devices, hardware vs software features, FDA clearance tracking, sensor count comparison, proprietary algorithm analysis',
       'keywords': 'whoop vs oura vs garmin differences, apple watch vs whoop vs garmin, wearable hardware vs software, health wearable comparison 2026, garmin venu 4 vs apple watch, whoop 5.0 vs oura ring 4, fitbit charge 6 EDA stress, wearable health features differences, best health tracker comparison 2026'
     };
     const script = document.createElement('script');
@@ -1536,6 +1544,24 @@ class KygoSensorComparison extends HTMLElement {
     faqScript.setAttribute('data-kygo-sensor-comparison-faq', '');
     faqScript.textContent = JSON.stringify(faq);
     document.head.appendChild(faqScript);
+
+    // BreadcrumbList schema
+    if (!document.querySelector('script[data-kygo-sensor-comparison-breadcrumb]')) {
+      const breadcrumb = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+          { '@type': 'ListItem', 'position': 3, 'name': 'Sensor Comparison', 'item': 'https://www.kygo.app/tools/sensor-comparison' }
+        ]
+      };
+      const bcScript = document.createElement('script');
+      bcScript.type = 'application/ld+json';
+      bcScript.setAttribute('data-kygo-sensor-comparison-breadcrumb', '');
+      bcScript.textContent = JSON.stringify(breadcrumb);
+      document.head.appendChild(bcScript);
+    }
   }
 }
 

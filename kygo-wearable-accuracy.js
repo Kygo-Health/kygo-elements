@@ -849,7 +849,7 @@ class KygoWearableAccuracy extends HTMLElement {
       </section>
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">×</button>
+          <button class="modal-close" aria-label="Close dialog">×</button>
           <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>
@@ -1590,9 +1590,17 @@ class KygoWearableAccuracy extends HTMLElement {
       'description': 'Compare accuracy of popular wearable devices (Oura Ring, Apple Watch, Garmin, WHOOP, Fitbit, Samsung) across sleep, HRV, heart rate, SpO2, steps, calories, VO2 max, skin temperature, and respiratory rate. Data sourced from 17+ peer-reviewed studies with full bias disclosure.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
-      'url': 'https://www.kygohealth.com/wearable-accuracy',
+      'url': 'https://www.kygo.app/tools/wearable-accuracy',
+      'datePublished': '2026-02-01',
+      'dateModified': '2026-03-18',
+      'softwareVersion': '1.0',
+      'inLanguage': 'en',
+      'isAccessibleForFree': true,
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygohealth.com' },
+      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'alternateName': 'Kygo Wearable Accuracy Comparison Tool',
+      'featureList': 'Compare 6 wearable brands, 9 health metrics, 17+ peer-reviewed studies, funding bias disclosure, MedicalScholarlyArticle citations',
       'about': {
         '@type': 'MedicalScholarlyArticle',
         'name': 'Wearable Device Accuracy Research Summary',
@@ -1605,6 +1613,64 @@ class KygoWearableAccuracy extends HTMLElement {
     script.setAttribute('data-kygo-wearable-ld', '');
     script.textContent = JSON.stringify(ld);
     document.head.appendChild(script);
+
+    // FAQPage schema
+    if (!document.querySelector('script[data-kygo-wearable-faq]')) {
+      const faq = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': 'Which wearable is the most accurate overall?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'No single wearable is most accurate across all metrics. Oura Ring 4 leads for sleep tracking (93% stage accuracy) and resting HRV. Apple Watch leads for heart rate during exercise and has the most FDA-cleared features. Garmin leads for step counting (82.6% accuracy) and GPS-based metrics. WHOOP excels at 24/7 HRV monitoring with 26 Hz sampling.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'How accurate is Oura Ring for sleep tracking?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'Oura Ring has 93% agreement with PSG (polysomnography) for 2-stage sleep classification and 79% for 4-stage classification. It detects N3 deep sleep with 75% sensitivity and REM with 70% sensitivity. The finger-based PPG sensor provides 120% better signal quality than wrist-based devices, making it the gold standard for consumer sleep tracking.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Is Apple Watch or Garmin more accurate for heart rate?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch is more accurate for continuous heart rate during exercise with a mean absolute error of 3-6 BPM across intensities. Garmin Elevate Gen 5 improved significantly with multi-LED technology (green + red + IR) and averages 5-8 BPM error. Both struggle during high-intensity interval training where wrist-based PPG accuracy drops to ±10-15 BPM.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'How accurate is WHOOP for HRV?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'WHOOP measures HRV via RMSSD using its 26 Hz PPG sensor during sleep. Validation studies show r=0.86 correlation with ECG-derived HRV. WHOOP is one of the few devices that measures HRV continuously during the night rather than spot-checking. Its Strain metric (0-21 scale) uses accumulated HR data, not HRV directly.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Which wearable has the most accurate SpO2 sensor?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch and Garmin lead for SpO2 accuracy with ±2% error compared to medical pulse oximeters in the 90-100% range. Oura Ring 4 achieves similar accuracy from the finger, which is clinically preferred for pulse oximetry. Fitbit and WHOOP average ±3% error. All consumer wearables lose reliability below 90% SpO2, which is the clinical threshold where accuracy matters most.' }
+          }
+        ]
+      };
+      const faqScript = document.createElement('script');
+      faqScript.type = 'application/ld+json';
+      faqScript.setAttribute('data-kygo-wearable-faq', '');
+      faqScript.textContent = JSON.stringify(faq);
+      document.head.appendChild(faqScript);
+    }
+
+    // BreadcrumbList schema
+    if (!document.querySelector('script[data-kygo-wearable-breadcrumb]')) {
+      const breadcrumb = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+          { '@type': 'ListItem', 'position': 3, 'name': 'Wearable Accuracy', 'item': 'https://www.kygo.app/tools/wearable-accuracy' }
+        ]
+      };
+      const bcScript = document.createElement('script');
+      bcScript.type = 'application/ld+json';
+      bcScript.setAttribute('data-kygo-wearable-breadcrumb', '');
+      bcScript.textContent = JSON.stringify(breadcrumb);
+      document.head.appendChild(bcScript);
+    }
   }
 }
 

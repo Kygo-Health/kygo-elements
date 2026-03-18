@@ -25,7 +25,8 @@ class KygoContactSection extends HTMLElement {
     this.render();
     this._attachEventListeners();
     this._setupScrollAnimations();
-    __seo(this, 'Contact Kygo Health \u2014 Get in touch with our team for questions about nutrition tracking, wearable integration, or the Kygo app.');
+    __seo(this, 'Contact Kygo Health — Get in touch with the Kygo Health team for support with nutrition tracking, wearable device integration (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, Samsung Galaxy Watch), AI food logging, health correlations, or partnership inquiries. Email support@kygo.app for assistance.');
+    this._injectStructuredData();
   }
 
   disconnectedCallback() {
@@ -660,6 +661,31 @@ class KygoContactSection extends HTMLElement {
         </div>
       </section>
     `;
+  }
+  // ── Structured Data ───────────────────────────────────────────────────
+
+  _injectStructuredData() {
+    if (!document.querySelector('script[data-kygo-contact-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'ContactPage',
+        'name': 'Contact Kygo Health',
+        'description': 'Get in touch with Kygo Health for support, partnerships, or press inquiries.',
+        'url': 'https://www.kygo.app/contact',
+        'mainEntity': {
+          '@type': 'Organization',
+          'name': 'Kygo Health',
+          'url': 'https://www.kygo.app',
+          'email': 'support@kygo.app',
+          'contactPoint': { '@type': 'ContactPoint', 'contactType': 'customer support', 'email': 'support@kygo.app' }
+        }
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-contact-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
   }
 }
 

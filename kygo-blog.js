@@ -20,7 +20,8 @@ class KygoBlog extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'Kygo Health Blog \u2014 Articles on nutrition, health optimization, wearable technology, and food science.');
+    __seo(this, 'Kygo Health Blog — Research-backed articles on nutrition science, wearable accuracy, sleep optimization, HRV improvement, and food-body correlations. Topics include how food affects sleep quality, which wearables are most accurate for health tracking, AI-powered nutrition analysis, and personalized health insights from Apple Watch, Oura Ring, Garmin, WHOOP, and Fitbit data.');
+    this._injectStructuredData();
   }
 
   disconnectedCallback() {
@@ -569,6 +570,27 @@ class KygoBlog extends HTMLElement {
       }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
       cards.forEach(card => this._observer.observe(card));
     });
+  }
+  // ── Structured Data ───────────────────────────────────────────────────
+
+  _injectStructuredData() {
+    if (!document.querySelector('script[data-kygo-blog-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        'name': 'Kygo Health Blog',
+        'description': 'Articles on nutrition science, wearable technology, health optimization, sleep improvement, and food-body correlations from Kygo Health.',
+        'url': 'https://www.kygo.app/blog',
+        'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+        'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': { '@type': 'ImageObject', 'url': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' } },
+        'inLanguage': 'en'
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-blog-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
   }
 }
 

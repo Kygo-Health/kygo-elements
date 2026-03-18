@@ -608,7 +608,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       <!-- ANDROID MODAL -->
       <div class="modal-overlay" data-section="android-modal">
         <div class="modal">
-          <button class="modal-close" data-action="close-modal">×</button>
+          <button class="modal-close" data-action="close-modal" aria-label="Close dialog">×</button>
           <h3>Join the Android Beta</h3>
           <p>Be the first to try Kygo on Android. We'll send you exclusive access and early features.</p>
           <form class="modal-form" data-form="android-beta">
@@ -1180,6 +1180,24 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       howToScript.setAttribute('data-kygo-calorie-burn-howto', '');
       howToScript.textContent = JSON.stringify(howTo);
       document.head.appendChild(howToScript);
+    }
+
+    // BreadcrumbList schema
+    if (!document.querySelector('script[data-kygo-calorie-burn-breadcrumb]')) {
+      const breadcrumb = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+          { '@type': 'ListItem', 'position': 3, 'name': 'Calorie Burn Accuracy', 'item': 'https://www.kygo.app/tools/calorie-burn-accuracy' }
+        ]
+      };
+      const bcScript = document.createElement('script');
+      bcScript.type = 'application/ld+json';
+      bcScript.setAttribute('data-kygo-calorie-burn-breadcrumb', '');
+      bcScript.textContent = JSON.stringify(breadcrumb);
+      document.head.appendChild(bcScript);
     }
   }
 
