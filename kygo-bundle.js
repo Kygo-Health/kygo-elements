@@ -179,17 +179,17 @@ class KygoHeroSection extends HTMLElement {
               <p class="hero-subheadline">Kygo connects your wearables with nutrition tracking to reveal personalized correlations—so you can stop guessing and start understanding your body.</p>
               <div class="cta-container">
                 <div class="cta-group-top">
-                  <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" class="cta-primary">
+                  <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" class="cta-primary" data-track-position="hero">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                     Download Free on iOS
                   </a>
-                  <a href="#kygo-features-section" class="cta-secondary">
+                  <a href="#kygo-features-section" class="cta-secondary" data-track-position="hero">
                     See how it works
                     <svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
                   </a>
                 </div>
                 <p class="risk-reversal"><span>2-min setup</span><span>•</span><span>Free forever plan</span><span>•</span><span>No credit card</span></p>
-                <button class="cta-android">
+                <button class="cta-android" data-track-position="hero">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Android Free Beta
                 </button>
@@ -866,7 +866,7 @@ class KygoInsightsSteps extends HTMLElement {
             </div>
           </div>
           <div class="steps-cta">
-            <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" class="cta-primary">
+            <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" class="cta-primary" data-track-position="mid-page">
               <span>Start Free Today</span>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M10 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             </a>
@@ -1124,14 +1124,14 @@ class KygoFounderCta extends HTMLElement {
             <div class="final-cta-content">
               <h2>Ready to understand your body?</h2>
               <p>Stop guessing. Start discovering what actually works for you.</p>
-              <a href="${appStoreUrl}" class="cta-primary" target="_blank" rel="noopener noreferrer">
+              <a href="${appStoreUrl}" class="cta-primary" data-track-position="footer-cta" target="_blank" rel="noopener noreferrer">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                 Download Free on iOS
               </a>
               <p class="risk-reversal"><span>Free forever plan</span><span>•</span><span>No credit card required</span><span>•</span><span>Cancel anytime</span></p>
               <div class="android-waitlist">
                 <p>Android coming soon</p>
-                <button class="cta-android">
+                <button class="cta-android" data-track-position="footer-cta">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Join Android Beta
                 </button>

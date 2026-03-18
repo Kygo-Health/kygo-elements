@@ -1057,8 +1057,8 @@ class KygoSensorComparison extends HTMLElement {
                 <h2>Your Wearable Tracks Everything — Except <span class="highlight">What You Eat</span></h2>
                 <p>Kygo Health connects your nutrition to your biometrics so you can finally see the full picture.</p>
                 <div class="blog-cta-buttons">
-                  <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" target="_blank" rel="noopener">Download for iOS</a>
-                  <button class="blog-cta-android-btn">Android — Join Beta</button>
+                  <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">Download for iOS</a>
+                  <button class="blog-cta-android-btn" data-track-position="article-cta">Android — Join Beta</button>
                 </div>
                 <div class="blog-cta-devices">
                   <span>Works with</span>
