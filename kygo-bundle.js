@@ -26,7 +26,7 @@ class KygoHeroSection extends HTMLElement {
   connectedCallback() {
     this.render();
     this.setupEvents();
-    __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. Track nutrition alongside wearable data with the free Kygo app for iOS.');
+    __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. The free iOS app connects nutrition data with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch to reveal food-body correlations. AI photo logging identifies meals in seconds from over 5 million foods. Unlike MyFitnessPal or Lose It, Kygo shows how what you eat impacts deep sleep, HRV, resting heart rate, and recovery \u2014 not just calorie totals. Correlations appear after 7 days of logging. Free forever plan available.');
     this._injectStructuredData();
   }
   setupEvents() {
@@ -346,7 +346,7 @@ class KygoSocialProofSection extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts their wellness metrics.');
+    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts sleep quality, heart rate variability, energy levels, and recovery. Users discover personal patterns like which foods improve deep sleep or raise resting heart rate within their first two weeks.');
   }
   _parseWixAttributes() {
     try {
@@ -439,7 +439,7 @@ class KygoProblemSection extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'Stop guessing how food affects your body. Kygo Health uses AI to connect your nutrition data with wearable health insights for personalized recommendations.');
+    __seo(this, 'Stop guessing how food affects your body. Kygo Health uses AI to connect your nutrition data with wearable health metrics including sleep stages, HRV, resting heart rate, blood oxygen, skin temperature, and respiratory rate. The app identifies statistically significant correlations between specific foods and health outcomes \u2014 for example, showing that high-glycemic meals before bed reduce your deep sleep by a measurable percentage.');
   }
   _parseWixAttributes() {
     try {
@@ -555,7 +555,7 @@ class KygoFeaturesSection extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupIntersectionObserver();
-    __seo(this, 'Kygo Health Features \u2014 AI food logging, wearable sync with Apple Watch, Oura Ring, and WHOOP. Nutrition insights, health score tracking, and personalized recommendations.');
+    __seo(this, 'Kygo Health Features \u2014 AI food logging via photo, voice, text, or barcode scan. Automatic wearable sync with Apple Watch, Oura Ring, WHOOP, Garmin, Fitbit, and Samsung Galaxy Watch. Health Score tracking rates each meal on a 0\u2013100 scale based on nutritional quality. Personalized food-body correlation dashboard shows how meals affect your sleep, HRV, energy, and recovery over time. Macro and micronutrient breakdown for every logged meal from a database of over 5 million foods.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
@@ -954,7 +954,7 @@ class KygoFaq extends HTMLElement {
     this.render();
     this.setupAccordion();
     this.setupIntersectionObserver();
-    __seo(this, 'Frequently asked questions about Kygo Health \u2014 nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights.');
+    __seo(this, 'Frequently asked questions about Kygo Health \u2014 nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. Common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, Samsung Galaxy Watch), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (typically 7 days of consistent logging).');
   }
   setupAccordion() {
     const questions = this.shadowRoot.querySelectorAll('.faq-question');
@@ -1047,7 +1047,7 @@ class KygoFounderCta extends HTMLElement {
     this.render();
     this.setupIntersectionObserver();
     this.setupEvents();
-    __seo(this, 'Download Kygo Health free on iOS. Connect nutrition with wearable data for personalized health insights. Free forever plan available.');
+    __seo(this, 'Download Kygo Health free on iOS. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes. Android waitlist available.');
   }
   setupIntersectionObserver() {
     const observer = new IntersectionObserver((entries) => {

@@ -50,7 +50,7 @@ class CaloriesInAnything extends HTMLElement {
 
   connectedCallback() {
     this.render();
-    __seo(this, 'Kygo Food Scanner \u2014 Free AI-powered tool by Kygo Health. Snap a photo of any meal to get instant calories, macros, health score, and detailed nutrition insights. No signup required.');
+    __seo(this, 'Kygo Food Scanner \u2014 Free AI-powered tool by Kygo Health. Snap a photo of any meal to get instant calories, macros, health score (0\u2013100), and detailed nutrition insights including protein, carbs, fat, fiber, sugar, and sodium. Powered by AI image recognition trained on over 5 million foods from USDA and international nutrition databases. Identifies individual ingredients, portion sizes, and cooking methods from a single photo. No signup or download required \u2014 works instantly in your browser.');
     this._injectStructuredData();
   }
 

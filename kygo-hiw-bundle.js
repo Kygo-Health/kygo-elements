@@ -23,7 +23,7 @@ class KygoHiwHero extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'How Kygo Health Works \u2014 Three simple steps to understand how food affects your body. Connect wearables, log nutrition, and discover personalized health insights.');
+    __seo(this, 'How Kygo Health Works \u2014 Three simple steps to understand how food affects your body. Step 1: Connect your wearable (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch) for automatic health data sync. Step 2: Log meals using AI photo recognition, voice, text, or barcode scanning from a database of over 5 million foods. Step 3: After 7 days of consistent logging, Kygo reveals statistically significant correlations between your diet and sleep quality, HRV, energy, and recovery metrics. Setup takes about 2 minutes.');
     this._injectStructuredData();
   }
 
