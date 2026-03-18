@@ -23,7 +23,8 @@ class KygoHiwHero extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'How Kygo Health Works \u2014 Three simple steps to understand how food affects your body. Connect wearables, log nutrition, and discover personalized health insights.');
+    __seo(this, 'How Kygo Health Works \u2014 Three simple steps to understand how food affects your body. Step 1: Connect your wearable (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch) for automatic health data sync. Step 2: Log meals using AI photo recognition, voice, text, or barcode scanning from a database of over 5 million foods. Step 3: After 7 days of consistent logging, Kygo reveals statistically significant correlations between your diet and sleep quality, HRV, energy, and recovery metrics. Setup takes about 2 minutes.');
+    this._injectStructuredData();
   }
 
   _parseWixAttributes() {
@@ -219,6 +220,30 @@ class KygoHiwHero extends HTMLElement {
         </div>
       </section>
     `;
+  }
+
+  // ── Structured Data ───────────────────────────────────────────────────
+
+  _injectStructuredData() {
+    if (!document.querySelector('script[data-kygo-hiw-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        'name': 'How Kygo Health Works — From Meal Logging to Personalized Correlations',
+        'description': 'Kygo Health connects your nutrition data with your wearable health data to find personalized food-body correlations in 3 steps.',
+        'totalTime': 'P7D',
+        'step': [
+          { '@type': 'HowToStep', 'position': 1, 'name': 'Log your meals', 'text': 'Use AI photo recognition, voice input, barcode scanning, or natural text to log meals in seconds. The app identifies ingredients including garnishes and toppings for accurate macro and micronutrient tracking.' },
+          { '@type': 'HowToStep', 'position': 2, 'name': 'Connect your wearable', 'text': 'Link your Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch. Your historical health data syncs automatically — sleep stages, HRV, heart rate, steps, and recovery metrics.' },
+          { '@type': 'HowToStep', 'position': 3, 'name': 'Discover your correlations', 'text': 'After 7 days of logging, Kygo identifies personalized patterns like "Your deep sleep increases 22 minutes when you eat dinner before 7pm" or "Your HRV drops 15% on days you consume more than 200mg caffeine after 2pm."' }
+        ]
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-hiw-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
   }
 }
 
@@ -3235,7 +3260,7 @@ class KygoHiwFinalCta extends HTMLElement {
       </section>
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">×</button>
+          <button class="modal-close" aria-label="Close dialog">×</button>
           <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>

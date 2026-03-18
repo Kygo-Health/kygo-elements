@@ -30,7 +30,8 @@ class KygoFaqSection extends HTMLElement {
     this._buildSearchIndex();
     this._setupEventDelegation();
     this._setupScrollAnimations();
-    __seo(this, 'Kygo Health Help Center \u2014 Frequently asked questions about nutrition tracking, wearable sync, AI food logging, health scores, and data privacy.');
+    __seo(this, 'Kygo Health Help Center — Frequently asked questions about nutrition tracking, wearable sync, AI food logging, health scores, and data privacy. Learn how Kygo differs from MyFitnessPal (Kygo shows food-body correlations, not just calories), how photo logging works (AI identifies every ingredient including garnishes), which wearables are supported (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, Samsung Galaxy Watch), and how correlations appear after 7 days of logging. Setup takes about 2 minutes. Over 5 million foods in the database. Free forever plan available.');
+    this._injectStructuredData();
   }
 
   disconnectedCallback() {
@@ -591,8 +592,8 @@ class KygoFaqSection extends HTMLElement {
           <p class="hero-subtitle">Everything you need to know about Kygo. Can't find what you're looking for? Reach out to us below.</p>
           <div class="search-container">
             <div class="search-bar">
-              <input type="text" placeholder="Search for answers..." id="faq-search">
-              <div class="search-icon">
+              <input type="text" placeholder="Search for answers..." id="faq-search" aria-label="Search frequently asked questions">
+              <div class="search-icon" role="img" aria-label="Search">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
               </div>
             </div>
@@ -937,7 +938,7 @@ class KygoFaqSection extends HTMLElement {
       </section>
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">×</button>
+          <button class="modal-close" aria-label="Close dialog">×</button>
           <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>
@@ -948,6 +949,38 @@ class KygoFaqSection extends HTMLElement {
         </div>
       </div>
     `;
+  }
+  // ── Structured Data ───────────────────────────────────────────────────
+
+  _injectStructuredData() {
+    if (!document.querySelector('script[data-kygo-faq-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          { '@type': 'Question', 'name': "I've tried food logging before and quit. Why would this be different?", 'acceptedAnswer': { '@type': 'Answer', 'text': 'Because logging takes seconds, not minutes. We give you four ways to log — photo, voice, barcode, or natural text — so you can use whatever is fastest in the moment. Plus, our template system learns your eating habits. Your frequent meals become one-tap entries. Logging gets easier over time, not harder.' } },
+          { '@type': 'Question', 'name': 'How is Kygo different from MyFitnessPal?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery. We automatically correlate your nutrition data with your wearable data to find patterns unique to YOUR body. The key difference: MFP = calories as the goal. Kygo = correlations as the insight.' } },
+          { '@type': 'Question', 'name': 'How long does setup take?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'About 2 minutes. Download the app, connect your wearables (click, sign in, approve), and you are ready to log your first meal. Your historical wearable data syncs automatically in the background.' } },
+          { '@type': 'Question', 'name': 'What do I see before correlations appear?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'You get value from day one. Before correlations appear (at day 7), you have access to unified health trends from all your connected devices, detailed calorie and macro tracking for every meal, full micronutrient breakdown (23+ nutrients), and weight logging and trends. Correlations are the bonus, not the only value.' } },
+          { '@type': 'Question', 'name': 'How does photo logging work?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Point, shoot, done. Take a photo of your meal and we identify every ingredient — including garnishes and toppings like cracked pepper or a drizzle of olive oil. The recognition is detailed enough to catch the small stuff that actually matters for accurate nutrition tracking.' } },
+          { '@type': 'Question', 'name': 'Can I use voice to log meals?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Just speak naturally: "Two eggs with avocado and whole grain toast" or "chicken salad with ranch dressing for lunch." You can also type the same way — no need to search through databases. We understand natural language and convert it to accurate nutrition data.' } },
+          { '@type': 'Question', 'name': 'How big is your food database?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Over 5 million foods. This includes branded products (for barcode scanning), restaurant items, and generic foods. We use the USDA FoodData Central database as our foundation.' } },
+          { '@type': 'Question', 'name': 'How long until I see correlations?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'First correlations typically appear after 7 days of consistent logging (both nutrition and wearable data). Higher-confidence correlations emerge around day 14 and beyond. The more data you provide, the more correlations we can find.' } },
+          { '@type': 'Question', 'name': 'How do you calculate correlation confidence?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'We use statistical analysis to find patterns, not guesses. Each correlation has two key measures: Confidence (how sure we are the pattern is real) and Strength (how much impact the food or behavior has on the outcome). We also filter out outliers so one bad night of sleep does not skew your data.' } },
+          { '@type': 'Question', 'name': 'What kinds of correlations can Kygo find?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'We analyze relationships between your nutrition and biometrics including sleep quality, duration, and latency, HRV, resting heart rate, recovery scores, and energy levels. Example correlations: Sleep latency +8 min with late caffeine, HRV +12% on days with no sugar after 6pm, Deep sleep +23 min with high-protein dinners.' } },
+          { '@type': 'Question', 'name': 'Which wearables do you support?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'We integrate with Oura Ring (sleep, HRV, readiness scores), Apple Health (activity, workouts, steps), Fitbit (sleep, steps, heart rate), and Garmin (training, recovery, body battery). You can connect one device or multiple — we combine the data to give you the most complete picture.' } },
+          { '@type': 'Question', 'name': 'Is Kygo really free?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes — there is a free tier that is free forever. It includes full food logging (photo, voice, barcode, text), all wearable connections and sync, health and nutrition trends, and detailed macro and micronutrient tracking. The correlation engine is a premium feature — upgrade anytime to unlock personalized insights.' } },
+          { '@type': 'Question', 'name': 'How much does premium cost?', 'acceptedAnswer': { '@type': 'Answer', 'text': '$9.99/month or $39.99/year (save about 67% with annual). Premium gives you access to the correlation engine — the feature that shows you how your food choices affect your sleep, HRV, and recovery.' } },
+          { '@type': 'Question', 'name': 'Is my health data secure?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. Your data is encrypted and never sold. We exist to help you understand your health, not to monetize your information. We do not sell your data to third parties and we do not use it for advertising.' } },
+          { '@type': 'Question', 'name': 'Can I export my data?', 'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. You can export all your data anytime. It is your data — you should be able to take it with you.' } }
+        ]
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-faq-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
   }
 }
 

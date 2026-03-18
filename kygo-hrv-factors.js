@@ -874,7 +874,7 @@ class KygoHrvFactors extends HTMLElement {
       <!-- Android Modal -->
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">&times;</button>
+          <button class="modal-close" aria-label="Close dialog">&times;</button>
           <div class="modal-icon">
             <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36"><path d="M17.6 11.48V8a.5.5 0 0 0-1 0v3.48a4 4 0 0 1-2.1.58h-5a4 4 0 0 1-2.1-.58V8a.5.5 0 0 0-1 0v3.48A3.5 3.5 0 0 0 4 15v2.5a.5.5 0 0 0 1 0V15a2.5 2.5 0 0 1 1.4-2.24V16a2 2 0 0 0 2 2h7.2a2 2 0 0 0 2-2v-3.24A2.5 2.5 0 0 1 19 15v2.5a.5.5 0 0 0 1 0V15a3.5 3.5 0 0 0-2.4-3.52zM14.5 5.5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/></svg>
           </div>
@@ -1292,19 +1292,72 @@ class KygoHrvFactors extends HTMLElement {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
       'name': 'HRV Factor Explorer',
+      'alternateName': 'Kygo HRV Improvement Factors Tool',
       'description': 'Explore 44 research-backed factors that affect Heart Rate Variability — supplements, lifestyle habits, exercise, micronutrients, and demographics ranked by evidence strength.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/hrv-factors',
+      'datePublished': '2026-02-15',
+      'dateModified': '2026-03-18',
+      'softwareVersion': '1.0',
+      'inLanguage': 'en',
+      'isAccessibleForFree': true,
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'featureList': 'Explore 44 HRV factors, 5 evidence categories, supplement and lifestyle comparison, peer-reviewed research citations, demographic impact analysis',
       'keywords': 'HRV factors, how to improve HRV, heart rate variability supplements, HRV lifestyle, best exercise for HRV, what affects HRV, increase HRV naturally, RMSSD, SDNN, vagal tone, autonomic nervous system, Ashwagandha HRV, Omega-3 HRV, HIIT HRV, sleep HRV, cold exposure HRV'
     };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.setAttribute('data-kygo-hrv-factors-ld', '');
-    script.textContent = JSON.stringify(ld);
-    document.head.appendChild(script);
+
+    const faq = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': [
+        {
+          '@type': 'Question',
+          'name': 'What is the fastest way to improve HRV?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise is the single most evidence-backed way to improve HRV. Studies show regular moderate-intensity cardio (3-5x/week) can increase RMSSD by 10-20% within 8-12 weeks. Sleep quality and consistency are the second most impactful factor — poor sleep can reduce HRV by 30-50%.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Which supplements improve HRV?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Omega-3 fatty acids (EPA/DHA) have the strongest evidence for HRV improvement, with multiple RCTs showing 10-15% RMSSD increases at 2g/day. Ashwagandha (300-600mg/day) shows moderate evidence for stress-related HRV improvement. Magnesium glycinate and probiotics have emerging but limited evidence.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Does cold exposure improve HRV?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Cold water immersion (10-15°C for 2-5 minutes) acutely increases vagal tone and HRV. Regular cold exposure over 4+ weeks shows moderate evidence for sustained HRV improvements. However, cold exposure immediately after strength training may blunt adaptation. Best used on rest days or before bed.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'What lowers HRV the most?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Alcohol is the single biggest HRV suppressor — even 1-2 drinks can reduce HRV by 20-40% for 24-48 hours. Chronic stress, poor sleep (<6 hours), overtraining, and dehydration are the next most impactful factors. Age is the strongest non-modifiable factor, with HRV declining roughly 1-2 ms/year after age 25.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'What is a good HRV score?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'HRV is highly individual — a "good" score depends on age, fitness, and genetics. General RMSSD benchmarks: ages 20-30 average 40-80ms, ages 30-40 average 30-60ms, ages 40-50 average 20-45ms, ages 50+ average 15-35ms. Athletes often have RMSSD above 80ms. The trend over weeks matters more than any single reading.' }
+        }
+      ]
+    };
+
+    const breadcrumb = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+        { '@type': 'ListItem', 'position': 3, 'name': 'HRV Factors', 'item': 'https://www.kygo.app/tools/hrv-factors' }
+      ]
+    };
+
+    [ld, faq, breadcrumb].forEach(data => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-hrv-factors-ld', '');
+      script.textContent = JSON.stringify(data);
+      document.head.appendChild(script);
+    });
   }
 }
 

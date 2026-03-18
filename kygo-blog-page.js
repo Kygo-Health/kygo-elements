@@ -32,7 +32,8 @@ class KygoBlog extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'Kygo Health Blog \u2014 Latest articles and guides on nutrition tracking, health optimization, and wearable data insights.');
+    __seo(this, 'Kygo Health Blog — Latest articles and guides on nutrition tracking, health optimization, wearable data insights, sleep science, HRV improvement, calorie burn accuracy, and how food affects your body. Research-backed content with citations from peer-reviewed studies. Published by Kygo Health, the AI-powered nutrition and wearable correlation platform.');
+    this._injectStructuredData();
   }
 
   disconnectedCallback() {
@@ -581,6 +582,36 @@ class KygoBlog extends HTMLElement {
       }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
       cards.forEach(card => this._observer.observe(card));
     });
+  }
+
+  // ── Structured Data ───────────────────────────────────────────────────
+
+  _injectStructuredData() {
+    if (!document.querySelector('script[data-kygo-blog-post-ld]')) {
+      if (!this._posts || this._posts.length === 0) return;
+      const post = this._posts[0];
+      const postUrl = post.slug ? `https://www.kygo.app/post/${post.slug}` : 'https://www.kygo.app/blog';
+      const description = post.excerpt ? post.excerpt.substring(0, 160) : '';
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        'headline': post.title || '',
+        'description': description,
+        'url': postUrl,
+        'image': post.coverImage || '',
+        'datePublished': post.publishedDate || '',
+        'dateModified': post.publishedDate || '',
+        'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+        'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': { '@type': 'ImageObject', 'url': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' } },
+        'mainEntityOfPage': { '@type': 'WebPage', '@id': postUrl },
+        'inLanguage': 'en'
+      };
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-blog-post-ld', '');
+      script.textContent = JSON.stringify(ld);
+      document.head.appendChild(script);
+    }
   }
 }
 

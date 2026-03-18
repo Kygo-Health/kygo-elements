@@ -754,7 +754,7 @@ class KygoSleepMetrics extends HTMLElement {
       </section>
       <div class="android-modal">
         <div class="modal-content">
-          <button class="modal-close">×</button>
+          <button class="modal-close" aria-label="Close dialog">×</button>
           <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
           <h3>Android Free Beta Open!</h3>
           <p>Sign up and we'll send you an email to access the Android beta.</p>
@@ -1353,9 +1353,17 @@ class KygoSleepMetrics extends HTMLElement {
       'description': 'Compare every sleep metric tracked by Oura Ring, Fitbit, Apple Watch, and Garmin. 38 metrics across 10 categories including sleep stages, HRV, SpO2, respiratory rate, sleep apnea detection, and more. See what each device tracks, exclusive features, and how they measure each metric.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
-      'url': 'https://www.kygohealth.com/sleep-metrics',
+      'url': 'https://www.kygo.app/tools/sleep-metrics',
+      'datePublished': '2026-02-01',
+      'dateModified': '2026-03-18',
+      'softwareVersion': '1.0',
+      'inLanguage': 'en',
+      'isAccessibleForFree': true,
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygohealth.com' },
+      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'alternateName': 'Kygo Sleep Metrics Comparison Tool',
+      'featureList': 'Compare 4 wearable brands, 38 sleep metrics, 10 metric categories, exclusive feature identification, sensor technology details',
       'keywords': 'sleep metrics comparison, Oura Ring sleep tracking, Apple Watch sleep tracking, Fitbit sleep tracking, Garmin sleep tracking, wearable sleep features, sleep stage tracking, sleep apnea detection, HRV tracking, best wearable for sleep'
     };
     const script = document.createElement('script');
@@ -1363,6 +1371,64 @@ class KygoSleepMetrics extends HTMLElement {
     script.setAttribute('data-kygo-sleep-ld', '');
     script.textContent = JSON.stringify(ld);
     document.head.appendChild(script);
+
+    // FAQPage schema
+    if (!document.querySelector('script[data-kygo-sleep-faq]')) {
+      const faq = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': 'Which wearable tracks the most sleep metrics?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'Oura Ring tracks the most sleep metrics with 12 unique measurements including sleep latency, sleep efficiency, restfulness score, bedtime guidance, and optimal bedtime window. Garmin tracks 10 metrics including Body Battery and sleep-specific HRV. Fitbit tracks 9 including Sleep Profile animal types and snoring detection. Apple Watch tracks the fewest at 7 metrics.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Which wearable is best for sleep tracking?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'Oura Ring is the best for sleep tracking due to its finger-based PPG sensor (120% better signal quality), 93% PSG agreement for sleep staging, and the most comprehensive set of sleep metrics. It also has the lowest sleep disruption since rings are more comfortable to wear at night than watches or bands.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Can wearables detect sleep apnea?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch Series 10 and Ultra 3 have FDA-cleared sleep apnea detection using the accelerometer to measure breathing disturbances. Fitbit has submitted for FDA clearance but is pending. Garmin and Oura track SpO2 dips during sleep which may indicate apnea but are not FDA-cleared for detection. WHOOP does not offer sleep apnea features.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'What sleep metrics should I focus on?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'The most actionable sleep metrics are: (1) Sleep efficiency — percentage of time in bed actually sleeping (target >85%); (2) Deep sleep duration — critical for physical recovery (target 1-2 hours); (3) Sleep latency — time to fall asleep (target <20 minutes); (4) HRV during sleep — higher indicates better recovery. REM sleep percentage (target 20-25%) matters for cognitive function and emotional regulation.' }
+          },
+          {
+            '@type': 'Question',
+            'name': 'How do wearables measure sleep stages?',
+            'acceptedAnswer': { '@type': 'Answer', 'text': 'Wearables use a combination of accelerometer data (movement patterns), PPG heart rate data (HR drops in deep sleep, rises in REM), and HRV patterns to classify sleep stages. The gold standard PSG uses EEG brain waves, which wearables cannot measure. Accuracy for 4-stage classification ranges from 65% (Fitbit) to 79% (Oura Ring) compared to PSG.' }
+          }
+        ]
+      };
+      const faqScript = document.createElement('script');
+      faqScript.type = 'application/ld+json';
+      faqScript.setAttribute('data-kygo-sleep-faq', '');
+      faqScript.textContent = JSON.stringify(faq);
+      document.head.appendChild(faqScript);
+    }
+
+    // BreadcrumbList schema
+    if (!document.querySelector('script[data-kygo-sleep-breadcrumb]')) {
+      const breadcrumb = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+          { '@type': 'ListItem', 'position': 3, 'name': 'Sleep Metrics', 'item': 'https://www.kygo.app/tools/sleep-metrics' }
+        ]
+      };
+      const bcScript = document.createElement('script');
+      bcScript.type = 'application/ld+json';
+      bcScript.setAttribute('data-kygo-sleep-breadcrumb', '');
+      bcScript.textContent = JSON.stringify(breadcrumb);
+      document.head.appendChild(bcScript);
+    }
   }
 }
 
