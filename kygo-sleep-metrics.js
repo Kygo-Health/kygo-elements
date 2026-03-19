@@ -1372,45 +1372,7 @@ class KygoSleepMetrics extends HTMLElement {
     script.textContent = JSON.stringify(ld);
     document.head.appendChild(script);
 
-    // FAQPage schema
-    if (!document.querySelector('script[data-kygo-sleep-faq]')) {
-      const faq = {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        'mainEntity': [
-          {
-            '@type': 'Question',
-            'name': 'Which wearable tracks the most sleep metrics?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Oura Ring tracks the most sleep metrics with 12 unique measurements including sleep latency, sleep efficiency, restfulness score, bedtime guidance, and optimal bedtime window. Garmin tracks 10 metrics including Body Battery and sleep-specific HRV. Fitbit tracks 9 including Sleep Profile animal types and snoring detection. Apple Watch tracks the fewest at 7 metrics.' }
-          },
-          {
-            '@type': 'Question',
-            'name': 'Which wearable is best for sleep tracking?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Oura Ring is the best for sleep tracking due to its finger-based PPG sensor (120% better signal quality), 93% PSG agreement for sleep staging, and the most comprehensive set of sleep metrics. It also has the lowest sleep disruption since rings are more comfortable to wear at night than watches or bands.' }
-          },
-          {
-            '@type': 'Question',
-            'name': 'Can wearables detect sleep apnea?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch Series 10 and Ultra 3 have FDA-cleared sleep apnea detection using the accelerometer to measure breathing disturbances. Fitbit has submitted for FDA clearance but is pending. Garmin and Oura track SpO2 dips during sleep which may indicate apnea but are not FDA-cleared for detection. WHOOP does not offer sleep apnea features.' }
-          },
-          {
-            '@type': 'Question',
-            'name': 'What sleep metrics should I focus on?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'The most actionable sleep metrics are: (1) Sleep efficiency — percentage of time in bed actually sleeping (target >85%); (2) Deep sleep duration — critical for physical recovery (target 1-2 hours); (3) Sleep latency — time to fall asleep (target <20 minutes); (4) HRV during sleep — higher indicates better recovery. REM sleep percentage (target 20-25%) matters for cognitive function and emotional regulation.' }
-          },
-          {
-            '@type': 'Question',
-            'name': 'How do wearables measure sleep stages?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Wearables use a combination of accelerometer data (movement patterns), PPG heart rate data (HR drops in deep sleep, rises in REM), and HRV patterns to classify sleep stages. The gold standard PSG uses EEG brain waves, which wearables cannot measure. Accuracy for 4-stage classification ranges from 65% (Fitbit) to 79% (Oura Ring) compared to PSG.' }
-          }
-        ]
-      };
-      const faqScript = document.createElement('script');
-      faqScript.type = 'application/ld+json';
-      faqScript.setAttribute('data-kygo-sleep-faq', '');
-      faqScript.textContent = JSON.stringify(faq);
-      document.head.appendChild(faqScript);
-    }
+    // FAQPage schema is managed via Wix site-level LD+JSON to avoid duplicates
 
     // BreadcrumbList schema
     if (!document.querySelector('script[data-kygo-sleep-breadcrumb]')) {
