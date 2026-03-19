@@ -1231,26 +1231,7 @@ class KygoDeepSleepFactors extends HTMLElement {
     const guardAttr = 'data-kygo-deep-sleep-factors-ld';
     if (document.querySelector(`script[${guardAttr}]`)) return;
 
-    const ld = {
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      'name': 'Deep Sleep Factor Explorer',
-      'description': 'Explore 29 research-backed factors that affect deep sleep (N3/SWS) — lifestyle, supplements, environment, stress, and biology ranked by evidence strength.',
-      'applicationCategory': 'HealthApplication',
-      'operatingSystem': 'Web',
-      'url': 'https://www.kygo.app/tools/deep-sleep-factors',
-      'datePublished': '2026-02-15',
-      'dateModified': '2026-03-18',
-      'softwareVersion': '1.0',
-      'inLanguage': 'en',
-      'isAccessibleForFree': true,
-      'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
-      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'alternateName': 'Kygo Deep Sleep Improvement Factors Tool',
-      'featureList': 'Explore 29 deep sleep factors, 5 evidence categories, supplement and lifestyle ranking, peer-reviewed citations, personalized recommendation engine',
-      'keywords': 'deep sleep factors, how to increase deep sleep, what affects deep sleep, best supplements for deep sleep, slow wave sleep, N3 sleep, how to get more deep sleep, deep sleep and exercise, caffeine deep sleep, deep sleep and age, SWS factors, improve deep sleep naturally'
-    };
+    // WebApplication schema is managed via Wix site-level LD+JSON to avoid duplicates
 
     const faq = {
       '@context': 'https://schema.org',
@@ -1275,7 +1256,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       ]
     };
 
-    [ld, faq, breadcrumb].forEach(data => {
+    [faq, breadcrumb].forEach(data => {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
       script.setAttribute(guardAttr, '');
