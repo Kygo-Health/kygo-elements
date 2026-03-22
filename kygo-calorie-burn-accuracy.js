@@ -546,7 +546,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <div class="blog-cta">
             <div class="blog-cta-glow"></div>
             <div class="blog-cta-inner">
-              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free on iOS</div>
+              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
               <h3>Track Your <span style="color: var(--green);">Calorie Accuracy</span> Automatically</h3>
               <p class="blog-cta-desc">
                 Kygo syncs with your wearable and corrects for calorie inaccuracies in real-time — giving you data you can trust.

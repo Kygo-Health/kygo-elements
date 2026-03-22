@@ -676,7 +676,7 @@ class KygoSleepMetrics extends HTMLElement {
           <div class="blog-cta animate-on-scroll">
             <div class="blog-cta-badge">
               <div class="blog-cta-badge-dot"></div>
-              <span>Free on iOS</span>
+              <span>Free Forever Plan</span>
             </div>
             <div class="blog-cta-headline">See how your food affects your <span class="highlight">sleep, energy, and recovery</span></div>
             <p class="blog-cta-sub">Kygo connects your wearable data with AI-powered nutrition tracking\u2014then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.</p>
@@ -1043,7 +1043,7 @@ class KygoSleepMetrics extends HTMLElement {
         align-items: center;
         justify-content: center;
         gap: 8px;
-        width: 100%;
+        width: auto;
         max-width: 280px;
         background: var(--green);
         color: white;
@@ -1133,11 +1133,11 @@ class KygoSleepMetrics extends HTMLElement {
       .cta-features { display: flex; flex-direction: column; justify-content: center; gap: 10px; margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.8); }
       .cta-feat { display: flex; align-items: center; justify-content: center; gap: 8px; }
       .cta-feat svg { color: white; flex-shrink: 0; }
-      .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+      .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:nowrap}
       .cta-android{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;padding:12px 24px;border-radius:var(--radius-sm, 10px);font-weight:600;font-size:15px;text-decoration:none;transition:background 0.2s;border:none;cursor:pointer}
       .cta-android:hover{background:var(--green-dark);color:#fff}
       .cta-android svg{width:18px;height:18px}
-      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons a{width:100%;max-width:280px;justify-content:center}}
+      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons a{width:100%;max-width:280px;justify-content:center}.blog-cta-buttons{flex-wrap:wrap;flex-direction:column;align-items:center}.blog-cta-buttons a{width:100%;max-width:280px}}
 
       /* ── Footer ── */
       .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }

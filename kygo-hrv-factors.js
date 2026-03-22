@@ -842,7 +842,7 @@ class KygoHrvFactors extends HTMLElement {
           <div class="blog-cta animate-on-scroll">
             <div class="blog-cta-glow"></div>
             <div class="blog-cta-content">
-              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free on iOS</div>
+              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
               <h2>Track Your <span class="highlight">HRV Trends</span> Automatically</h2>
               <p>Kygo syncs with your wearable and food log to show which habits actually move your HRV — correlations personalized to your data.</p>
               <div class="blog-cta-buttons">
