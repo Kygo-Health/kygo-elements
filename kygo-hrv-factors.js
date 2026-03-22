@@ -1087,6 +1087,7 @@ class KygoHrvFactors extends HTMLElement {
       .blog-cta-btn:hover { background: var(--green-dark); }
       .blog-cta-btn svg { width: 18px; height: 18px; }
       .blog-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+      @media (max-width: 480px) { .blog-cta-buttons { flex-direction: column; align-items: stretch; } .blog-cta-buttons a, .blog-cta-buttons button { justify-content: center; text-align: center; } }
       .blog-cta-tags { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
       .blog-cta-tags span { color: var(--gray-400); font-size: 12px; }
       .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
