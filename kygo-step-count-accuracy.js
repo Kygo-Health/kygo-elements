@@ -1462,30 +1462,9 @@ class KygoStepCountAccuracy extends HTMLElement {
         position: relative;
         z-index: 1;
       }
-      .blog-cta-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: auto;
-        max-width: 280px;
-        background: var(--green);
-        color: white;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 15px;
-        font-weight: 600;
-        text-decoration: none;
-        padding: 14px 24px;
-        border-radius: 12px;
-        transition: all 0.2s;
-        box-shadow: 0 8px 20px rgba(34,197,94,0.3);
-      }
-      .blog-cta-btn:hover {
-        background: var(--green-dark);
-        transform: translateY(-2px);
-        box-shadow: 0 12px 28px rgba(34,197,94,0.4);
-      }
-      .blog-cta-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: white; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .blog-cta-btn:hover { background: var(--green-dark); }
+      .blog-cta-btn svg { width: 18px; height: 18px; }
       .blog-cta-meta {
         font-size: 12px;
         color: #94A3B8;
@@ -1552,16 +1531,16 @@ class KygoStepCountAccuracy extends HTMLElement {
       .cta-icon { width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; }
       .cta-box h2 { color: #fff; font-size: clamp(22px, 4vw, 30px); margin-bottom: 12px; }
       .cta-box p { color: rgba(255,255,255,0.85); font-size: 16px; margin-bottom: 28px; line-height: 1.7; }
-      .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: #fff; color: var(--green-dark); padding: 14px 28px; border-radius: 12px; font-weight: 700; font-size: 15px; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
-      .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+      .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--green-dark); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .cta-btn:hover { background: var(--gray-100); }
       .cta-features { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
       .cta-feature { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.9); font-size: 13px; }
       .cta-feature svg { color: white; flex-shrink: 0; }
-      .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:nowrap}
-      .cta-android{background:white;color:var(--green-dark);padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit}
-      .cta-android:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+      .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+      .cta-android{background:white;color:var(--green-dark);padding:12px 24px;border-radius:var(--radius-sm, 10px);font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.2s;border:none;cursor:pointer}
+      .cta-android:hover{background:var(--gray-100)}
       .cta-android svg{width:18px;height:18px}
-      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:stretch}.cta-buttons a{width:100%;justify-content:center}.blog-cta-buttons{flex-wrap:wrap;flex-direction:column;align-items:stretch}.blog-cta-buttons a{width:100%}}
+      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:stretch}.cta-buttons a{width:100%;justify-content:center;text-align:center}.blog-cta-buttons{flex-direction:column;align-items:stretch}.blog-cta-buttons a{width:100%;justify-content:center;text-align:center}}
 
       /* Footer */
       .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }

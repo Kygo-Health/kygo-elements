@@ -1220,30 +1220,9 @@ class KygoWearableAccuracy extends HTMLElement {
         position: relative;
         z-index: 1;
       }
-      .blog-cta-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        width: auto;
-        max-width: 280px;
-        background: var(--green);
-        color: white;
-        font-family: 'DM Sans', sans-serif;
-        font-size: 15px;
-        font-weight: 600;
-        text-decoration: none;
-        padding: 14px 24px;
-        border-radius: 12px;
-        transition: all 0.2s;
-        box-shadow: 0 8px 20px rgba(34,197,94,0.3);
-      }
-      .blog-cta-btn:hover {
-        background: var(--green-dark);
-        transform: translateY(-2px);
-        box-shadow: 0 12px 28px rgba(34,197,94,0.4);
-      }
-      .blog-cta-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .blog-cta-btn:hover { background: var(--green-dark); }
+      .blog-cta-btn svg { width: 18px; height: 18px; }
       .blog-cta-meta {
         font-size: 12px;
         color: #94A3B8;
@@ -1336,23 +1315,8 @@ class KygoWearableAccuracy extends HTMLElement {
       }
       .cta-box h2 { font-size: clamp(20px, 5vw, 24px); margin-bottom: 10px; color: white; }
       .cta-box p { font-size: 14px; color: rgba(255,255,255,0.85); margin-bottom: 24px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6; }
-      .cta-btn-white {
-        background: white;
-        color: var(--green-dark);
-        padding: 14px 28px;
-        border-radius: 12px;
-        font-weight: 600;
-        font-size: 15px;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.2s;
-        border: none;
-        cursor: pointer;
-        font-family: inherit;
-      }
-      .cta-btn-white:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+      .cta-btn-white { display: inline-flex; align-items: center; gap: 8px; background: white; color: var(--green-dark); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
+      .cta-btn-white:hover { background: var(--gray-100); }
       .cta-features {
         display: flex;
         flex-direction: column;
@@ -1364,11 +1328,11 @@ class KygoWearableAccuracy extends HTMLElement {
       }
       .cta-feature { display: flex; align-items: center; justify-content: center; gap: 8px; }
       .cta-feature svg { color: white; flex-shrink: 0; }
-      .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:nowrap}
-      .cta-android{background:white;color:var(--green-dark);padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit}
-      .cta-android:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+      .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+      .cta-android{background:white;color:var(--green-dark);padding:12px 24px;border-radius:var(--radius-sm, 10px);font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.2s;border:none;cursor:pointer}
+      .cta-android:hover{background:var(--gray-100)}
       .cta-android svg{width:18px;height:18px}
-      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons a{width:100%;max-width:280px;justify-content:center}.blog-cta-buttons{flex-wrap:wrap;flex-direction:column;align-items:center}.blog-cta-buttons a{width:100%;max-width:280px}}
+      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:stretch}.cta-buttons a{width:100%;justify-content:center;text-align:center}.blog-cta-buttons{flex-direction:column;align-items:stretch}.blog-cta-buttons a{width:100%;justify-content:center;text-align:center}}
 
       /* ── Footer ── */
       .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }

@@ -1040,6 +1040,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
       .cta-android:hover { background: var(--green-dark); color: #fff; }
       .cta-android svg { width: 18px; height: 18px; }
+      @media (max-width: 480px) { .blog-cta-buttons { flex-direction: column; align-items: stretch; } .blog-cta-buttons a, .blog-cta-buttons button { justify-content: center; text-align: center; } }
 
       /* Footer */
       .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
