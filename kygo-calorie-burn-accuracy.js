@@ -322,7 +322,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
 
         /* ==================== BLOG CTA ==================== */
         .blog-cta-section { padding: 32px 0; }
-        .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
+        .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
         .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34, 197, 94, 0.25) 0%, transparent 70%); pointer-events: none; }
         .blog-cta-inner { position: relative; z-index: 1; }
         .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34, 197, 94, 0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
@@ -332,8 +332,10 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
         .blog-cta-btn:hover { background: var(--green-dark); color: #fff; }
         .blog-cta-btn svg { width: 16px; height: 16px; }
-        .cta-android { display: block; margin: 16px auto 0; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); color: var(--gray-400); padding: 10px 24px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; text-decoration: none; }
-        .cta-android:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); color: #fff; }
+        .blog-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
+        .cta-android:hover { background: var(--green-dark); color: #fff; }
+        .cta-android svg { width: 18px; height: 18px; }
         .blog-cta-tags { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
         .blog-cta-tags span { color: var(--gray-400); font-size: 12px; }
         .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
@@ -549,11 +551,16 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
               <p class="blog-cta-desc">
                 Kygo syncs with your wearable and corrects for calorie inaccuracies in real-time — giving you data you can trust.
               </p>
-              <button class="blog-cta-btn" data-action="ios-download" data-track-position="article-cta">
-                <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                Download for iOS
-              </button>
-              <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="article-cta">Download for Android</a>
+              <div class="blog-cta-buttons">
+                <button class="blog-cta-btn" data-action="ios-download" data-track-position="article-cta">
+                  <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Download for iOS
+                </button>
+                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="article-cta">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                  Download for Android
+                </a>
+              </div>
               <div class="blog-cta-tags">
                 <span>Works with</span>
                 <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy">

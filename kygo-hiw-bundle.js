@@ -3055,7 +3055,7 @@ class KygoHiwFinalCta extends HTMLElement {
         .final-cta-inner {
           background: linear-gradient(135deg, var(--green), var(--green-dark));
           border-radius: 20px;
-          padding: 40px 20px;
+          padding: 36px 24px;
           text-align: center;
           position: relative;
           overflow: hidden;
@@ -3085,17 +3085,19 @@ class KygoHiwFinalCta extends HTMLElement {
 
         .final-cta-content > p {
           color: rgba(255,255,255,0.85);
-          margin-bottom: 28px;
+          margin-bottom: 20px;
           font-size: 17px;
         }
+
+        .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
         .cta-primary {
           background: white;
           color: var(--green-dark);
-          padding: 16px 28px;
+          padding: 14px 24px;
           border-radius: 12px;
           font-weight: 600;
-          font-size: 16px;
+          font-size: 15px;
           text-decoration: none;
           display: inline-flex;
           align-items: center;
@@ -3128,8 +3130,8 @@ class KygoHiwFinalCta extends HTMLElement {
         }
 
         @media (min-width: 768px) {
-          .final-cta { padding: 80px 0; }
-          .final-cta-inner { padding: 64px 48px; border-radius: 24px; }
+          .final-cta { padding: 60px 0; }
+          .final-cta-inner { padding: 48px 40px; border-radius: 24px; }
           .final-cta h2 { font-size: 44px; }
         }
 
@@ -3168,17 +3170,20 @@ class KygoHiwFinalCta extends HTMLElement {
         .final-cta-inner h2,
         .final-cta-content > p,
         .cta-primary,
+        .cta-android,
         .risk-reversal {
           opacity: 0;
         }
         .final-cta-inner h2 { transform: translateY(20px); }
         .final-cta-content > p { transform: translateY(15px); }
         .cta-primary { transform: scale(0.9); }
+        .cta-android { transform: scale(0.9); }
         .risk-reversal { transform: translateY(10px); }
 
         .final-cta-inner.visible h2 { animation: ctaSlideUp 0.6s ease-out 0.1s forwards; }
         .final-cta-inner.visible .final-cta-content > p { animation: ctaSlideUp 0.5s ease-out 0.25s forwards; }
         .final-cta-inner.visible .cta-primary { animation: ctaScaleIn 0.5s ease-out 0.4s forwards; }
+        .final-cta-inner.visible .cta-android { animation: ctaScaleIn 0.5s ease-out 0.4s forwards; }
         .final-cta-inner.visible .risk-reversal { animation: ctaSlideUp 0.5s ease-out 0.55s forwards; }
 
         /* CTA button glow pulse */
@@ -3195,14 +3200,16 @@ class KygoHiwFinalCta extends HTMLElement {
           .final-cta-inner h2,
           .final-cta-content > p,
           .cta-primary,
+          .cta-android,
           .risk-reversal {
             opacity: 1;
             transform: none;
           }
         }
-        .cta-android{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.9);border:1.5px solid rgba(255,255,255,0.35);padding:12px 24px;border-radius:10px;font-weight:500;font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;width:100%;max-width:260px;margin-top:12px;text-decoration:none}
-        .cta-android:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.6)}
-        .cta-android svg{width:16px;height:16px;flex-shrink:0}
+        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+        .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
+        .cta-android svg{width:18px;height:18px}
+        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
       </style>
 
       <section class="final-cta">
@@ -3212,13 +3219,18 @@ class KygoHiwFinalCta extends HTMLElement {
               <h2>Ready to understand your body?</h2>
               <p>Stop guessing. Start seeing the correlations between what you eat and how you feel.</p>
               
-              <a href="${ctaLink}" class="cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                </svg>
-                Download Free on iOS
-              </a>
-              
+              <div class="cta-buttons">
+                <a href="${ctaLink}" class="cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                  </svg>
+                  Download Free on iOS
+                </a>
+                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                  Download for Android
+                </a>
+              </div>
               <p class="risk-reversal">
                 <span>Free forever plan</span>
                 <span>•</span>
@@ -3226,10 +3238,6 @@ class KygoHiwFinalCta extends HTMLElement {
                 <span>•</span>
                 <span>Upgrade anytime</span>
               </p>
-              <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                Download for Android
-              </a>
             </div>
           </div>
         </div>

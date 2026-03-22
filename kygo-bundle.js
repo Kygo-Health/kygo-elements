@@ -68,9 +68,9 @@ class KygoHeroSection extends HTMLElement {
         .cta-secondary:hover svg{transform:translateX(3px)}
         .risk-reversal{font-size:13px;color:var(--gray-400);display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
         .risk-reversal span{white-space:nowrap}
-        .cta-android{background:transparent;color:var(--gray-600);padding:12px 20px;border-radius:10px;font-weight:500;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;border:1.5px solid #E2E8F0;cursor:pointer;width:100%;max-width:260px}
-        .cta-android:hover{border-color:var(--dark);color:var(--dark);background:rgba(0,0,0,0.02)}
-        .cta-android svg{width:16px;height:16px}
+        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;border:2px solid var(--green);cursor:pointer;width:100%;max-width:260px}
+        .cta-android:hover{background:var(--green);color:white;transform:translateY(-2px);box-shadow:0 10px 20px rgba(34,197,94,0.3)}
+        .cta-android svg{width:18px;height:18px;flex-shrink:0}
         .hero-demo{display:flex;flex-direction:column;align-items:center;perspective:1000px}
         .app-demo-container{position:relative;width:100%;max-width:300px}
         .phone-frame{background:var(--dark);border-radius:36px;padding:10px;box-shadow:0 25px 50px rgba(30,41,59,0.3),0 0 0 1px rgba(255,255,255,0.1) inset}
@@ -134,6 +134,7 @@ class KygoHeroSection extends HTMLElement {
           .cta-container{align-items:flex-start}
           .cta-group-top{flex-direction:row;justify-content:flex-start;align-items:center}
           .cta-primary{width:auto}
+          .cta-android{width:auto}
           .cta-secondary{padding:0}
           .risk-reversal{justify-content:flex-start}
         }
@@ -150,15 +151,15 @@ class KygoHeroSection extends HTMLElement {
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                     Download Free on iOS
                   </a>
-                  <a href="#kygo-features-section" class="cta-secondary" data-track-position="hero">
-                    See how it works
-                    <svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                  <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="hero">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                    Download for Android
                   </a>
                 </div>
                 <p class="risk-reversal"><span>2-min setup</span><span>•</span><span>Free forever plan</span><span>•</span><span>No credit card</span></p>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="hero">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
+                <a href="#kygo-features-section" class="cta-secondary" data-track-position="hero">
+                  See how it works
+                  <svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
                 </a>
               </div>
             </div>
@@ -1045,23 +1046,25 @@ class KygoFounderCta extends HTMLElement {
         .founder-info{display:flex;flex-direction:column;justify-content:center}
         .founder-info h4{color:white;font-size:16px;margin-bottom:2px;line-height:1.2}
         .founder-info span{color:var(--gray-400);font-size:14px;line-height:1.2}
-        .final-cta{padding:60px 0;background:var(--gray-50)}
-        .final-cta-inner{background:linear-gradient(135deg,var(--green),var(--green-dark));border-radius:24px;padding:48px 24px;text-align:center;position:relative;overflow:hidden}
+        .final-cta{padding:48px 0;background:var(--gray-50)}
+        .final-cta-inner{background:linear-gradient(135deg,var(--green),var(--green-dark));border-radius:24px;padding:36px 24px;text-align:center;position:relative;overflow:hidden}
         .final-cta-inner::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 50%);pointer-events:none}
         .final-cta-content{position:relative;z-index:1}
         .final-cta h2{font-size:32px;color:white;margin-bottom:12px}
-        .final-cta-content>p{color:rgba(255,255,255,0.8);margin-bottom:28px;font-size:17px}
-        .cta-primary{background:white;color:var(--green-dark);padding:16px 28px;border-radius:12px;font-weight:600;font-size:16px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
+        .final-cta-content>p{color:rgba(255,255,255,0.8);margin-bottom:20px;font-size:17px}
+        .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+        .cta-primary{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
         .cta-primary:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
         .cta-primary:active,.cta-primary:focus{background:white;color:var(--green-dark);outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(0,0,0,0.15)}
         .cta-primary svg{width:18px;height:18px}
-        .risk-reversal{margin-top:20px;color:rgba(255,255,255,0.7);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:13px}
+        .risk-reversal{margin-top:16px;color:rgba(255,255,255,0.7);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:13px}
         .risk-reversal span{display:inline-flex;align-items:center}
-        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;margin-top:16px}
+        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
         .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
         .cta-android:active,.cta-android:focus{background:white;color:var(--green-dark);outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(0,0,0,0.15)}
         .cta-android svg{width:18px;height:18px}
-        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:80px 0}.final-cta-inner{padding:64px 48px}.final-cta h2{font-size:40px}}
+        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
+        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:60px 0}.final-cta-inner{padding:48px 40px}.final-cta h2{font-size:40px}}
       </style>
       <section class="founder-story">
         <div class="container">
@@ -1095,15 +1098,17 @@ class KygoFounderCta extends HTMLElement {
             <div class="final-cta-content">
               <h2>Ready to understand your body?</h2>
               <p>Stop guessing. Start discovering what actually works for you.</p>
-              <a href="${appStoreUrl}" class="cta-primary" data-track-position="footer-cta" target="_blank" rel="noopener noreferrer">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                Download Free on iOS
-              </a>
+              <div class="cta-buttons">
+                <a href="${appStoreUrl}" class="cta-primary" data-track-position="footer-cta" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                  Download Free on iOS
+                </a>
+                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                  Download for Android
+                </a>
+              </div>
               <p class="risk-reversal"><span>Free forever plan</span><span>•</span><span>No credit card required</span><span>•</span><span>Cancel anytime</span></p>
-              <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                Download for Android
-              </a>
             </div>
           </div>
         </div>
