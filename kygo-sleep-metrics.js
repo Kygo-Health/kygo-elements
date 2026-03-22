@@ -1134,8 +1134,8 @@ class KygoSleepMetrics extends HTMLElement {
       .cta-feat { display: flex; align-items: center; justify-content: center; gap: 8px; }
       .cta-feat svg { color: white; flex-shrink: 0; }
       .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:nowrap}
-      .cta-android{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;padding:12px 24px;border-radius:var(--radius-sm, 10px);font-weight:600;font-size:15px;text-decoration:none;transition:background 0.2s;border:none;cursor:pointer}
-      .cta-android:hover{background:var(--green-dark);color:#fff}
+      .cta-android{background:white;color:var(--green-dark);padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit}
+      .cta-android:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
       .cta-android svg{width:18px;height:18px}
       @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons a{width:100%;max-width:280px;justify-content:center}.blog-cta-buttons{flex-wrap:wrap;flex-direction:column;align-items:center}.blog-cta-buttons a{width:100%;max-width:280px}}
 
