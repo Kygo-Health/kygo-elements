@@ -1281,8 +1281,8 @@ class KygoSensorComparison extends HTMLElement {
       .blog-cta-buttons { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
       .blog-cta-btn { display: inline-block; background: var(--green); color: #fff; font-weight: 600; padding: 12px 28px; border-radius: var(--radius-sm); font-size: 14px; transition: background 0.2s; }
       .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-android-btn { background: none; border: 2px solid rgba(255,255,255,0.4); color: #fff; padding: 10px 24px; border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.2s; text-decoration: none; }
-      .blog-cta-android-btn:hover { border-color: #fff; }
+      .blog-cta-android-btn { display:inline-block;background:var(--green);color:#fff;font-weight:600;padding:12px 28px;border-radius:var(--radius-sm, 10px);font-size:14px;transition:background 0.2s;text-decoration:none;border:none;cursor:pointer; }
+      .blog-cta-android-btn:hover { background:var(--green-dark);color:#fff; }
       .blog-cta-devices { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; font-size: 12px; color: var(--gray-400); }
       .blog-cta-devices img { height: 20px; width: auto; opacity: 0.7; }
 

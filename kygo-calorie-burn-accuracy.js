@@ -361,8 +361,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
         .cta-button-primary { background: var(--green); color: white; padding: 12px 28px; border-radius: var(--radius-sm); font-size: 15px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); display: inline-flex; align-items: center; gap: 8px; }
         .cta-button-primary:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4); }
-        .cta-button-secondary { background: transparent; color: var(--gray-300); padding: 12px 28px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-sm); font-size: 15px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; }
-        .cta-button-secondary:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.3); color: white; }
+        .cta-button-secondary { background:var(--green);color:white;padding:12px 28px;border-radius:var(--radius-sm, 10px);font-size:15px;box-shadow:0 4px 12px rgba(34,197,94,0.3);display:inline-flex;align-items:center;gap:8px;text-decoration:none;border:none;cursor:pointer;font-weight:600; }
+        .cta-button-secondary:hover { background:var(--green-dark);transform:translateY(-2px);box-shadow:0 8px 20px rgba(34,197,94,0.4);color:white; }
 
         /* ==================== ANDROID MODAL ==================== */
 
