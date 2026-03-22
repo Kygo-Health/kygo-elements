@@ -30,12 +30,8 @@ class KygoHeroSection extends HTMLElement {
     this._injectStructuredData();
   }
   setupEvents() {
-    const androidBtn = this.shadowRoot.querySelector('.cta-android');
     const secondaryBtn = this.shadowRoot.querySelector('.cta-secondary');
-    const modal = this.shadowRoot.querySelector('.android-modal');
-    const closeBtn = this.shadowRoot.querySelector('.modal-close');
-    const form = this.shadowRoot.querySelector('.android-form');
-    
+
     if (secondaryBtn) {
       secondaryBtn.addEventListener('click', e => {
         e.preventDefault();
@@ -47,20 +43,6 @@ class KygoHeroSection extends HTMLElement {
         }
       });
     }
-
-    if (androidBtn) androidBtn.addEventListener('click', e => { e.preventDefault(); modal.classList.add('active'); });
-    if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-    if (modal) modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
-    
-    if (form) form.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = form.querySelector('input').value;
-      if (email) {
-        this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true }));
-        form.innerHTML = '<p class="success-msg">You\'re on the list! 🎉</p>';
-        setTimeout(() => modal.classList.remove('active'), 2000);
-      }
-    });
   }
   render() {
     this.shadowRoot.innerHTML = `
@@ -89,22 +71,6 @@ class KygoHeroSection extends HTMLElement {
         .cta-android{background:transparent;color:var(--gray-600);padding:12px 20px;border-radius:10px;font-weight:500;font-size:14px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;border:1.5px solid #E2E8F0;cursor:pointer;width:100%;max-width:260px}
         .cta-android:hover{border-color:var(--dark);color:var(--dark);background:rgba(0,0,0,0.02)}
         .cta-android svg{width:16px;height:16px}
-        .android-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;visibility:hidden;transition:all .3s}
-        .android-modal.active{opacity:1;visibility:visible}
-        .modal-content{background:white;border-radius:20px;padding:32px;max-width:380px;width:90%;text-align:center;position:relative;transform:scale(0.9);transition:transform .3s}
-        .android-modal.active .modal-content{transform:scale(1)}
-        .modal-close{position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray-400);line-height:1}
-        .modal-close:hover{color:var(--dark)}
-        .modal-icon{width:48px;height:48px;background:linear-gradient(135deg,#3DDC84,#00A36C);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
-        .modal-icon svg{width:28px;height:28px;color:white}
-        .modal-content h3{font-family:'Space Grotesk',sans-serif;font-size:22px;margin-bottom:8px;color:var(--dark)}
-        .modal-content p{color:var(--gray-600);font-size:14px;margin-bottom:20px;line-height:1.5}
-        .android-form{display:flex;flex-direction:column;gap:12px}
-        .android-form input{padding:14px 16px;border:1px solid #E2E8F0;border-radius:10px;font-size:15px;font-family:inherit;outline:none;transition:border-color .2s}
-        .android-form input:focus{border-color:var(--green)}
-        .android-form button{background:var(--green);color:white;border:none;padding:14px;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s}
-        .android-form button:hover{background:var(--green-dark)}
-        .success-msg{color:var(--green);font-weight:600;padding:20px 0}
         .hero-demo{display:flex;flex-direction:column;align-items:center;perspective:1000px}
         .app-demo-container{position:relative;width:100%;max-width:300px}
         .phone-frame{background:var(--dark);border-radius:36px;padding:10px;box-shadow:0 25px 50px rgba(30,41,59,0.3),0 0 0 1px rgba(255,255,255,0.1) inset}
@@ -190,10 +156,10 @@ class KygoHeroSection extends HTMLElement {
                   </a>
                 </div>
                 <p class="risk-reversal"><span>2-min setup</span><span>•</span><span>Free forever plan</span><span>•</span><span>No credit card</span></p>
-                <button class="cta-android" data-track-position="hero">
+                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="hero">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Android Free Beta
-                </button>
+                  Download for Android
+                </a>
               </div>
             </div>
             <div class="hero-demo">
@@ -266,18 +232,6 @@ class KygoHeroSection extends HTMLElement {
           </div>
         </div>
       </section>
-      <div class="android-modal">
-        <div class="modal-content">
-          <button class="modal-close" aria-label="Close dialog">×</button>
-          <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
-          <h3>Android Free Beta Open!</h3>
-          <p>Sign up and we'll send you an email to access the Android beta.</p>
-          <form class="android-form">
-            <input type="email" placeholder="Enter your email" required>
-            <button type="submit">Join Free Beta</button>
-          </form>
-        </div>
-      </div>
     `;
   }
 
@@ -292,7 +246,7 @@ class KygoHeroSection extends HTMLElement {
         'alternateName': 'Kygo — See How Food Affects Your Health',
         'description': 'Kygo Health is an AI-powered nutrition tracking app that correlates what you eat with your sleep, HRV, energy, and recovery using data from Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch. Log meals via photo, voice, barcode, or text and discover personalized food-body correlations after 7 days.',
         'applicationCategory': 'HealthApplication',
-        'operatingSystem': 'iOS',
+        'operatingSystem': 'iOS, Android',
         'url': 'https://www.kygo.app',
         'datePublished': '2025-12-01',
         'dateModified': '2026-03-18',
@@ -1047,7 +1001,7 @@ class KygoFounderCta extends HTMLElement {
     this.render();
     this.setupIntersectionObserver();
     this.setupEvents();
-    __seo(this, 'Download Kygo Health free on iOS. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes. Android waitlist available.');
+    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
   }
   setupIntersectionObserver() {
     const observer = new IntersectionObserver((entries) => {
@@ -1058,22 +1012,7 @@ class KygoFounderCta extends HTMLElement {
     this.shadowRoot.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
   }
   setupEvents() {
-    const androidBtn = this.shadowRoot.querySelector('.cta-android');
-    const modal = this.shadowRoot.querySelector('.android-modal');
-    const closeBtn = this.shadowRoot.querySelector('.modal-close');
-    const form = this.shadowRoot.querySelector('.android-form');
-    if (androidBtn) androidBtn.addEventListener('click', e => { e.preventDefault(); modal.classList.add('active'); });
-    if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-    if (modal) modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
-    if (form) form.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = form.querySelector('input').value;
-      if (email) {
-        this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true }));
-        form.innerHTML = '<p class="success-msg">You\'re on the list! 🎉</p>';
-        setTimeout(() => modal.classList.remove('active'), 2000);
-      }
-    });
+    // No modal events needed — Android is now a direct link
   }
   render() {
     const appStoreUrl = this.getAttribute('app-store-url') || 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
@@ -1118,28 +1057,10 @@ class KygoFounderCta extends HTMLElement {
         .cta-primary svg{width:18px;height:18px}
         .risk-reversal{margin-top:20px;color:rgba(255,255,255,0.7);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:13px}
         .risk-reversal span{display:inline-flex;align-items:center}
-        .android-waitlist{margin-top:32px;padding-top:32px;border-top:1px solid rgba(255,255,255,0.2)}
-        .android-waitlist p{color:rgba(255,255,255,0.7);font-size:14px;margin-bottom:16px}
-        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
+        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent;margin-top:16px}
         .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
         .cta-android:active,.cta-android:focus{background:white;color:var(--green-dark);outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(0,0,0,0.15)}
         .cta-android svg{width:18px;height:18px}
-        .android-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;visibility:hidden;transition:all 0.3s}
-        .android-modal.active{opacity:1;visibility:visible}
-        .modal-content{background:white;border-radius:20px;padding:32px;max-width:380px;width:90%;text-align:center;position:relative;transform:scale(0.9);transition:transform 0.3s}
-        .android-modal.active .modal-content{transform:scale(1)}
-        .modal-close{position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer;color:var(--gray-400);line-height:1}
-        .modal-close:hover{color:var(--dark)}
-        .modal-icon{width:48px;height:48px;background:linear-gradient(135deg,#3DDC84,#00A36C);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
-        .modal-icon svg{width:28px;height:28px;color:white}
-        .modal-content h3{font-family:'Space Grotesk',sans-serif;font-size:22px;margin-bottom:8px;color:var(--dark)}
-        .modal-content>p{color:var(--gray-600);font-size:14px;margin-bottom:20px;line-height:1.5}
-        .android-form{display:flex;flex-direction:column;gap:12px}
-        .android-form input{padding:14px 16px;border:1px solid #E2E8F0;border-radius:10px;font-size:15px;font-family:inherit;outline:none;transition:border-color 0.2s}
-        .android-form input:focus{border-color:var(--green)}
-        .android-form button{background:var(--green);color:white;border:none;padding:14px;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer;transition:background 0.2s;font-family:inherit}
-        .android-form button:hover{background:var(--green-dark)}
-        .success-msg{color:var(--green);font-weight:600;padding:20px 0}
         @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:80px 0}.final-cta-inner{padding:64px 48px}.final-cta h2{font-size:40px}}
       </style>
       <section class="founder-story">
@@ -1179,29 +1100,14 @@ class KygoFounderCta extends HTMLElement {
                 Download Free on iOS
               </a>
               <p class="risk-reversal"><span>Free forever plan</span><span>•</span><span>No credit card required</span><span>•</span><span>Cancel anytime</span></p>
-              <div class="android-waitlist">
-                <p>Android coming soon</p>
-                <button class="cta-android" data-track-position="footer-cta">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Join Android Beta
-                </button>
-              </div>
+              <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                Download for Android
+              </a>
             </div>
           </div>
         </div>
       </section>
-      <div class="android-modal">
-        <div class="modal-content">
-          <button class="modal-close" aria-label="Close dialog">×</button>
-          <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
-          <h3>Android Free Beta Open!</h3>
-          <p>Sign up and we'll send you an email to access the Android beta.</p>
-          <form class="android-form">
-            <input type="email" placeholder="Enter your email" required>
-            <button type="submit">Join Free Beta</button>
-          </form>
-        </div>
-      </div>
     `;
   }
 }

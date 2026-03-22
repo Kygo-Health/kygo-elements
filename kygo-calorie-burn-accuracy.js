@@ -25,8 +25,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     this._calculationResult = null;
     this._expandedAccordion = null;
     this._expandedDeviceCard = null;
-    this._showAndroidModal = false;
-    this._androidEmail = '';
   }
 
   connectedCallback() {
@@ -334,7 +332,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
         .blog-cta-btn:hover { background: var(--green-dark); color: #fff; }
         .blog-cta-btn svg { width: 16px; height: 16px; }
-        .cta-android { display: block; margin: 16px auto 0; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); color: var(--gray-400); padding: 10px 24px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .cta-android { display: block; margin: 16px auto 0; background: transparent; border: 1px solid rgba(255, 255, 255, 0.15); color: var(--gray-400); padding: 10px 24px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; text-decoration: none; }
         .cta-android:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.25); color: #fff; }
         .blog-cta-tags { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
         .blog-cta-tags span { color: var(--gray-400); font-size: 12px; }
@@ -361,22 +359,10 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         .cta-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
         .cta-button-primary { background: var(--green); color: white; padding: 12px 28px; border-radius: var(--radius-sm); font-size: 15px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); display: inline-flex; align-items: center; gap: 8px; }
         .cta-button-primary:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4); }
-        .cta-button-secondary { background: transparent; color: var(--gray-300); padding: 12px 28px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-sm); font-size: 15px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+        .cta-button-secondary { background: transparent; color: var(--gray-300); padding: 12px 28px; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: var(--radius-sm); font-size: 15px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; }
         .cta-button-secondary:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.3); color: white; }
 
         /* ==================== ANDROID MODAL ==================== */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
-        .modal-overlay.show { display: flex; }
-        .modal { background: white; border-radius: var(--radius); padding: 32px 24px; max-width: 420px; width: 100%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); position: relative; }
-        .modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: var(--gray-100); border-radius: 50%; font-size: 20px; color: var(--gray-600); }
-        .modal-close:hover { background: var(--gray-200); color: var(--dark); }
-        .modal h3 { color: var(--dark); margin-bottom: 8px; }
-        .modal p { color: var(--gray-600); margin-bottom: 20px; font-size: 14px; }
-        .modal-form { display: flex; flex-direction: column; gap: 12px; }
-        .modal-input { padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 16px; font-family: inherit; transition: border-color 0.2s; }
-        .modal-input:focus { outline: none; border-color: var(--green); }
-        .modal-submit { background: var(--green); color: white; padding: 12px 24px; border-radius: var(--radius-sm); font-size: 16px; cursor: pointer; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
-        .modal-submit:hover { background: var(--green-dark); }
 
         /* ==================== FOOTER ==================== */
         .footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
@@ -567,7 +553,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
                 <svg viewBox="0 0 24 24" fill="none" width="18" height="18"><path d="M5 12h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 Download for iOS
               </button>
-              <button class="cta-android" data-action="android-beta" data-track-position="article-cta">Android — Join Beta</button>
+              <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="article-cta">Download for Android</a>
               <div class="blog-cta-tags">
                 <span>Works with</span>
                 <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy">
@@ -600,23 +586,11 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
               <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
               Download for iOS
             </button>
-            <button class="cta-button-secondary" data-action="android-beta" data-track-position="footer-cta">Android — Join Beta</button>
+            <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-button-secondary" data-action="android-download" data-track-position="footer-cta">Download for Android</a>
           </div>
         </div>
       </section>
 
-      <!-- ANDROID MODAL -->
-      <div class="modal-overlay" data-section="android-modal">
-        <div class="modal">
-          <button class="modal-close" data-action="close-modal" aria-label="Close dialog">×</button>
-          <h3>Join the Android Beta</h3>
-          <p>Be the first to try Kygo on Android. We'll send you exclusive access and early features.</p>
-          <form class="modal-form" data-form="android-beta">
-            <input type="email" class="modal-input" placeholder="your@email.com" required>
-            <button type="submit" class="modal-submit">Send Me Beta Access</button>
-          </form>
-        </div>
-      </div>
 
       <!-- FOOTER -->
       <footer class="footer">
@@ -885,12 +859,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         const action = target.getAttribute('data-action');
         if (action === 'ios-download') {
           this._openLink('https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589');
-        } else if (action === 'android-beta') {
-          this._showAndroidModal = true;
-          this._updateModalState();
-        } else if (action === 'close-modal') {
-          this._showAndroidModal = false;
-          this._updateModalState();
         } else if (action === 'calculate') {
           this._performCalculation();
         }
@@ -970,29 +938,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       });
     }
 
-    // Android modal form
-    const form = this.shadowRoot.querySelector('[data-form="android-beta"]');
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = form.querySelector('input[type="email"]').value;
-        this.dispatchEvent(new CustomEvent('kygo-android-beta', { detail: { email }, bubbles: true }));
-        this._showAndroidModal = false;
-        this._updateModalState();
-        form.reset();
-      });
-    }
-
-    // Modal overlay click
-    const modal = this.shadowRoot.querySelector('[data-section="android-modal"]');
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          this._showAndroidModal = false;
-          this._updateModalState();
-        }
-      });
-    }
   }
 
   _performCalculation() {
@@ -1054,13 +999,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     const panel = this.shadowRoot.querySelector('[data-section="results"]');
     if (panel) {
       panel.classList.remove('show');
-    }
-  }
-
-  _updateModalState() {
-    const modal = this.shadowRoot.querySelector('[data-section="android-modal"]');
-    if (modal) {
-      modal.classList.toggle('show', this._showAndroidModal);
     }
   }
 
