@@ -1285,10 +1285,10 @@ class KygoSensorComparison extends HTMLElement {
       .highlight { color: var(--green); }
       .blog-cta p { color: var(--gray-300); font-size: 14px; margin-bottom: 20px; }
       .blog-cta-buttons { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; font-weight: 600; padding: 12px 28px; border-radius: var(--radius-sm); font-size: 14px; text-decoration: none; transition: background 0.2s; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); font-size: 15px; text-decoration: none; transition: background 0.2s; }
       .blog-cta-btn:hover { background: var(--green-dark); }
       .blog-cta-btn svg { width: 18px; height: 18px; }
-      .blog-cta-android-btn { display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;font-weight:600;padding:12px 28px;border-radius:var(--radius-sm, 10px);font-size:14px;transition:background 0.2s;text-decoration:none;border:none;cursor:pointer; }
+      .blog-cta-android-btn { display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;font-weight:600;padding:12px 24px;border-radius:var(--radius-sm, 10px);font-size:15px;transition:background 0.2s;text-decoration:none;border:none;cursor:pointer; }
       .blog-cta-android-btn:hover { background:var(--green-dark);color:#fff; }
       .blog-cta-android-btn svg { width: 18px; height: 18px; }
       @media (max-width: 480px) { .blog-cta-buttons { flex-direction: column; align-items: stretch; } .blog-cta-buttons a { justify-content: center; text-align: center; } }
