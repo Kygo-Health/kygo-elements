@@ -7,7 +7,7 @@
  *
  * Events sent to GA4:
  *   - cta_click        (category, label, url, component, position)
- *   - android_signup    (component)
+ *   - android_download  (component via cta_click)
  *   - tool_interaction  (tool_name, action)
  */
 (function () {
@@ -85,11 +85,11 @@
       return { category: 'ios_download', label: getLabel(el), url: href || 'button-redirect' };
     }
 
-    // Android beta signup (opens modal)
-    if (action === 'android-beta' ||
+    // Android download (Google Play via kygo.app/android)
+    if (action === 'android-download' ||
         classList.indexOf('cta-android') !== -1 ||
-        (classList.indexOf('cta-button-secondary') !== -1 && getLabel(el).toLowerCase().indexOf('android') !== -1)) {
-      return { category: 'android_beta', label: getLabel(el) };
+        href.indexOf('kygo.app/android') !== -1) {
+      return { category: 'android_download', label: getLabel(el), url: href || 'button-redirect' };
     }
 
     // "See how it works" / scroll CTA
@@ -166,18 +166,6 @@
       });
     }
   }, true); // capture phase to fire before any stopPropagation
-
-  // Android signup form submission tracking
-  document.addEventListener('android-signup', function (e) {
-    var component = 'unknown';
-    if (e.target && e.target.tagName) {
-      component = e.target.tagName.toLowerCase();
-    }
-    track('android_signup', {
-      component: component,
-      page_path: window.location.pathname
-    });
-  });
 
   // Track page visibility for engagement
   document.addEventListener('visibilitychange', function () {

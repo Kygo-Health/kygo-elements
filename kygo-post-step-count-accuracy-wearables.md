@@ -395,7 +395,7 @@ Oura Ring is excellent for sleep and HRV but should not be relied upon for accur
 For most people, the accuracy differences between Garmin, Apple Watch, and Fitbit are smaller than the error introduced by walking speed and arm swing patterns. Focus on consistent daily tracking rather than absolute step count precision.
 
 
-Ready to see how your activity data connects to your nutrition? [Kygo](https://www.kygo.app) integrates with Oura, Apple Health, Garmin, and Fitbit to help you discover patterns between what you eat and how your body responds. [Download on iOS](https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589) or [join the Android beta](https://www.kygo.app).
+Ready to see how your activity data connects to your nutrition? [Kygo](https://www.kygo.app) integrates with Oura, Apple Health, Garmin, and Fitbit to help you discover patterns between what you eat and how your body responds. [Download on iOS](https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589) or [download on Android](https://kygo.app/android).
 
 
 ---

@@ -155,34 +155,6 @@ class KygoFaqSection extends HTMLElement {
         return;
       }
 
-      // Android modal — delegated so it survives re-renders
-      if (e.target.closest('.cta-android')) {
-        e.preventDefault();
-        shadow.querySelector('.android-modal').classList.add('active');
-        return;
-      }
-      if (e.target.closest('.modal-close')) {
-        shadow.querySelector('.android-modal').classList.remove('active');
-        return;
-      }
-      const _am = shadow.querySelector('.android-modal');
-      if (_am && e.target === _am) {
-        _am.classList.remove('active');
-        return;
-      }
-    });
-
-    // Android form submit — delegated so it survives re-renders
-    shadow.addEventListener('submit', (e) => {
-      if (e.target.closest('.android-form')) {
-        e.preventDefault();
-        const email = e.target.querySelector('input').value;
-        if (email) {
-          this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true }));
-          e.target.innerHTML = '<p class="success-msg">You\'re on the list!</p>';
-          setTimeout(() => shadow.querySelector('.android-modal').classList.remove('active'), 2000);
-        }
-      }
     });
 
     // Search input listener with debouncing
@@ -558,25 +530,9 @@ class KygoFaqSection extends HTMLElement {
         .cta-primary:hover { background: var(--light); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .cta-primary svg { width: 18px; height: 18px; }
         .risk-reversal { margin-top: 20px; color: rgba(255,255,255,0.7); font-size: 13px; display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .cta-android{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.9);border:1.5px solid rgba(255,255,255,0.35);padding:12px 24px;border-radius:10px;font-weight:500;font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;width:100%;max-width:260px;margin-top:12px}
+        .cta-android{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.9);border:1.5px solid rgba(255,255,255,0.35);padding:12px 24px;border-radius:10px;font-weight:500;font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;width:100%;max-width:260px;margin-top:12px;text-decoration:none}
         .cta-android:hover{background:rgba(255,255,255,0.2);border-color:rgba(255,255,255,0.6)}
         .cta-android svg{width:16px;height:16px;flex-shrink:0}
-        .android-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;visibility:hidden;transition:all 0.3s}
-        .android-modal.active{opacity:1;visibility:visible}
-        .modal-content{background:white;border-radius:20px;padding:32px;max-width:380px;width:90%;text-align:center;position:relative;transform:scale(0.9);transition:transform 0.3s}
-        .android-modal.active .modal-content{transform:scale(1)}
-        .modal-close{position:absolute;top:12px;right:12px;background:none;border:none;font-size:24px;cursor:pointer;color:#94a3b8;line-height:1}
-        .modal-close:hover{color:#1e293b}
-        .modal-icon{width:48px;height:48px;background:linear-gradient(135deg,#3DDC84,#00A36C);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
-        .modal-icon svg{width:28px;height:28px;color:white}
-        .modal-content h3{font-family:'Space Grotesk',sans-serif;font-size:22px;margin-bottom:8px;color:#1e293b}
-        .modal-content>p{color:#64748b;font-size:14px;margin-bottom:20px;line-height:1.5}
-        .android-form{display:flex;flex-direction:column;gap:12px}
-        .android-form input{padding:14px 16px;border:1px solid #E2E8F0;border-radius:10px;font-size:15px;font-family:inherit;outline:none;transition:border-color 0.2s}
-        .android-form input:focus{border-color:#22c55e}
-        .android-form button{background:#22c55e;color:white;border:none;padding:14px;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer;transition:background 0.2s;font-family:inherit}
-        .android-form button:hover{background:#16a34a}
-        .success-msg{color:#22c55e;font-weight:600;padding:20px 0}
 
         @media (min-width: 768px) {
           .hero { padding: 80px 0 60px; }
@@ -796,7 +752,7 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>Is Kygo available on Android?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Not yet, but it's coming soon.</strong> We're currently iOS only. You can join our Android waitlist on the homepage to be notified when we launch.</p>
+                  <p><strong>Yes!</strong> Kygo is available on both iOS and Android. You can <a href="https://kygo.app/android" target="_blank" rel="noopener" style="color:var(--green);text-decoration:underline">download it on Google Play</a> or the App Store.</p>
                 </div>
               </div>
             </div>
@@ -928,26 +884,14 @@ class KygoFaqSection extends HTMLElement {
                 <span>•</span>
                 <span>Upgrade anytime</span>
               </p>
-              <button class="cta-android">
+              <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                Android — Join Beta
-              </button>
+                Download for Android
+              </a>
             </div>
           </div>
         </div>
       </section>
-      <div class="android-modal">
-        <div class="modal-content">
-          <button class="modal-close" aria-label="Close dialog">×</button>
-          <div class="modal-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg></div>
-          <h3>Android Free Beta Open!</h3>
-          <p>Sign up and we'll send you an email to access the Android beta.</p>
-          <form class="android-form">
-            <input type="email" placeholder="Enter your email" required>
-            <button type="submit">Join Free Beta</button>
-          </form>
-        </div>
-      </div>
     `;
   }
   // ── Structured Data ───────────────────────────────────────────────────

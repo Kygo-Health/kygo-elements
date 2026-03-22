@@ -849,7 +849,10 @@ class KygoHrvFactors extends HTMLElement {
                 <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                 Download for iOS
               </a>
-              <button class="cta-android" data-track-position="article-cta">Android — Join Beta</button>
+              <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                Download for Android
+              </a>
               <div class="blog-cta-tags">
                 <span>Works with</span>
                 <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
@@ -870,22 +873,6 @@ class KygoHrvFactors extends HTMLElement {
           <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
-
-      <!-- Android Modal -->
-      <div class="android-modal">
-        <div class="modal-content">
-          <button class="modal-close" aria-label="Close dialog">&times;</button>
-          <div class="modal-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="36" height="36"><path d="M17.6 11.48V8a.5.5 0 0 0-1 0v3.48a4 4 0 0 1-2.1.58h-5a4 4 0 0 1-2.1-.58V8a.5.5 0 0 0-1 0v3.48A3.5 3.5 0 0 0 4 15v2.5a.5.5 0 0 0 1 0V15a2.5 2.5 0 0 1 1.4-2.24V16a2 2 0 0 0 2 2h7.2a2 2 0 0 0 2-2v-3.24A2.5 2.5 0 0 1 19 15v2.5a.5.5 0 0 0 1 0V15a3.5 3.5 0 0 0-2.4-3.52zM14.5 5.5a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0z"/></svg>
-          </div>
-          <h3>Android Free Beta Open!</h3>
-          <p>Sign up and we'll send you an email to access the Android beta.</p>
-          <form class="android-form">
-            <input type="email" placeholder="Enter your email" required />
-            <button type="submit">Join Free Beta</button>
-          </form>
-        </div>
-      </div>
 
       <!-- Footer -->
       <footer class="tool-footer">
@@ -1102,23 +1089,8 @@ class KygoHrvFactors extends HTMLElement {
       .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
 
       /* ── Android button (in Blog CTA) ── */
-      .cta-android { margin-top: 16px; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94A3B8; padding: 10px 24px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+      .cta-android { margin-top: 16px; background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #94A3B8; padding: 10px 24px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
       .cta-android:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.25); color: #fff; }
-
-      /* ── Android Modal ── */
-      .android-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-      .android-modal.active { opacity: 1; pointer-events: auto; }
-      .modal-content { background: #fff; border-radius: var(--radius); padding: 32px; max-width: 400px; width: 90%; text-align: center; position: relative; }
-      .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; color: var(--gray-400); cursor: pointer; }
-      .modal-icon { width: 56px; height: 56px; background: var(--green-light); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: var(--green-dark); }
-      .modal-content h3 { font-size: 20px; margin-bottom: 8px; }
-      .modal-content p { font-size: 14px; color: var(--gray-600); margin-bottom: 20px; }
-      .android-form { display: flex; gap: 8px; }
-      .android-form input { flex: 1; padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 14px; outline: none; font-family: inherit; }
-      .android-form input:focus { border-color: var(--green); }
-      .android-form button { background: var(--green); color: #fff; border: none; padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap; font-family: inherit; }
-      .android-form button:hover { background: var(--green-dark); }
-      .success-msg { color: var(--green-dark); font-weight: 600; padding: 12px 0; }
 
       /* ── Footer ── */
       .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
@@ -1201,26 +1173,6 @@ class KygoHrvFactors extends HTMLElement {
         return;
       }
 
-      // Android modal open
-      const androidBtn = e.target.closest('.cta-android');
-      if (androidBtn) {
-        e.preventDefault();
-        shadow.querySelector('.android-modal').classList.add('active');
-        return;
-      }
-
-      // Modal close
-      const modalClose = e.target.closest('.modal-close');
-      if (modalClose) {
-        shadow.querySelector('.android-modal').classList.remove('active');
-        return;
-      }
-
-      // Modal backdrop
-      if (e.target.classList.contains('android-modal')) {
-        e.target.classList.remove('active');
-        return;
-      }
     });
 
     // Sort dropdown
@@ -1230,20 +1182,6 @@ class KygoHrvFactors extends HTMLElement {
         this._updateCategory();
       }
     });
-
-    // Android form submit
-    const form = shadow.querySelector('.android-form');
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = form.querySelector('input').value;
-        if (email) {
-          this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true }));
-          form.innerHTML = '<p class="success-msg">You\'re on the list!</p>';
-          setTimeout(() => shadow.querySelector('.android-modal').classList.remove('active'), 2000);
-        }
-      });
-    }
 
     // Keyboard support
     shadow.addEventListener('keydown', (e) => {

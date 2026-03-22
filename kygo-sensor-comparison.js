@@ -1058,7 +1058,7 @@ class KygoSensorComparison extends HTMLElement {
                 <p>Kygo Health connects your nutrition to your biometrics so you can finally see the full picture.</p>
                 <div class="blog-cta-buttons">
                   <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">Download for iOS</a>
-                  <button class="blog-cta-android-btn" data-track-position="article-cta">Android — Join Beta</button>
+                  <a href="https://kygo.app/android" target="_blank" rel="noopener" class="blog-cta-android-btn" data-action="android-download" data-track-position="article-cta">Download for Android</a>
                 </div>
                 <div class="blog-cta-devices">
                   <span>Works with</span>
@@ -1082,21 +1082,6 @@ class KygoSensorComparison extends HTMLElement {
         </div>
       </section>
 
-      <!-- Android Modal -->
-      <div class="android-modal">
-        <div class="modal-content">
-          <button class="modal-close" aria-label="Close dialog">&times;</button>
-          <div class="modal-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-          </div>
-          <h3>Android Free Beta Open!</h3>
-          <p>Sign up and we'll send you an email to access the Android beta.</p>
-          <form class="android-form">
-            <input type="email" placeholder="Enter your email" required />
-            <button type="submit">Join Free Beta</button>
-          </form>
-        </div>
-      </div>
 
       <!-- Footer -->
       <footer class="tool-footer">
@@ -1296,7 +1281,7 @@ class KygoSensorComparison extends HTMLElement {
       .blog-cta-buttons { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
       .blog-cta-btn { display: inline-block; background: var(--green); color: #fff; font-weight: 600; padding: 12px 28px; border-radius: var(--radius-sm); font-size: 14px; transition: background 0.2s; }
       .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-android-btn { background: none; border: 2px solid rgba(255,255,255,0.4); color: #fff; padding: 10px 24px; border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.2s; }
+      .blog-cta-android-btn { background: none; border: 2px solid rgba(255,255,255,0.4); color: #fff; padding: 10px 24px; border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; font-weight: 500; cursor: pointer; transition: border-color 0.2s; text-decoration: none; }
       .blog-cta-android-btn:hover { border-color: #fff; }
       .blog-cta-devices { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; font-size: 12px; color: var(--gray-400); }
       .blog-cta-devices img { height: 20px; width: auto; opacity: 0.7; }
@@ -1334,23 +1319,6 @@ class KygoSensorComparison extends HTMLElement {
       .src-body li:first-child { border-top: none; }
       .src-body a { color: var(--green-dark); font-size: 13px; display: flex; align-items: center; gap: 6px; }
       .src-body a svg { width: 12px; height: 12px; flex-shrink: 0; }
-
-      /* Android Modal */
-      .android-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.3s; padding: 20px; }
-      .android-modal.active { opacity: 1; visibility: visible; }
-      .modal-content { background: #fff; border-radius: var(--radius); padding: 32px; max-width: 380px; width: 90%; text-align: center; position: relative; color: var(--dark); transform: scale(0.9); transition: transform 0.3s; }
-      .android-modal.active .modal-content { transform: scale(1); }
-      .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 24px; color: var(--gray-400); cursor: pointer; }
-      .modal-icon { width: 48px; height: 48px; margin: 0 auto 16px; color: var(--green); }
-      .modal-icon svg { width: 100%; height: 100%; }
-      .modal-content h3 { font-size: 20px; margin-bottom: 8px; }
-      .modal-content > p { color: var(--gray-600); font-size: 14px; margin-bottom: 16px; }
-      .android-form { display: flex; flex-direction: column; gap: 12px; }
-      .android-form input { padding: 14px 16px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-family: inherit; font-size: 15px; outline: none; transition: border-color 0.2s; }
-      .android-form input:focus { border-color: var(--green); }
-      .android-form button { background: var(--green); color: #fff; border: none; padding: 14px; border-radius: var(--radius-sm); font-family: inherit; font-weight: 600; font-size: 15px; cursor: pointer; transition: background 0.2s; }
-      .android-form button:hover { background: var(--green-dark); }
-      .success-msg { color: var(--green-dark); font-weight: 600; padding: 20px 0; }
 
       /* Footer */
       .tool-footer { padding: 24px 0 16px; text-align: center; border-top: 1px solid var(--gray-200); }
@@ -1425,24 +1393,6 @@ class KygoSensorComparison extends HTMLElement {
           c.classList.toggle('open', c.dataset.source === this._expandedSource);
         });
         return;
-      }
-    });
-
-    // Android modal
-    const _ab = shadow.querySelector('.blog-cta-android-btn');
-    const _am = shadow.querySelector('.android-modal');
-    const _mc = shadow.querySelector('.modal-close');
-    const _af = shadow.querySelector('.android-form');
-    if (_ab) _ab.addEventListener('click', e => { e.preventDefault(); _am.classList.add('active'); });
-    if (_mc) _mc.addEventListener('click', () => _am.classList.remove('active'));
-    if (_am) _am.addEventListener('click', e => { if (e.target === _am) _am.classList.remove('active'); });
-    if (_af) _af.addEventListener('submit', e => {
-      e.preventDefault();
-      const email = _af.querySelector('input').value;
-      if (email) {
-        this.dispatchEvent(new CustomEvent('android-signup', { detail: { email }, bubbles: true, composed: true }));
-        _af.innerHTML = '<p class="success-msg">You\'re on the list!</p>';
-        setTimeout(() => _am.classList.remove('active'), 2000);
       }
     });
 
