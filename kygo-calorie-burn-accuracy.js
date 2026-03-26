@@ -548,9 +548,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <div class="blog-cta-glow"></div>
             <div class="blog-cta-inner">
               <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-              <h3>Track Your <span style="color: var(--green);">Calorie Accuracy</span> Automatically</h3>
+              <h3>Track Your <span style="color: var(--green);">Health Trends</span> Automatically</h3>
               <p class="blog-cta-desc">
-                Kygo syncs with your wearable and corrects for calorie inaccuracies in real-time — giving you data you can trust.
+                Kygo syncs with your wearable and food log to show which habits actually move your health — correlations personalized to your data.
               </p>
               <div class="blog-cta-buttons">
                 <button class="blog-cta-btn" data-action="ios-download" data-track-position="article-cta">
@@ -588,7 +588,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       <section class="cta-section animate-on-scroll">
         <div class="container">
           <h2>Stop Guessing. Start Knowing.</h2>
-          <p>Kygo syncs with your wearable to correct calorie inaccuracies in real-time — so every workout counts. Free on iOS.</p>
+          <p>Kygo syncs with your wearable and food log to track your nutrition and health trends — personalized insights based on your data. Free on iOS.</p>
           <div class="cta-buttons">
             <button class="blog-cta-btn" data-action="ios-download" data-track-position="footer-cta">
               <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
