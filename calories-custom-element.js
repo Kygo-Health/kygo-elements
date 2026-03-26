@@ -891,17 +891,10 @@ class CaloriesInAnything extends HTMLElement {
           box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         .cta-btn-white svg { width: 18px; height: 18px; }
-        .cta-features {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          gap: 10px;
-          margin-top: 20px;
-          font-size: 13px;
-          color: rgba(255,255,255,0.8);
-        }
-        .cta-feature { display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .cta-check { color: white; display: flex; }
+        .highlight { color: var(--green); }
+        .cta-tags { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
+        .cta-tags span { color: rgba(255,255,255,0.7); font-size: 12px; }
+        .cta-tags img { height: 22px; width: auto; opacity: 0.7; }
         .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
         .cta-android{background:white;color:var(--green-dark);padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit}
         .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
@@ -1236,8 +1229,8 @@ class CaloriesInAnything extends HTMLElement {
           <div class="cta-section animate-on-scroll">
             <div class="cta-section-content">
               <div class="cta-icon">${Icons.activity}</div>
-              <h2>Go beyond calories. See cause and effect.</h2>
-              <p>Kygo connects your meals with sleep, HRV, and recovery data from Oura, Fitbit, Garmin & Apple Watch to reveal which foods help you perform best.</p>
+              <h2>Track Your <span class="highlight">Calorie Burn</span> Automatically</h2>
+              <p>Kygo syncs with your wearable and food log to track your nutrition and calorie burn — personalized insights based on your data.</p>
               <div class="cta-buttons">
                 <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn-white" target="_blank">
                   ${Icons.apple}
@@ -1248,10 +1241,12 @@ class CaloriesInAnything extends HTMLElement {
                   Download for Android
                 </a>
               </div>
-              <div class="cta-features">
-                <span class="cta-feature"><span class="cta-check">${Icons.check}</span> Free forever plan</span>
-                <span class="cta-feature"><span class="cta-check">${Icons.check}</span> Syncs with 4+ wearables</span>
-                <span class="cta-feature"><span class="cta-check">${Icons.check}</span> AI food logging</span>
+              <div class="cta-tags">
+                <span>Works with</span>
+                <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
               </div>
             </div>
           </div>
