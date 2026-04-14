@@ -966,7 +966,7 @@ class KygoFaq extends HTMLElement {
             </div>
             <div class="faq-item">
               <div class="faq-question">Which devices do you support?<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
-              <div class="faq-answer"><div class="faq-answer-inner">We integrate with Oura Ring, Apple Health, Fitbit, and Garmin. You can connect one device or multiple—we'll combine the data to fill gaps and give you the most complete picture.</div></div>
+              <div class="faq-answer"><div class="faq-answer-inner">We integrate with Oura Ring, Apple Health, Fitbit, Garmin, and WHOOP. You can connect one device or multiple—we'll combine the data to fill gaps and give you the most complete picture.</div></div>
             </div>
             <div class="faq-item">
               <div class="faq-question">How long until I see correlations?<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
