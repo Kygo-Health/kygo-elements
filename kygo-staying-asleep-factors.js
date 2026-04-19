@@ -604,12 +604,139 @@ class KygoStayingAsleepFactors extends HTMLElement {
   }
 
   render() {
+    const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
+    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
+
     this.shadowRoot.innerHTML = `
-      <style>:host { display:block; font-family: system-ui, -apple-system, sans-serif; padding: 40px 20px; text-align:center; color:#1E293B; }</style>
-      <h1>Staying Asleep Factor Explorer</h1>
-      <p>Coming soon — 31 research-backed factors that affect sleep maintenance (WASO, arousals, fragmentation).</p>
+      <style>${this._styles()}</style>
+
+      <!-- Header -->
+      <header class="header">
+        <div class="header-inner">
+          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
+            Staying Asleep
+          </a>
+          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
+            Get Kygo App ${this._icon('arrowRight')}
+          </a>
+        </div>
+      </header>
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-badge animate-on-scroll">31 FACTORS • 5 CATEGORIES • ALL PEER-REVIEWED</div>
+          <h1 class="animate-on-scroll">What Actually Keeps You Asleep Through the Night?</h1>
+          <p class="hero-sub animate-on-scroll">Every nutrition choice, supplement, habit, and environmental variable with proven impact on staying asleep — ranked by evidence strength and direction of effect. Focused on WASO, arousals, and sleep fragmentation. No guessing, just data.</p>
+        </div>
+      </section>
+
+      <!-- Top Picks -->
+      <section class="picks-section">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Quick Answers</h2>
+          <p class="section-sub animate-on-scroll">The top research-backed picks for staying asleep across every category.</p>
+          <div class="picks-grid">${this._renderTopPicks()}</div>
+        </div>
+      </section>
+
+      <!-- Primary Interactive: Category tabs + Factor cards -->
+      <section class="explore-section" id="explore">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Explore All Factors</h2>
+          <p class="section-sub animate-on-scroll">Tap any factor to see the key finding, mechanism, dosage, and source.</p>
+
+          <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
+          <div class="sort-bar animate-on-scroll">
+            <label class="sort-label" for="sort-select">Sort by:</label>
+            <select class="sort-select" id="sort-select">
+              <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
+              <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
+              <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
+            </select>
+          </div>
+          <div class="factor-cards">${this._renderFactorCards()}</div>
+
+          <!-- Read Full Article (cross-link) -->
+          <div class="blog-link-wrap animate-on-scroll">
+            <a href="https://www.kygo.app/post/how-to-stay-asleep-factors-ranked-by-evidence" class="blog-link-card" target="_blank" rel="noopener">
+              <span class="blog-link-icon"><img src="${logoUrl}" alt="Kygo" style="width:24px;height:24px;" /></span>
+              <div class="blog-link-text">
+                <span class="blog-link-title">Read the Full Article</span>
+                <span class="blog-link-desc">How to Stay Asleep: 31 Factors Ranked by Evidence (2026)</span>
+              </div>
+              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Blog CTA -->
+      <section class="blog-cta-section">
+        <div class="container">
+          <div class="blog-cta animate-on-scroll">
+            <div class="blog-cta-glow"></div>
+            <div class="blog-cta-content">
+              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
+              <h2>Find Out What's Waking You Up <span class="highlight">at Night</span></h2>
+              <p>Kygo Health connects your wearable data with nutrition tracking to pinpoint personal correlations between what you eat, how you move, and how well you stay asleep.</p>
+              <div class="blog-cta-buttons">
+                <a href="${iosUrl}" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                  Download for iOS
+                </a>
+                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                  Download for Android
+                </a>
+              </div>
+              <div class="blog-cta-tags">
+                <span>Works with</span>
+                <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sources -->
+      <section class="sources-section">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Sources</h2>
+          <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
+          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="tool-footer">
+        <div class="container">
+          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
+            Kygo Health
+          </a>
+          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
+          <div class="footer-links">
+            <a href="https://kygo.app">Home</a>
+            <a href="https://kygo.app/how-it-works">How It Works</a>
+            <a href="https://kygo.app/blog">Blog</a>
+            <a href="https://kygo.app/contact">Contact</a>
+            <a href="https://kygo.app/privacy">Privacy</a>
+            <a href="https://kygo.app/terms">Terms</a>
+          </div>
+          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
+          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated April 2026.</p>
+          <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
+        </div>
+      </footer>
     `;
   }
+
+  _styles() { return ''; }
 }
 
 if (!customElements.get('kygo-staying-asleep-factors')) {
