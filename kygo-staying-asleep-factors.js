@@ -423,6 +423,127 @@ class KygoStayingAsleepFactors extends HTMLElement {
     return map[ev] || map.moderate;
   }
 
+  _renderCategoryTabs() {
+    return Object.entries(this._categories).map(([k, c]) =>
+      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab" aria-selected="${k === this._activeCategory}">
+        <span class="cat-tab-icon">${this._icon(c.icon)}</span>
+        <span>${c.name}</span>
+        <span class="cat-tab-count">${c.count}</span>
+      </button>`
+    ).join('');
+  }
+
+  _renderFactorCards() {
+    let factors = this._factors[this._activeCategory];
+    if (!factors) return '<p class="no-data">No factors in this category.</p>';
+    if (this._sortMode === 'evidence') {
+      const rank = { strong: 0, moderate: 1, limited: 2, weak: 3 };
+      factors = [...factors].sort((a, b) => (rank[a.evidence] ?? 9) - (rank[b.evidence] ?? 9));
+    } else if (this._sortMode === 'direction') {
+      const rank = { positive: 0, mixed: 1, variable: 2, negative: 3 };
+      factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
+    }
+    return factors.map((f, i) => {
+      const dir = this._directionConfig(f.direction);
+      const ev = this._evidenceConfig(f.evidence);
+      const isExpanded = this._expandedFactor === f.key;
+      return `
+        <div class="factor-card ${isExpanded ? 'expanded' : ''}" data-factor="${f.key}" style="--delay:${i * 60}ms">
+          <div class="factor-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
+            <div class="factor-top">
+              <div class="factor-badges">
+                <span class="badge-direction" style="color:${dir.color};background:${dir.bg}">
+                  <span class="badge-icon">${this._icon(dir.icon)}</span>${dir.label}
+                </span>
+              </div>
+              <div class="factor-toggle">${this._icon('chevDown')}</div>
+            </div>
+            <h3 class="factor-name">${f.name}</h3>
+            <p class="factor-effect">${f.effect}</p>
+            <p class="factor-evidence-text"><span class="evidence-label">Evidence:</span> <span style="color:${ev.color};font-weight:600">${ev.label}</span></p>
+          </div>
+          <div class="factor-body">
+            <div class="factor-detail">
+              <div class="detail-row">
+                <span class="detail-label">Plain English</span>
+                <p class="detail-value">${f.whatThisMeans}</p>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Key Finding</span>
+                <p class="detail-value">${f.keyFinding}</p>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Mechanism</span>
+                <p class="detail-value">${f.mechanism}</p>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Dosage / Context</span>
+                <p class="detail-value">${f.dosage}</p>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Source</span>
+                <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  _renderTopPicks() {
+    return this._topPicks.map((p, i) => {
+      const isExpanded = this._expandedTopPick === i;
+      const warn = p.warning ? ' pick-warning' : '';
+      return `
+        <div class="pick-card ${isExpanded ? 'expanded' : ''}${warn} animate-on-scroll" data-pick="${i}" style="--delay:${i * 80}ms">
+          <div class="pick-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
+            <div class="pick-icon">${this._icon(p.icon)}</div>
+            <div class="pick-info">
+              <span class="pick-label">${p.label}</span>
+              <span class="pick-answer">${p.answer}</span>
+            </div>
+            <div class="pick-toggle">${this._icon('chevDown')}</div>
+          </div>
+          <div class="pick-body">
+            ${p.stat ? `<p class="pick-stat-detail"><span class="pick-stat-label">Key stat:</span> ${p.stat}</p>` : ''}
+            <p class="pick-note">${p.note}</p>
+            <span class="pick-cat">Category: ${p.category}</span>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  _updateCategory() {
+    const shadow = this.shadowRoot;
+    const tabs = shadow.querySelector('.cat-tabs');
+    const cards = shadow.querySelector('.factor-cards');
+    this._expandedFactor = null;
+    if (tabs) tabs.innerHTML = this._renderCategoryTabs();
+    if (cards) cards.innerHTML = this._renderFactorCards();
+  }
+
+  _toggleFactor(key) {
+    this._expandedFactor = this._expandedFactor === key ? null : key;
+    const shadow = this.shadowRoot;
+    shadow.querySelectorAll('.factor-card').forEach(card => {
+      const isExp = card.dataset.factor === this._expandedFactor;
+      card.classList.toggle('expanded', isExp);
+      const btn = card.querySelector('.factor-header');
+      if (btn) btn.setAttribute('aria-expanded', isExp);
+    });
+  }
+
+  _toggleTopPick(idx) {
+    this._expandedTopPick = this._expandedTopPick === idx ? null : idx;
+    const shadow = this.shadowRoot;
+    shadow.querySelectorAll('.pick-card').forEach(card => {
+      const isExp = parseInt(card.dataset.pick) === this._expandedTopPick;
+      card.classList.toggle('expanded', isExp);
+      const btn = card.querySelector('.pick-header');
+      if (btn) btn.setAttribute('aria-expanded', isExp);
+    });
+  }
+
   render() {
     this.shadowRoot.innerHTML = `
       <style>:host { display:block; font-family: system-ui, -apple-system, sans-serif; padding: 40px 20px; text-align:center; color:#1E293B; }</style>
