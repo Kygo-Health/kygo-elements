@@ -276,8 +276,151 @@ class KygoStayingAsleepFactors extends HTMLElement {
           dosage: 'Medium-firm mattress; replace every 7–10 years',
           source: { url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222', label: 'Hu et al. 2025 PSG study' }
         }
+      ],
+      physiology: [
+        {
+          key: 'aging', name: 'Aging (30–60+)',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (+10 min WASO/decade)',
+          keyFinding: 'Meta-analysis of 65 studies, n=3,577 (Ohayon 2004)',
+          whatThisMeans: 'The definitive reference on normal sleep architecture. WASO increases roughly 10 minutes per decade between age 30 and 60, then plateaus. Expected, not pathological — but it compounds with other age-related changes like lighter sleep and more frequent bathroom trips.',
+          mechanism: 'Reduced SCN amplitude, blunted nocturnal melatonin, and thinner cortical sleep architecture all increase spontaneous arousals.',
+          dosage: 'Non-modifiable; offset with morning light, exercise, sleep hygiene',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/', label: 'Ohayon et al. 2004 meta-analysis' }
+        },
+        {
+          key: 'female-sex', name: 'Female Sex (Subjective–Objective Paradox)',
+          direction: 'variable', evidence: 'strong',
+          effect: 'More complaints, better PSG',
+          keyFinding: 'Ohayon 2004: women sleep better objectively, report worse subjectively',
+          whatThisMeans: 'A well-documented paradox: women report more sleep complaints across every age group, yet show objectively better sleep continuity on polysomnography than men. Hormonal cycles, perimenopause, and insomnia prevalence likely explain the subjective side.',
+          mechanism: 'Hormonal fluctuations (menstrual, perimenopausal) drive perceived sleep disruption; baseline sleep architecture remains objectively stronger than age-matched men.',
+          dosage: 'Non-modifiable; address specific drivers (hormonal, hot flashes, anxiety)',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/', label: 'Ohayon et al. 2004 meta-analysis' }
+        },
+        {
+          key: 'menopause', name: 'Menopausal Hot Flashes',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (69% hot flashes → wake)',
+          keyFinding: 'PSG + GnRH model, n=29 (Joffe 2013)',
+          whatThisMeans: 'A controlled GnRH-agonist model with polysomnography found 69% of women developed vasomotor symptoms, and each additional nighttime hot flash increased WASO by 62% (P=0.007). Hot flashes accounted for about 27% of total WASO. HRT, cooling strategies, and CBT-I all help.',
+          mechanism: 'Vasomotor episodes produce abrupt heat surges that directly trigger awakening; autonomic destabilization keeps sleep light between episodes.',
+          dosage: 'HRT, cooling bedroom, moisture-wicking bedding; CBT-I adjunct',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/24293774/', label: 'Joffe et al. 2013 PSG study' }
+        },
+        {
+          key: 'obesity', name: 'Obesity (BMI ≥30)',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (↑ WASO)',
+          keyFinding: 'Sleep Heart Health Study, n=5,723 PSG (Zhao 2021)',
+          whatThisMeans: 'A large PSG-based cohort found WASO was independently associated with obesity after full adjustment (OR 1.003 per minute, P=0.007). Cross-sectional — so directionality is uncertain — but the link is well-established and bi-directional with sleep apnea.',
+          mechanism: 'Upper-airway loading (even without OSA), increased inflammation, and altered thermoregulation all raise overnight arousals.',
+          dosage: 'Weight management; screen for OSA if BMI ≥30',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/34196121/', label: 'Zhao et al. 2021 SHHS' }
+        },
+        {
+          key: 'shift-work', name: 'Shift Work',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (↑ WASO, ↓ efficiency)',
+          keyFinding: 'Narrative review of SWSD patients (Wickwire 2017)',
+          whatThisMeans: 'Shift workers — especially those with diagnosable shift work sleep disorder — show more fragmented daytime sleep, higher WASO, and lower efficiency. The mismatch between sleep time and circadian phase is the core issue.',
+          mechanism: 'Daytime sleep attempts fight the circadian alerting signal; light, noise, and social obligations interrupt the rest window.',
+          dosage: 'Strategic light, blackout sleep environment, timed melatonin, naps',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/28012806/', label: 'Wickwire et al. 2017 Chest review' }
+        },
+        {
+          key: 'nocturia', name: 'Nocturia (≥2 episodes/night)',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (+34 min WASO)',
+          keyFinding: 'SOF study, n=1,520 actigraphy (Fung 2017)',
+          whatThisMeans: 'One of the most impactful real-world WASO drivers and commonly overlooked. WASO climbed from 55.5 min (0 episodes) to 89.8 min (3–4 episodes) — a 34-minute swing. Nocturia frequency explained 6% additional variance in WASO beyond all other factors.',
+          mechanism: 'Each bathroom trip is a full arousal plus ambient light exposure plus cold sheets on return — compounding sleep fragmentation.',
+          dosage: 'Limit evening fluids; rule out BPH, overactive bladder, OSA-driven ANP',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/28914959/', label: 'Fung et al. 2017 SOF study' }
+        },
+        {
+          key: 'osa', name: 'Obstructive Sleep Apnea',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (↑ WASO, ↑ arousals with severity)',
+          keyFinding: 'Comprehensive review, PSG data (Patel 2019)',
+          whatThisMeans: 'Among the most well-established causes of sleep fragmentation in medicine. Every obstructive breathing event triggers an arousal — by definition. WASO and arousal index scale directly with apnea-hypopnea index. Diagnosis and treatment (CPAP, oral appliance) produce large WASO reductions.',
+          mechanism: 'Repeated airway collapse triggers cortical arousal to restore airway patency; each event fragments NREM and prevents consolidated sleep.',
+          dosage: 'Screen with home sleep test if suspected; treat with CPAP or oral appliance',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8340897/', label: 'Patel 2019 Annals IM review' }
+        },
+        {
+          key: 'chronic-pain', name: 'Chronic Pain',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (large effect)',
+          keyFinding: 'Meta-analysis of 37 studies, PSG (Mathias 2018)',
+          whatThisMeans: 'PSG-measured WASO roughly doubles in people with chronic pain versus healthy controls across 37 studies. Pain directly interrupts sleep, and the resulting fatigue lowers pain tolerance the next day — a vicious cycle that CBT-I and pain-focused therapy can both break.',
+          mechanism: 'Nociceptive input continues through sleep, producing repeated arousals; central sensitization amplifies even minor stimuli into full awakenings.',
+          dosage: 'Treat underlying pain; CBT-I improves both pain and sleep outcomes',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/30314881/', label: 'Mathias et al. 2018 meta-analysis' }
+        },
+        {
+          key: 'stress', name: 'Psychological Stress',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (↑ WASO via cortisol)',
+          keyFinding: '24-hr cortisol + PSG, n=24 (Vgontzas 2001)',
+          whatThisMeans: "The foundational paper for the 'hyperarousal' model of sleep-maintenance insomnia. Chronic insomnia patients showed elevated 24-hour cortisol — particularly pre-sleep and during the first half of the night — directly fragmenting sleep. Stress hormones are a real, measurable WASO driver.",
+          mechanism: 'HPA axis activation elevates cortisol and sympathetic tone, which lowers arousal threshold and produces spontaneous mid-night awakenings.',
+          dosage: 'CBT-I, mindfulness, cognitive restructuring; address chronic stressors',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/11502812/', label: 'Vgontzas et al. 2001' }
+        }
       ]
     };
+  }
+
+  get _topPicks() {
+    return [
+      { icon: 'moon',     label: 'Best Single Habit',        answer: 'Cool, dark, quiet bedroom',      note: 'Temperature, light, and noise have the strongest environmental evidence for staying asleep — all three matter every single night',                       stat: 'Fundamentals',        category: 'Environment' },
+      { icon: 'dumbbell', label: 'Best Exercise',            answer: 'Moderate aerobic exercise',      note: 'Meta-analysis of RCTs in insomnia patients: MD = −10.16 min WASO, p < .001 (Riedel 2024)',                                                                   stat: '−10 min WASO',        category: 'Exercise' },
+      { icon: 'pill',     label: 'Best Supplement',          answer: 'Ashwagandha (600 mg/day)',       note: 'Meta-analysis of 3 WASO trials, n=281 — SMD −0.39. The only supplement with direct pooled WASO evidence (Cheah 2021)',                                        stat: 'SMD −0.39',           category: 'Supplements' },
+      { icon: 'wind',     label: 'Most Overlooked Fix',      answer: 'Fix nighttime bathroom trips',   note: '3–4 nocturia episodes added 34 min to WASO in the SOF study (n=1,520). Limit evening fluids; rule out BPH, overactive bladder, OSA-driven ANP',              stat: '+34 min WASO',        category: 'Demographics' },
+      { icon: 'brain',    label: 'Quickest Impact',          answer: 'Kill dim bedroom light',         note: 'Even a nightlight-level 5–10 lux measurably increased WASO on PSG (Cho 2016). Blackout your bedroom tonight',                                                  stat: 'Immediate',           category: 'Environment' },
+      { icon: 'alert',    label: 'Biggest WASO Driver',      answer: 'Caffeine',                       note: 'Meta-analysis of 24 studies: +12 min WASO on top of longer sleep onset. Slow metabolizers are hit hardest (Gardiner 2023)',                                    stat: '+12 min WASO',        category: 'Nutrition', warning: true }
+    ];
+  }
+
+  _icon(name) {
+    const icons = {
+      salad: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10"/><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"/><path d="M11.38 12a2.4 2.4 0 0 1-.4-4.77 2.4 2.4 0 0 1 3.2-2.77 2.4 2.4 0 0 1 3.47-.63 2.4 2.4 0 0 1 3.37 3.37 2.4 2.4 0 0 1-1.1 3.7 2.51 2.51 0 0 1 .03 1.1"/><path d="m13 12 4-4"/><path d="M10.9 7.25A3.99 3.99 0 0 0 4 10c0 .73.2 1.41.54 2"/></svg>',
+      pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 1.5 3 3L5.3 12.7a4.24 4.24 0 0 1-6-6L7.5 4.5l3-3z"/><path d="m9 9 6.4-6.4a4.24 4.24 0 0 1 6 6L15 15"/><line x1="14.5" y1="13.5" x2="10.5" y2="9.5"/></svg>',
+      dumbbell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>',
+      moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+      users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+      brain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A5.5 5.5 0 0 0 4 7.5c0 1.28.44 2.46 1.17 3.39A5.49 5.49 0 0 0 4 14.5 5.5 5.5 0 0 0 9.5 20h0a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 9.5 2z"/><path d="M14.5 2A5.5 5.5 0 0 1 20 7.5c0 1.28-.44 2.46-1.17 3.39A5.49 5.49 0 0 1 20 14.5 5.5 5.5 0 0 1 14.5 20h0a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 14.5 2z"/></svg>',
+      wind: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>',
+      alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      chevDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>',
+      arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+      externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+      arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>',
+      arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
+      arrowLeftRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>'
+    };
+    return icons[name] || icons.moon;
+  }
+
+  _directionConfig(dir) {
+    const map = {
+      positive: { icon: 'arrowUp', label: 'Positive', color: '#22C55E', bg: 'rgba(34,197,94,0.1)' },
+      negative: { icon: 'arrowDown', label: 'Negative', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' },
+      mixed: { icon: 'arrowLeftRight', label: 'Mixed', color: '#FBBF24', bg: 'rgba(251,191,36,0.1)' },
+      variable: { icon: 'arrowLeftRight', label: 'Variable', color: '#94A3B8', bg: 'rgba(148,163,184,0.1)' }
+    };
+    return map[dir] || map.mixed;
+  }
+
+  _evidenceConfig(ev) {
+    const map = {
+      strong: { label: 'Strong', color: '#16A34A', bg: 'rgba(34,197,94,0.15)' },
+      moderate: { label: 'Moderate', color: '#D97706', bg: 'rgba(251,191,36,0.15)' },
+      limited: { label: 'Limited', color: '#6366F1', bg: 'rgba(99,102,241,0.15)' },
+      weak: { label: 'Weak', color: '#94A3B8', bg: 'rgba(148,163,184,0.15)' }
+    };
+    return map[ev] || map.moderate;
   }
 
   render() {
