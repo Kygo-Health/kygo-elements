@@ -172,6 +172,110 @@ class KygoStayingAsleepFactors extends HTMLElement {
           dosage: 'Not recommended as first-line for WASO',
           source: { url: 'https://journals.sagepub.com/doi/10.1177/2515690X20967323', label: 'Shinjyo et al. 2020 meta-analysis' }
         }
+      ],
+      exercise: [
+        {
+          key: 'moderate-aerobic', name: 'Moderate Aerobic Exercise',
+          direction: 'positive', evidence: 'strong',
+          effect: 'Positive (−10 min WASO)',
+          keyFinding: 'Meta-analysis of RCTs in insomnia patients (Riedel 2024)',
+          whatThisMeans: 'The strongest exercise evidence for sleep maintenance. A 2024 meta-analysis of RCTs in insomnia patients found regular moderate aerobic exercise cut WASO by about 10 minutes (MD = −10.16, p < .001). Reliable, well-tolerated, and works alongside other interventions.',
+          mechanism: 'Raises daytime energy expenditure, deepens homeostatic sleep pressure, lowers cortisol, and strengthens circadian amplitude.',
+          dosage: '150+ min/week moderate intensity, consistent schedule',
+          source: { url: 'https://www.sciencedirect.com/science/article/pii/S1087079224000522', label: 'Riedel et al. 2024 meta-analysis' }
+        },
+        {
+          key: 'resistance-training', name: 'Resistance Training',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (↓ disturbance, ↑ efficiency)',
+          keyFinding: 'Systematic review of 13 studies, n=652 (Kovacevic 2018)',
+          whatThisMeans: 'Strength training improved mid-sleep disturbance and sleep efficiency across 13 studies. WASO was not pooled specifically, but individual RCTs showed reductions. Works on its own and stacks well with cardio.',
+          mechanism: 'Elevated growth hormone and muscle-recovery demands deepen slow-wave sleep; reduced anxiety and stable glucose lower overnight arousals.',
+          dosage: '2–3 sessions per week, progressive overload',
+          source: { url: 'https://www.sciencedirect.com/science/article/abs/pii/S1087079216301526', label: 'Kovacevic et al. 2018 review' }
+        },
+        {
+          key: 'yoga', name: 'Yoga',
+          direction: 'positive', evidence: 'limited',
+          effect: 'Positive (−56 min WASO, likely inflated)',
+          keyFinding: 'Network meta-analysis of 22 RCTs, n=1,348 (Bu 2025)',
+          whatThisMeans: 'Yoga showed the largest raw WASO reduction in the 2025 network meta-analysis — about 56 minutes in insomnia patients. Flagged as low-certainty because of small samples and heterogeneity, so the effect size is likely inflated. Still worth trying given the low downside.',
+          mechanism: 'Pranayama breathing reduces sympathetic tone; gentle physical load supports circadian amplitude; mindfulness reduces rumination-driven arousals.',
+          dosage: 'Regular practice; 3+ sessions per week',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/40664502/', label: 'Bu et al. 2025 network meta-analysis' }
+        },
+        {
+          key: 'evening-moderate', name: 'Moderate Evening Exercise',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (↓ WASO)',
+          keyFinding: 'Narrative review of 34 studies (Dolezal 2017)',
+          whatThisMeans: "Moderate-intensity evening exercise reduced WASO across a broad review — contrary to the old 'never train at night' advice. Only vigorous, close-to-bedtime sessions carry risk; ordinary evening workouts help you stay asleep.",
+          mechanism: 'Moderate post-exercise cooling and parasympathetic rebound support the overnight core-temperature drop and reduced sympathetic tone needed for consolidated sleep.',
+          dosage: 'Moderate intensity, finish 1.5+ hrs before bed',
+          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1155/2017/1364387', label: 'Dolezal et al. 2017 review' }
+        },
+        {
+          key: 'vigorous-late', name: 'Vigorous Exercise ≤1 hr Pre-Bed',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (+21.9 min WASO)',
+          keyFinding: 'Meta-analysis of 23 studies (Stutz 2019)',
+          whatThisMeans: 'Vigorous training that ends within an hour of bedtime measurably fragments sleep — particularly when intensity exceeds your usual level (b = +21.9 min WASO, p = 0.044). Any exercise during the day is fine; just keep the hardest effort away from bedtime.',
+          mechanism: 'Sympathetic activation, catecholamine surge, and elevated core temperature oppose the physiological drop needed to stay in consolidated sleep.',
+          dosage: 'Avoid high-intensity exercise in the hour before bed',
+          source: { url: 'https://link.springer.com/article/10.1007/s40279-018-1015-0', label: 'Stutz et al. 2019 meta-analysis' }
+        }
+      ],
+      environment: [
+        {
+          key: 'bedroom-temp', name: 'Bedroom Temp (20–25°C)',
+          direction: 'positive', evidence: 'strong',
+          effect: 'Positive at optimal range',
+          keyFinding: 'Multiple PSG-measured studies; 20–25°C optimal',
+          whatThisMeans: 'Both too-hot and too-cold bedrooms measurably increase WASO. The 20–25°C (68–77°F) range is consistently supported; most sleep research points to the cooler end. Individual preference varies.',
+          mechanism: 'Ambient temperature outside the thermoneutral zone prevents the core-to-skin heat transfer that maintains deep sleep, producing mid-night arousals.',
+          dosage: 'Aim for 18–22°C (65–72°F); layer bedding to fine-tune',
+          source: { url: 'https://onlinelibrary.wiley.com/doi/full/10.1002/2475-8876.12187', label: 'Akiyama 2021 thermal environment study' }
+        },
+        {
+          key: 'light-at-night', name: 'Light at Night (even dim)',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (↑ WASO)',
+          keyFinding: 'PSG study, n=23, 5–10 lux (Cho 2016)',
+          whatThisMeans: "Even dim light during sleep — roughly a nightlight at 5–10 lux — significantly increased WASO and shallow REM on polysomnography. You don't have to be looking at a screen; ambient bedroom light is enough to fragment sleep.",
+          mechanism: 'Melanopsin-containing retinal ganglion cells detect light through the eyelids, suppressing melatonin and raising cortical arousal.',
+          dosage: 'Bedroom as dark as possible; cover electronics, use blackout',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/', label: 'Cho et al. 2016 PSG study' }
+        },
+        {
+          key: 'noise', name: 'Noise (>50 dBA)',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (+30 min WASO)',
+          keyFinding: 'WHO systematic review of 74 studies (Basner 2018)',
+          whatThisMeans: 'The most comprehensive environmental sleep review to date. Nighttime noise above 50 dBA added roughly 30 minutes of WASO in the reviewed field studies. Traffic, aircraft, and intermittent neighborhood noise all show dose-response effects.',
+          mechanism: 'Auditory cortex activation and autonomic arousal interrupt NREM stages; even sub-conscious arousals fragment sleep architecture.',
+          dosage: 'Keep bedroom <30 dB; use masking (white/pink noise) or earplugs',
+          source: { url: 'https://www.mdpi.com/1660-4601/15/3/519', label: 'Basner et al. 2018 WHO review' }
+        },
+        {
+          key: 'co2-ventilation', name: 'CO₂ >1000 ppm (Poor Ventilation)',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (+5 min wake)',
+          keyFinding: 'Field-lab, n=36, 3 ventilation levels (Kang 2024)',
+          whatThisMeans: 'A well-designed balanced crossover study found even moderate CO₂ buildup (~1,000 ppm) added measurable wake time during the night. A stuffy, poorly ventilated bedroom is a real and often-overlooked WASO driver.',
+          mechanism: 'Elevated CO₂ increases ventilatory drive, sympathetic tone, and micro-arousals; reduced O₂ saturation compounds the effect.',
+          dosage: 'Crack a window or use mechanical ventilation; aim <800 ppm',
+          source: { url: 'https://www.sciencedirect.com/science/article/pii/S0360132323011459', label: 'Kang et al. 2024' }
+        },
+        {
+          key: 'mattress', name: 'Mattress (Medium-Firm)',
+          direction: 'positive', evidence: 'limited',
+          effect: 'Positive (most consistent WASO)',
+          keyFinding: 'PSG study, n=12, 3 firmness levels (Hu 2025)',
+          whatThisMeans: 'A small polysomnography study found a medium-firm mattress produced the most stable sleep and lowest WASO across three firmness levels. Very small sample, but the direction is consistent with broader ergonomic data.',
+          mechanism: 'Appropriate spinal support reduces micro-movements and pressure-point arousals that fragment sleep across the night.',
+          dosage: 'Medium-firm mattress; replace every 7–10 years',
+          source: { url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222', label: 'Hu et al. 2025 PSG study' }
+        }
       ]
     };
   }
