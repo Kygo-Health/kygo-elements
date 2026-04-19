@@ -544,6 +544,65 @@ class KygoStayingAsleepFactors extends HTMLElement {
     });
   }
 
+  _renderSources() {
+    const groups = {
+      'Nutrition & Substances': [
+        { label: 'St-Onge et al. 2016 — Fiber, saturated fat & sleep arousals (J Clin Sleep Med)', url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384' },
+        { label: 'Gardiner et al. 2023 — Caffeine & WASO meta-analysis (24 studies)', url: 'https://www.sciencedirect.com/science/article/pii/S1087079223000205' },
+        { label: 'Spadola et al. 2019 — Evening alcohol & sleep fragmentation (Jackson Heart Study, n=785)', url: 'https://academic.oup.com/sleep/article/42/11/zsz136/5535848' },
+        { label: 'Crispim et al. 2022 — Bedtime eating & WASO (British J Nutrition)', url: 'https://www.cambridge.org/core/journals/british-journal-of-nutrition/article/associations-between-bedtime-eating-or-drinking-sleep-duration-and-wake-after-sleep-onset-findings-from-the-american-time-use-survey/72A5D22C25A35FA975A5B50991431E0C' },
+        { label: 'Pigeon et al. 2010 — Tart cherry juice & WASO pilot RCT', url: 'https://journals.sagepub.com/doi/full/10.1089/jmf.2009.0096' }
+      ],
+      'Supplements': [
+        { label: 'Menczel Schrire et al. 2022 — Melatonergic agents meta-analysis (Neuropsychopharmacology)', url: 'https://www.nature.com/articles/s41386-022-01278-5' },
+        { label: 'Cheah et al. 2021 — Ashwagandha & sleep meta-analysis (5 RCTs, n=400)', url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843' },
+        { label: 'Yamadera et al. 2007 — Glycine 3 g & PSG sleep-quality study', url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x' },
+        { label: 'Abbasi et al. 2012 — Magnesium & insomnia in elderly RCT', url: 'https://pubmed.ncbi.nlm.nih.gov/23853635/' },
+        { label: '2025 Systematic Review — L-theanine & sleep dietary trials (Nutritional Neuroscience)', url: 'https://www.tandfonline.com/doi/full/10.1080/1028415X.2025.2556925' },
+        { label: 'Shinjyo et al. 2020 — Valerian root & sleep meta-analysis (60 studies)', url: 'https://journals.sagepub.com/doi/10.1177/2515690X20967323' }
+      ],
+      'Exercise & Movement': [
+        { label: 'Riedel et al. 2024 — Exercise & insomnia meta-analysis (−10.16 min WASO)', url: 'https://www.sciencedirect.com/science/article/pii/S1087079224000522' },
+        { label: 'Kovacevic et al. 2018 — Resistance exercise & sleep review (13 studies)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S1087079216301526' },
+        { label: 'Bu et al. 2025 — Exercise interventions in insomnia network meta-analysis (22 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/40664502/' },
+        { label: 'Dolezal et al. 2017 — Sleep & exercise interrelationship review', url: 'https://onlinelibrary.wiley.com/doi/10.1155/2017/1364387' },
+        { label: 'Stutz et al. 2019 — Evening exercise & sleep meta-analysis (Sports Med)', url: 'https://link.springer.com/article/10.1007/s40279-018-1015-0' }
+      ],
+      'Environment & Sleep Hygiene': [
+        { label: 'Akiyama 2021 — Thermal environment & sleep quality in actual bedrooms', url: 'https://onlinelibrary.wiley.com/doi/full/10.1002/2475-8876.12187' },
+        { label: 'Cho et al. 2016 — Dim light at night & REM/awakenings (Chronobiology Int)', url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/' },
+        { label: 'Basner et al. 2018 — WHO environmental noise & sleep review (74 studies)', url: 'https://www.mdpi.com/1660-4601/15/3/519' },
+        { label: 'Kang et al. 2024 — CO₂ concentration & sleep (Building & Environment)', url: 'https://www.sciencedirect.com/science/article/pii/S0360132323011459' },
+        { label: 'Hu et al. 2025 — Mattress firmness & sleep architecture (PSG)', url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222' }
+      ],
+      'Demographics & Physiology': [
+        { label: 'Ohayon et al. 2004 — Normative sleep parameters meta-analysis (65 studies)', url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/' },
+        { label: 'Joffe et al. 2013 — GnRH model: hot flashes interrupt objective sleep', url: 'https://pubmed.ncbi.nlm.nih.gov/24293774/' },
+        { label: 'Zhao et al. 2021 — Sleep fragmentation & obesity (Sleep Heart Health Study, n=5,723)', url: 'https://pubmed.ncbi.nlm.nih.gov/34196121/' },
+        { label: 'Wickwire et al. 2017 — Shift work & shift work sleep disorder (Chest)', url: 'https://pubmed.ncbi.nlm.nih.gov/28012806/' },
+        { label: 'Fung et al. 2017 — Nocturia & sleep quality in older women (SOF, n=1,520)', url: 'https://pubmed.ncbi.nlm.nih.gov/28914959/' },
+        { label: 'Patel 2019 — Obstructive sleep apnea review (Annals Internal Medicine)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8340897/' },
+        { label: 'Mathias et al. 2018 — Sleep disturbances in chronic pain meta-analysis (37 studies)', url: 'https://pubmed.ncbi.nlm.nih.gov/30314881/' },
+        { label: 'Vgontzas et al. 2001 — Chronic insomnia & HPA axis activation', url: 'https://pubmed.ncbi.nlm.nih.gov/11502812/' }
+      ]
+    };
+    const totalCount = Object.values(groups).reduce((sum, g) => sum + g.length, 0);
+    return `<div class="src-accordion">
+      <div class="src-count-badge">${totalCount} sources cited</div>
+      ${Object.entries(groups).map(([cat, items]) => `
+        <div class="src-group">
+          <button class="src-group-toggle" aria-expanded="false">
+            <span class="src-group-name">${cat}</span>
+            <span class="src-group-count">${items.length}</span>
+            <span class="src-group-chevron">${this._icon('chevDown')}</span>
+          </button>
+          <div class="src-group-body">
+            ${items.map(s => `<a href="${s.url}" class="src-item" target="_blank" rel="noopener"><span class="src-dot"></span><span class="src-text">${s.label}</span><span class="src-ext">${this._icon('externalLink')}</span></a>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>`;
+  }
+
   render() {
     this.shadowRoot.innerHTML = `
       <style>:host { display:block; font-family: system-ui, -apple-system, sans-serif; padding: 40px 20px; text-align:center; color:#1E293B; }</style>
