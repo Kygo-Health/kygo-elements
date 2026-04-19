@@ -103,9 +103,17 @@ class KygoToolsPage extends HTMLElement {
         title: 'Sleep Latency Factors',
         description: 'Explore 33 research-backed factors that affect how fast you fall asleep — nutrition, supplements, exercise, environment, and physiology ranked by evidence.',
         icon: 'moon',
-        badge: 'New',
         url: '/sleep-latency-factors',
         features: ['33 factors across 5 categories', 'Evidence-ranked', 'Peer-reviewed sources']
+      },
+      {
+        slug: 'staying-asleep-factors',
+        title: 'Staying Asleep Factors',
+        description: 'Explore 31 research-backed factors that affect staying asleep — WASO, arousals, and sleep fragmentation across nutrition, supplements, exercise, environment, and physiology.',
+        icon: 'moon',
+        badge: 'New',
+        url: '/staying-asleep-factors',
+        features: ['31 factors across 5 categories', 'Evidence-ranked', 'Peer-reviewed sources']
       },
       {
         slug: 'step-count-accuracy',
@@ -737,9 +745,10 @@ class KygoToolsPage extends HTMLElement {
             { '@type': 'ListItem', 'position': 3, 'name': 'Calorie Burn Accuracy Calculator', 'description': 'Enter your wearable calorie burn and see the likely actual range based on peer-reviewed research.', 'url': 'https://www.kygo.app/tools/calorie-burn-accuracy' },
             { '@type': 'ListItem', 'position': 4, 'name': 'Step Count Accuracy Comparison', 'description': 'Compare step count accuracy across 8 wearable devices using data from 20+ peer-reviewed studies.', 'url': 'https://www.kygo.app/tools/step-count-accuracy' },
             { '@type': 'ListItem', 'position': 5, 'name': 'Deep Sleep Factor Explorer', 'description': 'Explore 29 research-backed factors that affect deep sleep ranked by evidence strength.', 'url': 'https://www.kygo.app/tools/deep-sleep-factors' },
-            { '@type': 'ListItem', 'position': 6, 'name': 'HRV Factor Explorer', 'description': 'Explore 44 research-backed factors that affect Heart Rate Variability ranked by evidence strength.', 'url': 'https://www.kygo.app/tools/hrv-factors' },
-            { '@type': 'ListItem', 'position': 7, 'name': 'Sensor & Feature Comparison', 'description': 'Compare hardware sensors and software features across Garmin, WHOOP, Oura, Apple Watch, and Fitbit.', 'url': 'https://www.kygo.app/tools/sensor-comparison' },
-            { '@type': 'ListItem', 'position': 8, 'name': 'AI Food Scanner', 'description': 'Free AI-powered food scanner that identifies ingredients and provides full nutrition breakdown from a photo.', 'url': 'https://www.kygo.app/food-scanner' }
+            { '@type': 'ListItem', 'position': 6, 'name': 'Staying Asleep Factor Explorer', 'description': 'Explore 31 research-backed factors that affect staying asleep (WASO, arousals, fragmentation) ranked by evidence strength.', 'url': 'https://www.kygo.app/tools/staying-asleep-factors' },
+            { '@type': 'ListItem', 'position': 7, 'name': 'HRV Factor Explorer', 'description': 'Explore 44 research-backed factors that affect Heart Rate Variability ranked by evidence strength.', 'url': 'https://www.kygo.app/tools/hrv-factors' },
+            { '@type': 'ListItem', 'position': 8, 'name': 'Sensor & Feature Comparison', 'description': 'Compare hardware sensors and software features across Garmin, WHOOP, Oura, Apple Watch, and Fitbit.', 'url': 'https://www.kygo.app/tools/sensor-comparison' },
+            { '@type': 'ListItem', 'position': 9, 'name': 'AI Food Scanner', 'description': 'Free AI-powered food scanner that identifies ingredients and provides full nutrition breakdown from a photo.', 'url': 'https://www.kygo.app/food-scanner' }
           ]
         },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' }
