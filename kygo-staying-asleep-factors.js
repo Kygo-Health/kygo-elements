@@ -31,6 +31,10 @@ class KygoStayingAsleepFactors extends HTMLElement {
 
   connectedCallback() {
     this.render();
+    this._setupEventDelegation();
+    this._setupAnimations();
+    this._injectStructuredData();
+    __seo(this, 'Staying Asleep Factor Explorer by Kygo Health. Explore 31 research-backed factors that affect sleep maintenance — wake after sleep onset (WASO), nighttime arousals, sleep fragmentation, and sleep efficiency — across 5 categories: Nutrition & Substances, Supplements, Exercise & Movement, Environment & Sleep Hygiene, and Demographics & Physiology. Nutrition factors include dietary fiber (reduces arousals per St-Onge 2016), sugar and refined carbs (increases arousals), caffeine (+12 min WASO per Gardiner 2023 meta-analysis), alcohol-driven sleep fragmentation (Spadola 2019 Jackson Heart Study), late eating (2–2.6× WASO odds per Crispim 2022), and tart cherry juice (−17 min WASO per Pigeon 2010 RCT). Supplements include immediate-release melatonin (no WASO effect per Menczel Schrire 2022), ashwagandha 600 mg (SMD −0.39 for WASO per Cheah 2021), glycine 3 g (PSG-verified WASO reduction), magnesium 500 mg, L-theanine, and valerian root (no consistent objective WASO benefit). Exercise factors include moderate aerobic exercise (−10 min WASO per Riedel 2024), resistance training, yoga, evening moderate exercise, and vigorous exercise within one hour of bedtime (+21.9 min WASO per Stutz 2019). Environment factors include bedroom temperature 20–25°C, light at night (even 5–10 lux increases WASO per Cho 2016), noise above 50 dBA (+30 min WASO per Basner 2018 WHO review), CO2 above 1000 ppm (Kang 2024 ventilation study), and mattress firmness. Demographics and physiology factors include aging (+10 min WASO per decade per Ohayon 2004), female sex subjective–objective paradox, menopausal hot flashes (Joffe 2013 GnRH model, 69% of flashes cause awakenings), obesity BMI 30 or higher (Zhao 2021 Sleep Heart Health Study), shift work sleep disorder, nocturia with two or more episodes (+34 min WASO per Fung 2017 SOF study), obstructive sleep apnea, chronic pain (Mathias 2018 meta-analysis of 37 studies), and psychological stress via cortisol elevation. Each factor includes evidence grade (Strong, Moderate, Limited, or Weak), direction of effect, mechanism, dosage or context, and peer-reviewed citation. How to stay asleep through the night. What causes waking up at night. WASO wake after sleep onset. Best supplements for staying asleep. Data sourced from peer-reviewed studies and meta-analyses.');
   }
 
   disconnectedCallback() {
@@ -734,6 +738,162 @@ class KygoStayingAsleepFactors extends HTMLElement {
         </div>
       </footer>
     `;
+  }
+
+  _setupEventDelegation() {
+    if (this._eventsBound) return;
+    this._eventsBound = true;
+    const shadow = this.shadowRoot;
+
+    shadow.addEventListener('click', (e) => {
+      const srcToggle = e.target.closest('.src-group-toggle');
+      if (srcToggle) {
+        const group = srcToggle.closest('.src-group');
+        if (group) {
+          const isOpen = group.classList.toggle('open');
+          srcToggle.setAttribute('aria-expanded', isOpen);
+        }
+        return;
+      }
+
+      const tab = e.target.closest('.cat-tab');
+      if (tab) {
+        this._activeCategory = tab.dataset.category;
+        this._updateCategory();
+        return;
+      }
+
+      if (e.target.closest('.source-link')) return;
+      const factorHeader = e.target.closest('.factor-header');
+      if (factorHeader) {
+        const card = factorHeader.closest('.factor-card');
+        if (card) this._toggleFactor(card.dataset.factor);
+        return;
+      }
+
+      const pickHeader = e.target.closest('.pick-header');
+      if (pickHeader) {
+        const card = pickHeader.closest('.pick-card');
+        if (card) this._toggleTopPick(parseInt(card.dataset.pick));
+        return;
+      }
+    });
+
+    shadow.addEventListener('change', (e) => {
+      if (e.target.classList.contains('sort-select')) {
+        this._sortMode = e.target.value;
+        this._updateCategory();
+      }
+    });
+
+    shadow.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        const factorHeader = e.target.closest('.factor-header');
+        if (factorHeader) {
+          e.preventDefault();
+          const card = factorHeader.closest('.factor-card');
+          if (card) this._toggleFactor(card.dataset.factor);
+          return;
+        }
+        const pickHeader = e.target.closest('.pick-header');
+        if (pickHeader) {
+          e.preventDefault();
+          const card = pickHeader.closest('.pick-card');
+          if (card) this._toggleTopPick(parseInt(card.dataset.pick));
+        }
+      }
+    });
+  }
+
+  _setupAnimations() {
+    requestAnimationFrame(() => {
+      const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!els.length) return;
+      if (this._observer) this._observer.disconnect();
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.2 });
+      els.forEach(el => this._observer.observe(el));
+    });
+  }
+
+  _injectStructuredData() {
+    if (document.querySelector('script[data-kygo-staying-asleep-factors-ld]')) return;
+    const ld = {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      'name': 'Staying Asleep Factor Explorer',
+      'alternateName': 'Kygo Sleep Maintenance Factors Tool',
+      'description': 'Explore 31 research-backed factors that affect sleep maintenance — nutrition, supplements, exercise, environment, and physiology ranked by evidence strength. Focused on WASO, arousals, and sleep fragmentation.',
+      'applicationCategory': 'HealthApplication',
+      'operatingSystem': 'Web',
+      'url': 'https://www.kygo.app/tools/staying-asleep-factors',
+      'datePublished': '2026-04-19',
+      'dateModified': '2026-04-19',
+      'softwareVersion': '1.0',
+      'inLanguage': 'en',
+      'isAccessibleForFree': true,
+      'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'featureList': 'Explore 31 sleep maintenance factors, 5 evidence categories, nutrition and supplement comparison, peer-reviewed research citations, sleep environment guidance',
+      'keywords': 'staying asleep factors, how to stay asleep, wake after sleep onset, WASO, sleep fragmentation, sleep arousals, sleep maintenance insomnia, caffeine and WASO, ashwagandha sleep, melatonin maintenance, nocturia WASO, menopausal hot flashes sleep, sleep apnea WASO, bedroom temperature, dim light at night, chronic pain sleep'
+    };
+
+    const faq = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': [
+        {
+          '@type': 'Question',
+          'name': 'What is WASO and why does it matter?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'WASO (Wake After Sleep Onset) is the total minutes spent awake after you first fall asleep. Clinically it matters more than sleep latency for sleep maintenance insomnia — high WASO fragments the night, cuts deep sleep, and drives next-day fatigue even when total time in bed looks normal. Healthy adults typically have WASO under 30 minutes; over 45 minutes is a common threshold for sleep-maintenance insomnia.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Does melatonin help you stay asleep?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Standard immediate-release melatonin — the form most people buy — does not significantly reduce WASO according to a 2022 meta-analysis in Neuropsychopharmacology (Menczel Schrire). Its half-life is too short to suppress overnight arousals. Extended-release formulations and prescription ramelteon have better evidence for maintenance. Melatonin shortens sleep onset and shifts circadian timing but is not a reliable fix for waking up at night.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'What supplement actually reduces WASO?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Ashwagandha has the strongest supplement-specific WASO evidence. A 2021 meta-analysis (Cheah, PLoS ONE) pooled 3 RCTs with 281 participants and found a standardized mean difference of −0.39 for WASO, with 600 mg/day of standardized extract most effective. Glycine 3 g before bed also reduces nighttime waking with PSG verification, though the study was small (n=11).' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'How does caffeine affect staying asleep?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Caffeine adds about 12 minutes to WASO on top of lengthening sleep latency, per a 2023 meta-analysis of 24 studies (Gardiner). Adenosine receptor antagonism lowers the arousal threshold, producing lighter sleep and more spontaneous awakenings. The effect is larger in slow metabolizers and with later-day intake — stop at least 8 hours before bed, or 10+ if you metabolize caffeine slowly.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Why do I wake up between 2 and 4 a.m.?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Common drivers: alcohol clearing (rebound glutamate), cortisol awakening response starting too early, elevated core body temperature, nocturia (bathroom trips), dim room light, CO₂ buildup in a poorly ventilated bedroom, menopausal hot flashes, and undiagnosed sleep apnea. Nocturia alone adds 34 minutes to WASO in people with 3–4 episodes per night (Fung 2017 SOF study). Addressing the specific driver produces much larger WASO reductions than generic sleep hygiene.' }
+        }
+      ]
+    };
+
+    const breadcrumb = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+        { '@type': 'ListItem', 'position': 3, 'name': 'Staying Asleep Factors', 'item': 'https://www.kygo.app/tools/staying-asleep-factors' }
+      ]
+    };
+
+    [ld, faq, breadcrumb].forEach(data => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-staying-asleep-factors-ld', '');
+      script.textContent = JSON.stringify(data);
+      document.head.appendChild(script);
+    });
   }
 
   _styles() {
