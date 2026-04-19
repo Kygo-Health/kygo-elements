@@ -110,6 +110,68 @@ class KygoStayingAsleepFactors extends HTMLElement {
           dosage: '240 mL (8 oz) twice daily; morning and 1–2 hrs pre-bed',
           source: { url: 'https://journals.sagepub.com/doi/full/10.1089/jmf.2009.0096', label: 'Pigeon et al. 2010 RCT' }
         }
+      ],
+      supplements: [
+        {
+          key: 'melatonin-ir', name: 'Melatonin (Immediate-Release)',
+          direction: 'variable', evidence: 'strong',
+          effect: 'Null (no WASO effect)',
+          keyFinding: 'Meta-analysis of RCTs (Menczel Schrire 2022)',
+          whatThisMeans: "The form of melatonin most people buy does not help you stay asleep. A 2022 meta-analysis in Neuropsychopharmacology found no significant WASO benefit for immediate-release melatonin. It shortens sleep onset and shifts circadian timing — but it won't keep you asleep.",
+          mechanism: 'Short half-life (~45 min) means exogenous melatonin is largely cleared before the second half of the night, so it cannot suppress overnight arousals.',
+          dosage: 'Use for sleep onset or circadian shift, not maintenance',
+          source: { url: 'https://www.nature.com/articles/s41386-022-01278-5', label: 'Menczel Schrire et al. 2022' }
+        },
+        {
+          key: 'ashwagandha', name: 'Ashwagandha (600 mg/day)',
+          direction: 'positive', evidence: 'strong',
+          effect: 'Positive (SMD −0.39 for WASO)',
+          keyFinding: 'Meta-analysis of 3 WASO trials, n=281 (Cheah 2021)',
+          whatThisMeans: 'The strongest supplement-specific evidence for staying asleep. Pooled across 3 RCTs with 281 participants, ashwagandha produced a standardized mean difference of −0.39 for WASO — meaningfully less nighttime waking. 600 mg/day of standardized extract shows the largest effect.',
+          mechanism: 'Withanolides reduce cortisol and overnight sympathetic tone; GABAergic activity dampens the arousals that fragment sleep.',
+          dosage: '600 mg/day standardized extract, split AM/PM or taken evening',
+          source: { url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843', label: 'Cheah et al. 2021 meta-analysis' }
+        },
+        {
+          key: 'glycine', name: 'Glycine (3 g)',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (↓ WASO, faster SWS)',
+          keyFinding: 'PSG-measured crossover, n=11 (Yamadera 2007)',
+          whatThisMeans: 'A small but polysomnography-verified study: 3 g of glycine before bed reduced nighttime waking and sped entry into slow-wave sleep. Small sample, but the mechanism is clean and the objective measurement is solid.',
+          mechanism: 'Peripheral vasodilation drops core body temperature (a deep-sleep signal); NMDA modulation reduces cortical arousal.',
+          dosage: '3 g, 30–60 min before bed',
+          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' }
+        },
+        {
+          key: 'magnesium', name: 'Magnesium (500 mg)',
+          direction: 'positive', evidence: 'limited',
+          effect: 'Positive for sleep efficiency',
+          keyFinding: '8-week RCT in 65+ y.o., n=46 (Abbasi 2012)',
+          whatThisMeans: 'Magnesium improved overall sleep efficiency in older adults with insomnia (P=0.03), but WASO itself was not directly measured. Early-morning awakening was only marginally better (P=0.08). Best evidence is in elderly people with low dietary magnesium.',
+          mechanism: 'NMDA receptor antagonism and GABA-A potentiation reduce cortical arousal; supports melatonin rhythm.',
+          dosage: '200–500 mg elemental magnesium (glycinate preferred)',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23853635/', label: 'Abbasi et al. 2012 RCT' }
+        },
+        {
+          key: 'l-theanine', name: 'L-Theanine (200–450 mg)',
+          direction: 'variable', evidence: 'limited',
+          effect: 'Mixed WASO results',
+          keyFinding: '2025 systematic review of dietary supplementation trials',
+          whatThisMeans: 'L-theanine shows subjective relaxation benefits and some sleep-maintenance signal at 200–450 mg/day, but WASO results are inconsistent when it is isolated from combination products. Promising, not yet proven for staying asleep.',
+          mechanism: 'Increases alpha brain waves and GABA/glutamate balance; reduces cortisol and sympathetic tone without sedation.',
+          dosage: '200–450 mg, 30–60 min before bed',
+          source: { url: 'https://www.tandfonline.com/doi/full/10.1080/1028415X.2025.2556925', label: '2025 systematic review' }
+        },
+        {
+          key: 'valerian', name: 'Valerian Root',
+          direction: 'variable', evidence: 'weak',
+          effect: 'Null (no objective WASO benefit)',
+          keyFinding: 'Meta-analysis of 60 studies, n=6,894 (Shinjyo 2020)',
+          whatThisMeans: 'Despite widespread use, valerian does not consistently improve objective WASO. Subjective sleep ratings improve, but polysomnography and actigraphy do not confirm it. The perceived benefit may be placebo or from combination formulations.',
+          mechanism: 'Weak GABA-A modulation and adenosine receptor binding; clinical signal inconsistent across doses and preparations.',
+          dosage: 'Not recommended as first-line for WASO',
+          source: { url: 'https://journals.sagepub.com/doi/10.1177/2515690X20967323', label: 'Shinjyo et al. 2020 meta-analysis' }
+        }
       ]
     };
   }
