@@ -22,9 +22,11 @@ class KygoStayingAsleepFactors extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._observer = null;
-    this._activeCategory = 'nutrition';
-    this._expandedFactor = null;
-    this._sortMode = 'default';
+    this._view = 'chart';
+    this._catFilter = null;
+    this._chartSelectedKey = null;
+    this._listSort = 'impact';
+    this._listExpandedKey = null;
     this._eventsBound = false;
   }
 
@@ -437,71 +439,402 @@ class KygoStayingAsleepFactors extends HTMLElement {
     return map[ev] || map.moderate;
   }
 
-  _renderCategoryTabs() {
-    return Object.entries(this._categories).map(([k, c]) =>
-      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab" aria-selected="${k === this._activeCategory}">
-        <span class="cat-tab-icon">${this._icon(c.icon)}</span>
-        <span>${c.name}</span>
-        <span class="cat-tab-count">${c.count}</span>
-      </button>`
-    ).join('');
+  get _categoryMeta() {
+    return {
+      nutrition:   { label: 'Nutrition & Substances',    hue: '#22C55E' },
+      supplements: { label: 'Supplements',               hue: '#6366F1' },
+      exercise:    { label: 'Exercise & Movement',       hue: '#F59E0B' },
+      environment: { label: 'Environment & Hygiene',     hue: '#06B6D4' },
+      physiology:  { label: 'Demographics & Physiology', hue: '#EC4899' }
+    };
   }
 
-  _renderFactorCards() {
-    let factors = this._factors[this._activeCategory];
-    if (!factors) return '<p class="no-data">No factors in this category.</p>';
-    if (this._sortMode === 'evidence') {
-      const rank = { strong: 0, moderate: 1, limited: 2, weak: 3 };
-      factors = [...factors].sort((a, b) => (rank[a.evidence] ?? 9) - (rank[b.evidence] ?? 9));
-    } else if (this._sortMode === 'direction') {
-      const rank = { positive: 0, mixed: 1, variable: 2, negative: 3 };
-      factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
-    }
-    return factors.map((f, i) => {
-      const dir = this._directionConfig(f.direction);
-      const ev = this._evidenceConfig(f.evidence);
-      const isExpanded = this._expandedFactor === f.key;
+  get _factorMeta() {
+    // waso (min; + = worse, - = better, 0 = null-effect, null = directional-only)
+    // time: 'day' | 'evening' | 'bedtime' | 'overnight' | 'chronic'
+    return {
+      'dietary-fiber':       { waso: null, time: 'day' },
+      'sugar':               { waso: null, time: 'evening' },
+      'caffeine':            { waso: 12,   time: 'day' },
+      'alcohol':             { waso: null, time: 'evening' },
+      'late-eating':         { waso: null, time: 'bedtime' },
+      'tart-cherry':         { waso: -17,  time: 'bedtime' },
+      'melatonin-ir':        { waso: 0,    time: 'bedtime' },
+      'ashwagandha':         { waso: null, time: 'chronic' },
+      'glycine':             { waso: null, time: 'bedtime' },
+      'magnesium':           { waso: null, time: 'chronic' },
+      'l-theanine':          { waso: null, time: 'bedtime' },
+      'valerian':            { waso: 0,    time: 'bedtime' },
+      'moderate-aerobic':    { waso: -10,  time: 'day' },
+      'resistance-training': { waso: null, time: 'day' },
+      'yoga':                { waso: -56,  time: 'evening', caveat: true },
+      'evening-moderate':    { waso: null, time: 'evening' },
+      'vigorous-late':       { waso: 22,   time: 'bedtime' },
+      'bedroom-temp':        { waso: null, time: 'overnight' },
+      'light-at-night':      { waso: null, time: 'overnight' },
+      'noise':               { waso: 30,   time: 'overnight' },
+      'co2-ventilation':     { waso: 5,    time: 'overnight' },
+      'mattress':            { waso: null, time: 'overnight' },
+      'aging':               { waso: 10,   time: 'chronic' },
+      'female-sex':          { waso: null, time: 'chronic' },
+      'menopause':           { waso: null, time: 'overnight' },
+      'obesity':             { waso: null, time: 'chronic' },
+      'shift-work':          { waso: null, time: 'chronic' },
+      'nocturia':            { waso: 34,   time: 'overnight' },
+      'osa':                 { waso: null, time: 'overnight' },
+      'chronic-pain':        { waso: null, time: 'chronic' },
+      'stress':              { waso: null, time: 'chronic' }
+    };
+  }
+
+  _flatFactors() {
+    const meta = this._factorMeta;
+    const out = [];
+    Object.entries(this._factors).forEach(([catKey, arr]) => {
+      arr.forEach(f => {
+        const m = meta[f.key] || { waso: null, time: 'chronic' };
+        out.push({ ...f, category: catKey, waso: m.waso, time: m.time, caveat: !!m.caveat });
+      });
+    });
+    return out;
+  }
+
+  _dirClass(dir) {
+    return dir === 'positive' ? 'pos' : dir === 'negative' ? 'neg' : 'neu';
+  }
+
+  _wasoDisplay(f) {
+    if (f.waso === null || f.waso === undefined) return { text: '—', cls: 'na', label: 'No numeric' };
+    if (f.waso === 0) return { text: '±0 min', cls: 'zero', label: '±0 min' };
+    if (f.waso < 0) return { text: `${f.waso} min`, cls: 'pos', label: `${f.waso} min` };
+    return { text: `+${f.waso} min`, cls: 'neg', label: `+${f.waso} min` };
+  }
+
+  get _timeSlots() {
+    return [
+      { key: 'day',       time: '6A–6P',  label: 'Daytime',            desc: 'Sets the stage — circadian, pressure, cortisol tone.' },
+      { key: 'evening',   time: '6–9P',   label: 'Evening',            desc: 'Wind-down window — the last chance to shape the night.' },
+      { key: 'bedtime',   time: '9–11P',  label: 'Bedtime',            desc: 'The hour before lights-out. Highest-leverage window.' },
+      { key: 'overnight', time: '11P–6A', label: 'Overnight',          desc: "What's in the room matters more than what's in your head." },
+      { key: 'chronic',   time: 'Always', label: 'Chronic / Baseline', desc: 'Always-on — demographics, disorders, baseline stress.' }
+    ];
+  }
+
+  get _viewConfig() {
+    return [
+      { k: 'chart',    label: 'Impact chart',   sub: 'Ranked by magnitude',      step: '01', lede: 'Bar length = minutes of Wake After Sleep Onset added or removed per night. Only factors with numeric WASO figures appear in the chart. Tap a bar for the mechanism and source.' },
+      { k: 'list',     label: 'Leaderboard',    sub: 'Every factor, sortable',   step: '02', lede: 'All 31 factors, sortable by impact, evidence, direction, or category. Tap a row for the key finding, mechanism, and source link.' },
+      { k: 'timeline', label: 'Night timeline', sub: 'Grouped by time of day',   step: '03', lede: 'Factors arranged by when they matter most — from daytime habits, through bedtime rituals, to what is happening in your bedroom overnight.' }
+    ];
+  }
+
+  _viewIcon(k) {
+    if (k === 'chart')    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 12h4M3 6h8M3 18h6M14 12h7M14 6h4M14 18h5"/></svg>';
+    if (k === 'list')     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg>';
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+  }
+
+  _renderViewPicker() {
+    return `
+      <div class="view-picker" role="tablist" aria-label="Data view">
+        ${this._viewConfig.map(v => `
+          <button class="view-tab ${this._view === v.k ? 'active' : ''}" data-view="${v.k}" role="tab" aria-selected="${this._view === v.k}">
+            <span class="view-icon">${this._viewIcon(v.k)}</span>
+            <span class="view-meta">
+              <span class="view-lbl">${v.label}</span>
+              <span class="view-sub">${v.sub}</span>
+            </span>
+            <span class="view-step">${v.step}</span>
+          </button>
+        `).join('')}
+      </div>`;
+  }
+
+  _renderCatRail() {
+    const flat = this._flatFactors();
+    const chips = [`
+      <button class="cat-chip ${!this._catFilter ? 'active' : ''}" data-cat="" aria-pressed="${!this._catFilter}">
+        All <span class="count">${flat.length}</span>
+      </button>`];
+    Object.entries(this._categoryMeta).forEach(([k, m]) => {
+      const count = flat.filter(f => f.category === k).length;
+      const active = this._catFilter === k;
+      chips.push(`
+        <button class="cat-chip ${active ? 'active' : ''}" data-cat="${k}" aria-pressed="${active}">
+          <span class="cat-hue" style="background:${m.hue}"></span>${m.label}
+          <span class="count">${count}</span>
+        </button>`);
+    });
+    return `<div class="cat-rail" role="tablist" aria-label="Filter by category">${chips.join('')}</div>`;
+  }
+
+  _renderChartView() {
+    const flat = this._flatFactors();
+    const quantified = flat
+      .filter(f => f.waso !== null && f.waso !== undefined)
+      .filter(f => !this._catFilter || f.category === this._catFilter)
+      .sort((a, b) => Math.abs(b.waso) - Math.abs(a.waso));
+    const domainMax = 40;
+    const ticks = [-40, -20, 0, 20, 40];
+    const meta = this._categoryMeta;
+    const selectedKey = this._chartSelectedKey;
+
+    const rows = quantified.map((f, i) => {
+      const val = f.waso;
+      const visualVal = Math.max(-domainMax, Math.min(domainMax, val));
+      const pct = (Math.abs(visualVal) / domainMax) * 50;
+      const isZero = val === 0;
+      const isPos = val < 0;
+      const isNeg = val > 0;
+      const isSelected = selectedKey === f.key;
+      const dim = selectedKey && !isSelected ? 'dim' : '';
+      const hue = (meta[f.category] || {}).hue || '#94A3B8';
       return `
-        <div class="factor-card ${isExpanded ? 'expanded' : ''}" data-factor="${f.key}" style="--delay:${i * 60}ms">
-          <div class="factor-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
-            <div class="factor-top">
-              <div class="factor-badges">
-                <span class="badge-direction" style="color:${dir.color};background:${dir.bg}">
-                  <span class="badge-icon">${this._icon(dir.icon)}</span>${dir.label}
-                </span>
-              </div>
-              <div class="factor-toggle">${this._icon('chevDown')}</div>
-            </div>
-            <h3 class="factor-name">${f.name}</h3>
-            <p class="factor-effect">${f.effect}</p>
-            <p class="factor-evidence-text"><span class="evidence-label">Evidence:</span> <span style="color:${ev.color};font-weight:600">${ev.label}</span></p>
+        <div class="chart-row ${dim}">
+          <button class="chart-label" data-chart-key="${f.key}" aria-expanded="${isSelected}">
+            <span class="chart-label-name">${f.name}</span>
+            <span class="chart-label-dot" style="background:${hue}" aria-hidden="true"></span>
+          </button>
+          <div class="chart-bar">
+            <span class="chart-axis" aria-hidden="true"></span>
+            ${isZero ? '<span class="chart-fill zero"></span>' : ''}
+            ${isPos ? `<span class="chart-fill pos" style="right:50%;width:${pct}%;animation-delay:${i * 40}ms"></span>` : ''}
+            ${isNeg ? `<span class="chart-fill neg" style="left:50%;width:${pct}%;animation-delay:${i * 40}ms"></span>` : ''}
           </div>
-          <div class="factor-body">
-            <div class="factor-detail">
-              <div class="detail-row">
-                <span class="detail-label">Plain English</span>
-                <p class="detail-value">${f.whatThisMeans}</p>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Key Finding</span>
-                <p class="detail-value">${f.keyFinding}</p>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Mechanism</span>
-                <p class="detail-value">${f.mechanism}</p>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Dosage / Context</span>
-                <p class="detail-value">${f.dosage}</p>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Source</span>
-                <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
-              </div>
-            </div>
+          <div class="chart-val ${isZero ? 'zero' : isPos ? 'pos' : 'neg'}">
+            ${isZero ? '±0' : (isPos ? val : `+${val}`)} min${f.caveat ? '<sup class="chart-caveat">*</sup>' : ''}
           </div>
         </div>`;
     }).join('');
+
+    const scaleTicks = ticks.map(t => {
+      const pct = ((t + domainMax) / (domainMax * 2)) * 100;
+      return `<span class="chart-tick ${t === 0 ? 'zero' : ''}" style="left:${pct}%">${t > 0 ? `+${t}` : t}</span>`;
+    }).join('');
+
+    const detail = selectedKey ? this._renderChartDetail(quantified.find(f => f.key === selectedKey) || flat.find(f => f.key === selectedKey)) : '';
+    const emptyState = quantified.length === 0 ? '<p class="dash-empty">No quantified factors in this category. See the qualitative grid below.</p>' : '';
+    const caveatNote = quantified.some(f => f.caveat) ? '<p class="chart-caveat-note">*Yoga effect (−56 min) capped at −40 in chart; network meta-analysis rated low-certainty. Chart shows only factors with reported numeric WASO minutes.</p>' : '';
+
+    return `
+      <div class="k-chart">
+        <div class="k-chart-head">
+          <div>
+            <h3 class="chart-title">WASO impact per night</h3>
+            <p class="chart-sub">Minutes added or removed from Wake After Sleep Onset, per peer-reviewed meta-analysis or RCT.</p>
+          </div>
+          <div class="chart-meta">${quantified.length} quantified factor${quantified.length === 1 ? '' : 's'}</div>
+        </div>
+        <div class="chart-legend-head">
+          <span class="helps"><span class="sw pos"></span>← Helps you stay asleep</span>
+          <span class="hurts">Wakes you up →<span class="sw neg"></span></span>
+        </div>
+        ${emptyState}
+        <div class="chart-wrap">
+          ${rows}
+          <div class="chart-scale-spacer"></div>
+          <div class="chart-scale">${scaleTicks}</div>
+          <div class="chart-scale-spacer"></div>
+        </div>
+        ${detail}
+        ${caveatNote}
+      </div>`;
+  }
+
+  _renderChartDetail(f) {
+    if (!f) return '';
+    const val = f.waso;
+    const isZero = val === 0;
+    const isPos = val < 0;
+    const cls = isZero ? 'zero' : isPos ? 'pos' : 'neg';
+    const bigVal = isZero ? '±0' : (isPos ? val : `+${val}`);
+    return `
+      <div class="chart-detail" role="region" aria-label="${f.name} detail">
+        <h4 class="chart-detail-h">
+          <span>${f.name}</span>
+          <span class="chart-detail-big ${cls}">${bigVal} min WASO</span>
+        </h4>
+        <div class="chart-detail-col">
+          <div class="chart-detail-row"><span class="lbl">Plain English</span><p>${f.whatThisMeans}</p></div>
+          <div class="chart-detail-row"><span class="lbl">Mechanism</span><p>${f.mechanism}</p></div>
+        </div>
+        <div class="chart-detail-col">
+          <div class="chart-detail-row"><span class="lbl">Key finding</span><p>${f.keyFinding}</p></div>
+          <div class="chart-detail-row"><span class="lbl">What to do</span><p>${f.dosage}</p></div>
+          <div class="chart-detail-row"><span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p></div>
+        </div>
+      </div>`;
+  }
+
+  _renderListView() {
+    const flat = this._flatFactors();
+    const meta = this._categoryMeta;
+    let shown = flat.filter(f => !this._catFilter || f.category === this._catFilter);
+    if (this._listSort === 'impact') {
+      shown = shown.slice().sort((a, b) => {
+        const aw = a.waso === null || a.waso === undefined ? 0 : Math.abs(a.waso);
+        const bw = b.waso === null || b.waso === undefined ? 0 : Math.abs(b.waso);
+        return bw - aw;
+      });
+    } else if (this._listSort === 'evidence') {
+      const r = { strong: 0, moderate: 1, limited: 2, weak: 3 };
+      shown = shown.slice().sort((a, b) => (r[a.evidence] ?? 9) - (r[b.evidence] ?? 9));
+    } else if (this._listSort === 'direction') {
+      const r = { positive: 0, mixed: 1, variable: 2, negative: 3 };
+      shown = shown.slice().sort((a, b) => (r[a.direction] ?? 9) - (r[b.direction] ?? 9));
+    } else if (this._listSort === 'category') {
+      shown = shown.slice().sort((a, b) => a.category.localeCompare(b.category));
+    }
+
+    const evColor = { strong: 'var(--green-dark)', moderate: '#B45309', limited: '#4338CA', weak: 'var(--gray-600)' };
+    const dirLabel = (d) => d === 'positive' ? '↓ Helps' : d === 'negative' ? '↑ Hurts' : '— Neutral';
+
+    const sortBtns = [
+      { k: 'impact',    l: 'Impact' },
+      { k: 'evidence',  l: 'Evidence' },
+      { k: 'direction', l: 'Direction' },
+      { k: 'category',  l: 'Category' }
+    ].map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('');
+
+    const rows = shown.map((f, i) => {
+      const waso = this._wasoDisplay(f);
+      const isExp = this._listExpandedKey === f.key;
+      const hue = (meta[f.category] || {}).hue || '#94A3B8';
+      return `
+        <div class="list-row ${isExp ? 'expanded' : ''}" data-list-key="${f.key}" role="button" tabindex="0" aria-expanded="${isExp}">
+          <div class="list-rank">${String(i + 1).padStart(2, '0')}</div>
+          <div class="list-name"><span class="list-dot" style="background:${hue}" aria-hidden="true"></span>${f.name}</div>
+          <div class="list-col-dir"><span class="list-dir ${this._dirClass(f.direction)}">${dirLabel(f.direction)}</span></div>
+          <div class="list-eff hide-m">${f.effect}</div>
+          <div class="list-ev hide-m" style="color:${evColor[f.evidence]}">${f.evidence.toUpperCase()}</div>
+          <div class="list-waso ${waso.cls}">${waso.text}</div>
+          <div class="list-chev" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg></div>
+        </div>
+        ${isExp ? `
+          <div class="list-body">
+            <div class="list-body-grid">
+              <div>
+                <span class="lbl">Plain English</span><p>${f.whatThisMeans}</p>
+                <span class="lbl">Mechanism</span><p>${f.mechanism}</p>
+              </div>
+              <div>
+                <span class="lbl">Key finding</span><p>${f.keyFinding}</p>
+                <span class="lbl">What to do</span><p>${f.dosage}</p>
+                <span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
+              </div>
+            </div>
+          </div>` : ''}`;
+    }).join('');
+
+    return `
+      <div class="list-toolbar">
+        <span class="list-sort-label">Sort by</span>
+        <div class="list-sort-btns">${sortBtns}</div>
+      </div>
+      <div class="k-list">
+        <div class="list-row head" role="row">
+          <div>#</div>
+          <div>Factor</div>
+          <div>Direction</div>
+          <div class="hide-m">Effect</div>
+          <div class="hide-m">Evidence</div>
+          <div class="list-waso-head">WASO Δ</div>
+          <div></div>
+        </div>
+        ${rows || '<p class="dash-empty">No factors match this filter.</p>'}
+      </div>`;
+  }
+
+  _renderTimelineView() {
+    const flat = this._flatFactors();
+    const meta = this._categoryMeta;
+    const shown = flat.filter(f => !this._catFilter || f.category === this._catFilter);
+    const slots = this._timeSlots.map(slot => {
+      const bucket = shown
+        .filter(f => f.time === slot.key)
+        .sort((a, b) => {
+          const aw = a.waso === null || a.waso === undefined ? 0 : a.waso;
+          const bw = b.waso === null || b.waso === undefined ? 0 : b.waso;
+          return bw - aw;
+        });
+      const chips = bucket.length ? bucket.map(f => {
+        const hue = (meta[f.category] || {}).hue || '#94A3B8';
+        return `<div class="tl-chip ${this._dirClass(f.direction)}">
+          <span class="tl-dot" style="background:${hue}" aria-hidden="true"></span>
+          <div class="tl-text"><span class="tl-name">${f.name}</span><span class="tl-eff">${f.effect}</span></div>
+        </div>`;
+      }).join('') : '<p class="tl-empty">No factors in this slot.</p>';
+      return `
+        <div class="tl-slot ${slot.key}">
+          <div class="tl-head">
+            <div class="tl-head-l">
+              <div class="tl-time">${slot.time}</div>
+              <div class="tl-label">${slot.label}</div>
+            </div>
+            <div class="tl-count">${String(bucket.length).padStart(2, '0')}</div>
+          </div>
+          <p class="tl-desc">${slot.desc}</p>
+          <div class="tl-chips">${chips}</div>
+        </div>`;
+    }).join('');
+
+    return `
+      <div class="k-timeline">
+        <div class="tl-track">
+          <div class="tl-axis" aria-hidden="true"></div>
+          <div class="tl-ticks" aria-hidden="true">
+            <span>06:00</span><span>12:00</span><span>18:00</span><span class="now">22:00</span><span>02:00</span><span>06:00</span>
+          </div>
+        </div>
+        <div class="tl-slots">${slots}</div>
+      </div>`;
+  }
+
+  _renderQualGrid() {
+    const flat = this._flatFactors();
+    const qual = flat
+      .filter(f => f.waso === null || f.waso === undefined)
+      .filter(f => !this._catFilter || f.category === this._catFilter);
+    if (qual.length === 0) return '';
+    const cards = qual.map(f => {
+      const catLabel = (this._categoryMeta[f.category] || {}).label || f.category;
+      return `
+        <article class="qual-card ${this._dirClass(f.direction)}">
+          <div class="qual-top">
+            <span class="qual-cat">${catLabel}</span>
+            <span class="qual-ev ${f.evidence}">${f.evidence}</span>
+          </div>
+          <h4 class="qual-name">${f.name}</h4>
+          <p class="qual-effect">${f.effect}</p>
+          <details class="qual-details">
+            <summary class="qual-more">
+              <span class="qual-more-closed">Read more ↓</span>
+              <span class="qual-more-open">Collapse ↑</span>
+            </summary>
+            <div class="qual-body">
+              <p>${f.whatThisMeans}</p>
+              <p><strong>Mechanism.</strong> ${f.mechanism}</p>
+              <p><strong>What to do.</strong> ${f.dosage}</p>
+              <p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
+            </div>
+          </details>
+        </article>`;
+    }).join('');
+    return `
+      <div class="qual-wrap">
+        <div class="qual-head">
+          <h3>Also matters — directional evidence without a minute-figure</h3>
+          <span class="qual-count">${qual.length} qualitative factor${qual.length === 1 ? '' : 's'}</span>
+        </div>
+        <div class="qual-grid">${cards}</div>
+      </div>`;
+  }
+
+  _renderDashboardBody() {
+    if (this._view === 'chart')    return `${this._renderChartView()}${this._renderQualGrid()}`;
+    if (this._view === 'list')     return this._renderListView();
+    if (this._view === 'timeline') return this._renderTimelineView();
+    return '';
   }
 
   _renderTopPicks() {
@@ -550,24 +883,36 @@ class KygoStayingAsleepFactors extends HTMLElement {
       </svg>`;
   }
 
-  _updateCategory() {
+  _updateDashboard() {
     const shadow = this.shadowRoot;
-    const tabs = shadow.querySelector('.cat-tabs');
-    const cards = shadow.querySelector('.factor-cards');
-    this._expandedFactor = null;
-    if (tabs) tabs.innerHTML = this._renderCategoryTabs();
-    if (cards) cards.innerHTML = this._renderFactorCards();
+    const stepEl = shadow.querySelector('.dash-step');
+    if (stepEl) {
+      const idx = this._viewConfig.findIndex(v => v.k === this._view);
+      stepEl.textContent = `View ${String(idx + 1).padStart(2, '0')} / 03`;
+    }
+    const ledeEl = shadow.querySelector('.dash-lede');
+    if (ledeEl) {
+      const cur = this._viewConfig.find(v => v.k === this._view);
+      ledeEl.textContent = cur ? cur.lede : '';
+    }
+    const pickerEl = shadow.querySelector('.view-picker');
+    if (pickerEl) pickerEl.outerHTML = this._renderViewPicker();
+    const railEl = shadow.querySelector('.cat-rail');
+    if (railEl) railEl.outerHTML = this._renderCatRail();
+    const bodyEl = shadow.querySelector('.dash-body');
+    if (bodyEl) bodyEl.innerHTML = this._renderDashboardBody();
   }
 
-  _toggleFactor(key) {
-    this._expandedFactor = this._expandedFactor === key ? null : key;
-    const shadow = this.shadowRoot;
-    shadow.querySelectorAll('.factor-card').forEach(card => {
-      const isExp = card.dataset.factor === this._expandedFactor;
-      card.classList.toggle('expanded', isExp);
-      const btn = card.querySelector('.factor-header');
-      if (btn) btn.setAttribute('aria-expanded', isExp);
-    });
+  _toggleChartFactor(key) {
+    this._chartSelectedKey = this._chartSelectedKey === key ? null : key;
+    const bodyEl = this.shadowRoot.querySelector('.dash-body');
+    if (bodyEl) bodyEl.innerHTML = this._renderDashboardBody();
+  }
+
+  _toggleListRow(key) {
+    this._listExpandedKey = this._listExpandedKey === key ? null : key;
+    const bodyEl = this.shadowRoot.querySelector('.dash-body');
+    if (bodyEl) bodyEl.innerHTML = this._renderDashboardBody();
   }
 
   _renderSources() {
@@ -660,6 +1005,38 @@ class KygoStayingAsleepFactors extends HTMLElement {
         </div>
       </section>
 
+      <!-- Data Dashboard: chart / leaderboard / timeline -->
+      <section class="dash-section" id="explore">
+        <div class="container">
+          <div class="dash-head animate-on-scroll">
+            <div>
+              <span class="dash-eyebrow">The evidence</span>
+              <h2 class="dash-h2">What the <em>evidence</em> actually says.</h2>
+            </div>
+            <span class="dash-step">View ${String(this._viewConfig.findIndex(v => v.k === this._view) + 1).padStart(2, '0')} / 03</span>
+          </div>
+
+          <div class="animate-on-scroll">${this._renderViewPicker()}</div>
+
+          <p class="dash-lede animate-on-scroll">${this._viewConfig.find(v => v.k === this._view).lede}</p>
+
+          <div class="animate-on-scroll">${this._renderCatRail()}</div>
+
+          <div class="dash-body animate-on-scroll">${this._renderDashboardBody()}</div>
+
+          <div class="blog-link-wrap animate-on-scroll">
+            <a href="https://www.kygo.app/post/how-to-stay-asleep-factors-ranked-by-evidence" class="blog-link-card" target="_blank" rel="noopener">
+              <span class="blog-link-icon"><img src="${logoUrl}" alt="Kygo" style="width:24px;height:24px;" /></span>
+              <div class="blog-link-text">
+                <span class="blog-link-title">Read the Full Article</span>
+                <span class="blog-link-desc">How to Stay Asleep: 31 Factors Ranked by Evidence (2026)</span>
+              </div>
+              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <!-- Six headlines from the data -->
       <section class="picks-section" id="headlines">
         <div class="container">
@@ -670,37 +1047,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
               <h2 class="picks-title">If you only remember <em>six things</em>.</h2>
             </div>
             <div class="picks-grid">${this._renderTopPicks()}</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Primary Interactive: Category tabs + Factor cards -->
-      <section class="explore-section" id="explore">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Explore All Factors</h2>
-          <p class="section-sub animate-on-scroll">Tap any factor to see the key finding, mechanism, dosage, and source.</p>
-
-          <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
-          <div class="sort-bar animate-on-scroll">
-            <label class="sort-label" for="sort-select">Sort by:</label>
-            <select class="sort-select" id="sort-select">
-              <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
-              <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
-              <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
-            </select>
-          </div>
-          <div class="factor-cards">${this._renderFactorCards()}</div>
-
-          <!-- Read Full Article (cross-link) -->
-          <div class="blog-link-wrap animate-on-scroll">
-            <a href="https://www.kygo.app/post/how-to-stay-asleep-factors-ranked-by-evidence" class="blog-link-card" target="_blank" rel="noopener">
-              <span class="blog-link-icon"><img src="${logoUrl}" alt="Kygo" style="width:24px;height:24px;" /></span>
-              <div class="blog-link-text">
-                <span class="blog-link-title">Read the Full Article</span>
-                <span class="blog-link-desc">How to Stay Asleep: 31 Factors Ranked by Evidence (2026)</span>
-              </div>
-              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
-            </a>
           </div>
         </div>
       </section>
@@ -777,6 +1123,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
     const shadow = this.shadowRoot;
 
     shadow.addEventListener('click', (e) => {
+      if (e.target.closest('.source-link, a[href]')) return;
+
       const srcToggle = e.target.closest('.src-group-toggle');
       if (srcToggle) {
         const group = srcToggle.closest('.src-group');
@@ -787,39 +1135,55 @@ class KygoStayingAsleepFactors extends HTMLElement {
         return;
       }
 
-      const tab = e.target.closest('.cat-tab');
-      if (tab) {
-        this._activeCategory = tab.dataset.category;
-        this._updateCategory();
+      const viewTab = e.target.closest('.view-tab');
+      if (viewTab) {
+        const k = viewTab.dataset.view;
+        if (k && k !== this._view) {
+          this._view = k;
+          this._chartSelectedKey = null;
+          this._listExpandedKey = null;
+          this._updateDashboard();
+        }
         return;
       }
 
-      if (e.target.closest('.source-link')) return;
-      const factorHeader = e.target.closest('.factor-header');
-      if (factorHeader) {
-        const card = factorHeader.closest('.factor-card');
-        if (card) this._toggleFactor(card.dataset.factor);
+      const catChip = e.target.closest('.cat-chip');
+      if (catChip) {
+        const k = catChip.dataset.cat || null;
+        this._catFilter = (this._catFilter === k || k === '') ? null : k;
+        this._chartSelectedKey = null;
+        this._listExpandedKey = null;
+        this._updateDashboard();
         return;
       }
 
-    });
+      const sortBtn = e.target.closest('.list-sort-btn');
+      if (sortBtn) {
+        this._listSort = sortBtn.dataset.sort;
+        const bodyEl = shadow.querySelector('.dash-body');
+        if (bodyEl) bodyEl.innerHTML = this._renderDashboardBody();
+        return;
+      }
 
-    shadow.addEventListener('change', (e) => {
-      if (e.target.classList.contains('sort-select')) {
-        this._sortMode = e.target.value;
-        this._updateCategory();
+      const chartLbl = e.target.closest('.chart-label');
+      if (chartLbl) {
+        this._toggleChartFactor(chartLbl.dataset.chartKey);
+        return;
+      }
+
+      const listRow = e.target.closest('.list-row');
+      if (listRow && !listRow.classList.contains('head') && listRow.dataset.listKey) {
+        this._toggleListRow(listRow.dataset.listKey);
+        return;
       }
     });
 
     shadow.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        const factorHeader = e.target.closest('.factor-header');
-        if (factorHeader) {
-          e.preventDefault();
-          const card = factorHeader.closest('.factor-card');
-          if (card) this._toggleFactor(card.dataset.factor);
-          return;
-        }
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const listRow = e.target.closest('.list-row');
+      if (listRow && !listRow.classList.contains('head') && listRow.dataset.listKey) {
+        e.preventDefault();
+        this._toggleListRow(listRow.dataset.listKey);
       }
     });
   }
@@ -1006,50 +1370,197 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .pick-answer { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: #fff; line-height: 1.2; margin: 0; }
       .pick-note { margin: 10px 0 0; font-size: 13px; color: rgba(255,255,255,0.62); line-height: 1.5; }
 
-      .explore-section { padding: 48px 0 64px; }
+      /* ========== DATA DASHBOARD (mobile-first) ========== */
+      .dash-section { padding: 40px 0 56px; background: var(--gray-100); }
+      .dash-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+      .dash-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: var(--green-dark); margin-bottom: 10px; }
+      .dash-eyebrow::before { content: ''; width: 14px; height: 1px; background: currentColor; }
+      .dash-h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 5.5vw, 40px); letter-spacing: -0.02em; line-height: 1.08; margin: 0; color: var(--dark); max-width: 20ch; }
+      .dash-h2 em { font-style: normal; color: var(--green); font-family: inherit; }
+      .dash-step { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; font-family: 'Space Grotesk', sans-serif; }
+      .dash-lede { color: var(--gray-600); font-size: 15px; max-width: 64ch; margin: 0 0 24px; line-height: 1.55; }
+      .dash-body { }
+      .dash-empty { padding: 24px 18px; text-align: center; color: var(--gray-400); font-size: 14px; background: #fff; border: 1px dashed var(--gray-200); border-radius: 16px; }
 
-      .sort-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
-      .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; }
-      .sort-select { padding: 6px 28px 6px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance: none; appearance: none; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; transition: border-color 0.2s; }
-      .sort-select:hover, .sort-select:focus { border-color: var(--green); outline: none; }
+      /* View Picker */
+      .view-picker { display: flex; flex-direction: column; gap: 4px; padding: 6px; margin: 0 0 22px; background: #fff; border: 1px solid var(--gray-200); border-radius: 16px; }
+      .view-tab { position: relative; display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: transparent; border: 0; border-radius: 11px; cursor: pointer; text-align: left; color: var(--gray-600); font-family: inherit; transition: background .2s ease-out, color .2s ease-out; width: 100%; }
+      .view-tab:hover { background: var(--gray-50); color: var(--dark); }
+      .view-tab.active { background: var(--dark); color: #fff; }
+      .view-icon { width: 36px; height: 36px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; background: var(--gray-100); color: var(--dark); flex-shrink: 0; transition: background .2s ease-out, color .2s ease-out; }
+      .view-icon svg { width: 18px; height: 18px; }
+      .view-tab.active .view-icon { background: var(--green); color: #fff; }
+      .view-meta { min-width: 0; flex: 1; }
+      .view-lbl { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; line-height: 1.2; color: inherit; display: block; letter-spacing: -0.005em; }
+      .view-sub { font-size: 11.5px; font-weight: 500; line-height: 1.3; color: var(--gray-400); margin-top: 2px; display: block; }
+      .view-tab.active .view-sub { color: rgba(255,255,255,0.65); }
+      .view-step { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.04em; flex-shrink: 0; }
+      .view-tab.active .view-step { color: rgba(255,255,255,0.5); }
 
-      .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
-      .cat-tabs::-webkit-scrollbar { display: none; }
-      .cat-tab { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 50px; border: 2px solid var(--gray-200); background: #fff; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
-      .cat-tab.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
-      .cat-tab:hover { border-color: var(--green); }
-      .cat-tab-icon { width: 16px; height: 16px; display: flex; }
-      .cat-tab-icon svg { width: 16px; height: 16px; }
-      .cat-tab-count { background: var(--gray-100); color: var(--gray-400); font-size: 11px; padding: 1px 7px; border-radius: 50px; }
-      .cat-tab.active .cat-tab-count { background: rgba(34,197,94,0.2); color: var(--green-dark); }
+      /* Category rail */
+      .cat-rail { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; }
+      .cat-chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 9999px; background: #fff; border: 1px solid var(--gray-200); font-size: 12px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all .15s; font-family: inherit; }
+      .cat-chip .cat-hue { width: 8px; height: 8px; border-radius: 50%; }
+      .cat-chip:hover { border-color: var(--gray-400); }
+      .cat-chip.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+      .cat-chip .count { font-size: 11px; color: var(--gray-400); padding-left: 6px; border-left: 1px solid var(--gray-200); }
+      .cat-chip.active .count { color: rgba(255,255,255,0.55); border-color: rgba(255,255,255,0.2); }
 
-      .factor-cards { display: grid; grid-template-columns: 1fr; gap: 12px; }
-      .factor-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s, border-color 0.3s; }
-      .factor-card:hover { box-shadow: var(--shadow-hover); border-color: var(--gray-300); }
-      .factor-header { padding: 20px; cursor: pointer; }
-      .factor-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-      .factor-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-      .badge-direction { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 50px; font-size: 12px; font-weight: 600; }
-      .badge-icon { width: 14px; height: 14px; display: flex; }
-      .badge-icon svg { width: 14px; height: 14px; }
-      .factor-toggle { width: 24px; height: 24px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
-      .factor-toggle svg { width: 24px; height: 24px; }
-      .factor-card.expanded .factor-toggle { transform: rotate(180deg); }
-      .factor-name { font-size: 18px; margin-bottom: 4px; color: var(--dark); }
-      .factor-effect { font-size: 14px; font-weight: 600; color: var(--gray-600); margin-bottom: 2px; }
-      .factor-evidence-text { font-size: 13px; color: var(--dark); }
-      .evidence-label { color: var(--gray-400); font-weight: 500; }
+      /* Chart view */
+      .k-chart { background: #fff; border: 1px solid var(--gray-200); border-radius: 20px; padding: 22px 18px 28px; position: relative; overflow: hidden; box-shadow: 0 1px 0 rgba(30,41,59,0.03); }
+      .k-chart-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+      .chart-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px; color: var(--dark); margin: 0 0 4px; letter-spacing: -0.01em; }
+      .chart-sub { font-size: 13px; color: var(--gray-400); margin: 0; line-height: 1.45; }
+      .chart-meta { font-size: 12px; color: var(--gray-400); font-weight: 500; white-space: nowrap; }
+      .chart-legend-head { display: flex; justify-content: space-between; gap: 8px; margin: 4px 0 14px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700; color: var(--gray-400); }
+      .chart-legend-head .helps { color: var(--green-dark); display: inline-flex; align-items: center; gap: 6px; }
+      .chart-legend-head .hurts { color: var(--red); display: inline-flex; align-items: center; gap: 6px; }
+      .chart-legend-head .sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+      .chart-legend-head .sw.pos { background: linear-gradient(-90deg, #22C55E 0%, #4ADE80 100%); }
+      .chart-legend-head .sw.neg { background: linear-gradient(90deg, #EF4444 0%, #F87171 100%); }
 
-      .factor-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
-      .factor-card.expanded .factor-body { max-height: 800px; padding: 0 20px 20px; }
-      .factor-detail { border-top: 1px solid var(--gray-100); padding-top: 16px; }
-      .detail-row { margin-bottom: 12px; }
-      .detail-row:last-child { margin-bottom: 0; }
-      .detail-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); margin-bottom: 2px; }
-      .detail-value { font-size: 14px; color: var(--gray-600); line-height: 1.5; }
-      .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green); font-weight: 500; font-size: 13px; }
+      .chart-wrap { display: grid; grid-template-columns: 1fr; row-gap: 12px; position: relative; font-feature-settings: "tnum" 1; }
+      .chart-row { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; row-gap: 6px; transition: opacity .25s; }
+      .chart-row.dim { opacity: 0.35; }
+      .chart-label { grid-column: 1; grid-row: 1; display: inline-flex; align-items: center; gap: 8px; padding: 0; background: none; border: 0; cursor: pointer; text-align: left; font-family: inherit; font-size: 13.5px; font-weight: 600; color: var(--dark); line-height: 1.2; min-width: 0; }
+      .chart-label:hover { color: var(--green-dark); }
+      .chart-label-name { min-width: 0; }
+      .chart-label-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+      .chart-val { grid-column: 2; grid-row: 1; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: -0.01em; text-align: right; white-space: nowrap; }
+      .chart-val.pos { color: var(--green-dark); }
+      .chart-val.neg { color: var(--red); }
+      .chart-val.zero { color: var(--gray-400); }
+      .chart-caveat { font-size: 10px; color: var(--gray-400); margin-left: 2px; }
+      .chart-bar { grid-column: 1 / -1; grid-row: 2; position: relative; height: 22px; }
+      .chart-bar .chart-axis { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--gray-200); }
+      .chart-bar .chart-fill { position: absolute; top: 4px; bottom: 4px; border-radius: 4px; animation: chartGrow .7s cubic-bezier(0.16, 1, 0.3, 1) both; transform-origin: left center; }
+      .chart-bar .chart-fill.pos { background: linear-gradient(-90deg, #22C55E 0%, #4ADE80 100%); }
+      .chart-bar .chart-fill.neg { background: linear-gradient(90deg, #EF4444 0%, #F87171 100%); }
+      .chart-bar .chart-fill.zero { left: 50%; width: 4px; background: var(--gray-300); transform: translateX(-2px); }
+      @keyframes chartGrow { from { width: 0 !important; } }
+      .chart-scale-spacer { display: none; }
+      .chart-scale { grid-column: 1 / -1; position: relative; height: 26px; margin-top: 6px; border-top: 1px solid var(--gray-200); color: var(--gray-400); font-size: 10.5px; font-feature-settings: "tnum" 1; }
+      .chart-tick { position: absolute; top: 6px; transform: translateX(-50%); padding-top: 2px; white-space: nowrap; }
+      .chart-tick::before { content: ''; position: absolute; left: 50%; top: -1px; height: 4px; width: 1px; background: var(--gray-300); transform: translateX(-50%); }
+      .chart-tick.zero { font-weight: 600; color: var(--dark); }
+      .chart-caveat-note { margin-top: 16px; font-size: 11px; color: var(--gray-400); line-height: 1.5; }
+
+      /* Chart detail */
+      .chart-detail { margin-top: 20px; padding: 18px 18px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 14px; display: grid; grid-template-columns: 1fr; gap: 14px; animation: detailIn .35s cubic-bezier(0.16, 1, 0.3, 1); }
+      @keyframes detailIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+      .chart-detail-h { grid-column: 1 / -1; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; margin: 0 0 4px; color: var(--dark); display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; }
+      .chart-detail-big { font-size: 22px; letter-spacing: -0.02em; }
+      .chart-detail-big.pos { color: var(--green-dark); }
+      .chart-detail-big.neg { color: var(--red); }
+      .chart-detail-big.zero { color: var(--gray-400); }
+      .chart-detail-col { display: flex; flex-direction: column; gap: 14px; }
+      .chart-detail-row .lbl { font-size: 10px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; display: block; margin-bottom: 3px; }
+      .chart-detail-row p { margin: 0; font-size: 13.5px; color: var(--gray-600); line-height: 1.55; }
+      .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green-dark); font-weight: 500; font-size: 13px; }
       .source-link svg { width: 12px; height: 12px; }
-      .source-link:hover { color: var(--green-dark); }
+      .source-link:hover { color: var(--green); }
+
+      /* List / leaderboard view */
+      .list-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+      .list-sort-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-400); font-weight: 600; }
+      .list-sort-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+      .list-sort-btn { padding: 6px 12px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
+      .list-sort-btn:hover { border-color: var(--gray-400); }
+      .list-sort-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+      .k-list { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; overflow: hidden; box-shadow: 0 1px 0 rgba(30,41,59,0.03); }
+      .list-row { display: grid; grid-template-columns: 30px 1fr 74px 70px 26px; gap: 10px; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--gray-100); font-size: 13px; cursor: pointer; transition: background .15s; }
+      .list-row:last-child { border-bottom: 0; }
+      .list-row:hover { background: var(--gray-50); }
+      .list-row.head { cursor: default; font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-400); font-weight: 600; background: var(--gray-50); }
+      .list-row.head:hover { background: var(--gray-50); }
+      .list-row .hide-m { display: none; }
+      .list-rank { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; color: var(--gray-400); font-feature-settings: "tnum" 1; }
+      .list-name { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--dark); font-size: 13.5px; line-height: 1.2; min-width: 0; }
+      .list-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+      .list-dir { font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+      .list-dir.pos { background: var(--green-light); color: var(--green-dark); }
+      .list-dir.neg { background: rgba(239,68,68,0.1); color: var(--red); }
+      .list-dir.neu { background: rgba(148,163,184,0.18); color: var(--gray-600); }
+      .list-eff { color: var(--gray-600); font-size: 13px; }
+      .list-ev { font-size: 11px; font-weight: 600; }
+      .list-waso { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; color: var(--dark); font-feature-settings: "tnum" 1; text-align: right; white-space: nowrap; }
+      .list-waso.pos { color: var(--green-dark); }
+      .list-waso.neg { color: var(--red); }
+      .list-waso.zero { color: var(--gray-400); font-weight: 500; }
+      .list-waso.na { color: var(--gray-400); font-size: 12px; font-weight: 500; }
+      .list-waso-head { text-align: right; }
+      .list-chev { color: var(--gray-400); transition: transform .2s; display: flex; justify-content: flex-end; }
+      .list-chev svg { width: 14px; height: 14px; }
+      .list-row.expanded .list-chev { transform: rotate(90deg); }
+      .list-body { padding: 0 14px 16px 44px; background: var(--gray-50); border-bottom: 1px solid var(--gray-100); font-size: 13px; color: var(--gray-600); }
+      .list-body-grid { display: grid; grid-template-columns: 1fr; gap: 4px; padding-top: 14px; }
+      .list-body .lbl { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; margin-bottom: 3px; display: block; }
+      .list-body p { margin: 0 0 10px; line-height: 1.55; }
+      .list-body a { color: var(--green-dark); font-weight: 500; }
+
+      /* Timeline view */
+      .k-timeline { background: #fff; border: 1px solid var(--gray-200); border-radius: 20px; padding: 22px 18px; box-shadow: 0 1px 0 rgba(30,41,59,0.03); }
+      .tl-track { position: relative; padding: 16px 0 4px; }
+      .tl-axis { height: 2px; background: linear-gradient(90deg, rgba(34,197,94,0.2) 0%, rgba(30,41,59,0.15) 18%, var(--dark) 35%, var(--dark) 65%, rgba(30,41,59,0.15) 82%, rgba(34,197,94,0.2) 100%); }
+      .tl-ticks { display: flex; justify-content: space-between; margin-top: 10px; font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 11px; color: var(--gray-400); font-feature-settings: "tnum" 1; letter-spacing: 0.04em; }
+      .tl-ticks span.now { color: var(--green-dark); font-weight: 600; }
+      .tl-slots { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 22px; }
+      .tl-slot { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; min-height: 0; }
+      .tl-slot.overnight { background: var(--dark-card); border-color: var(--dark); color: #fff; }
+      .tl-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
+      .tl-time { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gray-400); white-space: nowrap; font-feature-settings: "tnum" 1; }
+      .tl-slot.overnight .tl-time { color: rgba(255,255,255,0.65); }
+      .tl-label { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); margin: 2px 0 0; letter-spacing: -0.01em; white-space: nowrap; }
+      .tl-slot.overnight .tl-label { color: #fff; }
+      .tl-count { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--gray-400); font-feature-settings: "tnum" 1; letter-spacing: -0.02em; }
+      .tl-slot.overnight .tl-count { color: rgba(255,255,255,0.55); }
+      .tl-desc { font-size: 11.5px; color: var(--gray-400); line-height: 1.45; margin: 6px 0 12px; }
+      .tl-slot.overnight .tl-desc { color: rgba(255,255,255,0.55); }
+      .tl-chips { display: flex; flex-direction: column; gap: 6px; }
+      .tl-chip { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 9px 11px; font-size: 12px; display: flex; align-items: flex-start; gap: 8px; }
+      .tl-chip.pos { border-left: 3px solid var(--green); }
+      .tl-chip.neg { border-left: 3px solid var(--red); }
+      .tl-chip.neu { border-left: 3px solid var(--gray-400); }
+      .tl-slot.overnight .tl-chip { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+      .tl-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+      .tl-text { flex: 1; min-width: 0; }
+      .tl-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12.5px; color: var(--dark); display: block; line-height: 1.2; }
+      .tl-slot.overnight .tl-name { color: #fff; }
+      .tl-eff { font-size: 11px; color: var(--gray-600); margin-top: 2px; display: block; }
+      .tl-slot.overnight .tl-eff { color: rgba(255,255,255,0.55); }
+      .tl-empty { font-size: 11.5px; color: var(--gray-400); font-style: italic; padding: 6px 0; margin: 0; }
+      .tl-slot.overnight .tl-empty { color: rgba(255,255,255,0.4); }
+
+      /* Qualitative grid */
+      .qual-wrap { margin-top: 28px; }
+      .qual-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+      .qual-head h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px; color: var(--dark); margin: 0; letter-spacing: -0.01em; }
+      .qual-count { font-size: 11.5px; color: var(--gray-400); font-weight: 500; }
+      .qual-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+      .qual-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 14px 16px; transition: border-color .2s, transform .2s, box-shadow .2s; }
+      .qual-card:hover { border-color: var(--gray-400); transform: translateY(-1px); box-shadow: var(--shadow); }
+      .qual-card.pos { border-left: 3px solid var(--green); }
+      .qual-card.neg { border-left: 3px solid var(--red); }
+      .qual-card.neu { border-left: 3px solid var(--gray-400); }
+      .qual-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
+      .qual-cat { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-400); font-weight: 600; }
+      .qual-ev { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.4px; }
+      .qual-ev.strong { background: var(--green-light); color: var(--green-dark); }
+      .qual-ev.moderate { background: rgba(245,158,11,0.12); color: #B45309; }
+      .qual-ev.limited { background: rgba(99,102,241,0.12); color: #4338CA; }
+      .qual-ev.weak { background: rgba(148,163,184,0.18); color: var(--gray-600); }
+      .qual-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); margin: 0 0 4px; line-height: 1.2; }
+      .qual-effect { font-size: 13px; color: var(--gray-600); margin: 0 0 10px; font-weight: 500; }
+      .qual-details summary { list-style: none; cursor: pointer; }
+      .qual-details summary::-webkit-details-marker { display: none; }
+      .qual-more { margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--green-dark); display: inline-flex; align-items: center; gap: 4px; }
+      .qual-details[open] .qual-more-closed { display: none; }
+      .qual-details:not([open]) .qual-more-open { display: none; }
+      .qual-body { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--gray-200); font-size: 12.5px; line-height: 1.55; color: var(--gray-600); }
+      .qual-body p { margin: 0 0 8px; }
+      .qual-body p:last-child { margin-bottom: 0; }
+      .qual-body strong { color: var(--dark); font-weight: 600; }
+      .qual-body a { color: var(--green-dark); font-weight: 500; }
 
       .sources-section { padding: 48px 0; }
       .src-accordion { max-width: 720px; margin: 0 auto; }
@@ -1122,27 +1633,53 @@ class KygoStayingAsleepFactors extends HTMLElement {
         .hero-meta .hero-cell:last-child { border-right: 0; padding-right: 0; }
         .hero-meta .hero-cell:nth-child(n+3), .hero-meta .hero-cell:nth-child(-n+2) { padding-top: 0; padding-bottom: 0; }
       }
+      @media (min-width: 680px) {
+        .view-picker { flex-direction: row; gap: 8px; padding: 8px; }
+        .view-tab { flex: 1 1 0; min-width: 0; }
+        .qual-grid { grid-template-columns: repeat(2, 1fr); }
+        .tl-slots { grid-template-columns: repeat(2, 1fr); }
+      }
       @media (min-width: 768px) {
         .header-inner { padding: 14px 24px; }
         .hero { padding: 72px 0 48px; }
         .picks-grid { grid-template-columns: 1fr 1fr; }
-        .factor-cards { grid-template-columns: 1fr 1fr; }
-        .picks-section, .explore-section { padding: 64px 0; }
+        .picks-section { padding: 64px 0; }
         .picks-card { padding: 48px 36px; border-radius: 28px; }
         .blog-cta { padding: 48px 40px; }
+        .dash-section { padding: 56px 0 72px; }
+        .k-chart { padding: 30px 32px 36px; border-radius: 24px; }
+        .k-timeline { padding: 30px 28px; border-radius: 24px; }
+        .chart-wrap { grid-template-columns: 220px 1fr auto; column-gap: 20px; row-gap: 6px; }
+        .chart-row { display: contents; }
+        .chart-label { grid-column: 1; grid-row: auto; justify-content: flex-end; text-align: right; padding: 10px 0; font-size: 14px; }
+        .chart-bar { grid-column: 2; grid-row: auto; height: 34px; }
+        .chart-bar .chart-fill { top: 6px; bottom: 6px; border-radius: 5px; }
+        .chart-val { grid-column: 3; grid-row: auto; padding: 10px 0; min-width: 78px; text-align: left; font-size: 15px; }
+        .chart-scale-spacer { display: block; }
+        .chart-scale-spacer:first-of-type { grid-column: 1; }
+        .chart-scale { grid-column: 2; margin-top: 4px; }
+        .chart-scale-spacer:last-of-type { grid-column: 3; }
+        .chart-detail { grid-template-columns: 1fr 1fr; gap: 20px 32px; padding: 22px 24px; }
+        .list-row { grid-template-columns: 40px 1.6fr 110px 1fr 110px 80px 28px; gap: 14px; padding: 14px 20px; font-size: 13px; }
+        .list-row .hide-m { display: block; }
+        .list-body { padding: 0 20px 18px 54px; }
+        .list-body-grid { grid-template-columns: 1fr 1fr; gap: 8px 28px; }
+        .tl-slots { grid-template-columns: repeat(5, 1fr); gap: 14px; }
+        .tl-slot { min-height: 190px; }
+        .qual-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
       }
       @media (min-width: 1000px) {
         .hero-wave { display: block; position: absolute; right: -20px; top: 30px; width: 46%; max-width: 560px; opacity: 0.9; pointer-events: none; }
       }
       @media (min-width: 1024px) {
         .picks-grid { grid-template-columns: 1fr 1fr 1fr; }
-        .explore-section { padding: 80px 0; }
+        .dash-section { padding: 72px 0 88px; }
       }
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-        .factor-body { transition: none; }
         .pulse-dot, .hero-dot { animation: none; }
-        .pick-card { transition: none; }
+        .pick-card, .qual-card, .chart-fill, .view-tab, .list-row, .list-chev { transition: none; animation: none; }
+        .chart-detail { animation: none; }
       }
     `;
   }
