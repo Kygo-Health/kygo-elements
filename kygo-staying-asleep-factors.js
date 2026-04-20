@@ -735,7 +735,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
         <div class="list-row head" role="row">
           <div>#</div>
           <div>Factor</div>
-          <div>Direction</div>
+          <div class="list-col-dir">Direction</div>
           <div class="hide-m">Effect</div>
           <div class="hide-m">Evidence</div>
           <div class="list-waso-head">WASO Δ</div>
@@ -796,37 +796,49 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .filter(f => f.waso === null || f.waso === undefined)
       .filter(f => !this._catFilter || f.category === this._catFilter);
     if (qual.length === 0) return '';
-    const cards = qual.map(f => {
-      const catLabel = (this._categoryMeta[f.category] || {}).label || f.category;
-      return `
-        <article class="qual-card ${this._dirClass(f.direction)}">
-          <div class="qual-top">
-            <span class="qual-cat">${catLabel}</span>
-            <span class="qual-ev ${f.evidence}">${f.evidence}</span>
-          </div>
+
+    const buildCard = (f) => `
+      <article class="qual-card ${this._dirClass(f.direction)}">
+        <div class="qual-row">
           <h4 class="qual-name">${f.name}</h4>
-          <p class="qual-effect">${f.effect}</p>
-          <details class="qual-details">
-            <summary class="qual-more">
-              <span class="qual-more-closed">Read more ↓</span>
-              <span class="qual-more-open">Collapse ↑</span>
-            </summary>
-            <div class="qual-body">
-              <p>${f.whatThisMeans}</p>
-              <p><strong>Mechanism.</strong> ${f.mechanism}</p>
-              <p><strong>What to do.</strong> ${f.dosage}</p>
-              <p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
-            </div>
-          </details>
-        </article>`;
-    }).join('');
+          <span class="qual-ev ${f.evidence}" title="${f.evidence} evidence">${f.evidence[0].toUpperCase()}</span>
+        </div>
+        <p class="qual-effect">${f.effect}</p>
+        <details class="qual-details">
+          <summary class="qual-more">
+            <span class="qual-more-closed">Read more ↓</span>
+            <span class="qual-more-open">Collapse ↑</span>
+          </summary>
+          <div class="qual-body">
+            <p>${f.whatThisMeans}</p>
+            <p><strong>Mechanism.</strong> ${f.mechanism}</p>
+            <p><strong>What to do.</strong> ${f.dosage}</p>
+            <p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
+          </div>
+        </details>
+      </article>`;
+
+    const groups = Object.entries(this._categoryMeta).map(([catKey, meta]) => {
+      const items = qual.filter(f => f.category === catKey);
+      if (items.length === 0) return '';
+      return `
+        <div class="qual-group">
+          <div class="qual-group-head">
+            <span class="qual-group-dot" style="background:${meta.hue}" aria-hidden="true"></span>
+            <h4 class="qual-group-title">${meta.label}</h4>
+            <span class="qual-group-count">${items.length}</span>
+          </div>
+          <div class="qual-grid">${items.map(buildCard).join('')}</div>
+        </div>`;
+    }).filter(Boolean).join('');
+
     return `
       <div class="qual-wrap">
         <div class="qual-head">
           <h3>Also matters — directional evidence without a minute-figure</h3>
           <span class="qual-count">${qual.length} qualitative factor${qual.length === 1 ? '' : 's'}</span>
         </div>
-        <div class="qual-grid">${cards}</div>
+        ${groups}
       </div>`;
   }
 
@@ -1022,7 +1034,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
 
           <div class="animate-on-scroll">${this._renderCatRail()}</div>
 
-          <div class="dash-body animate-on-scroll">${this._renderDashboardBody()}</div>
+          <div class="dash-body">${this._renderDashboardBody()}</div>
 
           <div class="blog-link-wrap animate-on-scroll">
             <a href="https://www.kygo.app/post/how-to-stay-asleep-factors-ranked-by-evidence" class="blog-link-card" target="_blank" rel="noopener">
@@ -1329,16 +1341,16 @@ class KygoStayingAsleepFactors extends HTMLElement {
       /* ========== HERO (mobile-first) ========== */
       .hero { padding: 40px 0 28px; background: #fff; }
       .hero-inner { position: relative; }
-      .hero-kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; color: var(--green-dark); background: var(--green-light); padding: 6px 12px; border-radius: 9999px; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 20px; }
-      .hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse 2.2s infinite; }
+      .hero-kicker { display: inline-flex; align-items: center; gap: 7px; font-size: 9.5px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 5px 10px; border-radius: 9999px; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px; white-space: nowrap; max-width: 100%; }
+      .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse 2.2s infinite; flex-shrink: 0; }
       @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.6);} 70%{box-shadow:0 0 0 8px rgba(34,197,94,0);} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0);} }
       .hero-title { font-size: clamp(32px, 8.5vw, 76px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; margin: 0; color: var(--dark); max-width: 14ch; }
       .hero-title em { font-style: normal; color: var(--green); font-family: inherit; }
       .hero-sub { margin: 20px 0 0; max-width: 54ch; font-size: clamp(15px, 2.2vw, 19px); line-height: 1.5; color: var(--gray-600); }
       .hero-sub strong { color: var(--dark); font-weight: 600; }
       .hero-meta { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--gray-200); padding-top: 20px; max-width: 760px; }
-      .hero-meta .hero-cell { padding: 8px 12px 8px 0; border-right: 1px solid var(--gray-200); }
-      .hero-meta .hero-cell:nth-child(2n) { border-right: 0; padding-right: 0; }
+      .hero-meta .hero-cell { padding: 8px 14px 8px 0; border-right: 1px solid var(--gray-200); min-width: 0; }
+      .hero-meta .hero-cell:nth-child(2n) { border-right: 0; padding-right: 0; padding-left: 16px; }
       .hero-meta .hero-cell:nth-child(-n+2) { border-bottom: 1px solid var(--gray-200); padding-bottom: 16px; }
       .hero-meta .hero-cell:nth-child(n+3) { padding-top: 16px; }
       .hero-num { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 6.5vw, 40px); color: var(--dark); letter-spacing: -0.02em; font-feature-settings: "tnum" 1; display: block; line-height: 1; }
@@ -1378,29 +1390,29 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .dash-h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 5.5vw, 40px); letter-spacing: -0.02em; line-height: 1.08; margin: 0; color: var(--dark); max-width: 20ch; }
       .dash-h2 em { font-style: normal; color: var(--green); font-family: inherit; }
       .dash-step { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; font-family: 'Space Grotesk', sans-serif; }
-      .dash-lede { color: var(--gray-600); font-size: 15px; max-width: 64ch; margin: 0 0 24px; line-height: 1.55; }
+      .dash-lede { display: none; color: var(--gray-600); font-size: 15px; max-width: 64ch; margin: 0 0 18px; line-height: 1.55; }
       .dash-body { }
       .dash-empty { padding: 24px 18px; text-align: center; color: var(--gray-400); font-size: 14px; background: #fff; border: 1px dashed var(--gray-200); border-radius: 16px; }
 
-      /* View Picker */
-      .view-picker { display: flex; flex-direction: column; gap: 4px; padding: 6px; margin: 0 0 22px; background: #fff; border: 1px solid var(--gray-200); border-radius: 16px; }
-      .view-tab { position: relative; display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: transparent; border: 0; border-radius: 11px; cursor: pointer; text-align: left; color: var(--gray-600); font-family: inherit; transition: background .2s ease-out, color .2s ease-out; width: 100%; }
+      /* View Picker — 3x1 row on mobile */
+      .view-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin: 0 0 14px; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; }
+      .view-tab { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 10px 6px 8px; background: transparent; border: 0; border-radius: 10px; cursor: pointer; text-align: center; color: var(--gray-600); font-family: inherit; transition: background .2s ease-out, color .2s ease-out; min-width: 0; }
       .view-tab:hover { background: var(--gray-50); color: var(--dark); }
       .view-tab.active { background: var(--dark); color: #fff; }
-      .view-icon { width: 36px; height: 36px; border-radius: 9px; display: inline-flex; align-items: center; justify-content: center; background: var(--gray-100); color: var(--dark); flex-shrink: 0; transition: background .2s ease-out, color .2s ease-out; }
-      .view-icon svg { width: 18px; height: 18px; }
+      .view-icon { width: 26px; height: 26px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; background: var(--gray-100); color: var(--dark); flex-shrink: 0; transition: background .2s ease-out, color .2s ease-out; }
+      .view-icon svg { width: 14px; height: 14px; }
       .view-tab.active .view-icon { background: var(--green); color: #fff; }
-      .view-meta { min-width: 0; flex: 1; }
-      .view-lbl { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; line-height: 1.2; color: inherit; display: block; letter-spacing: -0.005em; }
-      .view-sub { font-size: 11.5px; font-weight: 500; line-height: 1.3; color: var(--gray-400); margin-top: 2px; display: block; }
-      .view-tab.active .view-sub { color: rgba(255,255,255,0.65); }
-      .view-step { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.04em; flex-shrink: 0; }
+      .view-meta { min-width: 0; }
+      .view-lbl { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; line-height: 1.15; color: inherit; display: block; letter-spacing: -0.005em; }
+      .view-sub { display: none; }
+      .view-step { position: absolute; top: 6px; right: 8px; font-family: 'Space Grotesk', sans-serif; font-size: 9px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.04em; }
       .view-tab.active .view-step { color: rgba(255,255,255,0.5); }
 
-      /* Category rail */
-      .cat-rail { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 22px; }
-      .cat-chip { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 9999px; background: #fff; border: 1px solid var(--gray-200); font-size: 12px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all .15s; font-family: inherit; }
-      .cat-chip .cat-hue { width: 8px; height: 8px; border-radius: 50%; }
+      /* Category rail — single-row horizontal scroll on mobile */
+      .cat-rail { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 2px 0 6px; margin: 0 -20px 18px; padding-left: 20px; padding-right: 20px; scroll-padding-left: 20px; }
+      .cat-rail::-webkit-scrollbar { display: none; }
+      .cat-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border-radius: 9999px; background: #fff; border: 1px solid var(--gray-200); font-size: 12px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all .15s; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
+      .cat-chip .cat-hue { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
       .cat-chip:hover { border-color: var(--gray-400); }
       .cat-chip.active { background: var(--dark); color: #fff; border-color: var(--dark); }
       .cat-chip .count { font-size: 11px; color: var(--gray-400); padding-left: 6px; border-left: 1px solid var(--gray-200); }
@@ -1419,14 +1431,14 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .chart-legend-head .sw.pos { background: linear-gradient(-90deg, #22C55E 0%, #4ADE80 100%); }
       .chart-legend-head .sw.neg { background: linear-gradient(90deg, #EF4444 0%, #F87171 100%); }
 
-      .chart-wrap { display: grid; grid-template-columns: 1fr; row-gap: 12px; position: relative; font-feature-settings: "tnum" 1; }
-      .chart-row { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; row-gap: 6px; transition: opacity .25s; }
+      .chart-wrap { display: grid; grid-template-columns: 1fr; row-gap: 10px; position: relative; font-feature-settings: "tnum" 1; }
+      .chart-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; row-gap: 4px; transition: opacity .25s; }
       .chart-row.dim { opacity: 0.35; }
-      .chart-label { grid-column: 1; grid-row: 1; display: inline-flex; align-items: center; gap: 8px; padding: 0; background: none; border: 0; cursor: pointer; text-align: left; font-family: inherit; font-size: 13.5px; font-weight: 600; color: var(--dark); line-height: 1.2; min-width: 0; }
+      .chart-label { grid-column: 1; grid-row: 1; display: inline-flex; align-items: center; gap: 6px; padding: 0; background: none; border: 0; cursor: pointer; text-align: left; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--dark); line-height: 1.25; min-width: 0; max-width: 100%; padding-right: 8px; }
       .chart-label:hover { color: var(--green-dark); }
-      .chart-label-name { min-width: 0; }
+      .chart-label-name { min-width: 0; overflow-wrap: anywhere; word-break: normal; hyphens: auto; }
       .chart-label-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-      .chart-val { grid-column: 2; grid-row: 1; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: -0.01em; text-align: right; white-space: nowrap; }
+      .chart-val { grid-column: 2; grid-row: 1; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: -0.01em; text-align: right; white-space: nowrap; align-self: start; }
       .chart-val.pos { color: var(--green-dark); }
       .chart-val.neg { color: var(--red); }
       .chart-val.zero { color: var(--gray-400); }
@@ -1468,7 +1480,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .list-sort-btn:hover { border-color: var(--gray-400); }
       .list-sort-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
       .k-list { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; overflow: hidden; box-shadow: 0 1px 0 rgba(30,41,59,0.03); }
-      .list-row { display: grid; grid-template-columns: 30px 1fr 74px 70px 26px; gap: 10px; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--gray-100); font-size: 13px; cursor: pointer; transition: background .15s; }
+      .list-row { display: grid; grid-template-columns: 28px 1fr 74px 22px; gap: 10px; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--gray-100); font-size: 13px; cursor: pointer; transition: background .15s; }
+      .list-row .list-col-dir { display: none; }
       .list-row:last-child { border-bottom: 0; }
       .list-row:hover { background: var(--gray-50); }
       .list-row.head { cursor: default; font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-400); font-weight: 600; background: var(--gray-50); }
@@ -1531,33 +1544,39 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .tl-empty { font-size: 11.5px; color: var(--gray-400); font-style: italic; padding: 6px 0; margin: 0; }
       .tl-slot.overnight .tl-empty { color: rgba(255,255,255,0.4); }
 
-      /* Qualitative grid */
+      /* Qualitative grid — compact + grouped by category */
       .qual-wrap { margin-top: 28px; }
       .qual-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
-      .qual-head h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px; color: var(--dark); margin: 0; letter-spacing: -0.01em; }
+      .qual-head h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; line-height: 1.25; }
       .qual-count { font-size: 11.5px; color: var(--gray-400); font-weight: 500; }
-      .qual-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-      .qual-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 14px 16px; transition: border-color .2s, transform .2s, box-shadow .2s; }
-      .qual-card:hover { border-color: var(--gray-400); transform: translateY(-1px); box-shadow: var(--shadow); }
+      .qual-group { margin-bottom: 18px; }
+      .qual-group:last-child { margin-bottom: 0; }
+      .qual-group-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 0 2px; }
+      .qual-group-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+      .qual-group-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; color: var(--dark); margin: 0; letter-spacing: 0.01em; text-transform: uppercase; flex: 1; }
+      .qual-group-count { font-size: 11px; font-weight: 600; color: var(--gray-400); background: var(--gray-100); padding: 2px 8px; border-radius: 9999px; }
+      .qual-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+      .qual-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 10px 12px; transition: border-color .2s, box-shadow .2s; }
+      .qual-card:hover { border-color: var(--gray-400); }
       .qual-card.pos { border-left: 3px solid var(--green); }
       .qual-card.neg { border-left: 3px solid var(--red); }
       .qual-card.neu { border-left: 3px solid var(--gray-400); }
-      .qual-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
-      .qual-cat { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-400); font-weight: 600; }
-      .qual-ev { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.4px; }
+      .qual-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+      .qual-ev { font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; letter-spacing: 0; }
       .qual-ev.strong { background: var(--green-light); color: var(--green-dark); }
       .qual-ev.moderate { background: rgba(245,158,11,0.12); color: #B45309; }
       .qual-ev.limited { background: rgba(99,102,241,0.12); color: #4338CA; }
       .qual-ev.weak { background: rgba(148,163,184,0.18); color: var(--gray-600); }
-      .qual-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); margin: 0 0 4px; line-height: 1.2; }
-      .qual-effect { font-size: 13px; color: var(--gray-600); margin: 0 0 10px; font-weight: 500; }
+      .qual-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); margin: 0; line-height: 1.2; flex: 1; min-width: 0; }
+      .qual-effect { font-size: 11.5px; color: var(--gray-600); margin: 3px 0 0; font-weight: 500; line-height: 1.35; }
+      .qual-details { margin-top: 4px; }
       .qual-details summary { list-style: none; cursor: pointer; }
       .qual-details summary::-webkit-details-marker { display: none; }
-      .qual-more { margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--green-dark); display: inline-flex; align-items: center; gap: 4px; }
+      .qual-more { font-size: 11px; font-weight: 600; color: var(--green-dark); display: inline-flex; align-items: center; gap: 4px; padding: 4px 0 0; }
       .qual-details[open] .qual-more-closed { display: none; }
       .qual-details:not([open]) .qual-more-open { display: none; }
-      .qual-body { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--gray-200); font-size: 12.5px; line-height: 1.55; color: var(--gray-600); }
-      .qual-body p { margin: 0 0 8px; }
+      .qual-body { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--gray-200); font-size: 12px; line-height: 1.55; color: var(--gray-600); }
+      .qual-body p { margin: 0 0 6px; }
       .qual-body p:last-child { margin-bottom: 0; }
       .qual-body strong { color: var(--dark); font-weight: 600; }
       .qual-body a { color: var(--green-dark); font-weight: 500; }
@@ -1634,8 +1653,16 @@ class KygoStayingAsleepFactors extends HTMLElement {
         .hero-meta .hero-cell:nth-child(n+3), .hero-meta .hero-cell:nth-child(-n+2) { padding-top: 0; padding-bottom: 0; }
       }
       @media (min-width: 680px) {
-        .view-picker { flex-direction: row; gap: 8px; padding: 8px; }
-        .view-tab { flex: 1 1 0; min-width: 0; }
+        .view-picker { gap: 8px; padding: 8px; border-radius: 16px; }
+        .view-tab { flex-direction: row; gap: 12px; padding: 14px 16px 14px 14px; text-align: left; align-items: center; justify-content: flex-start; }
+        .view-icon { width: 36px; height: 36px; border-radius: 9px; }
+        .view-icon svg { width: 18px; height: 18px; }
+        .view-lbl { font-size: 15px; }
+        .view-sub { display: block; font-size: 11.5px; font-weight: 500; line-height: 1.3; color: var(--gray-400); margin-top: 2px; }
+        .view-tab.active .view-sub { color: rgba(255,255,255,0.65); }
+        .view-step { top: 10px; right: 12px; font-size: 10px; }
+        .cat-rail { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; flex-wrap: wrap; overflow: visible; }
+        .dash-lede { display: block; }
         .qual-grid { grid-template-columns: repeat(2, 1fr); }
         .tl-slots { grid-template-columns: repeat(2, 1fr); }
       }
@@ -1662,6 +1689,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
         .chart-detail { grid-template-columns: 1fr 1fr; gap: 20px 32px; padding: 22px 24px; }
         .list-row { grid-template-columns: 40px 1.6fr 110px 1fr 110px 80px 28px; gap: 14px; padding: 14px 20px; font-size: 13px; }
         .list-row .hide-m { display: block; }
+        .list-row .list-col-dir { display: block; }
         .list-body { padding: 0 20px 18px 54px; }
         .list-body-grid { grid-template-columns: 1fr 1fr; gap: 8px 28px; }
         .tl-slots { grid-template-columns: repeat(5, 1fr); gap: 14px; }
