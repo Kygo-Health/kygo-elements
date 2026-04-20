@@ -24,7 +24,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
     this._observer = null;
     this._activeCategory = 'nutrition';
     this._expandedFactor = null;
-    this._expandedTopPick = null;
     this._sortMode = 'default';
     this._eventsBound = false;
   }
@@ -377,14 +376,25 @@ class KygoStayingAsleepFactors extends HTMLElement {
   }
 
   get _topPicks() {
+    // Six headlines from the data — non-expanding editorial cards
     return [
-      { icon: 'moon',     label: 'Best Single Habit',        answer: 'Cool, dark, quiet bedroom',      note: 'Temperature, light, and noise have the strongest environmental evidence for staying asleep — all three matter every single night',                       stat: 'Fundamentals',        category: 'Environment' },
-      { icon: 'dumbbell', label: 'Best Exercise',            answer: 'Moderate aerobic exercise',      note: 'Meta-analysis of RCTs in insomnia patients: MD = −10.16 min WASO, p < .001 (Riedel 2024)',                                                                   stat: '−10 min WASO',        category: 'Exercise' },
-      { icon: 'pill',     label: 'Best Supplement',          answer: 'Ashwagandha (600 mg/day)',       note: 'Meta-analysis of 3 WASO trials, n=281 — SMD −0.39. The only supplement with direct pooled WASO evidence (Cheah 2021)',                                        stat: 'SMD −0.39',           category: 'Supplements' },
-      { icon: 'wind',     label: 'Most Overlooked Fix',      answer: 'Fix nighttime bathroom trips',   note: '3–4 nocturia episodes added 34 min to WASO in the SOF study (n=1,520). Limit evening fluids; rule out BPH, overactive bladder, OSA-driven ANP',              stat: '+34 min WASO',        category: 'Demographics' },
-      { icon: 'brain',    label: 'Quickest Impact',          answer: 'Kill dim bedroom light',         note: 'Even a nightlight-level 5–10 lux measurably increased WASO on PSG (Cho 2016). Blackout your bedroom tonight',                                                  stat: 'Immediate',           category: 'Environment' },
-      { icon: 'alert',    label: 'Biggest WASO Driver',      answer: 'Caffeine',                       note: 'Meta-analysis of 24 studies: +12 min WASO on top of longer sleep onset. Slow metabolizers are hit hardest (Gardiner 2023)',                                    stat: '+12 min WASO',        category: 'Nutrition', warning: true }
+      { label: 'Biggest hurter',     stat: '+34 min',   answer: 'Nocturia (≥2 trips)',        note: 'SOF study, n=1,520 — WASO climbs from 55.5 → 89.8 min as trips go 0 → 3–4.',                             cls: 'warn' },
+      { label: 'Biggest helper',     stat: '−17 min',   answer: 'Tart cherry juice',          note: 'Pigeon 2010 RCT crossover, n=15 insomnia adults. Needs replication, but the signal is clean.',            cls: '' },
+      { label: 'Hidden environment', stat: '+30 min',   answer: 'Noise over 50 dBA',          note: 'WHO review of 74 studies. Even intermittent neighborhood noise shows dose-response effects.',            cls: 'warn' },
+      { label: 'Reliable daily win', stat: '−10 min',   answer: 'Moderate aerobic exercise',  note: 'Riedel 2024 meta-analysis of insomnia RCTs. MD = −10.16 min WASO, p < .001.',                             cls: '' },
+      { label: 'Myth, busted',       stat: '±0 min',    answer: 'Melatonin (standard)',       note: 'Menczel Schrire 2022 meta-analysis — no significant WASO effect. Use for onset, not maintenance.',        cls: 'neutral' },
+      { label: 'Quickest fix',       stat: 'Tonight',   answer: 'Kill dim bedroom light',     note: 'Cho 2016 PSG — even 5–10 lux (nightlight-level) measurably raises WASO. Blackout the bedroom.',          cls: '' }
     ];
+  }
+
+  _heroStats() {
+    const all = Object.values(this._factors).flat();
+    return {
+      total:   all.length,
+      helpers: all.filter(f => f.direction === 'positive').length,
+      hurters: all.filter(f => f.direction === 'negative').length,
+      strong:  all.filter(f => f.evidence === 'strong').length
+    };
   }
 
   _icon(name) {
@@ -495,26 +505,49 @@ class KygoStayingAsleepFactors extends HTMLElement {
   }
 
   _renderTopPicks() {
-    return this._topPicks.map((p, i) => {
-      const isExpanded = this._expandedTopPick === i;
-      const warn = p.warning ? ' pick-warning' : '';
-      return `
-        <div class="pick-card ${isExpanded ? 'expanded' : ''}${warn} animate-on-scroll" data-pick="${i}" style="--delay:${i * 80}ms">
-          <div class="pick-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
-            <div class="pick-icon">${this._icon(p.icon)}</div>
-            <div class="pick-info">
-              <span class="pick-label">${p.label}</span>
-              <span class="pick-answer">${p.answer}</span>
-            </div>
-            <div class="pick-toggle">${this._icon('chevDown')}</div>
-          </div>
-          <div class="pick-body">
-            ${p.stat ? `<p class="pick-stat-detail"><span class="pick-stat-label">Key stat:</span> ${p.stat}</p>` : ''}
-            <p class="pick-note">${p.note}</p>
-            <span class="pick-cat">Category: ${p.category}</span>
-          </div>
-        </div>`;
-    }).join('');
+    return this._topPicks.map((p, i) => `
+        <article class="pick-card ${p.cls || ''} animate-on-scroll" style="--delay:${i * 70}ms">
+          <span class="pick-label">${p.label}</span>
+          <div class="pick-stat">${p.stat}</div>
+          <h3 class="pick-answer">${p.answer}</h3>
+          <p class="pick-note">${p.note}</p>
+        </article>`).join('');
+  }
+
+  _renderHeroMeta() {
+    const s = this._heroStats();
+    return `
+      <div class="hero-meta">
+        <div class="hero-cell"><span class="hero-num">${s.total}</span><span class="hero-lbl">Factors tracked</span></div>
+        <div class="hero-cell"><span class="hero-num hero-num--pos">${s.helpers}</span><span class="hero-lbl">Help you stay asleep</span></div>
+        <div class="hero-cell"><span class="hero-num hero-num--neg">${s.hurters}</span><span class="hero-lbl">Wake you up</span></div>
+        <div class="hero-cell"><span class="hero-num">${s.strong}</span><span class="hero-lbl">Strong-evidence</span></div>
+      </div>`;
+  }
+
+  _sleepWaveSvg() {
+    return `
+      <svg class="hero-wave" viewBox="0 0 600 300" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="kygo-sa-wave-g" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#22C55E" stop-opacity="0.08"/>
+            <stop offset="1" stop-color="#22C55E" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M0 180 Q 40 160, 80 180 T 160 180 L 170 140 L 180 180 Q 220 210, 260 180 T 340 180 L 350 220 L 360 170 L 370 200 L 380 180 Q 420 150, 460 180 T 540 180 T 600 180" stroke="#22C55E" stroke-width="2" fill="none" opacity="0.6"/>
+        <path d="M0 180 Q 40 160, 80 180 T 160 180 L 170 140 L 180 180 Q 220 210, 260 180 T 340 180 L 350 220 L 360 170 L 370 200 L 380 180 Q 420 150, 460 180 T 540 180 T 600 180 L 600 300 L 0 300 Z" fill="url(#kygo-sa-wave-g)"/>
+        <g stroke="rgba(30,41,59,0.08)" stroke-width="1">
+          <line x1="0" y1="60" x2="600" y2="60"/>
+          <line x1="0" y1="120" x2="600" y2="120"/>
+          <line x1="0" y1="240" x2="600" y2="240"/>
+        </g>
+        <g fill="#1E293B" font-size="10" font-family="Space Grotesk, sans-serif" opacity="0.35">
+          <text x="8" y="56">AWAKE</text>
+          <text x="8" y="116">REM</text>
+          <text x="8" y="176">N1 / N2</text>
+          <text x="8" y="236">DEEP</text>
+        </g>
+      </svg>`;
   }
 
   _updateCategory() {
@@ -533,17 +566,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
       const isExp = card.dataset.factor === this._expandedFactor;
       card.classList.toggle('expanded', isExp);
       const btn = card.querySelector('.factor-header');
-      if (btn) btn.setAttribute('aria-expanded', isExp);
-    });
-  }
-
-  _toggleTopPick(idx) {
-    this._expandedTopPick = this._expandedTopPick === idx ? null : idx;
-    const shadow = this.shadowRoot;
-    shadow.querySelectorAll('.pick-card').forEach(card => {
-      const isExp = parseInt(card.dataset.pick) === this._expandedTopPick;
-      card.classList.toggle('expanded', isExp);
-      const btn = card.querySelector('.pick-header');
       if (btn) btn.setAttribute('aria-expanded', isExp);
     });
   }
@@ -629,19 +651,26 @@ class KygoStayingAsleepFactors extends HTMLElement {
 
       <!-- Hero -->
       <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">31 FACTORS • 5 CATEGORIES • ALL PEER-REVIEWED</div>
-          <h1 class="animate-on-scroll">What Actually Keeps You Asleep Through the Night?</h1>
-          <p class="hero-sub animate-on-scroll">Every nutrition choice, supplement, habit, and environmental variable with proven impact on staying asleep — ranked by evidence strength and direction of effect. Focused on WASO, arousals, and sleep fragmentation. No guessing, just data.</p>
+        <div class="container hero-inner">
+          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>31 Factors • 28 Studies • Updated Apr 2026</div>
+          <h1 class="hero-title animate-on-scroll">The things <em>keeping you up</em> at 3&nbsp;AM — ranked.</h1>
+          <p class="hero-sub animate-on-scroll">Every nutrition choice, supplement, habit, and environmental variable with measurable impact on <strong>staying asleep</strong> — sorted by the minutes of wake time it adds or removes from your night. No guessing. Just the data.</p>
+          <div class="animate-on-scroll">${this._renderHeroMeta()}</div>
+          ${this._sleepWaveSvg()}
         </div>
       </section>
 
-      <!-- Top Picks -->
-      <section class="picks-section">
+      <!-- Six headlines from the data -->
+      <section class="picks-section" id="headlines">
         <div class="container">
-          <h2 class="section-title animate-on-scroll">Quick Answers</h2>
-          <p class="section-sub animate-on-scroll">The top research-backed picks for staying asleep across every category.</p>
-          <div class="picks-grid">${this._renderTopPicks()}</div>
+          <div class="picks-card">
+            <div class="picks-glow" aria-hidden="true"></div>
+            <div class="picks-head animate-on-scroll">
+              <span class="picks-eyebrow">Six headlines from the data</span>
+              <h2 class="picks-title">If you only remember <em>six things</em>.</h2>
+            </div>
+            <div class="picks-grid">${this._renderTopPicks()}</div>
+          </div>
         </div>
       </section>
 
@@ -773,12 +802,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
         return;
       }
 
-      const pickHeader = e.target.closest('.pick-header');
-      if (pickHeader) {
-        const card = pickHeader.closest('.pick-card');
-        if (card) this._toggleTopPick(parseInt(card.dataset.pick));
-        return;
-      }
     });
 
     shadow.addEventListener('change', (e) => {
@@ -796,12 +819,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
           const card = factorHeader.closest('.factor-card');
           if (card) this._toggleFactor(card.dataset.factor);
           return;
-        }
-        const pickHeader = e.target.closest('.pick-header');
-        if (pickHeader) {
-          e.preventDefault();
-          const card = pickHeader.closest('.pick-card');
-          if (card) this._toggleTopPick(parseInt(card.dataset.pick));
         }
       }
     });
@@ -945,36 +962,49 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .header-link:hover { background: var(--green-dark); }
       .header-link svg { width: 14px; height: 14px; }
 
-      .hero { padding: 48px 0 32px; text-align: center; }
-      .hero-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 16px; }
-      h1 { font-size: clamp(26px, 7vw, 42px); margin-bottom: 16px; color: var(--dark); }
-      .hero-sub { font-size: 16px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
+      /* ========== HERO (mobile-first) ========== */
+      .hero { padding: 40px 0 28px; background: #fff; }
+      .hero-inner { position: relative; }
+      .hero-kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; color: var(--green-dark); background: var(--green-light); padding: 6px 12px; border-radius: 9999px; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 20px; }
+      .hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse 2.2s infinite; }
+      @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.6);} 70%{box-shadow:0 0 0 8px rgba(34,197,94,0);} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0);} }
+      .hero-title { font-size: clamp(32px, 8.5vw, 76px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; margin: 0; color: var(--dark); max-width: 14ch; }
+      .hero-title em { font-style: normal; color: var(--green); font-family: inherit; }
+      .hero-sub { margin: 20px 0 0; max-width: 54ch; font-size: clamp(15px, 2.2vw, 19px); line-height: 1.5; color: var(--gray-600); }
+      .hero-sub strong { color: var(--dark); font-weight: 600; }
+      .hero-meta { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--gray-200); padding-top: 20px; max-width: 760px; }
+      .hero-meta .hero-cell { padding: 8px 12px 8px 0; border-right: 1px solid var(--gray-200); }
+      .hero-meta .hero-cell:nth-child(2n) { border-right: 0; padding-right: 0; }
+      .hero-meta .hero-cell:nth-child(-n+2) { border-bottom: 1px solid var(--gray-200); padding-bottom: 16px; }
+      .hero-meta .hero-cell:nth-child(n+3) { padding-top: 16px; }
+      .hero-num { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 6.5vw, 40px); color: var(--dark); letter-spacing: -0.02em; font-feature-settings: "tnum" 1; display: block; line-height: 1; }
+      .hero-num--pos { color: var(--green-dark); }
+      .hero-num--neg { color: var(--red); }
+      .hero-lbl { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; margin-top: 6px; display: block; }
+      .hero-wave { display: none; }
 
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
-      .picks-section { padding: 48px 0; }
-      .picks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-      .pick-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s; }
-      .pick-card:hover { box-shadow: var(--shadow-hover); }
-      .pick-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; cursor: pointer; }
-      .pick-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--green-light); display: flex; align-items: center; justify-content: center; color: var(--green-dark); flex-shrink: 0; }
-      .pick-icon svg { width: 20px; height: 20px; }
-      .pick-info { flex: 1; min-width: 0; }
-      .pick-label { display: block; font-size: 12px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; }
-      .pick-answer { display: block; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); }
-      .pick-toggle { width: 24px; height: 24px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
-      .pick-toggle svg { width: 24px; height: 24px; }
-      .pick-card.expanded .pick-toggle { transform: rotate(180deg); }
-      .pick-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
-      .pick-card.expanded .pick-body { max-height: 220px; padding: 0 20px 16px; }
-      .pick-stat-detail { font-size: 13px; color: var(--dark); margin-bottom: 8px; font-weight: 500; }
-      .pick-stat-label { color: var(--gray-400); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
-      .pick-warning { border-color: rgba(239,68,68,0.3); }
-      .pick-warning .pick-icon { background: rgba(239,68,68,0.1); color: var(--red); }
-      .pick-warning .pick-stat-detail { color: var(--red); }
-      .pick-note { font-size: 14px; color: var(--gray-600); margin-bottom: 6px; }
-      .pick-cat { font-size: 12px; color: var(--gray-400); }
+      /* ========== SIX HEADLINES ========== */
+      .picks-section { padding: 40px 0; background: #fff; }
+      .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
+      .picks-glow { position: absolute; top: -40%; right: -15%; width: 70%; height: 160%; background: radial-gradient(circle at center, rgba(34,197,94,0.22), transparent 60%); pointer-events: none; }
+      .picks-head { position: relative; z-index: 1; margin-bottom: 24px; }
+      .picks-eyebrow { display: block; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 600; margin-bottom: 8px; }
+      .picks-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: #fff; margin: 0; font-size: clamp(26px, 5.5vw, 40px); letter-spacing: -0.02em; line-height: 1.08; }
+      .picks-title em { font-style: normal; color: var(--green); font-family: inherit; }
+      .picks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; position: relative; z-index: 1; }
+      .pick-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; transition: transform .25s ease-out, background .25s ease-out, border-color .25s ease-out; }
+      .pick-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(34,197,94,0.5); transform: translateY(-3px); }
+      .pick-card.warn { border-color: rgba(239,68,68,0.35); }
+      .pick-card.warn:hover { border-color: rgba(239,68,68,0.6); }
+      .pick-label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.42); font-weight: 600; }
+      .pick-stat { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 28px; color: var(--green); margin: 8px 0 6px; letter-spacing: -0.02em; font-feature-settings: "tnum" 1; line-height: 1; }
+      .pick-card.warn .pick-stat { color: #FCA5A5; }
+      .pick-card.neutral .pick-stat { color: #fff; }
+      .pick-answer { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: #fff; line-height: 1.2; margin: 0; }
+      .pick-note { margin: 10px 0 0; font-size: 13px; color: rgba(255,255,255,0.62); line-height: 1.5; }
 
       .explore-section { padding: 48px 0 64px; }
 
@@ -1085,14 +1115,24 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
 
+      @media (min-width: 640px) {
+        .hero-meta { grid-template-columns: repeat(4, 1fr); }
+        .hero-meta .hero-cell { padding: 0 16px; border-right: 1px solid var(--gray-200); border-bottom: 0 !important; }
+        .hero-meta .hero-cell:first-child { padding-left: 0; }
+        .hero-meta .hero-cell:last-child { border-right: 0; padding-right: 0; }
+        .hero-meta .hero-cell:nth-child(n+3), .hero-meta .hero-cell:nth-child(-n+2) { padding-top: 0; padding-bottom: 0; }
+      }
       @media (min-width: 768px) {
         .header-inner { padding: 14px 24px; }
-        .hero { padding: 64px 0 40px; }
-        .hero-sub { font-size: 17px; }
+        .hero { padding: 72px 0 48px; }
         .picks-grid { grid-template-columns: 1fr 1fr; }
         .factor-cards { grid-template-columns: 1fr 1fr; }
         .picks-section, .explore-section { padding: 64px 0; }
+        .picks-card { padding: 48px 36px; border-radius: 28px; }
         .blog-cta { padding: 48px 40px; }
+      }
+      @media (min-width: 1000px) {
+        .hero-wave { display: block; position: absolute; right: -20px; top: 30px; width: 46%; max-width: 560px; opacity: 0.9; pointer-events: none; }
       }
       @media (min-width: 1024px) {
         .picks-grid { grid-template-columns: 1fr 1fr 1fr; }
@@ -1100,8 +1140,9 @@ class KygoStayingAsleepFactors extends HTMLElement {
       }
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-        .factor-body, .pick-body { transition: none; }
-        .pulse-dot { animation: none; }
+        .factor-body { transition: none; }
+        .pulse-dot, .hero-dot { animation: none; }
+        .pick-card { transition: none; }
       }
     `;
   }
