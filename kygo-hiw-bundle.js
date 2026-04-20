@@ -713,7 +713,7 @@ class KygoHiwPhaseConnect extends HTMLElement {
               </div>
               
               <p class="phase-description">
-                Link your Oura, Apple Health, Fitbit, or Garmin—we pull in your sleep, HRV, activity, and recovery data automatically. No manual entry needed, and your historical data imports so we can start finding patterns immediately.
+                Link your Oura, Apple Health, Fitbit, Garmin, Whoop, or Health Connect—we pull in your sleep, HRV, activity, and recovery data automatically. No manual entry needed, and your historical data imports so we can start finding patterns immediately.
               </p>
 
               <div class="feature-list">
