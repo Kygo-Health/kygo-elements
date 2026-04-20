@@ -713,7 +713,7 @@ class KygoHiwPhaseConnect extends HTMLElement {
               </div>
               
               <p class="phase-description">
-                Link your Oura, Apple Health, Fitbit, or Garmin—we pull in your sleep, HRV, activity, and recovery data automatically. No manual entry needed, and your historical data imports so we can start finding patterns immediately.
+                Link your Oura, Apple Health, Fitbit, Garmin, Whoop, or Health Connect—we pull in your sleep, HRV, activity, and recovery data automatically. No manual entry needed, and your historical data imports so we can start finding patterns immediately.
               </p>
 
               <div class="feature-list">
@@ -805,6 +805,28 @@ class KygoHiwPhaseConnect extends HTMLElement {
                   <div class="connect-step-content">
                     <strong>Garmin</strong>
                     <span>Training, recovery, body battery</span>
+                  </div>
+                  <div class="connect-step-status pending">+ Add</div>
+                </div>
+
+                <div class="connect-step">
+                  <div class="connect-step-icon">
+                    <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop">
+                  </div>
+                  <div class="connect-step-content">
+                    <strong>Whoop</strong>
+                    <span>Recovery, strain, sleep</span>
+                  </div>
+                  <div class="connect-step-status pending">+ Add</div>
+                </div>
+
+                <div class="connect-step">
+                  <div class="connect-step-icon">
+                    <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect">
+                  </div>
+                  <div class="connect-step-content">
+                    <strong>Health Connect</strong>
+                    <span>Android health data hub</span>
                   </div>
                   <div class="connect-step-status pending">+ Add</div>
                 </div>

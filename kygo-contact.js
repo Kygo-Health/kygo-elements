@@ -577,7 +577,7 @@ class KygoContactSection extends HTMLElement {
                   </div>
                   <div class="faq-item">
                     <div class="faq-question">Which wearables do you support?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                    <div class="faq-answer"><div class="faq-answer-content"><p>Oura Ring, Apple Health, Fitbit, and Garmin. Connect one or multiple..</p></div></div>
+                    <div class="faq-answer"><div class="faq-answer-content"><p>Oura Ring, Apple Health, Fitbit, Garmin, Whoop, and Health Connect. Connect one or multiple..</p></div></div>
                   </div>
                 </div>
                 <a href="${faqUrl}" class="view-all-faqs">View all FAQs<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></a>
