@@ -651,17 +651,20 @@ customElements.define('kygo-blog', KygoBlog);
  *     }
  *     
  *     let categoryLabel = 'General';
+ *     let categorySlug = '';
  *     if (post.categories && post.categories.length > 0) {
  *       categoryLabel = post.categories[0].label || post.categories[0].name || 'General';
+ *       categorySlug = post.categories[0].slug || '';
  *     }
- *     
+ *
  *     return {
  *       title: post.title,
  *       slug: post.slug,
  *       excerpt: post.excerpt,
  *       coverImage: imageUrl,
  *       publishedDate: post.firstPublishedDate,
- *       category: categoryLabel
+ *       category: categoryLabel,
+ *       categorySlug: categorySlug
  *     };
  *   });
  *   
