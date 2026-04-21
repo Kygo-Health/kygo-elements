@@ -195,6 +195,16 @@ class KygoBlog extends HTMLElement {
   _renderFeaturedPost(post) {
     if (!post) return '';
     return `
+      <header class="featured-header-row">
+        <span class="featured-badge" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 6.94H22l-6.18 4.49L18.21 21 12 16.77 5.79 21l2.39-7.57L2 8.94h7.61L12 2z"/></svg>
+        </span>
+        <div class="featured-heading">
+          <h2 class="featured-section-title">Featured Article</h2>
+          <p class="featured-section-descriptor">Our most-read deep dive on wearable accuracy</p>
+        </div>
+        <span class="featured-rule" aria-hidden="true"></span>
+      </header>
       <article class="featured-post" data-slug="${post.slug || ''}" role="button" tabindex="0"
                aria-label="Featured: ${post.title || 'Untitled'}">
         <div class="featured-post-image">
@@ -205,8 +215,6 @@ class KygoBlog extends HTMLElement {
           <h2 class="featured-post-title">${post.title || 'Untitled'}</h2>
           <p class="featured-post-excerpt">${post.excerpt || ''}</p>
           <div class="post-meta">
-            <span>${this._estimateReadTime(post.excerpt)} min read</span>
-            <span class="dot">•</span>
             <span>${this._formatDate(post.publishedDate)}</span>
           </div>
         </div>
@@ -225,8 +233,6 @@ class KygoBlog extends HTMLElement {
           <h3 class="post-card-title">${post.title || 'Untitled'}</h3>
           <p class="post-card-excerpt">${post.excerpt || ''}</p>
           <div class="post-meta post-card-meta">
-            <span>${this._estimateReadTime(post.excerpt)} min read</span>
-            <span class="dot">•</span>
             <span>${this._formatDate(post.publishedDate)}</span>
           </div>
         </div>
@@ -285,21 +291,20 @@ class KygoBlog extends HTMLElement {
     const allSorted = this._sortByDate(this._posts);
     const isAll = this._activeSlug === 'all';
 
-    let bodyHtml = '';
+    let heroHtml = '';
+    let sectionsHtml = '';
     if (this._posts.length === 0) {
-      bodyHtml = `<div class="loading"><div class="loading-spinner"></div></div>`;
+      sectionsHtml = `<div class="loading"><div class="loading-spinner"></div></div>`;
     } else if (isAll) {
       const pinned = allSorted.find(p => p.slug === PINNED_FEATURED_SLUG);
       const featured = pinned || allSorted[0];
       const rest = allSorted.filter(p => p !== featured);
       const groups = this._groupByCategory(rest);
-      bodyHtml = `
-        ${this._renderFeaturedPost(featured)}
-        ${groups.map(g => this._renderCategorySection(g)).join('')}
-      `;
+      heroHtml = this._renderFeaturedPost(featured);
+      sectionsHtml = groups.map(g => this._renderCategorySection(g)).join('');
     } else {
       const filtered = this._getFilteredPosts();
-      bodyHtml = this._renderFilteredGrid(filtered);
+      sectionsHtml = this._renderFilteredGrid(filtered);
     }
 
     this.shadowRoot.innerHTML = `
@@ -403,9 +408,56 @@ class KygoBlog extends HTMLElement {
           border-color: var(--green);
         }
 
-        /* BODY */
-        .blog-body {
-          padding: 40px 0 80px;
+        /* HERO BAND (grey) */
+        .hero-band {
+          background: var(--light);
+          padding: 32px 0 56px;
+        }
+
+        /* FEATURED SECTION HEADER */
+        .featured-header-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 20px;
+        }
+        .featured-badge {
+          flex: 0 0 auto;
+          width: 36px;
+          height: 36px;
+          border-radius: 10px;
+          background: linear-gradient(135deg, var(--green), var(--green-dark));
+          color: white;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 6px 14px rgba(34, 197, 94, 0.3);
+        }
+        .featured-badge svg { width: 18px; height: 18px; }
+        .featured-heading { flex: 0 1 auto; min-width: 0; }
+        .featured-section-title {
+          font-size: 20px;
+          color: var(--dark);
+        }
+        .featured-section-descriptor {
+          font-size: 13px;
+          color: var(--gray-500);
+          margin-top: 2px;
+        }
+        .featured-rule {
+          display: none;
+          flex: 1;
+          height: 1px;
+          background: var(--gray-200);
+          margin-left: 4px;
+        }
+
+        /* SECTIONS BAND (white - cards pop here) */
+        .sections-band {
+          background: white;
+          padding: 48px 0 72px;
+          border-top: 1px solid var(--gray-200);
+          position: relative;
         }
 
         /* FEATURED POST */
@@ -417,12 +469,12 @@ class KygoBlog extends HTMLElement {
           border-radius: 20px;
           overflow: hidden;
           cursor: pointer;
-          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-          margin-bottom: 56px;
+          transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+          box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
         }
         .featured-post:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 12px 36px rgba(15, 23, 42, 0.08);
+          transform: translateY(-4px);
+          box-shadow: 0 18px 48px rgba(15, 23, 42, 0.12);
           border-color: var(--gray-300);
         }
         .featured-post-image {
@@ -456,15 +508,26 @@ class KygoBlog extends HTMLElement {
         .featured-label {
           display: inline-flex;
           align-items: center;
+          gap: 5px;
           align-self: flex-start;
-          padding: 4px 10px;
+          padding: 5px 12px;
           border-radius: 999px;
-          background: var(--green-light);
-          color: var(--green-dark);
+          background: linear-gradient(135deg, var(--green), var(--green-dark));
+          color: white;
           font-size: 11px;
           font-weight: 700;
           text-transform: uppercase;
-          letter-spacing: 0.08em;
+          letter-spacing: 0.1em;
+          box-shadow: 0 4px 10px rgba(34, 197, 94, 0.25);
+        }
+        .featured-label::before {
+          content: '';
+          display: inline-block;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: white;
+          box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
         }
         .featured-post-title {
           font-size: 22px;
@@ -538,16 +601,32 @@ class KygoBlog extends HTMLElement {
           gap: 14px;
           background: white;
           border: 1px solid var(--gray-200);
-          border-radius: 14px;
+          border-radius: 16px;
           padding: 12px;
           cursor: pointer;
-          transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+          transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+          box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+          position: relative;
+          overflow: hidden;
+        }
+        .post-card::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: 3px;
+          background: linear-gradient(90deg, var(--green), var(--green-dark));
+          border-radius: 16px 16px 0 0;
+          opacity: 0;
+          transition: opacity 0.25s ease;
         }
         .post-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+          transform: translateY(-3px);
+          box-shadow: 0 14px 32px rgba(15, 23, 42, 0.1);
           border-color: var(--gray-300);
         }
+        .post-card:hover::after { opacity: 1; }
         .post-card-image {
           flex: 0 0 110px;
           width: 110px;
@@ -651,8 +730,10 @@ class KygoBlog extends HTMLElement {
           .blog-header .subtitle { font-size: 16px; }
           .category-tabs-inner { gap: 10px; padding: 16px 0; }
           .category-tab { padding: 9px 18px; font-size: 14px; }
-          .blog-body { padding: 48px 0 96px; }
+          .hero-band { padding: 40px 0 72px; }
+          .sections-band { padding: 64px 0 96px; }
 
+          .featured-header-row { margin-bottom: 24px; }
           .featured-post-content { padding: 32px; gap: 14px; }
           .featured-post-title { font-size: 26px; }
 
@@ -693,12 +774,16 @@ class KygoBlog extends HTMLElement {
           .container { padding: 0 40px; }
           .blog-header { padding: 72px 0 28px; }
           .blog-header h1 { font-size: 48px; }
-          .blog-body { padding: 56px 0 120px; }
+          .hero-band { padding: 40px 0 80px; }
+          .sections-band { padding: 72px 0 120px; }
+
+          .featured-header-row { margin-bottom: 24px; }
+          .featured-section-title { font-size: 22px; }
+          .featured-section-descriptor { font-size: 14px; }
 
           .featured-post {
             flex-direction: row;
             align-items: stretch;
-            margin-bottom: 72px;
           }
           .featured-post-image {
             flex: 0 0 55%;
@@ -712,7 +797,8 @@ class KygoBlog extends HTMLElement {
           }
           .featured-post-title { font-size: 30px; }
 
-          .category-rule { display: block; }
+          .category-rule,
+          .featured-rule { display: block; }
           .category-section { margin-bottom: 72px; }
 
           .post-grid {
@@ -859,7 +945,7 @@ class KygoBlog extends HTMLElement {
       <header class="blog-header">
         <div class="container">
           <h1>The Kygo Blog</h1>
-          <p class="subtitle">Research-backed articles on sleep, HRV, nutrition, and the wearables that measure it all.</p>
+          <p class="subtitle">Evidence-first guides on sleep, HRV, nutrition, and the wearables that track them &mdash; so you can stop guessing and start acting on what the research actually shows.</p>
         </div>
       </header>
 
@@ -879,15 +965,23 @@ class KygoBlog extends HTMLElement {
         </div>
       </nav>
 
-      <main class="blog-body">
+      ${heroHtml ? `
+        <section class="hero-band">
+          <div class="container">
+            ${heroHtml}
+          </div>
+        </section>
+      ` : ''}
+
+      <main class="blog-body sections-band">
         <div class="container">
-          ${bodyHtml}
+          ${sectionsHtml}
         </div>
       </main>
 
       <section class="final-cta">
         <div class="container">
-          <div class="final-cta-inner animate-in">
+          <div class="final-cta-inner">
             <div class="final-cta-content">
               <h2>Ready to understand your body?</h2>
               <p>Stop guessing. Start discovering what actually works for you.</p>
