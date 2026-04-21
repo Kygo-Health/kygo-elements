@@ -48,6 +48,10 @@ const CATEGORY_CONFIG = [
 
 const ALL_TAB = { slug: 'all', label: 'All Posts' };
 
+const PINNED_FEATURED_SLUG = 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device';
+const IOS_URL = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
+const ANDROID_URL = 'https://kygo.app/android';
+
 class KygoBlog extends HTMLElement {
   constructor() {
     super();
@@ -285,8 +289,9 @@ class KygoBlog extends HTMLElement {
     if (this._posts.length === 0) {
       bodyHtml = `<div class="loading"><div class="loading-spinner"></div></div>`;
     } else if (isAll) {
-      const featured = allSorted[0];
-      const rest = allSorted.slice(1);
+      const pinned = allSorted.find(p => p.slug === PINNED_FEATURED_SLUG);
+      const featured = pinned || allSorted[0];
+      const rest = allSorted.filter(p => p !== featured);
       const groups = this._groupByCategory(rest);
       bodyHtml = `
         ${this._renderFeaturedPost(featured)}
@@ -716,6 +721,116 @@ class KygoBlog extends HTMLElement {
           }
         }
 
+        /* FINAL CTA */
+        .final-cta {
+          padding: 48px 0 72px;
+          background: var(--light);
+        }
+        .final-cta-inner {
+          background: linear-gradient(135deg, var(--green), var(--green-dark));
+          border-radius: 24px;
+          padding: 36px 24px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
+        .final-cta-inner::before {
+          content: '';
+          position: absolute;
+          top: -50%;
+          left: -50%;
+          width: 200%;
+          height: 200%;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+          pointer-events: none;
+        }
+        .final-cta-content {
+          position: relative;
+          z-index: 1;
+        }
+        .final-cta h2 {
+          font-size: 28px;
+          color: white;
+          margin-bottom: 12px;
+        }
+        .final-cta-content > p {
+          color: rgba(255, 255, 255, 0.88);
+          margin-bottom: 20px;
+          font-size: 16px;
+        }
+        .cta-buttons {
+          display: flex;
+          gap: 12px;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+        .cta-primary,
+        .cta-android {
+          background: white;
+          color: var(--green-dark);
+          padding: 14px 24px;
+          border-radius: 12px;
+          font-weight: 600;
+          font-size: 15px;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          border: none;
+          cursor: pointer;
+          font-family: inherit;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .cta-primary:hover,
+        .cta-android:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .cta-primary:active,
+        .cta-primary:focus,
+        .cta-android:active,
+        .cta-android:focus {
+          outline: none;
+          transform: translateY(0);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        .cta-primary svg,
+        .cta-android svg {
+          width: 18px;
+          height: 18px;
+        }
+        .risk-reversal {
+          margin-top: 16px;
+          color: rgba(255, 255, 255, 0.75);
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          justify-content: center;
+          font-size: 13px;
+        }
+        .risk-reversal span {
+          display: inline-flex;
+          align-items: center;
+        }
+
+        @media (max-width: 480px) {
+          .cta-buttons { flex-direction: column; align-items: center; }
+          .cta-buttons .cta-primary,
+          .cta-buttons .cta-android {
+            width: 100%;
+            max-width: 280px;
+          }
+        }
+
+        @media (min-width: 768px) {
+          .final-cta { padding: 64px 0 96px; }
+          .final-cta-inner { padding: 48px 40px; }
+          .final-cta h2 { font-size: 36px; }
+          .final-cta-content > p { font-size: 17px; }
+        }
+
         /* ANIMATIONS */
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(16px); }
@@ -769,6 +884,28 @@ class KygoBlog extends HTMLElement {
           ${bodyHtml}
         </div>
       </main>
+
+      <section class="final-cta">
+        <div class="container">
+          <div class="final-cta-inner animate-in">
+            <div class="final-cta-content">
+              <h2>Ready to understand your body?</h2>
+              <p>Stop guessing. Start discovering what actually works for you.</p>
+              <div class="cta-buttons">
+                <a href="${IOS_URL}" class="cta-primary" data-track-position="blog-footer-cta" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                  Download for iOS
+                </a>
+                <a href="${ANDROID_URL}" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="blog-footer-cta">
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                  Download for Android
+                </a>
+              </div>
+              <p class="risk-reversal"><span>Free forever plan</span><span>•</span><span>No credit card required</span><span>•</span><span>Cancel anytime</span></p>
+            </div>
+          </div>
+        </div>
+      </section>
     `;
 
     this._bindEvents();
