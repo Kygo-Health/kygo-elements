@@ -234,7 +234,7 @@
   // Attributes:
   //   posts      – JSON array of { title, excerpt, slug, coverImage,
   //                  category, publishedDate, readTime, views }
-  //   heading    – section heading (default: "Recent Posts")
+  //   heading    – section heading (default: "Related Posts")
   //   subheading – under heading (default: "More research-backed deep dives")
   // ══════════════════════════════════════════════════════════════════════
   class KygoBlogPostRelated extends HTMLElement {
@@ -284,7 +284,7 @@
     }
 
     render() {
-      const heading = this.getAttribute('heading') || 'Recent Posts';
+      const heading = this.getAttribute('heading') || 'Related Posts';
       const sub     = this.getAttribute('subheading') || 'More research-backed deep dives';
 
       this.shadowRoot.innerHTML = `
@@ -999,38 +999,55 @@
  *    });
  *
  *    // ------------------------------------------------------
- *    // 2. Related / recent posts (3-up)
- *    //    Pulls latest 5, strips the post currently being viewed,
- *    //    keeps 3.
+ *    // 2. Related posts (uses the posts you manually pick in the
+ *    //    Wix Blog post editor). Falls back to 3 most-recent posts
+ *    //    when none are set on the current post.
  *    // ------------------------------------------------------
  *    try {
- *      const res = await wixData.query('Blog/Posts')
- *        .limit(5)
- *        .descending('firstPublishedDate')
+ *      // Look up current post to get its related-post IDs
+ *      const currentRes = await wixData.query('Blog/Posts')
+ *        .eq('slug', currentSlug)
  *        .find();
+ *      const thisPost = currentRes.items[0];
+ *      const relatedIds = (thisPost && thisPost.relatedPostIds) || [];
  *
- *      const posts = res.items
- *        .filter(p => p.slug !== currentSlug)
- *        .slice(0, 3)
- *        .map(p => {
- *          let img = '';
- *          if (p.coverImage) {
- *            img = typeof p.coverImage === 'string'
- *              ? p.coverImage
- *              : (p.coverImage.src || p.coverImage.url || '');
- *          }
- *          const wordCount = (p.plainContent || p.excerpt || '').split(/\s+/).length;
- *          return {
- *            title: p.title,
- *            slug: p.slug,
- *            excerpt: p.excerpt || '',
- *            coverImage: img,
- *            publishedDate: p.firstPublishedDate,
- *            category: '',
- *            readTime: Math.max(1, Math.ceil(wordCount / 200)),
- *            views: p.viewCount || null
- *          };
- *        });
+ *      let items = [];
+ *      if (relatedIds.length > 0) {
+ *        const relRes = await wixData.query('Blog/Posts')
+ *          .hasSome('_id', relatedIds)
+ *          .find();
+ *        // Preserve the order the author picked
+ *        items = relatedIds
+ *          .map(id => relRes.items.find(p => p._id === id))
+ *          .filter(Boolean);
+ *      }
+ *
+ *      // Fallback: latest 3 (excluding current). No sort field — Wix's
+ *      // default order is newest-first and firstPublishedDate errors.
+ *      if (items.length === 0) {
+ *        const recent = await wixData.query('Blog/Posts').limit(6).find();
+ *        items = recent.items.filter(p => p.slug !== currentSlug).slice(0, 3);
+ *      }
+ *
+ *      const posts = items.slice(0, 3).map(p => {
+ *        let img = '';
+ *        if (p.coverImage) {
+ *          img = typeof p.coverImage === 'string'
+ *            ? p.coverImage
+ *            : (p.coverImage.src || p.coverImage.url || '');
+ *        }
+ *        const wordCount = (p.plainContent || p.excerpt || '').split(/\s+/).length;
+ *        return {
+ *          title: p.title,
+ *          slug: p.slug,
+ *          excerpt: p.excerpt || '',
+ *          coverImage: img,
+ *          publishedDate: p.firstPublishedDate || p.lastPublishedDate,
+ *          category: '',
+ *          readTime: p.timeToRead || Math.max(1, Math.ceil(wordCount / 200)),
+ *          views: p.viewCount || null
+ *        };
+ *      });
  *      $w('#kygoRelated').setAttribute('posts', JSON.stringify(posts));
  *    } catch (e) { console.warn('Related posts load failed', e); }
  *
