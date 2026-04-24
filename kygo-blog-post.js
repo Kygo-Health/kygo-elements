@@ -974,9 +974,13 @@
  * ------------------------------------------------------------
  *  import wixData from 'wix-data';
  *  import wixLocationFrontend from 'wix-location-frontend';
- *  import { currentPost } from 'wix-blog-frontend';
  *
  *  $w.onReady(async function () {
+ *    // Current post slug comes from the URL (/post/<slug>) — avoids
+ *    // depending on wix-blog-frontend, which errors in the Velo editor.
+ *    const pathParts = wixLocationFrontend.path;
+ *    const currentSlug = pathParts[pathParts.length - 1] || '';
+ *
  *    // ------------------------------------------------------
  *    // 1. Category pill bar
  *    // ------------------------------------------------------
@@ -996,15 +1000,12 @@
  *
  *    // ------------------------------------------------------
  *    // 2. Related / recent posts (3-up)
- *    //    Pulls latest 4, strips the one currently being viewed,
+ *    //    Pulls latest 5, strips the post currently being viewed,
  *    //    keeps 3.
  *    // ------------------------------------------------------
  *    try {
- *      const post = await currentPost.getPost();           // current blog post
- *      const currentSlug = post && post.slug;
  *      const res = await wixData.query('Blog/Posts')
- *        .include('categories')
- *        .limit(4)
+ *        .limit(5)
  *        .descending('firstPublishedDate')
  *        .find();
  *
@@ -1018,8 +1019,6 @@
  *              ? p.coverImage
  *              : (p.coverImage.src || p.coverImage.url || '');
  *          }
- *          const cat = (p.categories && p.categories[0] &&
- *                       (p.categories[0].label || p.categories[0].name)) || '';
  *          const wordCount = (p.plainContent || p.excerpt || '').split(/\s+/).length;
  *          return {
  *            title: p.title,
@@ -1027,7 +1026,7 @@
  *            excerpt: p.excerpt || '',
  *            coverImage: img,
  *            publishedDate: p.firstPublishedDate,
- *            category: cat,
+ *            category: '',
  *            readTime: Math.max(1, Math.ceil(wordCount / 200)),
  *            views: p.viewCount || null
  *          };
@@ -1043,10 +1042,11 @@
  *    });
  *
  *    // ------------------------------------------------------
- *    // 3. Subscribe form → Blog/Subscribers collection
- *    //    (Blog/Subscribers isn't a default Wix collection; create
- *    //     one with at least an `email` field, or switch to your
- *    //     email-platform of choice via fetch.)
+ *    // 3. Subscribe form → Emails/Subscribers collection
+ *    //    Create a CMS collection called Subscribers with fields:
+ *    //      email (Text), source (Text), subscribedAt (Date & Time)
+ *    //    Wix may store it under the name `Emails/Subscribers` or
+ *    //    just `Subscribers` — match whatever the CMS shows.
  *    // ------------------------------------------------------
  *    $w('#kygoSubscribe').on('subscribe', async (event) => {
  *      const { email, onSuccess, onError } = event.detail;
