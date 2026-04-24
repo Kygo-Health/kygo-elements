@@ -134,10 +134,8 @@ class KygoToolsPage extends HTMLElement {
       steps: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16.5V14a2 2 0 0 1 2-2h2.5"/><path d="M8.5 12V6.5A2.5 2.5 0 0 1 11 4h0a2.5 2.5 0 0 1 2.5 2.5V7"/><path d="M14 20.5V18a2 2 0 0 1 2-2h2.5"/><path d="M18.5 16V10.5A2.5 2.5 0 0 0 16 8h0a2.5 2.5 0 0 0-2.5 2.5V11"/></svg>',
       check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
       'arrow-right': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
-      menu: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>',
       apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>',
       playstore: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.693-5.99l-2.49 2.49L5.79 2.898l10.894 6.303-.002-.002 1.507.885.002.002zM5.79 21.102l10.913-6.302 2.492 2.492-1.507.885-11.898 6.925z"/></svg>',
-      bookmark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>',
       share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>'
     };
     return icons[name] || icons.sparkles;
@@ -405,14 +403,6 @@ class KygoToolsPage extends HTMLElement {
         font-size: 20px; font-weight: 600; color: var(--dark);
         margin-top: 2px;
       }
-      .section-actions { display: flex; gap: 6px; }
-      .section-actions button {
-        border: 1px solid var(--gray-200); background: #fff;
-        border-radius: 10px; padding: 8px;
-        display: inline-flex; align-items: center; justify-content: center;
-        color: var(--dark);
-      }
-      .section-actions svg { width: 16px; height: 16px; }
     `;
   }
 
@@ -566,16 +556,21 @@ class KygoToolsPage extends HTMLElement {
       .works-label {
         font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 500;
       }
-      .works-dots { display: flex; gap: 6px; }
+      .works-dots { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
       .wd {
-        width: 30px; height: 30px; border-radius: 8px;
+        width: 32px; height: 32px; border-radius: 8px;
+        background: rgba(255,255,255,0.08);
         display: flex; align-items: center; justify-content: center;
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 11px; font-weight: 700; color: #fff;
-        flex-shrink: 0;
+        flex-shrink: 0; overflow: hidden;
+        transition: background 150ms ease, transform 150ms ease;
       }
-      .wd.d1 { background: #0F172A; }
-      .wd.d2 { background: #1E293B; color: var(--green); }
+      .wd:hover { background: rgba(255,255,255,0.15); transform: scale(1.08); }
+      .wd img {
+        width: 20px; height: 20px;
+        object-fit: contain; border-radius: 4px;
+        opacity: 0.85; transition: opacity 150ms ease;
+      }
+      .wd:hover img { opacity: 1; }
 
       /* ===== FOOTER ===== */
       .footer {
@@ -715,7 +710,7 @@ class KygoToolsPage extends HTMLElement {
             <span class="brand-name">Kygo</span>
             <span class="brand-sub">/ Tools</span>
           </a>
-          <button class="icon-btn" aria-label="Menu">${this._getIcon('menu')}</button>
+          <button class="icon-btn" aria-label="Share" data-share>${this._getIcon('share')}</button>
         </header>
 
         <section class="hero">
@@ -739,10 +734,6 @@ class KygoToolsPage extends HTMLElement {
           <div>
             <div class="section-kicker">${sectionLabel}</div>
             <div class="section-count">${filtered.length} ${filtered.length === 1 ? 'tool' : 'tools'} available</div>
-          </div>
-          <div class="section-actions">
-            <button aria-label="Bookmark">${this._getIcon('bookmark')}</button>
-            <button aria-label="Share" data-share>${this._getIcon('share')}</button>
           </div>
         </div>
 
@@ -771,12 +762,12 @@ class KygoToolsPage extends HTMLElement {
               <div class="works-with">
                 <span class="works-label">Works with</span>
                 <div class="works-dots">
-                  <span class="wd d1" title="Oura">O</span>
-                  <span class="wd d2" title="Apple Watch">A</span>
-                  <span class="wd d1" title="Fitbit">F</span>
-                  <span class="wd d2" title="Garmin">G</span>
-                  <span class="wd d1" title="Samsung">S</span>
-                  <span class="wd d2" title="WHOOP">W</span>
+                  <span class="wd" title="Oura Ring"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" loading="lazy"/></span>
+                  <span class="wd" title="Apple Health"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" loading="lazy"/></span>
+                  <span class="wd" title="Fitbit"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy"/></span>
+                  <span class="wd" title="Garmin"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy"/></span>
+                  <span class="wd" title="Whoop"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy"/></span>
+                  <span class="wd" title="Health Connect"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy"/></span>
                 </div>
               </div>
             </div>
