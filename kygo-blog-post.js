@@ -29,7 +29,7 @@
   // ──────────────────────────────────────────────────────────────────────
   const BRAND_LOGO = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
   const APP_IOS    = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-  const APP_ANDROID = 'https://play.google.com/store/apps/details?id=app.kygo';
+  const APP_ANDROID = 'https://kygo.app/android';
   const WEARABLE_BADGES = [
     { name: 'Oura Ring',     src: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png' },
     { name: 'Apple Health',  src: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png' },
