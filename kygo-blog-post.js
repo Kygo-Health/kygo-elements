@@ -660,22 +660,19 @@
           this._error = '';
           this._state = 'loading';
           this.render();
+          // Detail must be plain-data only — Wix sends Custom Element
+          // events to Velo via postMessage / structured clone, which
+          // cannot serialize functions. The host (Wix Velo or other)
+          // flips state via setAttribute('state', 'success'|'idle').
           this.dispatchEvent(new CustomEvent('subscribe', {
             bubbles: true, composed: true,
-            detail: {
-              email,
-              onSuccess: () => { this._state = 'success'; this.render(); },
-              onError:   (msg) => {
-                this._state = 'idle';
-                this._error = msg || 'Something went wrong. Please try again.';
-                this.render();
-              }
-            }
+            detail: { email }
           }));
-          // Fallback: if no one handles the event within 2s, show success
+          // Fallback for non-Wix hosts that don't flip the state attr —
+          // assume success after 4s so the UI doesn't hang in "loading".
           setTimeout(() => {
             if (this._state === 'loading') { this._state = 'success'; this.render(); }
-          }, 2000);
+          }, 4000);
         });
       }
     }
@@ -1078,24 +1075,30 @@
  *    });
  *
  *    // ------------------------------------------------------
- *    // 3. Subscribe form → Emails/Subscribers collection
+ *    // 3. Subscribe form → Subscribers collection
  *    //    Create a CMS collection called Subscribers with fields:
  *    //      email (Text), source (Text), subscribedAt (Date & Time)
- *    //    Wix may store it under the name `Emails/Subscribers` or
- *    //    just `Subscribers` — match whatever the CMS shows.
+ *    //    Set permissions → "Who can add content?" to Anyone.
+ *    //    NOTE: We flip the form's state via setAttribute, NOT via a
+ *    //    callback — Wix's postMessage bridge can't serialize
+ *    //    functions in event.detail.
  *    // ------------------------------------------------------
  *    $w('#kygoSubscribe').on('subscribe', async (event) => {
- *      const { email, onSuccess, onError } = event.detail;
+ *      const email = event && event.detail && event.detail.email;
+ *      if (!email) {
+ *        $w('#kygoSubscribe').setAttribute('state', 'idle');
+ *        return;
+ *      }
  *      try {
- *        await wixData.insert('Emails/Subscribers', {
+ *        await wixData.insert('Subscribers', {
  *          email,
  *          source: 'blog-post',
  *          subscribedAt: new Date()
  *        });
- *        onSuccess && onSuccess();
+ *        $w('#kygoSubscribe').setAttribute('state', 'success');
  *      } catch (err) {
  *        console.error('Subscribe failed', err);
- *        onError && onError('Could not subscribe. Please try again.');
+ *        $w('#kygoSubscribe').setAttribute('state', 'idle');
  *      }
  *    });
  *  });
