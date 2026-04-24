@@ -715,7 +715,7 @@ class KygoToolsPage extends HTMLElement {
 
           <div class="hero">
             <div class="kicker-pill">${this._getIcon('sparkles')} Free Health Tools</div>
-            <h1>Tools to understand <span class="hl">your nutrition.</span></h1>
+            <h1>Tools to understand <span class="hl">your well-being.</span></h1>
             <p>Research-backed calculators and factor explorers. No signup. Free forever.</p>
             <div class="mini-stats">
               <span class="item">${this._getIcon('check')} ${this._tools.length} tools</span>
