@@ -96,7 +96,7 @@
     check:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
     checkCircle:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>',
     apple:      '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>',
-    playstore:  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186c-.324-.227-.609-.664-.609-1.186V3c0-.522.285-.96.609-1.186zm10.89 10.186l2.733-2.733 3.061 1.777c.943.548.943 1.912 0 2.46l-3.061 1.777L14.5 12zM5.864 1.5l9.414 5.464L12.5 9.742 5.864 1.5zm0 21L12.5 14.258l2.778 2.778-9.414 5.464z"/></svg>',
+    playstore:  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>',
     facebook:   '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>',
     twitter:    '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>',
     linkedin:   '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14zM8.339 18.338V9.75H5.666v8.588h2.673zm-1.337-9.75a1.548 1.548 0 1 0 0-3.096 1.548 1.548 0 0 0 0 3.096zm11.336 9.75v-4.7c0-2.474-1.338-3.625-3.124-3.625-1.44 0-2.086.792-2.449 1.349V9.75H9.75c.036.753 0 8.588 0 8.588h2.674v-4.797c0-.24.017-.48.088-.653.194-.48.633-.976 1.371-.976.968 0 1.355.738 1.355 1.82v4.606h2.674z"/></svg>',
@@ -274,9 +274,26 @@
       return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
 
+    _resolveImg(src) {
+      if (!src) return '';
+      if (typeof src !== 'string') {
+        return src.url || src.src || '';
+      }
+      // Wix stores images as "wix:image://v1/<mediaId>/filename#..." — that
+      // URI doesn't work as an <img src>. Convert to static.wixstatic.com.
+      if (src.indexOf('wix:image://') === 0) {
+        const m = src.match(/wix:image:\/\/v1\/([^\/]+)/);
+        if (m) return `https://static.wixstatic.com/media/${m[1]}`;
+        return '';
+      }
+      return src;
+    }
+
     _thumb(post) {
-      if (post.coverImage) {
-        return `<img src="${post.coverImage}" alt="${(post.title || '').replace(/"/g, '&quot;')}" loading="lazy" />`;
+      const url = this._resolveImg(post.coverImage);
+      if (url) {
+        const alt = (post.title || '').replace(/"/g, '&quot;');
+        return `<img src="${url}" alt="${alt}" loading="lazy" />`;
       }
       // Fallback: emoji + gradient by category
       const emoji = post.emoji || '📊';
