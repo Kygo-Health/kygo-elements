@@ -1016,17 +1016,17 @@
  *    });
  *
  *    // ------------------------------------------------------
- *    // 2. Related posts (uses the posts you manually pick in the
- *    //    Wix Blog post editor). Falls back to 3 most-recent posts
- *    //    when none are set on the current post.
+ *    // 2. Related posts (uses the posts manually picked in the Wix
+ *    //    Blog post editor under Settings → Advanced → Choose Posts).
+ *    //    Manual picks are exposed on $w('#post1').getPost() as
+ *    //    `relatedPostIds`. Falls back to 3 most-recent posts when
+ *    //    no manual picks are set.
+ *    //    NOTE: #post1 is the default ID of the Wix Blog Post widget.
+ *    //    If your site uses a different ID, update it below.
  *    // ------------------------------------------------------
  *    try {
- *      // Look up current post to get its related-post IDs
- *      const currentRes = await wixData.query('Blog/Posts')
- *        .eq('slug', currentSlug)
- *        .find();
- *      const thisPost = currentRes.items[0];
- *      const relatedIds = (thisPost && thisPost.relatedPostIds) || [];
+ *      const currentPost = await $w('#post1').getPost();
+ *      const relatedIds = (currentPost && currentPost.relatedPostIds) || [];
  *
  *      let items = [];
  *      if (relatedIds.length > 0) {
@@ -1043,7 +1043,9 @@
  *      // default order is newest-first and firstPublishedDate errors.
  *      if (items.length === 0) {
  *        const recent = await wixData.query('Blog/Posts').limit(6).find();
- *        items = recent.items.filter(p => p.slug !== currentSlug).slice(0, 3);
+ *        items = recent.items
+ *          .filter(p => p._id !== (currentPost && currentPost._id))
+ *          .slice(0, 3);
  *      }
  *
  *      const posts = items.slice(0, 3).map(p => {
