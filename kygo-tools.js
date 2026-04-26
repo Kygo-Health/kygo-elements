@@ -77,16 +77,30 @@ class KygoToolsPage extends HTMLElement {
   }
 
   _categories() {
-    const order = ['all', 'sleep', 'recovery', 'nutrition', 'wearables'];
-    const labels = { all: 'All', sleep: 'Sleep', recovery: 'Recovery', nutrition: 'Nutrition', wearables: 'Wearables' };
+    // Default ordering preference for known categories. Any new category that
+    // shows up on a tool (via slug map or explicit tool.category) gets appended
+    // automatically — no code changes needed when adding a new tool group.
+    const preferredOrder = ['all', 'sleep', 'recovery', 'nutrition', 'wearables', 'other'];
+    const labels = {
+      all: 'All', sleep: 'Sleep', recovery: 'Recovery', nutrition: 'Nutrition',
+      wearables: 'Wearables', other: 'Other'
+    };
     const counts = { all: this._tools.length };
+    const observed = new Set();
     this._tools.forEach(t => {
       const c = this._categoryFor(t);
       counts[c] = (counts[c] || 0) + 1;
+      observed.add(c);
     });
-    return order
-      .filter(id => id === 'all' || counts[id])
-      .map(id => ({ id, label: labels[id], count: counts[id] || 0 }));
+    // Build the ordered list: preferred categories first (only if present),
+    // then any unknown categories that tools have declared, in insertion order.
+    const order = preferredOrder.filter(id => id === 'all' || observed.has(id));
+    observed.forEach(id => { if (!order.includes(id)) order.push(id); });
+    return order.map(id => ({
+      id,
+      label: labels[id] || (id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ')),
+      count: counts[id] || 0
+    }));
   }
 
   _filteredTools() {
