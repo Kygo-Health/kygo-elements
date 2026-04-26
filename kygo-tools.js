@@ -70,6 +70,7 @@ class KygoToolsPage extends HTMLElement {
       'staying-asleep-factors': 'sleep',
       'deep-sleep-factors': 'sleep',
       'hrv-factors': 'recovery',
+      'resting-heart-rate-factors': 'recovery',
       'food-scanner': 'nutrition'
     };
     return map[tool.slug] || 'other';
