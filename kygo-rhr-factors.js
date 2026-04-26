@@ -499,7 +499,7 @@ class KygoRhrFactors extends HTMLElement {
       { label: 'Best diet',             stat: '−2.2 bpm', answer: 'Mediterranean Diet',  icon: 'droplet',  note: 'García-López 2014 SUN cohort (n=15,863). High vs low adherence: 2.2 bpm lower (95% CI 1.4–3.1).', cls: '' },
       { label: 'Quickest impact',       stat: '−3.9 bpm', answer: 'HIIT',                icon: 'dumbbell', note: 'Edwards 2023 meta-analysis of 97 RCTs. Measurable change within 12 weeks — far faster than endurance training.', cls: '' },
       { label: 'Biggest RHR killer',    stat: '+2.4 bpm', answer: 'Alcohol',             icon: 'alert',    note: 'Per drink above your average. 2026 wearables study (n=20,968; 5.1M person-days). Effect persists overnight.', cls: 'warn' },
-      { label: 'Biggest myth',          stat: '±0 bpm',   answer: 'Vitamin D',           icon: 'alert',    note: 'BEST-D: a year-long, dose-response RCT showed zero RHR effect at any dose. Heavily marketed, no signal.',     cls: 'warn' }
+      { label: 'Biggest myth',          stat: '±0 bpm',   answer: 'Vitamin D',           icon: 'ghost',    note: 'BEST-D: a year-long, dose-response RCT showed zero RHR effect at any dose. Heavily marketed, no signal.',     cls: 'myth' }
     ];
   }
 
@@ -560,7 +560,13 @@ class KygoRhrFactors extends HTMLElement {
   }
 
   _effectSizeText(f) {
-    if (f.effectSize === null || f.effectSize === undefined) return { text: '—', cls: 'na' };
+    if (f.effectSize === null || f.effectSize === undefined) {
+      // Documented null findings (variable direction with no number) are an explicit "no effect" result —
+      // not a missing data point. Make that distinction visible.
+      if (f.direction === 'variable') return { text: '±0 bpm', cls: 'zero' };
+      if (f.direction === 'mixed')    return { text: 'Mixed',  cls: 'mix' };
+      return { text: 'Directional', cls: 'na' };
+    }
     if (f.direction === 'positive') return { text: `−${f.effectSize} bpm`, cls: 'pos' };
     if (f.direction === 'negative') return { text: `+${f.effectSize} bpm`, cls: 'neg' };
     if (f.direction === 'variable' && f.effectSize === 0) return { text: '±0 bpm', cls: 'zero' };
@@ -590,11 +596,22 @@ class KygoRhrFactors extends HTMLElement {
       { k: 'default',   l: 'Default' },
       { k: 'evidence',  l: 'Evidence' },
       { k: 'direction', l: 'Direction' },
-      { k: 'impact',    l: 'Impact (bpm)' }
+      { k: 'impact',    l: 'Impact' }
     ];
+    const total = this._flatModifiable().length;
+    const shownCount = this._catFilter
+      ? this._flatModifiable().filter(f => f.category === this._catFilter).length
+      : total;
+    const meta = this._categoryMeta[this._catFilter];
+    const countHtml = this._catFilter
+      ? `<span class="list-result-count">Showing <strong>${shownCount}</strong> of ${total} · ${meta ? meta.label : ''}</span>`
+      : `<span class="list-result-count"><strong>${total}</strong> modifiable factors</span>`;
     return `
       <div class="list-toolbar">
-        <span class="list-sort-label">Sort by</span>
+        <div class="list-toolbar-row">
+          ${countHtml}
+          <span class="list-sort-label">Sort by</span>
+        </div>
         <div class="list-sort-btns">
           ${opts.map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('')}
         </div>
@@ -627,9 +644,8 @@ class KygoRhrFactors extends HTMLElement {
       const ev = this._evidenceConfig(f.evidence);
       const eff = this._effectSizeText(f);
       return `
-        <article class="fact-card ${this._dirClass(f.direction)} ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}">
+        <article class="fact-card ${this._dirClass(f.direction)} ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}" style="--cat-hue:${hue}">
           <button class="fact-head" aria-expanded="${isExp}">
-            <span class="fact-hue" style="background:${hue}" aria-hidden="true"></span>
             <span class="fact-meta">
               <span class="fact-name">${f.name}</span>
               <span class="fact-effect">${f.effect}</span>
@@ -680,60 +696,49 @@ class KygoRhrFactors extends HTMLElement {
     if (listEl) listEl.outerHTML = this._renderFactorList();
   }
 
-  _renderBaselineSection() {
-    const cards = this._factorsDemographics.map(f => {
-      const isExp = this._baselineExpandedKey === f.key;
-      const ev = this._evidenceConfig(f.evidence);
-      return `
-        <article class="base-card ${isExp ? 'expanded' : ''}" data-base-key="${f.key}">
-          <button class="base-head" aria-expanded="${isExp}">
-            <span class="base-meta">
-              <span class="base-name">${f.name}</span>
-              <span class="base-effect">${f.effect}</span>
-            </span>
-            <span class="base-badges">
-              <span class="base-ev" style="color:${ev.color};background:${ev.bg}">${ev.label}</span>
-            </span>
-            <span class="base-chev" aria-hidden="true">${this._icon('chevDown')}</span>
-          </button>
-          ${isExp ? `
-            <div class="base-body">
-              <div class="base-body-row">
-                <span class="lbl">Plain English</span>
-                <p>${f.whatThisMeans}</p>
-              </div>
-              <div class="base-body-row">
-                <span class="lbl">Mechanism</span>
-                <p>${f.mechanism}</p>
-              </div>
-              <div class="base-body-row">
-                <span class="lbl">Key finding</span>
-                <p>${f.keyFinding}</p>
-              </div>
-              <div class="base-body-row">
-                <span class="lbl">Source</span>
-                <p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
-              </div>
-            </div>` : ''}
-        </article>`;
-    }).join('');
+  _renderBaseCard(f) {
+    const isExp = this._baselineExpandedKey === f.key;
+    const ev = this._evidenceConfig(f.evidence);
+    return `
+      <article class="base-card ${isExp ? 'expanded' : ''}" data-base-key="${f.key}">
+        <button class="base-head" aria-expanded="${isExp}">
+          <span class="base-meta">
+            <span class="base-name">${f.name}</span>
+            <span class="base-effect">${f.effect}</span>
+          </span>
+          <span class="base-badges">
+            <span class="base-ev" style="color:${ev.color};background:${ev.bg}">${ev.label}</span>
+          </span>
+          <span class="base-chev" aria-hidden="true">${this._icon('chevDown')}</span>
+        </button>
+        ${isExp ? `
+          <div class="base-body">
+            <div class="base-body-row"><span class="lbl">Plain English</span><p>${f.whatThisMeans}</p></div>
+            <div class="base-body-row"><span class="lbl">Mechanism</span><p>${f.mechanism}</p></div>
+            <div class="base-body-row"><span class="lbl">Key finding</span><p>${f.keyFinding}</p></div>
+            <div class="base-body-row"><span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p></div>
+          </div>` : ''}
+      </article>`;
+  }
 
+  _renderBaselineSection() {
+    const cards = this._factorsDemographics.map(f => this._renderBaseCard(f)).join('');
     const open = this._baselineOpen;
     return `
-      <section class="baseline-section">
+      <section class="baseline-section" aria-labelledby="baseline-title">
         <div class="container">
           <div class="baseline-wrap ${open ? 'open' : ''}">
-            <button class="baseline-head" aria-expanded="${open}" data-baseline-toggle>
+            <button class="baseline-head" aria-expanded="${open}" aria-controls="baseline-body" data-baseline-toggle>
               <span class="baseline-icon" aria-hidden="true">${this._icon('users')}</span>
               <span class="baseline-text">
                 <span class="baseline-eyebrow">Your baseline</span>
-                <span class="baseline-title">What you can't change — but should know</span>
+                <h2 class="baseline-title" id="baseline-title">What you can't change — but should know</h2>
                 <span class="baseline-sub">7 demographic and physiological factors that set your starting RHR.</span>
               </span>
               <span class="baseline-count">${this._factorsDemographics.length}</span>
               <span class="baseline-chev" aria-hidden="true">${this._icon('chevDown')}</span>
             </button>
-            <div class="baseline-body" ${open ? '' : 'hidden'}>
+            <div class="baseline-body" id="baseline-body" ${open ? '' : 'hidden'}>
               <div class="base-grid">${cards}</div>
             </div>
           </div>
@@ -757,27 +762,27 @@ class KygoRhrFactors extends HTMLElement {
         </article>`).join('');
       return `
         <div class="myth-group">
-          <h4 class="myth-group-title">${g}<span class="myth-group-count">${items.length}</span></h4>
+          <h3 class="myth-group-title">${g}<span class="myth-group-count">${items.length}</span></h3>
           <div class="myth-grid">${cards}</div>
         </div>`;
     }).join('');
 
     const total = this._myths.length;
     return `
-      <section class="myths-section">
+      <section class="myths-section" aria-labelledby="myths-title">
         <div class="container">
           <div class="myths-wrap ${open ? 'open' : ''}">
-            <button class="myths-head" aria-expanded="${open}" data-myths-toggle>
+            <button class="myths-head" aria-expanded="${open}" aria-controls="myths-body" data-myths-toggle>
               <span class="myths-icon" aria-hidden="true">${this._icon('ghost')}</span>
               <span class="myths-text">
                 <span class="myths-eyebrow">Common Myths</span>
-                <span class="myths-title">What Doesn't Actually Work (${total} myths debunked)</span>
+                <h2 class="myths-title" id="myths-title">What Doesn't Actually Work (${total} myths debunked)</h2>
                 <span class="myths-sub">Popular claims that don't survive an RHR-specific evidence review.</span>
               </span>
               <span class="myths-count">${total}</span>
               <span class="myths-chev" aria-hidden="true">${this._icon('chevDown')}</span>
             </button>
-            <div class="myths-body" ${open ? '' : 'hidden'}>
+            <div class="myths-body" id="myths-body" ${open ? '' : 'hidden'}>
               ${grouped}
             </div>
           </div>
@@ -933,7 +938,7 @@ class KygoRhrFactors extends HTMLElement {
             </div>
           </div>
 
-          <p class="dash-lede animate-on-scroll">All 30 modifiable factors across 4 categories. Tap any factor for the plain-English explanation, mechanism, dosage, and source citation. Sort by impact size to see which interventions move RHR the most.</p>
+          <p class="dash-lede animate-on-scroll">All ${this._flatModifiable().length} modifiable factors across ${Object.keys(this._categoryMeta).length} categories. Tap any factor for the plain-English explanation, mechanism, dosage, and source citation. Sort by impact size to see which interventions move RHR the most.</p>
 
           <div class="animate-on-scroll">${this._renderCatRail()}</div>
           <div class="animate-on-scroll">${this._renderSortBar()}</div>
@@ -1106,31 +1111,7 @@ class KygoRhrFactors extends HTMLElement {
           this._baselineExpandedKey = this._baselineExpandedKey === k ? null : k;
           const baseGrid = shadow.querySelector('.base-grid');
           if (baseGrid) {
-            const cards = this._factorsDemographics.map(f => {
-              const isExp = this._baselineExpandedKey === f.key;
-              const ev = this._evidenceConfig(f.evidence);
-              return `
-                <article class="base-card ${isExp ? 'expanded' : ''}" data-base-key="${f.key}">
-                  <button class="base-head" aria-expanded="${isExp}">
-                    <span class="base-meta">
-                      <span class="base-name">${f.name}</span>
-                      <span class="base-effect">${f.effect}</span>
-                    </span>
-                    <span class="base-badges">
-                      <span class="base-ev" style="color:${ev.color};background:${ev.bg}">${ev.label}</span>
-                    </span>
-                    <span class="base-chev" aria-hidden="true">${this._icon('chevDown')}</span>
-                  </button>
-                  ${isExp ? `
-                    <div class="base-body">
-                      <div class="base-body-row"><span class="lbl">Plain English</span><p>${f.whatThisMeans}</p></div>
-                      <div class="base-body-row"><span class="lbl">Mechanism</span><p>${f.mechanism}</p></div>
-                      <div class="base-body-row"><span class="lbl">Key finding</span><p>${f.keyFinding}</p></div>
-                      <div class="base-body-row"><span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p></div>
-                    </div>` : ''}
-                </article>`;
-            }).join('');
-            baseGrid.innerHTML = cards;
+            baseGrid.innerHTML = this._factorsDemographics.map(f => this._renderBaseCard(f)).join('');
           }
         }
         return;
@@ -1282,6 +1263,27 @@ class KygoRhrFactors extends HTMLElement {
       .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; transition-delay: var(--delay, 0ms); }
       .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
+      /* Keyboard focus — visible green ring on every interactive element */
+      :focus { outline: none; }
+      .cat-chip:focus-visible,
+      .list-sort-btn:focus-visible,
+      .fact-head:focus-visible,
+      .base-head:focus-visible,
+      .baseline-head:focus-visible,
+      .myths-head:focus-visible,
+      .src-group-toggle:focus-visible,
+      .header-link:focus-visible,
+      .blog-cta-btn:focus-visible,
+      .cta-android:focus-visible,
+      .article-card:focus-visible,
+      .source-link:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 9999px; }
+      .fact-head:focus-visible,
+      .base-head:focus-visible,
+      .baseline-head:focus-visible,
+      .myths-head:focus-visible,
+      .src-group-toggle:focus-visible,
+      .article-card:focus-visible { border-radius: 12px; }
+
       .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
       .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; max-width: 1200px; margin: 0 auto; }
       .logo { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); text-decoration: none; white-space: nowrap; min-width: 0; line-height: 1.2; }
@@ -1325,7 +1327,7 @@ class KygoRhrFactors extends HTMLElement {
       .baseline-icon svg { width: 20px; height: 20px; }
       .baseline-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
       .baseline-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--indigo); }
-      .baseline-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; }
+      .baseline-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; margin: 0; }
       .baseline-sub { font-size: 12px; color: var(--gray-600); line-height: 1.4; display: none; }
       .baseline-count { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--gray-600); background: #fff; border: 1px solid var(--gray-200); padding: 4px 10px; border-radius: 9999px; flex-shrink: 0; }
       .baseline-chev { width: 22px; height: 22px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .25s ease-out; }
@@ -1365,40 +1367,43 @@ class KygoRhrFactors extends HTMLElement {
       /* Category rail */
       .cat-rail { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 2px 0 6px; margin: 0 -20px 14px; padding-left: 20px; padding-right: 20px; scroll-padding-left: 20px; }
       .cat-rail::-webkit-scrollbar { display: none; }
-      .cat-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border-radius: 9999px; background: #fff; border: 1px solid var(--gray-200); font-size: 12px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all .15s; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
+      .cat-chip { display: inline-flex; align-items: center; gap: 7px; min-height: 38px; padding: 9px 14px; border-radius: 9999px; background: #fff; border: 1px solid var(--gray-200); font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all .15s; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
       .cat-chip .cat-hue { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
       .cat-chip:hover { border-color: var(--gray-400); }
       .cat-chip.active { background: var(--dark); color: #fff; border-color: var(--dark); }
       .cat-chip .count { font-size: 11px; color: var(--gray-400); padding-left: 6px; border-left: 1px solid var(--gray-200); }
       .cat-chip.active .count { color: rgba(255,255,255,0.55); border-color: rgba(255,255,255,0.2); }
 
-      /* Sort bar */
-      .list-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-      .list-sort-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--gray-400); font-weight: 600; }
-      .list-sort-btns { display: flex; gap: 6px; flex-wrap: wrap; }
-      .list-sort-btn { padding: 6px 12px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
+      /* Sort bar — mobile: label on its own row, buttons fill full width */
+      .list-toolbar { display: flex; flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 12px; }
+      .list-toolbar-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .list-sort-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--gray-400); font-weight: 600; }
+      .list-result-count { font-size: 12px; font-weight: 500; color: var(--gray-600); font-feature-settings: "tnum" 1; }
+      .list-result-count strong { color: var(--dark); font-weight: 700; }
+      .list-sort-btns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+      .list-sort-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 8px 10px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
       .list-sort-btn:hover { border-color: var(--gray-400); }
       .list-sort-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
 
       /* Factor cards */
       .fact-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
-      .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
+      .fact-card { position: relative; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
+      .fact-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--cat-hue, var(--gray-300)); }
       .fact-card:hover { border-color: var(--gray-300); }
       .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
       .fact-card.pos.expanded { border-color: var(--green); }
       .fact-card.neg.expanded { border-color: var(--red); }
       .fact-card.mix.expanded { border-color: var(--yellow); }
       .fact-card.neu.expanded { border-color: var(--gray-400); }
-      .fact-head { display: grid; grid-template-columns: auto 1fr auto; grid-template-rows: auto auto; gap: 4px 10px; width: 100%; padding: 12px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; align-items: center; }
+      .fact-head { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; gap: 6px 10px; width: 100%; padding: 12px 14px 12px 18px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; align-items: center; }
       .fact-head:hover { background: var(--gray-50); }
-      .fact-hue { grid-column: 1; grid-row: 1 / span 2; width: 10px; height: 36px; border-radius: 4px; flex-shrink: 0; align-self: center; }
-      .fact-meta { grid-column: 2; grid-row: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+      .fact-meta { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
       .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; color: var(--dark); line-height: 1.2; }
       .fact-effect { font-size: 12px; color: var(--gray-600); line-height: 1.35; }
-      .fact-chev { grid-column: 3; grid-row: 1 / span 2; width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; transition: transform .2s; flex-shrink: 0; align-self: center; }
+      .fact-chev { grid-column: 2; grid-row: 1 / span 2; width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; transition: transform .2s; flex-shrink: 0; align-self: center; }
       .fact-chev svg { width: 16px; height: 16px; }
       .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--green-dark); }
-      .fact-badges { grid-column: 2; grid-row: 2; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+      .fact-badges { grid-column: 1 / -1; grid-row: 2; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
       .fact-dir { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 9999px; letter-spacing: 0.3px; white-space: nowrap; }
       .fact-dir.pos { background: var(--green-light); color: var(--green-dark); }
       .fact-dir.neg { background: rgba(239,68,68,0.1); color: var(--red); }
@@ -1408,8 +1413,9 @@ class KygoRhrFactors extends HTMLElement {
       .fact-bpm { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 9999px; background: var(--gray-100); color: var(--gray-600); white-space: nowrap; font-feature-settings: "tnum" 1; }
       .fact-bpm.pos { background: var(--green-light); color: var(--green-dark); }
       .fact-bpm.neg { background: rgba(239,68,68,0.1); color: var(--red); }
-      .fact-bpm.zero { background: rgba(251,191,36,0.12); color: var(--amber); }
-      .fact-bpm.na { background: var(--gray-100); color: var(--gray-400); }
+      .fact-bpm.zero { background: rgba(251,191,36,0.18); color: var(--amber); }
+      .fact-bpm.mix { background: rgba(251,191,36,0.12); color: var(--amber); }
+      .fact-bpm.na { background: var(--gray-100); color: var(--gray-600); }
       .fact-body { padding: 4px 16px 14px; border-top: 1px dashed var(--gray-200); background: var(--gray-50); }
       .fact-body-row { padding-top: 10px; }
       .fact-body-row .lbl { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; display: block; margin-bottom: 3px; }
@@ -1429,7 +1435,7 @@ class KygoRhrFactors extends HTMLElement {
       .myths-icon svg { width: 22px; height: 22px; }
       .myths-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
       .myths-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); }
-      .myths-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; }
+      .myths-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; margin: 0; }
       .myths-sub { font-size: 12px; color: var(--gray-600); line-height: 1.4; display: none; }
       .myths-count { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--amber); background: #fff; border: 1px solid rgba(180,83,9,0.25); padding: 4px 10px; border-radius: 9999px; flex-shrink: 0; }
       .myths-chev { width: 22px; height: 22px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .25s ease-out; }
@@ -1461,12 +1467,16 @@ class KygoRhrFactors extends HTMLElement {
       .pick-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(34,197,94,0.5); transform: translateY(-3px); }
       .pick-card.warn { border-color: rgba(239,68,68,0.35); }
       .pick-card.warn:hover { border-color: rgba(239,68,68,0.6); }
+      .pick-card.myth { border-color: rgba(251,191,36,0.32); }
+      .pick-card.myth:hover { border-color: rgba(251,191,36,0.55); }
       .pick-icon { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 9px; background: rgba(34,197,94,0.15); color: var(--green); display: inline-flex; align-items: center; justify-content: center; }
       .pick-card.warn .pick-icon { background: rgba(239,68,68,0.18); color: #FCA5A5; }
+      .pick-card.myth .pick-icon { background: rgba(251,191,36,0.16); color: #FCD34D; }
       .pick-icon svg { width: 18px; height: 18px; }
       .pick-label { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.42); font-weight: 600; max-width: calc(100% - 44px); }
       .pick-stat { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 28px; color: var(--green); margin: 8px 0 6px; letter-spacing: -0.02em; font-feature-settings: "tnum" 1; line-height: 1; }
       .pick-card.warn .pick-stat { color: #FCA5A5; }
+      .pick-card.myth .pick-stat { color: #FCD34D; }
       .pick-answer { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: #fff; line-height: 1.2; margin: 0; }
       .pick-note { margin: 10px 0 0; font-size: 13px; color: rgba(255,255,255,0.62); line-height: 1.5; }
 
@@ -1557,6 +1567,10 @@ class KygoRhrFactors extends HTMLElement {
         .base-grid { grid-template-columns: repeat(2, 1fr); }
         .myth-grid { grid-template-columns: repeat(2, 1fr); }
         .cat-rail { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; flex-wrap: wrap; overflow: visible; }
+        .list-toolbar { flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; }
+        .list-toolbar-row { gap: 14px; }
+        .list-sort-btns { display: flex; grid-template-columns: none; gap: 6px; flex-wrap: wrap; }
+        .list-sort-btn { padding: 8px 14px; min-height: 36px; }
       }
       @media (min-width: 768px) {
         .header-inner { padding: 14px 24px; }
