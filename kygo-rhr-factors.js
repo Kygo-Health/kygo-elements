@@ -22,12 +22,11 @@ class KygoRhrFactors extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._observer = null;
-    this._catFilter = null;
+    this._catFilter = null;          // currently picked category for the sortable factors section
     this._listSort = 'impact';
     this._listExpandedKey = null;
-    this._baselineOpen = false;
     this._baselineExpandedKey = null;
-    this._mythsOpen = false;
+    this._mythsCatPick = null;       // currently picked category for the myths section
     this._eventsBound = false;
   }
 
@@ -575,6 +574,20 @@ class KygoRhrFactors extends HTMLElement {
     return { text: `${f.effectSize} bpm`, cls: 'neu' };
   }
 
+  _renderEvidenceSection() {
+    return `
+      <section class="evidence-section" aria-labelledby="evidence-title">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('arrowDown')}</span>The evidence</span>
+            <h2 class="section-h2" id="evidence-title">What the <em>evidence</em> actually says.</h2>
+            <p class="section-lede">Every modifiable factor with a clean numeric effect size, sorted by magnitude. Tap any bar to jump to its full source and mechanism below.</p>
+          </div>
+          ${this._renderImpactChart()}
+        </div>
+      </section>`;
+  }
+
   _renderImpactChart() {
     // Pulls every quantified factor (effectSize !== null), normalises sign by direction,
     // and renders a single horizontal-bar chart centered on a 0-line.
@@ -640,22 +653,51 @@ class KygoRhrFactors extends HTMLElement {
       </div>`;
   }
 
-  _renderCatRail() {
+  _renderSortableFactorsSection() {
     const flat = this._flatModifiable();
-    const chips = [`
-      <button class="cat-chip ${!this._catFilter ? 'active' : ''}" data-cat="" aria-pressed="${!this._catFilter}">
-        All <span class="count">${flat.length}</span>
-      </button>`];
-    Object.entries(this._categoryMeta).forEach(([k, m]) => {
+    const picked = this._catFilter;
+    const meta = this._categoryMeta;
+
+    const tiles = Object.entries(meta).map(([k, m]) => {
       const count = flat.filter(f => f.category === k).length;
-      const active = this._catFilter === k;
-      chips.push(`
-        <button class="cat-chip ${active ? 'active' : ''}" data-cat="${k}" aria-pressed="${active}">
-          <span class="cat-hue" style="background:${m.hue}"></span>${m.label}
-          <span class="count">${count}</span>
-        </button>`);
-    });
-    return `<div class="cat-rail" role="tablist" aria-label="Filter by category">${chips.join('')}</div>`;
+      const isActive = picked === k;
+      return `
+        <button class="picker-tile ${isActive ? 'active' : ''}" data-factors-cat="${k}" aria-pressed="${isActive}">
+          <span class="picker-tile-name">${m.label}</span>
+          <span class="picker-tile-count">${count}</span>
+        </button>`;
+    }).join('');
+
+    let panel = '';
+    if (picked) {
+      panel = `
+        <div class="picker-panel">
+          <div class="picker-panel-head">
+            <h3 class="picker-panel-title">${meta[picked].label} factors<span class="picker-panel-meta">${flat.filter(f => f.category === picked).length} factor${flat.filter(f => f.category === picked).length === 1 ? '' : 's'}</span></h3>
+          </div>
+          ${this._renderSortBar()}
+          ${this._renderFactorList()}
+        </div>`;
+    } else {
+      panel = `
+        <div class="picker-empty">
+          <span class="picker-empty-icon" aria-hidden="true">${this._icon('arrowDown')}</span>
+          <p>Tap a category above to see its factors with sources, mechanisms, and dosing.</p>
+        </div>`;
+    }
+
+    return `
+      <section class="factors-section" aria-labelledby="factors-title">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('arrowRight')}</span>Every factor, sortable</span>
+            <h2 class="section-h2" id="factors-title">All ${flat.length} <em>modifiable</em> factors.</h2>
+            <p class="section-lede">Pick a category to drill in. Each factor expands with the plain-English explanation, mechanism, dosage, and the primary source.</p>
+          </div>
+          <div class="picker-tiles">${tiles}</div>
+          ${panel}
+        </div>
+      </section>`;
   }
 
   _renderSortBar() {
@@ -750,16 +792,6 @@ class KygoRhrFactors extends HTMLElement {
     return `<div class="fact-list">${cards || '<p class="dash-empty">No factors match this filter.</p>'}</div>`;
   }
 
-  _updateDashboard() {
-    const shadow = this.shadowRoot;
-    const railEl = shadow.querySelector('.cat-rail');
-    if (railEl) railEl.outerHTML = this._renderCatRail();
-    const sortEl = shadow.querySelector('.list-toolbar');
-    if (sortEl) sortEl.outerHTML = this._renderSortBar();
-    const listEl = shadow.querySelector('.fact-list');
-    if (listEl) listEl.outerHTML = this._renderFactorList();
-  }
-
   _renderBaseCard(f) {
     const isExp = this._baselineExpandedKey === f.key;
     const ev = this._evidenceConfig(f.evidence);
@@ -787,35 +819,38 @@ class KygoRhrFactors extends HTMLElement {
 
   _renderBaselineSection() {
     const cards = this._factorsDemographics.map(f => this._renderBaseCard(f)).join('');
-    const open = this._baselineOpen;
     return `
       <section class="baseline-section" aria-labelledby="baseline-title">
         <div class="container">
-          <div class="baseline-wrap ${open ? 'open' : ''}">
-            <button class="baseline-head" aria-expanded="${open}" aria-controls="baseline-body" data-baseline-toggle>
-              <span class="baseline-icon" aria-hidden="true">${this._icon('users')}</span>
-              <span class="baseline-text">
-                <span class="baseline-eyebrow">Your baseline</span>
-                <h2 class="baseline-title" id="baseline-title">What you can't change — but should know</h2>
-                <span class="baseline-sub">7 demographic and physiological factors that set your starting RHR.</span>
-              </span>
-              <span class="baseline-count">${this._factorsDemographics.length}</span>
-              <span class="baseline-chev" aria-hidden="true">${this._icon('chevDown')}</span>
-            </button>
-            <div class="baseline-body" id="baseline-body" ${open ? '' : 'hidden'}>
-              <div class="base-grid">${cards}</div>
-            </div>
+          <div class="section-header">
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('users')}</span>Your baseline</span>
+            <h2 class="section-h2" id="baseline-title">What you can't change — <em>but should know</em></h2>
+            <p class="section-lede">${this._factorsDemographics.length} demographic and physiological factors that set your starting RHR. Tap any factor for the full study and mechanism.</p>
           </div>
+          <div class="base-grid">${cards}</div>
         </div>
       </section>`;
   }
 
   _renderMythsSection() {
-    const open = this._mythsOpen;
     const groups = ['Nutrition', 'Supplements', 'Exercise', 'Environment', 'Demographics'];
-    const grouped = groups.map(g => {
-      const items = this._myths.filter(m => m.cat === g);
-      if (!items.length) return '';
+    const counts = {};
+    groups.forEach(g => counts[g] = this._myths.filter(m => m.cat === g).length);
+    const total = this._myths.length;
+    const picked = this._mythsCatPick;
+
+    const tiles = groups.map(g => {
+      const isActive = picked === g;
+      return `
+        <button class="picker-tile ${isActive ? 'active' : ''}" data-myths-cat="${g}" aria-pressed="${isActive}">
+          <span class="picker-tile-name">${g}</span>
+          <span class="picker-tile-count">${counts[g]}</span>
+        </button>`;
+    }).join('');
+
+    let panel = '';
+    if (picked) {
+      const items = this._myths.filter(m => m.cat === picked);
       const cards = items.map(m => `
         <article class="myth-card">
           <div class="myth-row">
@@ -824,32 +859,31 @@ class KygoRhrFactors extends HTMLElement {
           </div>
           <p class="myth-why">${m.why}</p>
         </article>`).join('');
-      return `
-        <div class="myth-group">
-          <h3 class="myth-group-title">${g}<span class="myth-group-count">${items.length}</span></h3>
+      panel = `
+        <div class="picker-panel">
+          <div class="picker-panel-head">
+            <h3 class="picker-panel-title">${picked} myths<span class="picker-panel-meta">${items.length} debunked</span></h3>
+          </div>
           <div class="myth-grid">${cards}</div>
         </div>`;
-    }).join('');
+    } else {
+      panel = `
+        <div class="picker-empty">
+          <span class="picker-empty-icon" aria-hidden="true">${this._icon('ghost')}</span>
+          <p>Tap a category above to see the myths debunked.</p>
+        </div>`;
+    }
 
-    const total = this._myths.length;
     return `
       <section class="myths-section" aria-labelledby="myths-title">
         <div class="container">
-          <div class="myths-wrap ${open ? 'open' : ''}">
-            <button class="myths-head" aria-expanded="${open}" aria-controls="myths-body" data-myths-toggle>
-              <span class="myths-icon" aria-hidden="true">${this._icon('ghost')}</span>
-              <span class="myths-text">
-                <span class="myths-eyebrow">Common Myths</span>
-                <h2 class="myths-title" id="myths-title">What Doesn't Actually Work (${total} myths debunked)</h2>
-                <span class="myths-sub">Popular claims that don't survive an RHR-specific evidence review.</span>
-              </span>
-              <span class="myths-count">${total}</span>
-              <span class="myths-chev" aria-hidden="true">${this._icon('chevDown')}</span>
-            </button>
-            <div class="myths-body" id="myths-body" ${open ? '' : 'hidden'}>
-              ${grouped}
-            </div>
+          <div class="section-header">
+            <span class="section-eyebrow amber"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('ghost')}</span>Common Myths</span>
+            <h2 class="section-h2" id="myths-title">What <em>doesn't</em> actually work (${total} debunked)</h2>
+            <p class="section-lede">Popular claims that don't survive an RHR-specific evidence review. Pick a category to see what got cut.</p>
           </div>
+          <div class="picker-tiles">${tiles}</div>
+          ${panel}
         </div>
       </section>`;
   }
@@ -981,7 +1015,8 @@ class KygoRhrFactors extends HTMLElement {
         </div>
       </header>
 
-      <section class="hero">
+      <!-- 1. Hero (white) -->
+      <section class="hero section-bg-white">
         <div class="container hero-inner">
           <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>37 Factors • 4 Categories • All Peer-Reviewed</div>
           <h1 class="hero-title animate-on-scroll">What <em>Moves</em> Your Resting Heart Rate?</h1>
@@ -991,50 +1026,11 @@ class KygoRhrFactors extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderBaselineSection()}
+      <!-- 2. Evidence chart (gray) -->
+      <div class="section-bg-gray">${this._renderEvidenceSection()}</div>
 
-      <section class="dash-section" id="explore">
-        <div class="container">
-          <div class="dash-head animate-on-scroll">
-            <div>
-              <span class="dash-eyebrow">The evidence</span>
-              <h2 class="dash-h2">What the <em>evidence</em> actually says.</h2>
-            </div>
-          </div>
-
-          <p class="dash-lede animate-on-scroll">All ${this._flatModifiable().length} modifiable factors across ${Object.keys(this._categoryMeta).length} categories. Bars below are the quantified ones; the full sortable list comes after.</p>
-
-          <div class="animate-on-scroll">${this._renderImpactChart()}</div>
-
-          <div class="dash-list-head animate-on-scroll">
-            <h3 class="dash-list-title">Every factor, sortable</h3>
-            <p class="dash-list-sub">Tap any factor for the plain-English explanation, mechanism, dosage, and source citation.</p>
-          </div>
-
-          <div class="animate-on-scroll">${this._renderCatRail()}</div>
-          <div class="animate-on-scroll">${this._renderSortBar()}</div>
-
-          <div class="dash-body">${this._renderFactorList()}</div>
-        </div>
-      </section>
-
-      ${this._renderMythsSection()}
-
-      <section class="article-section">
-        <div class="container">
-          <a href="https://www.kygo.app/post/resting-heart-rate-factors" class="article-card animate-on-scroll" target="_blank" rel="noopener">
-            <span class="article-badge">Deep Dive</span>
-            <div class="article-body">
-              <span class="article-kicker">Read the full article</span>
-              <h3 class="article-title">Resting Heart Rate Factors: 37 Inputs Ranked by Evidence <span class="article-year">(2026)</span></h3>
-              <p class="article-desc">Every mechanism, dosage, and source in one long-form read.</p>
-            </div>
-            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
-          </a>
-        </div>
-      </section>
-
-      <section class="blog-cta-section">
+      <!-- 3. App CTA "See What's Influencing Your RHR" (white) -->
+      <section class="blog-cta-section section-bg-white">
         <div class="container">
           <div class="blog-cta animate-on-scroll">
             <div class="blog-cta-glow"></div>
@@ -1068,7 +1064,32 @@ class KygoRhrFactors extends HTMLElement {
         </div>
       </section>
 
-      <section class="picks-section" id="headlines">
+      <!-- 4. Baseline "What you can't change" — expanded by default (gray) -->
+      <div class="section-bg-gray">${this._renderBaselineSection()}</div>
+
+      <!-- 5. Blog CTA — Read the full article (white) -->
+      <section class="article-section section-bg-white">
+        <div class="container">
+          <a href="https://www.kygo.app/post/resting-heart-rate-factors" class="article-card animate-on-scroll" target="_blank" rel="noopener">
+            <span class="article-badge">Deep Dive</span>
+            <div class="article-body">
+              <span class="article-kicker">Read the full article</span>
+              <h3 class="article-title">Resting Heart Rate Factors: 37 Inputs Ranked by Evidence <span class="article-year">(2026)</span></h3>
+              <p class="article-desc">Every mechanism, dosage, and source in one long-form read.</p>
+            </div>
+            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- 6. Every factor sortable — category picker (gray) -->
+      <div class="section-bg-gray">${this._renderSortableFactorsSection()}</div>
+
+      <!-- 7. Common Myths — category picker (white) -->
+      <div class="section-bg-white">${this._renderMythsSection()}</div>
+
+      <!-- 8. Top picks (gray) -->
+      <section class="picks-section section-bg-gray" id="headlines">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1081,7 +1102,8 @@ class KygoRhrFactors extends HTMLElement {
         </div>
       </section>
 
-      <section class="sources-section">
+      <!-- 9. Sources (white) -->
+      <section class="sources-section section-bg-white">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
@@ -1130,47 +1152,31 @@ class KygoRhrFactors extends HTMLElement {
         return;
       }
 
-      const baselineToggle = e.target.closest('[data-baseline-toggle]');
-      if (baselineToggle) {
-        this._baselineOpen = !this._baselineOpen;
-        const wrap = shadow.querySelector('.baseline-wrap');
-        const body = shadow.querySelector('.baseline-body');
-        if (wrap) wrap.classList.toggle('open', this._baselineOpen);
-        baselineToggle.setAttribute('aria-expanded', this._baselineOpen);
-        if (body) {
-          if (this._baselineOpen) body.removeAttribute('hidden');
-          else body.setAttribute('hidden', '');
-        }
-        return;
-      }
-
-      const mythsToggle = e.target.closest('[data-myths-toggle]');
-      if (mythsToggle) {
-        this._mythsOpen = !this._mythsOpen;
-        const wrap = shadow.querySelector('.myths-wrap');
-        const body = shadow.querySelector('.myths-body');
-        if (wrap) wrap.classList.toggle('open', this._mythsOpen);
-        mythsToggle.setAttribute('aria-expanded', this._mythsOpen);
-        if (body) {
-          if (this._mythsOpen) body.removeAttribute('hidden');
-          else body.setAttribute('hidden', '');
-        }
-        return;
-      }
-
-      const catChip = e.target.closest('.cat-chip');
-      if (catChip) {
-        const k = catChip.dataset.cat || null;
-        this._catFilter = (this._catFilter === k || k === '') ? null : k;
+      const factorsTile = e.target.closest('[data-factors-cat]');
+      if (factorsTile) {
+        const k = factorsTile.dataset.factorsCat;
+        // Toggle: same tile collapses, different tile switches
+        this._catFilter = this._catFilter === k ? null : k;
         this._listExpandedKey = null;
-        this._updateDashboard();
+        const sec = shadow.querySelector('.factors-section');
+        if (sec) sec.outerHTML = this._renderSortableFactorsSection();
+        return;
+      }
+
+      const mythsTile = e.target.closest('[data-myths-cat]');
+      if (mythsTile) {
+        const k = mythsTile.dataset.mythsCat;
+        this._mythsCatPick = this._mythsCatPick === k ? null : k;
+        const sec = shadow.querySelector('.myths-section');
+        if (sec) sec.outerHTML = this._renderMythsSection();
         return;
       }
 
       const sortBtn = e.target.closest('.list-sort-btn');
       if (sortBtn) {
         this._listSort = sortBtn.dataset.sort;
-        this._updateDashboard();
+        const sec = shadow.querySelector('.factors-section');
+        if (sec) sec.outerHTML = this._renderSortableFactorsSection();
         return;
       }
 
@@ -1191,13 +1197,14 @@ class KygoRhrFactors extends HTMLElement {
       const jumpBtn = e.target.closest('[data-fact-jump]');
       if (jumpBtn) {
         const k = jumpBtn.dataset.factJump;
-        // Find the factor's category, switch to it (so it's visible after filter), expand and scroll
+        // Tap a chart label → open that factor's category, sort by impact, expand the card, scroll
         const f = this._flatModifiable().find(x => x.key === k);
         if (f) {
-          this._catFilter = null; // ensure visible
+          this._catFilter = f.category;
           this._listSort = 'impact';
           this._listExpandedKey = k;
-          this._updateDashboard();
+          const sec = shadow.querySelector('.factors-section');
+          if (sec) sec.outerHTML = this._renderSortableFactorsSection();
           requestAnimationFrame(() => {
             const target = shadow.querySelector(`[data-fact-key="${k}"]`);
             if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1354,24 +1361,17 @@ class KygoRhrFactors extends HTMLElement {
 
       /* Keyboard focus — visible green ring on every interactive element */
       :focus { outline: none; }
-      .cat-chip:focus-visible,
+      .picker-tile:focus-visible,
       .list-sort-btn:focus-visible,
       .fact-head:focus-visible,
       .base-head:focus-visible,
-      .baseline-head:focus-visible,
-      .myths-head:focus-visible,
       .src-group-toggle:focus-visible,
       .header-link:focus-visible,
       .blog-cta-btn:focus-visible,
       .cta-android:focus-visible,
       .article-card:focus-visible,
-      .source-link:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 9999px; }
-      .fact-head:focus-visible,
-      .base-head:focus-visible,
-      .baseline-head:focus-visible,
-      .myths-head:focus-visible,
-      .src-group-toggle:focus-visible,
-      .article-card:focus-visible { border-radius: 12px; }
+      .source-link:focus-visible,
+      .imp-label:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 
       .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
       .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; max-width: 1200px; margin: 0 auto; }
@@ -1384,8 +1384,9 @@ class KygoRhrFactors extends HTMLElement {
       /* HERO */
       .hero { padding: 40px 0 28px; background: #fff; }
       .hero-inner { position: relative; }
-      .hero-kicker { display: inline-flex; align-items: center; gap: 7px; font-size: 9.5px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 5px 10px; border-radius: 9999px; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px; white-space: nowrap; max-width: 100%; }
+      .hero-kicker { display: inline-flex; align-items: center; gap: 7px; font-size: 9.5px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 6px 11px; border-radius: 9999px; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px; max-width: 100%; line-height: 1.4; text-align: left; }
       .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse 2.2s infinite; flex-shrink: 0; }
+      @media (min-width: 480px) { .hero-kicker { font-size: 10.5px; white-space: nowrap; } }
       @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.6);} 70%{box-shadow:0 0 0 8px rgba(34,197,94,0);} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0);} }
       .hero-title { font-size: clamp(32px, 8.5vw, 76px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; margin: 0; color: var(--dark); max-width: 14ch; }
       .hero-title em { font-style: normal; color: var(--green); font-family: inherit; }
@@ -1405,26 +1406,47 @@ class KygoRhrFactors extends HTMLElement {
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
-      /* BASELINE (Demographics) — sits between hero and dashboard, brand green tint */
-      .baseline-section { padding: 32px 0 8px; background: #fff; }
-      .baseline-wrap { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
-      .baseline-wrap:hover { border-color: var(--gray-300); }
-      .baseline-wrap.open { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
-      .baseline-head { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 12px; width: 100%; padding: 16px 18px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
-      .baseline-head:hover { background: var(--gray-50); }
-      .baseline-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-      .baseline-icon svg { width: 20px; height: 20px; }
-      .baseline-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .baseline-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); }
-      .baseline-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; margin: 0; }
-      .baseline-sub { font-size: 12px; color: var(--gray-600); line-height: 1.4; display: none; }
-      .baseline-count { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--green-dark); background: var(--green-light); border: 1px solid rgba(34,197,94,0.2); padding: 4px 10px; border-radius: 9999px; flex-shrink: 0; }
-      .baseline-chev { width: 22px; height: 22px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .25s ease-out; }
-      .baseline-chev svg { width: 18px; height: 18px; }
-      .baseline-wrap.open .baseline-chev { transform: rotate(180deg); color: var(--green-dark); }
-      .baseline-body { padding: 0 14px 18px; border-top: 1px solid var(--gray-100); background: var(--gray-50); }
-      .baseline-body[hidden] { display: none; }
-      .base-grid { display: grid; grid-template-columns: 1fr; gap: 8px; padding-top: 14px; }
+      /* SECTION BACKGROUNDS — alternating white/gray rhythm */
+      .section-bg-white { background: #fff; }
+      .section-bg-gray  { background: var(--gray-100); }
+      .section-bg-white > section,
+      .section-bg-gray  > section { background: transparent; }
+
+      /* Shared section header used by Evidence, Baseline, Sortable Factors, Myths */
+      .section-header { margin-bottom: 24px; max-width: 720px; }
+      .section-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 12px; }
+      .section-eyebrow.amber { color: var(--amber); }
+      .section-eyebrow-icon { width: 22px; height: 22px; border-radius: 7px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; }
+      .section-eyebrow.amber .section-eyebrow-icon { background: rgba(180,83,9,0.10); color: var(--amber); }
+      .section-eyebrow-icon svg { width: 13px; height: 13px; }
+      .section-h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 5.5vw, 40px); letter-spacing: -0.02em; line-height: 1.08; margin: 0 0 12px; color: var(--dark); }
+      .section-h2 em { font-style: normal; color: var(--green); font-family: inherit; }
+      .factors-section, .baseline-section, .myths-section, .evidence-section { padding: 48px 0 56px; }
+
+      /* PICKER TILES — used by Sortable Factors and Myths sections */
+      .picker-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; min-height: 56px; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
+      .picker-tile:hover { border-color: var(--gray-300); transform: translateY(-1px); }
+      .picker-tile.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 6px 18px rgba(15,23,42,0.12); }
+      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; letter-spacing: -0.005em; line-height: 1.15; }
+      .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 4px 10px; min-width: 32px; text-align: center; font-feature-settings: "tnum" 1; }
+      .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
+
+      /* PICKER PANEL — the reveal area when a tile is selected */
+      .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); animation: panelIn .35s cubic-bezier(0.16, 1, 0.3, 1); }
+      @keyframes panelIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+      .picker-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
+      .picker-panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+      .picker-panel-meta { font-size: 11.5px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.5px; text-transform: uppercase; }
+
+      /* PICKER EMPTY — shown before any tile is selected */
+      .picker-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 32px 20px; background: #fff; border: 1px dashed var(--gray-200); border-radius: 18px; text-align: center; color: var(--gray-600); font-size: 13.5px; line-height: 1.5; }
+      .picker-empty-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--gray-100); color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; }
+      .picker-empty-icon svg { width: 18px; height: 18px; }
+      .picker-empty p { margin: 0; max-width: 36ch; }
+
+      /* BASELINE (Demographics) — content only, the section bg comes from .section-bg-* */
+      .base-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
       .base-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
       .base-card:hover { border-color: var(--gray-300); }
       .base-card.expanded { border-color: var(--green); box-shadow: 0 4px 14px rgba(34,197,94,0.08); }
@@ -1443,14 +1465,6 @@ class KygoRhrFactors extends HTMLElement {
       .base-body-row .lbl { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; display: block; margin-bottom: 3px; }
       .base-body-row p { margin: 0; font-size: 13px; color: var(--gray-600); line-height: 1.55; }
 
-      /* DASHBOARD — the gray slab where the chart and list live */
-      .dash-section { padding: 48px 0 64px; background: var(--gray-100); }
-      .dash-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
-      .dash-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: var(--green-dark); margin-bottom: 10px; }
-      .dash-eyebrow::before { content: ''; width: 14px; height: 1px; background: currentColor; }
-      .dash-h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 5.5vw, 40px); letter-spacing: -0.02em; line-height: 1.08; margin: 0; color: var(--dark); max-width: 20ch; }
-      .dash-h2 em { font-style: normal; color: var(--green); font-family: inherit; }
-      .dash-lede { color: var(--gray-600); font-size: 14px; max-width: 64ch; margin: 0 0 18px; line-height: 1.55; }
       .dash-empty { padding: 24px 18px; text-align: center; color: var(--gray-400); font-size: 14px; background: #fff; border: 1px dashed var(--gray-200); border-radius: 16px; }
 
       /* IMPACT CHART — the leaderboard view */
@@ -1486,21 +1500,6 @@ class KygoRhrFactors extends HTMLElement {
       .imp-tick::before { content: ''; position: absolute; left: 50%; top: -1px; height: 4px; width: 1px; background: var(--gray-300); transform: translateX(-50%); }
       .imp-tick.zero { font-weight: 700; color: var(--dark); }
       .imp-note { margin: 14px 0 0; font-size: 11.5px; color: var(--gray-400); line-height: 1.5; }
-
-      /* Sub-header above the full sortable list */
-      .dash-list-head { margin: 8px 0 14px; }
-      .dash-list-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--dark); margin: 0 0 4px; letter-spacing: -0.01em; }
-      .dash-list-sub { font-size: 13px; color: var(--gray-600); margin: 0; line-height: 1.5; }
-
-      /* Category rail */
-      .cat-rail { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 2px 0 6px; margin: 0 -20px 14px; padding-left: 20px; padding-right: 20px; scroll-padding-left: 20px; }
-      .cat-rail::-webkit-scrollbar { display: none; }
-      .cat-chip { display: inline-flex; align-items: center; gap: 7px; min-height: 38px; padding: 9px 14px; border-radius: 9999px; background: #fff; border: 1px solid var(--gray-200); font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all .15s; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
-      .cat-chip .cat-hue { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-      .cat-chip:hover { border-color: var(--gray-400); }
-      .cat-chip.active { background: var(--dark); color: #fff; border-color: var(--dark); }
-      .cat-chip .count { font-size: 11px; color: var(--gray-400); padding-left: 6px; border-left: 1px solid var(--gray-200); }
-      .cat-chip.active .count { color: rgba(255,255,255,0.55); border-color: rgba(255,255,255,0.2); }
 
       /* Sort bar — mobile: label on its own row, buttons fill full width */
       .list-toolbar { display: flex; flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 12px; }
@@ -1543,30 +1542,8 @@ class KygoRhrFactors extends HTMLElement {
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green); }
 
-      /* MYTHS — same brand container pattern as Baseline, with a subtle amber accent */
-      .myths-section { padding: 8px 0 40px; background: #fff; }
-      .myths-wrap { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
-      .myths-wrap:hover { border-color: var(--gray-300); }
-      .myths-wrap.open { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
-      .myths-head { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 12px; width: 100%; padding: 16px 18px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
-      .myths-head:hover { background: var(--gray-50); }
-      .myths-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(180,83,9,0.10); color: var(--amber); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-      .myths-icon svg { width: 22px; height: 22px; }
-      .myths-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .myths-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); }
-      .myths-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; margin: 0; }
-      .myths-sub { font-size: 12px; color: var(--gray-600); line-height: 1.4; display: none; }
-      .myths-count { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--amber); background: rgba(180,83,9,0.08); border: 1px solid rgba(180,83,9,0.2); padding: 4px 10px; border-radius: 9999px; flex-shrink: 0; }
-      .myths-chev { width: 22px; height: 22px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .25s ease-out; }
-      .myths-chev svg { width: 18px; height: 18px; }
-      .myths-wrap.open .myths-chev { transform: rotate(180deg); color: var(--amber); }
-      .myths-body { padding: 0 14px 18px; border-top: 1px solid var(--gray-100); background: var(--gray-50); }
-      .myths-body[hidden] { display: none; }
-      .myth-group { padding-top: 16px; }
-      .myth-group:first-child { padding-top: 14px; }
-      .myth-group-title { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.9px; margin: 0 0 10px; }
-      .myth-group-count { font-size: 10.5px; font-weight: 700; color: var(--gray-600); background: #fff; border: 1px solid var(--gray-200); padding: 2px 7px; border-radius: 9999px; letter-spacing: 0; }
-      .myth-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      /* MYTHS — content only, section bg comes from .section-bg-* */
+      .myth-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
       .myth-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 12px 14px; transition: border-color .15s; }
       .myth-card:hover { border-color: var(--gray-300); }
       .myth-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
@@ -1683,10 +1660,10 @@ class KygoRhrFactors extends HTMLElement {
         .hero-meta .hero-cell:nth-child(n+3), .hero-meta .hero-cell:nth-child(-n+2) { padding-top: 0; padding-bottom: 0; }
       }
       @media (min-width: 680px) {
-        .baseline-sub, .myths-sub { display: block; }
         .base-grid { grid-template-columns: repeat(2, 1fr); }
         .myth-grid { grid-template-columns: repeat(2, 1fr); }
-        .cat-rail { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; flex-wrap: wrap; overflow: visible; }
+        .picker-tiles { grid-template-columns: repeat(4, 1fr); }
+        .myths-section .picker-tiles { grid-template-columns: repeat(5, 1fr); }
         .list-toolbar { flex-direction: row; align-items: center; justify-content: space-between; gap: 12px; }
         .list-toolbar-row { gap: 14px; }
         .list-sort-btns { display: flex; grid-template-columns: none; gap: 6px; flex-wrap: wrap; }
@@ -1711,15 +1688,7 @@ class KygoRhrFactors extends HTMLElement {
         .logo { font-size: 16px; }
         .logo-img { height: 28px; }
         .hero { padding: 72px 0 48px; }
-        .baseline-section { padding: 36px 0 0; }
-        .baseline-head { padding: 22px 24px; }
-        .baseline-icon { width: 44px; height: 44px; }
-        .baseline-icon svg { width: 22px; height: 22px; }
-        .baseline-title { font-size: 17px; }
-        .baseline-body { padding: 6px 18px 22px; }
-        .myths-head { padding: 22px 24px; }
-        .myths-icon { width: 44px; height: 44px; }
-        .myths-title { font-size: 17px; }
+        .factors-section, .baseline-section, .myths-section, .evidence-section { padding: 64px 0 72px; }
         .picks-grid { grid-template-columns: 1fr 1fr; }
         .picks-section { padding: 64px 0; }
         .picks-card { padding: 48px 36px; border-radius: 28px; }
@@ -1730,7 +1699,9 @@ class KygoRhrFactors extends HTMLElement {
         .article-desc { display: block; }
         .article-go { width: 40px; height: 40px; }
         .article-go svg { width: 18px; height: 18px; }
-        .dash-section { padding: 56px 0 72px; }
+        .picker-tile { min-height: 64px; padding: 16px 18px; }
+        .picker-tile-name { font-size: 15.5px; }
+        .picker-panel { padding: 24px 26px; border-radius: 22px; }
         .fact-list { gap: 10px; }
         .fact-card { border-radius: 16px; }
         .fact-head { padding: 16px 20px; gap: 8px 14px; }
@@ -1743,7 +1714,6 @@ class KygoRhrFactors extends HTMLElement {
       }
       @media (min-width: 1024px) {
         .picks-grid { grid-template-columns: 1fr 1fr 1fr; }
-        .dash-section { padding: 72px 0 88px; }
         .base-grid { grid-template-columns: repeat(3, 1fr); }
       }
       @media (prefers-reduced-motion: reduce) {
