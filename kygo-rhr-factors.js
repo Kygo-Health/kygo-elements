@@ -1354,7 +1354,7 @@ class KygoRhrFactors extends HTMLElement {
       *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
       h1, h2, h3, h4 { font-family: 'Space Grotesk', -apple-system, sans-serif; font-weight: 600; line-height: 1.2; }
       a { color: var(--green); text-decoration: none; }
-      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; min-width: 0; }
 
       .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; transition-delay: var(--delay, 0ms); }
       .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
@@ -1424,12 +1424,12 @@ class KygoRhrFactors extends HTMLElement {
       .factors-section, .baseline-section, .myths-section, .evidence-section { padding: 48px 0 56px; }
 
       /* PICKER TILES — used by Sortable Factors and Myths sections */
-      .picker-tiles { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
-      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; min-height: 56px; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
+      .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
+      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
       .picker-tile:hover { border-color: var(--gray-300); transform: translateY(-1px); }
       .picker-tile.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 6px 18px rgba(15,23,42,0.12); }
-      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; letter-spacing: -0.005em; line-height: 1.15; }
-      .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 4px 10px; min-width: 32px; text-align: center; font-feature-settings: "tnum" 1; }
+      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: -0.005em; line-height: 1.15; min-width: 0; flex: 1; overflow-wrap: anywhere; }
+      .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 3px 9px; min-width: 28px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
       .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
 
       /* PICKER PANEL — the reveal area when a tile is selected */
@@ -1554,7 +1554,8 @@ class KygoRhrFactors extends HTMLElement {
       /* TOP PICKS */
       .picks-section { padding: 40px 0; background: #fff; }
       .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
-      .picks-glow { position: absolute; top: -40%; right: -15%; width: 70%; height: 160%; background: radial-gradient(circle at center, rgba(34,197,94,0.22), transparent 60%); pointer-events: none; }
+      /* Mobile: anchored radial in the top-right corner (was a tall narrow box centered on a circle, which read as a vertical stripe on long mobile cards). Tablet+ overrides to a wider spread. */
+      .picks-glow { position: absolute; top: 0; right: 0; width: 90%; max-width: 520px; aspect-ratio: 1 / 1; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.22) 0%, rgba(34,197,94,0.08) 35%, transparent 70%); pointer-events: none; }
       .picks-head { position: relative; z-index: 1; margin-bottom: 24px; }
       .picks-eyebrow { display: block; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.5); font-weight: 600; margin-bottom: 8px; }
       .picks-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: #fff; margin: 0; font-size: clamp(26px, 5.5vw, 40px); letter-spacing: -0.02em; line-height: 1.08; }
@@ -1600,18 +1601,19 @@ class KygoRhrFactors extends HTMLElement {
 
       /* ARTICLE CTA */
       .article-section { padding: 40px 0; background: #fff; }
-      .article-card { position: relative; display: flex; align-items: center; gap: 14px; max-width: 780px; margin: 0 auto; padding: 20px 20px 20px 22px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
-      .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(circle at center, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
+      .article-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; max-width: 780px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
+      .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
       .article-card:hover { border-color: var(--green); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(34,197,94,0.14); }
-      .article-badge { position: relative; z-index: 1; align-self: flex-start; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; }
-      .article-body { position: relative; z-index: 1; flex: 1; min-width: 0; }
+      .article-badge { position: relative; z-index: 1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; }
+      .article-body { position: relative; z-index: 1; flex: 1; min-width: 0; width: 100%; }
       .article-kicker { display: block; font-size: 11px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
       .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.25; letter-spacing: -0.01em; }
       .article-year { color: var(--gray-400); font-weight: 500; }
       .article-desc { display: none; font-size: 13px; color: var(--gray-600); margin: 6px 0 0; line-height: 1.45; }
-      .article-go { position: relative; z-index: 1; width: 34px; height: 34px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; }
+      .article-go { position: absolute; top: 18px; right: 18px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; }
       .article-card:hover .article-go { background: var(--green-dark); }
       .article-go svg { width: 16px; height: 16px; }
+      .article-body { padding-right: 50px; }
 
       /* APP CTA */
       .blog-cta-section { padding: 48px 0; }
@@ -1694,11 +1696,12 @@ class KygoRhrFactors extends HTMLElement {
         .picks-card { padding: 48px 36px; border-radius: 28px; }
         .blog-cta { padding: 48px 40px; }
         .article-section { padding: 56px 0; }
-        .article-card { padding: 24px 28px; gap: 18px; border-radius: 22px; }
+        .article-card { flex-direction: row; align-items: center; padding: 24px 28px; gap: 18px; border-radius: 22px; }
         .article-title { font-size: 19px; }
         .article-desc { display: block; }
-        .article-go { width: 40px; height: 40px; }
+        .article-go { position: static; width: 40px; height: 40px; }
         .article-go svg { width: 18px; height: 18px; }
+        .article-body { padding-right: 0; }
         .picker-tile { min-height: 64px; padding: 16px 18px; }
         .picker-tile-name { font-size: 15.5px; }
         .picker-panel { padding: 24px 26px; border-radius: 22px; }
