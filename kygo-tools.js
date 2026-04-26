@@ -22,7 +22,6 @@ class KygoToolsPage extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this._observer = null;
     this._tools = [];
-    this._activeCategory = 'all';
   }
 
   connectedCallback() {
@@ -76,36 +75,36 @@ class KygoToolsPage extends HTMLElement {
     return map[tool.slug] || 'other';
   }
 
-  _categories() {
-    // Default ordering preference for known categories. Any new category that
-    // shows up on a tool (via slug map or explicit tool.category) gets appended
-    // automatically — no code changes needed when adding a new tool group.
-    const preferredOrder = ['all', 'sleep', 'recovery', 'nutrition', 'wearables', 'other'];
-    const labels = {
-      all: 'All', sleep: 'Sleep', recovery: 'Recovery', nutrition: 'Nutrition',
-      wearables: 'Wearables', other: 'Other'
+  // Per-category presentation data — icon, label, lede. Unknown categories
+  // get a humanised label and a default icon.
+  _categoryMeta(id) {
+    const map = {
+      sleep:     { label: 'Sleep',     icon: 'moon',     lede: 'Tools that explore what shapes how fast you fall asleep, how deep you go, and whether you stay there.' },
+      recovery:  { label: 'Recovery',  icon: 'heart',    lede: 'Heart rate, HRV, and the lifestyle inputs that move them.' },
+      nutrition: { label: 'Nutrition', icon: 'sparkles', lede: 'Understand what\'s actually in your food.' },
+      wearables: { label: 'Wearables', icon: 'activity', lede: 'Device accuracy, head-to-head comparisons, and what each one gets right.' },
+      other:     { label: 'Other',     icon: 'sparkles', lede: 'Specialty tools.' }
     };
-    const counts = { all: this._tools.length };
-    const observed = new Set();
-    this._tools.forEach(t => {
-      const c = this._categoryFor(t);
-      counts[c] = (counts[c] || 0) + 1;
-      observed.add(c);
-    });
-    // Build the ordered list: preferred categories first (only if present),
-    // then any unknown categories that tools have declared, in insertion order.
-    const order = preferredOrder.filter(id => id === 'all' || observed.has(id));
-    observed.forEach(id => { if (!order.includes(id)) order.push(id); });
-    return order.map(id => ({
-      id,
-      label: labels[id] || (id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ')),
-      count: counts[id] || 0
-    }));
+    return map[id] || {
+      label: id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' '),
+      icon: 'sparkles',
+      lede: ''
+    };
   }
 
-  _filteredTools() {
-    if (this._activeCategory === 'all') return this._tools;
-    return this._tools.filter(t => this._categoryFor(t) === this._activeCategory);
+  // Group tools by category, preserving insertion order within each group.
+  // Returns an array of { id, meta, tools } in the preferred display order.
+  _groupedByCategory() {
+    const preferredOrder = ['sleep', 'recovery', 'nutrition', 'wearables', 'other'];
+    const buckets = new Map();
+    this._tools.forEach(t => {
+      const id = this._categoryFor(t);
+      if (!buckets.has(id)) buckets.set(id, []);
+      buckets.get(id).push(t);
+    });
+    const order = preferredOrder.filter(id => buckets.has(id));
+    buckets.forEach((_, id) => { if (!order.includes(id)) order.push(id); });
+    return order.map(id => ({ id, meta: this._categoryMeta(id), tools: buckets.get(id) }));
   }
 
   // Parse "17+ peer-reviewed studies" → { n: '17+', l: 'peer-reviewed studies' }
@@ -158,16 +157,6 @@ class KygoToolsPage extends HTMLElement {
 
   _setupEvents() {
     const root = this.shadowRoot;
-    root.querySelectorAll('[data-cat]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const id = btn.getAttribute('data-cat');
-        if (id === this._activeCategory) return;
-        this._activeCategory = id;
-        this.render();
-        this._setupEvents();
-        this._setupAnimations();
-      });
-    });
 
     root.querySelectorAll('[data-open-tool]').forEach(el => {
       el.addEventListener('click', (e) => {
@@ -316,30 +305,41 @@ class KygoToolsPage extends HTMLElement {
         .hero { padding: 56px 0 56px; }
       }
 
-      /* ===== CATEGORY CHIPS ===== */
-      .chips-wrap { padding: 4px 0 16px; }
-      .chips {
-        display: flex; gap: 8px; overflow-x: auto;
-        padding: 4px 0; scrollbar-width: none;
+      /* ===== CATEGORY SECTION HEADER ===== */
+      .cat-section { padding: 28px 0 8px; scroll-margin-top: 24px; }
+      .cat-section + .cat-section { border-top: 1px solid var(--gray-100); margin-top: 16px; }
+      .cat-head {
+        display: grid; grid-template-columns: auto 1fr; gap: 14px;
+        align-items: flex-start; margin-bottom: 18px;
       }
-      .chips::-webkit-scrollbar { display: none; }
-      .chip {
+      .cat-head-icon {
+        width: 42px; height: 42px; border-radius: 12px;
+        background: var(--green-light, rgba(34,197,94,0.1));
+        color: var(--green-dark, #16A34A);
+        display: inline-flex; align-items: center; justify-content: center;
         flex-shrink: 0;
-        background: #fff; color: var(--gray-600);
-        border: 1.5px solid var(--gray-200);
-        border-radius: 9999px;
-        padding: 8px 14px;
-        font-size: 13px; font-weight: 600;
-        display: inline-flex; align-items: center; gap: 6px;
-        transition: all 150ms ease;
       }
-      .chip .count {
-        font-size: 11px; font-weight: 500; color: var(--gray-400);
+      .cat-head-icon svg { width: 22px; height: 22px; }
+      .cat-head-text { min-width: 0; }
+      .cat-head-row { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+      .cat-head-label {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+        font-size: clamp(20px, 4.5vw, 26px); letter-spacing: -0.02em;
+        color: var(--dark); margin: 0; line-height: 1.15;
       }
-      .chip.active {
-        background: var(--dark); color: #fff; border-color: var(--dark);
+      .cat-head-count {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+        font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase;
+        color: var(--gray-400);
+        background: var(--gray-100); padding: 4px 10px; border-radius: 9999px;
       }
-      .chip.active .count { color: rgba(255,255,255,0.6); }
+      .cat-head-lede { margin: 4px 0 0; font-size: 13.5px; color: var(--gray-600); line-height: 1.5; max-width: 56ch; }
+      @media (min-width: 768px) {
+        .cat-section { padding: 40px 0 8px; }
+        .cat-head-icon { width: 48px; height: 48px; border-radius: 14px; }
+        .cat-head-icon svg { width: 26px; height: 26px; }
+        .cat-head-lede { font-size: 14.5px; }
+      }
     `;
   }
 
@@ -423,20 +423,6 @@ class KygoToolsPage extends HTMLElement {
         background: var(--green); display: inline-block;
       }
 
-      /* ===== SECTION HEADER ===== */
-      .section-head {
-        padding: 24px 0 12px;
-        display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      }
-      .section-kicker {
-        font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-        text-transform: uppercase; color: var(--gray-400);
-      }
-      .section-count {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 20px; font-weight: 600; color: var(--dark);
-        margin-top: 2px;
-      }
     `;
   }
 
@@ -444,13 +430,13 @@ class KygoToolsPage extends HTMLElement {
     return `
       /* ===== TOOL CARDS ===== */
       .grid {
-        padding: 0 0 32px;
-        display: grid; grid-template-columns: 1fr; gap: 14px;
+        padding: 0 0 8px;
+        display: grid; grid-template-columns: 1fr; gap: 12px;
       }
       .tool-card {
         width: 100%; text-align: left;
-        background: #fff; border: 1.5px solid var(--gray-200);
-        border-radius: 20px; padding: 18px;
+        background: #fff; border: 1px solid var(--gray-200);
+        border-radius: 16px; padding: 18px;
         position: relative;
         opacity: 0; transform: translateY(12px);
         transition: opacity 400ms ease, transform 400ms ease,
@@ -459,7 +445,7 @@ class KygoToolsPage extends HTMLElement {
       .tool-card.visible { opacity: 1; transform: translateY(0); }
       .tool-card:hover {
         border-color: var(--green);
-        box-shadow: 0 12px 32px rgba(0,0,0,0.06);
+        box-shadow: 0 10px 28px rgba(15,23,42,0.06);
         cursor: pointer;
       }
       .tool-card:hover .card-cta {
@@ -470,18 +456,19 @@ class KygoToolsPage extends HTMLElement {
         gap: 10px; margin-bottom: 14px;
       }
       .card-icon {
-        width: 44px; height: 44px; border-radius: 12px;
+        width: 42px; height: 42px; border-radius: 11px;
         background: var(--green-light); color: var(--green-dark);
         display: flex; align-items: center; justify-content: center;
         flex-shrink: 0;
       }
       .card-icon svg { width: 22px; height: 22px; }
       .card-title {
-        font-size: 17px; font-weight: 600; color: var(--dark);
-        margin: 0 0 6px; line-height: 1.25;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 18px; font-weight: 600; color: var(--dark);
+        margin: 0 0 8px; line-height: 1.25; letter-spacing: -0.01em;
       }
       .card-blurb {
-        font-size: 13px; color: var(--gray-600);
+        font-size: 13.5px; color: var(--gray-600);
         line-height: 1.5; margin: 0 0 14px;
       }
       .card-foot {
@@ -684,18 +671,24 @@ class KygoToolsPage extends HTMLElement {
     `;
   }
 
-  _renderChips(cats) {
+  _renderCategorySection(group) {
+    const { id, meta, tools } = group;
     return `
-      <div class="chips-wrap">
-        <div class="chips">
-          ${cats.map(c => `
-            <button class="chip ${this._activeCategory === c.id ? 'active' : ''}" data-cat="${c.id}">
-              ${c.label}
-              <span class="count">${c.count}</span>
-            </button>
-          `).join('')}
+      <section class="cat-section" data-cat-id="${id}" aria-labelledby="cat-${id}-title">
+        <div class="cat-head">
+          <div class="cat-head-icon">${this._getIcon(meta.icon)}</div>
+          <div class="cat-head-text">
+            <div class="cat-head-row">
+              <h2 class="cat-head-label" id="cat-${id}-title">${meta.label}</h2>
+              <span class="cat-head-count">${tools.length} ${tools.length === 1 ? 'tool' : 'tools'}</span>
+            </div>
+            ${meta.lede ? `<p class="cat-head-lede">${meta.lede}</p>` : ''}
+          </div>
         </div>
-      </div>
+        <div class="grid">
+          ${tools.map(t => this._renderCard(t)).join('')}
+        </div>
+      </section>
     `;
   }
 
@@ -704,15 +697,15 @@ class KygoToolsPage extends HTMLElement {
     const appStoreUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
     const playStoreUrl = 'https://kygo.app/android';
 
-    const cats = this._categories();
     const featured = this._featured();
-    const filtered = this._filteredTools();
-    const showFeatured = this._activeCategory === 'all' && featured;
-    const cardTools = showFeatured ? filtered.filter(t => t !== featured) : filtered;
+    const grouped = this._groupedByCategory();
+    // The featured tool gets its own card up top — strip it from its category bucket
+    const groupedNoFeatured = featured
+      ? grouped.map(g => ({ ...g, tools: g.tools.filter(t => t !== featured) }))
+                .filter(g => g.tools.length > 0)
+      : grouped;
 
-    const sectionLabel = this._activeCategory === 'all'
-      ? 'All Tools'
-      : (cats.find(c => c.id === this._activeCategory)?.label || 'Tools');
+    const totalCategories = grouped.length;
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}${this._styles2()}${this._styles3()}</style>
@@ -735,7 +728,7 @@ class KygoToolsPage extends HTMLElement {
             <div class="mini-stats">
               <span class="item">${this._getIcon('check')} ${this._tools.length} tools</span>
               <span class="dot">•</span>
-              <span class="item">${this._getIcon('check')} 200+ studies</span>
+              <span class="item">${this._getIcon('check')} ${totalCategories} ${totalCategories === 1 ? 'category' : 'categories'}</span>
               <span class="dot">•</span>
               <span class="item">${this._getIcon('check')} No signup</span>
             </div>
@@ -745,28 +738,14 @@ class KygoToolsPage extends HTMLElement {
 
       <section class="sec sec-tools">
         <div class="wrap">
-          ${showFeatured ? this._renderFeatured(featured) : ''}
-
-          <div class="section-head">
-            <div>
-              <div class="section-kicker">${sectionLabel}</div>
-              <div class="section-count">${filtered.length} ${filtered.length === 1 ? 'tool' : 'tools'} available</div>
-            </div>
-          </div>
-
-          ${this._renderChips(cats)}
-
-          ${cardTools.length ? `
-            <div class="grid">
-              ${cardTools.map(t => this._renderCard(t)).join('')}
-            </div>
-          ` : `
-            <div class="empty">
-              <div class="empty-icon">${this._getIcon('sparkles')}</div>
-              <div class="empty-title">No tools yet</div>
-              <div class="empty-sub">Try another category.</div>
-            </div>
-          `}
+          ${featured ? this._renderFeatured(featured) : ''}
+          ${groupedNoFeatured.length
+            ? groupedNoFeatured.map(g => this._renderCategorySection(g)).join('')
+            : `<div class="empty">
+                 <div class="empty-icon">${this._getIcon('sparkles')}</div>
+                 <div class="empty-title">No tools yet</div>
+                 <div class="empty-sub">Check back soon.</div>
+               </div>`}
         </div>
       </section>
 
