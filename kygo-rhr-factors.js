@@ -53,11 +53,13 @@ class KygoRhrFactors extends HTMLElement {
   }
 
   get _categoryMeta() {
+    // All categories use brand-aligned tones (green family + dark navy) instead of
+    // a rainbow palette. Variation comes from intensity, not hue rotation.
     return {
-      nutrition:   { label: 'Nutrition',   hue: '#22C55E' },
-      supplements: { label: 'Supplements', hue: '#6366F1' },
-      exercise:    { label: 'Exercise',    hue: '#F59E0B' },
-      environment: { label: 'Environment', hue: '#06B6D4' }
+      nutrition:   { label: 'Nutrition',   hue: '#16A34A' },
+      supplements: { label: 'Supplements', hue: '#0F766E' },
+      exercise:    { label: 'Exercise',    hue: '#1E293B' },
+      environment: { label: 'Environment', hue: '#475569' }
     };
   }
 
@@ -573,6 +575,71 @@ class KygoRhrFactors extends HTMLElement {
     return { text: `${f.effectSize} bpm`, cls: 'neu' };
   }
 
+  _renderImpactChart() {
+    // Pulls every quantified factor (effectSize !== null), normalises sign by direction,
+    // and renders a single horizontal-bar chart centered on a 0-line.
+    const flat = this._flatModifiable().filter(f => f.effectSize !== null && f.effectSize !== undefined);
+    const signed = flat.map(f => {
+      const sign = f.direction === 'positive' ? -1 : f.direction === 'negative' ? 1 : 0;
+      return { ...f, signedBpm: sign * Math.abs(f.effectSize) };
+    });
+    signed.sort((a, b) => Math.abs(b.signedBpm) - Math.abs(a.signedBpm));
+
+    const max = Math.max(...signed.map(f => Math.abs(f.signedBpm)), 1);
+    // Clean tick scale — round up to next whole bpm
+    const domain = Math.ceil(max);
+    const ticks = [-domain, -Math.round(domain/2), 0, Math.round(domain/2), domain];
+
+    const rows = signed.map((f, i) => {
+      const v = f.signedBpm;
+      const pct = (Math.abs(v) / domain) * 50; // 50% = one half of the chart
+      const isLowers = v < 0;
+      const isRaises = v > 0;
+      return `
+        <div class="imp-row" style="--delay:${i * 30}ms">
+          <button class="imp-label" data-fact-jump="${f.key}" aria-label="Jump to ${f.name}">
+            ${f.name}
+          </button>
+          <div class="imp-track">
+            <span class="imp-axis" aria-hidden="true"></span>
+            ${isLowers ? `<span class="imp-bar lowers" style="right:50%;width:${pct}%"></span>` : ''}
+            ${isRaises ? `<span class="imp-bar raises" style="left:50%;width:${pct}%"></span>` : ''}
+          </div>
+          <div class="imp-val ${isLowers ? 'pos' : isRaises ? 'neg' : 'zero'}">
+            ${isLowers ? `−${Math.abs(v)}` : isRaises ? `+${v}` : '±0'} bpm
+          </div>
+        </div>`;
+    }).join('');
+
+    const tickRow = ticks.map(t => {
+      const pct = ((t + domain) / (domain * 2)) * 100;
+      return `<span class="imp-tick ${t === 0 ? 'zero' : ''}" style="left:${pct}%">${t > 0 ? '+' : ''}${t}</span>`;
+    }).join('');
+
+    return `
+      <div class="impact-chart">
+        <div class="imp-head">
+          <div>
+            <span class="imp-eyebrow">Top movers</span>
+            <h3 class="imp-title">By measured bpm impact</h3>
+            <p class="imp-sub">Every modifiable factor with a clean numeric effect size from a meta-analysis or RCT — sorted by magnitude.</p>
+          </div>
+          <div class="imp-meta">${signed.length} quantified</div>
+        </div>
+        <div class="imp-legend">
+          <span class="imp-legend-l"><span class="sw lowers"></span>Lowers RHR</span>
+          <span class="imp-legend-r">Raises RHR<span class="sw raises"></span></span>
+        </div>
+        <div class="imp-chart">
+          ${rows}
+          <div class="imp-scale-spacer"></div>
+          <div class="imp-scale">${tickRow}</div>
+          <div class="imp-scale-spacer"></div>
+        </div>
+        <p class="imp-note">Bars show absolute bpm change reported in the strongest available study. The 16 directional-only factors (no clean numeric magnitude) appear in the full list below.</p>
+      </div>`;
+  }
+
   _renderCatRail() {
     const flat = this._flatModifiable();
     const chips = [`
@@ -644,17 +711,14 @@ class KygoRhrFactors extends HTMLElement {
       const ev = this._evidenceConfig(f.evidence);
       const eff = this._effectSizeText(f);
       return `
-        <article class="fact-card ${this._dirClass(f.direction)} ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}" style="--cat-hue:${hue}">
+        <article class="fact-card ${this._dirClass(f.direction)} ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}">
           <button class="fact-head" aria-expanded="${isExp}">
             <span class="fact-meta">
+              <span class="fact-cat" data-cat="${f.category}">${(meta[f.category] || {}).label || ''}</span>
               <span class="fact-name">${f.name}</span>
-              <span class="fact-effect">${f.effect}</span>
+              <span class="fact-effect">${f.effect} <span class="fact-ev-inline">· ${ev.label} evidence</span></span>
             </span>
-            <span class="fact-badges">
-              <span class="fact-dir ${this._dirClass(f.direction)}">${dirLabel(f.direction)}</span>
-              <span class="fact-ev" style="color:${ev.color};background:${ev.bg}">${ev.label}</span>
-              <span class="fact-bpm ${eff.cls}">${eff.text}</span>
-            </span>
+            <span class="fact-bpm ${eff.cls}" aria-label="Effect size: ${eff.text}">${eff.text}</span>
             <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
           </button>
           ${isExp ? `
@@ -938,7 +1002,14 @@ class KygoRhrFactors extends HTMLElement {
             </div>
           </div>
 
-          <p class="dash-lede animate-on-scroll">All ${this._flatModifiable().length} modifiable factors across ${Object.keys(this._categoryMeta).length} categories. Tap any factor for the plain-English explanation, mechanism, dosage, and source citation. Sort by impact size to see which interventions move RHR the most.</p>
+          <p class="dash-lede animate-on-scroll">All ${this._flatModifiable().length} modifiable factors across ${Object.keys(this._categoryMeta).length} categories. Bars below are the quantified ones; the full sortable list comes after.</p>
+
+          <div class="animate-on-scroll">${this._renderImpactChart()}</div>
+
+          <div class="dash-list-head animate-on-scroll">
+            <h3 class="dash-list-title">Every factor, sortable</h3>
+            <p class="dash-list-sub">Tap any factor for the plain-English explanation, mechanism, dosage, and source citation.</p>
+          </div>
 
           <div class="animate-on-scroll">${this._renderCatRail()}</div>
           <div class="animate-on-scroll">${this._renderSortBar()}</div>
@@ -1113,6 +1184,24 @@ class KygoRhrFactors extends HTMLElement {
           if (baseGrid) {
             baseGrid.innerHTML = this._factorsDemographics.map(f => this._renderBaseCard(f)).join('');
           }
+        }
+        return;
+      }
+
+      const jumpBtn = e.target.closest('[data-fact-jump]');
+      if (jumpBtn) {
+        const k = jumpBtn.dataset.factJump;
+        // Find the factor's category, switch to it (so it's visible after filter), expand and scroll
+        const f = this._flatModifiable().find(x => x.key === k);
+        if (f) {
+          this._catFilter = null; // ensure visible
+          this._listSort = 'impact';
+          this._listExpandedKey = k;
+          this._updateDashboard();
+          requestAnimationFrame(() => {
+            const target = shadow.querySelector(`[data-fact-key="${k}"]`);
+            if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
         }
         return;
       }
@@ -1316,29 +1405,29 @@ class KygoRhrFactors extends HTMLElement {
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
-      /* BASELINE (Demographics as collapsible "Your baseline") */
-      .baseline-section { padding: 24px 0 0; background: #fff; }
-      .baseline-wrap { background: linear-gradient(180deg, #fbfbfd 0%, #f3f4f6 100%); border: 1px solid var(--gray-200); border-radius: 18px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+      /* BASELINE (Demographics) — sits between hero and dashboard, brand green tint */
+      .baseline-section { padding: 32px 0 8px; background: #fff; }
+      .baseline-wrap { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
       .baseline-wrap:hover { border-color: var(--gray-300); }
-      .baseline-wrap.open { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
+      .baseline-wrap.open { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
       .baseline-head { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 12px; width: 100%; padding: 16px 18px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
-      .baseline-head:hover { background: rgba(255,255,255,0.4); }
-      .baseline-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(99,102,241,0.12); color: var(--indigo); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+      .baseline-head:hover { background: var(--gray-50); }
+      .baseline-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
       .baseline-icon svg { width: 20px; height: 20px; }
       .baseline-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .baseline-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--indigo); }
+      .baseline-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); }
       .baseline-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; margin: 0; }
       .baseline-sub { font-size: 12px; color: var(--gray-600); line-height: 1.4; display: none; }
-      .baseline-count { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--gray-600); background: #fff; border: 1px solid var(--gray-200); padding: 4px 10px; border-radius: 9999px; flex-shrink: 0; }
+      .baseline-count { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--green-dark); background: var(--green-light); border: 1px solid rgba(34,197,94,0.2); padding: 4px 10px; border-radius: 9999px; flex-shrink: 0; }
       .baseline-chev { width: 22px; height: 22px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .25s ease-out; }
       .baseline-chev svg { width: 18px; height: 18px; }
-      .baseline-wrap.open .baseline-chev { transform: rotate(180deg); color: var(--indigo); }
-      .baseline-body { padding: 6px 14px 18px; }
+      .baseline-wrap.open .baseline-chev { transform: rotate(180deg); color: var(--green-dark); }
+      .baseline-body { padding: 0 14px 18px; border-top: 1px solid var(--gray-100); background: var(--gray-50); }
       .baseline-body[hidden] { display: none; }
-      .base-grid { display: grid; grid-template-columns: 1fr; gap: 8px; padding-top: 6px; }
+      .base-grid { display: grid; grid-template-columns: 1fr; gap: 8px; padding-top: 14px; }
       .base-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
       .base-card:hover { border-color: var(--gray-300); }
-      .base-card.expanded { border-color: var(--indigo); box-shadow: 0 4px 14px rgba(99,102,241,0.1); }
+      .base-card.expanded { border-color: var(--green); box-shadow: 0 4px 14px rgba(34,197,94,0.08); }
       .base-head { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 10px; width: 100%; padding: 12px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .base-head:hover { background: var(--gray-50); }
       .base-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
@@ -1348,14 +1437,14 @@ class KygoRhrFactors extends HTMLElement {
       .base-ev { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 9999px; letter-spacing: 0.3px; }
       .base-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; transition: transform .2s; flex-shrink: 0; }
       .base-chev svg { width: 16px; height: 16px; }
-      .base-card.expanded .base-chev { transform: rotate(180deg); color: var(--indigo); }
+      .base-card.expanded .base-chev { transform: rotate(180deg); color: var(--green-dark); }
       .base-body { padding: 6px 14px 14px; border-top: 1px dashed var(--gray-200); background: #fafafa; }
       .base-body-row { padding-top: 10px; }
       .base-body-row .lbl { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; display: block; margin-bottom: 3px; }
       .base-body-row p { margin: 0; font-size: 13px; color: var(--gray-600); line-height: 1.55; }
 
-      /* DASHBOARD */
-      .dash-section { padding: 40px 0 56px; background: var(--gray-100); }
+      /* DASHBOARD — the gray slab where the chart and list live */
+      .dash-section { padding: 48px 0 64px; background: var(--gray-100); }
       .dash-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
       .dash-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: var(--green-dark); margin-bottom: 10px; }
       .dash-eyebrow::before { content: ''; width: 14px; height: 1px; background: currentColor; }
@@ -1363,6 +1452,45 @@ class KygoRhrFactors extends HTMLElement {
       .dash-h2 em { font-style: normal; color: var(--green); font-family: inherit; }
       .dash-lede { color: var(--gray-600); font-size: 14px; max-width: 64ch; margin: 0 0 18px; line-height: 1.55; }
       .dash-empty { padding: 24px 18px; text-align: center; color: var(--gray-400); font-size: 14px; background: #fff; border: 1px dashed var(--gray-200); border-radius: 16px; }
+
+      /* IMPACT CHART — the leaderboard view */
+      .impact-chart { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 22px 18px 24px; margin-bottom: 36px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+      .imp-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+      .imp-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 4px; }
+      .imp-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 19px; color: var(--dark); margin: 0 0 4px; letter-spacing: -0.01em; line-height: 1.2; }
+      .imp-sub { font-size: 13px; color: var(--gray-600); margin: 0; line-height: 1.5; max-width: 56ch; }
+      .imp-meta { font-size: 11.5px; color: var(--gray-400); font-weight: 600; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.6px; }
+      .imp-legend { display: flex; justify-content: space-between; align-items: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 700; color: var(--gray-400); margin: 4px 0 14px; }
+      .imp-legend-l { color: var(--green-dark); display: inline-flex; align-items: center; gap: 6px; }
+      .imp-legend-r { color: var(--dark); display: inline-flex; align-items: center; gap: 6px; }
+      .imp-legend .sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+      .imp-legend .sw.lowers { background: linear-gradient(-90deg, #16A34A, #4ADE80); }
+      .imp-legend .sw.raises { background: linear-gradient(90deg, #1E293B, #475569); }
+      .imp-chart { display: grid; grid-template-columns: 1fr; row-gap: 12px; font-feature-settings: "tnum" 1; }
+      .imp-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: 10px; row-gap: 4px; }
+      .imp-label { grid-column: 1; grid-row: 1; padding: 0; background: 0; border: 0; cursor: pointer; text-align: left; font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--dark); line-height: 1.25; min-width: 0; overflow-wrap: anywhere; padding-right: 8px; }
+      .imp-label:hover { color: var(--green-dark); }
+      .imp-val { grid-column: 2; grid-row: 1; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px; letter-spacing: -0.01em; text-align: right; white-space: nowrap; }
+      .imp-val.pos { color: var(--green-dark); }
+      .imp-val.neg { color: var(--dark); }
+      .imp-val.zero { color: var(--gray-400); }
+      .imp-track { grid-column: 1 / -1; grid-row: 2; position: relative; height: 22px; }
+      .imp-axis { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: var(--gray-200); }
+      .imp-bar { position: absolute; top: 5px; bottom: 5px; border-radius: 4px; animation: impGrow .7s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--delay, 0ms); }
+      .imp-bar.lowers { background: linear-gradient(-90deg, #16A34A, #4ADE80); }
+      .imp-bar.raises { background: linear-gradient(90deg, #1E293B, #475569); }
+      @keyframes impGrow { from { width: 0 !important; } }
+      .imp-scale-spacer { display: none; }
+      .imp-scale { grid-column: 1 / -1; position: relative; height: 26px; margin-top: 6px; border-top: 1px solid var(--gray-200); color: var(--gray-400); font-size: 10.5px; font-feature-settings: "tnum" 1; }
+      .imp-tick { position: absolute; top: 6px; transform: translateX(-50%); padding-top: 2px; white-space: nowrap; }
+      .imp-tick::before { content: ''; position: absolute; left: 50%; top: -1px; height: 4px; width: 1px; background: var(--gray-300); transform: translateX(-50%); }
+      .imp-tick.zero { font-weight: 700; color: var(--dark); }
+      .imp-note { margin: 14px 0 0; font-size: 11.5px; color: var(--gray-400); line-height: 1.5; }
+
+      /* Sub-header above the full sortable list */
+      .dash-list-head { margin: 8px 0 14px; }
+      .dash-list-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--dark); margin: 0 0 4px; letter-spacing: -0.01em; }
+      .dash-list-sub { font-size: 13px; color: var(--gray-600); margin: 0; line-height: 1.5; }
 
       /* Category rail */
       .cat-rail { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 2px 0 6px; margin: 0 -20px 14px; padding-left: 20px; padding-right: 20px; scroll-padding-left: 20px; }
@@ -1385,37 +1513,28 @@ class KygoRhrFactors extends HTMLElement {
       .list-sort-btn:hover { border-color: var(--gray-400); }
       .list-sort-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
 
-      /* Factor cards */
+      /* Factor cards — bpm value carries the visual weight on the right */
       .fact-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
-      .fact-card { position: relative; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
-      .fact-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--cat-hue, var(--gray-300)); }
+      .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
       .fact-card:hover { border-color: var(--gray-300); }
-      .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
-      .fact-card.pos.expanded { border-color: var(--green); }
-      .fact-card.neg.expanded { border-color: var(--red); }
-      .fact-card.mix.expanded { border-color: var(--yellow); }
-      .fact-card.neu.expanded { border-color: var(--gray-400); }
-      .fact-head { display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto auto; gap: 6px 10px; width: 100%; padding: 12px 14px 12px 18px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; align-items: center; }
+      .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); border-color: var(--gray-300); }
+      .fact-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
-      .fact-meta { grid-column: 1; grid-row: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; color: var(--dark); line-height: 1.2; }
-      .fact-effect { font-size: 12px; color: var(--gray-600); line-height: 1.35; }
-      .fact-chev { grid-column: 2; grid-row: 1 / span 2; width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; transition: transform .2s; flex-shrink: 0; align-self: center; }
+      .fact-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+      .fact-cat { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: var(--gray-400); line-height: 1; margin-bottom: 4px; }
+      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; }
+      .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.4; margin-top: 2px; }
+      .fact-ev-inline { color: var(--gray-400); font-weight: 500; }
+      .fact-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .fact-chev svg { width: 16px; height: 16px; }
       .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--green-dark); }
-      .fact-badges { grid-column: 1 / -1; grid-row: 2; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-      .fact-dir { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 9999px; letter-spacing: 0.3px; white-space: nowrap; }
-      .fact-dir.pos { background: var(--green-light); color: var(--green-dark); }
-      .fact-dir.neg { background: rgba(239,68,68,0.1); color: var(--red); }
-      .fact-dir.mix { background: rgba(251,191,36,0.18); color: var(--amber); }
-      .fact-dir.neu { background: rgba(251,191,36,0.12); color: var(--amber); }
-      .fact-ev { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 9999px; letter-spacing: 0.3px; white-space: nowrap; }
-      .fact-bpm { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 9999px; background: var(--gray-100); color: var(--gray-600); white-space: nowrap; font-feature-settings: "tnum" 1; }
-      .fact-bpm.pos { background: var(--green-light); color: var(--green-dark); }
-      .fact-bpm.neg { background: rgba(239,68,68,0.1); color: var(--red); }
-      .fact-bpm.zero { background: rgba(251,191,36,0.18); color: var(--amber); }
-      .fact-bpm.mix { background: rgba(251,191,36,0.12); color: var(--amber); }
-      .fact-bpm.na { background: var(--gray-100); color: var(--gray-600); }
+      /* Big right-aligned bpm value — the visual focal point */
+      .fact-bpm { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; padding: 6px 12px; border-radius: 10px; white-space: nowrap; font-feature-settings: "tnum" 1; letter-spacing: -0.01em; min-width: 88px; text-align: center; }
+      .fact-bpm.pos  { background: rgba(34,197,94,0.10);  color: var(--green-dark); }
+      .fact-bpm.neg  { background: rgba(30,41,59,0.07);   color: var(--dark); }
+      .fact-bpm.zero { background: rgba(180,83,9,0.08);   color: var(--amber); }
+      .fact-bpm.mix  { background: rgba(180,83,9,0.06);   color: var(--amber); }
+      .fact-bpm.na   { background: var(--gray-100);       color: var(--gray-600); font-size: 13px; font-weight: 600; }
       .fact-body { padding: 4px 16px 14px; border-top: 1px dashed var(--gray-200); background: var(--gray-50); }
       .fact-body-row { padding-top: 10px; }
       .fact-body-row .lbl { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; display: block; margin-bottom: 3px; }
@@ -1424,35 +1543,36 @@ class KygoRhrFactors extends HTMLElement {
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green); }
 
-      /* MYTHS */
-      .myths-section { padding: 32px 0; background: #fff; }
-      .myths-wrap { background: linear-gradient(180deg, #fefcfb 0%, #fdf4ed 100%); border: 1px solid rgba(180,83,9,0.18); border-radius: 18px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
-      .myths-wrap:hover { border-color: rgba(180,83,9,0.32); }
-      .myths-wrap.open { border-color: rgba(180,83,9,0.4); box-shadow: 0 6px 18px rgba(180,83,9,0.08); }
+      /* MYTHS — same brand container pattern as Baseline, with a subtle amber accent */
+      .myths-section { padding: 8px 0 40px; background: #fff; }
+      .myths-wrap { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+      .myths-wrap:hover { border-color: var(--gray-300); }
+      .myths-wrap.open { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
       .myths-head { display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 12px; width: 100%; padding: 16px 18px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
-      .myths-head:hover { background: rgba(255,255,255,0.4); }
-      .myths-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(180,83,9,0.12); color: var(--amber); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+      .myths-head:hover { background: var(--gray-50); }
+      .myths-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(180,83,9,0.10); color: var(--amber); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
       .myths-icon svg { width: 22px; height: 22px; }
       .myths-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
       .myths-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--amber); }
       .myths-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; margin: 0; }
       .myths-sub { font-size: 12px; color: var(--gray-600); line-height: 1.4; display: none; }
-      .myths-count { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--amber); background: #fff; border: 1px solid rgba(180,83,9,0.25); padding: 4px 10px; border-radius: 9999px; flex-shrink: 0; }
+      .myths-count { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--amber); background: rgba(180,83,9,0.08); border: 1px solid rgba(180,83,9,0.2); padding: 4px 10px; border-radius: 9999px; flex-shrink: 0; }
       .myths-chev { width: 22px; height: 22px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .25s ease-out; }
       .myths-chev svg { width: 18px; height: 18px; }
       .myths-wrap.open .myths-chev { transform: rotate(180deg); color: var(--amber); }
-      .myths-body { padding: 6px 14px 18px; }
+      .myths-body { padding: 0 14px 18px; border-top: 1px solid var(--gray-100); background: var(--gray-50); }
       .myths-body[hidden] { display: none; }
-      .myth-group { padding-top: 12px; }
-      .myth-group-title { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--gray-700); text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 8px; }
-      .myth-group-count { font-size: 11px; font-weight: 700; color: var(--amber); background: rgba(180,83,9,0.1); padding: 2px 8px; border-radius: 9999px; letter-spacing: 0; }
+      .myth-group { padding-top: 16px; }
+      .myth-group:first-child { padding-top: 14px; }
+      .myth-group-title { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.9px; margin: 0 0 10px; }
+      .myth-group-count { font-size: 10.5px; font-weight: 700; color: var(--gray-600); background: #fff; border: 1px solid var(--gray-200); padding: 2px 7px; border-radius: 9999px; letter-spacing: 0; }
       .myth-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
-      .myth-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 10px 12px; transition: border-color .15s; }
+      .myth-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 12px 14px; transition: border-color .15s; }
       .myth-card:hover { border-color: var(--gray-300); }
-      .myth-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-      .myth-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); margin: 0; line-height: 1.2; flex: 1; min-width: 0; }
-      .myth-badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--amber); background: rgba(180,83,9,0.1); padding: 3px 8px; border-radius: 9999px; white-space: nowrap; flex-shrink: 0; }
-      .myth-why { margin: 4px 0 0; font-size: 12px; color: var(--gray-600); line-height: 1.45; }
+      .myth-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+      .myth-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); margin: 0; line-height: 1.25; flex: 1; min-width: 0; }
+      .myth-badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--amber); background: rgba(180,83,9,0.08); padding: 3px 8px; border-radius: 9999px; white-space: nowrap; flex-shrink: 0; }
+      .myth-why { margin: 4px 0 0; font-size: 12.5px; color: var(--gray-600); line-height: 1.5; }
 
       /* TOP PICKS */
       .picks-section { padding: 40px 0; background: #fff; }
@@ -1573,6 +1693,18 @@ class KygoRhrFactors extends HTMLElement {
         .list-sort-btn { padding: 8px 14px; min-height: 36px; }
       }
       @media (min-width: 768px) {
+        .impact-chart { padding: 30px 32px 32px; border-radius: 22px; }
+        .imp-title { font-size: 22px; }
+        .imp-chart { grid-template-columns: 240px 1fr auto; column-gap: 20px; row-gap: 8px; }
+        .imp-row { display: contents; }
+        .imp-label { grid-column: 1; grid-row: auto; justify-content: flex-end; text-align: right; padding: 9px 0; font-size: 13.5px; }
+        .imp-track { grid-column: 2; grid-row: auto; height: 32px; }
+        .imp-bar { top: 6px; bottom: 6px; border-radius: 5px; }
+        .imp-val { grid-column: 3; grid-row: auto; padding: 9px 0 9px 4px; min-width: 80px; text-align: left; font-size: 14.5px; }
+        .imp-scale-spacer { display: block; }
+        .imp-scale-spacer:first-of-type { grid-column: 1; }
+        .imp-scale { grid-column: 2; }
+        .imp-scale-spacer:last-of-type { grid-column: 3; }
         .header-inner { padding: 14px 24px; }
         .header-link { font-size: 13px; padding: 8px 16px; gap: 6px; }
         .header-link svg { width: 14px; height: 14px; }
