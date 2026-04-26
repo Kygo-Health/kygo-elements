@@ -1158,7 +1158,7 @@ class KygoRhrFactors extends HTMLElement {
       'description': 'Explore 37 research-backed factors that affect resting heart rate — nutrition, supplements, exercise, environment, and demographics — every claim backed by RCTs and meta-analyses.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
-      'url': 'https://www.kygo.app/tools/rhr-factors',
+      'url': 'https://www.kygo.app/tools/resting-heart-rate-factors',
       'datePublished': '2026-04-26',
       'dateModified': '2026-04-26',
       'softwareVersion': '1.0',
@@ -1209,7 +1209,7 @@ class KygoRhrFactors extends HTMLElement {
       'itemListElement': [
         { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
         { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
-        { '@type': 'ListItem', 'position': 3, 'name': 'RHR Factors', 'item': 'https://www.kygo.app/tools/rhr-factors' }
+        { '@type': 'ListItem', 'position': 3, 'name': 'Resting Heart Rate Factors', 'item': 'https://www.kygo.app/tools/resting-heart-rate-factors' }
       ]
     };
 
