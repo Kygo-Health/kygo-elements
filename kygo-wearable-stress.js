@@ -926,7 +926,7 @@ class KygoWearableStress extends HTMLElement {
   _renderCtaRow() {
     const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
     return `
-      <section class="cta-row-section section-bg-white">
+      <section class="cta-row-section section-bg-gray">
         <div class="container">
           <div class="cta-row">
             <a href="https://www.kygo.app/post/wearable-stress-research" class="article-card animate-on-scroll" target="_blank" rel="noopener">
@@ -1206,7 +1206,7 @@ class KygoWearableStress extends HTMLElement {
   _renderFactorsSection() {
     const d1 = this._devices[this._device1];
     return `
-      <section class="factors-section section-bg-gray">
+      <section class="factors-section section-bg-white">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
@@ -1267,7 +1267,7 @@ class KygoWearableStress extends HTMLElement {
     };
     const total = Object.values(groups).reduce((s, g) => s + g.length, 0);
     return `
-      <section class="sources-section section-bg-white">
+      <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title">Sources</h2>
           <p class="section-sub">All claims sourced from peer-reviewed research and official device documentation.</p>
