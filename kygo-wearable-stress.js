@@ -1316,14 +1316,13 @@ class KygoWearableStress extends HTMLElement {
           <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalFactors} Factors · ${totalDevices} Wearables · Peer-Reviewed</div>
           <h1 class="hero-title animate-on-scroll">How does <em>your wearable</em> measure stress?</h1>
           <p class="hero-sub animate-on-scroll">Every brand reads stress differently — HRV, EDA, skin temp, breathing rate. Pick your device and the factor list below re-sorts around what actually moves <strong>your</strong> score.</p>
-          <div class="hero-stats animate-on-scroll">
-            <span class="hero-stat"><strong>${totalDevices}</strong>wearables</span>
-            <span class="hero-stat-sep" aria-hidden="true"></span>
-            <span class="hero-stat"><strong>${totalFactors}</strong>factors</span>
-            <span class="hero-stat-sep" aria-hidden="true"></span>
-            <span class="hero-stat"><strong>82%</strong>multi-signal accuracy</span>
-            <span class="hero-stat-sep" aria-hidden="true"></span>
-            <span class="hero-stat"><strong>77%</strong>HRV-only accuracy</span>
+          <div class="animate-on-scroll">
+            <div class="hero-meta">
+              <div class="hero-cell"><span class="hero-num">${totalDevices}</span><span class="hero-lbl">Wearables</span></div>
+              <div class="hero-cell"><span class="hero-num">${totalFactors}</span><span class="hero-lbl">Factors tracked</span></div>
+              <div class="hero-cell"><span class="hero-num hero-num--pos">82%</span><span class="hero-lbl">Multi-signal accuracy</span></div>
+              <div class="hero-cell"><span class="hero-num">77%</span><span class="hero-lbl">HRV-only accuracy</span></div>
+            </div>
           </div>
           ${this._heroWaveSvg()}
         </div>
@@ -1531,19 +1530,32 @@ class KygoWearableStress extends HTMLElement {
       /* HERO */
       .hero { padding: 40px 0 28px; background: #fff; }
       .hero-inner { position: relative; }
-      .hero-kicker { display: inline-flex; align-items: center; gap: 7px; font-size: 9.5px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 6px 11px; border-radius: 9999px; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px; line-height: 1.4; }
+      .hero-kicker { display: inline-flex; align-items: center; gap: 7px; font-size: 9.5px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 6px 11px; border-radius: 9999px; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px; max-width: 100%; line-height: 1.4; text-align: left; }
       .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse 2.2s infinite; flex-shrink: 0; }
       @media (min-width: 480px) { .hero-kicker { font-size: 10.5px; white-space: nowrap; } }
       @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.6);} 70%{box-shadow:0 0 0 8px rgba(34,197,94,0);} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0);} }
-      .hero-title { font-size: clamp(32px, 8.5vw, 76px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; color: var(--dark); max-width: 16ch; }
+      .hero-title { font-size: clamp(32px, 8.5vw, 76px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; margin: 0; color: var(--dark); max-width: 15ch; }
       .hero-title em { font-style: normal; color: var(--green); font-family: inherit; }
       .hero-sub { margin: 20px 0 0; max-width: 56ch; font-size: clamp(15px, 2.2vw, 19px); line-height: 1.5; color: var(--gray-600); }
       .hero-sub strong { color: var(--dark); font-weight: 600; }
-      .hero-stats { margin-top: 28px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding-top: 22px; border-top: 1px solid var(--gray-200); max-width: 760px; }
-      .hero-stat { display: inline-flex; align-items: baseline; gap: 6px; font-size: 12.5px; color: var(--gray-600); font-weight: 500; letter-spacing: 0.1px; }
-      .hero-stat strong { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: var(--dark); font-feature-settings: "tnum" 1; }
-      .hero-stat-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--gray-300); }
+      .hero-meta { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--gray-200); padding-top: 20px; max-width: 760px; }
+      .hero-meta .hero-cell { padding: 8px 14px 8px 0; border-right: 1px solid var(--gray-200); min-width: 0; }
+      .hero-meta .hero-cell:nth-child(2n) { border-right: 0; padding-right: 0; padding-left: 16px; }
+      .hero-meta .hero-cell:nth-child(-n+2) { border-bottom: 1px solid var(--gray-200); padding-bottom: 16px; }
+      .hero-meta .hero-cell:nth-child(n+3) { padding-top: 16px; }
+      .hero-num { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 6.5vw, 40px); color: var(--dark); letter-spacing: -0.02em; font-feature-settings: "tnum" 1; display: block; line-height: 1; }
+      .hero-num--pos { color: var(--green-dark); }
+      .hero-num--neg { color: var(--red); }
+      .hero-lbl { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; margin-top: 6px; display: block; }
       .hero-wave { display: none; }
+      @media (min-width: 640px) {
+        .hero-meta { grid-template-columns: repeat(4, 1fr); }
+        .hero-meta .hero-cell { padding: 0 16px; border-right: 1px solid var(--gray-200); border-bottom: 0 !important; }
+        .hero-meta .hero-cell:first-child { padding-left: 0; }
+        .hero-meta .hero-cell:last-child { border-right: 0; padding-right: 0; }
+        .hero-meta .hero-cell:nth-child(n+3), .hero-meta .hero-cell:nth-child(-n+2) { padding-top: 0; padding-bottom: 0; }
+      }
+      @media (min-width: 768px) { .hero { padding: 72px 0 48px; } }
       @media (min-width: 1000px) {
         .hero-wave { display: block; position: absolute; right: -20px; top: 30px; width: 46%; max-width: 560px; opacity: 0.9; pointer-events: none; }
       }
