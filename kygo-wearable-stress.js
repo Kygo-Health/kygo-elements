@@ -267,77 +267,490 @@ class KygoWearableStress extends HTMLElement {
 
     return {
       hrv: [
-        { key: 'hrv-sleep',          name: 'Consistent sleep (7–9 hrs)',     direction: 'positive', impact: 'high', magnitude: '15–30% RMSSD increase within 4 weeks',                  mechanism: 'Parasympathetic dominance during quality sleep restores vagal tone.',                source: SRC.frontiers2024 },
-        { key: 'hrv-aerobic',        name: 'Aerobic exercise (150 min/wk)',  direction: 'positive', impact: 'high', magnitude: 'Significant long-term HRV gain',                        mechanism: 'Enhanced vagal tone and cardiovascular fitness via consistent training.',           source: SRC.hrvExercise },
-        { key: 'hrv-meditation',     name: 'Meditation / breathwork',         direction: 'positive', impact: 'med',  magnitude: 'Acute HRV bump within minutes; chronic baseline lift',  mechanism: 'Slow breathing (~6 breaths/min) directly activates the vagus nerve.',               source: SRC.frontiers2024 },
-        { key: 'hrv-weight',         name: 'Healthy body weight',             direction: 'positive', impact: 'med',  magnitude: 'Restores sympathovagal balance',                        mechanism: 'Lifestyle weight loss reduces sympathetic load and lifts parasympathetic activity.', source: SRC.frontiers2024 },
-        { key: 'hrv-hydration',      name: 'Hydration',                       direction: 'positive', impact: 'low',  magnitude: 'Moderate effect on blood volume',                       mechanism: 'Adequate volume reduces cardiac strain and supports vagal tone.',                   source: SRC.rhrFactors },
-        { key: 'hrv-cold',           name: 'Cold exposure (controlled)',      direction: 'positive', impact: 'low',  magnitude: 'Acute vagal stimulation',                               mechanism: 'Brief cold exposure triggers the dive reflex, boosting parasympathetic output.',    source: SRC.coldHrv },
-        { key: 'hrv-alcohol',        name: 'Alcohol',                         direction: 'negative', impact: 'high', magnitude: '~2 ms RMSSD drop per drink; up to 13 ms after 3+',     mechanism: 'Direct suppression of parasympathetic activity for hours after intake.',           source: SRC.kygoHrv },
-        { key: 'hrv-sleep-dep',      name: 'Sleep deprivation',               direction: 'negative', impact: 'high', magnitude: 'Significant acute RMSSD reduction',                    mechanism: 'Short or fragmented sleep shifts autonomic balance toward sympathetic dominance.', source: SRC.frontiers2024 },
-        { key: 'hrv-overtraining',   name: 'Overtraining',                    direction: 'negative', impact: 'high', magnitude: 'Progressive HRV decline with accumulated load',         mechanism: 'Excessive load without recovery suppresses parasympathetic tone over days.',       source: SRC.hrvExercise },
-        { key: 'hrv-chronic-stress', name: 'Chronic psychological stress',    direction: 'negative', impact: 'high', magnitude: 'Sustained RMSSD/SDNN reduction',                       mechanism: 'Chronic sympathetic activation suppresses vagal tone over weeks.',                 source: SRC.chronicStress },
-        { key: 'hrv-illness',        name: 'Illness / inflammation',          direction: 'negative', impact: 'high', magnitude: 'Significant drop during acute illness',                 mechanism: 'Immune response activates the sympathetic nervous system.',                        source: SRC.frontiers2024 },
-        { key: 'hrv-caffeine',       name: 'Excess caffeine',                 direction: 'negative', impact: 'med',  magnitude: '8–12% drop in caffeine-sensitive individuals',         mechanism: 'Sympathetic overstimulation, particularly with afternoon doses.',                  source: SRC.caffeineHrv }
+        {
+          key: 'hrv-sleep', name: 'Consistent sleep (7–9 hrs)', direction: 'positive', impact: 'high',
+          plainEnglish: 'Sleep is the single biggest lever you have for HRV. Your overnight reading is essentially a scoreboard for how well your nervous system reset — short or fragmented sleep means it didn\'t, and your stress score climbs the next day. Chronic short sleepers see HRV depressed for weeks, but consistency rebuilds the baseline fast.',
+          magnitude: 'Roughly 15–30% RMSSD increase within 4 weeks of consistent 7–9 hour sleep. Effect compounds over months.',
+          mechanism: 'During deep and REM sleep, parasympathetic (vagal) tone takes over and beat-to-beat variability widens. Cut sleep short and you wake up locked in sympathetic dominance, which suppresses HRV all day.',
+          whatToDo: 'Protect 7–9 hours, with consistent bed and wake times. Keep the room cool and dark, no caffeine after 2 PM, and screen-light off in the last hour before bed.',
+          source: SRC.frontiers2024
+        },
+        {
+          key: 'hrv-aerobic', name: 'Aerobic exercise (150 min/wk)', direction: 'positive', impact: 'high',
+          plainEnglish: 'Of everything you can do for HRV, consistent aerobic training has the most evidence behind it. It physically remodels your heart and your autonomic nervous system over weeks and months — there\'s no app, supplement, or cold plunge with anywhere near this much data.',
+          magnitude: 'Significant long-term HRV gain — typically 10–20% over 8–12 weeks of consistent training, with continued improvement past 6 months.',
+          mechanism: 'Aerobic training increases stroke volume (more blood per beat) and shifts your autonomic balance toward parasympathetic dominance. Both raise resting HRV and lower resting heart rate.',
+          whatToDo: '150 min/week of moderate cardio (zone 2 — conversational pace) is the floor. Mix in 1–2 higher-intensity sessions for VO₂max gains. Build slowly to avoid overtraining.',
+          source: SRC.hrvExercise
+        },
+        {
+          key: 'hrv-meditation', name: 'Meditation / breathwork', direction: 'positive', impact: 'med',
+          plainEnglish: 'Slow breathing isn\'t woo — it\'s a direct line to your vagus nerve. Five to ten minutes of breathwork at around six breaths per minute can bump your HRV measurably within minutes, and consistent practice raises your baseline over weeks.',
+          magnitude: 'Acute HRV bump within minutes of practice; chronic baseline lift of 5–10% over 4–8 weeks of daily practice.',
+          mechanism: 'Breathing at ~6 breaths/min synchronizes heart rhythm with breath rhythm — a state called resonance — which maximally engages the vagus nerve and parasympathetic output.',
+          whatToDo: '5–10 min of slow-paced breathing daily. Box breathing (4-4-4-4), 4-7-8, or any app that paces you to ~6 breaths/min. Pre-bed timing compounds with sleep benefits.',
+          source: SRC.frontiers2024
+        },
+        {
+          key: 'hrv-weight', name: 'Healthy body weight', direction: 'positive', impact: 'med',
+          plainEnglish: 'Carrying excess body weight keeps your sympathetic nervous system slightly elevated all the time, even at rest. Sustainable weight loss — not crash dieting — restores autonomic balance and lifts HRV measurably over months.',
+          magnitude: 'Restores sympathovagal balance over 3–6 months of sustained loss. Larger effects in those starting from higher BMI.',
+          mechanism: 'Adipose tissue produces inflammatory cytokines and raises sympathetic tone. Sustainable loss reduces both, plus improves insulin sensitivity, which feeds back into autonomic regulation.',
+          whatToDo: 'Protein-forward eating, daily walks, gradual caloric deficit (≤1% body weight per week). Crash diets temporarily lower HRV — slow and steady wins here.',
+          source: SRC.frontiers2024
+        },
+        {
+          key: 'hrv-hydration', name: 'Hydration', direction: 'positive', impact: 'low',
+          plainEnglish: 'Being chronically under-hydrated keeps your blood volume low, which forces your heart to work a little harder all day and bumps HRV down. The effect is small but consistent — easy win if your overnight readings are mediocre and you\'re routinely thirsty.',
+          magnitude: 'Moderate effect via blood volume and cardiac strain. Can shift overnight HRV 5–10% in chronically under-hydrated individuals.',
+          mechanism: 'Adequate plasma volume reduces cardiac workload and supports vagal tone. Dehydration thickens blood and raises sympathetic activity to maintain blood pressure.',
+          whatToDo: 'Drink to thirst plus a baseline — rough rule, half your body weight in ounces per day. Add electrolytes (sodium, potassium) if you sweat heavily or train in heat.',
+          source: SRC.rhrFactors
+        },
+        {
+          key: 'hrv-cold', name: 'Cold exposure (controlled)', direction: 'positive', impact: 'low',
+          plainEnglish: 'A brief cold shower or face-dunk gives your vagus nerve a quick jolt — useful as an acute stress-management tool, but not a long-term HRV builder. Don\'t overdo it; chronic cold exposure can backfire and raise sympathetic tone.',
+          magnitude: 'Acute vagal stimulation — small, transient HRV bump that fades within hours. No durable baseline change from cold alone.',
+          mechanism: 'Cold water on the face triggers the mammalian dive reflex — heart rate drops sharply and parasympathetic output spikes within seconds.',
+          whatToDo: '30–60 seconds of cold water (face splash or whole-body) in the morning is plenty. Skip if you have cardiovascular conditions or untreated hypertension.',
+          source: SRC.coldHrv
+        },
+        {
+          key: 'hrv-alcohol', name: 'Alcohol', direction: 'negative', impact: 'high',
+          plainEnglish: 'Alcohol crushes HRV harder than almost anything else you can do. Even one drink suppresses your nervous system overnight, and three or more can keep your readings depressed for two to five days. If your HRV is suddenly tanking with no other explanation, look here first.',
+          magnitude: 'About 2 ms RMSSD drop per drink; up to 13 ms for 2–5 days after 3+ drinks. Effect strongest the night you drink and lingers.',
+          mechanism: 'Alcohol directly suppresses parasympathetic activity and disrupts deep sleep — both of which crater overnight HRV. Liver metabolism keeps sympathetic tone elevated for hours after the last drink.',
+          whatToDo: 'Treat each drink as a 24–48 hour HRV cost. A few alcohol-free nights per week recover the most. Cut off 3+ hours before bed if you do drink.',
+          source: SRC.kygoHrv
+        },
+        {
+          key: 'hrv-sleep-dep', name: 'Sleep deprivation', direction: 'negative', impact: 'high',
+          plainEnglish: 'Pull a short night and your HRV the next morning will show it — sometimes for several days, especially if it\'s a pattern. Sleep debt is the most common reason recovery scores look bad even when you didn\'t do anything else wrong.',
+          magnitude: 'Significant acute RMSSD reduction the next morning; cumulative effect across consecutive short nights.',
+          mechanism: 'Short or fragmented sleep stops the nightly autonomic reset. You wake up locked in sympathetic dominance, which suppresses HRV all day and keeps cortisol elevated.',
+          whatToDo: 'Protect 7–9 hours. If you can\'t, even a 20-minute daytime nap recovers some autonomic ground. Don\'t try to "make up" sleep on weekends — consistency beats catch-up.',
+          source: SRC.frontiers2024
+        },
+        {
+          key: 'hrv-overtraining', name: 'Overtraining', direction: 'negative', impact: 'high',
+          plainEnglish: 'Pushing past your recovery capacity will tank HRV — and your wearable will see it days before you feel burned out. Watch for HRV trending down across a week or two of hard training; that\'s the actual overtraining signal, not how tired you feel today.',
+          magnitude: 'Progressive HRV decline over days to weeks of accumulated load. Recovery requires reducing volume, not just one rest day.',
+          mechanism: 'Excessive training without recovery keeps cortisol and sympathetic tone elevated. Vagal tone drops, HRV drops with it, and the longer it goes the harder the rebound.',
+          whatToDo: 'If your 7-day HRV trend is down 10%+, take a deload week — easier zone-2 sessions, more sleep, more protein. Keep training at 50–70% of normal volume until HRV rebounds.',
+          source: SRC.hrvExercise
+        },
+        {
+          key: 'hrv-chronic-stress', name: 'Chronic psychological stress', direction: 'negative', impact: 'high',
+          plainEnglish: 'The grind — work pressure, relationship stress, financial worry — sits on your nervous system 24/7. Unlike acute stress, which spikes and resolves, chronic stress keeps HRV suppressed for weeks or months until you address the source. Your wearable can\'t fix this, but it will tell you when it\'s real.',
+          magnitude: 'Sustained RMSSD/SDNN reduction lasting weeks to months. Larger effects with longer duration and higher subjective intensity.',
+          mechanism: 'Chronic cortisol exposure and sustained sympathetic activation suppress vagal output. Brain-body inflammation can compound the effect.',
+          whatToDo: 'Address the source where you can. Otherwise: daily breathwork, regular cardio, social connection, and therapy. Don\'t expect HRV to recover until the stressor eases.',
+          source: SRC.chronicStress
+        },
+        {
+          key: 'hrv-illness', name: 'Illness / inflammation', direction: 'negative', impact: 'high',
+          plainEnglish: 'Your immune system burns through resources fighting infection — including the autonomic resources that keep HRV up. A sudden HRV drop with no obvious lifestyle cause is often the first sign you\'re getting sick, sometimes 24–48 hours before symptoms appear.',
+          magnitude: 'Significant drop during acute illness, often 1–2 days before subjective symptoms. Recovery tracks with illness resolution.',
+          mechanism: 'Cytokines and inflammatory signaling activate the sympathetic nervous system. The body redirects resources toward immune response, which suppresses vagal output.',
+          whatToDo: 'Take HRV drops as a real signal. Rest, hydrate, eat well, and skip hard training even before you "feel" sick. Most people would catch illness earlier if they trusted the data.',
+          source: SRC.frontiers2024
+        },
+        {
+          key: 'hrv-caffeine', name: 'Excess caffeine', direction: 'negative', impact: 'med',
+          plainEnglish: 'Caffeine in moderation is fine, but a third cup or anything after 2 PM eats into your HRV — particularly the overnight reading your wearable cares about. Sensitive folks see the effect at lower doses; if your overnight HRV looks worse on coffee days, you\'re one of them.',
+          magnitude: 'About 8–12% HRV drop in caffeine-sensitive individuals. Late-day doses produce the biggest overnight impact.',
+          mechanism: 'Caffeine blocks adenosine receptors and stimulates sympathetic activity. Half-life is 5–6 hours, so a 3 PM coffee still has half its dose at 9 PM.',
+          whatToDo: 'Cap at ~400 mg/day (≈3 cups), nothing past 2 PM. Cycle off occasionally to reset sensitivity. If you\'re shaky or anxious from coffee, your dose is too high.',
+          source: SRC.caffeineHrv
+        }
       ],
       hr: [
-        { key: 'hr-cardio-fit', name: 'Cardio fitness',         direction: 'positive', impact: 'high', magnitude: 'Strongest factor — dose-dependent RHR drop', mechanism: 'Stronger heart pumps more blood per beat, fewer beats needed at rest.',     source: SRC.rhrExercise },
-        { key: 'hr-sleep',      name: 'Adequate sleep',         direction: 'positive', impact: 'med',  magnitude: 'Poor sleep elevates next-day RHR',           mechanism: 'Sleep deprivation shifts autonomic balance toward sympathetic dominance.',  source: SRC.rhrFactors },
-        { key: 'hr-sedentary',  name: 'Sedentary lifestyle',    direction: 'negative', impact: 'high', magnitude: 'Most common cause of high RHR',              mechanism: 'Deconditioned heart works harder to maintain output.',                       source: SRC.sedentary },
-        { key: 'hr-caffeine',   name: 'Caffeine / stimulants',  direction: 'negative', impact: 'med',  magnitude: 'Acute increase, duration varies',            mechanism: 'Stimulates sympathetic nervous system and adrenal response.',                source: SRC.heartFoundation },
-        { key: 'hr-alcohol',    name: 'Alcohol',                direction: 'negative', impact: 'med',  magnitude: 'Acute and next-day elevation',               mechanism: 'Vasodilation requires compensatory heart rate increase.',                    source: SRC.rhrFactors },
-        { key: 'hr-heat',       name: 'Heat / dehydration',     direction: 'negative', impact: 'med',  magnitude: 'Significant in hot environments',            mechanism: 'Thicker blood and thermoregulation demand more cardiac work.',               source: SRC.rhrFactors },
-        { key: 'hr-fever',      name: 'Illness / fever',        direction: 'negative', impact: 'high', magnitude: '~10 bpm per 1°F of fever',                   mechanism: 'Immune response and thermoregulation increase metabolic demand.',            source: SRC.aha },
-        { key: 'hr-stress',     name: 'Stress / anxiety',       direction: 'negative', impact: 'high', magnitude: 'Acute and chronic elevation',                mechanism: 'Sympathetic activation via cortisol and adrenaline.',                        source: SRC.clevelandHr }
+        {
+          key: 'hr-cardio-fit', name: 'Cardio fitness', direction: 'positive', impact: 'high',
+          plainEnglish: 'Resting heart rate is essentially a fitness scoreboard. Trained athletes run 40–55 bpm at rest, sedentary adults 70–80. Lower is generally better — it means your heart pumps more blood per beat and works less to keep you alive.',
+          magnitude: 'Strongest single factor — every additional ~10 ml/kg/min of VO₂max drops resting HR roughly 3 bpm. Trained adults often sit 15–25 bpm below sedentary peers.',
+          mechanism: 'Endurance training thickens the heart wall and expands stroke volume. Each beat moves more blood, so fewer beats are needed at rest. Vagal tone also rises, slowing the resting rate further.',
+          whatToDo: 'Build aerobic base — zone 2 (conversational pace) cardio, 150+ min/week. Resting HR drops within 4–8 weeks of consistent training and continues for months.',
+          source: SRC.rhrExercise
+        },
+        {
+          key: 'hr-sleep', name: 'Adequate sleep', direction: 'positive', impact: 'med',
+          plainEnglish: 'Bad sleep raises your morning heart rate by 5–10 bpm — sometimes more after a really short night. Your wearable\'s morning RHR is essentially a sleep-quality readout that shows up before you\'ve even had coffee.',
+          magnitude: 'Poor sleep elevates next-day RHR 5–10 bpm. Effect compounds across consecutive short nights.',
+          mechanism: 'Sleep deprivation shifts autonomic balance toward sympathetic dominance, raising baseline heart rate even at rest. Cortisol stays elevated, which keeps HR elevated with it.',
+          whatToDo: 'Protect 7–9 hours. Watch your morning RHR — if it\'s 5+ bpm above baseline, your sleep was poor regardless of what your sleep score says.',
+          source: SRC.rhrFactors
+        },
+        {
+          key: 'hr-sedentary', name: 'Sedentary lifestyle', direction: 'negative', impact: 'high',
+          plainEnglish: 'Sitting all day deconditions your heart. Resting heart rate creeps up over weeks and months, which is why most desk-workers see RHR in the 70s while their athletic friends sit in the 50s. The fix isn\'t one workout — it\'s consistent movement.',
+          magnitude: 'Most common cause of elevated RHR. Sedentary adults typically run 10–20 bpm above active peers of the same age.',
+          mechanism: 'Without aerobic stress, the heart doesn\'t develop stroke volume capacity. Smaller stroke volume means more beats per minute to push the same blood — both at rest and during activity.',
+          whatToDo: 'Daily walks (8K+ steps), structured cardio 3–4x/week. Stand up and move every 30–60 minutes during desk work — even brief breaks shift the day.',
+          source: SRC.sedentary
+        },
+        {
+          key: 'hr-caffeine', name: 'Caffeine / stimulants', direction: 'negative', impact: 'med',
+          plainEnglish: 'Coffee acutely bumps your heart rate 5–10 bpm for a few hours. Tolerance develops with daily use, but pre-workout, energy drinks, or first-thing-in-the-morning caffeine before measurement will skew your "resting" reading upward.',
+          magnitude: 'Acute HR rise of 5–10 bpm within 30–60 min of intake. Higher doses or stimulant-stacks (caffeine + theanine + nicotine) produce bigger spikes.',
+          mechanism: 'Caffeine blocks adenosine receptors and stimulates the sympathetic nervous system. Heart rate rises and stays elevated for 3–6 hours per dose.',
+          whatToDo: 'Measure RHR before coffee, not after. Avoid stimulants 4+ hours before workouts you want to track accurately. Limit late-day caffeine to protect overnight readings.',
+          source: SRC.heartFoundation
+        },
+        {
+          key: 'hr-alcohol', name: 'Alcohol', direction: 'negative', impact: 'med',
+          plainEnglish: 'Alcohol raises heart rate the night you drink AND the morning after. Your wearable\'s morning RHR will show every late-night session for at least 24 hours, often longer.',
+          magnitude: 'Acute and next-day HR elevation, typically 5–10 bpm above baseline. Heavier drinking sessions can keep RHR elevated for 2–3 days.',
+          mechanism: 'Alcohol triggers vasodilation, which forces the heart to work harder to maintain blood pressure. Recovery (liver metabolism, dehydration) requires extra cardiac work for hours after the last drink.',
+          whatToDo: 'Each drink is a 12–24 hour HR cost. Hydrate during and after — water helps but doesn\'t eliminate the effect. A few alcohol-free nights/week recover the most.',
+          source: SRC.rhrFactors
+        },
+        {
+          key: 'hr-heat', name: 'Heat / dehydration', direction: 'negative', impact: 'med',
+          plainEnglish: 'Hot weather and dehydration both raise heart rate at rest. Athletes call it "cardiac drift" — same effort, higher HR. If your morning readings spike on hot days, this is why; it\'s not stress.',
+          magnitude: 'Significant in hot environments — 5–15 bpm rise in moderate heat, 15+ bpm in extreme heat or under-hydration.',
+          mechanism: 'Heat triggers thermoregulation (sweating, dilation of skin vessels). Dehydration thickens blood and lowers blood volume. Both increase cardiac workload to deliver the same oxygen.',
+          whatToDo: 'Pre-hydrate (16–20 oz fluid 1–2 hours before activity in heat). Add electrolytes when sweating heavily. Sleep cool — bedroom 65–68°F is the sweet spot.',
+          source: SRC.rhrFactors
+        },
+        {
+          key: 'hr-fever', name: 'Illness / fever', direction: 'negative', impact: 'high',
+          plainEnglish: 'Fever raises heart rate roughly 10 beats per minute per degree Fahrenheit of temperature elevation. Your morning RHR jumping 10+ bpm with no other explanation is usually the first sign you\'re getting sick, often before you feel symptoms.',
+          magnitude: 'Approximately 10 bpm per 1°F of fever; sustained for the duration of illness.',
+          mechanism: 'Immune activation raises metabolic demand, and fever requires extra cardiac work for thermoregulation. Both push HR up and keep it elevated until the body clears the infection.',
+          whatToDo: 'Treat sudden RHR spikes (10+ bpm) as a real signal. Rest, hydrate, skip hard workouts. Pushing through usually extends illness — and your data will tell you when it\'s actually back to baseline.',
+          source: SRC.aha
+        },
+        {
+          key: 'hr-stress', name: 'Stress / anxiety', direction: 'negative', impact: 'high',
+          plainEnglish: 'Acute stress (a tough meeting, an argument) spikes heart rate within seconds. Chronic stress (long-term work pressure, family stress) keeps it 5–15 bpm elevated all day, every day, until the source eases.',
+          magnitude: 'Acute spikes of 20+ bpm during stress events; chronic baseline elevation of 5–15 bpm under sustained stress.',
+          mechanism: 'Sympathetic activation via cortisol and adrenaline directly raises heart rate. Chronic stress maintains this state at low intensity even during "rest" periods.',
+          whatToDo: 'Daily breathwork (4-7-8, box breathing), regular cardio for the chronic baseline, address stressors at the source where possible. Therapy if it\'s not lifting on its own.',
+          source: SRC.clevelandHr
+        }
       ],
       eda: [
-        { key: 'eda-arousal',     name: 'Emotional arousal (anxiety, fear, anger)', direction: 'negative', impact: 'high', magnitude: 'Strong, immediate response',                 mechanism: 'Sympathetic NS triggers eccrine sweat glands, raising skin conductance.',          source: SRC.edaWiki },
-        { key: 'eda-cognitive',   name: 'Cognitive load / mental effort',           direction: 'negative', impact: 'med',  magnitude: 'Moderate sustained tonic rise',              mechanism: 'Mental exertion activates the sympathetic nervous system.',                         source: SRC.edaBiopac },
-        { key: 'eda-sensory',     name: 'Sensory stimulation (sounds, pain, surprise)', direction: 'negative', impact: 'med', magnitude: 'Acute orienting response',                mechanism: 'Startle/orienting response via sympathetic sweat-gland activation.',                source: SRC.edaSenses },
-        { key: 'eda-heat',        name: 'Ambient heat & humidity',                  direction: 'negative', impact: 'med',  magnitude: 'Tonic level rises with environmental heat',  mechanism: 'Thermoregulatory sweating, independent of emotional state — common confounder.',    source: SRC.skinTempAmbient },
-        { key: 'eda-excitement',  name: 'Excitement / positive arousal',            direction: 'variable', impact: 'med',  magnitude: 'Indistinguishable from negative arousal',     mechanism: 'EDA reads sympathetic activation only — it cannot tell valence.',                  source: SRC.edaWiki },
-        { key: 'eda-meditation',  name: 'Relaxation / meditation',                  direction: 'positive', impact: 'med',  magnitude: 'Gradual reduction in tonic level',           mechanism: 'Parasympathetic activation reduces sympathetic drive to sweat glands.',            source: SRC.edaBiopac },
-        { key: 'eda-cool',        name: 'Cool ambient temperature',                 direction: 'positive', impact: 'low',  magnitude: 'Tonic level falls',                          mechanism: 'Less thermoregulatory sweating in cooler conditions.',                              source: SRC.skinTempAmbient },
-        { key: 'eda-habituation', name: 'Habituation (repeated stimuli)',           direction: 'positive', impact: 'low',  magnitude: 'Progressive reduction with repeat exposure', mechanism: 'Brain adapts to repeated non-threatening stimuli, dampening response.',            source: SRC.edaWiki },
-        { key: 'eda-dehydration', name: 'Dehydration',                              direction: 'variable', impact: 'low',  magnitude: 'Alters electrolyte concentration',           mechanism: 'Changes sweat composition and skin conductance properties unpredictably.',         source: SRC.edaBiopac }
+        {
+          key: 'eda-arousal', name: 'Emotional arousal (anxiety, fear, anger)', direction: 'negative', impact: 'high',
+          plainEnglish: 'EDA is the cleanest acute-stress signal in consumer wearables. Anxiety, fear, anger — within seconds of the emotional spike, your skin starts producing tiny amounts of sweat that the sensor reads as a conductance jump. This is why EDA-equipped watches catch stress events that HRV-only devices miss.',
+          magnitude: 'Strong and immediate — measurable phasic response within 1–4 seconds of an emotional trigger.',
+          mechanism: 'The sympathetic nervous system triggers eccrine sweat glands almost instantly during emotional arousal. Sweat raises the skin\'s electrical conductance, which the sensor measures as a microsiemen change.',
+          whatToDo: 'Treat repeated EDA spikes during the day as a real signal. The fastest counter is slow-paced breathing — EDA tonic level often drops within 60–90 seconds of starting.',
+          source: SRC.edaWiki
+        },
+        {
+          key: 'eda-cognitive', name: 'Cognitive load / mental effort', direction: 'negative', impact: 'med',
+          plainEnglish: 'Sustained mental effort — coding, deep writing, hard problem-solving — raises tonic skin conductance even when you don\'t feel emotionally stressed. EDA-equipped watches will read a long deep-focus block as elevated stress, which is technically accurate at the physiology level even if the work feels rewarding.',
+          magnitude: 'Moderate sustained tonic rise that persists for the duration of demanding mental work.',
+          mechanism: 'Mental exertion activates sympathetic output to support attention and working memory. The same sweat-gland activation that signals emotional arousal kicks in for cognitive load.',
+          whatToDo: 'Pomodoro-style breaks (25 min focus, 5 min off) drop EDA back toward baseline. A 90-second breathing reset between tasks compounds.',
+          source: SRC.edaBiopac
+        },
+        {
+          key: 'eda-sensory', name: 'Sensory stimulation (sounds, pain, surprise)', direction: 'negative', impact: 'med',
+          plainEnglish: 'Loud sounds, pain, sudden bright lights — even surprises that aren\'t threatening — trigger an immediate EDA spike. This is why your stress score might jump during a movie scene or a noisy commute even though you\'re not anxious.',
+          magnitude: 'Acute orienting response — sharp phasic spike within 2–3 seconds of stimulus, then decays back over 10–20 seconds.',
+          mechanism: 'The brain\'s startle/orienting response sends rapid sympathetic activation to sweat glands as part of "what was that?" assessment, regardless of whether the stimulus is threatening.',
+          whatToDo: 'These spikes are normal and brief. If your environment has constant sensory load (open offices, noisy commute), noise-canceling headphones meaningfully reduce tonic EDA.',
+          source: SRC.edaSenses
+        },
+        {
+          key: 'eda-heat', name: 'Ambient heat & humidity', direction: 'negative', impact: 'med',
+          plainEnglish: 'EDA reads thermoregulatory sweating the same way it reads emotional sweating — it can\'t tell the difference. On hot or humid days, your stress score will run higher even if you\'re calm. This is the single biggest false-positive on Pixel/Fitbit cEDA.',
+          magnitude: 'Tonic skin conductance rises measurably with environmental heat. Effect strongest above 75°F and high humidity.',
+          mechanism: 'Eccrine sweat glands are activated by both emotional sympathetic output and thermoregulatory drive. The sensor sees the same conductance change either way.',
+          whatToDo: 'Cross-check elevated EDA against your HRV trend on hot days — if HRV is normal but EDA is up, it\'s probably heat. Cool environment, fan, or A/C resolves it.',
+          source: SRC.skinTempAmbient
+        },
+        {
+          key: 'eda-excitement', name: 'Excitement / positive arousal', direction: 'variable', impact: 'med',
+          plainEnglish: 'EDA cannot tell anxiety from excitement — both look identical to the sensor. The same spike fires whether you\'re scared, surprised in a good way, or genuinely excited about something. This is a fundamental limit, not an algorithm problem.',
+          magnitude: 'Indistinguishable from negative arousal at the signal level. Same magnitude and timing as a fear or anger spike.',
+          mechanism: 'EDA reads sympathetic activation only. The brain produces the same activation pattern for "good" and "bad" arousal — the valence (positive/negative) lives in higher cortical areas the sensor can\'t see.',
+          whatToDo: 'When your wearable flags "stress," sanity-check what you were actually doing. Watching a thriller, riding a roller coaster, or finishing a big project all spike EDA but aren\'t bad for you.',
+          source: SRC.edaWiki
+        },
+        {
+          key: 'eda-meditation', name: 'Relaxation / meditation', direction: 'positive', impact: 'med',
+          plainEnglish: 'Slow, deliberate breathing or meditation drops EDA tonic level within minutes. Pixel/Fitbit users will literally see the line going down on the cEDA chart during a breathwork session — it\'s one of the cleanest real-time biofeedback signals consumer wearables produce.',
+          magnitude: 'Gradual reduction in tonic level over 5–15 minutes of practice. Compounds with daily practice over weeks.',
+          mechanism: 'Parasympathetic activation reduces sympathetic drive to sweat glands. Slow breathing in particular engages the vagus nerve and dampens the sympathetic baseline.',
+          whatToDo: 'When your wearable fires a Body Response or stress alert, treat it as a cue: 5 minutes of slow-paced breathing. Watch the cEDA line drop in real time.',
+          source: SRC.edaBiopac
+        },
+        {
+          key: 'eda-cool', name: 'Cool ambient temperature', direction: 'positive', impact: 'low',
+          plainEnglish: 'Cool conditions reduce thermoregulatory sweating, which drops the EDA tonic baseline. If your stress score reads lower in air-conditioned spaces, this is part of the reason — not necessarily that you\'re less stressed there.',
+          magnitude: 'Modest tonic-level reduction in cool environments. Effect most visible in people who sweat heavily at room temperature.',
+          mechanism: 'Less thermoregulatory sweat output means less skin conductance change. The sensor reads a lower tonic baseline.',
+          whatToDo: 'Bedroom 65–68°F supports lower overnight EDA along with deeper sleep. Office cool-side is fine if it doesn\'t make you uncomfortable.',
+          source: SRC.skinTempAmbient
+        },
+        {
+          key: 'eda-habituation', name: 'Habituation (repeated stimuli)', direction: 'positive', impact: 'low',
+          plainEnglish: 'Your nervous system stops reacting to repeated harmless stimuli — the third loud noise barely registers compared to the first. This is why anxiety-provoking situations (public speaking, hard conversations) get easier with practice: your EDA literally responds less.',
+          magnitude: 'Progressive reduction with each repeat exposure. Most of the dampening happens in the first 5–10 exposures.',
+          mechanism: 'The brain learns that a stimulus isn\'t threatening and dampens the orienting response on subsequent exposures. Less sympathetic drive means less EDA spike.',
+          whatToDo: 'Exposure works. If something spikes you, repeated controlled exposure (presentations, hard runs, cold showers) trains the response down over time.',
+          source: SRC.edaWiki
+        },
+        {
+          key: 'eda-dehydration', name: 'Dehydration', direction: 'variable', impact: 'low',
+          plainEnglish: 'Dehydration changes the salt content of the small amount of sweat on your skin, which affects how the sensor reads conductance. Effect direction varies — sometimes higher, sometimes lower — making EDA less reliable when you\'re under-hydrated.',
+          magnitude: 'Variable — alters electrolyte concentration in sweat. Can shift readings either direction by small amounts.',
+          mechanism: 'EDA depends on stable sweat composition for accurate readings. Dehydration changes the ion concentration the sensor relies on.',
+          whatToDo: 'Stay normally hydrated for reliable EDA readings. If you\'ve been very dehydrated and EDA looks weird, it\'s a sensor accuracy issue, not a stress signal.',
+          source: SRC.edaBiopac
+        }
       ],
       skinTemp: [
-        { key: 'st-stress',      name: 'Acute psychological stress',     direction: 'negative', impact: 'med',  magnitude: 'Measurable peripheral drop at wrist/finger', mechanism: 'Vasoconstriction redirects blood to core organs.',                                source: SRC.skinTempStress },
-        { key: 'st-exercise',    name: 'Exercise',                       direction: 'variable', impact: 'med',  magnitude: 'Rises during, drops post',                   mechanism: 'Vasodilation for heat dissipation; algorithms typically filter this.',           source: SRC.skinTempUltra },
-        { key: 'st-cycle',       name: 'Menstrual cycle (luteal phase)', direction: 'negative', impact: 'high', magnitude: '~0.3–0.5°C luteal-phase rise',               mechanism: 'Progesterone raises basal body temperature.',                                     source: SRC.skinTempUltra },
-        { key: 'st-fever',       name: 'Illness / fever',                direction: 'negative', impact: 'high', magnitude: 'Significant rise during infection',          mechanism: 'Immune response raises core and peripheral temperature.',                          source: SRC.skinTempUltra },
-        { key: 'st-alcohol',     name: 'Alcohol',                        direction: 'negative', impact: 'med',  magnitude: 'Acute peripheral rise',                      mechanism: 'Vasodilation increases skin surface temperature for hours after intake.',          source: SRC.skinTempUltra },
-        { key: 'st-ambient',     name: 'Ambient temperature',            direction: 'variable', impact: 'high', magnitude: 'Major confounder for wrist devices',         mechanism: 'External temperature directly affects surface sensor readings.',                  source: SRC.skinTempAmbient },
-        { key: 'st-sleep-onset', name: 'Sleep onset',                    direction: 'positive', impact: 'low',  magnitude: 'Normal extremity-temp rise',                 mechanism: 'Vasodilation at extremities initiates the sleep-onset cascade.',                  source: SRC.skinTempSleep },
-        { key: 'st-depression',  name: 'Depression / chronic stress',    direction: 'negative', impact: 'med',  magnitude: 'Higher day-to-day temperature variability',  mechanism: 'Disrupted autonomic regulation increases temperature fluctuations.',              source: SRC.skinTempDepression }
+        {
+          key: 'st-stress', name: 'Acute psychological stress', direction: 'negative', impact: 'med',
+          plainEnglish: 'When you\'re acutely stressed, your body shunts blood away from the skin and toward core organs — the same "fight or flight" response that makes your hands cold during anxiety. Your wearable\'s peripheral skin-temp sensor catches the drop in real time.',
+          magnitude: 'Measurable peripheral drop at the wrist or finger within minutes of stress onset. Often 0.2–0.5°C below baseline.',
+          mechanism: 'Sympathetic activation triggers vasoconstriction in peripheral blood vessels, redirecting blood to the core. The skin surface cools as less blood flows there.',
+          whatToDo: 'Don\'t fight the response — acknowledge the stress, then engage parasympathetic recovery (slow breathing, brief walk). Skin temp returns to baseline within 10–20 minutes once the stressor eases.',
+          source: SRC.skinTempStress
+        },
+        {
+          key: 'st-exercise', name: 'Exercise', direction: 'variable', impact: 'med',
+          plainEnglish: 'Skin temp rises during exercise as your body dumps heat through skin vessels, then drops below baseline post-workout. Most wearables filter this out so it doesn\'t inflate your stress score, but it can confound overnight readings if you train late.',
+          magnitude: 'Rises 0.5–1.5°C during exercise, drops 0.3–0.5°C below baseline post. Effect resolves within 1–2 hours.',
+          mechanism: 'Working muscle generates heat. The body vasodilates skin vessels to dissipate it, which raises the surface temperature the sensor reads.',
+          whatToDo: 'Avoid hard training within 2 hours of bed — your overnight skin-temp baseline can\'t settle and Oura/WHOOP will read it as a deviation.',
+          source: SRC.skinTempUltra
+        },
+        {
+          key: 'st-cycle', name: 'Menstrual cycle (luteal phase)', direction: 'negative', impact: 'high',
+          plainEnglish: 'Progesterone in the second half of the menstrual cycle raises basal body temperature by 0.3–0.5°C. Your wearable reads this as a stress signal even though it\'s a normal hormonal pattern. Oura uses it deliberately for period prediction.',
+          magnitude: 'Roughly 0.3–0.5°C luteal-phase rise that persists until menses onset.',
+          mechanism: 'Progesterone, which spikes after ovulation, acts on the hypothalamus to raise the body\'s temperature setpoint. The shift shows up clearly at extremity sites like the finger.',
+          whatToDo: 'Track your cycle in the wearable\'s app so the algorithm contextualizes the rise. Treat luteal-phase HRV/temp shifts as expected, not a sign of illness or overtraining.',
+          source: SRC.skinTempUltra
+        },
+        {
+          key: 'st-fever', name: 'Illness / fever', direction: 'negative', impact: 'high',
+          plainEnglish: 'Skin temperature rising 0.5°C+ above your baseline is one of the earliest signs of infection your wearable will catch — sometimes 1–2 days before fever or symptoms register. Take it seriously.',
+          magnitude: 'Significant rise during infection — typically 0.5–1.5°C above baseline, depending on severity.',
+          mechanism: 'Cytokines and immune signaling raise the hypothalamic temperature setpoint. The body produces and retains more heat to make the environment hostile to pathogens.',
+          whatToDo: 'A clear skin-temp spike with no exercise, alcohol, or hot-room explanation is a real illness signal. Rest and hydrate before symptoms hit — most people would catch flu earlier if they trusted this data.',
+          source: SRC.skinTempUltra
+        },
+        {
+          key: 'st-alcohol', name: 'Alcohol', direction: 'negative', impact: 'med',
+          plainEnglish: 'Alcohol opens up your skin blood vessels — that warm flush you feel after a drink is real. Your peripheral skin temp rises measurably for several hours, which Oura and WHOOP both pick up overnight.',
+          magnitude: 'Acute peripheral rise of 0.3–0.7°C lasting 4–8 hours after drinking.',
+          mechanism: 'Alcohol triggers peripheral vasodilation, sending more warm blood to the skin surface. The sensor reads the rise as a baseline deviation.',
+          whatToDo: 'Cut off alcohol 3+ hours before bed if you want clean overnight skin-temp readings. The effect compounds with HRV suppression to make recovery scores look extra bad.',
+          source: SRC.skinTempUltra
+        },
+        {
+          key: 'st-ambient', name: 'Ambient temperature', direction: 'variable', impact: 'high',
+          plainEnglish: 'Wrist-based skin temp is heavily influenced by the room you\'re in. Hot rooms inflate readings; cold rooms deflate them. This is the biggest accuracy issue with wrist devices — finger-site sensors (Oura) are insulated better but still affected.',
+          magnitude: 'Major confounder for wrist devices. Hot/cold rooms can shift readings 0.5–1.5°C from your true baseline.',
+          mechanism: 'External air temperature directly affects surface sensor readings, especially on a wrist where the sensor sits close to the skin and to ambient air.',
+          whatToDo: 'Stable bedroom temperature is the single biggest fix — 65–68°F is Oura\'s recommended range. If your skin-temp deviation looks weird, check your thermostat before assuming illness.',
+          source: SRC.skinTempAmbient
+        },
+        {
+          key: 'st-sleep-onset', name: 'Sleep onset', direction: 'positive', impact: 'low',
+          plainEnglish: 'When you\'re falling asleep, blood vessels in your hands and feet dilate to dump heat — that\'s why warm hands and feet make you sleepy. The sensor reads a rise at the extremities, which is actually a sign of healthy sleep onset.',
+          magnitude: 'Normal extremity-temp rise of 0.3–0.5°C as you transition into sleep.',
+          mechanism: 'Distal vasodilation initiates the sleep-onset cascade — your core cools while extremities warm. This redistribution is essential for falling asleep.',
+          whatToDo: 'If you have trouble falling asleep, warm hands/feet (warm bath, socks) before bed accelerates the process. Cold extremities = harder to drop off.',
+          source: SRC.skinTempSleep
+        },
+        {
+          key: 'st-depression', name: 'Depression / chronic stress', direction: 'negative', impact: 'med',
+          plainEnglish: 'Long-term depression and chronic stress show up as more day-to-day variability in skin temperature, not a constant high or low. The body\'s autonomic regulation gets less stable, so readings swing more from one day to the next.',
+          magnitude: 'Higher day-to-day temperature variability over weeks. Effect tracks with subjective severity.',
+          mechanism: 'Disrupted autonomic regulation under chronic stress destabilizes thermoregulation. The body has a harder time holding a steady setpoint, so readings drift more.',
+          whatToDo: 'Address the underlying issue — therapy, exercise, social connection, sleep. Skin-temp variability stabilizes as autonomic regulation recovers, often over months.',
+          source: SRC.skinTempDepression
+        }
       ],
       rr: [
-        { key: 'rr-stress',        name: 'Stress / anxiety',           direction: 'negative', impact: 'high', magnitude: 'Acute increase in rate and shallowness', mechanism: 'Sympathetic activation increases respiratory drive.',                source: SRC.polarRR },
-        { key: 'rr-pain',          name: 'Pain',                       direction: 'negative', impact: 'med',  magnitude: 'Acute rate increase',                    mechanism: 'Sympathetic activation changes breathing pattern.',                  source: SRC.polarRR },
-        { key: 'rr-fever',         name: 'Fever / illness',            direction: 'negative', impact: 'med',  magnitude: 'Proportional to body temperature',       mechanism: 'Increased metabolic demand requires more oxygen.',                   source: SRC.polarRR },
-        { key: 'rr-overtraining',  name: 'Overtraining',               direction: 'negative', impact: 'high', magnitude: 'Elevated overnight rate is a key marker', mechanism: 'Incomplete recovery leaves sympathetic tone elevated overnight.',    source: SRC.whoopRecovery },
-        { key: 'rr-caffeine',      name: 'Late caffeine',              direction: 'negative', impact: 'low',  magnitude: 'Mild stimulatory rise',                  mechanism: 'CNS stimulation affects the respiratory center.',                    source: SRC.whoopRecovery },
-        { key: 'rr-meditation',    name: 'Relaxation / meditation',    direction: 'positive', impact: 'high', magnitude: 'Significant drop with slow breathing',   mechanism: 'Parasympathetic activation, vagal tone increase.',                   source: SRC.polarRR },
-        { key: 'rr-cardio-fit',    name: 'Cardio fitness',             direction: 'positive', impact: 'med',  magnitude: 'Lower baseline rate',                    mechanism: 'Efficient gas exchange needs fewer breaths per minute.',             source: SRC.whoopRecovery },
-        { key: 'rr-sleep',         name: 'Quality sleep',              direction: 'positive', impact: 'med',  magnitude: 'Lowest overnight rate',                  mechanism: 'Parasympathetic dominance during deep sleep.',                       source: SRC.polarRR }
+        {
+          key: 'rr-stress', name: 'Stress / anxiety', direction: 'negative', impact: 'high',
+          plainEnglish: 'Stress and anxiety raise breathing rate and make it shallower — even when you\'re not aware you\'re doing it. WHOOP and Polar pick this up overnight as elevated respiratory rate, which is one of the cleanest markers of unresolved daytime stress carrying into sleep.',
+          magnitude: 'Acute increase of 2–6 breaths per minute under stress; chronic 1–3 breath/min elevation in sustained anxiety.',
+          mechanism: 'Sympathetic activation increases respiratory drive directly. Your brain\'s breathing center gets a "speed up" signal alongside the cardiovascular spike.',
+          whatToDo: 'Slow-paced breathing in the evening (4-7-8, box breathing, or any 6-breath/min pattern) drops the carryover into sleep. Start 30+ minutes before bed for the best overnight rate.',
+          source: SRC.polarRR
+        },
+        {
+          key: 'rr-pain', name: 'Pain', direction: 'negative', impact: 'med',
+          plainEnglish: 'Pain — chronic injury pain, post-surgery, even bad muscle soreness — raises your respiratory rate the same way emotional stress does. Your body treats it as a threat and ramps up breathing to support the response.',
+          magnitude: 'Acute rate increase of 2–4 breaths per minute. Chronic pain produces a smaller, sustained baseline rise.',
+          mechanism: 'Pain signaling triggers sympathetic activation, which changes breathing pattern toward faster and shallower.',
+          whatToDo: 'Treat the pain source where you can. If injured, expect overnight RR to stay elevated until healing — don\'t over-interpret it as overtraining or stress.',
+          source: SRC.polarRR
+        },
+        {
+          key: 'rr-fever', name: 'Fever / illness', direction: 'negative', impact: 'med',
+          plainEnglish: 'Fever raises your respiratory rate proportionally — your body needs more oxygen to fuel the immune fight. WHOOP and Polar will catch elevated overnight RR before you\'re aware you\'re sick.',
+          magnitude: 'Roughly proportional to body temperature — about 4 breaths/min per 1°F of fever.',
+          mechanism: 'Higher core temperature raises metabolic rate, which requires more oxygen delivery and CO₂ removal. The respiratory center responds with faster breathing.',
+          whatToDo: 'Elevated overnight RR with no other explanation is a real early-illness signal. Rest, hydrate, skip hard training even before symptoms hit.',
+          source: SRC.polarRR
+        },
+        {
+          key: 'rr-overtraining', name: 'Overtraining', direction: 'negative', impact: 'high',
+          plainEnglish: 'Elevated overnight respiratory rate is the textbook overtraining marker — it shows up before HRV drops and before you feel burned out. WHOOP and Polar are the only consumer wearables that surface it, which is why athletes often pick those over HRV-only devices.',
+          magnitude: 'Sustained 1–3 breath/min rise in overnight rate during accumulated training stress. Resolves with deload.',
+          mechanism: 'Incomplete recovery leaves sympathetic tone elevated through the night. Cortisol stays high, which keeps respiratory drive up even during deep sleep.',
+          whatToDo: 'Watch your 7-day overnight RR trend. A 2+ breath/min rise sustained over a week is a deload signal. Ease volume by 30–50% for 5–7 days.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'rr-caffeine', name: 'Late caffeine', direction: 'negative', impact: 'low',
+          plainEnglish: 'Caffeine has a small but real stimulatory effect on breathing rate. Late-day caffeine carries a slightly elevated respiratory rate into sleep — usually a small effect, but it compounds with the HRV hit.',
+          magnitude: 'Mild rise of 0.5–1 breath per minute. Effect strongest with afternoon/evening doses.',
+          mechanism: 'CNS stimulation from caffeine affects the brainstem respiratory center, nudging breathing rate up slightly.',
+          whatToDo: 'No caffeine after 2 PM is the cleanest rule. The HRV and respiratory effects compound to make overnight recovery worse together.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'rr-meditation', name: 'Relaxation / meditation', direction: 'positive', impact: 'high',
+          plainEnglish: 'Slow-paced breathing literally trains your nervous system to default to slower, deeper breaths — the effect persists past the practice window. Consistent practice drops your overnight respiratory rate over weeks, which lifts WHOOP recovery and Polar Nightly Recharge.',
+          magnitude: 'Acute drop of 4–8 breaths/min during practice; chronic baseline drop of 0.5–1.5 breaths/min over 4–8 weeks.',
+          mechanism: 'Slow breathing engages the vagus nerve and shifts autonomic balance toward parasympathetic dominance. The respiratory center recalibrates to a lower default rate.',
+          whatToDo: '5–10 minutes of slow breathing daily. Pre-bed timing carries the effect into sleep. Apps that pace you to ~6 breaths/min work best.',
+          source: SRC.polarRR
+        },
+        {
+          key: 'rr-cardio-fit', name: 'Cardio fitness', direction: 'positive', impact: 'med',
+          plainEnglish: 'Trained athletes breathe less at rest — same oxygen delivery, fewer breaths needed. Building aerobic fitness drops your baseline respiratory rate the same way it drops your resting heart rate.',
+          magnitude: 'Lower baseline rate, typically 1–3 breaths/min below sedentary peers. Continues improving with sustained training.',
+          mechanism: 'Higher VO₂max means your blood carries more oxygen per breath and your tissues extract it more efficiently. Fewer breaths cover the same metabolic demand.',
+          whatToDo: 'Same prescription as for HRV and resting HR — 150+ min/week of zone-2 cardio, with some higher-intensity work for VO₂max gains.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'rr-sleep', name: 'Quality sleep', direction: 'positive', impact: 'med',
+          plainEnglish: 'Your respiratory rate is lowest during deep sleep — that\'s when parasympathetic tone is fully in control. A clean night of consolidated sleep produces the lowest overnight rate your wearable will see; fragmented sleep keeps it elevated.',
+          magnitude: 'Lowest rates seen during deep-sleep cycles. A good night runs 1–3 breaths/min below a fragmented one.',
+          mechanism: 'Parasympathetic dominance during deep sleep slows the respiratory center. Sleep fragmentation pulls you into lighter stages where breathing is faster.',
+          whatToDo: 'Sleep hygiene basics — cool dark room, consistent timing, no late alcohol. Polar Nightly Recharge is essentially a respiratory readout of how cleanly you slept the first 4 hours.',
+          source: SRC.polarRR
+        }
       ],
       spo2: [
-        { key: 'spo2-altitude',    name: 'Altitude',                       direction: 'negative', impact: 'high', magnitude: 'Significant drop above ~5,000 ft',     mechanism: 'Lower atmospheric oxygen reduces hemoglobin saturation.',          source: SRC.whoopRecovery },
-        { key: 'spo2-apnea',       name: 'Sleep apnea',                    direction: 'negative', impact: 'high', magnitude: 'Repeated overnight desaturation',      mechanism: 'Airway obstruction causes intermittent hypoxia during sleep.',     source: SRC.whoopRecovery },
-        { key: 'spo2-illness',     name: 'Respiratory illness',            direction: 'negative', impact: 'med',  magnitude: 'Varies by severity',                   mechanism: 'Impaired gas exchange in the lungs reduces saturation.',           source: SRC.whoopRecovery },
-        { key: 'spo2-smoking',     name: 'Smoking',                        direction: 'negative', impact: 'high', magnitude: 'Chronic reduction',                    mechanism: 'Carbon monoxide displaces oxygen on hemoglobin.',                   source: SRC.whoopRecovery },
-        { key: 'spo2-cardio-fit',  name: 'Cardio fitness',                 direction: 'positive', impact: 'low',  magnitude: 'Stable, near 95–100%',                 mechanism: 'Efficient cardiovascular system maintains saturation.',             source: SRC.whoopRecovery },
-        { key: 'spo2-breathing',   name: 'Proper breathing during sleep',  direction: 'positive', impact: 'low',  magnitude: 'Fewer desaturation events',            mechanism: 'Unobstructed airway throughout the sleep cycle.',                   source: SRC.whoopRecovery }
+        {
+          key: 'spo2-altitude', name: 'Altitude', direction: 'negative', impact: 'high',
+          plainEnglish: 'Above about 5,000 feet, the air has less oxygen, so your blood carries less. WHOOP will read your SpO₂ dropping the moment you arrive, and recovery scores will look bad until you acclimatize over several days.',
+          magnitude: 'Significant drop above ~5,000 ft (1,500 m). Saturation often falls into the 90–93% range at 8,000+ ft until acclimatized.',
+          mechanism: 'Lower atmospheric oxygen pressure reduces how much oxygen binds to hemoglobin in the lungs. Saturation is a direct function of altitude until the body responds with more red blood cells.',
+          whatToDo: 'Expect 5–7 days for partial acclimatization. Hydrate aggressively, sleep low if possible, and don\'t train hard the first 48 hours. WHOOP will eventually recalibrate.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-apnea', name: 'Sleep apnea', direction: 'negative', impact: 'high',
+          plainEnglish: 'Sleep apnea causes your airway to repeatedly close during sleep, which drops oxygen and forces brief micro-arousals. WHOOP\'s overnight SpO₂ trace will show repeated dips — sometimes the first time anyone sees apnea data is on a wearable.',
+          magnitude: 'Repeated overnight desaturation events, with dips into 88–92% range. Severity tracks with apnea-hypopnea index.',
+          mechanism: 'Airway obstruction during sleep causes intermittent hypoxia — oxygen briefly drops, the brain wakes you slightly to breathe, and the cycle repeats dozens or hundreds of times a night.',
+          whatToDo: 'If you see a "sawtooth" SpO₂ pattern overnight, see a sleep doctor. CPAP or oral appliance therapy resolves it cleanly. Untreated apnea is a major cardiovascular risk.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-illness', name: 'Respiratory illness', direction: 'negative', impact: 'med',
+          plainEnglish: 'Anything that affects your lungs — flu, COVID, bronchitis, asthma flare — reduces how efficiently you absorb oxygen. WHOOP\'s overnight SpO₂ will dip below your usual baseline; severity tracks with how sick you actually are.',
+          magnitude: 'Varies by severity — 1–3% baseline drop with mild illness, 5%+ with moderate respiratory infection.',
+          mechanism: 'Impaired gas exchange in the lungs (inflammation, fluid, congestion) reduces how much oxygen reaches the bloodstream per breath.',
+          whatToDo: 'Sustained SpO₂ below 92% with respiratory symptoms warrants medical attention, especially if breathing feels labored. Track your trend; recovery means returning to your normal baseline.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-smoking', name: 'Smoking', direction: 'negative', impact: 'high',
+          plainEnglish: 'Smoking permanently lowers SpO₂ baseline because carbon monoxide from smoke binds to hemoglobin and blocks oxygen from doing the same. Even after quitting, it takes weeks for hemoglobin to clear and saturation to return to normal.',
+          magnitude: 'Chronic reduction of 1–4% from baseline. Effect compounds with respiratory damage from long-term use.',
+          mechanism: 'Carbon monoxide binds to hemoglobin 200x more tightly than oxygen. Each cigarette displaces oxygen on a percentage of red blood cells for hours.',
+          whatToDo: 'Quit. SpO₂ baseline rises within 1–2 weeks of quitting; lung function recovery continues for years. WHOOP recovery scores improve noticeably even in the first month.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-cardio-fit', name: 'Cardio fitness', direction: 'positive', impact: 'low',
+          plainEnglish: 'Healthy cardiovascular systems maintain SpO₂ near 95–100% almost effortlessly — there\'s a ceiling effect, so fitness doesn\'t push the number higher. It just keeps it stable. If your SpO₂ trends down at rest, fitness probably isn\'t the issue.',
+          magnitude: 'Maintains stable saturation near 95–100%. Limited room to improve from here.',
+          mechanism: 'Efficient cardiovascular and respiratory systems deliver and exchange oxygen reliably, keeping hemoglobin saturation near maximum.',
+          whatToDo: 'If your SpO₂ is in the high 90s, you\'re fine. Focus on other levers (HRV, RR, sleep). Drops below 95% at rest deserve attention.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-breathing', name: 'Proper breathing during sleep', direction: 'positive', impact: 'low',
+          plainEnglish: 'Sleeping with a clear airway — no nasal blockage, no severe snoring, no positional collapse — keeps SpO₂ stable through the night. Most people don\'t realize how much positional sleep affects their oxygen until they see the data.',
+          magnitude: 'Fewer overnight desaturation events. Steady saturation in the 95–98% range.',
+          mechanism: 'An unobstructed airway throughout the sleep cycle allows uninterrupted gas exchange and stable hemoglobin saturation.',
+          whatToDo: 'Side-sleep if you snore on your back. Address nasal congestion (nose strips, allergy treatment). Avoid late alcohol — it relaxes airway muscles and worsens snoring.',
+          source: SRC.whoopRecovery
+        }
       ],
       sleep: [
-        { key: 'sl-schedule',      name: 'Consistent sleep schedule',     direction: 'positive', impact: 'high', magnitude: 'Improves all sleep-architecture metrics',  mechanism: 'Circadian rhythm alignment improves deep sleep and continuity.',         source: SRC.ouraCumulative },
-        { key: 'sl-cool',          name: 'Cool bedroom (65–68°F)',        direction: 'positive', impact: 'med',  magnitude: 'Increases deep sleep duration',            mechanism: 'Core temperature drop triggers deep sleep initiation.',                   source: SRC.ouraCumulative },
-        { key: 'sl-exercise',      name: 'Regular exercise (not late)',   direction: 'positive', impact: 'med',  magnitude: 'Increases deep sleep, reduces latency',    mechanism: 'Physical fatigue promotes sleep drive; vigorous training within 2 hrs of bed disrupts onset.', source: SRC.hrvExercise },
-        { key: 'sl-alcohol-bed',   name: 'Alcohol before bed',            direction: 'negative', impact: 'high', magnitude: 'Reduces deep sleep, increases wake-ups',   mechanism: 'Disrupts sleep architecture even when onset feels faster.',              source: SRC.frontiers2024 },
-        { key: 'sl-late-caffeine', name: 'Late caffeine (after 2 PM)',    direction: 'negative', impact: 'high', magnitude: 'Delays onset, reduces total sleep',        mechanism: 'Caffeine\'s 5–6 hour half-life blocks adenosine receptors.',             source: SRC.kygoHrv },
-        { key: 'sl-late-meals',    name: 'Late heavy meals',              direction: 'negative', impact: 'med',  magnitude: 'Disrupts sleep quality',                   mechanism: 'Digestion raises core temperature and metabolic activity at bedtime.',   source: SRC.ouraCumulative },
-        { key: 'sl-screens',       name: 'Screen time before bed',        direction: 'negative', impact: 'med',  magnitude: 'Delays melatonin release',                 mechanism: 'Blue light suppresses pineal melatonin production.',                     source: SRC.ouraCumulative },
-        { key: 'sl-stress',        name: 'Chronic stress / anxiety',      direction: 'negative', impact: 'high', magnitude: 'Fragmented sleep, less deep sleep',        mechanism: 'Elevated cortisol disrupts sleep architecture and continuity.',          source: SRC.ouraCumulative }
+        {
+          key: 'sl-schedule', name: 'Consistent sleep schedule', direction: 'positive', impact: 'high',
+          plainEnglish: 'Sleeping at the same time every night — including weekends — is more important than how many hours you log. Your circadian rhythm runs on regularity, and consistent timing produces deeper sleep stages and cleaner architecture than catching up on weekends.',
+          magnitude: 'Improves deep sleep percentage, REM continuity, and onset latency. Effect compounds over 2–4 weeks of consistency.',
+          mechanism: 'Circadian rhythm alignment optimizes melatonin and cortisol timing. The body anticipates sleep and wake, producing the right hormones at the right hour.',
+          whatToDo: 'Pick a fixed bed and wake time within 30 minutes, 7 days a week. Avoid weekend sleep-ins of more than an hour — they reset your circadian timing.',
+          source: SRC.ouraCumulative
+        },
+        {
+          key: 'sl-cool', name: 'Cool bedroom (65–68°F)', direction: 'positive', impact: 'med',
+          plainEnglish: 'Your body has to drop its core temperature about 1°C to initiate deep sleep — and it can\'t do that in a warm room. Most adults sleep best in a 65–68°F room; warmer than that and deep sleep percentage drops measurably.',
+          magnitude: 'Increases deep sleep duration in most adults. Effect strongest at the cool end of the range (65–66°F).',
+          mechanism: 'Core temperature drop triggers the deep-sleep cascade. A warm bedroom blocks the drop, keeping you in lighter sleep stages longer.',
+          whatToDo: 'Set the thermostat 65–68°F. Use breathable bedding. If you can\'t cool the room, a fan helps; cooling mattress pads work too.',
+          source: SRC.ouraCumulative
+        },
+        {
+          key: 'sl-exercise', name: 'Regular exercise (not late)', direction: 'positive', impact: 'med',
+          plainEnglish: 'Daily exercise improves nearly every sleep metric — but timing matters. Vigorous training within 2 hours of bed delays onset and pushes back deep sleep. Morning or early evening cardio is the sweet spot.',
+          magnitude: 'Increases deep sleep percentage and reduces sleep onset latency. Effect strongest with consistent daily exercise.',
+          mechanism: 'Physical fatigue promotes sleep drive (adenosine accumulation). Exercise also lowers core body temperature in the hours after, which supports deep-sleep initiation.',
+          whatToDo: 'Train earlier in the day if possible. If late training is unavoidable, finish 2+ hours before bed and prioritize a cool-down (shower, slow walk) to drop core temperature.',
+          source: SRC.hrvExercise
+        },
+        {
+          key: 'sl-alcohol-bed', name: 'Alcohol before bed', direction: 'negative', impact: 'high',
+          plainEnglish: 'Alcohol feels like it helps you fall asleep, but it sabotages every quality marker once you\'re asleep. Less deep sleep, less REM, more fragmentation, more wake-ups. The next morning your wearable\'s sleep score will be much worse than the same hours sober.',
+          magnitude: 'Reduces deep sleep 20–40%, REM 10–20%, and increases wake-ups. Effect proportional to dose.',
+          mechanism: 'Alcohol initially sedates but disrupts the brain\'s normal sleep architecture as it metabolizes through the night. The second half of sleep becomes fragmented.',
+          whatToDo: 'Cut off alcohol 3+ hours before bed if you do drink. Hydrate with water alongside. Several alcohol-free nights/week recover the most sleep architecture.',
+          source: SRC.frontiers2024
+        },
+        {
+          key: 'sl-late-caffeine', name: 'Late caffeine (after 2 PM)', direction: 'negative', impact: 'high',
+          plainEnglish: 'Caffeine\'s half-life is 5–6 hours — meaning a 3 PM coffee still has half its dose at 9 PM and a quarter at 3 AM. It delays sleep onset, reduces total sleep, and shows up as a worse Oura sleep score even if you don\'t feel wired at bedtime.',
+          magnitude: 'Delays sleep onset by 10–30 min on average; reduces total sleep time and deep sleep proportion.',
+          mechanism: 'Caffeine blocks adenosine receptors — the molecule that makes you sleepy. Even when you don\'t feel jittery, the receptors are still partially blocked.',
+          whatToDo: 'No caffeine after 2 PM is the cleanest rule. If you\'re sensitive, push it to noon. Cycle off occasionally to reset receptor sensitivity.',
+          source: SRC.kygoHrv
+        },
+        {
+          key: 'sl-late-meals', name: 'Late heavy meals', direction: 'negative', impact: 'med',
+          plainEnglish: 'A heavy meal within 2–3 hours of bed forces your body to digest while it\'s trying to drop into deep sleep. Core temperature stays up, blood is shunted to the gut, and sleep quality suffers — especially REM.',
+          magnitude: 'Reduces deep sleep proportion and disrupts REM in most people. Effect strongest with high-fat, high-volume meals.',
+          mechanism: 'Digestion raises core body temperature and metabolic activity. The temperature drop required for deep sleep is delayed or dampened.',
+          whatToDo: 'Last big meal 3+ hours before bed. A small protein-leaning snack (Greek yogurt, cottage cheese) is fine and doesn\'t disrupt sleep.',
+          source: SRC.ouraCumulative
+        },
+        {
+          key: 'sl-screens', name: 'Screen time before bed', direction: 'negative', impact: 'med',
+          plainEnglish: 'Phone, laptop, and TV screens emit blue light that suppresses melatonin — your sleep-onset hormone. Beyond the chemistry, scrolling is mentally activating, which keeps cognitive load (and EDA, if your watch tracks it) elevated past your bedtime.',
+          magnitude: 'Delays melatonin release by 30–60 minutes; reduces total sleep and deep sleep when severe.',
+          mechanism: 'Blue-spectrum light hits the retina\'s melanopsin cells, which signal "daytime" to the suprachiasmatic nucleus and suppress pineal melatonin.',
+          whatToDo: 'No screens 60 minutes before bed is the gold standard. If you can\'t, dim the screen, turn on Night Shift / blue-light filter, and avoid stimulating content (news, work email).',
+          source: SRC.ouraCumulative
+        },
+        {
+          key: 'sl-stress', name: 'Chronic stress / anxiety', direction: 'negative', impact: 'high',
+          plainEnglish: 'Stress doesn\'t turn off when you go to bed — it keeps cortisol elevated through the night and fragments your sleep architecture. You\'ll fall asleep, but you\'ll wake more, get less deep sleep, and feel less rested even at the same hours logged.',
+          magnitude: 'Fragmented sleep, less deep sleep, more frequent night wake-ups. Effect persists as long as the stressor is unresolved.',
+          mechanism: 'Elevated cortisol disrupts the normal nightly drop that supports deep sleep. Hyperarousal keeps the brain in lighter stages and pulls you out of REM.',
+          whatToDo: 'Pre-bed wind-down: low light, slow breathing, journaling, no work email. If chronic, address the source — therapy, lifestyle changes. Sleep aids are short-term band-aids only.',
+          source: SRC.ouraCumulative
+        }
       ]
     };
   }
@@ -730,9 +1143,11 @@ class KygoWearableStress extends HTMLElement {
     if (isExp) {
       body = `
         <div class="fact-body">
+          ${f.plainEnglish ? `<p class="fact-lede">${f.plainEnglish}</p>` : ''}
           <dl class="fact-fields">
             <div><dt>Magnitude</dt><dd>${f.magnitude}</dd></div>
             <div><dt>Mechanism</dt><dd>${f.mechanism}</dd></div>
+            ${f.whatToDo ? `<div class="fact-fields--full"><dt>What to do</dt><dd>${f.whatToDo}</dd></div>` : ''}
           </dl>
           <div class="fact-source-row">
             <span class="fact-source-lbl">Source</span>
@@ -1473,11 +1888,12 @@ class KygoWearableStress extends HTMLElement {
       .fact-effect.fact-dir-neg { color: var(--red); }
       .fact-effect.fact-dir-var { color: var(--amber); }
       .fact-ev-inline { color: var(--gray-400); font-weight: 500; }
-      .fact-fields { display: grid; gap: 10px; margin: 0 0 4px; }
-      .fact-fields > div { display: grid; grid-template-columns: 1fr; gap: 2px; }
+      .fact-lede { margin: 0 0 14px; font-size: 14px; line-height: 1.6; color: var(--dark); font-weight: 500; }
+      .fact-fields { display: grid; gap: 12px; margin: 0 0 4px; }
+      .fact-fields > div { display: grid; grid-template-columns: 1fr; gap: 3px; }
       .fact-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
       .fact-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
-      @media (min-width: 768px) { .fact-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } }
+      @media (min-width: 768px) { .fact-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } .fact-fields--full { grid-column: 1 / -1; } }
       .metric-tiles-label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin: 6px 0 8px; }
       /* Pills always sit on a neutral grey chip; only the label color shifts. */
       .fact-pill { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 10px; white-space: nowrap; min-width: 88px; text-align: center; letter-spacing: -0.005em; background: var(--gray-100); color: var(--gray-400); }
