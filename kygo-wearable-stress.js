@@ -216,13 +216,10 @@ class KygoWearableStress extends HTMLElement {
 
   get _categoryMeta() {
     return {
-      substance:   { label: 'Substance' },
-      sleep:       { label: 'Sleep' },
-      activity:    { label: 'Activity' },
-      mental:      { label: 'Mental' },
-      physical:    { label: 'Physical' },
-      environment: { label: 'Environment' },
-      physiology:  { label: 'Physiology' }
+      substances: { label: 'Substances' },
+      movement:   { label: 'Movement' },
+      recovery:   { label: 'Recovery' },
+      'mind-body': { label: 'Mind & Body' }
     };
   }
 
@@ -237,7 +234,7 @@ class KygoWearableStress extends HTMLElement {
     return [
       {
         key: 'alcohol',
-        category: 'substance',
+        category: 'substances',
         question: 'Drank alcohol in the last 48 hours?',
         name: 'Alcohol',
         baseImpact: 'high',
@@ -296,7 +293,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'sleep-deprivation',
-        category: 'sleep',
+        category: 'recovery',
         question: 'Getting less than 7 hours of sleep?',
         name: 'Sleep deprivation',
         baseImpact: 'high',
@@ -313,7 +310,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'caffeine',
-        category: 'substance',
+        category: 'substances',
         question: 'Drinking more than 400 mg of caffeine, or after 2 PM?',
         name: 'Excess or late caffeine',
         baseImpact: 'med',
@@ -330,7 +327,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'aerobic-exercise',
-        category: 'activity',
+        category: 'movement',
         question: 'Getting at least 150 minutes of moderate cardio a week?',
         name: 'Aerobic exercise (consistent)',
         baseImpact: 'high',
@@ -347,7 +344,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'overtraining',
-        category: 'activity',
+        category: 'movement',
         question: 'Training hard with little recovery?',
         name: 'Overtraining',
         baseImpact: 'high',
@@ -364,7 +361,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'meditation',
-        category: 'mental',
+        category: 'recovery',
         question: 'Practicing meditation or slow breathing regularly?',
         name: 'Meditation / breathwork',
         baseImpact: 'med',
@@ -381,7 +378,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'acute-stress',
-        category: 'mental',
+        category: 'mind-body',
         question: 'Stuck in a stretch of acute psychological stress?',
         name: 'Acute psychological stress',
         baseImpact: 'high',
@@ -398,7 +395,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'illness',
-        category: 'physiology',
+        category: 'mind-body',
         question: 'Coming down with something or running a fever?',
         name: 'Illness / fever',
         baseImpact: 'high',
@@ -415,7 +412,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'dehydration-heat',
-        category: 'physical',
+        category: 'mind-body',
         question: 'Dehydrated or training in the heat?',
         name: 'Dehydration & heat',
         baseImpact: 'med',
@@ -432,7 +429,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'cold-exposure',
-        category: 'physical',
+        category: 'recovery',
         question: 'Doing controlled cold exposure (cold showers, plunges)?',
         name: 'Cold exposure',
         baseImpact: 'low',
@@ -449,7 +446,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'cognitive-load',
-        category: 'mental',
+        category: 'mind-body',
         question: 'In a sustained period of high mental effort?',
         name: 'Cognitive load',
         baseImpact: 'med',
@@ -466,7 +463,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'menstrual-cycle',
-        category: 'physiology',
+        category: 'mind-body',
         question: 'In the luteal phase (week before period)?',
         name: 'Menstrual cycle (luteal phase)',
         baseImpact: 'med',
@@ -483,7 +480,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'ambient-temp',
-        category: 'environment',
+        category: 'mind-body',
         question: 'Tracking on a hot or humid day?',
         name: 'Ambient temperature & humidity',
         baseImpact: 'low',
@@ -500,7 +497,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'sedentary',
-        category: 'activity',
+        category: 'movement',
         question: 'Mostly sedentary — under 5,000 steps a day?',
         name: 'Sedentary lifestyle / low fitness',
         baseImpact: 'high',
@@ -807,44 +804,6 @@ class KygoWearableStress extends HTMLElement {
       </section>`;
   }
 
-  _renderAppCta() {
-    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-    return `
-      <section class="app-cta-section section-bg-white">
-        <div class="container">
-          <div class="app-cta animate-on-scroll">
-            <div class="app-cta-glow" aria-hidden="true"></div>
-            <div class="app-cta-content">
-              <div class="app-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-              <h2>See what's actually moving <span class="highlight">your stress score</span></h2>
-              <p>Kygo Health connects your wearable's stress signals with what you eat, drink, and do — pinpointing the personal correlations a generic stress score can't show you.</p>
-              <div class="app-cta-buttons">
-                <a href="${iosUrl}" class="app-cta-btn" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="app-cta-android">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <div class="app-cta-tags">
-                <span class="app-cta-tags-label">Works with</span>
-                <div class="app-cta-tags-logos">
-                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>`;
-  }
-
   _topPicks() {
     return [
       { label: 'Most universal mover', stat: '7 / 7', answer: 'Sleep deprivation', icon: 'moon', note: 'Hits every device because all 7 read HRV and sleep deprivation suppresses parasympathetic tone immediately.', cls: '' },
@@ -880,33 +839,33 @@ class KygoWearableStress extends HTMLElement {
   _renderCtaRow() {
     const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
     return `
-      <section class="cta-row-section section-bg-gray">
+      <section class="app-cta-section section-bg-white">
         <div class="container">
-          <div class="cta-row">
-            <a href="https://www.kygo.app/post/wearable-stress-research" class="article-card animate-on-scroll" target="_blank" rel="noopener">
-              <span class="article-badge">Deep Dive</span>
-              <div class="article-body">
-                <span class="article-kicker">Read the full article</span>
-                <h3 class="article-title">How 7 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
-                <p class="article-desc">Every signal, algorithm, and cited study in one long-form read.</p>
+          <div class="app-cta animate-on-scroll">
+            <div class="app-cta-glow" aria-hidden="true"></div>
+            <div class="app-cta-content">
+              <div class="app-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
+              <h2>See How Your Food Influences <span class="highlight">Your Sleep, HRV &amp; Recovery</span></h2>
+              <p>Kygo Health connects your wearable data with nutrition tracking to pinpoint personal correlations between what you eat, your sleep, your HRV, and how fast you recover from stress.</p>
+              <div class="app-cta-buttons">
+                <a href="${iosUrl}" class="app-cta-btn" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                  Download for iOS
+                </a>
+                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="app-cta-android">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                  Download for Android
+                </a>
               </div>
-              <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
-            </a>
-            <div class="app-cta animate-on-scroll">
-              <div class="app-cta-glow" aria-hidden="true"></div>
-              <div class="app-cta-content">
-                <div class="app-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-                <h3>See what's <span class="highlight">actually moving your score</span></h3>
-                <p>Kygo connects your wearable's stress signals with what you eat, drink, and do.</p>
-                <div class="app-cta-buttons">
-                  <a href="${iosUrl}" class="app-cta-btn" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    iOS
-                  </a>
-                  <a href="https://kygo.app/android" target="_blank" rel="noopener" class="app-cta-android">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                    Android
-                  </a>
+              <div class="app-cta-tags">
+                <span class="app-cta-tags-label">Works with</span>
+                <div class="app-cta-tags-logos">
+                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy" />
                 </div>
               </div>
             </div>
@@ -914,8 +873,6 @@ class KygoWearableStress extends HTMLElement {
         </div>
       </section>`;
   }
-
-  _renderAppCta() { return ''; /* deprecated, merged into _renderCtaRow */ }
 
   _renderMythsSection() {
     const groups = ['Reading the score', 'Devices', 'Signals', 'Lifestyle'];
@@ -1151,6 +1108,29 @@ class KygoWearableStress extends HTMLElement {
     return `<div class="picker-tiles">${allTile}${tiles}</div>`;
   }
 
+  _renderDevicePicker() {
+    const shortName = (k) => ({
+      garmin: 'Garmin', apple: 'Apple Watch', samsung: 'Samsung',
+      google_fitbit: 'Pixel / Fitbit', whoop: 'WHOOP', oura: 'Oura', polar: 'Polar'
+    })[k] || this._devices[k].name;
+    const tiles = Object.entries(this._devices).map(([k, d]) => {
+      const isActive = this._device1 === k;
+      const img = this._deviceImage(k);
+      return `
+        <button class="device-pick ${isActive ? 'active' : ''}" type="button" data-device-pick="${k}" aria-pressed="${isActive}">
+          ${img
+            ? `<span class="device-pick-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
+            : `<span class="device-pick-img device-pick-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
+          <span class="device-pick-name">${shortName(k)}</span>
+        </button>`;
+    }).join('');
+    return `
+      <div class="device-picker">
+        <span class="device-picker-label">Your wearable</span>
+        <div class="device-picker-tiles">${tiles}</div>
+      </div>`;
+  }
+
   _renderFactorsSection() {
     const d1 = this._devices[this._device1];
     const cat = this._categoryFilter;
@@ -1161,9 +1141,10 @@ class KygoWearableStress extends HTMLElement {
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
-            <h2 class="section-h2">${this._factors.length} <em>factors</em>, sorted for ${d1.name}.</h2>
-            <p class="section-lede">Pick a category to drill in. Each card expands with what's hurting your stress reading on this device — and what specifically helps.</p>
+            <h2 class="section-h2">${this._factors.length} <em>factors</em> that move your <em>${d1.name}</em> score.</h2>
+            <p class="section-lede">Pick your wearable, then drill into a category. Each card expands with what's hurting your reading on that device — and what specifically helps.</p>
           </div>
+          ${this._renderDevicePicker()}
           ${this._renderCategoryTiles()}
           <div class="picker-panel">
             <div class="picker-panel-head">
@@ -1328,6 +1309,18 @@ class KygoWearableStress extends HTMLElement {
         this._compareExpandedKey = this._compareExpandedKey === k ? null : k;
         const compSec = shadow.querySelector('.comparison-section');
         if (compSec) compSec.outerHTML = this._renderComparisonModule();
+        return;
+      }
+
+      const devicePick = e.target.closest('[data-device-pick]');
+      if (devicePick) {
+        const k = devicePick.dataset.devicePick;
+        if (k && this._device1 !== k) {
+          this._device1 = k;
+          this._listExpandedKey = null;
+          const sec = shadow.querySelector('.factors-section');
+          if (sec) sec.outerHTML = this._renderFactorsSection();
+        }
         return;
       }
 
@@ -1510,10 +1503,9 @@ class KygoWearableStress extends HTMLElement {
       .section-lede { font-size: 15px; color: var(--gray-600); line-height: 1.55; margin: 0; max-width: 64ch; }
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
-      .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section, .cta-row-section { padding: 48px 0 56px; }
+      .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section { padding: 48px 0 56px; }
       @media (min-width: 768px) {
         .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section { padding: 64px 0 72px; }
-        .cta-row-section { padding: 56px 0; }
       }
 
       /* ARTICLE CTA */
@@ -1635,11 +1627,9 @@ class KygoWearableStress extends HTMLElement {
       @media (min-width: 768px) { .dd-section-title { font-size: 18px; } }
 
       .dd-list { display: grid; gap: 6px; }
-      .dd-row { position: relative; background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; transition: border-color .15s, box-shadow .15s; animation: dcGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--delay, 0ms); }
+      .dd-row { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; transition: border-color .15s, box-shadow .15s; animation: dcGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--delay, 0ms); }
       .dd-row:hover { border-color: var(--gray-300); }
-      .dd-row.open { border-color: var(--accent, var(--gray-300)); box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
-      .dd-row::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--accent, var(--green)); opacity: 0; transition: opacity .15s; }
-      .dd-row.open::before { opacity: 1; }
+      .dd-row.open { box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
       @keyframes dcGrow { from { opacity: 0; transform: translateY(4px); } }
 
       .dd-row-head { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px 10px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; color: inherit; }
@@ -1717,6 +1707,27 @@ class KygoWearableStress extends HTMLElement {
       }
 
       /* CATEGORY PICKER TILES — RHR style: large white pill cards in a 2 / 4-column grid */
+      /* DEVICE PICKER — pick your wearable for the factor list */
+      .device-picker { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+      .device-picker-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); }
+      .device-picker-tiles { display: flex; gap: 6px; padding: 4px 2px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
+      .device-picker-tiles::-webkit-scrollbar { height: 4px; }
+      .device-picker-tiles::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+      .device-pick { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; min-height: 38px; flex-shrink: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 9999px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; color: var(--dark); white-space: nowrap; }
+      .device-pick:hover { border-color: var(--gray-300); transform: translateY(-1px); }
+      .device-pick.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 6px 16px rgba(15,23,42,0.16); }
+      .device-pick-img { width: 26px; height: 26px; border-radius: 7px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .device-pick-img img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
+      .device-pick-img--icon { background: var(--gray-200); color: var(--gray-600); }
+      .device-pick-img--icon svg { width: 14px; height: 14px; }
+      .device-pick.active .device-pick-img { background: rgba(255,255,255,0.14); }
+      .device-pick.active .device-pick-img--icon { color: #fff; }
+      .device-pick-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; letter-spacing: -0.01em; }
+      @media (min-width: 880px) {
+        .device-picker { flex-direction: row; align-items: center; gap: 14px; }
+        .device-picker-tiles { flex-wrap: wrap; overflow-x: visible; padding: 0; }
+      }
+
       .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
       .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
       .picker-tile:hover { border-color: var(--gray-300); transform: translateY(-1px); }
@@ -1724,7 +1735,7 @@ class KygoWearableStress extends HTMLElement {
       .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: -0.005em; line-height: 1.15; min-width: 0; flex: 1; overflow-wrap: anywhere; }
       .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 3px 9px; min-width: 28px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
       .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
-      @media (min-width: 680px) { .picker-tiles { grid-template-columns: repeat(4, 1fr); } }
+      @media (min-width: 680px) { .picker-tiles { grid-template-columns: repeat(5, 1fr); } }
       @media (min-width: 1024px) { .picker-tiles { grid-template-columns: repeat(8, 1fr); } }
 
       /* PICKER PANEL — white card holding the sort bar + factor list */
@@ -1832,26 +1843,32 @@ class KygoWearableStress extends HTMLElement {
       .source-link:hover { color: var(--green); }
 
       /* CTA ROW — combined article + app CTA */
-      .cta-row { display: grid; gap: 14px; grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto; }
-      @media (min-width: 880px) { .cta-row { grid-template-columns: 1.1fr 1fr; } }
-      .cta-row .article-card { margin: 0; max-width: none; }
-      .cta-row .app-cta { margin: 0; max-width: none; padding: 24px; text-align: left; border-radius: 18px; }
-      .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); overflow: hidden; }
+      /* APP CTA — centered card on white section, mirrors RHR */
+      .app-cta-section { padding: 48px 0; background: #fff; }
+      @media (min-width: 768px) { .app-cta-section { padding: 64px 0; } }
+      .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
       .app-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
       .app-cta-content { position: relative; z-index: 1; }
-      .app-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 12px; }
-      .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulseDot 2s infinite; }
+      .app-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+      .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulseDot 2s infinite; }
       @keyframes pulseDot { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
-      .app-cta h3 { color: #fff; font-size: 19px; line-height: 1.25; margin-bottom: 10px; letter-spacing: -0.01em; }
+      .app-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin: 0 0 12px; line-height: 1.2; letter-spacing: -0.01em; }
       .app-cta .highlight { color: var(--green); }
-      .app-cta p { color: rgba(255,255,255,0.65); font-size: 13.5px; margin-bottom: 16px; line-height: 1.5; }
-      .app-cta-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--green); color: #fff; padding: 9px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13.5px; text-decoration: none; transition: background 0.2s; }
+      .app-cta p { color: var(--gray-400); font-size: 14px; margin: 0 auto 20px; max-width: 480px; line-height: 1.55; }
+      .app-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+      @media (max-width: 480px) { .app-cta-buttons { flex-direction: column; align-items: stretch; } .app-cta-buttons a { justify-content: center; text-align: center; } }
+      .app-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
       .app-cta-btn:hover { background: var(--green-dark); }
-      .app-cta-btn svg { width: 14px; height: 14px; }
-      .app-cta-android { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.10); color: #fff; padding: 9px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13.5px; text-decoration: none; border: 1px solid rgba(255,255,255,0.18); transition: background 0.2s; }
-      .app-cta-android:hover { background: rgba(255,255,255,0.16); }
-      .app-cta-android svg { width: 14px; height: 14px; }
-      .app-cta-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+      .app-cta-btn svg { width: 18px; height: 18px; }
+      .app-cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .app-cta-android:hover { background: var(--green-dark); color: #fff; }
+      .app-cta-android svg { width: 18px; height: 18px; }
+      .app-cta-tags { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: nowrap; }
+      .app-cta-tags-label { color: var(--gray-400); font-size: 11px; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
+      .app-cta-tags-logos { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; overflow: hidden; }
+      .app-cta-tags-logos img { height: 18px; width: auto; opacity: 0.75; flex-shrink: 1; min-width: 0; object-fit: contain; }
+      @media (min-width: 480px) { .app-cta-tags-logos img { height: 20px; } .app-cta-tags-label { font-size: 12px; } }
+      @media (min-width: 768px) { .app-cta-tags-logos { gap: 8px; } .app-cta-tags-logos img { height: 22px; } }
 
       /* TOP PICKS */
       .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
