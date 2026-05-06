@@ -28,7 +28,6 @@ class KygoWearableStress extends HTMLElement {
     this._compareExpandedKey = null;
     this._categoryFilter = null;
     this._listExpandedKey = null;
-    this._mythsCatPick = null;
     this._eventsBound = false;
   }
 
@@ -987,27 +986,6 @@ class KygoWearableStress extends HTMLElement {
     ];
   }
 
-  get _myths() {
-    return [
-      { name: 'Higher stress score = something is wrong',                cat: 'Reading the score', why: 'A short spike is usually normal arousal — focus, excitement, a workout. Chronic elevation is the actual flag.' },
-      { name: 'My Garmin "55" means the same as my friend\'s Samsung "55"', cat: 'Reading the score', why: 'Every brand uses a proprietary algorithm and a personal baseline. Scores are not comparable across devices.' },
-      { name: 'Lowest possible stress all day is the goal',              cat: 'Reading the score', why: 'Some sympathetic activation is healthy and adaptive. Resilience is the recovery, not the absence of stress.' },
-      { name: 'A green "recovered" reading means I should max-train',    cat: 'Reading the score', why: 'Recovery scores reflect autonomic state, not muscular readiness. Training judgment still matters.' },
-      { name: 'Apple Watch has a native stress score',                   cat: 'Devices',           why: 'As of watchOS 11, no. Apple ships HRV data; third-party apps (StressWatch, Livity) compute the score.' },
-      { name: 'EDA detects "stress" specifically',                       cat: 'Devices',           why: 'EDA detects sympathetic arousal — anxiety, excitement, surprise, even ambient heat all raise it.' },
-      { name: 'Multi-signal devices are always more accurate',           cat: 'Devices',           why: 'Generally true (~82% vs ~77% in lab studies) but algorithm quality matters as much as signal count.' },
-      { name: 'Polar shows my real-time daytime stress',                 cat: 'Devices',           why: 'Polar Nightly Recharge measures only the first ~4 hours of sleep. There is no daytime stress score.' },
-      { name: 'A drop in HRV always means stress',                       cat: 'Signals',           why: 'Exercise, illness, alcohol, caffeine, dehydration, and even ambient heat all drop HRV.' },
-      { name: 'Wearables can read specific emotions',                    cat: 'Signals',           why: 'Devices detect physiological arousal — not valence. They cannot tell anxiety from excitement.' },
-      { name: 'Skin temperature is only useful for fever',               cat: 'Signals',           why: 'It tracks circadian rhythm, menstrual cycle, sleep onset, and overtraining — not just illness.' },
-      { name: 'Resting heart rate alone tells you about stress',         cat: 'Signals',           why: 'RHR moves with fitness and hydration too. HRV is the more sensitive autonomic readout.' },
-      { name: 'I should aim for zero alcohol forever to fix HRV',        cat: 'Lifestyle',         why: 'Most of the rebound happens in the first 2–5 alcohol-free nights; baseline lifts within weeks.' },
-      { name: 'Cold plunges fix chronic stress',                         cat: 'Lifestyle',         why: 'Cold gives a small, real acute vagal bump — but the durable movers are sleep, cardio, and breathwork.' },
-      { name: 'Meditation has to be 30+ minutes to work',                cat: 'Lifestyle',         why: '5–10 minutes of slow breathing (~6 breaths/min) shifts HRV and EDA measurably.' },
-      { name: 'Adaptogens (ashwagandha, rhodiola) lower wearable stress', cat: 'Lifestyle',         why: 'Trials show subjective stress changes and small HRV shifts; no consistent wearable-score evidence.' }
-    ];
-  }
-
   _renderArticleCta() {
     return `
       <section class="article-section section-bg-white">
@@ -1063,63 +1041,10 @@ class KygoWearableStress extends HTMLElement {
       </section>`;
   }
 
-  _renderMythsSection() {
-    const groups = ['Reading the score', 'Devices', 'Signals', 'Lifestyle'];
-    const counts = {};
-    groups.forEach(g => counts[g] = this._myths.filter(m => m.cat === g).length);
-    const total = this._myths.length;
-    const picked = this._mythsCatPick;
-
-    // Default highest-value myths shown immediately (no empty state)
-    const featuredKeys = [
-      'My Garmin "55" means the same as my friend\'s Samsung "55"',
-      'Apple Watch has a native stress score',
-      'EDA detects "stress" specifically',
-      'A drop in HRV always means stress'
-    ];
-    const items = picked
-      ? this._myths.filter(m => m.cat === picked)
-      : this._myths.filter(m => featuredKeys.includes(m.name));
-
-    const cards = items.map(m => `
-      <article class="myth-card">
-        <div class="myth-row">
-          <h4 class="myth-name">${m.name}</h4>
-          <span class="myth-badge">Myth</span>
-        </div>
-        <p class="myth-why">${m.why}</p>
-        <span class="myth-cat-tag">${m.cat}</span>
-      </article>`).join('');
-
-    const tiles = `
-      <button class="myth-filter ${picked === null ? 'active' : ''}" data-myths-cat="__featured" aria-pressed="${picked === null}">
-        <span>Top picks</span><span class="myth-filter-count">${featuredKeys.length}</span>
-      </button>
-      ${groups.map(g => {
-        const isActive = picked === g;
-        return `<button class="myth-filter ${isActive ? 'active' : ''}" data-myths-cat="${g}" aria-pressed="${isActive}">
-          <span>${g}</span><span class="myth-filter-count">${counts[g]}</span>
-        </button>`;
-      }).join('')}
-    `;
-
-    return `
-      <section class="myths-section section-bg-white" aria-labelledby="myths-title">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-eyebrow amber"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('ghost')}</span>Common Myths</span>
-            <h2 class="section-h2" id="myths-title">What people <em>get wrong</em> about stress scores.</h2>
-            <p class="section-lede">${total} misconceptions debunked. The ones below are the four worth dropping today — switch categories for the rest.</p>
-          </div>
-          <div class="myth-filters" role="tablist">${tiles}</div>
-          <div class="myth-grid">${cards}</div>
-        </div>
-      </section>`;
-  }
 
   _renderTopPicks() {
     return `
-      <section class="picks-section section-bg-gray">
+      <section class="picks-section section-bg-white">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1281,21 +1206,6 @@ class KygoWearableStress extends HTMLElement {
       </section>`;
   }
 
-  _renderCalloutSection() {
-    return `
-      <section class="callout-section section-bg-white">
-        <div class="container">
-          <div class="callout-card">
-            <span class="callout-icon" aria-hidden="true">${this._icon('info')}</span>
-            <div class="callout-body">
-              <h3>Stress scores aren't comparable across brands.</h3>
-              <p>Every wearable uses a proprietary mix of signals and a personal baseline, so a "55" on Garmin doesn't mean the same thing as a "55" on Samsung. Multi-signal devices (HRV + EDA + skin temp) hit ~82% accuracy in lab studies vs. ~77% for HRV-only. And remember: wearables detect <em>arousal</em>, not stress. The same HRV drop comes from anxiety, excitement, caffeine, or a hard workout.</p>
-            </div>
-          </div>
-        </div>
-      </section>`;
-  }
-
   _renderSourcesSection() {
     const groups = {
       'Core HRV & stress research': [
@@ -1392,9 +1302,7 @@ class KygoWearableStress extends HTMLElement {
       <div class="animate-on-scroll">${this._renderFactorsSection()}</div>
       ${this._renderArticleCta()}
       <div class="animate-on-scroll">${this._renderFullBreakdown()}</div>
-      ${this._renderMythsSection()}
       ${this._renderTopPicks()}
-      ${this._renderCalloutSection()}
       ${this._renderSourcesSection()}
 
       <footer class="tool-footer">
@@ -1457,15 +1365,6 @@ class KygoWearableStress extends HTMLElement {
         this._listExpandedKey = null;
         const sec = shadow.querySelector('.factors-section');
         if (sec) sec.outerHTML = this._renderFactorsSection();
-        return;
-      }
-
-      const mythsTile = e.target.closest('[data-myths-cat]');
-      if (mythsTile) {
-        const k = mythsTile.dataset.mythsCat;
-        this._mythsCatPick = (k === '__featured') ? null : k;
-        const sec = shadow.querySelector('.myths-section');
-        if (sec) sec.outerHTML = this._renderMythsSection();
         return;
       }
 
@@ -1985,6 +1884,8 @@ class KygoWearableStress extends HTMLElement {
       /* APP CTA — centered card on white section, mirrors RHR */
       .app-cta-section { padding: 48px 0; background: #fff; }
       @media (min-width: 768px) { .app-cta-section { padding: 64px 0; } }
+      .article-section { padding: 48px 0; background: #fff; }
+      @media (min-width: 768px) { .article-section { padding: 64px 0; } }
       .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
       .app-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
       .app-cta-content { position: relative; z-index: 1; }
