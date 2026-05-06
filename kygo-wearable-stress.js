@@ -219,7 +219,8 @@ class KygoWearableStress extends HTMLElement {
       substances: { label: 'Substances' },
       movement:   { label: 'Movement' },
       recovery:   { label: 'Recovery' },
-      'mind-body': { label: 'Mind & Body' }
+      mental:     { label: 'Mental' },
+      physical:   { label: 'Physical' }
     };
   }
 
@@ -378,7 +379,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'acute-stress',
-        category: 'mind-body',
+        category: 'mental',
         question: 'Stuck in a stretch of acute psychological stress?',
         name: 'Acute psychological stress',
         baseImpact: 'high',
@@ -395,7 +396,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'illness',
-        category: 'mind-body',
+        category: 'physical',
         question: 'Coming down with something or running a fever?',
         name: 'Illness / fever',
         baseImpact: 'high',
@@ -412,7 +413,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'dehydration-heat',
-        category: 'mind-body',
+        category: 'physical',
         question: 'Dehydrated or training in the heat?',
         name: 'Dehydration & heat',
         baseImpact: 'med',
@@ -446,7 +447,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'cognitive-load',
-        category: 'mind-body',
+        category: 'mental',
         question: 'In a sustained period of high mental effort?',
         name: 'Cognitive load',
         baseImpact: 'med',
@@ -463,7 +464,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'menstrual-cycle',
-        category: 'mind-body',
+        category: 'physical',
         question: 'In the luteal phase (week before period)?',
         name: 'Menstrual cycle (luteal phase)',
         baseImpact: 'med',
@@ -480,7 +481,7 @@ class KygoWearableStress extends HTMLElement {
       },
       {
         key: 'ambient-temp',
-        category: 'mind-body',
+        category: 'physical',
         question: 'Tracking on a hot or humid day?',
         name: 'Ambient temperature & humidity',
         baseImpact: 'low',
@@ -1109,11 +1110,6 @@ class KygoWearableStress extends HTMLElement {
   _renderCategoryTiles() {
     const counts = {};
     this._factors.forEach(f => { counts[f.category] = (counts[f.category] || 0) + 1; });
-    const allTile = `
-      <button class="picker-tile ${this._categoryFilter === null ? 'active' : ''}" data-cat="__all" aria-pressed="${this._categoryFilter === null}">
-        <span class="picker-tile-name">All</span>
-        <span class="picker-tile-count">${this._factors.length}</span>
-      </button>`;
     const tiles = Object.entries(this._categoryMeta).map(([k, m]) => {
       const isActive = this._categoryFilter === k;
       return `
@@ -1122,7 +1118,7 @@ class KygoWearableStress extends HTMLElement {
           <span class="picker-tile-count">${counts[k] || 0}</span>
         </button>`;
     }).join('');
-    return `<div class="picker-tiles">${allTile}${tiles}</div>`;
+    return `<div class="picker-tiles">${tiles}</div>`;
   }
 
   _renderDevicePicker() {
@@ -1345,7 +1341,7 @@ class KygoWearableStress extends HTMLElement {
       const tile = e.target.closest('[data-cat]');
       if (tile) {
         const k = tile.dataset.cat;
-        this._categoryFilter = (k === '__all') ? null : (this._categoryFilter === k ? null : k);
+        this._categoryFilter = this._categoryFilter === k ? null : k;
         this._listExpandedKey = null;
         const sec = shadow.querySelector('.factors-section');
         if (sec) sec.outerHTML = this._renderFactorsSection();
@@ -1747,14 +1743,14 @@ class KygoWearableStress extends HTMLElement {
       }
 
       .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
-      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
+      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
       .picker-tile:hover { border-color: var(--gray-300); transform: translateY(-1px); }
       .picker-tile.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 6px 18px rgba(15,23,42,0.12); }
-      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: -0.005em; line-height: 1.15; min-width: 0; flex: 1; overflow-wrap: anywhere; }
+      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; letter-spacing: -0.005em; line-height: 1.2; min-width: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 3px 9px; min-width: 28px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
       .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
-      @media (min-width: 680px) { .picker-tiles { grid-template-columns: repeat(5, 1fr); } }
-      @media (min-width: 1024px) { .picker-tiles { grid-template-columns: repeat(8, 1fr); } }
+      @media (min-width: 560px) { .picker-tiles { grid-template-columns: repeat(3, 1fr); } }
+      @media (min-width: 880px) { .picker-tiles { grid-template-columns: repeat(5, 1fr); } }
 
       /* PICKER PANEL — white card holding the sort bar + factor list */
       .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
