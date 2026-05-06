@@ -28,6 +28,7 @@ class KygoWearableStress extends HTMLElement {
     this._listSort = 'impact';
     this._categoryFilter = null;
     this._listExpandedKey = null;
+    this._mythsCatPick = null;
     this._eventsBound = false;
   }
 
@@ -35,7 +36,88 @@ class KygoWearableStress extends HTMLElement {
     this.render();
     this._setupEventDelegation();
     this._setupAnimations();
+    this._injectStructuredData();
     __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel/Fitbit Sense, WHOOP, Oura Ring, and Polar measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only. Explore 14 lifestyle factors — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms and evidence-based actions to lower your stress score. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024.');
+  }
+
+  _injectStructuredData() {
+    if (document.querySelector('script[data-kygo-stress-ld]')) return;
+
+    const ld = {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      'name': 'Wearable Stress Research',
+      'alternateName': 'Kygo Wearable Stress Comparison Tool',
+      'description': 'Compare how 7 wearables (Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel/Fitbit Sense 2, WHOOP, Oura Ring, Polar) measure stress, with 14 lifestyle factors broken down by device-specific mechanism.',
+      'applicationCategory': 'HealthApplication',
+      'operatingSystem': 'Web',
+      'url': 'https://www.kygo.app/tools/wearable-stress-research',
+      'datePublished': '2026-05-06',
+      'dateModified': '2026-05-06',
+      'softwareVersion': '1.0',
+      'inLanguage': 'en',
+      'isAccessibleForFree': true,
+      'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+      'featureList': '7 wearable comparison (Garmin, Apple, Samsung, Google Pixel/Fitbit, WHOOP, Oura, Polar), 14 lifestyle factors with device-specific mechanisms, what-hurts/what-helps card structure, evidence leaderboard sorted by impact for the selected device, common myths debunked, peer-reviewed citations.',
+      'keywords': 'wearable stress measurement, how does Garmin measure stress, Samsung BioActive sensor stress, WHOOP stress monitor, Oura cumulative stress, Apple Watch stress score, Pixel Watch cEDA, Fitbit Sense 2 stress, Polar Nightly Recharge, HRV stress, EDA skin conductance stress, alcohol HRV, sleep deprivation stress, caffeine HRV, overtraining respiratory rate'
+    };
+
+    const faq = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      'mainEntity': [
+        {
+          '@type': 'Question',
+          'name': 'Does Apple Watch have a built-in stress score?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. As of watchOS 11, Apple Watch tracks HRV but does not surface a native stress score. Third-party apps such as StressWatch and Livity read HRV from HealthKit and compute a score on top of it. ECG-based readings can reach 52–64% accuracy in lab studies (University of Waterloo).' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Can I compare a stress score across different wearable brands?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. Every brand uses a proprietary algorithm and a personal baseline. A "55" on Garmin does not correspond to a "55" on Samsung. Each device has to be interpreted against its own historical baseline.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Which wearables use EDA (skin conductance) for stress?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Only Samsung Galaxy Watch (BioActive Sensor) and Google Pixel Watch / Fitbit Sense 2 (continuous EDA, first introduced in 2022) measure EDA at the wrist. Garmin, WHOOP, Oura, Polar, and Apple Watch do not.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'What is the most universal factor that raises wearable stress scores?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Sleep deprivation. Every wearable that scores stress reads HRV, and short or fragmented sleep suppresses parasympathetic tone — so HRV drops and stress climbs the next morning on every device.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'How long does alcohol affect my wearable stress reading?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Even one drink drops RMSSD by about 2 ms. Three or more drinks can keep HRV depressed for 2 to 5 days. Most wearables show full recovery within 2 to 5 alcohol-free nights, with the personal baseline shifting up over a week or two of consistency.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Are multi-signal wearables more accurate at measuring stress?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Generally yes. Lab studies show ~82% accuracy for multi-signal approaches (HRV + EDA + skin temperature) versus ~77% for HRV alone. But accuracy still depends heavily on algorithm quality, baseline calibration, and the specific stressor being detected.' }
+        }
+      ]
+    };
+
+    const breadcrumb = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      'itemListElement': [
+        { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
+        { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+        { '@type': 'ListItem', 'position': 3, 'name': 'Wearable Stress Research', 'item': 'https://www.kygo.app/tools/wearable-stress-research' }
+      ]
+    };
+
+    [ld, faq, breadcrumb].forEach(data => {
+      const script = document.createElement('script');
+      script.type = 'application/ld+json';
+      script.setAttribute('data-kygo-stress-ld', '');
+      script.textContent = JSON.stringify(data);
+      document.head.appendChild(script);
+    });
   }
 
   disconnectedCallback() {
@@ -771,6 +853,100 @@ class KygoWearableStress extends HTMLElement {
     ];
   }
 
+  get _myths() {
+    return [
+      { name: 'Higher stress score = something is wrong',                cat: 'Reading the score', why: 'A short spike is usually normal arousal — focus, excitement, a workout. Chronic elevation is the actual flag.' },
+      { name: 'My Garmin "55" means the same as my friend\'s Samsung "55"', cat: 'Reading the score', why: 'Every brand uses a proprietary algorithm and a personal baseline. Scores are not comparable across devices.' },
+      { name: 'Lowest possible stress all day is the goal',              cat: 'Reading the score', why: 'Some sympathetic activation is healthy and adaptive. Resilience is the recovery, not the absence of stress.' },
+      { name: 'A green "recovered" reading means I should max-train',    cat: 'Reading the score', why: 'Recovery scores reflect autonomic state, not muscular readiness. Training judgment still matters.' },
+      { name: 'Apple Watch has a native stress score',                   cat: 'Devices',           why: 'As of watchOS 11, no. Apple ships HRV data; third-party apps (StressWatch, Livity) compute the score.' },
+      { name: 'EDA detects "stress" specifically',                       cat: 'Devices',           why: 'EDA detects sympathetic arousal — anxiety, excitement, surprise, even ambient heat all raise it.' },
+      { name: 'Multi-signal devices are always more accurate',           cat: 'Devices',           why: 'Generally true (~82% vs ~77% in lab studies) but algorithm quality matters as much as signal count.' },
+      { name: 'Polar shows my real-time daytime stress',                 cat: 'Devices',           why: 'Polar Nightly Recharge measures only the first ~4 hours of sleep. There is no daytime stress score.' },
+      { name: 'A drop in HRV always means stress',                       cat: 'Signals',           why: 'Exercise, illness, alcohol, caffeine, dehydration, and even ambient heat all drop HRV.' },
+      { name: 'Wearables can read specific emotions',                    cat: 'Signals',           why: 'Devices detect physiological arousal — not valence. They cannot tell anxiety from excitement.' },
+      { name: 'Skin temperature is only useful for fever',               cat: 'Signals',           why: 'It tracks circadian rhythm, menstrual cycle, sleep onset, and overtraining — not just illness.' },
+      { name: 'Resting heart rate alone tells you about stress',         cat: 'Signals',           why: 'RHR moves with fitness and hydration too. HRV is the more sensitive autonomic readout.' },
+      { name: 'I should aim for zero alcohol forever to fix HRV',        cat: 'Lifestyle',         why: 'Most of the rebound happens in the first 2–5 alcohol-free nights; baseline lifts within weeks.' },
+      { name: 'Cold plunges fix chronic stress',                         cat: 'Lifestyle',         why: 'Cold gives a small, real acute vagal bump — but the durable movers are sleep, cardio, and breathwork.' },
+      { name: 'Meditation has to be 30+ minutes to work',                cat: 'Lifestyle',         why: '5–10 minutes of slow breathing (~6 breaths/min) shifts HRV and EDA measurably.' },
+      { name: 'Adaptogens (ashwagandha, rhodiola) lower wearable stress', cat: 'Lifestyle',         why: 'Trials show subjective stress changes and small HRV shifts; no consistent wearable-score evidence.' }
+    ];
+  }
+
+  _renderArticleCta() {
+    return `
+      <section class="article-section section-bg-white">
+        <div class="container">
+          <a href="https://www.kygo.app/post/wearable-stress-research" class="article-card animate-on-scroll" target="_blank" rel="noopener">
+            <span class="article-badge">Deep Dive</span>
+            <div class="article-body">
+              <span class="article-kicker">Read the full article</span>
+              <h3 class="article-title">Wearable Stress Research: How 7 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
+              <p class="article-desc">Every signal, every algorithm, every cited study in one long-form read.</p>
+            </div>
+            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>`;
+  }
+
+  _renderMythsSection() {
+    const groups = ['Reading the score', 'Devices', 'Signals', 'Lifestyle'];
+    const counts = {};
+    groups.forEach(g => counts[g] = this._myths.filter(m => m.cat === g).length);
+    const total = this._myths.length;
+    const picked = this._mythsCatPick;
+
+    const tiles = groups.map(g => {
+      const isActive = picked === g;
+      return `
+        <button class="picker-tile ${isActive ? 'active' : ''}" data-myths-cat="${g}" aria-pressed="${isActive}">
+          <span class="picker-tile-name">${g}</span>
+          <span class="picker-tile-count">${counts[g]}</span>
+        </button>`;
+    }).join('');
+
+    let panel = '';
+    if (picked) {
+      const items = this._myths.filter(m => m.cat === picked);
+      const cards = items.map(m => `
+        <article class="myth-card">
+          <div class="myth-row">
+            <h4 class="myth-name">${m.name}</h4>
+            <span class="myth-badge">Myth</span>
+          </div>
+          <p class="myth-why">${m.why}</p>
+        </article>`).join('');
+      panel = `
+        <div class="picker-panel">
+          <div class="picker-panel-head">
+            <h3 class="picker-panel-title">${picked}<span class="picker-panel-meta">${items.length} debunked</span></h3>
+          </div>
+          <div class="myth-grid">${cards}</div>
+        </div>`;
+    } else {
+      panel = `
+        <div class="picker-empty">
+          <span class="picker-empty-icon" aria-hidden="true">${this._icon('ghost')}</span>
+          <p>Tap a category above to see the most common stress-wearable misconceptions debunked.</p>
+        </div>`;
+    }
+
+    return `
+      <section class="myths-section section-bg-white" aria-labelledby="myths-title">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow amber"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('ghost')}</span>Common Myths</span>
+            <h2 class="section-h2" id="myths-title">What people <em>get wrong</em> about stress scores (${total} debunked).</h2>
+            <p class="section-lede">A "stress score" sits at the intersection of physiology, signal processing, and marketing — easy to misread. Pick a category to see the misconceptions worth dropping.</p>
+          </div>
+          <div class="picker-tiles myths-tiles">${tiles}</div>
+          ${panel}
+        </div>
+      </section>`;
+  }
+
   _renderTopPicks() {
     return `
       <section class="picks-section section-bg-gray">
@@ -1083,8 +1259,10 @@ class KygoWearableStress extends HTMLElement {
 
       <div class="animate-on-scroll">${this._renderComparisonModule()}</div>
       <div class="animate-on-scroll">${this._renderEvidenceLeaderboard()}</div>
+      ${this._renderArticleCta()}
       ${this._renderAppCta()}
       <div class="animate-on-scroll">${this._renderFactorsSection()}</div>
+      ${this._renderMythsSection()}
       ${this._renderTopPicks()}
       ${this._renderCalloutSection()}
       ${this._renderSourcesSection()}
@@ -1144,6 +1322,15 @@ class KygoWearableStress extends HTMLElement {
         this._listSort = sortBtn.dataset.sort;
         const sec = shadow.querySelector('.factors-section');
         if (sec) sec.outerHTML = this._renderFactorsSection();
+        return;
+      }
+
+      const mythsTile = e.target.closest('[data-myths-cat]');
+      if (mythsTile) {
+        const k = mythsTile.dataset.mythsCat;
+        this._mythsCatPick = this._mythsCatPick === k ? null : k;
+        const sec = shadow.querySelector('.myths-section');
+        if (sec) sec.outerHTML = this._renderMythsSection();
         return;
       }
 
@@ -1312,14 +1499,67 @@ class KygoWearableStress extends HTMLElement {
       .section-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 12px; }
       .section-eyebrow-icon { width: 22px; height: 22px; border-radius: 7px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; }
       .section-eyebrow-icon svg { width: 13px; height: 13px; }
+      .section-eyebrow.amber { color: var(--amber); }
+      .section-eyebrow.amber .section-eyebrow-icon { background: rgba(180,83,9,0.10); color: var(--amber); }
       .section-h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 5.5vw, 40px); letter-spacing: -0.02em; line-height: 1.08; margin: 0 0 12px; color: var(--dark); }
       .section-h2 em { font-style: normal; color: var(--green); font-family: inherit; }
       .section-lede { font-size: 15px; color: var(--gray-600); line-height: 1.55; margin: 0; max-width: 64ch; }
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
-      .comparison-section, .evidence-section, .factors-section, .callout-section, .sources-section, .picks-section, .app-cta-section { padding: 48px 0 56px; }
+      .comparison-section, .evidence-section, .factors-section, .callout-section, .sources-section, .picks-section, .app-cta-section, .myths-section, .article-section { padding: 48px 0 56px; }
       @media (min-width: 768px) {
-        .comparison-section, .evidence-section, .factors-section, .callout-section, .sources-section, .picks-section, .app-cta-section { padding: 64px 0 72px; }
+        .comparison-section, .evidence-section, .factors-section, .callout-section, .sources-section, .picks-section, .app-cta-section, .myths-section { padding: 64px 0 72px; }
+        .article-section { padding: 56px 0; }
+      }
+
+      /* ARTICLE CTA */
+      .article-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; max-width: 780px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
+      .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
+      .article-card:hover { border-color: var(--green); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(34,197,94,0.14); }
+      .article-badge { position: relative; z-index: 1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; }
+      .article-body { position: relative; z-index: 1; flex: 1; min-width: 0; width: 100%; padding-right: 50px; }
+      .article-kicker { display: block; font-size: 11px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
+      .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.25; letter-spacing: -0.01em; }
+      .article-year { color: var(--gray-400); font-weight: 500; }
+      .article-desc { display: none; font-size: 13px; color: var(--gray-600); margin: 6px 0 0; line-height: 1.45; }
+      .article-go { position: absolute; top: 18px; right: 18px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; }
+      .article-card:hover .article-go { background: var(--green-dark); }
+      .article-go svg { width: 16px; height: 16px; }
+      @media (min-width: 768px) {
+        .article-card { flex-direction: row; align-items: center; padding: 24px 28px; gap: 18px; border-radius: 22px; }
+        .article-title { font-size: 19px; }
+        .article-desc { display: block; }
+        .article-go { position: static; width: 40px; height: 40px; }
+        .article-go svg { width: 18px; height: 18px; }
+        .article-body { padding-right: 0; }
+      }
+
+      /* PICKER PANEL (myths) */
+      .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); animation: panelIn .35s cubic-bezier(0.16, 1, 0.3, 1); }
+      @keyframes panelIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+      .picker-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
+      .picker-panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+      .picker-panel-meta { font-size: 11.5px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.5px; text-transform: uppercase; }
+      .picker-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 32px 20px; background: #fff; border: 1px dashed var(--gray-200); border-radius: 18px; text-align: center; color: var(--gray-600); font-size: 13.5px; line-height: 1.5; }
+      .picker-empty-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--gray-100); color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; }
+      .picker-empty-icon svg { width: 18px; height: 18px; }
+      .picker-empty p { margin: 0; max-width: 36ch; }
+
+      /* MYTH CARDS */
+      .myth-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+      .myth-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; padding: 13px 15px; transition: border-color .15s; }
+      .myth-card:hover { border-color: var(--gray-300); }
+      .myth-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+      .myth-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); margin: 0; line-height: 1.3; flex: 1; min-width: 0; letter-spacing: -0.005em; }
+      .myth-badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--amber); background: rgba(180,83,9,0.08); padding: 3px 8px; border-radius: 9999px; white-space: nowrap; flex-shrink: 0; }
+      .myth-why { margin: 6px 0 0; font-size: 12.5px; color: var(--gray-600); line-height: 1.55; }
+      .myths-tiles { grid-template-columns: repeat(2, 1fr); }
+      @media (min-width: 680px) {
+        .myth-grid { grid-template-columns: repeat(2, 1fr); }
+        .myths-tiles { grid-template-columns: repeat(4, 1fr); }
+      }
+      @media (min-width: 1024px) {
+        .myth-grid { grid-template-columns: repeat(3, 1fr); }
       }
 
       /* COMPARISON SHELL */
