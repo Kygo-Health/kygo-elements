@@ -36,7 +36,7 @@ class KygoWearableStress extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, and Polar measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only. Explore lifestyle factors that move each underlying signal — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms and evidence-based actions to lower your stress score. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024.');
+    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, and Polar measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only. Explore lifestyle factors that move each underlying signal — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms and evidence-based actions to lower your stress score. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024.');
   }
 
   _injectStructuredData() {
@@ -47,7 +47,7 @@ class KygoWearableStress extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'Wearable Stress Research',
       'alternateName': 'Kygo Wearable Stress Comparison Tool',
-      'description': 'Compare how 8 wearables (Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, Polar) measure stress, with lifestyle factors broken down by underlying signal.',
+      'description': 'Compare how 7 wearables (Garmin, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, Polar) measure stress, with lifestyle factors broken down by underlying signal.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/wearable-stress-research',
@@ -59,8 +59,8 @@ class KygoWearableStress extends HTMLElement {
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'featureList': '8 wearable comparison (Garmin, Apple Watch, Samsung, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura, Polar), per-signal factor breakdown (HRV, HR, EDA, Skin Temp, Resp Rate, SpO2, Sleep), what-helps/what-hurts grouping, peer-reviewed citations.',
-      'keywords': 'wearable stress measurement, how does Garmin measure stress, Samsung BioActive sensor stress, WHOOP stress monitor, Oura cumulative stress, Apple Watch stress score, Pixel Watch cEDA, Fitbit Sense 2 stress, Polar Nightly Recharge, HRV stress, EDA skin conductance stress, alcohol HRV, sleep deprivation stress, caffeine HRV, overtraining respiratory rate'
+      'featureList': '7 wearable comparison (Garmin, Samsung, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura, Polar), per-signal factor breakdown (HRV, HR, EDA, Skin Temp, Resp Rate, SpO2, Sleep), what-helps/what-hurts grouping, peer-reviewed citations.',
+      'keywords': 'wearable stress measurement, how does Garmin measure stress, Samsung BioActive sensor stress, WHOOP stress monitor, Oura cumulative stress, Pixel Watch cEDA, Fitbit Sense 2 stress, Polar Nightly Recharge, HRV stress, EDA skin conductance stress, alcohol HRV, sleep deprivation stress, caffeine HRV, overtraining respiratory rate'
     };
 
     const faq = {
@@ -69,18 +69,13 @@ class KygoWearableStress extends HTMLElement {
       'mainEntity': [
         {
           '@type': 'Question',
-          'name': 'Does Apple Watch have a built-in stress score?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. As of watchOS 11, Apple Watch tracks HRV but does not surface a native stress score. Third-party apps such as StressWatch and Livity read HRV from HealthKit and compute a score on top of it. ECG-based readings can reach 52–64% accuracy in lab studies (University of Waterloo).' }
-        },
-        {
-          '@type': 'Question',
           'name': 'Can I compare a stress score across different wearable brands?',
           'acceptedAnswer': { '@type': 'Answer', 'text': 'No. Every brand uses a proprietary algorithm and a personal baseline. A "55" on Garmin does not correspond to a "55" on Samsung. Each device has to be interpreted against its own historical baseline.' }
         },
         {
           '@type': 'Question',
           'name': 'Which wearables use EDA (skin conductance) for stress?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Only Samsung Galaxy Watch (BioActive Sensor) and Google Pixel Watch / Fitbit Sense 2 (continuous EDA, first introduced in 2022) measure EDA at the wrist. Garmin, WHOOP, Oura, Polar, and Apple Watch do not.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Samsung Galaxy Watch (BioActive Sensor), Google Pixel Watch, and Fitbit Sense 2 (continuous EDA, first introduced in 2022) all measure EDA at the wrist. Garmin, WHOOP, Oura, and Polar do not.' }
         },
         {
           '@type': 'Question',
@@ -136,18 +131,6 @@ class KygoWearableStress extends HTMLElement {
         strength: 'Long-running Firstbeat partnership; dependable, well-validated HRV pipeline.',
         limitation: 'HRV-only. Can\'t separate exercise arousal or excitement from psychological stress.',
         color: '#1E293B'
-      },
-      apple: {
-        name: 'Apple Watch',
-        modelLine: 'No native stress score (third-party only)',
-        sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
-        algorithm: 'No native algorithm as of watchOS 11. Third-party apps (StressWatch, Livity) read HRV from HealthKit.',
-        scale: 'N/A native (third-party apps vary)',
-        baseline: 'Set by whichever third-party app you use.',
-        coverage: 'Whatever the third-party app reads from HealthKit.',
-        strength: 'Highest-quality on-wrist ECG signal (per University of Waterloo lab study). Great raw data for third-party apps.',
-        limitation: 'No stress feature shipped by Apple. Must trust a third-party app\'s methodology.',
-        color: '#94A3B8'
       },
       samsung: {
         name: 'Samsung Galaxy Watch',
@@ -239,7 +222,6 @@ class KygoWearableStress extends HTMLElement {
   get _deviceMetrics() {
     return {
       garmin:        ['hrv', 'hr'],
-      apple:         ['hrv', 'hr'],
       samsung:       ['hrv', 'hr', 'eda'],
       google:        ['hrv', 'hr', 'eda', 'skinTemp'],
       fitbit:        ['hrv', 'hr', 'eda', 'skinTemp'],
@@ -841,13 +823,13 @@ class KygoWearableStress extends HTMLElement {
 
   _deviceImage(key) {
     return ({
-      garmin:        'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
-      apple:         'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
-      samsung:       'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
-      google:        'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
-      fitbit:        'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
-      whoop:         'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
-      oura:          'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png'
+      garmin:  'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
+      samsung: 'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
+      google:  'https://static.wixstatic.com/media/273a63_7b9a43c26540413586d185a889fa853c~mv2.png',
+      fitbit:  'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
+      whoop:   'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
+      oura:    'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
+      polar:   'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png'
     })[key] || null;
   }
 
@@ -992,7 +974,7 @@ class KygoWearableStress extends HTMLElement {
   _topPicks() {
     return [
       { label: 'Most universal mover', stat: '7 / 7', answer: 'Sleep deprivation', icon: 'moon', note: 'Hits every device because all 7 read HRV and sleep deprivation suppresses parasympathetic tone immediately.', cls: '' },
-      { label: 'Only-on-EDA signal',   stat: '2 devices', answer: 'Cognitive load', icon: 'brain', note: 'Sustained mental effort raises tonic skin conductance — invisible to HRV-only watches. Samsung & Pixel/Fitbit only.', cls: '' },
+      { label: 'Only-on-EDA signal',   stat: '3 devices', answer: 'Cognitive load', icon: 'brain', note: 'Sustained mental effort raises tonic skin conductance — invisible to HRV-only watches. Samsung, Pixel Watch, and Fitbit only.', cls: '' },
       { label: 'WHOOP / Polar specialty', stat: 'Resp. rate', answer: 'Overtraining', icon: 'dumbbell', note: 'Elevated overnight respiratory rate is the textbook overtraining flag. Only WHOOP and Polar surface it.', cls: '' },
       { label: 'Oura specialty', stat: '0.3–0.5°C', answer: 'Cycle skin temp', icon: 'thermometer', note: 'Finger-site skin temp catches the luteal-phase rise so cleanly that Oura uses it for period prediction.', cls: '' },
       { label: 'Hot-day false positive', stat: 'cEDA', answer: 'Ambient heat', icon: 'sun', note: 'Continuous EDA reads thermoregulatory sweating as stress. Pixel/Fitbit users: cross-check against HRV before reacting.', cls: 'warn' },
@@ -1169,8 +1151,8 @@ class KygoWearableStress extends HTMLElement {
 
   _renderDevicePicker() {
     const shortName = (k) => ({
-      garmin: 'Garmin', apple: 'Apple Watch', samsung: 'Samsung',
-      google: 'Pixel Watch', fitbit: 'Fitbit', whoop: 'WHOOP', oura: 'Oura', polar: 'Polar'
+      garmin: 'Garmin', samsung: 'Samsung', google: 'Pixel Watch',
+      fitbit: 'Fitbit', whoop: 'WHOOP', oura: 'Oura', polar: 'Polar'
     })[k] || this._devices[k].name;
     const tiles = Object.entries(this._devices).map(([k, d]) => {
       const isActive = this._device1 === k;
