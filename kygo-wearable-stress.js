@@ -1479,10 +1479,15 @@ class KygoWearableStress extends HTMLElement {
       .fact-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
       @media (min-width: 768px) { .fact-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } }
       .metric-tiles-label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin: 6px 0 8px; }
-      .fact-pill { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 10px; white-space: nowrap; min-width: 88px; text-align: center; letter-spacing: -0.005em; }
-      .fact-pill.imp-high { background: var(--red-light); color: var(--red); }
-      .fact-pill.imp-med  { background: var(--amber-light); color: var(--amber); }
-      .fact-pill.imp-low  { background: var(--green-light); color: var(--green-dark); }
+      .fact-pill { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 10px; white-space: nowrap; min-width: 88px; text-align: center; letter-spacing: -0.005em; background: var(--gray-100); color: var(--gray-600); }
+      /* In a What helps group, impact reads as a positive intensity (stronger = more helpful). */
+      .fact-group--helps .fact-pill.imp-high { background: rgba(22,163,74,0.18); color: var(--green-dark); }
+      .fact-group--helps .fact-pill.imp-med  { background: var(--green-light); color: var(--green-dark); }
+      .fact-group--helps .fact-pill.imp-low  { background: var(--gray-100); color: var(--gray-600); }
+      /* In a What hurts group, impact reads as a warning intensity (stronger = more harmful). */
+      .fact-group--hurts .fact-pill.imp-high { background: var(--red-light); color: var(--red); }
+      .fact-group--hurts .fact-pill.imp-med  { background: var(--amber-light); color: var(--amber); }
+      .fact-group--hurts .fact-pill.imp-low  { background: var(--gray-100); color: var(--gray-600); }
       .fact-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .fact-chev svg { width: 16px; height: 16px; }
       .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--green-dark); }
