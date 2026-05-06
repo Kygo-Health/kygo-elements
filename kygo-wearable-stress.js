@@ -763,7 +763,7 @@ class KygoWearableStress extends HTMLElement {
       : `<div class="device-card-grid one">${this._renderDeviceCard(this._device1)}</div>`;
 
     return `
-      <section class="comparison-section section-bg-gray" id="compare">
+      <section class="comparison-section section-bg-white" id="compare">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How your device measures stress</span>
@@ -1086,16 +1086,13 @@ class KygoWearableStress extends HTMLElement {
     return shown;
   }
 
-  _renderFactorCard(f, rank) {
+  _renderFactorCard(f) {
     const isExp = this._listExpandedKey === f.key;
     const d1 = this._devices[this._device1];
     const pd1 = f.perDevice[this._device1];
     const impact = pd1 ? pd1.impact : f.baseImpact;
     const impCfg = this._impactCfg(impact);
     const cat = (this._categoryMeta[f.category] || {}).label || '';
-    const catIcon = this._categoryIconKey(f.category);
-    const acc = this._categoryAccent(f.category);
-    const barPct = (impCfg.weight / 3) * 100;
 
     let body = '';
     if (isExp) {
@@ -1136,18 +1133,14 @@ class KygoWearableStress extends HTMLElement {
     }
 
     return `
-      <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}" style="--cat-accent:${acc.color};--cat-bg:${acc.bg};--cat-ink:${acc.ink}">
+      <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}">
         <button class="fact-head" aria-expanded="${isExp}">
-          <span class="fact-rank" aria-hidden="true">${String(rank).padStart(2, '0')}</span>
-          <span class="fact-cat-icon" aria-hidden="true">${this._icon(catIcon)}</span>
           <span class="fact-meta">
-            <span class="fact-name">${f.name}</span>
-            <span class="fact-sub">${f.question} <span class="fact-cat-tag">${cat}</span></span>
+            <span class="fact-cat">${cat}</span>
+            <span class="fact-name">${f.question}</span>
+            <span class="fact-effect">${f.name} <span class="fact-ev-inline">· ${impCfg.label} impact on ${d1.name}</span></span>
           </span>
-          <span class="fact-bar" aria-hidden="true">
-            <span class="fact-bar-fill imp-${impact}" style="width:${barPct}%"></span>
-          </span>
-          ${this._renderImpactPill(impact)}
+          <span class="fact-pill ${impCfg.cls}">${impCfg.label}</span>
           <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
         </button>
         ${body}
@@ -1157,13 +1150,13 @@ class KygoWearableStress extends HTMLElement {
   _renderFactorList() {
     const shown = this._sortedFactors();
     if (!shown.length) return '<p class="dash-empty">No factors match this filter.</p>';
-    return `<div class="fact-list">${shown.map((f, i) => this._renderFactorCard(f, i + 1)).join('')}</div>`;
+    return `<div class="fact-list">${shown.map(f => this._renderFactorCard(f)).join('')}</div>`;
   }
 
   _renderSortBar() {
     const opts = [
-      { k: 'impact', l: 'Impact' },
-      { k: 'alpha', l: 'A–Z' },
+      { k: 'impact',   l: 'Impact' },
+      { k: 'alpha',    l: 'A–Z' },
       { k: 'category', l: 'Category' }
     ];
     const total = this._factors.length;
@@ -1175,12 +1168,12 @@ class KygoWearableStress extends HTMLElement {
       : `<span class="list-result-count"><strong>${total}</strong> factors</span>`;
     return `
       <div class="list-toolbar">
-        ${countHtml}
-        <div class="list-sort-inline">
-          <span class="list-sort-label">Sort</span>
-          <div class="list-sort-btns">
-            ${opts.map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('')}
-          </div>
+        <div class="list-toolbar-row">
+          ${countHtml}
+          <span class="list-sort-label">Sort by</span>
+        </div>
+        <div class="list-sort-btns">
+          ${opts.map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('')}
         </div>
       </div>`;
   }
@@ -1188,34 +1181,43 @@ class KygoWearableStress extends HTMLElement {
   _renderCategoryTiles() {
     const counts = {};
     this._factors.forEach(f => { counts[f.category] = (counts[f.category] || 0) + 1; });
-    const allChip = `
-      <button class="cat-chip ${this._categoryFilter === null ? 'active' : ''}" data-cat="__all" aria-pressed="${this._categoryFilter === null}">
-        All<span class="cat-chip-count">${this._factors.length}</span>
+    const allTile = `
+      <button class="picker-tile ${this._categoryFilter === null ? 'active' : ''}" data-cat="__all" aria-pressed="${this._categoryFilter === null}">
+        <span class="picker-tile-name">All</span>
+        <span class="picker-tile-count">${this._factors.length}</span>
       </button>`;
-    const chips = Object.entries(this._categoryMeta).map(([k, m]) => {
+    const tiles = Object.entries(this._categoryMeta).map(([k, m]) => {
       const isActive = this._categoryFilter === k;
-      const acc = this._categoryAccent(k);
       return `
-        <button class="cat-chip ${isActive ? 'active' : ''}" data-cat="${k}" aria-pressed="${isActive}" style="--cat-accent:${acc.color};--cat-bg:${acc.bg}">
-          <span class="cat-chip-dot" aria-hidden="true"></span>${m.label}<span class="cat-chip-count">${counts[k] || 0}</span>
+        <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${k}" aria-pressed="${isActive}">
+          <span class="picker-tile-name">${m.label}</span>
+          <span class="picker-tile-count">${counts[k] || 0}</span>
         </button>`;
     }).join('');
-    return `<div class="cat-chip-row" role="tablist">${allChip}${chips}</div>`;
+    return `<div class="picker-tiles">${allTile}${tiles}</div>`;
   }
 
   _renderFactorsSection() {
     const d1 = this._devices[this._device1];
+    const cat = this._categoryFilter;
+    const catLabel = cat ? (this._categoryMeta[cat] || {}).label : 'All';
+    const shown = this._sortedFactors().length;
     return `
-      <section class="factors-section section-bg-white">
+      <section class="factors-section section-bg-gray">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
-            <h2 class="section-h2">${this._factors.length} factors, sorted for <em>${d1.name}</em>.</h2>
-            <p class="section-lede">Each card has two sides: what's hurting your stress reading right now, and what specifically helps. The mechanism is tied to your device's actual signals, not generic advice.</p>
+            <h2 class="section-h2">${this._factors.length} <em>factors</em>, sorted for ${d1.name}.</h2>
+            <p class="section-lede">Pick a category to drill in. Each card expands with what's hurting your stress reading on this device — and what specifically helps.</p>
           </div>
           ${this._renderCategoryTiles()}
-          ${this._renderSortBar()}
-          ${this._renderFactorList()}
+          <div class="picker-panel">
+            <div class="picker-panel-head">
+              <h3 class="picker-panel-title">${catLabel} factors<span class="picker-panel-meta">${shown} factor${shown === 1 ? '' : 's'}</span></h3>
+            </div>
+            ${this._renderSortBar()}
+            ${this._renderFactorList()}
+          </div>
         </div>
       </section>`;
   }
@@ -1755,70 +1757,66 @@ class KygoWearableStress extends HTMLElement {
         .lb-track { display: none; }
       }
 
-      /* CATEGORY CHIPS — horizontal scroll, no wrap */
-      .cat-chip-row { display: flex; gap: 8px; margin-bottom: 16px; padding: 4px 2px 12px; overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
-      .cat-chip-row::-webkit-scrollbar { height: 4px; }
-      .cat-chip-row::-webkit-scrollbar-track { background: transparent; }
-      .cat-chip-row::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
-      .cat-chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; min-height: 38px; flex-shrink: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 9999px; font-family: inherit; font-weight: 600; font-size: 13px; color: var(--gray-700); cursor: pointer; white-space: nowrap; transition: border-color .15s, background .15s, color .15s, box-shadow .15s; }
-      .cat-chip:hover { border-color: var(--gray-300); }
-      .cat-chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cat-accent, var(--gray-300)); flex-shrink: 0; }
-      .cat-chip-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11px; color: var(--gray-400); background: var(--gray-100); padding: 2px 7px; border-radius: 9999px; font-feature-settings: "tnum" 1; }
-      .cat-chip.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 4px 12px rgba(15,23,42,0.14); }
-      .cat-chip.active .cat-chip-count { background: rgba(255,255,255,0.18); color: #fff; }
-      .cat-chip.active .cat-chip-dot { background: var(--cat-accent, var(--green)); box-shadow: 0 0 0 2px rgba(255,255,255,0.4); }
+      /* CATEGORY PICKER TILES — RHR style: large white pill cards in a 2 / 4-column grid */
+      .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
+      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
+      .picker-tile:hover { border-color: var(--gray-300); transform: translateY(-1px); }
+      .picker-tile.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 6px 18px rgba(15,23,42,0.12); }
+      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: -0.005em; line-height: 1.15; min-width: 0; flex: 1; overflow-wrap: anywhere; }
+      .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 3px 9px; min-width: 28px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
+      .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
+      @media (min-width: 680px) { .picker-tiles { grid-template-columns: repeat(4, 1fr); } }
+      @media (min-width: 1024px) { .picker-tiles { grid-template-columns: repeat(8, 1fr); } }
 
-      /* SORT BAR — single inline cluster */
-      .list-toolbar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
-      .list-result-count { font-size: 12.5px; font-weight: 500; color: var(--gray-600); font-feature-settings: "tnum" 1; }
+      /* PICKER PANEL — white card holding the sort bar + factor list */
+      .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+      .picker-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
+      .picker-panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+      .picker-panel-meta { font-size: 11.5px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.5px; text-transform: uppercase; }
+      @media (min-width: 768px) { .picker-panel { padding: 24px 26px; border-radius: 22px; } }
+
+      /* SORT BAR — RHR style: count on left, label + pill row on right */
+      .list-toolbar { display: flex; flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 12px; }
+      .list-toolbar-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+      .list-sort-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--gray-400); font-weight: 600; }
+      .list-result-count { font-size: 12px; font-weight: 500; color: var(--gray-600); font-feature-settings: "tnum" 1; }
       .list-result-count strong { color: var(--dark); font-weight: 700; }
-      .list-sort-inline { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-      .list-sort-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--gray-400); font-weight: 700; }
-      .list-sort-btns { display: inline-flex; padding: 3px; gap: 2px; background: var(--gray-100); border-radius: 9999px; }
-      .list-sort-btn { padding: 6px 12px; border-radius: 9999px; border: 0; background: transparent; color: var(--gray-600); font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap; }
-      .list-sort-btn:hover { color: var(--dark); }
-      .list-sort-btn.active { background: #fff; color: var(--dark); box-shadow: 0 2px 6px rgba(15,23,42,0.08); }
+      .list-sort-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+      .list-sort-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 8px 10px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
+      .list-sort-btn:hover { border-color: var(--gray-400); }
+      .list-sort-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
       @media (min-width: 680px) {
-        .list-toolbar { flex-direction: row; align-items: center; justify-content: space-between; }
+        .list-toolbar { flex-direction: row; align-items: center; justify-content: space-between; gap: 14px; }
+        .list-toolbar-row { gap: 14px; }
+        .list-sort-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .list-sort-btn { padding: 8px 14px; min-height: 36px; }
       }
 
-      /* FACTOR CARDS — unified leaderboard row + expanding body */
-      .fact-list { display: grid; gap: 8px; }
-      .fact-card { position: relative; background: #fff; border: 1px solid var(--gray-200); border-left: 3px solid var(--cat-accent, var(--gray-300)); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s, transform .15s; animation: factGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; }
-      @keyframes factGrow { from { opacity: 0; transform: translateY(4px); } }
-      .fact-card:hover { border-color: var(--gray-300); border-left-color: var(--cat-accent, var(--gray-300)); transform: translateY(-1px); }
-      .fact-card.expanded { box-shadow: 0 8px 24px rgba(15,23,42,0.07); border-color: var(--gray-300); border-left-color: var(--cat-accent, var(--green)); }
-
-      .fact-head { display: grid; grid-template-columns: auto auto minmax(0, 1.3fr) minmax(120px, 1fr) auto auto; align-items: center; gap: 14px; width: 100%; padding: 14px 16px 14px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
+      /* FACTOR CARDS — clean RHR pattern: eyebrow + name + sub + value pill + chevron */
+      .fact-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
+      .fact-card:hover { border-color: var(--gray-300); }
+      .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); border-color: var(--gray-300); }
+      .fact-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
-      .fact-rank { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11.5px; color: var(--gray-400); font-feature-settings: "tnum" 1; min-width: 22px; }
-      .fact-cat-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--cat-bg, var(--green-light)); color: var(--cat-ink, var(--green-dark)); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-      .fact-cat-icon svg { width: 16px; height: 16px; }
       .fact-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.2; letter-spacing: -0.005em; }
-      .fact-sub { font-size: 12.5px; color: var(--gray-600); line-height: 1.4; }
-      .fact-cat-tag { display: inline-flex; align-items: center; padding: 1px 7px; margin-left: 4px; border-radius: 9999px; background: var(--cat-bg, var(--gray-100)); color: var(--cat-ink, var(--gray-600)); font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.2px; vertical-align: 1px; }
-
-      .fact-bar { position: relative; height: 8px; background: var(--gray-100); border-radius: 9999px; overflow: hidden; min-width: 80px; }
-      .fact-bar-fill { display: block; height: 100%; border-radius: 9999px; animation: factBarGrow .7s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 100ms; }
-      @keyframes factBarGrow { from { width: 0 !important; } }
-      .fact-bar-fill.imp-high { background: linear-gradient(90deg, #DC2626, #F87171); }
-      .fact-bar-fill.imp-med  { background: linear-gradient(90deg, var(--amber), #F59E0B); }
-      .fact-bar-fill.imp-low  { background: linear-gradient(90deg, var(--green-dark), #4ADE80); }
-
+      .fact-cat { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: var(--gray-400); line-height: 1; margin-bottom: 4px; }
+      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; }
+      .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.4; margin-top: 2px; }
+      .fact-ev-inline { color: var(--gray-400); font-weight: 500; }
+      .fact-pill { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 10px; white-space: nowrap; min-width: 88px; text-align: center; letter-spacing: -0.005em; }
+      .fact-pill.imp-high { background: var(--red-light); color: var(--red); }
+      .fact-pill.imp-med  { background: var(--amber-light); color: var(--amber); }
+      .fact-pill.imp-low  { background: var(--green-light); color: var(--green-dark); }
       .fact-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .fact-chev svg { width: 16px; height: 16px; }
-      .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--cat-ink, var(--green-dark)); }
-
-      @media (max-width: 720px) {
-        .fact-head { grid-template-columns: auto auto minmax(0, 1fr) auto auto; gap: 10px; padding: 12px 14px; }
-        .fact-bar { display: none; }
-      }
-      @media (max-width: 480px) {
-        .fact-head { grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 10px; }
-        .fact-rank { display: none; }
-        .impact-pill .impact-pill-text { display: none; }
-        .impact-pill { min-width: 0; padding: 6px 10px; }
+      .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--green-dark); }
+      @media (min-width: 768px) {
+        .fact-list { gap: 10px; }
+        .fact-card { border-radius: 16px; }
+        .fact-head { padding: 16px 20px; gap: 8px 14px; }
+        .fact-name { font-size: 16px; }
+        .fact-effect { font-size: 13px; }
       }
 
       /* IMPACT BADGE & PILL */
