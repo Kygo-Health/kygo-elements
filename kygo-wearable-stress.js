@@ -617,15 +617,14 @@ class KygoWearableStress extends HTMLElement {
   }
 
   _renderComparisonModule() {
-    // Single comparison chart: every wearable, sorted by signal coverage.
     const sensorList = [
-      { key: 'hrv',      label: 'HRV' },
-      { key: 'hr',       label: 'HR' },
-      { key: 'eda',      label: 'EDA' },
-      { key: 'skinTemp', label: 'Skin Temp' },
-      { key: 'spo2',     label: 'SpO₂' },
-      { key: 'rr',       label: 'Resp. Rate' },
-      { key: 'sleep',    label: 'Sleep arch.' }
+      { key: 'hrv',      label: 'HRV',         short: 'HRV' },
+      { key: 'hr',       label: 'HR',          short: 'HR' },
+      { key: 'eda',      label: 'EDA',         short: 'EDA' },
+      { key: 'skinTemp', label: 'Skin Temp',   short: 'Temp' },
+      { key: 'spo2',     label: 'SpO₂',        short: 'SpO₂' },
+      { key: 'rr',       label: 'Resp. Rate',  short: 'Resp' },
+      { key: 'sleep',    label: 'Sleep arch.', short: 'Sleep' }
     ];
     const totalSensors = sensorList.length;
 
@@ -636,46 +635,71 @@ class KygoWearableStress extends HTMLElement {
 
     const expanded = this._compareExpandedKey;
 
-    const rows = ranked.map(({ key, d, count }, i) => {
+    // Top: matrix table
+    const tableHead = `
+      <thead>
+        <tr>
+          <th class="dt-th-device" scope="col">Wearable</th>
+          ${sensorList.map(s => `
+            <th scope="col">
+              <span class="dt-th-full">${s.label}</span>
+              <span class="dt-th-short" aria-hidden="true">${s.short}</span>
+            </th>`).join('')}
+          <th class="dt-th-count" scope="col">Signals</th>
+        </tr>
+      </thead>`;
+
+    const tableBody = ranked.map(({ key, d, count }) => {
+      const img = this._deviceImage(key);
+      return `
+        <tr style="--accent:${d.color}">
+          <th class="dt-td-device" scope="row">
+            <span class="dt-brand">
+              ${img
+                ? `<span class="dt-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
+                : `<span class="dt-img dt-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
+              <span class="dt-name">${d.name}</span>
+            </span>
+          </th>
+          ${sensorList.map(s => {
+            const on = !!d.sensors[s.key];
+            return `<td class="dt-cell ${on ? 'on' : 'off'}" aria-label="${s.label} ${on ? 'used' : 'not used'}">
+              <span class="dt-mark" aria-hidden="true">${on ? this._icon('check') : '<span class="dt-dash"></span>'}</span>
+            </td>`;
+          }).join('')}
+          <td class="dt-td-count">
+            <span class="dt-count-num">${count}</span><span class="dt-count-lbl">/ ${totalSensors}</span>
+          </td>
+        </tr>`;
+    }).join('');
+
+    // Bottom: compact per-device dropdowns
+    const detailRows = ranked.map(({ key, d }, i) => {
       const img = this._deviceImage(key);
       const isOpen = expanded === key;
-      const sigs = sensorList.map(s => {
-        const on = !!d.sensors[s.key];
-        return `<span class="dc-sig ${on ? 'on' : 'off'}" aria-label="${s.label} ${on ? 'used' : 'not used'}">
-          <span class="dc-sig-mark" aria-hidden="true">${on ? this._icon('check') : this._icon('x')}</span>
-          <span class="dc-sig-text">${s.label}</span>
-        </span>`;
-      }).join('');
-
       return `
-        <div class="dc-row ${isOpen ? 'open' : ''}" style="--accent:${d.color};--delay:${i * 40}ms">
-          <button class="dc-row-head" type="button" data-device-row="${key}" aria-expanded="${isOpen}">
-            <span class="dc-brand">
-              ${img
-                ? `<span class="dc-brand-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
-                : `<span class="dc-brand-img dc-brand-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
-              <span class="dc-brand-text">
-                <span class="dc-brand-name">${d.name}</span>
-                <span class="dc-brand-line">${d.modelLine}</span>
-              </span>
+        <div class="dd-row ${isOpen ? 'open' : ''}" style="--accent:${d.color};--delay:${i * 30}ms">
+          <button class="dd-row-head" type="button" data-device-row="${key}" aria-expanded="${isOpen}">
+            ${img
+              ? `<span class="dd-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
+              : `<span class="dd-img dd-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
+            <span class="dd-text">
+              <span class="dd-name">${d.name}</span>
+              <span class="dd-line">${d.modelLine}</span>
             </span>
-            <span class="dc-sigs" aria-label="${count} of ${totalSensors} signals used">${sigs}</span>
-            <span class="dc-count" aria-hidden="true">
-              <span class="dc-count-num">${count}</span><span class="dc-count-lbl">/ ${totalSensors}</span>
-            </span>
-            <span class="dc-chev" aria-hidden="true">${this._icon('chevDown')}</span>
+            <span class="dd-chev" aria-hidden="true">${this._icon('chevDown')}</span>
           </button>
-          <div class="dc-body" ${isOpen ? '' : 'hidden'}>
-            <div class="dc-body-inner">
-              <dl class="dc-body-rows">
+          <div class="dd-body" ${isOpen ? '' : 'hidden'}>
+            <div class="dd-body-inner">
+              <dl class="dd-fields">
                 <div><dt>Algorithm</dt><dd>${d.algorithm}</dd></div>
                 <div><dt>Scale</dt><dd>${d.scale}</dd></div>
                 <div><dt>Baseline</dt><dd>${d.baseline}</dd></div>
                 <div><dt>Coverage</dt><dd>${d.coverage}</dd></div>
               </dl>
-              <div class="dc-callouts">
-                <div class="dc-callout strong"><span class="dc-callout-head"><span class="dc-callout-icon">${this._icon('sparkle')}</span>Unique strength</span><p>${d.strength}</p></div>
-                <div class="dc-callout watch"><span class="dc-callout-head"><span class="dc-callout-icon">${this._icon('alert')}</span>Watch out for</span><p>${d.limitation}</p></div>
+              <div class="dd-callouts">
+                <div class="dd-callout strong"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('sparkle')}</span>Unique strength</span><p>${d.strength}</p></div>
+                <div class="dd-callout watch"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('alert')}</span>Watch out for</span><p>${d.limitation}</p></div>
               </div>
             </div>
           </div>
@@ -690,16 +714,30 @@ class KygoWearableStress extends HTMLElement {
             <h2 class="section-h2">Every wearable, <em>side by side</em>.</h2>
             <p class="section-lede">Stress scores aren't comparable across brands. Each device pulls a different mix of HRV, EDA, skin temperature, and breathing rate — here's exactly what each one reads, ranked by signal coverage.</p>
           </div>
+
           <div class="device-chart">
             <div class="dc-head">
               <div>
                 <span class="dc-eyebrow">Signal coverage</span>
                 <h3 class="dc-title">Sensors fed into stress, by device</h3>
-                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only. Tap any row for the algorithm, scale, baseline, and tradeoffs.</p>
+                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only.</p>
               </div>
-              <div class="dc-meta">${ranked.length} wearables</div>
+              <div class="dc-meta">${ranked.length} wearables · ${totalSensors} signals</div>
             </div>
-            <div class="dc-rows">${rows}</div>
+            <div class="device-table-wrap">
+              <table class="device-table">
+                ${tableHead}
+                <tbody>${tableBody}</tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="device-details">
+            <div class="dd-section-head">
+              <span class="dd-section-eyebrow">Full breakdown</span>
+              <h3 class="dd-section-title">Tap a device for the algorithm, scale, and tradeoffs</h3>
+            </div>
+            <div class="dd-list">${detailRows}</div>
           </div>
         </div>
       </section>`;
@@ -1526,83 +1564,123 @@ class KygoWearableStress extends HTMLElement {
         .myth-grid { grid-template-columns: repeat(2, 1fr); }
       }
 
-      /* DEVICE CHART — single side-by-side comparison */
-      .device-chart { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px 16px 20px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
-      @media (min-width: 768px) { .device-chart { padding: 28px 30px 30px; border-radius: 22px; } }
-      .dc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px dashed var(--gray-200); }
+      /* DEVICE CHART — matrix table */
+      .device-chart { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px 16px 14px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+      @media (min-width: 768px) { .device-chart { padding: 26px 28px 22px; border-radius: 22px; } }
+      .dc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; margin-bottom: 6px; border-bottom: 1px dashed var(--gray-200); }
       .dc-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 4px; }
       .dc-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 19px; color: var(--dark); margin: 0 0 6px; letter-spacing: -0.01em; line-height: 1.2; }
       .dc-sub { font-size: 13px; color: var(--gray-600); margin: 0; line-height: 1.5; max-width: 60ch; }
       .dc-meta { font-size: 11.5px; color: var(--gray-400); font-weight: 600; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.6px; }
-      .dc-rows { display: grid; gap: 8px; }
 
-      .dc-row { position: relative; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s, transform .15s; animation: dcGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--delay, 0ms); }
-      .dc-row:hover { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
-      .dc-row.open { border-color: var(--accent, var(--gray-300)); box-shadow: 0 8px 22px rgba(15,23,42,0.06); }
-      .dc-row::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--accent, var(--green)); opacity: 0; transition: opacity .15s; }
-      .dc-row.open::before, .dc-row:hover::before { opacity: 1; }
+      .device-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -16px; padding: 0 16px 4px; }
+      @media (min-width: 768px) { .device-table-wrap { margin: 0; padding: 0; overflow-x: visible; } }
+      .device-table { width: 100%; border-collapse: separate; border-spacing: 0; font-feature-settings: "tnum" 1; min-width: 520px; }
+      .device-table th, .device-table td { padding: 0; vertical-align: middle; }
+
+      .device-table thead th { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 10.5px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); text-align: center; padding: 12px 4px; vertical-align: middle; border-bottom: 1px solid var(--gray-200); white-space: nowrap; background: #fff; }
+      .device-table thead .dt-th-device { text-align: left; padding-left: 4px; }
+      .device-table thead .dt-th-count { text-align: right; padding-right: 4px; }
+      .dt-th-full { display: none; }
+      .dt-th-short { display: inline; }
+      @media (min-width: 768px) {
+        .dt-th-full { display: inline; }
+        .dt-th-short { display: none; }
+        .device-table thead th { font-size: 11px; padding: 14px 6px; }
+      }
+
+      .device-table tbody tr { transition: background .15s; }
+      .device-table tbody tr + tr td, .device-table tbody tr + tr th { border-top: 1px solid var(--gray-100); }
+      .device-table tbody tr:hover { background: var(--gray-50); }
+      .device-table tbody tr:hover .dt-td-device { background: var(--gray-50); }
+
+      .dt-td-device { padding: 10px 12px 10px 4px; min-width: 150px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; transition: background .15s; }
+      .dt-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+      .dt-img { width: 32px; height: 32px; border-radius: 8px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .dt-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
+      .dt-img--icon { background: var(--accent, var(--gray-200)); color: #fff; }
+      .dt-img--icon svg { width: 16px; height: 16px; }
+      .dt-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); letter-spacing: -0.01em; line-height: 1.2; overflow-wrap: anywhere; }
+      @media (min-width: 768px) {
+        .dt-td-device { padding: 14px 14px 14px 4px; min-width: 220px; position: static; }
+        .dt-img { width: 38px; height: 38px; border-radius: 10px; }
+        .dt-name { font-size: 15px; }
+      }
+
+      .device-table tbody td { text-align: center; padding: 10px 6px; }
+      @media (min-width: 768px) { .device-table tbody td { padding: 14px 8px; } }
+      .dt-mark { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; }
+      .device-table tbody td.on .dt-mark { background: var(--green); color: #fff; box-shadow: 0 0 0 3px rgba(34,197,94,0.10); }
+      .device-table tbody td.on .dt-mark svg { width: 11px; height: 11px; }
+      .device-table tbody td.off .dt-mark { background: var(--gray-100); }
+      .dt-dash { display: block; width: 9px; height: 2px; border-radius: 1px; background: var(--gray-300); }
+      @media (min-width: 768px) {
+        .dt-mark { width: 26px; height: 26px; }
+        .device-table tbody td.on .dt-mark svg { width: 12px; height: 12px; }
+      }
+
+      .dt-td-count { text-align: right; padding-right: 4px; padding-left: 8px; white-space: nowrap; }
+      .dt-count-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: var(--dark); letter-spacing: -0.02em; }
+      .dt-count-lbl { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 11px; color: var(--gray-400); margin-left: 2px; }
+      @media (min-width: 768px) {
+        .dt-count-num { font-size: 19px; }
+        .dt-count-lbl { font-size: 12px; }
+      }
+
+      /* DEVICE DETAILS — compact dropdowns below the table */
+      .device-details { margin-top: 22px; }
+      .dd-section-head { margin-bottom: 12px; }
+      .dd-section-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 4px; }
+      .dd-section-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; line-height: 1.3; }
+      @media (min-width: 768px) { .dd-section-title { font-size: 18px; } }
+
+      .dd-list { display: grid; gap: 6px; }
+      .dd-row { position: relative; background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; transition: border-color .15s, box-shadow .15s; animation: dcGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--delay, 0ms); }
+      .dd-row:hover { border-color: var(--gray-300); }
+      .dd-row.open { border-color: var(--accent, var(--gray-300)); box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
+      .dd-row::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--accent, var(--green)); opacity: 0; transition: opacity .15s; }
+      .dd-row.open::before { opacity: 1; }
       @keyframes dcGrow { from { opacity: 0; transform: translateY(4px); } }
 
-      .dc-row-head { display: grid; grid-template-areas: "brand count chev" "sigs sigs sigs"; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px 12px; padding: 14px 14px 14px 16px; width: 100%; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; color: inherit; }
-      .dc-row-head:hover { background: var(--gray-50); }
+      .dd-row-head { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px 10px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; color: inherit; }
+      .dd-row-head:hover { background: var(--gray-50); }
+      .dd-img { width: 32px; height: 32px; border-radius: 8px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .dd-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
+      .dd-img--icon { background: var(--accent, var(--gray-200)); color: #fff; }
+      .dd-img--icon svg { width: 16px; height: 16px; }
+      .dd-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+      .dd-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; color: var(--dark); line-height: 1.2; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+      .dd-line { display: block; margin-top: 2px; font-size: 11.5px; color: var(--gray-600); line-height: 1.35; overflow-wrap: anywhere; }
+      .dd-chev { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 8px; color: var(--gray-400); transition: transform .25s, color .15s, background .15s; flex-shrink: 0; }
+      .dd-chev svg { width: 14px; height: 14px; }
+      .dd-row-head[aria-expanded="true"] .dd-chev { transform: rotate(180deg); color: var(--green-dark); background: var(--green-light); }
 
-      .dc-brand { grid-area: brand; display: flex; align-items: center; gap: 12px; min-width: 0; }
-      .dc-brand-img { width: 42px; height: 42px; border-radius: 10px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-      .dc-brand-img img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
-      .dc-brand-img--icon { background: var(--accent, var(--gray-100)); color: #fff; }
-      .dc-brand-img--icon svg { width: 20px; height: 20px; }
-      .dc-brand-text { display: flex; flex-direction: column; min-width: 0; }
-      .dc-brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15.5px; color: var(--dark); line-height: 1.2; letter-spacing: -0.01em; overflow-wrap: anywhere; }
-      .dc-brand-line { display: block; margin-top: 2px; font-size: 12px; color: var(--gray-600); line-height: 1.35; overflow-wrap: anywhere; }
-
-      .dc-sigs { grid-area: sigs; display: flex; flex-wrap: wrap; gap: 4px; }
-      .dc-sig { display: inline-flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; padding: 3px 9px 3px 5px; border-radius: 9999px; letter-spacing: 0.1px; line-height: 1.3; white-space: nowrap; }
-      .dc-sig.on { background: var(--green-light); color: var(--green-dark); }
-      .dc-sig.off { background: var(--gray-100); color: var(--gray-400); }
-      .dc-sig-mark { display: inline-flex; align-items: center; justify-content: center; width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; color: #fff; }
-      .dc-sig.on .dc-sig-mark { background: var(--green); }
-      .dc-sig.off .dc-sig-mark { background: var(--gray-300); }
-      .dc-sig-mark svg { width: 8px; height: 8px; }
-
-      .dc-count { grid-area: count; display: inline-flex; align-items: baseline; gap: 2px; font-family: 'Space Grotesk', sans-serif; color: var(--dark); font-feature-settings: "tnum" 1; }
-      .dc-count-num { font-weight: 700; font-size: 22px; letter-spacing: -0.02em; line-height: 1; }
-      .dc-count-lbl { font-weight: 600; font-size: 12px; color: var(--gray-400); }
-
-      .dc-chev { grid-area: chev; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; color: var(--gray-400); transition: transform .25s, color .15s, background .15s; flex-shrink: 0; }
-      .dc-chev svg { width: 16px; height: 16px; }
-      .dc-row-head[aria-expanded="true"] .dc-chev { transform: rotate(180deg); color: var(--green-dark); background: var(--green-light); }
-
-      .dc-body { padding: 0 16px 16px; border-top: 1px dashed var(--gray-200); }
-      .dc-body[hidden] { display: none; }
-      .dc-body-inner { display: grid; gap: 14px; padding-top: 14px; }
-      .dc-body-rows { display: grid; gap: 10px; margin: 0; }
-      .dc-body-rows > div { display: grid; grid-template-columns: 1fr; gap: 2px; }
-      .dc-body-rows dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
-      .dc-body-rows dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
-
-      .dc-callouts { display: grid; gap: 8px; }
-      .dc-callout { padding: 12px 14px; border-radius: 12px; border: 1px solid; }
-      .dc-callout.strong { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.22); }
-      .dc-callout.watch { background: rgba(180,83,9,0.05); border-color: rgba(180,83,9,0.20); }
-      .dc-callout-head { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
-      .dc-callout.strong .dc-callout-head { color: var(--green-dark); }
-      .dc-callout.watch .dc-callout-head { color: var(--amber); }
-      .dc-callout-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; }
-      .dc-callout-icon svg { width: 14px; height: 14px; }
-      .dc-callout p { margin: 0; font-size: 13px; color: var(--gray-700); line-height: 1.5; }
-
+      .dd-body { padding: 0 14px 14px; border-top: 1px dashed var(--gray-200); }
+      .dd-body[hidden] { display: none; }
+      .dd-body-inner { display: grid; gap: 14px; padding-top: 14px; }
+      .dd-fields { display: grid; gap: 10px; margin: 0; }
+      .dd-fields > div { display: grid; grid-template-columns: 1fr; gap: 2px; }
+      .dd-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
+      .dd-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
+      .dd-callouts { display: grid; gap: 8px; }
+      .dd-callout { padding: 12px 14px; border-radius: 12px; border: 1px solid; }
+      .dd-callout.strong { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.22); }
+      .dd-callout.watch { background: rgba(180,83,9,0.05); border-color: rgba(180,83,9,0.20); }
+      .dd-callout-head { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
+      .dd-callout.strong .dd-callout-head { color: var(--green-dark); }
+      .dd-callout.watch .dd-callout-head { color: var(--amber); }
+      .dd-callout-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; }
+      .dd-callout-icon svg { width: 14px; height: 14px; }
+      .dd-callout p { margin: 0; font-size: 13px; color: var(--gray-700); line-height: 1.5; }
       @media (min-width: 768px) {
-        .dc-row-head { grid-template-areas: "brand sigs count chev"; grid-template-columns: minmax(220px, 1.4fr) minmax(0, 2fr) auto auto; gap: 18px; padding: 16px 18px; }
-        .dc-brand-img { width: 48px; height: 48px; border-radius: 12px; }
-        .dc-brand-name { font-size: 16.5px; }
-        .dc-brand-line { font-size: 12.5px; }
-        .dc-sig { font-size: 11.5px; padding: 4px 10px 4px 5px; }
-        .dc-count-num { font-size: 26px; }
-        .dc-count-lbl { font-size: 13px; }
-        .dc-body { padding: 0 22px 20px; }
-        .dc-body-inner { padding-top: 16px; gap: 16px; }
-        .dc-body-rows { grid-template-columns: 1fr 1fr; gap: 14px 24px; }
-        .dc-callouts { grid-template-columns: 1fr 1fr; gap: 10px; }
+        .dd-row-head { padding: 12px 16px 12px 18px; gap: 12px; }
+        .dd-img { width: 36px; height: 36px; border-radius: 10px; }
+        .dd-name { font-size: 15.5px; }
+        .dd-line { font-size: 12.5px; }
+        .dd-body { padding: 0 22px 18px; }
+        .dd-body-inner { padding-top: 16px; gap: 16px; }
+        .dd-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+        .dd-callouts { grid-template-columns: 1fr 1fr; gap: 10px; }
       }
 
       /* EVIDENCE LEADERBOARD */
