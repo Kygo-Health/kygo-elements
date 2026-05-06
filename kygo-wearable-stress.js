@@ -25,6 +25,7 @@ class KygoWearableStress extends HTMLElement {
     this._mode = 'single';
     this._device1 = 'garmin';
     this._device2 = 'samsung';
+    this._compareExpandedKey = null;
     this._listSort = 'impact';
     this._categoryFilter = null;
     this._listExpandedKey = null;
@@ -603,187 +604,102 @@ class KygoWearableStress extends HTMLElement {
     return map[impact] || map.med;
   }
 
-  _sensorChips(sensors) {
-    const order = [
-      ['hrv', 'HRV'],
-      ['hr', 'Heart Rate'],
-      ['eda', 'EDA'],
-      ['skinTemp', 'Skin Temp'],
-      ['rr', 'Resp. Rate'],
-      ['spo2', 'SpO₂'],
-      ['sleep', 'Sleep arch.']
-    ];
-    return order.map(([k, label]) => {
-      const on = !!sensors[k];
-      return `<span class="sensor-chip ${on ? 'on' : 'off'}">
-        <span class="sensor-chip-icon" aria-hidden="true">${on ? this._icon('check') : this._icon('x')}</span>
-        ${label}
-      </span>`;
-    }).join('');
-  }
 
-  _renderPipelineDiagram(d) {
-    const activeSignals = [
-      ['hrv', 'HRV'],
-      ['hr', 'HR'],
-      ['eda', 'EDA'],
-      ['skinTemp', 'Temp'],
-      ['rr', 'Resp'],
-      ['spo2', 'SpO₂']
-    ].filter(([k]) => d.sensors[k]).map(([, label]) => label);
-
-    const algoShort = d.modelLine;
-    const scaleShort = d.scale.split('·')[0].trim();
-
-    return `
-      <div class="pipeline" aria-hidden="true">
-        <div class="pipe-step pipe-signals">
-          <span class="pipe-eyebrow">Signals</span>
-          <div class="pipe-chips">
-            ${activeSignals.map(s => `<span class="pipe-chip">${s}</span>`).join('')}
-          </div>
-        </div>
-        <span class="pipe-arrow">${this._icon('arrowRight')}</span>
-        <div class="pipe-step pipe-algo">
-          <span class="pipe-eyebrow">Algorithm</span>
-          <span class="pipe-text">${algoShort}</span>
-        </div>
-        <span class="pipe-arrow">${this._icon('arrowRight')}</span>
-        <div class="pipe-step pipe-score">
-          <span class="pipe-eyebrow">Score</span>
-          <span class="pipe-text pipe-score-text">${scaleShort}</span>
-        </div>
-      </div>`;
-  }
-
-  _renderDeviceCard(deviceKey) {
-    const d = this._devices[deviceKey];
-    if (!d) return '';
-    const sensorCount = Object.values(d.sensors).filter(Boolean).length;
-    return `
-      <article class="device-card" style="--accent:${d.color}">
-        <span class="device-card-stripe" aria-hidden="true"></span>
-        <header class="device-card-head">
-          <div class="device-card-icon" aria-hidden="true">${this._icon('watch')}</div>
-          <div class="device-card-titles">
-            <h3 class="device-card-name">${d.name}</h3>
-            <span class="device-card-model">${d.modelLine}</span>
-          </div>
-          <span class="device-card-pill">${sensorCount} signal${sensorCount === 1 ? '' : 's'}</span>
-        </header>
-
-        ${this._renderPipelineDiagram(d)}
-
-        <div class="device-card-section">
-          <span class="device-card-eyebrow">Sensors fed into stress</span>
-          <div class="device-sensor-row" aria-label="Sensors used by ${d.name}">${this._sensorChips(d.sensors)}</div>
-        </div>
-
-        <dl class="device-card-rows">
-          <div class="device-card-row"><dt>Baseline</dt><dd>${d.baseline}</dd></div>
-          <div class="device-card-row"><dt>Coverage</dt><dd>${d.coverage}</dd></div>
-        </dl>
-
-        <div class="device-card-callouts">
-          <div class="callout-box callout-strength">
-            <div class="callout-box-head"><span class="callout-box-icon">${this._icon('sparkle')}</span>Unique strength</div>
-            <p>${d.strength}</p>
-          </div>
-          <div class="callout-box callout-watchout">
-            <div class="callout-box-head"><span class="callout-box-icon">${this._icon('alert')}</span>Watch out for</div>
-            <p>${d.limitation}</p>
-          </div>
-        </div>
-      </article>`;
-  }
-
-  _renderDeviceDiff(d1Key, d2Key) {
-    const d1 = this._devices[d1Key];
-    const d2 = this._devices[d2Key];
-    if (!d1 || !d2 || d1Key === d2Key) return '';
-    const sensorLabels = { hrv: 'HRV', hr: 'Heart Rate', eda: 'EDA', skinTemp: 'Skin Temp', rr: 'Respiratory Rate', spo2: 'SpO₂', sleep: 'Sleep architecture' };
-    const onlyIn1 = Object.keys(d1.sensors).filter(k => d1.sensors[k] && !d2.sensors[k]).map(k => sensorLabels[k]);
-    const onlyIn2 = Object.keys(d2.sensors).filter(k => d2.sensors[k] && !d1.sensors[k]).map(k => sensorLabels[k]);
-    const shared = Object.keys(d1.sensors).filter(k => d1.sensors[k] && d2.sensors[k]).map(k => sensorLabels[k]);
-    const pill = (label) => `<span class="diff-pill">${label}</span>`;
-    const empty = '<span class="diff-empty">None</span>';
-    return `
-      <div class="device-diff">
-        <div class="device-diff-glow" aria-hidden="true"></div>
-        <div class="device-diff-head">
-          <span class="device-diff-eyebrow">Where they differ</span>
-          <h3 class="device-diff-title">${d1.name} <span class="device-diff-vs">vs</span> ${d2.name}</h3>
-        </div>
-        <div class="device-diff-rows">
-          <div class="diff-row">
-            <span class="diff-row-label diff-shared">Shared signals</span>
-            <div class="diff-row-pills">${shared.length ? shared.map(pill).join('') : empty}</div>
-          </div>
-          <div class="diff-row">
-            <span class="diff-row-label diff-only" style="--accent:${d1.color}">Only ${d1.name}</span>
-            <div class="diff-row-pills">${onlyIn1.length ? onlyIn1.map(pill).join('') : empty}</div>
-          </div>
-          <div class="diff-row">
-            <span class="diff-row-label diff-only" style="--accent:${d2.color}">Only ${d2.name}</span>
-            <div class="diff-row-pills">${onlyIn2.length ? onlyIn2.map(pill).join('') : empty}</div>
-          </div>
-        </div>
-      </div>`;
+  _deviceImage(key) {
+    return ({
+      garmin:        'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
+      apple:         'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
+      samsung:       'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
+      google_fitbit: 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
+      whoop:         'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
+      oura:          'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png'
+    })[key] || null;
   }
 
   _renderComparisonModule() {
-    const devices = this._devices;
-    const isCompare = this._mode === 'compare';
-    const selectorOpts = (selected) => Object.entries(devices)
-      .map(([k, d]) => `<option value="${k}" ${k === selected ? 'selected' : ''}>${d.name}</option>`).join('');
+    // Single comparison chart: every wearable, sorted by signal coverage.
+    const sensorList = [
+      { key: 'hrv',      label: 'HRV' },
+      { key: 'hr',       label: 'HR' },
+      { key: 'eda',      label: 'EDA' },
+      { key: 'skinTemp', label: 'Skin Temp' },
+      { key: 'spo2',     label: 'SpO₂' },
+      { key: 'rr',       label: 'Resp. Rate' },
+      { key: 'sleep',    label: 'Sleep arch.' }
+    ];
+    const totalSensors = sensorList.length;
 
-    const selectorRow = isCompare ? `
-      <div class="device-selectors compare">
-        <div class="selector-group">
-          <label>Device 1</label>
-          <div class="selector-wrap" style="--accent:${devices[this._device1].color}"><select id="device1">${selectorOpts(this._device1)}</select></div>
-        </div>
-        <div class="vs-badge" aria-hidden="true">VS</div>
-        <div class="selector-group">
-          <label>Device 2</label>
-          <div class="selector-wrap" style="--accent:${devices[this._device2].color}"><select id="device2">${selectorOpts(this._device2)}</select></div>
-        </div>
-      </div>
-    ` : `
-      <div class="device-selectors single">
-        <div class="selector-group">
-          <label>Your wearable</label>
-          <div class="selector-wrap" style="--accent:${devices[this._device1].color}"><select id="device1">${selectorOpts(this._device1)}</select></div>
-        </div>
-      </div>
-    `;
+    const ranked = Object.entries(this._devices).map(([key, d]) => {
+      const count = Object.values(d.sensors).filter(Boolean).length;
+      return { key, d, count };
+    }).sort((a, b) => b.count - a.count || a.d.name.localeCompare(b.d.name));
 
-    const cards = isCompare
-      ? `<div class="device-card-grid two">${this._renderDeviceCard(this._device1)}${this._renderDeviceCard(this._device2)}</div>${this._renderDeviceDiff(this._device1, this._device2)}`
-      : `<div class="device-card-grid one">${this._renderDeviceCard(this._device1)}</div>`;
+    const expanded = this._compareExpandedKey;
+
+    const rows = ranked.map(({ key, d, count }, i) => {
+      const img = this._deviceImage(key);
+      const isOpen = expanded === key;
+      const sigs = sensorList.map(s => {
+        const on = !!d.sensors[s.key];
+        return `<span class="dc-sig ${on ? 'on' : 'off'}" aria-label="${s.label} ${on ? 'used' : 'not used'}">
+          <span class="dc-sig-mark" aria-hidden="true">${on ? this._icon('check') : this._icon('x')}</span>
+          <span class="dc-sig-text">${s.label}</span>
+        </span>`;
+      }).join('');
+
+      return `
+        <div class="dc-row ${isOpen ? 'open' : ''}" style="--accent:${d.color};--delay:${i * 40}ms">
+          <button class="dc-row-head" type="button" data-device-row="${key}" aria-expanded="${isOpen}">
+            <span class="dc-brand">
+              ${img
+                ? `<span class="dc-brand-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
+                : `<span class="dc-brand-img dc-brand-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
+              <span class="dc-brand-text">
+                <span class="dc-brand-name">${d.name}</span>
+                <span class="dc-brand-line">${d.modelLine}</span>
+              </span>
+            </span>
+            <span class="dc-sigs" aria-label="${count} of ${totalSensors} signals used">${sigs}</span>
+            <span class="dc-count" aria-hidden="true">
+              <span class="dc-count-num">${count}</span><span class="dc-count-lbl">/ ${totalSensors}</span>
+            </span>
+            <span class="dc-chev" aria-hidden="true">${this._icon('chevDown')}</span>
+          </button>
+          <div class="dc-body" ${isOpen ? '' : 'hidden'}>
+            <div class="dc-body-inner">
+              <dl class="dc-body-rows">
+                <div><dt>Algorithm</dt><dd>${d.algorithm}</dd></div>
+                <div><dt>Scale</dt><dd>${d.scale}</dd></div>
+                <div><dt>Baseline</dt><dd>${d.baseline}</dd></div>
+                <div><dt>Coverage</dt><dd>${d.coverage}</dd></div>
+              </dl>
+              <div class="dc-callouts">
+                <div class="dc-callout strong"><span class="dc-callout-head"><span class="dc-callout-icon">${this._icon('sparkle')}</span>Unique strength</span><p>${d.strength}</p></div>
+                <div class="dc-callout watch"><span class="dc-callout-head"><span class="dc-callout-icon">${this._icon('alert')}</span>Watch out for</span><p>${d.limitation}</p></div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
 
     return `
-      <section class="comparison-section section-bg-white" id="compare">
+      <section class="comparison-section section-bg-gray" id="compare">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How your device measures stress</span>
-            <h2 class="section-h2">Pick your wearable — see <em>what it actually reads</em>.</h2>
-            <p class="section-lede">Stress scores aren't comparable across brands. Each device leans on a different mix of HRV, EDA, skin temperature, and respiratory rate. The factor cards below re-sort by the biggest movers for whichever device you pick.</p>
+            <h2 class="section-h2">Every wearable, <em>side by side</em>.</h2>
+            <p class="section-lede">Stress scores aren't comparable across brands. Each device pulls a different mix of HRV, EDA, skin temperature, and breathing rate — here's exactly what each one reads, ranked by signal coverage.</p>
           </div>
-
-          <div class="comparison-shell">
-            <div class="comparison-toolbar">
-              <div class="mode-toggle" role="tablist" aria-label="Comparison mode">
-                <button class="mode-btn ${this._mode === 'single' ? 'active' : ''}" data-mode="single" role="tab" aria-selected="${this._mode === 'single'}">
-                  <span class="mode-btn-icon" aria-hidden="true">${this._icon('watch')}</span>Single device
-                </button>
-                <button class="mode-btn ${this._mode === 'compare' ? 'active' : ''}" data-mode="compare" role="tab" aria-selected="${this._mode === 'compare'}">
-                  <span class="mode-btn-icon" aria-hidden="true">${this._icon('compare')}</span>Compare two
-                </button>
+          <div class="device-chart">
+            <div class="dc-head">
+              <div>
+                <span class="dc-eyebrow">Signal coverage</span>
+                <h3 class="dc-title">Sensors fed into stress, by device</h3>
+                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only. Tap any row for the algorithm, scale, baseline, and tradeoffs.</p>
               </div>
-              ${selectorRow}
+              <div class="dc-meta">${ranked.length} wearables</div>
             </div>
-            ${cards}
+            <div class="dc-rows">${rows}</div>
           </div>
         </div>
       </section>`;
@@ -1368,11 +1284,12 @@ class KygoWearableStress extends HTMLElement {
         return;
       }
 
-      const modeBtn = e.target.closest('.mode-btn');
-      if (modeBtn) {
-        this._mode = modeBtn.dataset.mode;
-        this.render();
-        this._setupAnimations();
+      const dcRow = e.target.closest('[data-device-row]');
+      if (dcRow) {
+        const k = dcRow.dataset.deviceRow;
+        this._compareExpandedKey = this._compareExpandedKey === k ? null : k;
+        const compSec = shadow.querySelector('.comparison-section');
+        if (compSec) compSec.outerHTML = this._renderComparisonModule();
         return;
       }
 
@@ -1431,26 +1348,6 @@ class KygoWearableStress extends HTMLElement {
       }
     });
 
-    shadow.addEventListener('change', (e) => {
-      if (e.target.id === 'device1') {
-        this._device1 = e.target.value;
-        this._updateDeviceDependentSections();
-        return;
-      }
-      if (e.target.id === 'device2') {
-        this._device2 = e.target.value;
-        this._updateDeviceDependentSections();
-        return;
-      }
-    });
-  }
-
-  _updateDeviceDependentSections() {
-    const shadow = this.shadowRoot;
-    const compSec = shadow.querySelector('.comparison-section');
-    if (compSec) compSec.outerHTML = this._renderComparisonModule();
-    const factSec = shadow.querySelector('.factors-section');
-    if (factSec) factSec.outerHTML = this._renderFactorsSection();
   }
 
   _setupAnimations() {
@@ -1629,111 +1526,83 @@ class KygoWearableStress extends HTMLElement {
         .myth-grid { grid-template-columns: repeat(2, 1fr); }
       }
 
-      /* COMPARISON SHELL */
-      .comparison-shell { background: #fff; border: 1px solid var(--gray-200); border-radius: 22px; padding: 22px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
-      @media (min-width: 768px) { .comparison-shell { padding: 28px; } }
-      .comparison-toolbar { display: flex; flex-direction: column; gap: 16px; padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px dashed var(--gray-200); }
-      @media (min-width: 880px) { .comparison-toolbar { flex-direction: row; justify-content: space-between; align-items: center; } }
+      /* DEVICE CHART — single side-by-side comparison */
+      .device-chart { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px 16px 20px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+      @media (min-width: 768px) { .device-chart { padding: 28px 30px 30px; border-radius: 22px; } }
+      .dc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px dashed var(--gray-200); }
+      .dc-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 4px; }
+      .dc-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 19px; color: var(--dark); margin: 0 0 6px; letter-spacing: -0.01em; line-height: 1.2; }
+      .dc-sub { font-size: 13px; color: var(--gray-600); margin: 0; line-height: 1.5; max-width: 60ch; }
+      .dc-meta { font-size: 11.5px; color: var(--gray-400); font-weight: 600; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.6px; }
+      .dc-rows { display: grid; gap: 8px; }
 
-      /* MODE TOGGLE */
-      .mode-toggle { display: inline-flex; gap: 4px; padding: 4px; background: var(--gray-100); border-radius: 9999px; align-self: flex-start; }
-      .mode-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 9999px; border: 0; background: transparent; color: var(--gray-600); font-family: inherit; font-weight: 600; font-size: 13px; cursor: pointer; transition: background .2s, color .2s, box-shadow .2s; white-space: nowrap; }
-      .mode-btn:hover { color: var(--dark); }
-      .mode-btn.active { background: var(--dark); color: #fff; box-shadow: 0 4px 12px rgba(15,23,42,0.18); }
-      .mode-btn-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; }
-      .mode-btn-icon svg { width: 14px; height: 14px; }
+      .dc-row { position: relative; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s, transform .15s; animation: dcGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--delay, 0ms); }
+      .dc-row:hover { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.05); }
+      .dc-row.open { border-color: var(--accent, var(--gray-300)); box-shadow: 0 8px 22px rgba(15,23,42,0.06); }
+      .dc-row::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--accent, var(--green)); opacity: 0; transition: opacity .15s; }
+      .dc-row.open::before, .dc-row:hover::before { opacity: 1; }
+      @keyframes dcGrow { from { opacity: 0; transform: translateY(4px); } }
 
-      /* DEVICE SELECTORS */
-      .device-selectors { display: flex; align-items: flex-end; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
-      .device-selectors.single { justify-content: flex-end; }
-      .selector-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-      .selector-group label { font-size: 10.5px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.6px; }
-      .selector-wrap { position: relative; }
-      .selector-wrap::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--accent, var(--green)); border-radius: 0 0 var(--radius-sm) var(--radius-sm); pointer-events: none; opacity: 0.85; }
-      .selector-wrap select { padding: 11px 36px 11px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--gray-200); font-family: inherit; font-size: 14.5px; font-weight: 600; background: #fff; color: var(--dark); cursor: pointer; min-width: 200px; transition: border-color .2s, box-shadow .2s; appearance: auto; }
-      .selector-wrap select:hover { border-color: var(--gray-300); }
-      .selector-wrap select:focus { outline: none; border-color: var(--accent, var(--green)); box-shadow: 0 0 0 3px rgba(34,197,94,0.12); }
-      .vs-badge { width: 38px; height: 38px; border-radius: 50%; background: var(--dark); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(15,23,42,0.18); margin-bottom: 4px; flex-shrink: 0; }
+      .dc-row-head { display: grid; grid-template-areas: "brand count chev" "sigs sigs sigs"; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px 12px; padding: 14px 14px 14px 16px; width: 100%; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; color: inherit; }
+      .dc-row-head:hover { background: var(--gray-50); }
 
-      /* DEVICE CARD */
-      .device-card-grid { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 4px; }
-      @media (min-width: 920px) { .device-card-grid.two { grid-template-columns: 1fr 1fr; } }
-      .device-card { position: relative; background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 22px; overflow: hidden; transition: border-color .15s, box-shadow .15s, transform .15s; }
-      .device-card:hover { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.05); transform: translateY(-1px); }
-      .device-card-stripe { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent, var(--green)); }
-      .device-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-top: 4px; }
-      .device-card-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--accent, var(--green)); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(15,23,42,0.08); }
-      .device-card-icon svg { width: 22px; height: 22px; }
-      .device-card-titles { flex: 1; min-width: 0; }
-      .device-card-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 20px; color: var(--dark); line-height: 1.2; letter-spacing: -0.01em; }
-      .device-card-model { display: block; margin-top: 2px; font-size: 12.5px; color: var(--gray-600); font-weight: 500; }
-      .device-card-pill { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; background: var(--gray-100); color: var(--gray-600); white-space: nowrap; flex-shrink: 0; }
-      /* SIGNAL PIPELINE DIAGRAM */
-      .pipeline { display: flex; align-items: stretch; gap: 8px; margin-bottom: 18px; padding: 14px; background: linear-gradient(180deg, rgba(34,197,94,0.04) 0%, rgba(34,197,94,0.00) 100%); border: 1px dashed rgba(34,197,94,0.25); border-radius: 14px; overflow-x: auto; }
-      .pipe-step { display: flex; flex-direction: column; gap: 4px; padding: 8px 10px; background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; min-width: 0; flex: 1 1 auto; }
-      .pipe-eyebrow { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
-      .pipe-text { font-size: 12px; color: var(--gray-700); font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
-      .pipe-chips { display: flex; flex-wrap: wrap; gap: 4px; }
-      .pipe-chip { font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 9999px; background: var(--green-light); color: var(--green-dark); }
-      .pipe-arrow { display: inline-flex; align-items: center; color: var(--gray-300); flex-shrink: 0; }
-      .pipe-arrow svg { width: 14px; height: 14px; }
-      .pipe-score { background: var(--dark); border-color: var(--dark); }
-      .pipe-score .pipe-eyebrow { color: rgba(255,255,255,0.5); }
-      .pipe-score-text { color: #fff; }
-      @media (max-width: 540px) {
-        .pipeline { flex-direction: column; align-items: stretch; }
-        .pipe-arrow { transform: rotate(90deg); align-self: center; }
-      }
+      .dc-brand { grid-area: brand; display: flex; align-items: center; gap: 12px; min-width: 0; }
+      .dc-brand-img { width: 42px; height: 42px; border-radius: 10px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .dc-brand-img img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+      .dc-brand-img--icon { background: var(--accent, var(--gray-100)); color: #fff; }
+      .dc-brand-img--icon svg { width: 20px; height: 20px; }
+      .dc-brand-text { display: flex; flex-direction: column; min-width: 0; }
+      .dc-brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15.5px; color: var(--dark); line-height: 1.2; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+      .dc-brand-line { display: block; margin-top: 2px; font-size: 12px; color: var(--gray-600); line-height: 1.35; overflow-wrap: anywhere; }
 
-      .device-card-section { margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px dashed var(--gray-200); }
-      .device-card-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 10px; }
-      .device-sensor-row { display: flex; flex-wrap: wrap; gap: 6px; }
-      .sensor-chip { display: inline-flex; align-items: center; gap: 5px; font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; padding: 4px 10px 4px 6px; border-radius: 9999px; letter-spacing: 0.1px; line-height: 1.3; }
-      .sensor-chip.on { background: var(--green-light); color: var(--green-dark); }
-      .sensor-chip.off { background: var(--gray-100); color: var(--gray-400); }
-      .sensor-chip-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
-      .sensor-chip.on .sensor-chip-icon { background: var(--green); color: #fff; }
-      .sensor-chip.off .sensor-chip-icon { background: var(--gray-300); color: #fff; }
-      .sensor-chip-icon svg { width: 9px; height: 9px; }
+      .dc-sigs { grid-area: sigs; display: flex; flex-wrap: wrap; gap: 4px; }
+      .dc-sig { display: inline-flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; padding: 3px 9px 3px 5px; border-radius: 9999px; letter-spacing: 0.1px; line-height: 1.3; white-space: nowrap; }
+      .dc-sig.on { background: var(--green-light); color: var(--green-dark); }
+      .dc-sig.off { background: var(--gray-100); color: var(--gray-400); }
+      .dc-sig-mark { display: inline-flex; align-items: center; justify-content: center; width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; color: #fff; }
+      .dc-sig.on .dc-sig-mark { background: var(--green); }
+      .dc-sig.off .dc-sig-mark { background: var(--gray-300); }
+      .dc-sig-mark svg { width: 8px; height: 8px; }
 
-      .device-card-rows { display: grid; gap: 12px; margin-bottom: 18px; }
-      .device-card-row { display: grid; grid-template-columns: 100px 1fr; gap: 14px; align-items: start; }
-      .device-card-row dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); padding-top: 2px; }
-      .device-card-row dd { font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
-      @media (max-width: 480px) {
-        .device-card-row { grid-template-columns: 1fr; gap: 2px; }
-      }
+      .dc-count { grid-area: count; display: inline-flex; align-items: baseline; gap: 2px; font-family: 'Space Grotesk', sans-serif; color: var(--dark); font-feature-settings: "tnum" 1; }
+      .dc-count-num { font-weight: 700; font-size: 22px; letter-spacing: -0.02em; line-height: 1; }
+      .dc-count-lbl { font-weight: 600; font-size: 12px; color: var(--gray-400); }
 
-      .device-card-callouts { display: grid; gap: 8px; }
-      @media (min-width: 540px) { .device-card-callouts { grid-template-columns: 1fr 1fr; } }
-      .callout-box { padding: 12px 14px; border-radius: 12px; border: 1px solid; }
-      .callout-strength { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.22); }
-      .callout-watchout { background: rgba(180,83,9,0.05); border-color: rgba(180,83,9,0.20); }
-      .callout-box-head { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
-      .callout-strength .callout-box-head { color: var(--green-dark); }
-      .callout-watchout .callout-box-head { color: var(--amber); }
-      .callout-box-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; }
-      .callout-box-icon svg { width: 14px; height: 14px; }
-      .callout-box p { margin: 0; font-size: 13px; color: var(--gray-700); line-height: 1.5; }
+      .dc-chev { grid-area: chev; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; color: var(--gray-400); transition: transform .25s, color .15s, background .15s; flex-shrink: 0; }
+      .dc-chev svg { width: 16px; height: 16px; }
+      .dc-row-head[aria-expanded="true"] .dc-chev { transform: rotate(180deg); color: var(--green-dark); background: var(--green-light); }
 
-      /* DIFF PANEL */
-      .device-diff { position: relative; margin-top: 16px; background: var(--dark-card); color: #fff; border-radius: 18px; padding: 24px; overflow: hidden; }
-      .device-diff-glow { position: absolute; top: -50px; right: -50px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(34,197,94,0.22) 0%, transparent 70%); pointer-events: none; }
-      .device-diff-head { position: relative; z-index: 1; margin-bottom: 16px; }
-      .device-diff-eyebrow { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 6px; }
-      .device-diff-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px; color: #fff; letter-spacing: -0.01em; margin: 0; }
-      .device-diff-vs { color: var(--green); font-style: italic; font-weight: 500; padding: 0 4px; }
-      .device-diff-rows { position: relative; z-index: 1; display: grid; gap: 10px; }
-      .diff-row { display: grid; grid-template-columns: 160px 1fr; gap: 14px; align-items: center; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.08); }
-      .diff-row:first-child { border-top: 0; padding-top: 4px; }
-      .diff-row-label { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 9999px; letter-spacing: 0.3px; text-align: center; white-space: nowrap; justify-self: start; }
-      .diff-shared { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.85); }
-      .diff-only { background: var(--accent, var(--green)); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
-      .diff-row-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-      .diff-pill { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 9999px; background: rgba(255,255,255,0.10); color: #fff; }
-      .diff-empty { font-size: 12.5px; color: rgba(255,255,255,0.55); font-style: italic; }
-      @media (max-width: 540px) {
-        .diff-row { grid-template-columns: 1fr; gap: 6px; }
+      .dc-body { padding: 0 16px 16px; border-top: 1px dashed var(--gray-200); }
+      .dc-body[hidden] { display: none; }
+      .dc-body-inner { display: grid; gap: 14px; padding-top: 14px; }
+      .dc-body-rows { display: grid; gap: 10px; margin: 0; }
+      .dc-body-rows > div { display: grid; grid-template-columns: 1fr; gap: 2px; }
+      .dc-body-rows dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
+      .dc-body-rows dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
+
+      .dc-callouts { display: grid; gap: 8px; }
+      .dc-callout { padding: 12px 14px; border-radius: 12px; border: 1px solid; }
+      .dc-callout.strong { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.22); }
+      .dc-callout.watch { background: rgba(180,83,9,0.05); border-color: rgba(180,83,9,0.20); }
+      .dc-callout-head { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
+      .dc-callout.strong .dc-callout-head { color: var(--green-dark); }
+      .dc-callout.watch .dc-callout-head { color: var(--amber); }
+      .dc-callout-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; }
+      .dc-callout-icon svg { width: 14px; height: 14px; }
+      .dc-callout p { margin: 0; font-size: 13px; color: var(--gray-700); line-height: 1.5; }
+
+      @media (min-width: 768px) {
+        .dc-row-head { grid-template-areas: "brand sigs count chev"; grid-template-columns: minmax(220px, 1.4fr) minmax(0, 2fr) auto auto; gap: 18px; padding: 16px 18px; }
+        .dc-brand-img { width: 48px; height: 48px; border-radius: 12px; }
+        .dc-brand-name { font-size: 16.5px; }
+        .dc-brand-line { font-size: 12.5px; }
+        .dc-sig { font-size: 11.5px; padding: 4px 10px 4px 5px; }
+        .dc-count-num { font-size: 26px; }
+        .dc-count-lbl { font-size: 13px; }
+        .dc-body { padding: 0 22px 20px; }
+        .dc-body-inner { padding-top: 16px; gap: 16px; }
+        .dc-body-rows { grid-template-columns: 1fr 1fr; gap: 14px 24px; }
+        .dc-callouts { grid-template-columns: 1fr 1fr; gap: 10px; }
       }
 
       /* EVIDENCE LEADERBOARD */
