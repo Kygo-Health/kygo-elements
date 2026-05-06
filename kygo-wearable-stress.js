@@ -1730,34 +1730,34 @@ class KygoWearableStress extends HTMLElement {
       .dd-section-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; line-height: 1.3; }
       @media (min-width: 768px) { .dd-section-title { font-size: 18px; } }
 
-      .dd-list { display: grid; gap: 6px; }
-      .dd-row { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; transition: border-color .15s, box-shadow .15s; animation: dcGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--delay, 0ms); }
+      .dd-list { display: grid; gap: 10px; grid-template-columns: 1fr; }
+      .dd-row { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; animation: dcGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--delay, 0ms); }
       .dd-row:hover { border-color: var(--gray-300); }
-      .dd-row.open { box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
+      .dd-row.open { box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
       @keyframes dcGrow { from { opacity: 0; transform: translateY(4px); } }
 
-      .dd-row-head { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px 10px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; color: inherit; }
+      .dd-row-head { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; color: inherit; }
       .dd-row-head:hover { background: var(--gray-50); }
-      .dd-img { width: 32px; height: 32px; border-radius: 8px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-      .dd-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
+      .dd-img { width: 40px; height: 40px; border-radius: 10px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .dd-img img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
       .dd-img--icon { background: var(--accent, var(--gray-200)); color: #fff; }
-      .dd-img--icon svg { width: 16px; height: 16px; }
+      .dd-img--icon svg { width: 18px; height: 18px; }
       .dd-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-      .dd-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; color: var(--dark); line-height: 1.2; letter-spacing: -0.01em; overflow-wrap: anywhere; }
-      .dd-line { display: block; margin-top: 2px; font-size: 11.5px; color: var(--gray-600); line-height: 1.35; overflow-wrap: anywhere; }
-      .dd-chev { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 8px; color: var(--gray-400); transition: transform .25s, color .15s, background .15s; flex-shrink: 0; }
-      .dd-chev svg { width: 14px; height: 14px; }
+      .dd-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15.5px; color: var(--dark); line-height: 1.2; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+      .dd-line { display: block; margin-top: 3px; font-size: 12.5px; color: var(--gray-600); line-height: 1.35; overflow-wrap: anywhere; }
+      .dd-chev { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 9px; color: var(--gray-400); transition: transform .25s, color .15s, background .15s; flex-shrink: 0; }
+      .dd-chev svg { width: 15px; height: 15px; }
       .dd-row-head[aria-expanded="true"] .dd-chev { transform: rotate(180deg); color: var(--green-dark); background: var(--green-light); }
 
-      .dd-body { padding: 0 14px 14px; border-top: 1px dashed var(--gray-200); }
+      .dd-body { padding: 0 16px 16px; border-top: 1px dashed var(--gray-200); }
       .dd-body[hidden] { display: none; }
-      .dd-body-inner { display: grid; gap: 14px; padding-top: 14px; }
-      .dd-fields { display: grid; gap: 10px; margin: 0; }
-      .dd-fields > div { display: grid; grid-template-columns: 1fr; gap: 2px; }
+      .dd-body-inner { display: grid; gap: 14px; padding-top: 16px; }
+      .dd-fields { display: grid; gap: 12px; margin: 0; }
+      .dd-fields > div { display: grid; grid-template-columns: 1fr; gap: 3px; }
       .dd-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
       .dd-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
-      .dd-callouts { display: grid; gap: 8px; }
-      .dd-callout { padding: 12px 14px; border-radius: 12px; border: 1px solid; }
+      .dd-callouts { display: grid; gap: 10px; }
+      .dd-callout { padding: 14px 16px; border-radius: 12px; border: 1px solid; }
       .dd-callout.strong { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.22); }
       .dd-callout.watch { background: rgba(180,83,9,0.05); border-color: rgba(180,83,9,0.20); }
       .dd-callout-head { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
@@ -1765,16 +1765,20 @@ class KygoWearableStress extends HTMLElement {
       .dd-callout.watch .dd-callout-head { color: var(--amber); }
       .dd-callout-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; }
       .dd-callout-icon svg { width: 14px; height: 14px; }
-      .dd-callout p { margin: 0; font-size: 13px; color: var(--gray-700); line-height: 1.5; }
-      @media (min-width: 768px) {
-        .dd-row-head { padding: 12px 16px 12px 18px; gap: 12px; }
-        .dd-img { width: 36px; height: 36px; border-radius: 10px; }
-        .dd-name { font-size: 15.5px; }
-        .dd-line { font-size: 12.5px; }
-        .dd-body { padding: 0 22px 18px; }
-        .dd-body-inner { padding-top: 16px; gap: 16px; }
-        .dd-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; }
-        .dd-callouts { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .dd-callout p { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
+      @media (min-width: 880px) {
+        /* Two cards per row on desktop — slightly bigger overall */
+        .dd-list { grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+        .dd-row { border-radius: 16px; }
+        .dd-row-head { padding: 18px 20px; gap: 14px; }
+        .dd-img { width: 48px; height: 48px; border-radius: 12px; }
+        .dd-img--icon svg { width: 22px; height: 22px; }
+        .dd-name { font-size: 17px; letter-spacing: -0.015em; }
+        .dd-line { font-size: 13px; margin-top: 4px; }
+        .dd-chev { width: 32px; height: 32px; border-radius: 10px; }
+        .dd-chev svg { width: 16px; height: 16px; }
+        .dd-body { padding: 0 22px 22px; }
+        .dd-body-inner { padding-top: 18px; gap: 16px; }
       }
 
       /* EVIDENCE LEADERBOARD */
