@@ -36,7 +36,7 @@ class KygoWearableStress extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel/Fitbit Sense, WHOOP, Oura Ring, and Polar measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only. Explore 14 lifestyle factors — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms and evidence-based actions to lower your stress score. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024.');
+    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, and Polar measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only. Explore lifestyle factors that move each underlying signal — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms and evidence-based actions to lower your stress score. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024.');
   }
 
   _injectStructuredData() {
@@ -47,7 +47,7 @@ class KygoWearableStress extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'Wearable Stress Research',
       'alternateName': 'Kygo Wearable Stress Comparison Tool',
-      'description': 'Compare how 7 wearables (Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel/Fitbit Sense 2, WHOOP, Oura Ring, Polar) measure stress, with 14 lifestyle factors broken down by device-specific mechanism.',
+      'description': 'Compare how 8 wearables (Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, Polar) measure stress, with lifestyle factors broken down by underlying signal.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/wearable-stress-research',
@@ -59,7 +59,7 @@ class KygoWearableStress extends HTMLElement {
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'featureList': '7 wearable comparison (Garmin, Apple, Samsung, Google Pixel/Fitbit, WHOOP, Oura, Polar), 14 lifestyle factors with device-specific mechanisms, what-hurts/what-helps card structure, evidence leaderboard sorted by impact for the selected device, common myths debunked, peer-reviewed citations.',
+      'featureList': '8 wearable comparison (Garmin, Apple Watch, Samsung, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura, Polar), per-signal factor breakdown (HRV, HR, EDA, Skin Temp, Resp Rate, SpO2, Sleep), what-helps/what-hurts grouping, peer-reviewed citations.',
       'keywords': 'wearable stress measurement, how does Garmin measure stress, Samsung BioActive sensor stress, WHOOP stress monitor, Oura cumulative stress, Apple Watch stress score, Pixel Watch cEDA, Fitbit Sense 2 stress, Polar Nightly Recharge, HRV stress, EDA skin conductance stress, alcohol HRV, sleep deprivation stress, caffeine HRV, overtraining respiratory rate'
     };
 
@@ -161,20 +161,32 @@ class KygoWearableStress extends HTMLElement {
         limitation: 'EDA can\'t tell positive arousal (excitement) from negative arousal (anxiety). It detects activation, not valence.',
         color: '#22C55E'
       },
-      google_fitbit: {
-        name: 'Google Pixel / Fitbit Sense 2',
+      google: {
+        name: 'Google Pixel Watch',
         modelLine: 'cEDA + ML across 4 signals',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
         algorithm: 'Continuous EDA (cEDA) + skin temperature + HRV + HR fed into a machine-learning model. First all-day on-wrist EDA (2022).',
         scale: 'Body Response alerts + 1–100 daily Stress Management Score (12 metrics, 3 categories: exertion balance, sleep, responsiveness).',
         baseline: 'ML baseline built over your first month of wear.',
         coverage: 'Continuous all-day cEDA. Distinguishes exercise from stress automatically.',
-        strength: 'Only consumer wearable with continuous on-wrist EDA paired with skin-temp. Catches stress events HRV-only devices miss.',
+        strength: 'Continuous on-wrist EDA paired with skin temp catches stress events HRV-only devices miss entirely.',
         limitation: 'cEDA is sensitive to ambient heat and humidity, which can show up as elevated tonic stress on hot days.',
         color: '#16A34A'
       },
+      fitbit: {
+        name: 'Fitbit Sense 2',
+        modelLine: 'cEDA + ML Stress Management Score',
+        sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
+        algorithm: 'Same cEDA + ML pipeline as Pixel Watch. Daily Stress Management Score blends exertion balance, sleep patterns, and responsiveness.',
+        scale: 'Body Response alerts + 1–100 daily Stress Management Score.',
+        baseline: 'ML baseline built over your first month of wear.',
+        coverage: 'Continuous all-day cEDA. Premium subscription unlocks deeper analysis.',
+        strength: 'Sense 2 ships the same cEDA hardware as Pixel Watch with a more polished daily score breakdown.',
+        limitation: 'Same heat/humidity confounder as Pixel Watch. Best signal quality requires Premium subscription.',
+        color: '#16A34A'
+      },
       whoop: {
-        name: 'WHOOP (4.0 / 5.0)',
+        name: 'WHOOP',
         modelLine: 'Recovery + Stress Monitor',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: true, rr: true, sleep: false },
         algorithm: 'RMSSD vs. 14-day personal baseline + respiratory rate + skin temp + SpO2. Motion-aware to filter exercise.',
@@ -186,7 +198,7 @@ class KygoWearableStress extends HTMLElement {
         color: '#0F766E'
       },
       oura: {
-        name: 'Oura Ring (Gen3 / Ring 4)',
+        name: 'Oura Ring',
         modelLine: 'Daytime + Resilience + Cumulative Stress',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: false, rr: false, sleep: true },
         algorithm: 'Three layers: real-time Daytime Stress (HRV), Resilience, and Cumulative Stress — a 31-day scan of HRV + sleep + activity, developed with the University of Southern Denmark (released Nov 2025).',
@@ -229,7 +241,8 @@ class KygoWearableStress extends HTMLElement {
       garmin:        ['hrv', 'hr'],
       apple:         ['hrv', 'hr'],
       samsung:       ['hrv', 'hr', 'eda'],
-      google_fitbit: ['hrv', 'hr', 'eda', 'skinTemp'],
+      google:        ['hrv', 'hr', 'eda', 'skinTemp'],
+      fitbit:        ['hrv', 'hr', 'eda', 'skinTemp'],
       whoop:         ['hrv', 'hr', 'rr', 'skinTemp', 'spo2'],
       oura:          ['hrv', 'hr', 'skinTemp', 'sleep'],
       polar:         ['hrv', 'hr', 'rr']
@@ -831,7 +844,8 @@ class KygoWearableStress extends HTMLElement {
       garmin:        'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
       apple:         'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
       samsung:       'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
-      google_fitbit: 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
+      google:        'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
+      fitbit:        'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
       whoop:         'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
       oura:          'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png'
     })[key] || null;
@@ -1156,7 +1170,7 @@ class KygoWearableStress extends HTMLElement {
   _renderDevicePicker() {
     const shortName = (k) => ({
       garmin: 'Garmin', apple: 'Apple Watch', samsung: 'Samsung',
-      google_fitbit: 'Pixel / Fitbit', whoop: 'WHOOP', oura: 'Oura', polar: 'Polar'
+      google: 'Pixel Watch', fitbit: 'Fitbit', whoop: 'WHOOP', oura: 'Oura', polar: 'Polar'
     })[k] || this._devices[k].name;
     const tiles = Object.entries(this._devices).map(([k, d]) => {
       const isActive = this._device1 === k;
