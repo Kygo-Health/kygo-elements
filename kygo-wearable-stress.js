@@ -26,7 +26,7 @@ class KygoWearableStress extends HTMLElement {
     this._device1 = 'garmin';
     this._device2 = 'samsung';
     this._compareExpandedKey = null;
-    this._listSort = 'impact';
+    this._listSort = 'metric';
     this._categoryFilter = null;
     this._listExpandedKey = null;
     this._mythsCatPick = null;
@@ -214,306 +214,144 @@ class KygoWearableStress extends HTMLElement {
     };
   }
 
-  get _categoryMeta() {
+  get _metricMeta() {
     return {
-      substances: { label: 'Substances' },
-      movement:   { label: 'Movement' },
-      recovery:   { label: 'Recovery' },
-      mental:     { label: 'Mental' },
-      physical:   { label: 'Physical' }
+      hrv:      { label: 'HRV',         short: 'HRV' },
+      hr:       { label: 'Heart Rate',  short: 'HR' },
+      eda:      { label: 'EDA',         short: 'EDA' },
+      skinTemp: { label: 'Skin Temp',   short: 'Skin Temp' },
+      rr:       { label: 'Resp. Rate',  short: 'Resp' },
+      spo2:     { label: 'SpO₂',        short: 'SpO₂' },
+      sleep:    { label: 'Sleep arch.', short: 'Sleep' }
     };
   }
 
-  // Shared boilerplate for HRV-driven mechanism on the "hurts" side.
-  _hrvHurtsBase(magnitude) {
-    return `Drops your RMSSD ${magnitude}. Your stress score climbs because the algorithm reads suppressed parasympathetic tone as elevated arousal.`;
+  get _deviceMetrics() {
+    return {
+      garmin:        ['hrv', 'hr'],
+      apple:         ['hrv', 'hr'],
+      samsung:       ['hrv', 'hr', 'eda'],
+      google_fitbit: ['hrv', 'hr', 'eda', 'skinTemp'],
+      whoop:         ['hrv', 'hr', 'rr', 'skinTemp', 'spo2'],
+      oura:          ['hrv', 'hr', 'skinTemp', 'sleep'],
+      polar:         ['hrv', 'hr', 'rr']
+    };
   }
 
-  get _factors() {
-    // Each factor's per-device entry: { impact: 'high'|'med'|'low', signal, magnitude, hurts, helps, timeline? }
-    // Impact reflects how much THIS factor moves THIS device's score, given which signals it uses.
-    return [
-      {
-        key: 'alcohol',
-        category: 'substances',
-        question: 'Drank alcohol in the last 48 hours?',
-        name: 'Alcohol',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: {
-            impact: 'high', signal: 'HRV (RMSSD)',
-            magnitude: '~2 ms RMSSD drop per drink · up to 13 ms for 2–5 days after 3+',
-            hurts: 'Garmin uses HRV as its only stress input. Alcohol suppresses your parasympathetic nervous system, so even one drink drops RMSSD ~2 ms. Body Battery drains faster and the stress score climbs. Three or more drinks can keep RMSSD depressed for up to 5 days.',
-            helps: 'Two to five alcohol-free nights lets RMSSD recover and shifts your personal baseline up over time. Because Garmin compares each reading to your own history, the lift is visible within about a week of consistent abstinence.',
-            timeline: '2–5 days'
-          },
-          apple: {
-            impact: 'high', signal: 'HRV (third-party)',
-            magnitude: '~2 ms RMSSD drop per drink · 13 ms for 2–5 days after 3+',
-            hurts: 'Apple Watch ships no native stress score, but every third-party stress app — StressWatch, Livity — pulls HRV from HealthKit. Alcohol suppresses parasympathetic activity, so RMSSD drops ~2 ms per drink. Whatever app you use, the next-day reading worsens.',
-            helps: 'Skip alcohol for 2–5 nights so HRV recovers fully. The lift will show up in whichever third-party stress app you use, since they all read the same HealthKit RMSSD value.',
-            timeline: '2–5 days'
-          },
-          samsung: {
-            impact: 'high', signal: 'HRV + EDA',
-            magnitude: '~2 ms RMSSD drop per drink, plus visible EDA changes from vasodilation',
-            hurts: 'On top of the HRV suppression every wearable sees, your BioActive Sensor picks up disrupted skin-conductance patterns from alcohol-driven vasodilation — an extra signal Garmin and Oura don\'t see. Both inputs push your score up.',
-            helps: 'A few alcohol-free nights moves RMSSD back toward baseline and lets your EDA tonic level settle. Samsung\'s baseline adapts within roughly a week, so consistency compounds.',
-            timeline: '2–5 days'
-          },
-          google_fitbit: {
-            impact: 'high', signal: 'HRV + cEDA + skin temp',
-            magnitude: '~2 ms RMSSD drop per drink · acute peripheral skin-temp rise',
-            hurts: 'Three signals all move at once: HRV drops (~2 ms/drink), continuous EDA shifts from vasodilation, and skin temperature rises peripherally. Your daily Stress Management Score and Body Response alerts both reflect it.',
-            helps: 'Two to five clean nights brings all three signals back. Pixel/Fitbit weighs sleep heavily inside the 12-metric score, so dropping evening drinks improves recovery on top of HRV.',
-            timeline: '2–5 days'
-          },
-          whoop: {
-            impact: 'high', signal: 'HRV + RR + skin temp',
-            magnitude: '~2 ms RMSSD drop · elevated overnight respiratory rate',
-            hurts: 'WHOOP\'s overnight RMSSD reading is the dominant input. Alcohol suppresses parasympathetic tone, drops RMSSD, and bumps overnight respiratory rate — both flag as poor recovery. Stress Monitor jumps up the next day.',
-            helps: 'WHOOP\'s 14-day rolling baseline rewards consistency. Two to five alcohol-free nights moves RMSSD up and respiratory rate down, lifting the green Recovery zone.',
-            timeline: '3–7 days for the rolling baseline'
-          },
-          oura: {
-            impact: 'high', signal: 'HRV + skin temp + sleep',
-            magnitude: '~2 ms RMSSD drop · disrupted sleep architecture · peripheral skin-temp rise',
-            hurts: 'Oura sees alcohol on three channels: HRV drops, skin temperature rises (vasodilation), and sleep architecture is disrupted — less deep sleep, more wake-ups. Cumulative Stress weights all three, so a single heavy night can sit on the 31-day rollup for days.',
-            helps: 'Avoid alcohol for at least 2–3 hours before bed; ideally 2–5 dry nights in a row. Oura\'s 31-day Cumulative scan rewards consistency more than any other device.',
-            timeline: '2–5 days · 31-day rollup smooths over time'
-          },
-          polar: {
-            impact: 'high', signal: 'HRV + RR (overnight)',
-            magnitude: '~2 ms RMSSD drop · elevated overnight respiratory rate',
-            hurts: 'Polar\'s Nightly Recharge reads the first 4 hours of sleep. Alcohol depresses RMSSD and elevates respiratory rate exactly during that window, so ANS Charge drops sharply.',
-            helps: 'Cut evening alcohol. Because Polar reads only sleep, the recovery response is the cleanest of any device — one good night usually shows the next morning.',
-            timeline: '1–3 nights'
-          }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' }
-      },
-      {
-        key: 'sleep-deprivation',
-        category: 'recovery',
-        question: 'Getting less than 7 hours of sleep?',
-        name: 'Sleep deprivation',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV (RMSSD)', magnitude: 'Significant acute RMSSD reduction; elevated next-day RHR', hurts: 'Sleep deprivation shifts your autonomic balance toward sympathetic dominance. Garmin reads it as suppressed RMSSD plus an elevated resting heart rate, so Body Battery starts the day already drained and stress climbs.', helps: 'Aim for 7–9 hours consistently. HRV typically improves 15–30% within 4 weeks of stable sleep. Garmin\'s personal baseline shifts up gradually.', timeline: '15–30% HRV improvement within 4 weeks' },
-          apple: { impact: 'high', signal: 'HRV (third-party)', magnitude: 'Acute RMSSD reduction visible in HealthKit', hurts: 'Sympathetic dominance from short sleep drops the HRV value Apple writes to HealthKit. Whichever third-party stress app you use will show it the next morning.', helps: 'Consistent 7–9 hours over 4 weeks lifts HRV 15–30%. The change shows up in any HealthKit-based stress app.', timeline: '4 weeks for 15–30% HRV gain' },
-          samsung: { impact: 'high', signal: 'HRV + EDA', magnitude: 'Acute HRV drop + slightly elevated tonic EDA', hurts: 'Both BioActive signals shift: HRV drops from sympathetic dominance, and tonic EDA tends to run higher because you\'re more reactive to small stimuli when underslept.', helps: '7–9 hours of consistent sleep restores HRV (15–30% in 4 weeks) and brings EDA tonic level back down.', timeline: '4 weeks for full restoration' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA + sleep metrics', magnitude: 'HRV drop, elevated cEDA reactivity, lower sleep score', hurts: 'Pixel/Fitbit\'s ML model weights sleep heavily inside the daily Stress Management Score. Short sleep tanks the sleep-pattern category and shifts cEDA to a more reactive tonic level.', helps: 'Hit your 7–9 hour target. The 12-metric daily score lifts noticeably within a week, fully recovers in ~4 weeks.', timeline: '1–4 weeks' },
-          whoop: { impact: 'high', signal: 'HRV + RR', magnitude: 'Suppressed RMSSD + elevated overnight RR', hurts: 'WHOOP\'s overnight RMSSD reading is dominated by sleep quantity and quality. Short sleep drops RMSSD and pushes respiratory rate up. Recovery score and Stress Monitor both worsen.', helps: 'Consistent 7–9 hours over 2–4 weeks moves the 14-day rolling baseline up. WHOOP rewards consistency more than any other recovery score.', timeline: '2–4 weeks' },
-          oura: { impact: 'high', signal: 'HRV + sleep architecture', magnitude: 'HRV drop, less deep sleep, fragmented architecture', hurts: 'Oura is the most sleep-weighted device on the market. Short sleep tanks the Sleep Score directly, suppresses HRV, and feeds straight into Cumulative Stress.', helps: 'Consistent 7–9 hours moves Sleep Score, HRV, and Cumulative Stress together. The 31-day scan smooths over single bad nights.', timeline: '4 weeks for full lift; 31-day rollup smooths' },
-          polar: { impact: 'high', signal: 'HRV + RR (overnight)', magnitude: 'Lower ANS Charge reading directly', hurts: 'Polar measures only the first 4 hours of sleep. Short or fragmented sleep means the entire reading window is compromised, so ANS Charge drops sharply.', helps: 'Sleep at least 7 hours. Because the measurement window is narrow, one good night moves Nightly Recharge the next morning.', timeline: '1–3 nights' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' }
-      },
-      {
-        key: 'caffeine',
-        category: 'substances',
-        question: 'Drinking more than 400 mg of caffeine, or after 2 PM?',
-        name: 'Excess or late caffeine',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'med', signal: 'HRV (RMSSD) + HR', magnitude: '8–12% RMSSD drop in sensitive individuals', hurts: 'Caffeine overstimulates the sympathetic nervous system. Garmin sees a transient HR bump and a measurable RMSSD drop, especially if you\'re caffeine-sensitive.', helps: 'Cap intake under ~400 mg/day; nothing after 2 PM (5–6 hr half-life). Most people see HRV recover within 24 hours of cutting back.', timeline: '24 hours' },
-          apple: { impact: 'med', signal: 'HRV (third-party)', magnitude: 'HealthKit HRV drop in sensitive individuals', hurts: 'Same sympathetic overstimulation. The HealthKit RMSSD value drops, so any third-party stress app reflects the same hit.', helps: 'Move caffeine before 2 PM and watch the next-day HRV reading recover.', timeline: '24 hours' },
-          samsung: { impact: 'med', signal: 'HRV + EDA', magnitude: 'HRV drop + elevated tonic EDA', hurts: 'BioActive Sensor sees both: HRV drops from sympathetic activation, and EDA tonic level runs higher because caffeine raises baseline arousal.', helps: 'Cap intake and avoid late doses. Both signals settle within 24 hours.', timeline: '24 hours' },
-          google_fitbit: { impact: 'med', signal: 'HRV + cEDA', magnitude: 'HRV drop + cEDA tonic shift', hurts: 'Continuous EDA shows the sympathetic baseline shift clearly — the score rolls higher even when you don\'t feel "stressed."', helps: 'Cap caffeine and clear it 6+ hours before bed. cEDA tonic level falls back within a day.', timeline: '24 hours' },
-          whoop: { impact: 'med', signal: 'HRV + RR', magnitude: 'HRV drop + mild RR elevation', hurts: 'Late caffeine particularly hurts overnight metrics — HRV is suppressed and respiratory rate runs slightly higher when WHOOP measures recovery.', helps: 'No caffeine after 2 PM is the cleanest rule for protecting overnight RMSSD.', timeline: '1–2 nights' },
-          oura: { impact: 'med', signal: 'HRV + sleep', magnitude: 'HRV drop + delayed sleep onset, less deep sleep', hurts: 'Caffeine\'s 5–6 hour half-life blocks adenosine receptors, delays sleep onset, and reduces deep sleep — which Oura weighs heavily inside Cumulative Stress.', helps: 'Cut off caffeine by early afternoon. Sleep onset and deep-sleep recovery follow within a night or two.', timeline: '1–3 nights' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'Lower ANS Charge from sympathetic carryover', hurts: 'Late caffeine carries sympathetic activation into the Nightly Recharge measurement window, which Polar reads as poor recovery.', helps: 'Avoid caffeine after 2 PM. Polar\'s overnight reading recovers within 1–2 nights.', timeline: '1–2 nights' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/', label: 'Caffeine, sleep & HRV review (PMC11284693)' }
-      },
-      {
-        key: 'aerobic-exercise',
-        category: 'movement',
-        question: 'Getting at least 150 minutes of moderate cardio a week?',
-        name: 'Aerobic exercise (consistent)',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + RHR', magnitude: 'Significant long-term HRV gain; RHR drops measurably', hurts: 'Without consistent cardio, vagal tone stays low and resting heart rate runs higher. Garmin reads both and your stress score sits elevated.', helps: 'Hit 150 min/week of moderate cardio. HRV gains compound; RHR drops 5–10 bpm in committed trainees over months.', timeline: '4–12 weeks for visible HRV gains' },
-          apple: { impact: 'high', signal: 'HRV (third-party) + RHR', magnitude: 'Long-term HRV gain visible in HealthKit', hurts: 'No vagal tone, no resilience. HealthKit RMSSD stays low and any third-party stress app reflects elevated baseline arousal.', helps: '150 min/week of moderate cardio. HRV climbs in HealthKit over 4–12 weeks.', timeline: '4–12 weeks' },
-          samsung: { impact: 'high', signal: 'HRV + HR', magnitude: 'Long-term HRV gain + lower RHR', hurts: 'Without aerobic training your HRV baseline runs low and your BioActive Sensor reads more reactive across the day.', helps: '150 min/week of cardio. HRV improves significantly over 4–12 weeks; RHR follows.', timeline: '4–12 weeks' },
-          google_fitbit: { impact: 'high', signal: 'HRV + HR (auto exercise filter)', magnitude: 'HRV gain over months; better Cardio Fitness Score', hurts: 'Pixel/Fitbit auto-distinguishes exercise from stress, so the workout itself doesn\'t blow up the score — but missing aerobic training leaves your baseline HRV low.', helps: '150 min/week of cardio. The Cardio Fitness Score lifts and the daily Stress Management Score baseline improves.', timeline: '4–12 weeks' },
-          whoop: { impact: 'high', signal: 'HRV + RR baseline', magnitude: 'HRV gain + lower overnight RR', hurts: 'Cardiorespiratory fitness is the dominant baseline-shifter for both HRV and respiratory rate. Without it, your 14-day baseline sits low.', helps: 'Build aerobic Strain consistently. WHOOP\'s 14-day baseline lifts as cardio fitness improves; overnight respiratory rate drops.', timeline: '4–12 weeks' },
-          oura: { impact: 'high', signal: 'HRV + activity + sleep', magnitude: 'HRV gain + better sleep architecture', hurts: 'Oura\'s Cumulative Stress weighs activity and sleep together. Sedentary weeks show as lower readiness and worse sleep depth.', helps: 'Get aerobic activity most days. Avoid vigorous exercise within 2 hours of bed. HRV and deep sleep both lift over weeks.', timeline: '4–12 weeks' },
-          polar: { impact: 'high', signal: 'HRV + RR (overnight)', magnitude: 'Higher ANS Charge baseline', hurts: 'Polar is built for athletes — without aerobic training the 28-day ANS Charge baseline stays flat or drifts negative.', helps: 'Train aerobically and let Polar track recovery. ANS Charge baseline lifts over 4–12 weeks.', timeline: '4–12 weeks' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/', label: 'HRV & exercise meta-analysis (PMC8950456)' }
-      },
-      {
-        key: 'overtraining',
-        category: 'movement',
-        question: 'Training hard with little recovery?',
-        name: 'Overtraining',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + RHR', magnitude: 'Progressive HRV decline; rising RHR', hurts: 'Excessive load without recovery suppresses parasympathetic tone. Garmin reads it as drifting HRV and a rising morning RHR — Body Battery never fully recharges.', helps: 'Take 1–2 deload days. HRV typically rebounds within a week of reduced load.', timeline: '5–10 days' },
-          apple: { impact: 'med', signal: 'HRV (third-party)', magnitude: 'Drifting HealthKit RMSSD over weeks', hurts: 'No native overtraining flag, but the HealthKit HRV trend drifts down and any decent third-party stress app will show it.', helps: 'Cut load and let HRV recover.', timeline: '5–10 days' },
-          samsung: { impact: 'high', signal: 'HRV + EDA', magnitude: 'HRV drop + reactive EDA', hurts: 'Both BioActive signals shift: HRV drifts down, and EDA runs more reactive because chronic sympathetic load amps you up.', helps: 'Reduce training volume for 5–10 days. Both signals recover together.', timeline: '5–10 days' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA + skin temp', magnitude: 'HRV drift + elevated cEDA tonic + skin-temp anomalies', hurts: 'The ML model picks up the chronic sympathetic state across all 4 inputs. Body Response alerts fire more frequently.', helps: 'Deload. The 12-metric score lifts within a week as exertion balance and responsiveness recover.', timeline: '5–10 days' },
-          whoop: { impact: 'high', signal: 'HRV + RR + skin temp', magnitude: 'Suppressed HRV + elevated overnight RR (canonical overtraining marker)', hurts: 'Overnight respiratory rate is WHOOP\'s strongest overtraining flag — even before HRV drifts, RR rises. Strain coach will start flashing yellow/red recovery.', helps: 'Listen to the recovery score. A 5–7 day lighter block usually rebuilds the green zone.', timeline: '5–7 days' },
-          oura: { impact: 'high', signal: 'HRV + skin temp + sleep', magnitude: 'HRV drift + skin-temp deviation + worse sleep', hurts: 'Cumulative Stress integrates all three signals. Skin temp deviating from your baseline is a common Oura overtraining/illness flag.', helps: 'Reduce vigorous training. Skin temp normalizes within a week, sleep architecture follows.', timeline: '5–10 days' },
-          polar: { impact: 'high', signal: 'HRV + RR (overnight)', magnitude: 'ANS Charge sliding negative over consecutive nights', hurts: 'Polar built Nightly Recharge to flag overtraining. Multi-day negative ANS Charge with elevated overnight RR is the classic pattern.', helps: 'Trust the negative ANS Charge. A 5–7 day deload restores it.', timeline: '5–7 days' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/', label: 'Overtraining & HRV (PMC8950456)' }
-      },
-      {
-        key: 'meditation',
-        category: 'recovery',
-        question: 'Practicing meditation or slow breathing regularly?',
-        name: 'Meditation / breathwork',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'med', signal: 'HRV', magnitude: 'Acute + chronic HRV improvement', hurts: 'Without active parasympathetic practice, you\'re relying on baseline recovery. HRV stays moderate and Body Battery refills slowly.', helps: '5–10 min of slow breathing (~6 breaths/min) daily. Acute HRV jumps measurably within minutes; chronic baseline lifts over weeks.', timeline: 'Acute · weeks for baseline' },
-          apple: { impact: 'med', signal: 'HRV (third-party)', magnitude: 'HealthKit HRV improvement, acute and chronic', hurts: 'Apple\'s Mindfulness app cues breathwork but doesn\'t score it. Without practice, HRV trend stays flat.', helps: 'Use Mindfulness or any breathwork app. The HealthKit HRV trend lifts over weeks.', timeline: 'Acute · weeks for baseline' },
-          samsung: { impact: 'med', signal: 'HRV + EDA', magnitude: 'HRV rises, EDA tonic level falls', hurts: 'Without parasympathetic practice your EDA tonic level runs higher and HRV stays moderate.', helps: 'Slow breathing drops EDA tonic almost immediately and lifts HRV. Both signals respond fast.', timeline: 'Minutes acute · weeks for baseline' },
-          google_fitbit: { impact: 'med', signal: 'HRV + cEDA', magnitude: 'cEDA drops within minutes; HRV climbs over weeks', hurts: 'cEDA captures the parasympathetic shift in real time — without it, tonic arousal stays elevated.', helps: 'Pixel/Fitbit will literally show cEDA dropping during slow breathing. Daily Stress Management Score lifts over weeks.', timeline: 'Minutes acute · weeks for baseline' },
-          whoop: { impact: 'med', signal: 'HRV + RR', magnitude: 'Acute HRV bump + lower overnight RR', hurts: 'Without breathwork, sympathetic carryover into the night keeps RR elevated.', helps: 'Slow breathing before bed drops RR into the measurement window — overnight HRV jumps the next morning.', timeline: '1–3 nights for visible Recovery lift' },
-          oura: { impact: 'med', signal: 'HRV + sleep', magnitude: 'Acute HRV improvement + better sleep onset', hurts: 'Without parasympathetic practice, sleep onset is slower and Daytime Stress trends higher.', helps: 'Pre-bed breathwork shortens sleep onset and lifts HRV. Cumulative Stress improves over a week.', timeline: 'Days · weeks for cumulative' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'Higher ANS Charge from better recovery start', hurts: 'No breathwork means more sympathetic carryover into the first 4 hours of sleep — exactly the window Polar reads.', helps: '5–10 min of breathwork before bed lifts Nightly Recharge the next morning.', timeline: '1–3 nights' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' }
-      },
-      {
-        key: 'acute-stress',
-        category: 'mental',
-        question: 'Stuck in a stretch of acute psychological stress?',
-        name: 'Acute psychological stress',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + HR', magnitude: 'Sustained RMSSD reduction · elevated RHR', hurts: 'Cortisol and adrenaline drive sympathetic activation. Garmin reads it as suppressed HRV and elevated resting HR — the score lives in the high band until the stressor lifts.', helps: 'The biggest movers are sleep, breathwork, and aerobic exercise. Most people see meaningful recovery within 1–2 weeks once the stressor eases.', timeline: '1–2 weeks' },
-          apple: { impact: 'high', signal: 'HRV (third-party)', magnitude: 'Sustained HealthKit HRV reduction', hurts: 'Chronic sympathetic activation drops HealthKit RMSSD across the day. Third-party apps read it directly.', helps: 'Address the stressor; use Mindfulness sessions and consistent sleep. HRV recovers gradually.', timeline: '1–2 weeks' },
-          samsung: { impact: 'high', signal: 'HRV + EDA', magnitude: 'Strong, immediate EDA increase + HRV drop', hurts: 'EDA is the cleanest acute-stress signal in consumer wearables. Anxiety, fear, anger all spike it within seconds. HRV drops in parallel. Note: EDA can\'t tell positive arousal from negative.', helps: 'Breathwork drops EDA tonic level within minutes. Consistent sleep + exercise rebuild HRV over weeks.', timeline: 'Acute response in minutes · weeks for baseline' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA', magnitude: 'Body Response alerts fire; daily score drops', hurts: 'Continuous EDA picks up sympathetic activation in real time. Pixel/Fitbit fires Body Response alerts and the daily Stress Management Score drops sharply.', helps: 'Use the Body Response alert as a cue for guided breathwork. cEDA drops in real time; the daily score recovers within days of stressor relief.', timeline: 'Real-time alerts · 1–2 weeks for baseline' },
-          whoop: { impact: 'high', signal: 'HRV + RR', magnitude: 'Suppressed HRV + elevated overnight RR', hurts: 'Sympathetic carryover into sleep depresses RMSSD and elevates respiratory rate. Stress Monitor jumps high; Recovery score sits red.', helps: 'Pre-bed wind-down (breathwork, lower light). Recovery rebuilds within a week of stressor lifting.', timeline: '1 week' },
-          oura: { impact: 'high', signal: 'HRV + skin temp + sleep', magnitude: 'HRV drop + peripheral skin-temp drop + worse sleep', hurts: 'Vasoconstriction at the periphery is a measurable acute-stress signal at the finger. Oura sees it on three channels and Cumulative Stress climbs.', helps: 'Sleep + breathwork + activity. Cumulative Stress drops noticeably within 1–2 weeks of stressor relief.', timeline: '1–2 weeks · 31-day rollup' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'ANS Charge sliding into negative range', hurts: 'Polar reads only sleep, so daytime stress shows up indirectly via worse first-4-hour recovery.', helps: 'Reduce evening sympathetic load (breathwork, no late screens). ANS Charge rebuilds within a few nights of relief.', timeline: '3–7 nights' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/', label: 'Chronic stress & HRV (PMC9974008)' }
-      },
-      {
-        key: 'illness',
-        category: 'physical',
-        question: 'Coming down with something or running a fever?',
-        name: 'Illness / fever',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + HR', magnitude: 'Significant HRV drop · ~10 bpm RHR rise per 1°F', hurts: 'Immune activation drives sympathetic dominance. HRV drops, RHR rises ~10 bpm per 1°F of fever. Body Battery never recharges.', helps: 'Rest and hydration. Garmin doesn\'t flag illness explicitly but you\'ll see the pattern.', timeline: 'Days, depending on illness' },
-          apple: { impact: 'high', signal: 'HRV + HR (third-party)', magnitude: 'HealthKit HRV drop + elevated RHR', hurts: 'Same immune-driven sympathetic shift visible in HealthKit values.', helps: 'Rest. Apple\'s Vitals app on watchOS can flag the deviation if multiple metrics shift together.', timeline: 'Days' },
-          samsung: { impact: 'high', signal: 'HRV + EDA', magnitude: 'HRV drop + reactive EDA', hurts: 'Both BioActive signals shift with immune activation.', helps: 'Rest. Both signals normalize as illness resolves.', timeline: 'Days' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA + skin temp', magnitude: 'HRV drop + elevated skin temp + cEDA shift', hurts: 'Skin-temperature deviation is a strong illness signal. Pixel/Fitbit weighs all four inputs and the daily Stress Management Score drops hard.', helps: 'Rest. The score rebuilds as skin temp returns to baseline.', timeline: 'Days' },
-          whoop: { impact: 'high', signal: 'HRV + RR + skin temp + SpO2', magnitude: 'All four signals shift; SpO2 drops with respiratory illness', hurts: 'WHOOP is the most illness-aware device. Elevated overnight RR + skin-temp deviation + suppressed HRV is the classic pattern; SpO2 drops with respiratory infections.', helps: 'Rest. WHOOP\'s recovery score is conservative — let it stay red until all four signals return.', timeline: 'Days to weeks depending on illness' },
-          oura: { impact: 'high', signal: 'HRV + skin temp + sleep', magnitude: 'Skin-temp elevation is the dominant signal', hurts: 'Oura\'s finger-site skin temp is the cleanest in the consumer market — fever shows up clearly. HRV drops, sleep fragments.', helps: 'Rest. Oura often flags illness 1–2 days before subjective symptoms appear.', timeline: 'Days' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'Lower ANS Charge + elevated overnight RR', hurts: 'Polar reads only overnight, but illness-driven sympathetic activation is clear in the first-4-hour window.', helps: 'Rest. ANS Charge recovers as illness resolves.', timeline: 'Days' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' }
-      },
-      {
-        key: 'dehydration-heat',
-        category: 'physical',
-        question: 'Dehydrated or training in the heat?',
-        name: 'Dehydration & heat',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'med', signal: 'HRV + HR', magnitude: 'Moderate HRV drop · significant RHR rise', hurts: 'Lower blood volume + thermoregulation demand drive cardiac strain. RHR climbs measurably and HRV drops modestly.', helps: 'Hydrate consistently (not just before workouts). Both signals settle within a day.', timeline: '24 hours' },
-          apple: { impact: 'med', signal: 'HRV + HR', magnitude: 'HealthKit values shift modestly', hurts: 'Same volume-driven sympathetic shift; visible in HealthKit but not flagged natively.', helps: 'Hydrate.', timeline: '24 hours' },
-          samsung: { impact: 'med', signal: 'HRV + EDA', magnitude: 'HRV drop + altered EDA conductance', hurts: 'Dehydration changes electrolyte concentration in sweat, so EDA readings can drift unpredictably along with the HRV drop.', helps: 'Hydrate consistently. EDA returns to normal as electrolyte balance restores.', timeline: '24 hours' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA + skin temp', magnitude: 'Heat shows up on all three signals', hurts: 'Thermoregulatory sweating raises tonic cEDA independent of emotional state — Pixel/Fitbit can read heat as stress on hot days.', helps: 'Hydrate; treat hot-day spikes with skepticism. The signals settle as ambient cools.', timeline: 'Hours to a day' },
-          whoop: { impact: 'med', signal: 'HRV + skin temp', magnitude: 'HRV drop + elevated skin temp', hurts: 'Heat strain shows up overnight as elevated skin temp and suppressed HRV.', helps: 'Hydrate; sleep cool. Both signals normalize within a night.', timeline: '1 night' },
-          oura: { impact: 'med', signal: 'HRV + skin temp', magnitude: 'Skin-temp elevation + HRV drop', hurts: 'Finger-site skin temp picks up heat strain clearly. Cumulative Stress climbs on hot days even without subjective stress.', helps: 'Hydrate; sleep cool (65–68°F bedroom is Oura\'s recommended range).', timeline: '1–2 nights' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'Lower ANS Charge from elevated RR + reduced HRV', hurts: 'Heat carries sympathetic activation into sleep, which Polar reads in the first 4 hours.', helps: 'Hydrate; sleep cool. ANS Charge recovers within 1–2 nights.', timeline: '1–2 nights' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/', label: 'RHR & hydration review (PMC9549087)' }
-      },
-      {
-        key: 'cold-exposure',
-        category: 'recovery',
-        question: 'Doing controlled cold exposure (cold showers, plunges)?',
-        name: 'Cold exposure',
-        baseImpact: 'low',
-        perDevice: {
-          garmin: { impact: 'low', signal: 'HRV', magnitude: 'Acute vagal stimulation; small HRV bump', hurts: 'Without cold exposure you\'re missing one of the cleanest acute parasympathetic levers. Not actively harmful — just leverage you\'re not using.', helps: 'Brief cold exposure (face dunk, 30–60s cold shower) triggers the dive reflex and acutely boosts vagal tone. Effect is small but real.', timeline: 'Acute response' },
-          apple: { impact: 'low', signal: 'HRV (third-party)', magnitude: 'Small HealthKit HRV bump', hurts: 'Same — not harmful, just unused leverage.', helps: 'Cold exposure produces a measurable acute HRV bump in HealthKit.', timeline: 'Acute' },
-          samsung: { impact: 'low', signal: 'HRV + EDA', magnitude: 'EDA spike then drop; HRV bump', hurts: 'EDA shows the initial sympathetic startle then a parasympathetic rebound.', helps: 'Brief cold exposure shifts both signals favorably after the initial spike.', timeline: 'Acute' },
-          google_fitbit: { impact: 'low', signal: 'HRV + cEDA', magnitude: 'cEDA spike then drop', hurts: 'Same biphasic pattern as Samsung.', helps: 'cEDA drops below baseline after the cold response — net positive.', timeline: 'Acute' },
-          whoop: { impact: 'low', signal: 'HRV', magnitude: 'Small overnight HRV gain', hurts: 'Not harmful — but WHOOP is built for endurance, not biphasic acute responses.', helps: 'Cold exposure earlier in the day can lift overnight HRV slightly.', timeline: '1 night' },
-          oura: { impact: 'low', signal: 'HRV + skin temp', magnitude: 'Skin temp drop + HRV bump', hurts: 'Skin-temp shifts from cold exposure can confound the menstrual-cycle signal if done close to bed.', helps: 'Cold exposure earlier in the day. Avoid right before sleep so skin-temp baseline isn\'t disrupted.', timeline: 'Acute · same night' },
-          polar: { impact: 'low', signal: 'HRV + RR (overnight)', magnitude: 'Small ANS Charge bump', hurts: 'Polar reads only overnight, so the acute response is invisible — only carryover effects show.', helps: 'Cold exposure earlier in the day can lift Nightly Recharge slightly.', timeline: '1 night' }
-        },
-        source: { url: 'https://marathonhandbook.com/how-to-increase-hrv/', label: 'Marathon Handbook 2026 — HRV strategies' }
-      },
-      {
-        key: 'cognitive-load',
-        category: 'mental',
-        question: 'In a sustained period of high mental effort?',
-        name: 'Cognitive load',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'low', signal: 'HRV + HR', magnitude: 'Mild HRV drop · small HR bump', hurts: 'Mental exertion activates the sympathetic nervous system mildly. Garmin\'s HRV-only model picks up only the larger episodes.', helps: 'Brief breaks, breathwork, walks. The acute response is small and reversible.', timeline: 'Hours' },
-          apple: { impact: 'low', signal: 'HRV (third-party)', magnitude: 'Small HealthKit HRV change', hurts: 'Mild and easy to miss without EDA.', helps: 'Breaks; Mindfulness sessions.', timeline: 'Hours' },
-          samsung: { impact: 'high', signal: 'EDA (primary)', magnitude: 'Moderate EDA increase', hurts: 'EDA is uniquely sensitive to cognitive load — sustained mental effort raises tonic skin conductance even without emotional content. Samsung\'s score reflects this.', helps: 'Brief mental breaks drop EDA quickly. Slow breathing accelerates the drop.', timeline: 'Minutes' },
-          google_fitbit: { impact: 'high', signal: 'cEDA (primary)', magnitude: 'cEDA tonic level rises throughout demanding work', hurts: 'Continuous EDA captures cognitive load in real time. Body Response alerts may fire during deep-focus blocks.', helps: 'Pomodoro-style breaks; brief breathwork. cEDA drops noticeably with each break.', timeline: 'Minutes' },
-          whoop: { impact: 'low', signal: 'HRV', magnitude: 'Mild overnight HRV impact only if chronic', hurts: 'WHOOP doesn\'t see daytime cognitive load directly; only chronic states carry into overnight RMSSD.', helps: 'Manage chronic load via sleep + breathwork.', timeline: 'Days' },
-          oura: { impact: 'low', signal: 'HRV', magnitude: 'Daytime Stress reflects sustained load', hurts: 'Oura\'s Daytime Stress catches sustained sympathetic activation but the resolution is coarser than EDA.', helps: 'Breaks + breathwork. Daytime Stress lifts within hours.', timeline: 'Hours' },
-          polar: { impact: 'low', signal: 'HRV + RR (overnight)', magnitude: 'Only chronic load shows', hurts: 'No daytime measurement — cognitive load only visible if it carries into sleep.', helps: 'Wind down before bed.', timeline: 'Nights' }
-        },
-        source: { url: 'https://blog.biopac.com/electrodermal-activity-eda/', label: 'BIOPAC — Electrodermal Activity overview' }
-      },
-      {
-        key: 'menstrual-cycle',
-        category: 'physical',
-        question: 'In the luteal phase (week before period)?',
-        name: 'Menstrual cycle (luteal phase)',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'low', signal: 'HRV', magnitude: 'Mild HRV reduction in luteal phase', hurts: 'Without skin temperature, Garmin sees only a small HRV shift across the cycle. Not flagged explicitly.', helps: 'Awareness — the luteal-phase HRV dip is normal and self-resolves at menses.', timeline: 'Resolves at menses onset' },
-          apple: { impact: 'low', signal: 'HRV + Cycle Tracking', magnitude: 'HealthKit HRV dip; Cycle Tracking surfaces it', hurts: 'Apple\'s Cycle Tracking gives some context but no skin-temp signal on Series watches under Ultra.', helps: 'Use Cycle Tracking to align expectations.', timeline: 'Resolves at menses' },
-          samsung: { impact: 'low', signal: 'HRV', magnitude: 'Small HRV shift', hurts: 'No skin-temp on Galaxy Watch wrist sensors, so cycle is implicit only.', helps: 'Awareness.', timeline: 'Resolves at menses' },
-          google_fitbit: { impact: 'med', signal: 'HRV + skin temp', magnitude: 'Skin-temp rise of ~0.3–0.5°C in luteal phase', hurts: 'Pixel/Fitbit\'s skin-temp shifts with progesterone. Daily Stress Management Score may run a few points lower in luteal phase.', helps: 'Track via Cycle Tracking; use the data to plan recovery weeks.', timeline: 'Resolves at menses' },
-          whoop: { impact: 'med', signal: 'HRV + skin temp', magnitude: 'Skin-temp rise + HRV dip', hurts: 'WHOOP\'s skin-temp deviation in the luteal phase can look like an overtraining or illness signal if not contextualized.', helps: 'Track with WHOOP Journal so the algorithm contextualizes cycle days.', timeline: 'Resolves at menses' },
-          oura: { impact: 'high', signal: 'Skin temp (primary)', magnitude: '~0.3–0.5°C luteal-phase rise · used for period prediction', hurts: 'Oura\'s finger-site skin temp is the cleanest cycle signal in the consumer market — luteal phase clearly raises Cumulative Stress unless accounted for.', helps: 'Oura\'s Cycle Insights uses this signal directly. Treat the luteal HRV/temp shift as expected, not a stress flare.', timeline: 'Resolves at menses' },
-          polar: { impact: 'low', signal: 'HRV (overnight)', magnitude: 'Small overnight HRV shift', hurts: 'No skin-temp; only HRV shift visible.', helps: 'Awareness.', timeline: 'Resolves at menses' }
-        },
-        source: { url: 'https://blog.ultrahuman.com/blog/factors-influencing-skin-temperature/', label: 'Ultrahuman — Skin temperature & cycle' }
-      },
-      {
-        key: 'ambient-temp',
-        category: 'physical',
-        question: 'Tracking on a hot or humid day?',
-        name: 'Ambient temperature & humidity',
-        baseImpact: 'low',
-        perDevice: {
-          garmin: { impact: 'low', signal: 'HR (indirect)', magnitude: 'Mild RHR rise in heat', hurts: 'Heat raises baseline HR slightly. Garmin\'s HRV-only stress model is mostly insulated from ambient temperature.', helps: 'Be aware that hot days raise baseline HR. Sleep cool.', timeline: 'Resolves with cool environment' },
-          apple: { impact: 'low', signal: 'HR (indirect)', magnitude: 'Mild HR rise in heat', hurts: 'Heat shifts HealthKit HR but not HRV directly.', helps: 'Sleep cool; hydrate.', timeline: 'Resolves quickly' },
-          samsung: { impact: 'med', signal: 'EDA confounder', magnitude: 'Tonic EDA rises with thermoregulatory sweating', hurts: 'EDA is sensitive to ambient temperature — humid days raise tonic skin conductance independent of stress, so the score reads higher.', helps: 'Cool environment. Be aware that hot-day spikes may not be psychological stress.', timeline: 'Resolves quickly' },
-          google_fitbit: { impact: 'high', signal: 'cEDA confounder', magnitude: 'Continuous EDA tonic level tracks ambient heat', hurts: 'Continuous EDA is most exposed to this confounder — hot/humid days drive Body Response alerts that aren\'t actually stress.', helps: 'Cool environment; cross-reference alerts with HRV trend before treating as stress.', timeline: 'Resolves with cool environment' },
-          whoop: { impact: 'low', signal: 'Skin temp (overnight)', magnitude: 'Elevated overnight skin temp in hot rooms', hurts: 'Hot bedroom inflates overnight skin-temp readings.', helps: 'Sleep at 65–68°F.', timeline: 'Resolves quickly' },
-          oura: { impact: 'med', signal: 'Skin temp', magnitude: 'Ambient confounds finger skin-temp readings', hurts: 'Cold rooms can drive finger skin-temp down enough to confuse the cycle algorithm; hot rooms inflate readings.', helps: 'Stable bedroom temperature. Oura recommends 65–68°F.', timeline: 'Resolves quickly' },
-          polar: { impact: 'low', signal: 'HRV + RR (overnight)', magnitude: 'Hot rooms slightly elevate overnight RR', hurts: 'Modest impact on the first-4-hour reading.', helps: 'Sleep cool.', timeline: '1 night' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/', label: 'Ambient temperature & physiological signals (PMC9690349)' }
-      },
-      {
-        key: 'sedentary',
-        category: 'movement',
-        question: 'Mostly sedentary — under 5,000 steps a day?',
-        name: 'Sedentary lifestyle / low fitness',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + RHR', magnitude: 'Lower HRV baseline · higher RHR (most common cause of high RHR)', hurts: 'A deconditioned heart works harder to maintain output. Garmin reads a sustained high RHR and a low HRV baseline — the score sits elevated.', helps: 'Build cardio gradually. Even daily walks lift HRV and drop RHR over weeks.', timeline: '4–12 weeks' },
-          apple: { impact: 'high', signal: 'HRV + RHR', magnitude: 'Same baseline impact in HealthKit', hurts: 'HealthKit HRV stays low and RHR stays high without aerobic activity.', helps: 'Use Activity Rings as a forcing function. HealthKit HRV climbs over weeks.', timeline: '4–12 weeks' },
-          samsung: { impact: 'high', signal: 'HRV + HR', magnitude: 'Low HRV baseline, elevated HR, more reactive EDA', hurts: 'Without aerobic conditioning, every metric runs worse — including EDA reactivity.', helps: 'Daily walks, gradual cardio. All three signals lift over weeks.', timeline: '4–12 weeks' },
-          google_fitbit: { impact: 'high', signal: 'HRV + HR + Cardio Fitness Score', magnitude: 'Low Cardio Fitness Score drives lower daily Stress Management Score', hurts: 'Pixel/Fitbit explicitly weighs cardio fitness inside the daily score. Sedentary baseline = lower score consistently.', helps: 'Build steps and Active Zone Minutes. Cardio Fitness lifts within a few weeks.', timeline: '4–12 weeks' },
-          whoop: { impact: 'high', signal: 'HRV + RR baseline', magnitude: 'Low HRV baseline + higher overnight RR', hurts: 'Without aerobic Strain, the 14-day baseline sits low and overnight RR sits higher.', helps: 'Build aerobic Strain consistently. Both metrics lift.', timeline: '4–12 weeks' },
-          oura: { impact: 'high', signal: 'HRV + activity + sleep', magnitude: 'Low Activity Score drives lower Readiness', hurts: 'Oura\'s Cumulative Stress weighs activity. Sedentary days compound on the 31-day rollup.', helps: 'Hit daily activity goal. Cumulative Stress lifts gradually.', timeline: '4–12 weeks' },
-          polar: { impact: 'high', signal: 'HRV + RR (overnight)', magnitude: 'ANS Charge baseline drifts negative', hurts: 'Polar is built around training. Without it, ANS Charge baseline stays flat.', helps: 'Build aerobic training. ANS Charge baseline lifts with cardio fitness.', timeline: '4–12 weeks' }
-        },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/', label: 'Exercise & RHR meta-analysis (PMC6306777)' }
+  get _metricFactors() {
+    // Source: Wearable_Stress_Research_Consolidated.md
+    const SRC = {
+      frontiers2024:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' },
+      hrvExercise:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/',  label: 'HRV & exercise meta-analysis (PMC8950456)' },
+      rhrFactors:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/',  label: 'RHR factors review (PMC9549087)' },
+      rhrExercise:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/',  label: 'Exercise & RHR meta-analysis (PMC6306777)' },
+      chronicStress:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/',  label: 'Chronic stress & HRV (PMC9974008)' },
+      caffeineHrv:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/', label: 'Caffeine, sleep & HRV (PMC11284693)' },
+      skinTempStress:   { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/',  label: 'Skin temperature & acute stress (PMC4664114)' },
+      skinTempAmbient:  { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/',  label: 'Skin temp & ambient confounds (PMC9690349)' },
+      edaSenses:        { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/', label: 'EDA & sensory stimulation (PMC10575214)' },
+      edaWiki:          { url: 'https://en.wikipedia.org/wiki/Electrodermal_activity', label: 'Electrodermal Activity (Wikipedia)' },
+      edaBiopac:        { url: 'https://blog.biopac.com/electrodermal-activity-eda/', label: 'BIOPAC — Electrodermal Activity' },
+      skinTempUltra:    { url: 'https://blog.ultrahuman.com/blog/factors-influencing-skin-temperature/', label: 'Ultrahuman — Skin temperature factors' },
+      skinTempSleep:    { url: 'https://www.nature.com/articles/s41746-026-02633-2', label: 'Nature 2026 — Skin temp during sleep' },
+      skinTempDepression: { url: 'https://www.sciencedirect.com/science/article/pii/S2666915325000071', label: 'ScienceDirect 2025 — EDA & skin temp in depression' },
+      polarRR:          { url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement', label: 'Polar — Nightly Recharge' },
+      whoopRecovery:    { url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/', label: 'WHOOP — Recovery 101' },
+      ouraCumulative:   { url: 'https://ouraring.com/blog/what-is-cumulative-stress/', label: 'Oura — Cumulative Stress' },
+      kygoHrv:          { url: 'https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence', label: 'Kygo — HRV: 44 factors ranked' },
+      aha:              { url: 'https://www.heart.org/en/news/2019/02/01/8-things-that-can-affect-your-heart-and-what-to-do-about-them', label: 'AHA — Heart rate factors' },
+      coldHrv:          { url: 'https://marathonhandbook.com/how-to-increase-hrv/', label: 'Marathon Handbook — HRV strategies' },
+      sedentary:        { url: 'https://www.hackensackmeridianhealth.org/en/healthier-you/2022/02/24/6-reasons-your-heart-rate-is-high', label: 'HMH — High heart rate causes' },
+      clevelandHr:      { url: 'https://health.clevelandclinic.org/how-to-lower-your-resting-heart-rate', label: 'Cleveland Clinic — Lowering RHR' },
+      heartFoundation:  { url: 'https://theheartfoundation.org/2018/11/02/your-heart-rate/', label: 'Heart Foundation — Heart rate' }
+    };
+
+    return {
+      hrv: [
+        { key: 'hrv-sleep',          name: 'Consistent sleep (7–9 hrs)',     direction: 'positive', impact: 'high', magnitude: '15–30% RMSSD increase within 4 weeks',                  mechanism: 'Parasympathetic dominance during quality sleep restores vagal tone.',                source: SRC.frontiers2024 },
+        { key: 'hrv-aerobic',        name: 'Aerobic exercise (150 min/wk)',  direction: 'positive', impact: 'high', magnitude: 'Significant long-term HRV gain',                        mechanism: 'Enhanced vagal tone and cardiovascular fitness via consistent training.',           source: SRC.hrvExercise },
+        { key: 'hrv-meditation',     name: 'Meditation / breathwork',         direction: 'positive', impact: 'med',  magnitude: 'Acute HRV bump within minutes; chronic baseline lift',  mechanism: 'Slow breathing (~6 breaths/min) directly activates the vagus nerve.',               source: SRC.frontiers2024 },
+        { key: 'hrv-weight',         name: 'Healthy body weight',             direction: 'positive', impact: 'med',  magnitude: 'Restores sympathovagal balance',                        mechanism: 'Lifestyle weight loss reduces sympathetic load and lifts parasympathetic activity.', source: SRC.frontiers2024 },
+        { key: 'hrv-hydration',      name: 'Hydration',                       direction: 'positive', impact: 'low',  magnitude: 'Moderate effect on blood volume',                       mechanism: 'Adequate volume reduces cardiac strain and supports vagal tone.',                   source: SRC.rhrFactors },
+        { key: 'hrv-cold',           name: 'Cold exposure (controlled)',      direction: 'positive', impact: 'low',  magnitude: 'Acute vagal stimulation',                               mechanism: 'Brief cold exposure triggers the dive reflex, boosting parasympathetic output.',    source: SRC.coldHrv },
+        { key: 'hrv-alcohol',        name: 'Alcohol',                         direction: 'negative', impact: 'high', magnitude: '~2 ms RMSSD drop per drink; up to 13 ms after 3+',     mechanism: 'Direct suppression of parasympathetic activity for hours after intake.',           source: SRC.kygoHrv },
+        { key: 'hrv-sleep-dep',      name: 'Sleep deprivation',               direction: 'negative', impact: 'high', magnitude: 'Significant acute RMSSD reduction',                    mechanism: 'Short or fragmented sleep shifts autonomic balance toward sympathetic dominance.', source: SRC.frontiers2024 },
+        { key: 'hrv-overtraining',   name: 'Overtraining',                    direction: 'negative', impact: 'high', magnitude: 'Progressive HRV decline with accumulated load',         mechanism: 'Excessive load without recovery suppresses parasympathetic tone over days.',       source: SRC.hrvExercise },
+        { key: 'hrv-chronic-stress', name: 'Chronic psychological stress',    direction: 'negative', impact: 'high', magnitude: 'Sustained RMSSD/SDNN reduction',                       mechanism: 'Chronic sympathetic activation suppresses vagal tone over weeks.',                 source: SRC.chronicStress },
+        { key: 'hrv-illness',        name: 'Illness / inflammation',          direction: 'negative', impact: 'high', magnitude: 'Significant drop during acute illness',                 mechanism: 'Immune response activates the sympathetic nervous system.',                        source: SRC.frontiers2024 },
+        { key: 'hrv-caffeine',       name: 'Excess caffeine',                 direction: 'negative', impact: 'med',  magnitude: '8–12% drop in caffeine-sensitive individuals',         mechanism: 'Sympathetic overstimulation, particularly with afternoon doses.',                  source: SRC.caffeineHrv }
+      ],
+      hr: [
+        { key: 'hr-cardio-fit', name: 'Cardio fitness',         direction: 'positive', impact: 'high', magnitude: 'Strongest factor — dose-dependent RHR drop', mechanism: 'Stronger heart pumps more blood per beat, fewer beats needed at rest.',     source: SRC.rhrExercise },
+        { key: 'hr-sleep',      name: 'Adequate sleep',         direction: 'positive', impact: 'med',  magnitude: 'Poor sleep elevates next-day RHR',           mechanism: 'Sleep deprivation shifts autonomic balance toward sympathetic dominance.',  source: SRC.rhrFactors },
+        { key: 'hr-sedentary',  name: 'Sedentary lifestyle',    direction: 'negative', impact: 'high', magnitude: 'Most common cause of high RHR',              mechanism: 'Deconditioned heart works harder to maintain output.',                       source: SRC.sedentary },
+        { key: 'hr-caffeine',   name: 'Caffeine / stimulants',  direction: 'negative', impact: 'med',  magnitude: 'Acute increase, duration varies',            mechanism: 'Stimulates sympathetic nervous system and adrenal response.',                source: SRC.heartFoundation },
+        { key: 'hr-alcohol',    name: 'Alcohol',                direction: 'negative', impact: 'med',  magnitude: 'Acute and next-day elevation',               mechanism: 'Vasodilation requires compensatory heart rate increase.',                    source: SRC.rhrFactors },
+        { key: 'hr-heat',       name: 'Heat / dehydration',     direction: 'negative', impact: 'med',  magnitude: 'Significant in hot environments',            mechanism: 'Thicker blood and thermoregulation demand more cardiac work.',               source: SRC.rhrFactors },
+        { key: 'hr-fever',      name: 'Illness / fever',        direction: 'negative', impact: 'high', magnitude: '~10 bpm per 1°F of fever',                   mechanism: 'Immune response and thermoregulation increase metabolic demand.',            source: SRC.aha },
+        { key: 'hr-stress',     name: 'Stress / anxiety',       direction: 'negative', impact: 'high', magnitude: 'Acute and chronic elevation',                mechanism: 'Sympathetic activation via cortisol and adrenaline.',                        source: SRC.clevelandHr }
+      ],
+      eda: [
+        { key: 'eda-arousal',     name: 'Emotional arousal (anxiety, fear, anger)', direction: 'negative', impact: 'high', magnitude: 'Strong, immediate response',                 mechanism: 'Sympathetic NS triggers eccrine sweat glands, raising skin conductance.',          source: SRC.edaWiki },
+        { key: 'eda-cognitive',   name: 'Cognitive load / mental effort',           direction: 'negative', impact: 'med',  magnitude: 'Moderate sustained tonic rise',              mechanism: 'Mental exertion activates the sympathetic nervous system.',                         source: SRC.edaBiopac },
+        { key: 'eda-sensory',     name: 'Sensory stimulation (sounds, pain, surprise)', direction: 'negative', impact: 'med', magnitude: 'Acute orienting response',                mechanism: 'Startle/orienting response via sympathetic sweat-gland activation.',                source: SRC.edaSenses },
+        { key: 'eda-heat',        name: 'Ambient heat & humidity',                  direction: 'negative', impact: 'med',  magnitude: 'Tonic level rises with environmental heat',  mechanism: 'Thermoregulatory sweating, independent of emotional state — common confounder.',    source: SRC.skinTempAmbient },
+        { key: 'eda-excitement',  name: 'Excitement / positive arousal',            direction: 'variable', impact: 'med',  magnitude: 'Indistinguishable from negative arousal',     mechanism: 'EDA reads sympathetic activation only — it cannot tell valence.',                  source: SRC.edaWiki },
+        { key: 'eda-meditation',  name: 'Relaxation / meditation',                  direction: 'positive', impact: 'med',  magnitude: 'Gradual reduction in tonic level',           mechanism: 'Parasympathetic activation reduces sympathetic drive to sweat glands.',            source: SRC.edaBiopac },
+        { key: 'eda-cool',        name: 'Cool ambient temperature',                 direction: 'positive', impact: 'low',  magnitude: 'Tonic level falls',                          mechanism: 'Less thermoregulatory sweating in cooler conditions.',                              source: SRC.skinTempAmbient },
+        { key: 'eda-habituation', name: 'Habituation (repeated stimuli)',           direction: 'positive', impact: 'low',  magnitude: 'Progressive reduction with repeat exposure', mechanism: 'Brain adapts to repeated non-threatening stimuli, dampening response.',            source: SRC.edaWiki },
+        { key: 'eda-dehydration', name: 'Dehydration',                              direction: 'variable', impact: 'low',  magnitude: 'Alters electrolyte concentration',           mechanism: 'Changes sweat composition and skin conductance properties unpredictably.',         source: SRC.edaBiopac }
+      ],
+      skinTemp: [
+        { key: 'st-stress',      name: 'Acute psychological stress',     direction: 'negative', impact: 'med',  magnitude: 'Measurable peripheral drop at wrist/finger', mechanism: 'Vasoconstriction redirects blood to core organs.',                                source: SRC.skinTempStress },
+        { key: 'st-exercise',    name: 'Exercise',                       direction: 'variable', impact: 'med',  magnitude: 'Rises during, drops post',                   mechanism: 'Vasodilation for heat dissipation; algorithms typically filter this.',           source: SRC.skinTempUltra },
+        { key: 'st-cycle',       name: 'Menstrual cycle (luteal phase)', direction: 'negative', impact: 'high', magnitude: '~0.3–0.5°C luteal-phase rise',               mechanism: 'Progesterone raises basal body temperature.',                                     source: SRC.skinTempUltra },
+        { key: 'st-fever',       name: 'Illness / fever',                direction: 'negative', impact: 'high', magnitude: 'Significant rise during infection',          mechanism: 'Immune response raises core and peripheral temperature.',                          source: SRC.skinTempUltra },
+        { key: 'st-alcohol',     name: 'Alcohol',                        direction: 'negative', impact: 'med',  magnitude: 'Acute peripheral rise',                      mechanism: 'Vasodilation increases skin surface temperature for hours after intake.',          source: SRC.skinTempUltra },
+        { key: 'st-ambient',     name: 'Ambient temperature',            direction: 'variable', impact: 'high', magnitude: 'Major confounder for wrist devices',         mechanism: 'External temperature directly affects surface sensor readings.',                  source: SRC.skinTempAmbient },
+        { key: 'st-sleep-onset', name: 'Sleep onset',                    direction: 'positive', impact: 'low',  magnitude: 'Normal extremity-temp rise',                 mechanism: 'Vasodilation at extremities initiates the sleep-onset cascade.',                  source: SRC.skinTempSleep },
+        { key: 'st-depression',  name: 'Depression / chronic stress',    direction: 'negative', impact: 'med',  magnitude: 'Higher day-to-day temperature variability',  mechanism: 'Disrupted autonomic regulation increases temperature fluctuations.',              source: SRC.skinTempDepression }
+      ],
+      rr: [
+        { key: 'rr-stress',        name: 'Stress / anxiety',           direction: 'negative', impact: 'high', magnitude: 'Acute increase in rate and shallowness', mechanism: 'Sympathetic activation increases respiratory drive.',                source: SRC.polarRR },
+        { key: 'rr-pain',          name: 'Pain',                       direction: 'negative', impact: 'med',  magnitude: 'Acute rate increase',                    mechanism: 'Sympathetic activation changes breathing pattern.',                  source: SRC.polarRR },
+        { key: 'rr-fever',         name: 'Fever / illness',            direction: 'negative', impact: 'med',  magnitude: 'Proportional to body temperature',       mechanism: 'Increased metabolic demand requires more oxygen.',                   source: SRC.polarRR },
+        { key: 'rr-overtraining',  name: 'Overtraining',               direction: 'negative', impact: 'high', magnitude: 'Elevated overnight rate is a key marker', mechanism: 'Incomplete recovery leaves sympathetic tone elevated overnight.',    source: SRC.whoopRecovery },
+        { key: 'rr-caffeine',      name: 'Late caffeine',              direction: 'negative', impact: 'low',  magnitude: 'Mild stimulatory rise',                  mechanism: 'CNS stimulation affects the respiratory center.',                    source: SRC.whoopRecovery },
+        { key: 'rr-meditation',    name: 'Relaxation / meditation',    direction: 'positive', impact: 'high', magnitude: 'Significant drop with slow breathing',   mechanism: 'Parasympathetic activation, vagal tone increase.',                   source: SRC.polarRR },
+        { key: 'rr-cardio-fit',    name: 'Cardio fitness',             direction: 'positive', impact: 'med',  magnitude: 'Lower baseline rate',                    mechanism: 'Efficient gas exchange needs fewer breaths per minute.',             source: SRC.whoopRecovery },
+        { key: 'rr-sleep',         name: 'Quality sleep',              direction: 'positive', impact: 'med',  magnitude: 'Lowest overnight rate',                  mechanism: 'Parasympathetic dominance during deep sleep.',                       source: SRC.polarRR }
+      ],
+      spo2: [
+        { key: 'spo2-altitude',    name: 'Altitude',                       direction: 'negative', impact: 'high', magnitude: 'Significant drop above ~5,000 ft',     mechanism: 'Lower atmospheric oxygen reduces hemoglobin saturation.',          source: SRC.whoopRecovery },
+        { key: 'spo2-apnea',       name: 'Sleep apnea',                    direction: 'negative', impact: 'high', magnitude: 'Repeated overnight desaturation',      mechanism: 'Airway obstruction causes intermittent hypoxia during sleep.',     source: SRC.whoopRecovery },
+        { key: 'spo2-illness',     name: 'Respiratory illness',            direction: 'negative', impact: 'med',  magnitude: 'Varies by severity',                   mechanism: 'Impaired gas exchange in the lungs reduces saturation.',           source: SRC.whoopRecovery },
+        { key: 'spo2-smoking',     name: 'Smoking',                        direction: 'negative', impact: 'high', magnitude: 'Chronic reduction',                    mechanism: 'Carbon monoxide displaces oxygen on hemoglobin.',                   source: SRC.whoopRecovery },
+        { key: 'spo2-cardio-fit',  name: 'Cardio fitness',                 direction: 'positive', impact: 'low',  magnitude: 'Stable, near 95–100%',                 mechanism: 'Efficient cardiovascular system maintains saturation.',             source: SRC.whoopRecovery },
+        { key: 'spo2-breathing',   name: 'Proper breathing during sleep',  direction: 'positive', impact: 'low',  magnitude: 'Fewer desaturation events',            mechanism: 'Unobstructed airway throughout the sleep cycle.',                   source: SRC.whoopRecovery }
+      ],
+      sleep: [
+        { key: 'sl-schedule',      name: 'Consistent sleep schedule',     direction: 'positive', impact: 'high', magnitude: 'Improves all sleep-architecture metrics',  mechanism: 'Circadian rhythm alignment improves deep sleep and continuity.',         source: SRC.ouraCumulative },
+        { key: 'sl-cool',          name: 'Cool bedroom (65–68°F)',        direction: 'positive', impact: 'med',  magnitude: 'Increases deep sleep duration',            mechanism: 'Core temperature drop triggers deep sleep initiation.',                   source: SRC.ouraCumulative },
+        { key: 'sl-exercise',      name: 'Regular exercise (not late)',   direction: 'positive', impact: 'med',  magnitude: 'Increases deep sleep, reduces latency',    mechanism: 'Physical fatigue promotes sleep drive; vigorous training within 2 hrs of bed disrupts onset.', source: SRC.hrvExercise },
+        { key: 'sl-alcohol-bed',   name: 'Alcohol before bed',            direction: 'negative', impact: 'high', magnitude: 'Reduces deep sleep, increases wake-ups',   mechanism: 'Disrupts sleep architecture even when onset feels faster.',              source: SRC.frontiers2024 },
+        { key: 'sl-late-caffeine', name: 'Late caffeine (after 2 PM)',    direction: 'negative', impact: 'high', magnitude: 'Delays onset, reduces total sleep',        mechanism: 'Caffeine\'s 5–6 hour half-life blocks adenosine receptors.',             source: SRC.kygoHrv },
+        { key: 'sl-late-meals',    name: 'Late heavy meals',              direction: 'negative', impact: 'med',  magnitude: 'Disrupts sleep quality',                   mechanism: 'Digestion raises core temperature and metabolic activity at bedtime.',   source: SRC.ouraCumulative },
+        { key: 'sl-screens',       name: 'Screen time before bed',        direction: 'negative', impact: 'med',  magnitude: 'Delays melatonin release',                 mechanism: 'Blue light suppresses pineal melatonin production.',                     source: SRC.ouraCumulative },
+        { key: 'sl-stress',        name: 'Chronic stress / anxiety',      direction: 'negative', impact: 'high', magnitude: 'Fragmented sleep, less deep sleep',        mechanism: 'Elevated cortisol disrupts sleep architecture and continuity.',          source: SRC.ouraCumulative }
+      ]
+    };
+  }
+
+  _factorsForDevice(deviceKey) {
+    const metrics = this._deviceMetrics[deviceKey] || [];
+    const out = [];
+    for (const m of metrics) {
+      for (const f of (this._metricFactors[m] || [])) {
+        out.push({ ...f, metric: m, _devKey: `${deviceKey}-${f.key}` });
       }
-    ];
+    }
+    return out;
   }
 
   _icon(name) {
@@ -566,32 +404,6 @@ class KygoWearableStress extends HTMLElement {
       </svg>`;
   }
 
-  _categoryIconKey(catKey) {
-    return ({
-      substance:   'droplet',
-      sleep:       'moon',
-      activity:    'dumbbell',
-      mental:      'brain',
-      physical:    'heart',
-      environment: 'sun',
-      physiology:  'thermometer'
-    })[catKey] || 'sparkle';
-  }
-
-  // Brand-aligned category accents — green family + slates + one warm tone.
-  // Same approach as RHR factors: variation through hue intensity, not rainbow.
-  _categoryAccent(catKey) {
-    const map = {
-      substance:   { color: '#B45309', bg: 'rgba(180,83,9,0.10)',  ink: '#B45309' },
-      sleep:       { color: '#475569', bg: 'rgba(71,85,105,0.10)', ink: '#334155' },
-      activity:    { color: '#16A34A', bg: 'rgba(22,163,74,0.10)', ink: '#16A34A' },
-      mental:      { color: '#0F766E', bg: 'rgba(15,118,110,0.10)', ink: '#0F766E' },
-      physical:    { color: '#22C55E', bg: 'rgba(34,197,94,0.10)', ink: '#16A34A' },
-      environment: { color: '#334155', bg: 'rgba(51,65,85,0.10)',  ink: '#334155' },
-      physiology:  { color: '#1E293B', bg: 'rgba(30,41,59,0.10)',  ink: '#1E293B' }
-    };
-    return map[catKey] || map.activity;
-  }
 
   _impactCfg(impact) {
     const map = {
@@ -736,70 +548,6 @@ class KygoWearableStress extends HTMLElement {
               <h3 class="dd-section-title">Tap a device for the algorithm, scale, and tradeoffs</h3>
             </div>
             <div class="dd-list">${detailRows}</div>
-          </div>
-        </div>
-      </section>`;
-  }
-
-  _renderImpactBadge(impact, deviceName) {
-    const cfg = this._impactCfg(impact);
-    return `<span class="impact-badge ${cfg.cls}" aria-label="${cfg.label} impact on ${deviceName}">
-      <span class="impact-dot" aria-hidden="true"></span>${cfg.label} on ${deviceName}
-    </span>`;
-  }
-
-  _renderImpactPill(impact) {
-    const cfg = this._impactCfg(impact);
-    return `<span class="impact-pill ${cfg.cls}" aria-label="${cfg.label} impact">
-      <span class="impact-pill-bars" aria-hidden="true">
-        <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span>
-      </span>
-      <span class="impact-pill-text">${cfg.label}</span>
-    </span>`;
-  }
-
-  _renderEvidenceLeaderboard() {
-    const d1 = this._devices[this._device1];
-    const factors = this._factors.slice();
-    const ranked = factors.map(f => {
-      const pd = f.perDevice[this._device1];
-      const w = pd ? this._impactCfg(pd.impact).weight : this._impactCfg(f.baseImpact).weight;
-      return { ...f, _w: w, _pd: pd };
-    }).sort((a, b) => b._w - a._w || a.name.localeCompare(b.name));
-
-    const rows = ranked.map((f, i) => {
-      const cfg = this._impactCfg(f._pd ? f._pd.impact : f.baseImpact);
-      const pct = (cfg.weight / 3) * 100;
-      return `
-        <button class="lb-row" data-fact-jump="${f.key}" style="--delay:${i * 30}ms" aria-label="Jump to ${f.name}">
-          <span class="lb-rank">${String(i + 1).padStart(2, '0')}</span>
-          <span class="lb-name">${f.name}</span>
-          <span class="lb-track" aria-hidden="true">
-            <span class="lb-bar lb-${cfg.cls}" style="width:${pct}%"></span>
-          </span>
-          <span class="lb-impact lb-${cfg.cls}">${cfg.label}</span>
-        </button>`;
-    }).join('');
-
-    return `
-      <section class="evidence-section section-bg-white">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('target')}</span>Top movers for ${d1.name}</span>
-            <h2 class="section-h2">What moves your <em>${d1.name}</em> score most.</h2>
-            <p class="section-lede">Every factor ranked by how much it nudges your stress reading on this specific device. Tap any row to jump to its full mechanism and action below.</p>
-          </div>
-          <div class="leaderboard">
-            <div class="lb-head">
-              <span class="lb-head-eyebrow">Ranked impact · ${d1.name}</span>
-              <span class="lb-head-meta">${factors.length} factors</span>
-            </div>
-            <div class="lb-rows">${rows}</div>
-            <div class="lb-legend">
-              <span class="lb-legend-item"><span class="lb-sw lb-imp-high"></span>High</span>
-              <span class="lb-legend-item"><span class="lb-sw lb-imp-med"></span>Medium</span>
-              <span class="lb-legend-item"><span class="lb-sw lb-imp-low"></span>Low</span>
-            </div>
           </div>
         </div>
       </section>`;
@@ -971,103 +719,54 @@ class KygoWearableStress extends HTMLElement {
       </section>`;
   }
 
-  _renderHurtsHelps(deviceKey, perDevice) {
-    const d = this._devices[deviceKey];
-    const pd = perDevice[deviceKey];
-    if (!d || !pd) {
-      return `<div class="hh-missing">${d ? d.name : 'This device'} doesn't have documented mechanisms for this factor in the source research.</div>`;
-    }
-    return `
-      <div class="hh-grid">
-        <div class="hh-col hh-hurts">
-          <div class="hh-head">
-            <span class="hh-eyebrow">What's hurting</span>
-            <span class="hh-magnitude">${pd.magnitude}</span>
-          </div>
-          <p class="hh-body">${pd.hurts}</p>
-          <span class="hh-tag">Signal: ${pd.signal}</span>
-        </div>
-        <div class="hh-col hh-helps">
-          <div class="hh-head">
-            <span class="hh-eyebrow">What helps</span>
-            ${pd.timeline ? `<span class="hh-timeline">Expect change in ${pd.timeline}</span>` : ''}
-          </div>
-          <p class="hh-body">${pd.helps}</p>
-        </div>
-      </div>`;
-  }
-
   _sortedFactors() {
-    const factors = this._factors.slice();
-    const cat = this._categoryFilter;
-    let shown = cat ? factors.filter(f => f.category === cat) : factors;
+    const all = this._factorsForDevice(this._device1);
+    const m = this._categoryFilter;
+    let shown = m ? all.filter(f => f.metric === m) : all;
     if (this._listSort === 'impact') {
-      const w = (f) => {
-        const pd = f.perDevice[this._device1];
-        return pd ? this._impactCfg(pd.impact).weight : this._impactCfg(f.baseImpact).weight;
-      };
-      shown.sort((a, b) => w(b) - w(a) || a.name.localeCompare(b.name));
+      shown.sort((a, b) => this._impactCfg(b.impact).weight - this._impactCfg(a.impact).weight || a.name.localeCompare(b.name));
     } else if (this._listSort === 'alpha') {
       shown.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (this._listSort === 'category') {
-      shown.sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
+    } else if (this._listSort === 'metric') {
+      const order = this._deviceMetrics[this._device1] || [];
+      shown.sort((a, b) =>
+        order.indexOf(a.metric) - order.indexOf(b.metric) ||
+        this._impactCfg(b.impact).weight - this._impactCfg(a.impact).weight ||
+        a.name.localeCompare(b.name));
     }
     return shown;
   }
 
   _renderFactorCard(f) {
-    const isExp = this._listExpandedKey === f.key;
-    const d1 = this._devices[this._device1];
-    const pd1 = f.perDevice[this._device1];
-    const impact = pd1 ? pd1.impact : f.baseImpact;
-    const impCfg = this._impactCfg(impact);
-    const cat = (this._categoryMeta[f.category] || {}).label || '';
+    const isExp = this._listExpandedKey === f._devKey;
+    const impCfg = this._impactCfg(f.impact);
+    const metricLbl = (this._metricMeta[f.metric] || {}).label || '';
+    const dirCls = f.direction === 'positive' ? 'fact-dir-pos' : f.direction === 'negative' ? 'fact-dir-neg' : 'fact-dir-var';
+    const dirArrow = f.direction === 'positive' ? '↓' : f.direction === 'negative' ? '↑' : '↕';
+    const dirLbl = f.direction === 'positive' ? 'Improves stress reading' : f.direction === 'negative' ? 'Worsens stress reading' : 'Variable effect';
 
     let body = '';
     if (isExp) {
-      const isCompare = this._mode === 'compare';
-      if (isCompare) {
-        const d2 = this._devices[this._device2];
-        body = `
-          <div class="fact-body">
-            <div class="device-block">
-              <div class="device-block-head">
-                <span class="device-block-name" style="--accent:${d1.color}">On ${d1.name}</span>
-                ${this._renderImpactBadge(pd1 ? pd1.impact : f.baseImpact, d1.name)}
-              </div>
-              ${this._renderHurtsHelps(this._device1, f.perDevice)}
-            </div>
-            <div class="device-block">
-              <div class="device-block-head">
-                <span class="device-block-name" style="--accent:${d2.color}">On ${d2.name}</span>
-                ${this._renderImpactBadge(f.perDevice[this._device2] ? f.perDevice[this._device2].impact : f.baseImpact, d2.name)}
-              </div>
-              ${this._renderHurtsHelps(this._device2, f.perDevice)}
-            </div>
-            <div class="fact-source-row">
-              <span class="fact-source-lbl">Source</span>
-              <a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>
-            </div>
-          </div>`;
-      } else {
-        body = `
-          <div class="fact-body">
-            ${this._renderHurtsHelps(this._device1, f.perDevice)}
-            <div class="fact-source-row">
-              <span class="fact-source-lbl">Source</span>
-              <a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>
-            </div>
-          </div>`;
-      }
+      body = `
+        <div class="fact-body">
+          <dl class="fact-fields">
+            <div><dt>Magnitude</dt><dd>${f.magnitude}</dd></div>
+            <div><dt>Mechanism</dt><dd>${f.mechanism}</dd></div>
+          </dl>
+          <div class="fact-source-row">
+            <span class="fact-source-lbl">Source</span>
+            <a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>
+          </div>
+        </div>`;
     }
 
     return `
-      <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}">
+      <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f._devKey}">
         <button class="fact-head" aria-expanded="${isExp}">
           <span class="fact-meta">
-            <span class="fact-cat">${cat}</span>
-            <span class="fact-name">${f.question}</span>
-            <span class="fact-effect">${f.name} <span class="fact-ev-inline">· ${impCfg.label} impact on ${d1.name}</span></span>
+            <span class="fact-cat">${metricLbl} <span class="fact-dir ${dirCls}" aria-hidden="true">${dirArrow}</span></span>
+            <span class="fact-name">${f.name}</span>
+            <span class="fact-effect ${dirCls}">${dirLbl} · ${impCfg.label} impact</span>
           </span>
           <span class="fact-pill ${impCfg.cls}">${impCfg.label}</span>
           <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
@@ -1084,16 +783,16 @@ class KygoWearableStress extends HTMLElement {
 
   _renderSortBar() {
     const opts = [
-      { k: 'impact',   l: 'Impact' },
-      { k: 'alpha',    l: 'A–Z' },
-      { k: 'category', l: 'Category' }
+      { k: 'metric', l: 'Metric' },
+      { k: 'impact', l: 'Impact' },
+      { k: 'alpha',  l: 'A–Z' }
     ];
-    const total = this._factors.length;
+    const total = this._factorsForDevice(this._device1).length;
     const shown = this._sortedFactors().length;
     const cat = this._categoryFilter;
-    const meta = this._categoryMeta[cat];
+    const metric = this._metricMeta[cat];
     const countHtml = cat
-      ? `<span class="list-result-count">Showing <strong>${shown}</strong> of ${total} · ${meta ? meta.label : ''}</span>`
+      ? `<span class="list-result-count">Showing <strong>${shown}</strong> of ${total} · ${metric ? metric.label : ''}</span>`
       : `<span class="list-result-count"><strong>${total}</strong> factors</span>`;
     return `
       <div class="list-toolbar">
@@ -1107,18 +806,19 @@ class KygoWearableStress extends HTMLElement {
       </div>`;
   }
 
-  _renderCategoryTiles() {
-    const counts = {};
-    this._factors.forEach(f => { counts[f.category] = (counts[f.category] || 0) + 1; });
-    const tiles = Object.entries(this._categoryMeta).map(([k, m]) => {
+  _renderMetricTiles() {
+    const deviceMetrics = this._deviceMetrics[this._device1] || [];
+    const tiles = deviceMetrics.map(k => {
+      const m = this._metricMeta[k];
+      const count = (this._metricFactors[k] || []).length;
       const isActive = this._categoryFilter === k;
       return `
         <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${k}" aria-pressed="${isActive}">
           <span class="picker-tile-name">${m.label}</span>
-          <span class="picker-tile-count">${counts[k] || 0}</span>
+          <span class="picker-tile-count">${count}</span>
         </button>`;
     }).join('');
-    return `<div class="picker-tiles">${tiles}</div>`;
+    return `<div class="picker-tiles picker-tiles--metrics" data-metric-count="${deviceMetrics.length}">${tiles}</div>`;
   }
 
   _renderDevicePicker() {
@@ -1147,21 +847,24 @@ class KygoWearableStress extends HTMLElement {
   _renderFactorsSection() {
     const d1 = this._devices[this._device1];
     const cat = this._categoryFilter;
-    const catLabel = cat ? (this._categoryMeta[cat] || {}).label : 'All';
+    const catLabel = cat ? (this._metricMeta[cat] || {}).label : null;
+    const total = this._factorsForDevice(this._device1).length;
     const shown = this._sortedFactors().length;
+    const metricCount = (this._deviceMetrics[this._device1] || []).length;
     return `
       <section class="factors-section section-bg-gray">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
-            <h2 class="section-h2">${this._factors.length} <em>factors</em> that move your <em>${d1.name}</em> score.</h2>
-            <p class="section-lede">Pick your wearable, then drill into a category. Each card expands with what's hurting your reading on that device — and what specifically helps.</p>
+            <h2 class="section-h2">${total} <em>factors</em> that move your <em>${d1.name}</em> score.</h2>
+            <p class="section-lede">Pick your wearable to see the metrics it actually reads, then tap a metric to see the factors that move it. Different devices use different signals, so the count changes.</p>
           </div>
           ${this._renderDevicePicker()}
-          ${this._renderCategoryTiles()}
+          <span class="metric-tiles-label">${metricCount} metric${metricCount === 1 ? '' : 's'} ${d1.name} reads</span>
+          ${this._renderMetricTiles()}
           <div class="picker-panel">
             <div class="picker-panel-head">
-              <h3 class="picker-panel-title">${catLabel} factors<span class="picker-panel-meta">${shown} factor${shown === 1 ? '' : 's'}</span></h3>
+              <h3 class="picker-panel-title">${catLabel ? `${catLabel} factors` : 'All factors'}<span class="picker-panel-meta">${shown} factor${shown === 1 ? '' : 's'}</span></h3>
             </div>
             ${this._renderSortBar()}
             ${this._renderFactorList()}
@@ -1241,7 +944,7 @@ class KygoWearableStress extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const totalFactors = this._factors.length;
+    const totalFactors = Object.values(this._metricFactors).reduce((s, arr) => s + arr.length, 0);
     const totalDevices = Object.keys(this._devices).length;
 
     this.shadowRoot.innerHTML = `
@@ -1381,7 +1084,7 @@ class KygoWearableStress extends HTMLElement {
       if (jumpBtn) {
         const k = jumpBtn.dataset.factJump;
         this._categoryFilter = null;
-        this._listSort = 'impact';
+        this._listSort = 'metric';
         this._listExpandedKey = k;
         const sec = shadow.querySelector('.factors-section');
         if (sec) sec.outerHTML = this._renderFactorsSection();
@@ -1749,8 +1452,10 @@ class KygoWearableStress extends HTMLElement {
       .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; letter-spacing: -0.005em; line-height: 1.2; min-width: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 3px 9px; min-width: 28px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
       .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
+      .picker-tiles--metrics { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
       @media (min-width: 560px) { .picker-tiles { grid-template-columns: repeat(3, 1fr); } }
       @media (min-width: 880px) { .picker-tiles { grid-template-columns: repeat(5, 1fr); } }
+      @media (min-width: 880px) { .picker-tiles--metrics { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); } }
 
       /* PICKER PANEL — white card holding the sort bar + factor list */
       .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
@@ -1784,10 +1489,23 @@ class KygoWearableStress extends HTMLElement {
       .fact-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
       .fact-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .fact-cat { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: var(--gray-400); line-height: 1; margin-bottom: 4px; }
+      .fact-cat { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: var(--gray-400); line-height: 1; margin-bottom: 4px; }
+      .fact-dir { font-size: 11px; font-weight: 700; line-height: 1; }
+      .fact-dir-pos { color: var(--green-dark); }
+      .fact-dir-neg { color: var(--red); }
+      .fact-dir-var { color: var(--amber); }
       .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; }
       .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.4; margin-top: 2px; }
+      .fact-effect.fact-dir-pos { color: var(--green-dark); }
+      .fact-effect.fact-dir-neg { color: var(--red); }
+      .fact-effect.fact-dir-var { color: var(--amber); }
       .fact-ev-inline { color: var(--gray-400); font-weight: 500; }
+      .fact-fields { display: grid; gap: 10px; margin: 0 0 4px; }
+      .fact-fields > div { display: grid; grid-template-columns: 1fr; gap: 2px; }
+      .fact-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
+      .fact-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
+      @media (min-width: 768px) { .fact-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } }
+      .metric-tiles-label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin: 6px 0 8px; }
       .fact-pill { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 10px; white-space: nowrap; min-width: 88px; text-align: center; letter-spacing: -0.005em; }
       .fact-pill.imp-high { background: var(--red-light); color: var(--red); }
       .fact-pill.imp-med  { background: var(--amber-light); color: var(--amber); }
