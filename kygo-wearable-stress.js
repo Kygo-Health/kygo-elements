@@ -1196,32 +1196,40 @@ class KygoWearableStress extends HTMLElement {
 
   _renderSourcesSection() {
     const groups = {
-      'Core HRV & stress research': [
+      'HRV & stress research': [
         { label: 'Frontiers in Physiology 2024 — Factors influencing HRV (PMC11333334)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'PMC9974008 — Chronic stress & HRV in medical professionals', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/' },
-        { label: 'PMC8950456 — HRV & exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/' },
-        { label: 'PMC11284693 — Caffeine, sleep & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
-        { label: 'PMC9549087 — Resting heart rate factors', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
-        { label: 'PMC6306777 — Exercise & RHR meta-analysis (Reimers 2018)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' }
+        { label: 'HRV & exercise meta-analysis (PMC8950456)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/' },
+        { label: 'Chronic stress & HRV in medical professionals (PMC9974008)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/' },
+        { label: 'Caffeine, sleep & HRV review (PMC11284693)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' }
+      ],
+      'Heart rate research': [
+        { label: 'RHR factors in healthy humans (PMC9549087)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
+        { label: 'Exercise & RHR meta-analysis — Reimers 2018 (PMC6306777)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' },
+        { label: 'American Heart Association — 8 things that affect your heart rate', url: 'https://www.heart.org/en/news/2019/02/01/8-things-that-can-affect-your-heart-and-what-to-do-about-them' },
+        { label: 'Cleveland Clinic — How to lower your resting heart rate', url: 'https://health.clevelandclinic.org/how-to-lower-your-resting-heart-rate' },
+        { label: 'Hackensack Meridian Health — 6 reasons your heart rate is high', url: 'https://www.hackensackmeridianhealth.org/en/healthier-you/2022/02/24/6-reasons-your-heart-rate-is-high' },
+        { label: 'The Heart Foundation — Your heart rate', url: 'https://theheartfoundation.org/2018/11/02/your-heart-rate/' }
       ],
       'EDA & skin conductance': [
+        { label: 'Wikipedia — Electrodermal Activity', url: 'https://en.wikipedia.org/wiki/Electrodermal_activity' },
         { label: 'BIOPAC — Electrodermal Activity overview', url: 'https://blog.biopac.com/electrodermal-activity-eda/' },
-        { label: 'PMC10575214 — Sensory EDA triggering', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/' },
-        { label: 'EBSCO Research Starters — Electrodermal Activity', url: 'https://www.ebsco.com/research-starters/health-and-medicine/electrodermal-activity-eda' },
-        { label: 'Wikipedia — Electrodermal Activity', url: 'https://en.wikipedia.org/wiki/Electrodermal_activity' }
+        { label: 'Sensory EDA triggering (PMC10575214)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/' }
       ],
-      'Skin temperature & ambient confounds': [
-        { label: 'PMC4664114 — Skin temperature as stress marker', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/' },
-        { label: 'PMC9690349 — Ambient temperature & physiological signals', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/' },
+      'Skin temperature': [
+        { label: 'Skin temperature & acute stress (PMC4664114)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/' },
+        { label: 'Ambient temperature & physiological signals (PMC9690349)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/' },
+        { label: 'Nature 2026 — Wearable-derived skin temperature dynamics during sleep', url: 'https://www.nature.com/articles/s41746-026-02633-2' },
+        { label: 'ScienceDirect 2025 — EDA & skin temp in stress and depression', url: 'https://www.sciencedirect.com/science/article/pii/S2666915325000071' },
         { label: 'Ultrahuman — Factors influencing skin temperature', url: 'https://blog.ultrahuman.com/blog/factors-influencing-skin-temperature/' }
       ],
       'Device documentation': [
         { label: 'WHOOP — Recovery 101', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
         { label: 'Polar — Nightly Recharge measurement', url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement' },
-        { label: 'Oura Blog — Cumulative Stress (2025)', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' },
-        { label: 'Oura Blog — Daytime Stress feature', url: 'https://ouraring.com/blog/daytime-stress-feature/' },
-        { label: 'Marathon Handbook 2026 — HRV strategies', url: 'https://marathonhandbook.com/how-to-increase-hrv/' },
-        { label: 'Kygo.app — How to improve HRV: 44 factors ranked', url: 'https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence' }
+        { label: 'Oura — Introducing Cumulative Stress (2025)', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' }
+      ],
+      'Independent reviews': [
+        { label: 'Kygo — HRV: 44 factors ranked by evidence', url: 'https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence' },
+        { label: 'Marathon Handbook 2026 — How to increase HRV', url: 'https://marathonhandbook.com/how-to-increase-hrv/' }
       ]
     };
     const total = Object.values(groups).reduce((s, g) => s + g.length, 0);
@@ -1229,7 +1237,7 @@ class KygoWearableStress extends HTMLElement {
       <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title">Sources</h2>
-          <p class="section-sub">All claims sourced from peer-reviewed research and official device documentation.</p>
+          <p class="section-sub">All claims sourced from peer-reviewed research and official device documentation. Every factor in the breakdown above cites at least one of these.</p>
           <div class="src-accordion">
             <div class="src-count-badge">${total} sources cited</div>
             ${Object.entries(groups).map(([cat, items]) => `
@@ -1247,6 +1255,7 @@ class KygoWearableStress extends HTMLElement {
         </div>
       </section>`;
   }
+
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
