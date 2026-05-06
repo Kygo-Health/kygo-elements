@@ -836,6 +836,23 @@ class KygoWearableStress extends HTMLElement {
     ];
   }
 
+  _renderArticleCta() {
+    return `
+      <section class="article-section section-bg-white">
+        <div class="container">
+          <a href="https://www.kygo.app/post/wearable-stress-research" class="article-card animate-on-scroll" target="_blank" rel="noopener">
+            <span class="article-badge">Deep Dive</span>
+            <div class="article-body">
+              <span class="article-kicker">Read the full article</span>
+              <h3 class="article-title">How 7 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
+              <p class="article-desc">Every signal, algorithm, and cited study in one long-form read.</p>
+            </div>
+            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>`;
+  }
+
   _renderCtaRow() {
     const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
     return `
@@ -1265,6 +1282,7 @@ class KygoWearableStress extends HTMLElement {
 
       <div class="animate-on-scroll">${this._renderComparisonModule()}</div>
       <div class="animate-on-scroll">${this._renderFactorsSection()}</div>
+      ${this._renderArticleCta()}
       ${this._renderCtaRow()}
       ${this._renderMythsSection()}
       ${this._renderTopPicks()}
