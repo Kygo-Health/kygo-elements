@@ -579,6 +579,21 @@ class KygoWearableStress extends HTMLElement {
     })[catKey] || 'sparkle';
   }
 
+  // Brand-aligned category accents — green family + slates + one warm tone.
+  // Same approach as RHR factors: variation through hue intensity, not rainbow.
+  _categoryAccent(catKey) {
+    const map = {
+      substance:   { color: '#B45309', bg: 'rgba(180,83,9,0.10)',  ink: '#B45309' },
+      sleep:       { color: '#475569', bg: 'rgba(71,85,105,0.10)', ink: '#334155' },
+      activity:    { color: '#16A34A', bg: 'rgba(22,163,74,0.10)', ink: '#16A34A' },
+      mental:      { color: '#0F766E', bg: 'rgba(15,118,110,0.10)', ink: '#0F766E' },
+      physical:    { color: '#22C55E', bg: 'rgba(34,197,94,0.10)', ink: '#16A34A' },
+      environment: { color: '#334155', bg: 'rgba(51,65,85,0.10)',  ink: '#334155' },
+      physiology:  { color: '#1E293B', bg: 'rgba(30,41,59,0.10)',  ink: '#1E293B' }
+    };
+    return map[catKey] || map.activity;
+  }
+
   _impactCfg(impact) {
     const map = {
       high: { label: 'High',   cls: 'imp-high',   weight: 3 },
@@ -607,6 +622,40 @@ class KygoWearableStress extends HTMLElement {
     }).join('');
   }
 
+  _renderPipelineDiagram(d) {
+    const activeSignals = [
+      ['hrv', 'HRV'],
+      ['hr', 'HR'],
+      ['eda', 'EDA'],
+      ['skinTemp', 'Temp'],
+      ['rr', 'Resp'],
+      ['spo2', 'SpO₂']
+    ].filter(([k]) => d.sensors[k]).map(([, label]) => label);
+
+    const algoShort = d.modelLine;
+    const scaleShort = d.scale.split('·')[0].trim();
+
+    return `
+      <div class="pipeline" aria-hidden="true">
+        <div class="pipe-step pipe-signals">
+          <span class="pipe-eyebrow">Signals</span>
+          <div class="pipe-chips">
+            ${activeSignals.map(s => `<span class="pipe-chip">${s}</span>`).join('')}
+          </div>
+        </div>
+        <span class="pipe-arrow">${this._icon('arrowRight')}</span>
+        <div class="pipe-step pipe-algo">
+          <span class="pipe-eyebrow">Algorithm</span>
+          <span class="pipe-text">${algoShort}</span>
+        </div>
+        <span class="pipe-arrow">${this._icon('arrowRight')}</span>
+        <div class="pipe-step pipe-score">
+          <span class="pipe-eyebrow">Score</span>
+          <span class="pipe-text pipe-score-text">${scaleShort}</span>
+        </div>
+      </div>`;
+  }
+
   _renderDeviceCard(deviceKey) {
     const d = this._devices[deviceKey];
     if (!d) return '';
@@ -623,14 +672,14 @@ class KygoWearableStress extends HTMLElement {
           <span class="device-card-pill">${sensorCount} signal${sensorCount === 1 ? '' : 's'}</span>
         </header>
 
+        ${this._renderPipelineDiagram(d)}
+
         <div class="device-card-section">
           <span class="device-card-eyebrow">Sensors fed into stress</span>
           <div class="device-sensor-row" aria-label="Sensors used by ${d.name}">${this._sensorChips(d.sensors)}</div>
         </div>
 
         <dl class="device-card-rows">
-          <div class="device-card-row"><dt>Algorithm</dt><dd>${d.algorithm}</dd></div>
-          <div class="device-card-row"><dt>Scale</dt><dd>${d.scale}</dd></div>
           <div class="device-card-row"><dt>Baseline</dt><dd>${d.baseline}</dd></div>
           <div class="device-card-row"><dt>Coverage</dt><dd>${d.coverage}</dd></div>
         </dl>
@@ -749,11 +798,11 @@ class KygoWearableStress extends HTMLElement {
 
   _renderImpactPill(impact) {
     const cfg = this._impactCfg(impact);
-    return `<span class="impact-pill ${cfg.cls}">
+    return `<span class="impact-pill ${cfg.cls}" aria-label="${cfg.label} impact">
       <span class="impact-pill-bars" aria-hidden="true">
         <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span>
       </span>
-      <span class="impact-pill-text">${cfg.label} impact</span>
+      <span class="impact-pill-text">${cfg.label}</span>
     </span>`;
   }
 
@@ -874,22 +923,45 @@ class KygoWearableStress extends HTMLElement {
     ];
   }
 
-  _renderArticleCta() {
+  _renderCtaRow() {
+    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
     return `
-      <section class="article-section section-bg-white">
+      <section class="cta-row-section section-bg-white">
         <div class="container">
-          <a href="https://www.kygo.app/post/wearable-stress-research" class="article-card animate-on-scroll" target="_blank" rel="noopener">
-            <span class="article-badge">Deep Dive</span>
-            <div class="article-body">
-              <span class="article-kicker">Read the full article</span>
-              <h3 class="article-title">Wearable Stress Research: How 7 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
-              <p class="article-desc">Every signal, every algorithm, every cited study in one long-form read.</p>
+          <div class="cta-row">
+            <a href="https://www.kygo.app/post/wearable-stress-research" class="article-card animate-on-scroll" target="_blank" rel="noopener">
+              <span class="article-badge">Deep Dive</span>
+              <div class="article-body">
+                <span class="article-kicker">Read the full article</span>
+                <h3 class="article-title">How 7 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
+                <p class="article-desc">Every signal, algorithm, and cited study in one long-form read.</p>
+              </div>
+              <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
+            </a>
+            <div class="app-cta animate-on-scroll">
+              <div class="app-cta-glow" aria-hidden="true"></div>
+              <div class="app-cta-content">
+                <div class="app-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
+                <h3>See what's <span class="highlight">actually moving your score</span></h3>
+                <p>Kygo connects your wearable's stress signals with what you eat, drink, and do.</p>
+                <div class="app-cta-buttons">
+                  <a href="${iosUrl}" class="app-cta-btn" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    iOS
+                  </a>
+                  <a href="https://kygo.app/android" target="_blank" rel="noopener" class="app-cta-android">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                    Android
+                  </a>
+                </div>
+              </div>
             </div>
-            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
-          </a>
+          </div>
         </div>
       </section>`;
   }
+
+  _renderAppCta() { return ''; /* deprecated, merged into _renderCtaRow */ }
 
   _renderMythsSection() {
     const groups = ['Reading the score', 'Devices', 'Signals', 'Lifestyle'];
@@ -898,51 +970,49 @@ class KygoWearableStress extends HTMLElement {
     const total = this._myths.length;
     const picked = this._mythsCatPick;
 
-    const tiles = groups.map(g => {
-      const isActive = picked === g;
-      return `
-        <button class="picker-tile ${isActive ? 'active' : ''}" data-myths-cat="${g}" aria-pressed="${isActive}">
-          <span class="picker-tile-name">${g}</span>
-          <span class="picker-tile-count">${counts[g]}</span>
-        </button>`;
-    }).join('');
+    // Default highest-value myths shown immediately (no empty state)
+    const featuredKeys = [
+      'My Garmin "55" means the same as my friend\'s Samsung "55"',
+      'Apple Watch has a native stress score',
+      'EDA detects "stress" specifically',
+      'A drop in HRV always means stress'
+    ];
+    const items = picked
+      ? this._myths.filter(m => m.cat === picked)
+      : this._myths.filter(m => featuredKeys.includes(m.name));
 
-    let panel = '';
-    if (picked) {
-      const items = this._myths.filter(m => m.cat === picked);
-      const cards = items.map(m => `
-        <article class="myth-card">
-          <div class="myth-row">
-            <h4 class="myth-name">${m.name}</h4>
-            <span class="myth-badge">Myth</span>
-          </div>
-          <p class="myth-why">${m.why}</p>
-        </article>`).join('');
-      panel = `
-        <div class="picker-panel">
-          <div class="picker-panel-head">
-            <h3 class="picker-panel-title">${picked}<span class="picker-panel-meta">${items.length} debunked</span></h3>
-          </div>
-          <div class="myth-grid">${cards}</div>
-        </div>`;
-    } else {
-      panel = `
-        <div class="picker-empty">
-          <span class="picker-empty-icon" aria-hidden="true">${this._icon('ghost')}</span>
-          <p>Tap a category above to see the most common stress-wearable misconceptions debunked.</p>
-        </div>`;
-    }
+    const cards = items.map(m => `
+      <article class="myth-card">
+        <div class="myth-row">
+          <h4 class="myth-name">${m.name}</h4>
+          <span class="myth-badge">Myth</span>
+        </div>
+        <p class="myth-why">${m.why}</p>
+        <span class="myth-cat-tag">${m.cat}</span>
+      </article>`).join('');
+
+    const tiles = `
+      <button class="myth-filter ${picked === null ? 'active' : ''}" data-myths-cat="__featured" aria-pressed="${picked === null}">
+        <span>Top picks</span><span class="myth-filter-count">${featuredKeys.length}</span>
+      </button>
+      ${groups.map(g => {
+        const isActive = picked === g;
+        return `<button class="myth-filter ${isActive ? 'active' : ''}" data-myths-cat="${g}" aria-pressed="${isActive}">
+          <span>${g}</span><span class="myth-filter-count">${counts[g]}</span>
+        </button>`;
+      }).join('')}
+    `;
 
     return `
       <section class="myths-section section-bg-white" aria-labelledby="myths-title">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow amber"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('ghost')}</span>Common Myths</span>
-            <h2 class="section-h2" id="myths-title">What people <em>get wrong</em> about stress scores (${total} debunked).</h2>
-            <p class="section-lede">A "stress score" sits at the intersection of physiology, signal processing, and marketing — easy to misread. Pick a category to see the misconceptions worth dropping.</p>
+            <h2 class="section-h2" id="myths-title">What people <em>get wrong</em> about stress scores.</h2>
+            <p class="section-lede">${total} misconceptions debunked. The ones below are the four worth dropping today — switch categories for the rest.</p>
           </div>
-          <div class="picker-tiles myths-tiles">${tiles}</div>
-          ${panel}
+          <div class="myth-filters" role="tablist">${tiles}</div>
+          <div class="myth-grid">${cards}</div>
         </div>
       </section>`;
   }
@@ -1016,17 +1086,20 @@ class KygoWearableStress extends HTMLElement {
     return shown;
   }
 
-  _renderFactorCard(f) {
+  _renderFactorCard(f, rank) {
     const isExp = this._listExpandedKey === f.key;
     const d1 = this._devices[this._device1];
     const pd1 = f.perDevice[this._device1];
     const impact = pd1 ? pd1.impact : f.baseImpact;
+    const impCfg = this._impactCfg(impact);
     const cat = (this._categoryMeta[f.category] || {}).label || '';
     const catIcon = this._categoryIconKey(f.category);
-    const isCompare = this._mode === 'compare';
+    const acc = this._categoryAccent(f.category);
+    const barPct = (impCfg.weight / 3) * 100;
 
     let body = '';
     if (isExp) {
+      const isCompare = this._mode === 'compare';
       if (isCompare) {
         const d2 = this._devices[this._device2];
         body = `
@@ -1063,21 +1136,18 @@ class KygoWearableStress extends HTMLElement {
     }
 
     return `
-      <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}">
+      <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}" style="--cat-accent:${acc.color};--cat-bg:${acc.bg};--cat-ink:${acc.ink}">
         <button class="fact-head" aria-expanded="${isExp}">
+          <span class="fact-rank" aria-hidden="true">${String(rank).padStart(2, '0')}</span>
           <span class="fact-cat-icon" aria-hidden="true">${this._icon(catIcon)}</span>
           <span class="fact-meta">
-            <span class="fact-cat-line">
-              <span class="fact-cat">${cat}</span>
-              <span class="fact-cat-dot" aria-hidden="true">·</span>
-              <span class="fact-cat-q">Question</span>
-            </span>
-            <span class="fact-question">${f.question}</span>
-            <span class="fact-name">${f.name} · on ${d1.name}</span>
+            <span class="fact-name">${f.name}</span>
+            <span class="fact-sub">${f.question} <span class="fact-cat-tag">${cat}</span></span>
           </span>
-          <span class="fact-impact-cell">
-            ${this._renderImpactPill(impact)}
+          <span class="fact-bar" aria-hidden="true">
+            <span class="fact-bar-fill imp-${impact}" style="width:${barPct}%"></span>
           </span>
+          ${this._renderImpactPill(impact)}
           <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
         </button>
         ${body}
@@ -1087,12 +1157,12 @@ class KygoWearableStress extends HTMLElement {
   _renderFactorList() {
     const shown = this._sortedFactors();
     if (!shown.length) return '<p class="dash-empty">No factors match this filter.</p>';
-    return `<div class="fact-list">${shown.map(f => this._renderFactorCard(f)).join('')}</div>`;
+    return `<div class="fact-list">${shown.map((f, i) => this._renderFactorCard(f, i + 1)).join('')}</div>`;
   }
 
   _renderSortBar() {
     const opts = [
-      { k: 'impact', l: 'Impact (default)' },
+      { k: 'impact', l: 'Impact' },
       { k: 'alpha', l: 'A–Z' },
       { k: 'category', l: 'Category' }
     ];
@@ -1105,12 +1175,12 @@ class KygoWearableStress extends HTMLElement {
       : `<span class="list-result-count"><strong>${total}</strong> factors</span>`;
     return `
       <div class="list-toolbar">
-        <div class="list-toolbar-row">
-          ${countHtml}
-          <span class="list-sort-label">Sort by</span>
-        </div>
-        <div class="list-sort-btns">
-          ${opts.map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('')}
+        ${countHtml}
+        <div class="list-sort-inline">
+          <span class="list-sort-label">Sort</span>
+          <div class="list-sort-btns">
+            ${opts.map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('')}
+          </div>
         </div>
       </div>`;
   }
@@ -1118,20 +1188,19 @@ class KygoWearableStress extends HTMLElement {
   _renderCategoryTiles() {
     const counts = {};
     this._factors.forEach(f => { counts[f.category] = (counts[f.category] || 0) + 1; });
-    const tiles = Object.entries(this._categoryMeta).map(([k, m]) => {
+    const allChip = `
+      <button class="cat-chip ${this._categoryFilter === null ? 'active' : ''}" data-cat="__all" aria-pressed="${this._categoryFilter === null}">
+        All<span class="cat-chip-count">${this._factors.length}</span>
+      </button>`;
+    const chips = Object.entries(this._categoryMeta).map(([k, m]) => {
       const isActive = this._categoryFilter === k;
+      const acc = this._categoryAccent(k);
       return `
-        <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${k}" aria-pressed="${isActive}">
-          <span class="picker-tile-name">${m.label}</span>
-          <span class="picker-tile-count">${counts[k] || 0}</span>
+        <button class="cat-chip ${isActive ? 'active' : ''}" data-cat="${k}" aria-pressed="${isActive}" style="--cat-accent:${acc.color};--cat-bg:${acc.bg}">
+          <span class="cat-chip-dot" aria-hidden="true"></span>${m.label}<span class="cat-chip-count">${counts[k] || 0}</span>
         </button>`;
     }).join('');
-    const allTile = `
-      <button class="picker-tile ${this._categoryFilter === null ? 'active' : ''}" data-cat="__all" aria-pressed="${this._categoryFilter === null}">
-        <span class="picker-tile-name">All</span>
-        <span class="picker-tile-count">${this._factors.length}</span>
-      </button>`;
-    return `<div class="picker-tiles">${allTile}${tiles}</div>`;
+    return `<div class="cat-chip-row" role="tablist">${allChip}${chips}</div>`;
   }
 
   _renderFactorsSection() {
@@ -1242,26 +1311,25 @@ class KygoWearableStress extends HTMLElement {
 
       <section class="hero section-bg-white">
         <div class="container hero-inner">
-          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalFactors} Factors • ${totalDevices} Wearables • All Peer-Reviewed</div>
+          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalFactors} Factors · ${totalDevices} Wearables · Peer-Reviewed</div>
           <h1 class="hero-title animate-on-scroll">How does <em>your wearable</em> measure stress?</h1>
-          <p class="hero-sub animate-on-scroll">Every brand reads stress differently — HRV, EDA, skin temp, breathing rate. Pick your device and the factor cards re-sort around what actually moves <strong>your</strong> score.</p>
-          <div class="animate-on-scroll">
-            <div class="hero-meta">
-              <div class="hero-cell"><span class="hero-num">${totalFactors}</span><span class="hero-lbl">Factors tracked</span></div>
-              <div class="hero-cell"><span class="hero-num">${totalDevices}</span><span class="hero-lbl">Wearables compared</span></div>
-              <div class="hero-cell"><span class="hero-num hero-num--pos">82%</span><span class="hero-lbl">Multi-signal accuracy</span></div>
-              <div class="hero-cell"><span class="hero-num">77%</span><span class="hero-lbl">HRV-only accuracy</span></div>
-            </div>
+          <p class="hero-sub animate-on-scroll">Every brand reads stress differently — HRV, EDA, skin temp, breathing rate. Pick your device and the factor list below re-sorts around what actually moves <strong>your</strong> score.</p>
+          <div class="hero-stats animate-on-scroll">
+            <span class="hero-stat"><strong>${totalDevices}</strong>wearables</span>
+            <span class="hero-stat-sep" aria-hidden="true"></span>
+            <span class="hero-stat"><strong>${totalFactors}</strong>factors</span>
+            <span class="hero-stat-sep" aria-hidden="true"></span>
+            <span class="hero-stat"><strong>82%</strong>multi-signal accuracy</span>
+            <span class="hero-stat-sep" aria-hidden="true"></span>
+            <span class="hero-stat"><strong>77%</strong>HRV-only accuracy</span>
           </div>
           ${this._heroWaveSvg()}
         </div>
       </section>
 
       <div class="animate-on-scroll">${this._renderComparisonModule()}</div>
-      <div class="animate-on-scroll">${this._renderEvidenceLeaderboard()}</div>
-      ${this._renderArticleCta()}
-      ${this._renderAppCta()}
       <div class="animate-on-scroll">${this._renderFactorsSection()}</div>
+      ${this._renderCtaRow()}
       ${this._renderMythsSection()}
       ${this._renderTopPicks()}
       ${this._renderCalloutSection()}
@@ -1328,7 +1396,7 @@ class KygoWearableStress extends HTMLElement {
       const mythsTile = e.target.closest('[data-myths-cat]');
       if (mythsTile) {
         const k = mythsTile.dataset.mythsCat;
-        this._mythsCatPick = this._mythsCatPick === k ? null : k;
+        this._mythsCatPick = (k === '__featured') ? null : k;
         const sec = shadow.querySelector('.myths-section');
         if (sec) sec.outerHTML = this._renderMythsSection();
         return;
@@ -1380,8 +1448,6 @@ class KygoWearableStress extends HTMLElement {
     const shadow = this.shadowRoot;
     const compSec = shadow.querySelector('.comparison-section');
     if (compSec) compSec.outerHTML = this._renderComparisonModule();
-    const evSec = shadow.querySelector('.evidence-section');
-    if (evSec) evSec.outerHTML = this._renderEvidenceLeaderboard();
     const factSec = shadow.querySelector('.factors-section');
     if (factSec) factSec.outerHTML = this._renderFactorsSection();
   }
@@ -1471,22 +1537,11 @@ class KygoWearableStress extends HTMLElement {
       .hero-title em { font-style: normal; color: var(--green); font-family: inherit; }
       .hero-sub { margin: 20px 0 0; max-width: 56ch; font-size: clamp(15px, 2.2vw, 19px); line-height: 1.5; color: var(--gray-600); }
       .hero-sub strong { color: var(--dark); font-weight: 600; }
-      .hero-meta { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--gray-200); padding-top: 20px; max-width: 760px; }
-      .hero-cell { padding: 8px 14px 8px 0; border-right: 1px solid var(--gray-200); min-width: 0; }
-      .hero-cell:nth-child(2n) { border-right: 0; padding-right: 0; padding-left: 16px; }
-      .hero-cell:nth-child(-n+2) { border-bottom: 1px solid var(--gray-200); padding-bottom: 16px; }
-      .hero-cell:nth-child(n+3) { padding-top: 16px; }
-      .hero-num { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 6.5vw, 40px); color: var(--dark); letter-spacing: -0.02em; font-feature-settings: "tnum" 1; display: block; line-height: 1; }
-      .hero-num--pos { color: var(--green-dark); }
-      .hero-lbl { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; margin-top: 6px; display: block; }
+      .hero-stats { margin-top: 28px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding-top: 22px; border-top: 1px solid var(--gray-200); max-width: 760px; }
+      .hero-stat { display: inline-flex; align-items: baseline; gap: 6px; font-size: 12.5px; color: var(--gray-600); font-weight: 500; letter-spacing: 0.1px; }
+      .hero-stat strong { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: var(--dark); font-feature-settings: "tnum" 1; }
+      .hero-stat-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--gray-300); }
       .hero-wave { display: none; }
-      @media (min-width: 640px) {
-        .hero-meta { grid-template-columns: repeat(4, 1fr); }
-        .hero-cell { padding: 0 16px; border-right: 1px solid var(--gray-200); border-bottom: 0 !important; }
-        .hero-cell:first-child { padding-left: 0; }
-        .hero-cell:last-child { border-right: 0; padding-right: 0; }
-        .hero-cell:nth-child(n+3), .hero-cell:nth-child(-n+2) { padding-top: 0; padding-bottom: 0; }
-      }
       @media (min-width: 1000px) {
         .hero-wave { display: block; position: absolute; right: -20px; top: 30px; width: 46%; max-width: 560px; opacity: 0.9; pointer-events: none; }
       }
@@ -1506,10 +1561,10 @@ class KygoWearableStress extends HTMLElement {
       .section-lede { font-size: 15px; color: var(--gray-600); line-height: 1.55; margin: 0; max-width: 64ch; }
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
-      .comparison-section, .evidence-section, .factors-section, .callout-section, .sources-section, .picks-section, .app-cta-section, .myths-section, .article-section { padding: 48px 0 56px; }
+      .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section, .cta-row-section { padding: 48px 0 56px; }
       @media (min-width: 768px) {
-        .comparison-section, .evidence-section, .factors-section, .callout-section, .sources-section, .picks-section, .app-cta-section, .myths-section { padding: 64px 0 72px; }
-        .article-section { padding: 56px 0; }
+        .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section { padding: 64px 0 72px; }
+        .cta-row-section { padding: 56px 0; }
       }
 
       /* ARTICLE CTA */
@@ -1534,32 +1589,30 @@ class KygoWearableStress extends HTMLElement {
         .article-body { padding-right: 0; }
       }
 
-      /* PICKER PANEL (myths) */
-      .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); animation: panelIn .35s cubic-bezier(0.16, 1, 0.3, 1); }
-      @keyframes panelIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-      .picker-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
-      .picker-panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-      .picker-panel-meta { font-size: 11.5px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.5px; text-transform: uppercase; }
-      .picker-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 32px 20px; background: #fff; border: 1px dashed var(--gray-200); border-radius: 18px; text-align: center; color: var(--gray-600); font-size: 13.5px; line-height: 1.5; }
-      .picker-empty-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--gray-100); color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; }
-      .picker-empty-icon svg { width: 18px; height: 18px; }
-      .picker-empty p { margin: 0; max-width: 36ch; }
+      /* MYTH FILTERS — pill row, no empty state */
+      .myth-filters { display: flex; gap: 6px; padding: 4px 2px 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .myth-filters::-webkit-scrollbar { height: 4px; }
+      .myth-filters::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+      .myth-filter { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; min-height: 34px; flex-shrink: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 9999px; font-family: inherit; font-weight: 600; font-size: 12.5px; color: var(--gray-700); cursor: pointer; white-space: nowrap; transition: all .15s; }
+      .myth-filter:hover { border-color: var(--gray-300); }
+      .myth-filter.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+      .myth-filter-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 10.5px; color: var(--gray-400); background: var(--gray-100); padding: 1px 6px; border-radius: 9999px; }
+      .myth-filter.active .myth-filter-count { background: rgba(255,255,255,0.18); color: #fff; }
 
       /* MYTH CARDS */
       .myth-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-      .myth-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; padding: 13px 15px; transition: border-color .15s; }
-      .myth-card:hover { border-color: var(--gray-300); }
+      .myth-card { position: relative; background: #fff; border: 1px solid var(--gray-200); border-left: 3px solid var(--amber); border-radius: 12px; padding: 14px 16px 14px 14px; transition: border-color .15s, box-shadow .15s, transform .15s; }
+      .myth-card:hover { border-color: var(--gray-300); border-left-color: var(--amber); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(15,23,42,0.06); }
       .myth-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
-      .myth-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); margin: 0; line-height: 1.3; flex: 1; min-width: 0; letter-spacing: -0.005em; }
+      .myth-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; color: var(--dark); margin: 0; line-height: 1.3; flex: 1; min-width: 0; letter-spacing: -0.005em; }
       .myth-badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--amber); background: rgba(180,83,9,0.08); padding: 3px 8px; border-radius: 9999px; white-space: nowrap; flex-shrink: 0; }
-      .myth-why { margin: 6px 0 0; font-size: 12.5px; color: var(--gray-600); line-height: 1.55; }
-      .myths-tiles { grid-template-columns: repeat(2, 1fr); }
+      .myth-why { margin: 6px 0 8px; font-size: 12.5px; color: var(--gray-600); line-height: 1.55; }
+      .myth-cat-tag { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--gray-400); }
       @media (min-width: 680px) {
         .myth-grid { grid-template-columns: repeat(2, 1fr); }
-        .myths-tiles { grid-template-columns: repeat(4, 1fr); }
       }
       @media (min-width: 1024px) {
-        .myth-grid { grid-template-columns: repeat(3, 1fr); }
+        .myth-grid { grid-template-columns: repeat(2, 1fr); }
       }
 
       /* COMPARISON SHELL */
@@ -1601,6 +1654,23 @@ class KygoWearableStress extends HTMLElement {
       .device-card-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 20px; color: var(--dark); line-height: 1.2; letter-spacing: -0.01em; }
       .device-card-model { display: block; margin-top: 2px; font-size: 12.5px; color: var(--gray-600); font-weight: 500; }
       .device-card-pill { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; background: var(--gray-100); color: var(--gray-600); white-space: nowrap; flex-shrink: 0; }
+      /* SIGNAL PIPELINE DIAGRAM */
+      .pipeline { display: flex; align-items: stretch; gap: 8px; margin-bottom: 18px; padding: 14px; background: linear-gradient(180deg, rgba(34,197,94,0.04) 0%, rgba(34,197,94,0.00) 100%); border: 1px dashed rgba(34,197,94,0.25); border-radius: 14px; overflow-x: auto; }
+      .pipe-step { display: flex; flex-direction: column; gap: 4px; padding: 8px 10px; background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; min-width: 0; flex: 1 1 auto; }
+      .pipe-eyebrow { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
+      .pipe-text { font-size: 12px; color: var(--gray-700); font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
+      .pipe-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+      .pipe-chip { font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 9999px; background: var(--green-light); color: var(--green-dark); }
+      .pipe-arrow { display: inline-flex; align-items: center; color: var(--gray-300); flex-shrink: 0; }
+      .pipe-arrow svg { width: 14px; height: 14px; }
+      .pipe-score { background: var(--dark); border-color: var(--dark); }
+      .pipe-score .pipe-eyebrow { color: rgba(255,255,255,0.5); }
+      .pipe-score-text { color: #fff; }
+      @media (max-width: 540px) {
+        .pipeline { flex-direction: column; align-items: stretch; }
+        .pipe-arrow { transform: rotate(90deg); align-self: center; }
+      }
+
       .device-card-section { margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px dashed var(--gray-200); }
       .device-card-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 10px; }
       .device-sensor-row { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -1685,57 +1755,69 @@ class KygoWearableStress extends HTMLElement {
         .lb-track { display: none; }
       }
 
-      /* PICKER TILES */
-      .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
-      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; min-height: 52px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
-      .picker-tile:hover { border-color: var(--gray-300); transform: translateY(-1px); }
-      .picker-tile.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 6px 18px rgba(15,23,42,0.12); }
-      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; letter-spacing: -0.005em; line-height: 1.15; flex: 1; min-width: 0; overflow-wrap: anywhere; }
-      .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 3px 9px; min-width: 28px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
-      .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
-      @media (min-width: 680px) { .picker-tiles { grid-template-columns: repeat(4, 1fr); } }
-      @media (min-width: 1000px) { .picker-tiles { grid-template-columns: repeat(8, 1fr); } }
+      /* CATEGORY CHIPS — horizontal scroll, no wrap */
+      .cat-chip-row { display: flex; gap: 8px; margin-bottom: 16px; padding: 4px 2px 12px; overflow-x: auto; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+      .cat-chip-row::-webkit-scrollbar { height: 4px; }
+      .cat-chip-row::-webkit-scrollbar-track { background: transparent; }
+      .cat-chip-row::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+      .cat-chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; min-height: 38px; flex-shrink: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 9999px; font-family: inherit; font-weight: 600; font-size: 13px; color: var(--gray-700); cursor: pointer; white-space: nowrap; transition: border-color .15s, background .15s, color .15s, box-shadow .15s; }
+      .cat-chip:hover { border-color: var(--gray-300); }
+      .cat-chip-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cat-accent, var(--gray-300)); flex-shrink: 0; }
+      .cat-chip-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11px; color: var(--gray-400); background: var(--gray-100); padding: 2px 7px; border-radius: 9999px; font-feature-settings: "tnum" 1; }
+      .cat-chip.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 4px 12px rgba(15,23,42,0.14); }
+      .cat-chip.active .cat-chip-count { background: rgba(255,255,255,0.18); color: #fff; }
+      .cat-chip.active .cat-chip-dot { background: var(--cat-accent, var(--green)); box-shadow: 0 0 0 2px rgba(255,255,255,0.4); }
 
-      /* SORT BAR */
-      .list-toolbar { display: flex; flex-direction: column; align-items: stretch; gap: 8px; margin-bottom: 12px; }
-      .list-toolbar-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-      .list-sort-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--gray-400); font-weight: 600; }
-      .list-result-count { font-size: 12px; font-weight: 500; color: var(--gray-600); font-feature-settings: "tnum" 1; }
+      /* SORT BAR — single inline cluster */
+      .list-toolbar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+      .list-result-count { font-size: 12.5px; font-weight: 500; color: var(--gray-600); font-feature-settings: "tnum" 1; }
       .list-result-count strong { color: var(--dark); font-weight: 700; }
-      .list-sort-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-      .list-sort-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 8px 12px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; }
-      .list-sort-btn:hover { border-color: var(--gray-400); }
-      .list-sort-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); }
+      .list-sort-inline { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+      .list-sort-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.7px; color: var(--gray-400); font-weight: 700; }
+      .list-sort-btns { display: inline-flex; padding: 3px; gap: 2px; background: var(--gray-100); border-radius: 9999px; }
+      .list-sort-btn { padding: 6px 12px; border-radius: 9999px; border: 0; background: transparent; color: var(--gray-600); font-size: 12.5px; font-weight: 600; cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap; }
+      .list-sort-btn:hover { color: var(--dark); }
+      .list-sort-btn.active { background: #fff; color: var(--dark); box-shadow: 0 2px 6px rgba(15,23,42,0.08); }
       @media (min-width: 680px) {
         .list-toolbar { flex-direction: row; align-items: center; justify-content: space-between; }
-        .list-sort-btns { display: flex; gap: 6px; }
-        .list-sort-btn { padding: 8px 16px; min-height: 36px; }
       }
 
-      /* FACTOR CARDS */
-      .fact-list { display: grid; gap: 10px; }
-      .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 16px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
-      .fact-card:hover { border-color: var(--gray-300); }
-      .fact-card.expanded { box-shadow: 0 8px 24px rgba(15,23,42,0.07); border-color: var(--gray-300); }
-      .fact-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 14px; width: 100%; padding: 16px 18px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
+      /* FACTOR CARDS — unified leaderboard row + expanding body */
+      .fact-list { display: grid; gap: 8px; }
+      .fact-card { position: relative; background: #fff; border: 1px solid var(--gray-200); border-left: 3px solid var(--cat-accent, var(--gray-300)); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s, transform .15s; animation: factGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+      @keyframes factGrow { from { opacity: 0; transform: translateY(4px); } }
+      .fact-card:hover { border-color: var(--gray-300); border-left-color: var(--cat-accent, var(--gray-300)); transform: translateY(-1px); }
+      .fact-card.expanded { box-shadow: 0 8px 24px rgba(15,23,42,0.07); border-color: var(--gray-300); border-left-color: var(--cat-accent, var(--green)); }
+
+      .fact-head { display: grid; grid-template-columns: auto auto minmax(0, 1.3fr) minmax(120px, 1fr) auto auto; align-items: center; gap: 14px; width: 100%; padding: 14px 16px 14px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
-      .fact-cat-icon { width: 38px; height: 38px; border-radius: 11px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-      .fact-cat-icon svg { width: 18px; height: 18px; }
+      .fact-rank { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11.5px; color: var(--gray-400); font-feature-settings: "tnum" 1; min-width: 22px; }
+      .fact-cat-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--cat-bg, var(--green-light)); color: var(--cat-ink, var(--green-dark)); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+      .fact-cat-icon svg { width: 16px; height: 16px; }
       .fact-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .fact-cat-line { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; line-height: 1; margin-bottom: 4px; }
-      .fact-cat { color: var(--green-dark); }
-      .fact-cat-dot { color: var(--gray-300); font-weight: 400; }
-      .fact-cat-q { color: var(--gray-400); }
-      .fact-question { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; }
-      .fact-name { font-size: 12.5px; color: var(--gray-600); margin-top: 2px; }
-      .fact-impact-cell { display: inline-flex; align-items: center; flex-shrink: 0; }
+      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.2; letter-spacing: -0.005em; }
+      .fact-sub { font-size: 12.5px; color: var(--gray-600); line-height: 1.4; }
+      .fact-cat-tag { display: inline-flex; align-items: center; padding: 1px 7px; margin-left: 4px; border-radius: 9999px; background: var(--cat-bg, var(--gray-100)); color: var(--cat-ink, var(--gray-600)); font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.2px; vertical-align: 1px; }
+
+      .fact-bar { position: relative; height: 8px; background: var(--gray-100); border-radius: 9999px; overflow: hidden; min-width: 80px; }
+      .fact-bar-fill { display: block; height: 100%; border-radius: 9999px; animation: factBarGrow .7s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: 100ms; }
+      @keyframes factBarGrow { from { width: 0 !important; } }
+      .fact-bar-fill.imp-high { background: linear-gradient(90deg, #DC2626, #F87171); }
+      .fact-bar-fill.imp-med  { background: linear-gradient(90deg, var(--amber), #F59E0B); }
+      .fact-bar-fill.imp-low  { background: linear-gradient(90deg, var(--green-dark), #4ADE80); }
+
       .fact-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .fact-chev svg { width: 16px; height: 16px; }
-      .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--green-dark); }
-      @media (max-width: 540px) {
-        .fact-head { grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; padding: 14px; }
-        .fact-impact-cell { grid-column: 1 / -1; grid-row: 2; padding-left: 48px; }
-        .fact-chev { grid-row: 1; }
+      .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--cat-ink, var(--green-dark)); }
+
+      @media (max-width: 720px) {
+        .fact-head { grid-template-columns: auto auto minmax(0, 1fr) auto auto; gap: 10px; padding: 12px 14px; }
+        .fact-bar { display: none; }
+      }
+      @media (max-width: 480px) {
+        .fact-rank { display: none; }
+        .impact-pill .impact-pill-text { display: none; }
+        .impact-pill { min-width: 0; padding: 6px 10px; }
       }
 
       /* IMPACT BADGE & PILL */
@@ -1791,30 +1873,27 @@ class KygoWearableStress extends HTMLElement {
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green); }
 
-      /* APP CTA */
-      .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 720px; margin: 0 auto; overflow: hidden; }
-      .app-cta-glow { position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
+      /* CTA ROW — combined article + app CTA */
+      .cta-row { display: grid; gap: 14px; grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto; }
+      @media (min-width: 880px) { .cta-row { grid-template-columns: 1.1fr 1fr; } }
+      .cta-row .article-card { margin: 0; max-width: none; }
+      .cta-row .app-cta { margin: 0; max-width: none; padding: 24px; text-align: left; border-radius: 18px; }
+      .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); overflow: hidden; }
+      .app-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
       .app-cta-content { position: relative; z-index: 1; }
-      .app-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
-      .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulseDot 2s infinite; }
+      .app-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 12px; }
+      .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulseDot 2s infinite; }
       @keyframes pulseDot { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
-      .app-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
+      .app-cta h3 { color: #fff; font-size: 19px; line-height: 1.25; margin-bottom: 10px; letter-spacing: -0.01em; }
       .app-cta .highlight { color: var(--green); }
-      .app-cta p { color: var(--gray-400); font-size: 14px; margin-bottom: 22px; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.55; }
-      .app-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .app-cta p { color: rgba(255,255,255,0.65); font-size: 13.5px; margin-bottom: 16px; line-height: 1.5; }
+      .app-cta-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--green); color: #fff; padding: 9px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13.5px; text-decoration: none; transition: background 0.2s; }
       .app-cta-btn:hover { background: var(--green-dark); }
-      .app-cta-btn svg { width: 18px; height: 18px; }
-      .app-cta-android { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--dark); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
-      .app-cta-android:hover { background: var(--gray-100); }
-      .app-cta-android svg { width: 18px; height: 18px; }
-      .app-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-      @media (max-width: 480px) { .app-cta-buttons { flex-direction: column; align-items: stretch; } .app-cta-buttons a { justify-content: center; } }
-      .app-cta-tags { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: nowrap; }
-      .app-cta-tags-label { color: var(--gray-400); font-size: 11px; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
-      .app-cta-tags-logos { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; overflow: hidden; }
-      .app-cta-tags-logos img { height: 18px; width: auto; opacity: 0.75; flex-shrink: 1; min-width: 0; object-fit: contain; }
-      @media (min-width: 480px) { .app-cta-tags-logos img { height: 20px; } .app-cta-tags-label { font-size: 12px; } }
-      @media (min-width: 768px) { .app-cta { padding: 48px 40px; } .app-cta-tags-logos { gap: 8px; } .app-cta-tags-logos img { height: 22px; } }
+      .app-cta-btn svg { width: 14px; height: 14px; }
+      .app-cta-android { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.10); color: #fff; padding: 9px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13.5px; text-decoration: none; border: 1px solid rgba(255,255,255,0.18); transition: background 0.2s; }
+      .app-cta-android:hover { background: rgba(255,255,255,0.16); }
+      .app-cta-android svg { width: 14px; height: 14px; }
+      .app-cta-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
 
       /* TOP PICKS */
       .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
