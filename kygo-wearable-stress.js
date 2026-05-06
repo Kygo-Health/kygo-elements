@@ -855,9 +855,6 @@ class KygoWearableStress extends HTMLElement {
       return { key, d, count };
     }).sort((a, b) => b.count - a.count || a.d.name.localeCompare(b.d.name));
 
-    const expanded = this._compareExpandedKey;
-
-    // Top: matrix table
     const tableHead = `
       <thead>
         <tr>
@@ -895,7 +892,43 @@ class KygoWearableStress extends HTMLElement {
         </tr>`;
     }).join('');
 
-    // Bottom: compact per-device dropdowns
+    return `
+      <section class="comparison-section section-bg-gray" id="compare">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How your device measures stress</span>
+            <h2 class="section-h2">Every wearable, <em>side by side</em>.</h2>
+            <p class="section-lede">Stress scores aren't comparable across brands. Each device pulls a different mix of HRV, EDA, skin temperature, and breathing rate — here's exactly what each one reads, ranked by signal coverage.</p>
+          </div>
+
+          <div class="device-chart">
+            <div class="dc-head">
+              <div>
+                <span class="dc-eyebrow">Signal coverage</span>
+                <h3 class="dc-title">Sensors fed into stress, by device</h3>
+                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only.</p>
+              </div>
+              <div class="dc-meta">${ranked.length} wearables · ${totalSensors} signals</div>
+            </div>
+            <div class="device-table-wrap">
+              <table class="device-table">
+                ${tableHead}
+                <tbody>${tableBody}</tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  _renderFullBreakdown() {
+    const ranked = Object.entries(this._devices).map(([key, d]) => {
+      const count = Object.values(d.sensors).filter(Boolean).length;
+      return { key, d, count };
+    }).sort((a, b) => b.count - a.count || a.d.name.localeCompare(b.d.name));
+
+    const expanded = this._compareExpandedKey;
+
     const detailRows = ranked.map(({ key, d }, i) => {
       const img = this._deviceImage(key);
       const isOpen = expanded === key;
@@ -929,36 +962,14 @@ class KygoWearableStress extends HTMLElement {
     }).join('');
 
     return `
-      <section class="comparison-section section-bg-gray" id="compare">
+      <section class="breakdown-section section-bg-gray" id="full-breakdown">
         <div class="container">
           <div class="section-header">
-            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How your device measures stress</span>
-            <h2 class="section-h2">Every wearable, <em>side by side</em>.</h2>
-            <p class="section-lede">Stress scores aren't comparable across brands. Each device pulls a different mix of HRV, EDA, skin temperature, and breathing rate — here's exactly what each one reads, ranked by signal coverage.</p>
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('sparkle')}</span>Per-device deep dive</span>
+            <h2 class="section-h2">How each wearable's stress score <em>actually works</em>.</h2>
+            <p class="section-lede">Tap any device for its full algorithm, signal scale, baseline window, coverage behavior, and the unique tradeoffs of its approach.</p>
           </div>
-
-          <div class="device-chart">
-            <div class="dc-head">
-              <div>
-                <span class="dc-eyebrow">Signal coverage</span>
-                <h3 class="dc-title">Sensors fed into stress, by device</h3>
-                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only.</p>
-              </div>
-              <div class="dc-meta">${ranked.length} wearables · ${totalSensors} signals</div>
-            </div>
-            <div class="device-table-wrap">
-              <table class="device-table">
-                ${tableHead}
-                <tbody>${tableBody}</tbody>
-              </table>
-            </div>
-          </div>
-
           <div class="device-details">
-            <div class="dd-section-head">
-              <span class="dd-section-eyebrow">Full breakdown</span>
-              <h3 class="dd-section-title">Tap a device for the algorithm, scale, and tradeoffs</h3>
-            </div>
             <div class="dd-list">${detailRows}</div>
           </div>
         </div>
@@ -1377,9 +1388,10 @@ class KygoWearableStress extends HTMLElement {
       </section>
 
       <div class="animate-on-scroll">${this._renderComparisonModule()}</div>
+      ${this._renderCtaRow()}
       <div class="animate-on-scroll">${this._renderFactorsSection()}</div>
       ${this._renderArticleCta()}
-      ${this._renderCtaRow()}
+      <div class="animate-on-scroll">${this._renderFullBreakdown()}</div>
       ${this._renderMythsSection()}
       ${this._renderTopPicks()}
       ${this._renderCalloutSection()}
@@ -1421,8 +1433,8 @@ class KygoWearableStress extends HTMLElement {
       if (dcRow) {
         const k = dcRow.dataset.deviceRow;
         this._compareExpandedKey = this._compareExpandedKey === k ? null : k;
-        const compSec = shadow.querySelector('.comparison-section');
-        if (compSec) compSec.outerHTML = this._renderComparisonModule();
+        const breakdownSec = shadow.querySelector('.breakdown-section');
+        if (breakdownSec) breakdownSec.outerHTML = this._renderFullBreakdown();
         return;
       }
 
@@ -1595,7 +1607,7 @@ class KygoWearableStress extends HTMLElement {
       .section-lede { font-size: 15px; color: var(--gray-600); line-height: 1.55; margin: 0; max-width: 64ch; }
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
-      .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section { padding: 48px 0 56px; }
+      .comparison-section, .breakdown-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section { padding: 48px 0 56px; }
       @media (min-width: 768px) {
         .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section { padding: 64px 0 72px; }
       }
