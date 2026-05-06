@@ -26,7 +26,6 @@ class KygoWearableStress extends HTMLElement {
     this._device1 = 'garmin';
     this._device2 = 'samsung';
     this._compareExpandedKey = null;
-    this._listSort = 'metric';
     this._categoryFilter = null;
     this._listExpandedKey = null;
     this._mythsCatPick = null;
@@ -719,24 +718,6 @@ class KygoWearableStress extends HTMLElement {
       </section>`;
   }
 
-  _sortedFactors() {
-    const all = this._factorsForDevice(this._device1);
-    const m = this._categoryFilter;
-    let shown = m ? all.filter(f => f.metric === m) : all;
-    if (this._listSort === 'impact') {
-      shown.sort((a, b) => this._impactCfg(b.impact).weight - this._impactCfg(a.impact).weight || a.name.localeCompare(b.name));
-    } else if (this._listSort === 'alpha') {
-      shown.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (this._listSort === 'metric') {
-      const order = this._deviceMetrics[this._device1] || [];
-      shown.sort((a, b) =>
-        order.indexOf(a.metric) - order.indexOf(b.metric) ||
-        this._impactCfg(b.impact).weight - this._impactCfg(a.impact).weight ||
-        a.name.localeCompare(b.name));
-    }
-    return shown;
-  }
-
   _renderFactorCard(f) {
     const isExp = this._listExpandedKey === f._devKey;
     const impCfg = this._impactCfg(f.impact);
@@ -776,33 +757,33 @@ class KygoWearableStress extends HTMLElement {
   }
 
   _renderFactorList() {
-    const shown = this._sortedFactors();
-    if (!shown.length) return '<p class="dash-empty">No factors match this filter.</p>';
-    return `<div class="fact-list">${shown.map(f => this._renderFactorCard(f)).join('')}</div>`;
-  }
+    // Two groups: what helps (improves the metric) vs what hurts (worsens or confounds).
+    const all = this._factorsForDevice(this._device1);
+    const m = this._categoryFilter;
+    const filtered = m ? all.filter(f => f.metric === m) : all;
+    if (!filtered.length) return '<p class="dash-empty">No factors match this filter.</p>';
 
-  _renderSortBar() {
-    const opts = [
-      { k: 'metric', l: 'Metric' },
-      { k: 'impact', l: 'Impact' },
-      { k: 'alpha',  l: 'A–Z' }
-    ];
-    const total = this._factorsForDevice(this._device1).length;
-    const shown = this._sortedFactors().length;
-    const cat = this._categoryFilter;
-    const metric = this._metricMeta[cat];
-    const countHtml = cat
-      ? `<span class="list-result-count">Showing <strong>${shown}</strong> of ${total} · ${metric ? metric.label : ''}</span>`
-      : `<span class="list-result-count"><strong>${total}</strong> factors</span>`;
+    const byImpact = (a, b) =>
+      this._impactCfg(b.impact).weight - this._impactCfg(a.impact).weight ||
+      a.name.localeCompare(b.name);
+    const helps = filtered.filter(f => f.direction === 'positive').sort(byImpact);
+    const hurts = filtered.filter(f => f.direction === 'negative' || f.direction === 'variable').sort(byImpact);
+
+    const group = (cls, label, sub, items) => `
+      <div class="fact-group fact-group--${cls}">
+        <div class="fact-group-head">
+          <span class="fact-group-label"><span class="fact-group-icon" aria-hidden="true"></span>${label}</span>
+          <span class="fact-group-meta">${items.length} factor${items.length === 1 ? '' : 's'} · ${sub}</span>
+        </div>
+        <div class="fact-list">
+          ${items.length ? items.map(f => this._renderFactorCard(f)).join('') : '<p class="dash-empty">None in this view.</p>'}
+        </div>
+      </div>`;
+
     return `
-      <div class="list-toolbar">
-        <div class="list-toolbar-row">
-          ${countHtml}
-          <span class="list-sort-label">Sort by</span>
-        </div>
-        <div class="list-sort-btns">
-          ${opts.map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('')}
-        </div>
+      <div class="fact-groups">
+        ${group('helps', 'What helps', 'Improves your reading', helps)}
+        ${group('hurts', 'What hurts', 'Worsens or confounds your reading', hurts)}
       </div>`;
   }
 
@@ -849,7 +830,9 @@ class KygoWearableStress extends HTMLElement {
     const cat = this._categoryFilter;
     const catLabel = cat ? (this._metricMeta[cat] || {}).label : null;
     const total = this._factorsForDevice(this._device1).length;
-    const shown = this._sortedFactors().length;
+    const shown = cat
+      ? this._factorsForDevice(this._device1).filter(f => f.metric === cat).length
+      : total;
     const metricCount = (this._deviceMetrics[this._device1] || []).length;
     return `
       <section class="factors-section section-bg-gray">
@@ -857,7 +840,7 @@ class KygoWearableStress extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
             <h2 class="section-h2">${total} <em>factors</em> that move your <em>${d1.name}</em> score.</h2>
-            <p class="section-lede">Pick your wearable to see the metrics it actually reads, then tap a metric to see the factors that move it. Different devices use different signals, so the count changes.</p>
+            <p class="section-lede">Pick your wearable to see the metrics it actually reads, then tap a metric to drill in. Each metric splits into what helps your reading and what hurts it, ranked by impact.</p>
           </div>
           ${this._renderDevicePicker()}
           <span class="metric-tiles-label">${metricCount} metric${metricCount === 1 ? '' : 's'} ${d1.name} reads</span>
@@ -866,7 +849,6 @@ class KygoWearableStress extends HTMLElement {
             <div class="picker-panel-head">
               <h3 class="picker-panel-title">${catLabel ? `${catLabel} factors` : 'All factors'}<span class="picker-panel-meta">${shown} factor${shown === 1 ? '' : 's'}</span></h3>
             </div>
-            ${this._renderSortBar()}
             ${this._renderFactorList()}
           </div>
         </div>
@@ -1051,14 +1033,6 @@ class KygoWearableStress extends HTMLElement {
         return;
       }
 
-      const sortBtn = e.target.closest('.list-sort-btn');
-      if (sortBtn) {
-        this._listSort = sortBtn.dataset.sort;
-        const sec = shadow.querySelector('.factors-section');
-        if (sec) sec.outerHTML = this._renderFactorsSection();
-        return;
-      }
-
       const mythsTile = e.target.closest('[data-myths-cat]');
       if (mythsTile) {
         const k = mythsTile.dataset.mythsCat;
@@ -1080,20 +1054,6 @@ class KygoWearableStress extends HTMLElement {
         return;
       }
 
-      const jumpBtn = e.target.closest('[data-fact-jump]');
-      if (jumpBtn) {
-        const k = jumpBtn.dataset.factJump;
-        this._categoryFilter = null;
-        this._listSort = 'metric';
-        this._listExpandedKey = k;
-        const sec = shadow.querySelector('.factors-section');
-        if (sec) sec.outerHTML = this._renderFactorsSection();
-        requestAnimationFrame(() => {
-          const target = shadow.querySelector(`[data-fact-key="${k}"]`);
-          if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
-        return;
-      }
     });
 
   }
@@ -1482,6 +1442,19 @@ class KygoWearableStress extends HTMLElement {
       }
 
       /* FACTOR CARDS — clean RHR pattern: eyebrow + name + sub + value pill + chevron */
+      .fact-groups { display: grid; grid-template-columns: 1fr; gap: 18px; }
+      .fact-group { display: flex; flex-direction: column; gap: 10px; }
+      .fact-group-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 2px 4px; border-bottom: 1px dashed var(--gray-200); }
+      .fact-group-label { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px; letter-spacing: -0.005em; }
+      .fact-group-icon { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; line-height: 1; flex-shrink: 0; }
+      .fact-group--helps .fact-group-label { color: var(--green-dark); }
+      .fact-group--helps .fact-group-icon { background: var(--green); color: #fff; }
+      .fact-group--helps .fact-group-icon::after { content: '↓'; }
+      .fact-group--hurts .fact-group-label { color: var(--red); }
+      .fact-group--hurts .fact-group-icon { background: var(--red); color: #fff; }
+      .fact-group--hurts .fact-group-icon::after { content: '↑'; }
+      .fact-group-meta { font-size: 11px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: var(--gray-400); white-space: nowrap; }
+      @media (min-width: 880px) { .fact-groups { grid-template-columns: 1fr 1fr; gap: 22px; } }
       .fact-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
       .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
       .fact-card:hover { border-color: var(--gray-300); }
