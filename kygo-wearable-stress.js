@@ -1815,6 +1815,7 @@ class KygoWearableStress extends HTMLElement {
         .fact-bar { display: none; }
       }
       @media (max-width: 480px) {
+        .fact-head { grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 10px; }
         .fact-rank { display: none; }
         .impact-pill .impact-pill-text { display: none; }
         .impact-pill { min-width: 0; padding: 6px 10px; }
