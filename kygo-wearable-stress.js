@@ -1150,25 +1150,17 @@ class KygoWearableStress extends HTMLElement {
   }
 
   _renderDevicePicker() {
-    const shortName = (k) => ({
-      garmin: 'Garmin', samsung: 'Samsung', google: 'Pixel Watch',
-      fitbit: 'Fitbit', whoop: 'WHOOP', oura: 'Oura', polar: 'Polar'
-    })[k] || this._devices[k].name;
-    const tiles = Object.entries(this._devices).map(([k, d]) => {
-      const isActive = this._device1 === k;
-      const img = this._deviceImage(k);
-      return `
-        <button class="device-pick ${isActive ? 'active' : ''}" type="button" data-device-pick="${k}" aria-pressed="${isActive}">
-          ${img
-            ? `<span class="device-pick-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
-            : `<span class="device-pick-img device-pick-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
-          <span class="device-pick-name">${shortName(k)}</span>
-        </button>`;
+    const options = Object.entries(this._devices).map(([k, d]) => {
+      const selected = this._device1 === k ? ' selected' : '';
+      return `<option value="${k}"${selected}>${d.name}</option>`;
     }).join('');
     return `
       <div class="device-picker">
-        <span class="device-picker-label">Your wearable</span>
-        <div class="device-picker-tiles">${tiles}</div>
+        <label class="device-picker-label" for="device-select">Your wearable</label>
+        <div class="device-select-wrap">
+          <select class="device-select" id="device-select" data-device-select aria-label="Pick your wearable">${options}</select>
+          <span class="device-select-chev" aria-hidden="true">${this._icon('chevDown')}</span>
+        </div>
       </div>`;
   }
 
@@ -1278,7 +1270,7 @@ class KygoWearableStress extends HTMLElement {
 
       <section class="hero section-bg-white">
         <div class="container hero-inner">
-          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalFactors} Factors · ${totalDevices} Wearables · Peer-Reviewed</div>
+          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalFactors} Factors · ${totalDevices} Wearables</div>
           <h1 class="hero-title animate-on-scroll">How does <em>your wearable</em> measure stress?</h1>
           <p class="hero-sub animate-on-scroll">Every brand reads stress differently — HRV, EDA, skin temp, breathing rate. Pick your device and the factor list below re-sorts around what actually moves <strong>your</strong> score.</p>
           <div class="animate-on-scroll">
@@ -1342,18 +1334,6 @@ class KygoWearableStress extends HTMLElement {
         return;
       }
 
-      const devicePick = e.target.closest('[data-device-pick]');
-      if (devicePick) {
-        const k = devicePick.dataset.devicePick;
-        if (k && this._device1 !== k) {
-          this._device1 = k;
-          this._listExpandedKey = null;
-          const sec = shadow.querySelector('.factors-section');
-          if (sec) sec.outerHTML = this._renderFactorsSection();
-        }
-        return;
-      }
-
       const tile = e.target.closest('[data-cat]');
       if (tile) {
         const k = tile.dataset.cat;
@@ -1378,6 +1358,18 @@ class KygoWearableStress extends HTMLElement {
 
     });
 
+    shadow.addEventListener('change', (e) => {
+      const sel = e.target.closest('[data-device-select]');
+      if (sel) {
+        const k = sel.value;
+        if (k && this._device1 !== k) {
+          this._device1 = k;
+          this._listExpandedKey = null;
+          const sec = shadow.querySelector('.factors-section');
+          if (sec) sec.outerHTML = this._renderFactorsSection();
+        }
+      }
+    });
   }
 
   _setupAnimations() {
@@ -1508,25 +1500,24 @@ class KygoWearableStress extends HTMLElement {
       }
 
       /* ARTICLE CTA */
-      .article-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; max-width: 780px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
+      .article-card { position: relative; display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: 'badge . arrow' 'body body body'; align-items: center; gap: 14px 12px; max-width: 780px; margin: 0 auto; padding: 18px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
       .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
       .article-card:hover { border-color: var(--green); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(34,197,94,0.14); }
-      .article-badge { position: relative; z-index: 1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; }
-      .article-body { position: relative; z-index: 1; flex: 1; min-width: 0; width: 100%; padding-right: 50px; }
+      .article-badge { grid-area: badge; position: relative; z-index: 1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; justify-self: start; }
+      .article-body { grid-area: body; position: relative; z-index: 1; min-width: 0; }
       .article-kicker { display: block; font-size: 11px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
-      .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.25; letter-spacing: -0.01em; }
+      .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.3; letter-spacing: -0.01em; overflow-wrap: anywhere; }
       .article-year { color: var(--gray-400); font-weight: 500; }
       .article-desc { display: none; font-size: 13px; color: var(--gray-600); margin: 6px 0 0; line-height: 1.45; }
-      .article-go { position: absolute; top: 18px; right: 18px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; }
+      .article-go { grid-area: arrow; position: relative; z-index: 2; width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; justify-self: end; }
       .article-card:hover .article-go { background: var(--green-dark); }
       .article-go svg { width: 16px; height: 16px; }
       @media (min-width: 768px) {
-        .article-card { flex-direction: row; align-items: center; padding: 24px 28px; gap: 18px; border-radius: 22px; }
+        .article-card { grid-template-columns: auto 1fr auto; grid-template-areas: 'badge body arrow'; padding: 24px 28px; gap: 18px; border-radius: 22px; }
         .article-title { font-size: 19px; }
         .article-desc { display: block; }
-        .article-go { position: static; width: 40px; height: 40px; }
+        .article-go { width: 40px; height: 40px; }
         .article-go svg { width: 18px; height: 18px; }
-        .article-body { padding-right: 0; }
       }
 
       /* MYTH FILTERS — pill row, no empty state */
@@ -1585,17 +1576,17 @@ class KygoWearableStress extends HTMLElement {
       .device-table tbody tr:hover { background: var(--gray-50); }
       .device-table tbody tr:hover .dt-td-device { background: var(--gray-50); }
 
-      .dt-td-device { padding: 10px 12px 10px 4px; min-width: 150px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; transition: background .15s; }
+      .dt-td-device { padding: 10px 8px 10px 4px; width: 56px; min-width: 56px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; transition: background .15s; box-shadow: 1px 0 0 var(--gray-200); }
       .dt-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-      .dt-img { width: 32px; height: 32px; border-radius: 8px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .dt-img { width: 36px; height: 36px; border-radius: 9px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
       .dt-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
       .dt-img--icon { background: var(--accent, var(--gray-200)); color: #fff; }
       .dt-img--icon svg { width: 16px; height: 16px; }
-      .dt-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); letter-spacing: -0.01em; line-height: 1.2; overflow-wrap: anywhere; }
+      .dt-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); letter-spacing: -0.01em; line-height: 1.2; overflow-wrap: anywhere; display: none; }
       @media (min-width: 768px) {
-        .dt-td-device { padding: 14px 14px 14px 4px; min-width: 220px; position: static; }
-        .dt-img { width: 38px; height: 38px; border-radius: 10px; }
-        .dt-name { font-size: 15px; }
+        .dt-td-device { padding: 14px 14px 14px 4px; width: auto; min-width: 220px; position: static; box-shadow: none; }
+        .dt-img { width: 40px; height: 40px; border-radius: 10px; }
+        .dt-name { display: inline; font-size: 15px; }
       }
 
       .device-table tbody td { text-align: center; padding: 10px 6px; }
@@ -1713,22 +1704,15 @@ class KygoWearableStress extends HTMLElement {
       /* DEVICE PICKER — pick your wearable for the factor list */
       .device-picker { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
       .device-picker-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); }
-      .device-picker-tiles { display: flex; gap: 6px; padding: 4px 2px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: thin; }
-      .device-picker-tiles::-webkit-scrollbar { height: 4px; }
-      .device-picker-tiles::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
-      .device-pick { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; min-height: 38px; flex-shrink: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 9999px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; color: var(--dark); white-space: nowrap; }
-      .device-pick:hover { border-color: var(--gray-300); transform: translateY(-1px); }
-      .device-pick.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 6px 16px rgba(15,23,42,0.16); }
-      .device-pick-img { width: 26px; height: 26px; border-radius: 7px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
-      .device-pick-img img { width: 100%; height: 100%; object-fit: contain; padding: 2px; }
-      .device-pick-img--icon { background: var(--gray-200); color: var(--gray-600); }
-      .device-pick-img--icon svg { width: 14px; height: 14px; }
-      .device-pick.active .device-pick-img { background: rgba(255,255,255,0.14); }
-      .device-pick.active .device-pick-img--icon { color: #fff; }
-      .device-pick-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; letter-spacing: -0.01em; }
+      .device-select-wrap { position: relative; max-width: 360px; }
+      .device-select { width: 100%; appearance: none; -webkit-appearance: none; -moz-appearance: none; padding: 14px 44px 14px 16px; min-height: 52px; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15.5px; color: var(--dark); letter-spacing: -0.01em; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .device-select:hover { border-color: var(--gray-300); }
+      .device-select:focus-visible { outline: 0; border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
+      .device-select-chev { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--gray-400); pointer-events: none; display: inline-flex; align-items: center; justify-content: center; }
+      .device-select-chev svg { width: 18px; height: 18px; }
       @media (min-width: 880px) {
         .device-picker { flex-direction: row; align-items: center; gap: 14px; }
-        .device-picker-tiles { flex-wrap: wrap; overflow-x: visible; padding: 0; }
+        .device-select-wrap { max-width: 320px; }
       }
 
       .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
@@ -1744,7 +1728,7 @@ class KygoWearableStress extends HTMLElement {
       @media (min-width: 880px) { .picker-tiles--metrics { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); } }
 
       /* PICKER PANEL — white card holding the sort bar + factor list */
-      .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+      .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 14px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); min-width: 0; overflow: hidden; }
       .picker-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
       .picker-panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
       .picker-panel-meta { font-size: 11.5px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.5px; text-transform: uppercase; }
@@ -1768,8 +1752,8 @@ class KygoWearableStress extends HTMLElement {
       }
 
       /* FACTOR CARDS — clean RHR pattern: eyebrow + name + sub + value pill + chevron */
-      .fact-groups { display: grid; grid-template-columns: 1fr; gap: 18px; }
-      .fact-group { display: flex; flex-direction: column; gap: 10px; }
+      .fact-groups { display: grid; grid-template-columns: 1fr; gap: 18px; min-width: 0; }
+      .fact-group { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
       .fact-group-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 2px 4px; border-bottom: 1px dashed var(--gray-200); }
       .fact-group-label { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px; letter-spacing: -0.005em; }
       .fact-group-icon { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; line-height: 1; flex-shrink: 0; }
@@ -1782,10 +1766,10 @@ class KygoWearableStress extends HTMLElement {
       .fact-group-meta { font-size: 11px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: var(--gray-400); white-space: nowrap; }
       @media (min-width: 880px) { .fact-groups { grid-template-columns: 1fr 1fr; gap: 22px; } }
       .fact-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
-      .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
+      .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; min-width: 0; transition: border-color .15s, box-shadow .15s; }
       .fact-card:hover { border-color: var(--gray-300); }
       .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); border-color: var(--gray-300); }
-      .fact-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
+      .fact-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px; width: 100%; padding: 12px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
       .fact-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
       .fact-cat { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: var(--gray-400); line-height: 1; margin-bottom: 4px; }
@@ -1793,21 +1777,22 @@ class KygoWearableStress extends HTMLElement {
       .fact-dir-pos { color: var(--green-dark); }
       .fact-dir-neg { color: var(--red); }
       .fact-dir-var { color: var(--amber); }
-      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; }
+      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: anywhere; }
       .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.4; margin-top: 2px; }
       .fact-effect.fact-dir-pos { color: var(--green-dark); }
       .fact-effect.fact-dir-neg { color: var(--red); }
       .fact-effect.fact-dir-var { color: var(--amber); }
       .fact-ev-inline { color: var(--gray-400); font-weight: 500; }
-      .fact-lede { margin: 0 0 14px; font-size: 14px; line-height: 1.6; color: var(--dark); font-weight: 500; }
-      .fact-fields { display: grid; gap: 12px; margin: 0 0 4px; }
-      .fact-fields > div { display: grid; grid-template-columns: 1fr; gap: 3px; }
+      .fact-lede { margin: 0 0 14px; font-size: 14px; line-height: 1.6; color: var(--dark); font-weight: 500; overflow-wrap: anywhere; }
+      .fact-fields { display: grid; gap: 12px; margin: 0 0 4px; min-width: 0; }
+      .fact-fields > div { display: grid; grid-template-columns: 1fr; gap: 3px; min-width: 0; }
       .fact-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
-      .fact-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
+      .fact-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; overflow-wrap: anywhere; }
       @media (min-width: 768px) { .fact-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } .fact-fields--full { grid-column: 1 / -1; } }
       .metric-tiles-label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin: 6px 0 8px; }
       /* Pills always sit on a neutral grey chip; only the label color shifts. */
-      .fact-pill { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 10px; white-space: nowrap; min-width: 88px; text-align: center; letter-spacing: -0.005em; background: var(--gray-100); color: var(--gray-400); }
+      .fact-pill { font-family: 'Space Grotesk', sans-serif; font-size: 12.5px; font-weight: 700; padding: 5px 11px; border-radius: 9px; white-space: nowrap; min-width: 60px; text-align: center; letter-spacing: -0.005em; background: var(--gray-100); color: var(--gray-400); }
+      @media (min-width: 480px) { .fact-pill { font-size: 14px; padding: 6px 14px; border-radius: 10px; min-width: 84px; } }
       .fact-pill.imp-med  { color: var(--dark); }
       .fact-pill.imp-low  { color: var(--gray-400); }
       .fact-group--helps .fact-pill.imp-high { color: var(--green-dark); }
@@ -1872,7 +1857,7 @@ class KygoWearableStress extends HTMLElement {
 
       .fact-source-row { margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--gray-200); display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
       .fact-source-lbl { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); font-weight: 700; }
-      .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green-dark); font-weight: 500; font-size: 13px; }
+      .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green-dark); font-weight: 500; font-size: 13px; overflow-wrap: anywhere; min-width: 0; }
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green); }
 
