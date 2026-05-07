@@ -1325,11 +1325,11 @@ class KygoWearableStress extends HTMLElement {
         </div>
       </section>
 
-      <div class="animate-on-scroll">${this._renderComparisonModule()}</div>
+      ${this._renderComparisonModule()}
       ${this._renderCtaRow()}
-      <div class="animate-on-scroll">${this._renderFactorsSection()}</div>
+      ${this._renderFactorsSection()}
       ${this._renderArticleCta()}
-      <div class="animate-on-scroll">${this._renderFullBreakdown()}</div>
+      ${this._renderFullBreakdown()}
       ${this._renderTopPicks()}
       ${this._renderSourcesSection()}
 
@@ -1426,6 +1426,12 @@ class KygoWearableStress extends HTMLElement {
         });
       }, { rootMargin: '0px 0px -50px 0px', threshold: 0.2 });
       els.forEach(el => this._observer.observe(el));
+      // Safety net: if the IntersectionObserver hasn't revealed an element
+      // within 1.5s (slow scroll, missed callback, prefers-reduced-motion
+      // edge cases), reveal it anyway so content is never stuck invisible.
+      setTimeout(() => {
+        this.shadowRoot.querySelectorAll('.animate-on-scroll:not(.visible)').forEach(el => el.classList.add('visible'));
+      }, 1500);
     });
   }
 
