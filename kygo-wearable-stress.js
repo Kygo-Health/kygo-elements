@@ -25,10 +25,9 @@ class KygoWearableStress extends HTMLElement {
     this._mode = 'single';
     this._device1 = 'garmin';
     this._device2 = 'samsung';
-    this._listSort = 'impact';
+    this._compareExpandedKey = null;
     this._categoryFilter = null;
     this._listExpandedKey = null;
-    this._mythsCatPick = null;
     this._eventsBound = false;
   }
 
@@ -37,7 +36,7 @@ class KygoWearableStress extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel/Fitbit Sense, WHOOP, Oura Ring, and Polar measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only. Explore 14 lifestyle factors — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms and evidence-based actions to lower your stress score. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024.');
+    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, and Polar measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only. Explore lifestyle factors that move each underlying signal — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms and evidence-based actions to lower your stress score. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024.');
   }
 
   _injectStructuredData() {
@@ -48,7 +47,7 @@ class KygoWearableStress extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'Wearable Stress Research',
       'alternateName': 'Kygo Wearable Stress Comparison Tool',
-      'description': 'Compare how 7 wearables (Garmin, Apple Watch, Samsung Galaxy Watch, Google Pixel/Fitbit Sense 2, WHOOP, Oura Ring, Polar) measure stress, with 14 lifestyle factors broken down by device-specific mechanism.',
+      'description': 'Compare how 7 wearables (Garmin, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, Polar) measure stress, with lifestyle factors broken down by underlying signal.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/wearable-stress-research',
@@ -60,8 +59,8 @@ class KygoWearableStress extends HTMLElement {
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'featureList': '7 wearable comparison (Garmin, Apple, Samsung, Google Pixel/Fitbit, WHOOP, Oura, Polar), 14 lifestyle factors with device-specific mechanisms, what-hurts/what-helps card structure, evidence leaderboard sorted by impact for the selected device, common myths debunked, peer-reviewed citations.',
-      'keywords': 'wearable stress measurement, how does Garmin measure stress, Samsung BioActive sensor stress, WHOOP stress monitor, Oura cumulative stress, Apple Watch stress score, Pixel Watch cEDA, Fitbit Sense 2 stress, Polar Nightly Recharge, HRV stress, EDA skin conductance stress, alcohol HRV, sleep deprivation stress, caffeine HRV, overtraining respiratory rate'
+      'featureList': '7 wearable comparison (Garmin, Samsung, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura, Polar), per-signal factor breakdown (HRV, HR, EDA, Skin Temp, Resp Rate, SpO2, Sleep), what-helps/what-hurts grouping, peer-reviewed citations.',
+      'keywords': 'wearable stress measurement, how does Garmin measure stress, Samsung BioActive sensor stress, WHOOP stress monitor, Oura cumulative stress, Pixel Watch cEDA, Fitbit Sense 2 stress, Polar Nightly Recharge, HRV stress, EDA skin conductance stress, alcohol HRV, sleep deprivation stress, caffeine HRV, overtraining respiratory rate'
     };
 
     const faq = {
@@ -70,18 +69,13 @@ class KygoWearableStress extends HTMLElement {
       'mainEntity': [
         {
           '@type': 'Question',
-          'name': 'Does Apple Watch have a built-in stress score?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. As of watchOS 11, Apple Watch tracks HRV but does not surface a native stress score. Third-party apps such as StressWatch and Livity read HRV from HealthKit and compute a score on top of it. ECG-based readings can reach 52–64% accuracy in lab studies (University of Waterloo).' }
-        },
-        {
-          '@type': 'Question',
           'name': 'Can I compare a stress score across different wearable brands?',
           'acceptedAnswer': { '@type': 'Answer', 'text': 'No. Every brand uses a proprietary algorithm and a personal baseline. A "55" on Garmin does not correspond to a "55" on Samsung. Each device has to be interpreted against its own historical baseline.' }
         },
         {
           '@type': 'Question',
           'name': 'Which wearables use EDA (skin conductance) for stress?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Only Samsung Galaxy Watch (BioActive Sensor) and Google Pixel Watch / Fitbit Sense 2 (continuous EDA, first introduced in 2022) measure EDA at the wrist. Garmin, WHOOP, Oura, Polar, and Apple Watch do not.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Samsung Galaxy Watch (BioActive Sensor), Google Pixel Watch, and Fitbit Sense 2 (continuous EDA, first introduced in 2022) all measure EDA at the wrist. Garmin, WHOOP, Oura, and Polar do not.' }
         },
         {
           '@type': 'Question',
@@ -138,18 +132,6 @@ class KygoWearableStress extends HTMLElement {
         limitation: 'HRV-only. Can\'t separate exercise arousal or excitement from psychological stress.',
         color: '#1E293B'
       },
-      apple: {
-        name: 'Apple Watch',
-        modelLine: 'No native stress score (third-party only)',
-        sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
-        algorithm: 'No native algorithm as of watchOS 11. Third-party apps (StressWatch, Livity) read HRV from HealthKit.',
-        scale: 'N/A native (third-party apps vary)',
-        baseline: 'Set by whichever third-party app you use.',
-        coverage: 'Whatever the third-party app reads from HealthKit.',
-        strength: 'Highest-quality on-wrist ECG signal (per University of Waterloo lab study). Great raw data for third-party apps.',
-        limitation: 'No stress feature shipped by Apple. Must trust a third-party app\'s methodology.',
-        color: '#94A3B8'
-      },
       samsung: {
         name: 'Samsung Galaxy Watch',
         modelLine: 'BioActive Sensor (HRV + EDA)',
@@ -162,20 +144,32 @@ class KygoWearableStress extends HTMLElement {
         limitation: 'EDA can\'t tell positive arousal (excitement) from negative arousal (anxiety). It detects activation, not valence.',
         color: '#22C55E'
       },
-      google_fitbit: {
-        name: 'Google Pixel / Fitbit Sense 2',
+      google: {
+        name: 'Google Pixel Watch',
         modelLine: 'cEDA + ML across 4 signals',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
         algorithm: 'Continuous EDA (cEDA) + skin temperature + HRV + HR fed into a machine-learning model. First all-day on-wrist EDA (2022).',
         scale: 'Body Response alerts + 1–100 daily Stress Management Score (12 metrics, 3 categories: exertion balance, sleep, responsiveness).',
         baseline: 'ML baseline built over your first month of wear.',
         coverage: 'Continuous all-day cEDA. Distinguishes exercise from stress automatically.',
-        strength: 'Only consumer wearable with continuous on-wrist EDA paired with skin-temp. Catches stress events HRV-only devices miss.',
+        strength: 'Continuous on-wrist EDA paired with skin temp catches stress events HRV-only devices miss entirely.',
         limitation: 'cEDA is sensitive to ambient heat and humidity, which can show up as elevated tonic stress on hot days.',
         color: '#16A34A'
       },
+      fitbit: {
+        name: 'Fitbit Sense 2',
+        modelLine: 'cEDA + ML Stress Management Score',
+        sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
+        algorithm: 'Same cEDA + ML pipeline as Pixel Watch. Daily Stress Management Score blends exertion balance, sleep patterns, and responsiveness.',
+        scale: 'Body Response alerts + 1–100 daily Stress Management Score.',
+        baseline: 'ML baseline built over your first month of wear.',
+        coverage: 'Continuous all-day cEDA. Premium subscription unlocks deeper analysis.',
+        strength: 'Sense 2 ships the same cEDA hardware as Pixel Watch with a more polished daily score breakdown.',
+        limitation: 'Same heat/humidity confounder as Pixel Watch. Best signal quality requires Premium subscription.',
+        color: '#16A34A'
+      },
       whoop: {
-        name: 'WHOOP (4.0 / 5.0)',
+        name: 'WHOOP',
         modelLine: 'Recovery + Stress Monitor',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: true, rr: true, sleep: false },
         algorithm: 'RMSSD vs. 14-day personal baseline + respiratory rate + skin temp + SpO2. Motion-aware to filter exercise.',
@@ -187,7 +181,7 @@ class KygoWearableStress extends HTMLElement {
         color: '#0F766E'
       },
       oura: {
-        name: 'Oura Ring (Gen3 / Ring 4)',
+        name: 'Oura Ring',
         modelLine: 'Daytime + Resilience + Cumulative Stress',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: false, rr: false, sleep: true },
         algorithm: 'Three layers: real-time Daytime Stress (HRV), Resilience, and Cumulative Stress — a 31-day scan of HRV + sleep + activity, developed with the University of Southern Denmark (released Nov 2025).',
@@ -213,308 +207,557 @@ class KygoWearableStress extends HTMLElement {
     };
   }
 
-  get _categoryMeta() {
+  get _metricMeta() {
     return {
-      substance:   { label: 'Substance' },
-      sleep:       { label: 'Sleep' },
-      activity:    { label: 'Activity' },
-      mental:      { label: 'Mental' },
-      physical:    { label: 'Physical' },
-      environment: { label: 'Environment' },
-      physiology:  { label: 'Physiology' }
+      hrv:      { label: 'HRV',         short: 'HRV' },
+      hr:       { label: 'Heart Rate',  short: 'HR' },
+      eda:      { label: 'EDA',         short: 'EDA' },
+      skinTemp: { label: 'Skin Temp',   short: 'Skin Temp' },
+      rr:       { label: 'Resp. Rate',  short: 'Resp' },
+      spo2:     { label: 'SpO₂',        short: 'SpO₂' },
+      sleep:    { label: 'Sleep arch.', short: 'Sleep' }
     };
   }
 
-  // Shared boilerplate for HRV-driven mechanism on the "hurts" side.
-  _hrvHurtsBase(magnitude) {
-    return `Drops your RMSSD ${magnitude}. Your stress score climbs because the algorithm reads suppressed parasympathetic tone as elevated arousal.`;
+  get _deviceMetrics() {
+    return {
+      garmin:        ['hrv', 'hr'],
+      samsung:       ['hrv', 'hr', 'eda'],
+      google:        ['hrv', 'hr', 'eda', 'skinTemp'],
+      fitbit:        ['hrv', 'hr', 'eda', 'skinTemp'],
+      whoop:         ['hrv', 'hr', 'rr', 'skinTemp', 'spo2'],
+      oura:          ['hrv', 'hr', 'skinTemp', 'sleep'],
+      polar:         ['hrv', 'hr', 'rr']
+    };
   }
 
-  get _factors() {
-    // Each factor's per-device entry: { impact: 'high'|'med'|'low', signal, magnitude, hurts, helps, timeline? }
-    // Impact reflects how much THIS factor moves THIS device's score, given which signals it uses.
-    return [
-      {
-        key: 'alcohol',
-        category: 'substance',
-        question: 'Drank alcohol in the last 48 hours?',
-        name: 'Alcohol',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: {
-            impact: 'high', signal: 'HRV (RMSSD)',
-            magnitude: '~2 ms RMSSD drop per drink · up to 13 ms for 2–5 days after 3+',
-            hurts: 'Garmin uses HRV as its only stress input. Alcohol suppresses your parasympathetic nervous system, so even one drink drops RMSSD ~2 ms. Body Battery drains faster and the stress score climbs. Three or more drinks can keep RMSSD depressed for up to 5 days.',
-            helps: 'Two to five alcohol-free nights lets RMSSD recover and shifts your personal baseline up over time. Because Garmin compares each reading to your own history, the lift is visible within about a week of consistent abstinence.',
-            timeline: '2–5 days'
-          },
-          apple: {
-            impact: 'high', signal: 'HRV (third-party)',
-            magnitude: '~2 ms RMSSD drop per drink · 13 ms for 2–5 days after 3+',
-            hurts: 'Apple Watch ships no native stress score, but every third-party stress app — StressWatch, Livity — pulls HRV from HealthKit. Alcohol suppresses parasympathetic activity, so RMSSD drops ~2 ms per drink. Whatever app you use, the next-day reading worsens.',
-            helps: 'Skip alcohol for 2–5 nights so HRV recovers fully. The lift will show up in whichever third-party stress app you use, since they all read the same HealthKit RMSSD value.',
-            timeline: '2–5 days'
-          },
-          samsung: {
-            impact: 'high', signal: 'HRV + EDA',
-            magnitude: '~2 ms RMSSD drop per drink, plus visible EDA changes from vasodilation',
-            hurts: 'On top of the HRV suppression every wearable sees, your BioActive Sensor picks up disrupted skin-conductance patterns from alcohol-driven vasodilation — an extra signal Garmin and Oura don\'t see. Both inputs push your score up.',
-            helps: 'A few alcohol-free nights moves RMSSD back toward baseline and lets your EDA tonic level settle. Samsung\'s baseline adapts within roughly a week, so consistency compounds.',
-            timeline: '2–5 days'
-          },
-          google_fitbit: {
-            impact: 'high', signal: 'HRV + cEDA + skin temp',
-            magnitude: '~2 ms RMSSD drop per drink · acute peripheral skin-temp rise',
-            hurts: 'Three signals all move at once: HRV drops (~2 ms/drink), continuous EDA shifts from vasodilation, and skin temperature rises peripherally. Your daily Stress Management Score and Body Response alerts both reflect it.',
-            helps: 'Two to five clean nights brings all three signals back. Pixel/Fitbit weighs sleep heavily inside the 12-metric score, so dropping evening drinks improves recovery on top of HRV.',
-            timeline: '2–5 days'
-          },
-          whoop: {
-            impact: 'high', signal: 'HRV + RR + skin temp',
-            magnitude: '~2 ms RMSSD drop · elevated overnight respiratory rate',
-            hurts: 'WHOOP\'s overnight RMSSD reading is the dominant input. Alcohol suppresses parasympathetic tone, drops RMSSD, and bumps overnight respiratory rate — both flag as poor recovery. Stress Monitor jumps up the next day.',
-            helps: 'WHOOP\'s 14-day rolling baseline rewards consistency. Two to five alcohol-free nights moves RMSSD up and respiratory rate down, lifting the green Recovery zone.',
-            timeline: '3–7 days for the rolling baseline'
-          },
-          oura: {
-            impact: 'high', signal: 'HRV + skin temp + sleep',
-            magnitude: '~2 ms RMSSD drop · disrupted sleep architecture · peripheral skin-temp rise',
-            hurts: 'Oura sees alcohol on three channels: HRV drops, skin temperature rises (vasodilation), and sleep architecture is disrupted — less deep sleep, more wake-ups. Cumulative Stress weights all three, so a single heavy night can sit on the 31-day rollup for days.',
-            helps: 'Avoid alcohol for at least 2–3 hours before bed; ideally 2–5 dry nights in a row. Oura\'s 31-day Cumulative scan rewards consistency more than any other device.',
-            timeline: '2–5 days · 31-day rollup smooths over time'
-          },
-          polar: {
-            impact: 'high', signal: 'HRV + RR (overnight)',
-            magnitude: '~2 ms RMSSD drop · elevated overnight respiratory rate',
-            hurts: 'Polar\'s Nightly Recharge reads the first 4 hours of sleep. Alcohol depresses RMSSD and elevates respiratory rate exactly during that window, so ANS Charge drops sharply.',
-            helps: 'Cut evening alcohol. Because Polar reads only sleep, the recovery response is the cleanest of any device — one good night usually shows the next morning.',
-            timeline: '1–3 nights'
-          }
+  get _metricFactors() {
+    // Source: Wearable_Stress_Research_Consolidated.md
+    const SRC = {
+      frontiers2024:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' },
+      hrvExercise:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/',  label: 'HRV & exercise meta-analysis (PMC8950456)' },
+      rhrFactors:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/',  label: 'RHR factors review (PMC9549087)' },
+      rhrExercise:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/',  label: 'Exercise & RHR meta-analysis (PMC6306777)' },
+      chronicStress:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/',  label: 'Chronic stress & HRV (PMC9974008)' },
+      caffeineHrv:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/', label: 'Caffeine, sleep & HRV (PMC11284693)' },
+      skinTempStress:   { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/',  label: 'Skin temperature & acute stress (PMC4664114)' },
+      skinTempAmbient:  { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/',  label: 'Skin temp & ambient confounds (PMC9690349)' },
+      edaSenses:        { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/', label: 'EDA & sensory stimulation (PMC10575214)' },
+      edaWiki:          { url: 'https://en.wikipedia.org/wiki/Electrodermal_activity', label: 'Electrodermal Activity (Wikipedia)' },
+      edaBiopac:        { url: 'https://blog.biopac.com/electrodermal-activity-eda/', label: 'BIOPAC — Electrodermal Activity' },
+      skinTempUltra:    { url: 'https://blog.ultrahuman.com/blog/factors-influencing-skin-temperature/', label: 'Ultrahuman — Skin temperature factors' },
+      skinTempSleep:    { url: 'https://www.nature.com/articles/s41746-026-02633-2', label: 'Nature 2026 — Skin temp during sleep' },
+      skinTempDepression: { url: 'https://www.sciencedirect.com/science/article/pii/S2666915325000071', label: 'ScienceDirect 2025 — EDA & skin temp in depression' },
+      polarRR:          { url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement', label: 'Polar — Nightly Recharge' },
+      whoopRecovery:    { url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/', label: 'WHOOP — Recovery 101' },
+      ouraCumulative:   { url: 'https://ouraring.com/blog/what-is-cumulative-stress/', label: 'Oura — Cumulative Stress' },
+      kygoHrv:          { url: 'https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence', label: 'Kygo — HRV: 44 factors ranked' },
+      aha:              { url: 'https://www.heart.org/en/news/2019/02/01/8-things-that-can-affect-your-heart-and-what-to-do-about-them', label: 'AHA — Heart rate factors' },
+      coldHrv:          { url: 'https://marathonhandbook.com/how-to-increase-hrv/', label: 'Marathon Handbook — HRV strategies' },
+      sedentary:        { url: 'https://www.hackensackmeridianhealth.org/en/healthier-you/2022/02/24/6-reasons-your-heart-rate-is-high', label: 'HMH — High heart rate causes' },
+      clevelandHr:      { url: 'https://health.clevelandclinic.org/how-to-lower-your-resting-heart-rate', label: 'Cleveland Clinic — Lowering RHR' },
+      heartFoundation:  { url: 'https://theheartfoundation.org/2018/11/02/your-heart-rate/', label: 'Heart Foundation — Heart rate' }
+    };
+
+    return {
+      hrv: [
+        {
+          key: 'hrv-sleep', name: 'Consistent sleep (7–9 hrs)', direction: 'positive', impact: 'high',
+          plainEnglish: 'Sleep is the single biggest lever you have for HRV. Your overnight reading is essentially a scoreboard for how well your nervous system reset — short or fragmented sleep means it didn\'t, and your stress score climbs the next day. Chronic short sleepers see HRV depressed for weeks, but consistency rebuilds the baseline fast.',
+          magnitude: 'Roughly 15–30% RMSSD increase within 4 weeks of consistent 7–9 hour sleep. Effect compounds over months.',
+          mechanism: 'During deep and REM sleep, parasympathetic (vagal) tone takes over and beat-to-beat variability widens. Cut sleep short and you wake up locked in sympathetic dominance, which suppresses HRV all day.',
+          whatToDo: 'Protect 7–9 hours, with consistent bed and wake times. Keep the room cool and dark, no caffeine after 2 PM, and screen-light off in the last hour before bed.',
+          source: SRC.frontiers2024
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' }
-      },
-      {
-        key: 'sleep-deprivation',
-        category: 'sleep',
-        question: 'Getting less than 7 hours of sleep?',
-        name: 'Sleep deprivation',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV (RMSSD)', magnitude: 'Significant acute RMSSD reduction; elevated next-day RHR', hurts: 'Sleep deprivation shifts your autonomic balance toward sympathetic dominance. Garmin reads it as suppressed RMSSD plus an elevated resting heart rate, so Body Battery starts the day already drained and stress climbs.', helps: 'Aim for 7–9 hours consistently. HRV typically improves 15–30% within 4 weeks of stable sleep. Garmin\'s personal baseline shifts up gradually.', timeline: '15–30% HRV improvement within 4 weeks' },
-          apple: { impact: 'high', signal: 'HRV (third-party)', magnitude: 'Acute RMSSD reduction visible in HealthKit', hurts: 'Sympathetic dominance from short sleep drops the HRV value Apple writes to HealthKit. Whichever third-party stress app you use will show it the next morning.', helps: 'Consistent 7–9 hours over 4 weeks lifts HRV 15–30%. The change shows up in any HealthKit-based stress app.', timeline: '4 weeks for 15–30% HRV gain' },
-          samsung: { impact: 'high', signal: 'HRV + EDA', magnitude: 'Acute HRV drop + slightly elevated tonic EDA', hurts: 'Both BioActive signals shift: HRV drops from sympathetic dominance, and tonic EDA tends to run higher because you\'re more reactive to small stimuli when underslept.', helps: '7–9 hours of consistent sleep restores HRV (15–30% in 4 weeks) and brings EDA tonic level back down.', timeline: '4 weeks for full restoration' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA + sleep metrics', magnitude: 'HRV drop, elevated cEDA reactivity, lower sleep score', hurts: 'Pixel/Fitbit\'s ML model weights sleep heavily inside the daily Stress Management Score. Short sleep tanks the sleep-pattern category and shifts cEDA to a more reactive tonic level.', helps: 'Hit your 7–9 hour target. The 12-metric daily score lifts noticeably within a week, fully recovers in ~4 weeks.', timeline: '1–4 weeks' },
-          whoop: { impact: 'high', signal: 'HRV + RR', magnitude: 'Suppressed RMSSD + elevated overnight RR', hurts: 'WHOOP\'s overnight RMSSD reading is dominated by sleep quantity and quality. Short sleep drops RMSSD and pushes respiratory rate up. Recovery score and Stress Monitor both worsen.', helps: 'Consistent 7–9 hours over 2–4 weeks moves the 14-day rolling baseline up. WHOOP rewards consistency more than any other recovery score.', timeline: '2–4 weeks' },
-          oura: { impact: 'high', signal: 'HRV + sleep architecture', magnitude: 'HRV drop, less deep sleep, fragmented architecture', hurts: 'Oura is the most sleep-weighted device on the market. Short sleep tanks the Sleep Score directly, suppresses HRV, and feeds straight into Cumulative Stress.', helps: 'Consistent 7–9 hours moves Sleep Score, HRV, and Cumulative Stress together. The 31-day scan smooths over single bad nights.', timeline: '4 weeks for full lift; 31-day rollup smooths' },
-          polar: { impact: 'high', signal: 'HRV + RR (overnight)', magnitude: 'Lower ANS Charge reading directly', hurts: 'Polar measures only the first 4 hours of sleep. Short or fragmented sleep means the entire reading window is compromised, so ANS Charge drops sharply.', helps: 'Sleep at least 7 hours. Because the measurement window is narrow, one good night moves Nightly Recharge the next morning.', timeline: '1–3 nights' }
+        {
+          key: 'hrv-aerobic', name: 'Aerobic exercise (150 min/wk)', direction: 'positive', impact: 'high',
+          plainEnglish: 'Of everything you can do for HRV, consistent aerobic training has the most evidence behind it. It physically remodels your heart and your autonomic nervous system over weeks and months — there\'s no app, supplement, or cold plunge with anywhere near this much data.',
+          magnitude: 'Significant long-term HRV gain — typically 10–20% over 8–12 weeks of consistent training, with continued improvement past 6 months.',
+          mechanism: 'Aerobic training increases stroke volume (more blood per beat) and shifts your autonomic balance toward parasympathetic dominance. Both raise resting HRV and lower resting heart rate.',
+          whatToDo: '150 min/week of moderate cardio (zone 2 — conversational pace) is the floor. Mix in 1–2 higher-intensity sessions for VO₂max gains. Build slowly to avoid overtraining.',
+          source: SRC.hrvExercise
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' }
-      },
-      {
-        key: 'caffeine',
-        category: 'substance',
-        question: 'Drinking more than 400 mg of caffeine, or after 2 PM?',
-        name: 'Excess or late caffeine',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'med', signal: 'HRV (RMSSD) + HR', magnitude: '8–12% RMSSD drop in sensitive individuals', hurts: 'Caffeine overstimulates the sympathetic nervous system. Garmin sees a transient HR bump and a measurable RMSSD drop, especially if you\'re caffeine-sensitive.', helps: 'Cap intake under ~400 mg/day; nothing after 2 PM (5–6 hr half-life). Most people see HRV recover within 24 hours of cutting back.', timeline: '24 hours' },
-          apple: { impact: 'med', signal: 'HRV (third-party)', magnitude: 'HealthKit HRV drop in sensitive individuals', hurts: 'Same sympathetic overstimulation. The HealthKit RMSSD value drops, so any third-party stress app reflects the same hit.', helps: 'Move caffeine before 2 PM and watch the next-day HRV reading recover.', timeline: '24 hours' },
-          samsung: { impact: 'med', signal: 'HRV + EDA', magnitude: 'HRV drop + elevated tonic EDA', hurts: 'BioActive Sensor sees both: HRV drops from sympathetic activation, and EDA tonic level runs higher because caffeine raises baseline arousal.', helps: 'Cap intake and avoid late doses. Both signals settle within 24 hours.', timeline: '24 hours' },
-          google_fitbit: { impact: 'med', signal: 'HRV + cEDA', magnitude: 'HRV drop + cEDA tonic shift', hurts: 'Continuous EDA shows the sympathetic baseline shift clearly — the score rolls higher even when you don\'t feel "stressed."', helps: 'Cap caffeine and clear it 6+ hours before bed. cEDA tonic level falls back within a day.', timeline: '24 hours' },
-          whoop: { impact: 'med', signal: 'HRV + RR', magnitude: 'HRV drop + mild RR elevation', hurts: 'Late caffeine particularly hurts overnight metrics — HRV is suppressed and respiratory rate runs slightly higher when WHOOP measures recovery.', helps: 'No caffeine after 2 PM is the cleanest rule for protecting overnight RMSSD.', timeline: '1–2 nights' },
-          oura: { impact: 'med', signal: 'HRV + sleep', magnitude: 'HRV drop + delayed sleep onset, less deep sleep', hurts: 'Caffeine\'s 5–6 hour half-life blocks adenosine receptors, delays sleep onset, and reduces deep sleep — which Oura weighs heavily inside Cumulative Stress.', helps: 'Cut off caffeine by early afternoon. Sleep onset and deep-sleep recovery follow within a night or two.', timeline: '1–3 nights' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'Lower ANS Charge from sympathetic carryover', hurts: 'Late caffeine carries sympathetic activation into the Nightly Recharge measurement window, which Polar reads as poor recovery.', helps: 'Avoid caffeine after 2 PM. Polar\'s overnight reading recovers within 1–2 nights.', timeline: '1–2 nights' }
+        {
+          key: 'hrv-meditation', name: 'Meditation / breathwork', direction: 'positive', impact: 'med',
+          plainEnglish: 'Slow breathing isn\'t woo — it\'s a direct line to your vagus nerve. Five to ten minutes of breathwork at around six breaths per minute can bump your HRV measurably within minutes, and consistent practice raises your baseline over weeks.',
+          magnitude: 'Acute HRV bump within minutes of practice; chronic baseline lift of 5–10% over 4–8 weeks of daily practice.',
+          mechanism: 'Breathing at ~6 breaths/min synchronizes heart rhythm with breath rhythm — a state called resonance — which maximally engages the vagus nerve and parasympathetic output.',
+          whatToDo: '5–10 min of slow-paced breathing daily. Box breathing (4-4-4-4), 4-7-8, or any app that paces you to ~6 breaths/min. Pre-bed timing compounds with sleep benefits.',
+          source: SRC.frontiers2024
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/', label: 'Caffeine, sleep & HRV review (PMC11284693)' }
-      },
-      {
-        key: 'aerobic-exercise',
-        category: 'activity',
-        question: 'Getting at least 150 minutes of moderate cardio a week?',
-        name: 'Aerobic exercise (consistent)',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + RHR', magnitude: 'Significant long-term HRV gain; RHR drops measurably', hurts: 'Without consistent cardio, vagal tone stays low and resting heart rate runs higher. Garmin reads both and your stress score sits elevated.', helps: 'Hit 150 min/week of moderate cardio. HRV gains compound; RHR drops 5–10 bpm in committed trainees over months.', timeline: '4–12 weeks for visible HRV gains' },
-          apple: { impact: 'high', signal: 'HRV (third-party) + RHR', magnitude: 'Long-term HRV gain visible in HealthKit', hurts: 'No vagal tone, no resilience. HealthKit RMSSD stays low and any third-party stress app reflects elevated baseline arousal.', helps: '150 min/week of moderate cardio. HRV climbs in HealthKit over 4–12 weeks.', timeline: '4–12 weeks' },
-          samsung: { impact: 'high', signal: 'HRV + HR', magnitude: 'Long-term HRV gain + lower RHR', hurts: 'Without aerobic training your HRV baseline runs low and your BioActive Sensor reads more reactive across the day.', helps: '150 min/week of cardio. HRV improves significantly over 4–12 weeks; RHR follows.', timeline: '4–12 weeks' },
-          google_fitbit: { impact: 'high', signal: 'HRV + HR (auto exercise filter)', magnitude: 'HRV gain over months; better Cardio Fitness Score', hurts: 'Pixel/Fitbit auto-distinguishes exercise from stress, so the workout itself doesn\'t blow up the score — but missing aerobic training leaves your baseline HRV low.', helps: '150 min/week of cardio. The Cardio Fitness Score lifts and the daily Stress Management Score baseline improves.', timeline: '4–12 weeks' },
-          whoop: { impact: 'high', signal: 'HRV + RR baseline', magnitude: 'HRV gain + lower overnight RR', hurts: 'Cardiorespiratory fitness is the dominant baseline-shifter for both HRV and respiratory rate. Without it, your 14-day baseline sits low.', helps: 'Build aerobic Strain consistently. WHOOP\'s 14-day baseline lifts as cardio fitness improves; overnight respiratory rate drops.', timeline: '4–12 weeks' },
-          oura: { impact: 'high', signal: 'HRV + activity + sleep', magnitude: 'HRV gain + better sleep architecture', hurts: 'Oura\'s Cumulative Stress weighs activity and sleep together. Sedentary weeks show as lower readiness and worse sleep depth.', helps: 'Get aerobic activity most days. Avoid vigorous exercise within 2 hours of bed. HRV and deep sleep both lift over weeks.', timeline: '4–12 weeks' },
-          polar: { impact: 'high', signal: 'HRV + RR (overnight)', magnitude: 'Higher ANS Charge baseline', hurts: 'Polar is built for athletes — without aerobic training the 28-day ANS Charge baseline stays flat or drifts negative.', helps: 'Train aerobically and let Polar track recovery. ANS Charge baseline lifts over 4–12 weeks.', timeline: '4–12 weeks' }
+        {
+          key: 'hrv-weight', name: 'Healthy body weight', direction: 'positive', impact: 'med',
+          plainEnglish: 'Carrying excess body weight keeps your sympathetic nervous system slightly elevated all the time, even at rest. Sustainable weight loss — not crash dieting — restores autonomic balance and lifts HRV measurably over months.',
+          magnitude: 'Restores sympathovagal balance over 3–6 months of sustained loss. Larger effects in those starting from higher BMI.',
+          mechanism: 'Adipose tissue produces inflammatory cytokines and raises sympathetic tone. Sustainable loss reduces both, plus improves insulin sensitivity, which feeds back into autonomic regulation.',
+          whatToDo: 'Protein-forward eating, daily walks, gradual caloric deficit (≤1% body weight per week). Crash diets temporarily lower HRV — slow and steady wins here.',
+          source: SRC.frontiers2024
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/', label: 'HRV & exercise meta-analysis (PMC8950456)' }
-      },
-      {
-        key: 'overtraining',
-        category: 'activity',
-        question: 'Training hard with little recovery?',
-        name: 'Overtraining',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + RHR', magnitude: 'Progressive HRV decline; rising RHR', hurts: 'Excessive load without recovery suppresses parasympathetic tone. Garmin reads it as drifting HRV and a rising morning RHR — Body Battery never fully recharges.', helps: 'Take 1–2 deload days. HRV typically rebounds within a week of reduced load.', timeline: '5–10 days' },
-          apple: { impact: 'med', signal: 'HRV (third-party)', magnitude: 'Drifting HealthKit RMSSD over weeks', hurts: 'No native overtraining flag, but the HealthKit HRV trend drifts down and any decent third-party stress app will show it.', helps: 'Cut load and let HRV recover.', timeline: '5–10 days' },
-          samsung: { impact: 'high', signal: 'HRV + EDA', magnitude: 'HRV drop + reactive EDA', hurts: 'Both BioActive signals shift: HRV drifts down, and EDA runs more reactive because chronic sympathetic load amps you up.', helps: 'Reduce training volume for 5–10 days. Both signals recover together.', timeline: '5–10 days' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA + skin temp', magnitude: 'HRV drift + elevated cEDA tonic + skin-temp anomalies', hurts: 'The ML model picks up the chronic sympathetic state across all 4 inputs. Body Response alerts fire more frequently.', helps: 'Deload. The 12-metric score lifts within a week as exertion balance and responsiveness recover.', timeline: '5–10 days' },
-          whoop: { impact: 'high', signal: 'HRV + RR + skin temp', magnitude: 'Suppressed HRV + elevated overnight RR (canonical overtraining marker)', hurts: 'Overnight respiratory rate is WHOOP\'s strongest overtraining flag — even before HRV drifts, RR rises. Strain coach will start flashing yellow/red recovery.', helps: 'Listen to the recovery score. A 5–7 day lighter block usually rebuilds the green zone.', timeline: '5–7 days' },
-          oura: { impact: 'high', signal: 'HRV + skin temp + sleep', magnitude: 'HRV drift + skin-temp deviation + worse sleep', hurts: 'Cumulative Stress integrates all three signals. Skin temp deviating from your baseline is a common Oura overtraining/illness flag.', helps: 'Reduce vigorous training. Skin temp normalizes within a week, sleep architecture follows.', timeline: '5–10 days' },
-          polar: { impact: 'high', signal: 'HRV + RR (overnight)', magnitude: 'ANS Charge sliding negative over consecutive nights', hurts: 'Polar built Nightly Recharge to flag overtraining. Multi-day negative ANS Charge with elevated overnight RR is the classic pattern.', helps: 'Trust the negative ANS Charge. A 5–7 day deload restores it.', timeline: '5–7 days' }
+        {
+          key: 'hrv-hydration', name: 'Hydration', direction: 'positive', impact: 'low',
+          plainEnglish: 'Being chronically under-hydrated keeps your blood volume low, which forces your heart to work a little harder all day and bumps HRV down. The effect is small but consistent — easy win if your overnight readings are mediocre and you\'re routinely thirsty.',
+          magnitude: 'Moderate effect via blood volume and cardiac strain. Can shift overnight HRV 5–10% in chronically under-hydrated individuals.',
+          mechanism: 'Adequate plasma volume reduces cardiac workload and supports vagal tone. Dehydration thickens blood and raises sympathetic activity to maintain blood pressure.',
+          whatToDo: 'Drink to thirst plus a baseline — rough rule, half your body weight in ounces per day. Add electrolytes (sodium, potassium) if you sweat heavily or train in heat.',
+          source: SRC.rhrFactors
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/', label: 'Overtraining & HRV (PMC8950456)' }
-      },
-      {
-        key: 'meditation',
-        category: 'mental',
-        question: 'Practicing meditation or slow breathing regularly?',
-        name: 'Meditation / breathwork',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'med', signal: 'HRV', magnitude: 'Acute + chronic HRV improvement', hurts: 'Without active parasympathetic practice, you\'re relying on baseline recovery. HRV stays moderate and Body Battery refills slowly.', helps: '5–10 min of slow breathing (~6 breaths/min) daily. Acute HRV jumps measurably within minutes; chronic baseline lifts over weeks.', timeline: 'Acute · weeks for baseline' },
-          apple: { impact: 'med', signal: 'HRV (third-party)', magnitude: 'HealthKit HRV improvement, acute and chronic', hurts: 'Apple\'s Mindfulness app cues breathwork but doesn\'t score it. Without practice, HRV trend stays flat.', helps: 'Use Mindfulness or any breathwork app. The HealthKit HRV trend lifts over weeks.', timeline: 'Acute · weeks for baseline' },
-          samsung: { impact: 'med', signal: 'HRV + EDA', magnitude: 'HRV rises, EDA tonic level falls', hurts: 'Without parasympathetic practice your EDA tonic level runs higher and HRV stays moderate.', helps: 'Slow breathing drops EDA tonic almost immediately and lifts HRV. Both signals respond fast.', timeline: 'Minutes acute · weeks for baseline' },
-          google_fitbit: { impact: 'med', signal: 'HRV + cEDA', magnitude: 'cEDA drops within minutes; HRV climbs over weeks', hurts: 'cEDA captures the parasympathetic shift in real time — without it, tonic arousal stays elevated.', helps: 'Pixel/Fitbit will literally show cEDA dropping during slow breathing. Daily Stress Management Score lifts over weeks.', timeline: 'Minutes acute · weeks for baseline' },
-          whoop: { impact: 'med', signal: 'HRV + RR', magnitude: 'Acute HRV bump + lower overnight RR', hurts: 'Without breathwork, sympathetic carryover into the night keeps RR elevated.', helps: 'Slow breathing before bed drops RR into the measurement window — overnight HRV jumps the next morning.', timeline: '1–3 nights for visible Recovery lift' },
-          oura: { impact: 'med', signal: 'HRV + sleep', magnitude: 'Acute HRV improvement + better sleep onset', hurts: 'Without parasympathetic practice, sleep onset is slower and Daytime Stress trends higher.', helps: 'Pre-bed breathwork shortens sleep onset and lifts HRV. Cumulative Stress improves over a week.', timeline: 'Days · weeks for cumulative' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'Higher ANS Charge from better recovery start', hurts: 'No breathwork means more sympathetic carryover into the first 4 hours of sleep — exactly the window Polar reads.', helps: '5–10 min of breathwork before bed lifts Nightly Recharge the next morning.', timeline: '1–3 nights' }
+        {
+          key: 'hrv-cold', name: 'Cold exposure (controlled)', direction: 'positive', impact: 'low',
+          plainEnglish: 'A brief cold shower or face-dunk gives your vagus nerve a quick jolt — useful as an acute stress-management tool, but not a long-term HRV builder. Don\'t overdo it; chronic cold exposure can backfire and raise sympathetic tone.',
+          magnitude: 'Acute vagal stimulation — small, transient HRV bump that fades within hours. No durable baseline change from cold alone.',
+          mechanism: 'Cold water on the face triggers the mammalian dive reflex — heart rate drops sharply and parasympathetic output spikes within seconds.',
+          whatToDo: '30–60 seconds of cold water (face splash or whole-body) in the morning is plenty. Skip if you have cardiovascular conditions or untreated hypertension.',
+          source: SRC.coldHrv
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' }
-      },
-      {
-        key: 'acute-stress',
-        category: 'mental',
-        question: 'Stuck in a stretch of acute psychological stress?',
-        name: 'Acute psychological stress',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + HR', magnitude: 'Sustained RMSSD reduction · elevated RHR', hurts: 'Cortisol and adrenaline drive sympathetic activation. Garmin reads it as suppressed HRV and elevated resting HR — the score lives in the high band until the stressor lifts.', helps: 'The biggest movers are sleep, breathwork, and aerobic exercise. Most people see meaningful recovery within 1–2 weeks once the stressor eases.', timeline: '1–2 weeks' },
-          apple: { impact: 'high', signal: 'HRV (third-party)', magnitude: 'Sustained HealthKit HRV reduction', hurts: 'Chronic sympathetic activation drops HealthKit RMSSD across the day. Third-party apps read it directly.', helps: 'Address the stressor; use Mindfulness sessions and consistent sleep. HRV recovers gradually.', timeline: '1–2 weeks' },
-          samsung: { impact: 'high', signal: 'HRV + EDA', magnitude: 'Strong, immediate EDA increase + HRV drop', hurts: 'EDA is the cleanest acute-stress signal in consumer wearables. Anxiety, fear, anger all spike it within seconds. HRV drops in parallel. Note: EDA can\'t tell positive arousal from negative.', helps: 'Breathwork drops EDA tonic level within minutes. Consistent sleep + exercise rebuild HRV over weeks.', timeline: 'Acute response in minutes · weeks for baseline' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA', magnitude: 'Body Response alerts fire; daily score drops', hurts: 'Continuous EDA picks up sympathetic activation in real time. Pixel/Fitbit fires Body Response alerts and the daily Stress Management Score drops sharply.', helps: 'Use the Body Response alert as a cue for guided breathwork. cEDA drops in real time; the daily score recovers within days of stressor relief.', timeline: 'Real-time alerts · 1–2 weeks for baseline' },
-          whoop: { impact: 'high', signal: 'HRV + RR', magnitude: 'Suppressed HRV + elevated overnight RR', hurts: 'Sympathetic carryover into sleep depresses RMSSD and elevates respiratory rate. Stress Monitor jumps high; Recovery score sits red.', helps: 'Pre-bed wind-down (breathwork, lower light). Recovery rebuilds within a week of stressor lifting.', timeline: '1 week' },
-          oura: { impact: 'high', signal: 'HRV + skin temp + sleep', magnitude: 'HRV drop + peripheral skin-temp drop + worse sleep', hurts: 'Vasoconstriction at the periphery is a measurable acute-stress signal at the finger. Oura sees it on three channels and Cumulative Stress climbs.', helps: 'Sleep + breathwork + activity. Cumulative Stress drops noticeably within 1–2 weeks of stressor relief.', timeline: '1–2 weeks · 31-day rollup' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'ANS Charge sliding into negative range', hurts: 'Polar reads only sleep, so daytime stress shows up indirectly via worse first-4-hour recovery.', helps: 'Reduce evening sympathetic load (breathwork, no late screens). ANS Charge rebuilds within a few nights of relief.', timeline: '3–7 nights' }
+        {
+          key: 'hrv-alcohol', name: 'Alcohol', direction: 'negative', impact: 'high',
+          plainEnglish: 'Alcohol crushes HRV harder than almost anything else you can do. Even one drink suppresses your nervous system overnight, and three or more can keep your readings depressed for two to five days. If your HRV is suddenly tanking with no other explanation, look here first.',
+          magnitude: 'About 2 ms RMSSD drop per drink; up to 13 ms for 2–5 days after 3+ drinks. Effect strongest the night you drink and lingers.',
+          mechanism: 'Alcohol directly suppresses parasympathetic activity and disrupts deep sleep — both of which crater overnight HRV. Liver metabolism keeps sympathetic tone elevated for hours after the last drink.',
+          whatToDo: 'Treat each drink as a 24–48 hour HRV cost. A few alcohol-free nights per week recover the most. Cut off 3+ hours before bed if you do drink.',
+          source: SRC.kygoHrv
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/', label: 'Chronic stress & HRV (PMC9974008)' }
-      },
-      {
-        key: 'illness',
-        category: 'physiology',
-        question: 'Coming down with something or running a fever?',
-        name: 'Illness / fever',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + HR', magnitude: 'Significant HRV drop · ~10 bpm RHR rise per 1°F', hurts: 'Immune activation drives sympathetic dominance. HRV drops, RHR rises ~10 bpm per 1°F of fever. Body Battery never recharges.', helps: 'Rest and hydration. Garmin doesn\'t flag illness explicitly but you\'ll see the pattern.', timeline: 'Days, depending on illness' },
-          apple: { impact: 'high', signal: 'HRV + HR (third-party)', magnitude: 'HealthKit HRV drop + elevated RHR', hurts: 'Same immune-driven sympathetic shift visible in HealthKit values.', helps: 'Rest. Apple\'s Vitals app on watchOS can flag the deviation if multiple metrics shift together.', timeline: 'Days' },
-          samsung: { impact: 'high', signal: 'HRV + EDA', magnitude: 'HRV drop + reactive EDA', hurts: 'Both BioActive signals shift with immune activation.', helps: 'Rest. Both signals normalize as illness resolves.', timeline: 'Days' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA + skin temp', magnitude: 'HRV drop + elevated skin temp + cEDA shift', hurts: 'Skin-temperature deviation is a strong illness signal. Pixel/Fitbit weighs all four inputs and the daily Stress Management Score drops hard.', helps: 'Rest. The score rebuilds as skin temp returns to baseline.', timeline: 'Days' },
-          whoop: { impact: 'high', signal: 'HRV + RR + skin temp + SpO2', magnitude: 'All four signals shift; SpO2 drops with respiratory illness', hurts: 'WHOOP is the most illness-aware device. Elevated overnight RR + skin-temp deviation + suppressed HRV is the classic pattern; SpO2 drops with respiratory infections.', helps: 'Rest. WHOOP\'s recovery score is conservative — let it stay red until all four signals return.', timeline: 'Days to weeks depending on illness' },
-          oura: { impact: 'high', signal: 'HRV + skin temp + sleep', magnitude: 'Skin-temp elevation is the dominant signal', hurts: 'Oura\'s finger-site skin temp is the cleanest in the consumer market — fever shows up clearly. HRV drops, sleep fragments.', helps: 'Rest. Oura often flags illness 1–2 days before subjective symptoms appear.', timeline: 'Days' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'Lower ANS Charge + elevated overnight RR', hurts: 'Polar reads only overnight, but illness-driven sympathetic activation is clear in the first-4-hour window.', helps: 'Rest. ANS Charge recovers as illness resolves.', timeline: 'Days' }
+        {
+          key: 'hrv-sleep-dep', name: 'Sleep deprivation', direction: 'negative', impact: 'high',
+          plainEnglish: 'Pull a short night and your HRV the next morning will show it — sometimes for several days, especially if it\'s a pattern. Sleep debt is the most common reason recovery scores look bad even when you didn\'t do anything else wrong.',
+          magnitude: 'Significant acute RMSSD reduction the next morning; cumulative effect across consecutive short nights.',
+          mechanism: 'Short or fragmented sleep stops the nightly autonomic reset. You wake up locked in sympathetic dominance, which suppresses HRV all day and keeps cortisol elevated.',
+          whatToDo: 'Protect 7–9 hours. If you can\'t, even a 20-minute daytime nap recovers some autonomic ground. Don\'t try to "make up" sleep on weekends — consistency beats catch-up.',
+          source: SRC.frontiers2024
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 (PMC11333334)' }
-      },
-      {
-        key: 'dehydration-heat',
-        category: 'physical',
-        question: 'Dehydrated or training in the heat?',
-        name: 'Dehydration & heat',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'med', signal: 'HRV + HR', magnitude: 'Moderate HRV drop · significant RHR rise', hurts: 'Lower blood volume + thermoregulation demand drive cardiac strain. RHR climbs measurably and HRV drops modestly.', helps: 'Hydrate consistently (not just before workouts). Both signals settle within a day.', timeline: '24 hours' },
-          apple: { impact: 'med', signal: 'HRV + HR', magnitude: 'HealthKit values shift modestly', hurts: 'Same volume-driven sympathetic shift; visible in HealthKit but not flagged natively.', helps: 'Hydrate.', timeline: '24 hours' },
-          samsung: { impact: 'med', signal: 'HRV + EDA', magnitude: 'HRV drop + altered EDA conductance', hurts: 'Dehydration changes electrolyte concentration in sweat, so EDA readings can drift unpredictably along with the HRV drop.', helps: 'Hydrate consistently. EDA returns to normal as electrolyte balance restores.', timeline: '24 hours' },
-          google_fitbit: { impact: 'high', signal: 'HRV + cEDA + skin temp', magnitude: 'Heat shows up on all three signals', hurts: 'Thermoregulatory sweating raises tonic cEDA independent of emotional state — Pixel/Fitbit can read heat as stress on hot days.', helps: 'Hydrate; treat hot-day spikes with skepticism. The signals settle as ambient cools.', timeline: 'Hours to a day' },
-          whoop: { impact: 'med', signal: 'HRV + skin temp', magnitude: 'HRV drop + elevated skin temp', hurts: 'Heat strain shows up overnight as elevated skin temp and suppressed HRV.', helps: 'Hydrate; sleep cool. Both signals normalize within a night.', timeline: '1 night' },
-          oura: { impact: 'med', signal: 'HRV + skin temp', magnitude: 'Skin-temp elevation + HRV drop', hurts: 'Finger-site skin temp picks up heat strain clearly. Cumulative Stress climbs on hot days even without subjective stress.', helps: 'Hydrate; sleep cool (65–68°F bedroom is Oura\'s recommended range).', timeline: '1–2 nights' },
-          polar: { impact: 'med', signal: 'HRV + RR (overnight)', magnitude: 'Lower ANS Charge from elevated RR + reduced HRV', hurts: 'Heat carries sympathetic activation into sleep, which Polar reads in the first 4 hours.', helps: 'Hydrate; sleep cool. ANS Charge recovers within 1–2 nights.', timeline: '1–2 nights' }
+        {
+          key: 'hrv-overtraining', name: 'Overtraining', direction: 'negative', impact: 'high',
+          plainEnglish: 'Pushing past your recovery capacity will tank HRV — and your wearable will see it days before you feel burned out. Watch for HRV trending down across a week or two of hard training; that\'s the actual overtraining signal, not how tired you feel today.',
+          magnitude: 'Progressive HRV decline over days to weeks of accumulated load. Recovery requires reducing volume, not just one rest day.',
+          mechanism: 'Excessive training without recovery keeps cortisol and sympathetic tone elevated. Vagal tone drops, HRV drops with it, and the longer it goes the harder the rebound.',
+          whatToDo: 'If your 7-day HRV trend is down 10%+, take a deload week — easier zone-2 sessions, more sleep, more protein. Keep training at 50–70% of normal volume until HRV rebounds.',
+          source: SRC.hrvExercise
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/', label: 'RHR & hydration review (PMC9549087)' }
-      },
-      {
-        key: 'cold-exposure',
-        category: 'physical',
-        question: 'Doing controlled cold exposure (cold showers, plunges)?',
-        name: 'Cold exposure',
-        baseImpact: 'low',
-        perDevice: {
-          garmin: { impact: 'low', signal: 'HRV', magnitude: 'Acute vagal stimulation; small HRV bump', hurts: 'Without cold exposure you\'re missing one of the cleanest acute parasympathetic levers. Not actively harmful — just leverage you\'re not using.', helps: 'Brief cold exposure (face dunk, 30–60s cold shower) triggers the dive reflex and acutely boosts vagal tone. Effect is small but real.', timeline: 'Acute response' },
-          apple: { impact: 'low', signal: 'HRV (third-party)', magnitude: 'Small HealthKit HRV bump', hurts: 'Same — not harmful, just unused leverage.', helps: 'Cold exposure produces a measurable acute HRV bump in HealthKit.', timeline: 'Acute' },
-          samsung: { impact: 'low', signal: 'HRV + EDA', magnitude: 'EDA spike then drop; HRV bump', hurts: 'EDA shows the initial sympathetic startle then a parasympathetic rebound.', helps: 'Brief cold exposure shifts both signals favorably after the initial spike.', timeline: 'Acute' },
-          google_fitbit: { impact: 'low', signal: 'HRV + cEDA', magnitude: 'cEDA spike then drop', hurts: 'Same biphasic pattern as Samsung.', helps: 'cEDA drops below baseline after the cold response — net positive.', timeline: 'Acute' },
-          whoop: { impact: 'low', signal: 'HRV', magnitude: 'Small overnight HRV gain', hurts: 'Not harmful — but WHOOP is built for endurance, not biphasic acute responses.', helps: 'Cold exposure earlier in the day can lift overnight HRV slightly.', timeline: '1 night' },
-          oura: { impact: 'low', signal: 'HRV + skin temp', magnitude: 'Skin temp drop + HRV bump', hurts: 'Skin-temp shifts from cold exposure can confound the menstrual-cycle signal if done close to bed.', helps: 'Cold exposure earlier in the day. Avoid right before sleep so skin-temp baseline isn\'t disrupted.', timeline: 'Acute · same night' },
-          polar: { impact: 'low', signal: 'HRV + RR (overnight)', magnitude: 'Small ANS Charge bump', hurts: 'Polar reads only overnight, so the acute response is invisible — only carryover effects show.', helps: 'Cold exposure earlier in the day can lift Nightly Recharge slightly.', timeline: '1 night' }
+        {
+          key: 'hrv-chronic-stress', name: 'Chronic psychological stress', direction: 'negative', impact: 'high',
+          plainEnglish: 'The grind — work pressure, relationship stress, financial worry — sits on your nervous system 24/7. Unlike acute stress, which spikes and resolves, chronic stress keeps HRV suppressed for weeks or months until you address the source. Your wearable can\'t fix this, but it will tell you when it\'s real.',
+          magnitude: 'Sustained RMSSD/SDNN reduction lasting weeks to months. Larger effects with longer duration and higher subjective intensity.',
+          mechanism: 'Chronic cortisol exposure and sustained sympathetic activation suppress vagal output. Brain-body inflammation can compound the effect.',
+          whatToDo: 'Address the source where you can. Otherwise: daily breathwork, regular cardio, social connection, and therapy. Don\'t expect HRV to recover until the stressor eases.',
+          source: SRC.chronicStress
         },
-        source: { url: 'https://marathonhandbook.com/how-to-increase-hrv/', label: 'Marathon Handbook 2026 — HRV strategies' }
-      },
-      {
-        key: 'cognitive-load',
-        category: 'mental',
-        question: 'In a sustained period of high mental effort?',
-        name: 'Cognitive load',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'low', signal: 'HRV + HR', magnitude: 'Mild HRV drop · small HR bump', hurts: 'Mental exertion activates the sympathetic nervous system mildly. Garmin\'s HRV-only model picks up only the larger episodes.', helps: 'Brief breaks, breathwork, walks. The acute response is small and reversible.', timeline: 'Hours' },
-          apple: { impact: 'low', signal: 'HRV (third-party)', magnitude: 'Small HealthKit HRV change', hurts: 'Mild and easy to miss without EDA.', helps: 'Breaks; Mindfulness sessions.', timeline: 'Hours' },
-          samsung: { impact: 'high', signal: 'EDA (primary)', magnitude: 'Moderate EDA increase', hurts: 'EDA is uniquely sensitive to cognitive load — sustained mental effort raises tonic skin conductance even without emotional content. Samsung\'s score reflects this.', helps: 'Brief mental breaks drop EDA quickly. Slow breathing accelerates the drop.', timeline: 'Minutes' },
-          google_fitbit: { impact: 'high', signal: 'cEDA (primary)', magnitude: 'cEDA tonic level rises throughout demanding work', hurts: 'Continuous EDA captures cognitive load in real time. Body Response alerts may fire during deep-focus blocks.', helps: 'Pomodoro-style breaks; brief breathwork. cEDA drops noticeably with each break.', timeline: 'Minutes' },
-          whoop: { impact: 'low', signal: 'HRV', magnitude: 'Mild overnight HRV impact only if chronic', hurts: 'WHOOP doesn\'t see daytime cognitive load directly; only chronic states carry into overnight RMSSD.', helps: 'Manage chronic load via sleep + breathwork.', timeline: 'Days' },
-          oura: { impact: 'low', signal: 'HRV', magnitude: 'Daytime Stress reflects sustained load', hurts: 'Oura\'s Daytime Stress catches sustained sympathetic activation but the resolution is coarser than EDA.', helps: 'Breaks + breathwork. Daytime Stress lifts within hours.', timeline: 'Hours' },
-          polar: { impact: 'low', signal: 'HRV + RR (overnight)', magnitude: 'Only chronic load shows', hurts: 'No daytime measurement — cognitive load only visible if it carries into sleep.', helps: 'Wind down before bed.', timeline: 'Nights' }
+        {
+          key: 'hrv-illness', name: 'Illness / inflammation', direction: 'negative', impact: 'high',
+          plainEnglish: 'Your immune system burns through resources fighting infection — including the autonomic resources that keep HRV up. A sudden HRV drop with no obvious lifestyle cause is often the first sign you\'re getting sick, sometimes 24–48 hours before symptoms appear.',
+          magnitude: 'Significant drop during acute illness, often 1–2 days before subjective symptoms. Recovery tracks with illness resolution.',
+          mechanism: 'Cytokines and inflammatory signaling activate the sympathetic nervous system. The body redirects resources toward immune response, which suppresses vagal output.',
+          whatToDo: 'Take HRV drops as a real signal. Rest, hydrate, eat well, and skip hard training even before you "feel" sick. Most people would catch illness earlier if they trusted the data.',
+          source: SRC.frontiers2024
         },
-        source: { url: 'https://blog.biopac.com/electrodermal-activity-eda/', label: 'BIOPAC — Electrodermal Activity overview' }
-      },
-      {
-        key: 'menstrual-cycle',
-        category: 'physiology',
-        question: 'In the luteal phase (week before period)?',
-        name: 'Menstrual cycle (luteal phase)',
-        baseImpact: 'med',
-        perDevice: {
-          garmin: { impact: 'low', signal: 'HRV', magnitude: 'Mild HRV reduction in luteal phase', hurts: 'Without skin temperature, Garmin sees only a small HRV shift across the cycle. Not flagged explicitly.', helps: 'Awareness — the luteal-phase HRV dip is normal and self-resolves at menses.', timeline: 'Resolves at menses onset' },
-          apple: { impact: 'low', signal: 'HRV + Cycle Tracking', magnitude: 'HealthKit HRV dip; Cycle Tracking surfaces it', hurts: 'Apple\'s Cycle Tracking gives some context but no skin-temp signal on Series watches under Ultra.', helps: 'Use Cycle Tracking to align expectations.', timeline: 'Resolves at menses' },
-          samsung: { impact: 'low', signal: 'HRV', magnitude: 'Small HRV shift', hurts: 'No skin-temp on Galaxy Watch wrist sensors, so cycle is implicit only.', helps: 'Awareness.', timeline: 'Resolves at menses' },
-          google_fitbit: { impact: 'med', signal: 'HRV + skin temp', magnitude: 'Skin-temp rise of ~0.3–0.5°C in luteal phase', hurts: 'Pixel/Fitbit\'s skin-temp shifts with progesterone. Daily Stress Management Score may run a few points lower in luteal phase.', helps: 'Track via Cycle Tracking; use the data to plan recovery weeks.', timeline: 'Resolves at menses' },
-          whoop: { impact: 'med', signal: 'HRV + skin temp', magnitude: 'Skin-temp rise + HRV dip', hurts: 'WHOOP\'s skin-temp deviation in the luteal phase can look like an overtraining or illness signal if not contextualized.', helps: 'Track with WHOOP Journal so the algorithm contextualizes cycle days.', timeline: 'Resolves at menses' },
-          oura: { impact: 'high', signal: 'Skin temp (primary)', magnitude: '~0.3–0.5°C luteal-phase rise · used for period prediction', hurts: 'Oura\'s finger-site skin temp is the cleanest cycle signal in the consumer market — luteal phase clearly raises Cumulative Stress unless accounted for.', helps: 'Oura\'s Cycle Insights uses this signal directly. Treat the luteal HRV/temp shift as expected, not a stress flare.', timeline: 'Resolves at menses' },
-          polar: { impact: 'low', signal: 'HRV (overnight)', magnitude: 'Small overnight HRV shift', hurts: 'No skin-temp; only HRV shift visible.', helps: 'Awareness.', timeline: 'Resolves at menses' }
+        {
+          key: 'hrv-caffeine', name: 'Excess caffeine', direction: 'negative', impact: 'med',
+          plainEnglish: 'Caffeine in moderation is fine, but a third cup or anything after 2 PM eats into your HRV — particularly the overnight reading your wearable cares about. Sensitive folks see the effect at lower doses; if your overnight HRV looks worse on coffee days, you\'re one of them.',
+          magnitude: 'About 8–12% HRV drop in caffeine-sensitive individuals. Late-day doses produce the biggest overnight impact.',
+          mechanism: 'Caffeine blocks adenosine receptors and stimulates sympathetic activity. Half-life is 5–6 hours, so a 3 PM coffee still has half its dose at 9 PM.',
+          whatToDo: 'Cap at ~400 mg/day (≈3 cups), nothing past 2 PM. Cycle off occasionally to reset sensitivity. If you\'re shaky or anxious from coffee, your dose is too high.',
+          source: SRC.caffeineHrv
+        }
+      ],
+      hr: [
+        {
+          key: 'hr-cardio-fit', name: 'Cardio fitness', direction: 'positive', impact: 'high',
+          plainEnglish: 'Resting heart rate is essentially a fitness scoreboard. Trained athletes run 40–55 bpm at rest, sedentary adults 70–80. Lower is generally better — it means your heart pumps more blood per beat and works less to keep you alive.',
+          magnitude: 'Strongest single factor — every additional ~10 ml/kg/min of VO₂max drops resting HR roughly 3 bpm. Trained adults often sit 15–25 bpm below sedentary peers.',
+          mechanism: 'Endurance training thickens the heart wall and expands stroke volume. Each beat moves more blood, so fewer beats are needed at rest. Vagal tone also rises, slowing the resting rate further.',
+          whatToDo: 'Build aerobic base — zone 2 (conversational pace) cardio, 150+ min/week. Resting HR drops within 4–8 weeks of consistent training and continues for months.',
+          source: SRC.rhrExercise
         },
-        source: { url: 'https://blog.ultrahuman.com/blog/factors-influencing-skin-temperature/', label: 'Ultrahuman — Skin temperature & cycle' }
-      },
-      {
-        key: 'ambient-temp',
-        category: 'environment',
-        question: 'Tracking on a hot or humid day?',
-        name: 'Ambient temperature & humidity',
-        baseImpact: 'low',
-        perDevice: {
-          garmin: { impact: 'low', signal: 'HR (indirect)', magnitude: 'Mild RHR rise in heat', hurts: 'Heat raises baseline HR slightly. Garmin\'s HRV-only stress model is mostly insulated from ambient temperature.', helps: 'Be aware that hot days raise baseline HR. Sleep cool.', timeline: 'Resolves with cool environment' },
-          apple: { impact: 'low', signal: 'HR (indirect)', magnitude: 'Mild HR rise in heat', hurts: 'Heat shifts HealthKit HR but not HRV directly.', helps: 'Sleep cool; hydrate.', timeline: 'Resolves quickly' },
-          samsung: { impact: 'med', signal: 'EDA confounder', magnitude: 'Tonic EDA rises with thermoregulatory sweating', hurts: 'EDA is sensitive to ambient temperature — humid days raise tonic skin conductance independent of stress, so the score reads higher.', helps: 'Cool environment. Be aware that hot-day spikes may not be psychological stress.', timeline: 'Resolves quickly' },
-          google_fitbit: { impact: 'high', signal: 'cEDA confounder', magnitude: 'Continuous EDA tonic level tracks ambient heat', hurts: 'Continuous EDA is most exposed to this confounder — hot/humid days drive Body Response alerts that aren\'t actually stress.', helps: 'Cool environment; cross-reference alerts with HRV trend before treating as stress.', timeline: 'Resolves with cool environment' },
-          whoop: { impact: 'low', signal: 'Skin temp (overnight)', magnitude: 'Elevated overnight skin temp in hot rooms', hurts: 'Hot bedroom inflates overnight skin-temp readings.', helps: 'Sleep at 65–68°F.', timeline: 'Resolves quickly' },
-          oura: { impact: 'med', signal: 'Skin temp', magnitude: 'Ambient confounds finger skin-temp readings', hurts: 'Cold rooms can drive finger skin-temp down enough to confuse the cycle algorithm; hot rooms inflate readings.', helps: 'Stable bedroom temperature. Oura recommends 65–68°F.', timeline: 'Resolves quickly' },
-          polar: { impact: 'low', signal: 'HRV + RR (overnight)', magnitude: 'Hot rooms slightly elevate overnight RR', hurts: 'Modest impact on the first-4-hour reading.', helps: 'Sleep cool.', timeline: '1 night' }
+        {
+          key: 'hr-sleep', name: 'Adequate sleep', direction: 'positive', impact: 'med',
+          plainEnglish: 'Bad sleep raises your morning heart rate by 5–10 bpm — sometimes more after a really short night. Your wearable\'s morning RHR is essentially a sleep-quality readout that shows up before you\'ve even had coffee.',
+          magnitude: 'Poor sleep elevates next-day RHR 5–10 bpm. Effect compounds across consecutive short nights.',
+          mechanism: 'Sleep deprivation shifts autonomic balance toward sympathetic dominance, raising baseline heart rate even at rest. Cortisol stays elevated, which keeps HR elevated with it.',
+          whatToDo: 'Protect 7–9 hours. Watch your morning RHR — if it\'s 5+ bpm above baseline, your sleep was poor regardless of what your sleep score says.',
+          source: SRC.rhrFactors
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/', label: 'Ambient temperature & physiological signals (PMC9690349)' }
-      },
-      {
-        key: 'sedentary',
-        category: 'activity',
-        question: 'Mostly sedentary — under 5,000 steps a day?',
-        name: 'Sedentary lifestyle / low fitness',
-        baseImpact: 'high',
-        perDevice: {
-          garmin: { impact: 'high', signal: 'HRV + RHR', magnitude: 'Lower HRV baseline · higher RHR (most common cause of high RHR)', hurts: 'A deconditioned heart works harder to maintain output. Garmin reads a sustained high RHR and a low HRV baseline — the score sits elevated.', helps: 'Build cardio gradually. Even daily walks lift HRV and drop RHR over weeks.', timeline: '4–12 weeks' },
-          apple: { impact: 'high', signal: 'HRV + RHR', magnitude: 'Same baseline impact in HealthKit', hurts: 'HealthKit HRV stays low and RHR stays high without aerobic activity.', helps: 'Use Activity Rings as a forcing function. HealthKit HRV climbs over weeks.', timeline: '4–12 weeks' },
-          samsung: { impact: 'high', signal: 'HRV + HR', magnitude: 'Low HRV baseline, elevated HR, more reactive EDA', hurts: 'Without aerobic conditioning, every metric runs worse — including EDA reactivity.', helps: 'Daily walks, gradual cardio. All three signals lift over weeks.', timeline: '4–12 weeks' },
-          google_fitbit: { impact: 'high', signal: 'HRV + HR + Cardio Fitness Score', magnitude: 'Low Cardio Fitness Score drives lower daily Stress Management Score', hurts: 'Pixel/Fitbit explicitly weighs cardio fitness inside the daily score. Sedentary baseline = lower score consistently.', helps: 'Build steps and Active Zone Minutes. Cardio Fitness lifts within a few weeks.', timeline: '4–12 weeks' },
-          whoop: { impact: 'high', signal: 'HRV + RR baseline', magnitude: 'Low HRV baseline + higher overnight RR', hurts: 'Without aerobic Strain, the 14-day baseline sits low and overnight RR sits higher.', helps: 'Build aerobic Strain consistently. Both metrics lift.', timeline: '4–12 weeks' },
-          oura: { impact: 'high', signal: 'HRV + activity + sleep', magnitude: 'Low Activity Score drives lower Readiness', hurts: 'Oura\'s Cumulative Stress weighs activity. Sedentary days compound on the 31-day rollup.', helps: 'Hit daily activity goal. Cumulative Stress lifts gradually.', timeline: '4–12 weeks' },
-          polar: { impact: 'high', signal: 'HRV + RR (overnight)', magnitude: 'ANS Charge baseline drifts negative', hurts: 'Polar is built around training. Without it, ANS Charge baseline stays flat.', helps: 'Build aerobic training. ANS Charge baseline lifts with cardio fitness.', timeline: '4–12 weeks' }
+        {
+          key: 'hr-sedentary', name: 'Sedentary lifestyle', direction: 'negative', impact: 'high',
+          plainEnglish: 'Sitting all day deconditions your heart. Resting heart rate creeps up over weeks and months, which is why most desk-workers see RHR in the 70s while their athletic friends sit in the 50s. The fix isn\'t one workout — it\'s consistent movement.',
+          magnitude: 'Most common cause of elevated RHR. Sedentary adults typically run 10–20 bpm above active peers of the same age.',
+          mechanism: 'Without aerobic stress, the heart doesn\'t develop stroke volume capacity. Smaller stroke volume means more beats per minute to push the same blood — both at rest and during activity.',
+          whatToDo: 'Daily walks (8K+ steps), structured cardio 3–4x/week. Stand up and move every 30–60 minutes during desk work — even brief breaks shift the day.',
+          source: SRC.sedentary
         },
-        source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/', label: 'Exercise & RHR meta-analysis (PMC6306777)' }
+        {
+          key: 'hr-caffeine', name: 'Caffeine / stimulants', direction: 'negative', impact: 'med',
+          plainEnglish: 'Coffee acutely bumps your heart rate 5–10 bpm for a few hours. Tolerance develops with daily use, but pre-workout, energy drinks, or first-thing-in-the-morning caffeine before measurement will skew your "resting" reading upward.',
+          magnitude: 'Acute HR rise of 5–10 bpm within 30–60 min of intake. Higher doses or stimulant-stacks (caffeine + theanine + nicotine) produce bigger spikes.',
+          mechanism: 'Caffeine blocks adenosine receptors and stimulates the sympathetic nervous system. Heart rate rises and stays elevated for 3–6 hours per dose.',
+          whatToDo: 'Measure RHR before coffee, not after. Avoid stimulants 4+ hours before workouts you want to track accurately. Limit late-day caffeine to protect overnight readings.',
+          source: SRC.heartFoundation
+        },
+        {
+          key: 'hr-alcohol', name: 'Alcohol', direction: 'negative', impact: 'med',
+          plainEnglish: 'Alcohol raises heart rate the night you drink AND the morning after. Your wearable\'s morning RHR will show every late-night session for at least 24 hours, often longer.',
+          magnitude: 'Acute and next-day HR elevation, typically 5–10 bpm above baseline. Heavier drinking sessions can keep RHR elevated for 2–3 days.',
+          mechanism: 'Alcohol triggers vasodilation, which forces the heart to work harder to maintain blood pressure. Recovery (liver metabolism, dehydration) requires extra cardiac work for hours after the last drink.',
+          whatToDo: 'Each drink is a 12–24 hour HR cost. Hydrate during and after — water helps but doesn\'t eliminate the effect. A few alcohol-free nights/week recover the most.',
+          source: SRC.rhrFactors
+        },
+        {
+          key: 'hr-heat', name: 'Heat / dehydration', direction: 'negative', impact: 'med',
+          plainEnglish: 'Hot weather and dehydration both raise heart rate at rest. Athletes call it "cardiac drift" — same effort, higher HR. If your morning readings spike on hot days, this is why; it\'s not stress.',
+          magnitude: 'Significant in hot environments — 5–15 bpm rise in moderate heat, 15+ bpm in extreme heat or under-hydration.',
+          mechanism: 'Heat triggers thermoregulation (sweating, dilation of skin vessels). Dehydration thickens blood and lowers blood volume. Both increase cardiac workload to deliver the same oxygen.',
+          whatToDo: 'Pre-hydrate (16–20 oz fluid 1–2 hours before activity in heat). Add electrolytes when sweating heavily. Sleep cool — bedroom 65–68°F is the sweet spot.',
+          source: SRC.rhrFactors
+        },
+        {
+          key: 'hr-fever', name: 'Illness / fever', direction: 'negative', impact: 'high',
+          plainEnglish: 'Fever raises heart rate roughly 10 beats per minute per degree Fahrenheit of temperature elevation. Your morning RHR jumping 10+ bpm with no other explanation is usually the first sign you\'re getting sick, often before you feel symptoms.',
+          magnitude: 'Approximately 10 bpm per 1°F of fever; sustained for the duration of illness.',
+          mechanism: 'Immune activation raises metabolic demand, and fever requires extra cardiac work for thermoregulation. Both push HR up and keep it elevated until the body clears the infection.',
+          whatToDo: 'Treat sudden RHR spikes (10+ bpm) as a real signal. Rest, hydrate, skip hard workouts. Pushing through usually extends illness — and your data will tell you when it\'s actually back to baseline.',
+          source: SRC.aha
+        },
+        {
+          key: 'hr-stress', name: 'Stress / anxiety', direction: 'negative', impact: 'high',
+          plainEnglish: 'Acute stress (a tough meeting, an argument) spikes heart rate within seconds. Chronic stress (long-term work pressure, family stress) keeps it 5–15 bpm elevated all day, every day, until the source eases.',
+          magnitude: 'Acute spikes of 20+ bpm during stress events; chronic baseline elevation of 5–15 bpm under sustained stress.',
+          mechanism: 'Sympathetic activation via cortisol and adrenaline directly raises heart rate. Chronic stress maintains this state at low intensity even during "rest" periods.',
+          whatToDo: 'Daily breathwork (4-7-8, box breathing), regular cardio for the chronic baseline, address stressors at the source where possible. Therapy if it\'s not lifting on its own.',
+          source: SRC.clevelandHr
+        }
+      ],
+      eda: [
+        {
+          key: 'eda-arousal', name: 'Emotional arousal (anxiety, fear, anger)', direction: 'negative', impact: 'high',
+          plainEnglish: 'EDA is the cleanest acute-stress signal in consumer wearables. Anxiety, fear, anger — within seconds of the emotional spike, your skin starts producing tiny amounts of sweat that the sensor reads as a conductance jump. This is why EDA-equipped watches catch stress events that HRV-only devices miss.',
+          magnitude: 'Strong and immediate — measurable phasic response within 1–4 seconds of an emotional trigger.',
+          mechanism: 'The sympathetic nervous system triggers eccrine sweat glands almost instantly during emotional arousal. Sweat raises the skin\'s electrical conductance, which the sensor measures as a microsiemen change.',
+          whatToDo: 'Treat repeated EDA spikes during the day as a real signal. The fastest counter is slow-paced breathing — EDA tonic level often drops within 60–90 seconds of starting.',
+          source: SRC.edaWiki
+        },
+        {
+          key: 'eda-cognitive', name: 'Cognitive load / mental effort', direction: 'negative', impact: 'med',
+          plainEnglish: 'Sustained mental effort — coding, deep writing, hard problem-solving — raises tonic skin conductance even when you don\'t feel emotionally stressed. EDA-equipped watches will read a long deep-focus block as elevated stress, which is technically accurate at the physiology level even if the work feels rewarding.',
+          magnitude: 'Moderate sustained tonic rise that persists for the duration of demanding mental work.',
+          mechanism: 'Mental exertion activates sympathetic output to support attention and working memory. The same sweat-gland activation that signals emotional arousal kicks in for cognitive load.',
+          whatToDo: 'Pomodoro-style breaks (25 min focus, 5 min off) drop EDA back toward baseline. A 90-second breathing reset between tasks compounds.',
+          source: SRC.edaBiopac
+        },
+        {
+          key: 'eda-sensory', name: 'Sensory stimulation (sounds, pain, surprise)', direction: 'negative', impact: 'med',
+          plainEnglish: 'Loud sounds, pain, sudden bright lights — even surprises that aren\'t threatening — trigger an immediate EDA spike. This is why your stress score might jump during a movie scene or a noisy commute even though you\'re not anxious.',
+          magnitude: 'Acute orienting response — sharp phasic spike within 2–3 seconds of stimulus, then decays back over 10–20 seconds.',
+          mechanism: 'The brain\'s startle/orienting response sends rapid sympathetic activation to sweat glands as part of "what was that?" assessment, regardless of whether the stimulus is threatening.',
+          whatToDo: 'These spikes are normal and brief. If your environment has constant sensory load (open offices, noisy commute), noise-canceling headphones meaningfully reduce tonic EDA.',
+          source: SRC.edaSenses
+        },
+        {
+          key: 'eda-heat', name: 'Ambient heat & humidity', direction: 'negative', impact: 'med',
+          plainEnglish: 'EDA reads thermoregulatory sweating the same way it reads emotional sweating — it can\'t tell the difference. On hot or humid days, your stress score will run higher even if you\'re calm. This is the single biggest false-positive on Pixel/Fitbit cEDA.',
+          magnitude: 'Tonic skin conductance rises measurably with environmental heat. Effect strongest above 75°F and high humidity.',
+          mechanism: 'Eccrine sweat glands are activated by both emotional sympathetic output and thermoregulatory drive. The sensor sees the same conductance change either way.',
+          whatToDo: 'Cross-check elevated EDA against your HRV trend on hot days — if HRV is normal but EDA is up, it\'s probably heat. Cool environment, fan, or A/C resolves it.',
+          source: SRC.skinTempAmbient
+        },
+        {
+          key: 'eda-excitement', name: 'Excitement / positive arousal', direction: 'variable', impact: 'med',
+          plainEnglish: 'EDA cannot tell anxiety from excitement — both look identical to the sensor. The same spike fires whether you\'re scared, surprised in a good way, or genuinely excited about something. This is a fundamental limit, not an algorithm problem.',
+          magnitude: 'Indistinguishable from negative arousal at the signal level. Same magnitude and timing as a fear or anger spike.',
+          mechanism: 'EDA reads sympathetic activation only. The brain produces the same activation pattern for "good" and "bad" arousal — the valence (positive/negative) lives in higher cortical areas the sensor can\'t see.',
+          whatToDo: 'When your wearable flags "stress," sanity-check what you were actually doing. Watching a thriller, riding a roller coaster, or finishing a big project all spike EDA but aren\'t bad for you.',
+          source: SRC.edaWiki
+        },
+        {
+          key: 'eda-meditation', name: 'Relaxation / meditation', direction: 'positive', impact: 'med',
+          plainEnglish: 'Slow, deliberate breathing or meditation drops EDA tonic level within minutes. Pixel/Fitbit users will literally see the line going down on the cEDA chart during a breathwork session — it\'s one of the cleanest real-time biofeedback signals consumer wearables produce.',
+          magnitude: 'Gradual reduction in tonic level over 5–15 minutes of practice. Compounds with daily practice over weeks.',
+          mechanism: 'Parasympathetic activation reduces sympathetic drive to sweat glands. Slow breathing in particular engages the vagus nerve and dampens the sympathetic baseline.',
+          whatToDo: 'When your wearable fires a Body Response or stress alert, treat it as a cue: 5 minutes of slow-paced breathing. Watch the cEDA line drop in real time.',
+          source: SRC.edaBiopac
+        },
+        {
+          key: 'eda-cool', name: 'Cool ambient temperature', direction: 'positive', impact: 'low',
+          plainEnglish: 'Cool conditions reduce thermoregulatory sweating, which drops the EDA tonic baseline. If your stress score reads lower in air-conditioned spaces, this is part of the reason — not necessarily that you\'re less stressed there.',
+          magnitude: 'Modest tonic-level reduction in cool environments. Effect most visible in people who sweat heavily at room temperature.',
+          mechanism: 'Less thermoregulatory sweat output means less skin conductance change. The sensor reads a lower tonic baseline.',
+          whatToDo: 'Bedroom 65–68°F supports lower overnight EDA along with deeper sleep. Office cool-side is fine if it doesn\'t make you uncomfortable.',
+          source: SRC.skinTempAmbient
+        },
+        {
+          key: 'eda-habituation', name: 'Habituation (repeated stimuli)', direction: 'positive', impact: 'low',
+          plainEnglish: 'Your nervous system stops reacting to repeated harmless stimuli — the third loud noise barely registers compared to the first. This is why anxiety-provoking situations (public speaking, hard conversations) get easier with practice: your EDA literally responds less.',
+          magnitude: 'Progressive reduction with each repeat exposure. Most of the dampening happens in the first 5–10 exposures.',
+          mechanism: 'The brain learns that a stimulus isn\'t threatening and dampens the orienting response on subsequent exposures. Less sympathetic drive means less EDA spike.',
+          whatToDo: 'Exposure works. If something spikes you, repeated controlled exposure (presentations, hard runs, cold showers) trains the response down over time.',
+          source: SRC.edaWiki
+        },
+        {
+          key: 'eda-dehydration', name: 'Dehydration', direction: 'variable', impact: 'low',
+          plainEnglish: 'Dehydration changes the salt content of the small amount of sweat on your skin, which affects how the sensor reads conductance. Effect direction varies — sometimes higher, sometimes lower — making EDA less reliable when you\'re under-hydrated.',
+          magnitude: 'Variable — alters electrolyte concentration in sweat. Can shift readings either direction by small amounts.',
+          mechanism: 'EDA depends on stable sweat composition for accurate readings. Dehydration changes the ion concentration the sensor relies on.',
+          whatToDo: 'Stay normally hydrated for reliable EDA readings. If you\'ve been very dehydrated and EDA looks weird, it\'s a sensor accuracy issue, not a stress signal.',
+          source: SRC.edaBiopac
+        }
+      ],
+      skinTemp: [
+        {
+          key: 'st-stress', name: 'Acute psychological stress', direction: 'negative', impact: 'med',
+          plainEnglish: 'When you\'re acutely stressed, your body shunts blood away from the skin and toward core organs — the same "fight or flight" response that makes your hands cold during anxiety. Your wearable\'s peripheral skin-temp sensor catches the drop in real time.',
+          magnitude: 'Measurable peripheral drop at the wrist or finger within minutes of stress onset. Often 0.2–0.5°C below baseline.',
+          mechanism: 'Sympathetic activation triggers vasoconstriction in peripheral blood vessels, redirecting blood to the core. The skin surface cools as less blood flows there.',
+          whatToDo: 'Don\'t fight the response — acknowledge the stress, then engage parasympathetic recovery (slow breathing, brief walk). Skin temp returns to baseline within 10–20 minutes once the stressor eases.',
+          source: SRC.skinTempStress
+        },
+        {
+          key: 'st-exercise', name: 'Exercise', direction: 'variable', impact: 'med',
+          plainEnglish: 'Skin temp rises during exercise as your body dumps heat through skin vessels, then drops below baseline post-workout. Most wearables filter this out so it doesn\'t inflate your stress score, but it can confound overnight readings if you train late.',
+          magnitude: 'Rises 0.5–1.5°C during exercise, drops 0.3–0.5°C below baseline post. Effect resolves within 1–2 hours.',
+          mechanism: 'Working muscle generates heat. The body vasodilates skin vessels to dissipate it, which raises the surface temperature the sensor reads.',
+          whatToDo: 'Avoid hard training within 2 hours of bed — your overnight skin-temp baseline can\'t settle and Oura/WHOOP will read it as a deviation.',
+          source: SRC.skinTempUltra
+        },
+        {
+          key: 'st-cycle', name: 'Menstrual cycle (luteal phase)', direction: 'negative', impact: 'high',
+          plainEnglish: 'Progesterone in the second half of the menstrual cycle raises basal body temperature by 0.3–0.5°C. Your wearable reads this as a stress signal even though it\'s a normal hormonal pattern. Oura uses it deliberately for period prediction.',
+          magnitude: 'Roughly 0.3–0.5°C luteal-phase rise that persists until menses onset.',
+          mechanism: 'Progesterone, which spikes after ovulation, acts on the hypothalamus to raise the body\'s temperature setpoint. The shift shows up clearly at extremity sites like the finger.',
+          whatToDo: 'Track your cycle in the wearable\'s app so the algorithm contextualizes the rise. Treat luteal-phase HRV/temp shifts as expected, not a sign of illness or overtraining.',
+          source: SRC.skinTempUltra
+        },
+        {
+          key: 'st-fever', name: 'Illness / fever', direction: 'negative', impact: 'high',
+          plainEnglish: 'Skin temperature rising 0.5°C+ above your baseline is one of the earliest signs of infection your wearable will catch — sometimes 1–2 days before fever or symptoms register. Take it seriously.',
+          magnitude: 'Significant rise during infection — typically 0.5–1.5°C above baseline, depending on severity.',
+          mechanism: 'Cytokines and immune signaling raise the hypothalamic temperature setpoint. The body produces and retains more heat to make the environment hostile to pathogens.',
+          whatToDo: 'A clear skin-temp spike with no exercise, alcohol, or hot-room explanation is a real illness signal. Rest and hydrate before symptoms hit — most people would catch flu earlier if they trusted this data.',
+          source: SRC.skinTempUltra
+        },
+        {
+          key: 'st-alcohol', name: 'Alcohol', direction: 'negative', impact: 'med',
+          plainEnglish: 'Alcohol opens up your skin blood vessels — that warm flush you feel after a drink is real. Your peripheral skin temp rises measurably for several hours, which Oura and WHOOP both pick up overnight.',
+          magnitude: 'Acute peripheral rise of 0.3–0.7°C lasting 4–8 hours after drinking.',
+          mechanism: 'Alcohol triggers peripheral vasodilation, sending more warm blood to the skin surface. The sensor reads the rise as a baseline deviation.',
+          whatToDo: 'Cut off alcohol 3+ hours before bed if you want clean overnight skin-temp readings. The effect compounds with HRV suppression to make recovery scores look extra bad.',
+          source: SRC.skinTempUltra
+        },
+        {
+          key: 'st-ambient', name: 'Ambient temperature', direction: 'variable', impact: 'high',
+          plainEnglish: 'Wrist-based skin temp is heavily influenced by the room you\'re in. Hot rooms inflate readings; cold rooms deflate them. This is the biggest accuracy issue with wrist devices — finger-site sensors (Oura) are insulated better but still affected.',
+          magnitude: 'Major confounder for wrist devices. Hot/cold rooms can shift readings 0.5–1.5°C from your true baseline.',
+          mechanism: 'External air temperature directly affects surface sensor readings, especially on a wrist where the sensor sits close to the skin and to ambient air.',
+          whatToDo: 'Stable bedroom temperature is the single biggest fix — 65–68°F is Oura\'s recommended range. If your skin-temp deviation looks weird, check your thermostat before assuming illness.',
+          source: SRC.skinTempAmbient
+        },
+        {
+          key: 'st-sleep-onset', name: 'Sleep onset', direction: 'positive', impact: 'low',
+          plainEnglish: 'When you\'re falling asleep, blood vessels in your hands and feet dilate to dump heat — that\'s why warm hands and feet make you sleepy. The sensor reads a rise at the extremities, which is actually a sign of healthy sleep onset.',
+          magnitude: 'Normal extremity-temp rise of 0.3–0.5°C as you transition into sleep.',
+          mechanism: 'Distal vasodilation initiates the sleep-onset cascade — your core cools while extremities warm. This redistribution is essential for falling asleep.',
+          whatToDo: 'If you have trouble falling asleep, warm hands/feet (warm bath, socks) before bed accelerates the process. Cold extremities = harder to drop off.',
+          source: SRC.skinTempSleep
+        },
+        {
+          key: 'st-depression', name: 'Depression / chronic stress', direction: 'negative', impact: 'med',
+          plainEnglish: 'Long-term depression and chronic stress show up as more day-to-day variability in skin temperature, not a constant high or low. The body\'s autonomic regulation gets less stable, so readings swing more from one day to the next.',
+          magnitude: 'Higher day-to-day temperature variability over weeks. Effect tracks with subjective severity.',
+          mechanism: 'Disrupted autonomic regulation under chronic stress destabilizes thermoregulation. The body has a harder time holding a steady setpoint, so readings drift more.',
+          whatToDo: 'Address the underlying issue — therapy, exercise, social connection, sleep. Skin-temp variability stabilizes as autonomic regulation recovers, often over months.',
+          source: SRC.skinTempDepression
+        }
+      ],
+      rr: [
+        {
+          key: 'rr-stress', name: 'Stress / anxiety', direction: 'negative', impact: 'high',
+          plainEnglish: 'Stress and anxiety raise breathing rate and make it shallower — even when you\'re not aware you\'re doing it. WHOOP and Polar pick this up overnight as elevated respiratory rate, which is one of the cleanest markers of unresolved daytime stress carrying into sleep.',
+          magnitude: 'Acute increase of 2–6 breaths per minute under stress; chronic 1–3 breath/min elevation in sustained anxiety.',
+          mechanism: 'Sympathetic activation increases respiratory drive directly. Your brain\'s breathing center gets a "speed up" signal alongside the cardiovascular spike.',
+          whatToDo: 'Slow-paced breathing in the evening (4-7-8, box breathing, or any 6-breath/min pattern) drops the carryover into sleep. Start 30+ minutes before bed for the best overnight rate.',
+          source: SRC.polarRR
+        },
+        {
+          key: 'rr-pain', name: 'Pain', direction: 'negative', impact: 'med',
+          plainEnglish: 'Pain — chronic injury pain, post-surgery, even bad muscle soreness — raises your respiratory rate the same way emotional stress does. Your body treats it as a threat and ramps up breathing to support the response.',
+          magnitude: 'Acute rate increase of 2–4 breaths per minute. Chronic pain produces a smaller, sustained baseline rise.',
+          mechanism: 'Pain signaling triggers sympathetic activation, which changes breathing pattern toward faster and shallower.',
+          whatToDo: 'Treat the pain source where you can. If injured, expect overnight RR to stay elevated until healing — don\'t over-interpret it as overtraining or stress.',
+          source: SRC.polarRR
+        },
+        {
+          key: 'rr-fever', name: 'Fever / illness', direction: 'negative', impact: 'med',
+          plainEnglish: 'Fever raises your respiratory rate proportionally — your body needs more oxygen to fuel the immune fight. WHOOP and Polar will catch elevated overnight RR before you\'re aware you\'re sick.',
+          magnitude: 'Roughly proportional to body temperature — about 4 breaths/min per 1°F of fever.',
+          mechanism: 'Higher core temperature raises metabolic rate, which requires more oxygen delivery and CO₂ removal. The respiratory center responds with faster breathing.',
+          whatToDo: 'Elevated overnight RR with no other explanation is a real early-illness signal. Rest, hydrate, skip hard training even before symptoms hit.',
+          source: SRC.polarRR
+        },
+        {
+          key: 'rr-overtraining', name: 'Overtraining', direction: 'negative', impact: 'high',
+          plainEnglish: 'Elevated overnight respiratory rate is the textbook overtraining marker — it shows up before HRV drops and before you feel burned out. WHOOP and Polar are the only consumer wearables that surface it, which is why athletes often pick those over HRV-only devices.',
+          magnitude: 'Sustained 1–3 breath/min rise in overnight rate during accumulated training stress. Resolves with deload.',
+          mechanism: 'Incomplete recovery leaves sympathetic tone elevated through the night. Cortisol stays high, which keeps respiratory drive up even during deep sleep.',
+          whatToDo: 'Watch your 7-day overnight RR trend. A 2+ breath/min rise sustained over a week is a deload signal. Ease volume by 30–50% for 5–7 days.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'rr-caffeine', name: 'Late caffeine', direction: 'negative', impact: 'low',
+          plainEnglish: 'Caffeine has a small but real stimulatory effect on breathing rate. Late-day caffeine carries a slightly elevated respiratory rate into sleep — usually a small effect, but it compounds with the HRV hit.',
+          magnitude: 'Mild rise of 0.5–1 breath per minute. Effect strongest with afternoon/evening doses.',
+          mechanism: 'CNS stimulation from caffeine affects the brainstem respiratory center, nudging breathing rate up slightly.',
+          whatToDo: 'No caffeine after 2 PM is the cleanest rule. The HRV and respiratory effects compound to make overnight recovery worse together.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'rr-meditation', name: 'Relaxation / meditation', direction: 'positive', impact: 'high',
+          plainEnglish: 'Slow-paced breathing literally trains your nervous system to default to slower, deeper breaths — the effect persists past the practice window. Consistent practice drops your overnight respiratory rate over weeks, which lifts WHOOP recovery and Polar Nightly Recharge.',
+          magnitude: 'Acute drop of 4–8 breaths/min during practice; chronic baseline drop of 0.5–1.5 breaths/min over 4–8 weeks.',
+          mechanism: 'Slow breathing engages the vagus nerve and shifts autonomic balance toward parasympathetic dominance. The respiratory center recalibrates to a lower default rate.',
+          whatToDo: '5–10 minutes of slow breathing daily. Pre-bed timing carries the effect into sleep. Apps that pace you to ~6 breaths/min work best.',
+          source: SRC.polarRR
+        },
+        {
+          key: 'rr-cardio-fit', name: 'Cardio fitness', direction: 'positive', impact: 'med',
+          plainEnglish: 'Trained athletes breathe less at rest — same oxygen delivery, fewer breaths needed. Building aerobic fitness drops your baseline respiratory rate the same way it drops your resting heart rate.',
+          magnitude: 'Lower baseline rate, typically 1–3 breaths/min below sedentary peers. Continues improving with sustained training.',
+          mechanism: 'Higher VO₂max means your blood carries more oxygen per breath and your tissues extract it more efficiently. Fewer breaths cover the same metabolic demand.',
+          whatToDo: 'Same prescription as for HRV and resting HR — 150+ min/week of zone-2 cardio, with some higher-intensity work for VO₂max gains.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'rr-sleep', name: 'Quality sleep', direction: 'positive', impact: 'med',
+          plainEnglish: 'Your respiratory rate is lowest during deep sleep — that\'s when parasympathetic tone is fully in control. A clean night of consolidated sleep produces the lowest overnight rate your wearable will see; fragmented sleep keeps it elevated.',
+          magnitude: 'Lowest rates seen during deep-sleep cycles. A good night runs 1–3 breaths/min below a fragmented one.',
+          mechanism: 'Parasympathetic dominance during deep sleep slows the respiratory center. Sleep fragmentation pulls you into lighter stages where breathing is faster.',
+          whatToDo: 'Sleep hygiene basics — cool dark room, consistent timing, no late alcohol. Polar Nightly Recharge is essentially a respiratory readout of how cleanly you slept the first 4 hours.',
+          source: SRC.polarRR
+        }
+      ],
+      spo2: [
+        {
+          key: 'spo2-altitude', name: 'Altitude', direction: 'negative', impact: 'high',
+          plainEnglish: 'Above about 5,000 feet, the air has less oxygen, so your blood carries less. WHOOP will read your SpO₂ dropping the moment you arrive, and recovery scores will look bad until you acclimatize over several days.',
+          magnitude: 'Significant drop above ~5,000 ft (1,500 m). Saturation often falls into the 90–93% range at 8,000+ ft until acclimatized.',
+          mechanism: 'Lower atmospheric oxygen pressure reduces how much oxygen binds to hemoglobin in the lungs. Saturation is a direct function of altitude until the body responds with more red blood cells.',
+          whatToDo: 'Expect 5–7 days for partial acclimatization. Hydrate aggressively, sleep low if possible, and don\'t train hard the first 48 hours. WHOOP will eventually recalibrate.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-apnea', name: 'Sleep apnea', direction: 'negative', impact: 'high',
+          plainEnglish: 'Sleep apnea causes your airway to repeatedly close during sleep, which drops oxygen and forces brief micro-arousals. WHOOP\'s overnight SpO₂ trace will show repeated dips — sometimes the first time anyone sees apnea data is on a wearable.',
+          magnitude: 'Repeated overnight desaturation events, with dips into 88–92% range. Severity tracks with apnea-hypopnea index.',
+          mechanism: 'Airway obstruction during sleep causes intermittent hypoxia — oxygen briefly drops, the brain wakes you slightly to breathe, and the cycle repeats dozens or hundreds of times a night.',
+          whatToDo: 'If you see a "sawtooth" SpO₂ pattern overnight, see a sleep doctor. CPAP or oral appliance therapy resolves it cleanly. Untreated apnea is a major cardiovascular risk.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-illness', name: 'Respiratory illness', direction: 'negative', impact: 'med',
+          plainEnglish: 'Anything that affects your lungs — flu, COVID, bronchitis, asthma flare — reduces how efficiently you absorb oxygen. WHOOP\'s overnight SpO₂ will dip below your usual baseline; severity tracks with how sick you actually are.',
+          magnitude: 'Varies by severity — 1–3% baseline drop with mild illness, 5%+ with moderate respiratory infection.',
+          mechanism: 'Impaired gas exchange in the lungs (inflammation, fluid, congestion) reduces how much oxygen reaches the bloodstream per breath.',
+          whatToDo: 'Sustained SpO₂ below 92% with respiratory symptoms warrants medical attention, especially if breathing feels labored. Track your trend; recovery means returning to your normal baseline.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-smoking', name: 'Smoking', direction: 'negative', impact: 'high',
+          plainEnglish: 'Smoking permanently lowers SpO₂ baseline because carbon monoxide from smoke binds to hemoglobin and blocks oxygen from doing the same. Even after quitting, it takes weeks for hemoglobin to clear and saturation to return to normal.',
+          magnitude: 'Chronic reduction of 1–4% from baseline. Effect compounds with respiratory damage from long-term use.',
+          mechanism: 'Carbon monoxide binds to hemoglobin 200x more tightly than oxygen. Each cigarette displaces oxygen on a percentage of red blood cells for hours.',
+          whatToDo: 'Quit. SpO₂ baseline rises within 1–2 weeks of quitting; lung function recovery continues for years. WHOOP recovery scores improve noticeably even in the first month.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-cardio-fit', name: 'Cardio fitness', direction: 'positive', impact: 'low',
+          plainEnglish: 'Healthy cardiovascular systems maintain SpO₂ near 95–100% almost effortlessly — there\'s a ceiling effect, so fitness doesn\'t push the number higher. It just keeps it stable. If your SpO₂ trends down at rest, fitness probably isn\'t the issue.',
+          magnitude: 'Maintains stable saturation near 95–100%. Limited room to improve from here.',
+          mechanism: 'Efficient cardiovascular and respiratory systems deliver and exchange oxygen reliably, keeping hemoglobin saturation near maximum.',
+          whatToDo: 'If your SpO₂ is in the high 90s, you\'re fine. Focus on other levers (HRV, RR, sleep). Drops below 95% at rest deserve attention.',
+          source: SRC.whoopRecovery
+        },
+        {
+          key: 'spo2-breathing', name: 'Proper breathing during sleep', direction: 'positive', impact: 'low',
+          plainEnglish: 'Sleeping with a clear airway — no nasal blockage, no severe snoring, no positional collapse — keeps SpO₂ stable through the night. Most people don\'t realize how much positional sleep affects their oxygen until they see the data.',
+          magnitude: 'Fewer overnight desaturation events. Steady saturation in the 95–98% range.',
+          mechanism: 'An unobstructed airway throughout the sleep cycle allows uninterrupted gas exchange and stable hemoglobin saturation.',
+          whatToDo: 'Side-sleep if you snore on your back. Address nasal congestion (nose strips, allergy treatment). Avoid late alcohol — it relaxes airway muscles and worsens snoring.',
+          source: SRC.whoopRecovery
+        }
+      ],
+      sleep: [
+        {
+          key: 'sl-schedule', name: 'Consistent sleep schedule', direction: 'positive', impact: 'high',
+          plainEnglish: 'Sleeping at the same time every night — including weekends — is more important than how many hours you log. Your circadian rhythm runs on regularity, and consistent timing produces deeper sleep stages and cleaner architecture than catching up on weekends.',
+          magnitude: 'Improves deep sleep percentage, REM continuity, and onset latency. Effect compounds over 2–4 weeks of consistency.',
+          mechanism: 'Circadian rhythm alignment optimizes melatonin and cortisol timing. The body anticipates sleep and wake, producing the right hormones at the right hour.',
+          whatToDo: 'Pick a fixed bed and wake time within 30 minutes, 7 days a week. Avoid weekend sleep-ins of more than an hour — they reset your circadian timing.',
+          source: SRC.ouraCumulative
+        },
+        {
+          key: 'sl-cool', name: 'Cool bedroom (65–68°F)', direction: 'positive', impact: 'med',
+          plainEnglish: 'Your body has to drop its core temperature about 1°C to initiate deep sleep — and it can\'t do that in a warm room. Most adults sleep best in a 65–68°F room; warmer than that and deep sleep percentage drops measurably.',
+          magnitude: 'Increases deep sleep duration in most adults. Effect strongest at the cool end of the range (65–66°F).',
+          mechanism: 'Core temperature drop triggers the deep-sleep cascade. A warm bedroom blocks the drop, keeping you in lighter sleep stages longer.',
+          whatToDo: 'Set the thermostat 65–68°F. Use breathable bedding. If you can\'t cool the room, a fan helps; cooling mattress pads work too.',
+          source: SRC.ouraCumulative
+        },
+        {
+          key: 'sl-exercise', name: 'Regular exercise (not late)', direction: 'positive', impact: 'med',
+          plainEnglish: 'Daily exercise improves nearly every sleep metric — but timing matters. Vigorous training within 2 hours of bed delays onset and pushes back deep sleep. Morning or early evening cardio is the sweet spot.',
+          magnitude: 'Increases deep sleep percentage and reduces sleep onset latency. Effect strongest with consistent daily exercise.',
+          mechanism: 'Physical fatigue promotes sleep drive (adenosine accumulation). Exercise also lowers core body temperature in the hours after, which supports deep-sleep initiation.',
+          whatToDo: 'Train earlier in the day if possible. If late training is unavoidable, finish 2+ hours before bed and prioritize a cool-down (shower, slow walk) to drop core temperature.',
+          source: SRC.hrvExercise
+        },
+        {
+          key: 'sl-alcohol-bed', name: 'Alcohol before bed', direction: 'negative', impact: 'high',
+          plainEnglish: 'Alcohol feels like it helps you fall asleep, but it sabotages every quality marker once you\'re asleep. Less deep sleep, less REM, more fragmentation, more wake-ups. The next morning your wearable\'s sleep score will be much worse than the same hours sober.',
+          magnitude: 'Reduces deep sleep 20–40%, REM 10–20%, and increases wake-ups. Effect proportional to dose.',
+          mechanism: 'Alcohol initially sedates but disrupts the brain\'s normal sleep architecture as it metabolizes through the night. The second half of sleep becomes fragmented.',
+          whatToDo: 'Cut off alcohol 3+ hours before bed if you do drink. Hydrate with water alongside. Several alcohol-free nights/week recover the most sleep architecture.',
+          source: SRC.frontiers2024
+        },
+        {
+          key: 'sl-late-caffeine', name: 'Late caffeine (after 2 PM)', direction: 'negative', impact: 'high',
+          plainEnglish: 'Caffeine\'s half-life is 5–6 hours — meaning a 3 PM coffee still has half its dose at 9 PM and a quarter at 3 AM. It delays sleep onset, reduces total sleep, and shows up as a worse Oura sleep score even if you don\'t feel wired at bedtime.',
+          magnitude: 'Delays sleep onset by 10–30 min on average; reduces total sleep time and deep sleep proportion.',
+          mechanism: 'Caffeine blocks adenosine receptors — the molecule that makes you sleepy. Even when you don\'t feel jittery, the receptors are still partially blocked.',
+          whatToDo: 'No caffeine after 2 PM is the cleanest rule. If you\'re sensitive, push it to noon. Cycle off occasionally to reset receptor sensitivity.',
+          source: SRC.kygoHrv
+        },
+        {
+          key: 'sl-late-meals', name: 'Late heavy meals', direction: 'negative', impact: 'med',
+          plainEnglish: 'A heavy meal within 2–3 hours of bed forces your body to digest while it\'s trying to drop into deep sleep. Core temperature stays up, blood is shunted to the gut, and sleep quality suffers — especially REM.',
+          magnitude: 'Reduces deep sleep proportion and disrupts REM in most people. Effect strongest with high-fat, high-volume meals.',
+          mechanism: 'Digestion raises core body temperature and metabolic activity. The temperature drop required for deep sleep is delayed or dampened.',
+          whatToDo: 'Last big meal 3+ hours before bed. A small protein-leaning snack (Greek yogurt, cottage cheese) is fine and doesn\'t disrupt sleep.',
+          source: SRC.ouraCumulative
+        },
+        {
+          key: 'sl-screens', name: 'Screen time before bed', direction: 'negative', impact: 'med',
+          plainEnglish: 'Phone, laptop, and TV screens emit blue light that suppresses melatonin — your sleep-onset hormone. Beyond the chemistry, scrolling is mentally activating, which keeps cognitive load (and EDA, if your watch tracks it) elevated past your bedtime.',
+          magnitude: 'Delays melatonin release by 30–60 minutes; reduces total sleep and deep sleep when severe.',
+          mechanism: 'Blue-spectrum light hits the retina\'s melanopsin cells, which signal "daytime" to the suprachiasmatic nucleus and suppress pineal melatonin.',
+          whatToDo: 'No screens 60 minutes before bed is the gold standard. If you can\'t, dim the screen, turn on Night Shift / blue-light filter, and avoid stimulating content (news, work email).',
+          source: SRC.ouraCumulative
+        },
+        {
+          key: 'sl-stress', name: 'Chronic stress / anxiety', direction: 'negative', impact: 'high',
+          plainEnglish: 'Stress doesn\'t turn off when you go to bed — it keeps cortisol elevated through the night and fragments your sleep architecture. You\'ll fall asleep, but you\'ll wake more, get less deep sleep, and feel less rested even at the same hours logged.',
+          magnitude: 'Fragmented sleep, less deep sleep, more frequent night wake-ups. Effect persists as long as the stressor is unresolved.',
+          mechanism: 'Elevated cortisol disrupts the normal nightly drop that supports deep sleep. Hyperarousal keeps the brain in lighter stages and pulls you out of REM.',
+          whatToDo: 'Pre-bed wind-down: low light, slow breathing, journaling, no work email. If chronic, address the source — therapy, lifestyle changes. Sleep aids are short-term band-aids only.',
+          source: SRC.ouraCumulative
+        }
+      ]
+    };
+  }
+
+  _factorsForDevice(deviceKey) {
+    const metrics = this._deviceMetrics[deviceKey] || [];
+    const out = [];
+    for (const m of metrics) {
+      for (const f of (this._metricFactors[m] || [])) {
+        out.push({ ...f, metric: m, _devKey: `${deviceKey}-${f.key}` });
       }
-    ];
+    }
+    return out;
   }
 
   _icon(name) {
@@ -567,32 +810,6 @@ class KygoWearableStress extends HTMLElement {
       </svg>`;
   }
 
-  _categoryIconKey(catKey) {
-    return ({
-      substance:   'droplet',
-      sleep:       'moon',
-      activity:    'dumbbell',
-      mental:      'brain',
-      physical:    'heart',
-      environment: 'sun',
-      physiology:  'thermometer'
-    })[catKey] || 'sparkle';
-  }
-
-  // Brand-aligned category accents — green family + slates + one warm tone.
-  // Same approach as RHR factors: variation through hue intensity, not rainbow.
-  _categoryAccent(catKey) {
-    const map = {
-      substance:   { color: '#B45309', bg: 'rgba(180,83,9,0.10)',  ink: '#B45309' },
-      sleep:       { color: '#475569', bg: 'rgba(71,85,105,0.10)', ink: '#334155' },
-      activity:    { color: '#16A34A', bg: 'rgba(22,163,74,0.10)', ink: '#16A34A' },
-      mental:      { color: '#0F766E', bg: 'rgba(15,118,110,0.10)', ink: '#0F766E' },
-      physical:    { color: '#22C55E', bg: 'rgba(34,197,94,0.10)', ink: '#16A34A' },
-      environment: { color: '#334155', bg: 'rgba(51,65,85,0.10)',  ink: '#334155' },
-      physiology:  { color: '#1E293B', bg: 'rgba(30,41,59,0.10)',  ink: '#1E293B' }
-    };
-    return map[catKey] || map.activity;
-  }
 
   _impactCfg(impact) {
     const map = {
@@ -603,257 +820,186 @@ class KygoWearableStress extends HTMLElement {
     return map[impact] || map.med;
   }
 
-  _sensorChips(sensors) {
-    const order = [
-      ['hrv', 'HRV'],
-      ['hr', 'Heart Rate'],
-      ['eda', 'EDA'],
-      ['skinTemp', 'Skin Temp'],
-      ['rr', 'Resp. Rate'],
-      ['spo2', 'SpO₂'],
-      ['sleep', 'Sleep arch.']
-    ];
-    return order.map(([k, label]) => {
-      const on = !!sensors[k];
-      return `<span class="sensor-chip ${on ? 'on' : 'off'}">
-        <span class="sensor-chip-icon" aria-hidden="true">${on ? this._icon('check') : this._icon('x')}</span>
-        ${label}
-      </span>`;
-    }).join('');
-  }
 
-  _renderPipelineDiagram(d) {
-    const activeSignals = [
-      ['hrv', 'HRV'],
-      ['hr', 'HR'],
-      ['eda', 'EDA'],
-      ['skinTemp', 'Temp'],
-      ['rr', 'Resp'],
-      ['spo2', 'SpO₂']
-    ].filter(([k]) => d.sensors[k]).map(([, label]) => label);
-
-    const algoShort = d.modelLine;
-    const scaleShort = d.scale.split('·')[0].trim();
-
-    return `
-      <div class="pipeline" aria-hidden="true">
-        <div class="pipe-step pipe-signals">
-          <span class="pipe-eyebrow">Signals</span>
-          <div class="pipe-chips">
-            ${activeSignals.map(s => `<span class="pipe-chip">${s}</span>`).join('')}
-          </div>
-        </div>
-        <span class="pipe-arrow">${this._icon('arrowRight')}</span>
-        <div class="pipe-step pipe-algo">
-          <span class="pipe-eyebrow">Algorithm</span>
-          <span class="pipe-text">${algoShort}</span>
-        </div>
-        <span class="pipe-arrow">${this._icon('arrowRight')}</span>
-        <div class="pipe-step pipe-score">
-          <span class="pipe-eyebrow">Score</span>
-          <span class="pipe-text pipe-score-text">${scaleShort}</span>
-        </div>
-      </div>`;
-  }
-
-  _renderDeviceCard(deviceKey) {
-    const d = this._devices[deviceKey];
-    if (!d) return '';
-    const sensorCount = Object.values(d.sensors).filter(Boolean).length;
-    return `
-      <article class="device-card" style="--accent:${d.color}">
-        <span class="device-card-stripe" aria-hidden="true"></span>
-        <header class="device-card-head">
-          <div class="device-card-icon" aria-hidden="true">${this._icon('watch')}</div>
-          <div class="device-card-titles">
-            <h3 class="device-card-name">${d.name}</h3>
-            <span class="device-card-model">${d.modelLine}</span>
-          </div>
-          <span class="device-card-pill">${sensorCount} signal${sensorCount === 1 ? '' : 's'}</span>
-        </header>
-
-        ${this._renderPipelineDiagram(d)}
-
-        <div class="device-card-section">
-          <span class="device-card-eyebrow">Sensors fed into stress</span>
-          <div class="device-sensor-row" aria-label="Sensors used by ${d.name}">${this._sensorChips(d.sensors)}</div>
-        </div>
-
-        <dl class="device-card-rows">
-          <div class="device-card-row"><dt>Baseline</dt><dd>${d.baseline}</dd></div>
-          <div class="device-card-row"><dt>Coverage</dt><dd>${d.coverage}</dd></div>
-        </dl>
-
-        <div class="device-card-callouts">
-          <div class="callout-box callout-strength">
-            <div class="callout-box-head"><span class="callout-box-icon">${this._icon('sparkle')}</span>Unique strength</div>
-            <p>${d.strength}</p>
-          </div>
-          <div class="callout-box callout-watchout">
-            <div class="callout-box-head"><span class="callout-box-icon">${this._icon('alert')}</span>Watch out for</div>
-            <p>${d.limitation}</p>
-          </div>
-        </div>
-      </article>`;
-  }
-
-  _renderDeviceDiff(d1Key, d2Key) {
-    const d1 = this._devices[d1Key];
-    const d2 = this._devices[d2Key];
-    if (!d1 || !d2 || d1Key === d2Key) return '';
-    const sensorLabels = { hrv: 'HRV', hr: 'Heart Rate', eda: 'EDA', skinTemp: 'Skin Temp', rr: 'Respiratory Rate', spo2: 'SpO₂', sleep: 'Sleep architecture' };
-    const onlyIn1 = Object.keys(d1.sensors).filter(k => d1.sensors[k] && !d2.sensors[k]).map(k => sensorLabels[k]);
-    const onlyIn2 = Object.keys(d2.sensors).filter(k => d2.sensors[k] && !d1.sensors[k]).map(k => sensorLabels[k]);
-    const shared = Object.keys(d1.sensors).filter(k => d1.sensors[k] && d2.sensors[k]).map(k => sensorLabels[k]);
-    const pill = (label) => `<span class="diff-pill">${label}</span>`;
-    const empty = '<span class="diff-empty">None</span>';
-    return `
-      <div class="device-diff">
-        <div class="device-diff-glow" aria-hidden="true"></div>
-        <div class="device-diff-head">
-          <span class="device-diff-eyebrow">Where they differ</span>
-          <h3 class="device-diff-title">${d1.name} <span class="device-diff-vs">vs</span> ${d2.name}</h3>
-        </div>
-        <div class="device-diff-rows">
-          <div class="diff-row">
-            <span class="diff-row-label diff-shared">Shared signals</span>
-            <div class="diff-row-pills">${shared.length ? shared.map(pill).join('') : empty}</div>
-          </div>
-          <div class="diff-row">
-            <span class="diff-row-label diff-only" style="--accent:${d1.color}">Only ${d1.name}</span>
-            <div class="diff-row-pills">${onlyIn1.length ? onlyIn1.map(pill).join('') : empty}</div>
-          </div>
-          <div class="diff-row">
-            <span class="diff-row-label diff-only" style="--accent:${d2.color}">Only ${d2.name}</span>
-            <div class="diff-row-pills">${onlyIn2.length ? onlyIn2.map(pill).join('') : empty}</div>
-          </div>
-        </div>
-      </div>`;
+  _deviceImage(key) {
+    return ({
+      garmin:  'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
+      samsung: 'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
+      google:  'https://static.wixstatic.com/media/273a63_7b9a43c26540413586d185a889fa853c~mv2.png',
+      fitbit:  'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
+      whoop:   'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
+      oura:    'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
+      polar:   'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png'
+    })[key] || null;
   }
 
   _renderComparisonModule() {
-    const devices = this._devices;
-    const isCompare = this._mode === 'compare';
-    const selectorOpts = (selected) => Object.entries(devices)
-      .map(([k, d]) => `<option value="${k}" ${k === selected ? 'selected' : ''}>${d.name}</option>`).join('');
+    const sensorList = [
+      { key: 'hrv',      label: 'HRV',         short: 'HRV' },
+      { key: 'hr',       label: 'HR',          short: 'HR' },
+      { key: 'eda',      label: 'EDA',         short: 'EDA' },
+      { key: 'skinTemp', label: 'Skin Temp',   short: 'Temp' },
+      { key: 'spo2',     label: 'SpO₂',        short: 'SpO₂' },
+      { key: 'rr',       label: 'Resp. Rate',  short: 'Resp' },
+      { key: 'sleep',    label: 'Sleep arch.', short: 'Sleep' }
+    ];
+    const totalSensors = sensorList.length;
 
-    const selectorRow = isCompare ? `
-      <div class="device-selectors compare">
-        <div class="selector-group">
-          <label>Device 1</label>
-          <div class="selector-wrap" style="--accent:${devices[this._device1].color}"><select id="device1">${selectorOpts(this._device1)}</select></div>
-        </div>
-        <div class="vs-badge" aria-hidden="true">VS</div>
-        <div class="selector-group">
-          <label>Device 2</label>
-          <div class="selector-wrap" style="--accent:${devices[this._device2].color}"><select id="device2">${selectorOpts(this._device2)}</select></div>
-        </div>
-      </div>
-    ` : `
-      <div class="device-selectors single">
-        <div class="selector-group">
-          <label>Your wearable</label>
-          <div class="selector-wrap" style="--accent:${devices[this._device1].color}"><select id="device1">${selectorOpts(this._device1)}</select></div>
-        </div>
-      </div>
-    `;
+    const ranked = Object.entries(this._devices).map(([key, d]) => {
+      const count = Object.values(d.sensors).filter(Boolean).length;
+      return { key, d, count };
+    }).sort((a, b) => b.count - a.count || a.d.name.localeCompare(b.d.name));
 
-    const cards = isCompare
-      ? `<div class="device-card-grid two">${this._renderDeviceCard(this._device1)}${this._renderDeviceCard(this._device2)}</div>${this._renderDeviceDiff(this._device1, this._device2)}`
-      : `<div class="device-card-grid one">${this._renderDeviceCard(this._device1)}</div>`;
+    const tableHead = `
+      <thead>
+        <tr>
+          <th class="dt-th-device" scope="col">Wearable</th>
+          ${sensorList.map(s => `
+            <th scope="col">
+              <span class="dt-th-full">${s.label}</span>
+              <span class="dt-th-short" aria-hidden="true">${s.short}</span>
+            </th>`).join('')}
+          <th class="dt-th-count" scope="col">Signals</th>
+        </tr>
+      </thead>`;
 
-    return `
-      <section class="comparison-section section-bg-white" id="compare">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How your device measures stress</span>
-            <h2 class="section-h2">Pick your wearable — see <em>what it actually reads</em>.</h2>
-            <p class="section-lede">Stress scores aren't comparable across brands. Each device leans on a different mix of HRV, EDA, skin temperature, and respiratory rate. The factor cards below re-sort by the biggest movers for whichever device you pick.</p>
-          </div>
-
-          <div class="comparison-shell">
-            <div class="comparison-toolbar">
-              <div class="mode-toggle" role="tablist" aria-label="Comparison mode">
-                <button class="mode-btn ${this._mode === 'single' ? 'active' : ''}" data-mode="single" role="tab" aria-selected="${this._mode === 'single'}">
-                  <span class="mode-btn-icon" aria-hidden="true">${this._icon('watch')}</span>Single device
-                </button>
-                <button class="mode-btn ${this._mode === 'compare' ? 'active' : ''}" data-mode="compare" role="tab" aria-selected="${this._mode === 'compare'}">
-                  <span class="mode-btn-icon" aria-hidden="true">${this._icon('compare')}</span>Compare two
-                </button>
-              </div>
-              ${selectorRow}
-            </div>
-            ${cards}
-          </div>
-        </div>
-      </section>`;
-  }
-
-  _renderImpactBadge(impact, deviceName) {
-    const cfg = this._impactCfg(impact);
-    return `<span class="impact-badge ${cfg.cls}" aria-label="${cfg.label} impact on ${deviceName}">
-      <span class="impact-dot" aria-hidden="true"></span>${cfg.label} on ${deviceName}
-    </span>`;
-  }
-
-  _renderImpactPill(impact) {
-    const cfg = this._impactCfg(impact);
-    return `<span class="impact-pill ${cfg.cls}" aria-label="${cfg.label} impact">
-      <span class="impact-pill-bars" aria-hidden="true">
-        <span class="bar b1"></span><span class="bar b2"></span><span class="bar b3"></span>
-      </span>
-      <span class="impact-pill-text">${cfg.label}</span>
-    </span>`;
-  }
-
-  _renderEvidenceLeaderboard() {
-    const d1 = this._devices[this._device1];
-    const factors = this._factors.slice();
-    const ranked = factors.map(f => {
-      const pd = f.perDevice[this._device1];
-      const w = pd ? this._impactCfg(pd.impact).weight : this._impactCfg(f.baseImpact).weight;
-      return { ...f, _w: w, _pd: pd };
-    }).sort((a, b) => b._w - a._w || a.name.localeCompare(b.name));
-
-    const rows = ranked.map((f, i) => {
-      const cfg = this._impactCfg(f._pd ? f._pd.impact : f.baseImpact);
-      const pct = (cfg.weight / 3) * 100;
+    const tableBody = ranked.map(({ key, d, count }) => {
+      const img = this._deviceImage(key);
       return `
-        <button class="lb-row" data-fact-jump="${f.key}" style="--delay:${i * 30}ms" aria-label="Jump to ${f.name}">
-          <span class="lb-rank">${String(i + 1).padStart(2, '0')}</span>
-          <span class="lb-name">${f.name}</span>
-          <span class="lb-track" aria-hidden="true">
-            <span class="lb-bar lb-${cfg.cls}" style="width:${pct}%"></span>
-          </span>
-          <span class="lb-impact lb-${cfg.cls}">${cfg.label}</span>
-        </button>`;
+        <tr style="--accent:${d.color}">
+          <th class="dt-td-device" scope="row">
+            <span class="dt-brand">
+              ${img
+                ? `<span class="dt-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
+                : `<span class="dt-img dt-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
+              <span class="dt-name">${d.name}</span>
+            </span>
+          </th>
+          ${sensorList.map(s => {
+            const on = !!d.sensors[s.key];
+            return `<td class="dt-cell ${on ? 'on' : 'off'}" aria-label="${s.label} ${on ? 'used' : 'not used'}">
+              <span class="dt-mark" aria-hidden="true">${on ? this._icon('check') : '<span class="dt-dash"></span>'}</span>
+            </td>`;
+          }).join('')}
+          <td class="dt-td-count">
+            <span class="dt-count-num">${count}</span><span class="dt-count-lbl">/ ${totalSensors}</span>
+          </td>
+        </tr>`;
     }).join('');
 
     return `
-      <section class="evidence-section section-bg-white">
+      <section class="comparison-section section-bg-gray" id="compare">
         <div class="container">
           <div class="section-header">
-            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('target')}</span>Top movers for ${d1.name}</span>
-            <h2 class="section-h2">What moves your <em>${d1.name}</em> score most.</h2>
-            <p class="section-lede">Every factor ranked by how much it nudges your stress reading on this specific device. Tap any row to jump to its full mechanism and action below.</p>
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How your device measures stress</span>
+            <h2 class="section-h2">Every wearable, <em>side by side</em>.</h2>
+            <p class="section-lede">Stress scores aren't comparable across brands. Each device pulls a different mix of HRV, EDA, skin temperature, and breathing rate — here's exactly what each one reads, ranked by signal coverage.</p>
           </div>
-          <div class="leaderboard">
-            <div class="lb-head">
-              <span class="lb-head-eyebrow">Ranked impact · ${d1.name}</span>
-              <span class="lb-head-meta">${factors.length} factors</span>
+
+          <div class="device-chart">
+            <div class="dc-head">
+              <div>
+                <span class="dc-eyebrow">Signal coverage</span>
+                <h3 class="dc-title">Sensors fed into stress, by device</h3>
+                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only.</p>
+              </div>
+              <div class="dc-meta">${ranked.length} wearables · ${totalSensors} signals</div>
             </div>
-            <div class="lb-rows">${rows}</div>
-            <div class="lb-legend">
-              <span class="lb-legend-item"><span class="lb-sw lb-imp-high"></span>High</span>
-              <span class="lb-legend-item"><span class="lb-sw lb-imp-med"></span>Medium</span>
-              <span class="lb-legend-item"><span class="lb-sw lb-imp-low"></span>Low</span>
+            <div class="device-table-wrap">
+              <table class="device-table">
+                ${tableHead}
+                <tbody>${tableBody}</tbody>
+              </table>
             </div>
           </div>
         </div>
       </section>`;
   }
 
-  _renderAppCta() {
+  _renderFullBreakdown() {
+    const ranked = Object.entries(this._devices).map(([key, d]) => {
+      const count = Object.values(d.sensors).filter(Boolean).length;
+      return { key, d, count };
+    }).sort((a, b) => b.count - a.count || a.d.name.localeCompare(b.d.name));
+
+    const expanded = this._compareExpandedKey;
+
+    const detailRows = ranked.map(({ key, d }, i) => {
+      const img = this._deviceImage(key);
+      const isOpen = expanded === key;
+      return `
+        <div class="dd-row ${isOpen ? 'open' : ''}" style="--accent:${d.color};--delay:${i * 30}ms">
+          <button class="dd-row-head" type="button" data-device-row="${key}" aria-expanded="${isOpen}">
+            ${img
+              ? `<span class="dd-img"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
+              : `<span class="dd-img dd-img--icon" aria-hidden="true">${this._icon('watch')}</span>`}
+            <span class="dd-text">
+              <span class="dd-name">${d.name}</span>
+              <span class="dd-line">${d.modelLine}</span>
+            </span>
+            <span class="dd-chev" aria-hidden="true">${this._icon('chevDown')}</span>
+          </button>
+          <div class="dd-body" ${isOpen ? '' : 'hidden'}>
+            <div class="dd-body-inner">
+              <dl class="dd-fields">
+                <div><dt>Algorithm</dt><dd>${d.algorithm}</dd></div>
+                <div><dt>Scale</dt><dd>${d.scale}</dd></div>
+                <div><dt>Baseline</dt><dd>${d.baseline}</dd></div>
+                <div><dt>Coverage</dt><dd>${d.coverage}</dd></div>
+              </dl>
+              <div class="dd-callouts">
+                <div class="dd-callout strong"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('sparkle')}</span>Unique strength</span><p>${d.strength}</p></div>
+                <div class="dd-callout watch"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('alert')}</span>Watch out for</span><p>${d.limitation}</p></div>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    return `
+      <section class="breakdown-section section-bg-gray" id="full-breakdown">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('sparkle')}</span>Per-device deep dive</span>
+            <h2 class="section-h2">How each wearable's stress score <em>actually works</em>.</h2>
+            <p class="section-lede">Tap any device for its full algorithm, signal scale, baseline window, coverage behavior, and the unique tradeoffs of its approach.</p>
+          </div>
+          <div class="device-details">
+            <div class="dd-list">${detailRows}</div>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  _topPicks() {
+    return [
+      { label: 'Most universal mover', stat: '7 / 7', answer: 'Sleep deprivation', icon: 'moon', note: 'Hits every device because all 7 read HRV and sleep deprivation suppresses parasympathetic tone immediately.', cls: '' },
+      { label: 'Only-on-EDA signal',   stat: '3 devices', answer: 'Cognitive load', icon: 'brain', note: 'Sustained mental effort raises tonic skin conductance — invisible to HRV-only watches. Samsung, Pixel Watch, and Fitbit only.', cls: '' },
+      { label: 'WHOOP / Polar specialty', stat: 'Resp. rate', answer: 'Overtraining', icon: 'dumbbell', note: 'Elevated overnight respiratory rate is the textbook overtraining flag. Only WHOOP and Polar surface it.', cls: '' },
+      { label: 'Oura specialty', stat: '0.3–0.5°C', answer: 'Cycle skin temp', icon: 'thermometer', note: 'Finger-site skin temp catches the luteal-phase rise so cleanly that Oura uses it for period prediction.', cls: '' },
+      { label: 'Hot-day false positive', stat: 'cEDA', answer: 'Ambient heat', icon: 'sun', note: 'Continuous EDA reads thermoregulatory sweating as stress. Pixel/Fitbit users: cross-check against HRV before reacting.', cls: 'warn' },
+      { label: 'The biggest myth', stat: 'Don\'t', answer: 'Compare scores across brands', icon: 'ghost', note: 'A "55" on Garmin doesn\'t mean a "55" on Samsung. Each algorithm uses a different sensor mix and a personal baseline.', cls: 'myth' }
+    ];
+  }
+
+  _renderArticleCta() {
+    return `
+      <section class="article-section section-bg-white">
+        <div class="container">
+          <a href="https://www.kygo.app/post/wearable-stress-scores-compared" class="article-card animate-on-scroll" target="_blank" rel="noopener">
+            <span class="article-badge">Deep Dive</span>
+            <div class="article-body">
+              <span class="article-kicker">Read the full article</span>
+              <h3 class="article-title">How 7 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
+              <p class="article-desc">Every signal, algorithm, and cited study in one long-form read.</p>
+            </div>
+            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>`;
+  }
+
+  _renderCtaRow() {
     const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
     return `
       <section class="app-cta-section section-bg-white">
@@ -862,8 +1008,8 @@ class KygoWearableStress extends HTMLElement {
             <div class="app-cta-glow" aria-hidden="true"></div>
             <div class="app-cta-content">
               <div class="app-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-              <h2>See what's actually moving <span class="highlight">your stress score</span></h2>
-              <p>Kygo Health connects your wearable's stress signals with what you eat, drink, and do — pinpointing the personal correlations a generic stress score can't show you.</p>
+              <h2>See How Your Food Influences <span class="highlight">Your Sleep, HRV &amp; Recovery</span></h2>
+              <p>Kygo Health connects your wearable data with nutrition tracking to pinpoint personal correlations between what you eat, your sleep, your HRV, and how fast you recover from stress.</p>
               <div class="app-cta-buttons">
                 <a href="${iosUrl}" class="app-cta-btn" target="_blank" rel="noopener">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
@@ -891,135 +1037,10 @@ class KygoWearableStress extends HTMLElement {
       </section>`;
   }
 
-  _topPicks() {
-    return [
-      { label: 'Most universal mover', stat: '7 / 7', answer: 'Sleep deprivation', icon: 'moon', note: 'Hits every device because all 7 read HRV and sleep deprivation suppresses parasympathetic tone immediately.', cls: '' },
-      { label: 'Only-on-EDA signal',   stat: '2 devices', answer: 'Cognitive load', icon: 'brain', note: 'Sustained mental effort raises tonic skin conductance — invisible to HRV-only watches. Samsung & Pixel/Fitbit only.', cls: '' },
-      { label: 'WHOOP / Polar specialty', stat: 'Resp. rate', answer: 'Overtraining', icon: 'dumbbell', note: 'Elevated overnight respiratory rate is the textbook overtraining flag. Only WHOOP and Polar surface it.', cls: '' },
-      { label: 'Oura specialty', stat: '0.3–0.5°C', answer: 'Cycle skin temp', icon: 'thermometer', note: 'Finger-site skin temp catches the luteal-phase rise so cleanly that Oura uses it for period prediction.', cls: '' },
-      { label: 'Hot-day false positive', stat: 'cEDA', answer: 'Ambient heat', icon: 'sun', note: 'Continuous EDA reads thermoregulatory sweating as stress. Pixel/Fitbit users: cross-check against HRV before reacting.', cls: 'warn' },
-      { label: 'The biggest myth', stat: 'Don\'t', answer: 'Compare scores across brands', icon: 'ghost', note: 'A "55" on Garmin doesn\'t mean a "55" on Samsung. Each algorithm uses a different sensor mix and a personal baseline.', cls: 'myth' }
-    ];
-  }
-
-  get _myths() {
-    return [
-      { name: 'Higher stress score = something is wrong',                cat: 'Reading the score', why: 'A short spike is usually normal arousal — focus, excitement, a workout. Chronic elevation is the actual flag.' },
-      { name: 'My Garmin "55" means the same as my friend\'s Samsung "55"', cat: 'Reading the score', why: 'Every brand uses a proprietary algorithm and a personal baseline. Scores are not comparable across devices.' },
-      { name: 'Lowest possible stress all day is the goal',              cat: 'Reading the score', why: 'Some sympathetic activation is healthy and adaptive. Resilience is the recovery, not the absence of stress.' },
-      { name: 'A green "recovered" reading means I should max-train',    cat: 'Reading the score', why: 'Recovery scores reflect autonomic state, not muscular readiness. Training judgment still matters.' },
-      { name: 'Apple Watch has a native stress score',                   cat: 'Devices',           why: 'As of watchOS 11, no. Apple ships HRV data; third-party apps (StressWatch, Livity) compute the score.' },
-      { name: 'EDA detects "stress" specifically',                       cat: 'Devices',           why: 'EDA detects sympathetic arousal — anxiety, excitement, surprise, even ambient heat all raise it.' },
-      { name: 'Multi-signal devices are always more accurate',           cat: 'Devices',           why: 'Generally true (~82% vs ~77% in lab studies) but algorithm quality matters as much as signal count.' },
-      { name: 'Polar shows my real-time daytime stress',                 cat: 'Devices',           why: 'Polar Nightly Recharge measures only the first ~4 hours of sleep. There is no daytime stress score.' },
-      { name: 'A drop in HRV always means stress',                       cat: 'Signals',           why: 'Exercise, illness, alcohol, caffeine, dehydration, and even ambient heat all drop HRV.' },
-      { name: 'Wearables can read specific emotions',                    cat: 'Signals',           why: 'Devices detect physiological arousal — not valence. They cannot tell anxiety from excitement.' },
-      { name: 'Skin temperature is only useful for fever',               cat: 'Signals',           why: 'It tracks circadian rhythm, menstrual cycle, sleep onset, and overtraining — not just illness.' },
-      { name: 'Resting heart rate alone tells you about stress',         cat: 'Signals',           why: 'RHR moves with fitness and hydration too. HRV is the more sensitive autonomic readout.' },
-      { name: 'I should aim for zero alcohol forever to fix HRV',        cat: 'Lifestyle',         why: 'Most of the rebound happens in the first 2–5 alcohol-free nights; baseline lifts within weeks.' },
-      { name: 'Cold plunges fix chronic stress',                         cat: 'Lifestyle',         why: 'Cold gives a small, real acute vagal bump — but the durable movers are sleep, cardio, and breathwork.' },
-      { name: 'Meditation has to be 30+ minutes to work',                cat: 'Lifestyle',         why: '5–10 minutes of slow breathing (~6 breaths/min) shifts HRV and EDA measurably.' },
-      { name: 'Adaptogens (ashwagandha, rhodiola) lower wearable stress', cat: 'Lifestyle',         why: 'Trials show subjective stress changes and small HRV shifts; no consistent wearable-score evidence.' }
-    ];
-  }
-
-  _renderCtaRow() {
-    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-    return `
-      <section class="cta-row-section section-bg-gray">
-        <div class="container">
-          <div class="cta-row">
-            <a href="https://www.kygo.app/post/wearable-stress-research" class="article-card animate-on-scroll" target="_blank" rel="noopener">
-              <span class="article-badge">Deep Dive</span>
-              <div class="article-body">
-                <span class="article-kicker">Read the full article</span>
-                <h3 class="article-title">How 7 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
-                <p class="article-desc">Every signal, algorithm, and cited study in one long-form read.</p>
-              </div>
-              <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
-            </a>
-            <div class="app-cta animate-on-scroll">
-              <div class="app-cta-glow" aria-hidden="true"></div>
-              <div class="app-cta-content">
-                <div class="app-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-                <h3>See what's <span class="highlight">actually moving your score</span></h3>
-                <p>Kygo connects your wearable's stress signals with what you eat, drink, and do.</p>
-                <div class="app-cta-buttons">
-                  <a href="${iosUrl}" class="app-cta-btn" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    iOS
-                  </a>
-                  <a href="https://kygo.app/android" target="_blank" rel="noopener" class="app-cta-android">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                    Android
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>`;
-  }
-
-  _renderAppCta() { return ''; /* deprecated, merged into _renderCtaRow */ }
-
-  _renderMythsSection() {
-    const groups = ['Reading the score', 'Devices', 'Signals', 'Lifestyle'];
-    const counts = {};
-    groups.forEach(g => counts[g] = this._myths.filter(m => m.cat === g).length);
-    const total = this._myths.length;
-    const picked = this._mythsCatPick;
-
-    // Default highest-value myths shown immediately (no empty state)
-    const featuredKeys = [
-      'My Garmin "55" means the same as my friend\'s Samsung "55"',
-      'Apple Watch has a native stress score',
-      'EDA detects "stress" specifically',
-      'A drop in HRV always means stress'
-    ];
-    const items = picked
-      ? this._myths.filter(m => m.cat === picked)
-      : this._myths.filter(m => featuredKeys.includes(m.name));
-
-    const cards = items.map(m => `
-      <article class="myth-card">
-        <div class="myth-row">
-          <h4 class="myth-name">${m.name}</h4>
-          <span class="myth-badge">Myth</span>
-        </div>
-        <p class="myth-why">${m.why}</p>
-        <span class="myth-cat-tag">${m.cat}</span>
-      </article>`).join('');
-
-    const tiles = `
-      <button class="myth-filter ${picked === null ? 'active' : ''}" data-myths-cat="__featured" aria-pressed="${picked === null}">
-        <span>Top picks</span><span class="myth-filter-count">${featuredKeys.length}</span>
-      </button>
-      ${groups.map(g => {
-        const isActive = picked === g;
-        return `<button class="myth-filter ${isActive ? 'active' : ''}" data-myths-cat="${g}" aria-pressed="${isActive}">
-          <span>${g}</span><span class="myth-filter-count">${counts[g]}</span>
-        </button>`;
-      }).join('')}
-    `;
-
-    return `
-      <section class="myths-section section-bg-white" aria-labelledby="myths-title">
-        <div class="container">
-          <div class="section-header">
-            <span class="section-eyebrow amber"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('ghost')}</span>Common Myths</span>
-            <h2 class="section-h2" id="myths-title">What people <em>get wrong</em> about stress scores.</h2>
-            <p class="section-lede">${total} misconceptions debunked. The ones below are the four worth dropping today — switch categories for the rest.</p>
-          </div>
-          <div class="myth-filters" role="tablist">${tiles}</div>
-          <div class="myth-grid">${cards}</div>
-        </div>
-      </section>`;
-  }
 
   _renderTopPicks() {
     return `
-      <section class="picks-section section-bg-gray">
+      <section class="picks-section section-bg-white">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1042,103 +1063,38 @@ class KygoWearableStress extends HTMLElement {
       </section>`;
   }
 
-  _renderHurtsHelps(deviceKey, perDevice) {
-    const d = this._devices[deviceKey];
-    const pd = perDevice[deviceKey];
-    if (!d || !pd) {
-      return `<div class="hh-missing">${d ? d.name : 'This device'} doesn't have documented mechanisms for this factor in the source research.</div>`;
-    }
-    return `
-      <div class="hh-grid">
-        <div class="hh-col hh-hurts">
-          <div class="hh-head">
-            <span class="hh-eyebrow">What's hurting</span>
-            <span class="hh-magnitude">${pd.magnitude}</span>
-          </div>
-          <p class="hh-body">${pd.hurts}</p>
-          <span class="hh-tag">Signal: ${pd.signal}</span>
-        </div>
-        <div class="hh-col hh-helps">
-          <div class="hh-head">
-            <span class="hh-eyebrow">What helps</span>
-            ${pd.timeline ? `<span class="hh-timeline">Expect change in ${pd.timeline}</span>` : ''}
-          </div>
-          <p class="hh-body">${pd.helps}</p>
-        </div>
-      </div>`;
-  }
-
-  _sortedFactors() {
-    const factors = this._factors.slice();
-    const cat = this._categoryFilter;
-    let shown = cat ? factors.filter(f => f.category === cat) : factors;
-    if (this._listSort === 'impact') {
-      const w = (f) => {
-        const pd = f.perDevice[this._device1];
-        return pd ? this._impactCfg(pd.impact).weight : this._impactCfg(f.baseImpact).weight;
-      };
-      shown.sort((a, b) => w(b) - w(a) || a.name.localeCompare(b.name));
-    } else if (this._listSort === 'alpha') {
-      shown.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (this._listSort === 'category') {
-      shown.sort((a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name));
-    }
-    return shown;
-  }
-
   _renderFactorCard(f) {
-    const isExp = this._listExpandedKey === f.key;
-    const d1 = this._devices[this._device1];
-    const pd1 = f.perDevice[this._device1];
-    const impact = pd1 ? pd1.impact : f.baseImpact;
-    const impCfg = this._impactCfg(impact);
-    const cat = (this._categoryMeta[f.category] || {}).label || '';
+    const isExp = this._listExpandedKey === f._devKey;
+    const impCfg = this._impactCfg(f.impact);
+    const metricLbl = (this._metricMeta[f.metric] || {}).label || '';
+    const dirCls = f.direction === 'positive' ? 'fact-dir-pos' : f.direction === 'negative' ? 'fact-dir-neg' : 'fact-dir-var';
+    const dirArrow = f.direction === 'positive' ? '↓' : f.direction === 'negative' ? '↑' : '↕';
+    const dirLbl = f.direction === 'positive' ? 'Improves stress reading' : f.direction === 'negative' ? 'Worsens stress reading' : 'Variable effect';
 
     let body = '';
     if (isExp) {
-      const isCompare = this._mode === 'compare';
-      if (isCompare) {
-        const d2 = this._devices[this._device2];
-        body = `
-          <div class="fact-body">
-            <div class="device-block">
-              <div class="device-block-head">
-                <span class="device-block-name" style="--accent:${d1.color}">On ${d1.name}</span>
-                ${this._renderImpactBadge(pd1 ? pd1.impact : f.baseImpact, d1.name)}
-              </div>
-              ${this._renderHurtsHelps(this._device1, f.perDevice)}
-            </div>
-            <div class="device-block">
-              <div class="device-block-head">
-                <span class="device-block-name" style="--accent:${d2.color}">On ${d2.name}</span>
-                ${this._renderImpactBadge(f.perDevice[this._device2] ? f.perDevice[this._device2].impact : f.baseImpact, d2.name)}
-              </div>
-              ${this._renderHurtsHelps(this._device2, f.perDevice)}
-            </div>
-            <div class="fact-source-row">
-              <span class="fact-source-lbl">Source</span>
-              <a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>
-            </div>
-          </div>`;
-      } else {
-        body = `
-          <div class="fact-body">
-            ${this._renderHurtsHelps(this._device1, f.perDevice)}
-            <div class="fact-source-row">
-              <span class="fact-source-lbl">Source</span>
-              <a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>
-            </div>
-          </div>`;
-      }
+      body = `
+        <div class="fact-body">
+          ${f.plainEnglish ? `<p class="fact-lede">${f.plainEnglish}</p>` : ''}
+          <dl class="fact-fields">
+            <div><dt>Magnitude</dt><dd>${f.magnitude}</dd></div>
+            <div><dt>Mechanism</dt><dd>${f.mechanism}</dd></div>
+            ${f.whatToDo ? `<div class="fact-fields--full"><dt>What to do</dt><dd>${f.whatToDo}</dd></div>` : ''}
+          </dl>
+          <div class="fact-source-row">
+            <span class="fact-source-lbl">Source</span>
+            <a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>
+          </div>
+        </div>`;
     }
 
     return `
-      <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f.key}">
+      <article class="fact-card ${isExp ? 'expanded' : ''}" data-fact-key="${f._devKey}">
         <button class="fact-head" aria-expanded="${isExp}">
           <span class="fact-meta">
-            <span class="fact-cat">${cat}</span>
-            <span class="fact-name">${f.question}</span>
-            <span class="fact-effect">${f.name} <span class="fact-ev-inline">· ${impCfg.label} impact on ${d1.name}</span></span>
+            <span class="fact-cat">${metricLbl} <span class="fact-dir ${dirCls}" aria-hidden="true">${dirArrow}</span></span>
+            <span class="fact-name">${f.name}</span>
+            <span class="fact-effect ${dirCls}">${dirLbl} · ${impCfg.label} impact</span>
           </span>
           <span class="fact-pill ${impCfg.cls}">${impCfg.label}</span>
           <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
@@ -1148,90 +1104,91 @@ class KygoWearableStress extends HTMLElement {
   }
 
   _renderFactorList() {
-    const shown = this._sortedFactors();
-    if (!shown.length) return '<p class="dash-empty">No factors match this filter.</p>';
-    return `<div class="fact-list">${shown.map(f => this._renderFactorCard(f)).join('')}</div>`;
-  }
+    // Two groups: what helps (improves the metric) vs what hurts (worsens or confounds).
+    const all = this._factorsForDevice(this._device1);
+    const m = this._categoryFilter;
+    const filtered = m ? all.filter(f => f.metric === m) : all;
+    if (!filtered.length) return '<p class="dash-empty">No factors match this filter.</p>';
 
-  _renderSortBar() {
-    const opts = [
-      { k: 'impact',   l: 'Impact' },
-      { k: 'alpha',    l: 'A–Z' },
-      { k: 'category', l: 'Category' }
-    ];
-    const total = this._factors.length;
-    const shown = this._sortedFactors().length;
-    const cat = this._categoryFilter;
-    const meta = this._categoryMeta[cat];
-    const countHtml = cat
-      ? `<span class="list-result-count">Showing <strong>${shown}</strong> of ${total} · ${meta ? meta.label : ''}</span>`
-      : `<span class="list-result-count"><strong>${total}</strong> factors</span>`;
+    const byImpact = (a, b) =>
+      this._impactCfg(b.impact).weight - this._impactCfg(a.impact).weight ||
+      a.name.localeCompare(b.name);
+    const helps = filtered.filter(f => f.direction === 'positive').sort(byImpact);
+    const hurts = filtered.filter(f => f.direction === 'negative' || f.direction === 'variable').sort(byImpact);
+
+    const group = (cls, label, sub, items) => `
+      <div class="fact-group fact-group--${cls}">
+        <div class="fact-group-head">
+          <span class="fact-group-label"><span class="fact-group-icon" aria-hidden="true"></span>${label}</span>
+          <span class="fact-group-meta">${items.length} factor${items.length === 1 ? '' : 's'} · ${sub}</span>
+        </div>
+        <div class="fact-list">
+          ${items.length ? items.map(f => this._renderFactorCard(f)).join('') : '<p class="dash-empty">None in this view.</p>'}
+        </div>
+      </div>`;
+
     return `
-      <div class="list-toolbar">
-        <div class="list-toolbar-row">
-          ${countHtml}
-          <span class="list-sort-label">Sort by</span>
-        </div>
-        <div class="list-sort-btns">
-          ${opts.map(o => `<button class="list-sort-btn ${this._listSort === o.k ? 'active' : ''}" data-sort="${o.k}">${o.l}</button>`).join('')}
-        </div>
+      <div class="fact-groups">
+        ${group('helps', 'What helps', 'Improves your reading', helps)}
+        ${group('hurts', 'What hurts', 'Worsens or confounds your reading', hurts)}
       </div>`;
   }
 
-  _renderCategoryTiles() {
-    const counts = {};
-    this._factors.forEach(f => { counts[f.category] = (counts[f.category] || 0) + 1; });
-    const allTile = `
-      <button class="picker-tile ${this._categoryFilter === null ? 'active' : ''}" data-cat="__all" aria-pressed="${this._categoryFilter === null}">
-        <span class="picker-tile-name">All</span>
-        <span class="picker-tile-count">${this._factors.length}</span>
-      </button>`;
-    const tiles = Object.entries(this._categoryMeta).map(([k, m]) => {
+  _renderMetricTiles() {
+    const deviceMetrics = this._deviceMetrics[this._device1] || [];
+    const tiles = deviceMetrics.map(k => {
+      const m = this._metricMeta[k];
+      const count = (this._metricFactors[k] || []).length;
       const isActive = this._categoryFilter === k;
       return `
         <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${k}" aria-pressed="${isActive}">
           <span class="picker-tile-name">${m.label}</span>
-          <span class="picker-tile-count">${counts[k] || 0}</span>
+          <span class="picker-tile-count">${count}</span>
         </button>`;
     }).join('');
-    return `<div class="picker-tiles">${allTile}${tiles}</div>`;
+    return `<div class="picker-tiles picker-tiles--metrics" data-metric-count="${deviceMetrics.length}">${tiles}</div>`;
+  }
+
+  _renderDevicePicker() {
+    const options = Object.entries(this._devices).map(([k, d]) => {
+      const selected = this._device1 === k ? ' selected' : '';
+      return `<option value="${k}"${selected}>${d.name}</option>`;
+    }).join('');
+    return `
+      <div class="device-picker">
+        <label class="device-picker-label" for="device-select">Your wearable</label>
+        <div class="device-select-wrap">
+          <select class="device-select" id="device-select" data-device-select aria-label="Pick your wearable">${options}</select>
+          <span class="device-select-chev" aria-hidden="true">${this._icon('chevDown')}</span>
+        </div>
+      </div>`;
   }
 
   _renderFactorsSection() {
     const d1 = this._devices[this._device1];
     const cat = this._categoryFilter;
-    const catLabel = cat ? (this._categoryMeta[cat] || {}).label : 'All';
-    const shown = this._sortedFactors().length;
+    const catLabel = cat ? (this._metricMeta[cat] || {}).label : null;
+    const total = this._factorsForDevice(this._device1).length;
+    const shown = cat
+      ? this._factorsForDevice(this._device1).filter(f => f.metric === cat).length
+      : total;
+    const metricCount = (this._deviceMetrics[this._device1] || []).length;
     return `
       <section class="factors-section section-bg-gray">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
-            <h2 class="section-h2">${this._factors.length} <em>factors</em>, sorted for ${d1.name}.</h2>
-            <p class="section-lede">Pick a category to drill in. Each card expands with what's hurting your stress reading on this device — and what specifically helps.</p>
+            <h2 class="section-h2">${total} <em>factors</em> that move your <em>${d1.name}</em> score.</h2>
+            <p class="section-lede">Pick your wearable to see the metrics it actually reads, then tap a metric to drill in. Each metric splits into what helps your reading and what hurts it, ranked by impact.</p>
           </div>
-          ${this._renderCategoryTiles()}
+          ${this._renderDevicePicker()}
+          <span class="metric-tiles-label">${metricCount} metric${metricCount === 1 ? '' : 's'} ${d1.name} reads</span>
+          ${this._renderMetricTiles()}
           <div class="picker-panel">
             <div class="picker-panel-head">
-              <h3 class="picker-panel-title">${catLabel} factors<span class="picker-panel-meta">${shown} factor${shown === 1 ? '' : 's'}</span></h3>
+              <h3 class="picker-panel-title">${catLabel ? `${catLabel} factors` : 'All factors'}<span class="picker-panel-meta">${shown} factor${shown === 1 ? '' : 's'}</span></h3>
             </div>
-            ${this._renderSortBar()}
             ${this._renderFactorList()}
-          </div>
-        </div>
-      </section>`;
-  }
-
-  _renderCalloutSection() {
-    return `
-      <section class="callout-section section-bg-white">
-        <div class="container">
-          <div class="callout-card">
-            <span class="callout-icon" aria-hidden="true">${this._icon('info')}</span>
-            <div class="callout-body">
-              <h3>Stress scores aren't comparable across brands.</h3>
-              <p>Every wearable uses a proprietary mix of signals and a personal baseline, so a "55" on Garmin doesn't mean the same thing as a "55" on Samsung. Multi-signal devices (HRV + EDA + skin temp) hit ~82% accuracy in lab studies vs. ~77% for HRV-only. And remember: wearables detect <em>arousal</em>, not stress. The same HRV drop comes from anxiety, excitement, caffeine, or a hard workout.</p>
-            </div>
           </div>
         </div>
       </section>`;
@@ -1239,32 +1196,71 @@ class KygoWearableStress extends HTMLElement {
 
   _renderSourcesSection() {
     const groups = {
-      'Core HRV & stress research': [
-        { label: 'Frontiers in Physiology 2024 — Factors influencing HRV (PMC11333334)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'PMC9974008 — Chronic stress & HRV in medical professionals', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/' },
-        { label: 'PMC8950456 — HRV & exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/' },
-        { label: 'PMC11284693 — Caffeine, sleep & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
-        { label: 'PMC9549087 — Resting heart rate factors', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
-        { label: 'PMC6306777 — Exercise & RHR meta-analysis (Reimers 2018)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' }
+      'Peer-reviewed research': [
+        { label: 'Frontiers in Physiology 2024 — Factors Influencing HRV (PMC11333334)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
+        { label: 'PMC8950456 — Analysis of HRV and Implication of Different Factors', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/' },
+        { label: 'PMC9549087 — Factors Affecting Resting Heart Rate in Free-Living Healthy Humans', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
+        { label: 'PMC6306777 — Effects of Exercise on Resting Heart Rate (Reimers 2018)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' },
+        { label: 'PMC9974008 — HRV as a Measure of Stress in Medical Professionals', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/' },
+        { label: 'PMC11284693 — Caffeine Intake Strategies and HRV during Recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
+        { label: 'PMC11439429 — HRV Measurement and Influencing Factors', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11439429/' },
+        { label: 'PMC4664114 — Skin Temperature Reveals the Intensity of Acute Stress', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/' },
+        { label: 'PMC9690349 — Diurnal Nonlinear Recurrence Metrics of Skin Temperature', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/' },
+        { label: 'PMC10575214 — The Five Basic Human Senses Evoke EDA', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/' },
+        { label: 'Nature 2026 — Wearable-derived Skin Temperature Dynamics During Sleep', url: 'https://www.nature.com/articles/s41746-026-02633-2' },
+        { label: 'ScienceDirect 2025 — EDA and Skin Temperature in Stress and Depression', url: 'https://www.sciencedirect.com/science/article/pii/S2666915325000071' }
       ],
-      'EDA & skin conductance': [
-        { label: 'BIOPAC — Electrodermal Activity overview', url: 'https://blog.biopac.com/electrodermal-activity-eda/' },
-        { label: 'PMC10575214 — Sensory EDA triggering', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/' },
+      'Manufacturer documentation': [
+        { label: 'Garmin Support — What Is the Stress Level Feature?', url: 'https://support.garmin.com/en-US/?faq=WT9BmhjacO4ZpxbCc0EKn9' },
+        { label: 'Garmin — HRV Stress Test Technology', url: 'https://www.garmin.com/en-US/garmin-technology/running-science/physiological-measurements/hrv-stress-test/' },
+        { label: 'Samsung Developer — Galaxy Watch EDA Sensor', url: 'https://developer.samsung.com/health/blog/en/how-the-galaxy-watchs-eda-sensor-enhances-your-health-monitoring' },
+        { label: 'Google Research — Pixel Watch / Fitbit Sense 2 EDA', url: 'https://research.google/blog/what-does-electrodermal-sensing-reveal-insights-from-the-pixel-watch-fitbit-sense-2/' },
+        { label: 'Google Blog — How We Trained Fitbit Body Response', url: 'https://blog.google/products/fitbit/how-we-trained-fitbits-body-response-feature-to-detect-stress/' },
+        { label: 'WHOOP Support — Get to Know the Stress Monitor', url: 'https://support.whoop.com/s/article/Get-to-Know-the-Stress-Monitor' },
+        { label: 'WHOOP Blog — How Does WHOOP Recovery Work 101', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
+        { label: 'Oura Blog 2025 — Introducing Cumulative Stress', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' },
+        { label: 'Oura Blog — Discover Oura\'s Daytime Stress Feature', url: 'https://ouraring.com/blog/daytime-stress-feature/' },
+        { label: 'Oura — Inside the Ring: Quantifying Chronic Stress', url: 'https://ouraring.com/blog/inside-the-ring-cumulative-stress/' },
+        { label: 'Polar Support — Nightly Recharge Recovery Measurement', url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement' },
+        { label: 'Polar — Vantage V3 Manual: Nightly Recharge', url: 'https://support.polar.com/e_manuals/vantage-v3/polar-vantage-v3-user-manual-english/nightly-recharge.htm' }
+      ],
+      'Clinical & advocacy organizations': [
+        { label: 'American Heart Association — 8 Things That Can Affect Your Heart', url: 'https://www.heart.org/en/news/2019/02/01/8-things-that-can-affect-your-heart-and-what-to-do-about-them' },
+        { label: 'Cleveland Clinic — How to Lower Your Resting Heart Rate', url: 'https://health.clevelandclinic.org/how-to-lower-your-resting-heart-rate' },
+        { label: 'Hackensack Meridian Health — 6 Reasons Your Heart Rate Is High', url: 'https://www.hackensackmeridianhealth.org/en/healthier-you/2022/02/24/6-reasons-your-heart-rate-is-high' },
+        { label: 'The Heart Foundation — Your Heart Rate', url: 'https://theheartfoundation.org/2018/11/02/your-heart-rate/' }
+      ],
+      'EDA & skin conductance references': [
+        { label: 'Wikipedia — Electrodermal Activity', url: 'https://en.wikipedia.org/wiki/Electrodermal_activity' },
         { label: 'EBSCO Research Starters — Electrodermal Activity', url: 'https://www.ebsco.com/research-starters/health-and-medicine/electrodermal-activity-eda' },
-        { label: 'Wikipedia — Electrodermal Activity', url: 'https://en.wikipedia.org/wiki/Electrodermal_activity' }
+        { label: 'BIOPAC Blog — Electrodermal Activity', url: 'https://blog.biopac.com/electrodermal-activity-eda/' },
+        { label: 'Innsightful — Science of Skin Conductance', url: 'https://www.innsightful.com/electrodermal-activity-eda-the-science-of-skin-conductance-and-emotional-arousal/' },
+        { label: 'Noldus Academy — Electrodermal Activity', url: 'https://academy.noldus.com/courses/getting-started-with-noldushub/lessons/noldushub-parameters/topics/skin-conductance-gsr/' },
+        { label: 'University of Birmingham — Guide for Analysing EDA (PDF)', url: 'https://www.birmingham.ac.uk/documents/college-les/psych/saal/guide-electrodermal-activity.pdf' },
+        { label: 'ScienceDirect — Electrodermal Activity (topic page)', url: 'https://www.sciencedirect.com/topics/psychology/electrodermal-activity' }
       ],
-      'Skin temperature & ambient confounds': [
-        { label: 'PMC4664114 — Skin temperature as stress marker', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/' },
-        { label: 'PMC9690349 — Ambient temperature & physiological signals', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/' },
-        { label: 'Ultrahuman — Factors influencing skin temperature', url: 'https://blog.ultrahuman.com/blog/factors-influencing-skin-temperature/' }
+      'Independent reviews & secondary sources': [
+        { label: 'Kygo 2026 — How to Improve HRV: 44 Factors Ranked by Evidence', url: 'https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence' },
+        { label: 'Marathon Handbook 2026 — How to Increase HRV: 11 Strategies', url: 'https://marathonhandbook.com/how-to-increase-hrv/' },
+        { label: 'Ultrahuman — Factors Influencing Skin Temperature', url: 'https://blog.ultrahuman.com/blog/factors-influencing-skin-temperature/' },
+        { label: 'Wareable 2026 — Best Stress Trackers: Long-Term Tests', url: 'https://www.wareable.com/health-and-wellbeing/stress-monitoring-wearables-explained-7969' },
+        { label: 'Android Authority — How Does Samsung Galaxy Watch Measure Stress?', url: 'https://www.androidauthority.com/how-does-galaxy-watch-measure-stress-3234828/' },
+        { label: 'Cybernews 2026 — WHOOP 5.0 Review', url: 'https://cybernews.com/health-tech/whoop-review/' }
       ],
-      'Device documentation': [
-        { label: 'WHOOP — Recovery 101', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
-        { label: 'Polar — Nightly Recharge measurement', url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement' },
-        { label: 'Oura Blog — Cumulative Stress (2025)', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' },
-        { label: 'Oura Blog — Daytime Stress feature', url: 'https://ouraring.com/blog/daytime-stress-feature/' },
-        { label: 'Marathon Handbook 2026 — HRV strategies', url: 'https://marathonhandbook.com/how-to-increase-hrv/' },
-        { label: 'Kygo.app — How to improve HRV: 44 factors ranked', url: 'https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence' }
+      'Wearable accuracy & methodology': [
+        { label: 'Frontiers in Computer Science 2024 — Stress Detection Using Wearables (Systematic Review)', url: 'https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2024.1478851/full' },
+        { label: 'JMIR 2024 — Wearable AI in Detecting Stress: Systematic Review and Meta-Analysis', url: 'https://www.jmir.org/2024/1/e52622' },
+        { label: 'Springer 2025 — Stress in Action Wearables Database', url: 'https://link.springer.com/article/10.3758/s13428-025-02685-4' },
+        { label: 'Nature Communications Medicine 2025 — Wearables for Anxiety Assessment', url: 'https://www.nature.com/articles/s43856-025-01234-6' },
+        { label: 'PMC11230864 — Real-Time Stress Prediction Models Using Wearables', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11230864/' },
+        { label: 'ScienceDirect 2025 — From Lab to Real-Life: Three-Stage Validation', url: 'https://www.sciencedirect.com/science/article/pii/S2215016125000536' },
+        { label: 'ScienceDirect 2025 — Meta-Analysis of 171 TSST Studies (n=8,452)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0306453025002896' },
+        { label: 'ScienceDirect — The Trier Social Stress Test: Principles and Practice', url: 'https://www.sciencedirect.com/science/article/pii/S2352289516300224' },
+        { label: 'PMC7739033 — Systematic Review of TSST Methodology', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7739033/' },
+        { label: 'arXiv 2025 — Extending Stress Detection Reproducibility to Consumer Wearables', url: 'https://arxiv.org/html/2505.05694v1' },
+        { label: 'ScienceDirect — Machine Learning for Predicting Stress Episodes', url: 'https://www.sciencedirect.com/science/article/pii/S0010482525015197' },
+        { label: 'MDPI Algorithms 2025 — Smartwatches in Stress Management & Well-Being', url: 'https://www.mdpi.com/1999-4893/18/7/419' },
+        { label: 'JMIR mHealth 2026 — Wearables for Stress Measurement in College Students', url: 'https://mhealth.jmir.org/2026/1/e64144' }
       ]
     };
     const total = Object.values(groups).reduce((s, g) => s + g.length, 0);
@@ -1272,7 +1268,7 @@ class KygoWearableStress extends HTMLElement {
       <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title">Sources</h2>
-          <p class="section-sub">All claims sourced from peer-reviewed research and official device documentation.</p>
+          <p class="section-sub">All claims sourced from peer-reviewed research and official device documentation. Every factor in the breakdown above cites at least one of these.</p>
           <div class="src-accordion">
             <div class="src-count-badge">${total} sources cited</div>
             ${Object.entries(groups).map(([cat, items]) => `
@@ -1291,9 +1287,10 @@ class KygoWearableStress extends HTMLElement {
       </section>`;
   }
 
+
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const totalFactors = this._factors.length;
+    const totalFactors = Object.values(this._metricFactors).reduce((s, arr) => s + arr.length, 0);
     const totalDevices = Object.keys(this._devices).length;
 
     this.shadowRoot.innerHTML = `
@@ -1313,28 +1310,27 @@ class KygoWearableStress extends HTMLElement {
 
       <section class="hero section-bg-white">
         <div class="container hero-inner">
-          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalFactors} Factors · ${totalDevices} Wearables · Peer-Reviewed</div>
+          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalFactors} Factors · ${totalDevices} Wearables</div>
           <h1 class="hero-title animate-on-scroll">How does <em>your wearable</em> measure stress?</h1>
           <p class="hero-sub animate-on-scroll">Every brand reads stress differently — HRV, EDA, skin temp, breathing rate. Pick your device and the factor list below re-sorts around what actually moves <strong>your</strong> score.</p>
-          <div class="hero-stats animate-on-scroll">
-            <span class="hero-stat"><strong>${totalDevices}</strong>wearables</span>
-            <span class="hero-stat-sep" aria-hidden="true"></span>
-            <span class="hero-stat"><strong>${totalFactors}</strong>factors</span>
-            <span class="hero-stat-sep" aria-hidden="true"></span>
-            <span class="hero-stat"><strong>82%</strong>multi-signal accuracy</span>
-            <span class="hero-stat-sep" aria-hidden="true"></span>
-            <span class="hero-stat"><strong>77%</strong>HRV-only accuracy</span>
+          <div class="animate-on-scroll">
+            <div class="hero-meta">
+              <div class="hero-cell"><span class="hero-num">${totalDevices}</span><span class="hero-lbl">Wearables</span></div>
+              <div class="hero-cell"><span class="hero-num">${totalFactors}</span><span class="hero-lbl">Factors tracked</span></div>
+              <div class="hero-cell"><span class="hero-num hero-num--pos">82%</span><span class="hero-lbl">Multi-signal accuracy</span></div>
+              <div class="hero-cell"><span class="hero-num">77%</span><span class="hero-lbl">HRV-only accuracy</span></div>
+            </div>
           </div>
           ${this._heroWaveSvg()}
         </div>
       </section>
 
       <div class="animate-on-scroll">${this._renderComparisonModule()}</div>
-      <div class="animate-on-scroll">${this._renderFactorsSection()}</div>
       ${this._renderCtaRow()}
-      ${this._renderMythsSection()}
+      <div class="animate-on-scroll">${this._renderFactorsSection()}</div>
+      ${this._renderArticleCta()}
+      <div class="animate-on-scroll">${this._renderFullBreakdown()}</div>
       ${this._renderTopPicks()}
-      ${this._renderCalloutSection()}
       ${this._renderSourcesSection()}
 
       <footer class="tool-footer">
@@ -1369,38 +1365,22 @@ class KygoWearableStress extends HTMLElement {
         return;
       }
 
-      const modeBtn = e.target.closest('.mode-btn');
-      if (modeBtn) {
-        this._mode = modeBtn.dataset.mode;
-        this.render();
-        this._setupAnimations();
+      const dcRow = e.target.closest('[data-device-row]');
+      if (dcRow) {
+        const k = dcRow.dataset.deviceRow;
+        this._compareExpandedKey = this._compareExpandedKey === k ? null : k;
+        const breakdownSec = shadow.querySelector('.breakdown-section');
+        if (breakdownSec) breakdownSec.outerHTML = this._renderFullBreakdown();
         return;
       }
 
       const tile = e.target.closest('[data-cat]');
       if (tile) {
         const k = tile.dataset.cat;
-        this._categoryFilter = (k === '__all') ? null : (this._categoryFilter === k ? null : k);
+        this._categoryFilter = this._categoryFilter === k ? null : k;
         this._listExpandedKey = null;
         const sec = shadow.querySelector('.factors-section');
         if (sec) sec.outerHTML = this._renderFactorsSection();
-        return;
-      }
-
-      const sortBtn = e.target.closest('.list-sort-btn');
-      if (sortBtn) {
-        this._listSort = sortBtn.dataset.sort;
-        const sec = shadow.querySelector('.factors-section');
-        if (sec) sec.outerHTML = this._renderFactorsSection();
-        return;
-      }
-
-      const mythsTile = e.target.closest('[data-myths-cat]');
-      if (mythsTile) {
-        const k = mythsTile.dataset.mythsCat;
-        this._mythsCatPick = (k === '__featured') ? null : k;
-        const sec = shadow.querySelector('.myths-section');
-        if (sec) sec.outerHTML = this._renderMythsSection();
         return;
       }
 
@@ -1410,48 +1390,26 @@ class KygoWearableStress extends HTMLElement {
         if (card) {
           const k = card.dataset.factKey;
           this._listExpandedKey = this._listExpandedKey === k ? null : k;
-          const listEl = shadow.querySelector('.fact-list');
-          if (listEl) listEl.outerHTML = this._renderFactorList();
+          const groupsEl = shadow.querySelector('.fact-groups');
+          if (groupsEl) groupsEl.outerHTML = this._renderFactorList();
         }
         return;
       }
 
-      const jumpBtn = e.target.closest('[data-fact-jump]');
-      if (jumpBtn) {
-        const k = jumpBtn.dataset.factJump;
-        this._categoryFilter = null;
-        this._listSort = 'impact';
-        this._listExpandedKey = k;
-        const sec = shadow.querySelector('.factors-section');
-        if (sec) sec.outerHTML = this._renderFactorsSection();
-        requestAnimationFrame(() => {
-          const target = shadow.querySelector(`[data-fact-key="${k}"]`);
-          if (target && target.scrollIntoView) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
-        return;
-      }
     });
 
     shadow.addEventListener('change', (e) => {
-      if (e.target.id === 'device1') {
-        this._device1 = e.target.value;
-        this._updateDeviceDependentSections();
-        return;
-      }
-      if (e.target.id === 'device2') {
-        this._device2 = e.target.value;
-        this._updateDeviceDependentSections();
-        return;
+      const sel = e.target.closest('[data-device-select]');
+      if (sel) {
+        const k = sel.value;
+        if (k && this._device1 !== k) {
+          this._device1 = k;
+          this._listExpandedKey = null;
+          const sec = shadow.querySelector('.factors-section');
+          if (sec) sec.outerHTML = this._renderFactorsSection();
+        }
       }
     });
-  }
-
-  _updateDeviceDependentSections() {
-    const shadow = this.shadowRoot;
-    const compSec = shadow.querySelector('.comparison-section');
-    if (compSec) compSec.outerHTML = this._renderComparisonModule();
-    const factSec = shadow.querySelector('.factors-section');
-    if (factSec) factSec.outerHTML = this._renderFactorsSection();
   }
 
   _setupAnimations() {
@@ -1531,19 +1489,32 @@ class KygoWearableStress extends HTMLElement {
       /* HERO */
       .hero { padding: 40px 0 28px; background: #fff; }
       .hero-inner { position: relative; }
-      .hero-kicker { display: inline-flex; align-items: center; gap: 7px; font-size: 9.5px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 6px 11px; border-radius: 9999px; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px; line-height: 1.4; }
+      .hero-kicker { display: inline-flex; align-items: center; gap: 7px; font-size: 9.5px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 6px 11px; border-radius: 9999px; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px; max-width: 100%; line-height: 1.4; text-align: left; }
       .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse 2.2s infinite; flex-shrink: 0; }
       @media (min-width: 480px) { .hero-kicker { font-size: 10.5px; white-space: nowrap; } }
       @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.6);} 70%{box-shadow:0 0 0 8px rgba(34,197,94,0);} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0);} }
-      .hero-title { font-size: clamp(32px, 8.5vw, 76px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; color: var(--dark); max-width: 16ch; }
+      .hero-title { font-size: clamp(32px, 8.5vw, 76px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; margin: 0; color: var(--dark); max-width: 15ch; }
       .hero-title em { font-style: normal; color: var(--green); font-family: inherit; }
       .hero-sub { margin: 20px 0 0; max-width: 56ch; font-size: clamp(15px, 2.2vw, 19px); line-height: 1.5; color: var(--gray-600); }
       .hero-sub strong { color: var(--dark); font-weight: 600; }
-      .hero-stats { margin-top: 28px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; padding-top: 22px; border-top: 1px solid var(--gray-200); max-width: 760px; }
-      .hero-stat { display: inline-flex; align-items: baseline; gap: 6px; font-size: 12.5px; color: var(--gray-600); font-weight: 500; letter-spacing: 0.1px; }
-      .hero-stat strong { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: var(--dark); font-feature-settings: "tnum" 1; }
-      .hero-stat-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--gray-300); }
+      .hero-meta { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--gray-200); padding-top: 20px; max-width: 760px; }
+      .hero-meta .hero-cell { padding: 8px 14px 8px 0; border-right: 1px solid var(--gray-200); min-width: 0; }
+      .hero-meta .hero-cell:nth-child(2n) { border-right: 0; padding-right: 0; padding-left: 16px; }
+      .hero-meta .hero-cell:nth-child(-n+2) { border-bottom: 1px solid var(--gray-200); padding-bottom: 16px; }
+      .hero-meta .hero-cell:nth-child(n+3) { padding-top: 16px; }
+      .hero-num { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(26px, 6.5vw, 40px); color: var(--dark); letter-spacing: -0.02em; font-feature-settings: "tnum" 1; display: block; line-height: 1; }
+      .hero-num--pos { color: var(--green-dark); }
+      .hero-num--neg { color: var(--red); }
+      .hero-lbl { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-400); font-weight: 600; margin-top: 6px; display: block; }
       .hero-wave { display: none; }
+      @media (min-width: 640px) {
+        .hero-meta { grid-template-columns: repeat(4, 1fr); }
+        .hero-meta .hero-cell { padding: 0 16px; border-right: 1px solid var(--gray-200); border-bottom: 0 !important; }
+        .hero-meta .hero-cell:first-child { padding-left: 0; }
+        .hero-meta .hero-cell:last-child { border-right: 0; padding-right: 0; }
+        .hero-meta .hero-cell:nth-child(n+3), .hero-meta .hero-cell:nth-child(-n+2) { padding-top: 0; padding-bottom: 0; }
+      }
+      @media (min-width: 768px) { .hero { padding: 72px 0 48px; } }
       @media (min-width: 1000px) {
         .hero-wave { display: block; position: absolute; right: -20px; top: 30px; width: 46%; max-width: 560px; opacity: 0.9; pointer-events: none; }
       }
@@ -1563,32 +1534,30 @@ class KygoWearableStress extends HTMLElement {
       .section-lede { font-size: 15px; color: var(--gray-600); line-height: 1.55; margin: 0; max-width: 64ch; }
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
-      .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section, .cta-row-section { padding: 48px 0 56px; }
+      .comparison-section, .breakdown-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section { padding: 48px 0 56px; }
       @media (min-width: 768px) {
         .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section, .myths-section { padding: 64px 0 72px; }
-        .cta-row-section { padding: 56px 0; }
       }
 
       /* ARTICLE CTA */
-      .article-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; max-width: 780px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
+      .article-card { position: relative; display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: 'badge . arrow' 'body body body'; align-items: center; gap: 14px 12px; max-width: 780px; margin: 0 auto; padding: 18px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
       .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
       .article-card:hover { border-color: var(--green); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(34,197,94,0.14); }
-      .article-badge { position: relative; z-index: 1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; }
-      .article-body { position: relative; z-index: 1; flex: 1; min-width: 0; width: 100%; padding-right: 50px; }
+      .article-badge { grid-area: badge; position: relative; z-index: 1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; justify-self: start; }
+      .article-body { grid-area: body; position: relative; z-index: 1; min-width: 0; }
       .article-kicker { display: block; font-size: 11px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
-      .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.25; letter-spacing: -0.01em; }
+      .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.3; letter-spacing: -0.01em; overflow-wrap: anywhere; }
       .article-year { color: var(--gray-400); font-weight: 500; }
       .article-desc { display: none; font-size: 13px; color: var(--gray-600); margin: 6px 0 0; line-height: 1.45; }
-      .article-go { position: absolute; top: 18px; right: 18px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; }
+      .article-go { grid-area: arrow; position: relative; z-index: 2; width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; justify-self: end; }
       .article-card:hover .article-go { background: var(--green-dark); }
       .article-go svg { width: 16px; height: 16px; }
       @media (min-width: 768px) {
-        .article-card { flex-direction: row; align-items: center; padding: 24px 28px; gap: 18px; border-radius: 22px; }
+        .article-card { grid-template-columns: auto 1fr auto; grid-template-areas: 'badge body arrow'; padding: 24px 28px; gap: 18px; border-radius: 22px; }
         .article-title { font-size: 19px; }
         .article-desc { display: block; }
-        .article-go { position: static; width: 40px; height: 40px; }
+        .article-go { width: 40px; height: 40px; }
         .article-go svg { width: 18px; height: 18px; }
-        .article-body { padding-right: 0; }
       }
 
       /* MYTH FILTERS — pill row, no empty state */
@@ -1617,111 +1586,125 @@ class KygoWearableStress extends HTMLElement {
         .myth-grid { grid-template-columns: repeat(2, 1fr); }
       }
 
-      /* COMPARISON SHELL */
-      .comparison-shell { background: #fff; border: 1px solid var(--gray-200); border-radius: 22px; padding: 22px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
-      @media (min-width: 768px) { .comparison-shell { padding: 28px; } }
-      .comparison-toolbar { display: flex; flex-direction: column; gap: 16px; padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px dashed var(--gray-200); }
-      @media (min-width: 880px) { .comparison-toolbar { flex-direction: row; justify-content: space-between; align-items: center; } }
+      /* DEVICE CHART — matrix table */
+      .device-chart { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px 16px 14px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+      @media (min-width: 768px) { .device-chart { padding: 26px 28px 22px; border-radius: 22px; } }
+      .dc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; margin-bottom: 6px; border-bottom: 1px dashed var(--gray-200); }
+      .dc-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 4px; }
+      .dc-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 19px; color: var(--dark); margin: 0 0 6px; letter-spacing: -0.01em; line-height: 1.2; }
+      .dc-sub { font-size: 13px; color: var(--gray-600); margin: 0; line-height: 1.5; max-width: 60ch; }
+      .dc-meta { font-size: 11.5px; color: var(--gray-400); font-weight: 600; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.6px; }
 
-      /* MODE TOGGLE */
-      .mode-toggle { display: inline-flex; gap: 4px; padding: 4px; background: var(--gray-100); border-radius: 9999px; align-self: flex-start; }
-      .mode-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 9999px; border: 0; background: transparent; color: var(--gray-600); font-family: inherit; font-weight: 600; font-size: 13px; cursor: pointer; transition: background .2s, color .2s, box-shadow .2s; white-space: nowrap; }
-      .mode-btn:hover { color: var(--dark); }
-      .mode-btn.active { background: var(--dark); color: #fff; box-shadow: 0 4px 12px rgba(15,23,42,0.18); }
-      .mode-btn-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; }
-      .mode-btn-icon svg { width: 14px; height: 14px; }
+      .device-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -16px; padding: 0 16px 4px; }
+      @media (min-width: 768px) { .device-table-wrap { margin: 0; padding: 0; overflow-x: visible; } }
+      .device-table { width: 100%; border-collapse: separate; border-spacing: 0; font-feature-settings: "tnum" 1; min-width: 520px; }
+      .device-table th, .device-table td { padding: 0; vertical-align: middle; }
 
-      /* DEVICE SELECTORS */
-      .device-selectors { display: flex; align-items: flex-end; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
-      .device-selectors.single { justify-content: flex-end; }
-      .selector-group { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-      .selector-group label { font-size: 10.5px; font-weight: 700; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.6px; }
-      .selector-wrap { position: relative; }
-      .selector-wrap::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--accent, var(--green)); border-radius: 0 0 var(--radius-sm) var(--radius-sm); pointer-events: none; opacity: 0.85; }
-      .selector-wrap select { padding: 11px 36px 11px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--gray-200); font-family: inherit; font-size: 14.5px; font-weight: 600; background: #fff; color: var(--dark); cursor: pointer; min-width: 200px; transition: border-color .2s, box-shadow .2s; appearance: auto; }
-      .selector-wrap select:hover { border-color: var(--gray-300); }
-      .selector-wrap select:focus { outline: none; border-color: var(--accent, var(--green)); box-shadow: 0 0 0 3px rgba(34,197,94,0.12); }
-      .vs-badge { width: 38px; height: 38px; border-radius: 50%; background: var(--dark); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(15,23,42,0.18); margin-bottom: 4px; flex-shrink: 0; }
-
-      /* DEVICE CARD */
-      .device-card-grid { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 4px; }
-      @media (min-width: 920px) { .device-card-grid.two { grid-template-columns: 1fr 1fr; } }
-      .device-card { position: relative; background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 22px; overflow: hidden; transition: border-color .15s, box-shadow .15s, transform .15s; }
-      .device-card:hover { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.05); transform: translateY(-1px); }
-      .device-card-stripe { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent, var(--green)); }
-      .device-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-top: 4px; }
-      .device-card-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--accent, var(--green)); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(15,23,42,0.08); }
-      .device-card-icon svg { width: 22px; height: 22px; }
-      .device-card-titles { flex: 1; min-width: 0; }
-      .device-card-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 20px; color: var(--dark); line-height: 1.2; letter-spacing: -0.01em; }
-      .device-card-model { display: block; margin-top: 2px; font-size: 12.5px; color: var(--gray-600); font-weight: 500; }
-      .device-card-pill { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; background: var(--gray-100); color: var(--gray-600); white-space: nowrap; flex-shrink: 0; }
-      /* SIGNAL PIPELINE DIAGRAM */
-      .pipeline { display: flex; align-items: stretch; gap: 8px; margin-bottom: 18px; padding: 14px; background: linear-gradient(180deg, rgba(34,197,94,0.04) 0%, rgba(34,197,94,0.00) 100%); border: 1px dashed rgba(34,197,94,0.25); border-radius: 14px; overflow-x: auto; }
-      .pipe-step { display: flex; flex-direction: column; gap: 4px; padding: 8px 10px; background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; min-width: 0; flex: 1 1 auto; }
-      .pipe-eyebrow { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
-      .pipe-text { font-size: 12px; color: var(--gray-700); font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
-      .pipe-chips { display: flex; flex-wrap: wrap; gap: 4px; }
-      .pipe-chip { font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 9999px; background: var(--green-light); color: var(--green-dark); }
-      .pipe-arrow { display: inline-flex; align-items: center; color: var(--gray-300); flex-shrink: 0; }
-      .pipe-arrow svg { width: 14px; height: 14px; }
-      .pipe-score { background: var(--dark); border-color: var(--dark); }
-      .pipe-score .pipe-eyebrow { color: rgba(255,255,255,0.5); }
-      .pipe-score-text { color: #fff; }
-      @media (max-width: 540px) {
-        .pipeline { flex-direction: column; align-items: stretch; }
-        .pipe-arrow { transform: rotate(90deg); align-self: center; }
+      .device-table thead th { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 10.5px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); text-align: center; padding: 12px 4px; vertical-align: middle; border-bottom: 1px solid var(--gray-200); white-space: nowrap; background: #fff; }
+      .device-table thead .dt-th-device { text-align: left; padding-left: 4px; }
+      .device-table thead .dt-th-count { text-align: right; padding-right: 4px; }
+      .dt-th-full { display: none; }
+      .dt-th-short { display: inline; }
+      @media (min-width: 768px) {
+        .dt-th-full { display: inline; }
+        .dt-th-short { display: none; }
+        .device-table thead th { font-size: 11px; padding: 14px 6px; }
       }
 
-      .device-card-section { margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px dashed var(--gray-200); }
-      .device-card-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 10px; }
-      .device-sensor-row { display: flex; flex-wrap: wrap; gap: 6px; }
-      .sensor-chip { display: inline-flex; align-items: center; gap: 5px; font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; padding: 4px 10px 4px 6px; border-radius: 9999px; letter-spacing: 0.1px; line-height: 1.3; }
-      .sensor-chip.on { background: var(--green-light); color: var(--green-dark); }
-      .sensor-chip.off { background: var(--gray-100); color: var(--gray-400); }
-      .sensor-chip-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
-      .sensor-chip.on .sensor-chip-icon { background: var(--green); color: #fff; }
-      .sensor-chip.off .sensor-chip-icon { background: var(--gray-300); color: #fff; }
-      .sensor-chip-icon svg { width: 9px; height: 9px; }
+      .device-table tbody tr { transition: background .15s; }
+      .device-table tbody tr + tr td, .device-table tbody tr + tr th { border-top: 1px solid var(--gray-100); }
+      .device-table tbody tr:hover { background: var(--gray-50); }
+      .device-table tbody tr:hover .dt-td-device { background: var(--gray-50); }
 
-      .device-card-rows { display: grid; gap: 12px; margin-bottom: 18px; }
-      .device-card-row { display: grid; grid-template-columns: 100px 1fr; gap: 14px; align-items: start; }
-      .device-card-row dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); padding-top: 2px; }
-      .device-card-row dd { font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
-      @media (max-width: 480px) {
-        .device-card-row { grid-template-columns: 1fr; gap: 2px; }
+      .dt-td-device { padding: 10px 8px 10px 4px; width: 56px; min-width: 56px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; transition: background .15s; box-shadow: 1px 0 0 var(--gray-200); }
+      .dt-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+      .dt-img { width: 36px; height: 36px; border-radius: 9px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .dt-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
+      .dt-img--icon { background: var(--accent, var(--gray-200)); color: #fff; }
+      .dt-img--icon svg { width: 16px; height: 16px; }
+      .dt-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); letter-spacing: -0.01em; line-height: 1.2; overflow-wrap: anywhere; display: none; }
+      @media (min-width: 768px) {
+        .dt-td-device { padding: 14px 14px 14px 4px; width: auto; min-width: 220px; position: static; box-shadow: none; }
+        .dt-img { width: 40px; height: 40px; border-radius: 10px; }
+        .dt-name { display: inline; font-size: 15px; }
       }
 
-      .device-card-callouts { display: grid; gap: 8px; }
-      @media (min-width: 540px) { .device-card-callouts { grid-template-columns: 1fr 1fr; } }
-      .callout-box { padding: 12px 14px; border-radius: 12px; border: 1px solid; }
-      .callout-strength { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.22); }
-      .callout-watchout { background: rgba(180,83,9,0.05); border-color: rgba(180,83,9,0.20); }
-      .callout-box-head { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
-      .callout-strength .callout-box-head { color: var(--green-dark); }
-      .callout-watchout .callout-box-head { color: var(--amber); }
-      .callout-box-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; }
-      .callout-box-icon svg { width: 14px; height: 14px; }
-      .callout-box p { margin: 0; font-size: 13px; color: var(--gray-700); line-height: 1.5; }
+      .device-table tbody td { text-align: center; padding: 10px 6px; }
+      @media (min-width: 768px) { .device-table tbody td { padding: 14px 8px; } }
+      .dt-mark { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; }
+      .device-table tbody td.on .dt-mark { background: var(--green); color: #fff; box-shadow: 0 0 0 3px rgba(34,197,94,0.10); }
+      .device-table tbody td.on .dt-mark svg { width: 11px; height: 11px; }
+      .device-table tbody td.off .dt-mark { background: var(--gray-100); }
+      .dt-dash { display: block; width: 9px; height: 2px; border-radius: 1px; background: var(--gray-300); }
+      @media (min-width: 768px) {
+        .dt-mark { width: 26px; height: 26px; }
+        .device-table tbody td.on .dt-mark svg { width: 12px; height: 12px; }
+      }
 
-      /* DIFF PANEL */
-      .device-diff { position: relative; margin-top: 16px; background: var(--dark-card); color: #fff; border-radius: 18px; padding: 24px; overflow: hidden; }
-      .device-diff-glow { position: absolute; top: -50px; right: -50px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(34,197,94,0.22) 0%, transparent 70%); pointer-events: none; }
-      .device-diff-head { position: relative; z-index: 1; margin-bottom: 16px; }
-      .device-diff-eyebrow { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-bottom: 6px; }
-      .device-diff-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px; color: #fff; letter-spacing: -0.01em; margin: 0; }
-      .device-diff-vs { color: var(--green); font-style: italic; font-weight: 500; padding: 0 4px; }
-      .device-diff-rows { position: relative; z-index: 1; display: grid; gap: 10px; }
-      .diff-row { display: grid; grid-template-columns: 160px 1fr; gap: 14px; align-items: center; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.08); }
-      .diff-row:first-child { border-top: 0; padding-top: 4px; }
-      .diff-row-label { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; padding: 6px 12px; border-radius: 9999px; letter-spacing: 0.3px; text-align: center; white-space: nowrap; justify-self: start; }
-      .diff-shared { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.85); }
-      .diff-only { background: var(--accent, var(--green)); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
-      .diff-row-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-      .diff-pill { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 9999px; background: rgba(255,255,255,0.10); color: #fff; }
-      .diff-empty { font-size: 12.5px; color: rgba(255,255,255,0.55); font-style: italic; }
-      @media (max-width: 540px) {
-        .diff-row { grid-template-columns: 1fr; gap: 6px; }
+      .dt-td-count { text-align: right; padding-right: 4px; padding-left: 8px; white-space: nowrap; }
+      .dt-count-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 17px; color: var(--dark); letter-spacing: -0.02em; }
+      .dt-count-lbl { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 11px; color: var(--gray-400); margin-left: 2px; }
+      @media (min-width: 768px) {
+        .dt-count-num { font-size: 19px; }
+        .dt-count-lbl { font-size: 12px; }
+      }
+
+      /* DEVICE DETAILS — compact dropdowns below the table */
+      .device-details { margin-top: 22px; }
+      .dd-section-head { margin-bottom: 12px; }
+      .dd-section-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 4px; }
+      .dd-section-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; line-height: 1.3; }
+      @media (min-width: 768px) { .dd-section-title { font-size: 18px; } }
+
+      .dd-list { display: grid; gap: 10px; grid-template-columns: 1fr; }
+      .dd-row { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; animation: dcGrow .55s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--delay, 0ms); }
+      .dd-row:hover { border-color: var(--gray-300); }
+      .dd-row.open { box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
+      @keyframes dcGrow { from { opacity: 0; transform: translateY(4px); } }
+
+      .dd-row-head { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; color: inherit; }
+      .dd-row-head:hover { background: var(--gray-50); }
+      .dd-img { width: 40px; height: 40px; border-radius: 10px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .dd-img img { width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+      .dd-img--icon { background: var(--accent, var(--gray-200)); color: #fff; }
+      .dd-img--icon svg { width: 18px; height: 18px; }
+      .dd-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+      .dd-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15.5px; color: var(--dark); line-height: 1.2; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+      .dd-line { display: block; margin-top: 3px; font-size: 12.5px; color: var(--gray-600); line-height: 1.35; overflow-wrap: anywhere; }
+      .dd-chev { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 9px; color: var(--gray-400); transition: transform .25s, color .15s, background .15s; flex-shrink: 0; }
+      .dd-chev svg { width: 15px; height: 15px; }
+      .dd-row-head[aria-expanded="true"] .dd-chev { transform: rotate(180deg); color: var(--green-dark); background: var(--green-light); }
+
+      .dd-body { padding: 0 16px 16px; border-top: 1px dashed var(--gray-200); }
+      .dd-body[hidden] { display: none; }
+      .dd-body-inner { display: grid; gap: 14px; padding-top: 16px; }
+      .dd-fields { display: grid; gap: 12px; margin: 0; }
+      .dd-fields > div { display: grid; grid-template-columns: 1fr; gap: 3px; }
+      .dd-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
+      .dd-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
+      .dd-callouts { display: grid; gap: 10px; }
+      .dd-callout { padding: 14px 16px; border-radius: 12px; border: 1px solid; }
+      .dd-callout.strong { background: rgba(34,197,94,0.06); border-color: rgba(34,197,94,0.22); }
+      .dd-callout.watch { background: rgba(180,83,9,0.05); border-color: rgba(180,83,9,0.20); }
+      .dd-callout-head { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; }
+      .dd-callout.strong .dd-callout-head { color: var(--green-dark); }
+      .dd-callout.watch .dd-callout-head { color: var(--amber); }
+      .dd-callout-icon { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; }
+      .dd-callout-icon svg { width: 14px; height: 14px; }
+      .dd-callout p { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; }
+      @media (min-width: 880px) {
+        /* Two cards per row on desktop — slightly bigger overall */
+        .dd-list { grid-template-columns: 1fr 1fr; gap: 14px; align-items: start; }
+        .dd-row { border-radius: 16px; }
+        .dd-row-head { padding: 18px 20px; gap: 14px; }
+        .dd-img { width: 48px; height: 48px; border-radius: 12px; }
+        .dd-img--icon svg { width: 22px; height: 22px; }
+        .dd-name { font-size: 17px; letter-spacing: -0.015em; }
+        .dd-line { font-size: 13px; margin-top: 4px; }
+        .dd-chev { width: 32px; height: 32px; border-radius: 10px; }
+        .dd-chev svg { width: 16px; height: 16px; }
+        .dd-body { padding: 0 22px 22px; }
+        .dd-body-inner { padding-top: 18px; gap: 16px; }
       }
 
       /* EVIDENCE LEADERBOARD */
@@ -1758,18 +1741,34 @@ class KygoWearableStress extends HTMLElement {
       }
 
       /* CATEGORY PICKER TILES — RHR style: large white pill cards in a 2 / 4-column grid */
+      /* DEVICE PICKER — pick your wearable for the factor list */
+      .device-picker { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+      .device-picker-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); }
+      .device-select-wrap { position: relative; max-width: 360px; }
+      .device-select { width: 100%; appearance: none; -webkit-appearance: none; -moz-appearance: none; padding: 14px 44px 14px 16px; min-height: 52px; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15.5px; color: var(--dark); letter-spacing: -0.01em; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .device-select:hover { border-color: var(--gray-300); }
+      .device-select:focus-visible { outline: 0; border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
+      .device-select-chev { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--gray-400); pointer-events: none; display: inline-flex; align-items: center; justify-content: center; }
+      .device-select-chev svg { width: 18px; height: 18px; }
+      @media (min-width: 880px) {
+        .device-picker { flex-direction: row; align-items: center; gap: 14px; }
+        .device-select-wrap { max-width: 320px; }
+      }
+
       .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
-      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 13px 14px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
+      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
       .picker-tile:hover { border-color: var(--gray-300); transform: translateY(-1px); }
       .picker-tile.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 6px 18px rgba(15,23,42,0.12); }
-      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: -0.005em; line-height: 1.15; min-width: 0; flex: 1; overflow-wrap: anywhere; }
+      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; letter-spacing: -0.005em; line-height: 1.2; min-width: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
       .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 3px 9px; min-width: 28px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
       .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
-      @media (min-width: 680px) { .picker-tiles { grid-template-columns: repeat(4, 1fr); } }
-      @media (min-width: 1024px) { .picker-tiles { grid-template-columns: repeat(8, 1fr); } }
+      .picker-tiles--metrics { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+      @media (min-width: 560px) { .picker-tiles { grid-template-columns: repeat(3, 1fr); } }
+      @media (min-width: 880px) { .picker-tiles { grid-template-columns: repeat(5, 1fr); } }
+      @media (min-width: 880px) { .picker-tiles--metrics { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); } }
 
       /* PICKER PANEL — white card holding the sort bar + factor list */
-      .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); }
+      .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 14px; box-shadow: 0 1px 0 rgba(15,23,42,0.03); min-width: 0; overflow: hidden; }
       .picker-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--gray-100); }
       .picker-panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
       .picker-panel-meta { font-size: 11.5px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.5px; text-transform: uppercase; }
@@ -1793,21 +1792,51 @@ class KygoWearableStress extends HTMLElement {
       }
 
       /* FACTOR CARDS — clean RHR pattern: eyebrow + name + sub + value pill + chevron */
+      .fact-groups { display: grid; grid-template-columns: 1fr; gap: 18px; min-width: 0; }
+      .fact-group { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+      .fact-group-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 2px 4px; border-bottom: 1px dashed var(--gray-200); }
+      .fact-group-label { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px; letter-spacing: -0.005em; }
+      .fact-group-icon { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; line-height: 1; flex-shrink: 0; }
+      .fact-group--helps .fact-group-label { color: var(--green-dark); }
+      .fact-group--helps .fact-group-icon { background: var(--green); color: #fff; }
+      .fact-group--helps .fact-group-icon::after { content: '↓'; }
+      .fact-group--hurts .fact-group-label { color: var(--red); }
+      .fact-group--hurts .fact-group-icon { background: var(--red); color: #fff; }
+      .fact-group--hurts .fact-group-icon::after { content: '↑'; }
+      .fact-group-meta { font-size: 11px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: var(--gray-400); white-space: nowrap; }
+      @media (min-width: 880px) { .fact-groups { grid-template-columns: 1fr 1fr; gap: 22px; } }
       .fact-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
-      .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
+      .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; min-width: 0; transition: border-color .15s, box-shadow .15s; }
       .fact-card:hover { border-color: var(--gray-300); }
       .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); border-color: var(--gray-300); }
-      .fact-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 12px; width: 100%; padding: 14px 16px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
+      .fact-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px; width: 100%; padding: 12px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
       .fact-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .fact-cat { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: var(--gray-400); line-height: 1; margin-bottom: 4px; }
-      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; }
+      .fact-cat { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: var(--gray-400); line-height: 1; margin-bottom: 4px; }
+      .fact-dir { font-size: 11px; font-weight: 700; line-height: 1; }
+      .fact-dir-pos { color: var(--green-dark); }
+      .fact-dir-neg { color: var(--red); }
+      .fact-dir-var { color: var(--amber); }
+      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: anywhere; }
       .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.4; margin-top: 2px; }
+      .fact-effect.fact-dir-pos { color: var(--green-dark); }
+      .fact-effect.fact-dir-neg { color: var(--red); }
+      .fact-effect.fact-dir-var { color: var(--amber); }
       .fact-ev-inline { color: var(--gray-400); font-weight: 500; }
-      .fact-pill { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; padding: 6px 14px; border-radius: 10px; white-space: nowrap; min-width: 88px; text-align: center; letter-spacing: -0.005em; }
-      .fact-pill.imp-high { background: var(--red-light); color: var(--red); }
-      .fact-pill.imp-med  { background: var(--amber-light); color: var(--amber); }
-      .fact-pill.imp-low  { background: var(--green-light); color: var(--green-dark); }
+      .fact-lede { margin: 0 0 14px; font-size: 14px; line-height: 1.6; color: var(--dark); font-weight: 500; overflow-wrap: anywhere; }
+      .fact-fields { display: grid; gap: 12px; margin: 0 0 4px; min-width: 0; }
+      .fact-fields > div { display: grid; grid-template-columns: 1fr; gap: 3px; min-width: 0; }
+      .fact-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
+      .fact-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; overflow-wrap: anywhere; }
+      @media (min-width: 768px) { .fact-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } .fact-fields--full { grid-column: 1 / -1; } }
+      .metric-tiles-label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin: 6px 0 8px; }
+      /* Pills always sit on a neutral grey chip; only the label color shifts. */
+      .fact-pill { font-family: 'Space Grotesk', sans-serif; font-size: 12.5px; font-weight: 700; padding: 5px 11px; border-radius: 9px; white-space: nowrap; min-width: 60px; text-align: center; letter-spacing: -0.005em; background: var(--gray-100); color: var(--gray-400); }
+      @media (min-width: 480px) { .fact-pill { font-size: 14px; padding: 6px 14px; border-radius: 10px; min-width: 84px; } }
+      .fact-pill.imp-med  { color: var(--dark); }
+      .fact-pill.imp-low  { color: var(--gray-400); }
+      .fact-group--helps .fact-pill.imp-high { color: var(--green-dark); }
+      .fact-group--hurts .fact-pill.imp-high { color: var(--red); }
       .fact-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .fact-chev svg { width: 16px; height: 16px; }
       .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--green-dark); }
@@ -1868,31 +1897,39 @@ class KygoWearableStress extends HTMLElement {
 
       .fact-source-row { margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--gray-200); display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
       .fact-source-lbl { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); font-weight: 700; }
-      .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green-dark); font-weight: 500; font-size: 13px; }
+      .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green-dark); font-weight: 500; font-size: 13px; overflow-wrap: anywhere; min-width: 0; }
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green); }
 
       /* CTA ROW — combined article + app CTA */
-      .cta-row { display: grid; gap: 14px; grid-template-columns: 1fr; max-width: 1100px; margin: 0 auto; }
-      @media (min-width: 880px) { .cta-row { grid-template-columns: 1.1fr 1fr; } }
-      .cta-row .article-card { margin: 0; max-width: none; }
-      .cta-row .app-cta { margin: 0; max-width: none; padding: 24px; text-align: left; border-radius: 18px; }
-      .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); overflow: hidden; }
+      /* APP CTA — centered card on white section, mirrors RHR */
+      .app-cta-section { padding: 48px 0; background: #fff; }
+      @media (min-width: 768px) { .app-cta-section { padding: 64px 0; } }
+      .article-section { padding: 48px 0; background: #fff; }
+      @media (min-width: 768px) { .article-section { padding: 64px 0; } }
+      .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
       .app-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
       .app-cta-content { position: relative; z-index: 1; }
-      .app-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 12px; }
-      .pulse-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulseDot 2s infinite; }
+      .app-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+      .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulseDot 2s infinite; }
       @keyframes pulseDot { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
-      .app-cta h3 { color: #fff; font-size: 19px; line-height: 1.25; margin-bottom: 10px; letter-spacing: -0.01em; }
+      .app-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin: 0 0 12px; line-height: 1.2; letter-spacing: -0.01em; }
       .app-cta .highlight { color: var(--green); }
-      .app-cta p { color: rgba(255,255,255,0.65); font-size: 13.5px; margin-bottom: 16px; line-height: 1.5; }
-      .app-cta-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--green); color: #fff; padding: 9px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13.5px; text-decoration: none; transition: background 0.2s; }
+      .app-cta p { color: var(--gray-400); font-size: 14px; margin: 0 auto 20px; max-width: 480px; line-height: 1.55; }
+      .app-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+      @media (max-width: 480px) { .app-cta-buttons { flex-direction: column; align-items: stretch; } .app-cta-buttons a { justify-content: center; text-align: center; } }
+      .app-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
       .app-cta-btn:hover { background: var(--green-dark); }
-      .app-cta-btn svg { width: 14px; height: 14px; }
-      .app-cta-android { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.10); color: #fff; padding: 9px 16px; border-radius: var(--radius-sm); font-weight: 600; font-size: 13.5px; text-decoration: none; border: 1px solid rgba(255,255,255,0.18); transition: background 0.2s; }
-      .app-cta-android:hover { background: rgba(255,255,255,0.16); }
-      .app-cta-android svg { width: 14px; height: 14px; }
-      .app-cta-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+      .app-cta-btn svg { width: 18px; height: 18px; }
+      .app-cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .app-cta-android:hover { background: var(--green-dark); color: #fff; }
+      .app-cta-android svg { width: 18px; height: 18px; }
+      .app-cta-tags { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: nowrap; }
+      .app-cta-tags-label { color: var(--gray-400); font-size: 11px; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
+      .app-cta-tags-logos { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; overflow: hidden; }
+      .app-cta-tags-logos img { height: 18px; width: auto; opacity: 0.75; flex-shrink: 1; min-width: 0; object-fit: contain; }
+      @media (min-width: 480px) { .app-cta-tags-logos img { height: 20px; } .app-cta-tags-label { font-size: 12px; } }
+      @media (min-width: 768px) { .app-cta-tags-logos { gap: 8px; } .app-cta-tags-logos img { height: 22px; } }
 
       /* TOP PICKS */
       .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
