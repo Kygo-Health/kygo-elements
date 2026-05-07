@@ -50,7 +50,7 @@ class KygoWearableStress extends HTMLElement {
       'description': 'Compare how 7 wearables (Garmin, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, Polar) measure stress, with lifestyle factors broken down by underlying signal.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
-      'url': 'https://www.kygo.app/tools/wearable-stress-research',
+      'url': 'https://www.kygo.app/tools/wearable-stress',
       'datePublished': '2026-05-06',
       'dateModified': '2026-05-06',
       'softwareVersion': '1.0',
@@ -101,7 +101,7 @@ class KygoWearableStress extends HTMLElement {
       'itemListElement': [
         { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
         { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
-        { '@type': 'ListItem', 'position': 3, 'name': 'Wearable Stress Research', 'item': 'https://www.kygo.app/tools/wearable-stress-research' }
+        { '@type': 'ListItem', 'position': 3, 'name': 'Wearable Stress Research', 'item': 'https://www.kygo.app/tools/wearable-stress' }
       ]
     };
 
