@@ -1359,124 +1359,63 @@ class KygoWearableStress extends HTMLElement {
     this._eventsBound = true;
     const shadow = this.shadowRoot;
 
-    // Path-walking click delegation: works whether the listener is attached
-    // to the shadow root OR the host element — composedPath() includes both.
-    const handleClick = (e) => {
-      const path = (typeof e.composedPath === 'function') ? e.composedPath() : [];
-      for (const node of path) {
-        if (!node || node.nodeType !== 1) continue;
-        if (node.matches && node.matches('.source-link, a[href], .src-item, .src-item *')) return;
-        if (node.classList && node.classList.contains('src-group-toggle')) {
-          const group = node.closest('.src-group');
-          if (group) {
-            const isOpen = group.classList.toggle('open');
-            node.setAttribute('aria-expanded', isOpen);
-          }
-          return;
+    shadow.addEventListener('click', (e) => {
+      if (e.target.closest('.source-link, a[href]')) return;
+
+      const srcToggle = e.target.closest('.src-group-toggle');
+      if (srcToggle) {
+        const group = srcToggle.closest('.src-group');
+        if (group) {
+          const isOpen = group.classList.toggle('open');
+          srcToggle.setAttribute('aria-expanded', isOpen);
         }
-        if (node.dataset && node.dataset.deviceRow) {
-          this._toggleDeviceRow(node.dataset.deviceRow);
-          return;
+        return;
+      }
+
+      const dcRow = e.target.closest('[data-device-row]');
+      if (dcRow) {
+        const k = dcRow.dataset.deviceRow;
+        this._compareExpandedKey = this._compareExpandedKey === k ? null : k;
+        const breakdownSec = shadow.querySelector('.breakdown-section');
+        if (breakdownSec) breakdownSec.outerHTML = this._renderFullBreakdown();
+        return;
+      }
+
+      const tile = e.target.closest('[data-cat]');
+      if (tile) {
+        const k = tile.dataset.cat;
+        this._categoryFilter = this._categoryFilter === k ? null : k;
+        this._listExpandedKey = null;
+        const sec = shadow.querySelector('.factors-section');
+        if (sec) sec.outerHTML = this._renderFactorsSection();
+        return;
+      }
+
+      const factHead = e.target.closest('.fact-head');
+      if (factHead) {
+        const card = factHead.closest('[data-fact-key]');
+        if (card) {
+          const k = card.dataset.factKey;
+          this._listExpandedKey = this._listExpandedKey === k ? null : k;
+          const groupsEl = shadow.querySelector('.fact-groups');
+          if (groupsEl) groupsEl.outerHTML = this._renderFactorList();
         }
-        if (node.dataset && node.dataset.cat) {
-          this._toggleMetricFilter(node.dataset.cat);
-          return;
-        }
-        if (node.classList && node.classList.contains('fact-head')) {
-          const card = node.closest('[data-fact-key]');
-          if (card) this._toggleFactorCard(card.dataset.factKey);
-          return;
+        return;
+      }
+    });
+
+    shadow.addEventListener('change', (e) => {
+      const sel = e.target.closest('[data-device-select]');
+      if (sel) {
+        const k = sel.value;
+        if (k && this._device1 !== k) {
+          this._device1 = k;
+          this._categoryFilter = null;
+          this._listExpandedKey = null;
+          const sec = shadow.querySelector('.factors-section');
+          if (sec) sec.outerHTML = this._renderFactorsSection();
         }
       }
-    };
-
-    const handleChange = (e) => {
-      const path = (typeof e.composedPath === 'function') ? e.composedPath() : [e.target];
-      for (const node of path) {
-        if (!node || node.nodeType !== 1) continue;
-        if (node.dataset && node.dataset.deviceSelect !== undefined) {
-          this._pickDevice(node.value);
-          return;
-        }
-      }
-    };
-
-    shadow.addEventListener('click', handleClick);
-    shadow.addEventListener('change', handleChange);
-    // Host-level too: composed:true events (click) bubble out of the shadow
-    // and can be caught here. Belt-and-braces against any host that swallows
-    // shadow-internal events.
-    this.addEventListener('click', handleClick);
-
-    // Direct per-element binding as a third fallback for anything that slips
-    // past both delegations (older Safari, certain iframe sandboxes).
-    this._rebindControls();
-  }
-
-  _toggleDeviceRow(k) {
-    if (!k) return;
-    this._compareExpandedKey = this._compareExpandedKey === k ? null : k;
-    const breakdownSec = this.shadowRoot.querySelector('.breakdown-section');
-    if (breakdownSec) breakdownSec.outerHTML = this._renderFullBreakdown();
-    this._rebindControls();
-  }
-
-  _toggleMetricFilter(k) {
-    if (!k) return;
-    this._categoryFilter = this._categoryFilter === k ? null : k;
-    this._listExpandedKey = null;
-    const sec = this.shadowRoot.querySelector('.factors-section');
-    if (sec) sec.outerHTML = this._renderFactorsSection();
-    this._rebindControls();
-  }
-
-  _toggleFactorCard(k) {
-    if (!k) return;
-    this._listExpandedKey = this._listExpandedKey === k ? null : k;
-    const groupsEl = this.shadowRoot.querySelector('.fact-groups');
-    if (groupsEl) groupsEl.outerHTML = this._renderFactorList();
-    this._rebindControls();
-  }
-
-  _pickDevice(k) {
-    if (!k || this._device1 === k) return;
-    this._device1 = k;
-    this._listExpandedKey = null;
-    this._categoryFilter = null;
-    const sec = this.shadowRoot.querySelector('.factors-section');
-    if (sec) sec.outerHTML = this._renderFactorsSection();
-    this._rebindControls();
-  }
-
-  _rebindControls() {
-    const shadow = this.shadowRoot;
-    // Direct binding on the device <select> as a fallback for environments
-    // where shadow-root delegation of native form events is flaky.
-    const sel = shadow.querySelector('[data-device-select]');
-    if (sel && !sel._kygoBound) {
-      sel._kygoBound = true;
-      sel.addEventListener('change', (e) => this._pickDevice(e.target.value));
-    }
-    // Same for metric tiles + per-device rows: native delegation handles them
-    // already, but a direct click binding catches any case where the bubbled
-    // event is swallowed by a host wrapper.
-    shadow.querySelectorAll('[data-cat]').forEach(btn => {
-      if (btn._kygoBound) return;
-      btn._kygoBound = true;
-      btn.addEventListener('click', () => this._toggleMetricFilter(btn.dataset.cat));
-    });
-    shadow.querySelectorAll('[data-device-row]').forEach(btn => {
-      if (btn._kygoBound) return;
-      btn._kygoBound = true;
-      btn.addEventListener('click', () => this._toggleDeviceRow(btn.dataset.deviceRow));
-    });
-    shadow.querySelectorAll('.fact-head').forEach(btn => {
-      if (btn._kygoBound) return;
-      btn._kygoBound = true;
-      btn.addEventListener('click', () => {
-        const card = btn.closest('[data-fact-key]');
-        if (card) this._toggleFactorCard(card.dataset.factKey);
-      });
     });
   }
 
