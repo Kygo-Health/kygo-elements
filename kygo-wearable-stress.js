@@ -986,7 +986,7 @@ class KygoWearableStress extends HTMLElement {
     return `
       <section class="article-section section-bg-white">
         <div class="container">
-          <a href="https://www.kygo.app/post/wearable-stress-research" class="article-card animate-on-scroll" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app/post/wearable-stress-scores-compared" class="article-card animate-on-scroll" target="_blank" rel="noopener">
             <span class="article-badge">Deep Dive</span>
             <div class="article-body">
               <span class="article-kicker">Read the full article</span>
