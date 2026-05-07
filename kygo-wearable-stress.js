@@ -122,6 +122,7 @@ class KygoWearableStress extends HTMLElement {
     return {
       oura: {
         name: 'Oura Ring',
+        scoreName: 'Cumulative Stress',
         modelLine: 'Daytime + Resilience + Cumulative Stress',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: false, rr: false, sleep: true },
         algorithm: 'Three layers: real-time Daytime Stress (HRV), Resilience, and Cumulative Stress — a 31-day scan of HRV + sleep + activity, developed with the University of Southern Denmark (released Nov 2025).',
@@ -134,6 +135,7 @@ class KygoWearableStress extends HTMLElement {
       },
       garmin: {
         name: 'Garmin',
+        scoreName: 'Body Battery',
         modelLine: 'Body Battery / Stress Score',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
         algorithm: 'Firstbeat Analytics — RMSSD-based, samples every few minutes, pauses during exercise.',
@@ -146,6 +148,7 @@ class KygoWearableStress extends HTMLElement {
       },
       samsung: {
         name: 'Samsung Galaxy Watch',
+        scoreName: 'Stress Score',
         modelLine: 'BioActive Sensor (HRV + EDA)',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: false, spo2: false, rr: false, sleep: false },
         algorithm: 'BioActive Sensor pairs HRV with EDA (skin conductance). GW8 adds enhanced EDA; GW7 Ultra+ uses AI pattern recognition.',
@@ -158,6 +161,7 @@ class KygoWearableStress extends HTMLElement {
       },
       google: {
         name: 'Google Pixel Watch',
+        scoreName: 'Stress Management Score',
         modelLine: 'cEDA + ML across 4 signals',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
         algorithm: 'Continuous EDA (cEDA) + skin temperature + HRV + HR fed into a machine-learning model. First all-day on-wrist EDA (2022).',
@@ -170,6 +174,7 @@ class KygoWearableStress extends HTMLElement {
       },
       fitbit: {
         name: 'Fitbit Sense 2',
+        scoreName: 'Stress Management Score',
         modelLine: 'cEDA + ML Stress Management Score',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
         algorithm: 'Same cEDA + ML pipeline as Pixel Watch. Daily Stress Management Score blends exertion balance, sleep patterns, and responsiveness.',
@@ -182,6 +187,7 @@ class KygoWearableStress extends HTMLElement {
       },
       whoop: {
         name: 'WHOOP',
+        scoreName: 'Stress Monitor',
         modelLine: 'Recovery + Stress Monitor',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: true, rr: true, sleep: false },
         algorithm: 'RMSSD vs. 14-day personal baseline + respiratory rate + skin temp + SpO2. Motion-aware to filter exercise.',
@@ -194,6 +200,7 @@ class KygoWearableStress extends HTMLElement {
       },
       polar: {
         name: 'Polar',
+        scoreName: 'Nightly Recharge',
         modelLine: 'Nightly Recharge / ANS Charge',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: true, sleep: false },
         algorithm: 'Nightly Recharge measures the first ~4 hours of sleep against a 28-day baseline. No daytime stress score.',
@@ -1178,7 +1185,7 @@ class KygoWearableStress extends HTMLElement {
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
-            <h2 class="section-h2">${total} <em>factors</em> that move your <em>${d1.name}</em> score.</h2>
+            <h2 class="section-h2">${total} <em>factors</em> that influence your <em>${d1.name}</em> ${d1.scoreName || 'stress score'}.</h2>
             <p class="section-lede">Pick your wearable to see the metrics it actually reads, then tap a metric to drill in. Each metric splits into what helps your reading and what hurts it, ranked by impact.</p>
           </div>
           ${this._renderDevicePicker()}
@@ -1352,47 +1359,57 @@ class KygoWearableStress extends HTMLElement {
     this._eventsBound = true;
     const shadow = this.shadowRoot;
 
-    shadow.addEventListener('click', (e) => {
-      if (e.target.closest('.source-link, a[href], .src-item')) return;
-
-      const srcToggle = e.target.closest('.src-group-toggle');
-      if (srcToggle) {
-        const group = srcToggle.closest('.src-group');
-        if (group) {
-          const isOpen = group.classList.toggle('open');
-          srcToggle.setAttribute('aria-expanded', isOpen);
+    // Path-walking click delegation: works whether the listener is attached
+    // to the shadow root OR the host element — composedPath() includes both.
+    const handleClick = (e) => {
+      const path = (typeof e.composedPath === 'function') ? e.composedPath() : [];
+      for (const node of path) {
+        if (!node || node.nodeType !== 1) continue;
+        if (node.matches && node.matches('.source-link, a[href], .src-item, .src-item *')) return;
+        if (node.classList && node.classList.contains('src-group-toggle')) {
+          const group = node.closest('.src-group');
+          if (group) {
+            const isOpen = group.classList.toggle('open');
+            node.setAttribute('aria-expanded', isOpen);
+          }
+          return;
         }
-        return;
+        if (node.dataset && node.dataset.deviceRow) {
+          this._toggleDeviceRow(node.dataset.deviceRow);
+          return;
+        }
+        if (node.dataset && node.dataset.cat) {
+          this._toggleMetricFilter(node.dataset.cat);
+          return;
+        }
+        if (node.classList && node.classList.contains('fact-head')) {
+          const card = node.closest('[data-fact-key]');
+          if (card) this._toggleFactorCard(card.dataset.factKey);
+          return;
+        }
       }
+    };
 
-      const dcRow = e.target.closest('[data-device-row]');
-      if (dcRow) {
-        this._toggleDeviceRow(dcRow.dataset.deviceRow);
-        return;
+    const handleChange = (e) => {
+      const path = (typeof e.composedPath === 'function') ? e.composedPath() : [e.target];
+      for (const node of path) {
+        if (!node || node.nodeType !== 1) continue;
+        if (node.dataset && node.dataset.deviceSelect !== undefined) {
+          this._pickDevice(node.value);
+          return;
+        }
       }
+    };
 
-      const tile = e.target.closest('[data-cat]');
-      if (tile) {
-        this._toggleMetricFilter(tile.dataset.cat);
-        return;
-      }
+    shadow.addEventListener('click', handleClick);
+    shadow.addEventListener('change', handleChange);
+    // Host-level too: composed:true events (click) bubble out of the shadow
+    // and can be caught here. Belt-and-braces against any host that swallows
+    // shadow-internal events.
+    this.addEventListener('click', handleClick);
 
-      const factHead = e.target.closest('.fact-head');
-      if (factHead) {
-        const card = factHead.closest('[data-fact-key]');
-        if (card) this._toggleFactorCard(card.dataset.factKey);
-        return;
-      }
-    });
-
-    shadow.addEventListener('change', (e) => {
-      const sel = e.target.closest('[data-device-select]');
-      if (sel) this._pickDevice(sel.value);
-    });
-
-    // Belt-and-braces: also bind directly on form/control elements after each
-    // render. Some browsers (older Safari, Wix iframes) drop bubbled native
-    // form events at shadow boundaries, so delegation alone isn't reliable.
+    // Direct per-element binding as a third fallback for anything that slips
+    // past both delegations (older Safari, certain iframe sandboxes).
     this._rebindControls();
   }
 
