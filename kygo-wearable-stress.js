@@ -1359,6 +1359,17 @@ class KygoWearableStress extends HTMLElement {
     this._eventsBound = true;
     const shadow = this.shadowRoot;
 
+    // Replace an element with freshly-parsed HTML. Works whether the parent
+    // is a regular Element OR a ShadowRoot/DocumentFragment — `outerHTML =`
+    // throws on the latter, so we always go through replaceWith().
+    const replaceWithHTML = (oldEl, html) => {
+      if (!oldEl) return;
+      const tmpl = document.createElement('template');
+      tmpl.innerHTML = html;
+      const newEl = tmpl.content.firstElementChild;
+      if (newEl) oldEl.replaceWith(newEl);
+    };
+
     shadow.addEventListener('click', (e) => {
       if (e.target.closest('.source-link, a[href]')) return;
 
@@ -1376,8 +1387,7 @@ class KygoWearableStress extends HTMLElement {
       if (dcRow) {
         const k = dcRow.dataset.deviceRow;
         this._compareExpandedKey = this._compareExpandedKey === k ? null : k;
-        const breakdownSec = shadow.querySelector('.breakdown-section');
-        if (breakdownSec) breakdownSec.outerHTML = this._renderFullBreakdown();
+        replaceWithHTML(shadow.querySelector('.breakdown-section'), this._renderFullBreakdown());
         return;
       }
 
@@ -1386,8 +1396,7 @@ class KygoWearableStress extends HTMLElement {
         const k = tile.dataset.cat;
         this._categoryFilter = this._categoryFilter === k ? null : k;
         this._listExpandedKey = null;
-        const sec = shadow.querySelector('.factors-section');
-        if (sec) sec.outerHTML = this._renderFactorsSection();
+        replaceWithHTML(shadow.querySelector('.factors-section'), this._renderFactorsSection());
         return;
       }
 
@@ -1397,8 +1406,7 @@ class KygoWearableStress extends HTMLElement {
         if (card) {
           const k = card.dataset.factKey;
           this._listExpandedKey = this._listExpandedKey === k ? null : k;
-          const groupsEl = shadow.querySelector('.fact-groups');
-          if (groupsEl) groupsEl.outerHTML = this._renderFactorList();
+          replaceWithHTML(shadow.querySelector('.fact-groups'), this._renderFactorList());
         }
         return;
       }
@@ -1412,8 +1420,7 @@ class KygoWearableStress extends HTMLElement {
           this._device1 = k;
           this._categoryFilter = null;
           this._listExpandedKey = null;
-          const sec = shadow.querySelector('.factors-section');
-          if (sec) sec.outerHTML = this._renderFactorsSection();
+          replaceWithHTML(shadow.querySelector('.factors-section'), this._renderFactorsSection());
         }
       }
     });
