@@ -23,7 +23,7 @@ class KygoWearableStress extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this._observer = null;
     this._mode = 'single';
-    this._device1 = 'garmin';
+    this._device1 = 'oura';
     this._device2 = 'samsung';
     this._compareExpandedKey = null;
     this._categoryFilter = null;
@@ -120,6 +120,18 @@ class KygoWearableStress extends HTMLElement {
 
   get _devices() {
     return {
+      oura: {
+        name: 'Oura Ring',
+        modelLine: 'Daytime + Resilience + Cumulative Stress',
+        sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: false, rr: false, sleep: true },
+        algorithm: 'Three layers: real-time Daytime Stress (HRV), Resilience, and Cumulative Stress — a 31-day scan of HRV + sleep + activity, developed with the University of Southern Denmark (released Nov 2025).',
+        scale: 'Low / Medium / High + trend',
+        baseline: '31-day personal cumulative scan; sleep architecture feeds heavily into the score.',
+        coverage: 'Daytime Stress is continuous; Cumulative is a daily rollup.',
+        strength: 'Finger-site skin temperature is the cleanest in the consumer market — drives accurate menstrual-cycle and illness detection.',
+        limitation: 'No EDA. Daytime spikes lean on HRV alone; sleep weight means a bad night dominates the score.',
+        color: '#475569'
+      },
       garmin: {
         name: 'Garmin',
         modelLine: 'Body Battery / Stress Score',
@@ -180,18 +192,6 @@ class KygoWearableStress extends HTMLElement {
         limitation: 'No EDA, so daytime sympathetic spikes only show up indirectly via HR and HRV.',
         color: '#0F766E'
       },
-      oura: {
-        name: 'Oura Ring',
-        modelLine: 'Daytime + Resilience + Cumulative Stress',
-        sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: false, rr: false, sleep: true },
-        algorithm: 'Three layers: real-time Daytime Stress (HRV), Resilience, and Cumulative Stress — a 31-day scan of HRV + sleep + activity, developed with the University of Southern Denmark (released Nov 2025).',
-        scale: 'Low / Medium / High + trend',
-        baseline: '31-day personal cumulative scan; sleep architecture feeds heavily into the score.',
-        coverage: 'Daytime Stress is continuous; Cumulative is a daily rollup.',
-        strength: 'Finger-site skin temperature is the cleanest in the consumer market — drives accurate menstrual-cycle and illness detection.',
-        limitation: 'No EDA. Daytime spikes lean on HRV alone; sleep weight means a bad night dominates the score.',
-        color: '#475569'
-      },
       polar: {
         name: 'Polar',
         modelLine: 'Nightly Recharge / ANS Charge',
@@ -221,13 +221,13 @@ class KygoWearableStress extends HTMLElement {
 
   get _deviceMetrics() {
     return {
-      garmin:        ['hrv', 'hr'],
-      samsung:       ['hrv', 'hr', 'eda'],
-      google:        ['hrv', 'hr', 'eda', 'skinTemp'],
-      fitbit:        ['hrv', 'hr', 'eda', 'skinTemp'],
-      whoop:         ['hrv', 'hr', 'rr', 'skinTemp', 'spo2'],
-      oura:          ['hrv', 'hr', 'skinTemp', 'sleep'],
-      polar:         ['hrv', 'hr', 'rr']
+      oura:    ['hrv', 'hr', 'skinTemp', 'sleep'],
+      garmin:  ['hrv', 'hr'],
+      samsung: ['hrv', 'hr', 'eda'],
+      google:  ['hrv', 'hr', 'eda', 'skinTemp'],
+      fitbit:  ['hrv', 'hr', 'eda', 'skinTemp'],
+      whoop:   ['hrv', 'hr', 'rr', 'skinTemp', 'spo2'],
+      polar:   ['hrv', 'hr', 'rr']
     };
   }
 
@@ -1367,48 +1367,99 @@ class KygoWearableStress extends HTMLElement {
 
       const dcRow = e.target.closest('[data-device-row]');
       if (dcRow) {
-        const k = dcRow.dataset.deviceRow;
-        this._compareExpandedKey = this._compareExpandedKey === k ? null : k;
-        const breakdownSec = shadow.querySelector('.breakdown-section');
-        if (breakdownSec) breakdownSec.outerHTML = this._renderFullBreakdown();
+        this._toggleDeviceRow(dcRow.dataset.deviceRow);
         return;
       }
 
       const tile = e.target.closest('[data-cat]');
       if (tile) {
-        const k = tile.dataset.cat;
-        this._categoryFilter = this._categoryFilter === k ? null : k;
-        this._listExpandedKey = null;
-        const sec = shadow.querySelector('.factors-section');
-        if (sec) sec.outerHTML = this._renderFactorsSection();
+        this._toggleMetricFilter(tile.dataset.cat);
         return;
       }
 
       const factHead = e.target.closest('.fact-head');
       if (factHead) {
         const card = factHead.closest('[data-fact-key]');
-        if (card) {
-          const k = card.dataset.factKey;
-          this._listExpandedKey = this._listExpandedKey === k ? null : k;
-          const groupsEl = shadow.querySelector('.fact-groups');
-          if (groupsEl) groupsEl.outerHTML = this._renderFactorList();
-        }
+        if (card) this._toggleFactorCard(card.dataset.factKey);
         return;
       }
-
     });
 
     shadow.addEventListener('change', (e) => {
       const sel = e.target.closest('[data-device-select]');
-      if (sel) {
-        const k = sel.value;
-        if (k && this._device1 !== k) {
-          this._device1 = k;
-          this._listExpandedKey = null;
-          const sec = shadow.querySelector('.factors-section');
-          if (sec) sec.outerHTML = this._renderFactorsSection();
-        }
-      }
+      if (sel) this._pickDevice(sel.value);
+    });
+
+    // Belt-and-braces: also bind directly on form/control elements after each
+    // render. Some browsers (older Safari, Wix iframes) drop bubbled native
+    // form events at shadow boundaries, so delegation alone isn't reliable.
+    this._rebindControls();
+  }
+
+  _toggleDeviceRow(k) {
+    if (!k) return;
+    this._compareExpandedKey = this._compareExpandedKey === k ? null : k;
+    const breakdownSec = this.shadowRoot.querySelector('.breakdown-section');
+    if (breakdownSec) breakdownSec.outerHTML = this._renderFullBreakdown();
+    this._rebindControls();
+  }
+
+  _toggleMetricFilter(k) {
+    if (!k) return;
+    this._categoryFilter = this._categoryFilter === k ? null : k;
+    this._listExpandedKey = null;
+    const sec = this.shadowRoot.querySelector('.factors-section');
+    if (sec) sec.outerHTML = this._renderFactorsSection();
+    this._rebindControls();
+  }
+
+  _toggleFactorCard(k) {
+    if (!k) return;
+    this._listExpandedKey = this._listExpandedKey === k ? null : k;
+    const groupsEl = this.shadowRoot.querySelector('.fact-groups');
+    if (groupsEl) groupsEl.outerHTML = this._renderFactorList();
+    this._rebindControls();
+  }
+
+  _pickDevice(k) {
+    if (!k || this._device1 === k) return;
+    this._device1 = k;
+    this._listExpandedKey = null;
+    this._categoryFilter = null;
+    const sec = this.shadowRoot.querySelector('.factors-section');
+    if (sec) sec.outerHTML = this._renderFactorsSection();
+    this._rebindControls();
+  }
+
+  _rebindControls() {
+    const shadow = this.shadowRoot;
+    // Direct binding on the device <select> as a fallback for environments
+    // where shadow-root delegation of native form events is flaky.
+    const sel = shadow.querySelector('[data-device-select]');
+    if (sel && !sel._kygoBound) {
+      sel._kygoBound = true;
+      sel.addEventListener('change', (e) => this._pickDevice(e.target.value));
+    }
+    // Same for metric tiles + per-device rows: native delegation handles them
+    // already, but a direct click binding catches any case where the bubbled
+    // event is swallowed by a host wrapper.
+    shadow.querySelectorAll('[data-cat]').forEach(btn => {
+      if (btn._kygoBound) return;
+      btn._kygoBound = true;
+      btn.addEventListener('click', () => this._toggleMetricFilter(btn.dataset.cat));
+    });
+    shadow.querySelectorAll('[data-device-row]').forEach(btn => {
+      if (btn._kygoBound) return;
+      btn._kygoBound = true;
+      btn.addEventListener('click', () => this._toggleDeviceRow(btn.dataset.deviceRow));
+    });
+    shadow.querySelectorAll('.fact-head').forEach(btn => {
+      if (btn._kygoBound) return;
+      btn._kygoBound = true;
+      btn.addEventListener('click', () => {
+        const card = btn.closest('[data-fact-key]');
+        if (card) this._toggleFactorCard(card.dataset.factKey);
+      });
     });
   }
 
