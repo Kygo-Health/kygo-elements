@@ -986,7 +986,7 @@ class KygoWearableStress extends HTMLElement {
     return `
       <section class="article-section section-bg-white">
         <div class="container">
-          <a href="https://www.kygo.app/post/wearable-stress-research" class="article-card animate-on-scroll" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app/post/wearable-stress-scores-compared" class="article-card animate-on-scroll" target="_blank" rel="noopener">
             <span class="article-badge">Deep Dive</span>
             <div class="article-body">
               <span class="article-kicker">Read the full article</span>
@@ -1196,32 +1196,71 @@ class KygoWearableStress extends HTMLElement {
 
   _renderSourcesSection() {
     const groups = {
-      'Core HRV & stress research': [
-        { label: 'Frontiers in Physiology 2024 — Factors influencing HRV (PMC11333334)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'PMC9974008 — Chronic stress & HRV in medical professionals', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/' },
-        { label: 'PMC8950456 — HRV & exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/' },
-        { label: 'PMC11284693 — Caffeine, sleep & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
-        { label: 'PMC9549087 — Resting heart rate factors', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
-        { label: 'PMC6306777 — Exercise & RHR meta-analysis (Reimers 2018)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' }
+      'Peer-reviewed research': [
+        { label: 'Frontiers in Physiology 2024 — Factors Influencing HRV (PMC11333334)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
+        { label: 'PMC8950456 — Analysis of HRV and Implication of Different Factors', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/' },
+        { label: 'PMC9549087 — Factors Affecting Resting Heart Rate in Free-Living Healthy Humans', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
+        { label: 'PMC6306777 — Effects of Exercise on Resting Heart Rate (Reimers 2018)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' },
+        { label: 'PMC9974008 — HRV as a Measure of Stress in Medical Professionals', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/' },
+        { label: 'PMC11284693 — Caffeine Intake Strategies and HRV during Recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
+        { label: 'PMC11439429 — HRV Measurement and Influencing Factors', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11439429/' },
+        { label: 'PMC4664114 — Skin Temperature Reveals the Intensity of Acute Stress', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/' },
+        { label: 'PMC9690349 — Diurnal Nonlinear Recurrence Metrics of Skin Temperature', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/' },
+        { label: 'PMC10575214 — The Five Basic Human Senses Evoke EDA', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/' },
+        { label: 'Nature 2026 — Wearable-derived Skin Temperature Dynamics During Sleep', url: 'https://www.nature.com/articles/s41746-026-02633-2' },
+        { label: 'ScienceDirect 2025 — EDA and Skin Temperature in Stress and Depression', url: 'https://www.sciencedirect.com/science/article/pii/S2666915325000071' }
       ],
-      'EDA & skin conductance': [
-        { label: 'BIOPAC — Electrodermal Activity overview', url: 'https://blog.biopac.com/electrodermal-activity-eda/' },
-        { label: 'PMC10575214 — Sensory EDA triggering', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/' },
+      'Manufacturer documentation': [
+        { label: 'Garmin Support — What Is the Stress Level Feature?', url: 'https://support.garmin.com/en-US/?faq=WT9BmhjacO4ZpxbCc0EKn9' },
+        { label: 'Garmin — HRV Stress Test Technology', url: 'https://www.garmin.com/en-US/garmin-technology/running-science/physiological-measurements/hrv-stress-test/' },
+        { label: 'Samsung Developer — Galaxy Watch EDA Sensor', url: 'https://developer.samsung.com/health/blog/en/how-the-galaxy-watchs-eda-sensor-enhances-your-health-monitoring' },
+        { label: 'Google Research — Pixel Watch / Fitbit Sense 2 EDA', url: 'https://research.google/blog/what-does-electrodermal-sensing-reveal-insights-from-the-pixel-watch-fitbit-sense-2/' },
+        { label: 'Google Blog — How We Trained Fitbit Body Response', url: 'https://blog.google/products/fitbit/how-we-trained-fitbits-body-response-feature-to-detect-stress/' },
+        { label: 'WHOOP Support — Get to Know the Stress Monitor', url: 'https://support.whoop.com/s/article/Get-to-Know-the-Stress-Monitor' },
+        { label: 'WHOOP Blog — How Does WHOOP Recovery Work 101', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
+        { label: 'Oura Blog 2025 — Introducing Cumulative Stress', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' },
+        { label: 'Oura Blog — Discover Oura\'s Daytime Stress Feature', url: 'https://ouraring.com/blog/daytime-stress-feature/' },
+        { label: 'Oura — Inside the Ring: Quantifying Chronic Stress', url: 'https://ouraring.com/blog/inside-the-ring-cumulative-stress/' },
+        { label: 'Polar Support — Nightly Recharge Recovery Measurement', url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement' },
+        { label: 'Polar — Vantage V3 Manual: Nightly Recharge', url: 'https://support.polar.com/e_manuals/vantage-v3/polar-vantage-v3-user-manual-english/nightly-recharge.htm' }
+      ],
+      'Clinical & advocacy organizations': [
+        { label: 'American Heart Association — 8 Things That Can Affect Your Heart', url: 'https://www.heart.org/en/news/2019/02/01/8-things-that-can-affect-your-heart-and-what-to-do-about-them' },
+        { label: 'Cleveland Clinic — How to Lower Your Resting Heart Rate', url: 'https://health.clevelandclinic.org/how-to-lower-your-resting-heart-rate' },
+        { label: 'Hackensack Meridian Health — 6 Reasons Your Heart Rate Is High', url: 'https://www.hackensackmeridianhealth.org/en/healthier-you/2022/02/24/6-reasons-your-heart-rate-is-high' },
+        { label: 'The Heart Foundation — Your Heart Rate', url: 'https://theheartfoundation.org/2018/11/02/your-heart-rate/' }
+      ],
+      'EDA & skin conductance references': [
+        { label: 'Wikipedia — Electrodermal Activity', url: 'https://en.wikipedia.org/wiki/Electrodermal_activity' },
         { label: 'EBSCO Research Starters — Electrodermal Activity', url: 'https://www.ebsco.com/research-starters/health-and-medicine/electrodermal-activity-eda' },
-        { label: 'Wikipedia — Electrodermal Activity', url: 'https://en.wikipedia.org/wiki/Electrodermal_activity' }
+        { label: 'BIOPAC Blog — Electrodermal Activity', url: 'https://blog.biopac.com/electrodermal-activity-eda/' },
+        { label: 'Innsightful — Science of Skin Conductance', url: 'https://www.innsightful.com/electrodermal-activity-eda-the-science-of-skin-conductance-and-emotional-arousal/' },
+        { label: 'Noldus Academy — Electrodermal Activity', url: 'https://academy.noldus.com/courses/getting-started-with-noldushub/lessons/noldushub-parameters/topics/skin-conductance-gsr/' },
+        { label: 'University of Birmingham — Guide for Analysing EDA (PDF)', url: 'https://www.birmingham.ac.uk/documents/college-les/psych/saal/guide-electrodermal-activity.pdf' },
+        { label: 'ScienceDirect — Electrodermal Activity (topic page)', url: 'https://www.sciencedirect.com/topics/psychology/electrodermal-activity' }
       ],
-      'Skin temperature & ambient confounds': [
-        { label: 'PMC4664114 — Skin temperature as stress marker', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/' },
-        { label: 'PMC9690349 — Ambient temperature & physiological signals', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/' },
-        { label: 'Ultrahuman — Factors influencing skin temperature', url: 'https://blog.ultrahuman.com/blog/factors-influencing-skin-temperature/' }
+      'Independent reviews & secondary sources': [
+        { label: 'Kygo 2026 — How to Improve HRV: 44 Factors Ranked by Evidence', url: 'https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence' },
+        { label: 'Marathon Handbook 2026 — How to Increase HRV: 11 Strategies', url: 'https://marathonhandbook.com/how-to-increase-hrv/' },
+        { label: 'Ultrahuman — Factors Influencing Skin Temperature', url: 'https://blog.ultrahuman.com/blog/factors-influencing-skin-temperature/' },
+        { label: 'Wareable 2026 — Best Stress Trackers: Long-Term Tests', url: 'https://www.wareable.com/health-and-wellbeing/stress-monitoring-wearables-explained-7969' },
+        { label: 'Android Authority — How Does Samsung Galaxy Watch Measure Stress?', url: 'https://www.androidauthority.com/how-does-galaxy-watch-measure-stress-3234828/' },
+        { label: 'Cybernews 2026 — WHOOP 5.0 Review', url: 'https://cybernews.com/health-tech/whoop-review/' }
       ],
-      'Device documentation': [
-        { label: 'WHOOP — Recovery 101', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
-        { label: 'Polar — Nightly Recharge measurement', url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement' },
-        { label: 'Oura Blog — Cumulative Stress (2025)', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' },
-        { label: 'Oura Blog — Daytime Stress feature', url: 'https://ouraring.com/blog/daytime-stress-feature/' },
-        { label: 'Marathon Handbook 2026 — HRV strategies', url: 'https://marathonhandbook.com/how-to-increase-hrv/' },
-        { label: 'Kygo.app — How to improve HRV: 44 factors ranked', url: 'https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence' }
+      'Wearable accuracy & methodology': [
+        { label: 'Frontiers in Computer Science 2024 — Stress Detection Using Wearables (Systematic Review)', url: 'https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2024.1478851/full' },
+        { label: 'JMIR 2024 — Wearable AI in Detecting Stress: Systematic Review and Meta-Analysis', url: 'https://www.jmir.org/2024/1/e52622' },
+        { label: 'Springer 2025 — Stress in Action Wearables Database', url: 'https://link.springer.com/article/10.3758/s13428-025-02685-4' },
+        { label: 'Nature Communications Medicine 2025 — Wearables for Anxiety Assessment', url: 'https://www.nature.com/articles/s43856-025-01234-6' },
+        { label: 'PMC11230864 — Real-Time Stress Prediction Models Using Wearables', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11230864/' },
+        { label: 'ScienceDirect 2025 — From Lab to Real-Life: Three-Stage Validation', url: 'https://www.sciencedirect.com/science/article/pii/S2215016125000536' },
+        { label: 'ScienceDirect 2025 — Meta-Analysis of 171 TSST Studies (n=8,452)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0306453025002896' },
+        { label: 'ScienceDirect — The Trier Social Stress Test: Principles and Practice', url: 'https://www.sciencedirect.com/science/article/pii/S2352289516300224' },
+        { label: 'PMC7739033 — Systematic Review of TSST Methodology', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7739033/' },
+        { label: 'arXiv 2025 — Extending Stress Detection Reproducibility to Consumer Wearables', url: 'https://arxiv.org/html/2505.05694v1' },
+        { label: 'ScienceDirect — Machine Learning for Predicting Stress Episodes', url: 'https://www.sciencedirect.com/science/article/pii/S0010482525015197' },
+        { label: 'MDPI Algorithms 2025 — Smartwatches in Stress Management & Well-Being', url: 'https://www.mdpi.com/1999-4893/18/7/419' },
+        { label: 'JMIR mHealth 2026 — Wearables for Stress Measurement in College Students', url: 'https://mhealth.jmir.org/2026/1/e64144' }
       ]
     };
     const total = Object.values(groups).reduce((s, g) => s + g.length, 0);
@@ -1229,7 +1268,7 @@ class KygoWearableStress extends HTMLElement {
       <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title">Sources</h2>
-          <p class="section-sub">All claims sourced from peer-reviewed research and official device documentation.</p>
+          <p class="section-sub">All claims sourced from peer-reviewed research and official device documentation. Every factor in the breakdown above cites at least one of these.</p>
           <div class="src-accordion">
             <div class="src-count-badge">${total} sources cited</div>
             ${Object.entries(groups).map(([cat, items]) => `
@@ -1247,6 +1286,7 @@ class KygoWearableStress extends HTMLElement {
         </div>
       </section>`;
   }
+
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
