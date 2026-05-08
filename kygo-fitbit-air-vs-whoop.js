@@ -366,6 +366,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated May 2026.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -398,17 +399,20 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   _renderTable() {
     const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
     const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
+    const fitbitAff = 'https://amzn.to/4wogJ3y';
+    const whoopAff = 'https://amzn.to/431iUfG';
     const rows = this._specs[this._activeTab];
     const winnerBadge = `<span class="winner-badge">★ best</span>`;
     const isNo = (v) => typeof v === 'string' && /class="n"/.test(v);
+    const amazonLink = (url) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
       <table class="tbl">
         <thead>
           <tr>
             <th>Spec</th>
-            <th><div class="head-prod"><img src="${fitbitImg}" alt="" /> Fitbit Air</div></th>
-            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> WHOOP 5.0</div></th>
-            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> WHOOP MG</div></th>
+            <th><div class="head-prod"><img src="${fitbitImg}" alt="" /> <span>Fitbit Air</span></div>${amazonLink(fitbitAff)}</th>
+            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> <span>WHOOP 5.0</span></div>${amazonLink(whoopAff)}</th>
+            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> <span>WHOOP MG</span></div>${amazonLink(whoopAff)}</th>
           </tr>
         </thead>
         <tbody>
@@ -820,6 +824,10 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .tbl thead th { text-align: left; padding: 16px 18px; font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.4px; background: var(--bg-raised); }
       .tbl thead th .head-prod { display: flex; align-items: center; gap: 10px; color: var(--fg-1); text-transform: none; letter-spacing: 0; font-size: 14px; }
       .tbl thead th .head-prod img { width: 22px; height: 22px; border-radius: 5px; background: #fff; padding: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); object-fit: contain; }
+      .tbl thead th .amazon-link { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-family: var(--font-body); font-size: 11px; font-weight: 600; color: var(--kygo-green-dark); text-transform: none; letter-spacing: 0; text-decoration: none; transition: color .15s; }
+      .tbl thead th .amazon-link:hover { color: var(--kygo-green); }
+      .tbl thead th .amazon-link .ico { width: 12px; height: 12px; transition: transform .15s; }
+      .tbl thead th .amazon-link:hover .ico { transform: translateX(2px); }
       .tbl tbody td { padding: 14px 18px; border-top: 1px solid var(--border-subtle); vertical-align: top; font-size: 14px; line-height: 1.5; }
       .tbl tbody tr:hover { background: var(--bg-raised); }
       .tbl .spec-name { font-weight: 600; color: var(--fg-1); width: 28%; }
@@ -938,6 +946,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .footer-links a:hover { color: var(--kygo-green-dark); }
       .footer-disclaimer { font-size: 12px; color: var(--fg-3); line-height: 1.6; max-width: 620px; margin: 0 auto 14px; }
       .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
+      .footer-affiliate { font-style: italic; }
     `;
   }
 }
