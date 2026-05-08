@@ -173,7 +173,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         <div class="hero-light-inner">
           <div class="hero-grid">
             <div class="hero-copy">
-              <div class="hero-pill"><span class="dot"></span> 35 SPECS · 5 CATEGORIES · UPDATED MAY 8, 2026</div>
+              <div class="hero-pill"><span class="dot"></span> UPDATED MAY 8, 2026</div>
               <h1>Fitbit Air vs WHOOP — <span class="hl">which screenless tracker is worth it?</span></h1>
               <p class="hero-lede">Same screenless silhouette. Two completely different bets. Compare every sensor, calculate your real 3-year cost, and find the tracker that <strong>actually fits your body</strong>.</p>
               <div class="hero-devices">
@@ -203,22 +203,11 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             </div>
           </div>
           <div class="hero-stats">
-            <div class="hero-stat"><div class="num"><span>52×</span></div><div class="lbl">More HR samples / sec on WHOOP</div></div>
-            <div class="hero-stat"><div class="num">5.2<span>g</span></div><div class="lbl">Fitbit Air pod — half of any WHOOP</div></div>
-            <div class="hero-stat"><div class="num"><span>$977</span></div><div class="lbl">3-yr cost gap, Air vs WHOOP MG</div></div>
-            <div class="hero-stat"><div class="num">1<span>device</span></div><div class="lbl">FDA-cleared ECG: WHOOP MG only</div></div>
+            <div class="hero-stat"><div class="num">52<span class="unit">×</span></div><div class="lbl">More HR samples / sec on WHOOP</div></div>
+            <div class="hero-stat"><div class="num">5.2<span class="unit">g</span></div><div class="lbl">Fitbit Air pod — half of any WHOOP</div></div>
+            <div class="hero-stat"><div class="num">$977</div><div class="lbl">3-yr cost gap, Air vs WHOOP MG</div></div>
+            <div class="hero-stat"><div class="num">1<span class="unit">device</span></div><div class="lbl">FDA-cleared ECG: WHOOP MG only</div></div>
           </div>
-        </div>
-      </section>
-
-      <section class="section bg-white">
-        <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">Quick winner</div>
-            <h2>The <span class="hl">right pick</span> depends on what you optimize for.</h2>
-            <p class="lede">Four common buyer profiles, ranked head-to-head.</p>
-          </div>
-          <div class="bestfor-grid">${this._renderBestFor()}</div>
         </div>
       </section>
 
@@ -271,6 +260,29 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
       <section class="section bg-light">
         <div class="section-inner">
+          <div class="kygo-cta-card animate-on-scroll">
+            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+            <h3>Get the most accurate metric <span>from each wearable.</span></h3>
+            <p>Kygo Health connects to both Fitbit and WHOOP, then cross-checks every reading against what you eat, train, and sleep — so you see which metrics are actually predictive for <em>your</em> body.</p>
+            <div class="cta-btn-row">
+              <a class="btn btn-primary btn-lg" href="https://kygo.app" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg" href="https://kygo.app" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
+            </div>
+            <div class="cta-works">
+              <span>Works with</span>
+              <div class="cta-badges">
+                <img src="${ouraImg}" alt="Oura" title="Oura" loading="lazy" />
+                <img src="${appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
+                <img src="${fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
+                <img src="${whoopImg}" alt="WHOOP" title="WHOOP" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">3-year cost calculator</div>
             <h2>What you'll <span class="hl">actually spend.</span></h2>
@@ -280,7 +292,32 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Quick winner</div>
+            <h2>The <span class="hl">right pick</span> depends on what you optimize for.</h2>
+            <p class="lede">Four common buyer profiles, ranked head-to-head.</p>
+          </div>
+          <div class="bestfor-grid">${this._renderBestFor()}</div>
+        </div>
+      </section>
+
       <section class="section bg-white">
+        <div class="section-inner">
+          <a class="blog-cta animate-on-scroll" href="https://kygo.app/blog/how-to-stay-asleep-31-factors" target="_blank" rel="noopener">
+            <span class="blog-cta-tag">Deep Dive</span>
+            <div class="blog-cta-body">
+              <div class="blog-cta-kicker">Read the full article</div>
+              <div class="blog-cta-title">How to Stay Asleep: 31 Factors Ranked by Evidence <span class="yr">(2026)</span></div>
+              <div class="blog-cta-sub">Every mechanism, dosage, and source in one long-form read.</div>
+            </div>
+            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Bottom line</div>
@@ -307,29 +344,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
-        <div class="section-inner">
-          <div class="kygo-cta-card animate-on-scroll">
-            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-            <h3>Get the most accurate metric <span>from each wearable.</span></h3>
-            <p>Kygo Health connects to both Fitbit and WHOOP, then cross-checks every reading against what you eat, train, and sleep — so you see which metrics are actually predictive for <em>your</em> body.</p>
-            <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg" href="https://kygo.app" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg" href="https://kygo.app" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
-            </div>
-            <div class="cta-works">
-              <span>Works with</span>
-              <div class="cta-badges">
-                <img src="${ouraImg}" alt="Oura" title="Oura" loading="lazy" />
-                <img src="${appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
-                <img src="${fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
-                <img src="${whoopImg}" alt="WHOOP" title="WHOOP" loading="lazy" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
@@ -342,23 +356,21 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://kygo.app" class="footer-brand">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
+            <span>Kygo Health</span>
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
             <a href="https://kygo.app">Home</a>
             <a href="https://kygo.app/how-it-works">How It Works</a>
             <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/tools">Tools</a>
             <a href="https://kygo.app/contact">Contact</a>
             <a href="https://kygo.app/privacy">Privacy</a>
             <a href="https://kygo.app/terms">Terms</a>
           </div>
-          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making health decisions based on wearable data.</p>
-          <p class="footer-copyright">Sources: Google Store, WHOOP Press, DC Rainmaker, Wareable, Android Central, the5krunner, TechCrunch. Last updated May 8, 2026.</p>
-          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
+          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
+          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated May 2026.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -714,11 +726,11 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .btn-lg .ico { width: 18px; height: 18px; }
 
       /* Hero */
-      .hero-light { background: var(--kygo-light); border-bottom: 1px solid var(--border-subtle); }
+      .hero-light { background: #fff; border-bottom: 1px solid var(--border-subtle); }
       .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
       .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
       @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
-      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--kygo-green-dark); padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: normal; }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--kygo-green-dark); padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
       .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kygo-green); flex: none; }
       .hero-light h1 { font-family: var(--font-display); font-weight: 700; color: var(--fg-1); font-size: clamp(30px, 5.5vw, 60px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
       .hero-light h1 .hl { color: var(--kygo-green); }
@@ -727,16 +739,20 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .hero-vis { background: #fff; border: 1px solid var(--border-subtle); border-radius: 20px; padding: 16px; aspect-ratio: 5 / 3; }
       .hero-vis svg { width: 100%; height: 100%; display: block; }
       @media (max-width: 880px) { .hero-vis { display: none; } }
-      .hero-devices { display: flex; align-items: center; gap: 14px; margin-top: 22px; flex-wrap: wrap; }
-      .hero-dev { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 8px 14px; }
-      .hero-dev img { width: 32px; height: 32px; border-radius: 6px; object-fit: contain; background: var(--kygo-light); padding: 2px; }
-      .hero-dev strong { font-family: var(--font-display); font-weight: 600; font-size: 14px; display: block; }
+      .hero-devices { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 22px; align-items: center; justify-items: stretch; }
+      .hero-dev { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; }
+      .hero-dev img { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; background: var(--kygo-light); padding: 4px; flex: none; }
+      .hero-dev strong { font-family: var(--font-display); font-weight: 600; font-size: 15px; display: block; }
       .hero-dev span { color: var(--fg-3); font-size: 12px; }
-      .hero-vs { font-family: var(--font-display); font-weight: 700; color: var(--kygo-green); font-size: 18px; }
-      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
+      .hero-vs { font-family: var(--font-display); font-weight: 700; color: var(--kygo-green); font-size: 14px; text-align: center; padding: 2px 0; letter-spacing: 0.06em; text-transform: uppercase; }
+      @media (min-width: 560px) {
+        .hero-devices { grid-template-columns: 1fr auto 1fr; gap: 14px; }
+        .hero-vs { font-size: 16px; padding: 0 4px; }
+      }
+      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
-      .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 4vw, 42px); line-height: 1; color: var(--fg-1); letter-spacing: -0.02em; }
-      .hero-stat .num span { color: var(--kygo-green); font-size: 0.6em; font-weight: 500; margin-left: 2px; }
+      .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 4.2vw, 44px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; display: inline-flex; align-items: baseline; gap: 2px; }
+      .hero-stat .num .unit { color: var(--kygo-green); font-size: 0.55em; font-weight: 600; }
       .hero-stat .lbl { margin-top: 10px; color: var(--fg-3); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; line-height: 1.4; }
 
       /* Sections */
@@ -778,12 +794,15 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .viz-toggle { display: inline-flex; gap: 4px; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 999px; }
       .viz-toggle button { font-family: var(--font-body); font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 0; background: transparent; color: rgba(255,255,255,0.7); cursor: pointer; }
       .viz-toggle button.active { background: var(--kygo-green); color: #fff; }
-      .viz-row { display: grid; grid-template-columns: 90px 1fr 70px; gap: 12px; align-items: center; padding: 14px 0; }
-      @media (min-width: 720px) { .viz-row { grid-template-columns: 140px 1fr 100px; gap: 16px; } }
+      .viz-row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: 'name rate' 'track track'; gap: 8px 12px; align-items: center; padding: 14px 0; }
+      .viz-row .name { grid-area: name; }
+      .viz-row .rate { grid-area: rate; }
+      .viz-row .track { grid-area: track; }
+      @media (min-width: 720px) { .viz-row { grid-template-columns: 140px 1fr 100px; grid-template-areas: 'name track rate'; gap: 16px; } }
       .viz-row + .viz-row { border-top: 1px dashed rgba(255,255,255,0.08); }
-      .viz-row .name { color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 13px; }
+      .viz-row .name { color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 14px; }
       .viz-row .name .sub { color: rgba(255,255,255,0.5); font-weight: 500; font-size: 11px; }
-      .viz-row .track { position: relative; height: 44px; background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); }
+      .viz-row .track { position: relative; height: 44px; background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); width: 100%; }
       .viz-row .pulse { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 10px var(--kygo-green); }
       .viz-row .pulse.air { background: #FBBF24; box-shadow: 0 0 8px rgba(251,191,36,0.7); }
       .viz-row .rate { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: #fff; text-align: right; }
@@ -895,18 +914,35 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .faq details[open] summary::after { content: '−'; }
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
-      /* Footer */
-      .tool-footer { padding: 48px 20px 32px; background: var(--kygo-dark); color: rgba(255,255,255,0.55); }
+      /* Blog CTA */
+      .blog-cta { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(34,197,94,0.02) 100%); border: 1.5px solid var(--kygo-green-light); border-radius: 18px; padding: 22px; transition: all .25s var(--ease-out); color: var(--fg-1); }
+      .blog-cta:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+      .blog-cta-tag { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 999px; background: #fff; border: 1.5px solid var(--kygo-green-light); color: var(--kygo-green-dark); font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; white-space: nowrap; }
+      .blog-cta-body { min-width: 0; }
+      .blog-cta-kicker { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--kygo-green-dark); margin-bottom: 4px; }
+      .blog-cta-title { font-family: var(--font-display); font-size: clamp(15px, 2vw, 18px); font-weight: 600; color: var(--fg-1); line-height: 1.3; }
+      .blog-cta-title .yr { color: var(--fg-3); font-weight: 500; }
+      .blog-cta-sub { font-size: 13px; color: var(--fg-2); margin-top: 4px; line-height: 1.5; }
+      .blog-cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 4px 12px rgba(34,197,94,0.30); }
+      .blog-cta-arrow .ico { width: 20px; height: 20px; }
+      @media (max-width: 600px) {
+        .blog-cta { grid-template-columns: 1fr auto; grid-template-areas: 'tag arrow' 'body body'; padding: 18px; gap: 14px; }
+        .blog-cta-tag { grid-area: tag; justify-self: start; }
+        .blog-cta-arrow { grid-area: arrow; width: 40px; height: 40px; }
+        .blog-cta-body { grid-area: body; }
+      }
+
+      /* Footer (light disclaimer style) */
+      .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
       .tool-footer .container { max-width: 720px; margin: 0 auto; text-align: center; }
-      .footer-brand { display: inline-flex; align-items: center; gap: 10px; color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 16px; }
+      .footer-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--fg-1); font-family: var(--font-display); font-weight: 700; font-size: 17px; }
       .footer-logo { width: 28px; height: 28px; }
-      .footer-tagline { color: rgba(255,255,255,0.65); font-size: 14px; margin: 8px 0 18px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-bottom: 22px; font-size: 13px; }
-      .footer-links a { color: rgba(255,255,255,0.65); }
-      .footer-links a:hover { color: #fff; }
-      .footer-disclaimer { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
-      .footer-copyright { font-size: 11px; color: rgba(255,255,255,0.45); margin: 4px 0; }
-      .footer-affiliate { font-style: italic; }
+      .footer-tagline { color: var(--fg-3); font-size: 14px; margin: 10px 0 22px; }
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 28px; font-size: 14px; }
+      .footer-links a { color: var(--fg-2); }
+      .footer-links a:hover { color: var(--kygo-green-dark); }
+      .footer-disclaimer { font-size: 12px; color: var(--fg-3); line-height: 1.6; max-width: 620px; margin: 0 auto 14px; }
+      .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
     `;
   }
 }
