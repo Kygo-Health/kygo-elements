@@ -139,10 +139,12 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png';
-    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
-    const ouraImg = 'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png';
-    const appleImg = 'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png';
+    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
+    const whoopImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
+    const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
+    const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
+    const garminImg = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
+    const healthConnectImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
@@ -159,15 +161,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </header>
 
-      <div class="toolbar">
-        <div class="toolbar-inner">
-          <div class="crumb">
-            <a href="https://kygo.app/tools">Tools</a>
-            <span class="sep">›</span>
-            <strong>Fitbit Air vs WHOOP</strong>
-          </div>
-        </div>
-      </div>
 
       <section class="hero-light">
         <div class="hero-light-inner">
@@ -265,16 +258,18 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <h3>Get the most accurate metric <span>from each wearable.</span></h3>
             <p>Kygo Health connects to both Fitbit and WHOOP, then cross-checks every reading against what you eat, train, and sleep — so you see which metrics are actually predictive for <em>your</em> body.</p>
             <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg" href="https://kygo.app" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg" href="https://kygo.app" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
+              <a class="btn btn-primary btn-lg" href="https://kygo.app/iOS" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg" href="https://kygo.app/android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
             </div>
             <div class="cta-works">
               <span>Works with</span>
               <div class="cta-badges">
-                <img src="${ouraImg}" alt="Oura" title="Oura" loading="lazy" />
+                <img src="${ouraImg}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
                 <img src="${appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
                 <img src="${fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
+                <img src="${garminImg}" alt="Garmin" title="Garmin" loading="lazy" />
                 <img src="${whoopImg}" alt="WHOOP" title="WHOOP" loading="lazy" />
+                <img src="${healthConnectImg}" alt="Health Connect" title="Health Connect" loading="lazy" />
               </div>
             </div>
           </div>
@@ -305,12 +300,12 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://kygo.app/blog/how-to-stay-asleep-31-factors" target="_blank" rel="noopener">
+          <a class="blog-cta animate-on-scroll" href="https://kygo.app/fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Deep Dive</span>
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Read the full article</div>
-              <div class="blog-cta-title">How to Stay Asleep: 31 Factors Ranked by Evidence <span class="yr">(2026)</span></div>
-              <div class="blog-cta-sub">Every mechanism, dosage, and source in one long-form read.</div>
+              <div class="blog-cta-title">Fitbit Air vs WHOOP: Which Screenless Tracker Wins? <span class="yr">(2026)</span></div>
+              <div class="blog-cta-sub">$100 one-time vs $199/yr subscription. We compared every spec, sensor, and cost between Fitbit Air, WHOOP 5.0/MG, and other Fitbits — here's who each one is for.</div>
             </div>
             <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
           </a>
@@ -401,8 +396,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   }
 
   _renderTable() {
-    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png';
-    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
+    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
+    const whoopImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
     const rows = this._specs[this._activeTab];
     const winnerBadge = `<span class="winner-badge">★ best</span>`;
     const isNo = (v) => typeof v === 'string' && /class="n"/.test(v);
@@ -440,8 +435,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   }
 
   _renderCalc() {
-    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png';
-    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
+    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
+    const whoopImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
     const tier = this._whoopTier, plan = this._airPlan, years = this._years;
     const whoopAnnual = tier === 'one' ? 199 : tier === 'peak' ? 239 : 359;
     const whoopTotal = whoopAnnual * years;
