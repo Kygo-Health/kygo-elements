@@ -300,7 +300,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://kygo.app/fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it" target="_blank" rel="noopener">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Deep Dive</span>
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Read the full article</div>
