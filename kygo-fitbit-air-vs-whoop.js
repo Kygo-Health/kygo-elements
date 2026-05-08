@@ -140,11 +140,11 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
-    const whoopImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
+    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
     const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
     const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
     const garminImg = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
-    const healthConnectImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
+    const healthConnectImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
@@ -397,7 +397,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
   _renderTable() {
     const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
-    const whoopImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
+    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
     const rows = this._specs[this._activeTab];
     const winnerBadge = `<span class="winner-badge">★ best</span>`;
     const isNo = (v) => typeof v === 'string' && /class="n"/.test(v);
@@ -436,7 +436,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
   _renderCalc() {
     const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
-    const whoopImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
+    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
     const tier = this._whoopTier, plan = this._airPlan, years = this._years;
     const whoopAnnual = tier === 'one' ? 199 : tier === 'peak' ? 239 : 359;
     const whoopTotal = whoopAnnual * years;
