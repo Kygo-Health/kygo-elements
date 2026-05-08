@@ -170,9 +170,23 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
               <h1>Fitbit Air vs WHOOP — <span class="hl">which screenless tracker is worth it?</span></h1>
               <p class="hero-lede">Same screenless silhouette. Two completely different bets. Compare every sensor, calculate your real 3-year cost, and find the tracker that <strong>actually fits your body</strong>.</p>
               <div class="hero-devices">
-                <div class="hero-dev"><img src="${fitbitImg}" alt="Fitbit Air" /><div><strong>Fitbit Air</strong><span>$99.99 · May 2026</span></div></div>
+                <a class="hero-dev" href="https://amzn.to/4wogJ3y" target="_blank" rel="noopener sponsored">
+                  <img src="${fitbitImg}" alt="Fitbit Air" />
+                  <div>
+                    <strong>Fitbit Air</strong>
+                    <span>$99.99 · May 2026</span>
+                    <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
+                  </div>
+                </a>
                 <div class="hero-vs">vs</div>
-                <div class="hero-dev"><img src="${whoopImg}" alt="WHOOP 5.0 / MG" /><div><strong>WHOOP 5.0 / MG</strong><span>$199–359/yr · Apr 2025</span></div></div>
+                <a class="hero-dev" href="https://amzn.to/431iUfG" target="_blank" rel="noopener sponsored">
+                  <img src="${whoopImg}" alt="WHOOP 5.0 / MG" />
+                  <div>
+                    <strong>WHOOP 5.0 / MG</strong>
+                    <span>$199–359/yr · Apr 2025</span>
+                    <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
+                  </div>
+                </a>
               </div>
             </div>
             <div class="hero-vis" aria-hidden="true">
@@ -739,10 +753,14 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .hero-vis svg { width: 100%; height: 100%; display: block; }
       @media (max-width: 880px) { .hero-vis { display: none; } }
       .hero-devices { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 22px; align-items: center; justify-items: stretch; }
-      .hero-dev { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; }
+      .hero-dev { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; color: var(--fg-1); transition: all .2s var(--ease-out); }
+      .hero-dev:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
       .hero-dev img { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; background: var(--kygo-light); padding: 4px; flex: none; }
       .hero-dev strong { font-family: var(--font-display); font-weight: 600; font-size: 15px; display: block; }
-      .hero-dev span { color: var(--fg-3); font-size: 12px; }
+      .hero-dev span { color: var(--fg-3); font-size: 12px; display: block; }
+      .hero-dev .hero-dev-aff { display: inline-flex; align-items: center; gap: 3px; color: var(--kygo-green-dark); font-weight: 600; font-size: 11px; margin-top: 2px; }
+      .hero-dev .hero-dev-aff .ico { width: 11px; height: 11px; transition: transform .15s; }
+      .hero-dev:hover .hero-dev-aff .ico { transform: translateX(2px); }
       .hero-vs { font-family: var(--font-display); font-weight: 700; color: var(--kygo-green); font-size: 14px; text-align: center; padding: 2px 0; letter-spacing: 0.06em; text-transform: uppercase; }
       @media (min-width: 560px) {
         .hero-devices { grid-template-columns: 1fr auto 1fr; gap: 14px; }
