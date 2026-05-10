@@ -446,11 +446,27 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'hr-sleep', name: 'Adequate sleep', direction: 'positive', impact: 'med',
-          plainEnglish: 'Bad sleep raises your morning heart rate by 5–10 bpm — sometimes more after a really short night. Your wearable\'s morning RHR is essentially a sleep-quality readout that shows up before you\'ve even had coffee.',
-          magnitude: 'Poor sleep elevates next-day RHR 5–10 bpm. Effect compounds across consecutive short nights.',
+          plainEnglish: 'Bad sleep raises your morning heart rate — sometimes more after a really short night. Your wearable\'s morning RHR is essentially a sleep-quality readout that shows up before you\'ve even had coffee.',
+          magnitude: 'Elevated next-day RHR after poor sleep. Effect compounds across consecutive short nights.',
           mechanism: 'Sleep deprivation shifts autonomic balance toward sympathetic dominance, raising baseline heart rate even at rest. Cortisol stays elevated, which keeps HR elevated with it.',
-          whatToDo: 'Protect 7–9 hours. Watch your morning RHR — if it\'s 5+ bpm above baseline, your sleep was poor regardless of what your sleep score says.',
+          whatToDo: 'Protect 7–9 hours. Watch your morning RHR — if it\'s a few bpm above baseline, your sleep was poor regardless of what your sleep score says.',
           source: SRC.rhrFactors
+        },
+        {
+          key: 'hr-weight', name: 'Healthy body weight', direction: 'positive', impact: 'med',
+          plainEnglish: 'Carrying excess body weight elevates resting heart rate at every age — and weight loss reliably brings it back down. The mechanism runs through both reduced sympathetic overactivity and lower inflammatory load on the cardiovascular system.',
+          magnitude: 'RHR is significantly higher in obese vs non-obese adults. Weight loss reduces RHR; effect proportional to amount lost.',
+          mechanism: 'Adipose tissue raises sympathetic tone and circulating inflammatory markers, which together push the resting heart to work harder. Sustainable loss reverses both.',
+          whatToDo: 'Protein-forward eating, daily walks, gradual caloric deficit (≤1% body weight per week). Crash diets temporarily raise HR — slow and steady wins.',
+          source: SRC.obesityRhr
+        },
+        {
+          key: 'hr-hydration', name: 'Hydration', direction: 'positive', impact: 'low',
+          plainEnglish: 'Being chronically under-hydrated keeps blood volume low, which makes the heart work harder to maintain output — and bumps RHR up. The fix is small but immediate: rehydrate and your morning reading drops back to baseline.',
+          magnitude: 'Hypohydration raises resting HR by ~5.8 bpm; rehydration restores stroke volume and lowers HR back to baseline.',
+          mechanism: 'Reduced plasma volume increases sympathetic drive to maintain blood pressure. Hydration restores stroke volume so each beat moves more blood, requiring fewer beats.',
+          whatToDo: 'Drink to thirst plus a baseline — rough rule, half your body weight in ounces per day. Add electrolytes (sodium, potassium) if you sweat heavily or train in heat.',
+          source: SRC.hydrationCardio
         },
         {
           key: 'hr-sedentary', name: 'Sedentary lifestyle', direction: 'negative', impact: 'high',
@@ -1052,7 +1068,7 @@ class KygoWearableStress extends HTMLElement {
     return [
       { label: 'Most universal mover', stat: '7 / 7', answer: 'Sleep deprivation', icon: 'moon', note: 'Hits every device because all 7 read HRV and sleep deprivation suppresses parasympathetic tone immediately.', cls: '' },
       { label: 'Only-on-EDA signal',   stat: '3 devices', answer: 'Cognitive load', icon: 'brain', note: 'Sustained mental effort raises tonic skin conductance — invisible to HRV-only watches. Samsung, Pixel Watch, and Fitbit only.', cls: '' },
-      { label: 'WHOOP / Polar specialty', stat: 'Resp. rate', answer: 'Overtraining', icon: 'dumbbell', note: 'Elevated overnight respiratory rate is the textbook overtraining flag. Only WHOOP and Polar surface it.', cls: '' },
+      { label: 'WHOOP / Polar specialty', stat: 'Resp. rate', answer: 'Overtraining', icon: 'dumbbell', note: 'Overtraining is best detected via elevated nocturnal HR + reduced HRV; overnight RR moves alongside them. WHOOP and Polar are the consumer wearables that surface RR overnight.', cls: '' },
       { label: 'Oura specialty', stat: '0.3–0.7°C', answer: 'Cycle skin temp', icon: 'thermometer', note: 'Finger-site skin temp catches the luteal-phase rise so cleanly that Oura uses it for period prediction.', cls: '' },
       { label: 'Hot-day false positive', stat: 'cEDA', answer: 'Ambient heat', icon: 'sun', note: 'Continuous EDA reads thermoregulatory sweating as stress. Pixel/Fitbit users: cross-check against HRV before reacting.', cls: 'warn' },
       { label: 'The biggest myth', stat: 'Don\'t', answer: 'Compare scores across brands', icon: 'ghost', note: 'A "55" on Garmin doesn\'t mean a "55" on Samsung. Each algorithm uses a different sensor mix and a personal baseline.', cls: 'myth' }
