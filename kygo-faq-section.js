@@ -682,6 +682,21 @@ class KygoFaqSection extends HTMLElement {
             </div>
             <div class="faq-list">
               <div class="faq-item">
+                <div class="faq-question"><span>How do I log food?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Tap the big green <strong>+</strong> in the bottom bar to open <strong>Food Chat</strong>. From there you have six ways to log:</p>
+                  <ul>
+                    <li><strong>Type</strong> what you ate in the input at the bottom ("two eggs and toast with butter")</li>
+                    <li><strong>Voice</strong> — tap the mic and just say it out loud</li>
+                    <li><strong>Camera</strong> — snap a photo of your meal or a nutrition label</li>
+                    <li><strong>Gallery</strong> — pick an existing photo from your phone</li>
+                    <li><strong>Barcode</strong> — scan a package</li>
+                    <li><strong>Saved</strong> — pick from your saved meals, favorites, or recently logged foods</li>
+                  </ul>
+                  <p>Pick whichever is easiest for what you're eating.</p>
+                </div>
+              </div>
+              <div class="faq-item">
                 <div class="faq-question"><span>How does photo logging work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
                   <p><strong>Point, shoot, done.</strong> Take a photo of your meal and we identify every ingredient—including garnishes and toppings like cracked pepper or a drizzle of olive oil.</p>
@@ -709,10 +724,10 @@ class KygoFaqSection extends HTMLElement {
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>Can I scan a barcode or nutrition label?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Can I scan a barcode?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes — and the same camera button does both.</strong> Point it at the barcode on a package and we pick it up automatically. If the barcode isn't scanning well, aim at the <strong>nutrition label</strong> instead — we'll read the panel directly.</p>
-                  <div class="answer-highlight">That's two accurate ways to log packaged food without typing a character.</div>
+                  <p><strong>Yes</strong> — tap the barcode icon in Food Chat, point at the barcode on the package, and we'll pick it up. We check <strong>Open Food Facts</strong> and the <strong>USDA Branded</strong> database for the best match, so packaged foods come back with accurate calories, macros, and ingredients.</p>
+                  <p>If the barcode won't scan, the camera icon can read the nutrition label panel directly — same result, just from the printed numbers.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -732,7 +747,74 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>How do I copy a meal to another day?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Head to the <strong>Food tab</strong>, find the meal, tap <strong>Copy Meals</strong>, pick the items you want, choose the target date and meal slot, and confirm. Fastest way to log a repeated meal without retyping it.</p>
+                  <p>Three quick paths:</p>
+                  <ul>
+                    <li><strong>Empty meal slot?</strong> Tap <strong>Copy from yesterday</strong> on the empty section — we'll pull forward whatever you ate in that slot the most recent day you logged it.</li>
+                    <li><strong>Single food</strong> — swipe left on the row and tap <strong>Copy</strong>. Pick the target date(s) and meal slot.</li>
+                    <li><strong>Several foods at once</strong> — long-press a row to enter selection mode, tap to add more rows (or tap a meal header to select the whole meal), then tap <strong>Copy</strong> in the bulk action bar.</li>
+                  </ul>
+                  <p>All three give you a date and meal-slot picker, so you can copy one item to a single day or a full meal across an entire week in one move.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>How do I edit or delete a food entry?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <ul>
+                    <li><strong>Edit:</strong> tap any food row to open it — change portions, units, meal slot, or nutrition details</li>
+                    <li><strong>Swipe left</strong> on a row to reveal <strong>Copy</strong>, <strong>Move</strong>, and <strong>Delete</strong> for that single item</li>
+                    <li><strong>Long-press</strong> a row to enter selection mode for bulk <strong>Copy / Move / Delete</strong> across many foods at once</li>
+                  </ul>
+                  <p>Every action shows an <strong>Undo</strong> toast for a few seconds — accidental swipes are easy to recover.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What's Quick Add and how do I use it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p><strong>Quick Add is the fastest way to repeat-log foods you eat often — no typing, no AI.</strong> Tap the <strong>+</strong> next to any meal section on the Today or Food tab to open a bottom sheet with three tabs:</p>
+                  <ul>
+                    <li><strong>Meals</strong> — your saved meal templates</li>
+                    <li><strong>Recent</strong> — your most-logged foods, ranked by frequency</li>
+                    <li><strong>Favorites</strong> — anything you've starred</li>
+                  </ul>
+                  <p>Tap a row to add it in one tap, or use the +/− stepper to bump the quantity in 0.5-serving increments before logging. Best for foods you eat the same way every time.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>How do I select multiple foods at once?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p><strong>Long-press any food row</strong> on the Today or Food tab. The card switches to selection mode — checkmarks appear on every row, and a bulk action bar slides in at the bottom. Tap additional rows to add them to the selection, or tap the header of a whole meal (e.g. "Lunch") to select every food in that meal at once.</p>
+                  <p>To exit selection mode, tap the × on the action bar or switch days.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What can I do with selected foods?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>The bulk action bar gives you three options:</p>
+                  <ul>
+                    <li><strong>Copy</strong> — duplicate the selected foods to one or more dates and any meal slot (breakfast / lunch / dinner / snack). Perfect for "I ate the same thing for lunch all week."</li>
+                    <li><strong>Move</strong> — change which meal or which day the selected foods belong to, without duplicating them</li>
+                    <li><strong>Delete</strong> — remove the selected foods at once</li>
+                  </ul>
+                  <p>All three actions show a confirmation and an <strong>Undo</strong> toast for a few seconds afterward, so accidental bulk actions are easy to recover.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>Can I copy, move, or delete just one food without selection mode?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Yes — <strong>swipe left</strong> on any food row to reveal three actions for that single item:</p>
+                  <ul>
+                    <li><strong>Copy</strong> — opens the same date/meal picker as bulk copy, just for that one row</li>
+                    <li><strong>Move</strong> — re-assign it to a different meal slot or day</li>
+                    <li><strong>Delete</strong> — removes it immediately (with an Undo toast)</li>
+                  </ul>
+                  <p>Use swipe for one-off fixes; use long-press + bulk actions when you're cleaning up or duplicating several foods at once.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What's the food-logging streak at the top of the Today screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p><strong>Every day you log at least one meal counts as a streak day.</strong> Your current streak shows in the greeting at the top of the Today screen.</p>
+                  <p>We give a small grace window for the current day so logging late at night still counts, and <strong>Smart meal reminders</strong> (Settings → Profile → Notifications) will nudge you when you have a streak going and haven't logged yet — the reminder copy switches to "🔥 N-day streak — log [meal] to keep it going."</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -825,6 +907,30 @@ class KygoFaqSection extends HTMLElement {
                 </div>
               </div>
               <div class="faq-item">
+                <div class="faq-question"><span>What are the Featured Question and Daily Pulse cards?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Two cards live at the top of the Correlation tab:</p>
+                  <ul>
+                    <li><strong>Featured Question</strong> — your daily pattern highlight, framed as a question ("Does your late coffee affect your sleep score?"). Tap it to see the full breakdown and suggested action.</li>
+                    <li><strong>Daily Pulse</strong> — a quick read on where your key metrics are sitting today versus your baseline, so you can spot a rough night or a good recovery at a glance.</li>
+                  </ul>
+                  <p>Both refresh each day as new data comes in.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What does the "Top contributors" breakdown show on a factor card?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>When you tap into a food or nutrient on a metric detail screen, you'll see the <strong>top contributing foods</strong> as a ranked list. Each row shows:</p>
+                  <ul>
+                    <li>The <strong>food</strong> that contributed</li>
+                    <li><strong>How many times</strong> you logged it in the sample window</li>
+                    <li><strong>Per-serving amount</strong> of that nutrient</li>
+                    <li><strong>Share %</strong> — how much of the total impact came from that food</li>
+                  </ul>
+                  <p>Use it to spot which foods are actually driving a pattern — for example, is your magnesium coming mostly from almonds, or from a daily spinach habit?</p>
+                </div>
+              </div>
+              <div class="faq-item">
                 <div class="faq-question"><span>Do correlations change over time?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
                   <p><strong>Yes.</strong> We recalculate as new data comes in, so patterns shift as your routine changes — new training block, a stressful work stretch, seasonal shifts, travel. What mattered three months ago may not be the dominant factor now.</p>
@@ -845,15 +951,33 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>Which wearables do you support?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>We integrate with:</p>
+                  <p>Six integrations:</p>
                   <ul>
-                    <li><strong>Oura Ring</strong> — Sleep, readiness, activity, HRV, temperature</li>
-                    <li><strong>Apple Health</strong> — Steps, heart rate, sleep, workouts, weight, and any data your other apps write to Apple Health (iOS only)</li>
-                    <li><strong>Fitbit</strong> — Sleep, heart rate, activity, workouts</li>
-                    <li><strong>Garmin</strong> — Activity, sleep, heart rate, body metrics</li>
-                    <li><strong>WHOOP</strong> — Strain, recovery, HRV, resting heart rate, sleep</li>
+                    <li><strong>Oura Ring</strong> — sleep, readiness, activity, HRV, temperature</li>
+                    <li><strong>Apple Health (iOS)</strong> — steps, heart rate, sleep, workouts, weight, and anything else apps write to it</li>
+                    <li><strong>Health Connect (Android)</strong> — the same idea for Android: pulls steps, sleep, resting heart rate, HRV, active calories, basal metabolic rate, hydration, and nutrition from Samsung Health, Google Fit, Fitbit, Oura, WHOOP Android, and any other app that writes to it</li>
+                    <li><strong>Fitbit</strong> — sleep, heart rate, activity, workouts</li>
+                    <li><strong>Garmin</strong> — activity, sleep, heart rate, body metrics</li>
+                    <li><strong>WHOOP</strong> — strain, recovery, HRV, resting heart rate, sleep</li>
                   </ul>
-                  <p>You can connect one device or multiple—we combine the data to give you the most complete picture.</p>
+                  <p>You can connect one device or multiple — we combine the data to give you the most complete picture.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>My Android wearable writes to Health Connect but some fields aren't showing (HRV, body temperature, etc.)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Two things can cause this:</p>
+                  <h4>1. The source app isn't writing it</h4>
+                  <p>A lot of wearable apps are selective:</p>
+                  <ul>
+                    <li><strong>WHOOP Android</strong> currently does not write HRV or body temperature to Health Connect even though it tracks them — limitation on WHOOP's side.</li>
+                    <li><strong>Samsung Health</strong> writes most metrics but may not include every field depending on your watch model.</li>
+                    <li><strong>Fitbit Android</strong> writes sleep, heart rate, and steps, but not HRV in many cases.</li>
+                  </ul>
+                  <p>If a metric is missing, open the <strong>Health Connect app → Data</strong> → pick the metric. If WHOOP / Samsung / Fitbit isn't listed as a data source there, they're not writing it — and Kygo can't read what isn't there.</p>
+                  <h4>2. Kygo no longer requests certain Health Connect permissions</h4>
+                  <p>To meet Google Play's minimum-scope policy, we removed raw heart rate, SpO2, and VO2 Max from our Health Connect requests in <strong>1.2.5</strong> — we weren't surfacing them in the app yet. Resting heart rate and HRV are still requested.</p>
+                  <div class="answer-highlight"><strong>Workaround:</strong> if you have a direct Oura / Fitbit / Garmin / WHOOP OAuth connection in Kygo, that pulls everything the device tracks (we go straight to the cloud, not through Health Connect). Use Health Connect for devices where you don't have a direct integration.</div>
                 </div>
               </div>
               <div class="faq-item">
@@ -1007,6 +1131,31 @@ class KygoFaqSection extends HTMLElement {
                 </div>
               </div>
               <div class="faq-item">
+                <div class="faq-question"><span>How do I manage notifications?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Go to <strong>Settings → Profile → Notifications</strong>. You'll see these toggles:</p>
+                  <ul>
+                    <li><strong>Meal reminders</strong> — fixed daily reminder + per-meal reminders (breakfast, lunch, dinner, snack) with custom times</li>
+                    <li><strong>Smart meal reminders</strong> — server-side reminders that skip the ping if you already logged that meal. When you have a 3+ day streak and haven't logged today, the reminder copy switches to "🔥 N-day streak — log [meal] to keep it going."</li>
+                    <li><strong>New insight alerts</strong> — a push when one of your health metrics has enough data to unlock its first correlations</li>
+                    <li><strong>Wearable reconnect alerts</strong> — heads-up if an Oura, Fitbit, Garmin, or WHOOP connection stops syncing and needs to be re-linked</li>
+                  </ul>
+                  <p>Each toggle is independent. Your phone's OS also has a master notification switch if you want to mute everything at that level.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>Will I get a push when a new insight unlocks?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Yes, if <strong>New insight alerts</strong> is on (default). When one of your metrics — sleep, HRV, resting HR, readiness, etc. — reaches enough data to show its first correlations, you'll get a tap-to-open push that drops you straight into that metric's detail screen.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What if my wearable disconnects without me noticing?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>If <strong>Wearable reconnect alerts</strong> is on (default), we'll send a push when Oura, Fitbit, Garmin, or WHOOP stops syncing — usually because the OAuth token expired or you revoked access on the device's side. Tap the notification to go straight to <strong>Device Connections</strong> and reconnect in one step.</p>
+                </div>
+              </div>
+              <div class="faq-item">
                 <div class="faq-question"><span>How do I delete my account?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
                   <p>Go to <strong>Settings → Privacy &amp; Data → Delete Account</strong>. We'll ask you to confirm, since this is permanent.</p>
@@ -1039,14 +1188,36 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>What's on the Today screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Your daily dashboard — everything you need in one glance:</p>
+                  <p>Your daily dashboard. From top to bottom:</p>
                   <ul>
-                    <li><strong>Recommended actions</strong> — personalized suggestions based on your profile and patterns</li>
-                    <li><strong>Daily nutrition</strong> — calories and macros against your targets</li>
-                    <li><strong>Today's meals</strong> — a quick glance at what you've logged so far</li>
-                    <li><strong>Focus cards</strong> — questions and insights to explore</li>
+                    <li><strong>Greeting + streak</strong> — a hello at the top with your current food-logging streak (consecutive days you've logged at least one meal)</li>
+                    <li><strong>Daily nutrition</strong> — a calorie ring plus protein / carbs / fat against your targets</li>
+                    <li><strong>Today's meals</strong> — breakfast / lunch / dinner / snacks, with quick edit, copy, and bulk-select</li>
+                    <li><strong>Hydration</strong> — water intake with quick-add buttons</li>
+                    <li><strong>Experiments progress</strong> — your pinned dietary experiments and how they're tracking</li>
                     <li><strong>Weight tracking</strong> — log today's weight and see your trend</li>
+                    <li><strong>Wearables</strong> — connection status for your linked devices, with a tap-to-reconnect if anything stopped syncing</li>
                   </ul>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What's on the Correlation screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Everything about how your food and health metrics connect. You'll see:</p>
+                  <ul>
+                    <li><strong>Featured Question + Daily Pulse</strong> at the top — today's pattern highlight and a quick read on where your metrics sit versus baseline</li>
+                    <li>A grid of your <strong>health metrics</strong> (sleep, HRV, resting HR, readiness, etc.) showing how many food factors are helping or hurting each</li>
+                    <li><strong>Experiments</strong> — your pinned dietary tests and their progress</li>
+                    <li>Tap any metric to open the <strong>detail screen</strong> — factor cards with scatter plots, lag effects (same-day / next-day), and a ranked <strong>Top contributors</strong> list of the foods driving the pattern</li>
+                  </ul>
+                  <div class="answer-highlight">Correlations and Experiments are <strong>Pro features</strong>. Free users can see the tab and the unlock progress, but tapping into a metric will take you to the upgrade screen.</div>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>How does hydration tracking work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Use the <strong>quick-add buttons</strong> on the Hydration card (Today screen) to log water as you drink it. Tap a preset (8 oz, 16 oz, etc.) or enter a custom amount — the card updates against your daily water target immediately.</p>
+                  <p><strong>We only count water you log directly on the hydration card.</strong> Beverages logged through Food Chat (coffee, juice, soda, etc.) count toward your calories and macros but don't add to your hydration total. This keeps your water number meaningful instead of inflating it from every drink you log.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -1093,12 +1264,6 @@ class KygoFaqSection extends HTMLElement {
                     <li><strong>Light</strong> — always light</li>
                     <li><strong>Dark</strong> — always dark</li>
                   </ul>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I manage notifications?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Go to <strong>Settings → Profile → Notifications</strong>. You can toggle which kinds of notifications you want — meal reminders, insight alerts, weekly summaries — or silence them entirely.</p>
                 </div>
               </div>
               <div class="faq-item">
