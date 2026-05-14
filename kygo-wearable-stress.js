@@ -36,7 +36,7 @@ class KygoWearableStress extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, and Polar measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only. Explore lifestyle factors that move each underlying signal — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms and evidence-based actions to lower your stress score. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024.');
+    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Samsung Galaxy Watch (GW4–GW8), Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring (Gen 3 / Ring 4), Apple Watch, Polar, COROS, and Amazfit measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only — but every wearable is detecting autonomic arousal, not stress directly. Explore lifestyle factors that move each underlying signal — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms, hardware-generation context (Garmin Elevate Gen 4 vs Gen 5, Samsung BioActive Sensor, Apple HealthKit SDNN, WHOOP lnRMSSD), validation data versus Polar H10 chest strap, and evidence-based actions. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024, the Trier Social Stress Test meta-analysis, and the npj Digital Medicine 2025 living meta-analysis of Apple Watch accuracy.');
   }
 
   _injectStructuredData() {
@@ -47,7 +47,7 @@ class KygoWearableStress extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'Wearable Stress Research',
       'alternateName': 'Kygo Wearable Stress Comparison Tool',
-      'description': 'Compare how 7 wearables (Garmin, Samsung Galaxy Watch, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring, Polar) measure stress, with lifestyle factors broken down by underlying signal.',
+      'description': 'Compare how 10 wearables (Garmin, Samsung Galaxy Watch GW4–GW8, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring Gen 3 / Ring 4, Apple Watch, Polar, COROS, Amazfit) measure stress, with hardware-generation context, lifestyle factors broken down by underlying signal, and validation data versus the Polar H10 chest-strap reference. Includes the methodological framing that all wearables detect autonomic arousal rather than stress directly.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/wearable-stress',
@@ -59,8 +59,8 @@ class KygoWearableStress extends HTMLElement {
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'featureList': '7 wearable comparison (Garmin, Samsung, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura, Polar), per-signal factor breakdown (HRV, HR, EDA, Skin Temp, Resp Rate, SpO2, Sleep), what-helps/what-hurts grouping, peer-reviewed citations.',
-      'keywords': 'wearable stress measurement, how does Garmin measure stress, Samsung BioActive sensor stress, WHOOP stress monitor, Oura cumulative stress, Pixel Watch cEDA, Fitbit Sense 2 stress, Polar Nightly Recharge, HRV stress, EDA skin conductance stress, alcohol HRV, sleep deprivation stress, caffeine HRV, overtraining respiratory rate'
+      'featureList': '10 wearable comparison (Garmin, Samsung, Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura, Apple Watch, Polar, COROS, Amazfit), per-signal factor breakdown (HRV, HR, EDA, Skin Temp, Resp Rate, SpO2, Sleep), hardware-generation lineage, device-specific validation data, what-helps/what-hurts grouping, peer-reviewed citations.',
+      'keywords': 'wearable stress measurement, how does Garmin measure stress, Garmin Elevate Gen 4 vs Gen 5, Garmin HRV Stress Test, Samsung BioActive sensor stress, Samsung GW8 Vascular Load Antioxidant Index AGEs, WHOOP stress monitor lnRMSSD, Oura cumulative stress resilience restorative time, Pixel Watch cEDA, Fitbit Sense 2 stress, Polar Nightly Recharge H10, Apple Watch HRV SDNN HealthKit, Athlytic Welltory, COROS Daily Stress, Amazfit Stress Index, HRV vs RMSSD vs SDNN, EDA skin conductance, alcohol HRV, sleep deprivation stress, caffeine HRV, overtraining respiratory rate, Trier Social Stress Test, wearable stress accuracy meta-analysis'
     };
 
     const faq = {
@@ -70,12 +70,22 @@ class KygoWearableStress extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'Can I compare a stress score across different wearable brands?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. Every brand uses a proprietary algorithm and a personal baseline. A "55" on Garmin does not correspond to a "55" on Samsung. Each device has to be interpreted against its own historical baseline.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. Every brand uses a proprietary algorithm and a personal baseline. A "55" on Garmin does not correspond to a "55" on Samsung. WHOOP\'s Stress Monitor is 0–3, not 0–100. Oura uses Low / Medium / High. Polar uses ANS Charge from −10 to +10. Apple Watch has no native stress score at all. Each device has to be interpreted against its own historical baseline.' }
         },
         {
           '@type': 'Question',
           'name': 'Which wearables use EDA (skin conductance) for stress?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Samsung Galaxy Watch (BioActive Sensor), Google Pixel Watch, and Fitbit Sense 2 (continuous EDA, first introduced in 2022) all measure EDA at the wrist. Garmin, WHOOP, Oura, and Polar do not.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Samsung Galaxy Watch (BioActive Sensor since GW4), Google Pixel Watch 2 and 3, and Fitbit Sense 2 all measure continuous EDA (cEDA) at the wrist. Fitbit Sense Gen 1 had EDA but only as a manual 2-minute spot-check. Pixel Watch 1 had no EDA. Garmin, WHOOP, Oura, Apple Watch, Polar, COROS, and Amazfit do not measure EDA.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Does Apple Watch have a native stress score?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. As of watchOS 11 / 12 / 26 there is no native Apple Watch stress feature. Apple HealthKit exposes HRV as SDNN (Standard Deviation of NN intervals — not RMSSD), sampled approximately every 4 hours by default, every 2 hours with Irregular Rhythm Notifications enabled, or every 15 minutes with AFib History enabled. Third-party apps like Athlytic and Welltory read this data and compute their own stress and recovery scores on top.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'How accurate is Apple Watch HRV compared to a chest strap?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'A 2024 peer-reviewed validation (Sensors, n=39 healthy adults, 316 measurements) found Apple Watch Series 9 / Ultra 2 underestimates SDNN by a mean of 8.31 ms versus a Polar H10 chest strap with Kubios — failing the ±10 ms equivalence margin. Resting heart rate is far more accurate: MAPE 5.91%, MAE 3.73 bpm. The widely-cited "1–4% error" is the low end of a 1.16%–6.46% MAPE range per the 2025 npj Digital Medicine living meta-analysis.' }
         },
         {
           '@type': 'Question',
@@ -90,7 +100,27 @@ class KygoWearableStress extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'Are multi-signal wearables more accurate at measuring stress?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Generally yes. Lab studies show ~82% accuracy for multi-signal approaches (HRV + EDA + skin temperature) versus ~77% for HRV alone. But accuracy still depends heavily on algorithm quality, baseline calibration, and the specific stressor being detected.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Generally yes. The 2024 JMIR systematic review and meta-analysis found pooled accuracy of ~82% for multi-signal approaches (HRV + EDA + skin temperature) versus ~77% for HRV alone. But the larger caveat is that wearables detect autonomic arousal, not stress per se — EDA cannot distinguish positive from negative arousal, and accuracy degrades significantly from lab paradigms (Trier Social Stress Test) to real-world daily use.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'Do wearables actually measure stress?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'They measure autonomic arousal — sympathetic nervous system activation — and infer stress on top. EDA fires the same way whether you are anxious, excited, or scared. HRV drops the same way from a stressful email, a cold drink, exercise, or caffeine. The closest reference standards are the Trier Social Stress Test (cortisol response), 12-lead ECG-derived HRV per Task Force 1996, and validated questionnaires like PSS-10. Wearable scores are inferences layered on arousal detection.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'What does Garmin\'s HRV Stress Test do that the regular stress score doesn\'t?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'The HRV Stress Test is a 3-minute on-demand reading taken while standing still, with a Garmin chest HRM (e.g., HRM-Pro). It uses ECG-derived R-R intervals rather than wrist PPG, which is closer to lab quality. The all-day Stress Score samples HRV from the Elevate optical wrist sensor every few minutes. The chest-strap test is available on Fenix and high-end Forerunner models.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'What chronic-stress metrics does the Samsung Galaxy Watch 8 add?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'GW8 / GW8 Classic (launched July 2025) added two new chronic-stress markers on top of the existing acute Stress Score and the GW7-introduced AGEs Index and Energy Score: Vascular Load (overnight PPG waveform analysis of blood volume and vascular stiffness, requires ≥3 nights of sleep in 14 days) and Antioxidant Index (multi-wavelength absorption spectroscopy of skin carotenoids — thumb on the rear sensor for ~5 seconds, scored 0–100). Antioxidant Index is GW8-series exclusive; it is not on GW Ultra or GW7.' }
+        },
+        {
+          '@type': 'Question',
+          'name': 'What are the five contributors to Oura\'s Cumulative Stress score?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Per Oura\'s official documentation: sleep continuity (sleep fragmentation overnight), heart stress-response (changes in HR and HRV), sleep micromotions (involuntary movements during sleep), temperature regulation (shifts in overnight temperature patterns), and activity impact (daily activity, energy use, and elevated RHR adding strain). Cumulative Stress requires at least 21 days of data in the past 31. It was developed with the University of Southern Denmark and released in November 2025.' }
         }
       ]
     };
@@ -125,38 +155,41 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Cumulative Stress',
         modelLine: 'Daytime + Resilience + Cumulative Stress',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: false, rr: false, sleep: true },
-        algorithm: 'Three layers: real-time Daytime Stress (HRV), Resilience, and Cumulative Stress — a 31-day scan of HRV + sleep + activity, developed with the University of Southern Denmark (released Nov 2025).',
-        scale: 'Low / Medium / High + trend',
-        baseline: '31-day personal cumulative scan; sleep architecture feeds heavily into the score.',
-        coverage: 'Daytime Stress is continuous; Cumulative is a daily rollup.',
-        strength: 'Finger-site skin temperature is the cleanest in the consumer market — drives accurate menstrual-cycle and illness detection.',
-        limitation: 'No EDA. Daytime spikes lean on HRV alone; sleep weight means a bad night dominates the score.',
+        algorithm: 'Three stacked layers. Daytime Stress reads HRV in real time when you\'re still. Resilience scores recovery capacity across 14 days (5 tiers: Exceptional → Strong → Solid → Adequate → Limited). Cumulative Stress, released Nov 2025 with the University of Southern Denmark, scans the last 31 days across five named contributors: sleep continuity, heart stress-response (HR + HRV), sleep micromotions, overnight temperature regulation, and daily activity impact. Restorative Time captures daytime windows where HR drops and HRV rises — active waking recovery, separate from sleep.',
+        scale: 'Daytime Stress: Low / Medium / High + trend  ·  Resilience: 5 tiers  ·  Cumulative Stress: levelled output over the 31-day window.',
+        baseline: 'Resilience needs a 14-day average with ≥5 complete days (10 for new members). Cumulative Stress needs ≥21 days of data in the last 31. Sleep architecture is the heaviest single input.',
+        coverage: 'Daytime Stress is continuous when still; Cumulative is a daily rollup; Resilience updates daily once thresholds are met.',
+        hardware: 'Gen 3 ring or Ring 4 — finger PPG, NTC skin-temp sensor, motion (sleep micromotion).',
+        strength: 'Finger-site skin temperature is the cleanest signal in the consumer market — Oura uses it deliberately for period prediction and early illness flags. Cumulative + Resilience is the only chronic-stress layer in any consumer wearable.',
+        limitation: 'No EDA. Daytime spikes lean on HRV alone; sleep dominates the score, so a single bad night drags Cumulative more than it probably should.',
         color: '#475569'
       },
       garmin: {
         name: 'Garmin',
-        scoreName: 'Body Battery',
-        modelLine: 'Body Battery / Stress Score',
+        scoreName: 'Stress Score',
+        modelLine: 'Stress Score · Body Battery · optional HRV Stress Test',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
-        algorithm: 'Firstbeat Analytics — RMSSD-based, samples every few minutes, pauses during exercise.',
-        scale: '0–100  ·  rest 0–25 / low 26–50 / med 51–75 / high 76–100',
-        baseline: 'Personal rolling baseline. Each reading is compared to your own history.',
-        coverage: 'All-day, pauses during workouts.',
-        strength: 'Long-running Firstbeat partnership; dependable, well-validated HRV pipeline.',
-        limitation: 'HRV-only. Can\'t separate exercise arousal or excitement from psychological stress.',
+        algorithm: 'Firstbeat Analytics — RMSSD-derived, sampled every few minutes from the Elevate optical sensor. Pauses during exercise. Body Battery is a derived 0–100 "energy tank" aggregator that combines the same stress signal with sleep, activity, and recovery — it is not a separate measurement. High-end models (Fenix, top Forerunner) also support an optional 3-minute HRV Stress Test taken while standing still with a Garmin chest HRM (HRM-Pro): uses ECG-derived R-R intervals — closer to lab quality than wrist PPG — and is tracked over time as a training-readiness signal.',
+        scale: 'Stress: 0–100 (rest 0–25 / low 26–50 / med 51–75 / high 76–100)  ·  Body Battery: 0–100 energy aggregator',
+        baseline: 'Multi-week personal rolling baseline; each reading is compared to your own history.',
+        coverage: 'All-day, pauses during workouts. HRV Stress Test is a manual on-demand reading.',
+        hardware: 'Elevate Gen 4 (2022 launch — Fenix 7 base/Solar, Forerunner 955, Venu 2 Plus, Venu 3) added red + IR LEDs alongside green for deeper penetration. Elevate Gen 5 (2023+ — Fenix 7 Pro, Epix Pro Gen 2, Fenix 8, Forerunner 965, Venu 4) expanded ECG support and improved signal fidelity.',
+        strength: 'Long-running Firstbeat partnership with a dependable, well-validated HRV pipeline. Only major brand offering an optional ECG-strap HRV test, which is genuinely lab-grade.',
+        limitation: 'HRV-only at the wrist. Can\'t separate exercise arousal or excitement from psychological stress. Common error: people confuse Elevate Gen 4 (FR 955) with Gen 5 (FR 965) — they are different sensors, not the same.',
         color: '#1E293B'
       },
       samsung: {
         name: 'Samsung Galaxy Watch',
         scoreName: 'Stress Score',
-        modelLine: 'BioActive Sensor (HRV + EDA)',
+        modelLine: 'BioActive Sensor (PPG + ECG + BIA) + EDA',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: false, spo2: false, rr: false, sleep: false },
-        algorithm: 'BioActive Sensor pairs HRV with EDA (skin conductance). GW8 adds enhanced EDA; GW7 Ultra+ uses AI pattern recognition.',
-        scale: '0–100',
-        baseline: 'Proprietary AI baseline; adapts to your patterns over time.',
-        coverage: 'Continuous real-time, all-day.',
-        strength: 'EDA picks up sympathetic arousal directly — a signal HRV-only watches miss entirely.',
-        limitation: 'EDA can\'t tell positive arousal (excitement) from negative arousal (anxiety). It detects activation, not valence.',
+        algorithm: 'The BioActive Sensor (introduced GW4) is a 3-in-1 chip — Optical Heart Rate / PPG + Electrical Heart / ECG + Bioelectrical Impedance Analysis / BIA. The acute Stress Score pairs HRV with EDA (skin conductance) and, on GW7 Ultra+, runs an AI pattern-recognition layer. Newer models layer chronic-stress markers on top of the acute score: AGEs Index (Advanced Glycation End-products, a metabolic-aging marker) and Energy Score on GW7 / GW Ultra / GW8; Vascular Load (overnight PPG waveform analysis of blood volume and vascular stiffness) and Antioxidant Index (multi-wavelength absorption spectroscopy of skin carotenoids — thumb on rear sensor for ~5 sec) on the GW8 series only.',
+        scale: 'Acute Stress: 0–100  ·  AGEs Index, Vascular Load, Antioxidant Index: separate 0–100 chronic-stress / metabolic markers',
+        baseline: 'Proprietary AI baseline that adapts over time. Vascular Load needs ≥3 nights of sleep within a 14-day window before it surfaces.',
+        coverage: 'Acute Stress is continuous all day; chronic markers update on their own cadence (overnight or on-demand for Antioxidant).',
+        hardware: 'GW4 / GW5 / GW6: core BioActive (PPG + ECG + BIA). GW7 / GW Ultra (2024): enhanced BioActive + AGEs + Energy Score. GW8 / GW8 Classic (July 2025): adds Vascular Load and Antioxidant Index.',
+        strength: 'Dual HRV + EDA on the same chip catches sympathetic arousal HRV-only watches miss. Only consumer wearable measuring skin carotenoids and vascular stiffness.',
+        limitation: 'EDA can\'t tell positive arousal (excitement) from negative arousal (anxiety) — detects activation, not valence. Common errors: Antioxidant Index is GW8 series only (not GW Ultra, not GW7); the new chronic-stress markers have limited independent validation.',
         color: '#22C55E'
       },
       google: {
@@ -164,12 +197,13 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Stress Management Score',
         modelLine: 'cEDA + ML across 4 signals',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
-        algorithm: 'Continuous EDA (cEDA) + skin temperature + HRV + HR fed into a machine-learning model. First all-day on-wrist EDA (2022).',
-        scale: 'Body Response alerts + 1–100 daily Stress Management Score (12 metrics, 3 categories: exertion balance, sleep, responsiveness).',
+        algorithm: 'Continuous EDA (cEDA) + skin temperature + HRV + HR feed into a machine-learning model trained on lab-induced social stress tests (mock interviews, surprise math tests — Trier-style protocols). First consumer all-day on-wrist EDA, introduced in 2022. The model distinguishes exercise from stress automatically; Body Response alerts surface acute sympathetic spikes in real time.',
+        scale: 'Body Response alerts + 1–100 daily Stress Management Score across 12 sub-metrics in 3 categories (exertion balance, sleep patterns, responsiveness).',
         baseline: 'ML baseline built over your first month of wear.',
-        coverage: 'Continuous all-day cEDA. Distinguishes exercise from stress automatically.',
-        strength: 'Continuous on-wrist EDA paired with skin temp catches stress events HRV-only devices miss entirely.',
-        limitation: 'cEDA is sensitive to ambient heat and humidity, which can show up as elevated tonic stress on hot days.',
+        coverage: 'Continuous all-day cEDA.',
+        hardware: 'Pixel Watch 1 (2022) shipped without an EDA sensor — only HRV and Stress Management Score. Pixel Watch 2 (2023) and Pixel Watch 3 (2024) added the same cEDA hardware Fitbit Sense 2 uses.',
+        strength: 'Continuous on-wrist EDA paired with skin temp catches stress events HRV-only devices miss entirely. ML model trained on real social-evaluative threat tasks, not just self-report.',
+        limitation: 'cEDA is sensitive to ambient heat and humidity, which shows up as elevated tonic stress on hot days. Like all EDA, it reads sympathetic activation — it cannot tell anxiety from excitement.',
         color: '#16A34A'
       },
       fitbit: {
@@ -177,39 +211,86 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Stress Management Score',
         modelLine: 'cEDA + ML Stress Management Score',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
-        algorithm: 'Same cEDA + ML pipeline as Pixel Watch. Daily Stress Management Score blends exertion balance, sleep patterns, and responsiveness.',
+        algorithm: 'Identical cEDA + ML pipeline to Pixel Watch 2/3 — Google\'s engineering across both product lines. Daily Stress Management Score blends 12 metrics across exertion balance, sleep patterns, and responsiveness; Body Response alerts fire for acute sympathetic spikes.',
         scale: 'Body Response alerts + 1–100 daily Stress Management Score.',
         baseline: 'ML baseline built over your first month of wear.',
-        coverage: 'Continuous all-day cEDA. Premium subscription unlocks deeper analysis.',
-        strength: 'Sense 2 ships the same cEDA hardware as Pixel Watch with a more polished daily score breakdown.',
-        limitation: 'Same heat/humidity confounder as Pixel Watch. Best signal quality requires Premium subscription.',
+        coverage: 'Continuous all-day cEDA. Premium subscription unlocks deeper analysis breakdowns.',
+        hardware: 'Fitbit Sense (Gen 1, 2020) was sEDA only — a manual 2-minute palm-on-watch spot-check. Fitbit Sense 2 (2022) introduced cEDA, the same hardware shared with Pixel Watch 2/3.',
+        strength: 'Same cEDA hardware as Pixel Watch with a richer Fitbit dashboard — historically the most polished daily stress breakdown in consumer wearables.',
+        limitation: 'Same heat/humidity confounder as Pixel Watch. Best signal quality and full insights require Premium subscription.',
         color: '#16A34A'
       },
       whoop: {
         name: 'WHOOP',
         scoreName: 'Stress Monitor',
-        modelLine: 'Recovery + Stress Monitor',
+        modelLine: 'Recovery + Stress Monitor (lnRMSSD)',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: true, rr: true, sleep: false },
-        algorithm: 'RMSSD vs. 14-day personal baseline + respiratory rate + skin temp + SpO2. Motion-aware to filter exercise.',
-        scale: 'Stress Monitor 0–3 (low / medium / high)  ·  Recovery 0–100%',
-        baseline: '14-day rolling personal RMSSD and respiratory-rate baseline.',
-        coverage: 'Real-time. Stress Monitor needs Peak or Life membership; Recovery is the overnight calc.',
-        strength: 'Overnight respiratory rate is a clean overtraining and illness flag — very few consumer devices surface it.',
-        limitation: 'No EDA, so daytime sympathetic spikes only show up indirectly via HR and HRV.',
+        algorithm: 'RMSSD is measured during the deepest period of overnight sleep, then natural-log-transformed (lnRMSSD) — standard practice for longitudinal HRV monitoring, since raw RMSSD is heteroscedastic. Recovery blends lnRMSSD, RHR, respiratory rate, sleep performance, and (on 4.0+) SpO2 and skin temperature. Stress Monitor compares live HR + HRV to a 14-day baseline. Motion-aware: a February 2026 re-architecture of the motion-artifact separation layer materially sharpened HR accuracy during running and reduced spurious spikes outside activity, with downstream cleanups to Recovery, Strain, and Sleep. The in-app Journal logs 160+ behaviors and perceived stress; Recovery Impacts surfaces correlations between logged behaviors and next-day HRV, RHR, recovery, and sleep-stage durations. Research on 11,000+ members showed that stress mindset (challenge vs. threat) measurably shifts recovery.',
+        scale: 'Stress Monitor 0–3 (0–1 low / 1–2 med / 2–3 high)  ·  Recovery 0–100%',
+        baseline: '14-day rolling personal lnRMSSD and respiratory-rate baseline.',
+        coverage: 'Real-time. Stress Monitor requires Peak or Life membership (not on base WHOOP One). Recovery is the overnight calc.',
+        hardware: 'WHOOP 4.0 / 5.0 / MG — high-frequency wrist PPG + skin temp + SpO2. Strapless form factor enables overnight skin-contact uptime that wrist watches can\'t match.',
+        validation: 'WHOOP-derived lnRMSSD day-to-day variability sits within or below alternative reference-protocol ranges (PMC9505647, Olympic water polo cohort). PPG-based HR/HRV validated vs ECG (PMC8160717), with strong agreement at rest and degraded agreement under motion pre-Feb-2026 — that update specifically targeted the motion failure mode.',
+        strength: 'Overnight respiratory rate is one of the cleanest overtraining and illness flags in any consumer wearable. lnRMSSD math is the most rigorous longitudinal HRV pipeline shipped on a consumer device. Journal + Recovery Impacts is the only built-in behavior-to-physiology correlation system.',
+        limitation: 'No EDA — daytime sympathetic spikes only show up indirectly via HR + HRV. Common error: WHOOP\'s Stress Monitor is 0–3, not 0–100; Recovery is 0–100%. The two are different metrics on different scales.',
         color: '#0F766E'
+      },
+      apple: {
+        name: 'Apple Watch',
+        scoreName: 'HRV (HealthKit SDNN) — no native stress score',
+        modelLine: 'SDNN in HealthKit · third-party apps build scores',
+        sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
+        algorithm: 'No native stress score as of watchOS 11 / 12 / 26. HealthKit exposes HRV as SDNN (Standard Deviation of NN intervals — not RMSSD), measured automatically when the user is still. Third-party apps build scores on top: Athlytic computes RMSSD if enabled (else SDNN) plus RHR against a 60-day rolling baseline; Welltory runs frequency-domain analysis (LF / HF / VLF power) on ≥300 RR-interval measurements against personal + population norms.',
+        scale: 'N/A native. Athlytic / Welltory / StressWatch / Livity each apply their own scale.',
+        baseline: 'No native baseline. Athlytic\'s 60-day rolling baseline is computed on iPhone and synced; Welltory blends personal and population norms.',
+        coverage: 'HRV is sampled approximately every 4 hours by default, only when the user is still. Bumps to every 2 hours with Irregular Rhythm Notifications enabled, every 15 minutes with AFib History enabled. The default cadence is too sparse for tight stress tracking — frequent users typically force readings via Mindfulness sessions.',
+        hardware: 'Series 6+ — green/red/IR PPG. Series 4+ supports ECG (single-lead, on-demand). Series 9 / Ultra 2 are the validation-study reference points in recent literature.',
+        validation: 'Series 9 / Ultra 2 vs Polar H10 + Kubios (Sensors 2024, n=39, 316 measurements): SDNN underestimated by mean 8.31 ms; MAPE 28.88%; MAE 20.46 ms — failed the ±10 ms equivalence margin. RHR was much closer: MAPE 5.91%, MAE 3.73 bpm, mean difference −0.1 bpm. Heart rate accuracy (Series 6+, npj Digital Medicine 2025 living meta): BPM MAPE 1.16% to 6.46%, limits of agreement −3.68 to 2.59 bpm — activity-dependent. Apple Watch ECG for stress detection: F1-weighted scores 52–64% (Mishra et al. 2022, pilot).',
+        strength: 'Largest third-party app ecosystem and the most flexible HealthKit data plumbing — pair it with Athlytic, Welltory, or Bevel for the score you actually want.',
+        limitation: 'No native stress feature, so every "Apple Watch stress score" you see is a third-party computation. HRV is reported as SDNN, not RMSSD — the two are different summary statistics. The widely repeated "Apple Watch error is 1–4%" line cherry-picks the low end of a 1.16–6.46% range. Default 4-hour sampling is too coarse for stress without manual readings.',
+        color: '#18181B'
       },
       polar: {
         name: 'Polar',
         scoreName: 'Nightly Recharge',
         modelLine: 'Nightly Recharge / ANS Charge',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: true, sleep: false },
-        algorithm: 'Nightly Recharge measures the first ~4 hours of sleep against a 28-day baseline. No daytime stress score.',
-        scale: 'ANS Charge −10 to +10',
-        baseline: '28-day personal ANS Charge baseline from overnight readings.',
-        coverage: 'Overnight only — recovery focus, not daytime tracking.',
-        strength: 'Overnight respiratory rate + HRV + HR together is a strong, clean recovery signal.',
-        limitation: 'No daytime score at all. If you want to see acute stress in real time, Polar isn\'t the device.',
+        algorithm: 'Nightly Recharge measures the first ~4 hours of sleep using HR + RMSSD + breathing rate against a 28-day baseline. ANS Charge is the autonomic component on a −10 to +10 scale; Sleep Charge is the architectural component. There is no daytime stress score — Polar\'s entire framing is recovery from the prior day.',
+        scale: 'ANS Charge −10 to +10  ·  Sleep Charge component score',
+        baseline: '28-day personal ANS Charge baseline anchored to your own overnight history — the most personalized baseline window in consumer wearables.',
+        coverage: 'Overnight only. No continuous daytime tracking.',
+        hardware: 'Vantage V3 and Grit X2 Pro use wrist PPG; the optional H10 chest strap is the lab-reference standard used in most peer-reviewed wearable validation studies.',
+        strength: 'Overnight RR + HRV + HR together is a strong, clean recovery signal. The 28-day baseline anchors readings to your own physiology rather than a population norm. Pairing with H10 chest strap upgrades the pipeline to lab quality.',
+        limitation: 'No daytime score at all. If you want acute stress in real time, Polar isn\'t the device.',
         color: '#334155'
+      },
+      coros: {
+        name: 'COROS',
+        scoreName: 'Daily Stress',
+        modelLine: 'HRV + HR every 5 min vs individual baseline',
+        sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
+        algorithm: 'Proprietary stress model — HR + HRV sampled every 5 minutes during inactivity, compared to an individual baseline. Pairs with COROS Training Readiness to feed into next-workout decisions.',
+        scale: '0–100 Daily Stress · Training Readiness composite',
+        baseline: 'Individual personal baseline; tightly coupled to training load.',
+        coverage: 'Every 5 minutes when still. Pauses during workouts (the data feeds Training Readiness instead).',
+        hardware: 'PACE 3, APEX 2, VERTIX 2 series — wrist optical PPG.',
+        strength: 'Tight integration with Training Readiness for endurance athletes. Less marketing-driven than competitors — the framing is performance, not "wellness."',
+        limitation: 'HRV + HR only — no EDA, no skin temp, no SpO2 in the stress pipeline. Less independent peer-reviewed validation than Garmin / WHOOP / Apple. Best fit for athletes already tracking training load.',
+        color: '#DC2626'
+      },
+      amazfit: {
+        name: 'Amazfit',
+        scoreName: 'Stress Index',
+        modelLine: 'RMSSD-based HRV + proprietary stress model',
+        sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
+        algorithm: 'Auto-measures RMSSD-derived HRV every 5 minutes, feeds it into a proprietary stress model. Some models add Zepp-branded readiness and sleep-quality scores layered on the same signal.',
+        scale: '0–100 Stress Index',
+        baseline: 'Personalized rolling baseline.',
+        coverage: 'Every 5 minutes when still.',
+        hardware: 'GTR / GTS / T-Rex / Balance series — wrist optical PPG.',
+        strength: 'The most affordable serious HRV-based stress tracking on the market — usable HRV pipeline at sub-$200 price points.',
+        limitation: 'HRV + HR only, minimal independent validation in peer-reviewed literature. Best treated as a longitudinal personal-baseline tool — don\'t over-interpret single readings.',
+        color: '#F97316'
       }
     };
   }
@@ -234,7 +315,10 @@ class KygoWearableStress extends HTMLElement {
       google:  ['hrv', 'hr', 'eda', 'skinTemp'],
       fitbit:  ['hrv', 'hr', 'eda', 'skinTemp'],
       whoop:   ['hrv', 'hr', 'rr', 'skinTemp', 'spo2'],
-      polar:   ['hrv', 'hr', 'rr']
+      apple:   ['hrv', 'hr'],
+      polar:   ['hrv', 'hr', 'rr'],
+      coros:   ['hrv', 'hr'],
+      amazfit: ['hrv', 'hr']
     };
   }
 
@@ -986,7 +1070,7 @@ class KygoWearableStress extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How your device measures stress</span>
             <h2 class="section-h2">Every wearable, <em>side by side</em>.</h2>
-            <p class="section-lede">Stress scores aren't comparable across brands. Each device pulls a different mix of HRV, EDA, skin temperature, and breathing rate — here's exactly what each one reads, ranked by signal coverage.</p>
+            <p class="section-lede">Stress scores aren't comparable across brands. Each device pulls a different mix of HRV, EDA, skin temperature, and breathing rate — and uses a different scale, baseline window, and reference frame. Here's exactly what each one reads, ranked by signal coverage.</p>
           </div>
 
           <div class="device-chart">
@@ -994,7 +1078,7 @@ class KygoWearableStress extends HTMLElement {
               <div>
                 <span class="dc-eyebrow">Signal coverage</span>
                 <h3 class="dc-title">Sensors fed into stress, by device</h3>
-                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only.</p>
+                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only (JMIR 2024 meta-analysis) — and lab numbers degrade meaningfully in real-world daily use.</p>
               </div>
               <div class="dc-meta">${ranked.length} wearables · ${totalSensors} signals</div>
             </div>
@@ -1039,6 +1123,8 @@ class KygoWearableStress extends HTMLElement {
                 <div><dt>Scale</dt><dd>${d.scale}</dd></div>
                 <div><dt>Baseline</dt><dd>${d.baseline}</dd></div>
                 <div><dt>Coverage</dt><dd>${d.coverage}</dd></div>
+                ${d.hardware ? `<div><dt>Hardware lineage</dt><dd>${d.hardware}</dd></div>` : ''}
+                ${d.validation ? `<div><dt>Validation</dt><dd>${d.validation}</dd></div>` : ''}
               </dl>
               <div class="dd-callouts">
                 <div class="dd-callout strong"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('sparkle')}</span>Unique strength</span><p>${d.strength}</p></div>
@@ -1055,7 +1141,7 @@ class KygoWearableStress extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('sparkle')}</span>Per-device deep dive</span>
             <h2 class="section-h2">How each wearable's stress score <em>actually works</em>.</h2>
-            <p class="section-lede">Tap any device for its full algorithm, signal scale, baseline window, coverage behavior, and the unique tradeoffs of its approach.</p>
+            <p class="section-lede">Tap any device for its full algorithm, scale, baseline window, coverage behavior, hardware generation lineage, validation data where available, and the unique tradeoffs of its approach.</p>
           </div>
           <div class="device-details">
             <div class="dd-list">${detailRows}</div>
@@ -1066,12 +1152,14 @@ class KygoWearableStress extends HTMLElement {
 
   _topPicks() {
     return [
-      { label: 'Most universal mover', stat: '7 / 7', answer: 'Sleep deprivation', icon: 'moon', note: 'Hits every device because all 7 read HRV and sleep deprivation suppresses parasympathetic tone immediately.', cls: '' },
-      { label: 'Only-on-EDA signal',   stat: '3 devices', answer: 'Cognitive load', icon: 'brain', note: 'Sustained mental effort raises tonic skin conductance — invisible to HRV-only watches. Samsung, Pixel Watch, and Fitbit only.', cls: '' },
-      { label: 'WHOOP / Polar specialty', stat: 'Resp. rate', answer: 'Overtraining', icon: 'dumbbell', note: 'Overtraining is best detected via elevated nocturnal HR + reduced HRV; overnight RR moves alongside them. WHOOP and Polar are the consumer wearables that surface RR overnight.', cls: '' },
-      { label: 'Oura specialty', stat: '0.3–0.7°C', answer: 'Cycle skin temp', icon: 'thermometer', note: 'Finger-site skin temp catches the luteal-phase rise so cleanly that Oura uses it for period prediction.', cls: '' },
-      { label: 'Hot-day false positive', stat: 'cEDA', answer: 'Ambient heat', icon: 'sun', note: 'Continuous EDA reads thermoregulatory sweating as stress. Pixel/Fitbit users: cross-check against HRV before reacting.', cls: 'warn' },
-      { label: 'The biggest myth', stat: 'Don\'t', answer: 'Compare scores across brands', icon: 'ghost', note: 'A "55" on Garmin doesn\'t mean a "55" on Samsung. Each algorithm uses a different sensor mix and a personal baseline.', cls: 'myth' }
+      { label: 'What wearables actually measure', stat: 'Arousal', answer: 'Not stress directly', icon: 'bolt', note: 'Every device detects sympathetic nervous system activation. EDA fires the same way for anxiety, excitement, fear, or surprise. HRV drops the same way for a stressful email, a cold drink, exercise, or caffeine. "Stress" is an inference layered on arousal detection.', cls: 'myth' },
+      { label: 'Most universal mover', stat: '10 / 10', answer: 'Sleep deprivation', icon: 'moon', note: 'Hits every device because all 10 read HRV and sleep deprivation suppresses parasympathetic tone immediately. The next-morning RHR bump and HRV drop show up on Garmin, Samsung, Oura, WHOOP, Apple, Polar, COROS, and Amazfit alike.', cls: '' },
+      { label: 'Only-on-EDA signal',   stat: '3 devices', answer: 'Cognitive load', icon: 'brain', note: 'Sustained mental effort raises tonic skin conductance — invisible to HRV-only watches. Samsung Galaxy Watch, Pixel Watch 2/3, and Fitbit Sense 2 only. Pixel Watch 1 had no EDA; Sense Gen 1 was manual spot-check.', cls: '' },
+      { label: 'Accuracy ceiling', stat: '~82% vs ~77%', answer: 'Multi-signal beats HRV-only', icon: 'target', note: 'Pooled lab accuracy from the 2024 JMIR meta-analysis: ~82% for HRV + EDA + skin temp combined, ~77% for HRV alone. Real-world daily-life accuracy degrades meaningfully from these lab numbers — the field\'s biggest unsolved problem.', cls: '' },
+      { label: 'Oura specialty', stat: '0.3–0.7°C', answer: 'Cycle skin temp', icon: 'thermometer', note: 'Finger-site skin temp catches the luteal-phase rise so cleanly that Oura uses it for period prediction. Cumulative Stress (released Nov 2025 with the University of Southern Denmark) layers this on top of sleep continuity, heart stress-response, sleep micromotions, and activity impact.', cls: '' },
+      { label: 'Hot-day false positive', stat: 'cEDA', answer: 'Ambient heat', icon: 'sun', note: 'Continuous EDA reads thermoregulatory sweating as stress. Pixel/Fitbit users: cross-check elevated EDA against HRV before reacting — if HRV is normal but EDA is up, it\'s probably the weather.', cls: 'warn' },
+      { label: 'Apple Watch ≠ RMSSD', stat: 'SDNN', answer: 'HealthKit reports SDNN', icon: 'watch', note: 'Apple HealthKit exposes HRV as Standard Deviation of NN intervals, not RMSSD. Default sampling is every ~4 hours (2 hours with IRN, 15 min with AFib History). Sensors 2024 found Apple Watch underestimates SDNN by 8.31 ms vs Polar H10 — RHR was much closer (MAE 3.73 bpm).', cls: 'warn' },
+      { label: 'The biggest myth', stat: 'Don\'t', answer: 'Compare scores across brands', icon: 'ghost', note: 'A "55" on Garmin doesn\'t mean a "55" on Samsung. WHOOP\'s Stress Monitor is 0–3, not 0–100. Apple has no native score at all. Each algorithm uses a different sensor mix, scale, and personal baseline — only same-brand longitudinal tracking is defensible.', cls: 'myth' }
     ];
   }
 
@@ -1138,8 +1226,8 @@ class KygoWearableStress extends HTMLElement {
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
             <div class="picks-head animate-on-scroll">
-              <span class="picks-eyebrow">Six headlines from the data</span>
-              <h2 class="picks-title">If you only remember <em>six things</em>.</h2>
+              <span class="picks-eyebrow">Eight headlines from the data</span>
+              <h2 class="picks-title">If you only remember <em>eight things</em>.</h2>
             </div>
             <div class="picks-grid">
               ${this._topPicks().map((p, i) => `
@@ -1272,7 +1360,7 @@ class KygoWearableStress extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
             <h2 class="section-h2">${total} <em>factors</em> that influence your <em>${d1.name}</em> ${d1.scoreName || 'stress score'}.</h2>
-            <p class="section-lede">Pick your wearable to see the metrics it actually reads, then tap a metric to drill in. Each metric splits into what helps your reading and what hurts it, ranked by impact.</p>
+            <p class="section-lede">Pick your wearable to see the metrics it actually reads, then tap a metric to drill in. Each metric splits into what helps your reading and what hurts it, ranked by impact. Remember: these signals reflect autonomic arousal, so "what hurts" includes both stressors and confounders (heat, caffeine, exercise) that move the same physiology.</p>
           </div>
           ${this._renderDevicePicker()}
           <span class="metric-tiles-label">${metricCount} metric${metricCount === 1 ? '' : 's'} ${d1.name} reads</span>
@@ -1361,15 +1449,33 @@ class KygoWearableStress extends HTMLElement {
       ],
       'Manufacturer documentation': [
         { label: 'Garmin Support — What Is the Stress Level Feature?', url: 'https://support.garmin.com/en-US/?faq=WT9BmhjacO4ZpxbCc0EKn9' },
-        { label: 'Garmin — HRV Stress Test Technology', url: 'https://www.garmin.com/en-US/garmin-technology/running-science/physiological-measurements/hrv-stress-test/' },
+        { label: 'Garmin — HRV Stress Test Technology', url: 'https://www.garmin.com/en-US/garmin-technology/cycling-science/physiological-measurements/hrv-stress-test/' },
+        { label: 'Garmin Elevate Wiki — Sensor Generations', url: 'https://wiki.garminrumors.com/Garmin_Elevate' },
+        { label: 'the5krunner 2023 — New Garmin Elevate Gen 5', url: 'https://the5krunner.com/2023/05/13/new-garmin-elevate-gen-5/' },
+        { label: 'Samsung Developer — BioActive Sensor Overview', url: 'https://developer.samsung.com/health/sensor/overview.html' },
         { label: 'Samsung Developer — Galaxy Watch EDA Sensor', url: 'https://developer.samsung.com/health/blog/en/how-the-galaxy-watchs-eda-sensor-enhances-your-health-monitoring' },
+        { label: 'Samsung Newsroom — Galaxy Watch 8 Unpacked 2025', url: 'https://news.samsung.com/global/galaxy-unpacked-2025-a-first-look-at-the-galaxy-watch8-series-streamlining-sleep-exercise-and-everything-in-between' },
+        { label: 'Samsung IE — Health Features on Galaxy Watch 8 / 8 Classic', url: 'https://www.samsung.com/ie/support/mobile-devices/health-features-on-the-galaxy-watch8-and-watch8-classic/' },
+        { label: 'Samsung Community — Antioxidant Index Availability (GW8 Only)', url: 'https://us.community.samsung.com/t5/Galaxy-Watch/Antioxidant-portion-not-available-on-the-Galaxy-watch-Ultra/td-p/3303935' },
         { label: 'Google Research — Pixel Watch / Fitbit Sense 2 EDA', url: 'https://research.google/blog/what-does-electrodermal-sensing-reveal-insights-from-the-pixel-watch-fitbit-sense-2/' },
         { label: 'Google Blog — How We Trained Fitbit Body Response', url: 'https://blog.google/products/fitbit/how-we-trained-fitbits-body-response-feature-to-detect-stress/' },
         { label: 'WHOOP Support — Get to Know the Stress Monitor', url: 'https://support.whoop.com/s/article/Get-to-Know-the-Stress-Monitor' },
+        { label: 'WHOOP Support — HRV Insights & WHOOP Metrics', url: 'https://support.whoop.com/s/article/Heart-Rate-Variability-HRV-Insights-WHOOP-Metrics' },
         { label: 'WHOOP Blog — How Does WHOOP Recovery Work 101', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
+        { label: 'WHOOP — A Look Behind the Data: How WHOOP Measures Heart Rate', url: 'https://www.whoop.com/us/en/thelocker/a-look-behind-the-data-how-whoop-measures-heart-rate/' },
+        { label: 'the5krunner Feb 2026 — WHOOP HR Algorithm Update', url: 'https://the5krunner.com/2026/02/28/whoop-heart-rate-accuracy-update/' },
+        { label: 'WHOOP Research — How Stress Mindset Shapes Recovery (n=11,000+)', url: 'https://www.whoop.com/us/en/thelocker/new-whoop-research-on-stress-perception/' },
+        { label: 'WHOOP Support — Journal Overview (160+ Behaviors)', url: 'https://support.whoop.com/s/article/WHOOP-Journal-Overview' },
+        { label: 'WHOOP Support — Recovery Impacts', url: 'https://support.whoop.com/s/article/Recovery-Insights' },
+        { label: 'Oura Help — Resilience', url: 'https://support.ouraring.com/hc/en-us/articles/25358829055251-Resilience' },
+        { label: 'Oura Help — Cumulative Stress', url: 'https://support.ouraring.com/hc/en-us/articles/45979919957395-Cumulative-Stress' },
         { label: 'Oura Blog 2025 — Introducing Cumulative Stress', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' },
         { label: 'Oura Blog — Discover Oura\'s Daytime Stress Feature', url: 'https://ouraring.com/blog/daytime-stress-feature/' },
         { label: 'Oura — Inside the Ring: Quantifying Chronic Stress', url: 'https://ouraring.com/blog/inside-the-ring-cumulative-stress/' },
+        { label: 'Apple Developer — HealthKit heartRateVariabilitySDNN', url: 'https://developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/heartratevariabilitysdnn' },
+        { label: 'Apple Nov 2024 — Heart Rate, Calorimetry & Activity on Apple Watch (PDF)', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
+        { label: 'Athlytic Help — Understanding Recovery (RMSSD + RHR, 60-day Baseline)', url: 'https://athlyticapp.helpscoutdocs.com/article/20-understanding-recovery' },
+        { label: 'Welltory Help — Frequency-Domain HRV Scores (LF / HF / VLF)', url: 'https://help.welltory.com/en/articles/3878862-frequency-domain-scores-of-your-heart-rate-variability' },
         { label: 'Polar Support — Nightly Recharge Recovery Measurement', url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement' },
         { label: 'Polar — Vantage V3 Manual: Nightly Recharge', url: 'https://support.polar.com/e_manuals/vantage-v3/polar-vantage-v3-user-manual-english/nightly-recharge.htm' },
         { label: 'COROS Help Center — Daily Stress', url: 'https://support.coros.com/hc/en-us/articles/22933434857108-Daily-Stress' },
@@ -1378,7 +1484,7 @@ class KygoWearableStress extends HTMLElement {
       ],
       'Wearable accuracy & methodology': [
         { label: 'Frontiers in Computer Science 2024 — Stress Detection Using Wearables (Systematic Review)', url: 'https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2024.1478851/full' },
-        { label: 'JMIR 2024 — Wearable AI in Detecting Stress: Systematic Review and Meta-Analysis', url: 'https://www.jmir.org/2024/1/e52622' },
+        { label: 'JMIR 2024 — Wearable AI in Detecting Stress: Systematic Review and Meta-Analysis (~82% multi-signal vs ~77% HRV)', url: 'https://www.jmir.org/2024/1/e52622' },
         { label: 'Springer 2025 — Stress in Action Wearables Database', url: 'https://link.springer.com/article/10.3758/s13428-025-02685-4' },
         { label: 'Nature Communications Medicine 2025 — Wearables for Anxiety Assessment', url: 'https://www.nature.com/articles/s43856-025-01234-6' },
         { label: 'PMC11230864 — Real-Time Stress Prediction Models Using Wearables', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11230864/' },
@@ -1390,7 +1496,11 @@ class KygoWearableStress extends HTMLElement {
         { label: 'ScienceDirect — Machine Learning for Predicting Stress Episodes', url: 'https://www.sciencedirect.com/science/article/pii/S0010482525015197' },
         { label: 'MDPI Algorithms 2025 — Smartwatches in Stress Management & Well-Being', url: 'https://www.mdpi.com/1999-4893/18/7/419' },
         { label: 'JMIR mHealth 2026 — Wearables for Stress Measurement in College Students', url: 'https://mhealth.jmir.org/2026/1/e64144' },
-        { label: 'Frontiers Digital Health 2022 (PMC9780663) — Apple Watch ECG for Stress Prediction', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9780663/' }
+        { label: 'Frontiers Digital Health 2022 (PMC9780663) — Apple Watch ECG for Stress Prediction (F1 52–64%)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9780663/' },
+        { label: 'Sensors / MDPI 2024 — Apple Watch Series 9 / Ultra 2 HRV Validity vs Polar H10 + Kubios', url: 'https://www.mdpi.com/1424-8220/24/19/6220' },
+        { label: 'npj Digital Medicine 2025 — Apple Watch Measurements Living Systematic Review & Meta-Analysis', url: 'https://www.nature.com/articles/s41746-025-02238-1' },
+        { label: 'PMC9505647 — WHOOP-Derived lnRMSSD Day-to-Day Variability (Olympic Water Polo)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9505647/' },
+        { label: 'PMC8160717 — Wrist PPG Assessment of HR & HRV: WHOOP Validation vs ECG', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8160717/' }
       ]
     };
     const total = Object.values(groups).reduce((s, g) => s + g.length, 0);
@@ -1442,7 +1552,7 @@ class KygoWearableStress extends HTMLElement {
         <div class="container hero-inner">
           <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalFactors} Factors · ${totalDevices} Wearables</div>
           <h1 class="hero-title animate-on-scroll">How does <em>your wearable</em> measure stress?</h1>
-          <p class="hero-sub animate-on-scroll">Every brand reads stress differently — HRV, EDA, skin temp, breathing rate. Pick your device and the factor list below re-sorts around what actually moves <strong>your</strong> score.</p>
+          <p class="hero-sub animate-on-scroll">Every wearable measures <strong>autonomic arousal</strong>, not stress directly — through HRV, EDA, skin temp, and breathing rate. We compare <strong>10 brands</strong> head-to-head, with hardware-generation context and validation versus the Polar H10 chest-strap reference. Pick your device and the factor list re-sorts around what actually moves <strong>your</strong> score.</p>
           <div class="animate-on-scroll">
             <div class="hero-meta">
               <div class="hero-cell"><span class="hero-num">${totalDevices}</span><span class="hero-lbl">Wearables</span></div>
