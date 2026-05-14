@@ -1171,7 +1171,7 @@ class KygoWearableStress extends HTMLElement {
             <span class="article-badge">Deep Dive</span>
             <div class="article-body">
               <span class="article-kicker">Read the full article</span>
-              <h3 class="article-title">How 7 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
+              <h3 class="article-title">How 10 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
               <p class="article-desc">Every signal, algorithm, and cited study in one long-form read.</p>
             </div>
             <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
