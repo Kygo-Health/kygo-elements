@@ -1872,17 +1872,18 @@ class KygoWearableStress extends HTMLElement {
       .device-table tbody tr:hover { background: var(--gray-50); }
       .device-table tbody tr:hover .dt-td-device { background: var(--gray-50); }
 
-      .dt-td-device { padding: 10px 8px 10px 4px; width: 56px; min-width: 56px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; transition: background .15s; box-shadow: 1px 0 0 var(--gray-200); }
-      .dt-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+      .dt-td-device { padding: 10px 6px 10px 4px; width: 76px; min-width: 76px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; transition: background .15s; box-shadow: 1px 0 0 var(--gray-200); }
+      .dt-brand { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; text-align: center; }
       .dt-img { width: 36px; height: 36px; border-radius: 9px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
       .dt-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
       .dt-img--icon { background: var(--accent, var(--gray-200)); color: #fff; }
       .dt-img--icon svg { width: 16px; height: 16px; }
-      .dt-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); letter-spacing: -0.01em; line-height: 1.2; overflow-wrap: anywhere; display: none; }
+      .dt-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 10.5px; color: var(--dark); letter-spacing: -0.01em; line-height: 1.15; overflow-wrap: anywhere; }
       @media (min-width: 768px) {
         .dt-td-device { padding: 14px 14px 14px 4px; width: auto; min-width: 220px; position: static; box-shadow: none; }
+        .dt-brand { flex-direction: row; align-items: center; gap: 10px; text-align: left; }
         .dt-img { width: 40px; height: 40px; border-radius: 10px; }
-        .dt-name { display: inline; font-size: 15px; }
+        .dt-name { font-size: 15px; }
       }
 
       .device-table tbody td { text-align: center; padding: 10px 6px; }
