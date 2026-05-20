@@ -24,7 +24,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     this._whoopTier = 'one';
     this._airPlan = 'free';
     this._years = 3;
-    this._vizMode = '1s';
     this._vizTimer = null;
     this._observer = null;
   }
@@ -64,7 +63,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       ],
       Accuracy: [
         { name: 'HRV precision', info: 'Higher internal sample rate = cleaner HRV', air: 'Pixel Watch–class', whoop5: y('Lab-validated (peer-reviewed, 26 Hz)'), whoopMG: y('Lab-validated (peer-reviewed, 26 Hz)'), winner: 'whoop' },
-        { name: 'High-intensity HR', info: 'Wrist HR during HIIT, sprints', air: '2-sec storage', whoop5: '1-sec storage', whoopMG: '1-sec storage', winner: 'whoop' },
+        { name: 'High-intensity HR', info: 'HR data resolution during workouts', air: '2-sec storage', whoop5: '1-sec storage', whoopMG: '1-sec storage', winner: 'whoop' },
         { name: 'Auto-detected workouts', info: 'No manual logging needed', air: '40+ via SmartTrack', whoop5: '145+ activities', whoopMG: '145+ activities', winner: 'whoop' },
         { name: 'Strength training', info: 'Resistance load detection', air: 'Basic', whoop5: 'Better axes; manual log recommended', whoopMG: 'Same as 5.0', winner: 'whoop' },
         { name: 'Wear locations', info: 'Where the sensor can sit', air: 'Wrist only', whoop5: y('Wrist · bicep · calf · apparel pods'), whoopMG: y('Wrist · bicep · calf · apparel pods'), winner: 'whoop' },
@@ -111,8 +110,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
   get _faqs() {
     return [
-      { q: 'Is Fitbit Air actually a WHOOP killer?', a: 'No — they\'re aimed at different buyers. WHOOP\'s 1-second sampling and bicep/apparel pods are still the gold standard for serious training, and only WHOOP MG has FDA-cleared ECG. Fitbit Air wins on price, weight, water resistance, and "no required subscription" — making it the better casual + sleep tracker for most people.' },
-      { q: 'Does 2-sec vs 1-sec HR storage actually matter for me?', a: 'For sleep, resting heart rate, and daily steps — basically nothing. Both devices will produce solid scores. For high-intensity training (HIIT, sprints, lifts), HRV experiments, or anything where heartbeat-to-heartbeat precision matters, WHOOP\'s tighter 1-second storage interval produces a more granular HR timeline.' },
+      { q: 'Is Fitbit Air actually a WHOOP killer?', a: 'They\'re aimed at different buyers and different budgets. Fitbit Air is $99.99 once, with no required subscription for core tracking. WHOOP is $0 hardware but $199–359/yr forever, and the device stops working if you cancel. For most people the price gap is the headline story — WHOOP MG\'s FDA-cleared ECG and bicep/apparel pods justify the cost for a smaller, more specific audience.' },
+      { q: 'Does 2-sec vs 1-sec HR storage actually matter for me?', a: 'For sleep, resting heart rate, and daily steps — basically nothing. Both devices produce solid scores. For high-intensity workouts or anyone who wants a more granular timeline of their HR, WHOOP\'s tighter 1-second storage shows more data points per minute but you are paying a lot more for this difference.' },
       { q: 'Can I use both?', a: 'Yes, and many people do — WHOOP on the bicep for workouts, Fitbit Air at night for sleep + recovery. Kygo can pull data from both and treat them as a single signal, automatically picking the more reliable source per metric.' },
       { q: 'What happens to a WHOOP if I cancel my subscription?', a: 'The device stops working. WHOOP\'s entire value is in the membership; the hardware is free but disabled without an active sub. Fitbit Air is the opposite — you own the hardware outright and Premium ($9.99/mo) is purely additive (mainly the AI Coach).' },
       { q: 'Does Kygo work with both?', a: 'Yes — Kygo connects to Fitbit, WHOOP, Oura, Apple Health, Garmin, and Samsung Galaxy Watch. Pick whichever wearable suits you; Kygo handles the cross-source correlations to your nutrition.' },
@@ -166,7 +165,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         <div class="hero-light-inner">
           <div class="hero-grid">
             <div class="hero-copy">
-              <div class="hero-pill"><span class="dot"></span> UPDATED MAY 8, 2026</div>
+              <div class="hero-pill"><span class="dot"></span> UPDATED MAY 20, 2026</div>
               <h1>Fitbit Air vs WHOOP — <span class="hl">which screenless tracker is worth it?</span></h1>
               <p class="hero-lede">Same screenless silhouette. Two completely different bets. Compare every sensor, calculate your real 3-year cost, and find the tracker that <strong>actually fits your body</strong>.</p>
               <div class="hero-devices">
@@ -225,22 +224,16 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
               <div class="left">
                 <div class="viz-kicker">The Headline Gap</div>
                 <h3>WHOOP stores HR data <span>2× more often.</span></h3>
-                <p>Storage frequency drives how granular your HR timeline looks. Both devices sample the underlying PPG faster, but only WHOOP publishes that internal rate (26 Hz).</p>
-              </div>
-              <div class="viz-toggle" data-viz-toggle>
-                <button data-viz="1s" class="${this._vizMode==='1s'?'active':''}">Real time</button>
-                <button data-viz="slow" class="${this._vizMode==='slow'?'active':''}">4× slower</button>
+                <p>Storage frequency drives how granular your HR timeline looks. Both devices sample the underlying PPG faster, but only WHOOP publishes that internal rate (26 Hz). Watch the dots: Fitbit logs once every 2 seconds, WHOOP every second.</p>
               </div>
             </div>
             <div class="viz-row">
               <div class="name">Fitbit Air<div class="sub">Every 2 seconds</div></div>
               <div class="track" data-track="air"></div>
-              <div class="rate">1<span class="unit">stored reading / 2 sec</span></div>
             </div>
             <div class="viz-row">
               <div class="name">WHOOP 5.0 / MG<div class="sub">Every 1 second</div></div>
               <div class="track" data-track="whoop"></div>
-              <div class="rate">1<span class="unit">stored reading / sec</span></div>
             </div>
             <div class="viz-foot">
               <span class="legend"><span class="swatch" style="background:#FBBF24"></span> Fitbit Air</span>
@@ -553,13 +546,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       }
     });
 
-    // Viz toggle
-    root.querySelector('[data-viz-toggle]').addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-viz]');
-      if (!btn) return;
-      this._vizMode = btn.dataset.viz;
-      root.querySelectorAll('[data-viz-toggle] button').forEach(b => b.classList.toggle('active', b === btn));
-    });
   }
 
   _updateCalc() {
@@ -573,10 +559,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     if (!airTrack || !whoopTrack) return;
 
     const tick = () => {
-      const slow = this._vizMode === 'slow';
-      const windowMs = slow ? 4000 : 2000;
-      const speedDiv = slow ? 4 : 1;
-      const now = (Date.now() / speedDiv) % windowMs;
+      const windowMs = 2000;
+      const now = Date.now() % windowMs;
 
       let airHTML = '';
       const airInterval = 2000;
@@ -621,7 +605,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'datePublished': '2026-05-08',
-        'dateModified': '2026-05-08',
+        'dateModified': '2026-05-20',
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
@@ -800,29 +784,22 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       /* HR sampling viz */
       .viz-wrap { background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%); border-radius: 20px; padding: 24px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
       @media (min-width: 720px) { .viz-wrap { padding: 36px; border-radius: 24px; } }
-      .viz-head { display: flex; flex-wrap: wrap; gap: 18px; align-items: end; justify-content: space-between; margin-bottom: 22px; }
-      .viz-head .left { color: #fff; max-width: 60ch; }
+      .viz-head { margin-bottom: 22px; }
+      .viz-head .left { color: #fff; max-width: 72ch; }
       .viz-kicker { display: inline-block; background: rgba(34,197,94,0.16); color: #86EFAC; border: 1px solid rgba(34,197,94,0.25); padding: 4px 12px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
       .viz-head h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(20px, 3vw, 28px); color: #fff; margin: 10px 0 8px; line-height: 1.15; }
       .viz-head h3 span { color: var(--kygo-green); }
       .viz-head .left p { color: rgba(255,255,255,0.65); margin: 0; font-size: 14px; line-height: 1.55; }
-      .viz-toggle { display: inline-flex; gap: 4px; background: rgba(255,255,255,0.06); padding: 4px; border-radius: 999px; }
-      .viz-toggle button { font-family: var(--font-body); font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: 999px; border: 0; background: transparent; color: rgba(255,255,255,0.7); cursor: pointer; }
-      .viz-toggle button.active { background: var(--kygo-green); color: #fff; }
-      .viz-row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: 'name rate' 'track track'; gap: 8px 12px; align-items: center; padding: 14px 0; }
+.viz-row { display: grid; grid-template-columns: 1fr; grid-template-areas: 'name' 'track'; gap: 8px 12px; align-items: center; padding: 14px 0; }
       .viz-row .name { grid-area: name; }
-      .viz-row .rate { grid-area: rate; }
       .viz-row .track { grid-area: track; }
-      @media (min-width: 720px) { .viz-row { grid-template-columns: 140px 1fr 100px; grid-template-areas: 'name track rate'; gap: 16px; } }
+      @media (min-width: 720px) { .viz-row { grid-template-columns: 160px 1fr; grid-template-areas: 'name track'; gap: 16px; } }
       .viz-row + .viz-row { border-top: 1px dashed rgba(255,255,255,0.08); }
       .viz-row .name { color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 14px; }
       .viz-row .name .sub { color: rgba(255,255,255,0.5); font-weight: 500; font-size: 11px; }
       .viz-row .track { position: relative; height: 44px; background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); width: 100%; }
       .viz-row .pulse { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 10px var(--kygo-green); }
       .viz-row .pulse.air { background: #FBBF24; box-shadow: 0 0 8px rgba(251,191,36,0.7); }
-      .viz-row .rate { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: #fff; text-align: right; }
-      @media (min-width: 720px) { .viz-row .rate { font-size: 18px; } }
-      .viz-row .rate .unit { color: rgba(255,255,255,0.5); font-weight: 500; font-size: 11px; display: block; }
       .viz-foot { margin-top: 14px; color: rgba(255,255,255,0.55); font-size: 12px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
       .viz-foot .legend { display: inline-flex; align-items: center; gap: 6px; }
       .viz-foot .swatch { width: 8px; height: 8px; border-radius: 50%; }
@@ -848,10 +825,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .tbl tbody tr:hover { background: var(--bg-raised); }
       .tbl .spec-name { font-weight: 600; color: var(--fg-1); width: 28%; }
       .tbl .spec-name .info { font-size: 12px; font-weight: 400; color: var(--fg-3); margin-top: 2px; line-height: 1.4; }
-      .tbl .y { color: var(--kygo-green-dark); font-weight: 600; }
       .tbl .n { color: var(--fg-3); }
       .tbl .num { font-family: var(--font-numeric); font-weight: 600; font-size: 15px; color: var(--fg-1); }
-      .tbl .num.y { color: var(--kygo-green-dark); }
       @media (max-width: 720px) {
         .tbl thead { display: none; }
         .tbl tbody td { display: block; padding: 6px 16px; border-top: 0; }
