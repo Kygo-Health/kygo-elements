@@ -72,7 +72,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         { name: 'VO₂ Max', info: 'Aerobic fitness estimate', air: y('Pixel Watch 4 algos'), whoop5: 'Yes', whoopMG: 'Yes', winner: 'tie' },
       ],
       'Form & Battery': [
-        { name: 'Pod weight', info: 'The sensor module alone', air: y('5.2 g'), whoop5: 'Not disclosed', whoopMG: 'Not disclosed', winner: 'air' },
+        { name: 'Pod weight', info: 'The sensor module alone', air: y('5.2 g'), whoop5: '~10 g', whoopMG: '~10 g', winner: 'air' },
         { name: 'Total weight w/ band', air: y('12 g'), whoop5: '~27 g', whoopMG: '~27 g', winner: 'air' },
         { name: 'Display', info: 'Visible screen on device', air: n('None'), whoop5: n('None'), whoopMG: n('None'), winner: 'tie' },
         { name: 'Water resistance', air: y('50 m'), whoop5: '10 m / 2 hr (IP68)', whoopMG: '10 m / 2 hr (IP68)', winner: 'air' },
@@ -256,7 +256,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Side by side</div>
             <h2>Every spec, <span class="hl">organized.</span></h2>
-            <p class="lede">35 specs split into five categories. ★ marks where each device wins. WHOOP 5.0 and MG share hardware externally — MG adds the ECG electrodes.</p>
+            <p class="lede">35 specs split into five categories. WHOOP 5.0 and MG share hardware externally — MG adds the ECG electrodes.</p>
           </div>
           <div class="tbl-wrap">
             <div class="tbl-tabs" data-tabs>${this._renderTabs()}</div>
@@ -416,8 +416,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     const fitbitAff = 'https://amzn.to/4wogJ3y';
     const whoopAff = 'https://amzn.to/431iUfG';
     const rows = this._specs[this._activeTab];
-    const winnerBadge = `<span class="winner-badge">★ best</span>`;
-    const isNo = (v) => typeof v === 'string' && /class="n"/.test(v);
     const amazonLink = (url) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
       <table class="tbl">
@@ -437,13 +435,13 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
                 ${r.info ? `<div class="info">${r.info}</div>` : ''}
               </td>
               <td class="cell" data-label="Fitbit Air">
-                ${r.air} ${r.winner==='air' ? winnerBadge : ''}
+                ${r.air}
               </td>
               <td class="cell" data-label="WHOOP 5.0">
-                ${r.whoop5} ${r.winner==='whoop' && !isNo(r.whoop5) ? winnerBadge : ''}
+                ${r.whoop5}
               </td>
               <td class="cell" data-label="WHOOP MG">
-                ${r.whoopMG} ${r.winner==='whoop' && !isNo(r.whoopMG) ? winnerBadge : ''}
+                ${r.whoopMG}
               </td>
             </tr>
           `).join('')}
@@ -850,7 +848,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .tbl tbody tr:hover { background: var(--bg-raised); }
       .tbl .spec-name { font-weight: 600; color: var(--fg-1); width: 28%; }
       .tbl .spec-name .info { font-size: 12px; font-weight: 400; color: var(--fg-3); margin-top: 2px; line-height: 1.4; }
-      .tbl .winner-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; background: var(--kygo-green-light); color: var(--kygo-green-dark); padding: 2px 7px; border-radius: 999px; font-weight: 600; margin-left: 6px; }
       .tbl .y { color: var(--kygo-green-dark); font-weight: 600; }
       .tbl .n { color: var(--fg-3); }
       .tbl .num { font-family: var(--font-numeric); font-weight: 600; font-size: 15px; color: var(--fg-1); }
