@@ -24,21 +24,18 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     this._whoopTier = 'one';
     this._airPlan = 'free';
     this._years = 3;
-    this._vizTimer = null;
     this._observer = null;
   }
 
   connectedCallback() {
     this.render();
     this._bindEvents();
-    this._startViz();
     this._setupAnimations();
     __seo(this, 'Fitbit Air vs WHOOP Comparison Tool by Kygo Health. Compare Fitbit Air, WHOOP 5.0, and WHOOP MG specs side by side. Filter by sensors, battery, price, health metrics, and 3-year cost of ownership. Fitbit Air released May 26, 2026 at $99.99 with optional $9.99/mo Premium AI coach. WHOOP 5.0 and MG released April 2025 with required subscriptions: WHOOP One $199/yr, Peak $239/yr, Life $359/yr (MG hardware required for Life). HR sampling: Fitbit Air every 2 seconds vs WHOOP every 1 second (2x more frequent). Pod weight: Fitbit Air 5.2g vs WHOOP ~10g. Water resistance: Fitbit Air 50m vs WHOOP 10m IP68. Battery: Fitbit Air 7 days vs WHOOP 14 days. WHOOP MG only device with FDA-cleared ECG and Blood Pressure Insights. WHOOP supports bicep, calf, and apparel pods. Fitbit Air wrist-only at launch. 3-year total cost of ownership: Fitbit Air $100 core, $396 with AI; WHOOP One $597, WHOOP Life with MG $1,077. Fitbit Air does not require subscription for core function. WHOOP devices are bricked without active subscription. Both work with Android and iOS. Both use phone GPS. Both have SpO2, skin temperature, sleep stages, VO2 Max, and cycle health.');
     this._injectStructuredData();
   }
 
   disconnectedCallback() {
-    if (this._vizTimer) clearInterval(this._vizTimer);
     if (this._observer) this._observer.disconnect();
   }
 
@@ -212,33 +209,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <div class="hero-stat"><div class="num">5.2<span class="unit">g</span></div><div class="lbl">Fitbit Air pod — smallest Fitbit ever</div></div>
             <div class="hero-stat"><div class="num">$977</div><div class="lbl">3-yr cost gap, Air vs WHOOP MG</div></div>
             <div class="hero-stat"><div class="num">1<span class="unit">device</span></div><div class="lbl">FDA-cleared ECG: WHOOP MG only</div></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section bg-light">
-        <div class="section-inner">
-          <div class="viz-wrap animate-on-scroll">
-            <div class="viz-head">
-              <div class="left">
-                <div class="viz-kicker">The Headline Gap</div>
-                <h3>WHOOP stores HR data <span>2× more often.</span></h3>
-                <p>Storage frequency drives how granular your HR timeline looks. Both devices sample the underlying PPG faster, but only WHOOP publishes that internal rate (26 Hz). Watch the dots: Fitbit logs once every 2 seconds, WHOOP every second.</p>
-              </div>
-            </div>
-            <div class="viz-row">
-              <div class="name">Fitbit Air<div class="sub">Every 2 seconds</div></div>
-              <div class="track" data-track="air"></div>
-            </div>
-            <div class="viz-row">
-              <div class="name">WHOOP 5.0 / MG<div class="sub">Every 1 second</div></div>
-              <div class="track" data-track="whoop"></div>
-            </div>
-            <div class="viz-foot">
-              <span class="legend"><span class="swatch" style="background:#FBBF24"></span> Fitbit Air</span>
-              <span class="legend"><span class="swatch" style="background:#22C55E"></span> WHOOP 5.0 / MG</span>
-              <span class="caption">Matters most for HR timeline granularity. HRV math runs on the underlying sensor data, not stored points.</span>
-            </div>
           </div>
         </div>
       </section>
@@ -551,36 +521,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     this.shadowRoot.querySelector('[data-calc]').innerHTML = this._renderCalc();
   }
 
-  _startViz() {
-    const root = this.shadowRoot;
-    const airTrack = root.querySelector('[data-track="air"]');
-    const whoopTrack = root.querySelector('[data-track="whoop"]');
-    if (!airTrack || !whoopTrack) return;
-
-    const tick = () => {
-      const windowMs = 2000;
-      const now = Date.now() % windowMs;
-
-      let airHTML = '';
-      const airInterval = 2000;
-      for (let t = 0; t <= windowMs; t += airInterval) {
-        const pos = ((t - now + windowMs) % windowMs) / windowMs * 100;
-        airHTML += `<div class="pulse air" style="left:${pos}%"></div>`;
-      }
-      airTrack.innerHTML = airHTML;
-
-      let whoopHTML = '';
-      const whoopInterval = 1000;
-      for (let t = 0; t <= windowMs; t += whoopInterval) {
-        const pos = ((t - now + windowMs) % windowMs) / windowMs * 100;
-        whoopHTML += `<div class="pulse" style="left:${pos}%"></div>`;
-      }
-      whoopTrack.innerHTML = whoopHTML;
-    };
-    tick();
-    this._vizTimer = setInterval(tick, 80);
-  }
-
   _setupAnimations() {
     if (!('IntersectionObserver' in window)) return;
     this._observer = new IntersectionObserver((entries) => {
@@ -781,29 +721,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .bestfor .yrly { color: var(--fg-3); font-size: 12px; }
 
       /* HR sampling viz */
-      .viz-wrap { background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%); border-radius: 20px; padding: 24px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
-      @media (min-width: 720px) { .viz-wrap { padding: 36px; border-radius: 24px; } }
-      .viz-head { margin-bottom: 22px; }
-      .viz-head .left { color: #fff; max-width: 72ch; }
-      .viz-kicker { display: inline-block; background: rgba(34,197,94,0.16); color: #86EFAC; border: 1px solid rgba(34,197,94,0.25); padding: 4px 12px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
-      .viz-head h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(20px, 3vw, 28px); color: #fff; margin: 10px 0 8px; line-height: 1.15; }
-      .viz-head h3 span { color: var(--kygo-green); }
-      .viz-head .left p { color: rgba(255,255,255,0.65); margin: 0; font-size: 14px; line-height: 1.55; }
-.viz-row { display: grid; grid-template-columns: 1fr; grid-template-areas: 'name' 'track'; gap: 8px 12px; align-items: center; padding: 14px 0; }
-      .viz-row .name { grid-area: name; }
-      .viz-row .track { grid-area: track; }
-      @media (min-width: 720px) { .viz-row { grid-template-columns: 160px 1fr; grid-template-areas: 'name track'; gap: 16px; } }
-      .viz-row + .viz-row { border-top: 1px dashed rgba(255,255,255,0.08); }
-      .viz-row .name { color: #fff; font-family: var(--font-display); font-weight: 600; font-size: 14px; }
-      .viz-row .name .sub { color: rgba(255,255,255,0.5); font-weight: 500; font-size: 11px; }
-      .viz-row .track { position: relative; height: 44px; background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); width: 100%; }
-      .viz-row .pulse { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 10px var(--kygo-green); }
-      .viz-row .pulse.air { background: #FBBF24; box-shadow: 0 0 8px rgba(251,191,36,0.7); }
-      .viz-foot { margin-top: 14px; color: rgba(255,255,255,0.55); font-size: 12px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-      .viz-foot .legend { display: inline-flex; align-items: center; gap: 6px; }
-      .viz-foot .swatch { width: 8px; height: 8px; border-radius: 50%; }
-      .viz-foot .caption { margin-left: auto; max-width: 60ch; }
-
       /* Spec table */
       .tbl-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; overflow: hidden; }
       .tbl-tabs { display: flex; gap: 4px; padding: 12px; border-bottom: 1px solid var(--border-subtle); overflow-x: auto; -webkit-overflow-scrolling: touch; }
