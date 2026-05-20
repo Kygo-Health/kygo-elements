@@ -51,20 +51,20 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     const num = (t, win) => `<span class="num${win ? ' y' : ''}">${t}</span>`;
     return {
       Sensors: [
-        { name: 'HR sampling rate', info: 'How often the optical sensor reads your pulse', air: 'Every 2 seconds', whoop5: 'Every 1 second', whoopMG: 'Every 1 second', winner: 'whoop' },
-        { name: 'PPG architecture', info: 'LED + photodiode stack', air: '1 LED set', whoop5: '3 green + 1 red + 1 IR LEDs · 4 photodiodes', whoopMG: 'Same as 5.0', winner: 'whoop' },
+        { name: 'HR data storage interval', info: 'How often the device records an HR data point', air: 'Every 2 seconds', whoop5: 'Every 1 second', whoopMG: 'Every 1 second', winner: 'whoop' },
+        { name: 'PPG architecture', info: 'LED + photodiode stack', air: 'Optical HR + Red + IR for SpO2 (LED count not disclosed)', whoop5: '3 green + 1 red + 1 IR LEDs · 4 photodiodes', whoopMG: 'Same as 5.0', winner: 'whoop' },
         { name: 'SpO₂ (blood oxygen)', info: 'Red + IR LEDs for overnight oxygen', air: 'Yes', whoop5: 'Yes', whoopMG: 'Yes', winner: 'tie' },
         { name: 'Skin temperature', info: 'Nightly variation tracking', air: 'Yes', whoop5: 'Yes', whoopMG: 'Yes', winner: 'tie' },
         { name: 'Accelerometer', info: 'Motion + activity detection', air: '3-axis + gyroscope', whoop5: 'Multi-axis', whoopMG: 'Multi-axis', winner: 'tie' },
         { name: 'ECG (single-lead)', info: 'Confirmed AFib detection', air: n('No'), whoop5: n('No'), whoopMG: y('Yes — FDA-cleared'), winner: 'whoop' },
-        { name: 'Blood pressure', info: 'Daily estimates from cuff calibration', air: n('No'), whoop5: n('No'), whoopMG: y('Yes (estimated)'), winner: 'whoop' },
+        { name: 'Blood pressure', info: 'Daily estimates from cuff calibration', air: n('No'), whoop5: n('No'), whoopMG: y('Estimated (cuff calibration required, not FDA-cleared, general wellness only)'), winner: 'whoop' },
         { name: 'AFib alerts', info: 'How irregular rhythm is detected', air: 'PPG-based alerts', whoop5: n('No'), whoopMG: y('ECG-confirmed'), winner: 'whoop' },
         { name: 'EDA (electrodermal)', info: 'Skin conductance for stress', air: n('No'), whoop5: n('No'), whoopMG: n('No'), winner: 'tie' },
         { name: 'GPS', info: 'Location tracking on device', air: 'Phone GPS', whoop5: 'Phone GPS', whoopMG: 'Phone GPS', winner: 'tie' },
       ],
       Accuracy: [
-        { name: 'HRV precision', info: 'Tighter sampling = cleaner HRV', air: 'Pixel Watch–class', whoop5: y('Lab-grade (high freq)'), whoopMG: y('Lab-grade (high freq)'), winner: 'whoop' },
-        { name: 'High-intensity HR', info: 'Wrist HR during HIIT, sprints', air: 'Limited (every 2s)', whoop5: 'Better (every 1s)', whoopMG: 'Better (every 1s)', winner: 'whoop' },
+        { name: 'HRV precision', info: 'Higher internal sample rate = cleaner HRV', air: 'Pixel Watch–class', whoop5: y('Lab-validated (peer-reviewed, 26 Hz)'), whoopMG: y('Lab-validated (peer-reviewed, 26 Hz)'), winner: 'whoop' },
+        { name: 'High-intensity HR', info: 'Wrist HR during HIIT, sprints', air: '2-sec storage', whoop5: '1-sec storage', whoopMG: '1-sec storage', winner: 'whoop' },
         { name: 'Auto-detected workouts', info: 'No manual logging needed', air: '40+ via SmartTrack', whoop5: '145+ activities', whoopMG: '145+ activities', winner: 'whoop' },
         { name: 'Strength training', info: 'Resistance load detection', air: 'Basic', whoop5: 'Better axes; manual log recommended', whoopMG: 'Same as 5.0', winner: 'whoop' },
         { name: 'Wear locations', info: 'Where the sensor can sit', air: 'Wrist only', whoop5: y('Wrist · bicep · calf · apparel pods'), whoopMG: y('Wrist · bicep · calf · apparel pods'), winner: 'whoop' },
@@ -103,16 +103,16 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   get _bestFor() {
     return [
       { icon: 'wallet', label: 'For the budget', pick: 'Fitbit Air', reason: '~$100 (or ~$396 with AI Coach over 3 yrs) vs $597–1,077 for WHOOP. No subscription required for core tracking.', price: '$99.99', yrly: '· no required sub' },
-      { icon: 'athlete', label: 'For the athlete', pick: 'WHOOP 5.0', reason: '2× higher HR sampling (1s vs 2s intervals). Bicep & apparel pods rival chest-strap accuracy. 145+ activities vs 40+.', price: '$199/yr', yrly: '· One tier' },
+      { icon: 'athlete', label: 'For the athlete', pick: 'WHOOP 5.0', reason: '2× more frequent HR data storage (1-sec vs 2-sec, per official specs). Bicep & apparel pods rival chest-strap accuracy. 145+ activities vs 40+.', price: '$199/yr', yrly: '· One tier' },
       { icon: 'stethoscope', label: 'For medical-grade', pick: 'WHOOP MG', reason: 'Only device with FDA-cleared ECG, ECG-confirmed AFib detection, and daily Blood Pressure Insights (cuff calibration).', price: '$359/yr', yrly: '· Life tier' },
-      { icon: 'moon', label: 'For casual / sleep', pick: 'Fitbit Air', reason: 'Pixel Watch 4–class sleep & VO₂ Max algorithms in a 12 g band. Smart Wake alarm. 7-day battery, 5-min top-up = 1 day.', price: '$99.99', yrly: '· 3-mo Premium trial' },
+      { icon: 'moon', label: 'For casual / sleep', pick: 'Fitbit Air', reason: 'Pixel Watch 4–class sleep & VO₂ Max algorithms in a 5.2g pod (12g with band). Smart Wake alarm. 7-day battery, 5-min top-up = 1 day.', price: '$99.99', yrly: '· 3-mo Premium trial' },
     ];
   }
 
   get _faqs() {
     return [
       { q: 'Is Fitbit Air actually a WHOOP killer?', a: 'No — they\'re aimed at different buyers. WHOOP\'s 1-second sampling and bicep/apparel pods are still the gold standard for serious training, and only WHOOP MG has FDA-cleared ECG. Fitbit Air wins on price, weight, water resistance, and "no required subscription" — making it the better casual + sleep tracker for most people.' },
-      { q: 'What does "every 2 seconds vs every 1 second" actually mean for me?', a: 'For sleep, resting heart rate, and daily steps — basically nothing. Both devices will produce solid scores. For high-intensity training (HIIT, sprints, lifts), HRV experiments, or anything where heartbeat-to-heartbeat precision matters, WHOOP\'s tighter 1-second interval produces noticeably cleaner data.' },
+      { q: 'Does 2-sec vs 1-sec HR storage actually matter for me?', a: 'For sleep, resting heart rate, and daily steps — basically nothing. Both devices will produce solid scores. For high-intensity training (HIIT, sprints, lifts), HRV experiments, or anything where heartbeat-to-heartbeat precision matters, WHOOP\'s tighter 1-second storage interval produces a more granular HR timeline.' },
       { q: 'Can I use both?', a: 'Yes, and many people do — WHOOP on the bicep for workouts, Fitbit Air at night for sleep + recovery. Kygo can pull data from both and treat them as a single signal, automatically picking the more reliable source per metric.' },
       { q: 'What happens to a WHOOP if I cancel my subscription?', a: 'The device stops working. WHOOP\'s entire value is in the membership; the hardware is free but disabled without an active sub. Fitbit Air is the opposite — you own the hardware outright and Premium ($9.99/mo) is purely additive (mainly the AI Coach).' },
       { q: 'Does Kygo work with both?', a: 'Yes — Kygo connects to Fitbit, WHOOP, Oura, Apple Health, Garmin, and Samsung Galaxy Watch. Pick whichever wearable suits you; Kygo handles the cross-source correlations to your nutrition.' },
@@ -210,8 +210,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             </div>
           </div>
           <div class="hero-stats">
-            <div class="hero-stat"><div class="num">2<span class="unit">×</span></div><div class="lbl">More HR samples / sec on WHOOP</div></div>
-            <div class="hero-stat"><div class="num">5.2<span class="unit">g</span></div><div class="lbl">Fitbit Air pod — half of any WHOOP</div></div>
+            <div class="hero-stat"><div class="num">2<span class="unit">×</span></div><div class="lbl">WHOOP stores HR data 2× more often</div></div>
+            <div class="hero-stat"><div class="num">5.2<span class="unit">g</span></div><div class="lbl">Fitbit Air pod — smallest Fitbit ever</div></div>
             <div class="hero-stat"><div class="num">$977</div><div class="lbl">3-yr cost gap, Air vs WHOOP MG</div></div>
             <div class="hero-stat"><div class="num">1<span class="unit">device</span></div><div class="lbl">FDA-cleared ECG: WHOOP MG only</div></div>
           </div>
@@ -224,8 +224,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <div class="viz-head">
               <div class="left">
                 <div class="viz-kicker">The Headline Gap</div>
-                <h3>WHOOP samples your heart rate <span>2× more often.</span></h3>
-                <p>Sampling frequency is what separates lab-grade HRV from blog-grade HRV. Here's how the two devices read your pulse over the same window — both polling silently.</p>
+                <h3>WHOOP stores HR data <span>2× more often.</span></h3>
+                <p>Storage frequency drives how granular your HR timeline looks. Both devices sample the underlying PPG faster, but only WHOOP publishes that internal rate (26 Hz).</p>
               </div>
               <div class="viz-toggle" data-viz-toggle>
                 <button data-viz="1s" class="${this._vizMode==='1s'?'active':''}">Real time</button>
@@ -235,17 +235,17 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <div class="viz-row">
               <div class="name">Fitbit Air<div class="sub">Every 2 seconds</div></div>
               <div class="track" data-track="air"></div>
-              <div class="rate">1<span class="unit">read / 2 sec</span></div>
+              <div class="rate">1<span class="unit">stored reading / 2 sec</span></div>
             </div>
             <div class="viz-row">
               <div class="name">WHOOP 5.0 / MG<div class="sub">Every 1 second</div></div>
               <div class="track" data-track="whoop"></div>
-              <div class="rate">1<span class="unit">read / sec</span></div>
+              <div class="rate">1<span class="unit">stored reading / sec</span></div>
             </div>
             <div class="viz-foot">
               <span class="legend"><span class="swatch" style="background:#FBBF24"></span> Fitbit Air</span>
               <span class="legend"><span class="swatch" style="background:#22C55E"></span> WHOOP 5.0 / MG</span>
-              <span class="caption">Matters most for HRV precision and high-intensity HR accuracy. For sleep + resting HR, Fitbit Air's rate is sufficient.</span>
+              <span class="caption">Matters most for HR timeline granularity. HRV math runs on the underlying sensor data, not stored points.</span>
             </div>
           </div>
         </div>
@@ -256,7 +256,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Side by side</div>
             <h2>Every spec, <span class="hl">organized.</span></h2>
-            <p class="lede">35 specs split into five categories. ★ marks where each device wins. WHOOP 5.0 and MG share hardware externally — MG adds the ECG electrodes.</p>
+            <p class="lede">35 specs split into five categories. WHOOP 5.0 and MG share hardware externally — MG adds the ECG electrodes.</p>
           </div>
           <div class="tbl-wrap">
             <div class="tbl-tabs" data-tabs>${this._renderTabs()}</div>
@@ -336,7 +336,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <div class="gap animate-on-scroll">
               <h4>Three technical gaps</h4>
               <ul>
-                <li><span class="num-tag">1</span><span><strong>HR sampling.</strong> WHOOP polls every 1 second vs Fitbit Air's every 2 seconds (2× more frequent). Matters for HRV precision and high-intensity HR accuracy.</span></li>
+                <li><span class="num-tag">1</span><span><strong>HR data resolution.</strong> WHOOP stores HR data every 1 sec; Fitbit Air every 2 sec (Google's official spec). 2× the granularity in your HR timeline.</span></li>
                 <li><span class="num-tag">2</span><span><strong>Wear flexibility.</strong> WHOOP supports bicep, calf, and apparel pods (sleeves, shorts, sports bras). Fitbit Air is wrist-only at launch.</span></li>
                 <li><span class="num-tag">3</span><span><strong>Medical-grade sensors.</strong> Only WHOOP MG has FDA-cleared ECG and daily Blood Pressure Insights from cuff calibration.</span></li>
               </ul>
@@ -379,7 +379,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <a href="https://kygo.app/terms">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
-          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated May 2026.</p>
+          <p class="footer-copyright">Data sourced from official manufacturer specifications, peer-reviewed validation studies, and independent reviews. Last updated May 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
@@ -416,8 +416,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     const fitbitAff = 'https://amzn.to/4wogJ3y';
     const whoopAff = 'https://amzn.to/431iUfG';
     const rows = this._specs[this._activeTab];
-    const winnerBadge = `<span class="winner-badge">★ best</span>`;
-    const isNo = (v) => typeof v === 'string' && /class="n"/.test(v);
     const amazonLink = (url) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
       <table class="tbl">
@@ -437,13 +435,13 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
                 ${r.info ? `<div class="info">${r.info}</div>` : ''}
               </td>
               <td class="cell" data-label="Fitbit Air">
-                ${r.air} ${r.winner==='air' ? winnerBadge : ''}
+                ${r.air}
               </td>
               <td class="cell" data-label="WHOOP 5.0">
-                ${r.whoop5} ${r.winner==='whoop' && !isNo(r.whoop5) ? winnerBadge : ''}
+                ${r.whoop5}
               </td>
               <td class="cell" data-label="WHOOP MG">
-                ${r.whoopMG} ${r.winner==='whoop' && !isNo(r.whoopMG) && r.whoopMG !== r.whoop5 ? winnerBadge : ''}
+                ${r.whoopMG}
               </td>
             </tr>
           `).join('')}
@@ -466,7 +464,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     const tierName = tier === 'one' ? 'One' : tier === 'peak' ? 'Peak' : 'Life · MG';
     const tierSub = tier === 'life' ? 'Includes MG hardware' : '5.0 hardware';
     const savingMsg = savings > 0
-      ? `You save <strong>${fmt(savings)}</strong> with Fitbit Air over ${years} ${years===1?'year':'years'} — but lose 1-second HR sampling, ECG (MG), and bicep wear.`
+      ? `You save <strong>${fmt(savings)}</strong> vs WHOOP One — or <strong>$977</strong> vs WHOOP MG. Trade-off: 1-sec HR storage, MG's ECG/BP, and bicep/calf/apparel wear.`
       : savings < 0
         ? `WHOOP costs <strong>${fmt(-savings)} less</strong> here.`
         : `Both options total <strong>${fmt(airTotal)}</strong> at this configuration.`;
@@ -850,7 +848,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .tbl tbody tr:hover { background: var(--bg-raised); }
       .tbl .spec-name { font-weight: 600; color: var(--fg-1); width: 28%; }
       .tbl .spec-name .info { font-size: 12px; font-weight: 400; color: var(--fg-3); margin-top: 2px; line-height: 1.4; }
-      .tbl .winner-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; background: var(--kygo-green-light); color: var(--kygo-green-dark); padding: 2px 7px; border-radius: 999px; font-weight: 600; margin-left: 6px; }
       .tbl .y { color: var(--kygo-green-dark); font-weight: 600; }
       .tbl .n { color: var(--fg-3); }
       .tbl .num { font-family: var(--font-numeric); font-weight: 600; font-size: 15px; color: var(--fg-1); }
