@@ -76,7 +76,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         { name: 'Display', info: 'Visible screen on device', air: n('None'), whoop5: n('None'), whoopMG: n('None'), winner: 'tie' },
         { name: 'Water resistance', air: y('50 m'), whoop5: '10 m / 2 hr (IP68)', whoopMG: '10 m / 2 hr (IP68)', winner: 'air' },
         { name: 'Battery (on device)', air: '~7 days', whoop5: '14 days', whoopMG: '14 days', winner: 'whoop' },
-        { name: 'Battery (extended)', info: 'Slide-on power pack', air: n('n/a'), whoop5: 'Up to 14 days w/ PowerPack', whoopMG: 'Up to 14 days w/ PowerPack', winner: 'whoop' },
+        { name: 'Battery (extended)', air: n('n/a'), whoop5: '14 days', whoopMG: '14 days', winner: 'whoop' },
         { name: 'Fast charge', air: y('1 day in 5 min · 0–100% in 90 min'), whoop5: 'Slide-on PowerPack', whoopMG: 'Slide-on PowerPack', winner: 'air' },
         { name: 'Charger', air: 'USB-C bidirectional puck', whoop5: 'Wireless PowerPack', whoopMG: 'Wireless PowerPack', winner: 'tie' },
       ],
