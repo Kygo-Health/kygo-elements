@@ -421,6 +421,15 @@ class KygoOuraRingComparison extends HTMLElement {
               <td class="cell" data-label="Oura Ring 5">${r.ring5}</td>
             </tr>
           `).join('')}
+          <tr class="aff-row">
+            <td colspan="4">
+              <div class="aff-row-inner">
+                <a class="aff-btn" href="${gen3Link}" target="_blank" rel="noopener sponsored"><img src="${ouraImg}" alt="" /> Gen 3 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${ring4Link}" target="_blank" rel="noopener sponsored"><img src="${ouraImg}" alt="" /> Ring 4 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${ring5Link}" target="_blank" rel="noopener sponsored"><img src="${ouraImg}" alt="" /> Ring 5 on Amazon ${this._icon('arrowRight')}</a>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     `;
@@ -804,12 +813,20 @@ class KygoOuraRingComparison extends HTMLElement {
       .tbl .n { color: var(--fg-3); }
       .tbl .num { font-family: var(--font-numeric); font-weight: 600; font-size: 15px; color: var(--fg-1); }
       .tbl .num.y { color: var(--kygo-green-dark); }
+      .aff-row { display: none; }
+      .aff-row-inner { display: flex; flex-direction: column; gap: 8px; }
+      .aff-btn { display: inline-flex; align-items: center; gap: 8px; justify-content: center; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--kygo-green-light); background: rgba(34,197,94,0.06); color: var(--kygo-green-dark); font-family: var(--font-body); font-weight: 600; font-size: 13px; transition: all .15s ease; }
+      .aff-btn:hover { border-color: var(--kygo-green); background: rgba(34,197,94,0.1); }
+      .aff-btn img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 2px; object-fit: contain; }
+      .aff-btn .ico { width: 13px; height: 13px; }
       @media (max-width: 720px) {
         .tbl thead { display: none; }
         .tbl tbody td { display: block; padding: 6px 16px; border-top: 0; }
         .tbl tbody tr { display: block; padding: 14px 0; border-top: 1px solid var(--border-subtle); }
         .tbl .spec-name { width: auto; padding-top: 14px; }
         .tbl tbody td.cell::before { content: attr(data-label); display: block; font-size: 10px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; font-weight: 600; }
+        .tbl tbody tr.aff-row { display: block; padding: 16px; background: var(--bg-surface); }
+        .tbl tbody tr.aff-row td { display: block; padding: 0; }
       }
 
       /* Cost calculator */
