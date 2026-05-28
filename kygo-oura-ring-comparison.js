@@ -155,7 +155,7 @@ class KygoOuraRingComparison extends HTMLElement {
             <img src="${logoUrl}" alt="Kygo" loading="lazy" />
             <span>Kygo Health</span>
           </a>
-          <a href="https://kygo.app" class="nav-cta-link" target="_blank" rel="noopener">
+          <a href="https://kygo.app/iOS" class="nav-cta-link" target="_blank" rel="noopener">
             Get Kygo App ${this._icon('arrowRight')}
           </a>
         </div>
@@ -169,30 +169,27 @@ class KygoOuraRingComparison extends HTMLElement {
               <h1>Oura Ring 5 vs Ring 4 vs Gen 3 — <span class="hl">is the upgrade worth it?</span></h1>
               <p class="hero-lede">Ring 5 is smaller, lighter, and longer-lasting — but it has <strong>zero independent validation</strong>, a shrunken size range, and a membership that makes the real 3-year cost ~$609. Compare every spec, the peer-reviewed accuracy data, and your true cost.</p>
               <div class="hero-devices three">
-                <a class="hero-dev" href="https://amzn.to/3PxP8fM" target="_blank" rel="noopener sponsored">
+                <div class="hero-dev">
                   <img src="${ouraImg}" alt="Oura Ring Gen 3" />
                   <div>
                     <strong>Oura Gen 3</strong>
                     <span>Resale · 2021</span>
-                    <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
                   </div>
-                </a>
-                <a class="hero-dev" href="https://amzn.to/3RD6VCL" target="_blank" rel="noopener sponsored">
+                </div>
+                <div class="hero-dev">
                   <img src="${ouraImg}" alt="Oura Ring 4" />
                   <div>
                     <strong>Oura Ring 4</strong>
                     <span>$349 · Oct 2024</span>
-                    <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
                   </div>
-                </a>
-                <a class="hero-dev" href="https://amzn.to/3Q4f42J" target="_blank" rel="noopener sponsored">
+                </div>
+                <div class="hero-dev">
                   <img src="${ouraImg}" alt="Oura Ring 5" />
                   <div>
                     <strong>Oura Ring 5</strong>
                     <span>$399 · ships Jun 4</span>
-                    <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
                   </div>
-                </a>
+                </div>
               </div>
             </div>
             <div class="hero-vis" aria-hidden="true">
@@ -285,7 +282,7 @@ class KygoOuraRingComparison extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/blog/oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based" target="_blank" rel="noopener">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Deep Dive</span>
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Read the full article</div>
@@ -438,6 +435,7 @@ class KygoOuraRingComparison extends HTMLElement {
   _renderCalc() {
     const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
     const pick = this._ouraPick, rival = this._rival, years = this._years;
+    const ouraAmazon = pick === 'ring4' ? 'https://amzn.to/3RD6VCL' : 'https://amzn.to/3Q4f42J';
     const ouraHardware = pick === 'ring4' ? 349 : pick === 'ring5' ? 399 : 499;
     const membershipYr = 69.99;
     const ouraTotal = ouraHardware + membershipYr * years;
@@ -493,6 +491,7 @@ class KygoOuraRingComparison extends HTMLElement {
           <div class="breakdown">$${rivalHardware} hardware + $0 sub</div>
         </div>
         <div class="calc-savings">${gapMsg}</div>
+        <a class="calc-amazon" href="${ouraAmazon}" target="_blank" rel="noopener sponsored">View Oura ${pickName} on Amazon ${this._icon('arrowRight')}</a>
       </div>
     `;
   }
@@ -748,14 +747,10 @@ class KygoOuraRingComparison extends HTMLElement {
       @media (max-width: 880px) { .hero-vis { display: none; } }
       .hero-devices { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 22px; align-items: stretch; }
       @media (min-width: 620px) { .hero-devices.three { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
-      .hero-dev { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; color: var(--fg-1); transition: all .2s var(--ease-out); }
-      .hero-dev:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+      .hero-dev { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; color: var(--fg-1); }
       .hero-dev img { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; background: var(--kygo-light); padding: 4px; flex: none; }
       .hero-dev strong { font-family: var(--font-display); font-weight: 600; font-size: 15px; display: block; }
       .hero-dev span { color: var(--fg-3); font-size: 12px; display: block; }
-      .hero-dev .hero-dev-aff { display: inline-flex; align-items: center; gap: 3px; color: var(--kygo-green-dark); font-weight: 600; font-size: 11px; margin-top: 2px; }
-      .hero-dev .hero-dev-aff .ico { width: 11px; height: 11px; transition: transform .15s; }
-      .hero-dev:hover .hero-dev-aff .ico { transform: translateX(2px); }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
       .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 4.2vw, 44px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; display: inline-flex; align-items: baseline; gap: 2px; }
@@ -863,6 +858,10 @@ class KygoOuraRingComparison extends HTMLElement {
       .calc-row .breakdown { grid-column: 1 / -1; color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 2px; line-height: 1.4; }
       .calc-savings { margin-top: auto; position: relative; padding: 12px 14px; border-radius: 12px; background: rgba(34,197,94,0.12); color: #6EE7A0; font-size: 13px; font-weight: 500; line-height: 1.5; }
       .calc-savings strong { color: #fff; }
+      .calc-amazon { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 6px; align-self: flex-start; padding: 11px 18px; border-radius: 10px; background: var(--kygo-green); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 13px; text-decoration: none; transition: all .15s ease; }
+      .calc-amazon:hover { background: var(--kygo-green-dark); transform: translateY(-1px); }
+      .calc-amazon .ico { width: 14px; height: 14px; transition: transform .15s; }
+      .calc-amazon:hover .ico { transform: translateX(2px); }
 
       /* Verdict gaps */
       .gaps { display: grid; grid-template-columns: 1fr; gap: 16px; }
