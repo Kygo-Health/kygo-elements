@@ -1,8 +1,8 @@
 /**
- * Kygo Health — Fitbit Air vs WHOOP Comparison Tool
- * Tag: kygo-fitbit-air-vs-whoop
- * URL: /tools/fitbit-air-vs-whoop-comparison
- * Mobile-first side-by-side comparison of Fitbit Air, WHOOP 5.0, and WHOOP MG.
+ * Kygo Health — Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool
+ * Tag: kygo-oura-ring-comparison
+ * URL: /oura-ring-comparison-tool
+ * Mobile-first side-by-side comparison of Oura Ring Gen 3, Ring 4, and Ring 5.
  */
 
 if (typeof __seo === 'undefined') {
@@ -16,13 +16,13 @@ if (typeof __seo === 'undefined') {
   };
 }
 
-class KygoFitbitAirVsWhoop extends HTMLElement {
+class KygoOuraRingComparison extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
-    this._activeTab = 'Sensors';
-    this._whoopTier = 'one';
-    this._airPlan = 'free';
+    this._activeTab = 'Overview';
+    this._ouraPick = 'ring5';
+    this._rival = 'ringconn';
     this._years = 3;
     this._observer = null;
   }
@@ -31,7 +31,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     this.render();
     this._bindEvents();
     this._setupAnimations();
-    __seo(this, 'Fitbit Air vs WHOOP Comparison Tool by Kygo Health. Compare Fitbit Air, WHOOP 5.0, and WHOOP MG specs side by side. Filter by sensors, battery, price, health metrics, and 3-year cost of ownership. Fitbit Air released May 26, 2026 at $99.99 with optional $9.99/mo Premium AI coach. WHOOP 5.0 and MG released April 2025 with required subscriptions: WHOOP One $199/yr, Peak $239/yr, Life $359/yr (MG hardware required for Life). HR sampling: Fitbit Air every 2 seconds vs WHOOP every 1 second (2x more frequent). Pod weight: Fitbit Air 5.2g vs WHOOP ~10g. Water resistance: Fitbit Air 50m vs WHOOP 10m IP68. Battery: Fitbit Air 7 days vs WHOOP 14 days. WHOOP MG only device with FDA-cleared ECG and Blood Pressure Insights. WHOOP supports bicep, calf, and apparel pods. Fitbit Air wrist-only at launch. 3-year total cost of ownership: Fitbit Air $100 core, $396 with AI; WHOOP One $597, WHOOP Life with MG $1,077. Fitbit Air does not require subscription for core function. WHOOP devices are bricked without active subscription. Both work with Android and iOS. Both use phone GPS. Both have SpO2, skin temperature, sleep stages, VO2 Max, and cycle health.');
+    __seo(this, 'Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool by Kygo Health. Compare Oura Ring Gen 3, Ring 4, and Ring 5 specs side by side with peer-reviewed accuracy data and the real 3-year cost of ownership including the Oura Membership. Ring 5 announced May 28, 2026, ships June 4, starting at $399 (Silver/Black) up to $499 for premium finishes. Ring 5 is 40% smaller than Ring 4, 2 to 2.6 g, 6.09 mm wide, 2.28 mm thick, with 6 to 9 day battery and an optional $99 charging case. Two regressions matter: size range shrinks from Ring 4 sizes 4 to 15 down to Ring 5 sizes 6 to 13, and signal pathways drop from up to 18 on Ring 4 to 12 on Ring 5. Ring 4 launched October 2024 at $349. Gen 3 launched November 2021 and is now discontinued, resale only. All rings require the $5.99/mo or $69.99/yr Oura Membership for full features. Ring 5 3-year total cost of ownership is roughly $609 base or $709 premium; Ring 4 is roughly $559. Peer-reviewed validation supports Gen 3 and Ring 4 as the most accurate consumer sleep tracker vs polysomnography (Khan 2025 meta-analysis, Robbins 2024, Svensson 2024) and the strongest agreement vs ECG for nocturnal HRV and resting heart rate (Dial 2025: Ring 4 CCC 0.98 RHR, 0.99 HRV). Ring 5 has zero independent peer-reviewed validation as of today. The Ring 5 store page "99% HR accuracy" footnote traces to Kinnunen 2020, authored by Oura employees on pre-Gen 3 hardware, and reports an r-squared correlation strength, not an error rate. Subscription-free competitors include RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349). Kygo connects to Oura, Apple Health, Fitbit, Garmin, WHOOP, and Samsung Galaxy Watch.');
     this._injectStructuredData();
   }
 
@@ -46,71 +46,75 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     const n = (t) => `<span class="n">${t}</span>`;
     const num = (t, win) => `<span class="num${win ? ' y' : ''}">${t}</span>`;
     return {
+      Overview: [
+        { name: 'Released', gen3: 'Nov 2021', ring4: 'Oct 2024', ring5: 'May 28, 2026 (ships June 4)' },
+        { name: 'Status', info: 'Availability today', gen3: n('Discontinued · resale only'), ring4: 'Current', ring5: 'Pre-order' },
+        { name: 'Launch price', info: 'Before membership', gen3: '$299–399', ring4: '$349+', ring5: '$399–499' },
+        { name: 'Sizes', info: 'US ring size range', gen3: '6–13', ring4: y('4–15'), ring5: '6–13 (launch press)' },
+        { name: 'Width', gen3: '7.0–7.9 mm', ring4: '7.90 mm', ring5: y('6.09 mm') },
+        { name: 'Thickness', gen3: '2.55 mm', ring4: '2.88–3.51 mm', ring5: y('2.28 mm') },
+        { name: 'Weight', gen3: '4–6 g', ring4: '3.3–5.2 g', ring5: y('2–2.6 g') },
+        { name: 'Battery (claimed)', gen3: 'Up to 7 days', ring4: '5–8 days', ring5: y('6–9 days') },
+        { name: 'Charging case', info: 'Extends time between wall charges', gen3: n('None'), ring4: n('None'), ring5: y('Optional · $99 · ~1 month total') },
+        { name: 'Water resistance', gen3: '100 m', ring4: '100 m', ring5: '100 m / IP68' },
+        { name: 'Membership required', info: 'For full features', gen3: n('Yes'), ring4: n('Yes'), ring5: n('Yes') },
+      ],
       Sensors: [
-        { name: 'HR data storage interval', info: 'How often the device records an HR data point', air: 'Every 2 seconds', whoop5: 'Every 1 second', whoopMG: 'Every 1 second', winner: 'whoop' },
-        { name: 'PPG architecture', info: 'LED + photodiode stack', air: 'Optical HR + Red + IR for SpO2 (LED count not disclosed)', whoop5: '3 green + 1 red + 1 IR LEDs · 4 photodiodes', whoopMG: 'Same as 5.0', winner: 'whoop' },
-        { name: 'SpO₂ (blood oxygen)', info: 'Red + IR LEDs for overnight oxygen', air: 'Yes', whoop5: 'Yes', whoopMG: 'Yes', winner: 'tie' },
-        { name: 'Skin temperature', info: 'Nightly variation tracking', air: 'Yes', whoop5: 'Yes', whoopMG: 'Yes', winner: 'tie' },
-        { name: 'Accelerometer', info: 'Motion + activity detection', air: '3-axis + gyroscope', whoop5: 'Multi-axis', whoopMG: 'Multi-axis', winner: 'tie' },
-        { name: 'ECG (single-lead)', info: 'Confirmed AFib detection', air: n('No'), whoop5: n('No'), whoopMG: y('Yes — FDA-cleared'), winner: 'whoop' },
-        { name: 'Blood pressure', info: 'Daily estimates from cuff calibration', air: n('No'), whoop5: n('No'), whoopMG: y('Estimated (cuff calibration required, not FDA-cleared, general wellness only)'), winner: 'whoop' },
-        { name: 'AFib alerts', info: 'How irregular rhythm is detected', air: 'PPG-based alerts', whoop5: n('No'), whoopMG: y('ECG-confirmed'), winner: 'whoop' },
-        { name: 'EDA (electrodermal)', info: 'Skin conductance for stress', air: n('No'), whoop5: n('No'), whoopMG: n('No'), winner: 'tie' },
-        { name: 'GPS', info: 'Location tracking on device', air: 'Phone GPS', whoop5: 'Phone GPS', whoopMG: 'Phone GPS', winner: 'tie' },
+        { name: 'Core PPG modality', info: 'Green / red / IR LEDs', gen3: 'Yes', ring4: 'Yes', ring5: 'Yes', },
+        { name: 'Interior surface', gen3: 'Non-metallic seamless molding (BPA-free)', ring4: 'Full titanium, recessed sensors', ring5: 'Full titanium + PVD scratch coating' },
+        { name: 'Sensor dome height', info: 'How far sensors sit from skin', gen3: '~1.3 mm raised', ring4: y('0.3 mm (near-flush)'), ring5: '0.7 mm' },
+        { name: 'LEDs', gen3: 'Green, red, IR + IR alignment', ring4: '2 multi-color LEDs + 3 photodiodes', ring5: 'LEDs rotated 180° · shorter paths · more powerful' },
+        { name: 'Photodiode', gen3: 'Standard', ring4: 'Standard', ring5: 'Larger PD (offsets shorter paths)' },
+        { name: 'Signal pathways', info: 'More pathways = more redundancy', gen3: '~8', ring4: y('Up to 18 (Smart Sensing)'), ring5: n('12 ("stronger" per Oura)') },
+        { name: 'Temperature sensor', gen3: 'Analog NTC', ring4: y('Digital'), ring5: y('Digital') },
+        { name: 'Accelerometer', gen3: 'Yes', ring4: 'Yes', ring5: 'Yes' },
       ],
       Accuracy: [
-        { name: 'HRV precision', info: 'Higher internal sample rate = cleaner HRV', air: 'Pixel Watch–class', whoop5: y('Lab-validated (peer-reviewed, 26 Hz)'), whoopMG: y('Lab-validated (peer-reviewed, 26 Hz)'), winner: 'whoop' },
-        { name: 'High-intensity HR', info: 'HR data resolution during workouts', air: '2-sec storage', whoop5: '1-sec storage', whoopMG: '1-sec storage', winner: 'whoop' },
-        { name: 'Auto-detected workouts', info: 'No manual logging needed', air: '40+ via SmartTrack', whoop5: '145+ activities', whoopMG: '145+ activities', winner: 'whoop' },
-        { name: 'Strength training', info: 'Resistance load detection', air: 'Basic', whoop5: 'Better axes; manual log recommended', whoopMG: 'Same as 5.0', winner: 'whoop' },
-        { name: 'Wear locations', info: 'Where the sensor can sit', air: 'Wrist only', whoop5: y('Wrist · bicep · calf · apparel pods'), whoopMG: y('Wrist · bicep · calf · apparel pods'), winner: 'whoop' },
-        { name: 'Sleep stages', info: 'REM/Deep/Light scoring', air: 'Yes + Smart Wake alarm', whoop5: 'Yes + Sleep Coach (exact bedtime)', whoopMG: 'Same', winner: 'tie' },
-        { name: 'VO₂ Max', info: 'Aerobic fitness estimate', air: y('Pixel Watch 4 algos'), whoop5: 'Yes', whoopMG: 'Yes', winner: 'tie' },
-      ],
-      'Form & Battery': [
-        { name: 'Pod weight', info: 'The sensor module alone', air: y('5.2 g'), whoop5: '~10 g', whoopMG: '~10 g', winner: 'air' },
-        { name: 'Total weight w/ band', air: y('12 g'), whoop5: '~27 g', whoopMG: '~27 g', winner: 'air' },
-        { name: 'Display', info: 'Visible screen on device', air: n('None'), whoop5: n('None'), whoopMG: n('None'), winner: 'tie' },
-        { name: 'Water resistance', air: y('50 m'), whoop5: '10 m / 2 hr (IP68)', whoopMG: '10 m / 2 hr (IP68)', winner: 'air' },
-        { name: 'Battery', air: '~7 days', whoop5: '14 days', whoopMG: '14 days', winner: 'whoop' },
-        { name: 'Fast charge', air: y('1 day in 5 min · 0–100% in 90 min'), whoop5: 'Slide-on PowerPack', whoopMG: 'Slide-on PowerPack', winner: 'air' },
-        { name: 'Charger', air: 'USB-C bidirectional puck', whoop5: 'Wireless PowerPack', whoopMG: 'Wireless PowerPack', winner: 'tie' },
+        { name: 'Independent validation', info: 'Peer-reviewed, non-Oura', gen3: y('Extensive (Gen 3 explicit, 2024–25)'), ring4: y('Head-to-head vs Gen 3 (Dial 2025)'), ring5: n('None yet · zero studies') },
+        { name: 'RHR vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 1.67%', ring4: y('0.98 · MAPE 1.94%'), ring5: 'Inherited claim' },
+        { name: 'HRV vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 7.15%', ring4: y('0.99 · MAPE 5.96%'), ring5: 'Inherited claim' },
+        { name: 'Sleep/wake vs PSG', info: '2-stage agreement', gen3: '~92% (Robbins/Svensson)', ring4: 'Inferred (shared PPG)', ring5: n('Untested') },
+        { name: '4-stage sleep vs PSG', info: 'REM/Deep/Light/Wake', gen3: '76.3% (Robbins, Gen 3)', ring4: 'Inferred', ring5: n('Untested') },
+        { name: '"99% HR accuracy" claim', info: 'On Ring 5 store page', gen3: 'Kinnunen 2020 (Oura-authored, r²)', ring4: 'Same source', ring5: n('Inherited, not independent') },
+        { name: 'SpO₂ accuracy', info: 'Overnight blood oxygen', gen3: 'Baseline', ring4: y('+30% vs Gen 3 (Oura internal)'), ring5: 'Inherits Ring 4' },
       ],
       'Cost & Plans': [
-        { name: 'Hardware price', air: num('$99.99'), whoop5: num('$0'), whoopMG: num('$0'), winner: 'tie' },
-        { name: 'Subscription', info: 'Required for core function?', air: y('Optional · $9.99/mo or $99/yr'), whoop5: 'Required · $199–239/yr', whoopMG: 'Required · $359/yr (Life)', winner: 'air' },
-        { name: 'Bricked without sub?', air: y('No'), whoop5: n('Yes'), whoopMG: n('Yes'), winner: 'air' },
-        { name: 'Premium trial', air: '3 months Health Premium', whoop5: n('None'), whoopMG: n('None'), winner: 'air' },
-        { name: '3-yr cost (core)', air: num('$100', true), whoop5: num('$597'), whoopMG: num('$1,077'), winner: 'air' },
-        { name: '3-yr cost (with AI)', air: num('$396', true), whoop5: num('$597+'), whoopMG: num('$1,077+'), winner: 'air' },
+        { name: 'Hardware price', gen3: num('$299–399 (resale)'), ring4: num('$349'), ring5: num('$399–499') },
+        { name: 'Membership', info: 'Required for full features', gen3: '$5.99/mo · $69.99/yr', ring4: '$5.99/mo · $69.99/yr', ring5: '$5.99/mo · $69.99/yr' },
+        { name: 'Free without membership', info: 'What still works', gen3: 'Sleep/Readiness/Activity scores only', ring4: 'Same', ring5: 'Same' },
+        { name: '3-yr membership', gen3: num('$209.97'), ring4: num('$209.97'), ring5: num('$209.97') },
+        { name: '3-yr total cost', info: 'Hardware + membership', gen3: num('~$509 (resale)'), ring4: num('~$559', true), ring5: num('~$609–709') },
+        { name: 'Sub-free alternative', info: 'Same category, no membership', gen3: 'RingConn Gen 2 $299 · Ultrahuman $349', ring4: 'RingConn Gen 2 $299 · Ultrahuman $349', ring5: 'RingConn Gen 2 $299 · Ultrahuman $349' },
       ],
       Software: [
-        { name: 'AI coach', air: 'Google Health Coach (Gemini)', whoop5: 'WHOOP Coach (LLM)', whoopMG: 'WHOOP Coach (LLM)', winner: 'tie' },
-        { name: 'Companion app', air: 'Google Health (rebranded Fitbit)', whoop5: 'WHOOP', whoopMG: 'WHOOP', winner: 'tie' },
-        { name: 'Strain / load', air: 'Cardio Load + Readiness', whoop5: 'Strain 0–21', whoopMG: 'Strain 0–21', winner: 'tie' },
-        { name: 'Healthspan', air: 'Health Coach (Premium)', whoop5: 'WHOOP Age + Pace of Aging', whoopMG: 'WHOOP Age + Pace of Aging', winner: 'whoop' },
-        { name: 'Cycle health', air: 'Yes', whoop5: 'Yes', whoopMG: 'Yes', winner: 'tie' },
-        { name: 'OS support', air: 'Android + iOS', whoop5: 'Android + iOS', whoopMG: 'Android + iOS', winner: 'tie' },
+        { name: 'Health Radar', info: 'Passive cardiovascular monitoring', gen3: y('Via membership'), ring4: y('Via membership'), ring5: y('Launches here') },
+        { name: 'Blood Pressure Signals', info: 'Nighttime BP trends from PPG', gen3: 'Via membership', ring4: 'Via membership', ring5: n('No FDA clearance · not a cuff') },
+        { name: 'Nighttime Breathing', info: '30-day breathing-disturbance view', gen3: 'Via membership', ring4: 'Via membership', ring5: n('Not apnea diagnosis') },
+        { name: 'GLP-1 Tracking Tools', gen3: y('Via membership'), ring4: y('Via membership'), ring5: y('Yes') },
+        { name: 'Live Activity Tracking', info: 'Real-time pace/distance/HR', gen3: 'Via membership', ring4: 'Via membership', ring5: 'Yes' },
+        { name: 'Oura Health Records (US)', gen3: y('Via membership'), ring4: y('Via membership'), ring5: y('Yes') },
+        { name: 'Advisor AI', gen3: 'Via membership', ring4: 'Via membership', ring5: 'Yes' },
       ],
     };
   }
 
   get _bestFor() {
     return [
-      { icon: 'wallet', label: 'For the budget', pick: 'Fitbit Air', reason: '~$100 (or ~$396 with AI Coach over 3 yrs) vs $597–1,077 for WHOOP. No subscription required for core tracking.', price: '$99.99', yrly: '· no required sub' },
-      { icon: 'athlete', label: 'For the athlete', pick: 'WHOOP 5.0', reason: '2× more frequent HR data storage (1-sec vs 2-sec, per official specs). Bicep & apparel pods rival chest-strap accuracy. 145+ activities vs 40+.', price: '$199/yr', yrly: '· One tier' },
-      { icon: 'stethoscope', label: 'For medical-grade', pick: 'WHOOP MG', reason: 'Only device with FDA-cleared ECG, ECG-confirmed AFib detection, and daily Blood Pressure Insights (cuff calibration).', price: '$359/yr', yrly: '· Life tier' },
-      { icon: 'moon', label: 'For casual / sleep', pick: 'Fitbit Air', reason: 'Pixel Watch 4–class sleep & VO₂ Max algorithms in a 5.2g pod (12g with band). Smart Wake alarm. 7-day battery, 5-min top-up = 1 day.', price: '$99.99', yrly: '· 3-mo Premium trial' },
+      { icon: 'shield', label: 'For proven accuracy', pick: 'Oura Ring 4', reason: 'The only ring with an independent head-to-head study (Dial 2025): CCC 0.98 RHR and 0.99 HRV vs ECG, beating Gen 3, WHOOP 4.0, Garmin, and Polar. Ring 5 has zero peer-reviewed validation yet.', price: '$349', yrly: '· ~$559 / 3 yrs' },
+      { icon: 'moon', label: 'For the smallest ring', pick: 'Oura Ring 5', reason: '40% smaller than Ring 4 at 2–2.6 g and 2.28 mm thick — the world\'s smallest smart ring. 6–9 day battery and an optional $99 charging case for ~1 month between wall charges.', price: '$399', yrly: '· ships June 4' },
+      { icon: 'wallet', label: 'For the value buyer', pick: 'Oura Ring 4', reason: 'Cheapest current ring at $349 (~$559 over 3 years vs ~$609 for Ring 5), fully validated, and it keeps the wider 4–15 size range. Every Ring 5 software feature rolls back to it with membership.', price: '$349', yrly: '· no Ring 5 lock-in' },
+      { icon: 'ruler', label: 'For small or large fingers', pick: 'Oura Ring 4', reason: 'Ring 5 shrinks the size range to 6–13. Ring 4 still spans sizes 4–15, so very small and very large fingers keep an Oura option that Ring 5 drops at launch.', price: '$349', yrly: '· sizes 4–15' },
     ];
   }
 
   get _faqs() {
     return [
-      { q: 'Is Fitbit Air actually a WHOOP killer?', a: 'They\'re aimed at different buyers and different budgets. Fitbit Air is $99.99 once, with no required subscription for core tracking. WHOOP is $0 hardware but $199–359/yr forever, and the device stops working if you cancel. For most people the price gap is the headline story — WHOOP MG\'s FDA-cleared ECG and bicep/apparel pods justify the cost for a smaller, more specific audience.' },
-      { q: 'Does 2-sec vs 1-sec HR storage actually matter for me?', a: 'For sleep, resting heart rate, and daily steps — basically nothing. Both devices produce solid scores. For high-intensity workouts or anyone who wants a more granular timeline of their HR, WHOOP\'s tighter 1-second storage shows more data points per minute but you are paying a lot more for this difference.' },
-      { q: 'Can I use both?', a: 'Yes — WHOOP on the bicep for workouts, Fitbit Air at night for sleep + recovery. Kygo can pull data from both and treat them as a single signal, automatically picking the more reliable source per metric.' },
-      { q: 'What happens to a WHOOP if I cancel my subscription?', a: 'The device stops working. WHOOP\'s entire value is in the membership; the hardware is free but disabled without an active sub. Fitbit Air is the opposite — you own the hardware outright and Premium ($9.99/mo) is purely additive (mainly the AI Coach).' },
-      { q: 'Does Kygo work with both?', a: 'Yes — Kygo connects to Fitbit, WHOOP, Oura, Apple Health, Garmin, and Samsung Galaxy Watch. Pick whichever wearable suits you; Kygo handles the cross-source correlations to your nutrition.' },
+      { q: 'Is the Ring 5\'s "99% HR accuracy" claim real?', a: 'It needs context. The "99%" footnote on the Ring 5 store page traces back to Kinnunen 2020, a paper authored by Oura employees (including Chief Scientist Hannu Kinnunen), tested on pre-Gen 3 hardware in 49 adults — not Ring 5. The 0.996 figure is an r² correlation strength, not an error percentage. The independent equivalent is Cao 2022 (University of Turku + UC Irvine), which reported a Pearson r of 0.99968 for nightly heart rate — still very strong, but properly attributed. Treat the store-page number as an inherited, Oura-influenced claim, not independent Ring 5 validation.' },
+      { q: 'Is the "95% sleep staging accuracy" number accurate?', a: 'It\'s misleading as usually quoted. The ~94–95% figure is the 2-stage sleep/wake sensitivity from Svensson 2024 (which tested Gen 3 and had 3 of 5 authors disclose Oura funding). Full 4-stage classification — REM, deep, light, wake — was 75.5–90.6% by stage in Svensson and 76.3% overall in Robbins 2024. Since PSG inter-rater reliability is only ~80%, mid-70s is near the practical ceiling. The right number depends on which claim is being made.' },
+      { q: 'Should I upgrade from Ring 4 to Ring 5?', a: 'For most Ring 4 owners, not yet. Ring 5 is a form-factor and signal-quality refinement, not a new-metric leap — it\'s smaller, lighter, and has slightly longer battery, plus Oura\'s internal study claims 12% better overnight HRV and 24% better workout HR. But all the new software features roll back to Ring 4 with an active membership, Ring 5 has no independent validation yet, the size range shrinks to 6–13, and signal pathways drop from 18 to 12. If your Ring 4 fits and works, there\'s little evidence-based reason to pay again.' },
+      { q: 'Do I still need the Oura Membership?', a: 'For almost everything useful, yes. Without an active membership ($5.99/mo or $69.99/yr) the app shows only Sleep, Readiness, and Activity scores plus battery and Explore content. Trends, HRV detail, temperature deviations, period prediction, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools are all gated. That\'s why the real 3-year cost of a Ring 5 is roughly $609, not $399. Subscription-free rivals like RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349) are genuine alternatives if you only want sleep and HRV.' },
+      { q: 'Why did the signal pathway count drop from 18 to 12?', a: 'Because the ring got smaller. Oura\'s engineering blog confirms Ring 5 shrank the battery, PCB, and structural components, so fewer total signal pathways fit in the smaller footprint. Oura frames the 12 pathways as individually "stronger" — LEDs were rotated 180° for shorter optical paths and the photodiode was enlarged to compensate. Whether stronger-but-fewer beats Ring 4\'s 18-pathway Smart Sensing in real-world gap reduction is exactly the kind of claim that has no independent validation yet.' },
+      { q: 'Does Kygo work with Oura?', a: 'Yes — Kygo connects to Oura, plus Apple Health, Fitbit, Garmin, WHOOP, and Samsung Galaxy Watch. Whichever ring (or watch) you wear, Kygo cross-checks your sleep, HRV, and recovery data against what you actually eat and train, so you can see which metrics are genuinely predictive for your body.' },
     ];
   }
 
@@ -123,9 +127,10 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       athlete: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M5 21l3-7 3 2 3-3 5 8M9 13l-2-3"/></svg>',
       stethoscope: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3M10 13v3a4 4 0 0 0 8 0v-2"/><circle cx="18" cy="11" r="2"/></svg>',
       moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>',
+      shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>',
+      ruler: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l5-5 13 13-5 5z"/><path d="M7 7l2 2M10 4l2 2M13 7l2 2M16 10l2 2"/></svg>',
       apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>',
       android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zm10 0v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zM5 17v3a1 1 0 1 0 2 0v-3H5zm12 0v3a1 1 0 1 0 2 0v-3h-2zm-9.5-9c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5H7.5zm.5 1h8a1 1 0 0 1 1 1v6H7v-6a1 1 0 0 1 1-1zM9 5.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm6 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z"/></svg>',
-      plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
     };
     return `<span class="ico">${map[k] || ''}</span>`;
   }
@@ -134,9 +139,9 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
+    const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
     const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
     const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
-    const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
     const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
     const garminImg = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
     const healthConnectImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
@@ -156,59 +161,63 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </header>
 
-
       <section class="hero-light">
         <div class="hero-light-inner">
           <div class="hero-grid">
             <div class="hero-copy">
-              <div class="hero-pill"><span class="dot"></span> UPDATED MAY 20, 2026</div>
-              <h1>Fitbit Air vs WHOOP — <span class="hl">which screenless tracker is worth it?</span></h1>
-              <p class="hero-lede">Same screenless silhouette. Two completely different bets. Compare every sensor, calculate your real 3-year cost, and find the tracker that <strong>actually fits your body</strong>.</p>
-              <div class="hero-devices">
-                <a class="hero-dev" href="https://amzn.to/4wogJ3y" target="_blank" rel="noopener sponsored">
-                  <img src="${fitbitImg}" alt="Fitbit Air" />
+              <div class="hero-pill"><span class="dot"></span> UPDATED MAY 28, 2026</div>
+              <h1>Oura Ring 5 vs Ring 4 vs Gen 3 — <span class="hl">is the upgrade worth it?</span></h1>
+              <p class="hero-lede">Ring 5 is smaller, lighter, and longer-lasting — but it has <strong>zero independent validation</strong>, a shrunken size range, and a membership that makes the real 3-year cost ~$609. Compare every spec, the peer-reviewed accuracy data, and your true cost.</p>
+              <div class="hero-devices three">
+                <a class="hero-dev" href="https://amzn.to/3PxP8fM" target="_blank" rel="noopener sponsored">
+                  <img src="${ouraImg}" alt="Oura Ring Gen 3" />
                   <div>
-                    <strong>Fitbit Air</strong>
-                    <span>$99.99 · May 2026</span>
+                    <strong>Oura Gen 3</strong>
+                    <span>Resale · 2021</span>
                     <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
                   </div>
                 </a>
-                <div class="hero-vs">vs</div>
-                <a class="hero-dev" href="https://amzn.to/431iUfG" target="_blank" rel="noopener sponsored">
-                  <img src="${whoopImg}" alt="WHOOP 5.0 / MG" />
+                <a class="hero-dev" href="https://amzn.to/3RD6VCL" target="_blank" rel="noopener sponsored">
+                  <img src="${ouraImg}" alt="Oura Ring 4" />
                   <div>
-                    <strong>WHOOP 5.0 / MG</strong>
-                    <span>$199–359/yr · Apr 2025</span>
+                    <strong>Oura Ring 4</strong>
+                    <span>$349 · Oct 2024</span>
+                    <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
+                  </div>
+                </a>
+                <a class="hero-dev" href="https://amzn.to/3Q4f42J" target="_blank" rel="noopener sponsored">
+                  <img src="${ouraImg}" alt="Oura Ring 5" />
+                  <div>
+                    <strong>Oura Ring 5</strong>
+                    <span>$399 · ships Jun 4</span>
                     <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
                   </div>
                 </a>
               </div>
             </div>
             <div class="hero-vis" aria-hidden="true">
-              <svg viewBox="0 0 600 360" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="hgFill" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0" stop-color="#22C55E" stop-opacity="0.18"/>
-                    <stop offset="1" stop-color="#22C55E" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <line x1="0" y1="60" x2="600" y2="60" stroke="#E2E8F0" stroke-width="1"/>
-                <line x1="0" y1="180" x2="600" y2="180" stroke="#E2E8F0" stroke-width="1"/>
-                <line x1="0" y1="300" x2="600" y2="300" stroke="#E2E8F0" stroke-width="1"/>
-                <text x="6" y="50" fill="#94A3B8" font-size="11" letter-spacing="1.5">FITBIT AIR · EVERY 2s</text>
-                <text x="6" y="170" fill="#94A3B8" font-size="11" letter-spacing="1.5">RESTING</text>
-                <text x="6" y="290" fill="#94A3B8" font-size="11" letter-spacing="1.5">WHOOP · EVERY 1s</text>
-                <path d="M0,60 L80,60 L100,55 L120,60 L200,60 L220,55 L240,60 L320,60 L340,55 L360,60 L440,60 L460,55 L480,60 L600,60" stroke="#FBBF24" stroke-width="2" fill="none"/>
-                <path d="M0,180 C20,180 30,160 50,160 S80,210 100,150 130,90 160,180 190,250 220,180 240,140 260,140 280,200 310,180 340,90 360,180 380,250 410,170 440,150 460,200 490,180 520,140 540,170 560,180 580,180 600,180" stroke="#22C55E" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M0,180 C20,180 30,160 50,160 S80,210 100,150 130,90 160,180 190,250 220,180 240,140 260,140 280,200 310,180 340,90 360,180 380,250 410,170 440,150 460,200 490,180 520,140 540,170 560,180 580,180 600,180 L600,360 L0,360 Z" fill="url(#hgFill)" opacity="0.7"/>
+              <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid meet">
+                <circle cx="135" cy="150" r="78" fill="#E2E8F0"/>
+                <circle cx="135" cy="150" r="54" fill="#fff"/>
+                <circle cx="300" cy="150" r="70" fill="#CBD5E1"/>
+                <circle cx="300" cy="150" r="50" fill="#fff"/>
+                <circle cx="460" cy="150" r="56" fill="#22C55E"/>
+                <circle cx="460" cy="150" r="42" fill="#fff"/>
+                <text x="135" y="262" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle" font-family="'Space Grotesk',sans-serif">GEN 3</text>
+                <text x="135" y="284" fill="#CBD5E1" font-size="12" text-anchor="middle" font-family="'Space Grotesk',sans-serif">4–6 g</text>
+                <text x="300" y="262" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle" font-family="'Space Grotesk',sans-serif">RING 4</text>
+                <text x="300" y="284" fill="#CBD5E1" font-size="12" text-anchor="middle" font-family="'Space Grotesk',sans-serif">3.3–5.2 g</text>
+                <text x="460" y="262" fill="#16A34A" font-size="13" font-weight="700" text-anchor="middle" font-family="'Space Grotesk',sans-serif">RING 5</text>
+                <text x="460" y="284" fill="#22C55E" font-size="12" font-weight="600" text-anchor="middle" font-family="'Space Grotesk',sans-serif">2–2.6 g</text>
+                <text x="300" y="330" fill="#94A3B8" font-size="11" letter-spacing="1.5" text-anchor="middle" font-family="'Space Grotesk',sans-serif">40% SMALLER, GEN 3 → RING 5</text>
               </svg>
             </div>
           </div>
           <div class="hero-stats">
-            <div class="hero-stat"><div class="num">2<span class="unit">×</span></div><div class="lbl">WHOOP stores HR data 2× more often</div></div>
-            <div class="hero-stat"><div class="num">5.2<span class="unit">g</span></div><div class="lbl">Fitbit Air pod — smallest Fitbit ever</div></div>
-            <div class="hero-stat"><div class="num">$977</div><div class="lbl">3-yr cost gap, Air vs WHOOP MG</div></div>
-            <div class="hero-stat"><div class="num">1<span class="unit">device</span></div><div class="lbl">FDA-cleared ECG: WHOOP MG only</div></div>
+            <div class="hero-stat"><div class="num">40<span class="unit">%</span></div><div class="lbl">Ring 5 smaller than Ring 4</div></div>
+            <div class="hero-stat"><div class="num">2<span class="unit">g</span></div><div class="lbl">Ring 5 — world's smallest smart ring</div></div>
+            <div class="hero-stat"><div class="num">$609</div><div class="lbl">Real 3-yr cost with membership</div></div>
+            <div class="hero-stat"><div class="num">0</div><div class="lbl">Independent Ring 5 validation studies</div></div>
           </div>
         </div>
       </section>
@@ -218,7 +227,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Side by side</div>
             <h2>Every spec, <span class="hl">organized.</span></h2>
-            <p class="lede">35 specs split into five categories. WHOOP 5.0 and MG share hardware externally — MG adds the ECG electrodes.</p>
+            <p class="lede">Five categories across three generations. Gen 3 is discontinued (resale only); Ring 4 is current; Ring 5 is pre-order. Green marks the generation that wins each row.</p>
           </div>
           <div class="tbl-wrap">
             <div class="tbl-tabs" data-tabs>${this._renderTabs()}</div>
@@ -231,8 +240,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         <div class="section-inner">
           <div class="kygo-cta-card animate-on-scroll">
             <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-            <h3>Get the most accurate metric <span>from each wearable.</span></h3>
-            <p>Kygo Health connects to both Fitbit and WHOOP, then cross-checks every reading against what you eat, train, and sleep — so you see which metrics are actually predictive for <em>your</em> body.</p>
+            <h3>Your ring tracks the data. <span>Kygo tells you what moves it.</span></h3>
+            <p>Whichever Oura you wear, Kygo connects to it and cross-checks every sleep, HRV, and recovery reading against what you actually eat and train — so you see which metrics are genuinely predictive for <em>your</em> body, not just a daily score.</p>
             <div class="cta-btn-row">
               <a class="btn btn-primary btn-lg" href="https://kygo.app/iOS" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
               <a class="btn btn-primary btn-lg" href="https://kygo.app/android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
@@ -257,7 +266,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">3-year cost calculator</div>
             <h2>What you'll <span class="hl">actually spend.</span></h2>
-            <p class="lede">Pick a WHOOP tier and your Fitbit Air plan. We'll run the math for you over your chosen horizon. Premium 3-month trial is included.</p>
+            <p class="lede">The Oura Membership ($69.99/yr) is required for almost every useful insight. Pick a ring, compare against a subscription-free rival, and see the real total over your horizon.</p>
           </div>
           <div class="calc" data-calc>${this._renderCalc()}</div>
         </div>
@@ -268,7 +277,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Quick winner</div>
             <h2>The <span class="hl">right pick</span> depends on what you optimize for.</h2>
-            <p class="lede">Four common buyer profiles, ranked head-to-head.</p>
+            <p class="lede">Four common buyer profiles, ranked on the evidence.</p>
           </div>
           <div class="bestfor-grid">${this._renderBestFor()}</div>
         </div>
@@ -276,12 +285,12 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it" target="_blank" rel="noopener">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/blog/oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Deep Dive</span>
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Read the full article</div>
-              <div class="blog-cta-title">Fitbit Air vs WHOOP: Which Screenless Tracker Wins? <span class="yr">(2026)</span></div>
-              <div class="blog-cta-sub">$100 one-time vs $199/yr subscription. We compared every spec, sensor, and cost between Fitbit Air, WHOOP 5.0/MG, and other Fitbits — here's who each one is for.</div>
+              <div class="blog-cta-title">Oura Ring 5 vs Ring 4: Is the Upgrade Worth It? <span class="yr">(Evidence-Based)</span></div>
+              <div class="blog-cta-sub">Smaller and lighter — but with no independent validation, a shrunken size range, and fewer signal pathways. We walk through the peer-reviewed accuracy data and the real cost, so you know whether to upgrade.</div>
             </div>
             <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
           </a>
@@ -292,23 +301,23 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Bottom line</div>
-            <h2>Three things split them. <span class="hl">Three more decide it.</span></h2>
+            <h2>Three real upgrades. <span class="hl">Three things that go backward.</span></h2>
           </div>
           <div class="gaps">
             <div class="gap animate-on-scroll">
-              <h4>Three technical gaps</h4>
+              <h4>Three real upgrades</h4>
               <ul>
-                <li><span class="num-tag">1</span><span><strong>HR data resolution.</strong> WHOOP stores HR data every 1 sec; Fitbit Air every 2 sec (Google's official spec). 2× the granularity in your HR timeline.</span></li>
-                <li><span class="num-tag">2</span><span><strong>Wear flexibility.</strong> WHOOP supports bicep, calf, and apparel pods (sleeves, shorts, sports bras). Fitbit Air is wrist-only at launch.</span></li>
-                <li><span class="num-tag">3</span><span><strong>Medical-grade sensors.</strong> Only WHOOP MG has FDA-cleared ECG and daily Blood Pressure Insights from cuff calibration.</span></li>
+                <li><span class="num-tag">1</span><span><strong>Dramatically smaller.</strong> 40% smaller than Ring 4, down to 2–2.6 g and 2.28 mm thick — the world's smallest smart ring.</span></li>
+                <li><span class="num-tag">2</span><span><strong>Better battery + charging case.</strong> 6–9 days claimed, plus an optional $99 case that holds ~5 charges (~1 month between wall plugs).</span></li>
+                <li><span class="num-tag">3</span><span><strong>Oura's internal study.</strong> 12% better overnight HRV, 24% better workout HR signal, 19% better running/cycling/walking accuracy (60 participants, not yet peer-reviewed).</span></li>
               </ul>
             </div>
             <div class="gap animate-on-scroll">
-              <h4>Three commercial gaps</h4>
+              <h4>Three things that go backward</h4>
               <ul>
-                <li><span class="num-tag">1</span><span><strong>Hardware cost.</strong> Fitbit Air is $99.99 once. WHOOP hardware is free, but with a mandatory annual subscription.</span></li>
-                <li><span class="num-tag">2</span><span><strong>Subscription model.</strong> Fitbit Air's is optional ($9.99/mo for AI Coach). WHOOP devices are bricked without an active membership.</span></li>
-                <li><span class="num-tag">3</span><span><strong>3-year TCO.</strong> Fitbit Air ~$100 (core) or ~$460 (with AI). WHOOP $597 (One) to $1,077 (Life with MG).</span></li>
+                <li><span class="num-tag">1</span><span><strong>Size range shrinks.</strong> From Ring 4's sizes 4–15 down to Ring 5's 6–13. Very small and very large fingers lose Ring 5 as an option.</span></li>
+                <li><span class="num-tag">2</span><span><strong>Fewer signal pathways.</strong> 18 on Ring 4 down to 12 on Ring 5. Oura calls them "stronger" — but stronger-but-fewer has no independent validation.</span></li>
+                <li><span class="num-tag">3</span><span><strong>No new validation, same cost.</strong> Ring 5 has zero peer-reviewed studies, the "99%" and "95%" claims are Oura-influenced, and membership still pushes TCO to ~$609.</span></li>
               </ul>
             </div>
           </div>
@@ -322,6 +331,17 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <h2>Common <span class="hl">questions.</span></h2>
           </div>
           <div class="faq">${this._renderFAQ()}</div>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Sources</div>
+            <h2>Every claim, <span class="hl">traceable.</span></h2>
+            <p class="lede">Specs are primary-source verified against Oura's own pages and launch coverage. Accuracy figures come from peer-reviewed studies, with conflicts of interest noted where they apply.</p>
+          </div>
+          <div class="sources">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -340,8 +360,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <a href="https://kygo.app/privacy">Privacy</a>
             <a href="https://kygo.app/terms">Terms</a>
           </div>
-          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
-          <p class="footer-copyright">Data sourced from official manufacturer specifications, peer-reviewed validation studies, and independent reviews. Last updated May 2026.</p>
+          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making decisions based on wearable data. Oura's Blood Pressure Signals and Nighttime Breathing are not FDA-cleared and do not diagnose any condition.</p>
+          <p class="footer-copyright">Data sourced from official Oura specifications, peer-reviewed validation studies (Khan 2025, Robbins 2024, Svensson 2024, Dial 2025, Cao 2022, Kinnunen 2020, Liang 2024), and Ring 5 launch coverage. Last updated May 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
@@ -373,20 +393,20 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   }
 
   _renderTable() {
-    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
-    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
-    const fitbitAff = 'https://amzn.to/4wogJ3y';
-    const whoopAff = 'https://amzn.to/431iUfG';
+    const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
+    const gen3Link = 'https://amzn.to/3PxP8fM';
+    const ring4Link = 'https://amzn.to/3RD6VCL';
+    const ring5Link = 'https://amzn.to/3Q4f42J';
     const rows = this._specs[this._activeTab];
-    const amazonLink = (url) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>`;
+    const storeLink = (url) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
       <table class="tbl">
         <thead>
           <tr>
             <th>Spec</th>
-            <th><div class="head-prod"><img src="${fitbitImg}" alt="" /> <span>Fitbit Air</span></div>${amazonLink(fitbitAff)}</th>
-            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> <span>WHOOP 5.0</span></div>${amazonLink(whoopAff)}</th>
-            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> <span>WHOOP MG</span></div>${amazonLink(whoopAff)}</th>
+            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Gen 3</span></div>${storeLink(gen3Link)}</th>
+            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 4</span></div>${storeLink(ring4Link)}</th>
+            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 5</span></div>${storeLink(ring5Link)}</th>
           </tr>
         </thead>
         <tbody>
@@ -396,22 +416,17 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
                 ${r.name}
                 ${r.info ? `<div class="info">${r.info}</div>` : ''}
               </td>
-              <td class="cell" data-label="Fitbit Air">
-                ${r.air}
-              </td>
-              <td class="cell" data-label="WHOOP 5.0">
-                ${r.whoop5}
-              </td>
-              <td class="cell" data-label="WHOOP MG">
-                ${r.whoopMG}
-              </td>
+              <td class="cell" data-label="Oura Gen 3">${r.gen3}</td>
+              <td class="cell" data-label="Oura Ring 4">${r.ring4}</td>
+              <td class="cell" data-label="Oura Ring 5">${r.ring5}</td>
             </tr>
           `).join('')}
           <tr class="aff-row">
             <td colspan="4">
               <div class="aff-row-inner">
-                <a class="aff-btn" href="${fitbitAff}" target="_blank" rel="noopener sponsored"><img src="${fitbitImg}" alt="" /> Fitbit Air on Amazon ${this._icon('arrowRight')}</a>
-                <a class="aff-btn" href="${whoopAff}" target="_blank" rel="noopener sponsored"><img src="${whoopImg}" alt="" /> WHOOP on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${gen3Link}" target="_blank" rel="noopener sponsored"><img src="${ouraImg}" alt="" /> Gen 3 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${ring4Link}" target="_blank" rel="noopener sponsored"><img src="${ouraImg}" alt="" /> Ring 4 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${ring5Link}" target="_blank" rel="noopener sponsored"><img src="${ouraImg}" alt="" /> Ring 5 on Amazon ${this._icon('arrowRight')}</a>
               </div>
             </td>
           </tr>
@@ -421,39 +436,39 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   }
 
   _renderCalc() {
-    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
-    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
-    const tier = this._whoopTier, plan = this._airPlan, years = this._years;
-    const whoopAnnual = tier === 'one' ? 199 : tier === 'peak' ? 239 : 359;
-    const whoopTotal = whoopAnnual * years;
-    const airHardware = 99.99;
-    const airSubMonths = plan === 'premium' ? Math.max(0, years * 12 - 3) : 0;
-    const airTotal = airHardware + (airSubMonths / 12) * 99;
+    const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
+    const pick = this._ouraPick, rival = this._rival, years = this._years;
+    const ouraHardware = pick === 'ring4' ? 349 : pick === 'ring5' ? 399 : 499;
+    const membershipYr = 69.99;
+    const ouraTotal = ouraHardware + membershipYr * years;
+    const rivalHardware = rival === 'ringconn' ? 299 : 349;
+    const rivalName = rival === 'ringconn' ? 'RingConn Gen 2' : 'Ultrahuman Ring Air';
+    const rivalTotal = rivalHardware; // no required subscription
     const fmt = n => '$' + Math.round(n).toLocaleString();
-    const savings = whoopTotal - airTotal;
-    const tierName = tier === 'one' ? 'One' : tier === 'peak' ? 'Peak' : 'Life · MG';
-    const tierSub = tier === 'life' ? 'Includes MG hardware' : '5.0 hardware';
-    const savingMsg = savings > 0
-      ? `You save <strong>${fmt(savings)}</strong> vs WHOOP One — or <strong>$977</strong> vs WHOOP MG. Trade-off: 1-sec HR storage, MG's ECG/BP, and bicep/calf/apparel wear.`
-      : savings < 0
-        ? `WHOOP costs <strong>${fmt(-savings)} less</strong> here.`
-        : `Both options total <strong>${fmt(airTotal)}</strong> at this configuration.`;
+    const pickName = pick === 'ring4' ? 'Ring 4' : pick === 'ring5' ? 'Ring 5' : 'Ring 5 Premium';
+    const pickSub = pick === 'ring4' ? '$349 hardware' : pick === 'ring5' ? '$399 hardware' : '$499 hardware';
+    const gap = ouraTotal - rivalTotal;
+    const gapMsg = gap > 0
+      ? `Oura costs <strong>${fmt(gap)} more</strong> than ${rivalName} over ${years} ${years === 1 ? 'year' : 'years'} — almost entirely membership. You're paying for the strongest peer-reviewed validation, Health Radar, and app polish; ${rivalName} has no subscription${rival === 'ringconn' ? ' and 3–4 days more battery' : ' and CGM integration'}.`
+      : gap < 0
+        ? `${rivalName} costs <strong>${fmt(-gap)} more</strong> at this setup.`
+        : `Both options total <strong>${fmt(ouraTotal)}</strong> here.`;
 
     return `
       <div class="calc-controls">
         <div class="calc-block">
-          <div class="label"><img src="${whoopImg}" alt="" /><span>WHOOP membership tier</span></div>
-          <div class="seg" data-seg="whoop">
-            <button data-val="one" class="${tier==='one'?'active':''}">One <span class="px">$199/yr</span></button>
-            <button data-val="peak" class="${tier==='peak'?'active':''}">Peak <span class="px">$239/yr</span></button>
-            <button data-val="life" class="${tier==='life'?'active':''}">Life · MG <span class="px">$359/yr</span></button>
+          <div class="label"><img src="${ouraImg}" alt="" /><span>Oura ring</span></div>
+          <div class="seg" data-seg="oura">
+            <button data-val="ring4" class="${pick==='ring4'?'active':''}">Ring 4 <span class="px">$349</span></button>
+            <button data-val="ring5" class="${pick==='ring5'?'active':''}">Ring 5 <span class="px">$399</span></button>
+            <button data-val="ring5p" class="${pick==='ring5p'?'active':''}">Ring 5 Premium <span class="px">$499</span></button>
           </div>
         </div>
         <div class="calc-block">
-          <div class="label"><img src="${fitbitImg}" alt="" /><span>Fitbit Air plan</span></div>
-          <div class="seg" data-seg="air">
-            <button data-val="free" class="${plan==='free'?'active':''}">Free <span class="px">core tracking</span></button>
-            <button data-val="premium" class="${plan==='premium'?'active':''}">Premium <span class="px">$99/yr · AI Coach</span></button>
+          <div class="label"><span>Subscription-free rival</span></div>
+          <div class="seg" data-seg="rival">
+            <button data-val="ringconn" class="${rival==='ringconn'?'active':''}">RingConn Gen 2 <span class="px">$299 · no sub</span></button>
+            <button data-val="ultrahuman" class="${rival==='ultrahuman'?'active':''}">Ultrahuman Ring Air <span class="px">$349 · no sub</span></button>
           </div>
         </div>
         <div class="calc-block">
@@ -463,21 +478,21 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <div class="yrs">${years} <span>${years === 1 ? 'year' : 'years'}</span></div>
           </div>
         </div>
-        <p class="calc-foot">Hardware: Fitbit Air $99.99 one-time · WHOOP $0 (subscription required). Premium plan includes 3-month free trial.</p>
+        <p class="calc-foot">Oura Membership is $5.99/mo or $69.99/yr and is required for trends, HRV detail, Health Radar, and most insights. Rivals shown have no required subscription. Resale Gen 3 pricing not included.</p>
       </div>
       <div class="calc-result">
         <h4>${years}-year total cost of ownership</h4>
-        <div class="calc-row ${airTotal < whoopTotal ? 'win' : ''}">
-          <div class="who"><img src="${fitbitImg}" alt="" /><div>Fitbit Air<span class="sub">${plan === 'premium' ? 'Premium · $99/yr' : 'Free plan'}</span></div></div>
-          <div class="total">${fmt(airTotal)}</div>
-          <div class="breakdown">$99.99 hardware ${plan==='premium' ? `+ ${airSubMonths} mo × $8.25 (after 3-mo free trial)` : '+ $0 sub'}</div>
+        <div class="calc-row ${ouraTotal < rivalTotal ? 'win' : ''}">
+          <div class="who"><img src="${ouraImg}" alt="" /><div>Oura ${pickName}<span class="sub">${pickSub} + membership</span></div></div>
+          <div class="total">${fmt(ouraTotal)}</div>
+          <div class="breakdown">${pickSub} + ${years} × $69.99/yr membership</div>
         </div>
-        <div class="calc-row ${whoopTotal < airTotal ? 'win' : ''}">
-          <div class="who"><img src="${whoopImg}" alt="" /><div>WHOOP ${tierName}<span class="sub">${tierSub}</span></div></div>
-          <div class="total">${fmt(whoopTotal)}</div>
-          <div class="breakdown">$0 hardware + ${years} × $${whoopAnnual}/yr</div>
+        <div class="calc-row ${rivalTotal < ouraTotal ? 'win' : ''}">
+          <div class="who"><img src="${ouraImg}" alt="" style="opacity:.35" /><div>${rivalName}<span class="sub">No subscription</span></div></div>
+          <div class="total">${fmt(rivalTotal)}</div>
+          <div class="breakdown">$${rivalHardware} hardware + $0 sub</div>
         </div>
-        <div class="calc-savings">${savingMsg}</div>
+        <div class="calc-savings">${gapMsg}</div>
       </div>
     `;
   }
@@ -491,12 +506,74 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     `).join('');
   }
 
+  get _sources() {
+    return [
+      {
+        group: 'Oura primary',
+        links: [
+          { t: 'Introducing Oura Ring 5', u: 'https://ouraring.com/blog/introducing-oura-ring-5/' },
+          { t: 'Inside the Ring: Building Oura Ring 5', u: 'https://ouraring.com/blog/inside-the-ring-oura-ring-5/' },
+          { t: 'Oura Ring 5 store page', u: 'https://ouraring.com/store/rings/oura-ring-5' },
+          { t: 'Oura Ring 5 Charging Case', u: 'https://ouraring.com/store/accessories/oura-ring-5-charging-case' },
+          { t: 'Oura Ring 4 store page', u: 'https://ouraring.com/store/rings/oura-ring-4' },
+          { t: 'Previous Oura Ring Generations', u: 'https://support.ouraring.com/hc/en-us/articles/360025570153-Previous-Oura-Ring-Generations' },
+          { t: 'Oura Membership', u: 'https://ouraring.com/membership' },
+          { t: 'Smart Sensing (Ring 4 vs Gen 3)', u: 'https://ouraring.com/blog/smart-sensing/' },
+        ],
+      },
+      {
+        group: 'Peer-reviewed validation',
+        links: [
+          { t: 'Khan 2025 — meta-analysis (OTO Open)', u: 'https://aao-hnsfjournals.onlinelibrary.wiley.com/doi/full/10.1002/oto2.70181' },
+          { t: 'Svensson 2024 (Sleep Med) — Oura COI', u: 'https://pubmed.ncbi.nlm.nih.gov/38382312/' },
+          { t: 'Kinnunen 2020 — source of "99%" (Oura-authored)', u: 'https://pubmed.ncbi.nlm.nih.gov/32217820/' },
+          { t: 'Cao 2022 — independent (JMIR)', u: 'https://www.jmir.org/2022/1/e27487' },
+          { t: 'Robbins 2024 (Sensors)', u: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11511193/' },
+          { t: 'Liang, Yilmaz, Soon 2024 (Sensors)', u: 'https://www.mdpi.com/1424-8220/24/23/7475' },
+          { t: 'Dial 2025 — Ring 4 vs Gen 3 head-to-head', u: 'https://pubmed.ncbi.nlm.nih.gov/40834291/' },
+        ],
+      },
+      {
+        group: 'Ring 5 launch coverage',
+        links: [
+          { t: 'Business Wire — Ring 5 press release', u: 'https://www.businesswire.com/news/home/20260528686853/en/URA-Introduces-The-Worlds-Smallest-Smart-Ring-Oura-Ring-5' },
+          { t: 'TechCrunch', u: 'https://techcrunch.com/2026/05/28/oura-unveils-its-ring-5-with-a-thinner-lighter-design-starting-at-399/' },
+          { t: 'Wareable', u: 'https://www.wareable.com/wearable-tech/oura-ring-5-announcement-official-features-design-pricing-availability' },
+          { t: "Tom's Guide hands-on", u: 'https://www.tomsguide.com/wellness/smart-rings/ive-worn-the-oura-ring-5-and-it-really-is-tiny-heres-why-i-think-its-the-wearable-to-beat-in-2026' },
+          { t: 'AppleInsider — GLP-1 + BP', u: 'https://appleinsider.com/articles/26/05/28/blood-pressure-tracking-glp-1-tools-central-to-new-oura-ring-5' },
+          { t: 'The 5k Runner — Ring 4 vs Ring 5', u: 'https://the5krunner.com/2026/05/28/oura-ring-5-vs-ring-4-worth-it-review-opinion/' },
+        ],
+      },
+      {
+        group: 'Background & competitors',
+        links: [
+          { t: 'Wareable — Ring 4 vs Ring 3', u: 'https://www.wareable.com/wearable-tech/oura-ring-4-vs-ring-3-key-differences-compared' },
+          { t: 'TechInsights — Ring 4 teardown', u: 'https://www.techinsights.com/blog/oura-ring-gen-4-teardown' },
+          { t: 'DC Rainmaker — Ring 4 breakdown', u: 'https://www.dcrainmaker.com/2024/10/oura-announces-oura-4-heres-whats-actually-changed.html' },
+          { t: 'RingConn Gen 2 product page', u: 'https://ringconn.com/products/ringconn-gen-2' },
+          { t: 'Samsung Galaxy Ring support', u: 'https://www.samsung.com/us/support/answer/ANS10003278/' },
+          { t: 'Wareable — Best smart rings 2026', u: 'https://www.wareable.com/fashion/best-smart-rings-1340' },
+        ],
+      },
+    ];
+  }
+
+  _renderSources() {
+    return this._sources.map(s => `
+      <div class="source-group">
+        <h4>${s.group}</h4>
+        <ul>
+          ${s.links.map(l => `<li><a href="${l.u}" target="_blank" rel="noopener nofollow">${l.t} ${this._icon('arrowRight')}</a></li>`).join('')}
+        </ul>
+      </div>
+    `).join('');
+  }
+
   // ── Events ───────────────────────────────────────────────────────────
 
   _bindEvents() {
     const root = this.shadowRoot;
 
-    // Spec table tabs
     root.querySelector('[data-tabs]').addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-tab]');
       if (!btn) return;
@@ -505,24 +582,21 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       root.querySelector('[data-tbl-body]').innerHTML = this._renderTable();
     });
 
-    // Calc segment buttons
     root.querySelector('[data-calc]').addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-val]');
       if (!btn) return;
       const seg = btn.parentElement.dataset.seg;
-      if (seg === 'whoop') this._whoopTier = btn.dataset.val;
-      if (seg === 'air') this._airPlan = btn.dataset.val;
+      if (seg === 'oura') this._ouraPick = btn.dataset.val;
+      if (seg === 'rival') this._rival = btn.dataset.val;
       this._updateCalc();
     });
 
-    // Years slider
     root.querySelector('[data-calc]').addEventListener('input', (e) => {
       if (e.target.matches('[data-years]')) {
         this._years = +e.target.value;
         this._updateCalc();
       }
     });
-
   }
 
   _updateCalc() {
@@ -540,33 +614,33 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   // ── Structured Data ──────────────────────────────────────────────────
 
   _injectStructuredData() {
-    if (!document.querySelector('script[data-kygo-fitbitair-whoop-ld]')) {
+    if (!document.querySelector('script[data-kygo-oura-ld]')) {
       const ld = {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        'name': 'Fitbit Air vs WHOOP Comparison Tool',
-        'description': 'Compare Fitbit Air, WHOOP 5.0, and WHOOP MG specs side by side. Filter by sensors, battery, price, health metrics, and 3-year cost of ownership.',
-        'url': 'https://www.kygo.app/tools/fitbit-air-vs-whoop-comparison',
+        'name': 'Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool',
+        'description': 'Compare Oura Ring 5, Ring 4, and Gen 3 side by side. See specs, peer-reviewed accuracy data, and the real 3-year cost with subscription math included.',
+        'url': 'https://www.kygo.app/oura-ring-comparison-tool',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
-        'datePublished': '2026-05-08',
-        'dateModified': '2026-05-20',
+        'datePublished': '2026-05-28',
+        'dateModified': '2026-05-28',
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
-        'featureList': '35-spec side-by-side comparison, interactive 3-year cost calculator, HR sampling rate visualization, sensor and accuracy breakdown, mobile-first responsive design',
-        'keywords': 'fitbit air vs whoop, fitbit air vs whoop 5.0, fitbit air vs whoop mg, screenless fitness tracker comparison, whoop subscription cost, fitbit air price, fitbit air specs, whoop 5.0 specs, whoop mg ECG, screenless wearable 2026'
+        'featureList': '40-spec side-by-side comparison across three Oura generations, peer-reviewed accuracy breakdown, interactive 3-year cost calculator with subscription math, sensor hardware changes, mobile-first responsive design',
+        'keywords': 'oura ring 5 vs ring 4, oura ring 5 vs gen 3, oura ring comparison, oura ring 5 specs, oura ring 5 accuracy, oura ring 5 price, oura membership cost, oura ring 4 vs ring 5, smart ring comparison 2026, oura ring validation studies'
       };
       const s = document.createElement('script');
       s.type = 'application/ld+json';
-      s.setAttribute('data-kygo-fitbitair-whoop-ld', '');
+      s.setAttribute('data-kygo-oura-ld', '');
       s.textContent = JSON.stringify(ld);
       document.head.appendChild(s);
     }
 
-    if (!document.querySelector('script[data-kygo-fitbitair-whoop-faq]')) {
+    if (!document.querySelector('script[data-kygo-oura-faq]')) {
       const faq = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
@@ -578,24 +652,24 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       };
       const s = document.createElement('script');
       s.type = 'application/ld+json';
-      s.setAttribute('data-kygo-fitbitair-whoop-faq', '');
+      s.setAttribute('data-kygo-oura-faq', '');
       s.textContent = JSON.stringify(faq);
       document.head.appendChild(s);
     }
 
-    if (!document.querySelector('script[data-kygo-fitbitair-whoop-bc]')) {
+    if (!document.querySelector('script[data-kygo-oura-bc]')) {
       const bc = {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         'itemListElement': [
           { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.kygo.app' },
           { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
-          { '@type': 'ListItem', 'position': 3, 'name': 'Fitbit Air vs WHOOP Comparison', 'item': 'https://www.kygo.app/tools/fitbit-air-vs-whoop-comparison' }
+          { '@type': 'ListItem', 'position': 3, 'name': 'Oura Ring Comparison Tool', 'item': 'https://www.kygo.app/oura-ring-comparison-tool' }
         ]
       };
       const s = document.createElement('script');
       s.type = 'application/ld+json';
-      s.setAttribute('data-kygo-fitbitair-whoop-bc', '');
+      s.setAttribute('data-kygo-oura-bc', '');
       s.textContent = JSON.stringify(bc);
       document.head.appendChild(s);
     }
@@ -650,15 +724,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .nav-cta-link .ico { width: 16px; height: 16px; }
       @media (max-width: 480px) { .nav-brand span { display: none; } }
 
-      /* Toolbar */
-      .toolbar { border-bottom: 1px solid var(--border-subtle); background: var(--bg-surface); }
-      .toolbar-inner { max-width: 1200px; margin: 0 auto; padding: 12px 20px; }
-      .crumb { color: var(--fg-3); font-size: 13px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-      .crumb a { color: var(--fg-3); }
-      .crumb a:hover { color: var(--fg-1); }
-      .crumb strong { color: var(--fg-1); font-weight: 600; }
-      .crumb .sep { color: var(--fg-3); }
-
       /* Buttons */
       .btn { font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 10px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all .2s var(--ease-out); white-space: nowrap; }
       .btn .ico { width: 16px; height: 16px; }
@@ -681,7 +746,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .hero-vis { background: #fff; border: 1px solid var(--border-subtle); border-radius: 20px; padding: 16px; aspect-ratio: 5 / 3; }
       .hero-vis svg { width: 100%; height: 100%; display: block; }
       @media (max-width: 880px) { .hero-vis { display: none; } }
-      .hero-devices { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 22px; align-items: center; justify-items: stretch; }
+      .hero-devices { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 22px; align-items: stretch; }
+      @media (min-width: 620px) { .hero-devices.three { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
       .hero-dev { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; color: var(--fg-1); transition: all .2s var(--ease-out); }
       .hero-dev:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
       .hero-dev img { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; background: var(--kygo-light); padding: 4px; flex: none; }
@@ -690,11 +756,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .hero-dev .hero-dev-aff { display: inline-flex; align-items: center; gap: 3px; color: var(--kygo-green-dark); font-weight: 600; font-size: 11px; margin-top: 2px; }
       .hero-dev .hero-dev-aff .ico { width: 11px; height: 11px; transition: transform .15s; }
       .hero-dev:hover .hero-dev-aff .ico { transform: translateX(2px); }
-      .hero-vs { font-family: var(--font-display); font-weight: 700; color: var(--kygo-green); font-size: 14px; text-align: center; padding: 2px 0; letter-spacing: 0.06em; text-transform: uppercase; }
-      @media (min-width: 560px) {
-        .hero-devices { grid-template-columns: 1fr auto 1fr; gap: 14px; }
-        .hero-vs { font-size: 16px; padding: 0 4px; }
-      }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
       .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 4.2vw, 44px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; display: inline-flex; align-items: baseline; gap: 2px; }
@@ -728,7 +789,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .bestfor .price { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--fg-1); }
       .bestfor .yrly { color: var(--fg-3); font-size: 12px; }
 
-      /* HR sampling viz */
       /* Spec table */
       .tbl-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; overflow: hidden; }
       .tbl-tabs { display: flex; gap: 4px; padding: 12px; border-bottom: 1px solid var(--border-subtle); overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -749,8 +809,10 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .tbl tbody tr:hover { background: var(--bg-raised); }
       .tbl .spec-name { font-weight: 600; color: var(--fg-1); width: 28%; }
       .tbl .spec-name .info { font-size: 12px; font-weight: 400; color: var(--fg-3); margin-top: 2px; line-height: 1.4; }
+      .tbl .y { color: var(--kygo-green-dark); font-weight: 600; }
       .tbl .n { color: var(--fg-3); }
       .tbl .num { font-family: var(--font-numeric); font-weight: 600; font-size: 15px; color: var(--fg-1); }
+      .tbl .num.y { color: var(--kygo-green-dark); }
       .aff-row { display: none; }
       .aff-row-inner { display: flex; flex-direction: column; gap: 8px; }
       .aff-btn { display: inline-flex; align-items: center; gap: 8px; justify-content: center; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--kygo-green-light); background: rgba(34,197,94,0.06); color: var(--kygo-green-dark); font-family: var(--font-body); font-weight: 600; font-size: 13px; transition: all .15s ease; }
@@ -829,6 +891,19 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
       .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
+      /* Sources */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 16px; }
+      @media (min-width: 560px) { .sources { grid-template-columns: repeat(2, 1fr); } }
+      @media (min-width: 1000px) { .sources { grid-template-columns: repeat(4, 1fr); } }
+      .source-group { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; }
+      .source-group h4 { font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 14px; }
+      .source-group ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+      .source-group li { font-size: 13px; line-height: 1.45; }
+      .source-group a { display: inline-flex; align-items: flex-start; gap: 5px; color: var(--fg-2); transition: color .15s; }
+      .source-group a:hover { color: var(--kygo-green-dark); }
+      .source-group a .ico { width: 12px; height: 12px; color: var(--kygo-green-dark); flex: none; margin-top: 3px; transition: transform .15s; }
+      .source-group a:hover .ico { transform: translateX(2px); }
+
       /* FAQ */
       .faq { display: flex; flex-direction: column; gap: 10px; }
       .faq details { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 20px; transition: border-color .2s; }
@@ -873,6 +948,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   }
 }
 
-if (!customElements.get('kygo-fitbit-air-vs-whoop')) {
-  customElements.define('kygo-fitbit-air-vs-whoop', KygoFitbitAirVsWhoop);
+if (!customElements.get('kygo-oura-ring-comparison')) {
+  customElements.define('kygo-oura-ring-comparison', KygoOuraRingComparison);
 }
