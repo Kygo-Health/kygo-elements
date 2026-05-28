@@ -168,45 +168,66 @@ class KygoOuraRingComparison extends HTMLElement {
               <div class="hero-pill"><span class="dot"></span> UPDATED MAY 28, 2026</div>
               <h1>Oura Ring 5 vs Ring 4 vs Gen 3 — <span class="hl">is the upgrade worth it?</span></h1>
               <p class="hero-lede">Ring 5 is smaller, lighter, and longer-lasting — but it has <strong>zero independent validation</strong>, a shrunken size range, and a membership that makes the real 3-year cost ~$609. Compare every spec, the peer-reviewed accuracy data, and your true cost.</p>
-              <div class="hero-devices three">
-                <div class="hero-dev">
-                  <img src="${ouraImg}" alt="Oura Ring Gen 3" />
-                  <div>
-                    <strong>Oura Gen 3</strong>
-                    <span>Resale · 2021</span>
-                  </div>
-                </div>
-                <div class="hero-dev">
-                  <img src="${ouraImg}" alt="Oura Ring 4" />
-                  <div>
-                    <strong>Oura Ring 4</strong>
-                    <span>$349 · Oct 2024</span>
-                  </div>
-                </div>
-                <div class="hero-dev">
-                  <img src="${ouraImg}" alt="Oura Ring 5" />
-                  <div>
-                    <strong>Oura Ring 5</strong>
-                    <span>$399 · ships Jun 4</span>
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="hero-vis" aria-hidden="true">
-              <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid meet">
-                <circle cx="135" cy="150" r="78" fill="#E2E8F0"/>
-                <circle cx="135" cy="150" r="54" fill="#fff"/>
-                <circle cx="300" cy="150" r="70" fill="#CBD5E1"/>
-                <circle cx="300" cy="150" r="50" fill="#fff"/>
-                <circle cx="460" cy="150" r="56" fill="#22C55E"/>
-                <circle cx="460" cy="150" r="42" fill="#fff"/>
-                <text x="135" y="262" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle" font-family="'Space Grotesk',sans-serif">GEN 3</text>
-                <text x="135" y="284" fill="#CBD5E1" font-size="12" text-anchor="middle" font-family="'Space Grotesk',sans-serif">4–6 g</text>
-                <text x="300" y="262" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle" font-family="'Space Grotesk',sans-serif">RING 4</text>
-                <text x="300" y="284" fill="#CBD5E1" font-size="12" text-anchor="middle" font-family="'Space Grotesk',sans-serif">3.3–5.2 g</text>
-                <text x="460" y="262" fill="#16A34A" font-size="13" font-weight="700" text-anchor="middle" font-family="'Space Grotesk',sans-serif">RING 5</text>
-                <text x="460" y="284" fill="#22C55E" font-size="12" font-weight="600" text-anchor="middle" font-family="'Space Grotesk',sans-serif">2–2.6 g</text>
-                <text x="300" y="330" fill="#94A3B8" font-size="11" letter-spacing="1.5" text-anchor="middle" font-family="'Space Grotesk',sans-serif">40% SMALLER, GEN 3 → RING 5</text>
+              <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid meet" role="img" font-family="'Space Grotesk',sans-serif">
+                <defs>
+                  <linearGradient id="ouraSlate" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#CBD5E1"/>
+                    <stop offset="1" stop-color="#8A99AD"/>
+                  </linearGradient>
+                  <linearGradient id="ouraGreen" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#4ADE80"/>
+                    <stop offset="1" stop-color="#16A34A"/>
+                  </linearGradient>
+                  <filter id="ouraDrop" x="-60%" y="-60%" width="220%" height="220%">
+                    <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0F172A" flood-opacity="0.14"/>
+                  </filter>
+                  <filter id="ouraGlow" x="-80%" y="-80%" width="260%" height="260%">
+                    <feDropShadow dx="0" dy="6" stdDeviation="11" flood-color="#22C55E" flood-opacity="0.5"/>
+                  </filter>
+                </defs>
+
+                <!-- shrink trend -->
+                <path d="M118 78 C 240 70, 360 96, 462 124" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/>
+                <circle cx="118" cy="78" r="3.5" fill="#CBD5E1"/>
+                <path d="M455 117 l9 8 -10 7" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="290" y="46" fill="#94A3B8" font-size="12" font-weight="600" letter-spacing="1.5" text-anchor="middle">40% SMALLER · GEN 3 → RING 5</text>
+
+                <!-- ground shadows -->
+                <ellipse cx="130" cy="238" rx="68" ry="9" fill="#0F172A" opacity="0.06"/>
+                <ellipse cx="305" cy="238" rx="56" ry="8" fill="#0F172A" opacity="0.06"/>
+                <ellipse cx="466" cy="238" rx="45" ry="7" fill="#0F172A" opacity="0.06"/>
+
+                <!-- Gen 3 -->
+                <g filter="url(#ouraDrop)">
+                  <circle cx="130" cy="151" r="64" fill="none" stroke="url(#ouraSlate)" stroke-width="19"/>
+                </g>
+                <circle cx="130" cy="151" r="55" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
+                <text x="130" y="262" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">GEN 3</text>
+                <text x="130" y="282" fill="#94A3B8" font-size="12" text-anchor="middle">4–6 g · 2021</text>
+
+                <!-- Ring 4 -->
+                <g filter="url(#ouraDrop)">
+                  <circle cx="305" cy="164" r="52" fill="none" stroke="url(#ouraSlate)" stroke-width="16"/>
+                </g>
+                <circle cx="305" cy="164" r="44.5" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
+                <text x="305" y="262" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">RING 4</text>
+                <text x="305" y="282" fill="#94A3B8" font-size="12" text-anchor="middle">3.3–5.2 g · 2024</text>
+
+                <!-- Ring 5 -->
+                <g filter="url(#ouraGlow)">
+                  <circle cx="466" cy="177" r="40" fill="none" stroke="url(#ouraGreen)" stroke-width="13"/>
+                </g>
+                <circle cx="466" cy="177" r="34" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+                <text x="466" y="262" fill="#16A34A" font-size="14" font-weight="700" text-anchor="middle">RING 5</text>
+                <text x="466" y="282" fill="#22C55E" font-size="12" font-weight="600" text-anchor="middle">2–2.6 g · 2026</text>
+
+                <!-- smallest badge -->
+                <g transform="translate(466,127)">
+                  <rect x="-46" y="-13" width="92" height="22" rx="11" fill="#DCFCE7"/>
+                  <text x="0" y="2.5" fill="#16A34A" font-size="10.5" font-weight="700" letter-spacing="0.4" text-anchor="middle">SMALLEST EVER</text>
+                </g>
               </svg>
             </div>
           </div>
@@ -745,12 +766,6 @@ class KygoOuraRingComparison extends HTMLElement {
       .hero-vis { background: #fff; border: 1px solid var(--border-subtle); border-radius: 20px; padding: 16px; aspect-ratio: 5 / 3; }
       .hero-vis svg { width: 100%; height: 100%; display: block; }
       @media (max-width: 880px) { .hero-vis { display: none; } }
-      .hero-devices { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 22px; align-items: stretch; }
-      @media (min-width: 620px) { .hero-devices.three { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
-      .hero-dev { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; color: var(--fg-1); }
-      .hero-dev img { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; background: var(--kygo-light); padding: 4px; flex: none; }
-      .hero-dev strong { font-family: var(--font-display); font-weight: 600; font-size: 15px; display: block; }
-      .hero-dev span { color: var(--fg-3); font-size: 12px; display: block; }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
       .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 4.2vw, 44px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; display: inline-flex; align-items: baseline; gap: 2px; }
