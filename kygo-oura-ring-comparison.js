@@ -169,27 +169,28 @@ class KygoOuraRingComparison extends HTMLElement {
               <h1>Oura Ring 5 vs Ring 4 vs Gen 3 — <span class="hl">is the upgrade worth it?</span></h1>
               <p class="hero-lede">Ring 5 is smaller, lighter, and longer-lasting — but it has <strong>zero independent validation</strong>, a shrunken size range, and a membership that makes the real 3-year cost ~$609. Compare every spec, the peer-reviewed accuracy data, and your true cost.</p>
               <div class="hero-devices three">
-                <a class="hero-dev" href="https://support.ouraring.com/hc/en-us/articles/360025570153-Previous-Oura-Ring-Generations" target="_blank" rel="noopener">
+                <a class="hero-dev" href="https://amzn.to/3PxP8fM" target="_blank" rel="noopener sponsored">
                   <img src="${ouraImg}" alt="Oura Ring Gen 3" />
                   <div>
                     <strong>Oura Gen 3</strong>
-                    <span>Resale only · 2021</span>
+                    <span>Resale · 2021</span>
+                    <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
                   </div>
                 </a>
-                <a class="hero-dev" href="https://ouraring.com/store/rings/oura-ring-4" target="_blank" rel="noopener">
+                <a class="hero-dev" href="https://amzn.to/3RD6VCL" target="_blank" rel="noopener sponsored">
                   <img src="${ouraImg}" alt="Oura Ring 4" />
                   <div>
                     <strong>Oura Ring 4</strong>
                     <span>$349 · Oct 2024</span>
-                    <span class="hero-dev-aff">View at Oura ${this._icon('arrowRight')}</span>
+                    <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
                   </div>
                 </a>
-                <a class="hero-dev" href="https://ouraring.com/store/rings/oura-ring-5" target="_blank" rel="noopener">
+                <a class="hero-dev" href="https://amzn.to/3Q4f42J" target="_blank" rel="noopener sponsored">
                   <img src="${ouraImg}" alt="Oura Ring 5" />
                   <div>
                     <strong>Oura Ring 5</strong>
                     <span>$399 · ships Jun 4</span>
-                    <span class="hero-dev-aff">View at Oura ${this._icon('arrowRight')}</span>
+                    <span class="hero-dev-aff">View on Amazon ${this._icon('arrowRight')}</span>
                   </div>
                 </a>
               </div>
@@ -333,6 +334,17 @@ class KygoOuraRingComparison extends HTMLElement {
         </div>
       </section>
 
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Sources</div>
+            <h2>Every claim, <span class="hl">traceable.</span></h2>
+            <p class="lede">Specs are primary-source verified against Oura's own pages and launch coverage. Accuracy figures come from peer-reviewed studies, with conflicts of interest noted where they apply.</p>
+          </div>
+          <div class="sources">${this._renderSources()}</div>
+        </div>
+      </section>
+
       <footer class="tool-footer">
         <div class="container">
           <a href="https://kygo.app" class="footer-brand">
@@ -350,6 +362,7 @@ class KygoOuraRingComparison extends HTMLElement {
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making decisions based on wearable data. Oura's Blood Pressure Signals and Nighttime Breathing are not FDA-cleared and do not diagnose any condition.</p>
           <p class="footer-copyright">Data sourced from official Oura specifications, peer-reviewed validation studies (Khan 2025, Robbins 2024, Svensson 2024, Dial 2025, Cao 2022, Kinnunen 2020, Liang 2024), and Ring 5 launch coverage. Last updated May 2026.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -381,19 +394,19 @@ class KygoOuraRingComparison extends HTMLElement {
 
   _renderTable() {
     const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
-    const ring4Link = 'https://ouraring.com/store/rings/oura-ring-4';
-    const ring5Link = 'https://ouraring.com/store/rings/oura-ring-5';
-    const gen3Link = 'https://support.ouraring.com/hc/en-us/articles/360025570153-Previous-Oura-Ring-Generations';
+    const gen3Link = 'https://amzn.to/3PxP8fM';
+    const ring4Link = 'https://amzn.to/3RD6VCL';
+    const ring5Link = 'https://amzn.to/3Q4f42J';
     const rows = this._specs[this._activeTab];
-    const storeLink = (url, label) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener">${label} ${this._icon('arrowRight')}</a>`;
+    const storeLink = (url) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
       <table class="tbl">
         <thead>
           <tr>
             <th>Spec</th>
-            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Gen 3</span></div>${storeLink(gen3Link, 'Resale only')}</th>
-            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 4</span></div>${storeLink(ring4Link, 'View at Oura')}</th>
-            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 5</span></div>${storeLink(ring5Link, 'View at Oura')}</th>
+            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Gen 3</span></div>${storeLink(gen3Link)}</th>
+            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 4</span></div>${storeLink(ring4Link)}</th>
+            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 5</span></div>${storeLink(ring5Link)}</th>
           </tr>
         </thead>
         <tbody>
@@ -481,6 +494,69 @@ class KygoOuraRingComparison extends HTMLElement {
         <summary>${f.q}</summary>
         <div class="body">${f.a}</div>
       </details>
+    `).join('');
+  }
+
+  get _sources() {
+    return [
+      {
+        group: 'Oura primary',
+        links: [
+          { t: 'Introducing Oura Ring 5', u: 'https://ouraring.com/blog/introducing-oura-ring-5/' },
+          { t: 'Inside the Ring: Building Oura Ring 5', u: 'https://ouraring.com/blog/inside-the-ring-oura-ring-5/' },
+          { t: 'Oura Ring 5 store page', u: 'https://ouraring.com/store/rings/oura-ring-5' },
+          { t: 'Oura Ring 5 Charging Case', u: 'https://ouraring.com/store/accessories/oura-ring-5-charging-case' },
+          { t: 'Oura Ring 4 store page', u: 'https://ouraring.com/store/rings/oura-ring-4' },
+          { t: 'Previous Oura Ring Generations', u: 'https://support.ouraring.com/hc/en-us/articles/360025570153-Previous-Oura-Ring-Generations' },
+          { t: 'Oura Membership', u: 'https://ouraring.com/membership' },
+          { t: 'Smart Sensing (Ring 4 vs Gen 3)', u: 'https://ouraring.com/blog/smart-sensing/' },
+        ],
+      },
+      {
+        group: 'Peer-reviewed validation',
+        links: [
+          { t: 'Khan 2025 — meta-analysis (OTO Open)', u: 'https://aao-hnsfjournals.onlinelibrary.wiley.com/doi/full/10.1002/oto2.70181' },
+          { t: 'Svensson 2024 (Sleep Med) — Oura COI', u: 'https://pubmed.ncbi.nlm.nih.gov/38382312/' },
+          { t: 'Kinnunen 2020 — source of "99%" (Oura-authored)', u: 'https://pubmed.ncbi.nlm.nih.gov/32217820/' },
+          { t: 'Cao 2022 — independent (JMIR)', u: 'https://www.jmir.org/2022/1/e27487' },
+          { t: 'Robbins 2024 (Sensors)', u: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11511193/' },
+          { t: 'Liang, Yilmaz, Soon 2024 (Sensors)', u: 'https://www.mdpi.com/1424-8220/24/23/7475' },
+          { t: 'Dial 2025 — Ring 4 vs Gen 3 head-to-head', u: 'https://pubmed.ncbi.nlm.nih.gov/40834291/' },
+        ],
+      },
+      {
+        group: 'Ring 5 launch coverage',
+        links: [
+          { t: 'Business Wire — Ring 5 press release', u: 'https://www.businesswire.com/news/home/20260528686853/en/URA-Introduces-The-Worlds-Smallest-Smart-Ring-Oura-Ring-5' },
+          { t: 'TechCrunch', u: 'https://techcrunch.com/2026/05/28/oura-unveils-its-ring-5-with-a-thinner-lighter-design-starting-at-399/' },
+          { t: 'Wareable', u: 'https://www.wareable.com/wearable-tech/oura-ring-5-announcement-official-features-design-pricing-availability' },
+          { t: "Tom's Guide hands-on", u: 'https://www.tomsguide.com/wellness/smart-rings/ive-worn-the-oura-ring-5-and-it-really-is-tiny-heres-why-i-think-its-the-wearable-to-beat-in-2026' },
+          { t: 'AppleInsider — GLP-1 + BP', u: 'https://appleinsider.com/articles/26/05/28/blood-pressure-tracking-glp-1-tools-central-to-new-oura-ring-5' },
+          { t: 'The 5k Runner — Ring 4 vs Ring 5', u: 'https://the5krunner.com/2026/05/28/oura-ring-5-vs-ring-4-worth-it-review-opinion/' },
+        ],
+      },
+      {
+        group: 'Background & competitors',
+        links: [
+          { t: 'Wareable — Ring 4 vs Ring 3', u: 'https://www.wareable.com/wearable-tech/oura-ring-4-vs-ring-3-key-differences-compared' },
+          { t: 'TechInsights — Ring 4 teardown', u: 'https://www.techinsights.com/blog/oura-ring-gen-4-teardown' },
+          { t: 'DC Rainmaker — Ring 4 breakdown', u: 'https://www.dcrainmaker.com/2024/10/oura-announces-oura-4-heres-whats-actually-changed.html' },
+          { t: 'RingConn Gen 2 product page', u: 'https://ringconn.com/products/ringconn-gen-2' },
+          { t: 'Samsung Galaxy Ring support', u: 'https://www.samsung.com/us/support/answer/ANS10003278/' },
+          { t: 'Wareable — Best smart rings 2026', u: 'https://www.wareable.com/fashion/best-smart-rings-1340' },
+        ],
+      },
+    ];
+  }
+
+  _renderSources() {
+    return this._sources.map(s => `
+      <div class="source-group">
+        <h4>${s.group}</h4>
+        <ul>
+          ${s.links.map(l => `<li><a href="${l.u}" target="_blank" rel="noopener nofollow">${l.t} ${this._icon('arrowRight')}</a></li>`).join('')}
+        </ul>
+      </div>
     `).join('');
   }
 
@@ -662,7 +738,7 @@ class KygoOuraRingComparison extends HTMLElement {
       .hero-vis svg { width: 100%; height: 100%; display: block; }
       @media (max-width: 880px) { .hero-vis { display: none; } }
       .hero-devices { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 22px; align-items: stretch; }
-      @media (min-width: 560px) { .hero-devices.three { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
+      @media (min-width: 620px) { .hero-devices.three { grid-template-columns: repeat(3, 1fr); gap: 12px; } }
       .hero-dev { display: flex; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; color: var(--fg-1); transition: all .2s var(--ease-out); }
       .hero-dev:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
       .hero-dev img { width: 36px; height: 36px; border-radius: 8px; object-fit: contain; background: var(--kygo-light); padding: 4px; flex: none; }
@@ -798,6 +874,19 @@ class KygoOuraRingComparison extends HTMLElement {
       .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
       .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
+      /* Sources */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 16px; }
+      @media (min-width: 560px) { .sources { grid-template-columns: repeat(2, 1fr); } }
+      @media (min-width: 1000px) { .sources { grid-template-columns: repeat(4, 1fr); } }
+      .source-group { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; }
+      .source-group h4 { font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 14px; }
+      .source-group ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+      .source-group li { font-size: 13px; line-height: 1.45; }
+      .source-group a { display: inline-flex; align-items: flex-start; gap: 5px; color: var(--fg-2); transition: color .15s; }
+      .source-group a:hover { color: var(--kygo-green-dark); }
+      .source-group a .ico { width: 12px; height: 12px; color: var(--kygo-green-dark); flex: none; margin-top: 3px; transition: transform .15s; }
+      .source-group a:hover .ico { transform: translateX(2px); }
+
       /* FAQ */
       .faq { display: flex; flex-direction: column; gap: 10px; }
       .faq details { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 20px; transition: border-color .2s; }
@@ -837,6 +926,7 @@ class KygoOuraRingComparison extends HTMLElement {
       .footer-links a:hover { color: var(--kygo-green-dark); }
       .footer-disclaimer { font-size: 12px; color: var(--fg-3); line-height: 1.6; max-width: 620px; margin: 0 auto 14px; }
       .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
+      .footer-affiliate { font-style: italic; }
     `;
   }
 }
