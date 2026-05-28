@@ -170,6 +170,10 @@ class KygoOuraRingComparison extends HTMLElement {
               <p class="hero-lede">Ring 5 is smaller, lighter, and longer-lasting — but it has <strong>zero independent validation</strong>, a shrunken size range, and a membership that makes the real 3-year cost ~$609. Compare every spec, the peer-reviewed accuracy data, and your true cost.</p>
             </div>
             <div class="hero-vis" aria-hidden="true">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Relative size</span>
+                <span class="hero-vis-tag">40% smaller</span>
+              </div>
               <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid meet" role="img" font-family="'Space Grotesk',sans-serif">
                 <defs>
                   <linearGradient id="ouraSlate" x1="0" y1="0" x2="0" y2="1">
@@ -192,7 +196,6 @@ class KygoOuraRingComparison extends HTMLElement {
                 <path d="M118 78 C 240 70, 360 96, 462 124" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/>
                 <circle cx="118" cy="78" r="3.5" fill="#CBD5E1"/>
                 <path d="M455 117 l9 8 -10 7" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-                <text x="290" y="46" fill="#94A3B8" font-size="12" font-weight="600" letter-spacing="1.5" text-anchor="middle">40% SMALLER · GEN 3 → RING 5</text>
 
                 <!-- ground shadows -->
                 <ellipse cx="130" cy="238" rx="68" ry="9" fill="#0F172A" opacity="0.06"/>
@@ -226,7 +229,7 @@ class KygoOuraRingComparison extends HTMLElement {
                 <!-- smallest badge -->
                 <g transform="translate(466,127)">
                   <rect x="-46" y="-13" width="92" height="22" rx="11" fill="#DCFCE7"/>
-                  <text x="0" y="2.5" fill="#16A34A" font-size="10.5" font-weight="700" letter-spacing="0.4" text-anchor="middle">SMALLEST EVER</text>
+                  <text x="0" y="2.5" fill="#16A34A" font-size="10.5" font-weight="700" letter-spacing="0.4" text-anchor="middle">THINNEST EVER</text>
                 </g>
               </svg>
             </div>
@@ -763,8 +766,14 @@ class KygoOuraRingComparison extends HTMLElement {
       .hero-light h1 .hl { color: var(--kygo-green); }
       .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--fg-2); max-width: 60ch; margin: 0; }
       .hero-lede strong { color: var(--fg-1); font-weight: 600; }
-      .hero-vis { background: #fff; border: 1px solid var(--border-subtle); border-radius: 20px; padding: 16px; aspect-ratio: 5 / 3; }
-      .hero-vis svg { width: 100%; height: 100%; display: block; }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 6px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 16px 18px; aspect-ratio: 5 / 3; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis::after { content: ''; position: absolute; bottom: -110px; left: -70px; width: 230px; height: 230px; background: radial-gradient(closest-side, rgba(148,163,184,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
+      .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; }
+      .hero-vis svg { position: relative; width: 100%; flex: 1; min-height: 0; display: block; }
       @media (max-width: 880px) { .hero-vis { display: none; } }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
