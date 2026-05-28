@@ -171,8 +171,8 @@ class KygoOuraRingComparison extends HTMLElement {
             </div>
             <div class="hero-vis" aria-hidden="true">
               <div class="hero-vis-head">
-                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Relative size</span>
-                <span class="hero-vis-tag">40% smaller</span>
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Relative thickness</span>
+                <span class="hero-vis-tag">40% thinner</span>
               </div>
               <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid meet" role="img" font-family="'Space Grotesk',sans-serif">
                 <defs>
@@ -192,42 +192,37 @@ class KygoOuraRingComparison extends HTMLElement {
                   </filter>
                 </defs>
 
-                <!-- shrink trend -->
-                <path d="M118 78 C 240 70, 360 96, 462 124" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/>
-                <circle cx="118" cy="78" r="3.5" fill="#CBD5E1"/>
-                <path d="M455 117 l9 8 -10 7" fill="none" stroke="#16A34A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- ground shadows (same outer diameter) -->
+                <ellipse cx="150" cy="230" rx="58" ry="8" fill="#0F172A" opacity="0.06"/>
+                <ellipse cx="305" cy="230" rx="58" ry="8" fill="#0F172A" opacity="0.06"/>
+                <ellipse cx="460" cy="230" rx="58" ry="8" fill="#0F172A" opacity="0.06"/>
 
-                <!-- ground shadows -->
-                <ellipse cx="130" cy="238" rx="68" ry="9" fill="#0F172A" opacity="0.06"/>
-                <ellipse cx="305" cy="238" rx="56" ry="8" fill="#0F172A" opacity="0.06"/>
-                <ellipse cx="466" cy="238" rx="45" ry="7" fill="#0F172A" opacity="0.06"/>
-
-                <!-- Gen 3 -->
+                <!-- Gen 3 — same outer size, medium wall -->
                 <g filter="url(#ouraDrop)">
-                  <circle cx="130" cy="151" r="64" fill="none" stroke="url(#ouraSlate)" stroke-width="19"/>
+                  <circle cx="150" cy="158" r="51" fill="none" stroke="url(#ouraSlate)" stroke-width="18"/>
                 </g>
-                <circle cx="130" cy="151" r="55" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
-                <text x="130" y="262" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">GEN 3</text>
-                <text x="130" y="282" fill="#94A3B8" font-size="12" text-anchor="middle">4–6 g · 2021</text>
+                <circle cx="150" cy="158" r="42" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
+                <text x="150" y="250" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">GEN 3</text>
+                <text x="150" y="270" fill="#94A3B8" font-size="12" text-anchor="middle">2.55 mm · 2021</text>
 
-                <!-- Ring 4 -->
+                <!-- Ring 4 — same outer size, thickest wall -->
                 <g filter="url(#ouraDrop)">
-                  <circle cx="305" cy="164" r="52" fill="none" stroke="url(#ouraSlate)" stroke-width="16"/>
+                  <circle cx="305" cy="158" r="48.5" fill="none" stroke="url(#ouraSlate)" stroke-width="23"/>
                 </g>
-                <circle cx="305" cy="164" r="44.5" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
-                <text x="305" y="262" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">RING 4</text>
-                <text x="305" y="282" fill="#94A3B8" font-size="12" text-anchor="middle">3.3–5.2 g · 2024</text>
+                <circle cx="305" cy="158" r="37" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
+                <text x="305" y="250" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">RING 4</text>
+                <text x="305" y="270" fill="#94A3B8" font-size="12" text-anchor="middle">3.51 mm · 2024</text>
 
-                <!-- Ring 5 -->
+                <!-- Ring 5 — same outer size, thinnest wall -->
                 <g filter="url(#ouraGlow)">
-                  <circle cx="466" cy="177" r="40" fill="none" stroke="url(#ouraGreen)" stroke-width="13"/>
+                  <circle cx="460" cy="158" r="54.5" fill="none" stroke="url(#ouraGreen)" stroke-width="11"/>
                 </g>
-                <circle cx="466" cy="177" r="34" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
-                <text x="466" y="262" fill="#16A34A" font-size="14" font-weight="700" text-anchor="middle">RING 5</text>
-                <text x="466" y="282" fill="#22C55E" font-size="12" font-weight="600" text-anchor="middle">2–2.6 g · 2026</text>
+                <circle cx="460" cy="158" r="49" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+                <text x="460" y="250" fill="#16A34A" font-size="14" font-weight="700" text-anchor="middle">RING 5</text>
+                <text x="460" y="270" fill="#22C55E" font-size="12" font-weight="600" text-anchor="middle">2.28 mm · 2026</text>
 
-                <!-- smallest badge -->
-                <g transform="translate(466,127)">
+                <!-- thinnest badge -->
+                <g transform="translate(460,78)">
                   <rect x="-46" y="-13" width="92" height="22" rx="11" fill="#DCFCE7"/>
                   <text x="0" y="2.5" fill="#16A34A" font-size="10.5" font-weight="700" letter-spacing="0.4" text-anchor="middle">THINNEST EVER</text>
                 </g>
