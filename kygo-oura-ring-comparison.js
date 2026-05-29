@@ -87,9 +87,9 @@ class KygoOuraRingComparison extends HTMLElement {
         { name: 'Sub-free alternative', info: 'Same category, no membership', gen3: 'RingConn Gen 2 $299 · Ultrahuman $349', ring4: 'RingConn Gen 2 $299 · Ultrahuman $349', ring5: 'RingConn Gen 2 $299 · Ultrahuman $349' },
       ],
       Software: [
-        { name: 'Health Radar', info: 'Passive cardiovascular monitoring', gen3: y('Via membership'), ring4: y('Via membership'), ring5: y('Launches here') },
-        { name: 'Blood Pressure Signals', info: 'Nighttime BP trends from PPG', gen3: 'Via membership', ring4: 'Via membership', ring5: n('No FDA clearance · not a cuff') },
-        { name: 'Nighttime Breathing', info: '30-day breathing-disturbance view', gen3: 'Via membership', ring4: 'Via membership', ring5: n('Not apnea diagnosis') },
+        { name: 'Health Radar', info: 'New in 2026 · all rings', gen3: 'Via membership', ring4: 'Via membership', ring5: 'Via membership' },
+        { name: 'Blood Pressure Signals', info: 'Overnight BP trends · not FDA-cleared, not a cuff replacement (all rings)', gen3: 'Via membership', ring4: 'Via membership', ring5: 'Via membership' },
+        { name: 'Nighttime Breathing', info: '30-day breathing-disturbance view · not an apnea diagnosis (all rings)', gen3: 'Via membership', ring4: 'Via membership', ring5: 'Via membership' },
         { name: 'GLP-1 Tracking Tools', gen3: y('Via membership'), ring4: y('Via membership'), ring5: y('Yes') },
         { name: 'Live Activity Tracking', info: 'Real-time pace/distance/HR', gen3: 'Via membership', ring4: 'Via membership', ring5: 'Yes' },
         { name: 'Oura Health Records (US)', gen3: y('Via membership'), ring4: y('Via membership'), ring5: y('Yes') },
@@ -316,24 +316,24 @@ class KygoOuraRingComparison extends HTMLElement {
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
-            <div class="kicker">Bottom line</div>
-            <h2>Three real upgrades. <span class="hl">Three things that go backward.</span></h2>
+            <div class="kicker">What's changed</div>
+            <h2>Ring 5 vs Ring 4, <span class="hl">change by change.</span></h2>
           </div>
           <div class="gaps">
             <div class="gap animate-on-scroll">
-              <h4>Three real upgrades</h4>
+              <h4>Improvements</h4>
               <ul>
-                <li><span class="num-tag">1</span><span><strong>Dramatically smaller.</strong> 40% smaller than Ring 4, down to 2–2.6 g and 2.28 mm thick — the world's smallest smart ring.</span></li>
+                <li><span class="num-tag">1</span><span><strong>Thinner and lighter.</strong> ~21% thinner in profile (2.28 mm) and down to 2–2.6 g — Oura's smallest ring to date.</span></li>
                 <li><span class="num-tag">2</span><span><strong>Better battery + charging case.</strong> 6–9 days claimed, plus an optional $99 case that holds ~5 charges (~1 month between wall plugs).</span></li>
                 <li><span class="num-tag">3</span><span><strong>Oura's internal study.</strong> 12% better overnight HRV, 24% better workout HR signal, 19% better running/cycling/walking accuracy (60 participants, not yet peer-reviewed).</span></li>
               </ul>
             </div>
             <div class="gap animate-on-scroll">
-              <h4>Three things that go backward</h4>
+              <h4>Trade-offs</h4>
               <ul>
-                <li><span class="num-tag">1</span><span><strong>Size range shrinks.</strong> From Ring 4's sizes 4–15 down to Ring 5's 6–13. Very small and very large fingers lose Ring 5 as an option.</span></li>
-                <li><span class="num-tag">2</span><span><strong>Fewer signal pathways.</strong> 18 on Ring 4 down to 12 on Ring 5. Oura calls them "stronger" — but stronger-but-fewer has no independent validation.</span></li>
-                <li><span class="num-tag">3</span><span><strong>No new validation, same cost.</strong> Ring 5 has zero peer-reviewed studies, the "99%" and "95%" claims are Oura-influenced, and membership still pushes TCO to ~$609.</span></li>
+                <li><span class="num-tag">1</span><span><strong>Narrower size range.</strong> From Ring 4's sizes 4–15 to Ring 5's 6–13, so very small and very large fingers lose Ring 5 as an option.</span></li>
+                <li><span class="num-tag">2</span><span><strong>Fewer signal pathways.</strong> 18 on Ring 4 to 12 on Ring 5. Oura calls them "stronger," but stronger-but-fewer has no independent validation yet.</span></li>
+                <li><span class="num-tag">3</span><span><strong>No independent validation yet.</strong> Ring 5 has no peer-reviewed studies so far; the "99%" and "95%" figures trace to Oura-influenced sources, and membership keeps the 3-year cost near ~$609.</span></li>
               </ul>
             </div>
           </div>
@@ -770,7 +770,7 @@ class KygoOuraRingComparison extends HTMLElement {
       .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
       .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; }
       .hero-vis svg { position: relative; width: 100%; flex: 1; min-height: 0; display: block; }
-      @media (max-width: 880px) { .hero-vis { display: none; } }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; padding: 14px 16px; } }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
       .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 4.2vw, 44px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; display: inline-flex; align-items: baseline; gap: 2px; }
