@@ -71,12 +71,13 @@ class KygoOuraRingComparison extends HTMLElement {
       ],
       Accuracy: [
         { name: 'Independent validation', info: 'Peer-reviewed, non-Oura', gen3: y('Extensive (Gen 3 explicit, 2024–25)'), ring4: y('Head-to-head vs Gen 3 (Dial 2025)'), ring5: n('None yet · zero studies') },
-        { name: 'RHR vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 1.67%', ring4: '0.98 · MAPE 1.94%', ring5: n('No Ring 5 data — inherits Ring 4') },
-        { name: 'HRV vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 7.15%', ring4: '0.99 · MAPE 5.96%', ring5: n('No Ring 5 data — inherits Ring 4') },
-        { name: 'Sleep/wake vs PSG', info: '2-stage agreement', gen3: '~92% (Robbins/Svensson)', ring4: 'Inferred (shared PPG)', ring5: n('Untested') },
-        { name: '4-stage sleep vs PSG', info: 'REM/Deep/Light/Wake', gen3: '76.3% (Robbins, Gen 3)', ring4: 'Inferred', ring5: n('Untested') },
+        { name: "Oura's Ring 5 accuracy claim", info: 'Oura internal study, not peer-reviewed', gen3: '—', ring4: 'Baseline', ring5: n('+12% HRV, +24% workout HR (60 ppts, not independent)') },
+        { name: 'RHR vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 1.67%', ring4: '0.98 · MAPE 1.94%', ring5: n('Not tested on Ring 5') },
+        { name: 'HRV vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 7.15%', ring4: '0.99 · MAPE 5.96%', ring5: n('Not tested on Ring 5') },
+        { name: 'Sleep/wake vs PSG', info: '2-stage agreement', gen3: '~92% (Robbins/Svensson)', ring4: 'Inferred (shared PPG)', ring5: n('Not tested on Ring 5') },
+        { name: '4-stage sleep vs PSG', info: 'REM/Deep/Light/Wake', gen3: '76.3% (Robbins, Gen 3)', ring4: 'Inferred', ring5: n('Not tested on Ring 5') },
         { name: '"99% HR accuracy" claim', info: 'On Ring 5 store page', gen3: 'Kinnunen 2020 (Oura-authored, r²)', ring4: 'Same source', ring5: n('Inherited, not independent') },
-        { name: 'SpO₂ accuracy', info: 'Overnight blood oxygen', gen3: 'Baseline', ring4: n('+30% vs Gen 3 (Oura internal, not independent)'), ring5: n('No Ring 5 data — inherits Ring 4') },
+        { name: 'SpO₂ accuracy', info: 'Overnight blood oxygen', gen3: 'Baseline', ring4: n('+30% vs Gen 3 (Oura internal, not independent)'), ring5: n('Not tested on Ring 5') },
       ],
       'Cost & Plans': [
         { name: 'Hardware price', gen3: num('$299–399 (resale)'), ring4: num('$349'), ring5: num('$399–499') },
