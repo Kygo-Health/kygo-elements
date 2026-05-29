@@ -498,7 +498,13 @@
 
     attributeChangedCallback(name, oldV, newV) {
       if (oldV === newV) return;
-      if (name === 'state' && newV) this._state = newV;
+      if (name === 'state' && newV) {
+        // Host (Wix Velo) has confirmed — cancel the safety timeout so it
+        // can't later overwrite a real success/idle with an error.
+        clearTimeout(this._submitTimeout);
+        this._state = newV;
+        if (newV !== 'idle') this._error = '';
+      }
       this.render();
     }
 
@@ -668,11 +674,19 @@
             bubbles: true, composed: true,
             detail: { email }
           }));
-          // Fallback for non-Wix hosts that don't flip the state attr —
-          // assume success after 4s so the UI doesn't hang in "loading".
-          setTimeout(() => {
-            if (this._state === 'loading') { this._state = 'success'; this.render(); }
-          }, 4000);
+          // Safety timeout. If the host (Wix Velo) never confirms by
+          // flipping the `state` attribute, surface an error instead of
+          // faking success — a silent "thank you" would hide dropped
+          // submissions from the visitor and from us. The window is
+          // generous so a slow wix-data insert isn't mistaken for failure.
+          clearTimeout(this._submitTimeout);
+          this._submitTimeout = setTimeout(() => {
+            if (this._state === 'loading') {
+              this._state = 'idle';
+              this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+              this.render();
+            }
+          }, 10000);
         });
       }
     }
