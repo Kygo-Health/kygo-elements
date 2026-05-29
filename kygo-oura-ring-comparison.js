@@ -71,12 +71,12 @@ class KygoOuraRingComparison extends HTMLElement {
       ],
       Accuracy: [
         { name: 'Independent validation', info: 'Peer-reviewed, non-Oura', gen3: y('Extensive (Gen 3 explicit, 2024–25)'), ring4: y('Head-to-head vs Gen 3 (Dial 2025)'), ring5: n('None yet · zero studies') },
-        { name: 'RHR vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 1.67%', ring4: y('0.98 · MAPE 1.94%'), ring5: 'Inherited claim' },
-        { name: 'HRV vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 7.15%', ring4: y('0.99 · MAPE 5.96%'), ring5: 'Inherited claim' },
+        { name: 'RHR vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 1.67%', ring4: '0.98 · MAPE 1.94%', ring5: n('No Ring 5 data — inherits Ring 4') },
+        { name: 'HRV vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 7.15%', ring4: '0.99 · MAPE 5.96%', ring5: n('No Ring 5 data — inherits Ring 4') },
         { name: 'Sleep/wake vs PSG', info: '2-stage agreement', gen3: '~92% (Robbins/Svensson)', ring4: 'Inferred (shared PPG)', ring5: n('Untested') },
         { name: '4-stage sleep vs PSG', info: 'REM/Deep/Light/Wake', gen3: '76.3% (Robbins, Gen 3)', ring4: 'Inferred', ring5: n('Untested') },
         { name: '"99% HR accuracy" claim', info: 'On Ring 5 store page', gen3: 'Kinnunen 2020 (Oura-authored, r²)', ring4: 'Same source', ring5: n('Inherited, not independent') },
-        { name: 'SpO₂ accuracy', info: 'Overnight blood oxygen', gen3: 'Baseline', ring4: y('+30% vs Gen 3 (Oura internal)'), ring5: 'Inherits Ring 4' },
+        { name: 'SpO₂ accuracy', info: 'Overnight blood oxygen', gen3: 'Baseline', ring4: n('+30% vs Gen 3 (Oura internal, not independent)'), ring5: n('No Ring 5 data — inherits Ring 4') },
       ],
       'Cost & Plans': [
         { name: 'Hardware price', gen3: num('$299–399 (resale)'), ring4: num('$349'), ring5: num('$399–499') },
@@ -172,7 +172,7 @@ class KygoOuraRingComparison extends HTMLElement {
             <div class="hero-vis" aria-hidden="true">
               <div class="hero-vis-head">
                 <span class="hero-vis-title"><span class="hero-vis-dot"></span> Relative thickness</span>
-                <span class="hero-vis-tag">40% thinner</span>
+                <span class="hero-vis-tag">~21% thinner</span>
               </div>
               <svg viewBox="0 0 600 360" preserveAspectRatio="xMidYMid meet" role="img" font-family="'Space Grotesk',sans-serif">
                 <defs>
@@ -207,17 +207,17 @@ class KygoOuraRingComparison extends HTMLElement {
 
                 <!-- Ring 4 — same outer size, thickest wall -->
                 <g filter="url(#ouraDrop)">
-                  <circle cx="305" cy="158" r="48.5" fill="none" stroke="url(#ouraSlate)" stroke-width="23"/>
+                  <circle cx="305" cy="158" r="50" fill="none" stroke="url(#ouraSlate)" stroke-width="20"/>
                 </g>
-                <circle cx="305" cy="158" r="37" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
+                <circle cx="305" cy="158" r="40" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
                 <text x="305" y="250" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">RING 4</text>
-                <text x="305" y="270" fill="#94A3B8" font-size="12" text-anchor="middle">3.51 mm · 2024</text>
+                <text x="305" y="270" fill="#94A3B8" font-size="12" text-anchor="middle">2.88 mm · 2024</text>
 
                 <!-- Ring 5 — same outer size, thinnest wall -->
                 <g filter="url(#ouraGlow)">
-                  <circle cx="460" cy="158" r="54.5" fill="none" stroke="url(#ouraGreen)" stroke-width="11"/>
+                  <circle cx="460" cy="158" r="52" fill="none" stroke="url(#ouraGreen)" stroke-width="16"/>
                 </g>
-                <circle cx="460" cy="158" r="49" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+                <circle cx="460" cy="158" r="44" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
                 <text x="460" y="250" fill="#16A34A" font-size="14" font-weight="700" text-anchor="middle">RING 5</text>
                 <text x="460" y="270" fill="#22C55E" font-size="12" font-weight="600" text-anchor="middle">2.28 mm · 2026</text>
 
@@ -448,6 +448,7 @@ class KygoOuraRingComparison extends HTMLElement {
           </tr>
         </tbody>
       </table>
+      ${this._activeTab === 'Accuracy' ? `<p class="tbl-note">Note: CCC scores of 0.97–0.99 are statistically equivalent in everyday use — treat Gen 3 and Ring 4 as effectively tied on heart-rate accuracy. Ring 5 has no independent validation; its figures are inherited from earlier rings, not measured.</p>` : ''}
     `;
   }
 
@@ -805,6 +806,7 @@ class KygoOuraRingComparison extends HTMLElement {
 
       /* Spec table */
       .tbl-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; overflow: hidden; }
+      .tbl-note { color: var(--fg-3); font-size: 12.5px; line-height: 1.55; margin: 0; padding: 14px 18px 16px; border-top: 1px solid var(--border-subtle); background: var(--bg-surface); }
       .tbl-tabs { display: flex; gap: 4px; padding: 12px; border-bottom: 1px solid var(--border-subtle); overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .tbl-tabs button { font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 9px 14px; border-radius: 10px; border: 0; background: transparent; color: var(--fg-2); cursor: pointer; white-space: nowrap; transition: all .15s ease; display: inline-flex; align-items: center; gap: 8px; }
       .tbl-tabs button:hover { background: var(--bg-raised); color: var(--fg-1); }
