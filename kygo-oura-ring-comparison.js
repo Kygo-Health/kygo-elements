@@ -827,7 +827,7 @@ class KygoOuraRingComparison extends HTMLElement {
       .tbl .spec-name { font-weight: 600; color: var(--fg-1); width: 28%; }
       .tbl .spec-name .info { font-size: 12px; font-weight: 400; color: var(--fg-3); margin-top: 2px; line-height: 1.4; }
       .tbl .y { color: var(--kygo-green-dark); font-weight: 600; }
-      .tbl .n { color: var(--fg-3); }
+      .tbl .n { color: var(--fg-2); }
       .tbl .num { font-family: var(--font-numeric); font-weight: 600; font-size: 15px; color: var(--fg-1); }
       .tbl .num.y { color: var(--kygo-green-dark); }
       .aff-row { display: none; }
