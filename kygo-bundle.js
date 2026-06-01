@@ -1121,6 +1121,32 @@ class KygoFounderCta extends HTMLElement {
 customElements.define('kygo-founder-cta', KygoFounderCta);
 
 /* ========================================
+   8. KYGO HOME (single-embed wrapper)
+   Tag: kygo-home
+   Renders all 7 homepage sections in order so the page needs only ONE Wix
+   custom-element embed (one URL to bump on each push) instead of seven.
+   Sections are appended to LIGHT DOM so each one's __seo text stays
+   crawlable and its structured data still injects normally. Each section
+   uses its built-in defaults (no per-section Wix settings are forwarded).
+======================================== */
+class KygoHome extends HTMLElement {
+  connectedCallback() {
+    if (this._mounted) return;
+    this._mounted = true;
+    [
+      'kygo-hero-section',
+      'kygo-social-proof-section',
+      'kygo-problem-section',
+      'kygo-features-section',
+      'kygo-insights-steps',
+      'kygo-faq',
+      'kygo-founder-cta'
+    ].forEach(tag => this.appendChild(document.createElement(tag)));
+  }
+}
+customElements.define('kygo-home', KygoHome);
+
+/* ========================================
    BUNDLE COMPLETE
    All 7 elements registered:
    - kygo-hero-section
@@ -1130,4 +1156,5 @@ customElements.define('kygo-founder-cta', KygoFounderCta);
    - kygo-insights-steps
    - kygo-faq
    - kygo-founder-cta
+   Plus kygo-home — a wrapper that renders all 7 as a single embed.
 ======================================== */
