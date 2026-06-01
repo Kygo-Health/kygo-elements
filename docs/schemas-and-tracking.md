@@ -118,17 +118,29 @@ wearable-accuracy) cite the studies referenced on the page via `citation`. **Con
 (contact) wraps an Organization with a `ContactPoint`. **Blog** uses `CollectionPage` (index)
 and `BlogPosting`/`WebPage` (single post) with `ImageObject`.
 
-## Schema gaps / inconsistencies to review
+## Schema notes & intentional omissions
 
-1. **`kygo-faq-section.js` emits no FAQPage schema** despite being the FAQ UI — the biggest miss
-   for rich results. Other pages inline their own FAQPage; this dedicated one doesn't.
-2. **`kygo-blog-post.js` (categories/related/subscribe/CTA sub-components) emit no schema.**
-3. **`kygo-deep-sleep-factors.js`** injects only FAQPage + BreadcrumbList — **no `WebApplication`**,
-   unlike its sibling factor pages.
-4. **`kygo-sleep-metrics.js`** injects `WebApplication` + Breadcrumb but **no FAQPage**.
+Some pages **deliberately** skip a schema type to avoid injecting duplicate schema when multiple
+components render on the same Wix page. These are **not bugs** — each carries an explicit comment
+(`… managed via Wix site-level LD+JSON to avoid duplicate schema errors`):
+
+1. **`kygo-faq-section.js`** — empty `_injectStructuredData() {}`; FAQPage is handled at the Wix
+   site level.
+2. **`kygo-deep-sleep-factors.js`** — injects FAQPage + BreadcrumbList only; WebApplication is
+   site-level managed.
+3. **`kygo-sleep-metrics.js`** — injects WebApplication + BreadcrumbList only; FAQPage is
+   site-level managed.
+
+Genuine notes to keep in mind:
+
+4. **`kygo-blog-post.js`** sub-components (categories/related/subscribe/CTA) emit no schema — they're
+   page *fragments*; the `BlogPosting` schema lives in `kygo-blog-page.js`. Fine as-is.
 5. `datePublished`/`dateModified` are hardcoded per file — keep `dateModified` current when editing.
 6. New pages: scaffold via the `new-page` skill, then fill `_injectStructuredData()` with the
    right type and a unique `data-kygo-<name>-ld` marker.
+7. Because each component guards only its **own** marker, two *different* components on one page each
+   inject their own Organization/WebApplication — the site-level deferral above is how duplicates
+   are avoided. Keep this in mind when composing multiple components on a single Wix page.
 
 ---
 

@@ -13,6 +13,8 @@ Guidance for working in this repo. Read this before editing or creating componen
   Wix Velo CustomEvents).
 - **`docs/assets-and-urls.md`** — every image/logo asset (Wix media) and what it is, plus fonts,
   CDN, analytics, and external research/citation URLs.
+- **`docs/fixes-and-issues.md`** — consolidated, severity-ranked backlog of bugs/inconsistencies
+  across files (with file:line + suggested fix). Check/update this when fixing things.
 
 ## What this repo is
 
