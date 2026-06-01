@@ -21,9 +21,21 @@
 - **#7** Samsung Galaxy Watch unified to `amzn.to/3PUMS23` across all 3 pages (replaced broken
   `4tfkllQ` + old `4aZkBPB`).
 - **#4** calorie-burn link confirmed live at `/post/how-accurate-is-your-wearable-calorie-burn`.
+- **#11** font `@import` standardized on the DM Sans `400;500;600;700` variant (7 files updated, 11 total).
+- **#15** host normalized to `https://www.kygo.app` across all components — **except** the
+  `kygo.app/android` download redirect, intentionally left bare (verified-working, key conversion;
+  `www.kygo.app/android` not yet verified to resolve).
+- **#16** iOS download links standardized to the direct App Store URL
+  `https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589` (replaced the `/iOS`
+  redirect in Oura + Fitbit-vs-WHOOP; also fixes their GA `ios_download` classification).
 
-Still open: **#8** GA conversion forwarding (opt-in), **#10–#14** polish, plus a missing
-Cooling Mattress Pad affiliate link (add if a good product turns up).
+**Closed (owner decisions):** **#8** no GA forwarding — app-download clicks are the key conversion
+and already tracked. **#10** Health Connect logo confirmed correct. **#14** dates updated only on
+real edits. **#17** Cooling Mattress Pad stays linkless (no product).
+
+**Still open:** **#12** sleep-latency affiliate links (deferred), **#13** consent gating (your
+legal call — see below), and **#15 follow-up**: normalize `kygo.app/android` → `www` once you
+confirm `www.kygo.app/android` resolves.
 
 ## Summary
 

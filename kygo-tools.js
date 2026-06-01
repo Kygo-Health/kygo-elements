@@ -713,7 +713,7 @@ class KygoToolsPage extends HTMLElement {
       <section class="sec sec-hero">
         <div class="wrap">
           <header class="page-header">
-            <a class="brand" href="https://kygo.app">
+            <a class="brand" href="https://www.kygo.app">
               <img class="brand-logo" src="${logoUrl}" alt="Kygo Health" />
               <span class="brand-name">Kygo</span>
               <span class="brand-sub">/ Tools</span>

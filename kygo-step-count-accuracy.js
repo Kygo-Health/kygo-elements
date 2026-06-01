@@ -426,7 +426,7 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="logo-img" />
             Step Count Accuracy
           </a>
@@ -651,15 +651,15 @@ class KygoStepCountAccuracy extends HTMLElement {
       </section>
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app" target="_blank" rel="noopener">Kygo App</a>
-            <a href="https://kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
+            <a href="https://www.kygo.app" target="_blank" rel="noopener">Kygo App</a>
+            <a href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
           </div>
           <p class="footer-copy">Data last updated February 2026. All accuracy claims sourced from peer-reviewed research with full bias disclosure.</p>
           <p class="footer-copy footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>

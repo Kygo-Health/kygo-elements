@@ -1005,11 +1005,11 @@ class KygoRhrFactors extends HTMLElement {
 
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             RHR Factors
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="header-link" target="_blank" rel="noopener">
             Get App ${this._icon('arrowRight')}
           </a>
         </div>
@@ -1113,18 +1113,18 @@ class KygoRhrFactors extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Home</a>
-            <a href="https://kygo.app/how-it-works">How It Works</a>
-            <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy-policy">Privacy</a>
-            <a href="https://kygo.app/terms-conditions">Terms</a>
+            <a href="https://www.kygo.app">Home</a>
+            <a href="https://www.kygo.app/how-it-works">How It Works</a>
+            <a href="https://www.kygo.app/blog">Blog</a>
+            <a href="https://www.kygo.app/contact">Contact</a>
+            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated April 2026.</p>
@@ -1320,7 +1320,7 @@ class KygoRhrFactors extends HTMLElement {
 
   _styles() {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
         --dark: #1E293B;

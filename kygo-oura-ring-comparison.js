@@ -152,11 +152,11 @@ class KygoOuraRingComparison extends HTMLElement {
 
       <header class="nav">
         <div class="nav-inner">
-          <a href="https://kygo.app" class="nav-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="nav-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" loading="lazy" />
             <span>Kygo Health</span>
           </a>
-          <a href="https://kygo.app/iOS" class="nav-cta-link" target="_blank" rel="noopener">
+          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="nav-cta-link" target="_blank" rel="noopener">
             Get Kygo App ${this._icon('arrowRight')}
           </a>
         </div>
@@ -260,7 +260,7 @@ class KygoOuraRingComparison extends HTMLElement {
             <h3>Your ring tracks the data. <span>Kygo tells you what moves it.</span></h3>
             <p>Whichever Oura you wear, Kygo connects to it and cross-checks every sleep, HRV, and recovery reading against what you actually eat and train — so you see which metrics are genuinely predictive for <em>your</em> body, not just a daily score.</p>
             <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg" href="https://kygo.app/iOS" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
               <a class="btn btn-primary btn-lg" href="https://kygo.app/android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
             </div>
             <div class="cta-works">
@@ -364,18 +364,18 @@ class KygoOuraRingComparison extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand">
+          <a href="https://www.kygo.app" class="footer-brand">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             <span>Kygo Health</span>
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Home</a>
-            <a href="https://kygo.app/how-it-works">How It Works</a>
-            <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy-policy">Privacy</a>
-            <a href="https://kygo.app/terms-conditions">Terms</a>
+            <a href="https://www.kygo.app">Home</a>
+            <a href="https://www.kygo.app/how-it-works">How It Works</a>
+            <a href="https://www.kygo.app/blog">Blog</a>
+            <a href="https://www.kygo.app/contact">Contact</a>
+            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making decisions based on wearable data. Oura's Blood Pressure Signals and Nighttime Breathing are not FDA-cleared and do not diagnose any condition.</p>
           <p class="footer-copyright">Data sourced from official Oura specifications, peer-reviewed validation studies (Khan 2025, Robbins 2024, Svensson 2024, Dial 2025, Cao 2022, Kinnunen 2020, Liang 2024), and Ring 5 launch coverage. Last updated May 2026.</p>

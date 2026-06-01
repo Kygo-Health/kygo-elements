@@ -96,7 +96,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   _render() {
     this.shadowRoot.innerHTML = `
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
         /* ==================== BASE (MOBILE-FIRST) ==================== */
         :host {
@@ -415,7 +415,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       <!-- HEADER -->
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="header-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="header-brand" target="_blank" rel="noopener">
             <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo">
             Calorie Burn
           </a>
@@ -613,18 +613,18 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       <!-- FOOTER -->
       <footer class="footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo Health" loading="lazy">
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Home</a>
-            <a href="https://kygo.app/how-it-works">How It Works</a>
-            <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy-policy">Privacy</a>
-            <a href="https://kygo.app/terms-conditions">Terms</a>
+            <a href="https://www.kygo.app">Home</a>
+            <a href="https://www.kygo.app/how-it-works">How It Works</a>
+            <a href="https://www.kygo.app/blog">Blog</a>
+            <a href="https://www.kygo.app/contact">Contact</a>
+            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This calculator is for educational purposes only and does not replace professional medical advice. Wearable device accuracy varies by individual, environmental factors, and algorithm updates.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses.</p>

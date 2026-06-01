@@ -968,11 +968,11 @@ class KygoSensorComparison extends HTMLElement {
       <!-- Header -->
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" loading="lazy" />
             Sensor Comparison
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="header-link" target="_blank" rel="noopener">
             Get Kygo App ${this._icon('arrowRight')}
           </a>
         </div>
@@ -1094,18 +1094,18 @@ class KygoSensorComparison extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Home</a>
-            <a href="https://kygo.app/how-it-works">How It Works</a>
-            <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy-policy">Privacy</a>
-            <a href="https://kygo.app/terms-conditions">Terms</a>
+            <a href="https://www.kygo.app">Home</a>
+            <a href="https://www.kygo.app/how-it-works">How It Works</a>
+            <a href="https://www.kygo.app/blog">Blog</a>
+            <a href="https://www.kygo.app/contact">Contact</a>
+            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making health decisions based on wearable data.</p>
           <p class="footer-copyright">Data sourced from official manufacturer specs, support documentation, and independent reviews. Last updated March 2026.</p>
@@ -1120,7 +1120,7 @@ class KygoSensorComparison extends HTMLElement {
 
   _styles() {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
         --dark: #1E293B;

@@ -648,11 +648,11 @@ class KygoWearableAccuracy extends HTMLElement {
       <!-- Header -->
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Wearable Accuracy
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="header-link" target="_blank" rel="noopener">
             Get Kygo App <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
         </div>
@@ -859,15 +859,15 @@ class KygoWearableAccuracy extends HTMLElement {
       </section>
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app" target="_blank" rel="noopener">Kygo App</a>
-            <a href="https://kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
+            <a href="https://www.kygo.app" target="_blank" rel="noopener">Kygo App</a>
+            <a href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
           </div>
           <p class="footer-copyright">Data last updated February 2025. All accuracy claims sourced from peer-reviewed research with full bias disclosure.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>

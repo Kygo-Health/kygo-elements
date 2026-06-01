@@ -637,11 +637,11 @@ class KygoSleepMetrics extends HTMLElement {
       <!-- Header -->
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Sleep Metrics
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="header-link" target="_blank" rel="noopener">
             Get Kygo App ${this._icon('arrowRight')}
           </a>
         </div>
@@ -765,15 +765,15 @@ class KygoSleepMetrics extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app" target="_blank" rel="noopener">Kygo App</a>
-            <a href="https://kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
+            <a href="https://www.kygo.app" target="_blank" rel="noopener">Kygo App</a>
+            <a href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
           </div>
           <p class="footer-copyright">Data sourced from official manufacturer documentation. Last updated February 2025.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>

@@ -1541,11 +1541,11 @@ class KygoWearableStress extends HTMLElement {
 
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Stress Research
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="header-link" target="_blank" rel="noopener">
             Get App ${this._icon('arrowRight')}
           </a>
         </div>
@@ -1578,7 +1578,7 @@ class KygoWearableStress extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             Kygo Health
           </a>
@@ -1687,7 +1687,7 @@ class KygoWearableStress extends HTMLElement {
 
   _styles() {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
         --dark: #1E293B;
