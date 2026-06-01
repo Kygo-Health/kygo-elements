@@ -658,8 +658,8 @@ class KygoStepCountAccuracy extends HTMLElement {
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
             <a href="https://kygo.app" target="_blank" rel="noopener">Kygo App</a>
-            <a href="https://kygo.app/privacy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://kygo.app/terms" target="_blank" rel="noopener">Terms</a>
+            <a href="https://kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
           </div>
           <p class="footer-copy">Data last updated February 2026. All accuracy claims sourced from peer-reviewed research with full bias disclosure.</p>
           <p class="footer-copy footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>

@@ -7,6 +7,19 @@
 > Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
 > **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
+## ✅ Resolved on branch `claude/hopeful-faraday-ig1PE` (2026-06)
+
+- **#2** food-scanner `${this.dailyLimit}` → now a template literal (`calories-custom-element.js:1296`).
+- **#3** tool-component footers → `/privacy-policy` + `/terms-conditions` across all 13 files.
+- **#4** calorie-burn article link → `/post/how-accurate-is-your-wearable-calorie-burn`.
+- **#5** food-scanner URLs → `/tools/calories-in-anything` (`calories-custom-element.js:229,1615`).
+- **#6** Oura canonical/breadcrumb → `/tools/oura-ring-comparison-tool` *(still needs the Wix-side
+  redirect of the orphaned root route)*.
+- **#9** deleted orphaned `kygo-blog-page.js`.
+
+Still open / needs input: **#1** Deep Sleep affiliate URLs, **#7** Samsung affiliate URL,
+**#8** GA conversion forwarding (opt-in), **#10–#14** polish.
+
 ## Summary
 
 | # | Area | Severity | Status | One-liner |

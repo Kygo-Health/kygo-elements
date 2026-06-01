@@ -772,8 +772,8 @@ class KygoSleepMetrics extends HTMLElement {
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
             <a href="https://kygo.app" target="_blank" rel="noopener">Kygo App</a>
-            <a href="https://kygo.app/privacy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://kygo.app/terms" target="_blank" rel="noopener">Terms</a>
+            <a href="https://kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
           </div>
           <p class="footer-copyright">Data sourced from official manufacturer documentation. Last updated February 2025.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>

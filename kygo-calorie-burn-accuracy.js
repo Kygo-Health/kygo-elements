@@ -524,7 +524,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             ${this._renderBrandCards()}
           </div>
           <div class="blog-link-wrap animate-on-scroll">
-            <a href="https://www.kygo.app/blog/how-accurate-is-your-wearable-calorie-burn" class="blog-link-card" target="_blank" rel="noopener">
+            <a href="https://www.kygo.app/post/how-accurate-is-your-wearable-calorie-burn" class="blog-link-card" target="_blank" rel="noopener">
               <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo" class="blog-link-logo" />
               <div class="blog-link-text">
                 <span class="blog-link-title">Read the Full Article</span>
@@ -623,8 +623,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <a href="https://kygo.app/how-it-works">How It Works</a>
             <a href="https://kygo.app/blog">Blog</a>
             <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy">Privacy</a>
-            <a href="https://kygo.app/terms">Terms</a>
+            <a href="https://kygo.app/privacy-policy">Privacy</a>
+            <a href="https://kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This calculator is for educational purposes only and does not replace professional medical advice. Wearable device accuracy varies by individual, environmental factors, and algorithm updates.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses.</p>

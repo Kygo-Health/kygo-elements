@@ -1104,8 +1104,8 @@ class KygoSensorComparison extends HTMLElement {
             <a href="https://kygo.app/how-it-works">How It Works</a>
             <a href="https://kygo.app/blog">Blog</a>
             <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy">Privacy</a>
-            <a href="https://kygo.app/terms">Terms</a>
+            <a href="https://kygo.app/privacy-policy">Privacy</a>
+            <a href="https://kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making health decisions based on wearable data.</p>
           <p class="footer-copyright">Data sourced from official manufacturer specs, support documentation, and independent reviews. Last updated March 2026.</p>

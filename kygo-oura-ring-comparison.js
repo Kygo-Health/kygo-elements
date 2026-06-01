@@ -1,7 +1,7 @@
 /**
  * Kygo Health — Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool
  * Tag: kygo-oura-ring-comparison
- * URL: /oura-ring-comparison-tool
+ * URL: /tools/oura-ring-comparison-tool
  * Mobile-first side-by-side comparison of Oura Ring Gen 3, Ring 4, and Ring 5.
  */
 
@@ -374,8 +374,8 @@ class KygoOuraRingComparison extends HTMLElement {
             <a href="https://kygo.app/how-it-works">How It Works</a>
             <a href="https://kygo.app/blog">Blog</a>
             <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy">Privacy</a>
-            <a href="https://kygo.app/terms">Terms</a>
+            <a href="https://kygo.app/privacy-policy">Privacy</a>
+            <a href="https://kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making decisions based on wearable data. Oura's Blood Pressure Signals and Nighttime Breathing are not FDA-cleared and do not diagnose any condition.</p>
           <p class="footer-copyright">Data sourced from official Oura specifications, peer-reviewed validation studies (Khan 2025, Robbins 2024, Svensson 2024, Dial 2025, Cao 2022, Kinnunen 2020, Liang 2024), and Ring 5 launch coverage. Last updated May 2026.</p>
@@ -640,7 +640,7 @@ class KygoOuraRingComparison extends HTMLElement {
         '@type': 'WebApplication',
         'name': 'Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool',
         'description': 'Compare Oura Ring 5, Ring 4, and Gen 3 side by side. See specs, peer-reviewed accuracy data, and the real 3-year cost with subscription math included.',
-        'url': 'https://www.kygo.app/oura-ring-comparison-tool',
+        'url': 'https://www.kygo.app/tools/oura-ring-comparison-tool',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
         'inLanguage': 'en',
@@ -684,7 +684,7 @@ class KygoOuraRingComparison extends HTMLElement {
         'itemListElement': [
           { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.kygo.app' },
           { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
-          { '@type': 'ListItem', 'position': 3, 'name': 'Oura Ring Comparison Tool', 'item': 'https://www.kygo.app/oura-ring-comparison-tool' }
+          { '@type': 'ListItem', 'position': 3, 'name': 'Oura Ring Comparison Tool', 'item': 'https://www.kygo.app/tools/oura-ring-comparison-tool' }
         ]
       };
       const s = document.createElement('script');

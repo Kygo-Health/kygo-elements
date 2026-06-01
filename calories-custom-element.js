@@ -226,7 +226,7 @@ class CaloriesInAnything extends HTMLElement {
     const r = this.result;
     const score = r.healthScore ? ` | Health Score: ${r.healthScore}/10` : '';
     const text = `I just scanned "${r.item}" with Kygo Food Scanner — ${r.calories} calories${score}!\n\n"${r.verdict}"\n\nTry it yourself:`;
-    const url = 'https://kygo.app/tools/food-scanner';
+    const url = 'https://kygo.app/tools/calories-in-anything';
     if (navigator.share) {
       navigator.share({ text, url }).catch(() => this.copyToClipboard(text + ' ' + url));
     } else {
@@ -1293,7 +1293,7 @@ class CaloriesInAnything extends HTMLElement {
               ${this.renderFaqItem(1, "What info does each scan include?", "Every scan returns calories, six macronutrients (protein, carbs, fat, fiber, sugar, sodium), a 1\u201310 health score, key vitamins and minerals with % daily value, dietary tags like <strong>High Protein</strong> or <strong>Heart Healthy</strong>, and actionable health insights specific to that food.")}
               ${this.renderFaqItem(2, "What photo formats are supported?", "JPG, PNG, WebP, and HEIC (iPhone photos). You can upload from your camera roll, take a photo directly, or drag and drop. Images are compressed client-side before analysis\u2014your original photo never leaves your device.")}
               ${this.renderFaqItem(3, "How does this connect to the Kygo app?", "This scanner gives you instant one-off nutrition checks. The <a href=\"https://kygo.app\" target=\"_blank\">Kygo app</a> takes it further\u2014log meals daily and connect your wearable (Oura, Apple Watch, Fitbit, Garmin, Whoop, or Health Connect) to discover how specific foods affect your sleep, HRV, energy, and recovery over time.")}
-              ${this.renderFaqItem(4, "Is there a daily limit?", "You get ${this.dailyLimit} free scans per day with no sign-up required. The Kygo app includes unlimited AI-powered food logging along with wearable correlations and a free forever plan.")}
+              ${this.renderFaqItem(4, "Is there a daily limit?", `You get ${this.dailyLimit} free scans per day with no sign-up required. The Kygo app includes unlimited AI-powered food logging along with wearable correlations and a free forever plan.`)}
               ${this.renderFaqItem(5, "What if I scan something that isn't food?", "The AI will detect non-food items and let you know. You'll see a notice that the image doesn't appear to be food, along with a prompt to try again with a meal photo.")}
             </div>
           </div>
@@ -1306,8 +1306,8 @@ class CaloriesInAnything extends HTMLElement {
             <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
             <div class="footer-links">
               <a href="https://kygo.app" target="_blank">Kygo App</a>
-              <a href="https://kygo.app/privacy" target="_blank">Privacy</a>
-              <a href="https://kygo.app/terms" target="_blank">Terms</a>
+              <a href="https://kygo.app/privacy-policy" target="_blank">Privacy</a>
+              <a href="https://kygo.app/terms-conditions" target="_blank">Terms</a>
             </div>
             <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC</p>
           </footer>
@@ -1612,7 +1612,7 @@ class CaloriesInAnything extends HTMLElement {
         'description': 'Free AI-powered food scanner by Kygo Health. Take a photo of any meal and get instant calorie counts, macronutrient breakdown (protein, carbs, fat, fiber), and full micronutrient analysis. Powered by advanced image recognition trained on 5+ million foods from the USDA FoodData Central database.',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
-        'url': 'https://www.kygo.app/food-scanner',
+        'url': 'https://www.kygo.app/tools/calories-in-anything',
         'datePublished': '2026-01-15',
         'dateModified': '2026-03-18',
         'softwareVersion': '1.0',
