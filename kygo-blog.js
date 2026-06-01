@@ -50,7 +50,7 @@ const ALL_TAB = { slug: 'all', label: 'All Posts' };
 
 const PINNED_FEATURED_SLUG = 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device';
 const IOS_URL = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-const ANDROID_URL = 'https://kygo.app/android';
+const ANDROID_URL = 'https://www.kygo.app/android';
 
 class KygoBlog extends HTMLElement {
   constructor() {

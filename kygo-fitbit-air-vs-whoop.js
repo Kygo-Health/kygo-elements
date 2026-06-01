@@ -235,7 +235,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <p>Kygo Health connects to both Fitbit and WHOOP, then cross-checks every reading against what you eat, train, and sleep — so you see which metrics are actually predictive for <em>your</em> body.</p>
             <div class="cta-btn-row">
               <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg" href="https://kygo.app/android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
+              <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
             </div>
             <div class="cta-works">
               <span>Works with</span>

@@ -261,7 +261,7 @@ class KygoOuraRingComparison extends HTMLElement {
             <p>Whichever Oura you wear, Kygo connects to it and cross-checks every sleep, HRV, and recovery reading against what you actually eat and train — so you see which metrics are genuinely predictive for <em>your</em> body, not just a daily score.</p>
             <div class="cta-btn-row">
               <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg" href="https://kygo.app/android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
+              <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
             </div>
             <div class="cta-works">
               <span>Works with</span>

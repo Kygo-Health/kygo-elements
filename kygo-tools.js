@@ -695,7 +695,7 @@ class KygoToolsPage extends HTMLElement {
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const appStoreUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-    const playStoreUrl = 'https://kygo.app/android';
+    const playStoreUrl = 'https://www.kygo.app/android';
 
     const featured = this._featured();
     const grouped = this._groupedByCategory();
