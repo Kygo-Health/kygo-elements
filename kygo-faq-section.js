@@ -249,7 +249,7 @@ class KygoFaqSection extends HTMLElement {
   }
 
   render() {
-    const appStoreUrl = this._getSetting('app-store-url', '#');
+    const appStoreUrl = this._getSetting('app-store-url', 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589');
     const email = this._getSetting('email', 'support@kygo.app');
 
     this.shadowRoot.innerHTML = `
