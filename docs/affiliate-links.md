@@ -2,7 +2,7 @@
 
 > Every affiliate link in the `kygo-elements` components — what product it points to and where
 > it's listed. All affiliate links are **Amazon short links (`amzn.to/...`)** except one WHOOP
-> referral link (noted at the bottom). **35 unique** Amazon short links across **10 files**.
+> referral link (noted at the bottom). **36 unique** Amazon short links across **9 files**.
 
 All affiliate `<a>` tags use `target="_blank" rel="noopener sponsored"` (the `sponsored` rel is
 the FTC/Google-correct attribute for paid links — good). Short links resolve on Amazon's side;
@@ -23,8 +23,7 @@ data object (`affiliateUrl`, `{name,url}`, or `affiliate:{url,label}`).
 | `amzn.to/4aF93jj` | **Oura Ring** (Ring 4) | sensor-comparison:97 · sleep-metrics:51 · step-count-accuracy:243 · wearable-accuracy:74 · calorie-burn-accuracy:1269 |
 | `amzn.to/4suRaen` | **Whoop 5.0** | sensor-comparison:86 |
 | `amzn.to/4rRoziQ` | **WHOOP** | step-count-accuracy:267 · wearable-accuracy:106 |
-| `amzn.to/4aZkBPB` | **Samsung Galaxy Watch** | step-count-accuracy:159 · wearable-accuracy:138 |
-| `amzn.to/4tfkllQ` | **Samsung Galaxy Watch** ⚠️ different link than above | calorie-burn-accuracy:1294 |
+| `amzn.to/3PUMS23` | **Samsung Galaxy Watch** (unified across all 3 pages) | step-count-accuracy:159 · wearable-accuracy:138 · calorie-burn-accuracy:1294 |
 | `amzn.to/4rkOv6I` | **COROS** | step-count-accuracy:186 |
 | `amzn.to/4rqpdnL` | **Polar** | step-count-accuracy:214 |
 
@@ -52,10 +51,10 @@ Rendered inline on the "factors" pages as `affiliate:{url,label}` chips under ea
 |---|---|---|
 | `amzn.to/4saSeEc` | Sunrise Alarm Clock | 179 |
 | `amzn.to/3Nbjq6C` | Magnesium Glycinate | 195 |
-| `amzn.to/3OyDz7c` | Glycine Powder | 208 |
-| `amzn.to/406okEX` | Tart Cherry Juice | 221 |
+| `amzn.to/3PWfatc` | Glycine Powder | 208 |
+| `amzn.to/3PXqKEh` | Tart Cherry Juice | 221 |
 | `amzn.to/4szGon9` | Melatonin Supplement | 234 |
-| `amzn.to/4aYRATe` | Cooling Mattress Pad | 250 |
+| _(none)_ | Cooling Mattress Pad — affiliate intentionally removed (no good product found) | 250 (Temperature factor) |
 | `amzn.to/4cwMwI1` | Blue Light Blocking Glasses | 263 |
 | `amzn.to/4bfT8bC` | White Noise Machine | 276 |
 | `amzn.to/40gYtKD` | CO₂ Monitor | 313 |
@@ -67,11 +66,11 @@ Rendered inline on the "factors" pages as `affiliate:{url,label}` chips under ea
 | `amzn.to/4qYXjOD` | KSM-66 Ashwagandha | 80 |
 | `amzn.to/40AsqFp` | Multi-Strain Probiotic | 91 |
 | `amzn.to/4rM2eDY` | Daily Multivitamin | 112 |
-| `amzn.to/3OyDz7c` | GABA Supplement ⚠️ same link as Glycine Powder above | 123 |
+| `amzn.to/3OyDz7c` | GABA Supplement | 123 |
 | `amzn.to/3OEoHEh` | L-Theanine 200mg | 134 |
-| `amzn.to/406okEX` | Beetroot Juice Shots ⚠️ same link as Tart Cherry Juice above | 145 |
+| `amzn.to/406okEX` | Beetroot Juice Shots | 145 |
 | `amzn.to/46scAQQ` | Breathing Trainer | 168 |
-| `amzn.to/4aYRATe` | Cold Plunge Tub ⚠️ same link as Cooling Mattress Pad above | 179 |
+| `amzn.to/4aYRATe` | Cold Plunge Tub | 179 |
 | `amzn.to/4tZ5Zr2` | Meditation Cushion | 190 |
 | `amzn.to/4lbwIg3` | Vitamin B12 | 405 |
 | `amzn.to/4cm6d5m` | Vitamin D3 | 416 |
@@ -91,12 +90,21 @@ Rendered inline on the "factors" pages as `affiliate:{url,label}` chips under ea
 
 ---
 
-## ⚠️ Anomalies to review
+## ✅ Resolved (branch `claude/hopeful-faraday-ig1PE`, 2026-06)
 
-1. **One short link reused for different products** — likely copy-paste errors that send buyers to the wrong item:
-   - `amzn.to/3OyDz7c` = "Glycine Powder" (deep-sleep:208) **and** "GABA Supplement" (hrv:123)
-   - `amzn.to/406okEX` = "Tart Cherry Juice" (deep-sleep:221) **and** "Beetroot Juice Shots" (hrv:145)
-   - `amzn.to/4aYRATe` = "Cooling Mattress Pad" (deep-sleep:250) **and** "Cold Plunge Tub" (hrv:179)
-2. **Samsung Galaxy Watch has two different links**: `amzn.to/4aZkBPB` (step-count, wearable-accuracy) vs `amzn.to/4tfkllQ` (calorie-burn). Confirm which is the intended/current affiliate link.
-3. **`kygo-sleep-latency-factors.js`** renders affiliate chips (`f.affiliate`, line 518) but its current factor data contains **no** affiliate URLs — the slots are wired up but empty.
-4. Short links hide the Amazon affiliate **tag**; verify each `amzn.to` still carries the correct associate tag on the Amazon side (not auditable from this repo).
+1. **Reused short links fixed** — the three slugs that pointed at the wrong product on the Deep
+   Sleep page were re-pointed; each slug now belongs to one product:
+   - Glycine Powder → `amzn.to/3PWfatc` (was `3OyDz7c`, which is GABA on the HRV page)
+   - Tart Cherry Juice → `amzn.to/3PXqKEh` (was `406okEX`, which is Beetroot on the HRV page)
+   - Cooling Mattress Pad → **affiliate removed** (no good product found; was `4aYRATe`, which is
+     Cold Plunge on the HRV page)
+2. **Samsung unified** — all three pages now use `amzn.to/3PUMS23` (replaced the broken
+   `4tfkllQ` and the old `4aZkBPB`).
+
+## ⚠️ Still open
+
+3. **`kygo-sleep-latency-factors.js`** renders affiliate chips (`f.affiliate`, line 518) but its
+   current factor data contains **no** affiliate URLs — slots wired up but empty.
+4. **Cooling Mattress Pad** has no affiliate link (intentional gap) — add one if a good product turns up.
+5. Short links hide the Amazon affiliate **tag**; verify each `amzn.to` still carries the correct
+   associate tag on the Amazon side (not auditable from this repo).

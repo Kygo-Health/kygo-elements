@@ -156,7 +156,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kim2024'],
         affiliateLinks: [
-          { name: 'Shop Samsung Galaxy Watch on Amazon', url: 'https://amzn.to/4aZkBPB' }
+          { name: 'Shop Samsung Galaxy Watch on Amazon', url: 'https://amzn.to/3PUMS23' }
         ]
       },
       coros: {

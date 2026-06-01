@@ -205,7 +205,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Glycine acts on NMDA receptors in the suprachiasmatic nucleus, lowering core body temperature. Also acts as an inhibitory neurotransmitter facilitating NREM entry.',
           dosage: '3g before bed',
           source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007' },
-          affiliate: { url: 'https://amzn.to/3OyDz7c', label: 'Glycine Powder' }
+          affiliate: { url: 'https://amzn.to/3PWfatc', label: 'Glycine Powder' }
         },
         {
           key: 'tart-cherry',
@@ -218,7 +218,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Proanthocyanidins inhibit indoleamine 2,3-dioxygenase, reducing tryptophan degradation via kynurenine pathway. More tryptophan available for serotonin → melatonin conversion.',
           dosage: '240 mL Montmorency tart cherry juice 2x/day',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5617749/', label: 'Losso et al. 2018' },
-          affiliate: { url: 'https://amzn.to/406okEX', label: 'Tart Cherry Juice' }
+          affiliate: { url: 'https://amzn.to/3PXqKEh', label: 'Tart Cherry Juice' }
         },
         {
           key: 'melatonin',
@@ -246,8 +246,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           whatThisMeans: 'Cooling your body reliably increases deep sleep — a cooling mattress added 7.5 minutes of N3 per night. Keep your bedroom between 64-72°F (18-22°C). Going above 77°F starts cutting into deep sleep, particularly as you age.',
           mechanism: 'Increasing the core-to-skin temperature gradient via conductive cooling promotes hypothalamic thermoregulatory signaling that gates SWS entry and maintenance. Heat exposure above 25°C triggers thermoregulatory arousal responses.',
           dosage: 'Cooling mattress for body temp; bedroom 18-22°C (64-72°F); older adults more sensitive to heat',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/38409133/', label: 'Herberger et al. 2024' },
-          affiliate: { url: 'https://amzn.to/4aYRATe', label: 'Cooling Mattress Pad' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/38409133/', label: 'Herberger et al. 2024' }
         },
         {
           key: 'blue-light',

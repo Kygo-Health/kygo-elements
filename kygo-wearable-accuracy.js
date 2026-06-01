@@ -135,7 +135,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: null,
         studyIds: ['park2023', 'park2023resp', 'lanfranchi2024'],
         affiliateLinks: [
-          { name: 'Samsung Galaxy Watch', url: 'https://amzn.to/4aZkBPB' }
+          { name: 'Samsung Galaxy Watch', url: 'https://amzn.to/3PUMS23' }
         ]
       }
     };

@@ -13,12 +13,17 @@
 - **#3** tool-component footers → `/privacy-policy` + `/terms-conditions` across all 13 files.
 - **#4** calorie-burn article link → `/post/how-accurate-is-your-wearable-calorie-burn`.
 - **#5** food-scanner URLs → `/tools/calories-in-anything` (`calories-custom-element.js:229,1615`).
-- **#6** Oura canonical/breadcrumb → `/tools/oura-ring-comparison-tool` *(still needs the Wix-side
-  redirect of the orphaned root route)*.
+- **#6** Oura canonical/breadcrumb → `/tools/oura-ring-comparison-tool` *(Wix-side redirect of the
+  orphaned root route confirmed to `https://www.kygo.app/tools/oura-ring-comparison-tool`)*.
 - **#9** deleted orphaned `kygo-blog-page.js`.
+- **#1** Deep Sleep affiliate links fixed: Glycine → `3PWfatc`, Tart Cherry → `3PXqKEh`, Cooling
+  Mattress Pad affiliate **removed** (no good product). Reused-link collisions with HRV resolved.
+- **#7** Samsung Galaxy Watch unified to `amzn.to/3PUMS23` across all 3 pages (replaced broken
+  `4tfkllQ` + old `4aZkBPB`).
+- **#4** calorie-burn link confirmed live at `/post/how-accurate-is-your-wearable-calorie-burn`.
 
-Still open / needs input: **#1** Deep Sleep affiliate URLs, **#7** Samsung affiliate URL,
-**#8** GA conversion forwarding (opt-in), **#10–#14** polish.
+Still open: **#8** GA conversion forwarding (opt-in), **#10–#14** polish, plus a missing
+Cooling Mattress Pad affiliate link (add if a good product turns up).
 
 ## Summary
 

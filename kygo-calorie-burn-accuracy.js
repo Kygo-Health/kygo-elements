@@ -1291,7 +1291,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         short: 'Samsung',
         color: '#1428A0',
         imageUrl: 'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
-        affiliateUrl: 'https://amzn.to/4tfkllQ',
+        affiliateUrl: 'https://amzn.to/3PUMS23',
         algorithm: 'HR-VO2 relationships combined with accelerometer and GPS data. MET tables applied for recognized activities. Galaxy Watch 7 BioActive sensor estimates body fat %, skeletal muscle, water via BIA — potentially useful for personalized BMR, though integration into calorie algorithms is not documented.',
         bmrMethod: 'Standard metabolic equation (undisclosed — likely Harris-Benedict or Mifflin-St Jeor)',
         sensors: 'Optical HR (PPG), 3-axis accelerometer, gyroscope, barometer, GPS; Galaxy Watch 7 adds BioActive sensor (optical HR, ECG, BIA body composition)',
