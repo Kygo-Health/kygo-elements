@@ -15,6 +15,8 @@ Guidance for working in this repo. Read this before editing or creating componen
   CDN, analytics, and external research/citation URLs.
 - **`docs/fixes-and-issues.md`** — consolidated, severity-ranked backlog of bugs/inconsistencies
   across files (with file:line + suggested fix). Check/update this when fixing things.
+- **`docs/wix-velo-code.md`** — the Wix Velo page + backend code each component talks to (events,
+  attributes, collections, secrets) — lives in the Wix editor, mirrored here as reference.
 
 ## What this repo is
 
