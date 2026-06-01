@@ -1,202 +1,139 @@
 # Fixes & Issues — Consolidated Backlog
 
-> Everything found across the repo that may need fixing, grouped by area and **ranked by
-> severity**. Each item lists the exact file/line and a suggested fix. Verified against source on
-> the audit date; items needing live-site confirmation are marked **[verify]**.
+> Severity-ranked backlog of bugs/inconsistencies across the repo, with file:line + suggested fix.
+> **Status reflects live browser QA (2026-06) — see the Status column.** Deploy model: a commit to
+> a tracked branch ships via CDN, so verify before pushing.
 >
-> Severity: **P1** = visibly broken / wrong in production · **P2** = likely broken or
-> meaningful inconsistency · **P3** = polish / consistency / maintainability · **Intentional /
-> No action** = confirmed deliberate, listed so it isn't "re-discovered" as a bug.
+> Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
+> **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
 ## Summary
 
-| # | Area | Severity | One-liner |
+| # | Area | Severity | Status | One-liner |
+|---|---|---|---|---|
+| 1 | Affiliate | **P1** | Needs input | Deep Sleep page's 3 affiliate links resolve to the HRV products (all wrong) |
+| 2 | Code bug | **P1** | Fix ready | `${this.dailyLimit}` shows literally in food-scanner FAQ |
+| 3 | Links | **P1** | Fix ready | Tool-component footers link `/privacy` & `/terms` → both 404 |
+| 4 | Links | **P2** | Fix ready | Calorie-burn "Read the Article" → `/blog/…` 404 (should be `/post/…`) |
+| 5 | Links | **P2** | Fix ready | Food-scanner internal/canonical URLs 404 (real path `/tools/calories-in-anything`) |
+| 6 | Links | **P2** | Fix ready + Wix | Oura tool canonical is root `/oura-ring-comparison-tool` (orphaned/blank); real page is `/tools/…` |
+| 7 | Affiliate | **P2** | Needs input | Samsung link `amzn.to/4tfkllQ` → Amazon search + error page (broken) |
+| 8 | Tracking | **P3** | Open (opt-in) | Contact/subscribe conversions not sent to GA4 |
+| 9 | Code/cleanup | **P3** | Confirm to remove | `kygo-blog-page.js` is an orphaned 2nd `kygo-blog` registration (not live) |
+| 10 | Assets | **P3** | Spot-check | Asset `46b3b6ce` double-labeled (Whoop card renders fine; verify Health Connect rows) |
+| 11 | Assets | **P3** | Open | Two Google Fonts `@import` variants (DM Sans 700 drift) |
+| 12 | Affiliate | **P3** | Open | `kygo-sleep-latency-factors.js` renders affiliate chips but has none |
+| 13 | Tracking | **P3** | Verify | No consent/CMP gating before GA loads (GA ID `G-P2224N75KY`) |
+| 14 | Schema | **P3** | Open | Hardcoded `dateModified` values go stale |
+| — | Links | — | **Closed** | Bare `kygo.app` → `www` redirects cleanly (1 hop) |
+| — | Links | — | **Closed** | `/iOS` redirect works → App Store |
+| — | Assets | — | **Closed** | "Two Kygo logos" = same mark, flat vs glossy render |
+| — | Tracking | — | **Closed** | `kygo-tracking.js` + GA ID confirmed live on tool pages |
+| — | Schema | — | **No action** | faq-section / deep-sleep / sleep-metrics omissions are intentional (site-level LD) |
+
+---
+
+## P1 — visibly broken
+
+### 1. [Needs input] Deep Sleep page's affiliate links are wrong
+QA confirmed all three shared `amzn.to` slugs resolve to the **HRV** products, so
+**`kygo-deep-sleep-factors.js`** is the page with wrong links (HRV page is correct):
+
+| Slug | Actually lands on | HRV label ✅ | Deep Sleep label ❌ (file:line) |
 |---|---|---|---|
-| 1 | Code bug | **P1** | Duplicate `kygo-blog` custom-element registration in two files |
-| 2 | Code bug | **P1** | `${this.dailyLimit}` in a double-quoted string renders literally |
-| 3 | Assets | **P1** | Whoop card shows the Health Connect logo image |
-| 4 | Affiliate | **P1** | 3 Amazon short links reused for different products |
-| 5 | Links | **P2** [verify] | Footer links `/privacy` but real page is `/privacy-policy` |
-| 6 | Links | **P2** [verify] | Calorie-burn article uses `/blog/…` while all others use `/post/…` |
-| 7 | Affiliate | **P2** | Samsung Galaxy Watch has two different affiliate links |
-| 8 | Links | **P2** | Bare `kygo.app` vs `www.kygo.app` used interchangeably |
-| 9 | Tracking | **P2** | Conversion CustomEvents not forwarded to GA4 |
-| 10 | Tracking | **P2** [verify] | Analytics only fires if `kygo-tracking.js` + `data-ga-id` present |
-| 11 | Links | **P3** | iOS download: App Store URL vs `/iOS` redirect inconsistency |
-| 12 | Links | **P3** | Food-scanner uses both `/food-scanner` and `/tools/food-scanner` |
-| 13 | Links | **P3** | Oura tool lives at `/oura-ring-comparison-tool`, not under `/tools/` |
-| 14 | Assets | **P3** | Two different Kygo logo assets |
-| 15 | Assets | **P3** | Two Google Fonts `@import` variants (DM Sans 700 drift) |
-| 16 | Affiliate | **P3** | `kygo-sleep-latency-factors.js` renders affiliate chips but has none |
-| 17 | Tracking | **P3** [verify] | No consent/CMP gating before GA loads |
-| 18 | Schema | **P3** | Hardcoded `dateModified` values go stale |
-| 19 | Assets | **Info** | All images hardcoded to Wix `static.wixstatic.com` (no fallback) |
-| — | Schema | **No action** | `faq-section` / `deep-sleep` / `sleep-metrics` omissions are intentional |
+| `amzn.to/3OyDz7c` | GABA 500mg | "GABA Supplement" | "Glycine Powder" — `kygo-deep-sleep-factors.js:208` |
+| `amzn.to/406okEX` | Beetroot Juice (Beet Sport Pro) | "Beetroot Juice Shots" | "Tart Cherry Juice" — `:221` |
+| `amzn.to/4aYRATe` | Cold Plunge / Ice Bath Tub | "Cold Plunge Tub" | "Cooling Mattress Pad" — `:250` |
 
----
+- **Fix:** replace the three Deep Sleep links with correct affiliate URLs for **Glycine Powder**,
+  **Tart Cherry Juice**, and a **Cooling Mattress Pad**. → **Need the 3 new `amzn.to`/Amazon URLs from you.**
 
-## Area 1 — Code bugs (functional)
+### 2. [Fix ready] `${this.dailyLimit}` literal in food-scanner FAQ
+`calories-custom-element.js:1296` — the answer is a double-quoted argument string, so it renders
+`You get ${this.dailyLimit} free scans per day`. **Fix:** make it a template literal (backticks).
 
-### 1. [P1] Duplicate `kygo-blog` registration
-`kygo-blog.js:1068` and `kygo-blog-page.js:618` both define `class KygoBlog` and call
-`customElements.define('kygo-blog', KygoBlog)`. If both scripts load on the same page, the second
-`define()` throws `DOMException: 'kygo-blog' has already been used` and that component fails to
-render.
-- **Fix:** decide which is canonical, then delete/retire the other or rename its tag
-  (e.g. `kygo-blog-page`). Confirm the Wix embeds only point at the surviving file.
-- **Note:** `kygo-blog-page.js` also injects `BlogPosting`/`WebPage` schema and `kygo-blog.js`
-  injects `CollectionPage` — they may be an index vs. single-post split that was never renamed.
-
-### 2. [P1] Un-interpolated `${this.dailyLimit}` in food-scanner FAQ
-`calories-custom-element.js:1296` —
-`renderFaqItem(4, "Is there a daily limit?", "You get ${this.dailyLimit} free scans per day …")`.
-The answer is a **double-quoted string** (a function argument), so `${this.dailyLimit}` is **not**
-interpolated and the page literally shows "You get ${this.dailyLimit} free scans per day."
-- **Fix:** use a template literal or concatenation:
-  `` `You get ${this.dailyLimit} free scans per day …` `` (or `"You get " + this.dailyLimit + " …"`).
-- Only occurrence (the JSON-LD FAQ at line ~1652 uses separate, correct text).
-
----
-
-## Area 2 — Image / logo assets
-
-### 3. [P1] Whoop card uses the Health Connect logo
-`kygo-sensor-comparison.js:81` sets the **Whoop 5.0** `imageUrl` to
-`273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png`, which is the **Health Connect logo** everywhere
-else (incl. line 1076 of the same file, `alt="Health Connect"`).
-- **Fix:** point it at the Whoop product image `273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png`
-  (or the Whoop logo `273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png`, matching sibling cards).
-
-### 14. [P3] Two Kygo logo assets
-`273a63_7ac49e91…` is used in 37 places (and as the JSON-LD Organization `logo`);
-`273a63_d0b94a6b…` is used only in `kygo-sensor-comparison.js`.
-- **Fix:** confirm the current brand logo and standardize on one hash.
-
-### 15. [P3] Font `@import` drift
-Two near-identical Google Fonts URLs exist — one includes `DM Sans` weight **700**, one doesn't.
-- **Fix:** pick one (the 700 variant if any headings/bold use 700) for consistent weights and one
-  cached stylesheet. See `docs/assets-and-urls.md §4`.
-
-### 19. [Info] Wix media coupling
-Every image is a hardcoded `static.wixstatic.com/media/273a63_…` URL with no repo-local fallback
-beyond `onerror="this.style.display='none'"`. If the Wix media library changes, images break
-across all components. Architectural note, not an immediate fix.
-
----
-
-## Area 3 — Affiliate links
-
-### 4. [P1] Reused Amazon short links → wrong product
-The same `amzn.to` slug points at two different products (buyers land on the wrong item):
-
-| Short link | Used as | and as |
-|---|---|---|
-| `amzn.to/3OyDz7c` | Glycine Powder (`kygo-deep-sleep-factors.js:208`) | GABA Supplement (`kygo-hrv-factors.js:123`) |
-| `amzn.to/406okEX` | Tart Cherry Juice (`kygo-deep-sleep-factors.js:221`) | Beetroot Juice Shots (`kygo-hrv-factors.js:145`) |
-| `amzn.to/4aYRATe` | Cooling Mattress Pad (`kygo-deep-sleep-factors.js:250`) | Cold Plunge Tub (`kygo-hrv-factors.js:179`) |
-
-- **Fix:** create a correct, distinct Amazon affiliate link for each product. **[needs your input]** —
-  I can't see the destination ASIN behind a short link, so I need the right URLs.
-
-### 7. [P2] Samsung Galaxy Watch — two different links
-`amzn.to/4aZkBPB` (`step-count-accuracy.js:159`, `wearable-accuracy.js:138`) vs
-`amzn.to/4tfkllQ` (`calorie-burn-accuracy.js:1294`).
-- **Fix:** confirm the canonical Samsung link and use it everywhere.
-
-### 16. [P3] Empty affiliate slots in sleep-latency
-`kygo-sleep-latency-factors.js:518` renders `f.affiliate` chips, but the factor data contains no
-affiliate URLs — the capability is wired but unused.
-- **Fix:** either populate relevant affiliate links or leave intentionally empty (no harm).
-
-### [Info] Short links hide the associate tag
-Every device/product link is an `amzn.to` short link; the Amazon associate **tag** isn't visible
-in-repo and can't be audited here. Verify tags on Amazon's side.
-
----
-
-## Area 4 — Internal links & URLs
-
-### 5. [P2][verify] Privacy path mismatch
-Components link `https://kygo.app/privacy` (13 places), but the live policy page is
-`https://www.kygo.app/privacy-policy` (per product owner).
-- **Fix (if confirmed):** update footer links to `/privacy-policy`. Also re-check `/terms`.
-- Locations: footers in `kygo-calorie-burn-accuracy.js`, `kygo-deep-sleep-factors.js`,
+### 3. [Fix ready] Tool-component footers point at dead Privacy/Terms
+The Wix **site** footer is fine (`/privacy-policy` 200, `/terms-conditions` 200). But each tool
+component's **own mini-footer** links `kygo.app/privacy` and `kygo.app/terms` — **both 404 on
+every tool page.**
+- **Fix:** `/privacy` → `/privacy-policy`, `/terms` → `/terms-conditions` in the component footers.
+- Files (13): `kygo-calorie-burn-accuracy.js`, `kygo-deep-sleep-factors.js`,
   `kygo-fitbit-air-vs-whoop.js`, `kygo-hrv-factors.js`, `kygo-oura-ring-comparison.js`,
   `kygo-rhr-factors.js`, `kygo-sensor-comparison.js`, `kygo-sleep-latency-factors.js`,
   `kygo-sleep-metrics.js`, `kygo-staying-asleep-factors.js`, `kygo-step-count-accuracy.js`,
   `kygo-wearable-accuracy.js`, `calories-custom-element.js`.
 
-### 6. [P2][verify] Calorie-burn article link prefix
-`kygo-calorie-burn-accuracy.js:527` links `…/blog/how-accurate-is-your-wearable-calorie-burn`,
-while all other article links use `…/post/<slug>`.
-- **Fix (if `/post/` is correct):** change to `/post/how-accurate-is-your-wearable-calorie-burn`.
+---
 
-### 8. [P2] Host inconsistency `kygo.app` vs `www.kygo.app`
-In-page nav/footer use bare `kygo.app`; JSON-LD `url`/canonical use `www.kygo.app`. Mixed hosts
-hurt canonicalization/SEO.
-- **Fix:** choose one canonical host (JSON-LD already standardizes on `www.`) and normalize links.
+## P2 — broken / meaningful
 
-### 11. [P3] iOS download inconsistency
-Most files link the App Store URL directly; `kygo-oura-ring-comparison.js` and
-`kygo-fitbit-air-vs-whoop.js` use a `/iOS` redirect.
-- **Fix:** standardize (either always App Store URL or always the redirect).
+### 4. [Fix ready] Calorie-burn article link 404
+`kygo-calorie-burn-accuracy.js:527` → `/blog/how-accurate-is-your-wearable-calorie-burn` (404).
+**Fix:** change `/blog/` → `/post/` to match the live pattern. *Confirm the exact post slug exists.*
 
-### 12. [P3] Food-scanner dual path
-`calories-custom-element.js` uses both `/tools/food-scanner` (line 229) and `/food-scanner`
-(line 1615).
-- **Fix:** pick the real route and use it in both places.
+### 5. [Fix ready] Food-scanner internal/canonical URLs 404
+Both `/food-scanner` and `/tools/food-scanner` 404; the real page is **`/tools/calories-in-anything`**
+(matches the tag `calories-in-anything`).
+- **Fix in `calories-custom-element.js`:** update the JSON-LD `url`, breadcrumb, and any share/nav
+  links (lines ~229 `/tools/food-scanner`, ~1615 `/food-scanner`) to `/tools/calories-in-anything`.
 
-### 13. [P3] Oura tool off-pattern path
-`kygo-oura-ring-comparison.js` canonical is `/oura-ring-comparison-tool` (root), while every other
-tool is `/tools/<slug>`. Confirm intended; normalize if it should be `/tools/…`.
+### 6. [Fix ready + Wix] Oura tool canonical path
+Real tool lives at **`/tools/oura-ring-comparison-tool`** (loads fine, iOS CTA works). The bare
+root `/oura-ring-comparison-tool` is an **orphaned 200-but-blank route** (Wix "did not find the
+pageId" error). The component's canonical/JSON-LD uses the **root** path
+(`kygo-oura-ring-comparison.js:643,687`).
+- **Fix (code):** change canonical/breadcrumb from `/oura-ring-comparison-tool` → `/tools/oura-ring-comparison-tool`.
+- **Fix (Wix, your side):** redirect the orphaned root route to the `/tools/` version.
+
+### 7. [Needs input] Samsung affiliate link broken
+`amzn.to/4tfkllQ` (`kygo-calorie-burn-accuracy.js:1294`) → Amazon **search** "samsung galaxy
+watch" and renders Amazon's "Something went wrong" page. The other pages use `amzn.to/4aZkBPB`
+(unverified).
+- **Fix:** replace with a working Samsung Galaxy Watch product link. → **Need a valid URL** (and
+  ideally unify all Samsung links on it once confirmed working).
 
 ---
 
-## Area 5 — Tracking / analytics
+## P3 — polish / decisions
 
-### 9. [P2] Conversion events not sent to GA4
-`subscribe` (`kygo-blog-post.js`), `contactSubmit` (`kygo-contact.js`), and `kygo-calculation`
-(`kygo-calorie-burn-accuracy.js`) fire as Wix CustomEvents but are **not** mirrored to GA4, so
-these conversions aren't measured.
-- **Fix:** add matching `data-action`s the tracker already classifies, or extend
-  `kygo-tracking.js` to listen for these CustomEvents and `track()` them.
+### 8. [Opt-in] Conversion events not in GA4
+`contactSubmit`, `subscribe`, `kygo-calculation` fire as Wix events only. If you want them as GA4
+conversions, I can wire `kygo-tracking.js` to forward them. (Otherwise leave as-is.)
 
-### 10. [P2][verify] Analytics depends on the embed
-GA4 only fires if the Wix page includes `kygo-tracking.js` **with a valid `data-ga-id`**. Any page
-missing it has no analytics (events log to console only).
-- **Fix:** verify the tracking script + GA ID are present on every page that ships components.
+### 9. [Confirm to remove] Orphaned `kygo-blog-page.js`
+No live conflict — `/blog` uses `kygo-blog.js`, posts use `kygo-blog-post.js`. But
+**`kygo-blog-page.js`** also defines `class KygoBlog` / registers `kygo-blog` and appears **unused
+live**. **Action:** confirm it's dead and delete it (removes the latent duplicate-registration risk).
 
-### 17. [P3][verify] No consent/CMP gating
-`kygo-tracking.js` loads gtag immediately when `data-ga-id` is set — no cookie-consent gate.
-- **Fix:** confirm this matches the site privacy/cookie policy; add CMP gating if required.
+### 10. [Spot-check] Asset `46b3b6ce` double-labeled
+The Whoop card renders the correct WHOOP logo live, so no visible bug. But the same asset
+(`273a63_46b3b6ce…`) is referenced as both a Whoop image and `alt="Health Connect"`. Quick check:
+do the **Health Connect** logo rows show the right icon? If yes, just a naming quirk; close it.
 
----
-
-## Area 6 — Schema / structured data
-
-### 18. [P3] Stale `dateModified`
-`datePublished`/`dateModified` are hardcoded per file in `_injectStructuredData()`. Update
-`dateModified` whenever a page's content changes.
-
-### [No action] Intentional schema omissions
-Confirmed **deliberate** (explicit "managed via Wix site-level LD+JSON" comments) — do **not**
-"fix":
-- `kygo-faq-section.js` — empty `_injectStructuredData() {}`, FAQPage at site level.
-- `kygo-deep-sleep-factors.js` — no WebApplication (site level).
-- `kygo-sleep-metrics.js` — no FAQPage (site level).
-- `kygo-blog-post.js` sub-components — page fragments; schema lives in `kygo-blog-page.js`.
+### 11. Font `@import` drift — two Google Fonts URLs (one with DM Sans 700). Standardize on one.
+### 12. `kygo-sleep-latency-factors.js` — affiliate chip slots wired but empty. Populate or leave.
+### 13. No consent/CMP gating before GA (`G-P2224N75KY`) loads — confirm vs. cookie policy.
+### 14. Hardcoded `dateModified` in `_injectStructuredData()` — refresh when editing a page.
 
 ---
 
-## Suggested order of attack
+## Closed by QA (no action)
+- Bare `kygo.app` → `www.kygo.app` redirects cleanly in one hop.
+- `/iOS` redirect resolves to the App Store (Oura + Fitbit-vs-WHOOP CTAs OK).
+- Fitbit Air (`4wogJ3y`) and WHOOP (`431iUfG`) hero links are correct.
+- "Two Kygo logos" are the same mark (flat vs glossy render) — not wrong.
+- `kygo-tracking.js` + GA ID `G-P2224N75KY` confirmed loading on tool pages.
+- Intentional schema omissions (faq-section / deep-sleep / sleep-metrics) — leave as-is.
 
-1. **P1 quick wins** (small, safe, visible): #2 dailyLimit, #3 Whoop image. Then #1 blog dedupe
-   (needs a decision on which file survives).
-2. **P1 needing your input:** #4 affiliate links (need correct ASIN URLs).
-3. **P2 link/route fixes** once you confirm live routes: #5 privacy, #6 article prefix, #7 Samsung,
-   #8 host normalization.
-4. **P2 tracking:** #9 conversion events, #10 verify embeds.
-5. **P3 polish** as a batch: #11–#18.
+---
 
-*Items marked [verify] or [needs your input] need confirmation before I change them; the rest I can
-fix directly on request.*
+## What I can fix now vs. what I need from you
+
+**Can apply immediately (code-side, confirmed):** #2 dailyLimit · #3 footer Privacy/Terms (13 files) ·
+#4 calorie-burn `/post/` · #5 food-scanner → `/tools/calories-in-anything` · #6 Oura canonical → `/tools/…`.
+
+**Need input before I can fix:**
+- #1 — three correct affiliate URLs for **Glycine Powder, Tart Cherry Juice, Cooling Mattress Pad**.
+- #7 — one working **Samsung Galaxy Watch** affiliate URL.
+- #9 — confirm `kygo-blog-page.js` is dead so I can delete it.
+- #6 (Wix side) & #13 — your call (Wix redirect; consent policy).
