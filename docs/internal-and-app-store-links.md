@@ -89,12 +89,13 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/tools/wearable-stress` | kygo-wearable-stress.js | 53, 134 |
 | `/tools/fitbit-air-vs-whoop-comparison` | kygo-fitbit-air-vs-whoop.js | 549, 593 |
 | `/tools` (index) | kygo-tools.js | 790, 798, 801 |
-| `/oura-ring-comparison-tool` ⚠️ **not** under `/tools/` | kygo-oura-ring-comparison.js | 643, 687 |
-| `/food-scanner` and `/tools/food-scanner` ⚠️ both forms used | calories-custom-element.js | 229, 1615 |
+| `/tools/oura-ring-comparison-tool` *(fixed; was root `/oura-ring-comparison-tool`)* | kygo-oura-ring-comparison.js | 643, 687 |
+| `/tools/calories-in-anything` *(fixed; was `/food-scanner` + `/tools/food-scanner`, both 404)* | calories-custom-element.js | 229, 1615 |
 
 ### Blog / post links
-- Blog index: `/blog` — `kygo-blog.js:1049`, `kygo-blog-page.js:593`.
-- Post permalink pattern: `https://www.kygo.app/post/${post.slug}` — `kygo-blog-page.js:593`.
+- Blog index: `/blog` — `kygo-blog.js:1049` (JSON-LD `url`).
+- Individual posts live at `/post/<slug>`, routed by Wix. (The component that constructed
+  `…/post/${post.slug}` was the now-removed orphan `kygo-blog-page.js`.)
 - Specific posts linked from tool pages (the "read the article" CTA):
 
 | Post URL | Linked from |
@@ -117,11 +118,21 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 
 ---
 
-## ⚠️ Inconsistencies worth fixing
+## Inconsistencies — status
 
-1. **Host mismatch**: bare `kygo.app` vs `www.kygo.app` used interchangeably. Pick one canonical host.
-2. **iOS download**: most files link the App Store URL directly; two files use `/iOS` redirect. Standardize.
-3. **Oura tool path**: `/oura-ring-comparison-tool` sits at root, unlike every other tool under `/tools/`.
-4. **Food scanner path**: both `/food-scanner` and `/tools/food-scanner` appear in `calories-custom-element.js`.
-5. **Calorie-burn post**: linked as `/blog/how-accurate-...` while other posts use `/post/...`.
-6. **`kygo-tools.js:798`** builds URLs as `https://www.kygo.app${t.url...}` — verify the data `t.url` values are correct relative paths.
+✅ **Fixed on branch `claude/hopeful-faraday-ig1PE`:**
+3. **Oura tool path** → canonical now `/tools/oura-ring-comparison-tool` (Wix redirects the old root route).
+4. **Food scanner path** → both 404 forms replaced with the real `/tools/calories-in-anything`.
+5. **Calorie-burn post** → now `/post/how-accurate-...` (was `/blog/...`, 404).
+6. **`kygo-tools.js:798`** → not a repo bug: `t.url` values come from the **Wix CMS** (`this._tools`
+   is `JSON.parse`d from a Wix attribute), so the building code is correct. Ensure the Wix tool
+   entries use the right `/tools/<slug>` paths.
+
+⚪ **Open but harmless (QA-confirmed working) — optional consistency polish:**
+1. **Host mismatch**: bare `kygo.app` vs `www.kygo.app` still used interchangeably. Bare host
+   redirects cleanly to `www` in one hop, so nothing is broken; normalize only for tidiness/SEO.
+2. **iOS download**: most files link the App Store URL directly; `kygo-oura-ring-comparison.js` and
+   `kygo-fitbit-air-vs-whoop.js` use the `/iOS` redirect (which works → App Store). Cosmetic only.
+
+ℹ️ Footer **Privacy/Terms** paths were fixed separately (`/privacy-policy`, `/terms-conditions`) —
+see `fixes-and-issues.md`.

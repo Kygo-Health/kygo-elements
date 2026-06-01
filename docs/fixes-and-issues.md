@@ -132,6 +132,9 @@ do the **Health Connect** logo rows show the right icon? If yes, just a naming q
 ### 12. `kygo-sleep-latency-factors.js` — affiliate chip slots wired but empty. Populate or leave.
 ### 13. No consent/CMP gating before GA (`G-P2224N75KY`) loads — confirm vs. cookie policy.
 ### 14. Hardcoded `dateModified` in `_injectStructuredData()` — refresh when editing a page.
+### 15. [Optional, not broken] Host mismatch — bare `kygo.app` vs `www.kygo.app` used interchangeably. Redirects cleanly (QA); normalize only for SEO/tidiness.
+### 16. [Optional, not broken] iOS link style — most pages use the App Store URL; Oura + Fitbit-vs-WHOOP use the `/iOS` redirect (works). Standardize for consistency only.
+### 17. [Missing data] Cooling Mattress Pad has no affiliate link (removed; was wrong). Add one if a good product turns up.
 
 ---
 

@@ -40,7 +40,6 @@ Every content component implements `_injectStructuredData()`, called once from
 | `kygo-contact.js` | `data-kygo-contact-ld` | ContactPage, Organization, ContactPoint |
 | `kygo-tools.js` | `data-kygo-tools-ld` | CollectionPage, ItemList, ListItem, Organization |
 | `kygo-blog.js` | `data-kygo-blog-ld` | CollectionPage, Organization, ImageObject |
-| `kygo-blog-page.js` | `data-kygo-blog-post-ld` | BlogPosting, WebPage, Organization, ImageObject |
 | `kygo-calorie-burn-accuracy.js` | `data-kygo-calorie-burn-ld` | WebApplication, **HowTo + HowToStep + HowToTool**, FAQPage, BreadcrumbList, **7× ScholarlyArticle**, Offer, Organization |
 | `kygo-step-count-accuracy.js` | `data-kygo-step-ld` | WebApplication, FAQPage (7 Q&A), BreadcrumbList, Offer, Organization |
 | `kygo-wearable-accuracy.js` | `data-kygo-wearable-ld` | WebApplication, FAQPage, BreadcrumbList, **MedicalScholarlyArticle**, Offer, Organization |
@@ -49,13 +48,13 @@ Every content component implements `_injectStructuredData()`, called once from
 | `kygo-rhr-factors.js` | `data-kygo-rhr-factors-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
 | `kygo-sleep-latency-factors.js` | `data-kygo-sleep-latency-factors-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
 | `kygo-staying-asleep-factors.js` | `data-kygo-staying-asleep-factors-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
-| `kygo-deep-sleep-factors.js` | `data-kygo-deep-sleep-factors-ld` | FAQPage, BreadcrumbList *(no WebApplication — see gaps)* |
-| `kygo-sleep-metrics.js` | `data-kygo-sleep-ld` | WebApplication, BreadcrumbList, Offer, Organization *(no FAQPage)* |
+| `kygo-deep-sleep-factors.js` | `data-kygo-deep-sleep-factors-ld` | FAQPage, BreadcrumbList *(WebApplication intentionally site-level)* |
+| `kygo-sleep-metrics.js` | `data-kygo-sleep-ld` | WebApplication, BreadcrumbList, Offer, Organization *(FAQPage intentionally site-level)* |
 | `kygo-sensor-comparison.js` | `data-kygo-sensor-comparison-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
 | `kygo-oura-ring-comparison.js` | `data-kygo-oura-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
 | `kygo-fitbit-air-vs-whoop.js` | `data-kygo-fitbitair-whoop-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
-| `kygo-faq-section.js` | — | **none** ⚠️ (FAQ UI but no FAQPage schema — see gaps) |
-| `kygo-blog-post.js` | — | **none** ⚠️ (sub-components: categories, related, subscribe, CTA) |
+| `kygo-faq-section.js` | — | **none** (FAQPage intentionally site-level; empty `_injectStructuredData()`) |
+| `kygo-blog-post.js` | — | **none** (5 post-page widget sub-components; post `BlogPosting`/`FAQPage` handled site-level) |
 
 ## Canonical schema shapes
 
@@ -134,7 +133,8 @@ components render on the same Wix page. These are **not bugs** — each carries 
 Genuine notes to keep in mind:
 
 4. **`kygo-blog-post.js`** sub-components (categories/related/subscribe/CTA) emit no schema — they're
-   page *fragments*; the `BlogPosting` schema lives in `kygo-blog-page.js`. Fine as-is.
+   page *fragments*; the post `BlogPosting`/`FAQPage` is handled at the Wix site level. (The old
+   `kygo-blog-page.js`, which carried a component-level `BlogPosting`, was orphaned and has been removed.)
 5. `datePublished`/`dateModified` are hardcoded per file — keep `dateModified` current when editing.
 6. New pages: scaffold via the `new-page` skill, then fill `_injectStructuredData()` with the
    right type and a unique `data-kygo-<name>-ld` marker.
@@ -218,7 +218,7 @@ plain-data `detail`) that the **Wix Velo** host listens for to drive backend act
 | `contactSubmit` | `kygo-contact.js` | Contact form submission → Velo sends email |
 | `imageUploaded` | `calories-custom-element.js` | Food-scanner image upload |
 | `kygo-calculation` | `kygo-calorie-burn-accuracy.js` | Calculator run (could double as analytics signal) |
-| `postClick` | `kygo-blog.js`, `kygo-blog-page.js`, `kygo-blog-post.js` | Navigate to a blog post |
+| `postClick` | `kygo-blog.js`, `kygo-blog-post.js` | Navigate to a blog post |
 | `categoryClick` | `kygo-blog-post.js` | Filter by category |
 | `seeAllClick` | `kygo-blog-post.js` | "See all" related posts |
 | `subscribe` | `kygo-blog-post.js` | Newsletter subscribe |

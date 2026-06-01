@@ -23,9 +23,9 @@ Small brand logos, used in headers, footers, and "connect your wearable" section
 | Asset (hash) | What it is | Usage |
 |---|---|---|
 | `273a63_7ac49e91323749f49cadfe795ff3680f` | **Kygo Health logo** (primary) | 37 refs — site header/footer **and** the `logo` in every JSON-LD Organization block |
-| `273a63_d0b94a6b9cb54aff93a61cb4f2229b21` | **Kygo logo** (2nd variant) ⚠️ | only `kygo-sensor-comparison.js` (alt="Kygo") |
+| `273a63_d0b94a6b9cb54aff93a61cb4f2229b21` | **Kygo logo** (glossy 3D render of the same mark) | only `kygo-sensor-comparison.js` (alt="Kygo") — QA-confirmed same logo, not wrong |
 | `273a63_56ac2eb53faf43fab1903643b29c0bce` | **Oura Ring** logo | 22 refs (connect-wearable rows, Oura comparison table head) |
-| `273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7` | **Health Connect** logo | 21 refs ⚠️ also reused as a *Whoop product image* — see anomalies |
+| `273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7` | **Health Connect** logo | 21 refs · also referenced as a Whoop `imageUrl` in sensor-comparison, but the WHOOP card renders correctly live (QA) |
 | `273a63_c451e954ff8740338204915f904d8798` | **Fitbit** logo | 20 refs |
 | `273a63_1a1ba0e735ea4d4d865c04f7c9540e69` | **Apple / Apple Health** logo | 20 refs |
 | `273a63_0a60d1d6c15b421e9f0eca5c4c9e592b` | **Garmin** logo | 18 refs |
@@ -105,22 +105,24 @@ affiliate or nav links.** By domain (top sources):
 **Pages carrying citation links:** `kygo-calorie-burn-accuracy.js`, `kygo-deep-sleep-factors.js`,
 `kygo-faq-section.js`, `kygo-hrv-factors.js`, `kygo-rhr-factors.js`,
 `kygo-sleep-latency-factors.js`, `kygo-staying-asleep-factors.js`, `kygo-wearable-accuracy.js`,
-`kygo-wearable-stress.js`, `kygo-blog-page.js`. Stored in factor data as
+`kygo-wearable-stress.js`. Stored in factor data as
 `source: { url, label }` and surfaced as in-page source links / JSON-LD `citation`.
 
 ---
 
-## ⚠️ Anomalies to review
+## ✅ Closed by browser QA (2026-06)
 
-1. **Image mislabel — Whoop vs Health Connect:** `kygo-sensor-comparison.js:81` sets the **Whoop
-   5.0** `imageUrl` to `273a63_46b3b6ce...`, which everywhere else (incl. line 1076 of the same
-   file, alt="Health Connect") is the **Health Connect logo**. Whoop has its own product image
-   (`273a63_c52aaaca...`) and logo (`273a63_0c0e48cc...`) — the sensor-comparison Whoop card is
-   likely pointing at the wrong asset.
-2. **Two Kygo logo assets** (`7ac49e91` everywhere; `d0b94a6b` only in sensor-comparison). Confirm
-   which is current and standardize.
+1. **Whoop image** — the WHOOP card on `/tools/sensor-comparison` renders the correct WHOOP logo
+   live; not the wrong asset. *(Residual: the same `46b3b6ce` asset is also labeled "Health
+   Connect" — worth a one-time glance that the Health Connect logo rows look right. Tracked as #10
+   in `fixes-and-issues.md`.)*
+2. **Two Kygo logo assets** — confirmed the **same** brand mark; `d0b94a6b` is just a glossy 3D
+   render of `7ac49e91`. Not wrong; no action.
+
+## ⚠️ Still open
+
 3. **Hosting coupling:** every image is a Wix `static.wixstatic.com` URL tied to site namespace
    `273a63_`. If the Wix site/media library changes, these hardcoded URLs break across all
-   components with no fallback beyond `onerror` hide. No local/CDN copy exists in this repo.
+   components with no fallback beyond `onerror` hide. No local/CDN copy exists in this repo. (Info.)
 4. **Font `@import` drift:** two slightly different Google Fonts URLs (one includes DM Sans 700,
    one doesn't). Pick one to avoid an extra stylesheet fetch and inconsistent heading weights.
