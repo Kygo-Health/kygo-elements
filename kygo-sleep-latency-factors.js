@@ -95,7 +95,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Higher-fiber days predicted falling asleep ~12 minutes faster in a tightly controlled RCT. Fiber, deep sleep, and short sleep latency travel together.',
           mechanism: 'Fiber-driven gut microbiome diversity modulates vagal signaling and systemic inflammation; stable glucose reduces nocturnal cortisol spikes.',
           dosage: '25–35 g/day from whole foods',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26156950/', label: 'St-Onge et al. 2016 RCT' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26156950/', label: 'St-Onge et al. 2016 RCT' },
+          affiliate: { url: 'https://amzn.to/4uL7b1p', label: 'Dietary Fiber Supplement' }
         },
         {
           key: 'saturated-fat', name: 'Saturated Fat',
@@ -157,7 +158,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'The best-studied sleep-onset supplement. Pooled across 19 RCTs with 1,683 subjects, melatonin cuts sleep latency by an average of 7.06 minutes (95% CI 4.37–9.75, p<0.001), with peak effect around 4 mg. Best for circadian misalignment (jet lag, shift work, DSPS); less impressive for ordinary insomnia.',
           mechanism: 'Exogenous melatonin binds MT1/MT2 receptors in the SCN, signaling "biological night" and promoting sleep onset.',
           dosage: '0.3–1 mg, 30–60 min before bed (low dose); up to 4 mg if needed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23691095/', label: 'Ferracioli-Oda et al. 2013 meta-analysis' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23691095/', label: 'Ferracioli-Oda et al. 2013 meta-analysis' },
+          affiliate: { url: 'https://amzn.to/4szGon9', label: 'Melatonin Supplement' }
         },
         {
           key: 'ashwagandha', name: 'Ashwagandha',
@@ -167,7 +169,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Pooled analysis of 5 RCTs with 400 participants found a standardized mean difference of −0.53 (95% CI −0.77 to −0.29, p<0.001) for sleep onset, with 600 mg/day showing the largest effect. Also reduces anxiety scores, likely part of the mechanism.',
           mechanism: 'Withanolides reduce cortisol and pre-sleep arousal; GABAergic activity may directly promote sleep onset.',
           dosage: '600 mg/day standardized extract (most effective dose)',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/34559859/', label: 'Cheah et al. 2021 meta-analysis' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/34559859/', label: 'Cheah et al. 2021 meta-analysis' },
+          affiliate: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }
         },
         {
           key: 'magnesium', name: 'Magnesium',
@@ -177,7 +180,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Pooled across 3 RCTs in 151 older adults, magnesium supplementation cut sleep onset by 17.36 minutes (p=0.0006). Best evidence is in older adults and people with low dietary magnesium. Less clear in already-replete younger people. Glycinate form is better tolerated than oxide.',
           mechanism: 'NMDA receptor antagonism and GABA-A potentiation reduce cortical arousal; regulates melatonin synthesis.',
           dosage: '200–400 mg elemental magnesium (glycinate preferred)',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/33865376/', label: 'Mah & Pitre 2021 meta-analysis' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/33865376/', label: 'Mah & Pitre 2021 meta-analysis' },
+          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
         },
         {
           key: 'glycine', name: 'Glycine',
@@ -187,7 +191,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Polysomnography-verified: 3 g glycine taken before bed shortens objective sleep onset and improves subjective sleep quality. Japanese RCTs are small but consistent, and the mechanism is well-characterized.',
           mechanism: 'Peripheral vasodilation lowers core body temperature (a key sleep-onset signal); NMDA modulation in the SCN.',
           dosage: '3 g, 30–60 min before bed',
-          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' }
+          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' },
+          affiliate: { url: 'https://amzn.to/3PWfatc', label: 'Glycine Powder' }
         },
         {
           key: 'gaba', name: 'GABA',
@@ -197,7 +202,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'In a controlled trial, 300 mg of oral GABA dropped sleep onset from 13.4 min to 5.7 min (p=0.001). 75 mg was also effective. The blood-brain barrier debate continues, but the clinical signal is clean.',
           mechanism: 'Likely peripheral vagal afferent signaling; direct CNS effect is debated but enteric GABA receptors appear involved.',
           dosage: '75–300 mg, 30–60 min before bed',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6031986/', label: 'Byun et al. 2018 RCT' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6031986/', label: 'Byun et al. 2018 RCT' },
+          affiliate: { url: 'https://amzn.to/3OyDz7c', label: 'GABA Supplement' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine',
@@ -207,7 +213,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: "Meta-analysis of 10 RCTs in 897 people found a small subjective benefit (SMD 0.15, p=0.04) but no objective sleep-onset effect on polysomnography. People report feeling more relaxed, but the SOL reduction doesn't show up on instruments.",
           mechanism: 'Increases alpha brain waves and GABA/glutamate ratio; reduces cortisol and sympathetic tone without sedation.',
           dosage: '200–400 mg, 30–60 min before bed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/40056718/', label: 'Bulman et al. 2025 meta-analysis' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/40056718/', label: 'Bulman et al. 2025 meta-analysis' },
+          affiliate: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }
         },
         {
           key: 'cbd-isolate', name: 'CBD Isolate',
@@ -301,7 +308,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: "Just normal indoor room lighting in the hour before bed is enough to suppress and delay melatonin, pushing sleep onset later. You don't need to be scrolling your phone — the ceiling lights alone are doing it.",
           mechanism: 'Melanopsin-containing retinal ganglion cells detect evening light and suppress SCN-driven melatonin release.',
           dosage: 'Dim lights below ~30 lux in the hour before bed; use warm-tone lighting',
-          source: { url: 'https://journals.sagepub.com/doi/10.1177/07487304221100826', label: 'Cajochen et al. 2022' }
+          source: { url: 'https://journals.sagepub.com/doi/10.1177/07487304221100826', label: 'Cajochen et al. 2022' },
+          affiliate: { url: 'https://amzn.to/4cwMwI1', label: 'Blue Light Blocking Glasses' }
         },
         {
           key: 'noise', name: 'Environmental Noise',
@@ -311,7 +319,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Ambient noise above ~30 dB measurably delays sleep onset and fragments sleep. Traffic, aircraft, and neighborhood noise all show dose-response effects. White/pink noise or earplugs help mask it when the source is unavoidable.',
           mechanism: 'Auditory cortex activation keeps the brain partially alert; autonomic arousal prevents transition to NREM sleep.',
           dosage: 'Keep bedroom <30 dB; use earplugs or masking if needed',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5877064/', label: 'Basner & McGuire 2018' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5877064/', label: 'Basner & McGuire 2018' },
+          affiliate: { url: 'https://amzn.to/4bfT8bC', label: 'White Noise Machine' }
         },
         {
           key: 'stimulus-control', name: 'Stimulus Control Therapy',

@@ -2,7 +2,7 @@
 
 > Every affiliate link in the `kygo-elements` components — what product it points to and where
 > it's listed. All affiliate links are **Amazon short links (`amzn.to/...`)** except one WHOOP
-> referral link (noted at the bottom). **36 unique** Amazon short links across **9 files**.
+> referral link (noted at the bottom). **37 unique** Amazon short links across **10 files**.
 
 All affiliate `<a>` tags use `target="_blank" rel="noopener sponsored"` (the `sponsored` rel is
 the FTC/Google-correct attribute for paid links — good). Short links resolve on Amazon's side;
@@ -78,6 +78,23 @@ Rendered inline on the "factors" pages as `affiliate:{url,label}` chips under ea
 | `amzn.to/4cVnvGt` | Omega-3 Fish Oil | 438 |
 | `amzn.to/4760BIN` | Zinc Picolinate | 449 |
 
+### `kygo-sleep-latency-factors.js`
+Wired up 2026-06. Supplement links **reuse** the same products as the Deep Sleep / HRV pages
+(same physical item = same link, which is correct); Dietary Fiber is a new link.
+| Short link | Product label | Line |
+|---|---|---|
+| `amzn.to/4uL7b1p` | Dietary Fiber Supplement (new) | 99 |
+| `amzn.to/4szGon9` | Melatonin Supplement | 162 |
+| `amzn.to/403ZgOP` | Ashwagandha Extract | 173 |
+| `amzn.to/3Nbjq6C` | Magnesium Glycinate | 184 |
+| `amzn.to/3PWfatc` | Glycine Powder | 195 |
+| `amzn.to/3OyDz7c` | GABA Supplement | 206 |
+| `amzn.to/3OEoHEh` | L-Theanine 200mg | 217 |
+| `amzn.to/4cwMwI1` | Blue Light Blocking Glasses | 312 |
+| `amzn.to/4bfT8bC` | White Noise Machine | 323 |
+
+*(CBD Isolate and Kiwifruit factors intentionally have no affiliate link.)*
+
 ---
 
 ## C. Non-Amazon affiliate / referral
@@ -101,10 +118,11 @@ Rendered inline on the "factors" pages as `affiliate:{url,label}` chips under ea
 2. **Samsung unified** — all three pages now use `amzn.to/3PUMS23` (replaced the broken
    `4tfkllQ` and the old `4aZkBPB`).
 
+3. **Sleep-latency affiliate links wired** — 9 factors populated (8 reusing existing product
+   links + new Dietary Fiber `4uL7b1p`). CBD Isolate / Kiwifruit intentionally left without links.
+
 ## ⚠️ Still open
 
-3. **`kygo-sleep-latency-factors.js`** renders affiliate chips (`f.affiliate`, line 518) but its
-   current factor data contains **no** affiliate URLs — slots wired up but empty.
 4. **Cooling Mattress Pad** has no affiliate link (intentional gap) — add one if a good product turns up.
 5. Short links hide the Amazon affiliate **tag**; verify each `amzn.to` still carries the correct
    associate tag on the Amazon side (not auditable from this repo).

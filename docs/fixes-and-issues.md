@@ -33,9 +33,13 @@
 and already tracked. **#10** Health Connect logo confirmed correct. **#14** dates updated only on
 real edits. **#17** Cooling Mattress Pad stays linkless (no product).
 
-**Still open:** **#12** sleep-latency affiliate links (deferred), **#13** consent gating (your
-legal call — see below), and **#15 follow-up**: normalize `kygo.app/android` → `www` once you
-confirm `www.kygo.app/android` resolves.
+- **#12** sleep-latency affiliate links wired (9 factors: 8 reusing existing product links +
+  new Dietary Fiber `amzn.to/4uL7b1p`; CBD/Kiwifruit intentionally skipped).
+- **#15 follow-up** done: `kygo.app/android` → `www.kygo.app/android` (confirmed resolving). No
+  bare `kygo.app` URLs remain.
+
+**Still open:** **#13** consent gating (your legal call) and the standing **Cooling Mattress Pad**
+link gap (no product yet).
 
 ## Summary
 
