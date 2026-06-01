@@ -3269,3 +3269,29 @@ class KygoHiwFinalCta extends HTMLElement {
 }
 
 customElements.define('kygo-hiw-final-cta', KygoHiwFinalCta);
+
+/* ========================================
+   KYGO HIW (single-embed wrapper)
+   Tag: kygo-hiw
+   Renders all 7 "How It Works" sections in order so the page needs only ONE
+   Wix custom-element embed (one URL to bump on each push) instead of seven.
+   Sections are appended to LIGHT DOM so each one's __seo text stays crawlable
+   and its structured data still injects normally. Each section uses its
+   built-in defaults (no per-section Wix settings are forwarded).
+======================================== */
+class KygoHiw extends HTMLElement {
+  connectedCallback() {
+    if (this._mounted) return;
+    this._mounted = true;
+    [
+      'kygo-hiw-hero',
+      'kygo-hiw-phase-connect',
+      'kygo-hiw-phase-log',
+      'kygo-hiw-phase-discover',
+      'kygo-hiw-timeline',
+      'kygo-hiw-objections',
+      'kygo-hiw-final-cta'
+    ].forEach(tag => this.appendChild(document.createElement(tag)));
+  }
+}
+customElements.define('kygo-hiw', KygoHiw);
