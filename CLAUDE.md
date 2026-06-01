@@ -11,6 +11,8 @@ Guidance for working in this repo. Read this before editing or creating componen
 - **`docs/schemas-and-tracking.md`** — the JSON-LD schema each page injects (per-page map +
   canonical shapes) and all tracking/analytics (GA4 via `kygo-tracking.js`, event taxonomy,
   Wix Velo CustomEvents).
+- **`docs/assets-and-urls.md`** — every image/logo asset (Wix media) and what it is, plus fonts,
+  CDN, analytics, and external research/citation URLs.
 
 ## What this repo is
 
