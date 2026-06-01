@@ -62,22 +62,15 @@ $w.onReady(function () {
 });
 ```
 
-### Tools page — ⚠️ KEEP the `tools` setter, REMOVE `android-signup`
-The 14-tool grid content is defined **here in Velo** (not in `kygo-tools.js`) and passed via the
-`tools` attribute. Adding/renaming a tool = edit this array. The `android-signup` block is dead.
-```js
-$w.onReady(function () {
-  const toolsElement = $w('#customElement1');
-  const tools = [ /* …14 tool objects: slug, title, description, icon, badge, url, features… */ ];
-  toolsElement.setAttribute('tools', JSON.stringify(tools));
-  // ❌ REMOVE: import wixCrm + toolsElement.on('android-signup', …) — beta waitlist retired
-});
-```
-**Issues in the tools array (fix in Velo):**
-- `Stress Factor Explorer` → `url: '/tools/stress-factors'`, but the component canonical is
-  **`/tools/wearable-stress`**. Confirm the real Wix route and make both match (likely a broken link).
-- Factor counts in copy drift from the components: grid says **HRV "38"** (component ~43–44),
-  **staying-asleep "27"** (component ~36), **deep-sleep "28"** (component 29). Reconcile the numbers.
+### Tools page — ❌ REMOVE all (tools list now baked into the component)
+The 14-tool grid is now the **built-in default** in `kygo-tools.js` (`_defaultTools()`), so the
+page needs no Velo code. Reduce to `$w.onReady(function () {});`. (The component still accepts a
+`tools` attribute, so Wix *can* override the list, but doesn't need to.) The old `android-signup`
+block is dead and goes away with the rest.
+- ✅ The `Stress Factor Explorer` URL is reconciled: real route is `/tools/stress-factors`, and the
+  `kygo-wearable-stress.js` canonical/breadcrumb were corrected to match.
+- ℹ️ Factor-count copy (HRV "38" vs component ~43–44, staying-asleep "27" vs ~36, deep-sleep "28"
+  vs 29) now lives in `_defaultTools()` in the repo — adjust there if you want exact numbers.
 
 ### Blog page — ✅ KEEP (live, required)
 ```js
@@ -166,17 +159,17 @@ finishReason.
 |---|---|
 | Homepage | empty `$w.onReady` |
 | FAQ | empty `$w.onReady` (also drop the `setAttribute` lines) |
-| Tools | keep only the `tools` setter |
+| Tools | empty `$w.onReady` (tools list now baked into `kygo-tools.js`) |
 | Calories-in-anything | keep only the `imageUploaded` handler |
 | Sleep Metrics | empty `$w.onReady` |
 | Wearable Accuracy | empty `$w.onReady` |
 | Step Count Accuracy | empty `$w.onReady` |
 
 **Also (in Wix Velo / content):**
-- Fix the **Tools grid `Stress Factor Explorer` URL** (`/tools/stress-factors` vs component
-  `/tools/wearable-stress`) — verify the live route and unify.
-- Reconcile **factor counts** in the Tools grid copy (HRV, staying-asleep, deep-sleep) with the components.
+- ✅ Tools `Stress Factor Explorer` URL reconciled — real route `/tools/stress-factors`; component
+  canonical corrected to match.
+- Factor-count copy now lives in `kygo-tools.js` `_defaultTools()`; adjust there for exact numbers.
 - Align the **Gemini size limit message** ("4MB") with the actual check (6 MB).
 
-**Keep (live, required):** Contact (page + backend), Blog, Blog Post, Tools `tools` setter,
+**Keep (live, required):** Contact (page + backend), Blog, Blog Post,
 Calories `imageUploaded` + Gemini backend.
