@@ -695,7 +695,7 @@ class KygoToolsPage extends HTMLElement {
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const appStoreUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-    const playStoreUrl = 'https://kygo.app/android';
+    const playStoreUrl = 'https://www.kygo.app/android';
 
     const featured = this._featured();
     const grouped = this._groupedByCategory();
@@ -713,7 +713,7 @@ class KygoToolsPage extends HTMLElement {
       <section class="sec sec-hero">
         <div class="wrap">
           <header class="page-header">
-            <a class="brand" href="https://kygo.app">
+            <a class="brand" href="https://www.kygo.app">
               <img class="brand-logo" src="${logoUrl}" alt="Kygo Health" />
               <span class="brand-name">Kygo</span>
               <span class="brand-sub">/ Tools</span>

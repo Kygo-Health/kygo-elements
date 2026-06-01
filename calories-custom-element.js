@@ -226,7 +226,7 @@ class CaloriesInAnything extends HTMLElement {
     const r = this.result;
     const score = r.healthScore ? ` | Health Score: ${r.healthScore}/10` : '';
     const text = `I just scanned "${r.item}" with Kygo Food Scanner — ${r.calories} calories${score}!\n\n"${r.verdict}"\n\nTry it yourself:`;
-    const url = 'https://kygo.app/tools/food-scanner';
+    const url = 'https://www.kygo.app/tools/calories-in-anything';
     if (navigator.share) {
       navigator.share({ text, url }).catch(() => this.copyToClipboard(text + ' ' + url));
     } else {
@@ -1198,11 +1198,11 @@ class CaloriesInAnything extends HTMLElement {
       <div class="calories-app">
         <header class="header">
           <div class="header-inner">
-            <a href="https://kygo.app" class="logo" target="_blank">
+            <a href="https://www.kygo.app" class="logo" target="_blank">
               <img src="${this.logoUrl}" alt="Kygo" class="logo-img" />
               Food Scanner
             </a>
-            <a href="https://kygo.app" class="header-link" target="_blank">
+            <a href="https://www.kygo.app" class="header-link" target="_blank">
               Get Kygo App ${Icons.arrowRight}
             </a>
           </div>
@@ -1229,7 +1229,7 @@ class CaloriesInAnything extends HTMLElement {
           </div>
           ${!this.result && !this.error && !this.analyzing && remaining <= 5 ? `
             <div class="rate-notice">
-              ${Icons.zap} ${remaining} free scan${remaining !== 1 ? 's' : ''} remaining today. <a href="https://kygo.app" target="_blank">Get unlimited with Kygo app</a>
+              ${Icons.zap} ${remaining} free scan${remaining !== 1 ? 's' : ''} remaining today. <a href="https://www.kygo.app" target="_blank">Get unlimited with Kygo app</a>
             </div>
           ` : ''}
 
@@ -1243,7 +1243,7 @@ class CaloriesInAnything extends HTMLElement {
                   ${Icons.apple}
                   Download Free on iOS
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
@@ -1292,22 +1292,22 @@ class CaloriesInAnything extends HTMLElement {
               ${this.renderFaqItem(0, "How accurate are the nutrition estimates?", "Our AI identifies ingredients and estimates portion sizes using visual analysis. Results are reliable for everyday tracking and meal awareness. For clinical dietary planning, we recommend pairing this with a registered dietitian. Accuracy improves with well-lit, overhead photos of plated meals.")}
               ${this.renderFaqItem(1, "What info does each scan include?", "Every scan returns calories, six macronutrients (protein, carbs, fat, fiber, sugar, sodium), a 1\u201310 health score, key vitamins and minerals with % daily value, dietary tags like <strong>High Protein</strong> or <strong>Heart Healthy</strong>, and actionable health insights specific to that food.")}
               ${this.renderFaqItem(2, "What photo formats are supported?", "JPG, PNG, WebP, and HEIC (iPhone photos). You can upload from your camera roll, take a photo directly, or drag and drop. Images are compressed client-side before analysis\u2014your original photo never leaves your device.")}
-              ${this.renderFaqItem(3, "How does this connect to the Kygo app?", "This scanner gives you instant one-off nutrition checks. The <a href=\"https://kygo.app\" target=\"_blank\">Kygo app</a> takes it further\u2014log meals daily and connect your wearable (Oura, Apple Watch, Fitbit, Garmin, Whoop, or Health Connect) to discover how specific foods affect your sleep, HRV, energy, and recovery over time.")}
-              ${this.renderFaqItem(4, "Is there a daily limit?", "You get ${this.dailyLimit} free scans per day with no sign-up required. The Kygo app includes unlimited AI-powered food logging along with wearable correlations and a free forever plan.")}
+              ${this.renderFaqItem(3, "How does this connect to the Kygo app?", "This scanner gives you instant one-off nutrition checks. The <a href=\"https://www.kygo.app\" target=\"_blank\">Kygo app</a> takes it further\u2014log meals daily and connect your wearable (Oura, Apple Watch, Fitbit, Garmin, Whoop, or Health Connect) to discover how specific foods affect your sleep, HRV, energy, and recovery over time.")}
+              ${this.renderFaqItem(4, "Is there a daily limit?", `You get ${this.dailyLimit} free scans per day with no sign-up required. The Kygo app includes unlimited AI-powered food logging along with wearable correlations and a free forever plan.`)}
               ${this.renderFaqItem(5, "What if I scan something that isn't food?", "The AI will detect non-food items and let you know. You'll see a notice that the image doesn't appear to be food, along with a prompt to try again with a meal photo.")}
             </div>
           </div>
 
           <footer class="footer">
-            <a href="https://kygo.app" class="footer-brand" target="_blank">
+            <a href="https://www.kygo.app" class="footer-brand" target="_blank">
               <img src="${this.logoUrl}" alt="Kygo Health" class="footer-logo" />
               Kygo Health
             </a>
             <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
             <div class="footer-links">
-              <a href="https://kygo.app" target="_blank">Kygo App</a>
-              <a href="https://kygo.app/privacy" target="_blank">Privacy</a>
-              <a href="https://kygo.app/terms" target="_blank">Terms</a>
+              <a href="https://www.kygo.app" target="_blank">Kygo App</a>
+              <a href="https://www.kygo.app/privacy-policy" target="_blank">Privacy</a>
+              <a href="https://www.kygo.app/terms-conditions" target="_blank">Terms</a>
             </div>
             <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC</p>
           </footer>
@@ -1612,7 +1612,7 @@ class CaloriesInAnything extends HTMLElement {
         'description': 'Free AI-powered food scanner by Kygo Health. Take a photo of any meal and get instant calorie counts, macronutrient breakdown (protein, carbs, fat, fiber), and full micronutrient analysis. Powered by advanced image recognition trained on 5+ million foods from the USDA FoodData Central database.',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
-        'url': 'https://www.kygo.app/food-scanner',
+        'url': 'https://www.kygo.app/tools/calories-in-anything',
         'datePublished': '2026-01-15',
         'dateModified': '2026-03-18',
         'softwareVersion': '1.0',
