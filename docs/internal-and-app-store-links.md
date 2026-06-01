@@ -86,7 +86,7 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/tools/staying-asleep-factors` | kygo-staying-asleep-factors.js | 1253, 1304 |
 | `/tools/step-count-accuracy` | kygo-step-count-accuracy.js | 1748, 1815 |
 | `/tools/wearable-accuracy` | kygo-wearable-accuracy.js | 1533, 1605 |
-| `/tools/wearable-stress` | kygo-wearable-stress.js | 53, 134 |
+| `/tools/stress-factors` | kygo-wearable-stress.js | 53, 134 |
 | `/tools/fitbit-air-vs-whoop-comparison` | kygo-fitbit-air-vs-whoop.js | 549, 593 |
 | `/tools` (index) | kygo-tools.js | 790, 798, 801 |
 | `/tools/oura-ring-comparison-tool` *(fixed; was root `/oura-ring-comparison-tool`)* | kygo-oura-ring-comparison.js | 643, 687 |
