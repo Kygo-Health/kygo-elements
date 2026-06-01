@@ -2,6 +2,13 @@
 
 Guidance for working in this repo. Read this before editing or creating components.
 
+## Reference docs (read when relevant)
+
+- **`docs/about-kygo.md`** — what the Kygo app actually does (features, wearables, data sources,
+  Free vs Pro). Use it to keep page copy, `__seo` summaries, and JSON-LD accurate.
+- **`docs/internal-and-app-store-links.md`** — every internal kygo.app + app-store link, by file.
+- **`docs/affiliate-links.md`** — every Amazon/affiliate link, the product it points to, and where.
+
 ## What this repo is
 
 A flat collection of **standalone vanilla-JS Web Components** (custom elements) that power
