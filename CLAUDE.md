@@ -8,6 +8,9 @@ Guidance for working in this repo. Read this before editing or creating componen
   Free vs Pro). Use it to keep page copy, `__seo` summaries, and JSON-LD accurate.
 - **`docs/internal-and-app-store-links.md`** — every internal kygo.app + app-store link, by file.
 - **`docs/affiliate-links.md`** — every Amazon/affiliate link, the product it points to, and where.
+- **`docs/schemas-and-tracking.md`** — the JSON-LD schema each page injects (per-page map +
+  canonical shapes) and all tracking/analytics (GA4 via `kygo-tracking.js`, event taxonomy,
+  Wix Velo CustomEvents).
 
 ## What this repo is
 
