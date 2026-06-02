@@ -161,18 +161,21 @@ do the **Health Connect** logo rows show the right icon? If yes, just a naming q
 
 | # | Area | Severity | Status | One-liner |
 |---|---|---|---|---|
-| 18 | Schema | **P2** | Needs input | Two head `SoftwareApplication` blocks ship conflicting `aggregateRating` (`ratingCount` 30 vs 1) — consolidate to one honest rating |
-| 19 | Content | **P2** | Needs input | Footer email `ryan@kygo.app` ≠ schema/components `support@kygo.app` — pick one public address |
-| 20 | Links | **P2** | Needs input | Header/footer link `/contact-8`; all components + docs use `/contact` — confirm real slug, normalize |
-| 21 | Links/SEO | **P3** | Fix in Wix | Homepage `@graph` uses bare `https://kygo.app` for `url`/`downloadUrl` — normalize to `www` (matches #15) |
-| 22 | Schema | **P3** | Verify | `WebSite.potentialAction` SearchAction targets `/search?q=` — verify the page exists or remove |
-| 23 | Schema | **P3** | Fix in Wix | `SoftwareApplication.screenshot` reuses the **logo** URL, not a real app screenshot |
-| 24 | Assets | **P3** | Fix in Wix | Head fonts `<link>` loads DM Sans `400;500;600` (no `700`) — add `;700` to match repo standard (#11) |
-| 25 | Content | **P3** | Fix in Wix | Footer disclaimer says **© 2025** (it's 2026) — update the year |
+| 18 | Schema | **P2** | Paste ready | Two head `SoftwareApplication` blocks ship conflicting `aggregateRating` (30 vs 1). **Decided:** consolidate to one `@graph`, rating **removed** (App Store reviews not markup-eligible per Google) |
+| 19 | Content | **P2** | Paste ready | Footer email `ryan@kygo.app` ≠ schema `support@kygo.app`. **Decided:** use `support@kygo.app` |
+| 20 | Links | **P2** | Paste ready | Header/footer link `/contact-8`; components use `/contact`. **Decided:** use `/contact` (change header + footer) |
+| 21 | Links/SEO | **P3** | Paste ready | Homepage `@graph` uses bare `https://kygo.app` — normalized to `www` in corrected block (matches #15) |
+| 22 | Schema | **P3** | Verify | `WebSite.potentialAction` SearchAction targets `/search?q=` — keep only if `/search` exists, else delete |
+| 23 | Schema | **P3** | Paste ready | `SoftwareApplication.screenshot` reused the **logo** URL — **removed** in corrected block |
+| 24 | Assets | **P3** | Paste ready | Head fonts `<link>` missing DM Sans `700` — `;700` added in corrected block (#11) |
+| 25 | Content | **P3** | Paste ready | Footer disclaimer **© 2025** → **2026** |
 | 26 | A11y | **P3** | Optional | Header hamburger is a `<div onclick>` with no `role`/`aria-label`/keyboard handler |
 
 **Confirmed OK:** logo asset, Apple App Store URL, `www.kygo.app/android`, Privacy/Terms/Accessibility
 paths, GA4 ID `G-P2224N75KY`, and GA tracking of both download CTAs (via `href` match).
+
+> **Corrected paste-ready blocks for #18–25 live in `wix-global-code.md` → "Corrected blocks".**
+> Apply them in the Wix editor, then mark these closed and update the Block 2/3 mirror.
 
 ---
 
