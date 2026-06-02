@@ -190,6 +190,7 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | `blog_cta` | `.blog-cta-btn` |
 | `primary_cta` | `.cta-primary` / `.cta-button-primary` / `.cta-btn` |
 | `other_action` | any other element with a `data-action` |
+| `affiliate_banner` | **not** from `classifyClick()` — fired directly by `kygo-oura-ring-comparison.js` for the HLTH Code banner (see below) |
 
 ## How components opt into tracking
 
@@ -206,6 +207,31 @@ Tracking is **convention-based** — components don't call the tracker, they jus
 
 > When adding a CTA you want tracked, give it one of the known classes or a `data-action`, and an
 > optional `data-track-label` / `data-track-position`. No JS wiring needed.
+
+### Exception: the HLTH Code affiliate banner (component-fired `cta_click`)
+
+The one place a component fires GA4 **directly** rather than relying on the global listener is the
+**HLTH Code** affiliate banner on `kygo-oura-ring-comparison.js` (`_setupAffiliateBanner()`). The
+banner is a third-party **Refersion** dynamic creative (`creative.js` → `#rfsn_img_125600`) injected
+into light DOM and slotted in — its `<a>` is generated asynchronously and carries no Kygo class, so
+`classifyClick()` would bucket it as nothing. Instead the component attaches its own click handler
+that calls `window.gtag('event', 'cta_click', …)` with:
+
+| Param | Value |
+|---|---|
+| `cta_category` | `affiliate_banner` |
+| `cta_label` | `HLTH Code` |
+| `cta_url` | the actual generated Refersion link clicked (falls back to the `gethlth.com` referral URL) |
+| `component` | `kygo-oura-ring-comparison` |
+| `position` | `whats-changed` |
+| `affiliate` | `hlth_code` |
+| `affiliate_network` | `refersion` |
+
+It reuses the **same `cta_click` event** as the rest of the site (so it lands in the same GA4
+report, filterable by `cta_category = affiliate_banner` / `affiliate = hlth_code`) and falls back to
+`dataLayer` / console if `gtag` isn't present. The global `kygo-tracking.js` listener also sees the
+click but `classifyClick()` returns `null` for it → **no duplicate event**. This is the affiliate
+A/B-test placement; see `docs/affiliate-links.md` for the affiliate/disclosure side.
 
 ## Wix Velo events (not analytics — host integration)
 

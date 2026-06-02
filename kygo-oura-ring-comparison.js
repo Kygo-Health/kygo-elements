@@ -31,12 +31,92 @@ class KygoOuraRingComparison extends HTMLElement {
     this.render();
     this._bindEvents();
     this._setupAnimations();
+    this._setupAffiliateBanner();
     __seo(this, 'Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool by Kygo Health. Compare Oura Ring Gen 3, Ring 4, and Ring 5 specs side by side with peer-reviewed accuracy data and the real 3-year cost of ownership including the Oura Membership. Ring 5 announced May 28, 2026, ships June 4, starting at $399 (Silver/Black) up to $499 for premium finishes. Ring 5 is 40% smaller than Ring 4, 2 to 2.6 g, 6.09 mm wide, 2.28 mm thick, with 6 to 9 day battery and an optional $99 charging case. Two regressions matter: size range shrinks from Ring 4 sizes 4 to 15 down to Ring 5 sizes 6 to 13, and signal pathways drop from up to 18 on Ring 4 to 12 on Ring 5. Ring 4 launched October 2024 at $349. Gen 3 launched November 2021 and is now discontinued, resale only. All rings require the $5.99/mo or $69.99/yr Oura Membership for full features. Ring 5 3-year total cost of ownership is roughly $609 base or $709 premium; Ring 4 is roughly $559. Peer-reviewed validation supports Gen 3 and Ring 4 as the most accurate consumer sleep tracker vs polysomnography (Khan 2025 meta-analysis, Robbins 2024, Svensson 2024) and the strongest agreement vs ECG for nocturnal HRV and resting heart rate (Dial 2025: Ring 4 CCC 0.98 RHR, 0.99 HRV). Ring 5 has zero independent peer-reviewed validation as of today. The Ring 5 store page "99% HR accuracy" footnote traces to Kinnunen 2020, authored by Oura employees on pre-Gen 3 hardware, and reports an r-squared correlation strength, not an error rate. Subscription-free competitors include RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349). Kygo connects to Oura, Apple Health, Fitbit, Garmin, WHOOP, and Samsung Galaxy Watch.');
     this._injectStructuredData();
   }
 
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
+    const host = this.querySelector('[data-hlth-ad]');
+    if (host && this._onBannerClick) host.removeEventListener('click', this._onBannerClick);
+  }
+
+  // ── HLTH Code affiliate banner (Refersion dynamic creative) ──────────
+  // Refersion's creative.js injects into a real document element by id, which
+  // can't reach shadow DOM — so the banner lives in light DOM and is projected
+  // into the layout via <slot name="hlth-ad">. Click tracking mirrors the
+  // cta_click taxonomy in kygo-tracking.js under a dedicated affiliate_banner
+  // category so this placement test can be isolated in GA4.
+  _setupAffiliateBanner() {
+    if (this.querySelector('[data-hlth-ad]')) return; // inject once
+
+    const host = document.createElement('div');
+    host.setAttribute('slot', 'hlth-ad');
+    host.setAttribute('data-hlth-ad', '');
+    host.style.cssText = 'display:flex;justify-content:center;width:100%;';
+
+    const target = document.createElement('div');
+    target.id = 'rfsn_img_125600';
+    host.appendChild(target);
+    this.appendChild(host);
+
+    // Constrain whatever Refersion renders so it fits the layout cleanly.
+    if (!document.querySelector('style[data-hlth-ad-style]')) {
+      const css = document.createElement('style');
+      css.setAttribute('data-hlth-ad-style', '');
+      css.textContent = '#rfsn_img_125600{max-width:100%;}#rfsn_img_125600 a{display:inline-block;line-height:0;}#rfsn_img_125600 img{max-width:100%;height:auto;display:block;border-radius:14px;box-shadow:0 8px 24px rgba(15,23,42,0.08);}';
+      document.head.appendChild(css);
+    }
+
+    // GA4 click tracking — fires the shared cta_click event (gtag is loaded by
+    // kygo-tracking.js). cta_url captures the actual generated Refersion link.
+    this._onBannerClick = (e) => {
+      const a = e.target.closest && e.target.closest('a');
+      const params = {
+        cta_category: 'affiliate_banner',
+        cta_label: 'HLTH Code',
+        cta_url: a ? a.href : 'https://gethlth.com/?rfsn=9131461.c81405e&utm_source=refersion&utm_medium=affiliate',
+        component: 'kygo-oura-ring-comparison',
+        position: 'whats-changed',
+        page_path: window.location.pathname,
+        affiliate: 'hlth_code',
+        affiliate_network: 'refersion'
+      };
+      if (window.gtag) {
+        window.gtag('event', 'cta_click', params);
+      } else {
+        (window.dataLayer = window.dataLayer || []).push(['event', 'cta_click', params]);
+        console.log('[kygo-tracking] affiliate_banner', params);
+      }
+    };
+    host.addEventListener('click', this._onBannerClick);
+
+    // Load Refersion creative.js once, then generate the dynamic banner.
+    const generate = () => {
+      try {
+        window.$rfsn_creative.generate(
+          'refersion_client/48068/creatives/dynamic/125600-f2e03561174f8711d3590d85a6f6dc74.json',
+          { aid: '9131461.c81405e' }
+        );
+      } catch (err) {
+        console.warn('kygo-oura-ring-comparison: HLTH Code banner failed to render', err);
+      }
+    };
+
+    if (window.$rfsn_creative) {
+      generate();
+    } else {
+      let s = document.querySelector('script[data-rfsn-creative]');
+      if (!s) {
+        s = document.createElement('script');
+        s.src = 'https://cdn.refersion.com/creative.js';
+        s.async = true;
+        s.setAttribute('data-rfsn-creative', '');
+        document.head.appendChild(s);
+      }
+      s.addEventListener('load', generate);
+    }
   }
 
   // ── Data ─────────────────────────────────────────────────────────────
@@ -337,6 +417,12 @@ class KygoOuraRingComparison extends HTMLElement {
                 <li><span class="num-tag">3</span><span><strong>No independent validation yet.</strong> Ring 5 has no peer-reviewed studies so far; the "99%" and "95%" figures trace to Oura-influenced sources, and membership keeps the 3-year cost near ~$609.</span></li>
               </ul>
             </div>
+          </div>
+
+          <div class="ad-banner animate-on-scroll">
+            <span class="ad-disclosure">Advertisement</span>
+            <slot name="hlth-ad"></slot>
+            <p class="ad-affiliate-note">HLTH Code is a paid affiliate partner. Kygo Health may earn a commission from purchases made through this banner — at no extra cost to you.</p>
           </div>
         </div>
       </section>
@@ -894,6 +980,12 @@ class KygoOuraRingComparison extends HTMLElement {
       .gap li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; font-size: 14px; line-height: 1.55; color: var(--fg-2); }
       .gap li .num-tag { font-family: var(--font-display); font-weight: 700; font-size: 13px; color: var(--kygo-green-dark); background: var(--kygo-green-light); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
       .gap li strong { color: var(--fg-1); font-weight: 600; }
+
+      /* HLTH Code affiliate banner (slotted light-DOM Refersion creative) */
+      .ad-banner { margin-top: 28px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
+      .ad-disclosure { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--fg-3); }
+      .ad-banner ::slotted([data-hlth-ad]) { max-width: 100%; }
+      .ad-affiliate-note { margin: 2px 0 0; font-size: 11px; line-height: 1.5; color: var(--fg-3); max-width: 52ch; }
 
       /* Kygo CTA */
       .kygo-cta-card { background: var(--kygo-dark); border-radius: 20px; padding: 40px 24px; position: relative; overflow: hidden; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; }
