@@ -1,8 +1,9 @@
 # Affiliate Links Inventory
 
 > Every affiliate link in the `kygo-elements` components — what product it points to and where
-> it's listed. All affiliate links are **Amazon short links (`amzn.to/...`)** except one WHOOP
-> referral link (noted at the bottom). **37 unique** Amazon short links across **10 files**.
+> it's listed. All affiliate links are **Amazon short links (`amzn.to/...`)** except two non-Amazon
+> referrals (a WHOOP membership link and the HLTH Code Refersion banner — both in Section C).
+> **37 unique** Amazon short links across **10 files**.
 
 All affiliate `<a>` tags use `target="_blank" rel="noopener sponsored"` (the `sponsored` rel is
 the FTC/Google-correct attribute for paid links — good). Short links resolve on Amazon's side;
@@ -102,8 +103,27 @@ Wired up 2026-06. Supplement links **reuse** the same products as the Deep Sleep
 | Link | Product | Listed in |
 |---|---|---|
 | `https://join.whoop.com/` | **WHOOP** membership referral (WHOOP's own program, not Amazon) | calorie-burn-accuracy.js:1244 |
+| `https://gethlth.com/?rfsn=9131461.c81405e` | **HLTH Code** meal-replacement shake — **Refersion** affiliate (referral `aid` `9131461.c81405e`) | kygo-oura-ring-comparison.js (`_setupAffiliateBanner`) |
 
 *(Other `whoop.com` / `support.whoop.com` URLs in the codebase are editorial citations, not affiliate links.)*
+
+### HLTH Code banner (Refersion dynamic creative)
+
+This is the **only non-Amazon, non-`<a>`-tag** affiliate placement: a Refersion **dynamic banner**
+(an ad test), not a static link. Mechanics:
+
+- Lives on the **Oura Ring comparison page** (`kygo-oura-ring-comparison.js`), directly below the
+  "What's changed" cards, injected by `_setupAffiliateBanner()`.
+- Refersion's `cdn.refersion.com/creative.js` renders the creative into `#rfsn_img_125600`
+  (creative `125600-f2e0…`, `aid: 9131461.c81405e`). Because `creative.js` targets a real DOM
+  element by id (can't reach shadow DOM), the banner is appended to **light DOM** and projected
+  into the layout via `<slot name="hlth-ad">`.
+- Affiliate attribution is handled **on Refersion's side** via the `aid`; the visible link is the
+  generated creative link (falls back to `https://gethlth.com/?rfsn=9131461.c81405e&utm_source=refersion&utm_medium=affiliate`).
+- Labeled **"Advertisement"** above the banner (FTC disclosure). The page footer's Amazon-Associate
+  line still applies to the Amazon links elsewhere on the page.
+- **Tracking:** clicks fire a GA4 `cta_click` with `cta_category: "affiliate_banner"`,
+  `affiliate: "hlth_code"`, `affiliate_network: "refersion"` (see `docs/schemas-and-tracking.md`).
 
 ---
 
