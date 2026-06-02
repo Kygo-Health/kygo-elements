@@ -38,6 +38,7 @@ class KygoOuraRingComparison extends HTMLElement {
 
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
+    if (this._bannerObserver) this._bannerObserver.disconnect();
     const host = this.querySelector('[data-hlth-ad]');
     if (host && this._onBannerClick) host.removeEventListener('click', this._onBannerClick);
   }
@@ -54,10 +55,12 @@ class KygoOuraRingComparison extends HTMLElement {
     const host = document.createElement('div');
     host.setAttribute('slot', 'hlth-ad');
     host.setAttribute('data-hlth-ad', '');
-    host.style.cssText = 'display:flex;justify-content:center;width:100%;';
+    // Hard width cap so the creative stays small + centered on this wide tool
+    // page (the blog column constrains it naturally; this section does not).
+    host.style.cssText = 'width:100%;max-width:360px;margin:0 auto;';
 
     const target = document.createElement('div');
-    target.id = 'rfsn_img_125600';
+    target.id = 'rfsn_img_125599';
     host.appendChild(target);
     this.appendChild(host);
 
@@ -65,9 +68,22 @@ class KygoOuraRingComparison extends HTMLElement {
     if (!document.querySelector('style[data-hlth-ad-style]')) {
       const css = document.createElement('style');
       css.setAttribute('data-hlth-ad-style', '');
-      css.textContent = '#rfsn_img_125600{max-width:100%;}#rfsn_img_125600 a{display:inline-block;line-height:0;}#rfsn_img_125600 img{max-width:100%;height:auto;display:block;border-radius:14px;box-shadow:0 8px 24px rgba(15,23,42,0.08);}';
+      css.textContent = '#rfsn_img_125599{width:100%;line-height:0;}#rfsn_img_125599 a{display:block;}#rfsn_img_125599 img{width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 8px 24px rgba(15,23,42,0.08);}';
       document.head.appendChild(css);
     }
+
+    // Refersion injects the <a> asynchronously — tag it for FTC/SEO (sponsored,
+    // nofollow) and open in a new tab once it appears.
+    const tagAnchor = () => {
+      const a = target.querySelector('a');
+      if (a && !a.dataset.hlthTagged) {
+        a.setAttribute('rel', 'sponsored nofollow noopener');
+        a.setAttribute('target', '_blank');
+        a.dataset.hlthTagged = '1';
+      }
+    };
+    this._bannerObserver = new MutationObserver(tagAnchor);
+    this._bannerObserver.observe(target, { childList: true, subtree: true });
 
     // GA4 click tracking — fires the shared cta_click event (gtag is loaded by
     // kygo-tracking.js). cta_url captures the actual generated Refersion link.
@@ -76,7 +92,7 @@ class KygoOuraRingComparison extends HTMLElement {
       const params = {
         cta_category: 'affiliate_banner',
         cta_label: 'HLTH Code',
-        cta_url: a ? a.href : 'https://gethlth.com/?rfsn=9131461.c81405e&utm_source=refersion&utm_medium=affiliate',
+        cta_url: a ? a.href : 'https://gethlth.com/?rfsn=9131461.c81405e&utm_source=refersion&utm_medium=affiliate&utm_campaign=oura_ring_comparison',
         component: 'kygo-oura-ring-comparison',
         position: 'whats-changed',
         page_path: window.location.pathname,
@@ -96,9 +112,10 @@ class KygoOuraRingComparison extends HTMLElement {
     const generate = () => {
       try {
         window.$rfsn_creative.generate(
-          'refersion_client/48068/creatives/dynamic/125600-f2e03561174f8711d3590d85a6f6dc74.json',
+          'refersion_client/48068/creatives/dynamic/125599-3f2dd22db0d5cfdd30cbfb9d0cecddae.json',
           { aid: '9131461.c81405e' }
         );
+        tagAnchor();
       } catch (err) {
         console.warn('kygo-oura-ring-comparison: HLTH Code banner failed to render', err);
       }
@@ -420,9 +437,8 @@ class KygoOuraRingComparison extends HTMLElement {
           </div>
 
           <div class="ad-banner animate-on-scroll">
-            <span class="ad-disclosure">Advertisement</span>
             <slot name="hlth-ad"></slot>
-            <p class="ad-affiliate-note">HLTH Code is a paid affiliate partner. Kygo Health may earn a commission from purchases made through this banner — at no extra cost to you.</p>
+            <p class="ad-affiliate-note">Affiliate link. If you buy through this banner, Kygo may earn a commission at no extra cost to you.</p>
           </div>
         </div>
       </section>
@@ -982,10 +998,9 @@ class KygoOuraRingComparison extends HTMLElement {
       .gap li strong { color: var(--fg-1); font-weight: 600; }
 
       /* HLTH Code affiliate banner (slotted light-DOM Refersion creative) */
-      .ad-banner { margin-top: 28px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
-      .ad-disclosure { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--fg-3); }
-      .ad-banner ::slotted([data-hlth-ad]) { max-width: 100%; }
-      .ad-affiliate-note { margin: 2px 0 0; font-size: 11px; line-height: 1.5; color: var(--fg-3); max-width: 52ch; }
+      .ad-banner { margin-top: 28px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+      .ad-banner ::slotted([data-hlth-ad]) { width: 100%; max-width: 360px; } /* keep it small + centered on the wide tool page */
+      .ad-affiliate-note { margin: 0; font-style: italic; font-size: 11px; line-height: 1.45; color: var(--fg-3); max-width: 44ch; }
 
       /* Kygo CTA */
       .kygo-cta-card { background: var(--kygo-dark); border-radius: 20px; padding: 40px 24px; position: relative; overflow: hidden; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; }

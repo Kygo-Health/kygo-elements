@@ -114,18 +114,23 @@ This is the **only non-Amazon, non-`<a>`-tag** affiliate placement: a Refersion 
 
 - Lives on the **Oura Ring comparison page** (`kygo-oura-ring-comparison.js`), directly below the
   "What's changed" cards, injected by `_setupAffiliateBanner()`.
-- Refersion's `cdn.refersion.com/creative.js` renders the creative into `#rfsn_img_125600`
-  (creative `125600-f2e0…`, `aid: 9131461.c81405e`). Because `creative.js` targets a real DOM
+- Refersion's `cdn.refersion.com/creative.js` renders the creative into `#rfsn_img_125599`
+  (creative `125599-3f2d…`, `aid: 9131461.c81405e`). Because `creative.js` targets a real DOM
   element by id (can't reach shadow DOM), the banner is appended to **light DOM** and projected
   into the layout via `<slot name="hlth-ad">`.
+- **Sized small:** the slotted host is capped at **`max-width: 360px`, centered** so the creative
+  doesn't blow up to the full 1200px section width (the blog column constrains its banner naturally;
+  this tool section does not).
+- The Refersion-injected `<a>` is tagged via `MutationObserver` with `rel="sponsored nofollow
+  noopener"` + `target="_blank"` once it appears.
 - Affiliate attribution is handled **on Refersion's side** via the `aid`; the visible link is the
-  generated creative link (falls back to `https://gethlth.com/?rfsn=9131461.c81405e&utm_source=refersion&utm_medium=affiliate`).
-- **FTC disclosure:** labeled **"Advertisement"** above the banner **and** a paid-partnership line
-  below it ("HLTH Code is a paid affiliate partner. Kygo Health may earn a commission… at no extra
-  cost to you."). HLTH Code is **not** covered by the footer's Amazon-Associate line (Refersion, not
-  Amazon), so the banner carries its own disclosure. Per HLTH Code's affiliate terms this is a
-  **referral-link** placement on owned editorial content (allowed) — **not** PPC "direct linking"
-  and **not** a promo-code share, both of which their terms prohibit.
+  generated creative link (falls back to `https://gethlth.com/?rfsn=9131461.c81405e&utm_source=refersion&utm_medium=affiliate&utm_campaign=oura_ring_comparison`).
+- **FTC disclosure:** an italic paid-partnership line sits directly below the banner ("Affiliate
+  link. If you buy through this banner, Kygo may earn a commission at no extra cost to you.") —
+  matching the blog placement. HLTH Code is **not** covered by the footer's Amazon-Associate line
+  (Refersion, not Amazon), so the banner carries its own disclosure. Per HLTH Code's affiliate terms
+  this is a **referral-link** placement on owned editorial content (allowed) — **not** PPC "direct
+  linking" and **not** a promo-code share, both of which their terms prohibit.
 - **Tracking:** clicks fire a GA4 `cta_click` with `cta_category: "affiliate_banner"`,
   `affiliate: "hlth_code"`, `affiliate_network: "refersion"` (see `docs/schemas-and-tracking.md`).
 
