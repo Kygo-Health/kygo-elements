@@ -154,6 +154,28 @@ do the **Health Connect** logo rows show the right icon? If yes, just a naming q
 
 ---
 
+## Wix global custom code (head + header/footer) — audit 2026-06-02
+
+> Mirrored & reviewed in `docs/wix-global-code.md`. These live in the **Wix editor**
+> (Settings → Custom Code + site header/footer), not in this repo — fixes are applied **in Wix**.
+
+| # | Area | Severity | Status | One-liner |
+|---|---|---|---|---|
+| 18 | Schema | **P2** | Needs input | Two head `SoftwareApplication` blocks ship conflicting `aggregateRating` (`ratingCount` 30 vs 1) — consolidate to one honest rating |
+| 19 | Content | **P2** | Needs input | Footer email `ryan@kygo.app` ≠ schema/components `support@kygo.app` — pick one public address |
+| 20 | Links | **P2** | Needs input | Header/footer link `/contact-8`; all components + docs use `/contact` — confirm real slug, normalize |
+| 21 | Links/SEO | **P3** | Fix in Wix | Homepage `@graph` uses bare `https://kygo.app` for `url`/`downloadUrl` — normalize to `www` (matches #15) |
+| 22 | Schema | **P3** | Verify | `WebSite.potentialAction` SearchAction targets `/search?q=` — verify the page exists or remove |
+| 23 | Schema | **P3** | Fix in Wix | `SoftwareApplication.screenshot` reuses the **logo** URL, not a real app screenshot |
+| 24 | Assets | **P3** | Fix in Wix | Head fonts `<link>` loads DM Sans `400;500;600` (no `700`) — add `;700` to match repo standard (#11) |
+| 25 | Content | **P3** | Fix in Wix | Footer disclaimer says **© 2025** (it's 2026) — update the year |
+| 26 | A11y | **P3** | Optional | Header hamburger is a `<div onclick>` with no `role`/`aria-label`/keyboard handler |
+
+**Confirmed OK:** logo asset, Apple App Store URL, `www.kygo.app/android`, Privacy/Terms/Accessibility
+paths, GA4 ID `G-P2224N75KY`, and GA tracking of both download CTAs (via `href` match).
+
+---
+
 ## Closed by QA (no action)
 - Bare `kygo.app` → `www.kygo.app` redirects cleanly in one hop.
 - `/iOS` redirect resolves to the App Store (Oura + Fitbit-vs-WHOOP CTAs OK).
