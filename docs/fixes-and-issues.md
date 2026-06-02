@@ -165,7 +165,7 @@ do the **Health Connect** logo rows show the right icon? If yes, just a naming q
 | 19 | Content | **P2** | Paste ready | Footer email `ryan@kygo.app` ≠ schema `support@kygo.app`. **Decided:** use `support@kygo.app` |
 | 20 | Links | **P2** | Paste ready | Header/footer link `/contact-8`; components use `/contact`. **Decided:** use `/contact` (change header + footer) |
 | 21 | Links/SEO | **P3** | Paste ready | Homepage `@graph` uses bare `https://kygo.app` — normalized to `www` in corrected block (matches #15) |
-| 22 | Schema | **P3** | Verify | `WebSite.potentialAction` SearchAction targets `/search?q=` — keep only if `/search` exists, else delete |
+| 22 | Schema | **P3** | Paste ready | `WebSite.potentialAction` SearchAction targeted `/search?q=` (no such page) — **removed** in corrected block |
 | 23 | Schema | **P3** | Paste ready | `SoftwareApplication.screenshot` reused the **logo** URL — **removed** in corrected block |
 | 24 | Assets | **P3** | Paste ready | Head fonts `<link>` missing DM Sans `700` — `;700` added in corrected block (#11) |
 | 25 | Content | **P3** | Paste ready | Footer disclaimer **© 2025** → **2026** |

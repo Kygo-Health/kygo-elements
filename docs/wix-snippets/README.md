@@ -14,8 +14,6 @@ Wix slot. See `../wix-global-code.md` for the audit and rationale behind each va
 | `6-custom-footer-body-end.html` | Body – end → "Kygo Custom Footer" | Replace block (`/contact`, `support@kygo.app`, © 2026) |
 
 ## Before you publish
-- **SearchAction:** `3-homepage-jsonld-head.html` includes `potentialAction` → `www.kygo.app/search`.
-  Keep it only if that search page exists; otherwise delete the `,"potentialAction":{…}` object.
 - **Rating:** intentionally omitted (App Store reviews aren't markup-eligible on this domain). Re-add
   only with genuine reviews shown on-page — snippet in `../wix-global-code.md`.
 - After pasting the two head JSON-LD changes, run the homepage URL through Google's
