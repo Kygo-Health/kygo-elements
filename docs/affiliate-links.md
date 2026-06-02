@@ -120,8 +120,12 @@ This is the **only non-Amazon, non-`<a>`-tag** affiliate placement: a Refersion 
   into the layout via `<slot name="hlth-ad">`.
 - Affiliate attribution is handled **on Refersion's side** via the `aid`; the visible link is the
   generated creative link (falls back to `https://gethlth.com/?rfsn=9131461.c81405e&utm_source=refersion&utm_medium=affiliate`).
-- Labeled **"Advertisement"** above the banner (FTC disclosure). The page footer's Amazon-Associate
-  line still applies to the Amazon links elsewhere on the page.
+- **FTC disclosure:** labeled **"Advertisement"** above the banner **and** a paid-partnership line
+  below it ("HLTH Code is a paid affiliate partner. Kygo Health may earn a commission… at no extra
+  cost to you."). HLTH Code is **not** covered by the footer's Amazon-Associate line (Refersion, not
+  Amazon), so the banner carries its own disclosure. Per HLTH Code's affiliate terms this is a
+  **referral-link** placement on owned editorial content (allowed) — **not** PPC "direct linking"
+  and **not** a promo-code share, both of which their terms prohibit.
 - **Tracking:** clicks fire a GA4 `cta_click` with `cta_category: "affiliate_banner"`,
   `affiliate: "hlth_code"`, `affiliate_network: "refersion"` (see `docs/schemas-and-tracking.md`).
 

@@ -422,6 +422,7 @@ class KygoOuraRingComparison extends HTMLElement {
           <div class="ad-banner animate-on-scroll">
             <span class="ad-disclosure">Advertisement</span>
             <slot name="hlth-ad"></slot>
+            <p class="ad-affiliate-note">HLTH Code is a paid affiliate partner. Kygo Health may earn a commission from purchases made through this banner — at no extra cost to you.</p>
           </div>
         </div>
       </section>
@@ -984,6 +985,7 @@ class KygoOuraRingComparison extends HTMLElement {
       .ad-banner { margin-top: 28px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
       .ad-disclosure { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--fg-3); }
       .ad-banner ::slotted([data-hlth-ad]) { max-width: 100%; }
+      .ad-affiliate-note { margin: 2px 0 0; font-size: 11px; line-height: 1.5; color: var(--fg-3); max-width: 52ch; }
 
       /* Kygo CTA */
       .kygo-cta-card { background: var(--kygo-dark); border-radius: 20px; padding: 40px 24px; position: relative; overflow: hidden; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; }
