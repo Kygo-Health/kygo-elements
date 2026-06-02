@@ -1,0 +1,350 @@
+<!-- Kygo Health Custom Header -->
+<div id="kygo-header-root"></div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  #kygo-header-root {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .kygo-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(248, 250, 252, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    padding: 14px 24px;
+    z-index: 99999;
+    transition: all 0.3s ease;
+  }
+
+  .kygo-nav.scrolled {
+    padding: 10px 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .kygo-nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .kygo-nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .kygo-nav-logo:hover {
+    opacity: 0.85;
+  }
+
+  .kygo-nav-logo img {
+    height: 36px;
+    width: auto;
+  }
+
+  .kygo-nav-logo span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #1E293B;
+    letter-spacing: -0.02em;
+  }
+
+  .kygo-nav-links {
+    display: none;
+    align-items: center;
+    gap: 36px;
+  }
+
+  .kygo-nav-links a {
+    color: #475569;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 15px;
+    transition: color 0.2s;
+    position: relative;
+  }
+
+  .kygo-nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #22C55E;
+    transition: width 0.2s;
+  }
+
+  .kygo-nav-links a:hover {
+    color: #1E293B;
+  }
+
+  .kygo-nav-links a:hover::after {
+    width: 100%;
+  }
+
+  .kygo-nav-cta-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .kygo-nav-cta {
+    background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+    color: white !important;
+    padding: 11px 18px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.25);
+    white-space: nowrap;
+  }
+
+  .kygo-nav-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.35);
+  }
+
+  .kygo-nav-cta svg {
+    flex-shrink: 0;
+  }
+
+  .kygo-nav-cta-android {
+    background: transparent;
+    border: 2px solid #22C55E;
+    color: #22C55E !important;
+    padding: 9px 18px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .kygo-nav-cta-android:hover {
+    background: rgba(34, 197, 94, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.15);
+  }
+
+  .kygo-nav-cta-android svg {
+    flex-shrink: 0;
+  }
+
+  .kygo-hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 8px;
+    margin-right: -8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+  }
+
+  .kygo-hamburger:hover {
+    background: rgba(0,0,0,0.04);
+  }
+
+  .kygo-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: #1E293B;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .kygo-hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .kygo-hamburger.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .kygo-hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  .kygo-mobile-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(248, 250, 252, 0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    z-index: 99998;
+    border-bottom: none;
+  }
+
+  .kygo-mobile-menu.open {
+    max-height: 600px;
+    padding: 16px 24px 28px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  }
+
+  .kygo-mobile-menu a {
+    display: block;
+    color: #475569;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid #E2E8F0;
+    transition: color 0.2s;
+  }
+
+  .kygo-mobile-menu a:last-of-type {
+    border-bottom: none;
+  }
+
+  .kygo-mobile-menu a:hover {
+    color: #22C55E;
+  }
+
+  .kygo-mobile-cta-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+
+  .kygo-mobile-cta {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+    color: white !important;
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    border-bottom: none !important;
+    text-decoration: none;
+  }
+
+  .kygo-mobile-cta-android {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: transparent;
+    border: 2px solid #22C55E;
+    color: #22C55E !important;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    border-bottom: none !important;
+    text-decoration: none;
+  }
+
+  .kygo-nav-spacer {
+    height: 70px;
+  }
+
+  @media (min-width: 768px) {
+    .kygo-nav-links {
+      display: flex;
+    }
+
+    .kygo-hamburger {
+      display: none;
+    }
+
+    .kygo-mobile-menu {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .kygo-nav-cta-group.desktop-only {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  var appleIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>';
+  var androidIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.236a.5.5 0 0 0-.86.508l1.08 1.83a7.504 7.504 0 0 0-11.486 0l1.08-1.83a.5.5 0 0 0-.86-.508L5.28 5.12A7.502 7.502 0 0 0 1.5 11.5h21A7.502 7.502 0 0 0 18.72 5.12l-1.197-2.884zM8.5 9a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm7 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM3.5 13v6.5A2.5 2.5 0 0 0 6 22h1v-9H3.5zm14 0H17v9h1a2.5 2.5 0 0 0 2.5-2.5V13zM7 13v9h4v-9H7zm4 0v9h4v-9h-4zM1 13.5a1.5 1.5 0 0 1 3 0v5a1.5 1.5 0 0 1-3 0v-5zm19 0a1.5 1.5 0 0 1 3 0v5a1.5 1.5 0 0 1-3 0v-5z"/></svg>';
+
+  var headerHTML = '<nav class="kygo-nav" id="kygo-nav"><div class="kygo-nav-inner">'
+    + '<a href="https://www.kygo.app/" class="kygo-nav-logo"><img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo Health" /><span>KYGO HEALTH</span></a>'
+    + '<div class="kygo-nav-links"><a href="https://www.kygo.app/how-it-works">How It Works</a><a href="https://www.kygo.app/faq">FAQ</a><a href="https://www.kygo.app/blog">Blog</a><a href="https://www.kygo.app/tools">Tools</a><a href="https://www.kygo.app/contact">Contact</a></div>'
+    + '<div class="kygo-nav-cta-group desktop-only">'
+    + '<a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="kygo-nav-cta" target="_blank" rel="noopener">' + appleIcon + 'iOS</a>'
+    + '<a href="https://www.kygo.app/android" class="kygo-nav-cta-android" target="_blank" rel="noopener">' + androidIcon + 'Android</a>'
+    + '</div>'
+    + '<div class="kygo-hamburger" id="kygo-hamburger" onclick="toggleKygoMobile()"><span></span><span></span><span></span></div>'
+    + '</div></nav>'
+    + '<div class="kygo-mobile-menu" id="kygo-mobile-menu">'
+    + '<a href="https://www.kygo.app/how-it-works" onclick="closeKygoMobile()">How It Works</a>'
+    + '<a href="https://www.kygo.app/faq" onclick="closeKygoMobile()">FAQ</a>'
+    + '<a href="https://www.kygo.app/blog" onclick="closeKygoMobile()">Blog</a>'
+    + '<a href="https://www.kygo.app/tools" onclick="closeKygoMobile()">Tools</a>'
+    + '<a href="https://www.kygo.app/contact" onclick="closeKygoMobile()">Contact</a>'
+    + '<div class="kygo-mobile-cta-group">'
+    + '<a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="kygo-mobile-cta" target="_blank" rel="noopener">' + appleIcon + 'Download for iOS</a>'
+    + '<a href="https://www.kygo.app/android" class="kygo-mobile-cta-android" target="_blank" rel="noopener">' + androidIcon + 'Download for Android</a>'
+    + '</div></div>'
+    + '<div class="kygo-nav-spacer"></div>';
+
+  document.getElementById('kygo-header-root').innerHTML = headerHTML;
+
+  window.addEventListener('scroll', function() {
+    var nav = document.getElementById('kygo-nav');
+    if (window.scrollY > 20) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+})();
+
+function toggleKygoMobile() {
+  var menu = document.getElementById('kygo-mobile-menu');
+  var hamburger = document.getElementById('kygo-hamburger');
+  menu.classList.toggle('open');
+  hamburger.classList.toggle('active');
+}
+
+function closeKygoMobile() {
+  var menu = document.getElementById('kygo-mobile-menu');
+  var hamburger = document.getElementById('kygo-hamburger');
+  menu.classList.remove('open');
+  hamburger.classList.remove('active');
+}
+</script>

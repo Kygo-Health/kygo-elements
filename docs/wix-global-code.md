@@ -256,4 +256,7 @@ duplicate carrying the conflicting `ratingCount`).
 - `© 2025 by KYGO Health LLC` → `© 2026 by KYGO Health LLC`
 
 **Block 4 — GA tracking:** no change.
+
+> 📋 **Full, paste-ready source for every block lives in `wix-snippets/`** (one file per Wix slot) —
+> see `wix-snippets/README.md`. Paste those directly; the find/replaces above are just what changed.
 </content>
