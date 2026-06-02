@@ -154,6 +154,31 @@ do the **Health Connect** logo rows show the right icon? If yes, just a naming q
 
 ---
 
+## Wix global custom code (head + header/footer) — audit 2026-06-02
+
+> Mirrored & reviewed in `docs/wix-global-code.md`. These live in the **Wix editor**
+> (Settings → Custom Code + site header/footer), not in this repo — fixes are applied **in Wix**.
+
+| # | Area | Severity | Status | One-liner |
+|---|---|---|---|---|
+| 18 | Schema | **P2** | Paste ready | Two head `SoftwareApplication` blocks ship conflicting `aggregateRating` (30 vs 1). **Decided:** consolidate to one `@graph`, rating **removed** (App Store reviews not markup-eligible per Google) |
+| 19 | Content | **P2** | Paste ready | Footer email `ryan@kygo.app` ≠ schema `support@kygo.app`. **Decided:** use `support@kygo.app` |
+| 20 | Links | **P2** | Paste ready | Header/footer link `/contact-8`; components use `/contact`. **Decided:** use `/contact` (change header + footer) |
+| 21 | Links/SEO | **P3** | Paste ready | Homepage `@graph` uses bare `https://kygo.app` — normalized to `www` in corrected block (matches #15) |
+| 22 | Schema | **P3** | Paste ready | `WebSite.potentialAction` SearchAction targeted `/search?q=` (no such page) — **removed** in corrected block |
+| 23 | Schema | **P3** | Paste ready | `SoftwareApplication.screenshot` reused the **logo** URL — **removed** in corrected block |
+| 24 | Assets | **P3** | Paste ready | Head fonts `<link>` missing DM Sans `700` — `;700` added in corrected block (#11) |
+| 25 | Content | **P3** | Paste ready | Footer disclaimer **© 2025** → **2026** |
+| 26 | A11y | **P3** | Optional | Header hamburger is a `<div onclick>` with no `role`/`aria-label`/keyboard handler |
+
+**Confirmed OK:** logo asset, Apple App Store URL, `www.kygo.app/android`, Privacy/Terms/Accessibility
+paths, GA4 ID `G-P2224N75KY`, and GA tracking of both download CTAs (via `href` match).
+
+> **Corrected paste-ready blocks for #18–25 live in `wix-global-code.md` → "Corrected blocks".**
+> Apply them in the Wix editor, then mark these closed and update the Block 2/3 mirror.
+
+---
+
 ## Closed by QA (no action)
 - Bare `kygo.app` → `www.kygo.app` redirects cleanly in one hop.
 - `/iOS` redirect resolves to the App Store (Oura + Fitbit-vs-WHOOP CTAs OK).

@@ -17,6 +17,10 @@ Guidance for working in this repo. Read this before editing or creating componen
   across files (with file:line + suggested fix). Check/update this when fixing things.
 - **`docs/wix-velo-code.md`** — the Wix Velo page + backend code each component talks to (events,
   attributes, collections, secrets) — lives in the Wix editor, mirrored here as reference.
+- **`docs/wix-global-code.md`** — the site-level Wix custom code that is **not** a component:
+  head fonts, the homepage/`SoftwareApplication` JSON-LD, the GA4 tracking embed, and the global
+  custom header/footer. Lives in the Wix editor (Settings → Custom Code), mirrored here with a
+  link/tracking/schema audit.
 
 ## What this repo is
 
