@@ -212,7 +212,7 @@ Tracking is **convention-based** — components don't call the tracker, they jus
 
 The one place a component fires GA4 **directly** rather than relying on the global listener is the
 **HLTH Code** affiliate banner on `kygo-oura-ring-comparison.js` (`_setupAffiliateBanner()`). The
-banner is a third-party **Refersion** dynamic creative (`creative.js` → `#rfsn_img_125600`) injected
+banner is a third-party **Refersion** dynamic creative (`creative.js` → `#rfsn_img_125599`) injected
 into light DOM and slotted in — its `<a>` is generated asynchronously and carries no Kygo class, so
 `classifyClick()` would bucket it as nothing. Instead the component attaches its own click handler
 that calls `window.gtag('event', 'cta_click', …)` with:
