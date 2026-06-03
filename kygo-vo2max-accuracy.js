@@ -169,7 +169,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: 'Like Garmin (shared engine)',
         weakestFor: 'No brand-specific study',
         subscription: false, subLabel: 'Free',
-        affiliateUrl: null,
+        affiliateUrl: 'https://amzn.to/4fZD5Cx',
         hrSource: 'Wrist optical or paired chest strap', gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       }
     ];
