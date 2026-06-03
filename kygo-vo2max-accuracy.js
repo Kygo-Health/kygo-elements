@@ -25,7 +25,6 @@ class KygoVo2maxAccuracy extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this._observer = null;
     this._eventsBound = false;
-    this._expandedSource = null;
     this._filters = { type: new Set(), sub: new Set(), val: new Set(), run: new Set() };
   }
 
@@ -46,7 +45,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
   get _devices() {
     return [
       {
-        key: 'garmin', name: 'Garmin (Firstbeat)', short: 'Garmin', color: '#f59e0b',
+        key: 'garmin', name: 'Garmin (Firstbeat)', short: 'Garmin',
         type: 'watch', typeLabel: 'Watch',
         method: 'exercise', methodLabel: 'Exercise — HR-to-pace run',
         needs: 'Outdoor run + HR (chest strap best)', needsRun: true,
@@ -61,7 +60,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       },
       {
-        key: 'apple', name: 'Apple Watch', short: 'Apple', color: '#64748b',
+        key: 'apple', name: 'Apple Watch', short: 'Apple',
         type: 'watch', typeLabel: 'Watch',
         method: 'exercise', methodLabel: 'Exercise — outdoor walk/run/hike',
         needs: 'GPS + ~30% HR rise', needsRun: true,
@@ -75,7 +74,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         hrSource: 'Wrist optical', gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       },
       {
-        key: 'polar', name: 'Polar', short: 'Polar', color: '#ef4444',
+        key: 'polar', name: 'Polar', short: 'Polar',
         type: 'watch', typeLabel: 'Watch',
         method: 'resting', methodLabel: 'Resting Fitness Test (HR + HRV); exercise on run models',
         needs: 'Nothing for the resting test; a run for exercise mode', needsRun: false,
@@ -89,7 +88,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         hrSource: 'Wrist optical / chest, at rest', gps: false, hrv: true, restingHr: true, profile: true, maxHr: true
       },
       {
-        key: 'fitbit', name: 'Fitbit / Google', short: 'Fitbit', color: '#10b981',
+        key: 'fitbit', name: 'Fitbit / Google', short: 'Fitbit',
         type: 'watch', typeLabel: 'Watch / band',
         method: 'resting', methodLabel: 'Resting HR + profile (Cardio Fitness Score)',
         needs: 'Nothing (a GPS run refines it)', needsRun: false,
@@ -103,7 +102,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         hrSource: 'Wrist optical', gps: 'opt', hrv: false, restingHr: true, profile: true, maxHr: true
       },
       {
-        key: 'samsung', name: 'Samsung Galaxy Watch', short: 'Samsung', color: '#3b82f6',
+        key: 'samsung', name: 'Samsung Galaxy Watch', short: 'Samsung',
         type: 'watch', typeLabel: 'Watch',
         method: 'exercise', methodLabel: 'Exercise — outdoor run',
         needs: 'Outdoor run + GPS', needsRun: true,
@@ -117,7 +116,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         hrSource: 'Wrist optical', gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       },
       {
-        key: 'whoop', name: 'WHOOP', short: 'WHOOP', color: '#0f172a',
+        key: 'whoop', name: 'WHOOP', short: 'WHOOP',
         type: 'strap', typeLabel: 'Strap (no screen)',
         method: 'hybrid', methodLabel: 'Proprietary — passive / GPS / calibrated (3-tier)',
         needs: 'A GPS run for the calibrated estimate', needsRun: true,
@@ -131,7 +130,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         hrSource: 'Wrist/arm optical (PPG)', gps: true, hrv: 'part', restingHr: true, profile: true, maxHr: true
       },
       {
-        key: 'oura', name: 'Oura Ring', short: 'Oura', color: '#C4A97D',
+        key: 'oura', name: 'Oura Ring', short: 'Oura',
         type: 'ring', typeLabel: 'Ring',
         method: 'hybrid', methodLabel: 'Guided in-app 6-minute walk test (Cardio Capacity)',
         needs: 'Take the in-app walk test', needsRun: false,
@@ -145,7 +144,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         hrSource: 'Ring PPG, during the walk test', gps: false, hrv: false, restingHr: false, profile: true, maxHr: true
       },
       {
-        key: 'coros', name: 'Coros', short: 'Coros', color: '#f97316',
+        key: 'coros', name: 'Coros', short: 'Coros',
         type: 'watch', typeLabel: 'Watch',
         method: 'exercise', methodLabel: 'Exercise — HR-to-pace (algorithm unpublished)',
         needs: 'Outdoor run + HR', needsRun: true,
@@ -159,7 +158,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         hrSource: 'Wrist optical or paired chest strap', gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       },
       {
-        key: 'suunto', name: 'Suunto', short: 'Suunto', color: '#1e3a8a',
+        key: 'suunto', name: 'Suunto', short: 'Suunto',
         type: 'watch', typeLabel: 'Watch',
         method: 'exercise', methodLabel: 'Exercise — Firstbeat engine (current models)',
         needs: 'Outdoor run + HR', needsRun: true,
@@ -246,6 +245,23 @@ class KygoVo2maxAccuracy extends HTMLElement {
     ];
   }
 
+  // ── FAQ (also emitted as FAQPage JSON-LD) ────────────────────────────────
+
+  get _faqs() {
+    return [
+      { q: 'Do wearables actually measure VO2 max?',
+        a: 'No. The lab gold standard (CPET) analyzes the oxygen and carbon dioxide in your breath. Watches, rings, and straps have no gas analysis, so they estimate VO2 max from heart rate, motion, GPS pace, and your profile (age, sex, weight). Treat it as a fitness trend, not a clinical value.' },
+      { q: 'Which wearable has the most accurate VO2 max?',
+        a: 'Garmin (Firstbeat) from a hard outdoor run with a chest strap is the most trustworthy and the only brand with solid independent validation (about 5 to 7 percent error in general populations). Apple has two independent studies but both show it underestimates by roughly 13 to 16 percent.' },
+      { q: 'Does the Apple Watch overestimate or underestimate VO2 max?',
+        a: 'Two independent studies show the Apple Watch underestimates VO2 max: by 6.07 mL/kg/min (MAPE 13.3%, Lambe 2025) and predicting about 41 versus a measured 46 mL/kg/min on the Series 7 (MAPE 15.8%, Caserman 2024). The underestimation is larger in fitter people.' },
+      { q: 'Why are resting VO2 max estimates less accurate?',
+        a: 'Resting-based estimates (Polar Fitness Test, Fitbit cardio fitness score) use resting heart rate plus age, sex and weight with no workout. The INTERLIVE meta-analysis found they overestimate by about +2.17 mL/kg/min on average, versus near-zero bias for exercise-based estimates from an actual run.' },
+      { q: 'Do you need a subscription to see your VO2 max?',
+        a: 'Most watches show VO2 max for free (Garmin, Apple, Polar, Samsung, Coros, Suunto; Fitbit shows the metric free with Premium adding coaching only). WHOOP requires a paid membership, and Oura requires its membership to see Cardio Capacity.' }
+    ];
+  }
+
   // ── SEO light-DOM summary ───────────────────────────────────────────────
 
   _seoText() {
@@ -258,20 +274,20 @@ class KygoVo2maxAccuracy extends HTMLElement {
     const icons = {
       check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
       minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
-      chevDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>',
-      arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+      arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
       externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
       watch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6"/><polyline points="12 10 12 12 13 13"/><path d="m9 4.5.5-2.5h5l.5 2.5"/><path d="m9 19.5.5 2.5h5l.5-2.5"/></svg>',
       ring: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="6"/><path d="M9 4h6l-1.5 4h-3z"/></svg>',
       strap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="8" width="10" height="8" rx="2"/><path d="M7 10H4m16 0h-3M7 14H4m16 0h-3"/></svg>',
       activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
       info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
-      lab: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2v6.5L4.5 17A2 2 0 0 0 6.3 20h11.4a2 2 0 0 0 1.8-3L15 8.5V2"/><path d="M8 2h8"/><path d="M7.5 13h9"/></svg>',
       lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
       unlock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>',
-      run: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="m6 20 2-5 3 1 1 4"/><path d="m5 11 4-2 3 3 4-1"/></svg>'
+      run: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="m6 20 2-5 3 1 1 4"/><path d="m5 11 4-2 3 3 4-1"/></svg>',
+      apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>',
+      android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zm10 0v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zM5 17v3a1 1 0 1 0 2 0v-3H5zm12 0v3a1 1 0 1 0 2 0v-3h-2zm-9.5-9c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5H7.5zm.5 1h8a1 1 0 0 1 1 1v6H7v-6a1 1 0 0 1 1-1zM9 5.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm6 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z"/></svg>'
     };
-    return icons[name] || icons.info;
+    return `<span class="ico">${icons[name] || icons.info}</span>`;
   }
 
   // ── Filtering ───────────────────────────────────────────────────────────
@@ -310,38 +326,36 @@ class KygoVo2maxAccuracy extends HTMLElement {
   _updateResults() {
     const sr = this.shadowRoot;
     const filtered = this._filtered();
-    const chipbar = sr.querySelector('.vo2-chipbar');
+    const chipbar = sr.querySelector('[data-chips]');
     if (chipbar) chipbar.innerHTML = this._renderChips();
-    const count = sr.querySelector('.vo2-count');
-    if (count) count.textContent = `Showing ${filtered.length} of ${this._devices.length} devices`;
-    const matrix = sr.querySelector('.vo2-matrix');
-    if (matrix) matrix.innerHTML = this._renderMatrix(filtered);
-    const cards = sr.querySelector('.vo2-cards');
+    const count = sr.querySelector('[data-count]');
+    if (count) count.innerHTML = `Showing <strong>${filtered.length}</strong> of ${this._devices.length} devices`;
+    const cards = sr.querySelector('[data-cards]');
     if (cards) cards.innerHTML = this._renderCards(filtered);
   }
 
   // ── Small render helpers ────────────────────────────────────────────────
 
+  _typeIcon(t) { return t === 'ring' ? this._icon('ring') : (t === 'strap' ? this._icon('strap') : this._icon('watch')); }
+
   _validationBadge(v) {
-    if (v === 'validated') return `<span class="badge badge-yes">${this._icon('check')} Independently validated</span>`;
-    if (v === 'indirect') return `<span class="badge badge-mid">≈ Same engine (Firstbeat)</span>`;
-    return `<span class="badge badge-no">Vendor claims only</span>`;
+    if (v === 'validated') return `<span class="vbadge yes">${this._icon('check')} Independently validated</span>`;
+    if (v === 'indirect') return `<span class="vbadge mid">≈ Same engine (Firstbeat)</span>`;
+    return `<span class="vbadge no">Vendor claims only</span>`;
   }
 
   _methodPill(d) {
-    const cls = d.method === 'exercise' ? 'pill-ex' : (d.method === 'resting' ? 'pill-rest' : 'pill-hybrid');
+    const cls = d.method === 'exercise' ? 'ex' : 'rest';
     const txt = d.method === 'exercise' ? 'Exercise-based' : (d.method === 'resting' ? 'Resting-based' : 'Hybrid');
-    return `<span class="method-pill ${cls}">${txt}</span>`;
+    return `<span class="m-pill ${cls}">${txt}</span>`;
   }
 
   _yn(v) {
-    if (v === true) return `<span class="yn yn-yes">${this._icon('check')}</span>`;
-    if (v === 'opt') return `<span class="yn yn-opt">Optional</span>`;
-    if (v === 'part') return `<span class="yn yn-opt">Partial</span>`;
-    return `<span class="yn yn-no">${this._icon('minus')}</span>`;
+    if (v === true) return `<span class="yn yes">${this._icon('check')}</span>`;
+    if (v === 'opt') return `<span class="yn opt">Optional</span>`;
+    if (v === 'part') return `<span class="yn opt">Partial</span>`;
+    return `<span class="yn no">${this._icon('minus')}</span>`;
   }
-
-  _typeIcon(t) { return t === 'ring' ? this._icon('ring') : (t === 'strap' ? this._icon('strap') : this._icon('watch')); }
 
   // ── Section: filter chips ───────────────────────────────────────────────
 
@@ -358,92 +372,50 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </div>`).join('');
     return groups + (anyActive
-      ? `<button class="filter-reset" data-action="reset-filters">Reset filters</button>`
+      ? `<button class="filter-reset" data-action="reset-filters">Reset</button>`
       : '');
   }
 
-  // ── Section: comparison matrix ──────────────────────────────────────────
-
-  _renderMatrix(devices) {
-    if (!devices.length) {
-      return `<div class="empty-state">No devices match those filters. <button class="link-btn" data-action="reset-filters">Reset</button></div>`;
-    }
-    return `
-      <div class="table-scroll">
-        <table class="data-table">
-          <thead>
-            <tr>
-              <th>Device</th>
-              <th>How it estimates</th>
-              <th>What it needs</th>
-              <th>Vendor claim</th>
-              <th>Independent validation</th>
-              <th>Best / weakest for</th>
-              <th>VO2 max access</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${devices.map(d => `
-              <tr>
-                <td class="cell-device">
-                  <span class="dev-dot" style="background:${d.color}"></span>
-                  <span class="dev-name">${d.name}</span>
-                  <span class="dev-type">${this._typeIcon(d.type)} ${d.typeLabel}</span>
-                </td>
-                <td>${this._methodPill(d)}<span class="cell-sub">${d.methodLabel}</span></td>
-                <td><span class="cell-sub">${d.needs}</span></td>
-                <td><span class="cell-sub">${d.vendorClaim}</span></td>
-                <td>${this._validationBadge(d.validation)}<span class="cell-sub">${d.independent}</span></td>
-                <td><span class="bw bw-best">${this._icon('check')} ${d.bestFor}</span><span class="bw bw-weak">${this._icon('minus')} ${d.weakestFor}</span></td>
-                <td>${d.subscription
-                  ? `<span class="sub-tag sub-paid">${this._icon('lock')} Paid</span>`
-                  : `<span class="sub-tag sub-free">${this._icon('unlock')} Free</span>`}<span class="cell-sub">${d.subLabel}</span></td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
-      </div>`;
-  }
-
-  // ── Section: per-device cards ───────────────────────────────────────────
+  // ── Section: per-device cards (single consolidated comparison) ───────────
 
   _renderCards(devices) {
     if (!devices.length) {
-      return `<div class="empty-state">No devices match those filters. <button class="link-btn" data-action="reset-filters">Reset</button></div>`;
+      return `<div class="empty-state">No devices match those filters. <button class="link-btn" data-action="reset-filters">Reset filters</button></div>`;
     }
     return devices.map(d => `
-      <article class="dev-card" style="--accent:${d.color}">
-        <div class="dev-card-top">
-          <div class="dev-card-head">
-            <span class="dev-card-icon">${this._typeIcon(d.type)}</span>
-            <div>
-              <h3>${d.name}</h3>
-              <span class="dev-card-type">${d.typeLabel} · ${this._methodPill(d)}</span>
-            </div>
+      <article class="dev-card${d.validation === 'validated' ? ' is-validated' : ''}">
+        <div class="dev-head">
+          <span class="dev-icon">${this._typeIcon(d.type)}</span>
+          <div class="dev-headtext">
+            <h3>${d.name}</h3>
+            <span class="dev-meta">${d.typeLabel}</span>
           </div>
-          ${this._validationBadge(d.validation)}
+          ${d.subscription
+            ? `<span class="sub-tag paid">${this._icon('lock')} Paid</span>`
+            : `<span class="sub-tag free">${this._icon('unlock')} Free</span>`}
         </div>
 
-        <div class="acc-grid">
-          <div class="acc-cell acc-vendor">
-            <span class="acc-label">Vendor claim</span>
-            <p>${d.vendorClaim}</p>
-          </div>
-          <div class="acc-cell acc-indep">
-            <span class="acc-label">Independent vs lab CPET</span>
-            <p>${d.independent}</p>
-          </div>
+        <div class="dev-pills">${this._methodPill(d)}${this._validationBadge(d.validation)}</div>
+
+        <div class="dev-finding">
+          <span class="dev-label">Independent vs lab CPET</span>
+          <p>${d.independent}</p>
         </div>
+
+        <details class="dev-vendor">
+          <summary>Vendor claim</summary>
+          <p>${d.vendorClaim}</p>
+        </details>
 
         <ul class="dev-facts">
-          <li><span>${this._icon('run')}</span><strong>Needs:</strong> ${d.needs}</li>
-          <li><span>${this._icon('check')}</span><strong>Best for:</strong> ${d.bestFor}</li>
-          <li><span>${this._icon('minus')}</span><strong>Weakest for:</strong> ${d.weakestFor}</li>
-          <li><span>${d.subscription ? this._icon('lock') : this._icon('unlock')}</span><strong>Access:</strong> ${d.subLabel}</li>
+          <li><span class="fct-ico">${this._icon('run')}</span><span><strong>Needs</strong> ${d.needs}</span></li>
+          <li><span class="fct-ico ok">${this._icon('check')}</span><span><strong>Best for</strong> ${d.bestFor}</span></li>
+          <li><span class="fct-ico">${this._icon('minus')}</span><span><strong>Weakest for</strong> ${d.weakestFor}</span></li>
         </ul>
 
         ${d.affiliateUrl
-          ? `<a href="${d.affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.short} Amazon" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
-          : `<span class="amazon-link amazon-link-disabled">No affiliate link available</span>`}
+          ? `<a href="${d.affiliateUrl}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.short} Amazon" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
+          : ''}
       </article>`).join('');
   }
 
@@ -451,29 +423,29 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
   _renderInputsTableA(devices) {
     return `
-      <div class="table-scroll">
-        <table class="data-table data-table-inputs">
+      <div class="tbl-wrap">
+        <table class="tbl">
           <thead>
             <tr>
               <th>Device</th>
               <th>Heart-rate source</th>
-              <th>GPS pace</th>
+              <th>GPS</th>
               <th>HRV</th>
               <th>Resting HR</th>
               <th>Profile</th>
-              <th>Extrapolates via assumed max HR</th>
+              <th>Assumed max HR</th>
             </tr>
           </thead>
           <tbody>
             ${devices.map(d => `
               <tr>
-                <td class="cell-device"><span class="dev-dot" style="background:${d.color}"></span><span class="dev-name">${d.name}</span></td>
-                <td><span class="cell-sub">${d.hrSource}</span></td>
-                <td>${this._yn(d.gps)}</td>
-                <td>${this._yn(d.hrv)}</td>
-                <td>${this._yn(d.restingHr)}</td>
-                <td>${this._yn(d.profile)}</td>
-                <td>${this._yn(d.maxHr)}</td>
+                <td class="spec-name" data-label="Device">${d.name}</td>
+                <td class="cell" data-label="Heart-rate source">${d.hrSource}</td>
+                <td class="cell tc" data-label="GPS">${this._yn(d.gps)}</td>
+                <td class="cell tc" data-label="HRV">${this._yn(d.hrv)}</td>
+                <td class="cell tc" data-label="Resting HR">${this._yn(d.restingHr)}</td>
+                <td class="cell tc" data-label="Profile">${this._yn(d.profile)}</td>
+                <td class="cell tc" data-label="Assumed max HR">${this._yn(d.maxHr)}</td>
               </tr>`).join('')}
           </tbody>
         </table>
@@ -482,17 +454,17 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
   _renderInputsTableB() {
     return `
-      <div class="table-scroll">
-        <table class="data-table data-table-signals">
+      <div class="tbl-wrap">
+        <table class="tbl">
           <thead>
             <tr><th>Input signal</th><th>How good it is (independent evidence)</th><th>Source</th></tr>
           </thead>
           <tbody>
             ${this._inputSignals.map(s => `
               <tr>
-                <td class="cell-label">${s.signal}</td>
-                <td><span class="q-pill q-${s.quality}">${s.qLabel}</span><span class="cell-sub">${s.finding}</span></td>
-                <td><span class="cell-sub">${s.source}</span></td>
+                <td class="spec-name" data-label="Input signal">${s.signal}</td>
+                <td class="cell" data-label="How good it is"><span class="q-pill q-${s.quality}">${s.qLabel}</span><span class="cell-sub">${s.finding}</span></td>
+                <td class="cell" data-label="Source"><span class="cell-sub">${s.source}</span></td>
               </tr>`).join('')}
           </tbody>
         </table>
@@ -503,177 +475,220 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
   _renderSources() {
     return this._sources.map(s => `
-      <div class="src-card" data-source="${s.id}">
-        <div class="src-header" tabindex="0" role="button" aria-expanded="false">
-          <span class="src-num">#${s.id}</span>
-          <span class="src-brand-wrap">
-            <span class="src-title">${s.title}</span>
-            <span class="src-tag">${s.tag}</span>
-          </span>
-          <span class="src-toggle">${this._icon('chevDown')}</span>
-        </div>
+      <details class="src">
+        <summary>
+          <span class="src-tag">${s.tag}</span>
+          <span class="src-title">${s.title}</span>
+        </summary>
         <div class="src-body">
           <p class="src-detail">${s.detail}</p>
           <p class="src-cite">${s.cite}</p>
-          <a href="${s.url}" target="_blank" rel="noopener">View source ${this._icon('externalLink')}</a>
+          <a href="${s.url}" target="_blank" rel="noopener nofollow">View source ${this._icon('externalLink')}</a>
         </div>
-      </div>`).join('');
+      </details>`).join('');
+  }
+
+  _renderFAQ() {
+    return this._faqs.map(f => `
+      <details>
+        <summary>${f.q}</summary>
+        <div class="body">${f.a}</div>
+      </details>`).join('');
   }
 
   // ── Main render ─────────────────────────────────────────────────────────
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
+    const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
+    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
+    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
+    const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
+    const garminImg = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
+    const healthConnectImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
     const all = this._devices;
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <!-- Header -->
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" loading="lazy" />
-            VO2 Max Accuracy
+      <header class="nav">
+        <div class="nav-inner">
+          <a href="https://www.kygo.app" class="nav-brand" target="_blank" rel="noopener">
+            <img src="${logoUrl}" alt="Kygo" loading="lazy" />
+            <span>Kygo Health</span>
           </a>
-          <a href="https://www.kygo.app" class="header-link" target="_blank" rel="noopener">
+          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="nav-cta-link" target="_blank" rel="noopener">
             Get Kygo App ${this._icon('arrowRight')}
           </a>
         </div>
       </header>
 
-      <!-- Hero -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">9 DEVICES · LAB-VALIDATED ACCURACY</div>
-          <h1 class="animate-on-scroll">How Accurate Is Your Watch's VO2 Max?</h1>
-          <p class="hero-sub animate-on-scroll">No wearable <em>measures</em> VO2 max — the lab test analyzes the gas in your breath; a watch only <strong>estimates</strong> from heart rate, GPS pace, and your profile. Here's how 9 devices actually stack up against a lab CPET, brand by brand.</p>
-          <div class="hero-note animate-on-scroll">${this._icon('info')} Treat the number as a fitness <em>trend tracker</em>, not a clinical value. Keep the device and protocol consistent and watch your own trend.</div>
+      <section class="hero-light">
+        <div class="hero-light-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill"><span class="dot"></span> 9 DEVICES · LAB-VALIDATED ACCURACY</div>
+              <h1>How accurate is your watch's <span class="hl">VO2 max?</span></h1>
+              <p class="hero-lede">No wearable <strong>measures</strong> VO2 max — a lab CPET analyzes the gas in your breath; a watch only <strong>estimates</strong> from heart rate, GPS pace, and your profile. Here's how 9 devices actually stack up against the lab, brand by brand.</p>
+            </div>
+            <div class="hero-vis" aria-hidden="true">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Avg bias vs lab</span>
+                <span class="hero-vis-tag">method &gt; brand</span>
+              </div>
+              <svg viewBox="0 0 600 320" preserveAspectRatio="xMidYMid meet" font-family="'Space Grotesk',sans-serif">
+                <!-- zero (lab) line -->
+                <line x1="190" y1="40" x2="190" y2="250" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="4 5"/>
+                <text x="190" y="270" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle">LAB = 0</text>
+                <!-- exercise bar (near zero, green) -->
+                <text x="20" y="92" fill="#475569" font-size="14" font-weight="600">Exercise-based</text>
+                <rect x="184" y="104" width="14" height="34" rx="3" fill="#22C55E"/>
+                <g transform="translate(214,121)"><rect x="0" y="-15" width="92" height="30" rx="8" fill="#DCFCE7"/><text x="46" y="5" fill="#16A34A" font-size="15" font-weight="700" text-anchor="middle">−0.09</text></g>
+                <!-- resting bar (overestimates, slate) -->
+                <text x="20" y="182" fill="#475569" font-size="14" font-weight="600">Resting-based</text>
+                <rect x="190" y="194" width="150" height="34" rx="3" fill="#94A3B8"/>
+                <g transform="translate(352,211)"><rect x="0" y="-15" width="92" height="30" rx="8" fill="#F1F5F9"/><text x="46" y="5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">+2.17</text></g>
+                <text x="300" y="304" fill="#94A3B8" font-size="12" text-anchor="middle">mL/kg/min — INTERLIVE meta-analysis</text>
+              </svg>
+            </div>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="num">0</div><div class="lbl">Wearables that truly measure VO2 max</div></div>
+            <div class="hero-stat"><div class="num">4</div><div class="lbl">Brands with independent validation</div></div>
+            <div class="hero-stat"><div class="num">−0.09</div><div class="lbl">Exercise-based avg bias vs lab</div></div>
+            <div class="hero-stat"><div class="num">+2.17</div><div class="lbl">Resting-based avg bias vs lab</div></div>
+          </div>
         </div>
       </section>
 
-      <!-- Key framing: exercise vs resting (INTERLIVE) -->
-      <section class="framing-section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">The one thing that decides accuracy</h2>
-          <p class="section-sub animate-on-scroll">The INTERLIVE meta-analysis of consumer wearables found that <strong>how the device collects the data matters more than the brand.</strong></p>
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Method matters most</div>
+            <h2>The one thing that <span class="hl">decides accuracy.</span></h2>
+            <p class="lede">The INTERLIVE meta-analysis of consumer wearables found that <strong>how the device collects the data matters more than the brand.</strong></p>
+          </div>
           <div class="framing-grid">
-            <div class="framing-card framing-good animate-on-scroll">
-              <span class="framing-tag">${this._icon('activity')} Exercise-based (more accurate)</span>
-              <span class="framing-stat">−0.09<small> mL/kg/min</small></span>
-              <span class="framing-desc">Average bias vs lab when the estimate comes from an actual workout (HR-to-pace on an outdoor run). Essentially nil at the group level.</span>
+            <div class="framing-card good animate-on-scroll">
+              <span class="framing-tag">${this._icon('activity')} Exercise-based</span>
+              <span class="framing-stat">−0.09<small>mL/kg/min</small></span>
+              <span class="framing-cap">More accurate</span>
+              <p>Average bias vs lab when the estimate comes from an actual workout (HR-to-pace on an outdoor run). Essentially nil at the group level.</p>
             </div>
-            <div class="framing-card framing-bad animate-on-scroll">
-              <span class="framing-tag">${this._icon('info')} Resting-based (overestimates)</span>
-              <span class="framing-stat">+2.17<small> mL/kg/min</small></span>
-              <span class="framing-desc">Average overestimation when the estimate comes from resting HR + age/sex/weight, with no workout. Convenient, but reads high.</span>
+            <div class="framing-card animate-on-scroll">
+              <span class="framing-tag">${this._icon('info')} Resting-based</span>
+              <span class="framing-stat">+2.17<small>mL/kg/min</small></span>
+              <span class="framing-cap">Overestimates</span>
+              <p>Average overestimation when the estimate comes from resting HR + age/sex/weight, with no workout. Convenient, but reads high.</p>
             </div>
           </div>
-          <div class="framing-foot animate-on-scroll">${this._icon('info')} <strong>Either way, individual error is large</strong> — limits of agreement run roughly ±13 to 17 mL/kg/min for resting methods. That's why it's a trend tool, not a precise personal value. <span class="src-ref">Molina-García 2022 (INTERLIVE)</span></div>
+          <div class="callout animate-on-scroll">${this._icon('info')} <span><strong>Either way, individual error is large</strong> — limits of agreement run roughly ±13 to 17 mL/kg/min for resting methods. That's why it's a trend tool, not a precise personal value. <em>Molina-García 2022 (INTERLIVE)</em></span></div>
         </div>
       </section>
 
-      <!-- App CTA (placed high, after the framing teaser) -->
-      <section class="blog-cta-section">
-        <div class="container">
-          <div class="blog-cta-wrapper animate-on-scroll">
-            <div class="blog-cta">
-              <div class="blog-cta-glow"></div>
-              <div class="blog-cta-content">
-                <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-                <h2>Track Your VO2 Max Trend — Alongside <span class="highlight">What You Eat</span></h2>
-                <p>Kygo Health connects your wearable's data to your nutrition so you can see the full picture, not just one number.</p>
-                <div class="blog-cta-buttons">
-                  <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    Download for iOS
-                  </a>
-                  <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="blog-cta-android-btn" data-action="android-download" data-track-position="article-cta">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                    Download for Android
-                  </a>
-                </div>
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="kygo-cta-card animate-on-scroll">
+            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+            <h3>Track your VO2 max trend — alongside <span>what you eat.</span></h3>
+            <p>Kygo connects your wearable's data to your nutrition and training, so you see the full picture behind the number — not just one score that drifts.</p>
+            <div class="cta-btn-row">
+              <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener" data-track-position="article-cta">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="article-cta">${this._icon('android')} Download for Android</a>
+            </div>
+            <div class="cta-works">
+              <span>Works with</span>
+              <div class="cta-badges">
+                <img src="${ouraImg}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+                <img src="${appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
+                <img src="${fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
+                <img src="${garminImg}" alt="Garmin" title="Garmin" loading="lazy" />
+                <img src="${whoopImg}" alt="WHOOP" title="WHOOP" loading="lazy" />
+                <img src="${healthConnectImg}" alt="Health Connect" title="Health Connect" loading="lazy" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Decision filters + comparison matrix -->
-      <section class="compare-section" id="compare">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Find &amp; compare your device</h2>
-          <p class="section-sub animate-on-scroll">Filter by what matters to you, then read the matrix. Independent validation = it exists in non-vendor peer-reviewed literature.</p>
-          <div class="vo2-chipbar animate-on-scroll">${this._renderChips()}</div>
-          <div class="vo2-count animate-on-scroll">Showing ${all.length} of ${all.length} devices</div>
-          <div class="vo2-matrix animate-on-scroll">${this._renderMatrix(all)}</div>
-        </div>
-      </section>
-
-      <!-- Per-device cards -->
-      <section class="cards-section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Device-by-device accuracy</h2>
-          <p class="section-sub animate-on-scroll">Vendor claims vs what independent studies actually found. Badge shows whether independent peer-reviewed VO2 max validation exists.</p>
-          <div class="vo2-cards">${this._renderCards(all)}</div>
-        </div>
-      </section>
-
-      <!-- Companion blog cross-link -->
-      <section class="blog-link-section">
-        <div class="container">
-          <div class="blog-link-wrap animate-on-scroll">
-            <a href="https://www.kygo.app/post/most-accurate-vo2-max-wearable" class="blog-link-card" target="_blank" rel="noopener">
-              <span class="blog-link-icon">${this._icon('activity')}</span>
-              <div class="blog-link-text">
-                <span class="blog-link-title">Read the full breakdown</span>
-                <span class="blog-link-desc">The Most Accurate VO2 Max Wearable — which brands are actually validated</span>
-              </div>
-              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
-            </a>
+      <section class="section bg-light" id="compare">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Side by side</div>
+            <h2>Find &amp; compare <span class="hl">your device.</span></h2>
+            <p class="lede">Filter by what matters to you. <em>Independently validated</em> means non-vendor, peer-reviewed VO2 max evidence exists.</p>
           </div>
+          <div class="filters animate-on-scroll" data-chips>${this._renderChips()}</div>
+          <div class="count animate-on-scroll" data-count>Showing <strong>${all.length}</strong> of ${all.length} devices</div>
+          <div class="dev-grid animate-on-scroll" data-cards>${this._renderCards(all)}</div>
         </div>
       </section>
 
-      <!-- How they calculate it -->
-      <section class="inputs-section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">How they calculate it</h2>
-          <p class="section-sub animate-on-scroll">VO2 max is only as good as the signals fed in. None of these measure oxygen — they infer it from HR, GPS pace, and your profile.</p>
+      <section class="section bg-white">
+        <div class="section-inner">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/most-accurate-vo2-max-wearable" target="_blank" rel="noopener">
+            <span class="blog-cta-tag">Deep Dive</span>
+            <div class="blog-cta-body">
+              <div class="blog-cta-kicker">Read the full breakdown</div>
+              <div class="blog-cta-title">The Most Accurate VO2 Max Wearable</div>
+              <div class="blog-cta-sub">Which brands are actually validated, which overestimate, and how to read your own number — evidence-based.</div>
+            </div>
+            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Under the hood</div>
+            <h2>How they <span class="hl">calculate it.</span></h2>
+            <p class="lede">VO2 max is only as good as the signals fed in. None of these measure oxygen — they infer it from HR, GPS pace, and your profile.</p>
+          </div>
           <h3 class="sub-head animate-on-scroll">What each device feeds in</h3>
           <div class="animate-on-scroll">${this._renderInputsTableA(all)}</div>
           <h3 class="sub-head animate-on-scroll">How good those inputs are</h3>
           <div class="animate-on-scroll">${this._renderInputsTableB()}</div>
-          <div class="inputs-note animate-on-scroll">${this._icon('info')} The limiting input is heart rate <em>during the run</em> plus the assumed max HR (often just 220−age). That combination — not the sensor at rest — is the real ceiling on accuracy, which is why a chest strap helps and why very fit people get the biggest errors.</div>
+          <div class="callout animate-on-scroll">${this._icon('info')} <span>The limiting input is heart rate <em>during the run</em> plus the assumed max HR (often just 220−age). That combination — not the sensor at rest — is the real ceiling on accuracy, which is why a chest strap helps and why very fit people get the biggest errors.</span></div>
         </div>
       </section>
 
-      <!-- Bottom line / verification note -->
-      <section class="bottomline-section">
-        <div class="container">
-          <div class="bottomline-card animate-on-scroll">
-            <h2>The bottom line</h2>
-            <p>A VO2 max estimate from a hard outdoor run with a chest strap (<strong>Garmin/Firstbeat — the only brand with solid independent validation, ~5–7% error in general populations</strong>) is the most trustworthy. <strong>Apple</strong> has two independent studies and both show it <em>underestimates</em> (~13–16%). <strong>Polar's</strong> resting test and <strong>Fitbit</strong> overestimate. <strong>Samsung, WHOOP, Oura, and Coros</strong> rely on company claims with little or no independent peer-reviewed VO2 max validation.</p>
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="bottomline animate-on-scroll">
+            <div class="bottomline-tag">The bottom line</div>
+            <p>A VO2 max estimate from a hard outdoor run with a chest strap — <strong>Garmin / Firstbeat, the only brand with solid independent validation (~5–7% error in general populations)</strong> — is the most trustworthy. <strong>Apple</strong> has two independent studies and both show it <em>underestimates</em> (~13–16%). <strong>Polar's</strong> resting test and <strong>Fitbit</strong> overestimate. <strong>Samsung, WHOOP, Oura, and Coros</strong> rely on company claims with little or no independent peer-reviewed VO2 max validation.</p>
             <p class="verify-note">${this._icon('info')} <strong>Verification note (triple-checked).</strong> Independent VO2 max validation exists only for Garmin, Apple, Polar, and Fitbit. A frequently-repeated "Galaxy Watch ±4.7 mL/kg/min" figure appears only on marketing/AI-content sites and could not be traced to a real indexed study — it is deliberately excluded here.</p>
           </div>
         </div>
       </section>
 
-      <!-- Sources -->
-      <section class="sources-section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Sources</h2>
-          <p class="section-sub animate-on-scroll">Each opened and checked against the primary record (PubMed/PMC/journal). Tap to expand. Verified June 2026.</p>
-          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">FAQ</div>
+            <h2>Common <span class="hl">questions.</span></h2>
+          </div>
+          <div class="faq">${this._renderFAQ()}</div>
         </div>
       </section>
 
-      <!-- Footer -->
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Sources</div>
+            <h2>Every claim, <span class="hl">traceable.</span></h2>
+            <p class="lede">Each opened and checked against the primary record (PubMed / PMC / journal). Tap to expand. Verified June 2026.</p>
+          </div>
+          <div class="sources animate-on-scroll">${this._renderSources()}</div>
+        </div>
+      </section>
+
       <footer class="tool-footer">
         <div class="container">
           <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
+            <span>Kygo Health</span>
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
@@ -707,36 +722,13 @@ class KygoVo2maxAccuracy extends HTMLElement {
         this._updateResults();
         return;
       }
-
       const chip = e.target.closest('.filter-chip');
       if (chip) {
-        const facet = chip.dataset.facet;
+        const set = this._filters[chip.dataset.facet];
         const value = chip.dataset.value;
-        const set = this._filters[facet];
         if (set.has(value)) set.delete(value); else set.add(value);
         this._updateResults();
         return;
-      }
-
-      const srcHeader = e.target.closest('.src-header');
-      if (srcHeader) {
-        const card = srcHeader.closest('.src-card');
-        const key = card.dataset.source;
-        this._expandedSource = this._expandedSource === key ? null : key;
-        shadow.querySelectorAll('.src-card').forEach(c => {
-          const open = c.dataset.source === this._expandedSource;
-          c.classList.toggle('open', open);
-          const h = c.querySelector('.src-header');
-          if (h) h.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-        return;
-      }
-    });
-
-    shadow.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        const srcHeader = e.target.closest('.src-header');
-        if (srcHeader) { e.preventDefault(); srcHeader.click(); }
       }
     });
   }
@@ -746,7 +738,10 @@ class KygoVo2maxAccuracy extends HTMLElement {
   _setupAnimations() {
     requestAnimationFrame(() => {
       const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!els.length) return;
+      if (!els.length || !('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('visible'));
+        return;
+      }
       if (this._observer) this._observer.disconnect();
       this._observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -755,7 +750,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
             this._observer.unobserve(entry.target);
           }
         });
-      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.15 });
+      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.12 });
       els.forEach(el => this._observer.observe(el));
     });
   }
@@ -795,18 +790,10 @@ class KygoVo2maxAccuracy extends HTMLElement {
       const faq = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        'mainEntity': [
-          { '@type': 'Question', 'name': 'Do wearables actually measure VO2 max?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'No. The lab gold standard (CPET) analyzes the oxygen and carbon dioxide in your breath. Watches, rings, and straps have no gas analysis, so they estimate VO2 max from heart rate, motion, GPS pace, and your profile (age, sex, weight). Treat it as a fitness trend, not a clinical value.' } },
-          { '@type': 'Question', 'name': 'Which wearable has the most accurate VO2 max?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Garmin (Firstbeat) from a hard outdoor run with a chest strap is the most trustworthy and the only brand with solid independent validation (about 5 to 7 percent error in general populations). Apple has two independent studies but both show it underestimates by roughly 13 to 16 percent.' } },
-          { '@type': 'Question', 'name': 'Does the Apple Watch overestimate or underestimate VO2 max?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Two independent studies show the Apple Watch underestimates VO2 max: by 6.07 mL/kg/min (MAPE 13.3%, Lambe 2025) and predicting about 41 versus a measured 46 mL/kg/min on the Series 7 (MAPE 15.8%, Caserman 2024). The underestimation is larger in fitter people.' } },
-          { '@type': 'Question', 'name': 'Why are resting VO2 max estimates less accurate?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Resting-based estimates (Polar Fitness Test, Fitbit cardio fitness score) use resting heart rate plus age, sex and weight with no workout. The INTERLIVE meta-analysis found they overestimate by about +2.17 mL/kg/min on average, versus near-zero bias for exercise-based estimates from an actual run.' } },
-          { '@type': 'Question', 'name': 'Do you need a subscription to see your VO2 max?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Most watches show VO2 max for free (Garmin, Apple, Polar, Samsung, Coros, Suunto; Fitbit shows the metric free with Premium adding coaching only). WHOOP requires a paid membership, and Oura requires its membership to see Cardio Capacity.' } }
-        ]
+        'mainEntity': this._faqs.map(f => ({
+          '@type': 'Question', 'name': f.q,
+          'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
+        }))
       };
       const s2 = document.createElement('script');
       s2.type = 'application/ld+json';
@@ -823,275 +810,288 @@ class KygoVo2maxAccuracy extends HTMLElement {
       @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
-        --dark: #1E293B;
-        --light: #F8FAFC;
-        --green: #22C55E;
-        --green-dark: #16A34A;
-        --green-light: rgba(34,197,94,0.1);
-        --amber: #F59E0B;
-        --amber-light: rgba(245,158,11,0.1);
-        --red: #EF4444;
-        --red-light: rgba(239,68,68,0.1);
-        --blue: #3B82F6;
-        --gray-50: #f9fafb;
-        --gray-100: #F1F5F9;
-        --gray-200: #E2E8F0;
-        --gray-300: #CBD5E1;
-        --gray-400: #94A3B8;
-        --gray-600: #475569;
-        --gray-700: #334155;
-        --radius: 20px;
-        --radius-sm: 12px;
-        --shadow: 0 4px 12px rgba(0,0,0,0.04);
-        --shadow-hover: 0 12px 32px rgba(0,0,0,0.08);
+        --kygo-green: #22C55E;
+        --kygo-green-dark: #16A34A;
+        --kygo-green-light: #DCFCE7;
+        --kygo-dark: #0F172A;
+        --kygo-light: #F8FAFC;
+        --bg-canvas: #FFFFFF;
+        --bg-surface: #F8FAFC;
+        --bg-raised: #F1F5F9;
+        --fg-1: #0F172A;
+        --fg-2: #475569;
+        --fg-3: #94A3B8;
+        --border-subtle: #E2E8F0;
+        --shadow-md: 0 8px 24px rgba(15,23,42,0.06);
+        --shadow-cta: 0 8px 24px rgba(34,197,94,0.30);
+        --font-display: 'Space Grotesk', sans-serif;
+        --font-body: 'DM Sans', sans-serif;
+        --ease-out: cubic-bezier(.16,1,.3,1);
         display: block;
-        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: var(--light);
-        color: var(--dark);
-        line-height: 1.6;
+        font-family: var(--font-body);
+        color: var(--fg-1);
+        background: var(--bg-canvas);
+        line-height: 1.5;
         -webkit-font-smoothing: antialiased;
       }
-      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-      h1, h2, h3, h4 { font-family: 'Space Grotesk', -apple-system, sans-serif; font-weight: 600; line-height: 1.2; }
-      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-      a { text-decoration: none; }
-      em { font-style: italic; }
+      * { box-sizing: border-box; }
+      a { color: inherit; text-decoration: none; }
+      .ico { display: inline-flex; align-items: center; justify-content: center; }
+      .ico svg { width: 1em; height: 1em; }
 
-      .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-      .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+      .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); }
+      .animate-on-scroll.visible { opacity: 1; transform: none; }
 
-      /* Header */
-      .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; max-width: 1200px; margin: 0 auto; gap: 10px; }
-      .logo { display: flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; min-width: 0; }
-      .logo-img { height: 28px; width: auto; flex-shrink: 0; }
-      .header-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #fff; background: var(--green); padding: 8px 16px; border-radius: 50px; transition: background 0.2s; flex-shrink: 0; white-space: nowrap; }
-      .header-link:hover { background: var(--green-dark); }
-      .header-link svg { width: 14px; height: 14px; }
+      /* Nav */
+      .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--border-subtle); }
+      .nav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
+      .nav-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: -0.01em; color: var(--fg-1); text-transform: uppercase; }
+      .nav-brand img { width: 26px; height: 26px; }
+      .nav-cta-link { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; color: var(--kygo-green-dark); font-weight: 600; font-size: 14px; }
+      .nav-cta-link .ico { width: 16px; height: 16px; }
+      @media (max-width: 480px) { .nav-brand span { display: none; } }
+
+      /* Buttons */
+      .btn { font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 10px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all .2s var(--ease-out); white-space: nowrap; }
+      .btn .ico { width: 16px; height: 16px; }
+      .btn-primary { background: var(--kygo-green); color: #fff; box-shadow: 0 4px 12px rgba(34,197,94,0.25); }
+      .btn-primary:hover { background: var(--kygo-green-dark); transform: translateY(-1px); box-shadow: var(--shadow-cta); }
+      .btn-lg { padding: 14px 22px; font-size: 15px; border-radius: 12px; }
+      .btn-lg .ico { width: 18px; height: 18px; }
 
       /* Hero */
-      .hero { padding: 56px 0 28px; text-align: center; }
-      .hero-badge { display: inline-block; background: var(--green-light); color: var(--green-dark); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; padding: 6px 16px; border-radius: 50px; margin-bottom: 16px; }
-      .hero h1 { font-size: clamp(26px, 7vw, 42px); max-width: 740px; margin: 0 auto 16px; }
-      .hero-sub { color: var(--gray-600); font-size: 16px; max-width: 640px; margin: 0 auto 18px; }
-      .hero-sub strong { color: var(--dark); }
-      .hero-note { display: inline-flex; align-items: flex-start; gap: 8px; text-align: left; background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px; color: var(--gray-600); max-width: 560px; }
-      .hero-note svg { width: 16px; height: 16px; color: var(--green-dark); flex-shrink: 0; margin-top: 2px; }
+      .hero-light { background: #fff; border-bottom: 1px solid var(--border-subtle); }
+      .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--kygo-green-dark); padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
+      .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kygo-green); flex: none; }
+      .hero-light h1 { font-family: var(--font-display); font-weight: 700; color: var(--fg-1); font-size: clamp(30px, 5.5vw, 58px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
+      .hero-light h1 .hl { color: var(--kygo-green); }
+      .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--fg-2); max-width: 60ch; margin: 0; }
+      .hero-lede strong { color: var(--fg-1); font-weight: 600; }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 6px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 16px 18px; aspect-ratio: 5 / 3; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
+      .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; }
+      .hero-vis svg { position: relative; width: 100%; flex: 1; min-height: 0; display: block; }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
+      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
+      @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
+      .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; }
+      .hero-stat .lbl { margin-top: 10px; color: var(--fg-3); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; line-height: 1.4; }
 
-      /* Section headings */
-      .section-title { font-size: clamp(22px, 5vw, 32px); margin-bottom: 8px; }
-      .section-sub { color: var(--gray-600); font-size: 15px; margin-bottom: 24px; max-width: 720px; }
-      .section-sub strong { color: var(--dark); }
-      .sub-head { font-size: 16px; margin: 28px 0 12px; color: var(--dark); }
+      /* Sections */
+      .section { padding: 56px 20px; }
+      @media (min-width: 720px) { .section { padding: 80px 24px; } }
+      .section-inner { max-width: 1200px; margin: 0 auto; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+      .section.bg-white { background: #fff; }
+      .section.bg-light { background: var(--kygo-light); }
+      .section-head { margin-bottom: 28px; max-width: 720px; }
+      .kicker { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 6px 12px; border-radius: 999px; }
+      .section h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 4vw, 42px); line-height: 1.1; margin: 16px 0 10px; letter-spacing: -0.01em; }
+      .section h2 .hl { color: var(--kygo-green); }
+      .lede { color: var(--fg-2); font-size: 16px; line-height: 1.55; max-width: 60ch; margin: 0; }
+      .lede strong { color: var(--fg-1); font-weight: 600; }
+      .sub-head { font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--fg-2); margin: 28px 0 14px; }
 
-      /* Framing (exercise vs resting) */
-      .framing-section { padding: 40px 0; background: #fff; }
+      /* Callout */
+      .callout { margin-top: 24px; display: flex; gap: 12px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 16px 18px; font-size: 14px; line-height: 1.6; color: var(--fg-2); }
+      .callout .ico { width: 18px; height: 18px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
+      .callout strong { color: var(--fg-1); font-weight: 600; }
+      .callout em { font-style: normal; color: var(--fg-3); font-size: 12.5px; }
+
+      /* Framing cards */
       .framing-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      .framing-card { border-radius: var(--radius-sm); padding: 22px; display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--gray-200); }
-      .framing-good { background: var(--green-light); border-color: rgba(34,197,94,0.3); }
-      .framing-bad { background: var(--amber-light); border-color: rgba(245,158,11,0.3); }
-      .framing-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; }
-      .framing-good .framing-tag { color: var(--green-dark); }
-      .framing-bad .framing-tag { color: #B45309; }
-      .framing-tag svg { width: 15px; height: 15px; }
-      .framing-stat { font-family: 'Space Grotesk', sans-serif; font-size: clamp(30px, 8vw, 44px); font-weight: 700; line-height: 1; }
-      .framing-good .framing-stat { color: var(--green-dark); }
-      .framing-bad .framing-stat { color: #B45309; }
-      .framing-stat small { font-size: 14px; font-weight: 500; color: var(--gray-600); margin-left: 4px; }
-      .framing-desc { font-size: 14px; color: var(--gray-600); }
-      .framing-foot { display: flex; align-items: flex-start; gap: 8px; margin-top: 16px; font-size: 13px; color: var(--gray-600); background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px 16px; }
-      .framing-foot strong { color: var(--dark); }
-      .framing-foot svg { width: 16px; height: 16px; color: var(--gray-400); flex-shrink: 0; margin-top: 2px; }
-      .src-ref { display: inline-block; font-size: 11px; color: var(--gray-400); font-style: italic; }
+      @media (min-width: 640px) { .framing-grid { grid-template-columns: 1fr 1fr; } }
+      .framing-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 6px; }
+      .framing-card.good { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.10); }
+      .framing-tag { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--fg-2); }
+      .framing-tag .ico { width: 16px; height: 16px; color: var(--fg-3); }
+      .framing-card.good .framing-tag .ico { color: var(--kygo-green-dark); }
+      .framing-stat { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 6vw, 48px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-2); margin-top: 8px; display: inline-flex; align-items: baseline; gap: 6px; }
+      .framing-card.good .framing-stat { color: var(--kygo-green-dark); }
+      .framing-stat small { font-size: 14px; font-weight: 500; color: var(--fg-3); }
+      .framing-cap { font-family: var(--font-display); font-weight: 600; font-size: 12px; letter-spacing: 0.4px; text-transform: uppercase; color: var(--fg-3); }
+      .framing-card.good .framing-cap { color: var(--kygo-green-dark); }
+      .framing-card p { margin: 6px 0 0; font-size: 14px; line-height: 1.55; color: var(--fg-2); }
 
-      /* Compare section + filter chips */
-      .compare-section { padding: 48px 0; }
-      .vo2-chipbar { display: flex; flex-wrap: wrap; gap: 16px 24px; margin-bottom: 16px; align-items: flex-end; }
-      .chip-group { display: flex; flex-direction: column; gap: 6px; }
-      .chip-group-label { font-size: 11px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: var(--gray-400); }
+      /* Kygo CTA */
+      .kygo-cta-card { background: var(--kygo-dark); border-radius: 24px; padding: 40px 24px; position: relative; overflow: hidden; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; }
+      @media (min-width: 720px) { .kygo-cta-card { padding: 56px 40px; } }
+      .kygo-cta-card::before { content: ''; position: absolute; top: -160px; right: -160px; width: 520px; height: 520px; background: radial-gradient(closest-side, rgba(34,197,94,0.30), transparent); pointer-events: none; }
+      .kygo-cta-card::after { content: ''; position: absolute; bottom: -180px; left: -180px; width: 480px; height: 480px; background: radial-gradient(closest-side, rgba(34,197,94,0.12), transparent); pointer-events: none; }
+      .kygo-cta-card .cta-pill { position: relative; display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.16); color: #6EE7A0; padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 12px; font-weight: 600; border: 1px solid rgba(34,197,94,0.25); }
+      .kygo-cta-card .cta-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 8px var(--kygo-green); }
+      .kygo-cta-card h3 { position: relative; font-family: var(--font-display); font-weight: 600; color: #fff; font-size: clamp(26px, 4.5vw, 42px); line-height: 1.05; letter-spacing: -0.01em; margin: 18px 0 14px; max-width: 22ch; }
+      .kygo-cta-card h3 span { color: var(--kygo-green); }
+      .kygo-cta-card p { position: relative; color: rgba(255,255,255,0.72); font-size: clamp(14px, 1.6vw, 16px); line-height: 1.6; max-width: 56ch; margin: 0 auto 24px; }
+      .kygo-cta-card .cta-btn-row { position: relative; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%; }
+      @media (max-width: 560px) { .kygo-cta-card .cta-btn-row .btn-lg { width: 100%; justify-content: center; } }
+      .kygo-cta-card .cta-works { position: relative; margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.6); font-size: 13px; }
+      .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+      .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
+
+      /* Filters */
+      .filters { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-end; padding: 20px 22px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; margin-bottom: 18px; }
+      .chip-group { display: flex; flex-direction: column; gap: 8px; }
+      .chip-group-label { font-family: var(--font-display); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
       .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
-      .filter-chip { padding: 7px 14px; border: 2px solid var(--gray-200); border-radius: 50px; background: #fff; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; transition: all 0.18s; white-space: nowrap; }
-      .filter-chip:hover { border-color: var(--gray-300); }
-      .filter-chip.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
-      .filter-reset { align-self: flex-end; padding: 7px 14px; border: none; background: none; color: var(--gray-400); font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: underline; }
-      .filter-reset:hover { color: var(--dark); }
-      .vo2-count { font-size: 13px; color: var(--gray-400); margin-bottom: 14px; font-weight: 500; }
-
-      /* Data tables */
-      .table-scroll { overflow-x: auto; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); background: #fff; -webkit-overflow-scrolling: touch; }
-      .table-scroll::after { content: 'Swipe to see more →'; display: block; text-align: center; font-size: 12px; color: var(--gray-400); padding: 8px; }
-      @media (min-width: 1024px) { .table-scroll::after { display: none; } }
-      .data-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; min-width: 1040px; }
-      .data-table-inputs { min-width: 880px; }
-      .data-table-signals { min-width: 720px; }
-      .data-table th { background: var(--gray-50); padding: 12px 14px; text-align: left; font-weight: 600; font-size: 12px; color: var(--gray-600); border-bottom: 1px solid var(--gray-200); white-space: nowrap; }
-      .data-table td { padding: 12px 14px; border-bottom: 1px solid var(--gray-100); vertical-align: top; }
-      .data-table tr:last-child td { border-bottom: none; }
-      .data-table tbody tr:hover td { background: rgba(34,197,94,0.03); }
-      .data-table th:first-child, .data-table td:first-child { position: sticky; left: 0; z-index: 2; background: #fff; min-width: 150px; box-shadow: 2px 0 4px rgba(0,0,0,0.05); }
-      .data-table th:first-child { background: var(--gray-50); }
-      .cell-device { display: flex; flex-direction: column; gap: 4px; }
-      .dev-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-      .dev-name { font-weight: 600; font-size: 13px; }
-      .dev-type { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--gray-400); }
-      .dev-type svg { width: 13px; height: 13px; }
-      .cell-sub { display: block; font-size: 12px; color: var(--gray-600); margin-top: 4px; }
-      .cell-label { font-weight: 600; }
-
-      .method-pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 50px; }
-      .pill-ex { background: var(--green-light); color: var(--green-dark); }
-      .pill-rest { background: var(--amber-light); color: #B45309; }
-      .pill-hybrid { background: rgba(59,130,246,0.1); color: #1D4ED8; }
-
-      .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 50px; white-space: nowrap; }
-      .badge svg { width: 13px; height: 13px; }
-      .badge-yes { background: var(--green-light); color: var(--green-dark); }
-      .badge-mid { background: var(--amber-light); color: #B45309; }
-      .badge-no { background: var(--gray-100); color: var(--gray-600); }
-
-      .bw { display: flex; align-items: flex-start; gap: 4px; font-size: 12px; margin-bottom: 4px; }
-      .bw svg { width: 13px; height: 13px; flex-shrink: 0; margin-top: 2px; }
-      .bw-best { color: var(--gray-700); }
-      .bw-best svg { color: var(--green); }
-      .bw-weak { color: var(--gray-400); }
-      .bw-weak svg { color: var(--gray-300); }
-
-      .sub-tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 50px; }
-      .sub-tag svg { width: 12px; height: 12px; }
-      .sub-free { background: var(--green-light); color: var(--green-dark); }
-      .sub-paid { background: var(--amber-light); color: #B45309; }
-
-      .yn { display: inline-flex; align-items: center; }
-      .yn svg { width: 18px; height: 18px; }
-      .yn-yes svg { color: var(--green); }
-      .yn-no svg { color: var(--gray-300); }
-      .yn-opt { font-size: 11px; font-weight: 600; color: var(--amber); }
-
-      .q-pill { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 50px; }
-      .q-good { background: var(--green-light); color: var(--green-dark); }
-      .q-mixed { background: var(--amber-light); color: #B45309; }
-      .q-poor { background: var(--red-light); color: #B91C1C; }
-
-      .empty-state { padding: 40px 20px; text-align: center; color: var(--gray-400); font-size: 14px; background: #fff; border: 1px dashed var(--gray-300); border-radius: var(--radius-sm); }
-      .link-btn { border: none; background: none; color: var(--green-dark); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: underline; }
+      .filter-chip { font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-2); cursor: pointer; transition: all .15s ease; }
+      .filter-chip:hover { border-color: var(--kygo-green); color: var(--kygo-green-dark); }
+      .filter-chip.active { background: var(--kygo-green); border-color: var(--kygo-green); color: #fff; }
+      .filter-reset { align-self: flex-end; margin-left: auto; font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; border: 0; background: transparent; color: var(--fg-3); cursor: pointer; }
+      .filter-reset:hover { color: var(--kygo-green-dark); }
+      .count { font-size: 13px; color: var(--fg-3); margin-bottom: 18px; }
+      .count strong { color: var(--fg-1); }
+      .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--fg-2); background: #fff; border: 1.5px dashed var(--border-subtle); border-radius: 18px; }
+      .link-btn { border: 0; background: none; color: var(--kygo-green-dark); font-weight: 600; cursor: pointer; font-size: inherit; }
 
       /* Device cards */
-      .cards-section { padding: 48px 0; background: #fff; }
-      .vo2-cards { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      .dev-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 20px; border-top: 4px solid var(--accent, var(--green)); display: flex; flex-direction: column; }
-      .dev-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
-      .dev-card-head { display: flex; align-items: center; gap: 12px; }
-      .dev-card-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; color: var(--accent, var(--dark)); flex-shrink: 0; }
-      .dev-card-icon svg { width: 20px; height: 20px; }
-      .dev-card-head h3 { font-size: 17px; }
-      .dev-card-type { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--gray-400); }
-      .acc-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 14px; }
-      .acc-cell { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 12px 14px; }
-      .acc-indep { border-left: 3px solid var(--green); }
-      .acc-vendor { border-left: 3px solid var(--gray-300); }
-      .acc-label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-400); margin-bottom: 4px; }
-      .acc-cell p { font-size: 13px; color: var(--gray-700); }
-      .dev-facts { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
-      .dev-facts li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--gray-600); }
-      .dev-facts li span { display: inline-flex; flex-shrink: 0; margin-top: 1px; }
-      .dev-facts li svg { width: 15px; height: 15px; color: var(--gray-400); }
-      .dev-facts strong { color: var(--dark); font-weight: 600; }
-      .amazon-link { display: inline-flex; align-items: center; gap: 6px; align-self: flex-start; margin-top: auto; font-size: 13px; font-weight: 600; color: #fff; background: var(--accent, var(--green-dark)); padding: 9px 16px; border-radius: 50px; transition: filter 0.2s; }
-      .amazon-link:hover { filter: brightness(0.92); }
-      .amazon-link svg { width: 15px; height: 15px; }
-      .amazon-link-disabled { background: var(--gray-100); color: var(--gray-400); font-weight: 500; cursor: default; }
+      .dev-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+      @media (min-width: 620px) { .dev-grid { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 1000px) { .dev-grid { grid-template-columns: repeat(3, 1fr); } }
+      .dev-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px; transition: all .25s var(--ease-out); }
+      .dev-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+      .dev-card.is-validated { border-color: rgba(34,197,94,0.45); }
+      .dev-head { display: flex; align-items: center; gap: 12px; }
+      .dev-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg-raised); color: var(--fg-2); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .dev-icon .ico { width: 20px; height: 20px; }
+      .dev-headtext { min-width: 0; flex: 1; }
+      .dev-headtext h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; margin: 0; line-height: 1.2; }
+      .dev-meta { font-size: 12px; color: var(--fg-3); }
+      .sub-tag { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
+      .sub-tag .ico { width: 11px; height: 11px; }
+      .sub-tag.free { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .sub-tag.paid { background: var(--bg-raised); color: var(--fg-2); }
+      .dev-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+      .m-pill { display: inline-flex; align-items: center; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+      .m-pill.ex { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .m-pill.rest { background: var(--bg-raised); color: var(--fg-2); }
+      .vbadge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
+      .vbadge .ico { width: 12px; height: 12px; }
+      .vbadge.yes { background: var(--kygo-green); color: #fff; }
+      .vbadge.mid { background: var(--bg-raised); color: var(--fg-2); }
+      .vbadge.no { background: #fff; border: 1px solid var(--border-subtle); color: var(--fg-3); }
+      .dev-finding { background: var(--bg-surface); border-radius: 12px; padding: 12px 14px; }
+      .dev-label { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
+      .dev-finding p { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--fg-1); }
+      .dev-vendor { font-size: 13px; }
+      .dev-vendor summary { list-style: none; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); display: inline-flex; align-items: center; gap: 6px; }
+      .dev-vendor summary::-webkit-details-marker { display: none; }
+      .dev-vendor summary::after { content: '+'; font-size: 15px; line-height: 1; color: var(--kygo-green-dark); }
+      .dev-vendor[open] summary::after { content: '−'; }
+      .dev-vendor p { margin: 8px 0 0; font-size: 13px; line-height: 1.5; color: var(--fg-2); }
+      .dev-facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+      .dev-facts li { display: grid; grid-template-columns: 22px 1fr; gap: 9px; font-size: 13px; line-height: 1.45; color: var(--fg-2); }
+      .dev-facts .fct-ico { width: 22px; height: 22px; border-radius: 6px; background: var(--bg-raised); color: var(--fg-3); display: inline-flex; align-items: center; justify-content: center; }
+      .dev-facts .fct-ico.ok { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .dev-facts .fct-ico .ico { width: 13px; height: 13px; }
+      .dev-facts strong { color: var(--fg-1); font-weight: 600; display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
+      .dev-amazon { margin-top: auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--kygo-green-light); background: rgba(34,197,94,0.06); color: var(--kygo-green-dark); font-family: var(--font-body); font-weight: 600; font-size: 13px; transition: all .15s ease; }
+      .dev-amazon:hover { border-color: var(--kygo-green); background: rgba(34,197,94,0.12); }
+      .dev-amazon .ico { width: 14px; height: 14px; transition: transform .15s; }
+      .dev-amazon:hover .ico { transform: translateX(2px); }
 
-      /* Inputs section */
-      .inputs-section { padding: 48px 0; }
-      .inputs-note { display: flex; align-items: flex-start; gap: 8px; margin-top: 18px; font-size: 13px; color: var(--gray-600); background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px 16px; }
-      .inputs-note svg { width: 16px; height: 16px; color: var(--green-dark); flex-shrink: 0; margin-top: 2px; }
+      /* Tables */
+      .tbl-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; }
+      .tbl { width: 100%; border-collapse: collapse; font-family: var(--font-body); }
+      .tbl thead th { text-align: left; padding: 14px 16px; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.4px; background: var(--bg-raised); }
+      .tbl tbody td { padding: 13px 16px; border-top: 1px solid var(--border-subtle); vertical-align: top; font-size: 13.5px; line-height: 1.5; }
+      .tbl tbody tr:hover { background: var(--bg-surface); }
+      .tbl .spec-name { font-weight: 600; color: var(--fg-1); }
+      .tbl .tc { text-align: center; }
+      .tbl .cell-sub { display: block; color: var(--fg-2); font-size: 13px; line-height: 1.5; margin-top: 4px; }
+      .yn { display: inline-flex; align-items: center; justify-content: center; }
+      .yn .ico { width: 16px; height: 16px; }
+      .yn.yes { color: var(--kygo-green-dark); }
+      .yn.no { color: var(--fg-3); }
+      .yn.opt { font-size: 11px; font-weight: 600; color: var(--fg-2); background: var(--bg-raised); padding: 2px 8px; border-radius: 999px; }
+      .q-pill { display: inline-block; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+      .q-good { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .q-mixed { background: var(--bg-raised); color: var(--fg-2); }
+      .q-poor { background: var(--kygo-dark); color: #fff; }
+      @media (max-width: 760px) {
+        .tbl thead { display: none; }
+        .tbl tbody td { display: flex; justify-content: space-between; gap: 16px; padding: 8px 16px; border-top: 0; text-align: right; }
+        .tbl tbody tr { display: block; padding: 12px 0; border-top: 1px solid var(--border-subtle); }
+        .tbl tbody td::before { content: attr(data-label); font-family: var(--font-display); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--fg-3); text-align: left; }
+        .tbl .spec-name { padding-top: 12px; }
+        .tbl .cell-sub { text-align: right; margin-top: 0; }
+        .tbl .tc { justify-content: space-between; }
+      }
 
       /* Bottom line */
-      .bottomline-section { padding: 16px 0 48px; }
-      .bottomline-card { background: var(--dark); color: #fff; border-radius: var(--radius); padding: 32px 28px; max-width: 860px; margin: 0 auto; }
-      .bottomline-card h2 { font-size: clamp(20px, 5vw, 26px); margin-bottom: 14px; }
-      .bottomline-card p { font-size: 15px; color: var(--gray-200); margin-bottom: 14px; }
-      .bottomline-card strong { color: #fff; }
-      .verify-note { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--gray-300); background: rgba(255,255,255,0.06); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 0 !important; }
-      .verify-note svg { width: 16px; height: 16px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
-      .verify-note strong { color: #fff; }
-
-      /* Companion blog cross-link */
-      .blog-link-section { padding: 24px 0 8px; }
-      .blog-link-wrap { max-width: 720px; margin: 0 auto; }
-      .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); transition: box-shadow 0.3s; }
-      .blog-link-card:hover { box-shadow: var(--shadow-hover); }
-      .blog-link-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 10px; color: var(--green-dark); }
-      .blog-link-icon svg { width: 20px; height: 20px; }
-      .blog-link-text { flex: 1; min-width: 0; }
-      .blog-link-title { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--green-dark); letter-spacing: 0.3px; }
-      .blog-link-desc { display: block; font-size: 14px; font-weight: 500; color: var(--dark); margin-top: 2px; }
-      .blog-link-arrow { width: 20px; height: 20px; color: var(--green-dark); flex-shrink: 0; }
-      .blog-link-arrow svg { width: 20px; height: 20px; }
+      .bottomline { background: var(--kygo-dark); color: rgba(255,255,255,0.82); border-radius: 22px; padding: 32px 26px; position: relative; overflow: hidden; }
+      @media (min-width: 720px) { .bottomline { padding: 44px 40px; } }
+      .bottomline::before { content: ''; position: absolute; top: -120px; right: -120px; width: 360px; height: 360px; background: radial-gradient(closest-side, rgba(34,197,94,0.22), transparent); pointer-events: none; }
+      .bottomline-tag { position: relative; display: inline-flex; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #6EE7A0; background: rgba(34,197,94,0.14); border: 1px solid rgba(34,197,94,0.25); padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+      .bottomline p { position: relative; font-size: clamp(15px, 1.8vw, 18px); line-height: 1.65; margin: 0 0 14px; }
+      .bottomline strong { color: #fff; font-weight: 600; }
+      .bottomline em { font-style: italic; color: #fff; }
+      .bottomline .verify-note { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.55); display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12); }
+      .bottomline .verify-note .ico { width: 16px; height: 16px; color: #6EE7A0; flex: none; margin-top: 2px; }
+      .bottomline .verify-note strong { color: rgba(255,255,255,0.85); }
 
       /* Blog CTA */
-      .blog-cta-section { padding: 48px 0; overflow: hidden; }
-      .blog-cta-wrapper { max-width: 680px; margin: 0 auto; }
-      .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 32px; overflow: hidden; text-align: center; color: #fff; }
-      .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.15), transparent 70%); pointer-events: none; }
-      .blog-cta-content { position: relative; z-index: 1; }
-      .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 500; margin-bottom: 16px; }
-      .pulse-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-      .blog-cta h2 { font-size: clamp(20px, 5vw, 28px); margin-bottom: 12px; }
-      .highlight { color: var(--green); }
-      .blog-cta p { color: var(--gray-300); font-size: 14px; margin-bottom: 20px; }
-      .blog-cta-buttons { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
-      .blog-cta-btn, .blog-cta-android-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); font-size: 15px; transition: background 0.2s; border: none; cursor: pointer; font-family: inherit; }
-      .blog-cta-btn:hover, .blog-cta-android-btn:hover { background: var(--green-dark); color: #fff; }
-      .blog-cta-btn svg, .blog-cta-android-btn svg { width: 18px; height: 18px; }
-      @media (max-width: 480px) { .blog-cta-buttons { flex-direction: column; align-items: stretch; } .blog-cta-buttons a { justify-content: center; } }
+      .blog-cta { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(34,197,94,0.02) 100%); border: 1.5px solid var(--kygo-green-light); border-radius: 18px; padding: 22px; transition: all .25s var(--ease-out); color: var(--fg-1); }
+      .blog-cta:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+      .blog-cta-tag { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 999px; background: #fff; border: 1.5px solid var(--kygo-green-light); color: var(--kygo-green-dark); font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; white-space: nowrap; }
+      .blog-cta-body { min-width: 0; }
+      .blog-cta-kicker { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--kygo-green-dark); margin-bottom: 4px; }
+      .blog-cta-title { font-family: var(--font-display); font-size: clamp(15px, 2vw, 18px); font-weight: 600; color: var(--fg-1); line-height: 1.3; }
+      .blog-cta-sub { font-size: 13px; color: var(--fg-2); margin-top: 4px; line-height: 1.5; }
+      .blog-cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 4px 12px rgba(34,197,94,0.30); }
+      .blog-cta-arrow .ico { width: 20px; height: 20px; }
+      @media (max-width: 600px) {
+        .blog-cta { grid-template-columns: 1fr auto; grid-template-areas: 'tag arrow' 'body body'; padding: 18px; gap: 14px; }
+        .blog-cta-tag { grid-area: tag; justify-self: start; }
+        .blog-cta-arrow { grid-area: arrow; width: 40px; height: 40px; }
+        .blog-cta-body { grid-area: body; }
+      }
 
-      /* Sources */
-      .sources-section { padding: 48px 0; background: #fff; }
-      .sources-list { display: flex; flex-direction: column; gap: 6px; }
-      .src-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; }
-      .src-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
-      .src-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; color: var(--green-dark); flex-shrink: 0; }
-      .src-brand-wrap { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-      .src-title { font-size: 14px; font-weight: 600; color: var(--dark); }
-      .src-tag { font-size: 11px; color: var(--gray-400); }
-      .src-toggle { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
-      .src-toggle svg { width: 100%; height: 100%; }
-      .src-card.open .src-toggle { transform: rotate(180deg); }
-      .src-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 16px; }
-      .src-card.open .src-body { max-height: 460px; padding: 0 16px 16px; }
-      .src-detail { font-size: 13px; color: var(--gray-600); margin-bottom: 8px; }
-      .src-cite { font-size: 12px; color: var(--gray-400); font-style: italic; margin-bottom: 8px; }
-      .src-body a { display: inline-flex; align-items: center; gap: 6px; color: var(--green-dark); font-size: 13px; font-weight: 600; }
-      .src-body a svg { width: 13px; height: 13px; }
+      /* FAQ + Sources (details) */
+      .faq { display: flex; flex-direction: column; gap: 10px; }
+      .faq details { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 20px; transition: border-color .2s; }
+      .faq details[open] { border-color: var(--kygo-green); }
+      .faq summary { list-style: none; padding: 16px 0; font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); display: flex; align-items: center; justify-content: space-between; cursor: pointer; gap: 14px; }
+      .faq summary::-webkit-details-marker { display: none; }
+      .faq summary::after { content: '+'; color: var(--kygo-green-dark); font-weight: 600; font-size: 22px; transition: transform .2s; line-height: 1; }
+      .faq details[open] summary::after { content: '−'; }
+      .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
+
+      .sources { display: grid; grid-template-columns: 1fr; gap: 10px; }
+      @media (min-width: 760px) { .sources { grid-template-columns: 1fr 1fr; } }
+      .src { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 18px; transition: border-color .2s; }
+      .src[open] { border-color: var(--kygo-green); }
+      .src summary { list-style: none; padding: 14px 0; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
+      .src summary::-webkit-details-marker { display: none; }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 3px 9px; border-radius: 999px; }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); line-height: 1.35; }
+      .src-body { padding: 0 0 16px; }
+      .src-detail { font-size: 13.5px; line-height: 1.6; color: var(--fg-2); margin: 0 0 8px; }
+      .src-cite { font-size: 12px; color: var(--fg-3); margin: 0 0 10px; }
+      .src-body a { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--kygo-green-dark); }
+      .src-body a .ico { width: 13px; height: 13px; }
 
       /* Footer */
-      .tool-footer { padding: 28px 0 18px; text-align: center; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { color: var(--gray-400); font-size: 13px; margin-bottom: 12px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
-      .footer-links a { color: var(--gray-600); font-size: 13px; white-space: nowrap; }
-      .footer-links a:hover { color: var(--green-dark); }
-      .footer-copyright { color: var(--gray-400); font-size: 12px; margin-top: 4px; }
-      .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 600px; margin: 0 auto 12px; }
+      .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
+      .tool-footer .container { max-width: 720px; margin: 0 auto; text-align: center; }
+      .footer-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--fg-1); font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+      .footer-logo { width: 28px; height: 28px; }
+      .footer-tagline { color: var(--fg-3); font-size: 14px; margin: 10px 0 22px; }
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 28px; font-size: 14px; }
+      .footer-links a { color: var(--fg-2); }
+      .footer-links a:hover { color: var(--kygo-green-dark); }
+      .footer-disclaimer { font-size: 12px; color: var(--fg-3); line-height: 1.6; max-width: 620px; margin: 0 auto 14px; }
+      .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
       .footer-affiliate { font-style: italic; }
 
-      /* Responsive */
-      @media (min-width: 768px) {
-        .hero { padding: 72px 0 36px; }
-        .framing-grid { grid-template-columns: 1fr 1fr; }
-        .vo2-cards { grid-template-columns: 1fr 1fr; }
-        .acc-grid { grid-template-columns: 1fr 1fr; }
-      }
-      @media (min-width: 1024px) {
-        .vo2-cards { grid-template-columns: 1fr 1fr 1fr; }
-      }
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-        .src-body { transition: none; }
-        .pulse-dot { animation: none; }
       }
     `;
   }

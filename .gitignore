@@ -1,0 +1,10 @@
+
+# local preview/screenshot helpers (not shipped)
+.shot.js
+.shot-el.js
+.shot-*.html
+.shotel-*.html
+before-*.png
+after-*.png
+mobile-table.png
+node_modules/
