@@ -617,6 +617,22 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <!-- Companion blog cross-link -->
+      <section class="blog-link-section">
+        <div class="container">
+          <div class="blog-link-wrap animate-on-scroll">
+            <a href="https://www.kygo.app/post/most-accurate-vo2-max-wearable" class="blog-link-card" target="_blank" rel="noopener">
+              <span class="blog-link-icon">${this._icon('activity')}</span>
+              <div class="blog-link-text">
+                <span class="blog-link-title">Read the full breakdown</span>
+                <span class="blog-link-desc">The Most Accurate VO2 Max Wearable — which brands are actually validated</span>
+              </div>
+              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <!-- App CTA -->
       <section class="blog-cta-section">
         <div class="container">
@@ -751,11 +767,11 @@ class KygoVo2maxAccuracy extends HTMLElement {
       const ld = {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        'name': 'Wearable VO2 Max Accuracy Comparison — Garmin vs Apple vs Polar vs Fitbit vs Whoop vs Oura',
-        'description': 'How accurately do consumer wearables estimate VO2 max versus a lab CPET? Compare 9 devices on method, vendor claim, independent validation, inputs, and subscription.',
+        'name': 'Most Accurate VO2 Max Wearable: Garmin, WHOOP, Oura & More',
+        'description': 'How accurately do Garmin, Apple, WHOOP, Oura, Fitbit, Polar & Samsung estimate VO2 max? Compared vs lab CPET, with which brands are actually validated.',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
-        'url': 'https://www.kygo.app/tools/vo2max-accuracy',
+        'url': 'https://www.kygo.app/tools/vo2-max-accuracy',
         'datePublished': '2026-06-03',
         'dateModified': '2026-06-03',
         'softwareVersion': '1.0',
@@ -999,6 +1015,19 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .verify-note { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--gray-300); background: rgba(255,255,255,0.06); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 0 !important; }
       .verify-note svg { width: 16px; height: 16px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
       .verify-note strong { color: #fff; }
+
+      /* Companion blog cross-link */
+      .blog-link-section { padding: 8px 0 0; }
+      .blog-link-wrap { max-width: 720px; margin: 0 auto; }
+      .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); transition: box-shadow 0.3s; }
+      .blog-link-card:hover { box-shadow: var(--shadow-hover); }
+      .blog-link-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 10px; color: var(--green-dark); }
+      .blog-link-icon svg { width: 20px; height: 20px; }
+      .blog-link-text { flex: 1; min-width: 0; }
+      .blog-link-title { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--green-dark); letter-spacing: 0.3px; }
+      .blog-link-desc { display: block; font-size: 14px; font-weight: 500; color: var(--dark); margin-top: 2px; }
+      .blog-link-arrow { width: 20px; height: 20px; color: var(--green-dark); flex-shrink: 0; }
+      .blog-link-arrow svg { width: 20px; height: 20px; }
 
       /* Blog CTA */
       .blog-cta-section { padding: 48px 0; overflow: hidden; }
