@@ -573,6 +573,32 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <!-- App CTA (placed high, after the framing teaser) -->
+      <section class="blog-cta-section">
+        <div class="container">
+          <div class="blog-cta-wrapper animate-on-scroll">
+            <div class="blog-cta">
+              <div class="blog-cta-glow"></div>
+              <div class="blog-cta-content">
+                <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
+                <h2>Track Your VO2 Max Trend — Alongside <span class="highlight">What You Eat</span></h2>
+                <p>Kygo Health connects your wearable's data to your nutrition so you can see the full picture, not just one number.</p>
+                <div class="blog-cta-buttons">
+                  <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                    Download for iOS
+                  </a>
+                  <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="blog-cta-android-btn" data-action="android-download" data-track-position="article-cta">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                    Download for Android
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Decision filters + comparison matrix -->
       <section class="compare-section" id="compare">
         <div class="container">
@@ -590,6 +616,22 @@ class KygoVo2maxAccuracy extends HTMLElement {
           <h2 class="section-title animate-on-scroll">Device-by-device accuracy</h2>
           <p class="section-sub animate-on-scroll">Vendor claims vs what independent studies actually found. Badge shows whether independent peer-reviewed VO2 max validation exists.</p>
           <div class="vo2-cards">${this._renderCards(all)}</div>
+        </div>
+      </section>
+
+      <!-- Companion blog cross-link -->
+      <section class="blog-link-section">
+        <div class="container">
+          <div class="blog-link-wrap animate-on-scroll">
+            <a href="https://www.kygo.app/post/most-accurate-vo2-max-wearable" class="blog-link-card" target="_blank" rel="noopener">
+              <span class="blog-link-icon">${this._icon('activity')}</span>
+              <div class="blog-link-text">
+                <span class="blog-link-title">Read the full breakdown</span>
+                <span class="blog-link-desc">The Most Accurate VO2 Max Wearable — which brands are actually validated</span>
+              </div>
+              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -613,48 +655,6 @@ class KygoVo2maxAccuracy extends HTMLElement {
             <h2>The bottom line</h2>
             <p>A VO2 max estimate from a hard outdoor run with a chest strap (<strong>Garmin/Firstbeat — the only brand with solid independent validation, ~5–7% error in general populations</strong>) is the most trustworthy. <strong>Apple</strong> has two independent studies and both show it <em>underestimates</em> (~13–16%). <strong>Polar's</strong> resting test and <strong>Fitbit</strong> overestimate. <strong>Samsung, WHOOP, Oura, and Coros</strong> rely on company claims with little or no independent peer-reviewed VO2 max validation.</p>
             <p class="verify-note">${this._icon('info')} <strong>Verification note (triple-checked).</strong> Independent VO2 max validation exists only for Garmin, Apple, Polar, and Fitbit. A frequently-repeated "Galaxy Watch ±4.7 mL/kg/min" figure appears only on marketing/AI-content sites and could not be traced to a real indexed study — it is deliberately excluded here.</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Companion blog cross-link -->
-      <section class="blog-link-section">
-        <div class="container">
-          <div class="blog-link-wrap animate-on-scroll">
-            <a href="https://www.kygo.app/post/most-accurate-vo2-max-wearable" class="blog-link-card" target="_blank" rel="noopener">
-              <span class="blog-link-icon">${this._icon('activity')}</span>
-              <div class="blog-link-text">
-                <span class="blog-link-title">Read the full breakdown</span>
-                <span class="blog-link-desc">The Most Accurate VO2 Max Wearable — which brands are actually validated</span>
-              </div>
-              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- App CTA -->
-      <section class="blog-cta-section">
-        <div class="container">
-          <div class="blog-cta-wrapper animate-on-scroll">
-            <div class="blog-cta">
-              <div class="blog-cta-glow"></div>
-              <div class="blog-cta-content">
-                <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-                <h2>Track Your VO2 Max Trend — Alongside <span class="highlight">What You Eat</span></h2>
-                <p>Kygo Health connects your wearable's data to your nutrition so you can see the full picture, not just one number.</p>
-                <div class="blog-cta-buttons">
-                  <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    Download for iOS
-                  </a>
-                  <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="blog-cta-android-btn" data-action="android-download" data-track-position="article-cta">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                    Download for Android
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -1017,7 +1017,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .verify-note strong { color: #fff; }
 
       /* Companion blog cross-link */
-      .blog-link-section { padding: 8px 0 0; }
+      .blog-link-section { padding: 24px 0 8px; }
       .blog-link-wrap { max-width: 720px; margin: 0 auto; }
       .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); transition: box-shadow 0.3s; }
       .blog-link-card:hover { box-shadow: var(--shadow-hover); }
