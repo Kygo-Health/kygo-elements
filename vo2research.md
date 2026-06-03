@@ -1,6 +1,6 @@
 # Guide to what influences your VO2 max (Based on research)
 
-> **Status: IN PROGRESS.** This is the working file for the VO2 max topic. 44 sources verified so far (7 factor batches + an expanded wearable-accuracy section), each checked directly against the primary publication (PubMed/PMC/journal). Includes a factor reference (what moves VO2 max) plus a "Wearable VO2 Max Estimation: Methods & Accuracy" section that separates vendor-claimed accuracy from independent validation for Garmin, Apple, Polar, Fitbit, Samsung, WHOOP, Oura, Coros, and Suunto, followed by a side-by-side comparison table (method, requirements, accuracy, validation status, subscription). Every row below traces to a verified source in the "Verified Sources" section.
+> **Status: FINALIZED v1 (2026-06-02).** Canonical VO2 max reference for Kygo. 48 sources, each verified directly against the primary publication (PubMed/PMC/journal) and individually linked. Covers factors that move VO2 max (Exercise, Nutrition & Supplements, Environment, Demographics & Physiology, Lifestyle, Clinical), why it matters (CRF–mortality), and a wearable-accuracy section (vendor vs independent validation, a device comparison table, and device-input + input-quality tables) reconciled against files #06/#07. Considered complete for building website pages, blog posts, and tools. Every row traces to a verified source in the "Verified Sources" section; optional future additions are listed at the bottom.
 
 ## General Information
 
@@ -94,8 +94,9 @@ A note on what VO2 max actually responds to: training and biology dominate. Most
 | Long COVID | Negative | Strong | Meta-analysis (9 studies, 464 symptomatic vs 359): peak VO2 was 4.9 mL/kg/min lower in people with ongoing symptoms 3+ months after infection. Drivers include deconditioning, dysfunctional breathing, chronotropic incompetence, and impaired oxygen extraction. | Lingering COVID symptoms come with a measurably lower VO2 max, comparable to deconditioning from bed rest. Some is reversible with graded reconditioning, but mechanisms vary by person. |
 | Type 2 diabetes | Negative | Strong | Meta-analysis (77 studies): people with type 2 diabetes averaged 5.84 mL/kg/min lower VO2 max than those without (roughly 20% lower). Driven by cardiac, microvascular, and mitochondrial impairments. | Type 2 diabetes meaningfully lowers aerobic fitness, and low fitness in turn predicts worse outcomes. Exercise that raises VO2 max is one of the highest-value interventions here. |
 | Heart failure (and VO2 max as prognosis) | Negative | Strong | Heart failure lowers peak VO2, and the value itself is prognostic: in the landmark CPET study, peak VO2 ≤14 mL/kg/min marked the worst-prognosis group and became a heart-transplant timing threshold. | The heart can't deliver enough oxygen, so VO2 max falls and is one of the strongest predictors of survival in heart failure. It is used to time transplant decisions. |
+| Low VO2 max / fitness as a mortality risk factor | Predictor (higher = lower mortality) | Strong | In 122,007 adults followed ~8.4 years, higher cardiorespiratory fitness was associated with lower all-cause mortality with no upper limit of benefit; the least-fit had ~5x the adjusted mortality risk of the fittest — a risk comparable to or greater than smoking, diabetes, or coronary disease. | The "why it matters" headline: low VO2 max is one of the strongest predictors of dying early, on par with major disease risk factors — and there's no point of diminishing returns. Raising it is among the highest-leverage things you can do for longevity. |
 
-*Anchors: Durstenfeld et al. 2022 (long COVID); Macedo et al. 2023 meta (type 2 diabetes); Mancini et al. 1991 (heart failure prognosis / transplant threshold).*
+*Anchors: Durstenfeld et al. 2022 (long COVID); Macedo et al. 2023 meta (type 2 diabetes); Mancini et al. 1991 (heart failure prognosis / transplant threshold); Mandsager et al. 2018 (CRF and all-cause mortality, n=122,007).*
 
 ## Wearable VO2 Max Estimation: Methods & Accuracy
 
@@ -145,6 +146,39 @@ Side-by-side on the fields that matter for choosing/trusting a device. "Independ
 | Suunto (watch) | Exercise: Firstbeat engine | Outdoor run + HR | Inherits Firstbeat (~95%) | Indirect (same engine as Garmin); no Suunto-specific study | Best: like Garmin. Weakest: no brand-specific study | No (free) |
 
 Reading it: only Garmin and Apple have genuine independent validation, and even they are trend tools (Garmin tends to underestimate in very fit users; Apple underestimates broadly). Rings/straps and resting-based watches are convenient but either overestimate, lack independent validation, or sit behind a subscription. For tracking *change in your own fitness*, any of them works if you keep the device and protocol consistent; for an accurate *absolute* number, only a lab CPET qualifies.
+
+### What Each Device Measures (Inputs) and How Good Those Inputs Are
+
+VO2 max is only as accurate as the signals fed into it. None of these devices measure oxygen; they infer VO2 max from heart rate, GPS pace, and your profile. Table A shows what goes in; Table B shows how well-validated each input is independently. The punchline: the limiting input is heart rate *during the run* plus the assumed maximum HR, which is exactly why a chest strap helps and why very fit people get poor readings.
+
+**Table A — What each device feeds into its VO2 max estimate**
+
+| Device | Heart-rate source | GPS pace | HRV | Resting HR | Profile (age/sex/wt/ht) | Extrapolates via assumed max HR |
+|---|---|---|---|---|---|---|
+| Garmin (watch) | Wrist optical or paired chest strap | Yes | No | No | Yes | Yes |
+| Apple Watch | Wrist optical | Yes | No | No | Yes | Yes |
+| Polar (Fitness Test) | Wrist optical / chest, at rest | No (resting); Yes in run-test mode | Yes | Yes | Yes | Yes |
+| Fitbit / Google | Wrist optical | Optional (a GPS run refines it) | No | Yes (core input) | Yes | Yes |
+| Samsung Galaxy Watch | Wrist optical | Yes | No | No | Yes | Yes |
+| WHOOP | Wrist/arm optical (PPG) | Yes (GPS model) | Part of recovery model | Yes (passive model) | Yes | Yes |
+| Oura Ring | Ring PPG, during the walk test | No (uses walk distance/cadence) | No | No (profile baseline) | Yes | Yes (submaximal walk) |
+| Coros (watch) | Wrist optical or paired chest strap | Yes | No | No | Yes | Yes |
+| Suunto (watch) | Wrist optical or paired chest strap | Yes | No | No | Yes | Yes |
+
+**Table B — Independent accuracy of each input signal**
+
+| Input signal | How good it is (independent evidence) | Source |
+|---|---|---|
+| Chest-strap HR (Polar H10) | Effectively ECG-grade at rest and during exercise (RR/HR agreement >99%) | Gilgen-Ammann 2019; #06 (r=0.99 vs ECG) |
+| Wrist optical HR, steady effort | Generally accurate; 6 of 7 wrist devices tracked HR within ~5% of ECG (though none measured energy expenditure well: 27-93% off) | Shcherbina 2017 |
+| Wrist optical HR, hard/variable exercise | Degrades and is device-dependent; active-HR agreement vs ECG ~0.80 (Apple) down to ~0.52 (Garmin wrist) | #06 (Dial 2025; Miller 2022) |
+| Ring PPG HR (Oura) | Excellent at rest/overnight (resting-HR CCC ~0.98); no validated active-exercise HR | #06 (Dial 2025); Kinnunen 2020 (Oura-employee-authored) + Cao 2022 (independent) |
+| GPS pace/distance | MAPE 3.2-6.1% across 8 watches; only Polar <5%; worse in urban/forest, better on track | 8-watch GPS study 2020 |
+| Assumed maximum HR (often 220−age) | Not a sensor — an assumption baked into the model; when wrong it directly skews VO2 max, and is a leading error source (esp. in highly trained people) | Flagged in INTERLIVE 2022 + Firstbeat methodology |
+
+**Reconciliation with #06/#07 (checked).** The heart-rate and sensor figures above were sourced fresh and then cross-checked against file #06 (Wearable Accuracy). They agree: #06 independently lists chest strap r=0.99, Apple active-HR r=0.80, Garmin r=0.52 (Dial et al. 2025), Oura resting-HR CCC 0.98, and — importantly — the same VO2 max figures used here (Garmin Fēnix 6 MAPE 7.05%, Apple 13-16%). No contradictions were found between this section and #06/#07. The one caveat carried over from the library's Oura file: Oura's headline HR/HRV validation (Kinnunen 2020) is Oura-employee-authored; independent work (Cao 2022, Dial 2025) confirms strong *resting* accuracy but Oura has no active-exercise HR.
+
+Why this matters for VO2 max: a device can have a good HR sensor and still produce a shaky VO2 max, because the estimate leans on HR *during hard effort* (where wrist optical drifts) and on an assumed max HR (often just 220−age). That combination — not the sensor at rest — is the real ceiling on accuracy, and it explains why chest-strap + outdoor run (Garmin) is the most trustworthy setup and why highly trained users see the biggest errors.
 
 ---
 
@@ -299,14 +333,36 @@ Each source below was opened and checked directly against the primary record. Sa
 44. **Wearable accuracy / Samsung (heart rate, not VO2 max).** Inoue A, Soares J, Antunes-Santos F, Ferreira A, Gonçalves A, Alcântara J, dos Santos M. "Heart Rate Estimation Using the Galaxy Watch During Maximal Cardiopulmonary Exercise Testing: Cross-Sectional Validation Study." *JMIR Cardio.* 2026;10:e81917. PMCID [PMC13086260](https://pmc.ncbi.nlm.nih.gov/articles/PMC13086260/). DOI [10.2196/81917](https://doi.org/10.2196/81917).
    - Design: independent validation, n=55, Galaxy Watch 6 vs Polar H10 during a maximal treadmill CPET. Verified scope: this study validates **heart rate** (good agreement, ICC; error rises modestly near max), NOT VO2 max. Included only to substantiate that the independent evidence for Samsung covers HR, not VO2 max. The often-cited "Galaxy Watch VO2 max ±4.7 mL/kg/min (Frontiers, n=84)" figure could not be verified against any indexed source and is excluded as likely fabricated.
 
+### Batch 9 (added 2026-06-02) — Input-signal accuracy (heart rate, GPS)
+
+These support the "What Each Device Measures" tables. They validate the *inputs* to VO2 max (HR, GPS), not VO2 max itself.
+
+45. **Wrist HR vs energy expenditure.** Shcherbina A, Mattsson CM, Waggott D, Salisbury H, Christle JW, Hastie T, Wheeler MT, Ashley EA. "Accuracy in Wrist-Worn, Sensor-Based Measurements of Heart Rate and Energy Expenditure in a Diverse Cohort." *Journal of Personalized Medicine.* 2017;7(2):3. PMCID [PMC5491979](https://pmc.ncbi.nlm.nih.gov/articles/PMC5491979/). DOI [10.3390/jpm7020003](https://doi.org/10.3390/jpm7020003).
+   - Design: Stanford, n=60, 7 wrist devices vs ECG + indirect calorimetry, treadmill/cycle. Verified: most devices measured HR within ~5% (6 of 7 acceptable), but none measured energy expenditure acceptably (most-accurate device off ~27%, worst ~93%). Keystone showing wrist HR is decent but derived metrics are not.
+
+46. **Chest-strap HR validity.** Gilgen-Ammann R, Schweizer T, Wyss T. "RR interval signal quality of a heart rate monitor and an ECG Holter at rest and during exercise." *European Journal of Applied Physiology.* 2019;119(7):1525-1532. DOI [10.1007/s00421-019-04142-5](https://doi.org/10.1007/s00421-019-04142-5).
+   - Design: n=10, Polar H10 chest strap vs medilog ECG Holter across five rest-to-high-intensity activities. Verified: chest-strap RR/HR signal quality is effectively ECG-grade (>99% of beats correctly detected) at rest and during exercise. Establishes the chest strap as the best HR input.
+
+47. **GPS distance/pace accuracy.** "Accuracy of Distance Recordings in Eight Positioning-Enabled Sport Watches: Instrument Validation Study." *JMIR mHealth and uHealth.* 2020;8(6):e17118. PMID [32396865](https://pubmed.ncbi.nlm.nih.gov/32396865/). DOI [10.2196/17118](https://doi.org/10.2196/17118).
+   - Design: 8 sport watches (Apple, Coros, Garmin, Polar, Suunto) across urban/forest/track while walking/running/cycling. Verified figures: MAPE 3.2-6.1%; only Polar's receivers <5% overall; distances underestimated and least accurate in urban/forest. Establishes GPS pace error as a secondary input limitation.
+   - Cross-referenced (already verified in file #06 Wearable Accuracy, not re-listed here): Dial MB et al. 2025 (*Physiological Reports*, independent — active HR r=0.99 chest / 0.80 Apple / 0.52 Garmin; resting-HR CCC Oura 0.98, WHOOP 0.91, Polar 0.86); Miller DJ et al. 2022 (*Sensors* — 6-device HR/HRV validation).
+
+### Batch 10 (added 2026-06-02) — Why it matters
+
+48. **Clinical / mortality.** Mandsager K, Harb S, Cremer P, Phelan D, Nissen SE, Jaber W. "Association of Cardiorespiratory Fitness With Long-term Mortality Among Adults Undergoing Exercise Treadmill Testing." *JAMA Network Open.* 2018;1(6):e183605. PMID [30646252](https://pubmed.ncbi.nlm.nih.gov/30646252/). PMCID [PMC6324439](https://pmc.ncbi.nlm.nih.gov/articles/PMC6324439/). DOI [10.1001/jamanetworkopen.2018.3605](https://doi.org/10.1001/jamanetworkopen.2018.3605).
+   - Design: retrospective cohort, n=122,007 (Cleveland Clinic), mean follow-up 8.4 yr, 13,637 deaths. Verified findings: cardiorespiratory fitness was inversely associated with all-cause mortality with no observed upper limit of benefit; lowest-fitness group had ~5x the adjusted mortality risk vs elite (HR ~5.0); the paper notes poor fitness carried risk comparable to or greater than coronary disease, diabetes, and smoking. The motivational anchor for the whole topic. Authors/journal/figures confirmed.
+
 ---
 
-## Open Items / Next Batch
+## Optional Future Additions (not blockers; doc is finalized)
 
-- Exercise/Training: training frequency/volume dose-response; polarized vs threshold intensity distribution.
-- Environment: cold exposure/cold-air training; humidity; hyperoxia.
-- Lifestyle: menstrual-cycle phase, cannabis, caffeine timing.
-- Clinical (separate from this request): anemia beyond iron, COPD/asthma, CRF and all-cause mortality (Mandsager 2018).
-- Wearable VO2 max estimation accuracy section added (Batch 8). Future: add Garmin/WHOOP independent peer-reviewed validations as they publish; pin the Firstbeat white paper citation.
-- Reconcile with #16 GLP-1 file (open gap there: VO2 max direct measurement on GLP-1).
-- Possible deliverables from this research: a VO2 Max Factor Explorer tool and/or a blog/Reddit post.
+These would extend the doc but were judged low-priority. Add only if a specific page/tool needs them.
+
+- Exercise/Training: training frequency/volume dose-response; polarized vs threshold intensity distribution (for a deep "how to train" spoke).
+- Lifestyle: menstrual-cycle phase (relevant to Kygo's audience, but the evidence is thin — would be a short honest entry).
+- Niche/low-value: cold exposure, humidity, hyperoxia, cannabis; clinical extras (anemia beyond iron, COPD/asthma).
+- Housekeeping: add Garmin/WHOOP/Oura independent VO2 max validations if/when they publish; pin the Firstbeat white-paper citation.
+
+**Cross-reference:** GLP-1 effects on cardiometabolic/wearable metrics are tracked in file #16 (GLP-1 Wearable Effects); that file's open gap on direct VO2 max measurement under GLP-1 remains open there and is the right home for it (not duplicated here).
+
+**Downstream deliverables from this research:** a VO2 Max Factor Explorer tool (kygo-factor-explorer), a wearable-accuracy comparison tool (kygo-tool-builder), and blog/Reddit posts (pillar "what affects VO2 max" + spokes on wearable accuracy and "supplements that don't work"). The CRF–mortality finding (Mandsager 2018) is the recommended intro hook for any of these.
