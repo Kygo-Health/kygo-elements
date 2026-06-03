@@ -565,7 +565,7 @@ class KygoVo2maxFactors extends HTMLElement {
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><div class="num">39</div><div class="lbl">Factors analyzed</div></div>
-            <div class="hero-stat"><div class="num">48</div><div class="lbl">Peer-reviewed sources</div></div>
+            <div class="hero-stat"><div class="num">36</div><div class="lbl">Peer-reviewed sources</div></div>
             <div class="hero-stat"><div class="num">6</div><div class="lbl">Categories of influence</div></div>
             <div class="hero-stat"><div class="num">~47<span class="unit">%</span></div><div class="lbl">Of trainability is heritable</div></div>
           </div>
