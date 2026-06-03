@@ -13,3 +13,6 @@ node_modules/
 .smoke2*
 m-*.png
 state-*.png
+hero-vis.png
+exp-*.png
+state-*.png
