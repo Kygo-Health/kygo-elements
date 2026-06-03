@@ -24,13 +24,10 @@ class KygoVo2maxAccuracy extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._observer = null;
-    this._eventsBound = false;
-    this._filters = { type: new Set(), sub: new Set(), val: new Set(), run: new Set() };
   }
 
   connectedCallback() {
     this.render();
-    this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
     __seo(this, this._seoText());
@@ -38,6 +35,29 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
+  }
+
+  // ── Brand product images (shared Wix assets, by device key) ─────────────
+
+  _deviceImage(key) {
+    return ({
+      garmin:  'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
+      apple:   'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
+      polar:   'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png',
+      fitbit:  'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
+      samsung: 'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
+      whoop:   'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
+      oura:    'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
+      coros:   'https://static.wixstatic.com/media/273a63_b86aaa1f1b5b43a4a8ccc8294293e193~mv2.png'
+    })[key] || null;
+  }
+
+  _deviceLogo(d, size) {
+    const img = this._deviceImage(d.key);
+    const cls = size === 'sm' ? 'brand-img sm' : 'brand-img';
+    return img
+      ? `<span class="${cls}"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
+      : `<span class="${cls} brand-img--icon">${this._typeIcon(d.type)}</span>`;
   }
 
   // ── Device data (the "Wearable VO2 Max Comparison" + accuracy tables) ───
@@ -272,7 +292,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
   _icon(name) {
     const icons = {
-      check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+      check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
       minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
       arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
       externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
@@ -281,8 +301,6 @@ class KygoVo2maxAccuracy extends HTMLElement {
       strap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="8" width="10" height="8" rx="2"/><path d="M7 10H4m16 0h-3M7 14H4m16 0h-3"/></svg>',
       activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
       info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
-      lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
-      unlock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>',
       run: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="m6 20 2-5 3 1 1 4"/><path d="m5 11 4-2 3 3 4-1"/></svg>',
       apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>',
       android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zm10 0v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zM5 17v3a1 1 0 1 0 2 0v-3H5zm12 0v3a1 1 0 1 0 2 0v-3h-2zm-9.5-9c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5H7.5zm.5 1h8a1 1 0 0 1 1 1v6H7v-6a1 1 0 0 1 1-1zM9 5.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm6 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z"/></svg>'
@@ -290,53 +308,9 @@ class KygoVo2maxAccuracy extends HTMLElement {
     return `<span class="ico">${icons[name] || icons.info}</span>`;
   }
 
-  // ── Filtering ───────────────────────────────────────────────────────────
-
-  get _filterGroups() {
-    return [
-      { facet: 'type', label: 'Device type', chips: [
-        { v: 'watch', l: 'Watch' }, { v: 'ring', l: 'Ring' }, { v: 'strap', l: 'Strap' } ] },
-      { facet: 'val', label: 'Validation', chips: [
-        { v: 'validated', l: 'Independently validated' }, { v: 'notvalidated', l: 'Vendor / indirect only' } ] },
-      { facet: 'run', label: 'Effort needed', chips: [
-        { v: 'run', l: 'Needs a workout' }, { v: 'norun', l: 'No workout needed' } ] },
-      { facet: 'sub', label: 'VO2 max access', chips: [
-        { v: 'free', l: 'Free' }, { v: 'paid', l: 'Subscription' } ] }
-    ];
-  }
-
-  _deviceFacet(d, facet) {
-    if (facet === 'type') return d.type;
-    if (facet === 'val') return d.validation === 'validated' ? 'validated' : 'notvalidated';
-    if (facet === 'run') return d.needsRun ? 'run' : 'norun';
-    if (facet === 'sub') return d.subscription ? 'paid' : 'free';
-    return '';
-  }
-
-  _matches(d) {
-    for (const facet of Object.keys(this._filters)) {
-      const set = this._filters[facet];
-      if (set.size && !set.has(this._deviceFacet(d, facet))) return false;
-    }
-    return true;
-  }
-
-  _filtered() { return this._devices.filter(d => this._matches(d)); }
-
-  _updateResults() {
-    const sr = this.shadowRoot;
-    const filtered = this._filtered();
-    const chipbar = sr.querySelector('[data-chips]');
-    if (chipbar) chipbar.innerHTML = this._renderChips();
-    const count = sr.querySelector('[data-count]');
-    if (count) count.innerHTML = `Showing <strong>${filtered.length}</strong> of ${this._devices.length} devices`;
-    const cards = sr.querySelector('[data-cards]');
-    if (cards) cards.innerHTML = this._renderCards(filtered);
-  }
+  _typeIcon(t) { return t === 'ring' ? this._icon('ring') : (t === 'strap' ? this._icon('strap') : this._icon('watch')); }
 
   // ── Small render helpers ────────────────────────────────────────────────
-
-  _typeIcon(t) { return t === 'ring' ? this._icon('ring') : (t === 'strap' ? this._icon('strap') : this._icon('watch')); }
 
   _validationBadge(v) {
     if (v === 'validated') return `<span class="vbadge yes">${this._icon('check')} Independently validated</span>`;
@@ -346,53 +320,74 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
   _methodPill(d) {
     const cls = d.method === 'exercise' ? 'ex' : 'rest';
-    const txt = d.method === 'exercise' ? 'Exercise-based' : (d.method === 'resting' ? 'Resting-based' : 'Hybrid');
+    const txt = d.method === 'exercise' ? 'Exercise' : (d.method === 'resting' ? 'Resting' : 'Hybrid');
     return `<span class="m-pill ${cls}">${txt}</span>`;
   }
 
-  _yn(v) {
-    if (v === true) return `<span class="yn yes">${this._icon('check')}</span>`;
-    if (v === 'opt') return `<span class="yn opt">Optional</span>`;
-    if (v === 'part') return `<span class="yn opt">Partial</span>`;
-    return `<span class="yn no">${this._icon('minus')}</span>`;
+  // matrix mark: true → check, false → dash, 'opt'/'part' → small pill
+  _mark(v) {
+    if (v === true) return `<span class="mk on">${this._icon('check')}</span>`;
+    if (v === 'opt') return `<span class="mk pill">Opt</span>`;
+    if (v === 'part') return `<span class="mk pill">Part</span>`;
+    return `<span class="mk off"><span class="dash"></span></span>`;
   }
 
-  // ── Section: filter chips ───────────────────────────────────────────────
+  // ── Section: comparison matrix (logo chart, ranked validated-first) ──────
 
-  _renderChips() {
-    const anyActive = Object.values(this._filters).some(s => s.size);
-    const groups = this._filterGroups.map(g => `
-      <div class="chip-group">
-        <span class="chip-group-label">${g.label}</span>
-        <div class="chip-row">
-          ${g.chips.map(c => {
-            const active = this._filters[g.facet].has(c.v);
-            return `<button class="filter-chip${active ? ' active' : ''}" data-facet="${g.facet}" data-value="${c.v}" aria-pressed="${active}">${c.l}</button>`;
-          }).join('')}
+  _renderComparisonMatrix() {
+    const rank = { validated: 0, indirect: 1, none: 2 };
+    const rows = this._devices.slice().sort((a, b) => (rank[a.validation] - rank[b.validation]) || a.name.localeCompare(b.name));
+    const valMark = (v) => v === 'validated'
+      ? `<span class="mk on">${this._icon('check')}</span>`
+      : (v === 'indirect' ? `<span class="mk approx">≈</span>` : `<span class="mk off"><span class="dash"></span></span>`);
+    return `
+      <div class="cmp">
+        <div class="cmp-scroll">
+          <table class="cmp-table">
+            <thead>
+              <tr>
+                <th class="cmp-th-device" scope="col">Wearable</th>
+                <th scope="col">Method</th>
+                <th scope="col"><span class="th-full">Independently validated</span><span class="th-short" aria-hidden="true">Validated</span></th>
+                <th scope="col"><span class="th-full">Needs a workout</span><span class="th-short" aria-hidden="true">Workout</span></th>
+                <th scope="col"><span class="th-full">VO2 max access</span><span class="th-short" aria-hidden="true">Access</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map(d => `
+                <tr>
+                  <th class="cmp-td-device" scope="row">
+                    <span class="brand">
+                      ${this._deviceLogo(d, 'sm')}
+                      <span class="brand-text"><span class="brand-name">${d.name}</span><span class="brand-type">${d.typeLabel}</span></span>
+                    </span>
+                  </th>
+                  <td>${this._methodPill(d)}</td>
+                  <td>${valMark(d.validation)}</td>
+                  <td>${this._mark(!!d.needsRun)}</td>
+                  <td>${d.subscription ? `<span class="acc-pill paid">Paid</span>` : `<span class="acc-pill free">Free</span>`}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
         </div>
-      </div>`).join('');
-    return groups + (anyActive
-      ? `<button class="filter-reset" data-action="reset-filters">Reset</button>`
-      : '');
+        <p class="cmp-legend">${this._icon('check')} Independent, non-vendor peer-reviewed VO2 max validation · ≈ shares Garmin's Firstbeat engine (no brand-specific study) · — vendor / company claims only.</p>
+      </div>`;
   }
 
-  // ── Section: per-device cards (single consolidated comparison) ───────────
+  // ── Section: per-device detail (accordions, with logos) ─────────────────
 
-  _renderCards(devices) {
-    if (!devices.length) {
-      return `<div class="empty-state">No devices match those filters. <button class="link-btn" data-action="reset-filters">Reset filters</button></div>`;
-    }
-    return devices.map(d => `
+  _renderDeviceDetails() {
+    return `<div class="dev-grid">${this._devices.map(d => `
       <article class="dev-card${d.validation === 'validated' ? ' is-validated' : ''}">
         <div class="dev-head">
-          <span class="dev-icon">${this._typeIcon(d.type)}</span>
+          ${this._deviceLogo(d)}
           <div class="dev-headtext">
             <h3>${d.name}</h3>
             <span class="dev-meta">${d.typeLabel}</span>
           </div>
           ${d.subscription
-            ? `<span class="sub-tag paid">${this._icon('lock')} Paid</span>`
-            : `<span class="sub-tag free">${this._icon('unlock')} Free</span>`}
+            ? `<span class="acc-pill paid">Paid</span>`
+            : `<span class="acc-pill free">Free</span>`}
         </div>
 
         <div class="dev-pills">${this._methodPill(d)}${this._validationBadge(d.validation)}</div>
@@ -416,59 +411,61 @@ class KygoVo2maxAccuracy extends HTMLElement {
         ${d.affiliateUrl
           ? `<a href="${d.affiliateUrl}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.short} Amazon" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
           : ''}
-      </article>`).join('');
+      </article>`).join('')}</div>`;
   }
 
-  // ── Section: how they calculate it (Table A + Table B) ──────────────────
+  // ── Section: inputs comparison matrix (logo chart) ──────────────────────
 
-  _renderInputsTableA(devices) {
+  _renderInputsMatrix() {
+    const cols = [
+      { key: 'gps', full: 'GPS pace', short: 'GPS' },
+      { key: 'hrv', full: 'HRV', short: 'HRV' },
+      { key: 'restingHr', full: 'Resting HR', short: 'Rest HR' },
+      { key: 'profile', full: 'Profile', short: 'Profile' },
+      { key: 'maxHr', full: 'Assumed max HR', short: 'Max HR' }
+    ];
     return `
-      <div class="tbl-wrap">
-        <table class="tbl">
-          <thead>
-            <tr>
-              <th>Device</th>
-              <th>Heart-rate source</th>
-              <th>GPS</th>
-              <th>HRV</th>
-              <th>Resting HR</th>
-              <th>Profile</th>
-              <th>Assumed max HR</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${devices.map(d => `
+      <div class="cmp">
+        <div class="cmp-scroll">
+          <table class="cmp-table">
+            <thead>
               <tr>
-                <td class="spec-name" data-label="Device">${d.name}</td>
-                <td class="cell" data-label="Heart-rate source">${d.hrSource}</td>
-                <td class="cell tc" data-label="GPS">${this._yn(d.gps)}</td>
-                <td class="cell tc" data-label="HRV">${this._yn(d.hrv)}</td>
-                <td class="cell tc" data-label="Resting HR">${this._yn(d.restingHr)}</td>
-                <td class="cell tc" data-label="Profile">${this._yn(d.profile)}</td>
-                <td class="cell tc" data-label="Assumed max HR">${this._yn(d.maxHr)}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
+                <th class="cmp-th-device" scope="col">Wearable</th>
+                ${cols.map(c => `<th scope="col"><span class="th-full">${c.full}</span><span class="th-short" aria-hidden="true">${c.short}</span></th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${this._devices.map(d => `
+                <tr>
+                  <th class="cmp-td-device" scope="row">
+                    <span class="brand">
+                      ${this._deviceLogo(d, 'sm')}
+                      <span class="brand-text"><span class="brand-name">${d.name}</span><span class="brand-type">${d.hrSource}</span></span>
+                    </span>
+                  </th>
+                  ${cols.map(c => `<td>${this._mark(d[c.key])}</td>`).join('')}
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+        <p class="cmp-legend">Heart-rate source shown under each brand. None of these measure oxygen — VO2 max is inferred from these inputs plus an assumed maximum heart rate.</p>
       </div>`;
   }
 
-  _renderInputsTableB() {
-    return `
-      <div class="tbl-wrap">
-        <table class="tbl">
-          <thead>
-            <tr><th>Input signal</th><th>How good it is (independent evidence)</th><th>Source</th></tr>
-          </thead>
-          <tbody>
-            ${this._inputSignals.map(s => `
-              <tr>
-                <td class="spec-name" data-label="Input signal">${s.signal}</td>
-                <td class="cell" data-label="How good it is"><span class="q-pill q-${s.quality}">${s.qLabel}</span><span class="cell-sub">${s.finding}</span></td>
-                <td class="cell" data-label="Source"><span class="cell-sub">${s.source}</span></td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
-      </div>`;
+  // ── Section: input-signal quality cards (Table B redesign) ──────────────
+
+  _renderSignalCards() {
+    const qmap = { good: 'Strong', mixed: 'Mixed', poor: 'Weak link' };
+    return `<div class="sig-grid">${this._inputSignals.map(s => `
+      <article class="sig-card">
+        <div class="sig-top">
+          <span class="sig-q q-${s.quality}">${s.qLabel}</span>
+          <span class="sig-rank">${qmap[s.quality]}</span>
+        </div>
+        <h4 class="sig-name">${s.signal}</h4>
+        <p class="sig-find">${s.finding}</p>
+        <span class="sig-src">${s.source}</span>
+      </article>`).join('')}</div>`;
   }
 
   // ── Section: sources accordion ──────────────────────────────────────────
@@ -506,7 +503,6 @@ class KygoVo2maxAccuracy extends HTMLElement {
     const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
     const garminImg = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
     const healthConnectImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
-    const all = this._devices;
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
@@ -537,14 +533,11 @@ class KygoVo2maxAccuracy extends HTMLElement {
                 <span class="hero-vis-tag">method &gt; brand</span>
               </div>
               <svg viewBox="0 0 600 320" preserveAspectRatio="xMidYMid meet" font-family="'Space Grotesk',sans-serif">
-                <!-- zero (lab) line -->
                 <line x1="190" y1="40" x2="190" y2="250" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="4 5"/>
                 <text x="190" y="270" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle">LAB = 0</text>
-                <!-- exercise bar (near zero, green) -->
                 <text x="20" y="92" fill="#475569" font-size="14" font-weight="600">Exercise-based</text>
                 <rect x="184" y="104" width="14" height="34" rx="3" fill="#22C55E"/>
                 <g transform="translate(214,121)"><rect x="0" y="-15" width="92" height="30" rx="8" fill="#DCFCE7"/><text x="46" y="5" fill="#16A34A" font-size="15" font-weight="700" text-anchor="middle">−0.09</text></g>
-                <!-- resting bar (overestimates, slate) -->
                 <text x="20" y="182" fill="#475569" font-size="14" font-weight="600">Resting-based</text>
                 <rect x="190" y="194" width="150" height="34" rx="3" fill="#94A3B8"/>
                 <g transform="translate(352,211)"><rect x="0" y="-15" width="92" height="30" rx="8" fill="#F1F5F9"/><text x="46" y="5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">+2.17</text></g>
@@ -566,23 +559,23 @@ class KygoVo2maxAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Method matters most</div>
             <h2>The one thing that <span class="hl">decides accuracy.</span></h2>
-            <p class="lede">The INTERLIVE meta-analysis of consumer wearables found that <strong>how the device collects the data matters more than the brand.</strong></p>
+            <p class="lede">The INTERLIVE meta-analysis found that <strong>how the device collects the data matters more than the brand.</strong></p>
           </div>
-          <div class="framing-grid">
-            <div class="framing-card good animate-on-scroll">
-              <span class="framing-tag">${this._icon('activity')} Exercise-based</span>
-              <span class="framing-stat">−0.09<small>mL/kg/min</small></span>
-              <span class="framing-cap">More accurate</span>
-              <p>Average bias vs lab when the estimate comes from an actual workout (HR-to-pace on an outdoor run). Essentially nil at the group level.</p>
+          <div class="bias animate-on-scroll">
+            <div class="bias-card good">
+              <span class="bias-tag">${this._icon('activity')} Exercise-based</span>
+              <span class="bias-stat">−0.09 <small>mL/kg/min</small></span>
+              <span class="bias-cap">Near-zero bias · more accurate</span>
+              <p>From an actual workout (HR-to-pace on an outdoor run) — essentially nil at the group level.</p>
             </div>
-            <div class="framing-card animate-on-scroll">
-              <span class="framing-tag">${this._icon('info')} Resting-based</span>
-              <span class="framing-stat">+2.17<small>mL/kg/min</small></span>
-              <span class="framing-cap">Overestimates</span>
-              <p>Average overestimation when the estimate comes from resting HR + age/sex/weight, with no workout. Convenient, but reads high.</p>
+            <div class="bias-card">
+              <span class="bias-tag">${this._icon('info')} Resting-based</span>
+              <span class="bias-stat">+2.17 <small>mL/kg/min</small></span>
+              <span class="bias-cap">Reads high · overestimates</span>
+              <p>From resting HR + age/sex/weight, with no workout. Convenient, but reads high.</p>
             </div>
+            <p class="bias-note">${this._icon('info')} <span><strong>Either way, individual error is large</strong> — limits of agreement run ≈ ±13–17 mL/kg/min for resting methods. Track your own trend, not a clinical value. <em>Molina-García 2022 (INTERLIVE)</em></span></p>
           </div>
-          <div class="callout animate-on-scroll">${this._icon('info')} <span><strong>Either way, individual error is large</strong> — limits of agreement run roughly ±13 to 17 mL/kg/min for resting methods. That's why it's a trend tool, not a precise personal value. <em>Molina-García 2022 (INTERLIVE)</em></span></div>
         </div>
       </section>
 
@@ -615,12 +608,12 @@ class KygoVo2maxAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Side by side</div>
-            <h2>Find &amp; compare <span class="hl">your device.</span></h2>
-            <p class="lede">Filter by what matters to you. <em>Independently validated</em> means non-vendor, peer-reviewed VO2 max evidence exists.</p>
+            <h2>Every device, <span class="hl">at a glance.</span></h2>
+            <p class="lede">Nine wearables, ranked with the independently-validated brands first. Scroll the chart sideways on mobile, then read the full per-device breakdown below.</p>
           </div>
-          <div class="filters animate-on-scroll" data-chips>${this._renderChips()}</div>
-          <div class="count animate-on-scroll" data-count>Showing <strong>${all.length}</strong> of ${all.length} devices</div>
-          <div class="dev-grid animate-on-scroll" data-cards>${this._renderCards(all)}</div>
+          <div class="animate-on-scroll">${this._renderComparisonMatrix()}</div>
+          <h3 class="sub-head animate-on-scroll">The full breakdown, device by device</h3>
+          <div class="animate-on-scroll">${this._renderDeviceDetails()}</div>
         </div>
       </section>
 
@@ -642,13 +635,12 @@ class KygoVo2maxAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Under the hood</div>
-            <h2>How they <span class="hl">calculate it.</span></h2>
-            <p class="lede">VO2 max is only as good as the signals fed in. None of these measure oxygen — they infer it from HR, GPS pace, and your profile.</p>
+            <h2>What each device <span class="hl">feeds in.</span></h2>
+            <p class="lede">VO2 max is only as good as the signals behind it. Here's the exact mix each wearable uses — none of them measure oxygen.</p>
           </div>
-          <h3 class="sub-head animate-on-scroll">What each device feeds in</h3>
-          <div class="animate-on-scroll">${this._renderInputsTableA(all)}</div>
-          <h3 class="sub-head animate-on-scroll">How good those inputs are</h3>
-          <div class="animate-on-scroll">${this._renderInputsTableB()}</div>
+          <div class="animate-on-scroll">${this._renderInputsMatrix()}</div>
+          <h3 class="sub-head animate-on-scroll">How good those inputs actually are</h3>
+          <div class="animate-on-scroll">${this._renderSignalCards()}</div>
           <div class="callout animate-on-scroll">${this._icon('info')} <span>The limiting input is heart rate <em>during the run</em> plus the assumed max HR (often just 220−age). That combination — not the sensor at rest — is the real ceiling on accuracy, which is why a chest strap helps and why very fit people get the biggest errors.</span></div>
         </div>
       </section>
@@ -708,31 +700,6 @@ class KygoVo2maxAccuracy extends HTMLElement {
     `;
   }
 
-  // ── Event delegation ────────────────────────────────────────────────────
-
-  _setupEventDelegation() {
-    if (this._eventsBound) return;
-    this._eventsBound = true;
-    const shadow = this.shadowRoot;
-
-    shadow.addEventListener('click', (e) => {
-      const reset = e.target.closest('[data-action="reset-filters"]');
-      if (reset) {
-        Object.values(this._filters).forEach(s => s.clear());
-        this._updateResults();
-        return;
-      }
-      const chip = e.target.closest('.filter-chip');
-      if (chip) {
-        const set = this._filters[chip.dataset.facet];
-        const value = chip.dataset.value;
-        if (set.has(value)) set.delete(value); else set.add(value);
-        this._updateResults();
-        return;
-      }
-    });
-  }
-
   // ── Scroll animations ───────────────────────────────────────────────────
 
   _setupAnimations() {
@@ -776,7 +743,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'alternateName': 'Kygo Wearable VO2 Max Accuracy Tool',
-        'featureList': 'Compare 9 wearables, exercise vs resting estimation, vendor vs independent validation, input-signal accuracy, subscription requirements, decision filters',
+        'featureList': 'Compare 9 wearables, exercise vs resting estimation, vendor vs independent validation, input-signal accuracy, subscription requirements',
         'keywords': 'wearable vo2 max accuracy, garmin vo2 max accuracy, apple watch vo2 max accuracy, whoop vo2 max accuracy, oura vo2 max, polar fitness test accuracy, fitbit cardio fitness score accuracy, does apple watch overestimate vo2 max, most accurate vo2 max watch 2026'
       };
       const s1 = document.createElement('script');
@@ -896,28 +863,31 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .section h2 .hl { color: var(--kygo-green); }
       .lede { color: var(--fg-2); font-size: 16px; line-height: 1.55; max-width: 60ch; margin: 0; }
       .lede strong { color: var(--fg-1); font-weight: 600; }
-      .sub-head { font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--fg-2); margin: 28px 0 14px; }
+      .sub-head { font-family: var(--font-display); font-weight: 600; font-size: clamp(17px,2.4vw,20px); color: var(--fg-1); margin: 36px 0 16px; }
 
       /* Callout */
       .callout { margin-top: 24px; display: flex; gap: 12px; align-items: flex-start; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 14px; padding: 16px 18px; font-size: 14px; line-height: 1.6; color: var(--fg-2); }
       .callout .ico { width: 18px; height: 18px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
       .callout strong { color: var(--fg-1); font-weight: 600; }
-      .callout em { font-style: normal; color: var(--fg-3); font-size: 12.5px; }
+      .callout em { font-style: italic; }
 
-      /* Framing cards */
-      .framing-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      @media (min-width: 640px) { .framing-grid { grid-template-columns: 1fr 1fr; } }
-      .framing-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; display: flex; flex-direction: column; gap: 6px; }
-      .framing-card.good { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.10); }
-      .framing-tag { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--fg-2); }
-      .framing-tag .ico { width: 16px; height: 16px; color: var(--fg-3); }
-      .framing-card.good .framing-tag .ico { color: var(--kygo-green-dark); }
-      .framing-stat { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 6vw, 48px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-2); margin-top: 8px; display: inline-flex; align-items: baseline; gap: 6px; }
-      .framing-card.good .framing-stat { color: var(--kygo-green-dark); }
-      .framing-stat small { font-size: 14px; font-weight: 500; color: var(--fg-3); }
-      .framing-cap { font-family: var(--font-display); font-weight: 600; font-size: 12px; letter-spacing: 0.4px; text-transform: uppercase; color: var(--fg-3); }
-      .framing-card.good .framing-cap { color: var(--kygo-green-dark); }
-      .framing-card p { margin: 6px 0 0; font-size: 14px; line-height: 1.55; color: var(--fg-2); }
+      /* Bias module (compact, stays 2-up) */
+      .bias { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .bias-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 4px; }
+      .bias-card.good { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.10); }
+      .bias-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-2); }
+      .bias-tag .ico { width: 14px; height: 14px; color: var(--fg-3); }
+      .bias-card.good .bias-tag .ico { color: var(--kygo-green-dark); }
+      .bias-stat { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 6.5vw, 38px); line-height: 1.05; letter-spacing: -0.02em; color: var(--fg-2); margin-top: 6px; }
+      .bias-card.good .bias-stat { color: var(--kygo-green-dark); }
+      .bias-stat small { font-size: 12px; font-weight: 500; color: var(--fg-3); }
+      .bias-cap { font-family: var(--font-display); font-weight: 600; font-size: 11px; letter-spacing: 0.2px; text-transform: uppercase; color: var(--fg-3); }
+      .bias-card.good .bias-cap { color: var(--kygo-green-dark); }
+      .bias-card p { margin: 6px 0 0; font-size: 13px; line-height: 1.5; color: var(--fg-2); }
+      .bias-note { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; margin: 2px 0 0; font-size: 13px; line-height: 1.55; color: var(--fg-2); background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px 16px; }
+      .bias-note .ico { width: 16px; height: 16px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
+      .bias-note strong { color: var(--fg-1); font-weight: 600; }
+      .bias-note em { font-style: normal; color: var(--fg-3); font-size: 12px; }
 
       /* Kygo CTA */
       .kygo-cta-card { background: var(--kygo-dark); border-radius: 24px; padding: 40px 24px; position: relative; overflow: hidden; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; }
@@ -935,22 +905,59 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
       .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
-      /* Filters */
-      .filters { display: flex; flex-wrap: wrap; gap: 18px 28px; align-items: flex-end; padding: 20px 22px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; margin-bottom: 18px; }
-      .chip-group { display: flex; flex-direction: column; gap: 8px; }
-      .chip-group-label { font-family: var(--font-display); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
-      .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
-      .filter-chip { font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-2); cursor: pointer; transition: all .15s ease; }
-      .filter-chip:hover { border-color: var(--kygo-green); color: var(--kygo-green-dark); }
-      .filter-chip.active { background: var(--kygo-green); border-color: var(--kygo-green); color: #fff; }
-      .filter-reset { align-self: flex-end; margin-left: auto; font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 999px; border: 0; background: transparent; color: var(--fg-3); cursor: pointer; }
-      .filter-reset:hover { color: var(--kygo-green-dark); }
-      .count { font-size: 13px; color: var(--fg-3); margin-bottom: 18px; }
-      .count strong { color: var(--fg-1); }
-      .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--fg-2); background: #fff; border: 1.5px dashed var(--border-subtle); border-radius: 18px; }
-      .link-btn { border: 0; background: none; color: var(--kygo-green-dark); font-weight: 600; cursor: pointer; font-size: inherit; }
+      /* ── Comparison matrix (logo chart) ───────────────────────────────── */
+      .cmp { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 8px 8px 4px; }
+      @media (min-width: 768px) { .cmp { padding: 12px 18px 10px; border-radius: 22px; } }
+      .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      @media (min-width: 768px) { .cmp-scroll { overflow-x: visible; } }
+      .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 560px; }
+      .cmp-table th, .cmp-table td { padding: 0; vertical-align: middle; }
+      .cmp-table thead th { font-family: var(--font-display); font-weight: 600; font-size: 10.5px; letter-spacing: 0.4px; text-transform: uppercase; color: var(--fg-3); text-align: center; padding: 12px 6px; border-bottom: 1px solid var(--border-subtle); white-space: nowrap; background: #fff; }
+      .cmp-table thead .cmp-th-device { text-align: left; padding-left: 8px; }
+      .th-full { display: none; } .th-short { display: inline; }
+      @media (min-width: 768px) {
+        .th-full { display: inline; } .th-short { display: none; }
+        .cmp-table thead th { font-size: 11px; padding: 14px 8px; }
+      }
+      .cmp-table tbody tr + tr td, .cmp-table tbody tr + tr th { border-top: 1px solid var(--border-subtle); }
+      .cmp-table tbody tr:hover td, .cmp-table tbody tr:hover .cmp-td-device { background: var(--bg-surface); }
+      .cmp-td-device { padding: 10px 8px; width: 84px; min-width: 84px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--border-subtle); }
+      .brand { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+      .brand-img { width: 38px; height: 38px; border-radius: 9px; background: var(--bg-raised); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .brand-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
+      .brand-img.brand-img--icon { color: var(--fg-3); }
+      .brand-img.brand-img--icon .ico { width: 18px; height: 18px; }
+      .brand-img.sm { width: 34px; height: 34px; border-radius: 8px; }
+      .brand-text { display: flex; flex-direction: column; min-width: 0; }
+      .brand-name { font-family: var(--font-display); font-weight: 600; font-size: 10.5px; color: var(--fg-1); line-height: 1.15; }
+      .brand-type { font-size: 9.5px; color: var(--fg-3); line-height: 1.2; display: none; }
+      @media (min-width: 768px) {
+        .cmp-td-device { padding: 12px 14px 12px 8px; width: auto; min-width: 230px; position: static; box-shadow: none; }
+        .brand { flex-direction: row; align-items: center; gap: 12px; text-align: left; }
+        .brand-img { width: 42px; height: 42px; border-radius: 11px; }
+        .brand-img.sm { width: 42px; height: 42px; border-radius: 11px; }
+        .brand-name { font-size: 15px; }
+        .brand-type { font-size: 11.5px; display: block; }
+      }
+      .cmp-table tbody td { text-align: center; padding: 10px 6px; }
+      @media (min-width: 768px) { .cmp-table tbody td { padding: 12px 8px; } }
+      .mk { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; height: 24px; border-radius: 50%; }
+      .mk.on { background: var(--kygo-green); color: #fff; box-shadow: 0 0 0 3px rgba(34,197,94,0.10); }
+      .mk.on .ico { width: 12px; height: 12px; }
+      .mk.off { background: var(--bg-raised); }
+      .mk .dash { display: block; width: 9px; height: 2px; border-radius: 1px; background: var(--fg-3); }
+      .mk.approx { background: var(--bg-raised); color: var(--fg-2); font-family: var(--font-display); font-weight: 700; font-size: 14px; }
+      .mk.pill { width: auto; min-width: 0; padding: 0 9px; border-radius: 999px; background: var(--bg-raised); color: var(--fg-2); font-family: var(--font-display); font-weight: 600; font-size: 11px; }
+      .m-pill { display: inline-flex; align-items: center; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
+      .m-pill.ex { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .m-pill.rest { background: var(--bg-raised); color: var(--fg-2); }
+      .acc-pill { display: inline-flex; align-items: center; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
+      .acc-pill.free { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .acc-pill.paid { background: var(--bg-raised); color: var(--fg-2); }
+      .cmp-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; padding: 12px 10px 10px; font-size: 12px; line-height: 1.5; color: var(--fg-3); }
+      .cmp-legend .ico { width: 13px; height: 13px; color: var(--kygo-green-dark); background: var(--kygo-green-light); border-radius: 50%; padding: 2px; box-sizing: content-box; }
 
-      /* Device cards */
+      /* Device detail cards */
       .dev-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
       @media (min-width: 620px) { .dev-grid { grid-template-columns: 1fr 1fr; } }
       @media (min-width: 1000px) { .dev-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -958,19 +965,11 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .dev-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
       .dev-card.is-validated { border-color: rgba(34,197,94,0.45); }
       .dev-head { display: flex; align-items: center; gap: 12px; }
-      .dev-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg-raised); color: var(--fg-2); display: inline-flex; align-items: center; justify-content: center; flex: none; }
-      .dev-icon .ico { width: 20px; height: 20px; }
+      .dev-head .brand-img { width: 44px; height: 44px; border-radius: 11px; }
       .dev-headtext { min-width: 0; flex: 1; }
       .dev-headtext h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; margin: 0; line-height: 1.2; }
       .dev-meta { font-size: 12px; color: var(--fg-3); }
-      .sub-tag { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
-      .sub-tag .ico { width: 11px; height: 11px; }
-      .sub-tag.free { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
-      .sub-tag.paid { background: var(--bg-raised); color: var(--fg-2); }
       .dev-pills { display: flex; flex-wrap: wrap; gap: 6px; }
-      .m-pill { display: inline-flex; align-items: center; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
-      .m-pill.ex { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
-      .m-pill.rest { background: var(--bg-raised); color: var(--fg-2); }
       .vbadge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
       .vbadge .ico { width: 12px; height: 12px; }
       .vbadge.yes { background: var(--kygo-green); color: #fff; }
@@ -996,33 +995,20 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .dev-amazon .ico { width: 14px; height: 14px; transition: transform .15s; }
       .dev-amazon:hover .ico { transform: translateX(2px); }
 
-      /* Tables */
-      .tbl-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; }
-      .tbl { width: 100%; border-collapse: collapse; font-family: var(--font-body); }
-      .tbl thead th { text-align: left; padding: 14px 16px; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.4px; background: var(--bg-raised); }
-      .tbl tbody td { padding: 13px 16px; border-top: 1px solid var(--border-subtle); vertical-align: top; font-size: 13.5px; line-height: 1.5; }
-      .tbl tbody tr:hover { background: var(--bg-surface); }
-      .tbl .spec-name { font-weight: 600; color: var(--fg-1); }
-      .tbl .tc { text-align: center; }
-      .tbl .cell-sub { display: block; color: var(--fg-2); font-size: 13px; line-height: 1.5; margin-top: 4px; }
-      .yn { display: inline-flex; align-items: center; justify-content: center; }
-      .yn .ico { width: 16px; height: 16px; }
-      .yn.yes { color: var(--kygo-green-dark); }
-      .yn.no { color: var(--fg-3); }
-      .yn.opt { font-size: 11px; font-weight: 600; color: var(--fg-2); background: var(--bg-raised); padding: 2px 8px; border-radius: 999px; }
-      .q-pill { display: inline-block; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
-      .q-good { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
-      .q-mixed { background: var(--bg-raised); color: var(--fg-2); }
-      .q-poor { background: var(--kygo-dark); color: #fff; }
-      @media (max-width: 760px) {
-        .tbl thead { display: none; }
-        .tbl tbody td { display: flex; justify-content: space-between; gap: 16px; padding: 8px 16px; border-top: 0; text-align: right; }
-        .tbl tbody tr { display: block; padding: 12px 0; border-top: 1px solid var(--border-subtle); }
-        .tbl tbody td::before { content: attr(data-label); font-family: var(--font-display); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--fg-3); text-align: left; }
-        .tbl .spec-name { padding-top: 12px; }
-        .tbl .cell-sub { text-align: right; margin-top: 0; }
-        .tbl .tc { justify-content: space-between; }
-      }
+      /* Signal-quality cards */
+      .sig-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+      @media (min-width: 620px) { .sig-grid { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 1000px) { .sig-grid { grid-template-columns: repeat(3, 1fr); } }
+      .sig-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+      .sig-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .sig-q { font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 999px; }
+      .sig-q.q-good { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .sig-q.q-mixed { background: var(--bg-raised); color: var(--fg-2); }
+      .sig-q.q-poor { background: var(--kygo-dark); color: #fff; }
+      .sig-rank { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); }
+      .sig-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 2px 0 0; line-height: 1.3; color: var(--fg-1); }
+      .sig-find { margin: 0; font-size: 13px; line-height: 1.55; color: var(--fg-2); }
+      .sig-src { margin-top: auto; padding-top: 8px; font-size: 11.5px; color: var(--fg-3); border-top: 1px solid var(--border-subtle); }
 
       /* Bottom line */
       .bottomline { background: var(--kygo-dark); color: rgba(255,255,255,0.82); border-radius: 22px; padding: 32px 26px; position: relative; overflow: hidden; }
