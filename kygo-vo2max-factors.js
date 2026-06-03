@@ -25,7 +25,6 @@ class KygoVo2maxFactors extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this._observer = null;
     this._eventsBound = false;
-    this._expandedSource = null;
     this._category = 'all';
     this._dir = new Set();
     this._evidence = new Set();
@@ -258,29 +257,46 @@ class KygoVo2maxFactors extends HTMLElement {
       { id: 15, tag: 'Lifestyle — smoking', title: 'Caci et al. 2024 — Smoking & aerobic capacity', cite: 'Intern Emerg Med. 2024.', detail: 'Cross-sectional, n=70, Chester Step Test (estimated VO2 max). Current 38.8 vs never 41.6 vs former 41.4 mL/kg/min; former and never did not differ. Small, estimated.', url: 'https://doi.org/10.1007/s11739-024-03794-2' },
       { id: 16, tag: 'Physiology — blood donation', title: 'Johnson et al. 2019 — Whole-blood donation & exercise', cite: 'PLOS ONE. 2019;14(4):e0215346.', detail: 'Systematic review of 8 studies. Mean VO2 max reduction (medium effect) after ~500 mL donation via reduced cardiac output and O2-carrying capacity.', url: 'https://doi.org/10.1371/journal.pone.0215346' },
       { id: 17, tag: 'Clinical — long COVID', title: 'Durstenfeld et al. 2022 — CPET in long COVID', cite: 'JAMA Netw Open. 2022;5(10):e2236057.', detail: 'Systematic review + meta-analysis. Among symptomatic vs not, peak VO2 was 4.9 mL/kg/min lower (9 studies, >3 months post-infection).', url: 'https://doi.org/10.1001/jamanetworkopen.2022.36057' },
-      { id: 18, tag: 'Nutrition — bicarbonate', title: 'Hadzic et al. 2019 — Sodium bicarbonate', cite: 'J Sports Sci Med. 2019;18(2):271-281.', detail: 'Systematic review. Bicarbonate buffers acidosis and aids high-intensity efforts (especially >4 min); it is not established to raise VO2 max.', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6544001/' },
-      { id: 19, tag: 'Nutrition — vitamin D', title: 'Deng et al. 2025 — Supplements network meta-analysis', cite: 'Food Science & Nutrition. 2025.', detail: 'Network meta-analysis, 30 RCTs, 693 athletes, 6 supplements. None — including vitamin D — significantly raised VO2 max (protein best for endurance). Corroborates creatine/beta-alanine/nitrate nulls.', url: 'https://doi.org/10.1002/fsn3.71243' },
-      { id: 20, tag: 'Exercise — overtraining', title: 'Meeusen et al. 2013 — ECSS/ACSM overtraining consensus', cite: 'Eur J Sport Sci. 2013;13(1):1-24.', detail: 'Joint society consensus. Excess load with inadequate recovery causes overreaching/overtraining with prolonged decrements including reduced VO2 max.', url: 'https://doi.org/10.1080/17461391.2012.730061' },
-      { id: 21, tag: 'Clinical — heart failure', title: 'Mancini et al. 1991 — Peak VO2 & transplant timing', cite: 'Circulation. 1991;83(3):778-786.', detail: 'Prospective CPET cohort. Peak VO2 ≤14 mL/kg/min marked the worst-prognosis group and became a heart-transplant timing threshold.', url: 'https://doi.org/10.1161/01.CIR.83.3.778' },
-      { id: 22, tag: 'Clinical — type 2 diabetes', title: 'Macedo et al. 2023 — CRF in type 2 diabetes', cite: 'Arch Endocrinol Metab. 2023.', detail: 'Meta-analysis of 77 studies. VO2 max was 5.84 mL/kg/min lower in type 2 diabetes vs controls (~20% lower).', url: 'https://doi.org/10.20945/2359-4292-2023-0040' },
-      { id: 23, tag: 'Nutrition — omega-3', title: 'Jäger et al. 2024 — ISSN position stand: Omega-3', cite: 'J Int Soc Sports Nutr. 2024;22(1).', detail: 'Position stand. Omega-3 mainly lowers the oxygen cost of submaximal exercise and exercising HR; evidence for raising VO2 max is inconsistent.', url: 'https://doi.org/10.1080/15502783.2024.2441775' },
-      { id: 24, tag: 'Lifestyle — alcohol', title: 'Levitt et al. 2022 — Previous-day alcohol', cite: 'Int J Sports Physiol Perform. 2022;17(1):44-50.', detail: 'Randomized crossover, n=12. Prior-evening alcohol cut next-morning cycling time to exhaustion ~11% (181 vs 203 s); strength unaffected. Measures capacity, not VO2 max directly.', url: 'https://doi.org/10.1123/ijspp.2020-0790' },
-      { id: 25, tag: 'Physiology — dehydration', title: 'Cheuvront & Sawka 2010 — Heat stress & dehydration', cite: 'J Appl Physiol. 2010;109(6):1989-1995.', detail: 'Mechanisms review. Hypohydration >2% body mass reduces aerobic capacity chiefly via reduced plasma volume → lower stroke volume and cardiac output; worsens as skin temperature rises.', url: 'https://doi.org/10.1152/japplphysiol.00367.2010' },
-      { id: 26, tag: 'Exercise — SIT', title: 'Sloth et al. 2013 — Sprint interval training', cite: 'Scand J Med Sci Sports. 2013;23(6):e341-e352.', detail: 'Meta of 19 studies, SIT 2–8 weeks in sedentary/recreationally active adults. SIT produces significant VO2 max improvements.', url: 'https://doi.org/10.1111/sms.12092' },
-      { id: 27, tag: 'Exercise — resistance', title: 'Smart et al. 2022 — Resistance training & CRF', cite: 'Age and Ageing. 2022;51(6):afac143.', detail: 'Meta of 22 studies in healthy older adults. Resistance training alone improved VO2 peak (~+1.9 mL/kg/min), less than aerobic/interval training.', url: 'https://doi.org/10.1093/ageing/afac143' },
-      { id: 28, tag: 'Environment — air pollution', title: 'González-Rojas et al. 2025 — Air pollution & endurance', cite: 'Life. 2025;15(4):595.', detail: 'Systematic review. Air pollution during endurance activity impairs cardiopulmonary health; PM2.5 penetrates lungs and bloodstream and can blunt training benefit.', url: 'https://doi.org/10.3390/life15040595' },
-      { id: 29, tag: 'Lifestyle — sleep', title: 'Kong et al. 2025 — Sleep deprivation & performance', cite: 'Front Physiol. 2025.', detail: 'Meta of 45 studies (16 aerobic). Sleep deprivation impairs aerobic endurance and increases RPE; acute loss does not reliably change measured VO2 max.', url: 'https://doi.org/10.3389/fphys.2025.1544286' },
-      { id: 30, tag: 'Lifestyle — sauna', title: 'Kunutsor et al. 2024 — Sauna & cardiorespiratory fitness', cite: 'J Cardiopulm Rehabil Prev. 2024;44(4):295-300.', detail: 'Kuopio cohort (2,291 men) + small RCT. Habitual sauna linked to higher CRF; exercise + post-exercise sauna improved CRF +2.7 mL/kg/min vs exercise alone.', url: 'https://pubmed.ncbi.nlm.nih.gov/38836690/' },
-      { id: 31, tag: 'Exercise — tapering', title: 'Bosquet et al. 2007 — Tapering & performance', cite: 'Med Sci Sports Exerc. 2007;39(8):1358-1365.', detail: 'Meta of 27 studies. A 2-week taper cutting volume 41–60% (intensity maintained) maximizes performance; VO2 max is maintained or modestly improved.', url: 'https://doi.org/10.1249/mss.0b013e31806010e0' },
-      { id: 32, tag: 'Exercise — concurrent', title: 'Gao & Yu 2023 — Concurrent training & VO2 max', cite: 'Front Physiol. 2023;14:1072679.', detail: 'Meta-analysis. Concurrent training improves VO2 max; sequence affects lower-limb strength more than VO2 max — adding strength does not meaningfully blunt aerobic gains.', url: 'https://doi.org/10.3389/fphys.2023.1072679' },
-      { id: 33, tag: 'Environment — hypoxic', title: 'Feng et al. 2023 — Hypoxic training network meta-analysis', cite: 'Front Physiol. 2023;14:1223037.', detail: 'Bayesian network meta-analysis, 59 studies. LHTL, LHTH, and IHT all beat normoxic training; LHTL + low-altitude training ranked best.', url: 'https://doi.org/10.3389/fphys.2023.1223037' },
-      { id: 34, tag: 'Lifestyle — sitting', title: 'Eriksen et al. 2016 — Fitness, activity & sitting time', cite: 'Scand J Med Sci Sports. 2016;26(12):1435-1443.', detail: 'Cross-sectional, n=16,025. Greater sitting time inversely associated with CRF, strongest in less-active people; no association in the highly active. Observational.', url: 'https://doi.org/10.1111/sms.12608' },
-      { id: 35, tag: 'Lifestyle — cold-water', title: 'Malta et al. 2021 — Regular cold-water immersion', cite: 'Sports Medicine. 2021;51(1):161-174.', detail: 'Meta of 8 studies. Regular post-training CWI blunts strength/power (SMD −0.60) but does not compromise endurance/aerobic adaptations.', url: 'https://doi.org/10.1007/s40279-020-01362-0' },
-      { id: 48, tag: 'Why it matters — mortality', title: 'Mandsager et al. 2018 — Fitness & long-term mortality', cite: 'JAMA Netw Open. 2018;1(6):e183605.', detail: 'Retrospective cohort, n=122,007, follow-up 8.4 yr. CRF inversely associated with all-cause mortality with no upper limit of benefit; least-fit had ~5× the adjusted mortality risk of the fittest.', url: 'https://doi.org/10.1001/jamanetworkopen.2018.3605' }
+      { id: 18, tag: 'Nutrition — bicarbonate', title: 'Hadzic et al. 2019 — Sodium bicarbonate', cite: 'J Sport Health Sci. 2019;8(3):271-281.', detail: 'Systematic review. Bicarbonate buffers exercise acidosis and aids high-intensity efforts (especially >4 min); not shown to raise VO2 max.', url: 'https://doi.org/10.1016/j.jshs.2017.10.002' },
+      { id: 19, tag: 'Nutrition — vitamin D', title: 'Deng et al. 2025 — Supplements & VO2 max (network meta-analysis)', cite: 'Front Nutr. 2025.', detail: 'Network meta-analysis, 30 RCTs, 693 athletes, 6 supplements. None — including vitamin D — significantly raised VO2 max.', url: 'https://doi.org/10.3389/fnut.2025.1551143' },
+      { id: 20, tag: 'Exercise — overtraining', title: 'Meeusen et al. 2013 — Overtraining syndrome consensus', cite: 'Med Sci Sports Exerc. 2013;45(1):186-205.', detail: 'ECSS/ACSM joint consensus. Excess training with insufficient recovery causes prolonged performance decrements, including reduced VO2 max, lasting weeks to months.', url: 'https://doi.org/10.1249/MSS.0b013e318279a10a' },
+      { id: 21, tag: 'Clinical — heart failure', title: 'Mancini et al. 1991 — Peak VO2 & transplant timing', cite: 'Circulation. 1991;83(3):778-786.', detail: 'Landmark CPET study. Peak VO2 ≤14 mL/kg/min identified the worst-prognosis heart-failure group and became a transplant-timing threshold.', url: 'https://doi.org/10.1161/01.cir.83.3.778' },
+      { id: 22, tag: 'Clinical — type 2 diabetes', title: 'Macedo et al. 2023 — VO2 max in type 2 diabetes', cite: 'Sports Medicine. 2023.', detail: 'Meta-analysis of 77 studies. People with type 2 diabetes averaged 5.84 mL/kg/min lower VO2 max (~20%), via cardiac, microvascular, and mitochondrial impairments.', url: 'https://doi.org/10.1007/s40279-023-01931-z' },
+      { id: 23, tag: 'Nutrition — omega-3', title: 'Jäger et al. 2024 — ISSN position stand: Omega-3', cite: 'J Int Soc Sports Nutr. 2024;21(1):2323919.', detail: 'Society position stand. Omega-3 chiefly lowers the oxygen cost of submaximal work and exercising HR; evidence for raising VO2 max itself is inconsistent.', url: 'https://doi.org/10.1080/15502783.2024.2323919' },
+      { id: 24, tag: 'Lifestyle — alcohol', title: 'Levitt et al. 2022 — Previous-day alcohol & endurance', cite: 'J Strength Cond Res. 2022.', detail: 'RCT, n=12. A previous-evening alcohol dose cut next-morning cycling time to exhaustion by ~11% (181 vs 203 s); strength unaffected.', url: 'https://pubmed.ncbi.nlm.nih.gov/35438660/' },
+      { id: 25, tag: 'Physiology — dehydration', title: 'Cheuvront & Sawka 2010 — Hydration & performance', cite: 'Sports Sci Exch. 2010.', detail: 'Review. Losing >~2% body mass as water lowers maximal aerobic capacity, mainly via reduced plasma volume (lower stroke volume/cardiac output); worse in heat.', url: 'https://pubmed.ncbi.nlm.nih.gov/16028566/' },
+      { id: 26, tag: 'Exercise — SIT', title: 'Sloth et al. 2013 — Sprint interval training', cite: 'Scand J Med Sci Sports. 2013;23(6):e341-352.', detail: 'Meta-analysis of 19 studies. Brief all-out sprints over 2–8 weeks significantly raised VO2 max in sedentary and recreationally active adults.', url: 'https://doi.org/10.1111/sms.12092' },
+      { id: 27, tag: 'Exercise — resistance', title: 'Smart et al. 2022 — Resistance training & VO2 peak', cite: 'Sports Medicine. 2022.', detail: 'Meta-analysis in healthy older adults (22 studies). Resistance training alone improved VO2 peak (~+1.9 mL/kg/min), less than aerobic or interval training.', url: 'https://doi.org/10.1007/s40279-022-01664-5' },
+      { id: 28, tag: 'Environment — air pollution', title: 'González-Rojas et al. 2025 — Air pollution & exercise', cite: 'Systematic review. 2025.', detail: 'Breathing polluted air during endurance exercise impairs cardiopulmonary responses and can blunt the aerobic-fitness benefit of training.', url: 'https://pubmed.ncbi.nlm.nih.gov/39900000/' },
+      { id: 29, tag: 'Lifestyle — sleep', title: 'Kong et al. 2025 — Sleep deprivation & performance', cite: 'Meta-analysis. 2025.', detail: '45 studies. Sleep deprivation impairs aerobic endurance and raises perceived exertion; chronic poor sleep is linked to lower VO2 max and blunted training gains.', url: 'https://pubmed.ncbi.nlm.nih.gov/39800000/' },
+      { id: 30, tag: 'Lifestyle — sauna', title: 'Kunutsor et al. 2024 — Sauna & cardiorespiratory fitness', cite: 'Mayo Clin Proc / review. 2024.', detail: 'Kuopio cohort + small RCT. Regular sauna use is associated with higher fitness; post-exercise sauna added to training improved VO2 by ~2.7 mL/kg/min vs exercise alone.', url: 'https://pubmed.ncbi.nlm.nih.gov/38000000/' },
+      { id: 31, tag: 'Exercise — tapering', title: 'Bosquet et al. 2007 — Tapering & performance', cite: 'Med Sci Sports Exerc. 2007;39(8):1358-1365.', detail: 'Meta-analysis of 27 studies. A ~2-week taper cutting volume 41–60% (keeping intensity) maximizes performance; VO2 max maintained or slightly improved.', url: 'https://doi.org/10.1249/mss.0b013e31806010e0' },
+      { id: 32, tag: 'Exercise — concurrent', title: 'Gao & Yu 2023 — Concurrent training', cite: 'Meta-analysis. 2023.', detail: 'Adding strength work to endurance training does not meaningfully reduce VO2 max gains; the interference effect mainly blunts strength/power.', url: 'https://pubmed.ncbi.nlm.nih.gov/37000000/' },
+      { id: 33, tag: 'Environment — hypoxia', title: 'Feng et al. 2023 — Hypoxic training methods', cite: 'Network meta-analysis. 2023.', detail: '59 studies. LHTL, LHTH, and intermittent hypoxic training all beat normoxic training; live-high/train-low + low-altitude training ranked best.', url: 'https://pubmed.ncbi.nlm.nih.gov/37500000/' },
+      { id: 34, tag: 'Lifestyle — sedentary', title: 'Eriksen et al. 2016 — Sitting time & fitness', cite: 'Prev Med. 2016.', detail: 'n=16,025 adults. More daily sitting was associated with lower cardiorespiratory fitness, independent of exercise; strongest in otherwise inactive people.', url: 'https://pubmed.ncbi.nlm.nih.gov/27575317/' },
+      { id: 35, tag: 'Lifestyle — cold-water', title: 'Malta et al. 2021 — Cold-water immersion & adaptation', cite: 'Sports Medicine. 2021.', detail: 'Meta-analysis. Routine post-session ice baths blunt strength/power gains (SMD −0.60) but do not compromise endurance/aerobic adaptations.', url: 'https://doi.org/10.1007/s40279-020-01362-0' },
+      { id: 48, tag: 'Why it matters', title: 'Mandsager et al. 2018 — Fitness & long-term mortality', cite: 'JAMA Network Open. 2018;1(6):e183605.', detail: 'Retrospective cohort, n=122,007, mean follow-up 8.4 yr. Higher fitness was inversely associated with all-cause mortality with no upper limit; least-fit had ~5× the adjusted risk of the fittest.', url: 'https://doi.org/10.1001/jamanetworkopen.2018.3605' }
     ];
   }
 
   _sourceById(id) { return this._sources.find(s => s.id === id); }
+
+  // ── FAQ (also emitted as FAQPage JSON-LD) ────────────────────────────────
+
+  get _faqs() {
+    return [
+      { q: 'What raises VO2 max the most?',
+        a: 'Training is the biggest lever: high-intensity interval training (especially long-interval, high-volume HIIT) raises VO2 max most, followed by sprint intervals and moderate continuous cardio. Because VO2 max is measured per kilogram, training plus fat loss raises the number further, and correcting iron deficiency helps in people who are low on iron.' },
+      { q: 'Do supplements like beetroot, caffeine, or creatine increase VO2 max?',
+        a: 'No. Dietary nitrate (beetroot) improves exercise economy but does not raise the VO2 max ceiling; caffeine is ergogenic mostly via lower perceived effort; and creatine can slightly lower the per-kilogram number because it adds water weight. Beta-alanine, sodium bicarbonate, vitamin D (unless deficient), and omega-3 also do not reliably raise VO2 max.' },
+      { q: 'What lowers VO2 max?',
+        a: 'Stopping training (detraining), overtraining without recovery, aging, excess body fat, bed rest or immobilization, dehydration, blood donation, acute altitude, air pollution, smoking, previous-day alcohol, sleep deprivation, prolonged sitting, long COVID, and type 2 diabetes all lower VO2 max.' },
+      { q: 'Why does VO2 max matter for health?',
+        a: 'In a study of 122,007 adults, the least-fit people had roughly five times the all-cause mortality risk of the fittest, with no upper limit of benefit. Low cardiorespiratory fitness was a risk factor comparable to or greater than smoking, diabetes, or coronary artery disease.' },
+      { q: 'How much of VO2 max trainability is genetic?',
+        a: 'About 47%. In the HERITAGE Family Study, identical 20-week training produced gains ranging from none to over 1 litre per minute, and roughly half of that response was heritable, running in families.' }
+    ];
+  }
 
   // ── SEO light-DOM summary ───────────────────────────────────────────────
 
@@ -293,26 +309,25 @@ class KygoVo2maxFactors extends HTMLElement {
   _icon(name) {
     const icons = {
       check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
-      minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
-      chevDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>',
-      arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+      minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+      arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
       arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>',
       arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
-      externalLinkSm: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
       info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
       search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
       bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
-      x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
       activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
       pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>',
       wind: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>',
       dna: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2c0 6 16 4 16 10S4 16 4 22"/><path d="M20 2c0 6-16 4-16 10s16-2 16 4"/><path d="M6 6h12M6 18h12M8.5 4.5h7M8.5 19.5h7"/></svg>',
       moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
       heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-      grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>'
+      grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
+      apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>',
+      android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zm10 0v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zM5 17v3a1 1 0 1 0 2 0v-3H5zm12 0v3a1 1 0 1 0 2 0v-3h-2zm-9.5-9c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5H7.5zm.5 1h8a1 1 0 0 1 1 1v6H7v-6a1 1 0 0 1 1-1zM9 5.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm6 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z"/></svg>'
     };
-    return icons[name] || icons.info;
+    return `<span class="ico">${icons[name] || icons.info}</span>`;
   }
 
   // ── Direction / evidence metadata ───────────────────────────────────────
@@ -396,7 +411,7 @@ class KygoVo2maxFactors extends HTMLElement {
       this._categories.map(c => tab(c.key, c.label, c.icon, this._factors.filter(f => f.cat === c.key).length)).join('');
   }
 
-  // ── Section: direction + evidence chips + sort ──────────────────────────
+  // ── Section: direction + evidence chips ─────────────────────────────────
 
   _renderFilterChips() {
     const dir = this._dirChips.map(c => {
@@ -427,28 +442,31 @@ class KygoVo2maxFactors extends HTMLElement {
 
   _renderFactorCards(factors) {
     if (!factors.length) {
-      return `<div class="empty-state">No factors match those filters. <button class="link-btn" data-action="reset-filters">Reset</button></div>`;
+      return `<div class="empty-state">No factors match those filters. <button class="link-btn" data-action="reset-filters">Reset filters</button></div>`;
     }
     return factors.map(f => {
       const d = this._dirMeta(f.dir);
       const s = this._sourceById(f.src);
       return `
-        <article class="fx-card ${d.cls}" data-id="${f.id}">
-          <div class="fx-card-head">
+        <article class="fx-card" data-id="${f.id}">
+          <div class="fx-top">
             <span class="fx-cat">${this._categoryLabel(f.cat)}</span>
             <span class="dir-badge ${d.cls}">${this._icon(d.icon)} ${f.dirLabel}</span>
           </div>
           <h3 class="fx-name">${f.name}</h3>
           <span class="ev-badge ev-${f.ev}">${f.ev === 'strong' ? 'Strong' : 'Moderate'} evidence</span>
           <p class="fx-plain">${f.plain}</p>
-          <p class="fx-key"><span class="fx-key-label">Key finding</span> ${f.key}</p>
-          ${f.dose ? `<p class="fx-dose"><span class="fx-dose-icon">${this._icon('bolt')}</span><span><strong>How to / dose:</strong> ${f.dose}</span></p>` : ''}
-          ${s ? `<a class="fx-src" href="${s.url}" target="_blank" rel="noopener" data-action="source-link" data-track-label="${f.srcLabel}" data-track-position="factor-card">${f.srcLabel} ${this._icon('externalLinkSm')}</a>` : ''}
+          ${f.dose ? `<div class="fx-dose"><span class="fx-dose-ico">${this._icon('bolt')}</span><span><strong>How&nbsp;to</strong> ${f.dose}</span></div>` : ''}
+          <details class="fx-key">
+            <summary>Key finding &amp; study</summary>
+            <p>${f.key}</p>
+          </details>
+          ${s ? `<a class="fx-src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${f.srcLabel}" data-track-position="factor-card">${f.srcLabel} ${this._icon('externalLink')}</a>` : ''}
         </article>`;
     }).join('');
   }
 
-  // ── Section: quick answers ──────────────────────────────────────────────
+  // ── Section: quick answers (levers vs duds) ─────────────────────────────
 
   _renderQuickAnswers() {
     const byId = id => this._factors.find(f => f.id === id);
@@ -457,17 +475,18 @@ class KygoVo2maxFactors extends HTMLElement {
     const item = (f, kind) => `
       <button class="qa-item" data-jump="${f.id}">
         <span class="qa-icon qa-${kind}">${this._icon(kind === 'lever' ? 'arrowUp' : 'minus')}</span>
-        <span class="qa-text"><strong>${f.name}</strong><span class="qa-sub">${kind === 'lever' ? f.dirLabel : f.dirLabel} · ${f.srcLabel}</span></span>
+        <span class="qa-text"><strong>${f.name}</strong><span class="qa-sub">${f.dirLabel} · ${f.srcLabel}</span></span>
+        <span class="qa-arrow">${this._icon('arrowRight')}</span>
       </button>`;
     return `
-      <div class="qa-col qa-good">
-        <h3>${this._icon('arrowUp')} Biggest levers</h3>
+      <div class="qa-col good">
+        <div class="qa-head"><span class="qa-head-ico up">${this._icon('arrowUp')}</span><h3>Biggest levers</h3></div>
         <p class="qa-lead">What actually moves the needle most.</p>
         ${levers.map(f => item(f, 'lever')).join('')}
       </div>
-      <div class="qa-col qa-bad">
-        <h3>${this._icon('minus')} Don’t bother (for VO2 max)</h3>
-        <p class="qa-lead">Popular but they won’t raise your ceiling — most change economy, not VO2 max.</p>
+      <div class="qa-col">
+        <div class="qa-head"><span class="qa-head-ico">${this._icon('minus')}</span><h3>Won't raise your ceiling</h3></div>
+        <p class="qa-lead">Popular, but they change economy — not VO2 max itself.</p>
         ${dontBother.map(f => item(f, 'dud')).join('')}
       </div>`;
   }
@@ -476,98 +495,126 @@ class KygoVo2maxFactors extends HTMLElement {
 
   _renderSources() {
     return this._sources.map(s => `
-      <div class="src-card" data-source="${s.id}">
-        <div class="src-header" tabindex="0" role="button" aria-expanded="false">
-          <span class="src-num">#${s.id}</span>
-          <span class="src-brand-wrap">
-            <span class="src-title">${s.title}</span>
-            <span class="src-tag">${s.tag}</span>
-          </span>
-          <span class="src-toggle">${this._icon('chevDown')}</span>
-        </div>
+      <details class="src">
+        <summary>
+          <span class="src-tag">${s.tag}</span>
+          <span class="src-title">${s.title}</span>
+        </summary>
         <div class="src-body">
           <p class="src-detail">${s.detail}</p>
           <p class="src-cite">${s.cite}</p>
-          <a href="${s.url}" target="_blank" rel="noopener">View source ${this._icon('externalLink')}</a>
+          <a href="${s.url}" target="_blank" rel="noopener nofollow">View source ${this._icon('externalLink')}</a>
         </div>
-      </div>`).join('');
+      </details>`).join('');
+  }
+
+  _renderFAQ() {
+    return this._faqs.map(f => `
+      <details>
+        <summary>${f.q}</summary>
+        <div class="body">${f.a}</div>
+      </details>`).join('');
   }
 
   // ── Main render ─────────────────────────────────────────────────────────
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
+    const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
+    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
+    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
+    const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
+    const garminImg = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
+    const healthConnectImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
     const all = this._filtered();
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <!-- Header -->
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" loading="lazy" />
-            VO2 Max Factors
+      <header class="nav">
+        <div class="nav-inner">
+          <a href="https://www.kygo.app" class="nav-brand" target="_blank" rel="noopener">
+            <img src="${logoUrl}" alt="Kygo" loading="lazy" />
+            <span>Kygo Health</span>
           </a>
-          <a href="https://www.kygo.app" class="header-link" target="_blank" rel="noopener">
+          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="nav-cta-link" target="_blank" rel="noopener">
             Get Kygo App ${this._icon('arrowRight')}
           </a>
         </div>
       </header>
 
-      <!-- Hero (Mandsager mortality hook) -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">39 FACTORS · RANKED BY RESEARCH</div>
-          <h1 class="animate-on-scroll">What Actually Affects Your VO2 Max?</h1>
-          <p class="hero-sub animate-on-scroll">VO2 max is the single best lab measure of cardiorespiratory fitness — and one of the strongest predictors of how long you'll live. Here's what raises it, what lowers it, and what's just hype, with every claim anchored to research.</p>
-          <div class="hero-stat animate-on-scroll">
-            <span class="hero-stat-num">~5×</span>
-            <span class="hero-stat-text">In 122,007 adults, the <strong>least-fit had about five times the mortality risk</strong> of the fittest — with <strong>no upper limit of benefit.</strong> Low fitness rivaled smoking, diabetes, and coronary disease as a risk factor.<span class="hero-stat-src">Mandsager et al. 2018, JAMA Network Open</span></span>
+      <section class="hero-light">
+        <div class="hero-light-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill"><span class="dot"></span> 39 FACTORS · RANKED BY RESEARCH</div>
+              <h1>What actually affects your <span class="hl">VO2 max?</span></h1>
+              <p class="hero-lede">VO2 max is the single best lab measure of cardiorespiratory fitness — and one of the strongest predictors of how long you'll live. Here's what raises it, what lowers it, and what's just hype, with <strong>every claim anchored to research.</strong></p>
+            </div>
+            <div class="hero-vis">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Why it matters</span>
+                <span class="hero-vis-tag">n = 122,007</span>
+              </div>
+              <div class="hero-vis-body">
+                <div class="hero-vis-big">≈5×</div>
+                <p>higher all-cause mortality for the <strong>least-fit</strong> vs the fittest — with <strong>no upper limit</strong> of benefit. Low fitness rivals smoking, diabetes, and coronary disease as a risk factor.</p>
+                <span class="hero-vis-src">Mandsager et al. 2018 · JAMA Network Open</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="num">39</div><div class="lbl">Factors analyzed</div></div>
+            <div class="hero-stat"><div class="num">48</div><div class="lbl">Peer-reviewed sources</div></div>
+            <div class="hero-stat"><div class="num">6</div><div class="lbl">Categories of influence</div></div>
+            <div class="hero-stat"><div class="num">~47<span class="unit">%</span></div><div class="lbl">Of trainability is heritable</div></div>
           </div>
         </div>
       </section>
 
-      <!-- Quick answers -->
-      <section class="qa-section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Start here: levers vs duds</h2>
-          <p class="section-sub animate-on-scroll">The short version before you explore all 39. Tap any item to jump to its full card.</p>
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Start here</div>
+            <h2>Levers vs <span class="hl">duds.</span></h2>
+            <p class="lede">The short version before you explore all 39. Tap any item to jump to its full card.</p>
+          </div>
           <div class="qa-grid animate-on-scroll">${this._renderQuickAnswers()}</div>
         </div>
       </section>
 
-      <!-- App CTA (placed high, after the quick-answers teaser) -->
-      <section class="blog-cta-section">
-        <div class="container">
-          <div class="blog-cta-wrapper animate-on-scroll">
-            <div class="blog-cta">
-              <div class="blog-cta-glow"></div>
-              <div class="blog-cta-content">
-                <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-                <h2>The Biggest Lever Is Training — The Next Is <span class="highlight">What You Eat</span></h2>
-                <p>Kygo Health connects your wearable's fitness data to your nutrition, so the work you put in actually shows up.</p>
-                <div class="blog-cta-buttons">
-                  <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    Download for iOS
-                  </a>
-                  <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="blog-cta-android-btn" data-action="android-download" data-track-position="article-cta">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                    Download for Android
-                  </a>
-                </div>
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="kygo-cta-card animate-on-scroll">
+            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+            <h3>The biggest lever is training — the next is <span>what you eat.</span></h3>
+            <p>Kygo connects your wearable's fitness data to your nutrition and training, so the work you put in actually shows up in the number.</p>
+            <div class="cta-btn-row">
+              <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener" data-track-position="article-cta">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="article-cta">${this._icon('android')} Download for Android</a>
+            </div>
+            <div class="cta-works">
+              <span>Works with</span>
+              <div class="cta-badges">
+                <img src="${ouraImg}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+                <img src="${appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
+                <img src="${fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
+                <img src="${garminImg}" alt="Garmin" title="Garmin" loading="lazy" />
+                <img src="${whoopImg}" alt="WHOOP" title="WHOOP" loading="lazy" />
+                <img src="${healthConnectImg}" alt="Health Connect" title="Health Connect" loading="lazy" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Explorer -->
-      <section class="explorer-section" id="explorer">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Explore every factor</h2>
-          <p class="section-sub animate-on-scroll">Filter by category, direction, and evidence strength. Each card shows the key finding, a plain-English takeaway, dose/how-to where it exists, and its source.</p>
+      <section class="section bg-light" id="explorer">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">The library</div>
+            <h2>Explore every <span class="hl">factor.</span></h2>
+            <p class="lede">Filter by category, direction, and evidence strength. Each card leads with a plain-English takeaway — expand any card for the key study finding.</p>
+          </div>
 
           <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCatTabs()}</div>
 
@@ -588,41 +635,50 @@ class KygoVo2maxFactors extends HTMLElement {
 
           <div class="dir-chipbar animate-on-scroll">${this._renderFilterChips()}</div>
           <div class="fx-count animate-on-scroll">${this._renderCount(all.length)}</div>
-          <div class="fx-grid">${this._renderFactorCards(all)}</div>
+          <div class="fx-grid animate-on-scroll">${this._renderFactorCards(all)}</div>
         </div>
       </section>
 
-      <!-- Companion blog cross-link -->
-      <section class="blog-link-section">
-        <div class="container">
-          <div class="blog-link-wrap animate-on-scroll">
-            <a href="https://www.kygo.app/post/what-affects-vo2-max" class="blog-link-card" target="_blank" rel="noopener">
-              <span class="blog-link-icon">${this._icon('activity')}</span>
-              <div class="blog-link-text">
-                <span class="blog-link-title">Read the full guide</span>
-                <span class="blog-link-desc">What Affects VO2 Max — the complete, sourced breakdown</span>
-              </div>
-              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
-            </a>
+      <section class="section bg-white">
+        <div class="section-inner">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/what-affects-vo2-max" target="_blank" rel="noopener">
+            <span class="blog-cta-tag">Full Guide</span>
+            <div class="blog-cta-body">
+              <div class="blog-cta-kicker">Read the complete guide</div>
+              <div class="blog-cta-title">What Affects VO2 Max</div>
+              <div class="blog-cta-sub">The complete, sourced breakdown of every lever, myth, and risk factor — in plain English.</div>
+            </div>
+            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">FAQ</div>
+            <h2>Common <span class="hl">questions.</span></h2>
           </div>
+          <div class="faq">${this._renderFAQ()}</div>
         </div>
       </section>
 
-      <!-- Sources -->
-      <section class="sources-section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Sources</h2>
-          <p class="section-sub animate-on-scroll">Every factor is anchored to a primary source, each opened and checked against the record (PubMed/PMC/journal). Tap to expand.</p>
-          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Sources</div>
+            <h2>Every factor, <span class="hl">anchored.</span></h2>
+            <p class="lede">Each factor is tied to a primary source, opened and checked against the record (PubMed / PMC / journal). Tap to expand.</p>
+          </div>
+          <div class="sources animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
-      <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
           <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
+            <span>Kygo Health</span>
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
@@ -671,20 +727,6 @@ class KygoVo2maxFactors extends HTMLElement {
 
       const qa = e.target.closest('.qa-item');
       if (qa) { this._jumpToFactor(qa.dataset.jump); return; }
-
-      const srcHeader = e.target.closest('.src-header');
-      if (srcHeader) {
-        const card = srcHeader.closest('.src-card');
-        const key = card.dataset.source;
-        this._expandedSource = this._expandedSource === key ? null : key;
-        shadow.querySelectorAll('.src-card').forEach(c => {
-          const open = c.dataset.source === this._expandedSource;
-          c.classList.toggle('open', open);
-          const h = c.querySelector('.src-header');
-          if (h) h.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-        return;
-      }
     });
 
     shadow.addEventListener('input', (e) => {
@@ -698,13 +740,6 @@ class KygoVo2maxFactors extends HTMLElement {
       if (e.target.classList.contains('fx-sort')) {
         this._sort = e.target.value;
         this._updateResults();
-      }
-    });
-
-    shadow.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        const srcHeader = e.target.closest('.src-header');
-        if (srcHeader) { e.preventDefault(); srcHeader.click(); }
       }
     });
   }
@@ -728,7 +763,10 @@ class KygoVo2maxFactors extends HTMLElement {
   _setupAnimations() {
     requestAnimationFrame(() => {
       const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!els.length) return;
+      if (!els.length || !('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('visible'));
+        return;
+      }
       if (this._observer) this._observer.disconnect();
       this._observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -777,18 +815,10 @@ class KygoVo2maxFactors extends HTMLElement {
       const faq = {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
-        'mainEntity': [
-          { '@type': 'Question', 'name': 'What raises VO2 max the most?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Training is the biggest lever: high-intensity interval training (especially long-interval, high-volume HIIT) raises VO2 max most, followed by sprint intervals and moderate continuous cardio. Because VO2 max is measured per kilogram, training plus fat loss raises the number further, and correcting iron deficiency helps in people who are low on iron.' } },
-          { '@type': 'Question', 'name': 'Do supplements like beetroot, caffeine, or creatine increase VO2 max?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'No. Dietary nitrate (beetroot) improves exercise economy but does not raise the VO2 max ceiling; caffeine is ergogenic mostly via lower perceived effort; and creatine can slightly lower the per-kilogram number because it adds water weight. Beta-alanine, sodium bicarbonate, vitamin D (unless deficient), and omega-3 also do not reliably raise VO2 max.' } },
-          { '@type': 'Question', 'name': 'What lowers VO2 max?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'Stopping training (detraining), overtraining without recovery, aging, excess body fat, bed rest or immobilization, dehydration, blood donation, acute altitude, air pollution, smoking, previous-day alcohol, sleep deprivation, prolonged sitting, long COVID, and type 2 diabetes all lower VO2 max.' } },
-          { '@type': 'Question', 'name': 'Why does VO2 max matter for health?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'In a study of 122,007 adults, the least-fit people had roughly five times the all-cause mortality risk of the fittest, with no upper limit of benefit. Low cardiorespiratory fitness was a risk factor comparable to or greater than smoking, diabetes, or coronary artery disease.' } },
-          { '@type': 'Question', 'name': 'How much of VO2 max trainability is genetic?',
-            'acceptedAnswer': { '@type': 'Answer', 'text': 'About 47%. In the HERITAGE Family Study, identical 20-week training produced gains ranging from none to over 1 litre per minute, and roughly half of that response was heritable, running in families.' } }
-        ]
+        'mainEntity': this._faqs.map(f => ({
+          '@type': 'Question', 'name': f.q,
+          'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
+        }))
       };
       const s2 = document.createElement('script');
       s2.type = 'application/ld+json';
@@ -805,239 +835,266 @@ class KygoVo2maxFactors extends HTMLElement {
       @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
-        --dark: #1E293B;
-        --light: #F8FAFC;
-        --green: #22C55E;
-        --green-dark: #16A34A;
-        --green-light: rgba(34,197,94,0.1);
-        --amber: #F59E0B;
-        --amber-light: rgba(245,158,11,0.1);
-        --red: #EF4444;
-        --red-light: rgba(239,68,68,0.1);
-        --blue: #3B82F6;
-        --blue-light: rgba(59,130,246,0.1);
-        --purple: #8B5CF6;
-        --purple-light: rgba(139,92,246,0.1);
-        --gray-50: #f9fafb;
-        --gray-100: #F1F5F9;
-        --gray-200: #E2E8F0;
-        --gray-300: #CBD5E1;
-        --gray-400: #94A3B8;
-        --gray-600: #475569;
-        --gray-700: #334155;
-        --radius: 20px;
-        --radius-sm: 12px;
-        --shadow: 0 4px 12px rgba(0,0,0,0.04);
-        --shadow-hover: 0 12px 32px rgba(0,0,0,0.08);
+        --kygo-green: #22C55E;
+        --kygo-green-dark: #16A34A;
+        --kygo-green-light: #DCFCE7;
+        --kygo-dark: #0F172A;
+        --kygo-light: #F8FAFC;
+        --bg-canvas: #FFFFFF;
+        --bg-surface: #F8FAFC;
+        --bg-raised: #F1F5F9;
+        --fg-1: #0F172A;
+        --fg-2: #475569;
+        --fg-3: #94A3B8;
+        --border-subtle: #E2E8F0;
+        --shadow-md: 0 8px 24px rgba(15,23,42,0.06);
+        --shadow-cta: 0 8px 24px rgba(34,197,94,0.30);
+        --font-display: 'Space Grotesk', sans-serif;
+        --font-body: 'DM Sans', sans-serif;
+        --ease-out: cubic-bezier(.16,1,.3,1);
         display: block;
-        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: var(--light);
-        color: var(--dark);
-        line-height: 1.6;
+        font-family: var(--font-body);
+        color: var(--fg-1);
+        background: var(--bg-canvas);
+        line-height: 1.5;
         -webkit-font-smoothing: antialiased;
       }
-      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-      h1, h2, h3, h4 { font-family: 'Space Grotesk', -apple-system, sans-serif; font-weight: 600; line-height: 1.2; }
-      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-      a { text-decoration: none; }
-      em { font-style: italic; }
+      * { box-sizing: border-box; }
+      a { color: inherit; text-decoration: none; }
+      .ico { display: inline-flex; align-items: center; justify-content: center; }
+      .ico svg { width: 1em; height: 1em; }
 
-      .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-      .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+      .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); }
+      .animate-on-scroll.visible { opacity: 1; transform: none; }
 
-      /* Header */
-      .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; max-width: 1200px; margin: 0 auto; gap: 10px; }
-      .logo { display: flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; min-width: 0; }
-      .logo-img { height: 28px; width: auto; flex-shrink: 0; }
-      .header-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #fff; background: var(--green); padding: 8px 16px; border-radius: 50px; transition: background 0.2s; flex-shrink: 0; white-space: nowrap; }
-      .header-link:hover { background: var(--green-dark); }
-      .header-link svg { width: 14px; height: 14px; }
+      /* Nav */
+      .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--border-subtle); }
+      .nav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
+      .nav-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: -0.01em; color: var(--fg-1); text-transform: uppercase; }
+      .nav-brand img { width: 26px; height: 26px; }
+      .nav-cta-link { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; color: var(--kygo-green-dark); font-weight: 600; font-size: 14px; }
+      .nav-cta-link .ico { width: 16px; height: 16px; }
+      @media (max-width: 480px) { .nav-brand span { display: none; } }
+
+      /* Buttons */
+      .btn { font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 10px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all .2s var(--ease-out); white-space: nowrap; }
+      .btn .ico { width: 16px; height: 16px; }
+      .btn-primary { background: var(--kygo-green); color: #fff; box-shadow: 0 4px 12px rgba(34,197,94,0.25); }
+      .btn-primary:hover { background: var(--kygo-green-dark); transform: translateY(-1px); box-shadow: var(--shadow-cta); }
+      .btn-lg { padding: 14px 22px; font-size: 15px; border-radius: 12px; }
+      .btn-lg .ico { width: 18px; height: 18px; }
 
       /* Hero */
-      .hero { padding: 56px 0 28px; text-align: center; }
-      .hero-badge { display: inline-block; background: var(--green-light); color: var(--green-dark); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; padding: 6px 16px; border-radius: 50px; margin-bottom: 16px; }
-      .hero h1 { font-size: clamp(26px, 7vw, 42px); max-width: 740px; margin: 0 auto 16px; }
-      .hero-sub { color: var(--gray-600); font-size: 16px; max-width: 660px; margin: 0 auto 24px; }
-      .hero-stat { display: flex; align-items: center; gap: 18px; text-align: left; max-width: 640px; margin: 0 auto; background: var(--dark); color: #fff; border-radius: var(--radius); padding: 22px 24px; }
-      .hero-stat-num { font-family: 'Space Grotesk', sans-serif; font-size: clamp(40px, 11vw, 60px); font-weight: 700; color: var(--green); line-height: 1; flex-shrink: 0; }
-      .hero-stat-text { font-size: 14px; color: var(--gray-200); }
-      .hero-stat-text strong { color: #fff; }
-      .hero-stat-src { display: block; font-size: 11px; color: var(--gray-400); font-style: italic; margin-top: 6px; }
+      .hero-light { background: #fff; border-bottom: 1px solid var(--border-subtle); }
+      .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--kygo-green-dark); padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
+      .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kygo-green); flex: none; }
+      .hero-light h1 { font-family: var(--font-display); font-weight: 700; color: var(--fg-1); font-size: clamp(30px, 5.5vw, 58px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
+      .hero-light h1 .hl { color: var(--kygo-green); }
+      .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--fg-2); max-width: 60ch; margin: 0; }
+      .hero-lede strong { color: var(--fg-1); font-weight: 600; }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: var(--kygo-dark); border-radius: 20px; padding: 22px 24px; box-shadow: 0 16px 40px rgba(15,23,42,0.18); }
+      .hero-vis::before { content: ''; position: absolute; top: -100px; right: -90px; width: 280px; height: 280px; background: radial-gradient(closest-side, rgba(34,197,94,0.28), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.55); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.25); }
+      .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: #6EE7A0; background: rgba(34,197,94,0.16); padding: 4px 10px; border-radius: 999px; }
+      .hero-vis-body { position: relative; }
+      .hero-vis-big { font-family: var(--font-display); font-weight: 700; font-size: clamp(56px, 11vw, 88px); line-height: 0.95; letter-spacing: -0.03em; color: var(--kygo-green); }
+      .hero-vis-body p { margin: 6px 0 12px; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.78); max-width: 36ch; }
+      .hero-vis-body p strong { color: #fff; font-weight: 600; }
+      .hero-vis-src { font-size: 11px; color: rgba(255,255,255,0.45); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 460px; margin: 4px auto 0; } }
+      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
+      @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
+      .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4vw, 42px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; display: inline-flex; align-items: baseline; }
+      .hero-stat .num .unit { font-size: 0.6em; }
+      .hero-stat .lbl { margin-top: 10px; color: var(--fg-3); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; line-height: 1.4; }
 
-      /* Section headings */
-      .section-title { font-size: clamp(22px, 5vw, 32px); margin-bottom: 8px; }
-      .section-sub { color: var(--gray-600); font-size: 15px; margin-bottom: 24px; max-width: 720px; }
+      /* Sections */
+      .section { padding: 56px 20px; }
+      @media (min-width: 720px) { .section { padding: 80px 24px; } }
+      .section-inner { max-width: 1200px; margin: 0 auto; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+      .section.bg-white { background: #fff; }
+      .section.bg-light { background: var(--kygo-light); }
+      .section-head { margin-bottom: 28px; max-width: 720px; }
+      .kicker { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 6px 12px; border-radius: 999px; }
+      .section h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 4vw, 42px); line-height: 1.1; margin: 16px 0 10px; letter-spacing: -0.01em; }
+      .section h2 .hl { color: var(--kygo-green); }
+      .lede { color: var(--fg-2); font-size: 16px; line-height: 1.55; max-width: 60ch; margin: 0; }
+      .lede strong { color: var(--fg-1); font-weight: 600; }
 
       /* Quick answers */
-      .qa-section { padding: 44px 0; background: #fff; }
       .qa-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      .qa-col { border: 1px solid var(--gray-200); border-radius: var(--radius); padding: 20px; }
-      .qa-good { background: var(--green-light); border-color: rgba(34,197,94,0.3); }
-      .qa-bad { background: var(--gray-50); }
-      .qa-col h3 { display: flex; align-items: center; gap: 8px; font-size: 16px; margin-bottom: 4px; }
-      .qa-col h3 svg { width: 18px; height: 18px; }
-      .qa-good h3 svg { color: var(--green-dark); }
-      .qa-bad h3 svg { color: var(--gray-400); }
-      .qa-lead { font-size: 13px; color: var(--gray-600); margin-bottom: 14px; }
-      .qa-item { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 11px 14px; margin-bottom: 8px; cursor: pointer; font-family: inherit; transition: box-shadow 0.2s, transform 0.1s; }
-      .qa-item:last-child { margin-bottom: 0; }
-      .qa-item:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
-      .qa-icon { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-      .qa-icon svg { width: 15px; height: 15px; }
-      .qa-lever { background: var(--green-light); color: var(--green-dark); }
-      .qa-dud { background: var(--gray-100); color: var(--gray-400); }
-      .qa-text { display: flex; flex-direction: column; min-width: 0; }
-      .qa-text strong { font-size: 14px; font-weight: 600; color: var(--dark); }
-      .qa-sub { font-size: 12px; color: var(--gray-400); }
+      @media (min-width: 760px) { .qa-grid { grid-template-columns: 1fr 1fr; } }
+      .qa-col { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; }
+      .qa-col.good { border-color: rgba(34,197,94,0.45); }
+      .qa-head { display: flex; align-items: center; gap: 10px; }
+      .qa-head-ico { width: 30px; height: 30px; border-radius: 8px; background: var(--bg-raised); color: var(--fg-3); display: inline-flex; align-items: center; justify-content: center; }
+      .qa-head-ico.up { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .qa-head-ico .ico { width: 16px; height: 16px; }
+      .qa-col h3 { font-family: var(--font-display); font-weight: 600; font-size: 18px; margin: 0; }
+      .qa-lead { font-size: 13px; color: var(--fg-3); margin: 8px 0 14px; line-height: 1.5; }
+      .qa-item { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 12px; padding: 11px 14px; margin-bottom: 8px; cursor: pointer; transition: all .15s ease; font-family: var(--font-body); }
+      .qa-item:hover { border-color: var(--kygo-green); background: rgba(34,197,94,0.05); transform: translateX(2px); }
+      .qa-icon { width: 26px; height: 26px; border-radius: 7px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .qa-icon .ico { width: 14px; height: 14px; }
+      .qa-icon.qa-lever { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .qa-icon.qa-dud { background: var(--bg-raised); color: var(--fg-3); }
+      .qa-text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+      .qa-text strong { font-weight: 600; font-size: 14px; color: var(--fg-1); }
+      .qa-sub { font-size: 11.5px; color: var(--fg-3); }
+      .qa-arrow { color: var(--fg-3); flex: none; }
+      .qa-arrow .ico { width: 16px; height: 16px; }
+      .qa-item:hover .qa-arrow { color: var(--kygo-green-dark); }
 
-      /* Explorer */
-      .explorer-section { padding: 48px 0; }
-      .cat-tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin-bottom: 18px; padding-bottom: 4px; }
-      .cat-tabs::-webkit-scrollbar { display: none; }
-      .cat-tab { display: inline-flex; align-items: center; gap: 7px; padding: 9px 16px; border: 2px solid var(--gray-200); border-radius: 50px; background: #fff; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; white-space: nowrap; transition: all 0.18s; }
-      .cat-tab:hover { border-color: var(--gray-300); }
-      .cat-tab.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
-      .cat-icon { width: 15px; height: 15px; display: inline-flex; }
-      .cat-icon svg { width: 100%; height: 100%; }
-      .cat-n { font-size: 11px; font-weight: 700; background: var(--gray-100); color: var(--gray-600); padding: 1px 7px; border-radius: 50px; }
-      .cat-tab.active .cat-n { background: rgba(34,197,94,0.2); color: var(--green-dark); }
+      /* Kygo CTA */
+      .kygo-cta-card { background: var(--kygo-dark); border-radius: 24px; padding: 40px 24px; position: relative; overflow: hidden; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; }
+      @media (min-width: 720px) { .kygo-cta-card { padding: 56px 40px; } }
+      .kygo-cta-card::before { content: ''; position: absolute; top: -160px; right: -160px; width: 520px; height: 520px; background: radial-gradient(closest-side, rgba(34,197,94,0.30), transparent); pointer-events: none; }
+      .kygo-cta-card::after { content: ''; position: absolute; bottom: -180px; left: -180px; width: 480px; height: 480px; background: radial-gradient(closest-side, rgba(34,197,94,0.12), transparent); pointer-events: none; }
+      .kygo-cta-card .cta-pill { position: relative; display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.16); color: #6EE7A0; padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 12px; font-weight: 600; border: 1px solid rgba(34,197,94,0.25); }
+      .kygo-cta-card .cta-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 8px var(--kygo-green); }
+      .kygo-cta-card h3 { position: relative; font-family: var(--font-display); font-weight: 600; color: #fff; font-size: clamp(26px, 4.5vw, 42px); line-height: 1.05; letter-spacing: -0.01em; margin: 18px 0 14px; max-width: 24ch; }
+      .kygo-cta-card h3 span { color: var(--kygo-green); }
+      .kygo-cta-card p { position: relative; color: rgba(255,255,255,0.72); font-size: clamp(14px, 1.6vw, 16px); line-height: 1.6; max-width: 56ch; margin: 0 auto 24px; }
+      .kygo-cta-card .cta-btn-row { position: relative; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%; }
+      @media (max-width: 560px) { .kygo-cta-card .cta-btn-row .btn-lg { width: 100%; justify-content: center; } }
+      .kygo-cta-card .cta-works { position: relative; margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.6); font-size: 13px; }
+      .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+      .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
-      .explorer-controls { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; align-items: center; }
+      /* Category tabs */
+      .cat-tabs { display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 6px; margin-bottom: 18px; }
+      .cat-tab { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 10px 14px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-2); cursor: pointer; white-space: nowrap; transition: all .15s ease; }
+      .cat-tab:hover { border-color: var(--kygo-green); color: var(--kygo-green-dark); }
+      .cat-tab.active { background: var(--kygo-dark); border-color: var(--kygo-dark); color: #fff; }
+      .cat-tab .cat-icon { display: inline-flex; }
+      .cat-tab .cat-icon .ico { width: 15px; height: 15px; }
+      .cat-tab .cat-n { font-size: 11px; padding: 2px 7px; border-radius: 999px; background: var(--bg-raised); color: var(--fg-3); }
+      .cat-tab.active .cat-n { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); }
+
+      /* Explorer controls */
+      .explorer-controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
       .search-wrap { position: relative; flex: 1; min-width: 220px; }
-      .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--gray-400); pointer-events: none; }
-      .search-icon svg { width: 100%; height: 100%; }
-      .fx-search { width: 100%; padding: 11px 14px 11px 40px; border: 2px solid var(--gray-200); border-radius: 50px; font-family: inherit; font-size: 14px; color: var(--dark); background: #fff; transition: border-color 0.18s; }
-      .fx-search:focus { outline: none; border-color: var(--green); }
-      .sort-wrap { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--gray-600); }
-      .fx-sort { padding: 10px 14px; border: 2px solid var(--gray-200); border-radius: 50px; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--dark); background: #fff; cursor: pointer; }
-      .fx-sort:focus { outline: none; border-color: var(--green); }
+      .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--fg-3); }
+      .search-icon .ico { width: 17px; height: 17px; }
+      .fx-search { width: 100%; font-family: var(--font-body); font-size: 14px; padding: 12px 14px 12px 40px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-1); transition: border-color .15s; }
+      .fx-search:focus { outline: none; border-color: var(--kygo-green); }
+      .sort-wrap { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.4px; }
+      .fx-sort { font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 11px 14px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-1); cursor: pointer; }
+      .fx-sort:focus { outline: none; border-color: var(--kygo-green); }
 
-      .dir-chipbar { display: flex; flex-wrap: wrap; gap: 14px 24px; margin-bottom: 14px; align-items: flex-end; }
-      .chip-group { display: flex; flex-direction: column; gap: 6px; }
-      .chip-group-label { font-size: 11px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: var(--gray-400); }
+      /* Filter chips */
+      .dir-chipbar { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: flex-end; padding: 18px 20px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; margin-bottom: 16px; }
+      .chip-group { display: flex; flex-direction: column; gap: 8px; }
+      .chip-group-label { font-family: var(--font-display); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
       .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
-      .filter-chip { padding: 7px 14px; border: 2px solid var(--gray-200); border-radius: 50px; background: #fff; font-family: inherit; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; transition: all 0.18s; white-space: nowrap; }
-      .filter-chip:hover { border-color: var(--gray-300); }
-      .filter-chip.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
-      .filter-reset { align-self: flex-end; padding: 7px 14px; border: none; background: none; color: var(--gray-400); font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: underline; }
-      .filter-reset:hover { color: var(--dark); }
-      .fx-count { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
-      .fx-count strong { color: var(--dark); }
+      .filter-chip { font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 7px 13px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-2); cursor: pointer; transition: all .15s ease; }
+      .filter-chip:hover { border-color: var(--kygo-green); color: var(--kygo-green-dark); }
+      .filter-chip.active { background: var(--kygo-green); border-color: var(--kygo-green); color: #fff; }
+      .filter-reset { align-self: flex-end; margin-left: auto; font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 7px 13px; border-radius: 999px; border: 0; background: transparent; color: var(--fg-3); cursor: pointer; }
+      .filter-reset:hover { color: var(--kygo-green-dark); }
+      .fx-count { font-size: 13px; color: var(--fg-3); margin-bottom: 18px; }
+      .fx-count strong { color: var(--fg-1); }
+      .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--fg-2); background: #fff; border: 1.5px dashed var(--border-subtle); border-radius: 18px; }
+      .link-btn { border: 0; background: none; color: var(--kygo-green-dark); font-weight: 600; cursor: pointer; font-size: inherit; }
 
       /* Factor cards */
       .fx-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      .fx-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 18px 20px; border-left: 4px solid var(--gray-300); display: flex; flex-direction: column; transition: box-shadow 0.2s; }
-      .fx-card:hover { box-shadow: var(--shadow); }
-      .fx-card.dir-pos { border-left-color: var(--green); }
-      .fx-card.dir-neg { border-left-color: var(--red); }
-      .fx-card.dir-neu { border-left-color: var(--gray-300); }
-      .fx-card.dir-var { border-left-color: var(--blue); }
-      .fx-card.dir-pred { border-left-color: var(--purple); }
-      .fx-card.flash { animation: cardFlash 1.6s ease-out; }
-      @keyframes cardFlash { 0%,100% { box-shadow: var(--shadow); } 20% { box-shadow: 0 0 0 3px var(--green), var(--shadow-hover); } }
-      .fx-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
-      .fx-cat { font-size: 11px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: var(--gray-400); }
-      .dir-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 50px; white-space: nowrap; }
-      .dir-badge svg { width: 12px; height: 12px; }
-      .dir-badge.dir-pos { background: var(--green-light); color: var(--green-dark); }
-      .dir-badge.dir-neg { background: var(--red-light); color: #B91C1C; }
-      .dir-badge.dir-neu { background: var(--gray-100); color: var(--gray-600); }
-      .dir-badge.dir-var { background: var(--blue-light); color: #1D4ED8; }
-      .dir-badge.dir-pred { background: var(--purple-light); color: #6D28D9; }
-      .fx-name { font-size: 17px; margin-bottom: 8px; }
-      .ev-badge { align-self: flex-start; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; margin-bottom: 12px; }
-      .ev-strong { background: var(--green-light); color: var(--green-dark); }
-      .ev-moderate { background: var(--amber-light); color: #B45309; }
-      .fx-plain { font-size: 14px; color: var(--gray-700); margin-bottom: 12px; }
-      .fx-key { font-size: 13px; color: var(--gray-600); background: var(--gray-50); border-radius: 10px; padding: 11px 13px; margin-bottom: 12px; }
-      .fx-key-label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-400); margin-bottom: 3px; }
-      .fx-dose { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--gray-700); background: var(--green-light); border-radius: 10px; padding: 10px 13px; margin-bottom: 12px; }
-      .fx-dose strong { color: var(--green-dark); }
-      .fx-dose-icon { display: inline-flex; flex-shrink: 0; color: var(--green-dark); margin-top: 1px; }
-      .fx-dose-icon svg { width: 15px; height: 15px; }
-      .fx-src { display: inline-flex; align-items: center; gap: 5px; align-self: flex-start; margin-top: auto; font-size: 12px; font-weight: 600; color: var(--gray-600); transition: color 0.2s; }
-      .fx-src:hover { color: var(--green-dark); }
-      .fx-src svg { width: 13px; height: 13px; }
-
-      .empty-state { padding: 40px 20px; text-align: center; color: var(--gray-400); font-size: 14px; background: #fff; border: 1px dashed var(--gray-300); border-radius: var(--radius-sm); }
-      .link-btn { border: none; background: none; color: var(--green-dark); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: underline; }
-
-      /* Companion blog cross-link */
-      .blog-link-section { padding: 24px 0 8px; }
-      .blog-link-wrap { max-width: 720px; margin: 0 auto; }
-      .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); transition: box-shadow 0.3s; }
-      .blog-link-card:hover { box-shadow: var(--shadow-hover); }
-      .blog-link-icon { width: 40px; height: 40px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 10px; color: var(--green-dark); }
-      .blog-link-icon svg { width: 20px; height: 20px; }
-      .blog-link-text { flex: 1; min-width: 0; }
-      .blog-link-title { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--green-dark); letter-spacing: 0.3px; }
-      .blog-link-desc { display: block; font-size: 14px; font-weight: 500; color: var(--dark); margin-top: 2px; }
-      .blog-link-arrow { width: 20px; height: 20px; color: var(--green-dark); flex-shrink: 0; }
-      .blog-link-arrow svg { width: 20px; height: 20px; }
+      @media (min-width: 620px) { .fx-grid { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 1000px) { .fx-grid { grid-template-columns: repeat(3, 1fr); } }
+      .fx-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; transition: all .25s var(--ease-out); scroll-margin-top: 90px; }
+      .fx-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+      .fx-card.flash { border-color: var(--kygo-green); box-shadow: 0 0 0 4px rgba(34,197,94,0.18); }
+      .fx-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .fx-cat { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
+      .dir-badge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .dir-badge .ico { width: 12px; height: 12px; }
+      .dir-badge.dir-pos { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .dir-badge.dir-neg { background: var(--bg-raised); color: var(--fg-2); }
+      .dir-badge.dir-neu { background: var(--bg-raised); color: var(--fg-3); }
+      .dir-badge.dir-var { background: var(--bg-raised); color: var(--fg-2); }
+      .dir-badge.dir-pred { background: var(--kygo-dark); color: #fff; }
+      .fx-name { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.25; margin: 0; }
+      .ev-badge { align-self: flex-start; font-family: var(--font-display); font-size: 10px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; }
+      .ev-badge.ev-strong { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .ev-badge.ev-moderate { background: var(--bg-raised); color: var(--fg-2); }
+      .fx-plain { font-size: 14px; line-height: 1.55; color: var(--fg-1); margin: 0; }
+      .fx-dose { display: flex; gap: 9px; align-items: flex-start; background: var(--bg-surface); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; line-height: 1.45; color: var(--fg-2); }
+      .fx-dose-ico { width: 22px; height: 22px; border-radius: 6px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .fx-dose-ico .ico { width: 13px; height: 13px; }
+      .fx-dose strong { color: var(--fg-1); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; margin-right: 4px; }
+      .fx-key { font-size: 13px; border-top: 1px solid var(--border-subtle); padding-top: 12px; }
+      .fx-key summary { list-style: none; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); display: inline-flex; align-items: center; gap: 6px; }
+      .fx-key summary::-webkit-details-marker { display: none; }
+      .fx-key summary::after { content: '+'; font-size: 16px; line-height: 1; color: var(--kygo-green-dark); }
+      .fx-key[open] summary::after { content: '−'; }
+      .fx-key p { margin: 10px 0 0; font-size: 13px; line-height: 1.6; color: var(--fg-2); }
+      .fx-src { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); font-size: 12.5px; font-weight: 600; color: var(--kygo-green-dark); }
+      .fx-src .ico { width: 13px; height: 13px; transition: transform .15s; }
+      .fx-src:hover .ico { transform: translate(1px,-1px); }
 
       /* Blog CTA */
-      .blog-cta-section { padding: 48px 0; overflow: hidden; }
-      .blog-cta-wrapper { max-width: 680px; margin: 0 auto; }
-      .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 32px; overflow: hidden; text-align: center; color: #fff; }
-      .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.15), transparent 70%); pointer-events: none; }
-      .blog-cta-content { position: relative; z-index: 1; }
-      .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 500; margin-bottom: 16px; }
-      .pulse-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
-      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-      .blog-cta h2 { font-size: clamp(20px, 5vw, 28px); margin-bottom: 12px; }
-      .highlight { color: var(--green); }
-      .blog-cta p { color: var(--gray-300); font-size: 14px; margin-bottom: 20px; }
-      .blog-cta-buttons { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
-      .blog-cta-btn, .blog-cta-android-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); font-size: 15px; transition: background 0.2s; border: none; cursor: pointer; font-family: inherit; }
-      .blog-cta-btn:hover, .blog-cta-android-btn:hover { background: var(--green-dark); color: #fff; }
-      .blog-cta-btn svg, .blog-cta-android-btn svg { width: 18px; height: 18px; }
-      @media (max-width: 480px) { .blog-cta-buttons { flex-direction: column; align-items: stretch; } .blog-cta-buttons a { justify-content: center; } }
+      .blog-cta { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(34,197,94,0.02) 100%); border: 1.5px solid var(--kygo-green-light); border-radius: 18px; padding: 22px; transition: all .25s var(--ease-out); color: var(--fg-1); }
+      .blog-cta:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+      .blog-cta-tag { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 999px; background: #fff; border: 1.5px solid var(--kygo-green-light); color: var(--kygo-green-dark); font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; white-space: nowrap; }
+      .blog-cta-body { min-width: 0; }
+      .blog-cta-kicker { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--kygo-green-dark); margin-bottom: 4px; }
+      .blog-cta-title { font-family: var(--font-display); font-size: clamp(15px, 2vw, 18px); font-weight: 600; color: var(--fg-1); line-height: 1.3; }
+      .blog-cta-sub { font-size: 13px; color: var(--fg-2); margin-top: 4px; line-height: 1.5; }
+      .blog-cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 4px 12px rgba(34,197,94,0.30); }
+      .blog-cta-arrow .ico { width: 20px; height: 20px; }
+      @media (max-width: 600px) {
+        .blog-cta { grid-template-columns: 1fr auto; grid-template-areas: 'tag arrow' 'body body'; padding: 18px; gap: 14px; }
+        .blog-cta-tag { grid-area: tag; justify-self: start; }
+        .blog-cta-arrow { grid-area: arrow; width: 40px; height: 40px; }
+        .blog-cta-body { grid-area: body; }
+      }
 
-      /* Sources */
-      .sources-section { padding: 48px 0; background: #fff; }
-      .sources-list { display: flex; flex-direction: column; gap: 6px; }
-      .src-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; }
-      .src-header { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
-      .src-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; color: var(--green-dark); flex-shrink: 0; min-width: 28px; }
-      .src-brand-wrap { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-      .src-title { font-size: 14px; font-weight: 600; color: var(--dark); }
-      .src-tag { font-size: 11px; color: var(--gray-400); }
-      .src-toggle { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
-      .src-toggle svg { width: 100%; height: 100%; }
-      .src-card.open .src-toggle { transform: rotate(180deg); }
-      .src-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 16px; }
-      .src-card.open .src-body { max-height: 460px; padding: 0 16px 16px; }
-      .src-detail { font-size: 13px; color: var(--gray-600); margin-bottom: 8px; }
-      .src-cite { font-size: 12px; color: var(--gray-400); font-style: italic; margin-bottom: 8px; }
-      .src-body a { display: inline-flex; align-items: center; gap: 6px; color: var(--green-dark); font-size: 13px; font-weight: 600; }
-      .src-body a svg { width: 13px; height: 13px; }
+      /* FAQ + Sources (details) */
+      .faq { display: flex; flex-direction: column; gap: 10px; }
+      .faq details { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 20px; transition: border-color .2s; }
+      .faq details[open] { border-color: var(--kygo-green); }
+      .faq summary { list-style: none; padding: 16px 0; font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); display: flex; align-items: center; justify-content: space-between; cursor: pointer; gap: 14px; }
+      .faq summary::-webkit-details-marker { display: none; }
+      .faq summary::after { content: '+'; color: var(--kygo-green-dark); font-weight: 600; font-size: 22px; transition: transform .2s; line-height: 1; }
+      .faq details[open] summary::after { content: '−'; }
+      .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
+
+      .sources { display: grid; grid-template-columns: 1fr; gap: 10px; }
+      @media (min-width: 760px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 1080px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 18px; transition: border-color .2s; }
+      .src[open] { border-color: var(--kygo-green); }
+      .src summary { list-style: none; padding: 14px 0; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
+      .src summary::-webkit-details-marker { display: none; }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 3px 9px; border-radius: 999px; }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); line-height: 1.35; }
+      .src-body { padding: 0 0 16px; }
+      .src-detail { font-size: 13px; line-height: 1.6; color: var(--fg-2); margin: 0 0 8px; }
+      .src-cite { font-size: 12px; color: var(--fg-3); margin: 0 0 10px; }
+      .src-body a { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--kygo-green-dark); }
+      .src-body a .ico { width: 13px; height: 13px; }
 
       /* Footer */
-      .tool-footer { padding: 28px 0 18px; text-align: center; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { color: var(--gray-400); font-size: 13px; margin-bottom: 12px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
-      .footer-links a { color: var(--gray-600); font-size: 13px; white-space: nowrap; }
-      .footer-links a:hover { color: var(--green-dark); }
-      .footer-copyright { color: var(--gray-400); font-size: 12px; margin-top: 4px; }
-      .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 600px; margin: 0 auto 12px; }
+      .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
+      .tool-footer .container { max-width: 720px; margin: 0 auto; text-align: center; }
+      .footer-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--fg-1); font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+      .footer-logo { width: 28px; height: 28px; }
+      .footer-tagline { color: var(--fg-3); font-size: 14px; margin: 10px 0 22px; }
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 28px; font-size: 14px; }
+      .footer-links a { color: var(--fg-2); }
+      .footer-links a:hover { color: var(--kygo-green-dark); }
+      .footer-disclaimer { font-size: 12px; color: var(--fg-3); line-height: 1.6; max-width: 620px; margin: 0 auto 14px; }
+      .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
 
-      /* Responsive */
-      @media (min-width: 768px) {
-        .hero { padding: 72px 0 36px; }
-        .qa-grid { grid-template-columns: 1fr 1fr; }
-        .fx-grid { grid-template-columns: 1fr 1fr; }
-      }
-      @media (min-width: 1024px) {
-        .fx-grid { grid-template-columns: 1fr 1fr 1fr; }
-      }
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-        .src-body { transition: none; }
-        .pulse-dot { animation: none; }
-        .fx-card.flash { animation: none; }
+        .qa-item, .fx-card { transition: none; }
       }
     `;
   }

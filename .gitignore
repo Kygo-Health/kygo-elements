@@ -8,3 +8,6 @@ before-*.png
 after-*.png
 mobile-table.png
 node_modules/
+.smoke.js
+.smoke-*.html
+.smoke2*
