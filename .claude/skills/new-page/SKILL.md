@@ -9,6 +9,13 @@ Creates a new `kygo-<name>.js` component and a `test-<name>.html` preview harnes
 conventions documented in the repo root `CLAUDE.md`. Read `CLAUDE.md` first if you haven't —
 this skill assumes that house style.
 
+> **If the new page is a full-page tool** (comparison chart, factor explorer, calculator), read
+> **`docs/tool-page-playbook.md`** and build to it: the semantic palette, the standard section
+> skeleton, the reusable modules (logo comparison matrix, collapsible category dropdowns, compact
+> sources), the brand-logo map, the mobile/scroll-reveal gotchas, and the pre-commit checklist.
+> Use `kygo-oura-ring-comparison.js` / `kygo-vo2max-accuracy.js` as the reference implementations,
+> and register the new tool in `kygo-tools.js`.
+
 ## Inputs to determine (ask the user only if unclear)
 
 - **Tag name**: `kygo-<name>` (kebab-case). Class name is the PascalCase form, e.g.
