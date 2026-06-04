@@ -583,8 +583,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="kygo-cta-card animate-on-scroll">
             <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-            <h3>Track your VO2 max trend alongside <span>what you eat.</span></h3>
-            <p>Kygo connects your wearable's data to your nutrition and training, so you see the full picture behind the number, not just one score that drifts.</p>
+            <h3>See how <span>what you eat</span> shows up in your recovery.</h3>
+            <p>Track your VO2 max trend alongside the metrics that drive it, and see how your nutrition moves your sleep, HRV, and recovery.</p>
             <div class="cta-btn-row">
               <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener" data-track-position="article-cta">${this._icon('apple')} Download for iOS</a>
               <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="article-cta">${this._icon('android')} Download for Android</a>
