@@ -21,10 +21,8 @@ class KygoDeepSleepFactors extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._observer = null;
-    this._activeCategory = 'lifestyle';
     this._expandedFactor = null;
     this._expandedTopPick = null;
-    this._sortMode = 'default';
     this._eventsBound = false;
   }
 
@@ -490,7 +488,7 @@ class KygoDeepSleepFactors extends HTMLElement {
   _icon(name) {
     const icons = {
       sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
-      pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 1.5 3 3L5.3 12.7a4.24 4.24 0 0 1-6-6L7.5 4.5l3-3z"/><path d="m9 9 6.4-6.4a4.24 4.24 0 0 1 6 6L15 15"/><line x1="14.5" y1="13.5" x2="10.5" y2="9.5"/></svg>',
+      pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>',
       moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
       brain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A5.5 5.5 0 0 0 4 7.5c0 1.28.44 2.46 1.17 3.39A5.49 5.49 0 0 0 4 14.5 5.5 5.5 0 0 0 9.5 20h0a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 9.5 2z"/><path d="M14.5 2A5.5 5.5 0 0 1 20 7.5c0 1.28-.44 2.46-1.17 3.39A5.49 5.49 0 0 1 20 14.5 5.5 5.5 0 0 1 14.5 20h0a1.5 1.5 0 0 1-1.5-1.5v-15A1.5 1.5 0 0 1 14.5 2z"/></svg>',
       users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
@@ -507,110 +505,88 @@ class KygoDeepSleepFactors extends HTMLElement {
       arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>',
       arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 12-7 7-7-7"/><path d="M12 5v14"/></svg>',
       arrowLeftRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>',
-      book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>'
+      book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+      apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>',
+      android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>'
     };
     return icons[name] || icons.heart;
   }
 
   // ── Direction & Evidence Config ────────────────────────────────────────
 
+  // Direction → on-brand class + icon (green for positive; neutral slate for the rest,
+  // differentiated by the up/down/shuffle icon — no off-brand red/amber).
   _directionConfig(d) {
     const map = {
-      positive: { icon: 'arrowUp', color: '#22C55E', bg: 'rgba(34,197,94,0.1)', label: 'Positive' },
-      negative: { icon: 'arrowDown', color: '#EF4444', bg: 'rgba(239,68,68,0.1)', label: 'Negative' },
-      mixed: { icon: 'arrowLeftRight', color: '#FBBF24', bg: 'rgba(251,191,36,0.1)', label: 'Mixed' },
-      variable: { icon: 'arrowLeftRight', color: '#94A3B8', bg: 'rgba(148,163,184,0.1)', label: 'Variable' }
+      positive: { cls: 'dir-pos', icon: 'arrowUp', label: 'Positive' },
+      negative: { cls: 'dir-neg', icon: 'arrowDown', label: 'Negative' },
+      mixed: { cls: 'dir-mix', icon: 'arrowLeftRight', label: 'Mixed' },
+      variable: { cls: 'dir-var', icon: 'arrowLeftRight', label: 'Variable' }
     };
     return map[d] || map.variable;
   }
 
   _evidenceConfig(e) {
     const map = {
-      strong: { color: '#16A34A', bg: 'rgba(34,197,94,0.15)', label: 'Strong' },
-      moderate: { color: '#D97706', bg: 'rgba(251,191,36,0.15)', label: 'Moderate' },
-      emerging: { color: '#6366F1', bg: 'rgba(99,102,241,0.15)', label: 'Emerging' }
+      strong: { cls: 'ev-strong', label: 'Strong' },
+      moderate: { cls: 'ev-moderate', label: 'Moderate' },
+      emerging: { cls: 'ev-moderate', label: 'Emerging' }
     };
-    return map[e] || map.emerging;
+    return map[e] || map.moderate;
   }
 
   // ── Render Helpers ────────────────────────────────────────────────────
 
-  _renderCategoryTabs() {
+  // Category jump-nav chips — clicking scrolls to that category block.
+  _renderCategoryNav() {
     return Object.entries(this._categories).map(([k, c]) =>
-      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab" aria-selected="${k === this._activeCategory}">
-        <span class="cat-tab-icon">${this._icon(c.icon)}</span>
-        <span>${c.name}</span>
-        <span class="cat-tab-count">${c.count}</span>
+      `<button class="cat-chip" data-jump="cat-${k}">
+        <span class="cat-chip-ico">${this._icon(c.icon)}</span>${c.name}<span class="cat-chip-n">${c.count}</span>
       </button>`
     ).join('');
   }
 
-  _renderSortBar() {
-    return `
-      <label class="sort-label" for="sort-select">Sort by:</label>
-      <select class="sort-select" id="sort-select">
-        <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
-        <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
-        <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
-      </select>
-    `;
-  }
-
-  _renderFactorCards() {
-    let factors = this._factors[this._activeCategory];
-    if (!factors) return '<p>No factors in this category.</p>';
-    const catInfo = this._categories[this._activeCategory];
-    const introHtml = catInfo && catInfo.intro ? `<div class="category-intro">${catInfo.intro}</div>` : '';
-
-    if (this._sortMode === 'evidence') {
-      const rank = { strong: 0, moderate: 1, emerging: 2 };
-      factors = [...factors].sort((a, b) => (rank[a.evidence] ?? 9) - (rank[b.evidence] ?? 9));
-    } else if (this._sortMode === 'direction') {
-      const rank = { positive: 0, mixed: 1, variable: 2, negative: 3 };
-      factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
-    }
-
-    return introHtml + factors.map((f, i) => {
-      const dc = this._directionConfig(f.direction);
-      const isExp = this._expandedFactor === f.key;
+  // Each category is its own block (header + a 2-up grid of factor cards on desktop).
+  _renderCategoryBlocks() {
+    return Object.entries(this._categories).map(([k, c]) => {
+      const factors = this._factors[k] || [];
+      const intro = c.intro ? `<p class="cat-block-intro">${c.intro}</p>` : '';
       return `
-        <div class="factor-card ${isExp ? 'expanded' : ''}" data-factor="${f.key}" style="--delay:${i * 60}ms">
-          <div class="factor-header" role="button" aria-expanded="${isExp}" tabindex="0">
-            <div class="factor-top">
-              <div class="factor-badges">
-                <span class="badge-direction" style="color:${dc.color};background:${dc.bg}">
-                  <span class="badge-icon">${this._icon(dc.icon)}</span>${dc.label}
-                </span>
-              </div>
-              <div class="factor-toggle">${this._icon('chevDown')}</div>
-            </div>
-            <h3 class="factor-name">${f.name}</h3>
-            <div class="factor-effect">${f.effect}</div>
-            <div class="factor-evidence-text"><span class="evidence-label">Key: </span>${f.keyFinding}</div>
+        <div class="cat-block animate-on-scroll" id="cat-${k}">
+          <div class="cat-block-head">
+            <span class="cat-block-ico">${this._icon(c.icon)}</span>
+            <h3 class="cat-block-name">${c.name}</h3>
+            <span class="cat-block-count">${factors.length} factors</span>
           </div>
-          <div class="factor-body">
-            <div class="factor-detail">
-              <div class="detail-row">
-                <span class="detail-label">What This Means</span>
-                <span class="detail-value">${f.whatThisMeans}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Mechanism</span>
-                <span class="detail-value">${f.mechanism}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Dosage / Context</span>
-                <span class="detail-value">${f.dosage}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Source</span>
-                <a href="${f.source.url}" class="source-link" target="_blank" rel="noopener">${f.source.label} ${this._icon('externalLink')}</a>
-              </div>
-              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored"><span>Check it out on Amazon</span><span class="factor-affiliate-arrow">${this._icon('externalLink')}</span></a>` : ''}
-            </div>
-          </div>
+          ${intro}
+          <div class="factor-grid">${factors.map(f => this._renderFactorCard(f)).join('')}</div>
         </div>`;
     }).join('');
+  }
+
+  _renderFactorCard(f) {
+    const dc = this._directionConfig(f.direction);
+    const ev = this._evidenceConfig(f.evidence);
+    const isExp = this._expandedFactor === f.key;
+    return `
+      <div class="factor-card ${isExp ? 'expanded' : ''}" data-factor="${f.key}">
+        <div class="factor-header" role="button" aria-expanded="${isExp}" tabindex="0">
+          <div class="factor-top">
+            <span class="badge-direction ${dc.cls}"><span class="badge-icon">${this._icon(dc.icon)}</span>${dc.label}</span>
+            <span class="ev-badge ${ev.cls}">${ev.label}</span>
+            <span class="factor-toggle">${this._icon('chevDown')}</span>
+          </div>
+          <h3 class="factor-name">${f.name}</h3>
+          <p class="factor-key"><span class="factor-key-label">Key</span> ${f.keyFinding}</p>
+        </div>
+        <div class="factor-body">
+          <div class="detail-row"><span class="detail-label">What this means</span><span class="detail-value">${f.whatThisMeans}</span></div>
+          <div class="detail-row"><span class="detail-label">Mechanism</span><span class="detail-value">${f.mechanism}</span></div>
+          <div class="detail-row"><span class="detail-label">Dosage / context</span><span class="detail-value">${f.dosage}</span></div>
+          <a href="${f.source.url}" class="factor-src" target="_blank" rel="noopener nofollow" data-action="source-link">${f.source.label} ${this._icon('externalLink')}</a>
+          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate">Check it out on Amazon ${this._icon('externalLink')}</a>` : ''}
+        </div>
+      </div>`;
   }
 
   _renderTopPicks() {
@@ -635,59 +611,25 @@ class KygoDeepSleepFactors extends HTMLElement {
     }).join('');
   }
 
+  // Compact source list (tag = category, title = factor + study).
   _renderSources() {
-    const catNames = {
-      biology: 'Biology & Demographics',
-      lifestyle: 'Lifestyle & Behavior',
-      environment: 'Environment & Circadian',
-      stress: 'Stress & Mental Health',
-      supplements: 'Supplements & Micronutrients'
+    const catLabel = {
+      lifestyle: 'Lifestyle', supplements: 'Supplements', environment: 'Environment',
+      stress: 'Stress', biology: 'Biology'
     };
-    const allSources = [];
-    const groups = {};
+    const items = [];
     for (const [catKey, factors] of Object.entries(this._factors)) {
-      const name = catNames[catKey] || catKey;
-      groups[name] = [];
       for (const f of factors) {
-        if (f.source) {
-          groups[name].push({ label: `${f.name} — ${f.source.label}`, url: f.source.url });
-          allSources.push(f.source);
-        }
+        if (f.source) items.push({ tag: catLabel[catKey] || catKey, title: `${f.name} — ${f.source.label}`, url: f.source.url });
       }
     }
-    const totalCount = allSources.length;
     return `
-      <div class="src-count-badge">${totalCount} peer-reviewed sources</div>
-      ${Object.entries(groups).map(([name, items]) => `
-        <div class="src-group">
-          <button class="src-group-toggle" aria-expanded="false">
-            <span class="src-group-name">${name}</span>
-            <span class="src-group-count">${items.length}</span>
-            <span class="src-group-chevron">${this._icon('chevDown')}</span>
-          </button>
-          <div class="src-group-body">
-            ${items.map(s => `
-              <a href="${s.url}" class="src-item" target="_blank" rel="noopener">
-                <span class="src-dot"></span>
-                <span class="src-text">${s.label}</span>
-                <span class="src-ext">${this._icon('externalLink')}</span>
-              </a>`).join('')}
-          </div>
-        </div>`).join('')}
-    `;
-  }
-
-  // ── Surgical Updates ──────────────────────────────────────────────────
-
-  _updateCategory() {
-    const shadow = this.shadowRoot;
-    this._expandedFactor = null;
-    const tabs = shadow.querySelector('.cat-tabs');
-    const cards = shadow.querySelector('.factor-cards');
-    const sortBar = shadow.querySelector('.sort-bar');
-    if (tabs) tabs.innerHTML = this._renderCategoryTabs();
-    if (cards) cards.innerHTML = this._renderFactorCards();
-    if (sortBar) sortBar.innerHTML = this._renderSortBar();
+      <div class="src-count">${items.length} peer-reviewed sources</div>
+      <div class="sources">${items.map(s => `
+        <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link">
+          <span class="src-tag">${s.tag}</span>
+          <span class="src-title">${s.title}</span>
+        </a>`).join('')}</div>`;
   }
 
   _toggleFactor(key) {
@@ -715,112 +657,135 @@ class KygoDeepSleepFactors extends HTMLElement {
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
+    const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
+    const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
+    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
+    const garminImg = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
+    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
+    const healthConnectImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <!-- Header -->
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
-            Deep Sleep Factors
+      <header class="nav">
+        <div class="nav-inner">
+          <a href="https://www.kygo.app" class="nav-brand" target="_blank" rel="noopener">
+            <img src="${logoUrl}" alt="Kygo" loading="lazy" />
+            <span>Kygo Health</span>
           </a>
-          <a href="https://www.kygo.app" class="header-link" target="_blank" rel="noopener">
-            Get Kygo App ${this._icon('arrowRight')}
-          </a>
+          <a href="${iosUrl}" class="nav-cta-link" target="_blank" rel="noopener">Get Kygo App ${this._icon('arrowRight')}</a>
         </div>
       </header>
 
-      <!-- Hero -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">29 FACTORS • 5 CATEGORIES • ALL PEER-REVIEWED</div>
-          <h1 class="animate-on-scroll">What Actually Drives Your Deep Sleep?</h1>
-          <p class="hero-sub animate-on-scroll">We dug into every credible study on slow-wave sleep — supplements, lifestyle, environment, stress, and biology — ranked by evidence strength. Here's what actually moves the needle and what doesn't.</p>
-        </div>
-      </section>
-
-      <!-- Quick Answers -->
-      <section class="picks-section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Quick Answers</h2>
-          <p class="section-sub animate-on-scroll">Our top picks based on evidence strength and practical impact.</p>
-          <div class="picks-grid animate-on-scroll">${this._renderTopPicks()}</div>
-        </div>
-      </section>
-
-      <!-- Explore All Factors -->
-      <section class="explore-section" id="explore">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Explore All 29 Factors</h2>
-          <p class="section-sub animate-on-scroll">Filter by category, sort by evidence or direction, and expand any card for full details.</p>
-          <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
-          <div class="sort-bar animate-on-scroll">${this._renderSortBar()}</div>
-          <div class="factor-cards animate-on-scroll">${this._renderFactorCards()}</div>
-
-          <!-- Blog cross-link -->
-          <div class="blog-link-wrap animate-on-scroll">
-            <a href="https://www.kygo.app/post/how-to-increase-deep-sleep-factors-ranked" class="blog-link-card" target="_blank" rel="noopener">
-              <div class="blog-link-icon"><img src="${logoUrl}" alt="Kygo" style="width:24px;height:24px;" /></div>
-              <div class="blog-link-text">
-                <span class="blog-link-title">Deep Dive Article</span>
-                <span class="blog-link-desc">Read our full guide: What Influences Deep Sleep?</span>
+      <section class="hero-light">
+        <div class="hero-light-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill"><span class="dot"></span> 29 FACTORS · 5 CATEGORIES · PEER-REVIEWED</div>
+              <h1>What actually drives your <span class="hl">deep sleep?</span></h1>
+              <p class="hero-lede">We dug into every credible study on slow-wave sleep — supplements, lifestyle, environment, stress, and biology — <strong>ranked by evidence strength.</strong> Here's what moves the needle and what doesn't.</p>
+            </div>
+            <div class="hero-vis">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Biggest lever</span>
+                <span class="hero-vis-tag">peer-reviewed</span>
               </div>
-              <div class="blog-link-arrow">${this._icon('arrowRight')}</div>
-            </a>
+              <div class="hv-body">
+                <div class="hv-big">+33%</div>
+                <div class="hv-text">
+                  <p>more <strong>slow-wave (deep) sleep</strong> from regular moderate exercise — the single most reliable lever you control.</p>
+                  <span class="hv-src">Aritake-Okada 2019</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="num">29</div><div class="lbl">Factors analyzed</div></div>
+            <div class="hero-stat"><div class="num">29</div><div class="lbl">Peer-reviewed sources</div></div>
+            <div class="hero-stat"><div class="num">5</div><div class="lbl">Categories of influence</div></div>
+            <div class="hero-stat"><div class="num">−30<span class="unit">min</span></div><div class="lbl">Late caffeine's hit to deep sleep</div></div>
           </div>
         </div>
       </section>
 
-      <!-- Blog CTA -->
-      <section class="blog-cta-section">
-        <div class="container">
-          <div class="blog-cta animate-on-scroll">
-            <div class="blog-cta-glow"></div>
-            <div class="blog-cta-content">
-              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-              <h2>Track Your <span class="highlight">Deep Sleep</span> Recovery</h2>
-              <p>Kygo connects your wearable data to nutrition and lifestyle — so you can see what actually improves your sleep.</p>
-              <div class="blog-cta-buttons">
-                <a href="${iosUrl}" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <div class="blog-cta-tags">
-                <span>Works with</span>
-                <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy" />
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Start here</div>
+            <h2>Quick <span class="hl">answers.</span></h2>
+            <p class="lede">Our top picks, ranked on evidence strength and practical impact. Tap any to expand.</p>
+          </div>
+          <div class="picks-grid animate-on-scroll">${this._renderTopPicks()}</div>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="kygo-cta-card animate-on-scroll">
+            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+            <h3>Track your <span>deep sleep</span> recovery.</h3>
+            <p>Kygo connects your wearable data to your nutrition and lifestyle, so you can see what actually improves your sleep.</p>
+            <div class="cta-btn-row">
+              <a class="btn btn-primary btn-lg" href="${iosUrl}" target="_blank" rel="noopener" data-track-position="article-cta">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="article-cta">${this._icon('android')} Download for Android</a>
+            </div>
+            <div class="cta-works">
+              <span>Works with</span>
+              <div class="cta-badges">
+                <img src="${ouraImg}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+                <img src="${appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
+                <img src="${fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
+                <img src="${garminImg}" alt="Garmin" title="Garmin" loading="lazy" />
+                <img src="${whoopImg}" alt="WHOOP" title="WHOOP" loading="lazy" />
+                <img src="${healthConnectImg}" alt="Health Connect" title="Health Connect" loading="lazy" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Sources -->
-      <section class="sources-section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Sources</h2>
-          <p class="section-sub animate-on-scroll">Every claim backed by peer-reviewed research.</p>
-          <div class="src-accordion animate-on-scroll">${this._renderSources()}</div>
+      <section class="section bg-light" id="explore">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">The library</div>
+            <h2>Explore all <span class="hl">29 factors.</span></h2>
+            <p class="lede">Jump to a category, then tap any factor to expand its plain-English takeaway, mechanism, dose, and source.</p>
+          </div>
+          <div class="cat-nav animate-on-scroll">${this._renderCategoryNav()}</div>
+          ${this._renderCategoryBlocks()}
         </div>
       </section>
 
-      <!-- Footer -->
+      <section class="section bg-white">
+        <div class="section-inner">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/how-to-increase-deep-sleep-factors-ranked" target="_blank" rel="noopener">
+            <span class="blog-cta-tag">Full Guide</span>
+            <div class="blog-cta-body">
+              <div class="blog-cta-kicker">Read the complete guide</div>
+              <div class="blog-cta-title">How to Increase Deep Sleep</div>
+              <div class="blog-cta-sub">Every factor ranked by evidence — what actually moves slow-wave sleep, and what's just hype, in plain English.</div>
+            </div>
+            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Sources</div>
+            <h2>Every claim, <span class="hl">traceable.</span></h2>
+            <p class="lede">Each factor is anchored to a primary peer-reviewed source. Last updated March 2026.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderSources()}</div>
+        </div>
+      </section>
+
       <footer class="tool-footer">
         <div class="container">
           <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
+            <span>Kygo Health</span>
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
@@ -847,235 +812,217 @@ class KygoDeepSleepFactors extends HTMLElement {
       @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
-        --dark: #1E293B;
-        --dark-card: #0F172A;
-        --light: #F8FAFC;
-        --green: #22C55E;
-        --green-dark: #16A34A;
-        --green-light: rgba(34,197,94,0.1);
-        --yellow: #FBBF24;
-        --red: #EF4444;
-        --gray-50: #f9fafb;
-        --gray-100: #F1F5F9;
-        --gray-200: #E2E8F0;
-        --gray-300: #CBD5E1;
-        --gray-400: #94A3B8;
-        --gray-600: #475569;
-        --gray-700: #334155;
-        --radius: 20px;
-        --radius-sm: 10px;
-        --shadow: 0 4px 12px rgba(0,0,0,0.04);
-        --shadow-hover: 0 12px 32px rgba(0,0,0,0.08);
-        display: block;
-        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: var(--light);
-        color: var(--dark);
-        line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
+        --kygo-green:#22C55E; --kygo-green-dark:#16A34A; --kygo-green-light:#DCFCE7;
+        --kygo-dark:#0F172A; --kygo-light:#F8FAFC;
+        --bg-canvas:#FFFFFF; --bg-surface:#F8FAFC; --bg-raised:#F1F5F9;
+        --fg-1:#0F172A; --fg-2:#475569; --fg-3:#94A3B8; --border-subtle:#E2E8F0;
+        --shadow-md:0 8px 24px rgba(15,23,42,.06); --shadow-cta:0 8px 24px rgba(34,197,94,.30);
+        --font-display:'Space Grotesk',sans-serif; --font-body:'DM Sans',sans-serif;
+        --ease-out:cubic-bezier(.16,1,.3,1);
+        display:block; font-family:var(--font-body); color:var(--fg-1); background:var(--bg-canvas);
+        line-height:1.5; -webkit-font-smoothing:antialiased;
       }
-      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-      h1, h2, h3, h4 { font-family: 'Space Grotesk', -apple-system, sans-serif; font-weight: 600; line-height: 1.2; }
-      a { color: var(--green); text-decoration: none; }
-      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+      * { box-sizing:border-box; }
+      a { color:inherit; text-decoration:none; }
+      .ico { display:inline-flex; align-items:center; justify-content:center; }
+      .ico svg, svg.inline { width:1em; height:1em; }
 
-      /* Animations */
-      .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; transition-delay: var(--delay, 0ms); }
-      .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
+      .animate-on-scroll { opacity:0; transform:translateY(16px); transition:opacity .6s var(--ease-out), transform .6s var(--ease-out); }
+      .animate-on-scroll.visible { opacity:1; transform:none; }
 
-      /* Header */
-      .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; max-width: 1200px; margin: 0 auto; padding: 12px 16px; }
-      .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); }
-      .logo-img { height: 28px; width: auto; }
-      .header-link { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--green); color: #fff; text-decoration: none; border-radius: 50px; font-size: 13px; font-weight: 600; transition: background 0.2s; white-space: nowrap; }
-      .header-link:hover { background: var(--green-dark); }
-      .header-link svg { width: 14px; height: 14px; }
+      /* Nav */
+      .nav { position:sticky; top:0; z-index:50; background:rgba(255,255,255,.92); backdrop-filter:saturate(160%) blur(14px); -webkit-backdrop-filter:saturate(160%) blur(14px); border-bottom:1px solid var(--border-subtle); }
+      .nav-inner { max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:16px; }
+      .nav-brand { display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; font-size:14px; letter-spacing:-.01em; color:var(--fg-1); text-transform:uppercase; }
+      .nav-brand img { width:26px; height:26px; }
+      .nav-cta-link { margin-left:auto; display:inline-flex; align-items:center; gap:6px; color:var(--kygo-green-dark); font-weight:600; font-size:14px; }
+      .nav-cta-link svg { width:16px; height:16px; }
+      @media (max-width:480px){ .nav-brand span { display:none; } }
+
+      /* Buttons */
+      .btn { font-family:var(--font-body); font-weight:600; font-size:14px; padding:10px 18px; border-radius:10px; border:0; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:all .2s var(--ease-out); white-space:nowrap; }
+      .btn svg { width:16px; height:16px; }
+      .btn-primary { background:var(--kygo-green); color:#fff; box-shadow:0 4px 12px rgba(34,197,94,.25); }
+      .btn-primary:hover { background:var(--kygo-green-dark); transform:translateY(-1px); box-shadow:var(--shadow-cta); }
+      .btn-lg { padding:14px 22px; font-size:15px; border-radius:12px; }
+      .btn-lg svg { width:18px; height:18px; }
 
       /* Hero */
-      .hero { padding: 48px 0 32px; text-align: center; background: #fff; }
-      .hero-badge { display: inline-block; padding: 6px 16px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; border-radius: 50px; margin-bottom: 16px; }
-      .hero h1 { font-size: clamp(26px, 7vw, 40px); max-width: 700px; margin: 0 auto 16px; }
-      .hero-sub { font-size: 16px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
+      .hero-light { background:#fff; border-bottom:1px solid var(--border-subtle); }
+      .hero-light-inner { max-width:1200px; margin:0 auto; padding:48px 20px 36px; }
+      .hero-grid { display:grid; grid-template-columns:1fr; gap:24px; align-items:center; margin-bottom:32px; }
+      @media (min-width:880px){ .hero-grid { grid-template-columns:1.15fr 1fr; gap:48px; } .hero-light-inner { padding:64px 24px 48px; } }
+      .hero-pill { display:inline-flex; align-items:center; gap:8px; background:rgba(34,197,94,.10); color:var(--kygo-green-dark); padding:6px 14px; border-radius:999px; font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:.5px; white-space:nowrap; }
+      .hero-pill .dot { width:6px; height:6px; border-radius:50%; background:var(--kygo-green); flex:none; }
+      .hero-light h1 { font-family:var(--font-display); font-weight:700; color:var(--fg-1); font-size:clamp(30px,5.5vw,56px); line-height:1.05; letter-spacing:-.02em; margin:18px 0; }
+      .hero-light h1 .hl { color:var(--kygo-green); }
+      .hero-lede { font-size:clamp(15px,1.6vw,18px); line-height:1.55; color:var(--fg-2); max-width:60ch; margin:0; }
+      .hero-lede strong { color:var(--fg-1); font-weight:600; }
+      .hero-vis { position:relative; overflow:hidden; display:flex; flex-direction:column; gap:14px; background:linear-gradient(158deg,#fff 0%,#EEF2F7 100%); border:1px solid var(--border-subtle); border-radius:20px; padding:18px 20px; box-shadow:0 16px 40px rgba(15,23,42,.08); }
+      .hero-vis::before { content:''; position:absolute; top:-90px; right:-70px; width:240px; height:240px; background:radial-gradient(closest-side,rgba(34,197,94,.16),transparent); pointer-events:none; }
+      .hero-vis-head { position:relative; display:flex; align-items:center; justify-content:space-between; }
+      .hero-vis-title { display:inline-flex; align-items:center; gap:7px; font-family:var(--font-display); font-size:11px; font-weight:600; letter-spacing:.6px; text-transform:uppercase; color:var(--fg-3); }
+      .hero-vis-dot { width:7px; height:7px; border-radius:50%; background:var(--kygo-green); box-shadow:0 0 0 3px rgba(34,197,94,.18); }
+      .hero-vis-tag { font-family:var(--font-display); font-size:11px; font-weight:700; letter-spacing:.3px; color:var(--kygo-green-dark); background:var(--kygo-green-light); padding:4px 10px; border-radius:999px; }
+      .hv-body { position:relative; display:flex; align-items:center; gap:18px; }
+      .hv-big { flex:none; font-family:var(--font-display); font-weight:700; font-size:clamp(46px,10vw,72px); line-height:.92; letter-spacing:-.03em; color:var(--kygo-green-dark); }
+      .hv-text { flex:1; min-width:0; }
+      .hv-text p { margin:0 0 8px; font-size:14px; line-height:1.55; color:var(--fg-2); }
+      .hv-text p strong { color:var(--fg-1); font-weight:600; }
+      .hv-src { font-size:11px; color:var(--fg-3); }
+      @media (max-width:880px){ .hero-vis { width:100%; max-width:460px; margin:4px auto 0; } }
+      .hero-stats { display:grid; grid-template-columns:repeat(2,1fr); gap:22px; border-top:1px solid var(--border-subtle); padding-top:24px; }
+      @media (min-width:720px){ .hero-stats { grid-template-columns:repeat(4,1fr); gap:24px; padding-top:28px; } }
+      .hero-stat .num { font-family:var(--font-display); font-weight:700; font-size:clamp(28px,4vw,40px); line-height:1; color:var(--kygo-green); letter-spacing:-.02em; display:inline-flex; align-items:baseline; }
+      .hero-stat .num .unit { font-size:.55em; margin-left:2px; }
+      .hero-stat .lbl { margin-top:10px; color:var(--fg-3); font-size:11px; text-transform:uppercase; letter-spacing:.5px; font-weight:600; line-height:1.4; }
 
-      /* Section titles */
-      .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
-      .section-sub { text-align: center; font-size: 15px; color: var(--gray-600); max-width: 600px; margin: 0 auto 24px; }
+      /* Sections */
+      .section { padding:56px 20px; }
+      @media (min-width:720px){ .section { padding:80px 24px; } }
+      .section-inner { max-width:1200px; margin:0 auto; }
+      .container { max-width:1200px; margin:0 auto; padding:0 20px; }
+      .section.bg-white { background:#fff; }
+      .section.bg-light { background:var(--kygo-light); }
+      .section-head { margin-bottom:28px; max-width:720px; }
+      .kicker { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-display); font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.8px; color:var(--kygo-green-dark); background:var(--kygo-green-light); padding:6px 12px; border-radius:999px; }
+      .section h2 { font-family:var(--font-display); font-weight:600; font-size:clamp(26px,4vw,42px); line-height:1.1; margin:16px 0 10px; letter-spacing:-.01em; }
+      .section h2 .hl { color:var(--kygo-green); }
+      .lede { color:var(--fg-2); font-size:16px; line-height:1.55; max-width:60ch; margin:0; }
+      .lede strong { color:var(--fg-1); font-weight:600; }
 
-      /* Quick Answers / Top Picks */
-      .picks-section { padding: 48px 0; background: #fff; }
-      .picks-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-      .pick-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s; }
-      .pick-card:hover { box-shadow: var(--shadow-hover); }
-      .pick-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; cursor: pointer; }
-      .pick-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--green-light); display: flex; align-items: center; justify-content: center; color: var(--green-dark); flex-shrink: 0; }
-      .pick-icon svg { width: 20px; height: 20px; }
-      .pick-info { flex: 1; min-width: 0; }
-      .pick-label { display: block; font-size: 12px; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; }
-      .pick-answer { display: block; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); }
-      .pick-toggle { width: 24px; height: 24px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
-      .pick-toggle svg { width: 24px; height: 24px; }
-      .pick-card.expanded .pick-toggle { transform: rotate(180deg); }
-      .pick-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
-      .pick-card.expanded .pick-body { max-height: 300px; padding: 0 20px 16px; }
-      .pick-warning { border-color: rgba(239,68,68,0.3); }
-      .pick-warning .pick-icon { background: rgba(239,68,68,0.1); color: var(--red); }
-      .pick-stat-detail { font-size: 13px; color: var(--dark); margin-bottom: 8px; font-weight: 500; }
-      .pick-stat-label { color: var(--gray-400); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
-      .pick-warning .pick-stat-detail { color: var(--red); }
-      .pick-note { font-size: 14px; color: var(--gray-600); margin-bottom: 6px; }
-      .pick-cat { font-size: 12px; color: var(--gray-400); }
+      /* Quick-answer pick cards */
+      .picks-grid { display:grid; grid-template-columns:1fr; gap:12px; }
+      @media (min-width:620px){ .picks-grid { grid-template-columns:1fr 1fr; } }
+      @media (min-width:980px){ .picks-grid { grid-template-columns:repeat(3,1fr); } }
+      .pick-card { background:#fff; border:1.5px solid var(--border-subtle); border-radius:16px; overflow:hidden; transition:border-color .2s, box-shadow .2s; }
+      .pick-card.expanded { border-color:var(--kygo-green); box-shadow:var(--shadow-md); }
+      .pick-header { display:flex; align-items:center; gap:12px; padding:16px; cursor:pointer; }
+      .pick-icon { width:38px; height:38px; border-radius:10px; background:var(--kygo-green-light); color:var(--kygo-green-dark); display:inline-flex; align-items:center; justify-content:center; flex:none; }
+      .pick-icon svg { width:19px; height:19px; }
+      .pick-warning .pick-icon { background:var(--bg-raised); color:var(--fg-2); }
+      .pick-info { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+      .pick-label { font-family:var(--font-display); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; color:var(--fg-3); }
+      .pick-answer { font-family:var(--font-display); font-weight:600; font-size:16px; color:var(--fg-1); line-height:1.2; }
+      .pick-toggle { color:var(--fg-3); flex:none; }
+      .pick-toggle svg { width:18px; height:18px; transition:transform .2s; }
+      .pick-card.expanded .pick-toggle svg { transform:rotate(180deg); color:var(--kygo-green-dark); }
+      .pick-body { display:none; padding:0 16px 16px 66px; }
+      .pick-card.expanded .pick-body { display:block; }
+      .pick-stat-detail { font-size:12px; color:var(--fg-2); background:var(--bg-surface); border-radius:8px; padding:8px 10px; margin-bottom:8px; }
+      .pick-stat-label { font-family:var(--font-display); font-weight:600; font-size:10px; text-transform:uppercase; letter-spacing:.3px; color:var(--kygo-green-dark); }
+      .pick-note { margin:0 0 8px; font-size:13px; line-height:1.55; color:var(--fg-2); }
+      .pick-cat { font-size:11px; color:var(--fg-3); }
 
-      /* Explore Section */
-      .explore-section { padding: 48px 0; background: var(--gray-50); }
+      /* Kygo CTA */
+      .kygo-cta-card { background:var(--kygo-dark); border-radius:24px; padding:40px 24px; position:relative; overflow:hidden; color:#fff; text-align:center; display:flex; flex-direction:column; align-items:center; }
+      @media (min-width:720px){ .kygo-cta-card { padding:56px 40px; } }
+      .kygo-cta-card::before { content:''; position:absolute; top:-160px; right:-160px; width:520px; height:520px; background:radial-gradient(closest-side,rgba(34,197,94,.30),transparent); pointer-events:none; }
+      .kygo-cta-card::after { content:''; position:absolute; bottom:-180px; left:-180px; width:480px; height:480px; background:radial-gradient(closest-side,rgba(34,197,94,.12),transparent); pointer-events:none; }
+      .kygo-cta-card .cta-pill { position:relative; display:inline-flex; align-items:center; gap:8px; background:rgba(34,197,94,.16); color:#6EE7A0; padding:6px 14px; border-radius:999px; font-family:var(--font-display); font-size:12px; font-weight:600; border:1px solid rgba(34,197,94,.25); }
+      .kygo-cta-card .cta-pill .dot { width:6px; height:6px; border-radius:50%; background:var(--kygo-green); box-shadow:0 0 8px var(--kygo-green); }
+      .kygo-cta-card h3 { position:relative; font-family:var(--font-display); font-weight:600; color:#fff; font-size:clamp(26px,4.5vw,42px); line-height:1.05; letter-spacing:-.01em; margin:18px 0 14px; max-width:22ch; }
+      .kygo-cta-card h3 span { color:var(--kygo-green); }
+      .kygo-cta-card p { position:relative; color:rgba(255,255,255,.72); font-size:clamp(14px,1.6vw,16px); line-height:1.6; max-width:56ch; margin:0 auto 24px; }
+      .kygo-cta-card .cta-btn-row { position:relative; display:flex; gap:12px; flex-wrap:wrap; justify-content:center; width:100%; }
+      @media (max-width:560px){ .kygo-cta-card .cta-btn-row .btn-lg { width:100%; justify-content:center; } }
+      .kygo-cta-card .cta-works { position:relative; margin-top:26px; display:flex; flex-direction:column; align-items:center; gap:12px; color:rgba(255,255,255,.6); font-size:13px; }
+      .kygo-cta-card .cta-badges { display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:center; }
+      .kygo-cta-card .cta-badges img { width:32px; height:32px; border-radius:8px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); padding:4px; object-fit:contain; }
 
-      /* Category Tabs */
-      .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
-      .cat-tabs::-webkit-scrollbar { display: none; }
-      .cat-tab { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 50px; border: 2px solid var(--gray-200); background: #fff; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
-      .cat-tab.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
-      .cat-tab:hover { border-color: var(--green); }
-      .cat-tab-icon { width: 16px; height: 16px; display: flex; }
-      .cat-tab-icon svg { width: 16px; height: 16px; }
-      .cat-tab-count { background: var(--gray-100); color: var(--gray-400); font-size: 11px; padding: 1px 7px; border-radius: 50px; }
-      .cat-tab.active .cat-tab-count { background: rgba(34,197,94,0.2); color: var(--green-dark); }
+      /* Category nav + blocks */
+      .cat-nav { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+      .cat-chip { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-body); font-size:13px; font-weight:600; padding:9px 14px; border-radius:999px; border:1.5px solid var(--border-subtle); background:#fff; color:var(--fg-2); cursor:pointer; transition:all .15s ease; }
+      .cat-chip:hover { border-color:var(--kygo-green); color:var(--kygo-green-dark); }
+      .cat-chip-ico { display:inline-flex; }
+      .cat-chip-ico svg { width:15px; height:15px; }
+      .cat-chip-n { font-size:11px; padding:2px 7px; border-radius:999px; background:var(--bg-raised); color:var(--fg-3); }
+      .cat-block { padding-top:32px; scroll-margin-top:80px; }
+      .cat-block-head { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+      .cat-block-ico { width:40px; height:40px; border-radius:11px; background:var(--kygo-green-light); color:var(--kygo-green-dark); display:inline-flex; align-items:center; justify-content:center; flex:none; }
+      .cat-block-ico svg { width:20px; height:20px; }
+      .cat-block-name { font-family:var(--font-display); font-weight:600; font-size:clamp(19px,2.6vw,24px); margin:0; flex:1; min-width:0; }
+      .cat-block-count { font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--fg-3); background:var(--bg-raised); padding:4px 11px; border-radius:999px; white-space:nowrap; }
+      .cat-block-intro { font-size:14px; line-height:1.6; color:var(--fg-2); background:#fff; border:1px solid var(--border-subtle); border-radius:14px; padding:14px 16px; margin:0 0 14px; }
 
-      /* Sort Bar */
-      .sort-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
-      .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; }
-      .sort-select { padding: 6px 28px 6px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance: none; appearance: none; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; }
-      .sort-select:hover, .sort-select:focus { border-color: var(--green); outline: none; }
+      /* Factor cards */
+      .factor-grid { display:grid; grid-template-columns:1fr; gap:12px; align-items:start; }
+      @media (min-width:768px){ .factor-grid { grid-template-columns:1fr 1fr; } }
+      .factor-card { background:#fff; border:1.5px solid var(--border-subtle); border-radius:16px; overflow:hidden; transition:border-color .2s, box-shadow .2s; }
+      .factor-card.expanded { border-color:var(--kygo-green); box-shadow:var(--shadow-md); }
+      .factor-header { padding:18px; cursor:pointer; }
+      .factor-top { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+      .badge-direction { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-display); font-size:11px; font-weight:600; padding:4px 10px; border-radius:999px; }
+      .badge-direction .badge-icon { display:inline-flex; }
+      .badge-direction .badge-icon svg { width:12px; height:12px; }
+      .badge-direction.dir-pos { background:var(--kygo-green-light); color:var(--kygo-green-dark); }
+      .badge-direction.dir-neg { background:var(--bg-raised); color:var(--fg-2); }
+      .badge-direction.dir-mix { background:var(--bg-raised); color:var(--fg-2); }
+      .badge-direction.dir-var { background:var(--bg-raised); color:var(--fg-3); }
+      .ev-badge { font-family:var(--font-display); font-size:10px; font-weight:600; letter-spacing:.3px; text-transform:uppercase; padding:3px 9px; border-radius:999px; }
+      .ev-badge.ev-strong { background:var(--kygo-green-light); color:var(--kygo-green-dark); }
+      .ev-badge.ev-moderate { background:var(--bg-raised); color:var(--fg-2); }
+      .factor-toggle { margin-left:auto; color:var(--fg-3); flex:none; }
+      .factor-toggle svg { width:18px; height:18px; transition:transform .2s; }
+      .factor-card.expanded .factor-toggle svg { transform:rotate(180deg); color:var(--kygo-green-dark); }
+      .factor-name { font-family:var(--font-display); font-weight:600; font-size:17px; line-height:1.25; margin:0 0 6px; }
+      .factor-key { margin:0; font-size:13px; line-height:1.5; color:var(--fg-2); }
+      .factor-key-label { font-family:var(--font-display); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.3px; color:var(--fg-3); margin-right:4px; }
+      .factor-body { display:none; padding:0 18px 18px; flex-direction:column; gap:12px; }
+      .factor-card.expanded .factor-body { display:flex; }
+      .detail-row { display:flex; flex-direction:column; gap:3px; border-top:1px solid var(--border-subtle); padding-top:12px; }
+      .detail-label { font-family:var(--font-display); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.4px; color:var(--fg-3); }
+      .detail-value { font-size:13px; line-height:1.6; color:var(--fg-2); }
+      .factor-src { display:inline-flex; align-items:center; gap:6px; font-family:var(--font-body); font-size:12.5px; font-weight:600; color:var(--kygo-green-dark); }
+      .factor-src svg { width:13px; height:13px; }
+      .factor-affiliate { display:inline-flex; align-items:center; gap:6px; align-self:flex-start; padding:10px 14px; border-radius:10px; border:1.5px solid var(--kygo-green-light); background:rgba(34,197,94,.06); color:var(--kygo-green-dark); font-family:var(--font-body); font-weight:600; font-size:13px; }
+      .factor-affiliate:hover { border-color:var(--kygo-green); background:rgba(34,197,94,.12); }
+      .factor-affiliate svg { width:13px; height:13px; }
 
-      /* Category Intro */
-      .category-intro { grid-column: 1 / -1; padding: 14px 18px; background: rgba(99,102,241,0.06); border-left: 3px solid #6366F1; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 14px; color: var(--gray-600); line-height: 1.6; margin-bottom: 4px; }
+      /* Blog CTA */
+      .blog-cta { display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:center; background:linear-gradient(135deg,rgba(34,197,94,.06) 0%,rgba(34,197,94,.02) 100%); border:1.5px solid var(--kygo-green-light); border-radius:18px; padding:22px; transition:all .25s var(--ease-out); color:var(--fg-1); }
+      .blog-cta:hover { border-color:var(--kygo-green); box-shadow:var(--shadow-md); transform:translateY(-2px); }
+      .blog-cta-tag { display:inline-flex; align-items:center; padding:6px 14px; border-radius:999px; background:#fff; border:1.5px solid var(--kygo-green-light); color:var(--kygo-green-dark); font-family:var(--font-display); font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; white-space:nowrap; }
+      .blog-cta-body { min-width:0; }
+      .blog-cta-kicker { font-family:var(--font-display); font-size:11px; font-weight:700; letter-spacing:.6px; text-transform:uppercase; color:var(--kygo-green-dark); margin-bottom:4px; }
+      .blog-cta-title { font-family:var(--font-display); font-size:clamp(15px,2vw,18px); font-weight:600; color:var(--fg-1); line-height:1.3; }
+      .blog-cta-sub { font-size:13px; color:var(--fg-2); margin-top:4px; line-height:1.5; }
+      .blog-cta-arrow { width:44px; height:44px; border-radius:50%; background:var(--kygo-green); color:#fff; display:inline-flex; align-items:center; justify-content:center; flex:none; box-shadow:0 4px 12px rgba(34,197,94,.30); }
+      .blog-cta-arrow svg { width:20px; height:20px; }
+      @media (max-width:600px){
+        .blog-cta { grid-template-columns:1fr auto; grid-template-areas:'tag arrow' 'body body'; padding:18px; gap:14px; }
+        .blog-cta-tag { grid-area:tag; justify-self:start; }
+        .blog-cta-arrow { grid-area:arrow; width:40px; height:40px; }
+        .blog-cta-body { grid-area:body; }
+      }
 
-      /* Factor Cards Grid */
-      .factor-cards { display: grid; grid-template-columns: 1fr; gap: 12px; }
-
-      /* Factor Card */
-      .factor-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s, border-color 0.3s; }
-      .factor-card:hover { box-shadow: var(--shadow-hover); border-color: var(--gray-300); }
-      .factor-header { padding: 20px; cursor: pointer; }
-      .factor-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-      .factor-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-      .badge-direction { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 50px; font-size: 12px; font-weight: 600; }
-      .badge-evidence { display: inline-flex; padding: 3px 10px; border-radius: 50px; font-size: 12px; font-weight: 600; }
-      .badge-icon { width: 14px; height: 14px; display: flex; }
-      .badge-icon svg { width: 14px; height: 14px; }
-      .factor-toggle { width: 24px; height: 24px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
-      .factor-toggle svg { width: 24px; height: 24px; }
-      .factor-card.expanded .factor-toggle { transform: rotate(180deg); }
-      .factor-name { font-size: 18px; margin-bottom: 4px; color: var(--dark); }
-      .factor-effect { font-size: 14px; font-weight: 600; color: var(--gray-600); margin-bottom: 2px; }
-      .factor-evidence-text { font-size: 13px; color: var(--dark); }
-      .evidence-label { color: var(--gray-400); font-weight: 500; }
-
-      /* Factor Body (expandable) */
-      .factor-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
-      .factor-card.expanded .factor-body { max-height: 800px; padding: 0 20px 20px; }
-      .factor-detail { border-top: 1px solid var(--gray-100); padding-top: 16px; }
-      .detail-row { margin-bottom: 12px; }
-      .detail-row:last-child { margin-bottom: 0; }
-      .detail-label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-400); margin-bottom: 2px; }
-      .detail-value { font-size: 14px; color: var(--gray-600); line-height: 1.5; }
-      .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green); font-weight: 500; font-size: 13px; text-decoration: none; }
-      .source-link:hover { text-decoration: underline; }
-      .source-link svg { width: 12px; height: 12px; }
-      .factor-affiliate { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; margin-top: 12px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 500; transition: all 0.2s; }
-      .factor-affiliate:hover { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
-      .factor-affiliate-arrow { width: 14px; height: 14px; display: flex; }
-      .factor-affiliate-arrow svg { width: 100%; height: 100%; }
-
-      /* Blog Cross-Link */
-      .blog-link-wrap { max-width: 720px; margin: 32px auto 0; }
-      .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); text-decoration: none; transition: box-shadow 0.3s; }
-      .blog-link-card:hover { box-shadow: var(--shadow-hover); }
-      .blog-link-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--green-dark); flex-shrink: 0; }
-      .blog-link-icon svg { width: 24px; height: 24px; }
-      .blog-link-text { flex: 1; }
-      .blog-link-title { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--green-dark); letter-spacing: 0.3px; }
-      .blog-link-desc { display: block; font-size: 14px; font-weight: 500; color: var(--dark); margin-top: 2px; }
-      .blog-link-arrow { width: 20px; height: 20px; color: var(--green-dark); flex-shrink: 0; }
-      .blog-link-arrow svg { width: 20px; height: 20px; }
-
-      /* Blog CTA Section */
-      .blog-cta-section { padding: 48px 0; background: var(--gray-50); }
-      .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
-      .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
-      .blog-cta-content { position: relative; z-index: 1; }
-      .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
-      .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
-      @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-      .blog-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
-      .blog-cta .highlight { color: var(--green); }
-      .blog-cta p { color: var(--gray-400); font-size: 14px; margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
-      .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-btn svg { width: 18px; height: 18px; }
-      .blog-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-      .blog-cta-tags { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
-      .blog-cta-tags span { color: var(--gray-400); font-size: 12px; }
-      .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
-
-      /* Sources Section */
-      .sources-section { padding: 48px 0; background: #fff; }
-      .src-accordion { max-width: 720px; margin: 0 auto; }
-      .src-count-badge { text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-400); margin-bottom: 16px; }
-      .src-group { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: #fff; }
-      .src-group-toggle { display: flex; align-items: center; width: 100%; padding: 12px 16px; background: none; border: none; cursor: pointer; font-family: inherit; gap: 8px; }
-      .src-group-name { flex: 1; text-align: left; font-size: 14px; font-weight: 600; color: var(--dark); }
-      .src-group-count { font-size: 11px; font-weight: 600; color: var(--gray-400); background: var(--gray-100); padding: 2px 8px; border-radius: 50px; }
-      .src-group-chevron { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; display: flex; }
-      .src-group-chevron svg { width: 18px; height: 18px; }
-      .src-group.open .src-group-chevron { transform: rotate(180deg); }
-      .src-group-body { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
-      .src-group.open .src-group-body { max-height: 600px; }
-      .src-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; text-decoration: none; color: var(--gray-600); font-size: 13px; transition: background 0.2s; }
-      .src-item:last-child { padding-bottom: 12px; }
-      .src-item:hover { background: var(--gray-50); }
-      .src-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-      .src-text { flex: 1; }
-      .src-ext { width: 14px; height: 14px; color: var(--gray-400); flex-shrink: 0; }
-      .src-ext svg { width: 14px; height: 14px; }
-
-      /* Android button (in Blog CTA) */
-      .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
-      .cta-android:hover { background: var(--green-dark); color: #fff; }
-      .cta-android svg { width: 18px; height: 18px; }
-      @media (max-width: 480px) { .blog-cta-buttons { flex-direction: column; align-items: stretch; } .blog-cta-buttons a, .blog-cta-buttons button { justify-content: center; text-align: center; } }
+      /* Sources */
+      .src-count { font-size:13px; color:var(--fg-3); margin-bottom:14px; }
+      .sources { display:grid; grid-template-columns:1fr; gap:8px; }
+      @media (min-width:600px){ .sources { grid-template-columns:1fr 1fr; } }
+      @media (min-width:960px){ .sources { grid-template-columns:repeat(3,1fr); } }
+      .src { display:flex; flex-direction:column; gap:4px; background:#fff; border:1.5px solid var(--border-subtle); border-radius:12px; padding:12px 14px; transition:border-color .15s, box-shadow .15s; }
+      .src:hover { border-color:var(--kygo-green); box-shadow:var(--shadow-md); }
+      .src-tag { align-self:flex-start; font-family:var(--font-display); font-size:9.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--kygo-green-dark); }
+      .src-title { font-family:var(--font-display); font-weight:600; font-size:13px; color:var(--fg-1); line-height:1.3; }
+      .src:hover .src-title { color:var(--kygo-green-dark); }
 
       /* Footer */
-      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
-      .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; white-space: nowrap; }
-      .footer-links a:hover { color: var(--green); }
-      .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
-      .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
-      .footer-affiliate { font-style: italic; }
+      .tool-footer { padding:56px 20px 40px; background:var(--kygo-light); color:var(--fg-2); border-top:1px solid var(--border-subtle); }
+      .tool-footer .container { max-width:720px; margin:0 auto; text-align:center; }
+      .footer-brand { display:inline-flex; align-items:center; gap:10px; color:var(--fg-1); font-family:var(--font-display); font-weight:700; font-size:17px; }
+      .footer-logo { width:28px; height:28px; }
+      .footer-tagline { color:var(--fg-3); font-size:14px; margin:10px 0 22px; }
+      .footer-links { display:flex; flex-wrap:wrap; justify-content:center; gap:18px; margin-bottom:28px; font-size:14px; }
+      .footer-links a { color:var(--fg-2); }
+      .footer-links a:hover { color:var(--kygo-green-dark); }
+      .footer-disclaimer { font-size:12px; color:var(--fg-3); line-height:1.6; max-width:620px; margin:0 auto 14px; }
+      .footer-copyright { font-size:12px; color:var(--fg-3); margin:4px 0; }
+      .footer-affiliate { font-style:italic; }
 
-      /* Responsive */
-      @media (min-width: 768px) {
-        .hero { padding: 64px 0 40px; }
-        .picks-grid { grid-template-columns: 1fr 1fr; }
-        .factor-cards { grid-template-columns: 1fr 1fr; }
-        .header-inner { padding: 14px 24px; }
-        .picks-section, .explore-section, .sources-section { padding: 64px 0; }
-      }
-      @media (min-width: 1024px) {
-        .hero { padding: 80px 0 48px; }
-        .picks-grid { grid-template-columns: 1fr 1fr 1fr; }
-        .picks-section, .explore-section, .sources-section { padding: 80px 0; }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-        .factor-body, .pick-body, .src-group-body { transition: none; }
-        .pulse-dot { animation: none; }
-      }
+      @media (prefers-reduced-motion:reduce){ .animate-on-scroll { opacity:1; transform:none; transition:none; } }
     `;
   }
-
   // ── Event Delegation ──────────────────────────────────────────────────
 
   _setupEventDelegation() {
@@ -1084,16 +1031,16 @@ class KygoDeepSleepFactors extends HTMLElement {
     const shadow = this.shadowRoot;
 
     shadow.addEventListener('click', (e) => {
-      // Category tabs
-      const tab = e.target.closest('.cat-tab');
-      if (tab) {
-        this._activeCategory = tab.dataset.category;
-        this._updateCategory();
+      // Category jump-nav → scroll to that category block
+      const jump = e.target.closest('[data-jump]');
+      if (jump) {
+        const target = shadow.getElementById(jump.dataset.jump);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         return;
       }
 
-      // Factor card toggle (skip affiliate clicks)
-      if (e.target.closest('.factor-affiliate') || e.target.closest('.source-link')) return;
+      // Factor card toggle (skip source/affiliate link clicks)
+      if (e.target.closest('[data-action="source-link"]') || e.target.closest('[data-action="affiliate"]')) return;
       const factorHeader = e.target.closest('.factor-header');
       if (factorHeader) {
         const card = factorHeader.closest('.factor-card');
@@ -1107,24 +1054,6 @@ class KygoDeepSleepFactors extends HTMLElement {
         const card = pickHeader.closest('.pick-card');
         if (card) this._toggleTopPick(parseInt(card.dataset.pick));
         return;
-      }
-
-      // Source group toggle
-      const srcToggle = e.target.closest('.src-group-toggle');
-      if (srcToggle) {
-        const group = srcToggle.closest('.src-group');
-        group.classList.toggle('open');
-        srcToggle.setAttribute('aria-expanded', group.classList.contains('open'));
-        return;
-      }
-
-    });
-
-    // Sort select
-    shadow.addEventListener('change', (e) => {
-      if (e.target.classList.contains('sort-select')) {
-        this._sortMode = e.target.value;
-        this._updateCategory();
       }
     });
 
@@ -1163,7 +1092,7 @@ class KygoDeepSleepFactors extends HTMLElement {
             this._observer.unobserve(entry.target);
           }
         });
-      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.2 });
+      }, { rootMargin: '0px 0px -40px 0px', threshold: 0.01 });
       els.forEach(el => this._observer.observe(el));
     });
   }
