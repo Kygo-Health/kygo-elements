@@ -470,21 +470,15 @@ class KygoVo2maxAccuracy extends HTMLElement {
       </article>`).join('')}</div>`;
   }
 
-  // ── Section: sources accordion ──────────────────────────────────────────
+  // ── Section: sources (compact link list) ────────────────────────────────
 
   _renderSources() {
     return this._sources.map(s => `
-      <details class="src">
-        <summary>
-          <span class="src-tag">${s.tag}</span>
-          <span class="src-title">${s.title}</span>
-        </summary>
-        <div class="src-body">
-          <p class="src-detail">${s.detail}</p>
-          <p class="src-cite">${s.cite}</p>
-          <a href="${s.url}" target="_blank" rel="noopener nofollow">View source ${this._icon('externalLink')}</a>
-        </div>
-      </details>`).join('');
+      <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">
+        <span class="src-tag">${s.tag}</span>
+        <span class="src-title">${s.title}</span>
+        <span class="src-cite">${s.cite} <span class="src-go">${this._icon('externalLink')}</span></span>
+      </a>`).join('');
   }
 
   _renderFAQ() {
@@ -534,19 +528,19 @@ class KygoVo2maxAccuracy extends HTMLElement {
                 <span class="hero-vis-title"><span class="hero-vis-dot"></span> Avg bias vs lab</span>
                 <span class="hero-vis-tag">method &gt; brand</span>
               </div>
-              <svg viewBox="0 0 560 290" preserveAspectRatio="xMidYMid meet" font-family="'Space Grotesk',sans-serif">
+              <svg viewBox="0 0 560 244" preserveAspectRatio="xMidYMid meet" font-family="'Space Grotesk',sans-serif">
                 <!-- zero baseline -->
-                <line x1="180" y1="34" x2="180" y2="236" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="3 5"/>
-                <text x="180" y="260" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle">LAB = 0</text>
+                <line x1="180" y1="22" x2="180" y2="196" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="3 5"/>
+                <text x="180" y="218" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle">LAB = 0</text>
                 <!-- exercise row -->
-                <text x="26" y="92" fill="#475569" font-size="15" font-weight="600">Exercise-based</text>
-                <rect x="168" y="104" width="12" height="42" rx="3" fill="#22C55E"/>
-                <g transform="translate(196,125)"><rect x="0" y="-16" width="96" height="32" rx="9" fill="#DCFCE7"/><text x="48" y="5" fill="#16A34A" font-size="16" font-weight="700" text-anchor="middle">−0.09</text></g>
+                <text x="26" y="40" fill="#475569" font-size="15" font-weight="600">Exercise-based</text>
+                <rect x="168" y="52" width="12" height="40" rx="3" fill="#22C55E"/>
+                <g transform="translate(196,72)"><rect x="0" y="-16" width="96" height="32" rx="9" fill="#DCFCE7"/><text x="48" y="5" fill="#16A34A" font-size="16" font-weight="700" text-anchor="middle">−0.09</text></g>
                 <!-- resting row -->
-                <text x="26" y="180" fill="#475569" font-size="15" font-weight="600">Resting-based</text>
-                <rect x="180" y="192" width="150" height="42" rx="3" fill="#94A3B8"/>
-                <g transform="translate(342,213)"><rect x="0" y="-16" width="96" height="32" rx="9" fill="#F1F5F9"/><text x="48" y="5" fill="#475569" font-size="16" font-weight="700" text-anchor="middle">+2.17</text></g>
-                <text x="280" y="284" fill="#94A3B8" font-size="12.5" text-anchor="middle">mL/kg/min · INTERLIVE meta-analysis</text>
+                <text x="26" y="128" fill="#475569" font-size="15" font-weight="600">Resting-based</text>
+                <rect x="180" y="140" width="150" height="40" rx="3" fill="#94A3B8"/>
+                <g transform="translate(342,160)"><rect x="0" y="-16" width="96" height="32" rx="9" fill="#F1F5F9"/><text x="48" y="5" fill="#475569" font-size="16" font-weight="700" text-anchor="middle">+2.17</text></g>
+                <text x="280" y="240" fill="#94A3B8" font-size="12.5" text-anchor="middle">mL/kg/min · INTERLIVE meta-analysis</text>
               </svg>
             </div>
           </div>
@@ -614,15 +608,24 @@ class KygoVo2maxAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Side by side</div>
             <h2>Every device, <span class="hl">at a glance.</span></h2>
-            <p class="lede">Nine wearables, ranked with the independently-validated brands first. Scroll the chart sideways on mobile, then read the full per-device breakdown below.</p>
+            <p class="lede">Nine wearables, ranked with the independently-validated brands first. Scroll the chart sideways on mobile to see every column.</p>
           </div>
           <div class="animate-on-scroll">${this._renderComparisonMatrix()}</div>
-          <h3 class="sub-head animate-on-scroll">The full breakdown, device by device</h3>
-          <div class="animate-on-scroll">${this._renderDeviceDetails()}</div>
         </div>
       </section>
 
       <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">In detail</div>
+            <h2>The full breakdown, <span class="hl">device by device.</span></h2>
+            <p class="lede">Tap any wearable to expand its vendor claim, the independent finding vs a lab CPET, and what it's best and weakest for.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderDeviceDetails()}</div>
+        </div>
+      </section>
+
+      <section class="section bg-light">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/most-accurate-vo2-max-wearable" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Deep Dive</span>
@@ -636,7 +639,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Under the hood</div>
@@ -650,7 +653,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
@@ -660,7 +663,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -670,12 +673,12 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
             <h2>Every claim, <span class="hl">traceable.</span></h2>
-            <p class="lede">Each opened and checked against the primary record (PubMed / PMC / journal). Tap to expand. Verified June 2026.</p>
+            <p class="lede">Each checked against the primary record (PubMed / PMC / journal). Verified June 2026.</p>
           </div>
           <div class="sources animate-on-scroll">${this._renderSources()}</div>
         </div>
@@ -917,8 +920,12 @@ class KygoVo2maxAccuracy extends HTMLElement {
       @media (min-width: 768px) { .cmp-scroll { overflow-x: visible; } }
       .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 560px; }
       .cmp-table th, .cmp-table td { padding: 0; vertical-align: middle; }
-      .cmp-table thead th { font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: 0.4px; text-transform: uppercase; color: #334155; text-align: center; padding: 12px 6px; border-bottom: 1px solid #CBD5E1; white-space: nowrap; background: #E2E8F0; position: sticky; top: 54px; z-index: 2; }
-      .cmp-table thead .cmp-th-device { text-align: left; padding-left: 10px; left: 0; z-index: 3; }
+      .cmp-table thead th { font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: 0.4px; text-transform: uppercase; color: #334155; text-align: center; padding: 12px 6px; border-bottom: 1px solid #CBD5E1; white-space: nowrap; background: #E2E8F0; }
+      .cmp-table thead .cmp-th-device { text-align: left; padding-left: 10px; }
+      @media (min-width: 768px) {
+        .cmp-table thead th { position: sticky; top: 54px; z-index: 2; }
+        .cmp-table thead .cmp-th-device { left: 0; z-index: 3; }
+      }
       .th-full { display: none; } .th-short { display: inline; }
       @media (min-width: 768px) {
         .th-full { display: inline; } .th-short { display: none; }
@@ -1060,19 +1067,19 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .faq details[open] summary::after { content: '−'; }
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
-      .sources { display: grid; grid-template-columns: 1fr; gap: 10px; }
-      @media (min-width: 760px) { .sources { grid-template-columns: 1fr 1fr; } }
-      .src { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 18px; transition: border-color .2s; }
-      .src[open] { border-color: var(--kygo-green); }
-      .src summary { list-style: none; padding: 14px 0; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
-      .src summary::-webkit-details-marker { display: none; }
-      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 3px 9px; border-radius: 999px; }
-      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); line-height: 1.35; }
-      .src-body { padding: 0 0 16px; }
-      .src-detail { font-size: 13.5px; line-height: 1.6; color: var(--fg-2); margin: 0 0 8px; }
-      .src-cite { font-size: 12px; color: var(--fg-3); margin: 0 0 10px; }
-      .src-body a { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--kygo-green-dark); }
-      .src-body a .ico { width: 13px; height: 13px; }
+      /* Sources — compact link list */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; transition: border-color .15s, box-shadow .15s; }
+      .src:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--fg-1); line-height: 1.3; }
+      .src:hover .src-title { color: var(--kygo-green-dark); }
+      .src-cite { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--fg-3); line-height: 1.35; }
+      .src-go { display: inline-flex; color: var(--kygo-green-dark); }
+      .src-go .ico { width: 12px; height: 12px; transition: transform .15s; }
+      .src:hover .src-go .ico { transform: translate(1px,-1px); }
 
       /* Footer */
       .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }

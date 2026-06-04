@@ -501,17 +501,11 @@ class KygoVo2maxFactors extends HTMLElement {
 
   _renderSources() {
     return this._sources.map(s => `
-      <details class="src">
-        <summary>
-          <span class="src-tag">${s.tag}</span>
-          <span class="src-title">${s.title}</span>
-        </summary>
-        <div class="src-body">
-          <p class="src-detail">${s.detail}</p>
-          <p class="src-cite">${s.cite}</p>
-          <a href="${s.url}" target="_blank" rel="noopener nofollow">View source ${this._icon('externalLink')}</a>
-        </div>
-      </details>`).join('');
+      <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">
+        <span class="src-tag">${s.tag}</span>
+        <span class="src-title">${s.title}</span>
+        <span class="src-cite">${s.cite} <span class="src-go">${this._icon('externalLink')}</span></span>
+      </a>`).join('');
   }
 
   _renderFAQ() {
@@ -1015,19 +1009,19 @@ class KygoVo2maxFactors extends HTMLElement {
       .fx-acc { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; scroll-margin-top: 90px; }
       .fx-acc[open] { box-shadow: var(--shadow-md); border-color: var(--kygo-green); }
       .fx-acc.flash { border-color: var(--kygo-green); box-shadow: 0 0 0 4px rgba(34,197,94,0.18); }
-      .fx-acc > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+      .fx-acc > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 11px; padding: 9px 13px; }
       .fx-acc > summary::-webkit-details-marker { display: none; }
       .fx-acc > summary:hover { background: var(--bg-surface); }
-      .fx-dir { width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
-      .fx-dir .ico { width: 15px; height: 15px; }
+      .fx-dir { width: 27px; height: 27px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .fx-dir .ico { width: 14px; height: 14px; }
       .fx-dir.dir-pos { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
       .fx-dir.dir-neg { background: var(--bg-raised); color: var(--fg-2); }
       .fx-dir.dir-neu { background: var(--bg-raised); color: var(--fg-3); }
       .fx-dir.dir-var { background: var(--bg-raised); color: var(--fg-2); }
       .fx-dir.dir-pred { background: var(--kygo-dark); color: #fff; }
-      .fx-acc-id { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-      .fx-acc-cat { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
-      .fx-acc-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); line-height: 1.25; }
+      .fx-acc-id { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+      .fx-acc-cat { font-family: var(--font-display); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
+      .fx-acc-name { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); line-height: 1.2; }
       .dir-badge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
       .dir-badge.dir-pos { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
       .dir-badge.dir-neg { background: var(--bg-raised); color: var(--fg-2); }
@@ -1084,20 +1078,19 @@ class KygoVo2maxFactors extends HTMLElement {
       .faq details[open] summary::after { content: '−'; }
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
-      .sources { display: grid; grid-template-columns: 1fr; gap: 10px; }
-      @media (min-width: 760px) { .sources { grid-template-columns: 1fr 1fr; } }
-      @media (min-width: 1080px) { .sources { grid-template-columns: repeat(3, 1fr); } }
-      .src { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 18px; transition: border-color .2s; }
-      .src[open] { border-color: var(--kygo-green); }
-      .src summary { list-style: none; padding: 14px 0; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
-      .src summary::-webkit-details-marker { display: none; }
-      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 3px 9px; border-radius: 999px; }
-      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); line-height: 1.35; }
-      .src-body { padding: 0 0 16px; }
-      .src-detail { font-size: 13px; line-height: 1.6; color: var(--fg-2); margin: 0 0 8px; }
-      .src-cite { font-size: 12px; color: var(--fg-3); margin: 0 0 10px; }
-      .src-body a { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--kygo-green-dark); }
-      .src-body a .ico { width: 13px; height: 13px; }
+      /* Sources — compact link list */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; transition: border-color .15s, box-shadow .15s; }
+      .src:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--fg-1); line-height: 1.3; }
+      .src:hover .src-title { color: var(--kygo-green-dark); }
+      .src-cite { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--fg-3); line-height: 1.35; }
+      .src-go { display: inline-flex; color: var(--kygo-green-dark); }
+      .src-go .ico { width: 12px; height: 12px; transition: transform .15s; }
+      .src:hover .src-go .ico { transform: translate(1px,-1px); }
 
       /* Footer */
       .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
