@@ -25,10 +25,8 @@ class KygoVo2maxFactors extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this._observer = null;
     this._eventsBound = false;
-    this._category = 'all';
     this._dir = new Set();
     this._evidence = new Set();
-    this._sort = 'category';
     this._query = '';
   }
 
@@ -324,6 +322,7 @@ class KygoVo2maxFactors extends HTMLElement {
       moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
       heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
       grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
+      chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
       apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>',
       android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zm10 0v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zM5 17v3a1 1 0 1 0 2 0v-3H5zm12 0v3a1 1 0 1 0 2 0v-3h-2zm-9.5-9c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5H7.5zm.5 1h8a1 1 0 0 1 1 1v6H7v-6a1 1 0 0 1 1-1zM9 5.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm6 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z"/></svg>'
     };
@@ -351,10 +350,9 @@ class KygoVo2maxFactors extends HTMLElement {
     ];
   }
 
-  // ── Filtering + sorting ─────────────────────────────────────────────────
+  // ── Filtering ────────────────────────────────────────────────────────────
 
   _matches(f) {
-    if (this._category !== 'all' && f.cat !== this._category) return false;
     if (this._dir.size && !this._dir.has(f.dir)) return false;
     if (this._evidence.size && !this._evidence.has(f.ev)) return false;
     if (this._query) {
@@ -365,50 +363,21 @@ class KygoVo2maxFactors extends HTMLElement {
     return true;
   }
 
-  _filtered() {
-    const catOrder = this._categories.map(c => c.key);
-    const evRank = { strong: 0, moderate: 1 };
-    const dirRank = { positive: 0, variable: 1, neutral: 2, predictor: 3, negative: 4 };
-    let list = this._factors.filter(f => this._matches(f));
-    if (this._sort === 'az') {
-      list = list.slice().sort((a, b) => a.name.localeCompare(b.name));
-    } else if (this._sort === 'evidence') {
-      list = list.slice().sort((a, b) => (evRank[a.ev] - evRank[b.ev]) || (dirRank[a.dir] - dirRank[b.dir]) || a.name.localeCompare(b.name));
-    } else { // category (default)
-      list = list.slice().sort((a, b) => (catOrder.indexOf(a.cat) - catOrder.indexOf(b.cat)) || (evRank[a.ev] - evRank[b.ev]) || a.name.localeCompare(b.name));
-    }
-    return list;
-  }
+  _filtered() { return this._factors.filter(f => this._matches(f)); }
 
   _anyFilterActive() {
-    return this._category !== 'all' || this._dir.size || this._evidence.size || this._query;
+    return this._dir.size || this._evidence.size || !!this._query;
   }
 
   _updateResults() {
     const sr = this.shadowRoot;
     const filtered = this._filtered();
-    const tabs = sr.querySelector('.cat-tabs');
-    if (tabs) tabs.innerHTML = this._renderCatTabs();
     const dirbar = sr.querySelector('.dir-chipbar');
     if (dirbar) dirbar.innerHTML = this._renderFilterChips();
     const count = sr.querySelector('.fx-count');
     if (count) count.innerHTML = this._renderCount(filtered.length);
-    const grid = sr.querySelector('.fx-grid');
-    if (grid) grid.innerHTML = this._renderFactorCards(filtered);
-  }
-
-  // ── Section: category tabs ──────────────────────────────────────────────
-
-  _renderCatTabs() {
-    const total = this._factors.length;
-    const tab = (key, label, icon, n) => {
-      const active = this._category === key;
-      return `<button class="cat-tab${active ? ' active' : ''}" data-cat="${key}" aria-pressed="${active}">
-        <span class="cat-icon">${this._icon(icon)}</span>${label}<span class="cat-n">${n}</span>
-      </button>`;
-    };
-    return tab('all', 'All factors', 'grid', total) +
-      this._categories.map(c => tab(c.key, c.label, c.icon, this._factors.filter(f => f.cat === c.key).length)).join('');
+    const groups = sr.querySelector('.fx-groups');
+    if (groups) groups.innerHTML = this._renderFactorGroups(filtered);
   }
 
   // ── Section: direction + evidence chips ─────────────────────────────────
@@ -435,41 +404,60 @@ class KygoVo2maxFactors extends HTMLElement {
   }
 
   _renderCount(n) {
-    return `Showing <strong>${n}</strong> of ${this._factors.length} factors${this._category !== 'all' ? ` in ${this._categoryLabel(this._category)}` : ''}`;
+    return `Showing <strong>${n}</strong> of ${this._factors.length} factors`;
   }
 
-  // ── Section: factor cards ───────────────────────────────────────────────
+  // ── Section: factors grouped into collapsible category dropdowns ─────────
 
-  _renderFactorCards(factors) {
+  _renderFactorGroups(factors) {
     if (!factors.length) {
       return `<div class="empty-state">No factors match those filters. <button class="link-btn" data-action="reset-filters">Reset filters</button></div>`;
     }
-    return factors.map(f => {
-      const d = this._dirMeta(f.dir);
-      const s = this._sourceById(f.src);
+    const evRank = { strong: 0, moderate: 1 };
+    const filtering = this._anyFilterActive();
+    const groups = this._categories.map(c => ({
+      c,
+      items: factors.filter(f => f.cat === c.key)
+        .sort((a, b) => (evRank[a.ev] - evRank[b.ev]) || a.name.localeCompare(b.name))
+    })).filter(g => g.items.length);
+
+    return groups.map((g, i) => {
+      const open = filtering || i === 0; // when filtering, open all matching groups; otherwise open the first
       return `
-        <details class="fx-acc ${d.cls}" data-id="${f.id}">
+        <details class="fxcat" data-cat="${g.c.key}"${open ? ' open' : ''}>
           <summary>
-            <span class="fx-dir ${d.cls}">${this._icon(d.icon)}</span>
-            <span class="fx-acc-id">
-              <span class="fx-acc-cat">${this._categoryLabel(f.cat)}</span>
-              <span class="fx-acc-name">${f.name}</span>
-            </span>
-            <span class="dir-badge ${d.cls} fx-hide-sm">${f.dirLabel}</span>
-            <span class="ev-badge ev-${f.ev} fx-hide-md">${f.ev === 'strong' ? 'Strong' : 'Moderate'}</span>
-            <span class="fx-chev">${this._icon('arrowRight')}</span>
+            <span class="fxcat-ico">${this._icon(g.c.icon)}</span>
+            <span class="fxcat-label">${g.c.label}</span>
+            <span class="fxcat-count">${g.items.length}</span>
+            <span class="fxcat-chev">${this._icon('chevron')}</span>
           </summary>
-          <div class="fx-acc-body">
-            <p class="fx-plain">${f.plain}</p>
-            ${f.dose ? `<div class="fx-dose"><span class="fx-dose-ico">${this._icon('bolt')}</span><span><strong>How&nbsp;to</strong> ${f.dose}</span></div>` : ''}
-            <div class="fx-keyblock">
-              <span class="fx-key-label">Key finding &amp; study</span>
-              <p>${f.key}</p>
-            </div>
-            ${s ? `<a class="fx-src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${f.srcLabel}" data-track-position="factor-card">${f.srcLabel} ${this._icon('externalLink')}</a>` : ''}
-          </div>
+          <div class="fxcat-body">${g.items.map(f => this._renderFactorRow(f)).join('')}</div>
         </details>`;
     }).join('');
+  }
+
+  _renderFactorRow(f) {
+    const d = this._dirMeta(f.dir);
+    const s = this._sourceById(f.src);
+    return `
+      <details class="fx-acc ${d.cls}" data-id="${f.id}">
+        <summary>
+          <span class="fx-dir ${d.cls}">${this._icon(d.icon)}</span>
+          <span class="fx-acc-id"><span class="fx-acc-name">${f.name}</span></span>
+          <span class="dir-badge ${d.cls} fx-hide-sm">${f.dirLabel}</span>
+          <span class="ev-badge ev-${f.ev} fx-hide-md">${f.ev === 'strong' ? 'Strong' : 'Moderate'}</span>
+          <span class="fx-chev">${this._icon('arrowRight')}</span>
+        </summary>
+        <div class="fx-acc-body">
+          <p class="fx-plain">${f.plain}</p>
+          ${f.dose ? `<div class="fx-dose"><span class="fx-dose-ico">${this._icon('bolt')}</span><span><strong>How&nbsp;to</strong> ${f.dose}</span></div>` : ''}
+          <div class="fx-keyblock">
+            <span class="fx-key-label">Key finding &amp; study</span>
+            <p>${f.key}</p>
+          </div>
+          ${s ? `<a class="fx-src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${f.srcLabel}" data-track-position="factor-card">${f.srcLabel} ${this._icon('externalLink')}</a>` : ''}
+        </div>
+      </details>`;
   }
 
   // ── Section: quick answers (levers vs duds) ─────────────────────────────
@@ -501,17 +489,11 @@ class KygoVo2maxFactors extends HTMLElement {
 
   _renderSources() {
     return this._sources.map(s => `
-      <details class="src">
-        <summary>
-          <span class="src-tag">${s.tag}</span>
-          <span class="src-title">${s.title}</span>
-        </summary>
-        <div class="src-body">
-          <p class="src-detail">${s.detail}</p>
-          <p class="src-cite">${s.cite}</p>
-          <a href="${s.url}" target="_blank" rel="noopener nofollow">View source ${this._icon('externalLink')}</a>
-        </div>
-      </details>`).join('');
+      <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">
+        <span class="src-tag">${s.tag}</span>
+        <span class="src-title">${s.title}</span>
+        <span class="src-cite">${s.cite} <span class="src-go">${this._icon('externalLink')}</span></span>
+      </a>`).join('');
   }
 
   _renderFAQ() {
@@ -619,29 +601,19 @@ class KygoVo2maxFactors extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">The library</div>
             <h2>Explore every <span class="hl">factor.</span></h2>
-            <p class="lede">Filter by category, direction, and evidence strength, then tap any factor to expand its plain-English takeaway, the key study finding, dose, and source.</p>
+            <p class="lede">Open a category, or filter by direction and evidence strength. Tap any factor to expand its plain-English takeaway, the key study finding, dose, and source.</p>
           </div>
-
-          <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCatTabs()}</div>
 
           <div class="explorer-controls animate-on-scroll">
             <div class="search-wrap">
               <span class="search-icon">${this._icon('search')}</span>
               <input type="search" class="fx-search" placeholder="Search factors (e.g. HIIT, iron, sauna)…" aria-label="Search factors" />
             </div>
-            <label class="sort-wrap">
-              <span>Sort</span>
-              <select class="fx-sort" aria-label="Sort factors">
-                <option value="category">By category</option>
-                <option value="evidence">Strongest evidence first</option>
-                <option value="az">A–Z</option>
-              </select>
-            </label>
           </div>
 
           <div class="dir-chipbar animate-on-scroll">${this._renderFilterChips()}</div>
           <div class="fx-count animate-on-scroll">${this._renderCount(all.length)}</div>
-          <div class="fx-grid animate-on-scroll">${this._renderFactorCards(all)}</div>
+          <div class="fx-groups animate-on-scroll">${this._renderFactorGroups(all)}</div>
         </div>
       </section>
 
@@ -713,14 +685,11 @@ class KygoVo2maxFactors extends HTMLElement {
     shadow.addEventListener('click', (e) => {
       const reset = e.target.closest('[data-action="reset-filters"]');
       if (reset) {
-        this._category = 'all'; this._dir.clear(); this._evidence.clear(); this._query = '';
+        this._dir.clear(); this._evidence.clear(); this._query = '';
         const input = shadow.querySelector('.fx-search'); if (input) input.value = '';
         this._updateResults();
         return;
       }
-
-      const tab = e.target.closest('.cat-tab');
-      if (tab) { this._category = tab.dataset.cat; this._updateResults(); return; }
 
       const chip = e.target.closest('.filter-chip');
       if (chip) {
@@ -741,27 +710,21 @@ class KygoVo2maxFactors extends HTMLElement {
         this._updateResults();
       }
     });
-
-    shadow.addEventListener('change', (e) => {
-      if (e.target.classList.contains('fx-sort')) {
-        this._sort = e.target.value;
-        this._updateResults();
-      }
-    });
   }
 
   _jumpToFactor(id) {
-    // Clear filters so the target is guaranteed visible, then scroll + flash.
-    this._category = 'all'; this._dir.clear(); this._evidence.clear(); this._query = '';
+    // Clear filters so the target is guaranteed visible, then open its category + row, scroll + flash.
+    this._dir.clear(); this._evidence.clear(); this._query = '';
     const input = this.shadowRoot.querySelector('.fx-search'); if (input) input.value = '';
     this._updateResults();
     requestAnimationFrame(() => {
-      const card = this.shadowRoot.querySelector(`.fx-acc[data-id="${id}"]`);
-      if (!card) return;
-      card.open = true;
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      card.classList.add('flash');
-      setTimeout(() => card.classList.remove('flash'), 1600);
+      const row = this.shadowRoot.querySelector(`.fx-acc[data-id="${id}"]`);
+      if (!row) return;
+      const cat = row.closest('.fxcat'); if (cat) cat.open = true;
+      row.open = true;
+      row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      row.classList.add('flash');
+      setTimeout(() => row.classList.remove('flash'), 1600);
     });
   }
 
@@ -974,16 +937,6 @@ class KygoVo2maxFactors extends HTMLElement {
       .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
       .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
-      /* Category tabs */
-      .cat-tabs { display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 6px; margin-bottom: 18px; }
-      .cat-tab { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 10px 14px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-2); cursor: pointer; white-space: nowrap; transition: all .15s ease; }
-      .cat-tab:hover { border-color: var(--kygo-green); color: var(--kygo-green-dark); }
-      .cat-tab.active { background: var(--kygo-dark); border-color: var(--kygo-dark); color: #fff; }
-      .cat-tab .cat-icon { display: inline-flex; }
-      .cat-tab .cat-icon .ico { width: 15px; height: 15px; }
-      .cat-tab .cat-n { font-size: 11px; padding: 2px 7px; border-radius: 999px; background: var(--bg-raised); color: var(--fg-3); }
-      .cat-tab.active .cat-n { background: rgba(255,255,255,0.16); color: rgba(255,255,255,0.85); }
-
       /* Explorer controls */
       .explorer-controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
       .search-wrap { position: relative; flex: 1; min-width: 220px; }
@@ -991,9 +944,6 @@ class KygoVo2maxFactors extends HTMLElement {
       .search-icon .ico { width: 17px; height: 17px; }
       .fx-search { width: 100%; font-family: var(--font-body); font-size: 14px; padding: 12px 14px 12px 40px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-1); transition: border-color .15s; }
       .fx-search:focus { outline: none; border-color: var(--kygo-green); }
-      .sort-wrap { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.4px; }
-      .fx-sort { font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 11px 14px; border-radius: 12px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-1); cursor: pointer; }
-      .fx-sort:focus { outline: none; border-color: var(--kygo-green); }
 
       /* Filter chips */
       .dir-chipbar { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: flex-end; padding: 18px 20px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; margin-bottom: 16px; }
@@ -1010,24 +960,38 @@ class KygoVo2maxFactors extends HTMLElement {
       .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--fg-2); background: #fff; border: 1.5px dashed var(--border-subtle); border-radius: 18px; }
       .link-btn { border: 0; background: none; color: var(--kygo-green-dark); font-weight: 600; cursor: pointer; font-size: inherit; }
 
-      /* Factor accordion list (one row per factor, click to expand) */
-      .fx-grid { display: flex; flex-direction: column; gap: 10px; }
-      .fx-acc { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; scroll-margin-top: 90px; }
+      /* Category dropdowns (collapsible sections) */
+      .fx-groups { display: flex; flex-direction: column; gap: 12px; }
+      .fxcat { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; overflow: hidden; }
+      .fxcat > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 15px 18px; }
+      .fxcat > summary::-webkit-details-marker { display: none; }
+      .fxcat > summary:hover { background: var(--bg-surface); }
+      .fxcat-ico { width: 36px; height: 36px; border-radius: 10px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .fxcat-ico .ico { width: 18px; height: 18px; }
+      .fxcat-label { flex: 1; min-width: 0; font-family: var(--font-display); font-weight: 600; font-size: 17px; color: var(--fg-1); line-height: 1.2; }
+      .fxcat-count { font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-2); background: var(--bg-raised); padding: 3px 10px; border-radius: 999px; flex: none; }
+      .fxcat-chev { color: var(--fg-3); flex: none; }
+      .fxcat-chev .ico { width: 18px; height: 18px; transition: transform .25s; }
+      .fxcat[open] .fxcat-chev .ico { transform: rotate(180deg); color: var(--kygo-green-dark); }
+      .fxcat-body { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px; }
+
+      /* Factor row (one row per factor inside a category, click to expand) */
+      .fx-acc { background: #fff; border: 1px solid var(--border-subtle); border-radius: 11px; overflow: hidden; transition: border-color .2s, box-shadow .2s; scroll-margin-top: 90px; }
       .fx-acc[open] { box-shadow: var(--shadow-md); border-color: var(--kygo-green); }
       .fx-acc.flash { border-color: var(--kygo-green); box-shadow: 0 0 0 4px rgba(34,197,94,0.18); }
-      .fx-acc > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+      .fx-acc > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 11px; padding: 9px 13px; }
       .fx-acc > summary::-webkit-details-marker { display: none; }
       .fx-acc > summary:hover { background: var(--bg-surface); }
-      .fx-dir { width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
-      .fx-dir .ico { width: 15px; height: 15px; }
+      .fx-dir { width: 27px; height: 27px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .fx-dir .ico { width: 14px; height: 14px; }
       .fx-dir.dir-pos { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
       .fx-dir.dir-neg { background: var(--bg-raised); color: var(--fg-2); }
       .fx-dir.dir-neu { background: var(--bg-raised); color: var(--fg-3); }
       .fx-dir.dir-var { background: var(--bg-raised); color: var(--fg-2); }
       .fx-dir.dir-pred { background: var(--kygo-dark); color: #fff; }
-      .fx-acc-id { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-      .fx-acc-cat { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
-      .fx-acc-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); line-height: 1.25; }
+      .fx-acc-id { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+      .fx-acc-cat { font-family: var(--font-display); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
+      .fx-acc-name { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); line-height: 1.2; }
       .dir-badge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
       .dir-badge.dir-pos { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
       .dir-badge.dir-neg { background: var(--bg-raised); color: var(--fg-2); }
@@ -1084,20 +1048,19 @@ class KygoVo2maxFactors extends HTMLElement {
       .faq details[open] summary::after { content: '−'; }
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
-      .sources { display: grid; grid-template-columns: 1fr; gap: 10px; }
-      @media (min-width: 760px) { .sources { grid-template-columns: 1fr 1fr; } }
-      @media (min-width: 1080px) { .sources { grid-template-columns: repeat(3, 1fr); } }
-      .src { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 18px; transition: border-color .2s; }
-      .src[open] { border-color: var(--kygo-green); }
-      .src summary { list-style: none; padding: 14px 0; cursor: pointer; display: flex; flex-direction: column; gap: 6px; }
-      .src summary::-webkit-details-marker { display: none; }
-      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 3px 9px; border-radius: 999px; }
-      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); line-height: 1.35; }
-      .src-body { padding: 0 0 16px; }
-      .src-detail { font-size: 13px; line-height: 1.6; color: var(--fg-2); margin: 0 0 8px; }
-      .src-cite { font-size: 12px; color: var(--fg-3); margin: 0 0 10px; }
-      .src-body a { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; color: var(--kygo-green-dark); }
-      .src-body a .ico { width: 13px; height: 13px; }
+      /* Sources — compact link list */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; transition: border-color .15s, box-shadow .15s; }
+      .src:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--fg-1); line-height: 1.3; }
+      .src:hover .src-title { color: var(--kygo-green-dark); }
+      .src-cite { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--fg-3); line-height: 1.35; }
+      .src-go { display: inline-flex; color: var(--kygo-green-dark); }
+      .src-go .ico { width: 12px; height: 12px; transition: transform .15s; }
+      .src:hover .src-go .ico { transform: translate(1px,-1px); }
 
       /* Footer */
       .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
