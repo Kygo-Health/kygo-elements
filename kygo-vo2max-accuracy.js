@@ -304,7 +304,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
       info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
       run: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="m6 20 2-5 3 1 1 4"/><path d="m5 11 4-2 3 3 4-1"/></svg>',
       apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>',
-      android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zm10 0v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zM5 17v3a1 1 0 1 0 2 0v-3H5zm12 0v3a1 1 0 1 0 2 0v-3h-2zm-9.5-9c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5H7.5zm.5 1h8a1 1 0 0 1 1 1v6H7v-6a1 1 0 0 1 1-1zM9 5.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm6 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z"/></svg>'
+      android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>'
     };
     return `<span class="ico">${icons[name] || icons.info}</span>`;
   }
@@ -525,23 +525,24 @@ class KygoVo2maxAccuracy extends HTMLElement {
             </div>
             <div class="hero-vis" aria-hidden="true">
               <div class="hero-vis-head">
-                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Avg bias vs lab</span>
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Average bias vs lab</span>
                 <span class="hero-vis-tag">method &gt; brand</span>
               </div>
-              <svg viewBox="0 0 560 244" preserveAspectRatio="xMidYMid meet" font-family="'Space Grotesk',sans-serif">
-                <!-- zero baseline -->
-                <line x1="180" y1="22" x2="180" y2="196" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="3 5"/>
-                <text x="180" y="218" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle">LAB = 0</text>
-                <!-- exercise row -->
-                <text x="26" y="40" fill="#475569" font-size="15" font-weight="600">Exercise-based</text>
-                <rect x="168" y="52" width="12" height="40" rx="3" fill="#22C55E"/>
-                <g transform="translate(196,72)"><rect x="0" y="-16" width="96" height="32" rx="9" fill="#DCFCE7"/><text x="48" y="5" fill="#16A34A" font-size="16" font-weight="700" text-anchor="middle">−0.09</text></g>
-                <!-- resting row -->
-                <text x="26" y="128" fill="#475569" font-size="15" font-weight="600">Resting-based</text>
-                <rect x="180" y="140" width="150" height="40" rx="3" fill="#94A3B8"/>
-                <g transform="translate(342,160)"><rect x="0" y="-16" width="96" height="32" rx="9" fill="#F1F5F9"/><text x="48" y="5" fill="#475569" font-size="16" font-weight="700" text-anchor="middle">+2.17</text></g>
-                <text x="280" y="240" fill="#94A3B8" font-size="12.5" text-anchor="middle">mL/kg/min · INTERLIVE meta-analysis</text>
-              </svg>
+              <div class="hv-two">
+                <div class="hv-col">
+                  <span class="hv-label">Exercise-based</span>
+                  <span class="hv-val good">−0.09</span>
+                  <div class="hv-bar"><span class="hv-fill good" style="width:8%"></span></div>
+                  <span class="hv-cap good">Near-zero · accurate</span>
+                </div>
+                <div class="hv-col">
+                  <span class="hv-label">Resting-based</span>
+                  <span class="hv-val">+2.17</span>
+                  <div class="hv-bar"><span class="hv-fill" style="width:100%"></span></div>
+                  <span class="hv-cap">Reads high</span>
+                </div>
+              </div>
+              <span class="hv-foot">mL/kg/min · INTERLIVE meta-analysis</span>
             </div>
           </div>
           <div class="hero-stats">
@@ -582,8 +583,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="kygo-cta-card animate-on-scroll">
             <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-            <h3>Track your VO2 max trend — alongside <span>what you eat.</span></h3>
-            <p>Kygo connects your wearable's data to your nutrition and training, so you see the full picture behind the number — not just one score that drifts.</p>
+            <h3>Track your VO2 max trend alongside <span>what you eat.</span></h3>
+            <p>Kygo connects your wearable's data to your nutrition and training, so you see the full picture behind the number, not just one score that drifts.</p>
             <div class="cta-btn-row">
               <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener" data-track-position="article-cta">${this._icon('apple')} Download for iOS</a>
               <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="article-cta">${this._icon('android')} Download for Android</a>
@@ -851,7 +852,18 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); }
       .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
       .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; }
-      .hero-vis svg { position: relative; width: 100%; height: auto; display: block; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--border-subtle); }
+      .hv-label { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-2); }
+      .hv-val { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-2); }
+      .hv-val.good { color: var(--kygo-green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--bg-raised); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--fg-3); }
+      .hv-fill.good { background: var(--kygo-green); }
+      .hv-cap { font-family: var(--font-display); font-size: 11px; font-weight: 600; color: var(--fg-3); }
+      .hv-cap.good { color: var(--kygo-green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--fg-3); }
       @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
@@ -914,18 +926,14 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
       /* ── Comparison matrix (logo chart) ───────────────────────────────── */
-      .cmp { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 8px 8px 4px; }
-      @media (min-width: 768px) { .cmp { padding: 12px 18px 10px; border-radius: 22px; } }
+      .cmp { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; }
+      @media (min-width: 768px) { .cmp { border-radius: 22px; } }
       .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
       @media (min-width: 768px) { .cmp-scroll { overflow-x: visible; } }
       .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 560px; }
       .cmp-table th, .cmp-table td { padding: 0; vertical-align: middle; }
       .cmp-table thead th { font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: 0.4px; text-transform: uppercase; color: #334155; text-align: center; padding: 12px 6px; border-bottom: 1px solid #CBD5E1; white-space: nowrap; background: #E2E8F0; }
-      .cmp-table thead .cmp-th-device { text-align: left; padding-left: 10px; }
-      @media (min-width: 768px) {
-        .cmp-table thead th { position: sticky; top: 54px; z-index: 2; }
-        .cmp-table thead .cmp-th-device { left: 0; z-index: 3; }
-      }
+      .cmp-table thead .cmp-th-device { text-align: left; padding-left: 14px; position: sticky; left: 0; z-index: 3; background: #E2E8F0; }
       .th-full { display: none; } .th-short { display: inline; }
       @media (min-width: 768px) {
         .th-full { display: inline; } .th-short { display: none; }
@@ -966,11 +974,12 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .acc-pill { display: inline-flex; align-items: center; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 999px; white-space: nowrap; }
       .acc-pill.free { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
       .acc-pill.paid { background: var(--bg-raised); color: var(--fg-2); }
-      .cmp-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; padding: 12px 10px 10px; font-size: 12px; line-height: 1.5; color: var(--fg-3); }
+      .cmp-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; padding: 12px 16px 14px; font-size: 12px; line-height: 1.5; color: var(--fg-3); }
       .cmp-legend .ico { width: 13px; height: 13px; color: var(--kygo-green-dark); background: var(--kygo-green-light); border-radius: 50%; padding: 2px; box-sizing: content-box; }
 
       /* Device detail accordion (one row per wearable, click to expand) */
-      .dev-acc { display: flex; flex-direction: column; gap: 10px; }
+      .dev-acc { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: start; }
+      @media (min-width: 768px) { .dev-acc { grid-template-columns: 1fr 1fr; gap: 12px; } }
       .dacc { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
       .dacc.is-validated { border-color: rgba(34,197,94,0.40); }
       .dacc[open] { box-shadow: var(--shadow-md); border-color: var(--kygo-green); }
