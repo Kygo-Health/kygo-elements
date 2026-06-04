@@ -1,15 +1,15 @@
-
 # local preview/screenshot helpers (not shipped)
 .shot.js
 .shot-el.js
-.shot-*.html
-.shotel-*.html
-before-*.png
-after-*.png
-mobile-table.png
-node_modules/
 .smoke.js
-.smoke-*.html
-.smoke2*
-m-*.png
-state-*.png
+.state.js
+.exp.js
+.chk.js
+.*.html
+node_modules/
+package.json
+package-lock.json
+
+# screenshot artifacts — the shipped components reference remote (Wix) images,
+# so no PNGs belong in the repo
+*.png

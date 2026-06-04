@@ -448,21 +448,27 @@ class KygoVo2maxFactors extends HTMLElement {
       const d = this._dirMeta(f.dir);
       const s = this._sourceById(f.src);
       return `
-        <article class="fx-card" data-id="${f.id}">
-          <div class="fx-top">
-            <span class="fx-cat">${this._categoryLabel(f.cat)}</span>
-            <span class="dir-badge ${d.cls}">${this._icon(d.icon)} ${f.dirLabel}</span>
+        <details class="fx-acc ${d.cls}" data-id="${f.id}">
+          <summary>
+            <span class="fx-dir ${d.cls}">${this._icon(d.icon)}</span>
+            <span class="fx-acc-id">
+              <span class="fx-acc-cat">${this._categoryLabel(f.cat)}</span>
+              <span class="fx-acc-name">${f.name}</span>
+            </span>
+            <span class="dir-badge ${d.cls} fx-hide-sm">${f.dirLabel}</span>
+            <span class="ev-badge ev-${f.ev} fx-hide-md">${f.ev === 'strong' ? 'Strong' : 'Moderate'}</span>
+            <span class="fx-chev">${this._icon('arrowRight')}</span>
+          </summary>
+          <div class="fx-acc-body">
+            <p class="fx-plain">${f.plain}</p>
+            ${f.dose ? `<div class="fx-dose"><span class="fx-dose-ico">${this._icon('bolt')}</span><span><strong>How&nbsp;to</strong> ${f.dose}</span></div>` : ''}
+            <div class="fx-keyblock">
+              <span class="fx-key-label">Key finding &amp; study</span>
+              <p>${f.key}</p>
+            </div>
+            ${s ? `<a class="fx-src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${f.srcLabel}" data-track-position="factor-card">${f.srcLabel} ${this._icon('externalLink')}</a>` : ''}
           </div>
-          <h3 class="fx-name">${f.name}</h3>
-          <span class="ev-badge ev-${f.ev}">${f.ev === 'strong' ? 'Strong' : 'Moderate'} evidence</span>
-          <p class="fx-plain">${f.plain}</p>
-          ${f.dose ? `<div class="fx-dose"><span class="fx-dose-ico">${this._icon('bolt')}</span><span><strong>How&nbsp;to</strong> ${f.dose}</span></div>` : ''}
-          <details class="fx-key">
-            <summary>Key finding &amp; study</summary>
-            <p>${f.key}</p>
-          </details>
-          ${s ? `<a class="fx-src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${f.srcLabel}" data-track-position="factor-card">${f.srcLabel} ${this._icon('externalLink')}</a>` : ''}
-        </article>`;
+        </details>`;
     }).join('');
   }
 
@@ -613,7 +619,7 @@ class KygoVo2maxFactors extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">The library</div>
             <h2>Explore every <span class="hl">factor.</span></h2>
-            <p class="lede">Filter by category, direction, and evidence strength. Each card leads with a plain-English takeaway — expand any card for the key study finding.</p>
+            <p class="lede">Filter by category, direction, and evidence strength, then tap any factor to expand its plain-English takeaway, the key study finding, dose, and source.</p>
           </div>
 
           <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCatTabs()}</div>
@@ -750,8 +756,9 @@ class KygoVo2maxFactors extends HTMLElement {
     const input = this.shadowRoot.querySelector('.fx-search'); if (input) input.value = '';
     this._updateResults();
     requestAnimationFrame(() => {
-      const card = this.shadowRoot.querySelector(`.fx-card[data-id="${id}"]`);
+      const card = this.shadowRoot.querySelector(`.fx-acc[data-id="${id}"]`);
       if (!card) return;
+      card.open = true;
       card.scrollIntoView({ behavior: 'smooth', block: 'center' });
       card.classList.add('flash');
       setTimeout(() => card.classList.remove('flash'), 1600);
@@ -775,7 +782,7 @@ class KygoVo2maxFactors extends HTMLElement {
             this._observer.unobserve(entry.target);
           }
         });
-      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      }, { rootMargin: '0px 0px -40px 0px', threshold: 0.01 });
       els.forEach(el => this._observer.observe(el));
     });
   }
@@ -1003,38 +1010,50 @@ class KygoVo2maxFactors extends HTMLElement {
       .empty-state { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--fg-2); background: #fff; border: 1.5px dashed var(--border-subtle); border-radius: 18px; }
       .link-btn { border: 0; background: none; color: var(--kygo-green-dark); font-weight: 600; cursor: pointer; font-size: inherit; }
 
-      /* Factor cards */
-      .fx-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      @media (min-width: 620px) { .fx-grid { grid-template-columns: 1fr 1fr; } }
-      @media (min-width: 1000px) { .fx-grid { grid-template-columns: repeat(3, 1fr); } }
-      .fx-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; transition: all .25s var(--ease-out); scroll-margin-top: 90px; }
-      .fx-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-      .fx-card.flash { border-color: var(--kygo-green); box-shadow: 0 0 0 4px rgba(34,197,94,0.18); }
-      .fx-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-      .fx-cat { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
+      /* Factor accordion list (one row per factor, click to expand) */
+      .fx-grid { display: flex; flex-direction: column; gap: 10px; }
+      .fx-acc { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; scroll-margin-top: 90px; }
+      .fx-acc[open] { box-shadow: var(--shadow-md); border-color: var(--kygo-green); }
+      .fx-acc.flash { border-color: var(--kygo-green); box-shadow: 0 0 0 4px rgba(34,197,94,0.18); }
+      .fx-acc > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+      .fx-acc > summary::-webkit-details-marker { display: none; }
+      .fx-acc > summary:hover { background: var(--bg-surface); }
+      .fx-dir { width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .fx-dir .ico { width: 15px; height: 15px; }
+      .fx-dir.dir-pos { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .fx-dir.dir-neg { background: var(--bg-raised); color: var(--fg-2); }
+      .fx-dir.dir-neu { background: var(--bg-raised); color: var(--fg-3); }
+      .fx-dir.dir-var { background: var(--bg-raised); color: var(--fg-2); }
+      .fx-dir.dir-pred { background: var(--kygo-dark); color: #fff; }
+      .fx-acc-id { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+      .fx-acc-cat { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
+      .fx-acc-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); line-height: 1.25; }
       .dir-badge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
-      .dir-badge .ico { width: 12px; height: 12px; }
       .dir-badge.dir-pos { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
       .dir-badge.dir-neg { background: var(--bg-raised); color: var(--fg-2); }
       .dir-badge.dir-neu { background: var(--bg-raised); color: var(--fg-3); }
       .dir-badge.dir-var { background: var(--bg-raised); color: var(--fg-2); }
       .dir-badge.dir-pred { background: var(--kygo-dark); color: #fff; }
-      .fx-name { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.25; margin: 0; }
-      .ev-badge { align-self: flex-start; font-family: var(--font-display); font-size: 10px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; }
+      .ev-badge { font-family: var(--font-display); font-size: 10px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
       .ev-badge.ev-strong { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
       .ev-badge.ev-moderate { background: var(--bg-raised); color: var(--fg-2); }
+      .fx-chev { color: var(--fg-3); flex: none; }
+      .fx-chev .ico { width: 16px; height: 16px; transition: transform .2s; }
+      .fx-acc[open] .fx-chev .ico { transform: rotate(90deg); color: var(--kygo-green-dark); }
+      .fx-hide-sm, .fx-hide-md { display: inline-flex; }
+      @media (max-width: 600px) { .fx-hide-sm { display: none; } }
+      @media (max-width: 720px) { .fx-hide-md { display: none; } }
+      .fx-acc-body { padding: 0 16px 16px 56px; display: flex; flex-direction: column; gap: 12px; }
+      @media (max-width: 480px) { .fx-acc-body { padding-left: 16px; } }
       .fx-plain { font-size: 14px; line-height: 1.55; color: var(--fg-1); margin: 0; }
       .fx-dose { display: flex; gap: 9px; align-items: flex-start; background: var(--bg-surface); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; line-height: 1.45; color: var(--fg-2); }
       .fx-dose-ico { width: 22px; height: 22px; border-radius: 6px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: inline-flex; align-items: center; justify-content: center; flex: none; }
       .fx-dose-ico .ico { width: 13px; height: 13px; }
       .fx-dose strong { color: var(--fg-1); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; margin-right: 4px; }
-      .fx-key { font-size: 13px; border-top: 1px solid var(--border-subtle); padding-top: 12px; }
-      .fx-key summary { list-style: none; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); display: inline-flex; align-items: center; gap: 6px; }
-      .fx-key summary::-webkit-details-marker { display: none; }
-      .fx-key summary::after { content: '+'; font-size: 16px; line-height: 1; color: var(--kygo-green-dark); }
-      .fx-key[open] summary::after { content: '−'; }
-      .fx-key p { margin: 10px 0 0; font-size: 13px; line-height: 1.6; color: var(--fg-2); }
-      .fx-src { margin-top: auto; display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); font-size: 12.5px; font-weight: 600; color: var(--kygo-green-dark); }
+      .fx-keyblock { border-top: 1px solid var(--border-subtle); padding-top: 12px; }
+      .fx-key-label { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
+      .fx-keyblock p { margin: 6px 0 0; font-size: 13px; line-height: 1.6; color: var(--fg-2); }
+      .fx-src { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-body); font-size: 12.5px; font-weight: 600; color: var(--kygo-green-dark); }
       .fx-src .ico { width: 13px; height: 13px; transition: transform .15s; }
       .fx-src:hover .ico { transform: translate(1px,-1px); }
 
@@ -1094,7 +1113,7 @@ class KygoVo2maxFactors extends HTMLElement {
 
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-        .qa-item, .fx-card { transition: none; }
+        .qa-item, .fx-acc { transition: none; }
       }
     `;
   }

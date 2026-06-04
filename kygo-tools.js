@@ -29,7 +29,7 @@ class KygoToolsPage extends HTMLElement {
     this.render();
     this._setupEvents();
     this._setupAnimations();
-    __seo(this, 'Kygo Health Free Tools — Free research-backed tools to understand your nutrition and health. Food Scanner, Wearable Accuracy, HRV Factors, Sleep Factors, Step Count Accuracy, Sleep Metrics, Calorie Burn Accuracy, Sensor Comparison, and more. No signup required.');
+    __seo(this, 'Kygo Health Free Tools — Free research-backed tools to understand your nutrition and health. Food Scanner, Wearable Accuracy, VO2 Max Accuracy, VO2 Max Factors, HRV Factors, Sleep Factors, Step Count Accuracy, Sleep Metrics, Calorie Burn Accuracy, Sensor Comparison, and more. No signup required.');
     this._injectStructuredData();
   }
 
@@ -61,6 +61,8 @@ class KygoToolsPage extends HTMLElement {
   _defaultTools() {
     return [
       { slug: 'wearable-accuracy', title: 'Most Accurate Wearable', description: 'Compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research.', icon: 'activity', badge: 'Most Popular', url: '/tools/wearable-accuracy', features: ['17+ peer-reviewed studies', 'Head-to-head comparison', 'Full bias disclosure'] },
+      { slug: 'vo2-max-accuracy', title: 'Most Accurate VO2 Max Wearable', description: 'How accurately do Garmin, Apple, Polar, Fitbit, WHOOP, Oura, Samsung & Coros estimate VO2 max vs a lab CPET? Compare 9 devices by method and see which brands are actually independently validated.', icon: 'activity', badge: 'New', url: '/tools/vo2-max-accuracy', category: 'wearables', features: ['9 devices compared', 'Independent vs vendor validation', '13 peer-reviewed sources'] },
+      { slug: 'vo2-max-factors', title: 'VO2 Max Factor Explorer', description: 'Explore 39 research-backed factors that raise or lower VO2 max — training, nutrition, environment, lifestyle & clinical — ranked by evidence strength, with doses and sources.', icon: 'zap', badge: 'New', url: '/tools/vo2-max-factors', category: 'recovery', features: ['39 factors ranked', '6 categories', '36 peer-reviewed sources'] },
       { slug: 'oura-ring-comparison-tool', title: 'Oura Ring 5 vs Ring 4 vs Gen 3', description: 'Compare Oura Ring 5, Ring 4, and Gen 3 side-by-side. See specs, peer-reviewed accuracy data (Dial 2025, Khan 2025), and the real 3-year cost with subscription math included.', icon: 'scale', badge: 'New', url: '/tools/oura-ring-comparison-tool', features: ['3 generations compared', 'Peer-reviewed accuracy data', '3-year TCO calculator'] },
       { slug: 'fitbit-air-vs-whoop-comparison', title: 'Fitbit Air vs WHOOP Comparison', description: 'Compare Fitbit Air, WHOOP 5.0, and WHOOP MG side by side. Filter by sensors, battery, price, health metrics, and 3-year cost of ownership.', icon: 'scale', badge: 'New', url: '/tools/fitbit-air-vs-whoop-comparison', features: ['35 specs across 5 categories', '3-year cost calculator', 'Live HR sampling visualization'] },
       { slug: 'stress-factors', title: 'Stress Factor Explorer', description: 'What actually moves your wearable stress score? Explore every factor by device — Garmin, WHOOP, Oura, Fitbit, Samsung, Apple Watch — broken down by signal, direction & evidence.', icon: 'brain', badge: 'New', url: '/tools/stress-factors', features: ['10 wearables compared', '5 signal types mapped', '30+ peer-reviewed sources'] },

@@ -48,7 +48,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
       samsung: 'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
       whoop:   'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
       oura:    'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
-      coros:   'https://static.wixstatic.com/media/273a63_b86aaa1f1b5b43a4a8ccc8294293e193~mv2.png'
+      coros:   'https://static.wixstatic.com/media/273a63_b86aaa1f1b5b43a4a8ccc8294293e193~mv2.png',
+      suunto:  'https://static.wixstatic.com/media/273a63_0bf2273473c849a98d9fc92b6ccea514~mv2.png'
     })[key] || null;
   }
 
@@ -374,44 +375,45 @@ class KygoVo2maxAccuracy extends HTMLElement {
       </div>`;
   }
 
-  // ── Section: per-device detail (accordions, with logos) ─────────────────
+  // ── Section: per-device detail (one row per wearable, click to expand) ───
 
   _renderDeviceDetails() {
-    return `<div class="dev-grid">${this._devices.map(d => `
-      <article class="dev-card${d.validation === 'validated' ? ' is-validated' : ''}">
-        <div class="dev-head">
-          ${this._deviceLogo(d)}
-          <div class="dev-headtext">
-            <h3>${d.name}</h3>
-            <span class="dev-meta">${d.typeLabel}</span>
+    const rank = { validated: 0, indirect: 1, none: 2 };
+    const rows = this._devices.slice().sort((a, b) => (rank[a.validation] - rank[b.validation]) || a.name.localeCompare(b.name));
+    const valDot = (v) => v === 'validated'
+      ? `<span class="dacc-vdot yes" title="Independently validated">${this._icon('check')}</span>`
+      : (v === 'indirect' ? `<span class="dacc-vdot mid" title="Shares Garmin's Firstbeat engine">≈</span>` : `<span class="dacc-vdot no" title="Vendor claims only"><span class="dash"></span></span>`);
+    return `<div class="dev-acc">${rows.map(d => `
+      <details class="dacc${d.validation === 'validated' ? ' is-validated' : ''}">
+        <summary>
+          ${this._deviceLogo(d, 'sm')}
+          <span class="dacc-id">
+            <span class="dacc-name">${d.name}</span>
+            <span class="dacc-sub">${this._methodPill(d)}<span class="acc-pill ${d.subscription ? 'paid' : 'free'}">${d.subscription ? 'Paid' : 'Free'}</span></span>
+          </span>
+          ${valDot(d.validation)}
+          <span class="dacc-chev">${this._icon('arrowRight')}</span>
+        </summary>
+        <div class="dacc-body">
+          <div class="dacc-badges">${this._validationBadge(d.validation)}</div>
+          <div class="dev-finding">
+            <span class="dev-label">Independent vs lab CPET</span>
+            <p>${d.independent}</p>
           </div>
-          ${d.subscription
-            ? `<span class="acc-pill paid">Paid</span>`
-            : `<span class="acc-pill free">Free</span>`}
+          <div class="dev-finding alt">
+            <span class="dev-label">Vendor claim</span>
+            <p>${d.vendorClaim}</p>
+          </div>
+          <ul class="dev-facts">
+            <li><span class="fct-ico">${this._icon('run')}</span><span><strong>Needs</strong> ${d.needs}</span></li>
+            <li><span class="fct-ico ok">${this._icon('check')}</span><span><strong>Best for</strong> ${d.bestFor}</span></li>
+            <li><span class="fct-ico">${this._icon('minus')}</span><span><strong>Weakest for</strong> ${d.weakestFor}</span></li>
+          </ul>
+          ${d.affiliateUrl
+            ? `<a href="${d.affiliateUrl}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.short} Amazon" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
+            : ''}
         </div>
-
-        <div class="dev-pills">${this._methodPill(d)}${this._validationBadge(d.validation)}</div>
-
-        <div class="dev-finding">
-          <span class="dev-label">Independent vs lab CPET</span>
-          <p>${d.independent}</p>
-        </div>
-
-        <details class="dev-vendor">
-          <summary>Vendor claim</summary>
-          <p>${d.vendorClaim}</p>
-        </details>
-
-        <ul class="dev-facts">
-          <li><span class="fct-ico">${this._icon('run')}</span><span><strong>Needs</strong> ${d.needs}</span></li>
-          <li><span class="fct-ico ok">${this._icon('check')}</span><span><strong>Best for</strong> ${d.bestFor}</span></li>
-          <li><span class="fct-ico">${this._icon('minus')}</span><span><strong>Weakest for</strong> ${d.weakestFor}</span></li>
-        </ul>
-
-        ${d.affiliateUrl
-          ? `<a href="${d.affiliateUrl}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.short} Amazon" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
-          : ''}
-      </article>`).join('')}</div>`;
+      </details>`).join('')}</div>`;
   }
 
   // ── Section: inputs comparison matrix (logo chart) ──────────────────────
@@ -532,16 +534,19 @@ class KygoVo2maxAccuracy extends HTMLElement {
                 <span class="hero-vis-title"><span class="hero-vis-dot"></span> Avg bias vs lab</span>
                 <span class="hero-vis-tag">method &gt; brand</span>
               </div>
-              <svg viewBox="0 0 600 320" preserveAspectRatio="xMidYMid meet" font-family="'Space Grotesk',sans-serif">
-                <line x1="190" y1="40" x2="190" y2="250" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="4 5"/>
-                <text x="190" y="270" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle">LAB = 0</text>
-                <text x="20" y="92" fill="#475569" font-size="14" font-weight="600">Exercise-based</text>
-                <rect x="184" y="104" width="14" height="34" rx="3" fill="#22C55E"/>
-                <g transform="translate(214,121)"><rect x="0" y="-15" width="92" height="30" rx="8" fill="#DCFCE7"/><text x="46" y="5" fill="#16A34A" font-size="15" font-weight="700" text-anchor="middle">−0.09</text></g>
-                <text x="20" y="182" fill="#475569" font-size="14" font-weight="600">Resting-based</text>
-                <rect x="190" y="194" width="150" height="34" rx="3" fill="#94A3B8"/>
-                <g transform="translate(352,211)"><rect x="0" y="-15" width="92" height="30" rx="8" fill="#F1F5F9"/><text x="46" y="5" fill="#475569" font-size="15" font-weight="700" text-anchor="middle">+2.17</text></g>
-                <text x="300" y="304" fill="#94A3B8" font-size="12" text-anchor="middle">mL/kg/min — INTERLIVE meta-analysis</text>
+              <svg viewBox="0 0 560 290" preserveAspectRatio="xMidYMid meet" font-family="'Space Grotesk',sans-serif">
+                <!-- zero baseline -->
+                <line x1="180" y1="34" x2="180" y2="236" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="3 5"/>
+                <text x="180" y="260" fill="#94A3B8" font-size="13" font-weight="600" text-anchor="middle">LAB = 0</text>
+                <!-- exercise row -->
+                <text x="26" y="92" fill="#475569" font-size="15" font-weight="600">Exercise-based</text>
+                <rect x="168" y="104" width="12" height="42" rx="3" fill="#22C55E"/>
+                <g transform="translate(196,125)"><rect x="0" y="-16" width="96" height="32" rx="9" fill="#DCFCE7"/><text x="48" y="5" fill="#16A34A" font-size="16" font-weight="700" text-anchor="middle">−0.09</text></g>
+                <!-- resting row -->
+                <text x="26" y="180" fill="#475569" font-size="15" font-weight="600">Resting-based</text>
+                <rect x="180" y="192" width="150" height="42" rx="3" fill="#94A3B8"/>
+                <g transform="translate(342,213)"><rect x="0" y="-16" width="96" height="32" rx="9" fill="#F1F5F9"/><text x="48" y="5" fill="#475569" font-size="16" font-weight="700" text-anchor="middle">+2.17</text></g>
+                <text x="280" y="284" fill="#94A3B8" font-size="12.5" text-anchor="middle">mL/kg/min · INTERLIVE meta-analysis</text>
               </svg>
             </div>
           </div>
@@ -717,7 +722,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
             this._observer.unobserve(entry.target);
           }
         });
-      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.12 });
+      }, { rootMargin: '0px 0px -40px 0px', threshold: 0.01 });
       els.forEach(el => this._observer.observe(el));
     });
   }
@@ -837,13 +842,13 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .hero-light h1 .hl { color: var(--kygo-green); }
       .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--fg-2); max-width: 60ch; margin: 0; }
       .hero-lede strong { color: var(--fg-1); font-weight: 600; }
-      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 6px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 16px 18px; aspect-ratio: 5 / 3; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
       .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
       .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; }
       .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); }
       .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
       .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; }
-      .hero-vis svg { position: relative; width: 100%; flex: 1; min-height: 0; display: block; }
+      .hero-vis svg { position: relative; width: 100%; height: auto; display: block; }
       @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
@@ -912,8 +917,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
       @media (min-width: 768px) { .cmp-scroll { overflow-x: visible; } }
       .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 560px; }
       .cmp-table th, .cmp-table td { padding: 0; vertical-align: middle; }
-      .cmp-table thead th { font-family: var(--font-display); font-weight: 600; font-size: 10.5px; letter-spacing: 0.4px; text-transform: uppercase; color: var(--fg-3); text-align: center; padding: 12px 6px; border-bottom: 1px solid var(--border-subtle); white-space: nowrap; background: #fff; }
-      .cmp-table thead .cmp-th-device { text-align: left; padding-left: 8px; }
+      .cmp-table thead th { font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: 0.4px; text-transform: uppercase; color: #334155; text-align: center; padding: 12px 6px; border-bottom: 1px solid #CBD5E1; white-space: nowrap; background: #E2E8F0; position: sticky; top: 54px; z-index: 2; }
+      .cmp-table thead .cmp-th-device { text-align: left; padding-left: 10px; left: 0; z-index: 3; }
       .th-full { display: none; } .th-short { display: inline; }
       @media (min-width: 768px) {
         .th-full { display: inline; } .th-short { display: none; }
@@ -921,7 +926,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
       }
       .cmp-table tbody tr + tr td, .cmp-table tbody tr + tr th { border-top: 1px solid var(--border-subtle); }
       .cmp-table tbody tr:hover td, .cmp-table tbody tr:hover .cmp-td-device { background: var(--bg-surface); }
-      .cmp-td-device { padding: 10px 8px; width: 84px; min-width: 84px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--border-subtle); }
+      .cmp-td-device { padding: 10px 6px; width: 98px; min-width: 98px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--border-subtle); }
       .brand { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
       .brand-img { width: 38px; height: 38px; border-radius: 9px; background: var(--bg-raised); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
       .brand-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
@@ -929,14 +934,14 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .brand-img.brand-img--icon .ico { width: 18px; height: 18px; }
       .brand-img.sm { width: 34px; height: 34px; border-radius: 8px; }
       .brand-text { display: flex; flex-direction: column; min-width: 0; }
-      .brand-name { font-family: var(--font-display); font-weight: 600; font-size: 10.5px; color: var(--fg-1); line-height: 1.15; }
+      .brand-name { font-family: var(--font-display); font-weight: 600; font-size: 11px; color: var(--fg-1); line-height: 1.2; overflow-wrap: anywhere; word-break: break-word; max-width: 86px; }
       .brand-type { font-size: 9.5px; color: var(--fg-3); line-height: 1.2; display: none; }
       @media (min-width: 768px) {
         .cmp-td-device { padding: 12px 14px 12px 8px; width: auto; min-width: 230px; position: static; box-shadow: none; }
         .brand { flex-direction: row; align-items: center; gap: 12px; text-align: left; }
         .brand-img { width: 42px; height: 42px; border-radius: 11px; }
         .brand-img.sm { width: 42px; height: 42px; border-radius: 11px; }
-        .brand-name { font-size: 15px; }
+        .brand-name { font-size: 15px; max-width: none; }
         .brand-type { font-size: 11.5px; display: block; }
       }
       .cmp-table tbody td { text-align: center; padding: 10px 6px; }
@@ -957,33 +962,39 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .cmp-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; padding: 12px 10px 10px; font-size: 12px; line-height: 1.5; color: var(--fg-3); }
       .cmp-legend .ico { width: 13px; height: 13px; color: var(--kygo-green-dark); background: var(--kygo-green-light); border-radius: 50%; padding: 2px; box-sizing: content-box; }
 
-      /* Device detail cards */
-      .dev-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      @media (min-width: 620px) { .dev-grid { grid-template-columns: 1fr 1fr; } }
-      @media (min-width: 1000px) { .dev-grid { grid-template-columns: repeat(3, 1fr); } }
-      .dev-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 14px; transition: all .25s var(--ease-out); }
-      .dev-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-      .dev-card.is-validated { border-color: rgba(34,197,94,0.45); }
-      .dev-head { display: flex; align-items: center; gap: 12px; }
-      .dev-head .brand-img { width: 44px; height: 44px; border-radius: 11px; }
-      .dev-headtext { min-width: 0; flex: 1; }
-      .dev-headtext h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; margin: 0; line-height: 1.2; }
-      .dev-meta { font-size: 12px; color: var(--fg-3); }
-      .dev-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+      /* Device detail accordion (one row per wearable, click to expand) */
+      .dev-acc { display: flex; flex-direction: column; gap: 10px; }
+      .dacc { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+      .dacc.is-validated { border-color: rgba(34,197,94,0.40); }
+      .dacc[open] { box-shadow: var(--shadow-md); border-color: var(--kygo-green); }
+      .dacc > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+      .dacc > summary::-webkit-details-marker { display: none; }
+      .dacc > summary:hover { background: var(--bg-surface); }
+      .dacc .brand-img.sm { width: 40px; height: 40px; border-radius: 10px; flex: none; }
+      .dacc-id { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+      .dacc-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); line-height: 1.2; }
+      .dacc-sub { display: flex; flex-wrap: wrap; gap: 6px; }
+      .dacc-vdot { width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; flex: none; font-family: var(--font-display); font-weight: 700; font-size: 13px; color: var(--fg-2); }
+      .dacc-vdot.yes { background: var(--kygo-green); color: #fff; }
+      .dacc-vdot.yes .ico { width: 12px; height: 12px; }
+      .dacc-vdot.mid { background: var(--bg-raised); }
+      .dacc-vdot.no { background: var(--bg-raised); }
+      .dacc-vdot .dash { display: block; width: 9px; height: 2px; border-radius: 1px; background: var(--fg-3); }
+      .dacc-chev { color: var(--fg-3); flex: none; }
+      .dacc-chev .ico { width: 16px; height: 16px; transition: transform .2s; }
+      .dacc[open] .dacc-chev .ico { transform: rotate(90deg); color: var(--kygo-green-dark); }
+      .dacc-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+      .dacc-badges { padding-top: 4px; }
       .vbadge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
       .vbadge .ico { width: 12px; height: 12px; }
       .vbadge.yes { background: var(--kygo-green); color: #fff; }
       .vbadge.mid { background: var(--bg-raised); color: var(--fg-2); }
       .vbadge.no { background: #fff; border: 1px solid var(--border-subtle); color: var(--fg-3); }
       .dev-finding { background: var(--bg-surface); border-radius: 12px; padding: 12px 14px; }
+      .dev-finding.alt { background: #fff; border: 1px solid var(--border-subtle); }
       .dev-label { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
       .dev-finding p { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--fg-1); }
-      .dev-vendor { font-size: 13px; }
-      .dev-vendor summary { list-style: none; cursor: pointer; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); display: inline-flex; align-items: center; gap: 6px; }
-      .dev-vendor summary::-webkit-details-marker { display: none; }
-      .dev-vendor summary::after { content: '+'; font-size: 15px; line-height: 1; color: var(--kygo-green-dark); }
-      .dev-vendor[open] summary::after { content: '−'; }
-      .dev-vendor p { margin: 8px 0 0; font-size: 13px; line-height: 1.5; color: var(--fg-2); }
+      .dev-finding.alt p { color: var(--fg-2); }
       .dev-facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
       .dev-facts li { display: grid; grid-template-columns: 22px 1fr; gap: 9px; font-size: 13px; line-height: 1.45; color: var(--fg-2); }
       .dev-facts .fct-ico { width: 22px; height: 22px; border-radius: 6px; background: var(--bg-raised); color: var(--fg-3); display: inline-flex; align-items: center; justify-content: center; }
