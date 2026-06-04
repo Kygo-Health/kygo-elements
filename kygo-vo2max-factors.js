@@ -324,7 +324,7 @@ class KygoVo2maxFactors extends HTMLElement {
       grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
       chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
       apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>',
-      android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zm10 0v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zM5 17v3a1 1 0 1 0 2 0v-3H5zm12 0v3a1 1 0 1 0 2 0v-3h-2zm-9.5-9c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5H7.5zm.5 1h8a1 1 0 0 1 1 1v6H7v-6a1 1 0 0 1 1-1zM9 5.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm6 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z"/></svg>'
+      android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>'
     };
     return `<span class="ico">${icons[name] || icons.info}</span>`;
   }
@@ -546,8 +546,10 @@ class KygoVo2maxFactors extends HTMLElement {
               </div>
               <div class="hero-vis-body">
                 <div class="hero-vis-big">≈5×</div>
-                <p>higher all-cause mortality for the <strong>least-fit</strong> vs the fittest — with <strong>no upper limit</strong> of benefit. Low fitness rivals smoking, diabetes, and coronary disease as a risk factor.</p>
-                <span class="hero-vis-src">Mandsager et al. 2018 · JAMA Network Open</span>
+                <div class="hero-vis-text">
+                  <p><strong>higher all-cause mortality</strong> for the least-fit vs the fittest, with <strong>no upper limit</strong> of benefit — low fitness rivals smoking, diabetes, and coronary disease as a risk factor.</p>
+                  <span class="hero-vis-src">Mandsager et al. 2018 · JAMA Network Open</span>
+                </div>
               </div>
             </div>
           </div>
@@ -871,9 +873,10 @@ class KygoVo2maxFactors extends HTMLElement {
       .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.55); }
       .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.25); }
       .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: #6EE7A0; background: rgba(34,197,94,0.16); padding: 4px 10px; border-radius: 999px; }
-      .hero-vis-body { position: relative; }
-      .hero-vis-big { font-family: var(--font-display); font-weight: 700; font-size: clamp(56px, 11vw, 88px); line-height: 0.95; letter-spacing: -0.03em; color: var(--kygo-green); }
-      .hero-vis-body p { margin: 6px 0 12px; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.78); max-width: 36ch; }
+      .hero-vis-body { position: relative; display: flex; align-items: center; gap: 20px; }
+      .hero-vis-big { flex: none; font-family: var(--font-display); font-weight: 700; font-size: clamp(52px, 12vw, 82px); line-height: 0.92; letter-spacing: -0.03em; color: var(--kygo-green); }
+      .hero-vis-text { flex: 1; min-width: 0; }
+      .hero-vis-body p { margin: 0 0 10px; font-size: 14px; line-height: 1.55; color: rgba(255,255,255,0.78); }
       .hero-vis-body p strong { color: #fff; font-weight: 600; }
       .hero-vis-src { font-size: 11px; color: rgba(255,255,255,0.45); }
       @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 460px; margin: 4px auto 0; } }
