@@ -676,6 +676,20 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
       <section class="section bg-light">
         <div class="section-inner">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/vo2-max-factors" target="_blank" rel="noopener">
+            <span class="blog-cta-tag">Related Tool</span>
+            <div class="blog-cta-body">
+              <div class="blog-cta-kicker">Pair it with</div>
+              <div class="blog-cta-title">VO2 Max Factor Explorer</div>
+              <div class="blog-cta-sub">39 research-backed factors that raise or lower VO2 max — training, nutrition, environment &amp; lifestyle, ranked by evidence strength.</div>
+            </div>
+            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
             <h2>Every claim, <span class="hl">traceable.</span></h2>

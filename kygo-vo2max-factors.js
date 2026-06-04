@@ -645,6 +645,20 @@ class KygoVo2maxFactors extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/vo2-max-accuracy" target="_blank" rel="noopener">
+            <span class="blog-cta-tag">Related Tool</span>
+            <div class="blog-cta-body">
+              <div class="blog-cta-kicker">Pair it with</div>
+              <div class="blog-cta-title">Most Accurate VO2 Max Wearable</div>
+              <div class="blog-cta-sub">See how 9 watches &amp; rings actually stack up against a lab CPET — which brands are independently validated, and which overestimate.</div>
+            </div>
+            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
             <h2>Every factor, <span class="hl">anchored.</span></h2>
