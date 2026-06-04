@@ -949,7 +949,7 @@ class KygoVo2maxFactors extends HTMLElement {
       .fx-search:focus { outline: none; border-color: var(--kygo-green); }
 
       /* Filter chips */
-      .dir-chipbar { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: flex-end; padding: 18px 20px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; margin-bottom: 16px; }
+      .dir-chipbar { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: flex-end; padding: 18px 20px; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: 16px; margin-bottom: 16px; }
       .chip-group { display: flex; flex-direction: column; gap: 8px; }
       .chip-group-label { font-family: var(--font-display); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
       .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }

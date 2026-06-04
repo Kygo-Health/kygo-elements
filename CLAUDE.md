@@ -6,6 +6,12 @@ Guidance for working in this repo. Read this before editing or creating componen
 
 - **`docs/about-kygo.md`** — what the Kygo app actually does (features, wearables, data sources,
   Free vs Pro). Use it to keep page copy, `__seo` summaries, and JSON-LD accurate.
+- **`docs/tool-page-playbook.md`** — **read before building or editing any full-page tool**
+  (comparison chart, factor explorer, calculator — e.g. the `*-comparison`, `vo2max-*`,
+  `wearable-stress` files). The standard design system, page skeleton, reusable modules (logo
+  comparison matrix, collapsible category dropdowns, compact sources), brand-logo map,
+  mobile/reveal gotchas, and a pre-commit verification checklist — so a new tool ships at the
+  same quality without a review round per detail.
 - **`docs/internal-and-app-store-links.md`** — every internal kygo.app + app-store link, by file.
 - **`docs/affiliate-links.md`** — every Amazon/affiliate link, the product it points to, and where.
 - **`docs/schemas-and-tracking.md`** — the JSON-LD schema each page injects (per-page map +
@@ -207,6 +213,10 @@ the source of truth for facts and figures, and keep the component's copy + JSON-
 with them.
 
 ## Adding a new page — checklist
+
+> **Building a full-page tool** (comparison chart, factor explorer, calculator)? Read
+> **`docs/tool-page-playbook.md`** first and follow it — it covers the design system, page
+> skeleton, reusable modules, mobile gotchas, and the verification checklist for those pages.
 
 Prefer the **`new-page` skill** (`.claude/skills/new-page/`) to scaffold, then fill it in. By hand:
 
