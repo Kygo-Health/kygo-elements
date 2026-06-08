@@ -268,10 +268,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Auditory cortex activation and autonomic arousal interrupt NREM stages; even sub-conscious arousals fragment sleep architecture.',
           dosage: 'Keep bedroom <30 dB; use masking (white/pink noise) or earplugs',
           source: { url: 'https://www.mdpi.com/1660-4601/15/3/519', label: 'Basner et al. 2018 WHO review' },
-          affiliate: [
-            { url: 'https://amzn.to/4bfT8bC', label: 'White Noise Machine' },
-            { url: 'https://amzn.to/4vGyQk9', label: 'Earplugs' }
-          ]
+          affiliate: { url: 'https://amzn.to/4vGyQk9', label: 'Earplugs' }
         },
         {
           key: 'co2-ventilation', name: 'CO₂ >1000 ppm (Poor Ventilation)',
