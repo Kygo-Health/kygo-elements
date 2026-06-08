@@ -64,7 +64,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A tightly controlled inpatient study with polysomnography found higher-fiber days independently predicted fewer sleep arousals. Fiber is one of the strongest dietary signals for staying asleep through the night.',
           mechanism: 'Stable overnight glucose, lower systemic inflammation, and microbiome-driven vagal tone reduce the arousals that fragment deep sleep.',
           dosage: '25–35 g/day from whole foods',
-          source: { url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384', label: 'St-Onge et al. 2016' }
+          source: { url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384', label: 'St-Onge et al. 2016' },
+          affiliate: { url: 'https://amzn.to/4uL7b1p', label: 'Dietary Fiber Supplement' }
         },
         {
           key: 'sugar', name: 'Sugar / Refined Carbs',
@@ -114,7 +115,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A small but clean pilot RCT found tart cherry juice cut WASO by about 17 minutes versus placebo in older adults with insomnia. Needs replication at larger scale, but the mechanism is plausible and the signal is direct.',
           mechanism: 'Naturally occurring melatonin and tryptophan plus anti-inflammatory anthocyanins support consolidated overnight sleep.',
           dosage: '240 mL (8 oz) twice daily; morning and 1–2 hrs pre-bed',
-          source: { url: 'https://journals.sagepub.com/doi/full/10.1089/jmf.2009.0096', label: 'Pigeon et al. 2010 RCT' }
+          source: { url: 'https://journals.sagepub.com/doi/full/10.1089/jmf.2009.0096', label: 'Pigeon et al. 2010 RCT' },
+          affiliate: { url: 'https://amzn.to/3PXqKEh', label: 'Tart Cherry Juice' }
         }
       ],
       supplements: [
@@ -136,7 +138,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'The strongest supplement-specific evidence for staying asleep. Pooled across 3 RCTs with 281 participants, ashwagandha produced a standardized mean difference of −0.39 for WASO — meaningfully less nighttime waking. 600 mg/day of standardized extract shows the largest effect.',
           mechanism: 'Withanolides reduce cortisol and overnight sympathetic tone; GABAergic activity dampens the arousals that fragment sleep.',
           dosage: '600 mg/day standardized extract, split AM/PM or taken evening',
-          source: { url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843', label: 'Cheah et al. 2021 meta-analysis' }
+          source: { url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843', label: 'Cheah et al. 2021 meta-analysis' },
+          affiliate: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }
         },
         {
           key: 'glycine', name: 'Glycine (3 g)',
@@ -146,7 +149,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A small but polysomnography-verified study: 3 g of glycine before bed reduced nighttime waking and sped entry into slow-wave sleep. Small sample, but the mechanism is clean and the objective measurement is solid.',
           mechanism: 'Peripheral vasodilation drops core body temperature (a deep-sleep signal); NMDA modulation reduces cortical arousal.',
           dosage: '3 g, 30–60 min before bed',
-          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' }
+          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' },
+          affiliate: { url: 'https://amzn.to/3PWfatc', label: 'Glycine Powder' }
         },
         {
           key: 'magnesium', name: 'Magnesium (500 mg)',
@@ -156,7 +160,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'Magnesium improved overall sleep efficiency in older adults with insomnia (P=0.03), but WASO itself was not directly measured. Early-morning awakening was only marginally better (P=0.08). Best evidence is in elderly people with low dietary magnesium.',
           mechanism: 'NMDA receptor antagonism and GABA-A potentiation reduce cortical arousal; supports melatonin rhythm.',
           dosage: '200–500 mg elemental magnesium (glycinate preferred)',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23853635/', label: 'Abbasi et al. 2012 RCT' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23853635/', label: 'Abbasi et al. 2012 RCT' },
+          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine (200–450 mg)',
@@ -166,7 +171,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'L-theanine shows subjective relaxation benefits and some sleep-maintenance signal at 200–450 mg/day, but WASO results are inconsistent when it is isolated from combination products. Promising, not yet proven for staying asleep.',
           mechanism: 'Increases alpha brain waves and GABA/glutamate balance; reduces cortisol and sympathetic tone without sedation.',
           dosage: '200–450 mg, 30–60 min before bed',
-          source: { url: 'https://www.tandfonline.com/doi/full/10.1080/1028415X.2025.2556925', label: '2025 systematic review' }
+          source: { url: 'https://www.tandfonline.com/doi/full/10.1080/1028415X.2025.2556925', label: '2025 systematic review' },
+          affiliate: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }
         },
         {
           key: 'valerian', name: 'Valerian Root',
@@ -260,7 +266,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'The most comprehensive environmental sleep review to date. Nighttime noise above 50 dBA added roughly 30 minutes of WASO in the reviewed field studies. Traffic, aircraft, and intermittent neighborhood noise all show dose-response effects.',
           mechanism: 'Auditory cortex activation and autonomic arousal interrupt NREM stages; even sub-conscious arousals fragment sleep architecture.',
           dosage: 'Keep bedroom <30 dB; use masking (white/pink noise) or earplugs',
-          source: { url: 'https://www.mdpi.com/1660-4601/15/3/519', label: 'Basner et al. 2018 WHO review' }
+          source: { url: 'https://www.mdpi.com/1660-4601/15/3/519', label: 'Basner et al. 2018 WHO review' },
+          affiliate: { url: 'https://amzn.to/4bfT8bC', label: 'White Noise Machine' }
         },
         {
           key: 'co2-ventilation', name: 'CO₂ >1000 ppm (Poor Ventilation)',
@@ -270,7 +277,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A well-designed balanced crossover study found even moderate CO₂ buildup (~1,000 ppm) added measurable wake time during the night. A stuffy, poorly ventilated bedroom is a real and often-overlooked WASO driver.',
           mechanism: 'Elevated CO₂ increases ventilatory drive, sympathetic tone, and micro-arousals; reduced O₂ saturation compounds the effect.',
           dosage: 'Crack a window or use mechanical ventilation; aim <800 ppm',
-          source: { url: 'https://www.sciencedirect.com/science/article/pii/S0360132323011459', label: 'Kang et al. 2024' }
+          source: { url: 'https://www.sciencedirect.com/science/article/pii/S0360132323011459', label: 'Kang et al. 2024' },
+          affiliate: { url: 'https://amzn.to/40gYtKD', label: 'CO₂ Monitor' }
         },
         {
           key: 'mattress', name: 'Mattress (Medium-Firm)',
@@ -663,6 +671,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           <div class="chart-detail-row"><span class="lbl">Key finding</span><p>${f.keyFinding}</p></div>
           <div class="chart-detail-row"><span class="lbl">What to do</span><p>${f.dosage}</p></div>
           <div class="chart-detail-row"><span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p></div>
+          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${f.affiliate.label}" data-track-position="factor-chart"><span>${f.affiliate.label}</span><span class="factor-affiliate-arrow">${this._icon('externalLink')}</span></a>` : ''}
         </div>
       </div>`;
   }
@@ -722,6 +731,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
                 <span class="lbl">Key finding</span><p>${f.keyFinding}</p>
                 <span class="lbl">What to do</span><p>${f.dosage}</p>
                 <span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
+                ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${f.affiliate.label}" data-track-position="factor-list"><span>${f.affiliate.label}</span><span class="factor-affiliate-arrow">${this._icon('externalLink')}</span></a>` : ''}
               </div>
             </div>
           </div>` : ''}`;
@@ -815,6 +825,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
             <p><strong>Mechanism.</strong> ${f.mechanism}</p>
             <p><strong>What to do.</strong> ${f.dosage}</p>
             <p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
+            ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${f.affiliate.label}" data-track-position="factor-qual"><span>${f.affiliate.label}</span><span class="factor-affiliate-arrow">${this._icon('externalLink')}</span></a>` : ''}
           </div>
         </details>
       </article>`;
@@ -1494,6 +1505,10 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green-dark); font-weight: 500; font-size: 13px; }
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green); }
+      .factor-affiliate { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; margin-top: 12px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm, 12px); text-decoration: none; color: var(--gray-600); font-size: 13px; font-weight: 600; transition: all 0.2s; }
+      .factor-affiliate:hover { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
+      .factor-affiliate-arrow { width: 14px; height: 14px; display: flex; flex-shrink: 0; }
+      .factor-affiliate-arrow svg { width: 100%; height: 100%; }
 
       /* List / leaderboard view */
       .list-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
