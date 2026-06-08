@@ -1,9 +1,11 @@
 # Affiliate Links Inventory
 
 > Every affiliate link in the `kygo-elements` components — what product it points to and where
-> it's listed. All affiliate links are **Amazon short links (`amzn.to/...`)** except two non-Amazon
-> referrals (a WHOOP membership link and the HLTH Code Refersion banner — both in Section C).
-> **37 unique** Amazon short links across **10 files**.
+> it's listed. Affiliate links are **Amazon short links (`amzn.to/...`)** except: two non-Amazon
+> referrals (a WHOOP membership link and the HLTH Code Refersion banner — both in Section C), and
+> one **full-URL Amazon Associates link** (the Sleep Mask on the staying-asleep page — a tagged
+> `amazon.com/dp/...?tag=kygohealthapp-20` link rather than an `amzn.to` short link).
+> **40 unique** Amazon links across **12 files**.
 
 All affiliate `<a>` tags use `target="_blank" rel="noopener sponsored"` (the `sponsored` rel is
 the FTC/Google-correct attribute for paid links — good). Short links resolve on Amazon's side;
@@ -40,6 +42,21 @@ data object (`affiliateUrl`, `{name,url}`, or `affiliate:{url,label}`).
 |---|---|---|
 | `amzn.to/4wogJ3y` | **Fitbit Air** | 168, 378 |
 | `amzn.to/431iUfG` | **WHOOP 5.0 / MG** | 177, 379 |
+
+### VO2 max accuracy tool (`kygo-vo2max-accuracy.js`)
+Added 2026-06. One affiliate per device in the `_devices` array (`affiliateUrl`). Reuses the
+existing per-brand slugs above; **Suunto (`amzn.to/4fZD5Cx`) is a new link.**
+| Short link | Product | Line |
+|---|---|---|
+| `amzn.to/4aF8l5D` | **Garmin** | 59 |
+| `amzn.to/4rUcGst` | **Apple Watch** | 74 |
+| `amzn.to/4rqpdnL` | **Polar** | 88 |
+| `amzn.to/3ZPkHDc` | **Fitbit / Google** | 102 |
+| `amzn.to/3PUMS23` | **Samsung Galaxy Watch** | 116 |
+| `amzn.to/4rRoziQ` | **WHOOP** | 130 |
+| `amzn.to/4aF93jj` | **Oura Ring** | 144 |
+| `amzn.to/4rkOv6I` | **Coros** | 158 |
+| `amzn.to/4fZD5Cx` | **Suunto** (new) | 172 |
 
 ---
 
@@ -95,6 +112,28 @@ Wired up 2026-06. Supplement links **reuse** the same products as the Deep Sleep
 | `amzn.to/4bfT8bC` | White Noise Machine | 323 |
 
 *(CBD Isolate and Kiwifruit factors intentionally have no affiliate link.)*
+
+### `kygo-staying-asleep-factors.js`
+Wired up 2026-06. Supplement/food links **reuse** the same products as the other factor pages
+(same physical item = same link); **Earplugs, Medium-Firm Mattress, and the Sleep Mask are new.**
+Rendered via the `_affiliateChips()` helper (a factor's `affiliate` may be a single object or an
+array), so the markup appears in all three views (chart / list / qualitative).
+| Link | Product label | Line |
+|---|---|---|
+| `amzn.to/4uL7b1p` | Dietary Fiber Supplement | 68 |
+| `amzn.to/3PXqKEh` | Tart Cherry Juice | 119 |
+| `amzn.to/403ZgOP` | Ashwagandha Extract | 142 |
+| `amzn.to/3PWfatc` | Glycine Powder | 153 |
+| `amzn.to/3Nbjq6C` | Magnesium Glycinate | 164 |
+| `amzn.to/3OEoHEh` | L-Theanine 200mg | 175 |
+| `amazon.com/dp/B07PRG2CQY?...tag=kygohealthapp-20` | Sleep Mask (new, full-URL Amazon link) | 260 |
+| `amzn.to/4vGyQk9` | Earplugs (new) | 271 |
+| `amzn.to/40gYtKD` | CO₂ Monitor | 282 |
+| `amzn.to/4urzyRc` | Medium-Firm Mattress (new) | 293 |
+
+*(Melatonin (immediate-release) and Valerian Root intentionally have **no** affiliate link — the
+page states both have no objective WASO benefit, so promoting a product on those rows would be
+bad-faith placement.)*
 
 ---
 
