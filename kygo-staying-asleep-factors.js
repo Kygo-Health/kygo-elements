@@ -256,7 +256,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: "Even dim light during sleep — roughly a nightlight at 5–10 lux — significantly increased WASO and shallow REM on polysomnography. You don't have to be looking at a screen; ambient bedroom light is enough to fragment sleep.",
           mechanism: 'Melanopsin-containing retinal ganglion cells detect light through the eyelids, suppressing melatonin and raising cortical arousal.',
           dosage: 'Bedroom as dark as possible; cover electronics, use blackout',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/', label: 'Cho et al. 2016 PSG study' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/', label: 'Cho et al. 2016 PSG study' },
+          affiliate: { url: 'https://www.amazon.com/dp/B07PRG2CQY?campaignId=amzn1.campaign.3S68LT4O16LOL&linkCode=tr1&tag=kygohealthapp-20&linkId=amzn1.campaign.3S68LT4O16LOL_1780933049531', label: 'Sleep Mask' }
         },
         {
           key: 'noise', name: 'Noise (>50 dBA)',
@@ -267,7 +268,10 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Auditory cortex activation and autonomic arousal interrupt NREM stages; even sub-conscious arousals fragment sleep architecture.',
           dosage: 'Keep bedroom <30 dB; use masking (white/pink noise) or earplugs',
           source: { url: 'https://www.mdpi.com/1660-4601/15/3/519', label: 'Basner et al. 2018 WHO review' },
-          affiliate: { url: 'https://amzn.to/4bfT8bC', label: 'White Noise Machine' }
+          affiliate: [
+            { url: 'https://amzn.to/4bfT8bC', label: 'White Noise Machine' },
+            { url: 'https://amzn.to/4vGyQk9', label: 'Earplugs' }
+          ]
         },
         {
           key: 'co2-ventilation', name: 'CO₂ >1000 ppm (Poor Ventilation)',
@@ -288,7 +292,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A small polysomnography study found a medium-firm mattress produced the most stable sleep and lowest WASO across three firmness levels. Very small sample, but the direction is consistent with broader ergonomic data.',
           mechanism: 'Appropriate spinal support reduces micro-movements and pressure-point arousals that fragment sleep across the night.',
           dosage: 'Medium-firm mattress; replace every 7–10 years',
-          source: { url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222', label: 'Hu et al. 2025 PSG study' }
+          source: { url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222', label: 'Hu et al. 2025 PSG study' },
+          affiliate: { url: 'https://amzn.to/4urzyRc', label: 'Medium-Firm Mattress' }
         }
       ],
       physiology: [
@@ -650,6 +655,12 @@ class KygoStayingAsleepFactors extends HTMLElement {
       </div>`;
   }
 
+  _affiliateChips(f, position) {
+    if (!f.affiliate) return '';
+    const list = Array.isArray(f.affiliate) ? f.affiliate : [f.affiliate];
+    return list.map(a => `<a href="${a.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${a.label}" data-track-position="${position}"><span>${a.label}</span><span class="factor-affiliate-arrow">${this._icon('externalLink')}</span></a>`).join('');
+  }
+
   _renderChartDetail(f) {
     if (!f) return '';
     const val = f.waso;
@@ -671,7 +682,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           <div class="chart-detail-row"><span class="lbl">Key finding</span><p>${f.keyFinding}</p></div>
           <div class="chart-detail-row"><span class="lbl">What to do</span><p>${f.dosage}</p></div>
           <div class="chart-detail-row"><span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p></div>
-          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${f.affiliate.label}" data-track-position="factor-chart"><span>${f.affiliate.label}</span><span class="factor-affiliate-arrow">${this._icon('externalLink')}</span></a>` : ''}
+          ${this._affiliateChips(f, 'factor-chart')}
         </div>
       </div>`;
   }
@@ -731,7 +742,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
                 <span class="lbl">Key finding</span><p>${f.keyFinding}</p>
                 <span class="lbl">What to do</span><p>${f.dosage}</p>
                 <span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
-                ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${f.affiliate.label}" data-track-position="factor-list"><span>${f.affiliate.label}</span><span class="factor-affiliate-arrow">${this._icon('externalLink')}</span></a>` : ''}
+                ${this._affiliateChips(f, 'factor-list')}
               </div>
             </div>
           </div>` : ''}`;
@@ -825,7 +836,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
             <p><strong>Mechanism.</strong> ${f.mechanism}</p>
             <p><strong>What to do.</strong> ${f.dosage}</p>
             <p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
-            ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${f.affiliate.label}" data-track-position="factor-qual"><span>${f.affiliate.label}</span><span class="factor-affiliate-arrow">${this._icon('externalLink')}</span></a>` : ''}
+            ${this._affiliateChips(f, 'factor-qual')}
           </div>
         </details>
       </article>`;
