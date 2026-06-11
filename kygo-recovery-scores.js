@@ -103,6 +103,7 @@ class KygoRecoveryScores extends HTMLElement {
     return {
       whoop: {
         name: 'WHOOP',
+        amazon: 'https://amzn.to/4rRoziQ',
         scoreName: 'Recovery',
         modelLine: 'Recovery · 1–100% (green/yellow/red) · membership',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: true, load: false, subj: false },
@@ -118,6 +119,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       oura: {
         name: 'Oura Ring',
+        amazon: 'https://amzn.to/4aF93jj',
         scoreName: 'Readiness',
         modelLine: 'Readiness · 0–100 · 9 contributors · membership',
         sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: false, load: true, subj: false },
@@ -133,6 +135,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       garmin: {
         name: 'Garmin',
+        amazon: 'https://amzn.to/4aF8l5D',
         scoreName: 'Training Readiness',
         modelLine: 'Training Readiness · 0–100 · Body Battery is separate · free',
         sensors: { hrv: true, rhr: false, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -148,6 +151,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       fitbit: {
         name: 'Fitbit / Pixel',
+        amazon: 'https://amzn.to/3ZPkHDc',
         scoreName: 'Daily Readiness Score',
         modelLine: 'Daily Readiness · 1–100 · free since app v4.27',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: false, subj: false },
@@ -163,6 +167,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       samsung: {
         name: 'Samsung',
+        amazon: 'https://amzn.to/3PUMS23',
         scoreName: 'Energy Score',
         modelLine: 'Energy Score · 0–100 · Galaxy Watch 7 / Ultra+ · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -178,6 +183,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       polar: {
         name: 'Polar',
+        amazon: 'https://amzn.to/4rqpdnL',
         scoreName: 'Nightly Recharge',
         modelLine: 'Nightly Recharge · ANS Charge −10 to +10 · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: true, load: false, subj: false },
@@ -193,6 +199,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       ultrahuman: {
         name: 'Ultrahuman',
+        amazon: 'https://www.amazon.com/s?k=Ultrahuman+Ring+AIR&tag=kygohealthapp-20',
         scoreName: 'Dynamic Recovery',
         modelLine: 'Dynamic Recovery · 0–100% · re-adjusts intraday · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: false, load: false, subj: false },
@@ -208,6 +215,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       coros: {
         name: 'COROS',
+        amazon: 'https://amzn.to/4rkOv6I',
         scoreName: 'Recovery Timer + Fatigue',
         modelLine: 'Recovery Timer + Fatigue (EvoLab) · training-load only · free',
         sensors: { hrv: false, rhr: false, sleep: false, temp: false, rr: false, load: true, subj: false },
@@ -223,6 +231,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       amazfit: {
         name: 'Amazfit / Zepp',
+        amazon: 'https://www.amazon.com/s?k=Amazfit+smartwatch&tag=kygohealthapp-20',
         scoreName: 'HybridCharge',
         modelLine: 'HybridCharge · 0–100 · replaced BioCharge May 2026 · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: true },
@@ -238,6 +247,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       suunto: {
         name: 'Suunto',
+        amazon: 'https://amzn.to/4fZD5Cx',
         scoreName: 'Body Resources',
         modelLine: 'Body Resources · 0–100 gauge · free',
         sensors: { hrv: true, rhr: false, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -253,6 +263,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       apple: {
         name: 'Apple Watch',
+        amazon: 'https://amzn.to/4rUcGst',
         scoreName: 'No native score',
         modelLine: 'No native recovery score · third-party apps fill the gap',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -268,6 +279,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       ringconn: {
         name: 'RingConn',
+        amazon: 'https://www.amazon.com/s?k=RingConn+smart+ring&tag=kygohealthapp-20',
         scoreName: 'Wellness Balance',
         modelLine: 'Wellness Balance · 4 petals (not a true score) · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -298,13 +310,13 @@ class KygoRecoveryScores extends HTMLElement {
 
   get _factorCategories() {
     return [
-      { key: 'sleep',       label: 'Sleep & circadian',           icon: 'moon' },
-      { key: 'substances',  label: 'Alcohol, caffeine & more',    icon: 'coffee' },
-      { key: 'nutrition',   label: 'Food & hydration',            icon: 'droplet' },
-      { key: 'training',    label: 'Training & recovery',         icon: 'dumbbell' },
-      { key: 'stress',      label: 'Stress, illness & altitude',  icon: 'brain' },
-      { key: 'supplements', label: 'Supplements',                 icon: 'sparkle' },
-      { key: 'baseline',    label: 'Baseline modifiers',          icon: 'target' }
+      { key: 'sleep',       label: 'Sleep',       icon: 'moon' },
+      { key: 'substances',  label: 'Substances',  icon: 'coffee' },
+      { key: 'nutrition',   label: 'Nutrition',   icon: 'droplet' },
+      { key: 'training',    label: 'Training',    icon: 'dumbbell' },
+      { key: 'stress',      label: 'Stress',      icon: 'brain' },
+      { key: 'supplements', label: 'Supplements', icon: 'sparkle' },
+      { key: 'baseline',    label: 'Baseline',    icon: 'target' }
     ];
   }
 
@@ -605,7 +617,8 @@ class KygoRecoveryScores extends HTMLElement {
       target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
       trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>',
       flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
-      watch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6"/><polyline points="12 10 12 12 13 13"/><path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05"/><path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05"/></svg>'
+      watch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6"/><polyline points="12 10 12 12 13 13"/><path d="m16.13 7.66-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05"/><path d="m7.88 16.36.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05"/></svg>',
+      cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>'
     };
     return icons[name] || icons.heart;
   }
@@ -775,6 +788,7 @@ class KygoRecoveryScores extends HTMLElement {
                 <div class="dd-callout strong"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('sparkle')}</span>Unique strength</span><p>${d.strength}</p></div>
                 <div class="dd-callout watch"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('alert')}</span>Watch out for</span><p>${d.limitation}</p></div>
               </div>
+              ${d.amazon ? `<div class="dd-buy-row"><a class="dd-buy" href="${d.amazon}" target="_blank" rel="noopener sponsored"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>View ${d.name} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission.</span></div>` : ''}
             </div>
           </div>
         </div>`;
@@ -969,7 +983,7 @@ class KygoRecoveryScores extends HTMLElement {
       const isActive = this._categoryFilter === c.key;
       return `
         <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${c.key}" aria-pressed="${isActive}">
-          <span class="picker-tile-name">${c.label}</span>
+          <span class="picker-tile-main"><span class="picker-tile-ic" aria-hidden="true">${this._icon(c.icon)}</span><span class="picker-tile-name">${c.label}</span></span>
           <span class="picker-tile-count">${count}</span>
         </button>`;
     }).join('');
@@ -1972,8 +1986,8 @@ class KygoRecoveryScores extends HTMLElement {
         .vt-img { width: 38px; height: 38px; }
       }
 
-      /* FAQ */
-      .faq-list { max-width: 820px; margin: 0 auto; display: grid; gap: 10px; }
+      /* FAQ — left-align the list with the section header (was centered) */
+      .faq-list { max-width: 820px; margin: 0; display: grid; gap: 10px; }
       .faq-item { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .15s, box-shadow .15s; }
       .faq-item[open] { border-color: var(--gray-300); box-shadow: 0 6px 18px rgba(15,23,42,0.06); }
       .faq-item:hover { border-color: var(--gray-300); }
@@ -1987,6 +2001,33 @@ class KygoRecoveryScores extends HTMLElement {
       .validation-section { padding: 48px 0 56px; }
       @media (min-width: 768px) { .validation-section, .faq-section { padding: 64px 0 72px; } }
       .faq-section { padding: 48px 0 56px; }
+
+      /* APP CTA — center the "Works with" logo row */
+      .app-cta-tags { justify-content: center; flex-wrap: wrap; gap: 10px 12px; }
+      .app-cta-tags-logos { flex: 0 1 auto; overflow: visible; justify-content: center; }
+
+      /* CATEGORY TILES — icon + single-word label */
+      .picker-tile-main { display: inline-flex; align-items: center; gap: 9px; min-width: 0; flex: 1; }
+      .picker-tile-ic { width: 26px; height: 26px; border-radius: 8px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, color .15s; }
+      .picker-tile-ic svg { width: 15px; height: 15px; }
+      .picker-tile.active .picker-tile-ic { background: rgba(255,255,255,0.16); color: #fff; }
+
+      /* VALIDATION CARD — grey header band for visual separation */
+      .validation-section .device-chart { padding-top: 0; overflow: hidden; }
+      .validation-section .dc-head { background: var(--gray-100); margin: 0 -16px 14px; padding: 18px 16px 16px; border-bottom: 1px solid var(--gray-200); }
+      @media (min-width: 768px) {
+        .validation-section .dc-head { margin: 0 -28px 16px; padding: 22px 28px 18px; }
+      }
+
+      /* AMAZON BUY LINK — inside brand deep-dive cards */
+      .dd-buy-row { display: flex; flex-direction: column; gap: 6px; }
+      .dd-buy { display: inline-flex; align-items: center; justify-content: center; gap: 8px; align-self: flex-start; padding: 11px 18px; border-radius: 10px; background: var(--green); color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px; letter-spacing: -0.005em; transition: background .2s; }
+      .dd-buy:hover { background: var(--green-dark); color: #fff; }
+      .dd-buy-cart { width: 16px; height: 16px; display: inline-flex; }
+      .dd-buy-cart svg { width: 16px; height: 16px; }
+      .dd-buy-go { width: 13px; height: 13px; opacity: 0.85; display: inline-flex; }
+      .dd-buy-go svg { width: 13px; height: 13px; }
+      .dd-buy-aff { font-size: 10.5px; color: var(--gray-400); letter-spacing: 0.2px; }
     `;
   }
 }
