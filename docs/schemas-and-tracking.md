@@ -44,6 +44,7 @@ Every content component implements `_injectStructuredData()`, called once from
 | `kygo-step-count-accuracy.js` | `data-kygo-step-ld` | WebApplication, FAQPage (7 Q&A), BreadcrumbList, Offer, Organization |
 | `kygo-wearable-accuracy.js` | `data-kygo-wearable-ld` | WebApplication, FAQPage, BreadcrumbList, **MedicalScholarlyArticle**, Offer, Organization |
 | `kygo-wearable-stress.js` | `data-kygo-stress-ld` | WebApplication, FAQPage (11 Q&A), BreadcrumbList, Offer, Organization |
+| `kygo-recovery-scores.js` | `data-kygo-recovery-ld` | WebApplication, FAQPage (8 Q&A — **also rendered visibly**), BreadcrumbList, Offer, Organization. FAQ JSON-LD is built from the same `_faqs()` getter that the visible `<details>` accordion renders, so schema and page never drift. WebApplication `name` = "Recovery Score Explorer", `url` = `/tools/recovery-score-explorer`. |
 | `kygo-hrv-factors.js` | `data-kygo-hrv-factors-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
 | `kygo-rhr-factors.js` | `data-kygo-rhr-factors-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
 | `kygo-sleep-latency-factors.js` | `data-kygo-sleep-latency-factors-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |

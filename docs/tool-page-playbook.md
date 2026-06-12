@@ -35,6 +35,9 @@ Use the **semantic palette only**. Copy this `:host` block verbatim:
   per-brand device colours anywhere. Verify before committing:
   `grep -nEi "amber|#f59e0b|#ef4444|#3b82f6|#f97316|--red|--blue|--amber|purple|orange" file.js`
   → must be empty.
+  ⚠️ If you copy `kygo-wearable-stress.js` as a base, it ships with `--red`/`--amber`/`--yellow`
+  tokens and red/amber `pick-card.warn`/`.myth` accents — **strip those** (recovery did) so the
+  rendered page stays green+slate+dark.
 - Convey **good vs bad / direction** with **green vs muted-grey + an icon** (check / dash /
   up-arrow / down-arrow), never with extra hues. "Win/validated/raises" = green;
   everything else = `--bg-raised`/`--fg-2`; strongest emphasis = `--kygo-dark` (dark chip).
@@ -49,18 +52,32 @@ Every tool page is the same spine. Sections **alternate backgrounds** `bg-light`
 with **no two adjacent the same**, and **each distinct content block is its own `<section>`**
 (don't stack two modules in one section — that was a fix on the VO2 accuracy tool).
 
-1. **Sticky nav** — brand (logo + "Kygo Health") left, "Get Kygo App →" link right.
+1. **Sticky nav** — brand (logo + a short tool name) left, **"Get Kygo Health →"** link right.
+   (Client prefers "Get Kygo Health" over "Get App"/"Get Kygo App" — use it on new tools.)
 2. **Hero** (`hero-light`, white) — `hero-pill` kicker, `<h1>` with a green `.hl` span, a
    `hero-lede`, a **`hero-vis`** (a clean supporting visual — a small chart or a dark stat
    card), and a **`hero-stats`** strip of 4 numbers (2×2 on mobile, 4-up desktop).
+   **Align the hero `<h1>` + lede with the page's meta title/description** so the first screen
+   matches what the SERP promised (e.g. meta "Compare … 12 wearables" → h1 "Compare recovery
+   scores across 12 wearables"). Meta title/description themselves are **Wix page-SEO settings**,
+   not component-injected — hand them to the client; the component only controls the visible copy
+   + JSON-LD.
 3. **Content sections** — each: `kicker` pill + `<h2>` (with `.hl`) + `lede`, then the module.
 4. **Kygo CTA card** — dark card, green radial glow, pill, headline, iOS + Android buttons,
-   "Works with" badge row. (Reuse from any tool; just swap copy.)
-5. **Blog cross-link** card → the matching `kygo.app/post/...` article.
+   "Works with" badge row. (Reuse from any tool; just swap copy. iOS button **must** use the
+   canonical App Store URL `apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589`.)
+5. **Blog cross-link** card → the matching `kygo.app/post/...` article. For a **multi-post
+   cluster**, use the *hub-and-spoke* pattern: each content section also gets a small
+   `section-readmore` link to its *own* matching post (matrix→comparison post, validation→trust
+   post, factor explorer→intake post), and the one big CTA card leads with the primary spoke.
 6. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
-   getter (never let JSON-LD FAQs exist without a visible FAQ).
+   getter (never let JSON-LD FAQs exist without a visible FAQ — the older `kygo-wearable-stress`
+   shipped FAQ JSON-LD with **no** visible FAQ; don't copy that omission).
 7. **Sources** — **compact link list** (see §4), not big expandable cards.
-8. **Footer** — brand, tagline, links, disclaimer, copyright.
+8. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
+   links, add the Amazon Associates disclosure line** (`footer-affiliate`): "As an Amazon
+   Associate, Kygo Health earns from qualifying purchases. Product links on this page are
+   affiliate links — we may earn a commission at no extra cost to you."
 
 Also required: `__seo(this, …)` light-DOM summary, and `_injectStructuredData()` injecting
 `WebApplication` + `FAQPage` JSON-LD (guarded by unique `data-kygo-*` markers).
@@ -112,6 +129,43 @@ the screen. Mirror the Oura tool's compact sources.
 ### Filter controls
 Give filter bars a **`--bg-raised` background** so they read as distinct from the white
 content cards (a white filter box on white cards has no contrast).
+
+### Factor explorer (raise / lower / modifier) — `kygo-recovery-scores.js`
+For "what moves this metric" explorers:
+- **Filter chips:** one **single word + an icon** each (e.g. "Sleep 🌙", "Nutrition 💧"). Don't
+  over-fragment — **consolidate related buckets into one chip** (recovery folds Substances +
+  Supplements + Food into a single **Nutrition** chip). Keep a separate granular sub-label on
+  each card's eyebrow so detail isn't lost while the chip count stays low (~5).
+- **Group order: "What helps" (raises) FIRST, then "What hurts" (lowers), then "Baseline
+  modifiers" last.** Helps-before-hurts, every time.
+- Each card shows **direction + impact + evidence grade** in the collapsed eyebrow
+  (e.g. "Raises your score · Medium impact · Moderate evidence").
+- **Group headers must wrap on mobile** (`flex-wrap:wrap; .meta{white-space:normal}`) — a
+  `white-space:nowrap` sub-label clips on a phone (the "SHIFT YOUR NUMBER…" bug).
+- Keep "don't-rely-on"/weak items in their own card but **never give them an affiliate button**.
+
+### Validation table (score vs signal) — `kygo-recovery-scores.js`
+When the honest story is "the score isn't validated but the signal might be," use a text table
+(reuse `.device-table` + a `.vtable` variant): columns = **Brand & score | Score validated? |
+Signal validated? | Key evidence**. Pills are **green = validated, dark chip = tested-but-weak,
+grey = none/poor/na** (no red). Keep **evidence cells to 2–3 lines** (trim the prose); a narrow
+**brand column with the logo stacked above the name** (matches the comparison matrix). Give the
+card a **grey header band** (`dc-head` on `--bg-raised`, full-bleed via negative margins) to
+separate it from the white table.
+
+### Affiliate buy buttons (Amazon) — `kygo-recovery-scores.js`
+- Put a green **"View <product> on Amazon"** button (cart + external-link icon) in the expanded
+  **device card** *and* expanded **supplement factor card**. Add `rel="noopener sponsored"` and a
+  small per-link "Affiliate link — we may earn a commission." note. Plus the footer disclosure (§2.8).
+- **Reuse the existing per-product slug** from `docs/affiliate-links.md` (same physical item =
+  same link across tools). **Never fabricate an `amzn.to` slug.** If a product has no slug, omit
+  the button and **ask the client for the link** (don't ship a bare search URL). Products not
+  sold on Amazon (e.g. Ultrahuman) get no button.
+
+### Callout / keystone card
+Dark card, green icon chip + body. On mobile **stack the icon above the text**
+(`@media (max-width:600px){ flex-direction:column }`) — a flex-row icon indents the whole
+paragraph behind it on a phone.
 
 ---
 
