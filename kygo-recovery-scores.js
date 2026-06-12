@@ -1264,7 +1264,7 @@ class KygoRecoveryScores extends HTMLElement {
             Recovery Scores
           </a>
           <a href="https://www.kygo.app" class="header-link" target="_blank" rel="noopener">
-            Get App ${this._icon('arrowRight')}
+            Get Kygo Health ${this._icon('arrowRight')}
           </a>
         </div>
       </header>
@@ -2084,6 +2084,11 @@ class KygoRecoveryScores extends HTMLElement {
       .dd-buy--sm .dd-buy-cart svg { width: 15px; height: 15px; }
       /* Footer Amazon Associates disclosure */
       .footer-affiliate { max-width: 560px; margin: 0 auto 10px; line-height: 1.5; font-size: 11px; }
+      /* Keystone callout — stack the icon above the text on mobile so the paragraph
+         uses the full width instead of being indented behind the icon */
+      @media (max-width: 600px) {
+        .callout-card { flex-direction: column; gap: 12px; padding: 22px 20px; }
+      }
     `;
   }
 }
