@@ -32,7 +32,7 @@ class KygoOuraRingComparison extends HTMLElement {
     this._bindEvents();
     this._setupAnimations();
     this._setupAffiliateBanner();
-    __seo(this, 'Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool by Kygo Health. Compare Oura Ring Gen 3, Ring 4, and Ring 5 specs side by side with peer-reviewed accuracy data and the real 3-year cost of ownership including the Oura Membership. Ring 5 announced May 28, 2026, ships June 4, starting at $399 (Silver/Black) up to $499 for premium finishes. Ring 5 is 40% smaller than Ring 4, 2 to 2.6 g, 6.09 mm wide, 2.28 mm thick, with 6 to 9 day battery and an optional $99 charging case. Two regressions matter: size range shrinks from Ring 4 sizes 4 to 15 down to Ring 5 sizes 6 to 13, and signal pathways drop from up to 18 on Ring 4 to 12 on Ring 5. Ring 4 launched October 2024 at $349. Gen 3 launched November 2021 and is now discontinued, resale only. All rings require the $5.99/mo or $69.99/yr Oura Membership for full features. Ring 5 3-year total cost of ownership is roughly $609 base or $709 premium; Ring 4 is roughly $559. Peer-reviewed validation supports Gen 3 and Ring 4 as the most accurate consumer sleep tracker vs polysomnography (Khan 2025 meta-analysis, Robbins 2024, Svensson 2024) and the strongest agreement vs ECG for nocturnal HRV and resting heart rate (Dial 2025: Ring 4 CCC 0.98 RHR, 0.99 HRV). Ring 5 has zero independent peer-reviewed validation as of today. The Ring 5 store page "99% HR accuracy" footnote traces to Kinnunen 2020, authored by Oura employees on pre-Gen 3 hardware, and reports an r-squared correlation strength, not an error rate. Subscription-free competitors include RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349). Kygo connects to Oura, Apple Health, Fitbit, Garmin, WHOOP, and Samsung Galaxy Watch.');
+    __seo(this, 'Oura Ring 5 vs 4 vs 3 Comparison (2026), updated June 2026. Includes a dedicated Oura Ring 3 vs 5 breakdown and the three-way Oura Ring 3 vs 4 vs 5 verdict, plus a size and dimensions comparison (width, thickness, weight). Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool by Kygo Health. Compare Oura Ring Gen 3, Ring 4, and Ring 5 specs side by side with peer-reviewed accuracy data and the real 3-year cost of ownership including the Oura Membership. Ring 5 announced May 28, 2026, ships June 4, starting at $399 (Silver/Black) up to $499 for premium finishes. Ring 5 is 40% smaller than Ring 4, 2 to 2.6 g, 6.09 mm wide, 2.28 mm thick, with 6 to 9 day battery and an optional $99 charging case. Two regressions matter: size range shrinks from Ring 4 sizes 4 to 15 down to Ring 5 sizes 6 to 13, and signal pathways drop from up to 18 on Ring 4 to 12 on Ring 5. Ring 4 launched October 2024 at $349. Gen 3 launched November 2021 and is now discontinued, resale only. All rings require the $5.99/mo or $69.99/yr Oura Membership for full features. Ring 5 3-year total cost of ownership is roughly $609 base or $709 premium; Ring 4 is roughly $559. Peer-reviewed validation supports Gen 3 and Ring 4 as the most accurate consumer sleep tracker vs polysomnography (Khan 2025 meta-analysis, Robbins 2024, Svensson 2024) and the strongest agreement vs ECG for nocturnal HRV and resting heart rate (Dial 2025: Ring 4 CCC 0.98 RHR, 0.99 HRV). Ring 5 has zero independent peer-reviewed validation as of today. The Ring 5 store page "99% HR accuracy" footnote traces to Kinnunen 2020, authored by Oura employees on pre-Gen 3 hardware, and reports an r-squared correlation strength, not an error rate. Subscription-free competitors include RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349). Kygo connects to Oura, Apple Health, Fitbit, Garmin, WHOOP, and Samsung Galaxy Watch.');
     this._injectStructuredData();
   }
 
@@ -263,9 +263,9 @@ class KygoOuraRingComparison extends HTMLElement {
         <div class="hero-light-inner">
           <div class="hero-grid">
             <div class="hero-copy">
-              <div class="hero-pill"><span class="dot"></span> UPDATED MAY 28, 2026</div>
-              <h1>Oura Ring 5 vs Ring 4 vs Gen 3 — <span class="hl">is the upgrade worth it?</span></h1>
-              <p class="hero-lede">Ring 5 is smaller, lighter, and longer-lasting — but it has <strong>zero independent validation</strong>, a shrunken size range, and a membership that makes the real 3-year cost ~$609. Compare every spec, the peer-reviewed accuracy data, and your true cost.</p>
+              <div class="hero-pill"><span class="dot"></span> UPDATED JUNE 2026</div>
+              <h1>Oura Ring 5 vs 4 vs 3 Comparison <span class="hl">(2026)</span></h1>
+              <p class="hero-lede"><strong>Is the upgrade worth it?</strong> Ring 5 is smaller, lighter, and longer-lasting — but it has <strong>zero independent validation</strong>, a shrunken size range, and a membership that makes the real 3-year cost ~$609. Compare every spec across Gen 3 (Ring 3), Ring 4, and Ring 5 — plus the peer-reviewed accuracy data and your true cost.</p>
             </div>
             <div class="hero-vis" aria-hidden="true">
               <div class="hero-vis-head">
@@ -333,6 +333,24 @@ class KygoOuraRingComparison extends HTMLElement {
             <div class="hero-stat"><div class="num">$609</div><div class="lbl">Real 3-yr cost with membership</div></div>
             <div class="hero-stat"><div class="num">0</div><div class="lbl">Independent Ring 5 validation studies</div></div>
           </div>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">The quick answer</div>
+            <h2>Oura Ring 5 vs 4 vs 3, <span class="hl">in plain English.</span></h2>
+            <p class="lede">The full interactive comparison is below — but if you just want the verdict for each matchup, start here. Specs are primary-source verified; accuracy claims are tied to peer-reviewed studies.</p>
+          </div>
+          <div class="tldr animate-on-scroll">${this._renderTLDR()}</div>
+
+          <div class="dims-head animate-on-scroll">
+            <div class="kicker">Size &amp; dimensions</div>
+            <h3>The headline change: Ring 5 is <span class="hl">the smallest smart ring ever.</span></h3>
+            <p class="lede">Width, thickness, and weight across all three generations. Outer ring sizes differ by finger; these are the device dimensions Oura publishes.</p>
+          </div>
+          <div class="dims animate-on-scroll">${this._renderDims()}</div>
         </div>
       </section>
 
@@ -480,12 +498,56 @@ class KygoOuraRingComparison extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making decisions based on wearable data. Oura's Blood Pressure Signals and Nighttime Breathing are not FDA-cleared and do not diagnose any condition.</p>
-          <p class="footer-copyright">Data sourced from official Oura specifications, peer-reviewed validation studies (Khan 2025, Robbins 2024, Svensson 2024, Dial 2025, Cao 2022, Kinnunen 2020, Liang 2024), and Ring 5 launch coverage. Last updated May 2026.</p>
+          <p class="footer-copyright">Data sourced from official Oura specifications, peer-reviewed validation studies (Khan 2025, Robbins 2024, Svensson 2024, Dial 2025, Cao 2022, Kinnunen 2020, Liang 2024), and Ring 5 launch coverage. Last updated June 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
     `;
+  }
+
+  // Static, crawlable comparison summary — explicit blocks for the long-tail
+  // matchups this page ranks for (3-vs-5 and the 3-way 3-vs-4-vs-5), featured
+  // because the interactive table renders in JS where crawlers may not read it.
+  _renderTLDR() {
+    return `
+      <p class="tldr-lead">The <strong>Oura Ring 5</strong> (announced May 28, 2026, shipping June 4) is the smallest, lightest Oura yet — 6.09&nbsp;mm wide, 2.28&nbsp;mm thick, and just 2–2.6&nbsp;g, roughly 40% smaller than the Ring 4. But it launches with <strong>zero independent peer-reviewed validation</strong>, a narrower size range (6–13 vs the Ring 4's 4–15), and 12 signal pathways instead of 18. With the required Oura Membership ($69.99/yr), its real three-year cost is roughly <strong>$609–709</strong>.</p>
+      <div class="cmp-blocks">
+        <div class="cmp-block">
+          <h3>Oura Ring 5 vs Ring 4</h3>
+          <p>Ring 5 is thinner, lighter, and lasts 6–9 days vs the Ring 4's 5–8, and Oura's internal study claims 12% better overnight HRV and 24% better workout heart rate. But the Ring 4 is cheaper ($349 vs $399–499), it's still the only Oura with an independent head-to-head accuracy study (Dial 2025: CCC 0.98 RHR, 0.99 HRV vs ECG), it keeps the wider 4–15 size range, and every new Ring 5 software feature rolls back to it with membership. <strong>For most Ring 4 owners, there's little evidence-based reason to upgrade.</strong></p>
+        </div>
+        <div class="cmp-block">
+          <h3>Oura Ring 5 vs Gen 3 (Ring 3)</h3>
+          <p>If you're still on a Gen 3 — often searched as "Oura Ring 3" — the jump to Ring 5 is large: roughly half the weight (2–2.6&nbsp;g vs 4–6&nbsp;g), a slimmer 2.28&nbsp;mm profile vs 2.55&nbsp;mm, a digital temperature sensor, longer battery, and the full 2026 software suite. Gen 3 is <strong>discontinued and resale-only</strong>. Both share the same 6–13 size range, so most Gen 3 wearers will fit a Ring 5 — but note Ring 5 has no generation-specific validation yet, whereas Gen 3 is the most extensively validated sleep tracker against polysomnography.</p>
+        </div>
+        <div class="cmp-block cmp-block-wide">
+          <h3>Oura Ring 3 vs 4 vs 5: the three-way verdict</h3>
+          <p>Across all three generations the trade-off is <strong>consistency vs refinement</strong>. Gen 3 (2021) is the proven, discontinued workhorse; Ring 4 (2024) is the validation-and-value sweet spot with the widest fit (sizes 4–15); Ring 5 (2026) is the smallest and most comfortable but unproven. Because the optical (PPG) sensing platform is shared across all three, sleep, HRV, and heart-rate accuracy are broadly comparable — so pick on size, price, fit, and how much independent evidence matters to you, not on a dramatic accuracy gap. <strong>Best all-rounder today: Ring 4. Smallest and lightest: Ring 5. Cheapest entry: a resale Gen 3.</strong></p>
+        </div>
+      </div>
+    `;
+  }
+
+  _renderDims() {
+    const rings = [
+      { name: 'Oura Gen 3', sub: '2021 · discontinued', width: '7.0–7.9 mm', thick: '2.55 mm', weight: '4–6 g', hl: false, badge: '' },
+      { name: 'Oura Ring 4', sub: '2024 · current', width: '7.90 mm', thick: '2.88–3.51 mm', weight: '3.3–5.2 g', hl: false, badge: '' },
+      { name: 'Oura Ring 5', sub: '2026 · newest', width: '6.09 mm', thick: '2.28 mm', weight: '2–2.6 g', hl: true, badge: 'Smallest ever' },
+    ];
+    const row = (label, val, win) => `<div class="dim-row"><span class="dim-label">${label}</span><span class="dim-val${win ? ' win' : ''}">${val}</span></div>`;
+    return rings.map(r => `
+      <div class="dim-card${r.hl ? ' dim-card-hl' : ''}">
+        <div class="dim-card-head">
+          <div class="dim-name">${r.name}</div>
+          ${r.badge ? `<span class="dim-badge">${r.badge}</span>` : ''}
+        </div>
+        <div class="dim-sub">${r.sub}</div>
+        ${row('Width', r.width, r.hl)}
+        ${row('Thickness', r.thick, r.hl)}
+        ${row('Weight', r.weight, r.hl)}
+      </div>
+    `).join('');
   }
 
   _renderBestFor() {
@@ -726,11 +788,15 @@ class KygoOuraRingComparison extends HTMLElement {
   }
 
   _setupAnimations() {
-    if (!('IntersectionObserver' in window)) return;
+    const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('in'));
+      return;
+    }
     this._observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-    }, { threshold: 0.12 });
-    this.shadowRoot.querySelectorAll('.animate-on-scroll').forEach(el => this._observer.observe(el));
+    }, { threshold: 0.01 });
+    els.forEach(el => this._observer.observe(el));
   }
 
   // ── Structured Data ──────────────────────────────────────────────────
@@ -740,15 +806,15 @@ class KygoOuraRingComparison extends HTMLElement {
       const ld = {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        'name': 'Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool',
-        'description': 'Compare Oura Ring 5, Ring 4, and Gen 3 side by side. See specs, peer-reviewed accuracy data, and the real 3-year cost with subscription math included.',
+        'name': 'Oura Ring 5 vs 4 vs 3 Comparison Tool (2026)',
+        'description': 'Compare Oura Ring 5, Ring 4, and Gen 3 (Ring 3) side by side. Includes an Oura Ring 3 vs 5 breakdown, the three-way Oura Ring 3 vs 4 vs 5 verdict, a size and dimensions comparison, peer-reviewed accuracy data, and the real 3-year cost with subscription math included.',
         'url': 'https://www.kygo.app/tools/oura-ring-comparison-tool',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'datePublished': '2026-05-28',
-        'dateModified': '2026-05-28',
+        'dateModified': '2026-06-12',
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
@@ -891,6 +957,35 @@ class KygoOuraRingComparison extends HTMLElement {
       .section h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 4vw, 42px); line-height: 1.1; margin: 16px 0 10px; letter-spacing: -0.01em; }
       .section h2 .hl { color: var(--kygo-green); }
       .lede { color: var(--fg-2); font-size: 16px; line-height: 1.55; max-width: 60ch; margin: 0; }
+
+      /* Quick-answer summary (crawlable prose) */
+      .tldr { margin-bottom: 8px; }
+      .tldr-lead { font-size: clamp(15px, 1.7vw, 17px); line-height: 1.6; color: var(--fg-2); max-width: 75ch; margin: 0 0 22px; }
+      .tldr-lead strong { color: var(--fg-1); font-weight: 600; }
+      .cmp-blocks { display: grid; grid-template-columns: 1fr; gap: 14px; }
+      @media (min-width: 760px) { .cmp-blocks { grid-template-columns: 1fr 1fr; } }
+      .cmp-block { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; }
+      .cmp-block.cmp-block-wide { grid-column: 1 / -1; }
+      .cmp-block h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(17px, 2vw, 20px); line-height: 1.2; margin: 0 0 10px; color: var(--fg-1); }
+      .cmp-block p { font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0; }
+      .cmp-block p strong { color: var(--fg-1); font-weight: 600; }
+
+      /* Size & dimensions */
+      .dims-head { margin: 40px 0 22px; max-width: 720px; }
+      .dims-head h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 3.2vw, 32px); line-height: 1.12; margin: 14px 0 8px; letter-spacing: -0.01em; }
+      .dims-head h3 .hl { color: var(--kygo-green); }
+      .dims { display: grid; grid-template-columns: 1fr; gap: 14px; }
+      @media (min-width: 720px) { .dims { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+      .dim-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 20px 22px; }
+      .dim-card-hl { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.12); }
+      .dim-card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .dim-name { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: var(--fg-1); }
+      .dim-badge { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
+      .dim-sub { font-size: 12px; color: var(--fg-3); margin: 2px 0 14px; }
+      .dim-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--border-subtle); }
+      .dim-label { font-size: 13px; color: var(--fg-2); font-weight: 500; }
+      .dim-val { font-family: var(--font-numeric); font-weight: 600; font-size: 15px; color: var(--fg-1); text-align: right; }
+      .dim-val.win { color: var(--kygo-green-dark); }
 
       /* Best-for */
       .bestfor-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
