@@ -58,6 +58,27 @@ existing per-brand slugs above; **Suunto (`amzn.to/4fZD5Cx`) is a new link.**
 | `amzn.to/4rkOv6I` | **Coros** | 158 |
 | `amzn.to/4fZD5Cx` | **Suunto** (new) | 172 |
 
+### Recovery & readiness scores tool (`kygo-recovery-scores.js`)
+Added 2026-06. One affiliate per brand in the `_devices` object (`amazon` field), rendered as a
+"View … on Amazon" button in each brand deep-dive card with `rel="noopener sponsored"` and a
+visible "Affiliate link" disclosure. Reuses the existing per-brand slugs above; **Amazfit
+(`amzn.to/4fHVnYW`) and RingConn (`amzn.to/4e5fGyj`) are new links.** **Ultrahuman has no
+button** — it is not sold on Amazon (no link).
+| Link | Product |
+|---|---|
+| `amzn.to/4rRoziQ` | **WHOOP** |
+| `amzn.to/4aF93jj` | **Oura Ring** |
+| `amzn.to/4aF8l5D` | **Garmin** |
+| `amzn.to/3ZPkHDc` | **Fitbit / Pixel** |
+| `amzn.to/3PUMS23` | **Samsung Galaxy Watch** |
+| `amzn.to/4rqpdnL` | **Polar** |
+| `amzn.to/4rkOv6I` | **Coros** |
+| `amzn.to/4fZD5Cx` | **Suunto** |
+| `amzn.to/4rUcGst` | **Apple Watch** |
+| `amzn.to/4fHVnYW` | **Amazfit** (new) |
+| `amzn.to/4e5fGyj` | **RingConn** (new) |
+| — | **Ultrahuman** — not on Amazon, no link |
+
 ---
 
 ## B. Supplements & sleep/recovery products
