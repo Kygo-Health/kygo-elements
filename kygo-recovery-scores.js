@@ -199,7 +199,6 @@ class KygoRecoveryScores extends HTMLElement {
       },
       ultrahuman: {
         name: 'Ultrahuman',
-        amazon: 'https://www.amazon.com/s?k=Ultrahuman+Ring+AIR&tag=kygohealthapp-20',
         scoreName: 'Dynamic Recovery',
         modelLine: 'Dynamic Recovery · 0–100% · re-adjusts intraday · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: false, load: false, subj: false },
@@ -231,7 +230,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       amazfit: {
         name: 'Amazfit / Zepp',
-        amazon: 'https://www.amazon.com/s?k=Amazfit+smartwatch&tag=kygohealthapp-20',
+        amazon: 'https://amzn.to/4fHVnYW',
         scoreName: 'HybridCharge',
         modelLine: 'HybridCharge · 0–100 · replaced BioCharge May 2026 · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: true },
@@ -279,7 +278,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       ringconn: {
         name: 'RingConn',
-        amazon: 'https://www.amazon.com/s?k=RingConn+smart+ring&tag=kygohealthapp-20',
+        amazon: 'https://amzn.to/4e5fGyj',
         scoreName: 'Wellness Balance',
         modelLine: 'Wellness Balance · 4 petals (not a true score) · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -663,8 +662,9 @@ class KygoRecoveryScores extends HTMLElement {
       apple:   'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
       coros:   'https://static.wixstatic.com/media/273a63_b86aaa1f1b5b43a4a8ccc8294293e193~mv2.png',
       suunto:  'https://static.wixstatic.com/media/273a63_0bf2273473c849a98d9fc92b6ccea514~mv2.png',
-      amazfit: 'https://static.wixstatic.com/media/273a63_01b29289863b4cd5844d575301addb6a~mv2.png'
-      // ultrahuman & ringconn: no Wix asset yet → neutral icon fallback
+      amazfit: 'https://static.wixstatic.com/media/273a63_01b29289863b4cd5844d575301addb6a~mv2.png',
+      ultrahuman: 'https://static.wixstatic.com/media/273a63_810650aa12fe4ae59ce7e22c25c312fc~mv2.png',
+      ringconn:   'https://static.wixstatic.com/media/273a63_fc0ed00ac88441138f7b4c7e398f7aa8~mv2.png'
     })[key] || null;
   }
 

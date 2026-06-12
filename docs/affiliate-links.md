@@ -61,9 +61,9 @@ existing per-brand slugs above; **Suunto (`amzn.to/4fZD5Cx`) is a new link.**
 ### Recovery & readiness scores tool (`kygo-recovery-scores.js`)
 Added 2026-06. One affiliate per brand in the `_devices` object (`amazon` field), rendered as a
 "View … on Amazon" button in each brand deep-dive card with `rel="noopener sponsored"` and a
-visible "Affiliate link" disclosure. Reuses the existing per-brand slugs above. **Ultrahuman,
-Amazfit, and RingConn have no `amzn.to` slug yet** — they use tagged Amazon search URLs
-(`amazon.com/s?k=…&tag=kygohealthapp-20`) until dedicated short links exist.
+visible "Affiliate link" disclosure. Reuses the existing per-brand slugs above; **Amazfit
+(`amzn.to/4fHVnYW`) and RingConn (`amzn.to/4e5fGyj`) are new links.** **Ultrahuman has no
+button** — it is not sold on Amazon (no link).
 | Link | Product |
 |---|---|
 | `amzn.to/4rRoziQ` | **WHOOP** |
@@ -75,9 +75,9 @@ Amazfit, and RingConn have no `amzn.to` slug yet** — they use tagged Amazon se
 | `amzn.to/4rkOv6I` | **Coros** |
 | `amzn.to/4fZD5Cx` | **Suunto** |
 | `amzn.to/4rUcGst` | **Apple Watch** |
-| `amazon.com/s?k=Ultrahuman+Ring+AIR&tag=kygohealthapp-20` | **Ultrahuman** (search, no slug yet) |
-| `amazon.com/s?k=Amazfit+smartwatch&tag=kygohealthapp-20` | **Amazfit** (search, no slug yet) |
-| `amazon.com/s?k=RingConn+smart+ring&tag=kygohealthapp-20` | **RingConn** (search, no slug yet) |
+| `amzn.to/4fHVnYW` | **Amazfit** (new) |
+| `amzn.to/4e5fGyj` | **RingConn** (new) |
+| — | **Ultrahuman** — not on Amazon, no link |
 
 ---
 
