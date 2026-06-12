@@ -764,7 +764,7 @@ class KygoRecoveryScores extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How each brand measures recovery</span>
             <h2 class="section-h2">Every recovery score, <em>side by side</em>.</h2>
-            <p class="section-lede">Almost every brand now sells a single morning number for "how recovered are you." They are NOT interchangeable — different inputs, baselines, and scales mean two devices on one wrist will disagree. The common spine is HRV + resting heart rate + sleep; training-load brands (Coros, Suunto, Garmin) weight workload instead. Here's exactly what each score reads, ranked by input coverage.</p>
+            <p class="section-lede">Two devices on one wrist will disagree — different inputs, baselines, and scales. Here's what each score actually reads, ranked by input coverage.</p>
             ${this._readMore(this._posts.compared, 'Full breakdown: WHOOP vs Oura vs Garmin compared')}
           </div>
 
@@ -773,7 +773,7 @@ class KygoRecoveryScores extends HTMLElement {
               <div>
                 <span class="dc-eyebrow">Input coverage</span>
                 <h3 class="dc-title">Signals fed into the recovery score, by brand</h3>
-                <p class="dc-sub">Across the De Gruyter catalogue of composite scores, HRV appears in 86% of them, resting heart rate in 79%, activity in 71%, and sleep duration in 71%. The differences are weighting and window length, not raw ingredients.</p>
+                <p class="dc-sub">Same core ingredients — HRV (86% of scores), resting HR (79%), sleep (71%). The difference between brands is weighting, not raw signals.</p>
               </div>
               <div class="dc-meta">${ranked.length} brands · ${totalSensors} signals</div>
             </div>
@@ -837,7 +837,7 @@ class KygoRecoveryScores extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('sparkle')}</span>Per-brand deep dive</span>
             <h2 class="section-h2">How each recovery score <em>actually works</em>.</h2>
-            <p class="section-lede">Tap any brand for its score name, how it's built, scale, core inputs, measurement window, whether it's free or paid, validation status, and the unique tradeoffs of its approach.</p>
+            <p class="section-lede">Tap any brand for how its score is built, its scale and inputs, free vs paid, and where it falls short.</p>
             ${this._readMore(this._posts.compared, 'Read: recovery scores compared, brand by brand')}
           </div>
           <div class="device-details">
@@ -985,6 +985,18 @@ class KygoRecoveryScores extends HTMLElement {
   }
 
   _renderFactorList() {
+    // Until a category is picked, prompt instead of dumping all 35 cards (too long on mobile).
+    if (!this._categoryFilter) {
+      const cats = this._factorCategories.map(c =>
+        `<button class="fact-prompt-chip" data-cat="${c.key}">${c.label}</button>`).join('');
+      return `
+        <div class="fact-prompt">
+          <span class="fact-prompt-ic" aria-hidden="true">${this._icon('activity')}</span>
+          <p class="fact-prompt-lead">Pick a category to explore its factors.</p>
+          <div class="fact-prompt-chips">${cats}</div>
+        </div>`;
+    }
+
     // Three direction groups: raises (positive), lowers (negative), baseline modifiers (modifier).
     const filtered = this._factorsInCat(this._categoryFilter);
     if (!filtered.length) return '<p class="dash-empty">No factors match this filter.</p>';
@@ -1039,14 +1051,14 @@ class KygoRecoveryScores extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
             <h2 class="section-h2">${total} <em>factors</em> that move your recovery score.</h2>
-            <p class="section-lede">The score's spine is HRV + resting heart rate + sleep (plus body temperature, and for some brands training load). Anything that moves those signals moves the score. Everything is relative to <strong>your</strong> personal baseline — the size of the deviation is what matters, not the absolute number. Pick a category, then tap a factor for the effect, evidence grade, mechanism, and what to do.</p>
+            <p class="section-lede">Anything that moves HRV, resting heart rate or sleep moves your score — always relative to your own baseline.</p>
             ${this._readMore(this._posts.lowers, 'Read: what lowers your recovery score')}
           </div>
           <span class="metric-tiles-label">Filter by category — ${this._factorCategories.length} groups</span>
           ${this._renderCategoryTiles()}
           <div class="picker-panel">
             <div class="picker-panel-head">
-              <h3 class="picker-panel-title">${catLabel ? catLabel : 'All factors'}<span class="picker-panel-meta">${shown} factor${shown === 1 ? '' : 's'}</span></h3>
+              <h3 class="picker-panel-title">${catLabel ? catLabel : 'Browse by category'}<span class="picker-panel-meta">${catLabel ? `${shown} factor${shown === 1 ? '' : 's'}` : `${total} total`}</span></h3>
             </div>
             ${this._renderFactorList()}
           </div>
@@ -1130,7 +1142,7 @@ class KygoRecoveryScores extends HTMLElement {
       <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title">Sources</h2>
-          <p class="section-sub">Every brand checked against the vendor's own documentation (except Amazfit — strong secondary only); every factor and supplement claim full-verified against primary research on 2026-06-11.</p>
+          <p class="section-sub">Every brand checked against vendor docs; every factor and supplement claim verified against primary research.</p>
           <div class="src-accordion">
             <div class="src-count-badge">${total} sources cited</div>
             ${Object.entries(groups).map(([cat, items]) => `
@@ -1192,7 +1204,7 @@ class KygoRecoveryScores extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('shield')}</span>Can you trust the number?</span>
             <h2 class="section-h2"><em>${validated} of ${ranked.length}</em> scores have any independent validation.</h2>
-            <p class="section-lede">The bottom line: the <strong>scores</strong> are largely unvalidated black boxes; the underlying <strong>signals</strong> (HRV, RHR) are validated in some devices. Only WHOOP and Oura have ever been tested against an external reference — and WHOOP's came out weak. There is no clinical gold standard for "recovery," so brands validate their inputs, not the output. Cite the signal, never the score.</p>
+            <p class="section-lede">The <strong>scores</strong> are mostly unvalidated black boxes; the underlying <strong>HRV/RHR signals</strong> are validated in some devices. Only WHOOP and Oura have been tested against a reference — and WHOOP's came out weak. Trust the signal, not the score.</p>
             ${this._readMore(this._posts.trust, 'Read: can you trust your recovery score?')}
           </div>
 
@@ -1201,7 +1213,7 @@ class KygoRecoveryScores extends HTMLElement {
               <div>
                 <span class="dc-eyebrow">Score vs signal</span>
                 <h3 class="dc-title">Is it validated — the score, or just the signals?</h3>
-                <p class="dc-sub">"None located" is a real finding, not a coverage gap: each brand was searched individually for a study testing its composite score against an external reference.</p>
+                <p class="dc-sub">"None located" is a real finding, not a gap — each brand was searched individually for a study testing its score.</p>
               </div>
               <div class="dc-meta">${ranked.length} brands</div>
             </div>
@@ -1275,7 +1287,7 @@ class KygoRecoveryScores extends HTMLElement {
         <div class="container hero-inner">
           <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalDevices} Wearables · ${totalFactors} Factors</div>
           <h1 class="hero-title animate-on-scroll">Compare recovery scores across <em>12 wearables</em>.</h1>
-          <p class="hero-sub animate-on-scroll">See the <strong>${totalFactors} factors</strong> that move yours, and find which scores are actually <strong>validated</strong>. Recovery and readiness scores aren't interchangeable — different inputs, baselines, and scales mean two devices on one wrist disagree. Spoiler: only <strong>2 of 12</strong> scores are validated, and the signals beat the scores.</p>
+          <p class="hero-sub animate-on-scroll">See the <strong>${totalFactors} factors</strong> that move yours, and which scores are actually <strong>validated</strong>. They aren't interchangeable — two devices on one wrist disagree — and only <strong>2 of 12</strong> are validated.</p>
           <div class="animate-on-scroll">
             <div class="hero-meta">
               <div class="hero-cell"><span class="hero-num">${totalDevices}</span><span class="hero-lbl">Brands compared</span></div>
@@ -2046,6 +2058,15 @@ class KygoRecoveryScores extends HTMLElement {
       .validation-section { padding: 48px 0 56px; }
       @media (min-width: 768px) { .validation-section, .faq-section { padding: 64px 0 72px; } }
       .faq-section { padding: 48px 0 56px; }
+
+      /* FACTOR EXPLORER — category prompt shown before a chip is picked */
+      .fact-prompt { text-align: center; padding: 28px 18px 10px; }
+      .fact-prompt-ic { width: 44px; height: 44px; border-radius: 12px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+      .fact-prompt-ic svg { width: 22px; height: 22px; }
+      .fact-prompt-lead { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0 0 14px; letter-spacing: -0.01em; }
+      .fact-prompt-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+      .fact-prompt-chip { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; color: var(--dark); background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 9999px; padding: 8px 14px; cursor: pointer; transition: background .15s, border-color .15s, color .15s; }
+      .fact-prompt-chip:hover { background: var(--green-light); border-color: var(--green); color: var(--green-dark); }
 
       /* SECTION DEEP-LINK — small read-more under a section lede */
       .section-readmore { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; color: var(--green-dark); letter-spacing: -0.005em; transition: gap .15s, color .15s; }

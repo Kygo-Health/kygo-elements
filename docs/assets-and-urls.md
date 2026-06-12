@@ -46,7 +46,7 @@ Larger device photos, used in comparison tables and device cards.
 | `273a63_c52aaaca1f7243f3818cf51d9374dbd4` | **WHOOP** (product) | distinct from the Whoop *logo* above |
 | `273a63_e7e3c05ed0bc4cec8f456cd7f995e70b` | **Polar** | `kygo-wearable-stress.js` only |
 | `273a63_b86aaa1f1b5b43a4a8ccc8294293e193` | **COROS** | `kygo-wearable-stress.js` only |
-| `273a63_0bf2273473c849a98d9fc92b6ccea514` | **Suunto** | `kygo-vo2max-accuracy.js` comparison chart |
+| `273a63_0bf2273473c849a98d9fc92b6ccea514` | **Suunto** | `kygo-vo2max-accuracy.js`, `kygo-recovery-scores.js` |
 | `273a63_7b9a43c26540413586d185a889fa853c` | **Google Pixel Watch** | `kygo-wearable-stress.js` only |
 | `273a63_01b29289863b4cd5844d575301addb6a` | **Amazfit** | `kygo-wearable-stress.js`, `kygo-recovery-scores.js` |
 | `273a63_810650aa12fe4ae59ce7e22c25c312fc` | **Ultrahuman** | `kygo-recovery-scores.js` only (new 2026-06) |

@@ -26,7 +26,8 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 `kygo-rhr-factors.js:1001`, `kygo-sensor-comparison.js:1060`,
 `kygo-sleep-latency-factors.js:659`, `kygo-sleep-metrics.js:685,747`,
 `kygo-staying-asleep-factors.js:1002`, `kygo-step-count-accuracy.js:433,490,634`,
-`kygo-tools.js:697`, `kygo-wearable-accuracy.js:716,842`, `kygo-wearable-stress.js:1187`.
+`kygo-tools.js:697`, `kygo-wearable-accuracy.js:716,842`, `kygo-wearable-stress.js:1187`,
+`kygo-recovery-scores.js` (app CTA — canonical App Store URL).
 
 **`/android` redirect — file locations:**
 `calories-custom-element.js:1246`, `kygo-blog-post.js:32`, `kygo-blog.js:53`,
@@ -87,6 +88,7 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/tools/step-count-accuracy` | kygo-step-count-accuracy.js | 1748, 1815 |
 | `/tools/wearable-accuracy` | kygo-wearable-accuracy.js | 1533, 1605 |
 | `/tools/stress-factors` | kygo-wearable-stress.js | 53, 134 |
+| `/tools/recovery-score-explorer` | kygo-recovery-scores.js | JSON-LD `url` + breadcrumb |
 | `/tools/fitbit-air-vs-whoop-comparison` | kygo-fitbit-air-vs-whoop.js | 549, 593 |
 | `/tools` (index) | kygo-tools.js | 790, 798, 801 |
 | `/tools/oura-ring-comparison-tool` *(fixed; was root `/oura-ring-comparison-tool`)* | kygo-oura-ring-comparison.js | 643, 687 |
@@ -110,6 +112,16 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/post/fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it` | kygo-fitbit-air-vs-whoop.js:279 |
 | `/post/wearable-hardware-vs-software-differences-2025` | kygo-sensor-comparison.js:1020 |
 | `/post/how-wearables-measure-stress-comparison` | kygo-wearable-stress.js:1173 |
+| `/post/what-lowers-recovery-score` *(spoke 1 — primary CTA + factor explorer)* | kygo-recovery-scores.js |
+| `/post/recovery-scores-compared-whoop-oura-garmin` *(spoke 2 — comparison matrix + per-brand accordion)* | kygo-recovery-scores.js |
+| `/post/can-you-trust-your-recovery-score` *(spoke 3 — validation table)* | kygo-recovery-scores.js |
+
+> **Hub-and-spoke pattern (new 2026-06, `kygo-recovery-scores.js`):** each tool section
+> deep-links its *own* matching post (matrix → comparison, validation → trust, factor
+> explorer → intake) so the tool feeds each post instead of competing with it. The one
+> primary "read the guide" article CTA leads with **spoke 1**. Reuse this pattern for future
+> multi-post tool clusters. The three slugs above were supplied by the client; they 404 until
+> the posts publish.
 
 ### Company / legal / misc
 - `/contact` — `kygo-contact.js:681`, plus footers above.
