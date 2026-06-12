@@ -42,12 +42,12 @@ class KygoRecoveryScores extends HTMLElement {
     const ld = {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
-      'name': 'Wearable Recovery & Readiness Scores Research',
-      'alternateName': 'Kygo Recovery Score Comparison Tool',
-      'description': 'Compare how 12 brands build a single morning recovery/readiness score (WHOOP Recovery, Oura Readiness, Garmin Training Readiness, Fitbit/Pixel Daily Readiness, Samsung Energy Score, Polar Nightly Recharge, Ultrahuman Dynamic Recovery, Coros Recovery Timer & Fatigue, Amazfit HybridCharge, Suunto Body Resources, Apple, RingConn), the 35 factors that move it, and which scores are actually validated. The scores are not interchangeable and largely unvalidated; the underlying HRV/RHR signals are validated in some devices.',
+      'name': 'Recovery Score Explorer',
+      'alternateName': 'Kygo Recovery & Readiness Score Comparison Tool',
+      'description': 'Compare recovery and readiness scores across 12 wearables, see the 35 factors that move yours, and find which scores are actually validated. The scores are not interchangeable and largely unvalidated; the underlying HRV/RHR signals are validated in some devices.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
-      'url': 'https://www.kygo.app/tools/recovery-scores',
+      'url': 'https://www.kygo.app/tools/recovery-score-explorer',
       'datePublished': '2026-06-11',
       'dateModified': '2026-06-11',
       'softwareVersion': '1.0',
@@ -68,7 +68,7 @@ class KygoRecoveryScores extends HTMLElement {
       'itemListElement': [
         { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
         { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
-        { '@type': 'ListItem', 'position': 3, 'name': 'Wearable Recovery & Readiness Scores', 'item': 'https://www.kygo.app/tools/recovery-scores' }
+        { '@type': 'ListItem', 'position': 3, 'name': 'Recovery Score Explorer', 'item': 'https://www.kygo.app/tools/recovery-score-explorer' }
       ]
     };
 
@@ -79,6 +79,21 @@ class KygoRecoveryScores extends HTMLElement {
       script.textContent = JSON.stringify(data);
       document.head.appendChild(script);
     });
+  }
+
+  get _posts() {
+    // Hub-and-spoke: each tool section deep-links its matching post so the tool feeds
+    // the blog rather than competing with it. Primary "read the guide" CTA = spoke 1 (intake).
+    const base = 'https://www.kygo.app/post/';
+    return {
+      lowers:     base + 'what-lowers-recovery-score',                  // spoke 1 — intake / factor explorer
+      compared:   base + 'recovery-scores-compared-whoop-oura-garmin',  // spoke 2 — comparison matrix + per-brand
+      trust:      base + 'can-you-trust-your-recovery-score'            // spoke 3 — validation
+    };
+  }
+
+  _readMore(url, label) {
+    return `<a class="section-readmore" href="${url}" target="_blank" rel="noopener">${label} <span aria-hidden="true">${this._icon('arrowRight')}</span></a>`;
   }
 
   _faqs() {
@@ -729,6 +744,7 @@ class KygoRecoveryScores extends HTMLElement {
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How each brand measures recovery</span>
             <h2 class="section-h2">Every recovery score, <em>side by side</em>.</h2>
             <p class="section-lede">Almost every brand now sells a single morning number for "how recovered are you." They are NOT interchangeable — different inputs, baselines, and scales mean two devices on one wrist will disagree. The common spine is HRV + resting heart rate + sleep; training-load brands (Coros, Suunto, Garmin) weight workload instead. Here's exactly what each score reads, ranked by input coverage.</p>
+            ${this._readMore(this._posts.compared, 'Full breakdown: WHOOP vs Oura vs Garmin compared')}
           </div>
 
           <div class="device-chart">
@@ -801,6 +817,7 @@ class KygoRecoveryScores extends HTMLElement {
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('sparkle')}</span>Per-brand deep dive</span>
             <h2 class="section-h2">How each recovery score <em>actually works</em>.</h2>
             <p class="section-lede">Tap any brand for its score name, how it's built, scale, core inputs, measurement window, whether it's free or paid, validation status, and the unique tradeoffs of its approach.</p>
+            ${this._readMore(this._posts.compared, 'Read: recovery scores compared, brand by brand')}
           </div>
           <div class="device-details">
             <div class="dd-list">${detailRows}</div>
@@ -826,12 +843,12 @@ class KygoRecoveryScores extends HTMLElement {
     return `
       <section class="article-section section-bg-white">
         <div class="container">
-          <a href="https://www.kygo.app/post/wearable-recovery-readiness-scores-explained" class="article-card animate-on-scroll" target="_blank" rel="noopener">
-            <span class="article-badge">Deep Dive</span>
+          <a href="${this._posts.lowers}" class="article-card animate-on-scroll" target="_blank" rel="noopener">
+            <span class="article-badge">Read the guide</span>
             <div class="article-body">
-              <span class="article-kicker">Read the full article</span>
-              <h3 class="article-title">Wearable Recovery &amp; Readiness Scores, Explained <span class="article-year">(2026)</span></h3>
-              <p class="article-desc">Every brand, input, factor, and cited study in one long-form read.</p>
+              <span class="article-kicker">Why is your score doing that?</span>
+              <h3 class="article-title">What Lowers Your Recovery Score <span class="article-year">(2026)</span></h3>
+              <p class="article-desc">The intake triggers — alcohol, late meals, caffeine — that move your number, and how to find your own with Kygo.</p>
             </div>
             <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
           </a>
@@ -1002,6 +1019,7 @@ class KygoRecoveryScores extends HTMLElement {
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
             <h2 class="section-h2">${total} <em>factors</em> that move your recovery score.</h2>
             <p class="section-lede">The score's spine is HRV + resting heart rate + sleep (plus body temperature, and for some brands training load). Anything that moves those signals moves the score. Everything is relative to <strong>your</strong> personal baseline — the size of the deviation is what matters, not the absolute number. Pick a category, then tap a factor for the effect, evidence grade, mechanism, and what to do.</p>
+            ${this._readMore(this._posts.lowers, 'Read: what lowers your recovery score')}
           </div>
           <span class="metric-tiles-label">Filter by category — ${this._factorCategories.length} groups</span>
           ${this._renderCategoryTiles()}
@@ -1154,6 +1172,7 @@ class KygoRecoveryScores extends HTMLElement {
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('shield')}</span>Can you trust the number?</span>
             <h2 class="section-h2"><em>${validated} of ${ranked.length}</em> scores have any independent validation.</h2>
             <p class="section-lede">The bottom line: the <strong>scores</strong> are largely unvalidated black boxes; the underlying <strong>signals</strong> (HRV, RHR) are validated in some devices. Only WHOOP and Oura have ever been tested against an external reference — and WHOOP's came out weak. There is no clinical gold standard for "recovery," so brands validate their inputs, not the output. Cite the signal, never the score.</p>
+            ${this._readMore(this._posts.trust, 'Read: can you trust your recovery score?')}
           </div>
 
           <div class="device-chart">
@@ -2001,6 +2020,12 @@ class KygoRecoveryScores extends HTMLElement {
       .validation-section { padding: 48px 0 56px; }
       @media (min-width: 768px) { .validation-section, .faq-section { padding: 64px 0 72px; } }
       .faq-section { padding: 48px 0 56px; }
+
+      /* SECTION DEEP-LINK — small read-more under a section lede */
+      .section-readmore { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; color: var(--green-dark); letter-spacing: -0.005em; transition: gap .15s, color .15s; }
+      .section-readmore:hover { color: var(--green); gap: 9px; }
+      .section-readmore span { display: inline-flex; }
+      .section-readmore svg { width: 15px; height: 15px; }
 
       /* APP CTA — center the "Works with" logo row */
       .app-cta-tags { justify-content: center; flex-wrap: wrap; gap: 10px 12px; }
