@@ -156,6 +156,23 @@ array), so the markup appears in all three views (chart / list / qualitative).
 page states both have no objective WASO benefit, so promoting a product on those rows would be
 bad-faith placement.)*
 
+### `kygo-recovery-scores.js` (supplement factors)
+Wired up 2026-06. Each supplement factor in the explorer carries an `amazon:{url,label}` that
+renders a "… on Amazon" button in the expanded card (`rel="noopener sponsored"` + per-link
+disclosure), plus a site-wide Amazon Associates disclosure in the page footer. All **reuse**
+existing product slugs. **Saffron, Chamomile, and the consolidated weak-tier have no button**
+(no matching affiliate product).
+| Short link | Product label |
+|---|---|
+| `amzn.to/3Nbjq6C` | Magnesium Glycinate |
+| `amzn.to/3PWfatc` | Glycine Powder |
+| `amzn.to/3PXqKEh` | Tart Cherry Juice |
+| `amzn.to/3OEoHEh` | L-Theanine 200mg |
+| `amzn.to/403ZgOP` | Ashwagandha Extract |
+| `amzn.to/4cVnvGt` | Omega-3 Fish Oil |
+| `amzn.to/4szGon9` | Melatonin Supplement |
+| `amzn.to/406okEX` | Beetroot Juice Shots (dietary nitrate) |
+
 ---
 
 ## C. Non-Amazon affiliate / referral

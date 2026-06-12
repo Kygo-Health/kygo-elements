@@ -129,7 +129,7 @@ class KygoRecoveryScores extends HTMLElement {
         window: 'During sleep',
         strength: 'The four-input model is lean and transparent by consumer standards, and Recovery is one of only two scores ever tested against an external reference.',
         limitation: 'Requires a paid membership. When tested in NCAA swimmers, the raw HRV carried the signal — the composite Recovery score did not add to it.',
-        validation: { score: 'weak', signal: 'moderate', evidence: 'Swimmer study (n=23, Lundstrom 2024); Bellenger 2021; Dial 2025 (HRV CCC 0.94). Raw HRV tracked energy deficiency; the composite added no consistent association.' },
+        validation: { score: 'weak', signal: 'moderate', evidence: 'Tested in NCAA swimmers (Lundstrom 2024): raw HRV carried the signal, the composite did not. Signals OK (Dial 2025, HRV CCC 0.94).' },
         color: ACC
       },
       oura: {
@@ -145,7 +145,7 @@ class KygoRecoveryScores extends HTMLElement {
         window: 'Overnight',
         strength: 'Finger-site temperature plus nine contributors is the richest input set in the market, and Oura\'s signals are the most accurate tested (Dial CCC 0.97–0.99). The only score with even moderate independent support.',
         limitation: 'Needs a paid membership (~$5.99/mo). Validation is "moderate," and some of the supporting work is Oura-affiliated.',
-        validation: { score: 'moderate', signal: 'strong', evidence: 'Endurance-athlete studies (2025): Readiness correlated with subjective recovery (r≈0.39–0.81; RPE/TQR R²≈0.29). Dial 2025: HRV CCC 0.97–0.99, RHR 0.97–0.98 — the most accurate tested.' },
+        validation: { score: 'moderate', signal: 'strong', evidence: 'Readiness correlated with subjective recovery in endurance athletes (2025). Signals most accurate tested — Dial 2025, HRV CCC 0.97–0.99.' },
         color: ACC
       },
       garmin: {
@@ -161,7 +161,7 @@ class KygoRecoveryScores extends HTMLElement {
         window: 'Continuous',
         strength: 'The most training-load-oriented of the mainstream scores — built for athletes managing workload, and free.',
         limitation: 'No independent validation of the composite. Garmin\'s nocturnal HRV/RHR were poor in Dial 2025 (excluded from the RHR analysis on methodology grounds).',
-        validation: { score: 'none', signal: 'poor', evidence: 'Firstbeat white papers validate components, not the composite. Dial 2025: poor nocturnal HRV; excluded from the RHR analysis for methodology.' },
+        validation: { score: 'none', signal: 'poor', evidence: 'Firstbeat white papers cover components, not the composite. Nocturnal HRV poor (Dial 2025).' },
         color: ACC
       },
       fitbit: {
@@ -177,7 +177,7 @@ class KygoRecoveryScores extends HTMLElement {
         window: 'Overnight',
         strength: 'Free, simple, three-input model. Most third-party articles still wrongly say "Premium required" — it isn\'t.',
         limitation: 'No published independent test of the score ("built on research"). Signal validation is moderate and component-level only.',
-        validation: { score: 'none', signal: 'moderate', evidence: 'No score study located — "built on research" with no published independent test. Signal-level validation only.' },
+        validation: { score: 'none', signal: 'moderate', evidence: 'No published independent test of the score. Signal-level validation only.' },
         color: ACC
       },
       samsung: {
@@ -193,7 +193,7 @@ class KygoRecoveryScores extends HTMLElement {
         window: 'Overnight + 24h wear',
         strength: 'Built with an academic collaborator and free across the Galaxy Watch line.',
         limitation: 'The only validation is company-affiliated (UGA correlated it to cognitive-test performance) — no independent test of the score.',
-        validation: { score: 'none', signal: 'yes', evidence: 'Company-affiliated only: UGA correlated Energy Score to cognitive-test performance. Signals reasonable; no independent score validation.' },
+        validation: { score: 'none', signal: 'yes', evidence: 'Only company-affiliated work (UGA, cognitive performance). No independent score test.' },
         color: ACC
       },
       polar: {
@@ -209,7 +209,7 @@ class KygoRecoveryScores extends HTMLElement {
         window: 'First 4h of sleep',
         strength: 'The 28-day overnight baseline is one of the most personalized windows in the market; pairs with the H10 chest strap (the lab reference for most wearable studies).',
         limitation: 'Wrist nocturnal RHR/HRV were poor in Dial 2025 (RHR CCC 0.86). No independent validation of the composite.',
-        validation: { score: 'none', signal: 'poor', evidence: 'Sleep Plus Stages validated vs PSG plus a Polar white paper, but not the composite. Dial 2025: poor nocturnal RHR (CCC 0.86).' },
+        validation: { score: 'none', signal: 'poor', evidence: 'Sleep staging validated vs PSG, but not the composite. Nocturnal RHR poor (Dial 2025, CCC 0.86).' },
         color: ACC
       },
       ultrahuman: {
@@ -240,7 +240,7 @@ class KygoRecoveryScores extends HTMLElement {
         window: 'Continuous',
         strength: 'Honest, performance-framed training-load math for endurance athletes — no "wellness" overreach.',
         limitation: 'Not a physiological recovery score at all, so there is nothing to validate as one. The De Gruyter paper lists its composite as "Daily Stress."',
-        validation: { score: 'na', signal: 'na', evidence: 'Not a recovery score; not validated as one. No HRV input.' },
+        validation: { score: 'na', signal: 'na', evidence: 'Not a recovery score, so nothing to validate as one. No HRV input.' },
         color: ACC
       },
       amazfit: {
@@ -256,7 +256,7 @@ class KygoRecoveryScores extends HTMLElement {
         window: 'Continuous + daily log',
         strength: 'The first mainstream score to formally blend sensor data with structured subjective self-report.',
         limitation: 'Brand-new (May 2026) with no primary documentation and no validation; treat as a longitudinal-only tool.',
-        validation: { score: 'none', signal: 'none', evidence: 'New (May 2026). No validation located for the score or its signals.' },
+        validation: { score: 'none', signal: 'none', evidence: 'Brand-new (May 2026). No validation located for the score or its signals.' },
         color: ACC
       },
       suunto: {
@@ -272,7 +272,7 @@ class KygoRecoveryScores extends HTMLElement {
         window: 'Continuous',
         strength: 'A continuous Firstbeat autonomic gauge for outdoor athletes.',
         limitation: 'No independent validation located; rides on Firstbeat\'s vendor lineage.',
-        validation: { score: 'none', signal: 'na', evidence: 'No independent validation located. Firstbeat lineage (vendor).' },
+        validation: { score: 'none', signal: 'na', evidence: 'No independent validation located. Rides on Firstbeat lineage (vendor).' },
         color: ACC
       },
       apple: {
@@ -323,15 +323,23 @@ class KygoRecoveryScores extends HTMLElement {
   }
 
   get _factorCategories() {
+    // Chips for the filter row. Nutrition consolidates the intake factors —
+    // food/hydration, substances (alcohol, caffeine, nicotine, THC) and supplements.
     return [
-      { key: 'sleep',       label: 'Sleep',       icon: 'moon' },
-      { key: 'substances',  label: 'Substances',  icon: 'coffee' },
-      { key: 'nutrition',   label: 'Nutrition',   icon: 'droplet' },
-      { key: 'training',    label: 'Training',    icon: 'dumbbell' },
-      { key: 'stress',      label: 'Stress',      icon: 'brain' },
-      { key: 'supplements', label: 'Supplements', icon: 'sparkle' },
-      { key: 'baseline',    label: 'Baseline',    icon: 'target' }
+      { key: 'sleep',     label: 'Sleep',     icon: 'moon',     cats: ['sleep'] },
+      { key: 'nutrition', label: 'Nutrition', icon: 'droplet',  cats: ['nutrition', 'substances', 'supplements'] },
+      { key: 'training',  label: 'Training',  icon: 'dumbbell', cats: ['training'] },
+      { key: 'stress',    label: 'Stress',    icon: 'brain',    cats: ['stress'] },
+      { key: 'baseline',  label: 'Baseline',  icon: 'target',   cats: ['baseline'] }
     ];
+  }
+
+  // Granular label for a factor's own sub-category (shown as the card eyebrow).
+  _catLabel(catKey) {
+    return ({
+      sleep: 'Sleep', substances: 'Substances', nutrition: 'Nutrition',
+      supplements: 'Supplement', training: 'Training', stress: 'Stress', baseline: 'Baseline'
+    })[catKey] || '';
   }
 
   get _allFactors() {
@@ -512,36 +520,42 @@ class KygoRecoveryScores extends HTMLElement {
         effect: 'Sleep onset ~17 min faster; a small HRV/readiness benefit.',
         mechanism: 'Magnesium supports GABAergic and NMDA balance involved in sleep onset; the autonomic effect is modest.',
         note: 'CORRECTED: the meta-analysis (Mah 2021) had only 3 small trials (n=151) with low-quality evidence, NOT the "27 RCTs / 2,496" figure circulating on blogs. A separate small Oura crossover (n=31) improved readiness and deep-sleep scores. Typical study dose ~200–360 mg.',
+        amazon: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' },
         source: SRC.magMeta },
       { key: 'glycine', cat: 'supplements', name: 'Glycine', direction: 'positive', impact: 'med', evidence: 'Moderate',
         plainEnglish: 'Small but PSG-correlated: faster sleep onset and better quality, partly by lowering core temperature.',
         effect: 'Faster sleep onset, better sleep quality; lowers core temperature ~0.28°C.',
         mechanism: 'Glycine promotes peripheral vasodilation and a core-temperature drop that helps initiate sleep.',
         note: 'Typical study dose 3 g pre-bed (Inagawa 2006 / Yamadera 2007) — PSG-correlated but small samples.',
+        amazon: { url: 'https://amzn.to/3PWfatc', label: 'Glycine Powder' },
         source: SRC.glycine },
       { key: 'tart-cherry', cat: 'supplements', name: 'Tart cherry (Montmorency)', direction: 'positive', impact: 'med', evidence: 'Moderate (small pilots)',
         plainEnglish: 'Adds sleep time and eases muscle soreness — handy as a double-duty training-recovery aid, though the trials are small.',
         effect: '+34 to 84 min sleep, raises melatonin, eases muscle soreness. The +84 min figure is from an 8-person pilot; Pigeon 2010 (n=15) cut insomnia severity.',
         mechanism: 'Naturally contains melatonin and anti-inflammatory anthocyanins.',
         note: 'Typical dose 60 mL concentrate 2×/day or juice. Small pilots (n=8–15).',
+        amazon: { url: 'https://amzn.to/3PXqKEh', label: 'Tart Cherry Juice' },
         source: SRC.tartCherry },
       { key: 'l-theanine', cat: 'supplements', name: 'L-theanine', direction: 'positive', impact: 'med', evidence: 'Moderate',
         plainEnglish: 'Lowers heart rate and cortisol under acute stress and improves sleep — and it pairs well with caffeine to blunt the jitters.',
         effect: 'Lowers HR and cortisol under acute stress; improves sleep.',
         mechanism: 'Promotes alpha-wave activity and dampens the sympathetic stress response.',
         note: 'Typical dose 200 mg. Often paired with caffeine to blunt its sympathetic effect.',
+        amazon: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' },
         source: SRC.lTheanine },
       { key: 'ashwagandha', cat: 'supplements', name: 'Ashwagandha', direction: 'positive', impact: 'med', evidence: 'Moderate',
         plainEnglish: 'Cortisol and sleep benefits are the clearest; direct HRV evidence is thinner.',
         effect: 'Lowers cortisol and anxiety, improves sleep; some HRV gain.',
         mechanism: 'An adaptogen that lowers HPA-axis cortisol output.',
         note: 'Typical dose 300–600 mg. Cortisol/sleep clearest; direct HRV evidence thinner.',
+        amazon: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' },
         source: SRC.ashwagandha },
       { key: 'omega3', cat: 'supplements', name: 'Omega-3 (DHA)', direction: 'positive', impact: 'low', evidence: 'Moderate (RHR)',
         plainEnglish: 'A small, reliable resting-heart-rate drop — and notably the effect is from DHA, not EPA.',
         effect: 'Lowers resting heart rate ~2.2 bpm; HRV evidence mixed.',
         mechanism: 'DHA incorporates into cardiac membranes and modulates autonomic control of heart rate.',
         note: '51-RCT meta-analysis. Effect from DHA, not EPA.',
+        amazon: { url: 'https://amzn.to/4cVnvGt', label: 'Omega-3 Fish Oil' },
         source: SRC.omega3 },
       { key: 'saffron', cat: 'supplements', name: 'Saffron', direction: 'positive', impact: 'med', evidence: 'Moderate',
         plainEnglish: 'Surprisingly solid for a botanical: a meaningful sleep-quality improvement across a large meta-analysis.',
@@ -560,14 +574,16 @@ class KygoRecoveryScores extends HTMLElement {
         effect: 'Speeds sleep onset and shifts circadian timing; 2 mg modestly raises HRV and lowers overnight HR (peaks ~day 3–5, then fades).',
         mechanism: 'Melatonin shifts the circadian phase and has a small, transient autonomic effect.',
         note: 'Typical dose 0.5–3 mg. A timing aid, not a recovery booster; high doses can nudge BP/HR.',
+        amazon: { url: 'https://amzn.to/4szGon9', label: 'Melatonin Supplement' },
         source: SRC.melatonin },
       { key: 'nitrate', cat: 'supplements', name: 'Dietary nitrate / beetroot', direction: 'positive', impact: 'low', evidence: 'Moderate / mixed',
         plainEnglish: 'Raises HRV and lowers sympathetic outflow and blood pressure — clearest acutely, and it varies by population.',
         effect: 'Raises SDNN, lowers sympathetic outflow and blood pressure.',
         mechanism: 'Dietary nitrate boosts nitric-oxide availability, improving vascular function and autonomic balance.',
         note: 'Clearest acutely; varies by population.',
+        amazon: { url: 'https://amzn.to/406okEX', label: 'Beetroot Juice Shots' },
         source: SRC.nitrate },
-      { key: 'weak-tier', cat: 'supplements', name: 'Weak / don’t rely on (valerian, GABA, CBD, creatine)', direction: 'modifier', impact: 'low', evidence: 'Weak',
+      { key: 'weak-tier', cat: 'supplements', name: 'Weak / don’t rely on (valerian, GABA, CBD, creatine)', direction: 'positive', impact: 'low', evidence: 'Weak',
         plainEnglish: 'Kept here as one line on purpose so recovery content doesn\'t recommend these as recovery aids — the evidence doesn\'t support it.',
         effect: 'Valerian: subjective improvement only, objective measures unconvincing. GABA: poor oral absorption. CBD: WHOOP data shows no meaningful recovery change. Creatine: a cognitive buffer when underslept, not an HRV/recovery aid.',
         note: 'Taurine was dropped (no recovery audience; clinical/animal evidence only). Do not feature these in recovery or affiliate content.',
@@ -600,8 +616,11 @@ class KygoRecoveryScores extends HTMLElement {
     ];
   }
 
-  _factorsInCat(catKey) {
-    return this._allFactors.filter(f => !catKey || f.cat === catKey);
+  _factorsInCat(chipKey) {
+    if (!chipKey) return this._allFactors;
+    const chip = this._factorCategories.find(c => c.key === chipKey);
+    if (!chip) return this._allFactors;
+    return this._allFactors.filter(f => chip.cats.includes(f.cat));
   }
 
   _icon(name) {
@@ -923,8 +942,7 @@ class KygoRecoveryScores extends HTMLElement {
   _renderFactorCard(f) {
     const isExp = this._listExpandedKey === f.key;
     const impCfg = this._impactCfg(f.impact);
-    const catMeta = this._factorCategories.find(c => c.key === f.cat) || {};
-    const catLbl = catMeta.label || '';
+    const catLbl = this._catLabel(f.cat);
     const dirCls = f.direction === 'positive' ? 'fact-dir-pos' : f.direction === 'negative' ? 'fact-dir-neg' : 'fact-dir-var';
     const dirArrow = f.direction === 'positive' ? '↑' : f.direction === 'negative' ? '↓' : '↕';
     const dirLbl = f.direction === 'positive' ? 'Raises your score' : f.direction === 'negative' ? 'Lowers your score' : 'Shifts your baseline';
@@ -945,6 +963,7 @@ class KygoRecoveryScores extends HTMLElement {
             <span class="fact-source-lbl">Source</span>
             <a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>
           </div>
+          ${f.amazon ? `<div class="fact-buy-row"><a class="dd-buy dd-buy--sm" href="${f.amazon.url}" target="_blank" rel="noopener sponsored"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>${f.amazon.label} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission.</span></div>` : ''}
         </div>`;
     }
 
@@ -988,15 +1007,15 @@ class KygoRecoveryScores extends HTMLElement {
 
     return `
       <div class="fact-groups">
-        ${group('lowers', 'What lowers it', 'Drops your score', lowers)}
-        ${group('raises', 'What raises it', 'Lifts your score', raises)}
-        ${group('modifier', 'Baseline modifiers', 'Shift your number, not "good" or "bad"', mods)}
+        ${group('raises', 'What helps', 'Raises your score', raises)}
+        ${group('lowers', 'What hurts', 'Lowers your score', lowers)}
+        ${group('modifier', 'Baseline modifiers', 'Shift your baseline', mods)}
       </div>`;
   }
 
   _renderCategoryTiles() {
     const tiles = this._factorCategories.map(c => {
-      const count = this._allFactors.filter(f => f.cat === c.key).length;
+      const count = this._allFactors.filter(f => c.cats.includes(f.cat)).length;
       const isActive = this._categoryFilter === c.key;
       return `
         <button class="picker-tile ${isActive ? 'active' : ''}" data-cat="${c.key}" aria-pressed="${isActive}">
@@ -1252,9 +1271,9 @@ class KygoRecoveryScores extends HTMLElement {
 
       <section class="hero section-bg-white">
         <div class="container hero-inner">
-          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalDevices} Brands · ${totalFactors} Factors</div>
-          <h1 class="hero-title animate-on-scroll">Can you trust your <em>recovery score</em>?</h1>
-          <p class="hero-sub animate-on-scroll">Almost every brand now sells a single morning number for "how recovered are you." They are <strong>not interchangeable</strong> — different inputs, baselines, and scales mean two devices on one wrist will disagree. We compare <strong>12 brands</strong> input by input, break down the <strong>${totalFactors} factors</strong> that move your number, and show which scores are actually validated. Spoiler: only ${'2'} of 12 are, and the signals beat the scores.</p>
+          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalDevices} Wearables · ${totalFactors} Factors</div>
+          <h1 class="hero-title animate-on-scroll">Compare recovery scores across <em>12 wearables</em>.</h1>
+          <p class="hero-sub animate-on-scroll">See the <strong>${totalFactors} factors</strong> that move yours, and find which scores are actually <strong>validated</strong>. Recovery and readiness scores aren't interchangeable — different inputs, baselines, and scales mean two devices on one wrist disagree. Spoiler: only <strong>2 of 12</strong> scores are validated, and the signals beat the scores.</p>
           <div class="animate-on-scroll">
             <div class="hero-meta">
               <div class="hero-cell"><span class="hero-num">${totalDevices}</span><span class="hero-lbl">Brands compared</span></div>
@@ -1285,6 +1304,7 @@ class KygoRecoveryScores extends HTMLElement {
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before changing supplement, exercise, or lifestyle routines.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links — we may earn a commission at no extra cost to you.</p>
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -1961,6 +1981,9 @@ class KygoRecoveryScores extends HTMLElement {
         .faq-item { transition: none; }
       }
 
+      /* FACTOR GROUPS — let the head wrap on narrow screens instead of clipping the sub-text */
+      .fact-group-head { flex-wrap: wrap; gap: 2px 12px; }
+      .fact-group-meta { white-space: normal; }
       /* FACTOR GROUPS — recovery: raises (green ↑), lowers (slate ↓), modifiers (↕) */
       .fact-group--raises .fact-group-label { color: var(--green-dark); }
       .fact-group--raises .fact-group-icon { background: var(--green); color: #fff; }
@@ -1979,30 +2002,31 @@ class KygoRecoveryScores extends HTMLElement {
       .fact-dir-var, .fact-effect.fact-dir-var { color: var(--gray-600); }
 
       /* VALIDATION TABLE — text-heavy variant of the matrix table */
-      .vtable { min-width: 640px; }
+      .vtable { min-width: 660px; }
       .vtable thead th { text-align: left; padding: 12px 10px; }
-      .vtable thead .vt-th-brand { padding-left: 4px; }
+      .vtable thead .vt-th-brand { padding-left: 4px; text-align: center; }
       .vtable tbody td, .vtable tbody th { text-align: left; vertical-align: top; padding: 14px 10px; }
-      .vt-brand { width: 150px; min-width: 150px; background: #fff; position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--gray-200); padding-left: 4px !important; }
+      /* Brand cell: narrow, logo stacked above name (matches the chart above) */
+      .vt-brand { width: 92px; min-width: 92px; background: #fff; position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--gray-200); padding: 14px 6px !important; }
       .device-table.vtable tbody tr:hover .vt-brand { background: var(--gray-50); }
-      .vt-brand-inner { display: flex; align-items: center; gap: 10px; }
-      .vt-img { width: 34px; height: 34px; border-radius: 9px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .vt-brand-inner { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+      .vt-img { width: 38px; height: 38px; border-radius: 9px; background: var(--gray-100); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
       .vt-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
       .vt-img--icon { background: var(--gray-400); color: #fff; }
-      .vt-img--icon svg { width: 15px; height: 15px; }
-      .vt-name { display: flex; flex-direction: column; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); line-height: 1.2; overflow-wrap: anywhere; }
-      .vt-score { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 11px; color: var(--gray-400); margin-top: 2px; }
-      .vt-status { width: 120px; }
-      .vt-ev { font-size: 12.5px; color: var(--gray-600); line-height: 1.5; min-width: 240px; }
+      .vt-img--icon svg { width: 16px; height: 16px; }
+      .vt-name { display: flex; flex-direction: column; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; color: var(--dark); line-height: 1.15; overflow-wrap: anywhere; }
+      .vt-score { font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 10.5px; color: var(--gray-400); margin-top: 3px; line-height: 1.2; }
+      .vt-status { width: 116px; }
+      .vt-ev { font-size: 12.5px; color: var(--gray-600); line-height: 1.5; min-width: 300px; }
       .vpill { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 9999px; letter-spacing: 0.1px; white-space: nowrap; }
       .vpill.vp-good { background: var(--green-light); color: var(--green-dark); }
       .vpill.vp-weak { background: var(--dark); color: #fff; }
       .vpill.vp-none { background: var(--gray-100); color: var(--gray-600); }
       .vpill.vp-na { background: var(--gray-100); color: var(--gray-400); }
       @media (min-width: 768px) {
-        .vt-brand { width: 200px; min-width: 200px; position: static; box-shadow: none; }
-        .vt-name { font-size: 15px; }
-        .vt-img { width: 38px; height: 38px; }
+        .vt-brand { width: 132px; min-width: 132px; position: static; box-shadow: none; }
+        .vt-name { font-size: 13.5px; }
+        .vt-img { width: 42px; height: 42px; }
       }
 
       /* FAQ — left-align the list with the section header (was centered) */
@@ -2053,6 +2077,13 @@ class KygoRecoveryScores extends HTMLElement {
       .dd-buy-go { width: 13px; height: 13px; opacity: 0.85; display: inline-flex; }
       .dd-buy-go svg { width: 13px; height: 13px; }
       .dd-buy-aff { font-size: 10.5px; color: var(--gray-400); letter-spacing: 0.2px; }
+      /* Affiliate buy link inside an expanded factor card */
+      .fact-buy-row { display: flex; flex-direction: column; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--gray-200); }
+      .dd-buy--sm { padding: 9px 14px; font-size: 12.5px; }
+      .dd-buy--sm .dd-buy-cart { width: 15px; height: 15px; }
+      .dd-buy--sm .dd-buy-cart svg { width: 15px; height: 15px; }
+      /* Footer Amazon Associates disclosure */
+      .footer-affiliate { max-width: 560px; margin: 0 auto 10px; line-height: 1.5; font-size: 11px; }
     `;
   }
 }
