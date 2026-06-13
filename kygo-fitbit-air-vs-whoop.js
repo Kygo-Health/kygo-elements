@@ -31,7 +31,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     this.render();
     this._bindEvents();
     this._setupAnimations();
-    __seo(this, 'Fitbit Air vs WHOOP Comparison Tool by Kygo Health. Compare Fitbit Air, WHOOP 5.0, and WHOOP MG specs side by side. Filter by sensors, battery, price, health metrics, and 3-year cost of ownership. Fitbit Air released May 26, 2026 at $99.99 with optional $9.99/mo Premium AI coach. WHOOP 5.0 and MG released April 2025 with required subscriptions: WHOOP One $199/yr, Peak $239/yr, Life $359/yr (MG hardware required for Life). HR sampling: Fitbit Air every 2 seconds vs WHOOP every 1 second (2x more frequent). Pod weight: Fitbit Air 5.2g vs WHOOP ~10g. Water resistance: Fitbit Air 50m vs WHOOP 10m IP68. Battery: Fitbit Air 7 days vs WHOOP 14 days. WHOOP MG only device with FDA-cleared ECG and Blood Pressure Insights. WHOOP supports bicep, calf, and apparel pods. Fitbit Air wrist-only at launch. 3-year total cost of ownership: Fitbit Air $100 core, $396 with AI; WHOOP One $597, WHOOP Life with MG $1,077. Fitbit Air does not require subscription for core function. WHOOP devices are bricked without active subscription. Both work with Android and iOS. Both use phone GPS. Both have SpO2, skin temperature, sleep stages, VO2 Max, and cycle health.');
+    __seo(this, 'Fitbit Air vs WHOOP: Accuracy, Specs & Cost Compared (2026), updated June 2026. Accuracy: for heart rate and HRV WHOOP wins (resting HR CCC 0.91 / 3.0% MAPE vs ECG, ~99% sleep HRV agreement, 1-second storage and bicep/apparel pods near chest-strap), while Fitbit Air uses Pixel Watch-class wrist PPG (workout HR ~73.6% within range). Sleep is closely matched: Fitbit 4-stage agreement kappa 0.42-0.55, WHOOP best-of-six deep-sleep detection 69.6%, REM 62.0%; both ~85-90% sleep/wake. Calories are weak on both: Fitbit ~65.6% accurate, WHOOP no validated figure, expect plus or minus 20-30% in mixed exercise. Neither Fitbit Air (May 2026) nor WHOOP 5.0/MG (April 2025) has device-specific independent validation yet; figures come from inherited Fitbit/Pixel and WHOOP 4.0 platforms. Compare Fitbit Air, WHOOP 5.0, and WHOOP MG specs side by side. Filter by sensors, battery, price, health metrics, and 3-year cost of ownership. Fitbit Air released May 26, 2026 at $99.99 with optional $9.99/mo Premium AI coach. WHOOP 5.0 and MG released April 2025 with required subscriptions: WHOOP One $199/yr, Peak $239/yr, Life $359/yr (MG hardware required for Life). HR sampling: Fitbit Air every 2 seconds vs WHOOP every 1 second (2x more frequent). Pod weight: Fitbit Air 5.2g vs WHOOP ~10g. Water resistance: Fitbit Air 50m vs WHOOP 10m IP68. Battery: Fitbit Air 7 days vs WHOOP 14 days. WHOOP MG only device with FDA-cleared ECG and Blood Pressure Insights. WHOOP supports bicep, calf, and apparel pods. Fitbit Air wrist-only at launch. 3-year total cost of ownership: Fitbit Air $100 core, $396 with AI; WHOOP One $597, WHOOP Life with MG $1,077. Fitbit Air does not require subscription for core function. WHOOP devices are bricked without active subscription. Both work with Android and iOS. Both use phone GPS. Both have SpO2, skin temperature, sleep stages, VO2 Max, and cycle health.');
     this._injectStructuredData();
   }
 
@@ -106,6 +106,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
   get _faqs() {
     return [
+      { q: 'Is Fitbit Air or WHOOP more accurate?', a: 'For heart rate and HRV, WHOOP is more accurate — it stores HR data every second, samples at 26 Hz, and (on the bicep or an apparel pod) approaches chest-strap accuracy, with resting HR validated at CCC 0.91 / 3.0% MAPE vs ECG and ~99% HRV agreement during sleep. For sleep staging the two are closely matched: Fitbit edges overall 4-stage agreement (κ 0.42–0.55) in independent testing, while WHOOP is the best of six devices at detecting deep sleep (69.6%). For calories, neither is reliable — Fitbit lands around 65% accuracy and WHOOP has no independently validated figure. Important caveat: Fitbit Air (2026) and WHOOP 5.0/MG (2025) are too new for device-specific studies, so these numbers come from the Fitbit/Pixel and WHOOP 4.0 platforms they inherit.' },
+      { q: 'How accurate is the Fitbit Air?', a: 'Fitbit Air hasn\'t been independently validated yet, but it runs Pixel Watch 4–class algorithms on a wrist PPG sensor. Based on the recent Fitbit/Pixel lineage, expect strong resting and overnight heart-rate accuracy, solid sleep/wake detection (~85–90% 2-stage agreement) and moderate 4-stage sleep staging (κ around 0.42–0.55), workout heart rate around 73% within range (wrist PPG struggles with rapid intensity changes), and weak calorie estimation (~65%, like most wearables). It records HR every 2 seconds vs WHOOP\'s every 1 second.' },
       { q: 'Is Fitbit Air actually a WHOOP killer?', a: 'They\'re aimed at different buyers and different budgets. Fitbit Air is $99.99 once, with no required subscription for core tracking. WHOOP is $0 hardware but $199–359/yr forever, and the device stops working if you cancel. For most people the price gap is the headline story — WHOOP MG\'s FDA-cleared ECG and bicep/apparel pods justify the cost for a smaller, more specific audience.' },
       { q: 'Does 2-sec vs 1-sec HR storage actually matter for me?', a: 'For sleep, resting heart rate, and daily steps — basically nothing. Both devices produce solid scores. For high-intensity workouts or anyone who wants a more granular timeline of their HR, WHOOP\'s tighter 1-second storage shows more data points per minute but you are paying a lot more for this difference.' },
       { q: 'Can I use both?', a: 'Yes — WHOOP on the bicep for workouts, Fitbit Air at night for sleep + recovery. Kygo can pull data from both and treat them as a single signal, automatically picking the more reliable source per metric.' },
@@ -126,6 +128,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>',
       android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 10v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zm10 0v6a1 1 0 1 0 2 0v-6a1 1 0 0 0-2 0zM5 17v3a1 1 0 1 0 2 0v-3H5zm12 0v3a1 1 0 1 0 2 0v-3h-2zm-9.5-9c0-2.5 2-4.5 4.5-4.5s4.5 2 4.5 4.5H7.5zm.5 1h8a1 1 0 0 1 1 1v6H7v-6a1 1 0 0 1 1-1zM9 5.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1zm6 0a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z"/></svg>',
       plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+      pulse: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>',
+      flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s5 4 5 9a5 5 0 0 1-10 0c0-1.5.7-2.8 1.5-3.8C9 9 9.5 10 10.5 10c0-2 .5-5 1.5-8z"/></svg>',
     };
     return `<span class="ico">${map[k] || ''}</span>`;
   }
@@ -161,9 +165,9 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         <div class="hero-light-inner">
           <div class="hero-grid">
             <div class="hero-copy">
-              <div class="hero-pill"><span class="dot"></span> UPDATED MAY 20, 2026</div>
-              <h1>Fitbit Air vs WHOOP — <span class="hl">which screenless tracker is worth it?</span></h1>
-              <p class="hero-lede">Same screenless silhouette. Two completely different bets. Compare every sensor, calculate your real 3-year cost, and find the tracker that <strong>actually fits your body</strong>.</p>
+              <div class="hero-pill"><span class="dot"></span> UPDATED JUNE 2026</div>
+              <h1>Fitbit Air vs WHOOP: Accuracy, Specs &amp; Cost <span class="hl">Compared (2026)</span></h1>
+              <p class="hero-lede">Same screenless silhouette. Two completely different bets. Compare every sensor, see the <strong>real accuracy numbers</strong> for heart rate, sleep, and calories, and calculate your true 3-year cost.</p>
               <div class="hero-devices">
                 <a class="hero-dev" href="https://amzn.to/4wogJ3y" target="_blank" rel="noopener sponsored">
                   <img src="${fitbitImg}" alt="Fitbit Air" />
@@ -213,6 +217,17 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">The quick answer</div>
+            <h2>Fitbit Air vs WHOOP, <span class="hl">in plain English.</span></h2>
+            <p class="lede">The full interactive comparison, accuracy numbers, and cost calculator are below — but if you just want the verdict, start here. Specs are from official manufacturer pages; accuracy figures are tied to peer-reviewed studies.</p>
+          </div>
+          <div class="tldr animate-on-scroll">${this._renderTLDR()}</div>
+        </div>
+      </section>
+
       <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
@@ -223,6 +238,21 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           <div class="tbl-wrap">
             <div class="tbl-tabs" data-tabs>${this._renderTabs()}</div>
             <div data-tbl-body>${this._renderTable()}</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Accuracy</div>
+            <h2>Fitbit Air vs WHOOP accuracy: <span class="hl">the actual numbers.</span></h2>
+            <p class="lede">Heart rate, sleep, and calorie accuracy — measured against ECG, polysomnography, and lab calorimetry. Where a device hasn't been independently tested, we say so rather than imply it.</p>
+          </div>
+          <div class="acc-grid animate-on-scroll">${this._renderAccuracy()}</div>
+          <div class="acc-note animate-on-scroll">
+            <span class="acc-note-ico">${this._icon('stethoscope')}</span>
+            <p><strong>A note on validation.</strong> Both Fitbit Air (May 2026) and WHOOP 5.0/MG (April 2025) are too new for published device-specific independent studies. The figures above come from the sensor platforms they inherit — recent Fitbit and Pixel Watch models, and WHOOP 4.0 — tested against gold standards. Treat them as the best available evidence, not a measurement of these exact units.</p>
           </div>
         </div>
       </section>
@@ -341,12 +371,91 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
-          <p class="footer-copyright">Data sourced from official manufacturer specifications, peer-reviewed validation studies, and independent reviews. Last updated May 2026.</p>
+          <p class="footer-copyright">Data sourced from official manufacturer specifications, peer-reviewed validation studies (Dial 2025, Schyvens/Antwerp 2025, Robbins 2024), and independent meta-analyses. Last updated June 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
     `;
+  }
+
+  // Static, crawlable summary for the "fitbit air vs whoop" / "fitbit air"
+  // queries — the interactive tool below renders in JS where crawlers may not
+  // read it, so the verdict is restated here as plain text.
+  _renderTLDR() {
+    return `
+      <p class="tldr-lead"><strong>Fitbit Air</strong> ($99.99, released May 26, 2026) and <strong>WHOOP 5.0 / MG</strong> (free hardware, $199–359/yr, April 2025) are both screenless trackers — but they're opposite bets. Fitbit Air is a one-time purchase with no required subscription, a 5.2&nbsp;g pod (12&nbsp;g with band), 50&nbsp;m water resistance, and ~7-day battery. WHOOP is subscription-only (and bricks if you cancel), stores heart-rate data twice as often (every 1&nbsp;s vs 2&nbsp;s), lasts 14 days, and adds bicep/calf/apparel pods — with WHOOP MG the only one carrying FDA-cleared ECG. Over three years that's roughly <strong>$100 (Fitbit Air, core)</strong> vs <strong>$597–1,077 (WHOOP)</strong>.</p>
+      <div class="cmp-blocks">
+        <div class="cmp-block">
+          <h3>Pick Fitbit Air if…</h3>
+          <p>You want the <strong>lowest cost</strong> and no mandatory subscription, you mostly care about sleep, recovery, and everyday heart rate, and you'd rather own the hardware outright. It's the lightest option, tops up a full day in 5 minutes, and inherits Pixel Watch–class sleep and VO₂ Max algorithms. Resting and overnight heart-rate accuracy from wrist PPG is strong; you give up the tightest workout-HR resolution and any ECG.</p>
+        </div>
+        <div class="cmp-block">
+          <h3>Pick WHOOP if…</h3>
+          <p>You train seriously and want <strong>chest-strap-class workout HR</strong> from a bicep or apparel pod, the deepest strain/recovery analytics, and 1-second HR storage — or, with <strong>WHOOP MG</strong>, FDA-cleared ECG and daily Blood Pressure Insights. You're accepting a $199–359/yr subscription that disables the device if you stop paying, and the highest 3-year cost of any tracker here.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  get _accuracy() {
+    return [
+      {
+        icon: 'pulse', metric: 'Heart rate & HRV', winner: 'WHOOP',
+        rows: [
+          { label: 'Resting HR vs ECG', air: 'Not yet tested · wrist PPG accurate at rest', whoop: 'CCC 0.91 · 3.0% MAPE', win: 'whoop' },
+          { label: 'Overnight HRV vs ECG', air: 'Not independently validated', whoop: 'CCC 0.94 · 8.2% MAPE · ~99% sleep HRV agreement', win: 'whoop' },
+          { label: 'Active / workout HR', air: '~73.6% within range (Fitbit lineage)', whoop: 'Approaches chest-strap on bicep/apparel pod', win: 'whoop' },
+        ],
+        take: 'WHOOP\'s 1-second storage, 26 Hz sampling, and off-wrist pods give it the clear edge for workouts and HRV. Fitbit Air is dependable for resting and sleeping heart rate.',
+        src: 'Dial 2025 (Physiological Reports); Central Queensland Univ. 2020; WellnessPulse meta-analysis 2025',
+      },
+      {
+        icon: 'moon', metric: 'Sleep', winner: 'Closely matched',
+        rows: [
+          { label: 'Sleep / wake (2-stage)', air: 'High (Fitbit lineage ~85–90%)', whoop: '~89% agreement vs PSG', win: 'tie' },
+          { label: 'Full 4-stage (REM/deep/light/wake)', air: 'κ 0.42–0.55 (Fitbit Sense/Charge)', whoop: 'κ 0.37 · ~64% agreement', win: 'air' },
+          { label: 'Deep-sleep & REM detection', air: 'REM 55.5% (Fitbit Sense)', whoop: 'Deep 69.6% (best of 6) · REM 62.0%', win: 'whoop' },
+        ],
+        take: 'A genuine toss-up. Fitbit edges overall 4-stage agreement in independent testing; WHOOP is the best of six devices at catching deep sleep. Both, like all wearables, over-score light sleep.',
+        src: 'Schyvens/Univ. Antwerp 2025 (Sleep Advances); Robbins 2024 (Sensors); Univ. of Arizona 2020',
+      },
+      {
+        icon: 'flame', metric: 'Calories (energy)', winner: 'Neither — both weak',
+        rows: [
+          { label: 'Total energy expenditure', air: '~65.6% accurate (Fitbit lineage)', whoop: 'No validated published figure', win: 'tie' },
+          { label: 'For context', air: 'Apple ~71% · Garmin ~48%', whoop: 'Error widens in mixed-intensity exercise', win: 'tie' },
+        ],
+        take: 'Don\'t buy either for calorie counting. Every wrist/pod wearable is unreliable here (typically ±20–30% in real use); use the trend, not the number.',
+        src: 'WellnessPulse meta-analysis 2025; AIM7 validation data',
+      },
+    ];
+  }
+
+  _renderAccuracy() {
+    const valCell = (dev, val, isWin) => `<div class="acc-v${isWin ? ' win' : ''}"><span class="dev">${dev}</span><span class="val">${val}</span></div>`;
+    return this._accuracy.map(a => `
+      <div class="acc-card">
+        <div class="acc-head">
+          <span class="acc-ico">${this._icon(a.icon)}</span>
+          <h3>${a.metric}</h3>
+          <span class="acc-win">${a.winner}</span>
+        </div>
+        <div class="acc-metrics">
+          ${a.rows.map(r => `
+            <div class="acc-metric">
+              <div class="acc-m-label">${r.label}</div>
+              <div class="acc-m-vals">
+                ${valCell('Fitbit Air', r.air, r.win === 'air')}
+                ${valCell('WHOOP', r.whoop, r.win === 'whoop')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <p class="acc-take">${a.take}</p>
+        <p class="acc-src">${a.src}</p>
+      </div>
+    `).join('');
   }
 
   _renderBestFor() {
@@ -530,11 +639,15 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   }
 
   _setupAnimations() {
-    if (!('IntersectionObserver' in window)) return;
+    const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('in'));
+      return;
+    }
     this._observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
-    }, { threshold: 0.12 });
-    this.shadowRoot.querySelectorAll('.animate-on-scroll').forEach(el => this._observer.observe(el));
+    }, { threshold: 0.01 });
+    els.forEach(el => this._observer.observe(el));
   }
 
   // ── Structured Data ──────────────────────────────────────────────────
@@ -544,20 +657,20 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       const ld = {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        'name': 'Fitbit Air vs WHOOP Comparison Tool',
-        'description': 'Compare Fitbit Air, WHOOP 5.0, and WHOOP MG specs side by side. Filter by sensors, battery, price, health metrics, and 3-year cost of ownership.',
+        'name': 'Fitbit Air vs WHOOP: Accuracy, Specs & Cost Compared (2026)',
+        'description': 'Compare Fitbit Air, WHOOP 5.0, and WHOOP MG side by side: heart-rate, sleep, and calorie accuracy with numbers, sensors, battery, price, and 3-year cost of ownership.',
         'url': 'https://www.kygo.app/tools/fitbit-air-vs-whoop-comparison',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'datePublished': '2026-05-08',
-        'dateModified': '2026-05-20',
+        'dateModified': '2026-06-12',
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
-        'featureList': '35-spec side-by-side comparison, interactive 3-year cost calculator, HR sampling rate visualization, sensor and accuracy breakdown, mobile-first responsive design',
-        'keywords': 'fitbit air vs whoop, fitbit air vs whoop 5.0, fitbit air vs whoop mg, screenless fitness tracker comparison, whoop subscription cost, fitbit air price, fitbit air specs, whoop 5.0 specs, whoop mg ECG, screenless wearable 2026'
+        'featureList': '35-spec side-by-side comparison, dedicated heart-rate/sleep/calorie accuracy breakdown with peer-reviewed numbers, interactive 3-year cost calculator, HR sampling rate visualization, mobile-first responsive design',
+        'keywords': 'fitbit air vs whoop, fitbit air vs whoop accuracy, fitbit air accuracy, fitbit air vs whoop 5.0, fitbit air vs whoop mg, fitbit air heart rate accuracy, fitbit air sleep accuracy, whoop accuracy, screenless fitness tracker comparison 2026, whoop subscription cost, fitbit air price, fitbit air specs, whoop mg ECG'
       };
       const s = document.createElement('script');
       s.type = 'application/ld+json';
@@ -712,6 +825,43 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .section h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 4vw, 42px); line-height: 1.1; margin: 16px 0 10px; letter-spacing: -0.01em; }
       .section h2 .hl { color: var(--kygo-green); }
       .lede { color: var(--fg-2); font-size: 16px; line-height: 1.55; max-width: 60ch; margin: 0; }
+
+      /* Quick-answer summary (crawlable prose) */
+      .tldr-lead { font-size: clamp(15px, 1.7vw, 17px); line-height: 1.6; color: var(--fg-2); max-width: 80ch; margin: 0 0 22px; }
+      .tldr-lead strong { color: var(--fg-1); font-weight: 600; }
+      .cmp-blocks { display: grid; grid-template-columns: 1fr; gap: 14px; }
+      @media (min-width: 760px) { .cmp-blocks { grid-template-columns: 1fr 1fr; } }
+      .cmp-block { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; }
+      .cmp-block h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(17px, 2vw, 20px); line-height: 1.2; margin: 0 0 10px; color: var(--fg-1); }
+      .cmp-block p { font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0; }
+      .cmp-block p strong { color: var(--fg-1); font-weight: 600; }
+
+      /* Accuracy cards */
+      .acc-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+      @media (min-width: 880px) { .acc-grid { grid-template-columns: repeat(3, 1fr); } }
+      .acc-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; }
+      .acc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+      .acc-ico { width: 38px; height: 38px; flex: none; border-radius: 10px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: flex; align-items: center; justify-content: center; }
+      .acc-ico .ico { width: 20px; height: 20px; }
+      .acc-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; margin: 0; color: var(--fg-1); flex: 1; }
+      .acc-win { font-family: var(--font-display); font-size: 10px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 9px; border-radius: 999px; text-align: center; }
+      .acc-metrics { display: flex; flex-direction: column; gap: 12px; }
+      .acc-metric { border-top: 1px solid var(--border-subtle); padding-top: 12px; }
+      .acc-m-label { font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 8px; }
+      .acc-m-vals { display: flex; flex-direction: column; gap: 6px; }
+      .acc-v { display: flex; flex-direction: column; gap: 1px; padding: 7px 10px; border-radius: 9px; background: var(--bg-raised); }
+      .acc-v.win { background: var(--kygo-green-light); }
+      .acc-v .dev { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); }
+      .acc-v.win .dev { color: var(--kygo-green-dark); }
+      .acc-v .val { font-size: 13px; font-weight: 500; color: var(--fg-1); line-height: 1.4; }
+      .acc-take { font-size: 13.5px; line-height: 1.55; color: var(--fg-2); margin: 16px 0 0; }
+      .acc-src { font-size: 11px; line-height: 1.45; color: var(--fg-3); margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+      .acc-note { display: flex; gap: 14px; align-items: flex-start; margin-top: 18px; background: var(--kygo-dark); color: #fff; border-radius: 16px; padding: 20px 22px; }
+      .acc-note-ico { width: 38px; height: 38px; flex: none; border-radius: 10px; background: rgba(34,197,94,0.16); color: #6EE7A0; display: flex; align-items: center; justify-content: center; }
+      .acc-note-ico .ico { width: 20px; height: 20px; }
+      .acc-note p { margin: 0; font-size: 13.5px; line-height: 1.6; color: rgba(255,255,255,0.78); }
+      .acc-note p strong { color: #fff; font-weight: 600; }
+      @media (max-width: 600px) { .acc-note { flex-direction: column; gap: 10px; } }
 
       /* Best-for */
       .bestfor-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
