@@ -341,20 +341,24 @@ class KygoOuraRingComparison extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">The quick answer</div>
             <h2>Oura Ring 5 vs 4 vs 3, <span class="hl">in plain English.</span></h2>
-            <p class="lede">The full interactive comparison is below — but if you just want the verdict for each matchup, start here. Specs are primary-source verified; accuracy claims are tied to peer-reviewed studies.</p>
+            <p class="lede">The full interactive comparison is below. If you just want the verdict for each matchup, start here.</p>
           </div>
           <div class="tldr animate-on-scroll">${this._renderTLDR()}</div>
+        </div>
+      </section>
 
-          <div class="dims-head animate-on-scroll">
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
             <div class="kicker">Size &amp; dimensions</div>
-            <h3>The headline change: Ring 5 is <span class="hl">the smallest smart ring ever.</span></h3>
+            <h2>The headline change: Ring 5 is <span class="hl">the smallest smart ring ever.</span></h2>
             <p class="lede">Width, thickness, and weight across all three generations. Outer ring sizes differ by finger; these are the device dimensions Oura publishes.</p>
           </div>
           <div class="dims animate-on-scroll">${this._renderDims()}</div>
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Side by side</div>
@@ -511,19 +515,22 @@ class KygoOuraRingComparison extends HTMLElement {
   // because the interactive table renders in JS where crawlers may not read it.
   _renderTLDR() {
     return `
-      <p class="tldr-lead">The <strong>Oura Ring 5</strong> (announced May 28, 2026, shipping June 4) is the smallest, lightest Oura yet — 6.09&nbsp;mm wide, 2.28&nbsp;mm thick, and just 2–2.6&nbsp;g, roughly 40% smaller than the Ring 4. But it launches with <strong>zero independent peer-reviewed validation</strong>, a narrower size range (6–13 vs the Ring 4's 4–15), and 12 signal pathways instead of 18. With the required Oura Membership ($69.99/yr), its real three-year cost is roughly <strong>$609–709</strong>.</p>
+      <p class="tldr-lead">The <strong>Oura Ring 5</strong> (announced May 28, 2026, shipping June 4) is the smallest, lightest Oura yet — but it launches with <strong>no independent validation</strong> and a narrower size range. Here's how the three generations actually stack up.</p>
       <div class="cmp-blocks">
         <div class="cmp-block">
           <h3>Oura Ring 5 vs Ring 4</h3>
-          <p>Ring 5 is thinner, lighter, and lasts 6–9 days vs the Ring 4's 5–8, and Oura's internal study claims 12% better overnight HRV and 24% better workout heart rate. But the Ring 4 is cheaper ($349 vs $399–499), it's still the only Oura with an independent head-to-head accuracy study (Dial 2025: CCC 0.98 RHR, 0.99 HRV vs ECG), it keeps the wider 4–15 size range, and every new Ring 5 software feature rolls back to it with membership. <strong>For most Ring 4 owners, there's little evidence-based reason to upgrade.</strong></p>
+          <p class="cmp-verdict">Ring 4 still wins for most people.</p>
+          <p>Ring 5 is thinner, lighter, and lasts a day or two longer. But Ring 4 is cheaper ($349 vs $399–499), keeps the wider 4–15 size range, is the only Oura with an independent accuracy study (Dial 2025), and gets every Ring 5 software feature via membership.</p>
         </div>
         <div class="cmp-block">
           <h3>Oura Ring 5 vs Gen 3 (Ring 3)</h3>
-          <p>If you're still on a Gen 3 — often searched as "Oura Ring 3" — the jump to Ring 5 is large: roughly half the weight (2–2.6&nbsp;g vs 4–6&nbsp;g), a slimmer 2.28&nbsp;mm profile vs 2.55&nbsp;mm, a digital temperature sensor, longer battery, and the full 2026 software suite. Gen 3 is <strong>discontinued and resale-only</strong>. Both share the same 6–13 size range, so most Gen 3 wearers will fit a Ring 5 — but note Ring 5 has no generation-specific validation yet, whereas Gen 3 is the most extensively validated sleep tracker against polysomnography.</p>
+          <p class="cmp-verdict">A big jump — if you want to buy again.</p>
+          <p>Versus a Gen 3 (often searched as "Ring 3"), Ring 5 is roughly half the weight, slimmer, and adds the full 2026 feature set. Gen 3 is discontinued and resale-only, but remains the most validated sleep tracker against polysomnography.</p>
         </div>
         <div class="cmp-block cmp-block-wide">
           <h3>Oura Ring 3 vs 4 vs 5: the three-way verdict</h3>
-          <p>Across all three generations the trade-off is <strong>consistency vs refinement</strong>. Gen 3 (2021) is the proven, discontinued workhorse; Ring 4 (2024) is the validation-and-value sweet spot with the widest fit (sizes 4–15); Ring 5 (2026) is the smallest and most comfortable but unproven. Because the optical (PPG) sensing platform is shared across all three, sleep, HRV, and heart-rate accuracy are broadly comparable — so pick on size, price, fit, and how much independent evidence matters to you, not on a dramatic accuracy gap. <strong>Best all-rounder today: Ring 4. Smallest and lightest: Ring 5. Cheapest entry: a resale Gen 3.</strong></p>
+          <p class="cmp-verdict">Gen 3 proven · Ring 4 best value · Ring 5 smallest.</p>
+          <p>All three share the same optical (PPG) sensing platform, so sleep, HRV, and heart-rate accuracy are broadly comparable. Choose on size, price, and fit — not on a dramatic accuracy gap.</p>
         </div>
       </div>
     `;
@@ -626,6 +633,9 @@ class KygoOuraRingComparison extends HTMLElement {
     const ouraTotal = ouraHardware + membershipYr * years;
     const rivalHardware = rival === 'ringconn' ? 299 : 349;
     const rivalName = rival === 'ringconn' ? 'RingConn Gen 2' : 'Ultrahuman Ring Air';
+    const ringconnImg = 'https://static.wixstatic.com/media/273a63_fc0ed00ac88441138f7b4c7e398f7aa8~mv2.png';
+    const ultrahumanImg = 'https://static.wixstatic.com/media/273a63_810650aa12fe4ae59ce7e22c25c312fc~mv2.png';
+    const rivalImg = rival === 'ringconn' ? ringconnImg : ultrahumanImg;
     const rivalTotal = rivalHardware; // no required subscription
     const fmt = n => '$' + Math.round(n).toLocaleString();
     const pickName = pick === 'ring4' ? 'Ring 4' : pick === 'ring5' ? 'Ring 5' : 'Ring 5 Premium';
@@ -648,7 +658,7 @@ class KygoOuraRingComparison extends HTMLElement {
           </div>
         </div>
         <div class="calc-block">
-          <div class="label"><span>Subscription-free rival</span></div>
+          <div class="label"><img src="${rivalImg}" alt="" /><span>Subscription-free rival</span></div>
           <div class="seg" data-seg="rival">
             <button data-val="ringconn" class="${rival==='ringconn'?'active':''}">RingConn Gen 2 <span class="px">$299 · no sub</span></button>
             <button data-val="ultrahuman" class="${rival==='ultrahuman'?'active':''}">Ultrahuman Ring Air <span class="px">$349 · no sub</span></button>
@@ -671,7 +681,7 @@ class KygoOuraRingComparison extends HTMLElement {
           <div class="breakdown">${pickSub} + ${years} × $69.99/yr membership</div>
         </div>
         <div class="calc-row ${rivalTotal < ouraTotal ? 'win' : ''}">
-          <div class="who"><img src="${ouraImg}" alt="" style="opacity:.35" /><div>${rivalName}<span class="sub">No subscription</span></div></div>
+          <div class="who"><img src="${rivalImg}" alt="${rivalName}" /><div>${rivalName}<span class="sub">No subscription</span></div></div>
           <div class="total">${fmt(rivalTotal)}</div>
           <div class="breakdown">$${rivalHardware} hardware + $0 sub</div>
         </div>
@@ -962,18 +972,16 @@ class KygoOuraRingComparison extends HTMLElement {
       .tldr { margin-bottom: 8px; }
       .tldr-lead { font-size: clamp(15px, 1.7vw, 17px); line-height: 1.6; color: var(--fg-2); max-width: 75ch; margin: 0 0 22px; }
       .tldr-lead strong { color: var(--fg-1); font-weight: 600; }
-      .cmp-blocks { display: grid; grid-template-columns: 1fr; gap: 14px; }
+      .cmp-blocks { display: grid; grid-template-columns: 1fr; gap: 16px; }
       @media (min-width: 760px) { .cmp-blocks { grid-template-columns: 1fr 1fr; } }
-      .cmp-block { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; }
+      .cmp-block { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; }
       .cmp-block.cmp-block-wide { grid-column: 1 / -1; }
-      .cmp-block h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(17px, 2vw, 20px); line-height: 1.2; margin: 0 0 10px; color: var(--fg-1); }
-      .cmp-block p { font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0; }
+      .cmp-block h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(17px, 2vw, 20px); line-height: 1.2; margin: 0 0 6px; color: var(--fg-1); }
+      .cmp-verdict { font-family: var(--font-display); font-weight: 600; font-size: 14px; line-height: 1.4; color: var(--kygo-green-dark); margin: 0 0 12px; }
+      .cmp-block p { font-size: 14.5px; line-height: 1.65; color: var(--fg-2); margin: 0; }
       .cmp-block p strong { color: var(--fg-1); font-weight: 600; }
 
       /* Size & dimensions */
-      .dims-head { margin: 40px 0 22px; max-width: 720px; }
-      .dims-head h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(22px, 3.2vw, 32px); line-height: 1.12; margin: 14px 0 8px; letter-spacing: -0.01em; }
-      .dims-head h3 .hl { color: var(--kygo-green); }
       .dims { display: grid; grid-template-columns: 1fr; gap: 14px; }
       @media (min-width: 720px) { .dims { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
       .dim-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 20px 22px; }
