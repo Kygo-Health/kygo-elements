@@ -222,7 +222,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">The quick answer</div>
             <h2>Fitbit Air vs WHOOP, <span class="hl">in plain English.</span></h2>
-            <p class="lede">The full interactive comparison, accuracy numbers, and cost calculator are below — but if you just want the verdict, start here. Specs are from official manufacturer pages; accuracy figures are tied to peer-reviewed studies.</p>
+            <p class="lede">The full tool, accuracy numbers, and cost calculator are below. Want the verdict first? Start here.</p>
           </div>
           <div class="tldr animate-on-scroll">${this._renderTLDR()}</div>
         </div>
@@ -384,17 +384,17 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   // read it, so the verdict is restated here as plain text.
   _renderTLDR() {
     return `
-      <p class="tldr-lead"><strong>Fitbit Air</strong> ($99.99, May 2026) and <strong>WHOOP 5.0 / MG</strong> ($199–359/yr, April 2025) are both screenless trackers — but opposite bets. Fitbit Air is buy-once with no required subscription; WHOOP is subscription-only and bricks if you cancel. Here's who each is for.</p>
+      <p class="tldr-lead"><strong>Fitbit Air</strong> ($99.99, buy once) and <strong>WHOOP</strong> ($199–359/yr, subscription-only) are opposite bets. Here's who each is for.</p>
       <div class="cmp-blocks">
         <div class="cmp-block">
           <h3>Pick Fitbit Air if…</h3>
           <p class="cmp-verdict">Best for value, comfort, and sleep.</p>
-          <p>You want the lowest cost, no mandatory subscription, and you mostly track sleep, recovery, and everyday heart rate. It's the lightest option (5.2&nbsp;g pod), tops up a day in 5 minutes, and uses Pixel Watch–class algorithms. You give up the tightest workout-HR resolution and any ECG.</p>
+          <p>$99.99, no required subscription, the lightest pod, and Pixel Watch–class sleep. You give up ECG and the tightest workout-HR resolution.</p>
         </div>
         <div class="cmp-block">
           <h3>Pick WHOOP if…</h3>
           <p class="cmp-verdict">Best for serious training and health.</p>
-          <p>You want chest-strap-class workout HR from a bicep or apparel pod, the deepest strain/recovery analytics, and 1-second HR storage — or, with WHOOP MG, FDA-cleared ECG. You're accepting a $199–359/yr subscription and the highest 3-year cost here.</p>
+          <p>Chest-strap-class workout HR, the deepest analytics, and 1-second data — or FDA-cleared ECG on MG. But it's $199–359/yr, forever.</p>
         </div>
       </div>
     `;
