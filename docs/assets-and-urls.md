@@ -49,8 +49,8 @@ Larger device photos, used in comparison tables and device cards.
 | `273a63_0bf2273473c849a98d9fc92b6ccea514` | **Suunto** | `kygo-vo2max-accuracy.js`, `kygo-recovery-scores.js` |
 | `273a63_7b9a43c26540413586d185a889fa853c` | **Google Pixel Watch** | `kygo-wearable-stress.js` only |
 | `273a63_01b29289863b4cd5844d575301addb6a` | **Amazfit** | `kygo-wearable-stress.js`, `kygo-recovery-scores.js` |
-| `273a63_810650aa12fe4ae59ce7e22c25c312fc` | **Ultrahuman** | `kygo-recovery-scores.js` only (new 2026-06) |
-| `273a63_fc0ed00ac88441138f7b4c7e398f7aa8` | **RingConn** | `kygo-recovery-scores.js` only (new 2026-06) |
+| `273a63_810650aa12fe4ae59ce7e22c25c312fc` | **Ultrahuman** | `kygo-recovery-scores.js`, `kygo-oura-ring-comparison.js` (cost calculator rival) |
+| `273a63_fc0ed00ac88441138f7b4c7e398f7aa8` | **RingConn** | `kygo-recovery-scores.js`, `kygo-oura-ring-comparison.js` (cost calculator rival) |
 
 The Oura comparison table (`kygo-oura-ring-comparison.js`) uses the **Oura logo**
 (`56ac2eb5`) for all three rings (Gen 3 / Ring 4 / Ring 5) rather than per-ring photos.

@@ -257,7 +257,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="kygo-cta-card animate-on-scroll">
             <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
@@ -282,7 +282,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">3-year cost calculator</div>
@@ -293,7 +293,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Quick winner</div>
@@ -304,7 +304,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Deep Dive</span>
@@ -318,7 +318,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Bottom line</div>
@@ -345,7 +345,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -384,15 +384,17 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   // read it, so the verdict is restated here as plain text.
   _renderTLDR() {
     return `
-      <p class="tldr-lead"><strong>Fitbit Air</strong> ($99.99, released May 26, 2026) and <strong>WHOOP 5.0 / MG</strong> (free hardware, $199–359/yr, April 2025) are both screenless trackers — but they're opposite bets. Fitbit Air is a one-time purchase with no required subscription, a 5.2&nbsp;g pod (12&nbsp;g with band), 50&nbsp;m water resistance, and ~7-day battery. WHOOP is subscription-only (and bricks if you cancel), stores heart-rate data twice as often (every 1&nbsp;s vs 2&nbsp;s), lasts 14 days, and adds bicep/calf/apparel pods — with WHOOP MG the only one carrying FDA-cleared ECG. Over three years that's roughly <strong>$100 (Fitbit Air, core)</strong> vs <strong>$597–1,077 (WHOOP)</strong>.</p>
+      <p class="tldr-lead"><strong>Fitbit Air</strong> ($99.99, May 2026) and <strong>WHOOP 5.0 / MG</strong> ($199–359/yr, April 2025) are both screenless trackers — but opposite bets. Fitbit Air is buy-once with no required subscription; WHOOP is subscription-only and bricks if you cancel. Here's who each is for.</p>
       <div class="cmp-blocks">
         <div class="cmp-block">
           <h3>Pick Fitbit Air if…</h3>
-          <p>You want the <strong>lowest cost</strong> and no mandatory subscription, you mostly care about sleep, recovery, and everyday heart rate, and you'd rather own the hardware outright. It's the lightest option, tops up a full day in 5 minutes, and inherits Pixel Watch–class sleep and VO₂ Max algorithms. Resting and overnight heart-rate accuracy from wrist PPG is strong; you give up the tightest workout-HR resolution and any ECG.</p>
+          <p class="cmp-verdict">Best for value, comfort, and sleep.</p>
+          <p>You want the lowest cost, no mandatory subscription, and you mostly track sleep, recovery, and everyday heart rate. It's the lightest option (5.2&nbsp;g pod), tops up a day in 5 minutes, and uses Pixel Watch–class algorithms. You give up the tightest workout-HR resolution and any ECG.</p>
         </div>
         <div class="cmp-block">
           <h3>Pick WHOOP if…</h3>
-          <p>You train seriously and want <strong>chest-strap-class workout HR</strong> from a bicep or apparel pod, the deepest strain/recovery analytics, and 1-second HR storage — or, with <strong>WHOOP MG</strong>, FDA-cleared ECG and daily Blood Pressure Insights. You're accepting a $199–359/yr subscription that disables the device if you stop paying, and the highest 3-year cost of any tracker here.</p>
+          <p class="cmp-verdict">Best for serious training and health.</p>
+          <p>You want chest-strap-class workout HR from a bicep or apparel pod, the deepest strain/recovery analytics, and 1-second HR storage — or, with WHOOP MG, FDA-cleared ECG. You're accepting a $199–359/yr subscription and the highest 3-year cost here.</p>
         </div>
       </div>
     `;
@@ -829,11 +831,12 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       /* Quick-answer summary (crawlable prose) */
       .tldr-lead { font-size: clamp(15px, 1.7vw, 17px); line-height: 1.6; color: var(--fg-2); max-width: 80ch; margin: 0 0 22px; }
       .tldr-lead strong { color: var(--fg-1); font-weight: 600; }
-      .cmp-blocks { display: grid; grid-template-columns: 1fr; gap: 14px; }
+      .cmp-blocks { display: grid; grid-template-columns: 1fr; gap: 16px; }
       @media (min-width: 760px) { .cmp-blocks { grid-template-columns: 1fr 1fr; } }
-      .cmp-block { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; }
-      .cmp-block h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(17px, 2vw, 20px); line-height: 1.2; margin: 0 0 10px; color: var(--fg-1); }
-      .cmp-block p { font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0; }
+      .cmp-block { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; }
+      .cmp-block h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(17px, 2vw, 20px); line-height: 1.2; margin: 0 0 6px; color: var(--fg-1); }
+      .cmp-verdict { font-family: var(--font-display); font-weight: 600; font-size: 14px; line-height: 1.4; color: var(--kygo-green-dark); margin: 0 0 12px; }
+      .cmp-block p { font-size: 14.5px; line-height: 1.65; color: var(--fg-2); margin: 0; }
       .cmp-block p strong { color: var(--fg-1); font-weight: 600; }
 
       /* Accuracy cards */
