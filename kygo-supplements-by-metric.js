@@ -104,7 +104,7 @@ class KygoSupplementsByMetric extends HTMLElement {
         rhr:      { g: 'X', effect: 'No magnesium-specific RHR meta-analysis exists; no reliable resting-rate effect.', study: 'No RHR meta located.' },
         recovery: { g: 'W', effect: 'Faster onset plus a small readiness / deep-sleep gain on Oura.', study: 'Mah & Pitre 2021 (n=151) + Breus 2024 Oura (n=31).', src: 'mag' }
       } },
-      { key: 'mag-threonate', name: 'Magnesium L-threonate', flag: true, m: {
+      { key: 'mag-threonate', name: 'Magnesium L-threonate', flag: true, amazon: { url: 'https://www.amazon.com/dp/B01M4GM9R1?linkCode=tr1&tag=kygohealthapp-20&linkId=amzn1.campaign.1T536CG5MXACL_1781448054715', label: 'Magnesium L-Threonate' }, m: {
         deep:     { g: 'M', flag: true, effect: 'Raises deep sleep, REM and readiness on Oura.', study: 'Hausenblas 2024 (n=80) + Breus 2024 (n=31).', flagNote: 'All manufacturer-funded; Lopresti 2025 found NO sleep effect.' },
         hrv:      { g: 'M', flag: true, effect: 'RMSSD +1.45 ms, RHR −1.32 bpm (p=0.036 / 0.030) on Oura.', study: 'Lopresti 2025, Oura, n=100.', src: 'mgt', flagNote: 'Manufacturer-funded; sleep was null in this same trial.' },
         recovery: { g: 'M', flag: true, effect: 'Better deep sleep, REM and readiness scores.', study: 'Hausenblas 2024 + Breus 2024.', flagNote: 'All manufacturer-funded.' }

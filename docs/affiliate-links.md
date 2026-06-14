@@ -182,8 +182,8 @@ Added 2026-06. The metric-filtered supplement explorer. Each supplement carries 
 selected metric's grade is S / M / W** (i.e. the supplement actually helps that metric) — so
 null/✗ and mixed (~) rows never show a buy button, and "don't-rely-on" supplements
 (valerian, CBD, creatine, potassium, etc.) carry no link at all. Plus the footer Amazon
-Associates disclosure. **All links reuse existing product slugs** — no new slugs introduced.
-Magnesium L-threonate has **no button** (no existing slug; would need a client-supplied link).
+Associates disclosure. Links reuse existing product slugs except **Magnesium L-Threonate**,
+which is a new client-supplied full tagged URL (added 2026-06-14).
 | Short link | Product label |
 |---|---|
 | `amzn.to/4cVnvGt` | Omega-3 Fish Oil |
@@ -201,7 +201,8 @@ Magnesium L-threonate has **no button** (no existing slug; would need a client-s
 | `amzn.to/4lbwIg3` | Vitamin B12 |
 | `amzn.to/4760BIN` | Zinc Picolinate |
 | `amzn.to/4rM2eDY` | Daily Multivitamin |
-| — | Magnesium L-threonate — no slug yet (ask client); PeptiSleep / passionflower / valerian / CBD / creatine / potassium / L-arginine / chromium / oat-bran / tryptophan / 5-HTP — no link by design |
+| `amazon.com/dp/B01M4GM9R1?…tag=kygohealthapp-20` | Magnesium L-Threonate (new 2026-06-14 — full tagged URL, no `amzn.to` slug) |
+| — | PeptiSleep / passionflower / valerian / CBD / creatine / potassium / L-arginine / chromium / oat-bran / tryptophan / 5-HTP — no link by design (null / weak / not-credible rows) |
 
 ---
 
