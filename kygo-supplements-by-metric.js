@@ -44,14 +44,21 @@ class KygoSupplementsByMetric extends HTMLElement {
   /* ---------------------------------------------------------------- DATA */
 
   get _metrics() {
+    // `tool` deep-links each metric to its sibling factor explorer on kygo.app
+    // (URLs verified against docs/site-url-index.md so internal links never 404).
+    const T = 'https://www.kygo.app/tools/';
     return [
-      { key: 'latency',  label: 'Sleep Latency',        short: 'Latency',  icon: 'moon',     benefit: 'Benefit = you fall asleep faster (shorter sleep onset).' },
-      { key: 'deep',     label: 'Deep Sleep',           short: 'Deep',     icon: 'moon',     benefit: 'Benefit = more N3 / slow-wave sleep or delta power.' },
-      { key: 'waso',     label: 'Staying Asleep',       short: 'WASO',     icon: 'moon',     benefit: 'Benefit = less wake after sleep onset (lower WASO).' },
-      { key: 'hrv',      label: 'HRV',                  short: 'HRV',      icon: 'activity', benefit: 'Benefit = higher HRV (RMSSD / HF power).' },
-      { key: 'rhr',      label: 'Resting HR',           short: 'RHR',      icon: 'heart',    benefit: 'Benefit = lower resting heart rate.' },
-      { key: 'recovery', label: 'Recovery / Readiness', short: 'Recovery', icon: 'shield',   benefit: 'Benefit = higher wearable recovery/readiness score (driven by HRV + RHR + sleep vs your baseline).' }
+      { key: 'latency',  label: 'Sleep Latency',        short: 'Latency',  icon: 'moon',     benefit: 'Benefit = you fall asleep faster (shorter sleep onset).', tool: T + 'sleep-latency-factors',      toolName: 'Sleep Latency Factors' },
+      { key: 'deep',     label: 'Deep Sleep',           short: 'Deep',     icon: 'moon',     benefit: 'Benefit = more N3 / slow-wave sleep or delta power.',     tool: T + 'deep-sleep-factors',         toolName: 'Deep Sleep Factor Explorer' },
+      { key: 'waso',     label: 'Staying Asleep',       short: 'WASO',     icon: 'moon',     benefit: 'Benefit = less wake after sleep onset (lower WASO).',     tool: T + 'staying-asleep-factors',     toolName: 'Staying Asleep Factors' },
+      { key: 'hrv',      label: 'HRV',                  short: 'HRV',      icon: 'activity', benefit: 'Benefit = higher HRV (RMSSD / HF power).',                tool: T + 'hrv-factors',                toolName: 'HRV Factor Explorer' },
+      { key: 'rhr',      label: 'Resting HR',           short: 'RHR',      icon: 'heart',    benefit: 'Benefit = lower resting heart rate.',                     tool: T + 'resting-heart-rate-factors', toolName: 'Resting Heart Rate Factors' },
+      { key: 'recovery', label: 'Recovery / Readiness', short: 'Recovery', icon: 'shield',   benefit: 'Benefit = higher wearable recovery/readiness score (driven by HRV + RHR + sleep vs your baseline).', tool: T + 'recovery-score-explorer', toolName: 'Recovery Score Explorer' }
     ];
+  }
+
+  _readMore(url, label) {
+    return `<a class="section-readmore" href="${url}" target="_blank" rel="noopener">${label} <span aria-hidden="true">${this._icon('arrowRight')}</span></a>`;
   }
 
   get _src() {
@@ -238,9 +245,10 @@ class KygoSupplementsByMetric extends HTMLElement {
 
   get _posts() {
     const base = 'https://www.kygo.app/post/';
+    // NOTE: dedicated post not created yet — see docs/site-url-index.md. Update the
+    // slug here once published (or tell the dev the final slug).
     return {
-      backed: base + 'supplements-that-actually-move-your-wearable-metrics',
-      myths:  base + 'supplement-myths-magnesium-melatonin-cbd'
+      backed: base + 'supplements-by-metric-what-research-says-moves-your-wearable-numbers'
     };
   }
 
@@ -372,6 +380,9 @@ class KygoSupplementsByMetric extends HTMLElement {
             </div>
             <p class="picker-benefit">${mt.benefit}</p>
             ${this._renderSupList()}
+            <div class="picker-foot">
+              ${this._readMore(mt.tool, `Explore the full ${mt.toolName} (lifestyle, food & more)`)}
+            </div>
           </div>
         </div>
       </section>`;
@@ -488,7 +499,7 @@ class KygoSupplementsByMetric extends HTMLElement {
             <span class="callout-icon" aria-hidden="true">${this._icon('info')}</span>
             <div class="callout-body">
               <h3>Read this before you buy anything</h3>
-              <p>Frame every row as <em>"research shows X affects this metric,"</em> never <em>"take X to fix your number."</em> Many of these effect sizes — RHR −2.2 bpm, HRV +1.45 ms — are small next to a wearable's night-to-night noise, and most were measured on Oura specifically. Nearly every supplement-specific trial here is industry-funded. Doses are study doses, not recommendations. This is not medical advice — talk to a clinician before changing your routine.</p>
+              <p>Frame every row as <em>"research shows X affects this metric,"</em> never <em>"take X to fix your number."</em> Many of these effect sizes — RHR −2.2 bpm, HRV +1.45 ms — are small next to a wearable's night-to-night noise, and most were measured on Oura specifically (see <a href="https://www.kygo.app/tools/wearable-accuracy" target="_blank" rel="noopener">how accurate your wearable is</a> and the <a href="https://www.kygo.app/tools/sensor-comparison" target="_blank" rel="noopener">sensor comparison</a>). Nearly every supplement-specific trial here is industry-funded. Doses are study doses, not recommendations. This is not medical advice — talk to a clinician before changing your routine.</p>
             </div>
           </div>
         </div>
@@ -981,7 +992,16 @@ class KygoSupplementsByMetric extends HTMLElement {
       .picker-panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--dark); margin: 0; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
       .picker-panel-meta { font-size: 11.5px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.5px; text-transform: uppercase; }
       .picker-benefit { font-size: 13px; color: var(--gray-600); line-height: 1.5; margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--gray-100); }
+      .picker-foot { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--gray-100); }
       @media (min-width: 768px) { .picker-panel { padding: 24px 26px; border-radius: 22px; } }
+
+      /* SECTION DEEP-LINK — read-more to a sibling tool/post */
+      .section-readmore { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; color: var(--green-dark); letter-spacing: -0.005em; transition: gap .15s, color .15s; }
+      .section-readmore:hover { color: var(--green); gap: 9px; }
+      .section-readmore span { display: inline-flex; }
+      .section-readmore svg { width: 15px; height: 15px; }
+      .callout-body a { color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+      .callout-body a:hover { color: #fff; }
 
       /* SUPPLEMENT CARDS */
       .fact-groups { display: grid; grid-template-columns: 1fr; gap: 18px; min-width: 0; }
