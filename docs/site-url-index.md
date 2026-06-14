@@ -55,10 +55,17 @@ This is the canonical list of every live URL on kygo.app. Regenerate by pulling 
 | Oura Ring Comparison Tool | https://www.kygo.app/tools/oura-ring-comparison-tool |
 
 > **New since last directory update (5/28):** `calories-in-anything`.
->
-> **Registered in `kygo-tools.js` but not yet confirmed in the live sitemap:**
-> `recovery-score-explorer`, `vo2-max-accuracy`, `vo2-max-factors`, and the new
-> `supplements-by-metric` (`https://www.kygo.app/tools/supplements-by-metric`).
+
+### Pending publish — registered in `kygo-tools.js`, not yet in the live sitemap
+
+Confirm these are published on Wix before relying on them for internal/deep links.
+
+| Tool | URL | Status |
+|------|-----|--------|
+| Recovery Score Explorer | https://www.kygo.app/tools/recovery-score-explorer | Built, awaiting sitemap |
+| Most Accurate VO2 Max Wearable | https://www.kygo.app/tools/vo2-max-accuracy | Built, awaiting sitemap |
+| VO2 Max Factor Explorer | https://www.kygo.app/tools/vo2-max-factors | Built, awaiting sitemap |
+| Supplements by Metric | https://www.kygo.app/tools/supplements-by-metric | Built, awaiting sitemap |
 
 ---
 
