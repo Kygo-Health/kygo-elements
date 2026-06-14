@@ -176,6 +176,34 @@ not promoted).
 | `amazon.com/dp/B097TKQSQD?…tag=kygohealthapp-20` | Saffron Extract (new — full tagged URL, no `amzn.to` slug) |
 | `amzn.to/3S5tosv` | Chamomile Extract (new) |
 
+### `kygo-supplements-by-metric.js` (supplement × metric explorer)
+Added 2026-06. The metric-filtered supplement explorer. Each supplement carries a single
+`amazon:{url,label}`; the "… on Amazon" button renders in the expanded card **only when the
+selected metric's grade is S / M / W** (i.e. the supplement actually helps that metric) — so
+null/✗ and mixed (~) rows never show a buy button, and "don't-rely-on" supplements
+(valerian, CBD, creatine, potassium, etc.) carry no link at all. Plus the footer Amazon
+Associates disclosure. Links reuse existing product slugs except **Magnesium L-Threonate**,
+which is a new client-supplied full tagged URL (added 2026-06-14).
+| Short link | Product label |
+|---|---|
+| `amzn.to/4cVnvGt` | Omega-3 Fish Oil |
+| `amzn.to/3Nbjq6C` | Magnesium Glycinate |
+| `amzn.to/3PWfatc` | Glycine Powder |
+| `amzn.to/403ZgOP` | Ashwagandha Extract |
+| `amzn.to/4szGon9` | Melatonin Supplement |
+| `amzn.to/3OyDz7c` | GABA Supplement |
+| `amzn.to/3OEoHEh` | L-Theanine 200mg |
+| `amzn.to/3PXqKEh` | Tart Cherry Juice |
+| `amazon.com/dp/B097TKQSQD?…tag=kygohealthapp-20` | Saffron Extract (full tagged URL, no `amzn.to` slug) |
+| `amzn.to/3S5tosv` | Chamomile Extract |
+| `amzn.to/406okEX` | Beetroot Juice Shots (dietary nitrate) |
+| `amzn.to/4cm6d5m` | Vitamin D3 |
+| `amzn.to/4lbwIg3` | Vitamin B12 |
+| `amzn.to/4760BIN` | Zinc Picolinate |
+| `amzn.to/4rM2eDY` | Daily Multivitamin |
+| `amazon.com/dp/B01M4GM9R1?…tag=kygohealthapp-20` | Magnesium L-Threonate (new 2026-06-14 — full tagged URL, no `amzn.to` slug) |
+| — | PeptiSleep / passionflower / valerian / CBD / creatine / potassium / L-arginine / chromium / oat-bran / tryptophan / 5-HTP — no link by design (null / weak / not-credible rows) |
+
 ---
 
 ## C. Non-Amazon affiliate / referral
