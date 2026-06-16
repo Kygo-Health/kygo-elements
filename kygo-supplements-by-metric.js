@@ -321,13 +321,13 @@ class KygoSupplementsByMetric extends HTMLElement {
     return `
       <article class="fact-card ${isExp ? 'expanded' : ''}" data-sup-key="${s.key}">
         <button class="fact-head" aria-expanded="${isExp}">
-          <span class="fact-meta">
-            ${flag ? `<span class="fact-cat"><span class="fact-flag">${this._icon('alert')} Industry-funded</span></span>` : ''}
-            <span class="fact-name">${s.name}</span>
-            <span class="fact-effect">${c.effect}</span>
+          <span class="fact-top">
+            ${flag ? `<span class="fact-flag">${this._icon('alert')} Industry-funded</span>` : ''}
+            <span class="grade-badge ${gm.cls}" title="${gm.full} evidence">${gm.full}</span>
+            <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
           </span>
-          <span class="grade-badge ${gm.cls}" title="${gm.full} evidence">${gm.full}</span>
-          <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
+          <span class="fact-name">${s.name}</span>
+          <span class="fact-effect">${c.effect}</span>
         </button>
         ${body}
       </article>`;
@@ -969,7 +969,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       .gpill.g-x { background: var(--dark); color: #fff; }
 
       /* GRADE BADGE — small word chip in the card top-right (replaces the big letter pill) */
-      .grade-badge { display: inline-flex; align-items: center; align-self: start; margin-top: 1px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.4px; text-transform: uppercase; padding: 4px 9px; border-radius: 9999px; white-space: nowrap; background: var(--gray-100); color: var(--gray-400); }
+      .grade-badge { display: inline-flex; align-items: center; flex-shrink: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.4px; text-transform: uppercase; padding: 4px 9px; border-radius: 9999px; white-space: nowrap; background: var(--gray-100); color: var(--gray-400); }
       @media (min-width: 480px) { .grade-badge { font-size: 10px; padding: 4px 10px; } }
       .grade-badge.g-s { background: var(--green); color: #fff; }
       .grade-badge.g-m { background: var(--green-light); color: var(--green-dark); }
@@ -980,16 +980,17 @@ class KygoSupplementsByMetric extends HTMLElement {
       /* METRIC PICKER TILES */
       .metric-tiles-label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin: 6px 0 8px; }
       .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
-      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 16px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
+      .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 7px; padding: 11px 12px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
       .picker-tile:hover { border-color: var(--gray-300); transform: translateY(-1px); }
       .picker-tile.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 6px 18px rgba(15,23,42,0.12); }
-      .picker-tile-main { display: inline-flex; align-items: center; gap: 9px; min-width: 0; flex: 1; }
-      .picker-tile-ic { width: 26px; height: 26px; border-radius: 8px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, color .15s; }
-      .picker-tile-ic svg { width: 15px; height: 15px; }
+      .picker-tile-main { display: inline-flex; align-items: center; gap: 7px; min-width: 0; flex: 1; }
+      .picker-tile-ic { width: 24px; height: 24px; border-radius: 7px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, color .15s; }
+      .picker-tile-ic svg { width: 14px; height: 14px; }
       .picker-tile.active .picker-tile-ic { background: rgba(255,255,255,0.16); color: #fff; }
-      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: -0.01em; line-height: 1.15; min-width: 0; flex: 1; white-space: normal; overflow-wrap: anywhere; }
+      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12.5px; letter-spacing: -0.01em; line-height: 1.12; min-width: 0; flex: 1; white-space: normal; overflow-wrap: break-word; word-break: normal; hyphens: none; }
+      @media (min-width: 400px) { .picker-tile-name { font-size: 13.5px; } }
       @media (min-width: 560px) { .picker-tile-name { font-size: 14px; } }
-      .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 3px 9px; min-width: 28px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
+      .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 2px 7px; min-width: 24px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
       .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
       @media (min-width: 560px) { .picker-tiles { grid-template-columns: repeat(3, 1fr); } }
       @media (min-width: 880px) { .picker-tiles { grid-template-columns: repeat(6, 1fr); } }
@@ -1033,21 +1034,20 @@ class KygoSupplementsByMetric extends HTMLElement {
       .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; min-width: 0; transition: border-color .15s, box-shadow .15s; }
       .fact-card:hover { border-color: var(--gray-300); }
       .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); border-color: var(--gray-300); }
-      .fact-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 10px; width: 100%; padding: 12px 14px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
+      .fact-head { display: flex; flex-direction: column; align-items: stretch; gap: 6px; width: 100%; padding: 13px 15px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
-      .fact-meta { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-      .fact-cat { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: var(--gray-400); line-height: 1; margin-bottom: 4px; }
-      .fact-flag { display: inline-flex; align-items: center; gap: 3px; color: var(--gray-600); letter-spacing: 0.4px; }
-      .fact-flag svg { width: 11px; height: 11px; }
-      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: anywhere; }
-      .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.4; margin-top: 3px; }
+      .fact-top { display: flex; align-items: center; gap: 8px; justify-content: flex-end; min-height: 22px; }
+      .fact-flag { display: inline-flex; align-items: center; gap: 4px; margin-right: auto; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-600); line-height: 1; }
+      .fact-flag svg { width: 11px; height: 11px; flex-shrink: 0; }
+      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: break-word; }
+      .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.45; }
       .fact-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .fact-chev svg { width: 16px; height: 16px; }
       .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--green-dark); }
       @media (min-width: 768px) {
         .fact-list { gap: 10px; }
         .fact-card { border-radius: 16px; }
-        .fact-head { padding: 16px 18px; gap: 8px 14px; }
+        .fact-head { padding: 16px 18px; }
         .fact-name { font-size: 16px; }
         .fact-effect { font-size: 13px; }
       }
