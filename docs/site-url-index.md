@@ -13,8 +13,8 @@ This is the canonical list of every live URL on kygo.app. Regenerate by pulling 
 > HRV → hrv-factors, RHR → resting-heart-rate-factors, recovery → recovery-score-explorer).
 > ⚠️ `recovery-score-explorer` and the two `vo2-max-*` tools are registered in `kygo-tools.js`
 > but are **not yet in the live sitemap** — confirm they're published before relying on them.
-> The dedicated "Supplements by Metric" blog post is **not created yet** (slug TBD — see note in
-> the Blog Posts section).
+> The dedicated "Supplements by Metric" blog post CTA points at
+> `/post/supplements-for-wearable-metrics-what-works-what-s-hype` (see note in the Blog Posts section).
 
 ---
 
@@ -110,10 +110,10 @@ Sorted newest first by sitemap `lastmod`.
 | 2026-01-12 | Update Nov 3 2025: Rebuilt Food Logging From the Ground Up and Made It Free | https://www.kygo.app/post/update-november-3-2025-rebuilt-food-logging-from-the-ground-up-and-made-it-free |
 | 2026-01-12 | Kygo Beta Opens to All Users: Apple Health Integration Now Live | https://www.kygo.app/post/kygo-beta-opens-to-all-users-apple-health-integration-now-live |
 
-> **Pending — Supplements by Metric blog post (to be created):** the `kygo-supplements-by-metric`
-> tool's main "Read the guide" CTA points at
-> `https://www.kygo.app/post/supplements-by-metric-what-research-says-moves-your-wearable-numbers`.
-> Create the post at that slug, or tell the dev the final slug so the CTA can be updated.
+> **Supplements by Metric blog post:** the `kygo-supplements-by-metric` tool's main "Read the
+> guide" CTA points at
+> `https://www.kygo.app/post/supplements-for-wearable-metrics-what-works-what-s-hype`.
+> Confirm the post is published at that slug.
 
 ---
 

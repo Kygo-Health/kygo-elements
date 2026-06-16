@@ -245,10 +245,8 @@ class KygoSupplementsByMetric extends HTMLElement {
 
   get _posts() {
     const base = 'https://www.kygo.app/post/';
-    // NOTE: dedicated post not created yet — see docs/site-url-index.md. Update the
-    // slug here once published (or tell the dev the final slug).
     return {
-      backed: base + 'supplements-by-metric-what-research-says-moves-your-wearable-numbers'
+      backed: base + 'supplements-for-wearable-metrics-what-works-what-s-hype'
     };
   }
 
