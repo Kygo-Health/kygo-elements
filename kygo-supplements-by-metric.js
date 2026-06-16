@@ -53,7 +53,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       { key: 'waso',     label: 'Staying Asleep',       short: 'WASO',     icon: 'moon',     benefit: 'Benefit = less wake after sleep onset (lower WASO).',     tool: T + 'staying-asleep-factors',     toolName: 'Staying Asleep Factors' },
       { key: 'hrv',      label: 'HRV',                  short: 'HRV',      icon: 'activity', benefit: 'Benefit = higher HRV (RMSSD / HF power).',                tool: T + 'hrv-factors',                toolName: 'HRV Factor Explorer' },
       { key: 'rhr',      label: 'Resting HR',           short: 'RHR',      icon: 'heart',    benefit: 'Benefit = lower resting heart rate.',                     tool: T + 'resting-heart-rate-factors', toolName: 'Resting Heart Rate Factors' },
-      { key: 'recovery', label: 'Recovery / Readiness', short: 'Recovery', icon: 'shield',   benefit: 'Benefit = higher wearable recovery/readiness score (driven by HRV + RHR + sleep vs your baseline).', tool: T + 'recovery-score-explorer', toolName: 'Recovery Score Explorer' }
+      { key: 'recovery', label: 'Recovery / Readiness', tileLabel: 'Recovery', short: 'Recovery', icon: 'shield',   benefit: 'Benefit = higher wearable recovery/readiness score (driven by HRV + RHR + sleep vs your baseline).', tool: T + 'recovery-score-explorer', toolName: 'Recovery Score Explorer' }
     ];
   }
 
@@ -289,7 +289,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       const active = this._metricFilter === mt.key;
       return `
         <button class="picker-tile ${active ? 'active' : ''}" data-metric="${mt.key}" aria-pressed="${active}">
-          <span class="picker-tile-main"><span class="picker-tile-ic" aria-hidden="true">${this._icon(mt.icon)}</span><span class="picker-tile-name">${mt.label}</span></span>
+          <span class="picker-tile-main"><span class="picker-tile-ic" aria-hidden="true">${this._icon(mt.icon)}</span><span class="picker-tile-name">${mt.tileLabel || mt.label}</span></span>
           <span class="picker-tile-count">${count}</span>
         </button>`;
     }).join('');
@@ -322,11 +322,11 @@ class KygoSupplementsByMetric extends HTMLElement {
       <article class="fact-card ${isExp ? 'expanded' : ''}" data-sup-key="${s.key}">
         <button class="fact-head" aria-expanded="${isExp}">
           <span class="fact-meta">
-            <span class="fact-cat">${gm.full} evidence${flag ? ` <span class="fact-flag">${this._icon('alert')} Industry-funded</span>` : ''}</span>
+            ${flag ? `<span class="fact-cat"><span class="fact-flag">${this._icon('alert')} Industry-funded</span></span>` : ''}
             <span class="fact-name">${s.name}</span>
             <span class="fact-effect">${c.effect}</span>
           </span>
-          <span class="gpill ${gm.cls}">${gm.short}</span>
+          <span class="grade-badge ${gm.cls}" title="${gm.full} evidence">${gm.full}</span>
           <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
         </button>
         ${body}
@@ -968,6 +968,15 @@ class KygoSupplementsByMetric extends HTMLElement {
       .gpill.g-mix { background: var(--gray-100); color: var(--gray-400); }
       .gpill.g-x { background: var(--dark); color: #fff; }
 
+      /* GRADE BADGE — small word chip in the card top-right (replaces the big letter pill) */
+      .grade-badge { display: inline-flex; align-items: center; align-self: start; margin-top: 1px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.4px; text-transform: uppercase; padding: 4px 9px; border-radius: 9999px; white-space: nowrap; background: var(--gray-100); color: var(--gray-400); }
+      @media (min-width: 480px) { .grade-badge { font-size: 10px; padding: 4px 10px; } }
+      .grade-badge.g-s { background: var(--green); color: #fff; }
+      .grade-badge.g-m { background: var(--green-light); color: var(--green-dark); }
+      .grade-badge.g-w { background: var(--gray-100); color: var(--gray-600); }
+      .grade-badge.g-mix { background: var(--gray-100); color: var(--gray-400); }
+      .grade-badge.g-x { background: var(--dark); color: #fff; }
+
       /* METRIC PICKER TILES */
       .metric-tiles-label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin: 6px 0 8px; }
       .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
@@ -978,7 +987,8 @@ class KygoSupplementsByMetric extends HTMLElement {
       .picker-tile-ic { width: 26px; height: 26px; border-radius: 8px; background: var(--green-light); color: var(--green-dark); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .15s, color .15s; }
       .picker-tile-ic svg { width: 15px; height: 15px; }
       .picker-tile.active .picker-tile-ic { background: rgba(255,255,255,0.16); color: #fff; }
-      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; letter-spacing: -0.005em; line-height: 1.2; min-width: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .picker-tile-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: -0.01em; line-height: 1.15; min-width: 0; flex: 1; white-space: normal; overflow-wrap: anywhere; }
+      @media (min-width: 560px) { .picker-tile-name { font-size: 14px; } }
       .picker-tile-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 3px 9px; min-width: 28px; text-align: center; font-feature-settings: "tnum" 1; flex-shrink: 0; }
       .picker-tile.active .picker-tile-count { background: rgba(255,255,255,0.16); color: #fff; }
       @media (min-width: 560px) { .picker-tiles { grid-template-columns: repeat(3, 1fr); } }
