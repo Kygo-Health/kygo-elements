@@ -321,12 +321,12 @@ class KygoSupplementsByMetric extends HTMLElement {
     return `
       <article class="fact-card ${isExp ? 'expanded' : ''}" data-sup-key="${s.key}">
         <button class="fact-head" aria-expanded="${isExp}">
-          <span class="fact-top">
-            ${flag ? `<span class="fact-flag">${this._icon('alert')} Industry-funded</span>` : ''}
+          ${flag ? `<span class="fact-flag">${this._icon('alert')} Industry-funded</span>` : ''}
+          <span class="fact-row">
+            <span class="fact-name">${s.name}</span>
             <span class="grade-badge ${gm.cls}" title="${gm.full} evidence">${gm.full}</span>
             <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
           </span>
-          <span class="fact-name">${s.name}</span>
           <span class="fact-effect">${c.effect}</span>
         </button>
         ${body}
@@ -969,7 +969,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       .gpill.g-x { background: var(--dark); color: #fff; }
 
       /* GRADE BADGE — small word chip in the card top-right (replaces the big letter pill) */
-      .grade-badge { display: inline-flex; align-items: center; flex-shrink: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.4px; text-transform: uppercase; padding: 4px 9px; border-radius: 9999px; white-space: nowrap; background: var(--gray-100); color: var(--gray-400); }
+      .grade-badge { display: inline-flex; align-items: center; flex-shrink: 0; margin-top: 1px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.4px; text-transform: uppercase; padding: 4px 9px; border-radius: 9999px; white-space: nowrap; background: var(--gray-100); color: var(--gray-400); }
       @media (min-width: 480px) { .grade-badge { font-size: 10px; padding: 4px 10px; } }
       .grade-badge.g-s { background: var(--green); color: #fff; }
       .grade-badge.g-m { background: var(--green-light); color: var(--green-dark); }
@@ -1036,12 +1036,12 @@ class KygoSupplementsByMetric extends HTMLElement {
       .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); border-color: var(--gray-300); }
       .fact-head { display: flex; flex-direction: column; align-items: stretch; gap: 6px; width: 100%; padding: 13px 15px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
-      .fact-top { display: flex; align-items: center; gap: 8px; justify-content: flex-end; min-height: 22px; }
-      .fact-flag { display: inline-flex; align-items: center; gap: 4px; margin-right: auto; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-600); line-height: 1; }
+      .fact-row { display: flex; align-items: flex-start; gap: 8px; }
+      .fact-flag { display: inline-flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-600); line-height: 1; }
       .fact-flag svg { width: 11px; height: 11px; flex-shrink: 0; }
-      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: break-word; }
+      .fact-name { flex: 1; min-width: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: break-word; }
       .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.45; }
-      .fact-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
+      .fact-chev { width: 18px; height: 18px; margin-top: 1px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .fact-chev svg { width: 16px; height: 16px; }
       .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--green-dark); }
       @media (min-width: 768px) {
