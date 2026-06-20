@@ -156,6 +156,16 @@ array), so the markup appears in all three views (chart / list / qualitative).
 page states both have no objective WASO benefit, so promoting a product on those rows would be
 bad-faith placement.)*
 
+### `kygo-rem-sleep.js`
+Added 2026-06. REM-sleep factor explorer. Only **one** affiliate placement — Melatonin, the one
+supplement with RCT evidence of raising REM (in low-REM individuals); rendered as a `affiliate:{url,label}`
+chip with a per-link disclosure. **Reuses** the existing Melatonin slug. 5-HTP, Vitamin B6 and Glycine
+intentionally carry **no** link (5-HTP/B6 unproven for REM duration; Glycine is neutral for REM), matching
+the bad-faith-placement convention used on the other factor pages.
+| Short link | Product label |
+|---|---|
+| `amzn.to/4szGon9` | Melatonin Supplement |
+
 ### `kygo-recovery-scores.js` (supplement factors)
 Wired up 2026-06. Each supplement factor in the explorer carries an `amazon:{url,label}` that
 renders a "… on Amazon" button in the expanded card (`rel="noopener sponsored"` + per-link

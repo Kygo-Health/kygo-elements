@@ -77,7 +77,8 @@ class KygoToolsPage extends HTMLElement {
       { slug: 'food-scanner', title: 'Food Scanner', description: 'Snap a photo of any meal and get instant calories, macros, health score, and nutrition insights powered by AI.', icon: 'camera', badge: 'Food', url: '/tools/calories-in-anything', features: ['Instant calorie count', 'Macro & vitamin breakdown', 'Health score 1–10'] },
       { slug: 'step-count-accuracy', title: 'Step Count Accuracy', description: 'See which wearable counts steps most accurately — Garmin, Apple Watch, Fitbit, Samsung, Oura & more, ranked by 20+ peer-reviewed studies.', icon: 'steps', badge: 'Activity', url: '/tools/step-count-accuracy', features: ['20+ peer-reviewed studies', 'Head-to-head comparison', '9 devices ranked'] },
       { slug: 'sleep-metrics', title: 'Sleep Metrics Comparison', description: 'Compare 38 sleep metrics tracked by Oura Ring, Fitbit, Apple Watch & Garmin across 10 categories — see exactly what each device measures while you sleep.', icon: 'moon', badge: 'Sleep', url: '/tools/sleep-metrics', features: ['38 metrics compared', '10 sleep categories', '29 verified sources'] },
-      { slug: 'sensor-comparison', title: 'Hardware & Software Differences', description: 'See what actually makes Garmin, Whoop, Oura, Apple Watch, and Fitbit different — hardware sensors, health metrics, and proprietary software compared.', icon: 'activity', badge: 'Hardware', url: '/tools/sensor-comparison', features: ['Hardware vs software breakdown', '25 proprietary algorithms', '6 latest-gen devices'] }
+      { slug: 'sensor-comparison', title: 'Hardware & Software Differences', description: 'See what actually makes Garmin, Whoop, Oura, Apple Watch, and Fitbit different — hardware sensors, health metrics, and proprietary software compared.', icon: 'activity', badge: 'Hardware', url: '/tools/sensor-comparison', features: ['Hardware vs software breakdown', '25 proprietary algorithms', '6 latest-gen devices'] },
+      { slug: 'rem-sleep-factors', title: 'REM Sleep Factor Explorer', description: 'What influences your REM (dream) sleep? Explore 23 research-backed factors across nutrition, supplements, exercise, environment & demographics — ranked by evidence strength, with mechanisms and sources.', icon: 'moon', badge: 'Sleep', url: '/tools/rem-sleep-factors', features: ['23 factors ranked', '5 categories', '23 peer-reviewed sources'] }
     ];
   }
 
@@ -93,6 +94,7 @@ class KygoToolsPage extends HTMLElement {
       'sleep-latency-factors': 'sleep',
       'staying-asleep-factors': 'sleep',
       'deep-sleep-factors': 'sleep',
+      'rem-sleep-factors': 'sleep',
       'hrv-factors': 'recovery',
       'resting-heart-rate-factors': 'recovery',
       'food-scanner': 'nutrition'
