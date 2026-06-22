@@ -148,17 +148,18 @@ class KygoOuraRingComparison extends HTMLElement {
         { name: 'Status', info: 'Availability today', gen3: n('Discontinued · resale only'), ring4: 'Current', ring5: 'Pre-order' },
         { name: 'Launch price', info: 'Before membership', gen3: '$299–399', ring4: '$349+', ring5: '$399–499' },
         { name: 'Sizes', info: 'US ring size range', gen3: '6–13', ring4: y('4–15'), ring5: '6–13 (launch press)' },
-        { name: 'Width', gen3: '7.0–7.9 mm', ring4: '7.90 mm', ring5: y('6.09 mm') },
-        { name: 'Thickness', gen3: '2.55 mm', ring4: '2.88–3.51 mm', ring5: y('2.28 mm') },
-        { name: 'Weight', gen3: '4–6 g', ring4: '3.3–5.2 g', ring5: y('2–2.6 g') },
-        { name: 'Battery (claimed)', gen3: 'Up to 7 days', ring4: '5–8 days', ring5: y('6–9 days') },
+        { name: 'Width', info: 'Band width', gen3: '7.9 mm (no taper)', ring4: '7.90 mm', ring5: y('6.09 mm') },
+        { name: 'Thickness', info: 'At thinnest point', gen3: '2.6 mm (Heritage) · 3.2 mm (Horizon)', ring4: '2.88 mm', ring5: y('2.28 mm') },
+        { name: 'Weight', info: 'Varies by size', gen3: '3–5 g (Heritage) · 4–6 g (Horizon)', ring4: '3.3–5.2 g', ring5: y('2–2.6 g') },
+        { name: 'Shell', info: 'Outer casing + finish coating', gen3: 'Titanium · DLC (black/stealth) / PVD (other finishes)', ring4: 'Titanium · DLC / PVD', ring5: 'Titanium · PVD' },
+        { name: 'Battery (claimed)', gen3: 'Up to 7 days', ring4: 'Up to 8 days (~6 observed)', ring5: y('6–9 days') },
         { name: 'Charging case', info: 'Extends time between wall charges', gen3: n('None'), ring4: n('None'), ring5: y('Optional · $99 · ~1 month total') },
         { name: 'Water resistance', gen3: '100 m', ring4: '100 m', ring5: '100 m / IP68' },
         { name: 'Membership required', info: 'For full features', gen3: n('Yes'), ring4: n('Yes'), ring5: n('Yes') },
       ],
       Sensors: [
         { name: 'Core PPG modality', info: 'Green / red / IR LEDs', gen3: 'Yes', ring4: 'Yes', ring5: 'Yes', },
-        { name: 'Interior surface', gen3: 'Non-metallic seamless molding (BPA-free)', ring4: 'Full titanium, recessed sensors', ring5: 'Full titanium + PVD scratch coating' },
+        { name: 'Interior surface', gen3: 'Medical-grade resin (non-metallic, BPA-free)', ring4: 'Full titanium, recessed sensors', ring5: 'Full titanium + PVD scratch coating' },
         { name: 'Sensor dome height', info: 'How far sensors sit from skin', gen3: '~1.3 mm raised', ring4: y('0.3 mm (near-flush)'), ring5: '0.7 mm' },
         { name: 'LEDs', gen3: 'Green, red, IR + IR alignment', ring4: '2 multi-color LEDs + 3 photodiodes', ring5: 'LEDs rotated 180° · shorter paths · more powerful' },
         { name: 'Photodiode', gen3: 'Standard', ring4: 'Standard', ring5: 'Larger PD (offsets shorter paths)' },
@@ -301,7 +302,7 @@ class KygoOuraRingComparison extends HTMLElement {
                 </g>
                 <circle cx="150" cy="158" r="42" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.55"/>
                 <text x="150" y="250" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">GEN 3</text>
-                <text x="150" y="270" fill="#94A3B8" font-size="12" text-anchor="middle">2.55 mm · 2021</text>
+                <text x="150" y="270" fill="#94A3B8" font-size="12" text-anchor="middle">2.6–3.2 mm · 2021</text>
 
                 <!-- Ring 4 — same outer size, thickest wall -->
                 <g filter="url(#ouraDrop)">
@@ -355,6 +356,7 @@ class KygoOuraRingComparison extends HTMLElement {
             <p class="lede">Width, thickness, and weight across all three generations. Outer ring sizes differ by finger; these are the device dimensions Oura publishes.</p>
           </div>
           <div class="dims animate-on-scroll">${this._renderDims()}</div>
+          <p class="tbl-note">Gen 3 shipped in two shapes: the flatter <strong>Heritage</strong> (2.6 mm, 3–5 g) and the fully rounded <strong>Horizon</strong> (3.2 mm, 4–6 g). Width is a uniform 7.9 mm with no taper. Measured values, thinnest point.</p>
         </div>
       </section>
 
@@ -538,8 +540,8 @@ class KygoOuraRingComparison extends HTMLElement {
 
   _renderDims() {
     const rings = [
-      { name: 'Oura Gen 3', sub: '2021 · discontinued', width: '7.0–7.9 mm', thick: '2.55 mm', weight: '4–6 g', hl: false, badge: '' },
-      { name: 'Oura Ring 4', sub: '2024 · current', width: '7.90 mm', thick: '2.88–3.51 mm', weight: '3.3–5.2 g', hl: false, badge: '' },
+      { name: 'Oura Gen 3', sub: '2021 · discontinued', width: '7.9 mm', thick: '2.6–3.2 mm', weight: '3–6 g', hl: false, badge: '' },
+      { name: 'Oura Ring 4', sub: '2024 · current', width: '7.90 mm', thick: '2.88 mm', weight: '3.3–5.2 g', hl: false, badge: '' },
       { name: 'Oura Ring 5', sub: '2026 · newest', width: '6.09 mm', thick: '2.28 mm', weight: '2–2.6 g', hl: true, badge: 'Smallest ever' },
     ];
     const row = (label, val, win) => `<div class="dim-row"><span class="dim-label">${label}</span><span class="dim-val${win ? ' win' : ''}">${val}</span></div>`;
@@ -743,6 +745,7 @@ class KygoOuraRingComparison extends HTMLElement {
         links: [
           { t: 'Wareable — Ring 4 vs Ring 3', u: 'https://www.wareable.com/wearable-tech/oura-ring-4-vs-ring-3-key-differences-compared' },
           { t: 'TechInsights — Ring 4 teardown', u: 'https://www.techinsights.com/blog/oura-ring-gen-4-teardown' },
+          { t: 'r/SmartRings — Gen 3 Heritage vs Horizon measured specs', u: 'https://www.reddit.com/r/SmartRings/s/z7g4Hl6VcE' },
           { t: 'DC Rainmaker — Ring 4 breakdown', u: 'https://www.dcrainmaker.com/2024/10/oura-announces-oura-4-heres-whats-actually-changed.html' },
           { t: 'RingConn Gen 2 product page', u: 'https://ringconn.com/products/ringconn-gen-2' },
           { t: 'Samsung Galaxy Ring support', u: 'https://www.samsung.com/us/support/answer/ANS10003278/' },
