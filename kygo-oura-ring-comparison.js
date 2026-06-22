@@ -149,10 +149,10 @@ class KygoOuraRingComparison extends HTMLElement {
         { name: 'Launch price', info: 'Before membership', gen3: '$299–399', ring4: '$349+', ring5: '$399–499' },
         { name: 'Sizes', info: 'US ring size range', gen3: '6–13', ring4: y('4–15'), ring5: '6–13 (launch press)' },
         { name: 'Width', info: 'Band width', gen3: '7.9 mm (no taper)', ring4: '7.90 mm', ring5: y('6.09 mm') },
-        { name: 'Thickness', info: 'At thinnest point', gen3: '2.6 mm (Heritage) · 3.2 mm (Horizon)', ring4: '2.88–3.51 mm', ring5: y('2.28 mm') },
+        { name: 'Thickness', info: 'At thinnest point', gen3: '2.6 mm (Heritage) · 3.2 mm (Horizon)', ring4: '2.88 mm', ring5: y('2.28 mm') },
         { name: 'Weight', info: 'Varies by size', gen3: '3–5 g (Heritage) · 4–6 g (Horizon)', ring4: '3.3–5.2 g', ring5: y('2–2.6 g') },
         { name: 'Shell', info: 'Outer casing + finish coating', gen3: 'Titanium · DLC (black/stealth) / PVD (other finishes)', ring4: 'Titanium · DLC / PVD', ring5: 'Titanium · PVD' },
-        { name: 'Battery (claimed)', gen3: 'Up to 7 days', ring4: '5–8 days', ring5: y('6–9 days') },
+        { name: 'Battery (claimed)', gen3: 'Up to 7 days', ring4: 'Up to 8 days (~6 observed)', ring5: y('6–9 days') },
         { name: 'Charging case', info: 'Extends time between wall charges', gen3: n('None'), ring4: n('None'), ring5: y('Optional · $99 · ~1 month total') },
         { name: 'Water resistance', gen3: '100 m', ring4: '100 m', ring5: '100 m / IP68' },
         { name: 'Membership required', info: 'For full features', gen3: n('Yes'), ring4: n('Yes'), ring5: n('Yes') },
@@ -541,7 +541,7 @@ class KygoOuraRingComparison extends HTMLElement {
   _renderDims() {
     const rings = [
       { name: 'Oura Gen 3', sub: '2021 · discontinued', width: '7.9 mm', thick: '2.6–3.2 mm', weight: '3–6 g', hl: false, badge: '' },
-      { name: 'Oura Ring 4', sub: '2024 · current', width: '7.90 mm', thick: '2.88–3.51 mm', weight: '3.3–5.2 g', hl: false, badge: '' },
+      { name: 'Oura Ring 4', sub: '2024 · current', width: '7.90 mm', thick: '2.88 mm', weight: '3.3–5.2 g', hl: false, badge: '' },
       { name: 'Oura Ring 5', sub: '2026 · newest', width: '6.09 mm', thick: '2.28 mm', weight: '2–2.6 g', hl: true, badge: 'Smallest ever' },
     ];
     const row = (label, val, win) => `<div class="dim-row"><span class="dim-label">${label}</span><span class="dim-val${win ? ' win' : ''}">${val}</span></div>`;
