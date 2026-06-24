@@ -42,8 +42,13 @@ model depends on these being plain, directly-servable scripts.
 
 ## How it ships (deploy model)
 
-1. Files are committed to this repo and served **raw** via **GitHub Pages** and the
-   **jsDelivr CDN** (`https://cdn.jsdelivr.net/gh/Kygo-Health/kygo-elements@<branch>/<file>.js`).
+1. Files are committed to this repo and served **raw** via **GitHub Pages**. The canonical
+   script URL we use in Wix is the **GitHub Pages** one —
+   `https://kygo-health.github.io/kygo-elements/<file>.js` (e.g.
+   `https://kygo-health.github.io/kygo-elements/kygo-vo2max-accuracy.js`). The jsDelivr CDN
+   (`https://cdn.jsdelivr.net/gh/Kygo-Health/kygo-elements@<branch>/<file>.js`) also serves the
+   same files and is handy for branch-pinned previews, but **prefer the `kygo-health.github.io`
+   link** for the live Wix embed and when handing a URL to the client.
 2. The Kygo site is built on **Wix**. Each component is embedded as a **Wix Custom Element**
    pointing at one of these script URLs.
 3. New code goes live by **committing + pushing**; the page cache-busts with `?v=Date.now()`.
