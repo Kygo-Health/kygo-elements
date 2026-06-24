@@ -534,29 +534,52 @@ class KygoRemSleep extends HTMLElement {
     }).join('');
   }
 
-  // Compact source list (tag = category, title = factor + study). Deduped by URL.
-  _renderSources() {
-    const catLabel = {
-      nutrition: 'Nutrition', supplements: 'Supplements', exercise: 'Exercise',
-      environment: 'Environment', demographics: 'Demographics'
-    };
-    const items = [];
+  // Sources grouped by category, deduped by URL across the whole page.
+  _sourceGroups() {
+    const cats = this._categories;
     const seen = new Set();
+    const groups = [];
     for (const [catKey, factors] of Object.entries(this._factors)) {
+      const items = [];
       for (const f of factors) {
         if (f.source && !seen.has(f.source.url)) {
           seen.add(f.source.url);
-          items.push({ tag: catLabel[catKey] || catKey, title: `${f.name} — ${f.source.label}`, url: f.source.url });
+          items.push({ title: `${f.name} — ${f.source.label}`, url: f.source.url });
         }
       }
+      if (items.length) groups.push({ key: catKey, name: cats[catKey].name, icon: cats[catKey].icon, items });
     }
-    return `
-      <div class="src-count">${items.length} peer-reviewed sources</div>
-      <div class="sources">${items.map(s => `
-        <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link">
-          <span class="src-tag">${s.tag}</span>
-          <span class="src-title">${s.title}</span>
-        </a>`).join('')}</div>`;
+    return groups;
+  }
+
+  _srcLink(s, tag) {
+    return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link">
+        ${tag ? `<span class="src-tag">${tag}</span>` : ''}
+        <span class="src-title">${s.title}</span>
+      </a>`;
+  }
+
+  // Desktop = compact grid (tag = category); mobile = one collapsible <details>
+  // per category (first open) so it isn't one long wall of every source at once.
+  _renderSources() {
+    const groups = this._sourceGroups();
+    const total = groups.reduce((n, g) => n + g.items.length, 0);
+    const desktop = `<div class="src-desktop">${
+      groups.map(g => g.items.map(s => this._srcLink(s, g.name)).join('')).join('')
+    }</div>`;
+    const mobile = `<div class="src-mobile">${
+      groups.map((g, i) => `
+        <details class="src-group"${i === 0 ? ' open' : ''}>
+          <summary class="src-group-head">
+            <span class="src-group-ico">${this._icon(g.icon)}</span>
+            <span class="src-group-name">${g.name}</span>
+            <span class="src-group-n">${g.items.length}</span>
+            <span class="src-group-chev">${this._icon('chevDown')}</span>
+          </summary>
+          <div class="src-group-body">${g.items.map(s => this._srcLink(s, null)).join('')}</div>
+        </details>`).join('')
+    }</div>`;
+    return `<div class="src-count">${total} peer-reviewed sources across ${groups.length} categories</div>${desktop}${mobile}`;
   }
 
   _sourceCount() {
@@ -941,14 +964,32 @@ class KygoRemSleep extends HTMLElement {
 
       /* Sources */
       .src-count { font-size:13px; color:var(--fg-3); margin-bottom:14px; }
-      .sources { display:grid; grid-template-columns:1fr; gap:8px; }
-      @media (min-width:600px){ .sources { grid-template-columns:1fr 1fr; } }
-      @media (min-width:960px){ .sources { grid-template-columns:repeat(3,1fr); } }
       .src { display:flex; flex-direction:column; gap:4px; background:#fff; border:1.5px solid var(--border-subtle); border-radius:12px; padding:12px 14px; transition:border-color .15s, box-shadow .15s; }
       .src:hover { border-color:var(--kygo-green); box-shadow:var(--shadow-md); }
       .src-tag { align-self:flex-start; font-family:var(--font-display); font-size:9.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--kygo-green-dark); }
       .src-title { font-family:var(--font-display); font-weight:600; font-size:13px; color:var(--fg-1); line-height:1.3; }
       .src:hover .src-title { color:var(--kygo-green-dark); }
+
+      /* Mobile = collapsible accordion by category; desktop = compact grid */
+      .src-desktop { display:none; }
+      .src-mobile { display:flex; flex-direction:column; gap:10px; }
+      .src-group { background:#fff; border:1.5px solid var(--border-subtle); border-radius:14px; overflow:hidden; transition:border-color .2s; }
+      .src-group[open] { border-color:var(--kygo-green-light); }
+      .src-group-head { display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; list-style:none; }
+      .src-group-head::-webkit-details-marker { display:none; }
+      .src-group-ico { width:30px; height:30px; border-radius:8px; background:var(--kygo-green-light); color:var(--kygo-green-dark); display:inline-flex; align-items:center; justify-content:center; flex:none; }
+      .src-group-ico svg { width:16px; height:16px; }
+      .src-group-name { font-family:var(--font-display); font-weight:600; font-size:14px; color:var(--fg-1); flex:1; min-width:0; }
+      .src-group-n { font-family:var(--font-display); font-size:11px; font-weight:600; color:var(--fg-3); background:var(--bg-raised); padding:3px 9px; border-radius:999px; flex:none; }
+      .src-group-chev { color:var(--fg-3); display:inline-flex; flex:none; }
+      .src-group-chev svg { width:16px; height:16px; transition:transform .2s; }
+      .src-group[open] .src-group-chev svg { transform:rotate(180deg); color:var(--kygo-green-dark); }
+      .src-group-body { display:flex; flex-direction:column; gap:8px; padding:0 16px 16px; }
+      @media (min-width:768px){
+        .src-mobile { display:none; }
+        .src-desktop { display:grid; gap:8px; grid-template-columns:1fr 1fr; }
+      }
+      @media (min-width:960px){ .src-desktop { grid-template-columns:repeat(3,1fr); } }
 
       /* Footer */
       .tool-footer { padding:56px 20px 40px; background:var(--kygo-light); color:var(--fg-2); border-top:1px solid var(--border-subtle); }
