@@ -462,36 +462,31 @@ class KygoFaqSection extends HTMLElement {
           to { opacity: 1; transform: scale(1); }
         }
 
+        .final-cta-content .cta-pill,
         .final-cta-content h2,
         .final-cta-content > p,
         .final-cta-content .cta-primary,
         .final-cta-content .cta-android,
-        .final-cta-content .risk-reversal {
+        .final-cta-content .cta-works {
           opacity: 0;
         }
-        .final-cta-inner.visible .final-cta-content h2 {
-          animation: ctaSlideUp 0.6s ease-out forwards;
+        .final-cta-inner.visible .final-cta-content .cta-pill {
+          animation: ctaSlideUp 0.5s ease-out forwards;
         }
-        .final-cta-inner.visible .final-cta-content > p {
+        .final-cta-inner.visible .final-cta-content h2 {
           animation: ctaSlideUp 0.6s ease-out 0.1s forwards;
         }
+        .final-cta-inner.visible .final-cta-content > p {
+          animation: ctaSlideUp 0.6s ease-out 0.25s forwards;
+        }
         .final-cta-inner.visible .final-cta-content .cta-primary {
-          animation: ctaScaleIn 0.5s ease-out 0.25s forwards;
+          animation: ctaScaleIn 0.5s ease-out 0.4s forwards;
         }
         .final-cta-inner.visible .final-cta-content .cta-android {
-          animation: ctaScaleIn 0.5s ease-out 0.25s forwards;
+          animation: ctaScaleIn 0.5s ease-out 0.4s forwards;
         }
-        .final-cta-inner.visible .final-cta-content .risk-reversal {
-          animation: fadeInUp 0.5s ease-out 0.4s forwards;
-        }
-
-        /* CTA button glow pulse */
-        @keyframes ctaGlow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
-          50% { box-shadow: 0 0 20px 4px rgba(255,255,255,0.2); }
-        }
-        .final-cta-inner.visible .cta-primary {
-          animation: ctaScaleIn 0.5s ease-out 0.25s forwards, ctaGlow 2.5s ease-in-out 1s infinite;
+        .final-cta-inner.visible .final-cta-content .cta-works {
+          animation: fadeInUp 0.5s ease-out 0.55s forwards;
         }
 
         /* Reduced motion for all new animations */
@@ -506,10 +501,12 @@ class KygoFaqSection extends HTMLElement {
           .still-questions-inner > p,
           .still-questions-inner .contact-options,
           .still-questions-inner .contact-option,
+          .final-cta-content .cta-pill,
           .final-cta-content h2,
           .final-cta-content > p,
           .final-cta-content .cta-primary,
-          .final-cta-content .risk-reversal {
+          .final-cta-content .cta-android,
+          .final-cta-content .cta-works {
             opacity: 1;
             transform: none;
             animation: none;
@@ -528,27 +525,30 @@ class KygoFaqSection extends HTMLElement {
         .contact-option-text strong { display: block; font-size: 15px; margin-bottom: 2px; }
         .contact-option-text span { font-size: 13px; color: var(--gray-600); }
 
-        .final-cta { padding: 48px 0; background: white; }
-        .final-cta-inner { background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: 24px; padding: 36px 24px; text-align: center; position: relative; overflow: hidden; }
-        .final-cta-inner::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%); pointer-events: none; }
-        .final-cta-content { position: relative; z-index: 1; }
-        .final-cta h2 { font-size: 32px; color: white; margin-bottom: 12px; }
-        .final-cta-content > p { color: rgba(255,255,255,0.85); margin-bottom: 20px; font-size: 17px; }
+        .final-cta { padding: 72px 0; background: white; }
+        .final-cta-inner { background: #0F172A; border-radius: 24px; padding: 40px 24px; text-align: center; position: relative; overflow: hidden; color: #fff; }
+        .final-cta-inner::before { content: ''; position: absolute; top: -160px; right: -160px; width: 520px; height: 520px; background: radial-gradient(closest-side, rgba(34,197,94,0.30), transparent); pointer-events: none; }
+        .final-cta-inner::after { content: ''; position: absolute; bottom: -180px; left: -180px; width: 480px; height: 480px; background: radial-gradient(closest-side, rgba(34,197,94,0.12), transparent); pointer-events: none; }
+        .final-cta-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+        .cta-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.16); color: #6EE7A0; padding: 6px 14px; border-radius: 999px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; border: 1px solid rgba(34,197,94,0.25); margin-bottom: 18px; }
+        .cta-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+        .final-cta h2 { font-size: clamp(26px, 4.5vw, 42px); line-height: 1.05; color: #fff; margin-bottom: 14px; max-width: 22ch; }
+        .final-cta h2 span { color: var(--green); }
+        .final-cta-content > p { color: rgba(255,255,255,0.72); margin-bottom: 24px; font-size: clamp(15px, 1.6vw, 17px); max-width: 56ch; line-height: 1.6; }
         .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-        .cta-primary { background: white; color: var(--green-dark); padding: 14px 24px; border-radius: 12px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
-        .cta-primary:hover { background: var(--light); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .cta-primary svg { width: 18px; height: 18px; }
-        .risk-reversal { margin-top: 20px; color: rgba(255,255,255,0.7); font-size: 13px; display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
-        .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-        .cta-android svg{width:18px;height:18px}
+        .cta-primary, .cta-android { background: var(--green); color: #fff; padding: 14px 24px; border-radius: 12px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+        .cta-primary:hover, .cta-android:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(34,197,94,0.30); }
+        .cta-primary svg, .cta-android svg { width: 18px; height: 18px; }
+        .cta-works { margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.6); font-size: 13px; }
+        .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
 
         @media (min-width: 768px) {
           .hero { padding: 80px 0 60px; }
           .hero h1 { font-size: 48px; }
-          .final-cta-inner { padding: 48px 40px; }
-          .final-cta h2 { font-size: 40px; }
+          .final-cta { padding: 96px 0; }
+          .final-cta-inner { padding: 56px 40px; }
         }
       </style>
 
@@ -1408,25 +1408,30 @@ class KygoFaqSection extends HTMLElement {
         <div class="container">
           <div class="final-cta-inner animate-on-scroll">
             <div class="final-cta-content">
-              <h2>Ready to understand your body?</h2>
-              <p>Stop guessing. Start seeing the correlations between what you eat and how you feel.</p>
+              <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+              <h2>No more questions? <span>Try it free.</span></h2>
+              <p>Logging and wearable syncing are free forever. See your meals line up against how you actually sleep, recover, and feel.</p>
               <div class="cta-buttons">
-                <a href="${appStoreUrl}" class="cta-primary" target="_blank" rel="noopener">
+                <a href="${appStoreUrl}" class="cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                   Download for iOS
                 </a>
-                <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
-              <p class="risk-reversal">
-                <span>Free forever plan</span>
-                <span>•</span>
-                <span>No credit card required</span>
-                <span>•</span>
-                <span>Upgrade anytime</span>
-              </p>
+              <div class="cta-works">
+                <span>Works with</span>
+                <div class="cta-badges">
+                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
