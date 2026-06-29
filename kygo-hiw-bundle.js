@@ -3261,8 +3261,8 @@ class KygoHiwFinalCta extends HTMLElement {
           <div class="final-cta-inner animate-on-scroll">
             <div class="final-cta-content">
               <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-              <h2>Ready to understand <span>your body?</span></h2>
-              <p>Stop guessing. Start seeing the correlations between what you eat and how you feel.</p>
+              <h2>Ready to see <span>your own patterns?</span></h2>
+              <p>Connect a wearable, log a few meals, and Kygo starts surfacing the foods helping or hurting your sleep and recovery in about a week.</p>
 
               <div class="cta-buttons">
                 <a href="${ctaLink}" class="cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta">
