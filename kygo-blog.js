@@ -383,9 +383,6 @@ class KygoBlog extends HTMLElement {
 
         /* CATEGORY TABS */
         .category-tabs {
-          position: sticky;
-          top: 0;
-          z-index: 5;
           background: #fff;
           border-bottom: 1px solid var(--gray-200);
         }
