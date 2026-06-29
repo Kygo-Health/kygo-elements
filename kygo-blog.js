@@ -433,10 +433,10 @@ class KygoBlog extends HTMLElement {
           border-color: var(--green);
         }
 
-        /* HERO BAND (white — continues the masthead) */
+        /* HERO BAND (grey — featured card pops here, like the list) */
         .hero-band {
-          background: #fff;
-          padding: 16px 0 48px;
+          background: var(--light);
+          padding: 24px 0 48px;
         }
 
         /* FEATURED SECTION HEADER */
@@ -503,7 +503,7 @@ class KygoBlog extends HTMLElement {
         }
         .featured-post-image {
           aspect-ratio: 16 / 9;
-          background: var(--gray-100);
+          background: #fff;
           overflow: hidden;
           position: relative;
         }
@@ -528,6 +528,7 @@ class KygoBlog extends HTMLElement {
           display: flex;
           flex-direction: column;
           gap: 12px;
+          border-top: 1px solid var(--gray-200);
         }
         .featured-label {
           display: inline-flex;
@@ -765,7 +766,6 @@ class KygoBlog extends HTMLElement {
           .post-card-content {
             padding: 18px 20px 20px;
             gap: 8px;
-            background: var(--gray-100);
             border-top: 1px solid var(--gray-200);
           }
           .post-card-title { font-size: 17px; }
@@ -798,6 +798,8 @@ class KygoBlog extends HTMLElement {
             flex: 0 0 45%;
             padding: 48px;
             justify-content: center;
+            border-top: none;
+            border-left: 1px solid var(--gray-200);
           }
           .featured-post-title { font-size: 30px; }
 
