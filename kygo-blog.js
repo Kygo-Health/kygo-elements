@@ -819,7 +819,7 @@ class KygoBlog extends HTMLElement {
 
         /* FINAL CTA — dark card (matches tool pages) */
         .final-cta {
-          padding: 48px 0 72px;
+          padding: 72px 0;
           background: var(--light);
         }
         .kygo-cta-card {
@@ -976,7 +976,7 @@ class KygoBlog extends HTMLElement {
         }
 
         @media (min-width: 768px) {
-          .final-cta { padding: 64px 0 96px; }
+          .final-cta { padding: 96px 0; }
           .kygo-cta-card { padding: 56px 40px; }
         }
 
