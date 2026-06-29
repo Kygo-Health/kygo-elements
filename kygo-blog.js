@@ -371,7 +371,22 @@ class KygoBlog extends HTMLElement {
         .blog-header h1 {
           font-size: 32px;
           color: var(--dark);
+          letter-spacing: -0.02em;
         }
+        .blog-header h1 .hl { color: var(--green); }
+        .kicker-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: var(--green-light);
+          color: var(--green-dark);
+          padding: 6px 14px;
+          border-radius: 9999px;
+          font-size: 12px;
+          font-weight: 600;
+          margin-bottom: 16px;
+        }
+        .kicker-pill svg { width: 14px; height: 14px; }
         .blog-header .subtitle {
           margin-top: 10px;
           color: var(--gray-500);
@@ -997,8 +1012,9 @@ class KygoBlog extends HTMLElement {
 
       <header class="blog-header">
         <div class="container">
-          <h1>Kygo Health's Blog</h1>
-          <p class="subtitle">Evidence-first guides on sleep, HRV, nutrition, and the wearables that track them. Stop guessing and act on what the research actually shows.</p>
+          <div class="kicker-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg> Research-Based Guides</div>
+          <h1>Kygo Health's <span class="hl">Blog</span></h1>
+          <p class="subtitle">Research-backed deep dives on sleep, HRV, nutrition, and the accuracy of the wearables that track them.</p>
         </div>
       </header>
 
