@@ -202,16 +202,18 @@ class KygoBlog extends HTMLElement {
     return `<div class="image-fallback">${this._placeholderSvg()}</div>`;
   }
 
-  _renderFeaturedPost(post) {
+  _renderFeaturedPost(post, opts = {}) {
     if (!post) return '';
+    const title = opts.title || 'Featured Article';
+    const descriptor = opts.descriptor || 'Our most-read deep dive on wearable accuracy';
     return `
       <header class="featured-header-row">
         <span class="featured-badge" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 6.94H22l-6.18 4.49L18.21 21 12 16.77 5.79 21l2.39-7.57L2 8.94h7.61L12 2z"/></svg>
         </span>
         <div class="featured-heading">
-          <h2 class="featured-section-title">Featured Article</h2>
-          <p class="featured-section-descriptor">Our most-read deep dive on wearable accuracy</p>
+          <h2 class="featured-section-title">${title}</h2>
+          <p class="featured-section-descriptor">${descriptor}</p>
         </div>
         <span class="featured-rule" aria-hidden="true"></span>
       </header>
@@ -305,7 +307,19 @@ class KygoBlog extends HTMLElement {
       sectionsHtml = groups.map(g => this._renderCategorySection(g)).join('');
     } else {
       const filtered = this._getFilteredPosts();
-      sectionsHtml = this._renderFilteredGrid(filtered);
+      if (filtered.length === 0) {
+        sectionsHtml = this._renderFilteredGrid(filtered);
+      } else {
+        const cfg = CATEGORY_CONFIG.find(c => c.slug === this._activeSlug);
+        const pinned = filtered.find(p => p.slug === PINNED_FEATURED_SLUG);
+        const featured = pinned || filtered[0];
+        const rest = filtered.filter(p => p !== featured);
+        heroHtml = this._renderFeaturedPost(featured, {
+          title: cfg ? `Featured in ${cfg.label}` : 'Featured Article',
+          descriptor: cfg ? cfg.descriptor : ''
+        });
+        sectionsHtml = rest.length ? this._renderFilteredGrid(rest) : '';
+      }
     }
 
     this.shadowRoot.innerHTML = `
