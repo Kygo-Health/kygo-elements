@@ -765,6 +765,7 @@ class KygoBlog extends HTMLElement {
           .post-card-content {
             padding: 18px 20px 20px;
             gap: 8px;
+            border-top: 1px solid var(--gray-200);
           }
           .post-card-title { font-size: 17px; }
           .post-card-excerpt { font-size: 14px; }
