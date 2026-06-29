@@ -367,6 +367,7 @@ class KygoBlog extends HTMLElement {
         .blog-header {
           text-align: center;
           padding: 40px 0 20px;
+          background: #fff;
         }
         .blog-header h1 {
           font-size: 32px;
@@ -991,7 +992,7 @@ class KygoBlog extends HTMLElement {
       <header class="blog-header">
         <div class="container">
           <h1>The Kygo Blog</h1>
-          <p class="subtitle">Evidence-first guides on sleep, HRV, nutrition, and the wearables that track them &mdash; so you can stop guessing and start acting on what the research actually shows.</p>
+          <p class="subtitle">Evidence-first guides on sleep, HRV, nutrition, and the wearables that track them. Stop guessing and act on what the research actually shows.</p>
         </div>
       </header>
 
