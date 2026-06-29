@@ -263,16 +263,7 @@ class KygoBlog extends HTMLElement {
           <span class="category-rule" aria-hidden="true"></span>
         </header>
         <div class="post-grid">
-          ${posts.slice(0, 6).map(p => this._renderPostCard(p)).join('')}
-        </div>
-        <div class="view-all-row">
-          <a class="view-all" href="/blog/categories/${cfg.slug}">
-            View all ${cfg.label}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M9 6l6 6-6 6"/>
-            </svg>
-          </a>
+          ${posts.map(p => this._renderPostCard(p)).join('')}
         </div>
       </section>
     `;
@@ -686,28 +677,6 @@ class KygoBlog extends HTMLElement {
         .post-card-meta {
           font-size: 12px;
           margin-top: 2px;
-        }
-
-        /* VIEW ALL */
-        .view-all-row {
-          margin-top: 18px;
-          display: flex;
-          justify-content: flex-end;
-        }
-        .view-all {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          font-size: 14px;
-          font-weight: 600;
-          color: var(--green-dark);
-          padding: 6px 0;
-          transition: gap 0.2s ease, color 0.2s ease;
-        }
-        .view-all svg { width: 16px; height: 16px; }
-        .view-all:hover {
-          color: var(--dark);
-          gap: 8px;
         }
 
         /* EMPTY / LOADING */
