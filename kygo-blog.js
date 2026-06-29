@@ -162,12 +162,11 @@ class KygoBlog extends HTMLElement {
   }
 
   _handleCategoryClick(slug) {
+    if (slug === this._activeSlug) return;
     this._activeSlug = slug;
     this.render();
-    const top = this.shadowRoot.querySelector('.category-tabs');
-    if (top && typeof top.scrollIntoView === 'function') {
-      top.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // No scroll: the pill bar is a sticky in-place filter; jumping the
+    // viewport on select is disorienting.
   }
 
   _handlePostClick(slug) {
@@ -388,12 +387,22 @@ class KygoBlog extends HTMLElement {
           top: 0;
           z-index: 5;
           background: var(--light);
-          border-bottom: 1px solid var(--gray-200);
+        }
+        .category-tabs-label {
+          display: block;
+          font-family: 'Space Grotesk', -apple-system, sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--gray-500);
+          padding-top: 18px;
+          margin-bottom: 10px;
         }
         .category-tabs-inner {
           display: flex;
           gap: 8px;
-          padding: 14px 0;
+          padding: 0 0 16px;
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
           scrollbar-width: none;
@@ -471,7 +480,7 @@ class KygoBlog extends HTMLElement {
         /* SECTIONS BAND (grey — white cards pop here) */
         .sections-band {
           background: var(--light);
-          padding: 48px 0 72px;
+          padding: 32px 0 72px;
           position: relative;
         }
 
@@ -648,7 +657,7 @@ class KygoBlog extends HTMLElement {
           height: 110px;
           border-radius: 10px;
           overflow: hidden;
-          background: var(--gray-100);
+          background: #fff;
           position: relative;
         }
         .post-card-image img,
@@ -721,10 +730,10 @@ class KygoBlog extends HTMLElement {
           .blog-header { padding: 56px 0 24px; }
           .blog-header h1 { font-size: 40px; }
           .blog-header .subtitle { font-size: 16px; }
-          .category-tabs-inner { gap: 10px; padding: 16px 0; }
+          .category-tabs-inner { gap: 10px; padding: 0 0 16px; }
           .category-tab { padding: 9px 18px; font-size: 14px; }
           .hero-band { padding: 40px 0 72px; }
-          .sections-band { padding: 64px 0 96px; }
+          .sections-band { padding: 40px 0 96px; }
 
           .featured-header-row { margin-bottom: 24px; }
           .featured-post-content { padding: 32px; gap: 14px; }
@@ -768,7 +777,7 @@ class KygoBlog extends HTMLElement {
           .blog-header { padding: 72px 0 28px; }
           .blog-header h1 { font-size: 48px; }
           .hero-band { padding: 40px 0 80px; }
-          .sections-band { padding: 72px 0 120px; }
+          .sections-band { padding: 48px 0 120px; }
 
           .featured-header-row { margin-bottom: 24px; }
           .featured-section-title { font-size: 22px; }
@@ -1005,6 +1014,7 @@ class KygoBlog extends HTMLElement {
 
       <nav class="category-tabs" aria-label="Blog categories">
         <div class="container">
+          <span class="category-tabs-label">Browse by topic</span>
           <div class="category-tabs-inner" role="tablist">
             ${tabs.map(t => `
               <button
