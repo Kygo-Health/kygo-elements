@@ -164,7 +164,7 @@ class KygoBlog extends HTMLElement {
   _handleCategoryClick(slug) {
     this._activeSlug = slug;
     this.render();
-    const top = this.shadowRoot.querySelector('.blog-body');
+    const top = this.shadowRoot.querySelector('.category-tabs');
     if (top && typeof top.scrollIntoView === 'function') {
       top.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -424,10 +424,10 @@ class KygoBlog extends HTMLElement {
           border-color: var(--green);
         }
 
-        /* HERO BAND (grey) */
+        /* HERO BAND (white — continues the masthead) */
         .hero-band {
-          background: var(--light);
-          padding: 32px 0 56px;
+          background: #fff;
+          padding: 16px 0 48px;
         }
 
         /* FEATURED SECTION HEADER */
@@ -468,11 +468,10 @@ class KygoBlog extends HTMLElement {
           margin-left: 4px;
         }
 
-        /* SECTIONS BAND (white - cards pop here) */
+        /* SECTIONS BAND (grey — white cards pop here) */
         .sections-band {
-          background: white;
+          background: var(--light);
           padding: 48px 0 72px;
-          border-top: 1px solid var(--gray-200);
           position: relative;
         }
 
@@ -804,7 +803,7 @@ class KygoBlog extends HTMLElement {
         /* FINAL CTA — dark card (matches tool pages) */
         .final-cta {
           padding: 72px 0;
-          background: var(--light);
+          background: #fff;
         }
         .kygo-cta-card {
           background: #0F172A;
@@ -991,10 +990,18 @@ class KygoBlog extends HTMLElement {
 
       <header class="blog-header">
         <div class="container">
-          <h1>The Kygo Blog</h1>
+          <h1>Kygo Health's Blog</h1>
           <p class="subtitle">Evidence-first guides on sleep, HRV, nutrition, and the wearables that track them. Stop guessing and act on what the research actually shows.</p>
         </div>
       </header>
+
+      ${heroHtml ? `
+        <section class="hero-band">
+          <div class="container">
+            ${heroHtml}
+          </div>
+        </section>
+      ` : ''}
 
       <nav class="category-tabs" aria-label="Blog categories">
         <div class="container">
@@ -1011,14 +1018,6 @@ class KygoBlog extends HTMLElement {
           </div>
         </div>
       </nav>
-
-      ${heroHtml ? `
-        <section class="hero-band">
-          <div class="container">
-            ${heroHtml}
-          </div>
-        </section>
-      ` : ''}
 
       <main class="blog-body sections-band">
         <div class="container">
