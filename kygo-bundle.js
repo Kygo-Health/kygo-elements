@@ -1048,25 +1048,26 @@ class KygoFounderCta extends HTMLElement {
         .founder-info{display:flex;flex-direction:column;justify-content:center}
         .founder-info h4{color:white;font-size:16px;margin-bottom:2px;line-height:1.2}
         .founder-info span{color:var(--gray-400);font-size:14px;line-height:1.2}
-        .final-cta{padding:48px 0;background:var(--gray-50)}
-        .final-cta-inner{background:linear-gradient(135deg,var(--green),var(--green-dark));border-radius:24px;padding:36px 24px;text-align:center;position:relative;overflow:hidden}
-        .final-cta-inner::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.1) 0%,transparent 50%);pointer-events:none}
-        .final-cta-content{position:relative;z-index:1}
-        .final-cta h2{font-size:32px;color:white;margin-bottom:12px}
-        .final-cta-content>p{color:rgba(255,255,255,0.8);margin-bottom:20px;font-size:17px}
+        .final-cta{padding:72px 0;background:var(--gray-50)}
+        .final-cta-inner{background:#0F172A;border-radius:24px;padding:40px 24px;text-align:center;position:relative;overflow:hidden;color:#fff}
+        .final-cta-inner::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,0.30),transparent);pointer-events:none}
+        .final-cta-inner::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,0.12),transparent);pointer-events:none}
+        .final-cta-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+        .cta-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,0.25);margin-bottom:18px}
+        .cta-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+        .final-cta h2{font-size:clamp(26px,4.5vw,42px);line-height:1.05;color:#fff;margin-bottom:14px;max-width:22ch}
+        .final-cta h2 span{color:var(--green)}
+        .final-cta-content>p{color:rgba(255,255,255,0.72);margin-bottom:24px;font-size:clamp(14px,1.6vw,16px);max-width:56ch;line-height:1.6}
         .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-        .cta-primary{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
-        .cta-primary:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-        .cta-primary:active,.cta-primary:focus{background:white;color:var(--green-dark);outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(0,0,0,0.15)}
-        .cta-primary svg{width:18px;height:18px}
-        .risk-reversal{margin-top:16px;color:rgba(255,255,255,0.7);display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:13px}
-        .risk-reversal span{display:inline-flex;align-items:center}
-        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
-        .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-        .cta-android:active,.cta-android:focus{background:white;color:var(--green-dark);outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(0,0,0,0.15)}
-        .cta-android svg{width:18px;height:18px}
+        .cta-primary,.cta-android{background:var(--green);color:#fff;padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;cursor:pointer;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
+        .cta-primary:hover,.cta-android:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 10px 30px rgba(34,197,94,0.30)}
+        .cta-primary:active,.cta-primary:focus,.cta-android:active,.cta-android:focus{outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(34,197,94,0.20)}
+        .cta-primary svg,.cta-android svg{width:18px;height:18px}
+        .cta-works{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:13px}
+        .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+        .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
-        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:60px 0}.final-cta-inner{padding:48px 40px}.final-cta h2{font-size:40px}}
+        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
       </style>
       <section class="founder-story">
         <div class="container">
@@ -1098,7 +1099,8 @@ class KygoFounderCta extends HTMLElement {
         <div class="container">
           <div class="final-cta-inner animate-on-scroll">
             <div class="final-cta-content">
-              <h2>Ready to understand your body?</h2>
+              <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+              <h2>Ready to understand <span>your body?</span></h2>
               <p>Stop guessing. Start discovering what actually works for you.</p>
               <div class="cta-buttons">
                 <a href="${appStoreUrl}" class="cta-primary" data-track-position="footer-cta" target="_blank" rel="noopener noreferrer">
@@ -1110,7 +1112,17 @@ class KygoFounderCta extends HTMLElement {
                   Download for Android
                 </a>
               </div>
-              <p class="risk-reversal"><span>Free forever plan</span><span>•</span><span>No credit card required</span><span>•</span><span>Cancel anytime</span></p>
+              <div class="cta-works">
+                <span>Works with</span>
+                <div class="cta-badges">
+                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
