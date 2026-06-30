@@ -14,7 +14,8 @@ this skill assumes that house style.
 > skeleton, the reusable modules (logo comparison matrix, collapsible category dropdowns, compact
 > sources), the brand-logo map, the mobile/scroll-reveal gotchas, and the pre-commit checklist.
 > Use `kygo-oura-ring-comparison.js` / `kygo-vo2max-accuracy.js` as the reference implementations,
-> and register the new tool in `kygo-tools.js`.
+> and register the new tool in `kygo-tools.js` — including **a green "data-motif" card** for it
+> (`_motifFor`/`_motifBody`); see the playbook §6 for the motif catalog and the teaser rules.
 
 ## Inputs to determine (ask the user only if unclear)
 
