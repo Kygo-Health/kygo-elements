@@ -161,7 +161,7 @@ class KygoToolsPage extends HTMLElement {
       return { motif: tool.motif, caption: tool.caption || '', stage: tool.stage, rows: tool.rows,
         ringValue: tool.ringValue, ringNote: tool.ringNote, bpm: tool.bpm,
         gaugePct: tool.gaugePct, gaugeValue: tool.gaugeValue, gaugeUnit: tool.gaugeUnit, rangeLabel: tool.rangeLabel,
-        radar: tool.radar, bars: tool.bars, versusA: tool.versusA, versusB: tool.versusB, versus: tool.versus, tiers: tool.tiers, dots: tool.dots };
+        radar: tool.radar, bars: tool.bars, versusA: tool.versusA, versusB: tool.versusB, versus: tool.versus, tiers: tool.tiers, dots: tool.dots, rings: tool.rings };
     }
     const map = {
       'wearable-accuracy': { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] },
@@ -169,7 +169,7 @@ class KygoToolsPage extends HTMLElement {
       'supplements-by-metric': { motif: 'ranked', caption: 'Graded by evidence' },
       'vo2-max-accuracy': { motif: 'compare', caption: 'Accuracy vs lab CPET', rows: [{ label: 'Garmin', pct: 93 }, { label: 'Apple', pct: 85 }, { label: 'Polar', pct: 80 }, { label: 'Fitbit', pct: 64 }] },
       'vo2-max-factors': { motif: 'gauge', caption: 'VO2 max estimate', gaugePct: 78, gaugeValue: '48', gaugeUnit: 'VO2 MAX' },
-      'oura-ring-comparison-tool': { motif: 'tiers', caption: 'Generation upgrade', tiers: [{ label: 'Gen 3', h: 0.42 }, { label: 'Ring 4', h: 0.68 }, { label: 'Ring 5', h: 1.0 }] },
+      'oura-ring-comparison-tool': { motif: 'rings', caption: 'Three generations', rings: [{ label: 'Gen 3' }, { label: 'Ring 4' }, { label: 'Ring 5' }] },
       'fitbit-air-vs-whoop-comparison': { motif: 'versus', caption: 'Head-to-head accuracy', versusA: 'WHOOP', versusB: 'Fitbit Air', versus: [{ a: 90, b: 72 }, { a: 88, b: 68 }, { a: 82, b: 64 }] },
       'stress-factors': { motif: 'gauge', caption: 'Stress load', gaugePct: 62, gaugeValue: '62', gaugeUnit: 'STRESS' },
       'staying-asleep-factors': { motif: 'ranked', caption: 'Factors ranked by evidence' },
@@ -245,17 +245,31 @@ class KygoToolsPage extends HTMLElement {
     if (m === 'diverging') {
       const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
       const rows = Array.isArray(c.bars) ? c.bars : [];
-      const cx = 128, maxLen = 70;
+      const cx = 124, maxLen = 70;
+      const dmax = Math.max(20, ...rows.map(r => Math.abs(r.val || 0)));
       const body = rows.map((r, i) => {
         const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
-        const v = Math.max(-100, Math.min(100, r.val || 0));
-        const len = Math.abs(v) / 100 * maxLen;
+        const v = r.val || 0;
+        const len = Math.max(5, Math.abs(v) / dmax * maxLen);
         const x = v >= 0 ? cx : cx - len;
         const y = 6 + i * 20;
-        return `<text x="0" y="${y + 11}" font-family="Space Grotesk" font-weight="600" font-size="9" fill="#475569">${r.label}</text><rect x="${x.toFixed(1)}" y="${y}" width="${len.toFixed(1)}" height="11" rx="5.5" fill="${fill}"/>`;
+        return `<text x="0" y="${y + 11}" font-family="Space Grotesk" font-weight="600" font-size="9" fill="#475569">${r.label}</text><rect x="${x.toFixed(1)}" y="${y}" width="${len.toFixed(1)}" height="11" rx="3" fill="${fill}"/>`;
       }).join('');
       const h = 6 + rows.length * 20;
       return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><line x1="${cx}" y1="2" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'rings') {
+      const r = Array.isArray(c.rings) ? c.rings : [];
+      const fills = ['#86EFAC', '#22C55E', '#16A34A'];
+      const radii = [15, 21, 28];
+      const sw = [6, 6.5, 7];
+      const n = r.length || 3;
+      const gap = 200 / n, cy = 44;
+      const body = r.map((rr, i) => {
+        const cx = gap * (i + 0.5);
+        return `<circle cx="${cx.toFixed(1)}" cy="${cy}" r="${radii[i] || 18}" fill="none" stroke="${fills[i] || '#16A34A'}" stroke-width="${sw[i] || 6}"/><text x="${cx.toFixed(1)}" y="94" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" fill="#94A3B8">${rr.label}</text>`;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;">${body}</svg>`;
     }
     if (m === 'versus') {
       const a = c.versusA || 'A', b = c.versusB || 'B';
@@ -569,11 +583,13 @@ class KygoToolsPage extends HTMLElement {
         font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 10px;
         letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 14px;
       }
-      .feat-rows { display: flex; flex-direction: column; gap: 11px; }
-      .feat-row { display: flex; align-items: center; gap: 10px; }
-      .feat-row .lab { width: 54px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 11px; color: var(--gray-600); }
-      .feat-row .track { flex: 1; height: 10px; border-radius: 5px; background: #EEF1F4; overflow: hidden; }
-      .feat-row .fill { display: block; height: 100%; border-radius: 5px; }
+      .feat-matrix { display: flex; flex-direction: column; gap: 9px; }
+      .fm-row { display: grid; grid-template-columns: 82px repeat(4, 1fr); align-items: center; }
+      .fm-dev { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 9px; color: var(--gray-400); text-align: center; }
+      .fm-metric { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 10px; color: var(--gray-600); }
+      .fm-cell { display: flex; justify-content: center; }
+      .fm-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gray-200); }
+      .fm-dot.on { background: #16A34A; box-shadow: 0 0 0 3px rgba(34,197,94,0.14); }
 
       .feat-content { padding: 28px; display: flex; flex-direction: column; gap: 14px; }
       .feat-pop {
@@ -784,14 +800,18 @@ class KygoToolsPage extends HTMLElement {
 
   _renderFeatured(tool) {
     if (!tool) return '';
-    const motif = this._motifFor(tool);
-    const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
-    const rows = Array.isArray(motif.rows) ? motif.rows : [];
-    const rowsHtml = rows.map((r, i) => {
-      const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
-      const w = Math.max(0, Math.min(100, r.pct));
-      return `<div class="feat-row"><span class="lab">${r.label}</span><span class="track"><span class="fill" style="width:${w}%;background:${fill};"></span></span></div>`;
-    }).join('');
+    // "Leader by metric" grid — the accuracy crown moves between devices, so
+    // no single wearable wins everything (a teaser of the real per-metric data).
+    const devices = ['Oura', 'Apple', 'Garmin', 'WHOOP'];
+    const metrics = [
+      { label: 'Sleep stages', winner: 0 },
+      { label: 'Nocturnal HRV', winner: 0 },
+      { label: 'Step count', winner: 1 },
+      { label: 'VO₂ max', winner: 2 },
+      { label: 'Recovery', winner: 3 }
+    ];
+    const matrixHtml = `<div class="fm-row fm-head"><span class="fm-metric"></span>${devices.map(d => `<span class="fm-dev">${d}</span>`).join('')}</div>` +
+      metrics.map(m => `<div class="fm-row"><span class="fm-metric">${m.label}</span>${devices.map((d, i) => `<span class="fm-cell"><span class="fm-dot${i === m.winner ? ' on' : ''}"></span></span>`).join('')}</div>`).join('');
     const stats = [
       { n: '17+', l: 'peer-reviewed studies' },
       { n: '6', l: 'wearables compared' },
@@ -810,8 +830,8 @@ class KygoToolsPage extends HTMLElement {
         <div class="feat-card" data-open-tool="${tool.url || '#'}" role="button" tabindex="0" aria-label="${tool.title}">
           <div class="feat-scene">
             <div class="feat-panel">
-              <div class="feat-panel-cap">Accuracy vs lab · 9 metrics</div>
-              <div class="feat-rows">${rowsHtml}</div>
+              <div class="feat-panel-cap">Accuracy leader by metric</div>
+              <div class="feat-matrix">${matrixHtml}</div>
             </div>
           </div>
           <div class="feat-content">
