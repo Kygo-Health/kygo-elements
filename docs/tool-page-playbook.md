@@ -203,7 +203,7 @@ the standard Apple-mark SVG. Keep these consistent across every tool.
 
 ---
 
-## 6. Register the tool on the index page
+## 6. Register the tool on the index page (+ give it a data-motif card)
 
 Add the tool to `kygo-tools.js` → `_defaultTools()`:
 `{ slug, title, description, icon, badge:'New', url:'/tools/<slug>', category, features:[…] }`
@@ -211,6 +211,48 @@ Add the tool to `kygo-tools.js` → `_defaultTools()`:
 `wearables`; factor explorers → the relevant physiological category). Tool count, grouping and
 ItemList JSON-LD update automatically. **Caveat:** if the live Wix `/tools` page passes its own
 `tools` attribute, that overrides this default and must be updated in the Wix editor too.
+(The `icon` field now only drives the **category section header**, not the card.)
+
+### Card style — image-led "data-motif" tiles (current standard)
+
+The index cards are **image-led** to match the blog: each card opens with a grey media tile
+(`#F1F5F9`, `aspect-ratio:16/10`) holding a **white data panel** — an uppercase `caption` + a
+small **green motif** that previews the tool's *output* — then the title, a 2-line blurb, and a
+muted meta line with an "Open →" affordance. **Every new tool must be wired to a motif.** Do it
+in `_motifFor(tool)` (keyed by `slug`, with per-tool override support) and render it via
+`_motifBody(cfg)` — both in `kygo-tools.js`.
+
+Pick the motif that fits the tool's data shape (don't default everything to bars):
+
+| Motif | Best for | Key params |
+|---|---|---|
+| `ranked` | factor/evidence rankings (descending bars) | — |
+| `compare` | device accuracy ranking, ≤4 labeled rows | `rows:[{label,pct}]` |
+| `diverging` | over/under or bias around zero | `bars:[{label,val}]` (signed) |
+| `versus` | 2-device head-to-head duel | `versusA`,`versusB`,`versus:[{a,b}]` |
+| `radar` | multi-dimensional focus (device × categories) | `radar:[5 vals 0–1]` |
+| `rings` | product generations by size/thickness (Oura) | `rings:[{label}]` (same outer size, varied wall) |
+| `tiers` | generic progression (ascending bars) | `tiers:[{label,h}]` |
+| `dots` | "X of N" coverage counts | `dots:[{label,n}]` |
+| `ring` | a single readiness/score readout (donut) | `ringValue`,`ringNote` |
+| `gauge` | a single value on a 180° arc | `gaugePct`,`gaugeValue`,`gaugeUnit` |
+| `pulse` | HRV / resting-HR (ECG line) | `bpm` (optional) |
+| `decay` | time-to-fall-asleep (falling curve) | — |
+| `hypno` | sleep stages (hypnogram, stage highlight) | `stage:'rem'\|'deep'` |
+| `donut` | macros/calories ring + legend | — |
+| `range` | confidence/likely-range band | `rangeLabel` |
+
+Rules:
+- **Teasers, not answers.** Motif values are *simplified, illustrative* — a few rows or a
+  representative shape, never the full dataset. The real numbers, the "why," and the verdict
+  stay inside the tool. Wire to **real per-tool figures** where a clean one exists (e.g. published
+  accuracy/MAPE); otherwise use a representative readout.
+- **Strictly green over neutrals.** Ramp `#16A34A → #22C55E → #4ADE80 → #86EFAC`; the
+  last/worst row greys out to `#CBD5E1`; tracks `#EEF1F4`, gridlines `#E2E8F0`. No off-palette.
+- **Featured tool** uses a "leader by metric" dot grid (the crown is split across devices) — not
+  a single-winner bar — so it doesn't imply one wearable wins everything.
+- Keep the SVG simple — the panel is ~170px wide. Reuse an existing motif before adding a new one;
+  if you add one, give it a `_motifBody` case + (optional) per-tool override passthrough.
 
 ---
 
@@ -232,5 +274,6 @@ Pre-commit checklist:
 - [ ] Scroll-reveal works on mobile (no section stuck invisible).
 - [ ] Section backgrounds alternate; each block is its own section.
 - [ ] FAQ visible + JSON-LD from one source; `__seo` + counts match the UI.
-- [ ] Tool added to `kygo-tools.js`; new assets documented in `docs/assets-and-urls.md`.
+- [ ] Tool added to `kygo-tools.js` **and wired to a fitting green data-motif** (`_motifFor`);
+      motif is a simplified teaser, on-palette. New assets documented in `docs/assets-and-urls.md`.
 - [ ] Zero runtime errors in the headless render.
