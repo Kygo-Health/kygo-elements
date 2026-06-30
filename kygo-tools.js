@@ -169,7 +169,7 @@ class KygoToolsPage extends HTMLElement {
       'supplements-by-metric': { motif: 'ranked', caption: 'Graded by evidence' },
       'vo2-max-accuracy': { motif: 'compare', caption: 'Accuracy vs lab CPET', rows: [{ label: 'Garmin', pct: 93 }, { label: 'Apple', pct: 85 }, { label: 'Polar', pct: 80 }, { label: 'Fitbit', pct: 64 }] },
       'vo2-max-factors': { motif: 'gauge', caption: 'VO2 max estimate', gaugePct: 78, gaugeValue: '48', gaugeUnit: 'VO2 MAX' },
-      'oura-ring-comparison-tool': { motif: 'rings', caption: 'Three generations', rings: [{ label: 'Gen 3' }, { label: 'Ring 4' }, { label: 'Ring 5' }] },
+      'oura-ring-comparison-tool': { motif: 'rings', caption: 'Relative thickness', rings: [{ label: 'Gen 3' }, { label: 'Ring 4' }, { label: 'Ring 5' }] },
       'fitbit-air-vs-whoop-comparison': { motif: 'versus', caption: 'Head-to-head accuracy', versusA: 'WHOOP', versusB: 'Fitbit Air', versus: [{ a: 90, b: 72 }, { a: 88, b: 68 }, { a: 82, b: 64 }] },
       'stress-factors': { motif: 'gauge', caption: 'Stress load', gaugePct: 62, gaugeValue: '62', gaugeUnit: 'STRESS' },
       'staying-asleep-factors': { motif: 'ranked', caption: 'Factors ranked by evidence' },
@@ -259,15 +259,19 @@ class KygoToolsPage extends HTMLElement {
       return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><line x1="${cx}" y1="2" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
     }
     if (m === 'rings') {
+      // Same outer size, different wall thickness — mirrors the Oura tool hero's
+      // "relative thickness" visual (Ring 5 thinnest, in green).
       const r = Array.isArray(c.rings) ? c.rings : [];
-      const fills = ['#86EFAC', '#22C55E', '#16A34A'];
-      const radii = [15, 21, 28];
-      const sw = [6, 6.5, 7];
-      const n = r.length || 3;
-      const gap = 200 / n, cy = 44;
+      const OE = 27, cy = 44;
+      const sw = [10, 12, 8];
+      const colors = ['#CBD5E1', '#94A3B8', '#16A34A'];
+      const lbl = ['#94A3B8', '#94A3B8', '#16A34A'];
+      const cxs = [34, 100, 166];
       const body = r.map((rr, i) => {
-        const cx = gap * (i + 0.5);
-        return `<circle cx="${cx.toFixed(1)}" cy="${cy}" r="${radii[i] || 18}" fill="none" stroke="${fills[i] || '#16A34A'}" stroke-width="${sw[i] || 6}"/><text x="${cx.toFixed(1)}" y="94" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" fill="#94A3B8">${rr.label}</text>`;
+        const w = sw[i] != null ? sw[i] : 10;
+        const rad = OE - w / 2;
+        const cx = cxs[i] != null ? cxs[i] : (200 / r.length) * (i + 0.5);
+        return `<circle cx="${cx}" cy="${cy}" r="${rad.toFixed(1)}" fill="none" stroke="${colors[i] || '#16A34A'}" stroke-width="${w}"/><text x="${cx}" y="90" text-anchor="middle" font-family="Space Grotesk" font-weight="${i === r.length - 1 ? 700 : 600}" font-size="9" fill="${lbl[i] || '#94A3B8'}">${rr.label}</text>`;
       }).join('');
       return `<svg viewBox="0 0 200 100" width="100%" style="display:block;">${body}</svg>`;
     }
