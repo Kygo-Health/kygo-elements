@@ -1,7 +1,7 @@
 /**
  * Kygo Health - Tools Page Custom Element
  * Tag: kygo-tools-page
- * Mobile-first tools index: hero, category chips, featured navy card, tool grid, dark navy app promo.
+ * Mobile-first tools index: hero, image-led featured card, data-motif tool grid, dark navy app promo.
  * Tools are configurable via the 'tools' attribute (JSON array).
  */
 
@@ -145,6 +145,92 @@ class KygoToolsPage extends HTMLElement {
       }
       return { n: '', l: s };
     });
+  }
+
+  // Collapse features to a short "A · B" meta line (first two features).
+  _metaFor(tool) {
+    if (tool.meta) return tool.meta;
+    const f = Array.isArray(tool.features) ? tool.features : [];
+    return f.slice(0, 2).join(' · ');
+  }
+
+  // Per-tool data-motif config (slug → motif + illustrative params). A tool may
+  // override via its own `motif`/`caption`/etc. fields (e.g. from Wix).
+  _motifFor(tool) {
+    if (tool.motif) {
+      return { motif: tool.motif, caption: tool.caption || '', stage: tool.stage, rows: tool.rows,
+        ringValue: tool.ringValue, ringNote: tool.ringNote, bpm: tool.bpm,
+        gaugePct: tool.gaugePct, gaugeValue: tool.gaugeValue, gaugeUnit: tool.gaugeUnit, rangeLabel: tool.rangeLabel };
+    }
+    const map = {
+      'wearable-accuracy': { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] },
+      'recovery-score-explorer': { motif: 'ring', caption: 'Readiness score', ringValue: 72, ringNote: 'Validated' },
+      'supplements-by-metric': { motif: 'ranked', caption: 'Graded by evidence' },
+      'vo2-max-accuracy': { motif: 'compare', caption: 'Accuracy vs lab CPET', rows: [{ label: 'Garmin', pct: 92 }, { label: 'Apple', pct: 85 }, { label: 'Polar', pct: 78 }, { label: 'Fitbit', pct: 64 }] },
+      'vo2-max-factors': { motif: 'gauge', caption: 'VO2 max estimate', gaugePct: 78, gaugeValue: '48', gaugeUnit: 'VO2 MAX' },
+      'oura-ring-comparison-tool': { motif: 'compare', caption: 'Generation vs generation', rows: [{ label: 'Ring 5', pct: 96 }, { label: 'Ring 4', pct: 84 }, { label: 'Gen 3', pct: 68 }] },
+      'fitbit-air-vs-whoop-comparison': { motif: 'compare', caption: 'Head-to-head specs', rows: [{ label: 'WHOOP', pct: 90 }, { label: 'Fitbit Air', pct: 72 }] },
+      'stress-factors': { motif: 'gauge', caption: 'Stress load', gaugePct: 62, gaugeValue: '62', gaugeUnit: 'STRESS' },
+      'staying-asleep-factors': { motif: 'ranked', caption: 'Factors ranked by evidence' },
+      'hrv-factors': { motif: 'pulse', caption: 'HRV · beat-to-beat' },
+      'resting-heart-rate-factors': { motif: 'pulse', caption: 'Resting heart rate', bpm: '58 bpm' },
+      'sleep-latency-factors': { motif: 'decay', caption: 'Time to fall asleep' },
+      'calorie-burn-accuracy': { motif: 'range', caption: 'Likely actual range', rangeLabel: '−18%' },
+      'deep-sleep-factors': { motif: 'hypno', stage: 'deep', caption: 'Sleep stages overnight' },
+      'food-scanner': { motif: 'donut', caption: 'Macros & calories' },
+      'step-count-accuracy': { motif: 'steps', caption: 'Daily step counts' },
+      'sleep-metrics': { motif: 'compare', caption: 'Metrics tracked per device', rows: [{ label: 'Oura', pct: 96 }, { label: 'Garmin', pct: 84 }, { label: 'Apple', pct: 74 }, { label: 'Fitbit', pct: 60 }] },
+      'sensor-comparison': { motif: 'compare', caption: 'Sensors per device', rows: [{ label: 'Garmin', pct: 95 }, { label: 'WHOOP', pct: 82 }, { label: 'Oura', pct: 76 }, { label: 'Apple', pct: 70 }] },
+      'rem-sleep-factors': { motif: 'hypno', stage: 'rem', caption: 'Sleep stages overnight' }
+    };
+    return map[tool.slug] || { motif: 'ranked', caption: 'Ranked by evidence' };
+  }
+
+  // The motif graphic (SVG/markup) that goes inside the white data panel.
+  // Geometry mirrors ToolCard2.dc.html exactly.
+  _motifBody(c) {
+    const m = c.motif || 'ranked';
+    if (m === 'compare') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.rows) ? c.rows : [];
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const w = Math.max(0, Math.min(100, r.pct));
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:48px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.label}</span><span style="flex:1;height:9px;border-radius:5px;background:#EEF1F4;overflow:hidden;"><span style="display:block;height:100%;border-radius:5px;background:${fill};width:${w}%;"></span></span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:8px;padding:2px 0;">${body}</div>`;
+    }
+    if (m === 'ring') {
+      const v = c.ringValue != null ? c.ringValue : 72;
+      const off = (238.8 * (1 - v / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 96 96" width="80" height="80"><circle cx="48" cy="48" r="38" fill="none" stroke="#E2E8F0" stroke-width="11"/><circle cx="48" cy="48" r="38" fill="none" stroke="#22C55E" stroke-width="11" stroke-linecap="round" stroke-dasharray="238.8" stroke-dashoffset="${off}" transform="rotate(-90 48 48)"/><text x="48" y="46" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="26" fill="#1E293B">${v}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" letter-spacing="0.5" fill="#94A3B8">SCORE</text></svg><div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:#16A34A;">↑ ${c.ringNote || 'Validated'}</div></div>`;
+    }
+    if (m === 'pulse') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><path d="M0 48 L34 48 L44 48 L52 18 L60 60 L70 30 L80 48 L118 48 L128 48 L136 14 L144 58 L154 34 L164 48 L200 48" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="136" cy="14" r="4" fill="#22C55E"/>${c.bpm ? `<text x="200" y="68" text-anchor="end" font-family="Space Grotesk" font-weight="700" font-size="13" fill="#1E293B">${c.bpm}</text>` : ''}</svg>`;
+    }
+    if (m === 'gauge') {
+      const pct = c.gaugePct != null ? c.gaugePct : 70;
+      const off = (125.7 * (1 - pct / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;padding:2px 0;"><svg viewBox="0 0 96 64" width="118" height="78"><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#E2E8F0" stroke-width="10" stroke-linecap="round"/><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#22C55E" stroke-width="10" stroke-linecap="round" stroke-dasharray="125.7" stroke-dashoffset="${off}"/><text x="48" y="50" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="22" fill="#1E293B">${c.gaugeValue || ''}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">${c.gaugeUnit || ''}</text></svg></div>`;
+    }
+    if (m === 'decay') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtDecay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(34,197,94,0.22)"/><stop offset="1" stop-color="rgba(34,197,94,0)"/></linearGradient></defs><path d="M0 10 C40 10 46 58 96 66 L200 74 L200 88 L0 88 Z" fill="url(#mtDecay)"/><path d="M0 10 C40 10 46 58 96 66 L200 74" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round"/><circle cx="96" cy="66" r="4" fill="#22C55E"/></svg>`;
+    }
+    if (m === 'hypno') {
+      const rem = c.stage === 'rem', deep = c.stage === 'deep';
+      return `<svg viewBox="0 0 200 80" width="100%" style="display:block;"><g font-family="Space Grotesk" font-weight="600" font-size="7" fill="#94A3B8"><text x="0" y="11">Awake</text><text x="0" y="33">REM</text><text x="0" y="55">Light</text><text x="0" y="77">Deep</text></g><path d="M36 8 L54 8 L54 52 L80 52 L80 74 L106 74 L106 30 L128 30 L128 52 L152 52 L152 30 L176 30 L176 52 L200 52" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${rem ? '<rect x="106" y="24" width="22" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}${deep ? '<rect x="80" y="68" width="26" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}</svg>`;
+    }
+    if (m === 'donut') {
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 84 84" width="78" height="78"><circle cx="42" cy="42" r="34" fill="none" stroke="#16A34A" stroke-width="12" stroke-dasharray="96 213.6" stroke-dashoffset="0" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#22C55E" stroke-width="12" stroke-dasharray="64 213.6" stroke-dashoffset="-96" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#86EFAC" stroke-width="12" stroke-dasharray="53 213.6" stroke-dashoffset="-160" transform="rotate(-90 42 42)"/><text x="42" y="40" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="17" fill="#1E293B">540</text><text x="42" y="53" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">KCAL</text></svg><div style="display:flex;flex-direction:column;gap:5px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#16A34A;"></span>Protein</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#22C55E;"></span>Carbs</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#86EFAC;"></span>Fat</span></div></div>`;
+    }
+    if (m === 'range') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><defs><linearGradient id="mtRange" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="6" y1="50" x2="194" y2="50" stroke="#E2E8F0" stroke-width="2"/><g stroke="#CBD5E1" stroke-width="2"><line x1="6" y1="46" x2="6" y2="54"/><line x1="100" y1="46" x2="100" y2="54"/><line x1="194" y1="46" x2="194" y2="54"/></g><rect x="78" y="22" width="76" height="16" rx="8" fill="rgba(34,197,94,0.18)"/><rect x="78" y="44" width="76" height="12" rx="6" fill="url(#mtRange)"/><circle cx="116" cy="50" r="7" fill="#16A34A" stroke="#fff" stroke-width="2.5"/><text x="116" y="16" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="12" fill="#1E293B">${c.rangeLabel || ''}</text></svg>`;
+    }
+    if (m === 'steps') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtSteps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><g><rect x="2" y="50" width="20" height="34" rx="4" fill="#CBD5E1"/><rect x="30" y="40" width="20" height="44" rx="4" fill="#86EFAC"/><rect x="58" y="58" width="20" height="26" rx="4" fill="#CBD5E1"/><rect x="86" y="20" width="20" height="64" rx="4" fill="url(#mtSteps)"/><rect x="114" y="44" width="20" height="40" rx="4" fill="#86EFAC"/><rect x="142" y="34" width="20" height="50" rx="4" fill="#22C55E" opacity="0.8"/><rect x="170" y="54" width="20" height="30" rx="4" fill="#CBD5E1"/></g></svg>`;
+    }
+    // ranked (default)
+    return `<svg viewBox="0 0 200 96" width="100%" style="display:block;"><defs><linearGradient id="mtRank" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect x="0" y="4" width="186" height="11" rx="5.5" fill="url(#mtRank)"/><rect x="0" y="25" width="150" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.85"/><rect x="0" y="46" width="116" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.7"/><rect x="0" y="67" width="82" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.55"/><rect x="0" y="88" width="54" height="6" rx="3" fill="#CBD5E1"/></svg>`;
   }
 
   _featured() {
@@ -372,162 +458,146 @@ class KygoToolsPage extends HTMLElement {
 
   _styles2() {
     return `
-      /* ===== FEATURED ===== */
+      /* ===== FEATURED (image-led, light) ===== */
       .featured-wrap { padding: 24px 0 4px; }
-      .featured {
-        display: block; width: 100%; text-align: left;
-        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-        color: #fff; border-radius: 24px; padding: 22px;
-        border: none; position: relative; overflow: hidden;
-        box-shadow: 0 12px 32px rgba(15,23,42,0.25);
+      .feat-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+      .feat-star {
+        flex: 0 0 auto; width: 36px; height: 36px; border-radius: 10px;
+        background: linear-gradient(135deg, #22C55E, #16A34A); color: #fff;
+        display: inline-flex; align-items: center; justify-content: center;
+        box-shadow: 0 6px 14px rgba(34,197,94,0.3);
       }
-      .featured::before {
-        content: ''; position: absolute; top: -40px; right: -40px;
-        width: 220px; height: 220px; border-radius: 50%;
-        background: radial-gradient(circle, rgba(34,197,94,0.35) 0%, transparent 70%);
-        pointer-events: none;
+      .feat-head-text { min-width: 0; }
+      .feat-head-title {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+        font-size: 20px; letter-spacing: -0.01em; color: var(--dark); margin: 0;
       }
-      .featured-inner { position: relative; z-index: 1; }
-      .featured-top {
-        display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
-      }
-      .featured-meta {
-        font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
-        text-transform: uppercase; color: rgba(255,255,255,0.5);
-      }
-      .featured-icon {
-        width: 50px; height: 50px; border-radius: 14px;
-        background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
-        display: flex; align-items: center; justify-content: center;
-        color: #fff; margin-bottom: 16px;
-        box-shadow: 0 8px 20px rgba(34,197,94,0.4);
-      }
-      .featured-icon svg { width: 26px; height: 26px; }
-      .featured h2 {
-        font-size: 26px; color: #fff; margin: 0 0 8px; line-height: 1.15;
-      }
-      .featured-blurb {
-        font-size: 14px; color: rgba(255,255,255,0.72);
-        line-height: 1.5; margin: 0 0 20px;
-      }
-      .featured-stats {
-        display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-        padding: 14px 0; margin-bottom: 18px;
-        border-top: 1px solid rgba(255,255,255,0.12);
-        border-bottom: 1px solid rgba(255,255,255,0.12);
-      }
-      .featured-stats .n {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 20px; font-weight: 700; color: var(--green); line-height: 1;
-      }
-      .featured-stats .l {
-        font-size: 10px; color: rgba(255,255,255,0.55);
-        margin-top: 4px; line-height: 1.2;
-      }
-      .featured-cta {
-        display: inline-flex; align-items: center; gap: 8px;
-        background: var(--green); color: #fff;
-        padding: 12px 18px; border-radius: 12px;
-        font-weight: 600; font-size: 14px;
-        border: none;
-      }
-      .featured-cta svg { width: 16px; height: 16px; }
+      .feat-head-sub { font-size: 13px; color: #64748B; margin: 2px 0 0; }
+      .feat-rule { flex: 1; height: 1px; background: var(--gray-200); margin-left: 4px; }
 
-      /* ===== TAG PILLS ===== */
-      .tag {
-        display: inline-flex; align-items: center; gap: 5px;
-        font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
-        text-transform: uppercase;
-        padding: 4px 9px; border-radius: 9999px;
+      .feat-card {
+        display: flex; flex-direction: column; width: 100%; text-align: left;
+        background: #fff; border: 1px solid var(--gray-200);
+        border-radius: 22px; overflow: hidden;
+        box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
       }
-      .tag.popular { background: var(--green); color: #fff; }
-      .tag.new { background: var(--dark); color: #fff; }
-      .tag.trending, .tag.soft {
-        background: var(--green-light); color: var(--green-dark);
+      .feat-card:hover {
+        transform: translateY(-4px); box-shadow: 0 18px 48px rgba(15,23,42,0.12);
+        border-color: #CBD5E1; cursor: pointer;
       }
-      .tag .dot {
-        width: 5px; height: 5px; border-radius: 9999px;
-        background: var(--green); display: inline-block;
+      .feat-scene {
+        position: relative; min-height: 300px; background: var(--gray-100);
+        overflow: hidden; display: flex; align-items: center; justify-content: center;
       }
+      .feat-panel {
+        position: relative; background: #fff; border: 1px solid #EAECEF;
+        border-radius: 18px; box-shadow: 0 12px 32px rgba(15,23,42,0.10);
+        padding: 20px 22px; width: 74%; max-width: 330px;
+      }
+      .feat-panel-cap {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 10px;
+        letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 14px;
+      }
+      .feat-rows { display: flex; flex-direction: column; gap: 11px; }
+      .feat-row { display: flex; align-items: center; gap: 10px; }
+      .feat-row .lab { width: 54px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 11px; color: var(--gray-600); }
+      .feat-row .track { flex: 1; height: 10px; border-radius: 5px; background: #EEF1F4; overflow: hidden; }
+      .feat-row .fill { display: block; height: 100%; border-radius: 5px; }
+
+      .feat-content { padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+      .feat-pop {
+        display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+        padding: 5px 12px; border-radius: 9999px;
+        background: linear-gradient(135deg, #22C55E, #16A34A); color: #fff;
+        font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+        box-shadow: 0 4px 10px rgba(34,197,94,0.25);
+      }
+      .feat-content h2 {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 26px;
+        line-height: 1.15; letter-spacing: -0.01em; color: var(--dark); margin: 0;
+      }
+      .feat-blurb { font-size: 15px; color: var(--gray-600); line-height: 1.55; margin: 0; }
+      .feat-stats { display: flex; gap: 24px; padding: 14px 0 4px; border-top: 1px solid var(--gray-100); margin-top: 4px; }
+      .feat-stats .n { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--green); line-height: 1; }
+      .feat-stats .l { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+      .feat-open {
+        display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+        background: var(--green); color: #fff; padding: 12px 20px; border-radius: 12px;
+        font-weight: 600; font-size: 14px; margin-top: 6px;
+      }
+      .feat-open svg { width: 16px; height: 16px; }
+      @media (min-width: 900px) {
+        .feat-card { flex-direction: row; align-items: stretch; }
+        .feat-scene { flex: 0 0 52%; min-height: 380px; }
+        .feat-content { flex: 1; justify-content: center; }
+      }
+      @media (max-width: 600px) { .feat-rule { display: none; } }
 
     `;
   }
 
   _styles3() {
     return `
-      /* ===== TOOL CARDS ===== */
+      /* ===== TOOL CARDS (data-motif) ===== */
       .grid {
         padding: 0 0 8px;
-        display: grid; grid-template-columns: 1fr; gap: 12px;
+        display: grid; grid-template-columns: 1fr; gap: 22px;
       }
       .tool-card {
-        width: 100%; text-align: left;
+        display: flex; flex-direction: column;
         background: #fff; border: 1px solid var(--gray-200);
-        border-radius: 16px; padding: 18px;
-        position: relative;
+        border-radius: 18px; overflow: hidden;
+        box-shadow: 0 2px 12px rgba(15,23,42,0.05);
         opacity: 0; transform: translateY(12px);
         transition: opacity 400ms ease, transform 400ms ease,
-                    border-color 160ms ease, box-shadow 160ms ease;
+                    border-color .25s ease, box-shadow .25s ease;
       }
       .tool-card.visible { opacity: 1; transform: translateY(0); }
       .tool-card:hover {
-        border-color: var(--green);
-        box-shadow: 0 10px 28px rgba(15,23,42,0.06);
-        cursor: pointer;
+        transform: translateY(-4px);
+        box-shadow: 0 18px 40px rgba(15,23,42,0.10);
+        border-color: #CBD5E1; cursor: pointer;
       }
-      .tool-card:hover .card-cta {
-        background: var(--green); color: #fff;
-      }
-      .card-head {
-        display: flex; align-items: flex-start; justify-content: space-between;
-        gap: 10px; margin-bottom: 14px;
-      }
-      .card-icon {
-        width: 42px; height: 42px; border-radius: 11px;
-        background: var(--green-light); color: var(--green-dark);
+      .card-media {
+        position: relative; aspect-ratio: 16 / 10; overflow: hidden;
+        background: var(--gray-100);
         display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
       }
-      .card-icon svg { width: 22px; height: 22px; }
+      .card-panel {
+        position: relative; background: #fff; border: 1px solid #EAECEF;
+        border-radius: 14px; box-shadow: 0 6px 18px rgba(15,23,42,0.08);
+        padding: 13px 15px; width: 76%;
+      }
+      .panel-cap {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 9px;
+        letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400);
+        margin-bottom: 8px;
+      }
+      .card-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 7px; }
       .card-title {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 18px; font-weight: 600; color: var(--dark);
-        margin: 0 0 8px; line-height: 1.25; letter-spacing: -0.01em;
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px;
+        line-height: 1.25; letter-spacing: -0.01em; color: var(--dark); margin: 0;
       }
       .card-blurb {
-        font-size: 13.5px; color: var(--gray-600);
-        line-height: 1.5; margin: 0 0 14px;
+        font-family: 'DM Sans', sans-serif; font-size: 13.5px; line-height: 1.55;
+        color: var(--gray-600); margin: 0;
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
       }
-      .card-foot {
-        display: flex; align-items: center; gap: 10px;
-        padding-top: 12px;
-        border-top: 1px solid var(--gray-200);
+      .card-foot2 {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 10px; margin-top: 5px;
       }
-      .card-stats {
-        display: flex; gap: 14px; flex: 1; min-width: 0;
+      .card-meta {
+        font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+        color: var(--gray-400); min-width: 0;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
       }
-      .card-stat { min-width: 0; }
-      .card-stat .n {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 16px; font-weight: 700; color: var(--dark); line-height: 1;
+      .card-open {
+        display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;
+        font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--green-dark);
       }
-      .card-stat .n.check {
-        display: inline-flex; align-items: center; color: var(--green);
-      }
-      .card-stat .n.check svg { width: 16px; height: 16px; }
-      .card-stat .l {
-        font-size: 10px; color: var(--gray-400); margin-top: 3px;
-        line-height: 1.2; white-space: nowrap;
-        overflow: hidden; text-overflow: ellipsis;
-      }
-      .card-cta {
-        flex-shrink: 0;
-        width: 36px; height: 36px; border-radius: 9999px;
-        background: var(--green-light); color: var(--green-dark);
-        display: flex; align-items: center; justify-content: center;
-        transition: background 160ms, color 160ms;
-      }
-      .card-cta svg { width: 16px; height: 16px; }
+      .card-open svg { width: 15px; height: 15px; }
 
       /* ===== EMPTY STATE ===== */
       .empty {
@@ -629,11 +699,11 @@ class KygoToolsPage extends HTMLElement {
       .wd:hover img { opacity: 1; }
 
       /* ===== RESPONSIVE ===== */
-      @media (min-width: 640px) {
-        .grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      @media (min-width: 600px) {
+        .grid { grid-template-columns: repeat(2, 1fr); }
       }
-      @media (min-width: 1024px) {
-        .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      @media (min-width: 900px) {
+        .grid { grid-template-columns: repeat(3, 1fr); }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -644,55 +714,67 @@ class KygoToolsPage extends HTMLElement {
 
   _renderFeatured(tool) {
     if (!tool) return '';
-    const stats = this._statsFor(tool);
+    const motif = this._motifFor(tool);
+    const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+    const rows = Array.isArray(motif.rows) ? motif.rows : [];
+    const rowsHtml = rows.map((r, i) => {
+      const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+      const w = Math.max(0, Math.min(100, r.pct));
+      return `<div class="feat-row"><span class="lab">${r.label}</span><span class="track"><span class="fill" style="width:${w}%;background:${fill};"></span></span></div>`;
+    }).join('');
+    const stats = [
+      { n: '17+', l: 'peer-reviewed studies' },
+      { n: '6', l: 'wearables compared' },
+      { n: '9', l: 'health metrics' }
+    ];
     return `
       <div class="featured-wrap">
-        <button class="featured" data-open-tool="${tool.url || '#'}" aria-label="${tool.title}">
-          <div class="featured-inner">
-            <div class="featured-top">
-              ${tool.badge ? `<span class="tag ${this._badgeTone(tool.badge)}">${tool.badge}</span>` : ''}
-              <span class="featured-meta">Featured Tool</span>
-            </div>
-            <div class="featured-icon">${this._getIcon(tool.icon || 'sparkles')}</div>
-            <h2>${tool.title}</h2>
-            <p class="featured-blurb">${tool.description || ''}</p>
-            ${stats.length ? `
-              <div class="featured-stats">
-                ${stats.map(s => `
-                  <div>
-                    <div class="n">${s.n || '✓'}</div>
-                    <div class="l">${s.l || ''}</div>
-                  </div>
-                `).join('')}
-              </div>
-            ` : ''}
-            <span class="featured-cta">Open tool ${this._getIcon('arrow-right')}</span>
+        <header class="feat-head">
+          <span class="feat-star"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2l2.39 6.94H22l-6.18 4.49L18.21 21 12 16.77 5.79 21l2.39-7.57L2 8.94h7.61L12 2z"/></svg></span>
+          <div class="feat-head-text">
+            <h2 class="feat-head-title">Featured Tool</h2>
+            <p class="feat-head-sub">Our most-used comparison, backed by peer-reviewed data</p>
           </div>
-        </button>
+          <span class="feat-rule"></span>
+        </header>
+        <div class="feat-card" data-open-tool="${tool.url || '#'}" role="button" tabindex="0" aria-label="${tool.title}">
+          <div class="feat-scene">
+            <div class="feat-panel">
+              <div class="feat-panel-cap">Accuracy vs lab · 9 metrics</div>
+              <div class="feat-rows">${rowsHtml}</div>
+            </div>
+          </div>
+          <div class="feat-content">
+            <span class="feat-pop">Most Popular</span>
+            <h2>${tool.title}</h2>
+            <p class="feat-blurb">${tool.description || ''}</p>
+            <div class="feat-stats">
+              ${stats.map(s => `<div><div class="n">${s.n}</div><div class="l">${s.l}</div></div>`).join('')}
+            </div>
+            <span class="feat-open">Open tool ${this._getIcon('arrow-right')}</span>
+          </div>
+        </div>
       </div>
     `;
   }
 
   _renderCard(tool) {
-    const stats = this._statsFor(tool);
+    const motif = this._motifFor(tool);
     return `
       <div class="tool-card" data-open-tool="${tool.url || '#'}" role="button" tabindex="0" aria-label="${tool.title}">
-        <div class="card-head">
-          <div class="card-icon">${this._getIcon(tool.icon || 'sparkles')}</div>
-          ${tool.badge ? `<span class="tag ${this._badgeTone(tool.badge)}">${(this._badgeTone(tool.badge) === 'trending' || this._badgeTone(tool.badge) === 'soft') ? '<span class="dot"></span>' : ''}${tool.badge}</span>` : ''}
-        </div>
-        <h3 class="card-title">${tool.title}</h3>
-        <p class="card-blurb">${tool.description || ''}</p>
-        <div class="card-foot">
-          <div class="card-stats">
-            ${stats.map(s => `
-              <div class="card-stat">
-                <div class="n${s.n ? '' : ' check'}">${s.n || this._getIcon('check')}</div>
-                <div class="l">${s.l || ''}</div>
-              </div>
-            `).join('')}
+        <div class="card-media">
+          <div class="card-panel">
+            <div class="panel-cap">${motif.caption || ''}</div>
+            ${this._motifBody(motif)}
           </div>
-          <span class="card-cta">${this._getIcon('arrow-right')}</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${tool.title}</h3>
+          <p class="card-blurb">${tool.description || ''}</p>
+          <div class="card-foot2">
+            <span class="card-meta">${this._metaFor(tool)}</span>
+            <span class="card-open">Open ${this._getIcon('arrow-right')}</span>
+          </div>
         </div>
       </div>
     `;
