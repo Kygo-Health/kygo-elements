@@ -160,7 +160,8 @@ class KygoToolsPage extends HTMLElement {
     if (tool.motif) {
       return { motif: tool.motif, caption: tool.caption || '', stage: tool.stage, rows: tool.rows,
         ringValue: tool.ringValue, ringNote: tool.ringNote, bpm: tool.bpm,
-        gaugePct: tool.gaugePct, gaugeValue: tool.gaugeValue, gaugeUnit: tool.gaugeUnit, rangeLabel: tool.rangeLabel };
+        gaugePct: tool.gaugePct, gaugeValue: tool.gaugeValue, gaugeUnit: tool.gaugeUnit, rangeLabel: tool.rangeLabel,
+        radar: tool.radar, bars: tool.bars, versusA: tool.versusA, versusB: tool.versusB, versus: tool.versus, tiers: tool.tiers, dots: tool.dots };
     }
     const map = {
       'wearable-accuracy': { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] },
@@ -168,19 +169,19 @@ class KygoToolsPage extends HTMLElement {
       'supplements-by-metric': { motif: 'ranked', caption: 'Graded by evidence' },
       'vo2-max-accuracy': { motif: 'compare', caption: 'Accuracy vs lab CPET', rows: [{ label: 'Garmin', pct: 93 }, { label: 'Apple', pct: 85 }, { label: 'Polar', pct: 80 }, { label: 'Fitbit', pct: 64 }] },
       'vo2-max-factors': { motif: 'gauge', caption: 'VO2 max estimate', gaugePct: 78, gaugeValue: '48', gaugeUnit: 'VO2 MAX' },
-      'oura-ring-comparison-tool': { motif: 'compare', caption: 'Generation vs generation', rows: [{ label: 'Ring 5', pct: 96 }, { label: 'Ring 4', pct: 84 }, { label: 'Gen 3', pct: 68 }] },
-      'fitbit-air-vs-whoop-comparison': { motif: 'compare', caption: 'Head-to-head specs', rows: [{ label: 'WHOOP', pct: 90 }, { label: 'Fitbit Air', pct: 72 }] },
+      'oura-ring-comparison-tool': { motif: 'tiers', caption: 'Generation upgrade', tiers: [{ label: 'Gen 3', h: 0.42 }, { label: 'Ring 4', h: 0.68 }, { label: 'Ring 5', h: 1.0 }] },
+      'fitbit-air-vs-whoop-comparison': { motif: 'versus', caption: 'Head-to-head accuracy', versusA: 'WHOOP', versusB: 'Fitbit Air', versus: [{ a: 90, b: 72 }, { a: 88, b: 68 }, { a: 82, b: 64 }] },
       'stress-factors': { motif: 'gauge', caption: 'Stress load', gaugePct: 62, gaugeValue: '62', gaugeUnit: 'STRESS' },
       'staying-asleep-factors': { motif: 'ranked', caption: 'Factors ranked by evidence' },
       'hrv-factors': { motif: 'pulse', caption: 'HRV · beat-to-beat' },
       'resting-heart-rate-factors': { motif: 'pulse', caption: 'Resting heart rate', bpm: '58 bpm' },
       'sleep-latency-factors': { motif: 'decay', caption: 'Time to fall asleep' },
-      'calorie-burn-accuracy': { motif: 'compare', caption: 'Calorie accuracy vs lab', rows: [{ label: 'Oura', pct: 87 }, { label: 'Apple', pct: 72 }, { label: 'Fitbit', pct: 58 }, { label: 'Garmin', pct: 48 }] },
+      'calorie-burn-accuracy': { motif: 'diverging', caption: 'Reported vs actual', bars: [{ label: 'Oura', val: 9 }, { label: 'Apple', val: 22 }, { label: 'Fitbit', val: -16 }, { label: 'Garmin', val: -31 }] },
       'deep-sleep-factors': { motif: 'hypno', stage: 'deep', caption: 'Sleep stages overnight' },
       'food-scanner': { motif: 'donut', caption: 'Macros & calories' },
       'step-count-accuracy': { motif: 'steps', caption: 'Daily step counts' },
-      'sleep-metrics': { motif: 'compare', caption: 'Metrics tracked per device', rows: [{ label: 'Oura', pct: 96 }, { label: 'Garmin', pct: 84 }, { label: 'Apple', pct: 74 }, { label: 'Fitbit', pct: 60 }] },
-      'sensor-comparison': { motif: 'compare', caption: 'Sensors per device', rows: [{ label: 'Garmin', pct: 95 }, { label: 'WHOOP', pct: 82 }, { label: 'Oura', pct: 76 }, { label: 'Apple', pct: 70 }] },
+      'sleep-metrics': { motif: 'dots', caption: 'Metrics tracked', dots: [{ label: 'Oura', n: 9 }, { label: 'Garmin', n: 7 }, { label: 'Apple', n: 6 }, { label: 'Fitbit', n: 5 }] },
+      'sensor-comparison': { motif: 'radar', caption: 'Sensor & software focus', radar: [0.92, 0.6, 0.78, 0.5, 0.85] },
       'rem-sleep-factors': { motif: 'hypno', stage: 'rem', caption: 'Sleep stages overnight' }
     };
     return map[tool.slug] || { motif: 'ranked', caption: 'Ranked by evidence' };
@@ -228,6 +229,75 @@ class KygoToolsPage extends HTMLElement {
     }
     if (m === 'steps') {
       return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtSteps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><g><rect x="2" y="50" width="20" height="34" rx="4" fill="#CBD5E1"/><rect x="30" y="40" width="20" height="44" rx="4" fill="#86EFAC"/><rect x="58" y="58" width="20" height="26" rx="4" fill="#CBD5E1"/><rect x="86" y="20" width="20" height="64" rx="4" fill="url(#mtSteps)"/><rect x="114" y="44" width="20" height="40" rx="4" fill="#86EFAC"/><rect x="142" y="34" width="20" height="50" rx="4" fill="#22C55E" opacity="0.8"/><rect x="170" y="54" width="20" height="30" rx="4" fill="#CBD5E1"/></g></svg>`;
+    }
+    if (m === 'radar') {
+      const vals = Array.isArray(c.radar) && c.radar.length === 5 ? c.radar : [0.92, 0.6, 0.78, 0.5, 0.85];
+      const cx = 100, cy = 52, R = 38;
+      const ang = k => (-90 + 72 * k) * Math.PI / 180;
+      const pt = (k, r) => [cx + r * Math.cos(ang(k)), cy + r * Math.sin(ang(k))];
+      const ring = r => 'M ' + [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, r); return x.toFixed(1) + ' ' + y.toFixed(1); }).join(' L ') + ' Z';
+      const dataPts = [0, 1, 2, 3, 4].map(k => pt(k, R * Math.max(0.08, Math.min(1, vals[k]))));
+      const dataPath = 'M ' + dataPts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L ') + ' Z';
+      const spokes = [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, R); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#E2E8F0" stroke-width="1"/>`; }).join('');
+      const dots = dataPts.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2" fill="#22C55E"/>`).join('');
+      return `<svg viewBox="0 0 200 104" width="100%" style="display:block;"><path d="${ring(R)}" fill="none" stroke="#E2E8F0" stroke-width="1"/><path d="${ring(R * 0.5)}" fill="none" stroke="#EEF1F4" stroke-width="1"/>${spokes}<path d="${dataPath}" fill="rgba(34,197,94,0.18)" stroke="#16A34A" stroke-width="2" stroke-linejoin="round"/>${dots}</svg>`;
+    }
+    if (m === 'diverging') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.bars) ? c.bars : [];
+      const cx = 128, maxLen = 70;
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const v = Math.max(-100, Math.min(100, r.val || 0));
+        const len = Math.abs(v) / 100 * maxLen;
+        const x = v >= 0 ? cx : cx - len;
+        const y = 6 + i * 20;
+        return `<text x="0" y="${y + 11}" font-family="Space Grotesk" font-weight="600" font-size="9" fill="#475569">${r.label}</text><rect x="${x.toFixed(1)}" y="${y}" width="${len.toFixed(1)}" height="11" rx="5.5" fill="${fill}"/>`;
+      }).join('');
+      const h = 6 + rows.length * 20;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><line x1="${cx}" y1="2" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'versus') {
+      const a = c.versusA || 'A', b = c.versusB || 'B';
+      const rows = Array.isArray(c.versus) ? c.versus : [];
+      const cx = 100, maxLen = 84;
+      const body = rows.map((r, i) => {
+        const y = 24 + i * 22;
+        const la = Math.max(0, Math.min(100, r.a)) / 100 * maxLen;
+        const lb = Math.max(0, Math.min(100, r.b)) / 100 * maxLen;
+        return `<rect x="${(cx - la).toFixed(1)}" y="${y}" width="${la.toFixed(1)}" height="10" rx="5" fill="#16A34A"/><rect x="${cx}" y="${y}" width="${lb.toFixed(1)}" height="10" rx="5" fill="#86EFAC"/>`;
+      }).join('');
+      const h = 24 + rows.length * 22;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><text x="2" y="12" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#16A34A">${a}</text><text x="198" y="12" text-anchor="end" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#94A3B8">${b}</text><line x1="${cx}" y1="18" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'tiers') {
+      const t = Array.isArray(c.tiers) ? c.tiers : [];
+      const n = t.length || 3;
+      const gap = 16, colW = (200 - gap * (n + 1)) / n, base = 84;
+      const fills = ['#86EFAC', '#22C55E', '#16A34A'];
+      let x = gap;
+      const bars = t.map((tt, i) => {
+        const hh = Math.max(0.1, Math.min(1, tt.h)) * (base - 14);
+        const y = base - hh;
+        const fill = i === n - 1 ? 'url(#mtTier)' : (fills[i] || '#86EFAC');
+        const out = `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${colW.toFixed(1)}" height="${hh.toFixed(1)}" rx="6" fill="${fill}"/><text x="${(x + colW / 2).toFixed(1)}" y="96" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" fill="#94A3B8">${tt.label}</text>`;
+        x += colW + gap;
+        return out;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;"><defs><linearGradient id="mtTier" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="0" y1="84" x2="200" y2="84" stroke="#E2E8F0" stroke-width="1.5"/>${bars}</svg>`;
+    }
+    if (m === 'dots') {
+      const rows = Array.isArray(c.dots) ? c.dots : [];
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const TOT = 10;
+      const body = rows.map((r, i) => {
+        const fill = fills[i] || '#86EFAC';
+        const n = Math.max(0, Math.min(TOT, r.n || 0));
+        let dots = '';
+        for (let k = 0; k < TOT; k++) dots += `<span style="width:7px;height:7px;border-radius:50%;background:${k < n ? fill : '#E2E8F0'};display:block;"></span>`;
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:42px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;">${r.label}</span><span style="display:flex;gap:4px;">${dots}</span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:7px;padding:2px 0;">${body}</div>`;
     }
     // ranked (default)
     return `<svg viewBox="0 0 200 96" width="100%" style="display:block;"><defs><linearGradient id="mtRank" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect x="0" y="4" width="186" height="11" rx="5.5" fill="url(#mtRank)"/><rect x="0" y="25" width="150" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.85"/><rect x="0" y="46" width="116" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.7"/><rect x="0" y="67" width="82" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.55"/><rect x="0" y="88" width="54" height="6" rx="3" fill="#CBD5E1"/></svg>`;
