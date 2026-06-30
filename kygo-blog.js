@@ -456,14 +456,14 @@ class KygoBlog extends HTMLElement {
         .featured-header-row {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 20px;
+          gap: 10px;
+          margin-bottom: 14px;
         }
         .featured-badge {
           flex: 0 0 auto;
-          width: 36px;
-          height: 36px;
-          border-radius: 10px;
+          width: 30px;
+          height: 30px;
+          border-radius: 9px;
           background: linear-gradient(135deg, var(--green), var(--green-dark));
           color: white;
           display: inline-flex;
@@ -471,14 +471,14 @@ class KygoBlog extends HTMLElement {
           justify-content: center;
           box-shadow: 0 6px 14px rgba(34, 197, 94, 0.3);
         }
-        .featured-badge svg { width: 18px; height: 18px; }
+        .featured-badge svg { width: 16px; height: 16px; }
         .featured-heading { flex: 0 1 auto; min-width: 0; }
         .featured-section-title {
-          font-size: 20px;
+          font-size: 16.5px;
           color: var(--dark);
         }
         .featured-section-descriptor {
-          font-size: 13px;
+          font-size: 12px;
           color: var(--gray-500);
           margin-top: 2px;
         }
@@ -665,9 +665,9 @@ class KygoBlog extends HTMLElement {
         }
         .post-card:hover::after { opacity: 1; }
         .post-card-image {
-          flex: 0 0 110px;
-          width: 110px;
-          height: 110px;
+          flex: 0 0 86px;
+          width: 86px;
+          height: 86px;
           border-radius: 10px;
           overflow: hidden;
           background: var(--gray-100);
@@ -695,7 +695,8 @@ class KygoBlog extends HTMLElement {
           gap: 6px;
         }
         .post-card-title {
-          font-size: 15px;
+          font-size: 13.5px;
+          line-height: 1.3;
           color: var(--dark);
           display: -webkit-box;
           -webkit-line-clamp: 2;
@@ -703,7 +704,8 @@ class KygoBlog extends HTMLElement {
           overflow: hidden;
         }
         .post-card-excerpt {
-          font-size: 13px;
+          font-size: 12px;
+          line-height: 1.45;
           color: var(--gray-600);
           display: -webkit-box;
           -webkit-line-clamp: 2;
@@ -748,7 +750,11 @@ class KygoBlog extends HTMLElement {
           .hero-band { padding: 40px 0 72px; }
           .sections-band { padding: 40px 0 96px; }
 
-          .featured-header-row { margin-bottom: 24px; }
+          .featured-header-row { margin-bottom: 24px; gap: 12px; }
+          .featured-badge { width: 36px; height: 36px; border-radius: 10px; }
+          .featured-badge svg { width: 18px; height: 18px; }
+          .featured-section-title { font-size: 20px; }
+          .featured-section-descriptor { font-size: 13px; }
           .featured-post-content { padding: 32px; gap: 14px; }
           .featured-post-title { font-size: 26px; }
 

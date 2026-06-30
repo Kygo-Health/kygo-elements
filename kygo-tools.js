@@ -151,7 +151,13 @@ class KygoToolsPage extends HTMLElement {
   _metaFor(tool) {
     if (tool.meta) return tool.meta;
     const f = Array.isArray(tool.features) ? tool.features : [];
-    return f.slice(0, 2).join(' · ');
+    // Normalize factor-count phrasing so every factor explorer reads "N factors"
+    // (not "N evidence-based factors" / "N factors ranked" / "N peer-reviewed factors").
+    const norm = s => {
+      const m = String(s).match(/^(\d+\+?)[\s\S]*?\bfactors?\b/i);
+      return m ? `${m[1]} factors` : String(s);
+    };
+    return f.slice(0, 2).map(norm).join(' · ');
   }
 
   // Per-tool data-motif config (slug → motif + illustrative params). A tool may
@@ -583,14 +589,17 @@ class KygoToolsPage extends HTMLElement {
         border-radius: 18px; box-shadow: 0 12px 32px rgba(15,23,42,0.10);
         padding: 20px 22px; width: 74%; max-width: 330px;
       }
+      @media (max-width: 560px) {
+        .feat-panel { width: 90%; max-width: none; padding: 16px 14px; }
+      }
       .feat-panel-cap {
         font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 10px;
         letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 14px;
       }
       .feat-matrix { display: flex; flex-direction: column; gap: 9px; }
-      .fm-row { display: grid; grid-template-columns: 82px repeat(4, 1fr); align-items: center; }
-      .fm-dev { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 9px; color: var(--gray-400); text-align: center; }
-      .fm-metric { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 10px; color: var(--gray-600); }
+      .fm-row { display: grid; grid-template-columns: 62px repeat(4, 1fr); align-items: center; column-gap: 2px; }
+      .fm-dev { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 8px; color: var(--gray-400); text-align: center; }
+      .fm-metric { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 9.5px; color: var(--gray-600); }
       .fm-cell { display: flex; justify-content: center; }
       .fm-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gray-200); }
       .fm-dot.on { background: #16A34A; box-shadow: 0 0 0 3px rgba(34,197,94,0.14); }
@@ -635,6 +644,7 @@ class KygoToolsPage extends HTMLElement {
         display: grid; grid-template-columns: 1fr; gap: 22px;
       }
       .tool-card {
+        position: relative;
         display: flex; flex-direction: column;
         background: #fff; border: 1px solid var(--gray-200);
         border-radius: 18px; overflow: hidden;
@@ -643,12 +653,18 @@ class KygoToolsPage extends HTMLElement {
         transition: opacity 400ms ease, transform 400ms ease,
                     border-color .25s ease, box-shadow .25s ease;
       }
+      .tool-card::after {
+        content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+        background: linear-gradient(90deg, var(--green), var(--green-dark));
+        opacity: 0; transition: opacity .25s ease; pointer-events: none; z-index: 2;
+      }
       .tool-card.visible { opacity: 1; transform: translateY(0); }
-      .tool-card:hover {
+      .tool-card:hover, .tool-card:active {
         transform: translateY(-4px);
         box-shadow: 0 18px 40px rgba(15,23,42,0.10);
         border-color: #CBD5E1; cursor: pointer;
       }
+      .tool-card:hover::after, .tool-card:active::after { opacity: 1; }
       .card-media {
         position: relative; aspect-ratio: 16 / 10; overflow: hidden;
         background: var(--gray-100);
@@ -808,9 +824,9 @@ class KygoToolsPage extends HTMLElement {
     // no single wearable wins everything (a teaser of the real per-metric data).
     const devices = ['Oura', 'Apple', 'Garmin', 'WHOOP'];
     const metrics = [
-      { label: 'Sleep stages', winner: 0 },
-      { label: 'Nocturnal HRV', winner: 0 },
-      { label: 'Step count', winner: 1 },
+      { label: 'Sleep', winner: 0 },
+      { label: 'HRV', winner: 0 },
+      { label: 'Steps', winner: 1 },
       { label: 'VO₂ max', winner: 2 },
       { label: 'Recovery', winner: 3 }
     ];
