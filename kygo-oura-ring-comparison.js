@@ -517,22 +517,22 @@ class KygoOuraRingComparison extends HTMLElement {
   // because the interactive table renders in JS where crawlers may not read it.
   _renderTLDR() {
     return `
-      <p class="tldr-lead">The <strong>Oura Ring 5</strong> (announced May 28, 2026, shipping June 4) is the smallest, lightest Oura yet — but it launches with <strong>no independent validation</strong> and a narrower size range. Here's how the three generations actually stack up.</p>
+      <p class="tldr-lead">The <strong>Oura Ring 5</strong> (ships June 4) is the smallest, lightest Oura yet — but it has <strong>no independent validation</strong> and a narrower size range. Here's how the three stack up.</p>
       <div class="cmp-blocks">
         <div class="cmp-block">
           <h3>Oura Ring 5 vs Ring 4</h3>
           <p class="cmp-verdict">Ring 4 still wins for most people.</p>
-          <p>Ring 5 is thinner, lighter, and lasts a day or two longer. But Ring 4 is cheaper ($349 vs $399–499), keeps the wider 4–15 size range, is the only Oura with an independent accuracy study (Dial 2025), and gets every Ring 5 software feature via membership.</p>
+          <p>Cheaper, wider 4–15 sizing, the only Oura with an independent accuracy study — and it gets Ring 5's software via membership.</p>
         </div>
         <div class="cmp-block">
           <h3>Oura Ring 5 vs Gen 3 (Ring 3)</h3>
-          <p class="cmp-verdict">A big jump — if you want to buy again.</p>
-          <p>Versus a Gen 3 (often searched as "Ring 3"), Ring 5 is roughly half the weight, slimmer, and adds the full 2026 feature set. Gen 3 is discontinued and resale-only, but remains the most validated sleep tracker against polysomnography.</p>
+          <p class="cmp-verdict">A big jump — if you'll buy again.</p>
+          <p>Roughly half the weight, slimmer, full 2026 features. Gen 3 is discontinued, but still the most validated for sleep.</p>
         </div>
         <div class="cmp-block cmp-block-wide">
           <h3>Oura Ring 3 vs 4 vs 5: the three-way verdict</h3>
           <p class="cmp-verdict">Gen 3 proven · Ring 4 best value · Ring 5 smallest.</p>
-          <p>All three share the same optical (PPG) sensing platform, so sleep, HRV, and heart-rate accuracy are broadly comparable. Choose on size, price, and fit — not on a dramatic accuracy gap.</p>
+          <p>All three share the same sensor platform, so accuracy is close — pick on size, price, and fit, not a big accuracy gap.</p>
         </div>
       </div>
     `;
