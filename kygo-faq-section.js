@@ -155,6 +155,20 @@ class KygoFaqSection extends HTMLElement {
         return;
       }
 
+      // Handle search clear (×) button clicks
+      const clearBtn = e.target.closest('.search-clear');
+      if (clearBtn) {
+        const input = shadow.getElementById('faq-search');
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+        clearBtn.hidden = true;
+        if (this._searchDebounceTimer) clearTimeout(this._searchDebounceTimer);
+        this._performSearch('');
+        return;
+      }
+
     });
 
     // Search input listener with debouncing.
@@ -170,6 +184,10 @@ class KygoFaqSection extends HTMLElement {
       // after dispatch, leaving e.target null/undefined by the time it fires.
       const query = e.target.value;
 
+      // Show the clear (×) button only when there's something to clear
+      const clearBtn = shadow.getElementById('faq-search-clear');
+      if (clearBtn) clearBtn.hidden = query.length === 0;
+
       // Clear existing debounce timer
       if (this._searchDebounceTimer) {
         clearTimeout(this._searchDebounceTimer);
@@ -184,32 +202,41 @@ class KygoFaqSection extends HTMLElement {
 
   _setupScrollAnimations() {
     requestAnimationFrame(() => {
-      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!elements.length) return;
-      this._observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            this._observer.unobserve(entry.target);
-          }
-        });
-      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-      elements.forEach(el => this._observer.observe(el));
+      // Reveal elements a bit BEFORE they scroll into view (positive bottom
+      // rootMargin) with threshold 0, so the fade finishes by the time they're
+      // on screen. The old settings triggered late and left blank space when
+      // scrolling quickly.
+      const revealOptions = { root: null, rootMargin: '0px 0px 20% 0px', threshold: 0 };
 
-      // Animate FAQ items with stagger
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (elements.length) {
+        this._observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              this._observer.unobserve(entry.target);
+            }
+          });
+        }, revealOptions);
+        elements.forEach(el => this._observer.observe(el));
+      }
+
+      // FAQ items reveal as soon as they approach the viewport. No per-item
+      // stagger: the old index-based setTimeout delayed later items by up to
+      // ~1.4s, so on a fast scroll they showed up blank and popped in late.
       const faqItems = this.shadowRoot.querySelectorAll('.faq-item');
-      const faqObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const item = entry.target;
-            const index = Array.from(item.parentElement.children).indexOf(item);
-            setTimeout(() => item.classList.add('visible'), index * 80);
-            faqObserver.unobserve(item);
-          }
-        });
-      }, { threshold: 0.1 });
-      faqItems.forEach(item => faqObserver.observe(item));
-      this._faqObserver = faqObserver;
+      if (faqItems.length) {
+        const faqObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              faqObserver.unobserve(entry.target);
+            }
+          });
+        }, revealOptions);
+        faqItems.forEach(item => faqObserver.observe(item));
+        this._faqObserver = faqObserver;
+      }
     });
   }
 
@@ -292,6 +319,10 @@ class KygoFaqSection extends HTMLElement {
         .search-bar:focus-within { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-light); }
         .search-bar input { flex: 1; border: none; outline: none; padding: 14px 16px; font-size: 16px; font-family: inherit; background: transparent; }
         .search-bar input::placeholder { color: var(--gray-400); }
+        .search-bar .search-clear { flex-shrink: 0; background: transparent; border: none; border-radius: 50%; width: 32px; height: 32px; margin-right: 4px; color: var(--gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .search-bar .search-clear:hover { background: var(--gray-100); color: var(--gray-600); }
+        .search-bar .search-clear[hidden] { display: none; }
+        .search-bar .search-clear svg { width: 16px; height: 16px; }
         .search-bar .search-icon { background: var(--green); border: none; border-radius: 10px; padding: 12px 20px; color: white; display: flex; align-items: center; justify-content: center; }
         .search-bar .search-icon svg { width: 18px; height: 18px; }
 
@@ -567,6 +598,9 @@ class KygoFaqSection extends HTMLElement {
           <div class="search-container">
             <div class="search-bar">
               <input type="text" placeholder="Search for answers..." id="faq-search" aria-label="Search frequently asked questions">
+              <button type="button" class="search-clear" id="faq-search-clear" aria-label="Clear search" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+              </button>
               <div class="search-icon" role="img" aria-label="Search">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
               </div>
