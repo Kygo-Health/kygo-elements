@@ -811,7 +811,7 @@ class KygoHiwPhaseConnect extends HTMLElement {
 
                 <div class="connect-step">
                   <div class="connect-step-icon">
-                    <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop">
+                    <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Whoop">
                   </div>
                   <div class="connect-step-content">
                     <strong>Whoop</strong>
@@ -822,7 +822,7 @@ class KygoHiwPhaseConnect extends HTMLElement {
 
                 <div class="connect-step">
                   <div class="connect-step-icon">
-                    <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect">
+                    <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect">
                   </div>
                   <div class="connect-step-content">
                     <strong>Health Connect</strong>
@@ -3072,50 +3072,86 @@ class KygoHiwFinalCta extends HTMLElement {
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        .final-cta { padding: 48px 0; }
+        .final-cta { padding: 72px 0; }
 
         .final-cta-inner {
-          background: linear-gradient(135deg, var(--green), var(--green-dark));
-          border-radius: 20px;
-          padding: 36px 24px;
+          background: #0F172A;
+          border-radius: 24px;
+          padding: 40px 24px;
           text-align: center;
           position: relative;
           overflow: hidden;
+          color: #fff;
         }
 
         .final-cta-inner::before {
           content: '';
           position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
+          top: -160px;
+          right: -160px;
+          width: 520px;
+          height: 520px;
+          background: radial-gradient(closest-side, rgba(34,197,94,0.30), transparent);
+          pointer-events: none;
+        }
+
+        .final-cta-inner::after {
+          content: '';
+          position: absolute;
+          bottom: -180px;
+          left: -180px;
+          width: 480px;
+          height: 480px;
+          background: radial-gradient(closest-side, rgba(34,197,94,0.12), transparent);
           pointer-events: none;
         }
 
         .final-cta-content {
           position: relative;
           z-index: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
+
+        .cta-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(34,197,94,0.16);
+          color: #6EE7A0;
+          padding: 6px 14px;
+          border-radius: 999px;
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          border: 1px solid rgba(34,197,94,0.25);
+          margin-bottom: 18px;
+        }
+        .cta-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
 
         .final-cta h2 {
-          font-size: clamp(28px, 7vw, 36px);
-          color: white;
-          margin-bottom: 12px;
+          font-size: clamp(28px, 7vw, 42px);
+          line-height: 1.05;
+          color: #fff;
+          margin-bottom: 14px;
+          max-width: 22ch;
         }
+        .final-cta h2 span { color: var(--green); }
 
         .final-cta-content > p {
-          color: rgba(255,255,255,0.85);
-          margin-bottom: 20px;
-          font-size: 17px;
+          color: rgba(255,255,255,0.72);
+          margin-bottom: 24px;
+          font-size: clamp(15px, 1.6vw, 17px);
+          max-width: 56ch;
+          line-height: 1.6;
         }
 
         .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
 
-        .cta-primary {
-          background: white;
-          color: var(--green-dark);
+        .cta-primary, .cta-android {
+          background: var(--green);
+          color: #fff;
           padding: 14px 24px;
           border-radius: 12px;
           font-weight: 600;
@@ -3123,38 +3159,43 @@ class KygoHiwFinalCta extends HTMLElement {
           text-decoration: none;
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
-          transition: all 0.2s;
+          transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
           border: none;
           cursor: pointer;
+          font-family: inherit;
+          -webkit-tap-highlight-color: transparent;
         }
 
-        .cta-primary:hover {
-          background: var(--light);
+        .cta-primary:hover, .cta-android:hover {
+          background: var(--green-dark);
           transform: translateY(-2px);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+          box-shadow: 0 10px 30px rgba(34,197,94,0.30);
         }
 
-        .cta-primary svg {
+        .cta-primary svg, .cta-android svg {
           width: 18px;
           height: 18px;
         }
 
-        .risk-reversal {
-          margin-top: 20px;
-          color: rgba(255,255,255,0.7);
-          font-size: 13px;
+        .cta-works {
+          margin-top: 26px;
           display: flex;
+          flex-direction: column;
           align-items: center;
           gap: 12px;
-          justify-content: center;
-          flex-wrap: wrap;
+          color: rgba(255,255,255,0.6);
+          font-size: 13px;
         }
+        .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
+
+        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
 
         @media (min-width: 768px) {
-          .final-cta { padding: 60px 0; }
-          .final-cta-inner { padding: 48px 40px; border-radius: 24px; }
-          .final-cta h2 { font-size: 44px; }
+          .final-cta { padding: 96px 0; }
+          .final-cta-inner { padding: 56px 40px; }
         }
 
         @keyframes fadeInUp {
@@ -3162,17 +3203,7 @@ class KygoHiwFinalCta extends HTMLElement {
           to { opacity: 1; transform: translateY(0); }
         }
 
-        .animate-on-scroll {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        /* Internal element cascade within CTA */
+        /* Card holds; children stagger in */
         .final-cta-inner.animate-on-scroll {
           opacity: 1;
           transform: none;
@@ -3189,58 +3220,50 @@ class KygoHiwFinalCta extends HTMLElement {
           to { opacity: 1; transform: scale(1); }
         }
 
+        .cta-pill,
         .final-cta-inner h2,
         .final-cta-content > p,
         .cta-primary,
         .cta-android,
-        .risk-reversal {
+        .cta-works {
           opacity: 0;
         }
+        .cta-pill { transform: translateY(10px); }
         .final-cta-inner h2 { transform: translateY(20px); }
         .final-cta-content > p { transform: translateY(15px); }
         .cta-primary { transform: scale(0.9); }
         .cta-android { transform: scale(0.9); }
-        .risk-reversal { transform: translateY(10px); }
+        .cta-works { transform: translateY(10px); }
 
+        .final-cta-inner.visible .cta-pill { animation: ctaSlideUp 0.5s ease-out forwards; }
         .final-cta-inner.visible h2 { animation: ctaSlideUp 0.6s ease-out 0.1s forwards; }
         .final-cta-inner.visible .final-cta-content > p { animation: ctaSlideUp 0.5s ease-out 0.25s forwards; }
         .final-cta-inner.visible .cta-primary { animation: ctaScaleIn 0.5s ease-out 0.4s forwards; }
         .final-cta-inner.visible .cta-android { animation: ctaScaleIn 0.5s ease-out 0.4s forwards; }
-        .final-cta-inner.visible .risk-reversal { animation: ctaSlideUp 0.5s ease-out 0.55s forwards; }
-
-        /* CTA button glow pulse */
-        @keyframes ctaPulse {
-          0%, 100% { box-shadow: 0 4px 15px rgba(255,255,255,0.3); }
-          50% { box-shadow: 0 8px 30px rgba(255,255,255,0.5); }
-        }
-        .final-cta-inner.visible .cta-primary {
-          animation: ctaScaleIn 0.5s ease-out 0.4s forwards, ctaPulse 2s ease-in-out 1s infinite;
-        }
+        .final-cta-inner.visible .cta-works { animation: ctaSlideUp 0.5s ease-out 0.55s forwards; }
 
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
+          .cta-pill,
           .final-cta-inner h2,
           .final-cta-content > p,
           .cta-primary,
           .cta-android,
-          .risk-reversal {
+          .cta-works {
             opacity: 1;
             transform: none;
           }
         }
-        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
-        .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-        .cta-android svg{width:18px;height:18px}
-        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
       </style>
 
       <section class="final-cta">
         <div class="container">
           <div class="final-cta-inner animate-on-scroll">
             <div class="final-cta-content">
-              <h2>Ready to understand your body?</h2>
-              <p>Stop guessing. Start seeing the correlations between what you eat and how you feel.</p>
-              
+              <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+              <h2>Ready to see <span>your own patterns?</span></h2>
+              <p>Connect a wearable, log a few meals, and Kygo starts surfacing the foods helping or hurting your sleep and recovery in about a week.</p>
+
               <div class="cta-buttons">
                 <a href="${ctaLink}" class="cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta">
                   <svg viewBox="0 0 24 24" fill="currentColor">
@@ -3248,18 +3271,22 @@ class KygoHiwFinalCta extends HTMLElement {
                   </svg>
                   Download for iOS
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
-              <p class="risk-reversal">
-                <span>Free forever plan</span>
-                <span>•</span>
-                <span>No credit card required</span>
-                <span>•</span>
-                <span>Upgrade anytime</span>
-              </p>
+              <div class="cta-works">
+                <span>Works with</span>
+                <div class="cta-badges">
+                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -3269,3 +3296,29 @@ class KygoHiwFinalCta extends HTMLElement {
 }
 
 customElements.define('kygo-hiw-final-cta', KygoHiwFinalCta);
+
+/* ========================================
+   KYGO HIW (single-embed wrapper)
+   Tag: kygo-hiw
+   Renders all 7 "How It Works" sections in order so the page needs only ONE
+   Wix custom-element embed (one URL to bump on each push) instead of seven.
+   Sections are appended to LIGHT DOM so each one's __seo text stays crawlable
+   and its structured data still injects normally. Each section uses its
+   built-in defaults (no per-section Wix settings are forwarded).
+======================================== */
+class KygoHiw extends HTMLElement {
+  connectedCallback() {
+    if (this._mounted) return;
+    this._mounted = true;
+    [
+      'kygo-hiw-hero',
+      'kygo-hiw-phase-connect',
+      'kygo-hiw-phase-log',
+      'kygo-hiw-phase-discover',
+      'kygo-hiw-timeline',
+      'kygo-hiw-objections',
+      'kygo-hiw-final-cta'
+    ].forEach(tag => this.appendChild(document.createElement(tag)));
+  }
+}
+customElements.define('kygo-hiw', KygoHiw);

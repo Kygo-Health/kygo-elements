@@ -155,53 +155,88 @@ class KygoFaqSection extends HTMLElement {
         return;
       }
 
+      // Handle search clear (×) button clicks
+      const clearBtn = e.target.closest('.search-clear');
+      if (clearBtn) {
+        const input = shadow.getElementById('faq-search');
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+        clearBtn.hidden = true;
+        if (this._searchDebounceTimer) clearTimeout(this._searchDebounceTimer);
+        this._performSearch('');
+        return;
+      }
+
     });
 
-    // Search input listener with debouncing
-    const searchInput = shadow.getElementById('faq-search');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        // Clear existing debounce timer
-        if (this._searchDebounceTimer) {
-          clearTimeout(this._searchDebounceTimer);
-        }
+    // Search input listener with debouncing.
+    // Delegate on the shadow root (not the input element) so it survives
+    // re-renders: render() replaces the shadow DOM innerHTML, destroying the
+    // #faq-search element, but this listener lives on the persistent shadow
+    // root — same reason the click handler above is robust.
+    shadow.addEventListener('input', (e) => {
+      if (!e.target.matches('#faq-search')) return;
 
-        // Debounce search by 150ms
-        this._searchDebounceTimer = setTimeout(() => {
-          this._performSearch(e.target.value);
-        }, 150);
-      });
-    }
+      // Capture the value synchronously — reading e.target inside the debounced
+      // callback is unreliable because the browser detaches the event target
+      // after dispatch, leaving e.target null/undefined by the time it fires.
+      const query = e.target.value;
+
+      // Show the clear (×) button only when there's something to clear
+      const clearBtn = shadow.getElementById('faq-search-clear');
+      if (clearBtn) clearBtn.hidden = query.length === 0;
+
+      // Clear existing debounce timer
+      if (this._searchDebounceTimer) {
+        clearTimeout(this._searchDebounceTimer);
+      }
+
+      // Debounce search by 150ms
+      this._searchDebounceTimer = setTimeout(() => {
+        this._performSearch(query);
+      }, 150);
+    });
   }
 
   _setupScrollAnimations() {
     requestAnimationFrame(() => {
-      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!elements.length) return;
-      this._observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            this._observer.unobserve(entry.target);
-          }
-        });
-      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-      elements.forEach(el => this._observer.observe(el));
+      // Reveal elements a bit BEFORE they scroll into view (positive bottom
+      // rootMargin) with threshold 0, so the fade finishes by the time they're
+      // on screen. The old settings triggered late and left blank space when
+      // scrolling quickly.
+      const revealOptions = { root: null, rootMargin: '0px 0px 20% 0px', threshold: 0 };
 
-      // Animate FAQ items with stagger
+      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (elements.length) {
+        this._observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              this._observer.unobserve(entry.target);
+            }
+          });
+        }, revealOptions);
+        elements.forEach(el => this._observer.observe(el));
+      }
+
+      // FAQ items reveal as soon as they approach the viewport. No per-item
+      // stagger: the old index-based setTimeout delayed later items by up to
+      // ~1.4s, so on a fast scroll they showed up blank and popped in late.
       const faqItems = this.shadowRoot.querySelectorAll('.faq-item');
-      const faqObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const item = entry.target;
-            const index = Array.from(item.parentElement.children).indexOf(item);
-            setTimeout(() => item.classList.add('visible'), index * 80);
-            faqObserver.unobserve(item);
-          }
-        });
-      }, { threshold: 0.1 });
-      faqItems.forEach(item => faqObserver.observe(item));
-      this._faqObserver = faqObserver;
+      if (faqItems.length) {
+        const faqObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              faqObserver.unobserve(entry.target);
+            }
+          });
+        }, revealOptions);
+        faqItems.forEach(item => faqObserver.observe(item));
+        this._faqObserver = faqObserver;
+      }
     });
   }
 
@@ -249,7 +284,7 @@ class KygoFaqSection extends HTMLElement {
   }
 
   render() {
-    const appStoreUrl = this._getSetting('app-store-url', '#');
+    const appStoreUrl = this._getSetting('app-store-url', 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589');
     const email = this._getSetting('email', 'support@kygo.app');
 
     this.shadowRoot.innerHTML = `
@@ -284,6 +319,10 @@ class KygoFaqSection extends HTMLElement {
         .search-bar:focus-within { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-light); }
         .search-bar input { flex: 1; border: none; outline: none; padding: 14px 16px; font-size: 16px; font-family: inherit; background: transparent; }
         .search-bar input::placeholder { color: var(--gray-400); }
+        .search-bar .search-clear { flex-shrink: 0; background: transparent; border: none; border-radius: 50%; width: 32px; height: 32px; margin-right: 4px; color: var(--gray-400); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .search-bar .search-clear:hover { background: var(--gray-100); color: var(--gray-600); }
+        .search-bar .search-clear[hidden] { display: none; }
+        .search-bar .search-clear svg { width: 16px; height: 16px; }
         .search-bar .search-icon { background: var(--green); border: none; border-radius: 10px; padding: 12px 20px; color: white; display: flex; align-items: center; justify-content: center; }
         .search-bar .search-icon svg { width: 18px; height: 18px; }
 
@@ -462,36 +501,31 @@ class KygoFaqSection extends HTMLElement {
           to { opacity: 1; transform: scale(1); }
         }
 
+        .final-cta-content .cta-pill,
         .final-cta-content h2,
         .final-cta-content > p,
         .final-cta-content .cta-primary,
         .final-cta-content .cta-android,
-        .final-cta-content .risk-reversal {
+        .final-cta-content .cta-works {
           opacity: 0;
         }
-        .final-cta-inner.visible .final-cta-content h2 {
-          animation: ctaSlideUp 0.6s ease-out forwards;
+        .final-cta-inner.visible .final-cta-content .cta-pill {
+          animation: ctaSlideUp 0.5s ease-out forwards;
         }
-        .final-cta-inner.visible .final-cta-content > p {
+        .final-cta-inner.visible .final-cta-content h2 {
           animation: ctaSlideUp 0.6s ease-out 0.1s forwards;
         }
+        .final-cta-inner.visible .final-cta-content > p {
+          animation: ctaSlideUp 0.6s ease-out 0.25s forwards;
+        }
         .final-cta-inner.visible .final-cta-content .cta-primary {
-          animation: ctaScaleIn 0.5s ease-out 0.25s forwards;
+          animation: ctaScaleIn 0.5s ease-out 0.4s forwards;
         }
         .final-cta-inner.visible .final-cta-content .cta-android {
-          animation: ctaScaleIn 0.5s ease-out 0.25s forwards;
+          animation: ctaScaleIn 0.5s ease-out 0.4s forwards;
         }
-        .final-cta-inner.visible .final-cta-content .risk-reversal {
-          animation: fadeInUp 0.5s ease-out 0.4s forwards;
-        }
-
-        /* CTA button glow pulse */
-        @keyframes ctaGlow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
-          50% { box-shadow: 0 0 20px 4px rgba(255,255,255,0.2); }
-        }
-        .final-cta-inner.visible .cta-primary {
-          animation: ctaScaleIn 0.5s ease-out 0.25s forwards, ctaGlow 2.5s ease-in-out 1s infinite;
+        .final-cta-inner.visible .final-cta-content .cta-works {
+          animation: fadeInUp 0.5s ease-out 0.55s forwards;
         }
 
         /* Reduced motion for all new animations */
@@ -506,10 +540,12 @@ class KygoFaqSection extends HTMLElement {
           .still-questions-inner > p,
           .still-questions-inner .contact-options,
           .still-questions-inner .contact-option,
+          .final-cta-content .cta-pill,
           .final-cta-content h2,
           .final-cta-content > p,
           .final-cta-content .cta-primary,
-          .final-cta-content .risk-reversal {
+          .final-cta-content .cta-android,
+          .final-cta-content .cta-works {
             opacity: 1;
             transform: none;
             animation: none;
@@ -528,27 +564,30 @@ class KygoFaqSection extends HTMLElement {
         .contact-option-text strong { display: block; font-size: 15px; margin-bottom: 2px; }
         .contact-option-text span { font-size: 13px; color: var(--gray-600); }
 
-        .final-cta { padding: 48px 0; background: white; }
-        .final-cta-inner { background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: 24px; padding: 36px 24px; text-align: center; position: relative; overflow: hidden; }
-        .final-cta-inner::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%); pointer-events: none; }
-        .final-cta-content { position: relative; z-index: 1; }
-        .final-cta h2 { font-size: 32px; color: white; margin-bottom: 12px; }
-        .final-cta-content > p { color: rgba(255,255,255,0.85); margin-bottom: 20px; font-size: 17px; }
+        .final-cta { padding: 72px 0; background: white; }
+        .final-cta-inner { background: #0F172A; border-radius: 24px; padding: 40px 24px; text-align: center; position: relative; overflow: hidden; color: #fff; }
+        .final-cta-inner::before { content: ''; position: absolute; top: -160px; right: -160px; width: 520px; height: 520px; background: radial-gradient(closest-side, rgba(34,197,94,0.30), transparent); pointer-events: none; }
+        .final-cta-inner::after { content: ''; position: absolute; bottom: -180px; left: -180px; width: 480px; height: 480px; background: radial-gradient(closest-side, rgba(34,197,94,0.12), transparent); pointer-events: none; }
+        .final-cta-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+        .cta-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.16); color: #6EE7A0; padding: 6px 14px; border-radius: 999px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; border: 1px solid rgba(34,197,94,0.25); margin-bottom: 18px; }
+        .cta-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+        .final-cta h2 { font-size: clamp(26px, 4.5vw, 42px); line-height: 1.05; color: #fff; margin-bottom: 14px; max-width: 22ch; }
+        .final-cta h2 span { color: var(--green); }
+        .final-cta-content > p { color: rgba(255,255,255,0.72); margin-bottom: 24px; font-size: clamp(15px, 1.6vw, 17px); max-width: 56ch; line-height: 1.6; }
         .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-        .cta-primary { background: white; color: var(--green-dark); padding: 14px 24px; border-radius: 12px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s; }
-        .cta-primary:hover { background: var(--light); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .cta-primary svg { width: 18px; height: 18px; }
-        .risk-reversal { margin-top: 20px; color: rgba(255,255,255,0.7); font-size: 13px; display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
-        .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-        .cta-android svg{width:18px;height:18px}
+        .cta-primary, .cta-android { background: var(--green); color: #fff; padding: 14px 24px; border-radius: 12px; font-weight: 600; font-size: 15px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; border: none; cursor: pointer; font-family: inherit; -webkit-tap-highlight-color: transparent; }
+        .cta-primary:hover, .cta-android:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(34,197,94,0.30); }
+        .cta-primary svg, .cta-android svg { width: 18px; height: 18px; }
+        .cta-works { margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.6); font-size: 13px; }
+        .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
 
         @media (min-width: 768px) {
           .hero { padding: 80px 0 60px; }
           .hero h1 { font-size: 48px; }
-          .final-cta-inner { padding: 48px 40px; }
-          .final-cta h2 { font-size: 40px; }
+          .final-cta { padding: 96px 0; }
+          .final-cta-inner { padding: 56px 40px; }
         }
       </style>
 
@@ -559,6 +598,9 @@ class KygoFaqSection extends HTMLElement {
           <div class="search-container">
             <div class="search-bar">
               <input type="text" placeholder="Search for answers..." id="faq-search" aria-label="Search frequently asked questions">
+              <button type="button" class="search-clear" id="faq-search-clear" aria-label="Clear search" hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>
+              </button>
               <div class="search-icon" role="img" aria-label="Search">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
               </div>
@@ -660,7 +702,7 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>What phones does Kygo work on?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Both <strong>iOS and Android</strong>. Download on the App Store or <a href="https://kygo.app/android" target="_blank" rel="noopener">Google Play</a>.</p>
+                  <p>Both <strong>iOS and Android</strong>. Download on the App Store or <a href="https://www.kygo.app/android" target="_blank" rel="noopener">Google Play</a>.</p>
                   <p>A few things are iOS-only because of Apple's platform rules: Apple Health integration and Sign in with Apple. Everything else — food logging, Oura, Fitbit, Garmin, WHOOP, correlations — works identically on both.</p>
                 </div>
               </div>
@@ -681,6 +723,21 @@ class KygoFaqSection extends HTMLElement {
               <h2>Food Logging</h2>
             </div>
             <div class="faq-list">
+              <div class="faq-item">
+                <div class="faq-question"><span>How do I log food?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Tap the big green <strong>+</strong> in the bottom bar to open <strong>Food Chat</strong>. From there you have six ways to log:</p>
+                  <ul>
+                    <li><strong>Type</strong> what you ate in the input at the bottom ("two eggs and toast with butter")</li>
+                    <li><strong>Voice</strong> — tap the mic and just say it out loud</li>
+                    <li><strong>Camera</strong> — snap a photo of your meal or a nutrition label</li>
+                    <li><strong>Gallery</strong> — pick an existing photo from your phone</li>
+                    <li><strong>Barcode</strong> — scan a package</li>
+                    <li><strong>Saved</strong> — pick from your saved meals, favorites, or recently logged foods</li>
+                  </ul>
+                  <p>Pick whichever is easiest for what you're eating.</p>
+                </div>
+              </div>
               <div class="faq-item">
                 <div class="faq-question"><span>How does photo logging work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
@@ -709,10 +766,10 @@ class KygoFaqSection extends HTMLElement {
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>Can I scan a barcode or nutrition label?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Can I scan a barcode?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes — and the same camera button does both.</strong> Point it at the barcode on a package and we pick it up automatically. If the barcode isn't scanning well, aim at the <strong>nutrition label</strong> instead — we'll read the panel directly.</p>
-                  <div class="answer-highlight">That's two accurate ways to log packaged food without typing a character.</div>
+                  <p><strong>Yes</strong> — tap the barcode icon in Food Chat, point at the barcode on the package, and we'll pick it up. We check <strong>Open Food Facts</strong> and the <strong>USDA Branded</strong> database for the best match, so packaged foods come back with accurate calories, macros, and ingredients.</p>
+                  <p>If the barcode won't scan, the camera icon can read the nutrition label panel directly — same result, just from the printed numbers.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -732,7 +789,74 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>How do I copy a meal to another day?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Head to the <strong>Food tab</strong>, find the meal, tap <strong>Copy Meals</strong>, pick the items you want, choose the target date and meal slot, and confirm. Fastest way to log a repeated meal without retyping it.</p>
+                  <p>Three quick paths:</p>
+                  <ul>
+                    <li><strong>Empty meal slot?</strong> Tap <strong>Copy from yesterday</strong> on the empty section — we'll pull forward whatever you ate in that slot the most recent day you logged it.</li>
+                    <li><strong>Single food</strong> — swipe left on the row and tap <strong>Copy</strong>. Pick the target date(s) and meal slot.</li>
+                    <li><strong>Several foods at once</strong> — long-press a row to enter selection mode, tap to add more rows (or tap a meal header to select the whole meal), then tap <strong>Copy</strong> in the bulk action bar.</li>
+                  </ul>
+                  <p>All three give you a date and meal-slot picker, so you can copy one item to a single day or a full meal across an entire week in one move.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>How do I edit or delete a food entry?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <ul>
+                    <li><strong>Edit:</strong> tap any food row to open it — change portions, units, meal slot, or nutrition details</li>
+                    <li><strong>Swipe left</strong> on a row to reveal <strong>Copy</strong>, <strong>Move</strong>, and <strong>Delete</strong> for that single item</li>
+                    <li><strong>Long-press</strong> a row to enter selection mode for bulk <strong>Copy / Move / Delete</strong> across many foods at once</li>
+                  </ul>
+                  <p>Every action shows an <strong>Undo</strong> toast for a few seconds — accidental swipes are easy to recover.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What's Quick Add and how do I use it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p><strong>Quick Add is the fastest way to repeat-log foods you eat often — no typing, no AI.</strong> Tap the <strong>+</strong> next to any meal section on the Today or Food tab to open a bottom sheet with three tabs:</p>
+                  <ul>
+                    <li><strong>Meals</strong> — your saved meal templates</li>
+                    <li><strong>Recent</strong> — your most-logged foods, ranked by frequency</li>
+                    <li><strong>Favorites</strong> — anything you've starred</li>
+                  </ul>
+                  <p>Tap a row to add it in one tap, or use the +/− stepper to bump the quantity in 0.5-serving increments before logging. Best for foods you eat the same way every time.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>How do I select multiple foods at once?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p><strong>Long-press any food row</strong> on the Today or Food tab. The card switches to selection mode — checkmarks appear on every row, and a bulk action bar slides in at the bottom. Tap additional rows to add them to the selection, or tap the header of a whole meal (e.g. "Lunch") to select every food in that meal at once.</p>
+                  <p>To exit selection mode, tap the × on the action bar or switch days.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What can I do with selected foods?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>The bulk action bar gives you three options:</p>
+                  <ul>
+                    <li><strong>Copy</strong> — duplicate the selected foods to one or more dates and any meal slot (breakfast / lunch / dinner / snack). Perfect for "I ate the same thing for lunch all week."</li>
+                    <li><strong>Move</strong> — change which meal or which day the selected foods belong to, without duplicating them</li>
+                    <li><strong>Delete</strong> — remove the selected foods at once</li>
+                  </ul>
+                  <p>All three actions show a confirmation and an <strong>Undo</strong> toast for a few seconds afterward, so accidental bulk actions are easy to recover.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>Can I copy, move, or delete just one food without selection mode?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Yes — <strong>swipe left</strong> on any food row to reveal three actions for that single item:</p>
+                  <ul>
+                    <li><strong>Copy</strong> — opens the same date/meal picker as bulk copy, just for that one row</li>
+                    <li><strong>Move</strong> — re-assign it to a different meal slot or day</li>
+                    <li><strong>Delete</strong> — removes it immediately (with an Undo toast)</li>
+                  </ul>
+                  <p>Use swipe for one-off fixes; use long-press + bulk actions when you're cleaning up or duplicating several foods at once.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What's the food-logging streak at the top of the Today screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p><strong>Every day you log at least one meal counts as a streak day.</strong> Your current streak shows in the greeting at the top of the Today screen.</p>
+                  <p>We give a small grace window for the current day so logging late at night still counts, and <strong>Smart meal reminders</strong> (Settings → Profile → Notifications) will nudge you when you have a streak going and haven't logged yet — the reminder copy switches to "🔥 N-day streak — log [meal] to keep it going."</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -825,6 +949,30 @@ class KygoFaqSection extends HTMLElement {
                 </div>
               </div>
               <div class="faq-item">
+                <div class="faq-question"><span>What are the Featured Question and Daily Pulse cards?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Two cards live at the top of the Correlation tab:</p>
+                  <ul>
+                    <li><strong>Featured Question</strong> — your daily pattern highlight, framed as a question ("Does your late coffee affect your sleep score?"). Tap it to see the full breakdown and suggested action.</li>
+                    <li><strong>Daily Pulse</strong> — a quick read on where your key metrics are sitting today versus your baseline, so you can spot a rough night or a good recovery at a glance.</li>
+                  </ul>
+                  <p>Both refresh each day as new data comes in.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What does the "Top contributors" breakdown show on a factor card?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>When you tap into a food or nutrient on a metric detail screen, you'll see the <strong>top contributing foods</strong> as a ranked list. Each row shows:</p>
+                  <ul>
+                    <li>The <strong>food</strong> that contributed</li>
+                    <li><strong>How many times</strong> you logged it in the sample window</li>
+                    <li><strong>Per-serving amount</strong> of that nutrient</li>
+                    <li><strong>Share %</strong> — how much of the total impact came from that food</li>
+                  </ul>
+                  <p>Use it to spot which foods are actually driving a pattern — for example, is your magnesium coming mostly from almonds, or from a daily spinach habit?</p>
+                </div>
+              </div>
+              <div class="faq-item">
                 <div class="faq-question"><span>Do correlations change over time?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
                   <p><strong>Yes.</strong> We recalculate as new data comes in, so patterns shift as your routine changes — new training block, a stressful work stretch, seasonal shifts, travel. What mattered three months ago may not be the dominant factor now.</p>
@@ -845,15 +993,33 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>Which wearables do you support?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>We integrate with:</p>
+                  <p>Six integrations:</p>
                   <ul>
-                    <li><strong>Oura Ring</strong> — Sleep, readiness, activity, HRV, temperature</li>
-                    <li><strong>Apple Health</strong> — Steps, heart rate, sleep, workouts, weight, and any data your other apps write to Apple Health (iOS only)</li>
-                    <li><strong>Fitbit</strong> — Sleep, heart rate, activity, workouts</li>
-                    <li><strong>Garmin</strong> — Activity, sleep, heart rate, body metrics</li>
-                    <li><strong>WHOOP</strong> — Strain, recovery, HRV, resting heart rate, sleep</li>
+                    <li><strong>Oura Ring</strong> — sleep, readiness, activity, HRV, temperature</li>
+                    <li><strong>Apple Health (iOS)</strong> — steps, heart rate, sleep, workouts, weight, and anything else apps write to it</li>
+                    <li><strong>Health Connect (Android)</strong> — the same idea for Android: pulls steps, sleep, resting heart rate, HRV, active calories, basal metabolic rate, hydration, and nutrition from Samsung Health, Google Fit, Fitbit, Oura, WHOOP Android, and any other app that writes to it</li>
+                    <li><strong>Fitbit</strong> — sleep, heart rate, activity, workouts</li>
+                    <li><strong>Garmin</strong> — activity, sleep, heart rate, body metrics</li>
+                    <li><strong>WHOOP</strong> — strain, recovery, HRV, resting heart rate, sleep</li>
                   </ul>
-                  <p>You can connect one device or multiple—we combine the data to give you the most complete picture.</p>
+                  <p>You can connect one device or multiple — we combine the data to give you the most complete picture.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>My Android wearable writes to Health Connect but some fields aren't showing (HRV, body temperature, etc.)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Two things can cause this:</p>
+                  <h4>1. The source app isn't writing it</h4>
+                  <p>A lot of wearable apps are selective:</p>
+                  <ul>
+                    <li><strong>WHOOP Android</strong> currently does not write HRV or body temperature to Health Connect even though it tracks them — limitation on WHOOP's side.</li>
+                    <li><strong>Samsung Health</strong> writes most metrics but may not include every field depending on your watch model.</li>
+                    <li><strong>Fitbit Android</strong> writes sleep, heart rate, and steps, but not HRV in many cases.</li>
+                  </ul>
+                  <p>If a metric is missing, open the <strong>Health Connect app → Data</strong> → pick the metric. If WHOOP / Samsung / Fitbit isn't listed as a data source there, they're not writing it — and Kygo can't read what isn't there.</p>
+                  <h4>2. Kygo no longer requests certain Health Connect permissions</h4>
+                  <p>To meet Google Play's minimum-scope policy, we removed raw heart rate, SpO2, and VO2 Max from our Health Connect requests in <strong>1.2.5</strong> — we weren't surfacing them in the app yet. Resting heart rate and HRV are still requested.</p>
+                  <div class="answer-highlight"><strong>Workaround:</strong> if you have a direct Oura / Fitbit / Garmin / WHOOP OAuth connection in Kygo, that pulls everything the device tracks (we go straight to the cloud, not through Health Connect). Use Health Connect for devices where you don't have a direct integration.</div>
                 </div>
               </div>
               <div class="faq-item">
@@ -878,7 +1044,7 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>Is Kygo available on Android?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes!</strong> Kygo is available on both iOS and Android. You can <a href="https://kygo.app/android" target="_blank" rel="noopener" style="color:var(--green);text-decoration:underline">download it on Google Play</a> or the App Store.</p>
+                  <p><strong>Yes!</strong> Kygo is available on both iOS and Android. You can <a href="https://www.kygo.app/android" target="_blank" rel="noopener" style="color:var(--green);text-decoration:underline">download it on Google Play</a> or the App Store.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -1007,6 +1173,31 @@ class KygoFaqSection extends HTMLElement {
                 </div>
               </div>
               <div class="faq-item">
+                <div class="faq-question"><span>How do I manage notifications?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Go to <strong>Settings → Profile → Notifications</strong>. You'll see these toggles:</p>
+                  <ul>
+                    <li><strong>Meal reminders</strong> — fixed daily reminder + per-meal reminders (breakfast, lunch, dinner, snack) with custom times</li>
+                    <li><strong>Smart meal reminders</strong> — server-side reminders that skip the ping if you already logged that meal. When you have a 3+ day streak and haven't logged today, the reminder copy switches to "🔥 N-day streak — log [meal] to keep it going."</li>
+                    <li><strong>New insight alerts</strong> — a push when one of your health metrics has enough data to unlock its first correlations</li>
+                    <li><strong>Wearable reconnect alerts</strong> — heads-up if an Oura, Fitbit, Garmin, or WHOOP connection stops syncing and needs to be re-linked</li>
+                  </ul>
+                  <p>Each toggle is independent. Your phone's OS also has a master notification switch if you want to mute everything at that level.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>Will I get a push when a new insight unlocks?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Yes, if <strong>New insight alerts</strong> is on (default). When one of your metrics — sleep, HRV, resting HR, readiness, etc. — reaches enough data to show its first correlations, you'll get a tap-to-open push that drops you straight into that metric's detail screen.</p>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What if my wearable disconnects without me noticing?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>If <strong>Wearable reconnect alerts</strong> is on (default), we'll send a push when Oura, Fitbit, Garmin, or WHOOP stops syncing — usually because the OAuth token expired or you revoked access on the device's side. Tap the notification to go straight to <strong>Device Connections</strong> and reconnect in one step.</p>
+                </div>
+              </div>
+              <div class="faq-item">
                 <div class="faq-question"><span>How do I delete my account?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
                   <p>Go to <strong>Settings → Privacy &amp; Data → Delete Account</strong>. We'll ask you to confirm, since this is permanent.</p>
@@ -1039,14 +1230,36 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>What's on the Today screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Your daily dashboard — everything you need in one glance:</p>
+                  <p>Your daily dashboard. From top to bottom:</p>
                   <ul>
-                    <li><strong>Recommended actions</strong> — personalized suggestions based on your profile and patterns</li>
-                    <li><strong>Daily nutrition</strong> — calories and macros against your targets</li>
-                    <li><strong>Today's meals</strong> — a quick glance at what you've logged so far</li>
-                    <li><strong>Focus cards</strong> — questions and insights to explore</li>
+                    <li><strong>Greeting + streak</strong> — a hello at the top with your current food-logging streak (consecutive days you've logged at least one meal)</li>
+                    <li><strong>Daily nutrition</strong> — a calorie ring plus protein / carbs / fat against your targets</li>
+                    <li><strong>Today's meals</strong> — breakfast / lunch / dinner / snacks, with quick edit, copy, and bulk-select</li>
+                    <li><strong>Hydration</strong> — water intake with quick-add buttons</li>
+                    <li><strong>Experiments progress</strong> — your pinned dietary experiments and how they're tracking</li>
                     <li><strong>Weight tracking</strong> — log today's weight and see your trend</li>
+                    <li><strong>Wearables</strong> — connection status for your linked devices, with a tap-to-reconnect if anything stopped syncing</li>
                   </ul>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>What's on the Correlation screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Everything about how your food and health metrics connect. You'll see:</p>
+                  <ul>
+                    <li><strong>Featured Question + Daily Pulse</strong> at the top — today's pattern highlight and a quick read on where your metrics sit versus baseline</li>
+                    <li>A grid of your <strong>health metrics</strong> (sleep, HRV, resting HR, readiness, etc.) showing how many food factors are helping or hurting each</li>
+                    <li><strong>Experiments</strong> — your pinned dietary tests and their progress</li>
+                    <li>Tap any metric to open the <strong>detail screen</strong> — factor cards with scatter plots, lag effects (same-day / next-day), and a ranked <strong>Top contributors</strong> list of the foods driving the pattern</li>
+                  </ul>
+                  <div class="answer-highlight">Correlations and Experiments are <strong>Pro features</strong>. Free users can see the tab and the unlock progress, but tapping into a metric will take you to the upgrade screen.</div>
+                </div>
+              </div>
+              <div class="faq-item">
+                <div class="faq-question"><span>How does hydration tracking work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-answer">
+                  <p>Use the <strong>quick-add buttons</strong> on the Hydration card (Today screen) to log water as you drink it. Tap a preset (8 oz, 16 oz, etc.) or enter a custom amount — the card updates against your daily water target immediately.</p>
+                  <p><strong>We only count water you log directly on the hydration card.</strong> Beverages logged through Food Chat (coffee, juice, soda, etc.) count toward your calories and macros but don't add to your hydration total. This keeps your water number meaningful instead of inflating it from every drink you log.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -1093,12 +1306,6 @@ class KygoFaqSection extends HTMLElement {
                     <li><strong>Light</strong> — always light</li>
                     <li><strong>Dark</strong> — always dark</li>
                   </ul>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I manage notifications?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Go to <strong>Settings → Profile → Notifications</strong>. You can toggle which kinds of notifications you want — meal reminders, insight alerts, weekly summaries — or silence them entirely.</p>
                 </div>
               </div>
               <div class="faq-item">
@@ -1243,25 +1450,30 @@ class KygoFaqSection extends HTMLElement {
         <div class="container">
           <div class="final-cta-inner animate-on-scroll">
             <div class="final-cta-content">
-              <h2>Ready to understand your body?</h2>
-              <p>Stop guessing. Start seeing the correlations between what you eat and how you feel.</p>
+              <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+              <h2>No more questions? <span>Try it free.</span></h2>
+              <p>Logging and wearable syncing are free forever. See your meals line up against how you actually sleep, recover, and feel.</p>
               <div class="cta-buttons">
-                <a href="${appStoreUrl}" class="cta-primary" target="_blank" rel="noopener">
+                <a href="${appStoreUrl}" class="cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                   Download for iOS
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
-              <p class="risk-reversal">
-                <span>Free forever plan</span>
-                <span>•</span>
-                <span>No credit card required</span>
-                <span>•</span>
-                <span>Upgrade anytime</span>
-              </p>
+              <div class="cta-works">
+                <span>Works with</span>
+                <div class="cta-badges">
+                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" />
+                </div>
+              </div>
             </div>
           </div>
         </div>

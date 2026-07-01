@@ -1,7 +1,7 @@
 /**
- * Kygo Health — Deep Sleep Factor Explorer
- * Tag: kygo-deep-sleep-factors
- * Interactive tool exploring 38 research-backed factors that affect Deep Sleep (N3/SWS) across 5 categories
+ * Kygo Health — What Influences REM Sleep? Factor Explorer
+ * Tag: kygo-rem-sleep
+ * Interactive tool exploring 23 research-backed factors that affect REM (dream) sleep across 5 categories
  */
 
 /** SEO helper — injects visible text outside Shadow DOM for crawlers */
@@ -16,7 +16,7 @@ if (typeof __seo === 'undefined') {
   };
 }
 
-class KygoDeepSleepFactors extends HTMLElement {
+class KygoRemSleep extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -31,7 +31,7 @@ class KygoDeepSleepFactors extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Deep Sleep Factor Explorer by Kygo Health. Explore 29 research-backed factors that affect Deep Sleep N3 slow-wave sleep across 5 categories: Lifestyle and Behavior, Supplements and Micronutrients, Environment and Circadian, Stress and Mental Health, and Biology and Demographics. Lifestyle factors include Exercise with 33 percent increase in SWS and increased delta power from moderate cardio, Alcohol with mixed net negative effects front-loading then disrupting SWS, Caffeine 400mg reducing N3 by 29.7 minutes at 4 hours pre-bed, Fiber Intake predicting more SWS, High-Carb High-GI with faster sleep onset but reduced SWS where low carb diets show more N3, Smoking and Nicotine with significant N3 reduction, Cannabis THC with net negative chronic effects on delta power, Dehydration reducing SWS by 24 minutes, Napping late afternoon reducing nighttime N3, and Sleep Consistency increasing SWS significantly. Supplements include Magnesium increasing SWS by 6.4 minutes in elderly, Glycine shortening latency to SWS, Tart Cherry increasing total sleep time by 84 minutes, and Melatonin helping via circadian and homeostatic pathways. Environment factors include Temperature with cooling mattress adding 7.5 minutes N3 and optimal room temp 18-22C, Blue Light reducing frontal slow-wave activity, Aircraft Noise reducing N3 by 23 minutes, Closed-Loop Audio enhancing slow oscillations, Altitude reducing SWA by 15 percent at 2590m, and Bedroom CO2 linearly reducing SWS. Stress factors include Depression MDD with markedly decreased N3, Anxiety Disorders reducing deep SWS percentage, and Vipassana Meditation preserving SWS with meditators showing 10.63 percent vs 3.94 percent at age 50-60. Biology factors include Age with SWS declining from 18.9 to 3.4 percent, Sex with women maintaining more SWS, PER2 Gene variant reducing SWS by 22 percent, BMI Obesity inversely correlated with SWA, and Gut Microbiome diversity correlating with sleep efficiency. How to increase deep sleep naturally. What affects deep sleep. Best supplements for deep sleep. How to get more slow wave sleep. What kills deep sleep. Data sourced from peer-reviewed studies and meta-analyses published through 2026.');
+    __seo(this, 'What Influences REM Sleep? A research-based factor explorer by Kygo Health covering 23 factors that affect REM (rapid eye movement / dream) sleep across 5 categories: Nutrition and Substances, Supplements, Exercise and Physical Activity, Environment and Sleep Hygiene, and Demographics and Physiology. REM sleep is the dreaming stage tied to emotional processing and memory, normally 20 to 25 percent of total sleep, concentrated in the second half of the night. Nutrition factors: Alcohol is one of the most reliable REM suppressors, pushing REM latency 18 minutes later and cutting REM duration 11.3 minutes on average, worse per drink (Gardiner meta-analysis 2024). Caffeine delays REM timing but may not cut total REM. Cannabis and THC suppress REM and cause vivid-dream REM rebound on quitting. Nicotine and smoking reduce REM dose-dependently, with the patch worse than cigarettes. Diet: more carbohydrate tracks with more REM, high protein low carb with later REM, weak evidence. Supplements: Melatonin increases REM duration in people whose REM started low via MT1 receptors. 5-HTP raised REM percent in a small Parkinson trial. Vitamin B6 boosts dream recall and vividness but not proven REM duration. Glycine speeds sleep onset and deep sleep without changing REM. Exercise: hard late intense evening workouts slightly cut REM percent by about 2.5 percent and push it later; regular aerobic training mostly adds deep sleep not REM; morning exercise spares REM. Environment: ambient heat strongly shortens REM because thermoregulation is suspended during REM so keep the room cool; circadian timing gates REM which peaks near the core body temperature minimum about 2 hours before wake; sleep curtailment cuts REM first because REM is back-loaded into the early morning; REM rebound surges to 140 percent of baseline on recovery nights after REM loss; daytime napping reduces nighttime REM; pre-sleep learning and cognitive load increase REM; pre-sleep stress fragments REM and raises density but can trigger rebound; altitude reduces REM on first nights then recovers. Demographics: REM percent declines gradually about 0.6 percent per decade with age; sex differences are small and hormones matter more; the luteal phase before a period lowers REM as core body temperature rises. How to increase REM sleep naturally. What affects REM sleep. What reduces dream sleep. Best supplements for REM sleep. Why alcohol kills dream sleep. Data sourced from peer-reviewed studies and meta-analyses published through 2026.');
   }
 
   disconnectedCallback() {
@@ -42,11 +42,11 @@ class KygoDeepSleepFactors extends HTMLElement {
 
   get _categories() {
     return {
-      lifestyle: { name: 'Lifestyle & Behavior', icon: 'sun', count: 10 },
-      supplements: { name: 'Supplements & Micronutrients', icon: 'pill', count: 4 },
-      environment: { name: 'Environment & Circadian', icon: 'moon', count: 6 },
-      stress: { name: 'Stress & Mental Health', icon: 'brain', count: 3, intro: 'Stress and deep sleep form a vicious cycle: SWS suppresses cortisol via GABAergic hypothalamic pathways, but when deep sleep is reduced, next-day cortisol rises — making it harder to get deep sleep the following night. Breaking this cycle is the common thread across all stress-related factors below.' },
-      biology: { name: 'Biology & Demographics', icon: 'users', count: 6 }
+      nutrition: { name: 'Nutrition & Substances', icon: 'droplet', count: 5, intro: 'REM sleep is unusually sensitive to chemistry. Alcohol, cannabis, and nicotine have the clearest effects of any substances here — and all three reduce dream sleep.' },
+      supplements: { name: 'Supplements', icon: 'pill', count: 4, intro: 'The supplement literature for REM specifically is thin. Most sleep supplements are studied against sleep latency or deep sleep, not isolated REM — treat any "boosts REM" claim as unproven unless it cites REM% on a sleep study (PSG).' },
+      exercise: { name: 'Exercise & Physical Activity', icon: 'dumbbell', count: 3 },
+      environment: { name: 'Environment & Sleep Hygiene', icon: 'moon', count: 8 },
+      demographics: { name: 'Demographics & Physiology', icon: 'users', count: 3 }
     };
   }
 
@@ -54,374 +54,295 @@ class KygoDeepSleepFactors extends HTMLElement {
 
   get _factors() {
     return {
-      lifestyle: [
-        {
-          key: 'exercise',
-          name: 'Exercise',
-          direction: 'positive',
-          evidence: 'strong',
-          effect: 'Positive (strong)',
-          keyFinding: '+33% SWS; also increases delta power & stability',
-          whatThisMeans: 'Consistent moderate cardio is one of the most reliable ways to increase deep sleep. 3-4 sessions per week at moderate effort works. Beyond duration, exercise also improves deep sleep quality — increased delta power and more stable SWS architecture show up on EEG even when you don\'t subjectively feel a difference.',
-          mechanism: 'Moderate aerobic exercise increases homeostatic sleep pressure (adenosine accumulation) and enhances thermoregulatory processes that promote SWS entry. Also increases slow-wave activity (delta power) and stabilizes SWS architecture in early sleep cycles.',
-          dosage: 'Moderate intensity (40% VO2max), 3-4x/week, 8-12 weeks for sustained effect; effects strongest in early sleep cycles',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/31095458/', label: 'Aritake-Okada 2019' }
-        },
+      nutrition: [
         {
           key: 'alcohol',
           name: 'Alcohol',
-          direction: 'mixed',
+          direction: 'negative',
           evidence: 'strong',
-          effect: 'Mixed (net negative)',
-          keyFinding: 'Redistributes SWS; net negative (meta-analysis)',
-          whatThisMeans: 'Alcohol front-loads your deep sleep but then wrecks the second half of the night. Total deep sleep doesn\'t actually increase — it just gets redistributed and disrupted.',
-          mechanism: 'Ethanol enhances GABAergic inhibition acutely (promoting early SWS) but causes sympathetic rebound and sleep fragmentation as it metabolizes.',
-          dosage: '≥0.85 g/kg = significant disruption; any dose affects second-half sleep',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3987855/', label: 'Chan et al. 2013' }
+          effect: 'Negative (dose-dependent)',
+          keyFinding: '−11.3 min REM duration, +18 min REM latency (27-study meta)',
+          whatThisMeans: 'Alcohol is one of the most reliable REM suppressors. Even two drinks delay and shorten your dream sleep, and it gets worse with every additional drink. This is why a nightcap leaves you under-recovered, and why using a drink to fall asleep backfires.',
+          mechanism: 'Ethanol\'s acute sedative (GABAergic) effect suppresses the cholinergic activity that generates REM early in the night. As it metabolizes, the resulting sympathetic rebound and fragmentation wreck the second half of the night — exactly where REM concentrates.',
+          dosage: 'Disruption begins at ~2 standard drinks; per 1 g/kg, REM latency rose 30.1 min and REM duration fell 40.4 min; REM% dropped 2.8%.',
+          source: { url: 'https://www.sciencedirect.com/science/article/pii/S1087079224001345', label: 'Gardiner et al., Sleep Medicine Reviews 2024' }
         },
         {
           key: 'caffeine',
           name: 'Caffeine',
-          direction: 'negative',
-          evidence: 'strong',
-          effect: 'Negative (strong)',
-          keyFinding: '−29.7 min N3 at 400mg/4h pre-bed',
-          whatThisMeans: '400mg of caffeine (about 2 large coffees) reduces deep sleep by 30 minutes even when consumed 4 hours before bed. The effect persists even at 12 hours out for high doses.',
-          mechanism: 'Adenosine A1 and A2A receptor antagonism directly blocks homeostatic sleep pressure that drives SWS. Half-life of 5-6 hours means late doses interfere with bedtime delta power.',
-          dosage: '400mg at 4h: −30 min N3; at 12h: −21 min; 100mg at 12h: no effect',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/39377163/', label: 'SLEEP 2025' }
-        },
-        {
-          key: 'fiber-intake',
-          name: 'Fiber Intake',
-          direction: 'positive',
-          evidence: 'moderate',
-          effect: 'Positive',
-          keyFinding: 'More fiber → more SWS (p=0.029)',
-          whatThisMeans: 'More fiber in your diet = more deep sleep. More saturated fat = less. Simple dietary composition matters for sleep architecture.',
-          mechanism: 'Fiber promotes stable glycemic control and feeds gut microbiota that produce short-chain fatty acids influencing central serotonin/melatonin pathways.',
-          dosage: 'Higher dietary fiber; lower saturated fat intake',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4702189/', label: 'St-Onge et al. 2016' }
-        },
-        {
-          key: 'high-carb',
-          name: 'High-Carb / High-GI',
           direction: 'mixed',
           evidence: 'moderate',
-          effect: 'Mixed (net negative for SWS)',
-          keyFinding: 'Faster sleep onset but reduced SWS. Low carb diets show more N3.',
-          whatThisMeans: 'High-carb meals help you fall asleep faster but actually reduce deep sleep. Low carbohydrate diets are associated with more N3/SWS. If deep sleep is your goal, cutting carbs — especially high-GI carbs at dinner — may help.',
-          mechanism: 'High-GI foods increase tryptophan uptake (reducing sleep latency) but insulin-mediated shifts in amino acid ratios alter neurotransmitter balance away from SWS promotion. Low carb intake preserves more delta-wave generating capacity.',
-          dosage: 'Low carb diets favor more SWS; effect is meal-dependent; timing matters more than total intake',
-          source: { url: 'https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2022.933898/full', label: 'Frontiers Nutrition 2022' }
-        },
-        {
-          key: 'smoking',
-          name: 'Smoking / Nicotine',
-          direction: 'negative',
-          evidence: 'strong',
-          effect: 'Negative',
-          keyFinding: 'NRT: significant N3 reduction vs non-smokers',
-          whatThisMeans: 'Nicotine directly suppresses deep sleep. NRT patches are even worse than smoking for N3 (probably sustained nicotine delivery). Quitting restores it. Note: the exact magnitude of reduction could not be independently verified from published abstracts; the general direction (smoking reduces N3, quitting restores it) is well-confirmed.',
-          mechanism: 'Nicotinic acetylcholine receptor activation promotes cortical arousal and suppresses thalamocortical slow oscillations that generate delta waves.',
-          dosage: 'Any nicotine exposure reduces N3; NRT patches worst due to sustained delivery; quitting restores deep sleep',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/41197178/', label: 'Tab-OSA Study 2025' }
+          effect: 'Mixed (delays, may not cut total)',
+          keyFinding: 'Delays REM timing; meta-analysis found no significant change in REM%',
+          whatThisMeans: 'Caffeine clearly delays when REM shows up, but the evidence that it cuts how much REM you get is weaker and mixed. The bigger, clearer hits from caffeine are to deep sleep and how fast you fall asleep.',
+          mechanism: 'Adenosine receptor antagonism delays sleep onset and pushes the nightly timing of REM later. Its clearest effects are on deep sleep and sleep onset rather than total REM amount.',
+          dosage: 'Ten days of regular caffeine delayed nightly REM timing in healthy men; avoid late-day doses to protect REM timing.',
+          source: { url: 'https://journals.sagepub.com/doi/full/10.1177/07487304211013995', label: 'Weibel et al., J Biol Rhythms 2021' }
         },
         {
           key: 'cannabis',
           name: 'Cannabis / THC',
-          direction: 'mixed',
-          evidence: 'moderate',
-          effect: 'Mixed (net negative chronic)',
-          keyFinding: 'Meta: chronic use reduces SWS & TST',
-          whatThisMeans: 'Acute cannabis use may briefly help sleep, but regular use reduces deep sleep. An EEG study also shows it makes the deep sleep you do get shallower. Similar to alcohol — short-term gain, long-term loss.',
-          mechanism: 'CB1 receptor activation acutely enhances GABAergic tone but chronic use downregulates receptors, reducing endocannabinoid-mediated SWS promotion and delta power.',
-          dosage: 'Near-daily use associated with reduced SWS; acute low-dose may briefly increase it',
-          source: { url: 'https://www.sciencedirect.com/science/article/pii/S1087079225001170', label: 'Cannabis Meta-Analysis 2025' }
-        },
-        {
-          key: 'dehydration',
-          name: 'Dehydration',
           direction: 'negative',
           evidence: 'moderate',
-          effect: 'Negative',
-          keyFinding: '−24 min SWS post-exercise (p=0.028)',
-          whatThisMeans: 'Being dehydrated after exercise costs you roughly 24 minutes of deep sleep. Hydrating properly preserves recovery sleep.',
-          mechanism: 'Hypovolemia triggers compensatory sympathetic activation that opposes the parasympathetic dominance required for SWS entry and maintenance.',
-          dosage: 'Replace fluids after exercise; euhydration preserves SWS',
-          source: { url: 'https://journals.physiology.org/doi/abs/10.1152/physiol.2024.39.S1.1321', label: 'Physiology 2024' }
+          effect: 'Negative (suppression + rebound)',
+          keyFinding: 'Suppresses REM; quitting triggers vivid-dream REM rebound',
+          whatThisMeans: 'Cannabis suppresses dream sleep, which is why heavy users often report not dreaming. Quit and the dreams come roaring back (REM rebound), which makes stopping hard. Lower medical doses are less clear-cut.',
+          mechanism: 'THC reduces eye-movement activity and, to a lesser degree, REM duration via CB1 signaling. Frequent use near bedtime raises REM latency and lowers sleep efficiency; stopping after heavy use unmasks a strong REM rebound.',
+          dosage: 'Frequent bedtime use is worst; newer low therapeutic doses show mixed or null REM effects.',
+          source: { url: 'https://www.sciencedirect.com/science/article/pii/S1087079225001170', label: 'Cannabis Meta-Analysis, Sleep Med Reviews 2025' }
         },
         {
-          key: 'napping',
-          name: 'Napping (Late Afternoon)',
+          key: 'nicotine',
+          name: 'Nicotine / Smoking',
           direction: 'negative',
-          evidence: 'moderate',
-          effect: 'Negative (on nighttime N3)',
-          keyFinding: 'Sleep onset +27 min; SWA reduced',
-          whatThisMeans: 'Late afternoon/evening naps "spend" your deep sleep pressure before nighttime. Your body can\'t rebuild enough sleep drive between the nap and bedtime, so you get less deep sleep that night.',
-          mechanism: 'Napping dissipates accumulated homeostatic sleep pressure (Process S). Insufficient time to rebuild adenosine reduces SWA in first nocturnal NREM cycle.',
-          dosage: 'Avoid naps after ~2 PM if nighttime deep sleep is a priority',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2824213/', label: 'PMC — SWS Regulation' }
-        },
-        {
-          key: 'sleep-consistency',
-          name: 'Sleep Consistency',
-          direction: 'positive',
           evidence: 'strong',
-          effect: 'Positive',
-          keyFinding: 'Consistency → significantly more SWS (n=38,838)',
-          whatThisMeans: 'Going to bed and waking up at the same time reliably increases deep sleep. One of the most underappreciated and controllable factors — and irregular sleep patterns are independently linked to mortality risk.',
-          mechanism: 'Consistent sleep timing strengthens circadian entrainment of the suprachiasmatic nucleus, optimizing the alignment between homeostatic sleep pressure and circadian SWS promotion windows.',
-          dosage: 'Consistent bed/wake times; minimize weekend shift',
-          source: { url: 'https://www.whoop.com/us/en/press-center/whoop-study-published-in-sleep-finds/', label: 'WHOOP/SLEEP Study' },
-          affiliate: { url: 'https://amzn.to/4saSeEc', label: 'Sunrise Alarm Clock' }
+          effect: 'Negative (dose-dependent)',
+          keyFinding: 'Dose-dependent REM reduction; patch can be worse than cigarettes',
+          whatThisMeans: 'Nicotine cuts dream sleep, whether from cigarettes or the patch. The patch can be worse for REM specifically because it keeps nicotine in your system all night rather than tapering off as a cigarette would.',
+          mechanism: 'Nicotinic acetylcholine receptor activation promotes cortical arousal and fragments sleep. Transdermal delivery sustains nicotine across the whole night, suppressing REM more than a cigarette that tapers off.',
+          dosage: 'Any nicotine exposure reduces REM; the all-night patch is worst. In the Sleep Heart Health Study (n=6,400) smokers had longer latency and lighter, more disrupted sleep.',
+          source: { url: 'https://academic.oup.com/aje/article/164/6/529/129824', label: 'Zhang et al., Am J Epidemiology 2006 (SHHS)' }
+        },
+        {
+          key: 'diet-macros',
+          name: 'Diet / Macronutrient Mix',
+          direction: 'mixed',
+          evidence: 'emerging',
+          effect: 'Shifts REM (weak evidence)',
+          keyFinding: 'More carbs ~ more REM; high-protein/low-carb → later REM',
+          whatThisMeans: 'More carbs tends to track with more REM, and very low-carb/high-protein with later REM — but this is among the weakest factors here: the data are observational and the mechanism may not apply to normal diets.',
+          mechanism: 'A proposed tryptophan-availability pathway shifts serotonin/melatonin signaling toward more REM, but it may only hold at unusually low protein intakes, so real-world relevance is debated.',
+          dosage: 'Observational only; among the weakest factors on this page.',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5612383/', label: 'Dietary Macronutrients & Sleep review, 2017' }
         }
       ],
 
       supplements: [
         {
-          key: 'magnesium',
-          name: 'Magnesium',
-          direction: 'positive',
-          evidence: 'emerging',
-          effect: 'Positive (elderly, small)',
-          keyFinding: '+6.4 min SWS, n=12 elderly',
-          whatThisMeans: 'Magnesium did increase deep sleep in elderly subjects, but only by ~6 minutes in one small study. Most of the hype around magnesium for deep sleep outpaces the actual evidence.',
-          mechanism: 'Mg²⁺ acts as a natural NMDA receptor antagonist and voltage-gated calcium channel modulator, enhancing thalamocortical delta oscillations. Also reduces nocturnal cortisol.',
-          dosage: '30 mmol/day oral Mg²⁺; 20-day supplementation period',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/12163983/', label: 'Held et al. 2002' },
-          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
-        },
-        {
-          key: 'glycine',
-          name: 'Glycine',
-          direction: 'positive',
-          evidence: 'moderate',
-          effect: 'Positive (latency)',
-          keyFinding: 'SWS latency shortened (p=0.019)',
-          whatThisMeans: 'Glycine helps you get into deep sleep faster without changing how much you get. Interesting mechanism but limited data.',
-          mechanism: 'Glycine acts on NMDA receptors in the suprachiasmatic nucleus, lowering core body temperature. Also acts as an inhibitory neurotransmitter facilitating NREM entry.',
-          dosage: '3g before bed',
-          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007' },
-          affiliate: { url: 'https://amzn.to/3PWfatc', label: 'Glycine Powder' }
-        },
-        {
-          key: 'tart-cherry',
-          name: 'Tart Cherry',
-          direction: 'positive',
-          evidence: 'moderate',
-          effect: 'Positive (TST)',
-          keyFinding: '+84 min TST (p=0.018), n=8',
-          whatThisMeans: 'Tart cherry juice added a dramatic 84 minutes of total sleep in a small pilot. The tryptophan pathway mechanism is solid but the sample size is very small (8 completers).',
-          mechanism: 'Proanthocyanidins inhibit indoleamine 2,3-dioxygenase, reducing tryptophan degradation via kynurenine pathway. More tryptophan available for serotonin → melatonin conversion.',
-          dosage: '240 mL Montmorency tart cherry juice 2x/day',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5617749/', label: 'Losso et al. 2018' },
-          affiliate: { url: 'https://amzn.to/3PXqKEh', label: 'Tart Cherry Juice' }
-        },
-        {
           key: 'melatonin',
           name: 'Melatonin',
           direction: 'positive',
           evidence: 'moderate',
-          effect: 'Positive (via MT2 receptors)',
-          keyFinding: 'MT2 activation → +31% NREM, +33% delta',
-          whatThisMeans: 'Helps via circadian and homeostatic pathways. More about sleep timing than N3 depth. MT2 receptors do increase delta power, but melatonin\'s primary value is regulating when you sleep rather than how deep.',
-          mechanism: 'Selective MT2 receptor activation in the reticular thalamic nucleus promotes NREM sleep and enhances delta power. MT1 receptors primarily regulate REM.',
-          dosage: '0.5-3 mg, 30-60 min before bed; timing > dose',
-          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/jpi.13011', label: 'Comai et al. 2024' },
+          effect: 'Positive (in low-REM individuals)',
+          keyFinding: '↑ REM duration in people whose REM started ≥25% below age norm (2 RCTs)',
+          whatThisMeans: 'Melatonin can nudge REM up, but the evidence is in people who started low, and the trials were small. Its core job is still circadian timing, not REM boosting. The effect in normal sleepers is unclear.',
+          mechanism: 'In animals the MT1 receptor selectively enhances REM without changing non-REM. In humans the REM benefit showed up mainly in patients who began with reduced REM.',
+          dosage: 'Two double-blind RCTs (n=14, mean age 50) in patients with REM ≥25% below age norm; effect in normal sleepers unclear.',
+          source: { url: 'https://academic.oup.com/jcem/article/89/1/128/2840303', label: 'Kunz et al., JCEM 2004' },
           affiliate: { url: 'https://amzn.to/4szGon9', label: 'Melatonin Supplement' }
+        },
+        {
+          key: '5-htp',
+          name: '5-HTP',
+          direction: 'positive',
+          evidence: 'emerging',
+          effect: 'Positive (small, clinical sample)',
+          keyFinding: '↑ REM% in a small RCT (n=18, Parkinson\'s, 50 mg/day)',
+          whatThisMeans: '5-HTP nudged REM% up in a small trial, but that trial was in Parkinson\'s patients. The mechanism is plausible (it feeds serotonin and melatonin), yet it has not been confirmed in healthy sleepers.',
+          mechanism: 'As a direct serotonin and melatonin precursor, 5-HTP may raise REM more reliably than L-tryptophan — but this rests on one small clinical sample.',
+          dosage: '50 mg/day for 4 weeks in a clinical (Parkinson\'s) sample; unconfirmed in healthy adults.',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9418091/', label: '5-HTP RCT, Sleep and Breathing 2021' }
+        },
+        {
+          key: 'vitamin-b6',
+          name: 'Vitamin B6',
+          direction: 'variable',
+          evidence: 'emerging',
+          effect: 'Dream recall, not REM duration',
+          keyFinding: '↑ dream vividness & recall; no measured change in REM time',
+          whatThisMeans: 'B6 makes dreams more vivid and easier to recall, which feels like "more REM" — but the studies did not actually show more REM time. It is a dream-recall effect, not a proven REM-duration effect.',
+          mechanism: 'Proposed to raise cortical arousal during REM, increasing recall and vividness, without lengthening REM itself.',
+          dosage: 'Increased vividness in a 250 mg pilot and recall in a larger study; no significant change in measured sleep variables.',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/11883552/', label: 'Ebben et al., 2002' }
+        },
+        {
+          key: 'glycine',
+          name: 'Glycine',
+          direction: 'neutral',
+          evidence: 'moderate',
+          effect: 'No effect on REM',
+          keyFinding: 'Speeds sleep onset & deep sleep; REM architecture unchanged',
+          whatThisMeans: 'Glycine helps you fall asleep and reach deep sleep faster without disturbing REM, unlike sedatives. Useful for sleep onset, neutral for dream sleep.',
+          mechanism: 'Glycine lowers core body temperature and speeds entry into NREM/slow-wave sleep, but does not change REM latency or overall sleep architecture.',
+          dosage: '3 g before bed shortened latency to sleep and to slow-wave sleep without altering REM.',
+          source: { url: 'https://onlinelibrary.wiley.com/doi/full/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al., Sleep & Biol Rhythms 2007' }
+        }
+      ],
+
+      exercise: [
+        {
+          key: 'exercise-acute',
+          name: 'Exercise (Acute, Evening, Intense)',
+          direction: 'negative',
+          evidence: 'moderate',
+          effect: 'Slightly negative',
+          keyFinding: 'Long, high-intensity evening exercise cut REM% by ~2.5%',
+          whatThisMeans: 'Hard, late, long workouts shave a little REM and push it later. Regular daytime exercise is still net positive for sleep overall; the small REM cost is mostly an evening-intensity issue.',
+          mechanism: 'Acute exercise slightly raises REM latency and decreases REM duration. Long, intense evening sessions elevate nocturnal core temperature, and REM is temperature-sensitive.',
+          dosage: 'Mostly an evening-intensity issue; daytime exercise is net positive for sleep.',
+          source: { url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S388863', label: 'Evening exercise meta-analysis, Nat Sci Sleep 2022' }
+        },
+        {
+          key: 'aerobic-training',
+          name: 'Regular Aerobic Training (Chronic)',
+          direction: 'mixed',
+          evidence: 'moderate',
+          effect: 'Mixed (mostly neutral / slight reduction)',
+          keyFinding: 'Adds deep sleep & shortens REM latency; REM duration flat-to-slightly-down',
+          whatThisMeans: 'Building a regular exercise habit is good for sleep overall, but it mostly adds deep sleep, not REM. Do not expect training to raise dream sleep; if anything REM dips slightly.',
+          mechanism: 'Chronic aerobic training raises total and deep sleep and tends to shorten REM latency, but effects on REM duration are mixed — most data show a small decrease or no change rather than an increase.',
+          dosage: 'Build the habit for overall sleep; don\'t expect a REM increase.',
+          source: { url: 'https://link.springer.com/article/10.1007/s10865-015-9617-6', label: 'Kredlow et al., J Behav Med 2015' }
+        },
+        {
+          key: 'exercise-timing',
+          name: 'Exercise Timing (Morning vs Evening)',
+          direction: 'variable',
+          evidence: 'moderate',
+          effect: 'Timing-dependent',
+          keyFinding: 'Evening sessions (~17:00–19:00) delay melatonin & cut REM; morning spares it',
+          whatThisMeans: 'When you exercise matters for REM: late, intense sessions warm you up and push melatonin later, trimming REM, while morning workouts leave dream sleep alone. Finishing a couple hours before bed mostly fixes it.',
+          mechanism: 'Evening exercise raises nocturnal core temperature and delays the melatonin rhythm, reducing REM. Morning exercise is less likely to disturb it.',
+          dosage: 'Prefer morning sessions, or finish more than ~2 hours before bed to blunt the effect.',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10636512/', label: 'Exercise timing & sleep systematic review, 2023' }
         }
       ],
 
       environment: [
         {
-          key: 'temperature',
-          name: 'Temperature',
-          direction: 'positive',
-          evidence: 'strong',
-          effect: 'Positive (strong)',
-          keyFinding: '+7.5 min N3 from cooling mattress; optimal room temp 18-22°C',
-          whatThisMeans: 'Cooling your body reliably increases deep sleep — a cooling mattress added 7.5 minutes of N3 per night. Keep your bedroom between 64-72°F (18-22°C). Going above 77°F starts cutting into deep sleep, particularly as you age.',
-          mechanism: 'Increasing the core-to-skin temperature gradient via conductive cooling promotes hypothalamic thermoregulatory signaling that gates SWS entry and maintenance. Heat exposure above 25°C triggers thermoregulatory arousal responses.',
-          dosage: 'Cooling mattress for body temp; bedroom 18-22°C (64-72°F); older adults more sensitive to heat',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/38409133/', label: 'Herberger et al. 2024' }
-        },
-        {
-          key: 'blue-light',
-          name: 'Blue Light (Evening)',
-          direction: 'negative',
-          evidence: 'moderate',
-          effect: 'Negative (SWA reduction)',
-          keyFinding: '6500K light reduced frontal SWA',
-          whatThisMeans: 'Evening screen use reduces deep sleep. The individual study effects are real but the meta-analysis says the overall evidence is moderate, not overwhelming. Note: specific timing claims about which part of the night is most affected could not be verified.',
-          mechanism: 'Blue-enriched light (6500K) suppresses melatonin via melanopsin-expressing ipRGCs and delays circadian phase, reducing frontal slow-wave activity.',
-          dosage: 'Avoid 6500K+ light 90 min before bed; blue-light filters help',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23509952/', label: 'Chellappa et al. 2013' },
-          affiliate: { url: 'https://amzn.to/4cwMwI1', label: 'Blue Light Blocking Glasses' }
-        },
-        {
-          key: 'aircraft-noise',
-          name: 'Aircraft Noise',
+          key: 'ambient-heat',
+          name: 'Ambient Heat',
           direction: 'negative',
           evidence: 'strong',
           effect: 'Negative (strong)',
-          keyFinding: '−23 min N3/night; earplugs prevent it',
-          whatThisMeans: 'Environmental noise directly cuts into deep sleep. 23 minutes per night is a big loss. Earplugs prevented the reduction in the same study.',
-          mechanism: 'Intermittent noise causes cortical arousals that disrupt the thalamocortical slow oscillations maintaining N3. Even sub-awakening arousals shift sleep from N3 to lighter stages.',
-          dosage: 'Use earplugs or white noise if exposed to environmental noise',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/37947580/', label: 'Basner et al. SLEEP 2026' },
-          affiliate: { url: 'https://amzn.to/4bfT8bC', label: 'White Noise Machine' }
+          keyFinding: 'Hot rooms reliably shorten REM — thermoregulation is offline during REM',
+          whatThisMeans: 'REM is the stage where your body\'s thermostat goes offline, so a hot room hits REM hardest. Heat is one of the most direct environmental levers on dream sleep. Keep the room cool.',
+          mechanism: 'During REM the body suspends thermoregulation (no effective sweating or shivering), so the sleeper is exposed to room temperature. The melanin-concentrating hormone (MCH) system links REM amount to ambient temperature.',
+          dosage: 'Keep the bedroom cool; elevated ambient heat reliably shortens REM.',
+          source: { url: 'https://www.cell.com/current-biology/fulltext/S0960-9822(19)30542-1', label: 'Komagata et al., Current Biology 2019' }
         },
         {
-          key: 'closed-loop-audio',
-          name: 'Closed-Loop Audio',
+          key: 'circadian-timing',
+          name: 'Circadian Timing',
+          direction: 'variable',
+          evidence: 'strong',
+          effect: 'Strong driver of distribution',
+          keyFinding: 'REM peaks near the core-temperature minimum, ~2 h before wake',
+          whatThisMeans: 'Most of your REM is in the last few hours before you wake. Cut your night short and you disproportionately cut REM. Sleeping in odd circadian windows (jet lag, shift work) misaligns it.',
+          mechanism: 'REM is gated by the circadian clock and peaks near the core body temperature minimum, which falls roughly 2 hours before normal wake time — concentrating REM in the late night and early morning.',
+          dosage: 'Protect the back end of the night; avoid off-phase sleep where possible.',
+          source: { url: 'https://academic.oup.com/sleep/article-pdf/2/3/329/13660651/020307.pdf', label: 'Czeisler et al., Sleep 1980' }
+        },
+        {
+          key: 'sleep-curtailment',
+          name: 'Sleep Duration / Curtailment',
+          direction: 'negative',
+          evidence: 'strong',
+          effect: 'Negative (REM hit first)',
+          keyFinding: 'At 4 h vs 9 h/night, REM duration & % dropped (n=27)',
+          whatThisMeans: 'The simplest REM lever is to sleep longer. Trimming the back end of your night cuts dream sleep first, which is why a 5-hour night can feel emotionally rough even when you got your deep sleep.',
+          mechanism: 'Because REM is back-loaded into the early morning, cutting sleep short trims REM more than any other stage, while slow-wave sleep percentage actually rises.',
+          dosage: 'Sleep longer; the back end of the night is where REM lives.',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3517705/', label: 'Shechter et al., Am J Physiol 2012' }
+        },
+        {
+          key: 'rem-rebound',
+          name: 'Sleep Deprivation / REM Rebound',
           direction: 'positive',
+          evidence: 'strong',
+          effect: 'Rebound (compensatory)',
+          keyFinding: 'After REM deprivation, REM surged to 140% of baseline on recovery night (n=8)',
+          whatThisMeans: 'REM is defended. Lose it and your brain pays itself back, front-loading extra REM on recovery nights. The bigger the debt, the longer the payback.',
+          mechanism: 'Selective REM deprivation cut REM to 9.2% of baseline; on the first recovery night it surged to 140.1%. The longer the prior deprivation, the longer the rebound.',
+          dosage: 'Compensatory and automatic; scaled to the size of the REM debt.',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/9575987/', label: 'Endo et al., Am J Physiol 1998' }
+        },
+        {
+          key: 'napping',
+          name: 'Daytime Napping',
+          direction: 'negative',
           evidence: 'moderate',
-          effect: 'Positive (precise timing)',
-          keyFinding: 'Phase-locked noise enhanced SO rhythm',
-          whatThisMeans: 'Precisely timed sound pulses during deep sleep can enhance it. Random background noise does not — and may actually hurt. Consumer devices attempting this need perfect timing to work.',
-          mechanism: 'Phase-locked acoustic stimulation (50ms pink noise at 55dB) delivered during the up-state of slow oscillations entrains thalamocortical networks, amplifying endogenous delta rhythms.',
-          dosage: 'Requires real-time EEG phase detection; consumer apps vary in accuracy',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/32765139/', label: 'Ngo et al. 2013' }
+          effect: 'Negative (on nighttime REM)',
+          keyFinding: 'Naps discharge sleep pressure, reducing nighttime REM & N2',
+          whatThisMeans: 'As with deep sleep, a daytime nap spends some of the drive your body would otherwise put into nighttime REM. Long, late naps shift dream sleep into the nap and away from the night.',
+          mechanism: 'Naps discharge homeostatic sleep pressure; split-sleep studies show daytime naps reduce subsequent nighttime REM and N2 duration.',
+          dosage: 'Avoid long, late naps if nighttime REM is a priority.',
+          source: { url: 'https://www.nature.com/articles/s41598-021-84625-8', label: 'Split sleep, Scientific Reports 2021' }
+        },
+        {
+          key: 'pre-sleep-learning',
+          name: 'Pre-Sleep Learning / Cognitive Load',
+          direction: 'positive',
+          evidence: 'emerging',
+          effect: 'Positive',
+          keyFinding: 'REM% rose with intensive language learning; tracked learning efficiency (n=10)',
+          whatThisMeans: 'Heavy mental learning during the day nudges REM up that night as the brain uses dream sleep to lock in skills, and the people who learned most gained the most REM. Sample sizes here are small.',
+          mechanism: 'REM preferentially supports procedural and emotional memory. In an immersion course, the rise in REM% correlated with language-learning efficiency (slow-wave sleep shares the load).',
+          dosage: 'Demanding daytime learning; effect is modest and based on small samples.',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/2584082/', label: 'De Koninck et al., 1989' }
+        },
+        {
+          key: 'pre-sleep-stress',
+          name: 'Pre-Sleep Stress / Arousal',
+          direction: 'mixed',
+          evidence: 'moderate',
+          effect: 'Mixed (fragmentation, density, rebound)',
+          keyFinding: 'Acute stress fragments REM & raises density; can also trigger REM rebound',
+          whatThisMeans: 'Stress chops REM up and loads it with eye movements in the moment, but can also trigger a rebound of extra REM afterward as the brain processes the load. Winding down before bed protects it.',
+          mechanism: 'After acute stress, high-sleep-reactivity people show fragmented REM, lower REM duration, and higher REM density with a stronger cortisol response; separately, some stressors are followed by increased REM (rebound) as emotional-processing recovery.',
+          dosage: 'Wind down before bed to protect REM continuity.',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10332417/', label: 'Sleep reactivity & cortisol, PMC 2023' }
         },
         {
           key: 'altitude',
-          name: 'Altitude',
-          direction: 'negative',
-          evidence: 'strong',
-          effect: 'Negative',
-          keyFinding: '−15% SWA at 2,590m vs 490m',
-          whatThisMeans: 'Sleeping at altitude measurably reduces deep sleep. At ~8,500 feet you\'re losing 15% of your slow-wave activity. Partial recovery with acclimatization over 2-3 days.',
-          mechanism: 'Hypobaric hypoxia increases periodic breathing and sympathetic activation via peripheral chemoreceptor stimulation, fragmenting SWS and reducing delta power.',
-          dosage: 'Effect begins at ~1,630m; −15% SWA at 2,590m; acclimatizes partially',
-          source: { url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0076945', label: 'Stadelmann et al. 2013' }
-        },
-        {
-          key: 'bedroom-co2',
-          name: 'Bedroom CO₂',
+          name: 'Altitude (High / Extreme)',
           direction: 'negative',
           evidence: 'moderate',
-          effect: 'Negative (linear)',
-          keyFinding: 'At 3,000 ppm: quality drops to 80.8%',
-          whatThisMeans: 'Stuffy bedrooms with poor ventilation reduce deep sleep. CO₂ above 1,000 ppm starts degrading sleep quality. Opening a window or running a fan makes a measurable difference.',
-          mechanism: 'Elevated CO₂ activates central chemoreceptors in the brainstem reticular formation, increasing respiratory drive and cortical arousal that fragments N3.',
-          dosage: 'Keep CO₂ below 1,000 ppm; ventilate bedroom before and during sleep',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/32979003/', label: 'Xu et al. 2021' },
-          affiliate: { url: 'https://amzn.to/40gYtKD', label: 'CO₂ Monitor' }
+          effect: 'Negative (mixed strength)',
+          keyFinding: 'REM reduced on first nights at altitude; recovers with acclimatization',
+          whatThisMeans: 'Sleeping high (mountains, travel) tends to cut REM at first, especially if you feel altitude sick, but the body adapts over a few nights. The evidence here is less consistent than it is for deep sleep.',
+          mechanism: 'On first nights at high altitude — and in acute mountain sickness — REM is reduced (near-absent at extreme altitude) via hypoxia and periodic breathing; slow-wave sleep is hit more consistently and REM recovers with acclimatization.',
+          dosage: 'Worst on the first nights; adapts over ~2–3 nights.',
+          source: { url: 'https://journals.physiology.org/doi/pdf/10.1152/japplphysiol.00448.2015', label: 'Sleep at high altitude review, J Appl Physiol 2015' }
         }
       ],
 
-      stress: [
+      demographics: [
         {
-          key: 'depression',
-          name: 'Depression (MDD)',
+          key: 'age',
+          name: 'Age',
           direction: 'negative',
           evidence: 'strong',
-          effect: 'Negative (strong)',
-          keyFinding: '37% SWA reduction → 10% symptom improvement',
-          whatThisMeans: 'Depression profoundly disrupts deep sleep architecture. N3 reduction in MDD is well-confirmed, though specific claims about which sleep cycles are most affected could not be independently verified.',
-          mechanism: 'Serotonergic dysregulation in MDD impairs thalamocortical slow-wave generation. Hyperarousal of the default mode network during NREM reduces delta consolidation.',
-          dosage: 'Treat underlying depression; CBT-I as adjunctive therapy',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7866255/', label: 'PMC 2021' }
+          effect: 'Negative (gradual)',
+          keyFinding: 'REM% declined ~0.6%/decade from age 19–75 (65-study meta, n=3,577)',
+          whatThisMeans: 'REM erodes slowly with age, not off a cliff like deep sleep does. The decline is gradual and modest — around half a percent of your sleep per decade.',
+          mechanism: 'Across 65 studies, REM% declined roughly linearly with age, then ticked up slightly between 75 and 85. REM latency also shortened with age.',
+          dosage: 'Non-modifiable; the decline is gradual and modest.',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/', label: 'Ohayon et al., SLEEP 2004 meta-analysis' }
         },
         {
-          key: 'anxiety',
-          name: 'Anxiety Disorders',
-          direction: 'negative',
-          evidence: 'moderate',
-          effect: 'Negative',
-          keyFinding: 'Less SWS%, more light sleep transitions',
-          whatThisMeans: 'Anxiety keeps your brain too activated to drop into deep sleep. More light sleep, more waking, less time in N3.',
-          mechanism: 'Hyperactivation of the amygdala and locus coeruleus maintains elevated noradrenergic tone, preventing the cortical deactivation required for N3 entry.',
-          dosage: 'Anxiety management; CBT; consider breathing exercises',
-          source: { url: 'https://academic.oup.com/sleep/article/20/5/370/2732138', label: 'Sleep 1997' }
-        },
-        {
-          key: 'meditation',
-          name: 'Meditation (Vipassana)',
-          direction: 'positive',
-          evidence: 'moderate',
-          effect: 'Positive (preserves SWS)',
-          keyFinding: '10.63% vs 3.94% SWS at age 50-60 (n=91)',
-          whatThisMeans: 'Long-term meditators maintained nearly 3x more deep sleep at age 50-60 than non-meditators. This is one of the largest effects in the entire deep sleep literature. Results are for Vipassana specifically — other meditation styles show inconsistent N3 effects.',
-          mechanism: 'Regular meditation practice reduces HPA axis reactivity and cortical excitability, preserving the thalamocortical slow-oscillation generators that decline with age.',
-          dosage: 'Long-term Vipassana practice; effects observed in experienced meditators (years of practice)',
-          source: { url: 'https://link.springer.com/article/10.1111/j.1479-8425.2009.00416.x', label: 'Sulekha et al. 2009' }
-        }
-      ],
-
-      biology: [
-        {
-          key: 'age-young',
-          name: 'Age (Young to Mid-Life)',
-          direction: 'negative',
-          evidence: 'strong',
-          effect: 'Negative (strong decline)',
-          keyFinding: 'SWS: 18.9% → 3.4% (age 16-50)',
-          whatThisMeans: 'Deep sleep drops off a cliff between your 20s and 40s. By 35 most men have lost the vast majority of it.',
-          mechanism: 'Progressive loss of cortical slow-oscillation generating neurons with age. Reduced growth hormone co-secretion during SWS further diminishes anabolic recovery.',
-          dosage: 'Non-modifiable; lifestyle factors can partially offset',
-          source: { url: 'https://jamanetwork.com/journals/jama/fullarticle/192981', label: 'Van Cauter et al. 2000' }
-        },
-        {
-          key: 'age-decline',
-          name: 'Age (Longitudinal Decline)',
-          direction: 'negative',
-          evidence: 'strong',
-          effect: 'Negative (ongoing)',
-          keyFinding: '−0.6% SWS/yr; 1% loss = 27% dementia risk',
-          whatThisMeans: 'Deep sleep keeps declining as you age, and the rate of that decline predicts your dementia risk decades later.',
-          mechanism: 'Age-related SWS loss reduces glymphatic clearance of amyloid-β and tau proteins during sleep, accelerating neurodegenerative pathology.',
-          dosage: 'Non-modifiable; exercise, meditation, and cooling may slow decline',
-          source: { url: 'https://jamanetwork.com/journals/jamaneurology/fullarticle/2810957', label: 'Himali et al. 2023' }
-        },
-        {
-          key: 'sex-gender',
-          name: 'Sex / Gender',
-          direction: 'variable',
-          evidence: 'strong',
-          effect: 'Women maintain more',
-          keyFinding: 'Women higher SWS%; men decline in 30s',
-          whatThisMeans: 'Women hold onto deep sleep longer than men. The gender gap in SWS becomes most obvious between 30-50.',
-          mechanism: 'Estrogen exerts neuroprotective effects on slow-oscillation generating cortical networks. Testosterone may accelerate age-related neuronal loss in these circuits.',
-          dosage: 'Non-modifiable',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/19302341/', label: 'Bixler et al. 2009' }
-        },
-        {
-          key: 'per2-gene',
-          name: 'Genetics (PER2 Gene)',
+          key: 'sex-hormonal',
+          name: 'Sex / Hormonal Status',
           direction: 'variable',
           evidence: 'moderate',
-          effect: 'Variable',
-          keyFinding: '−22% SWS (~20 min); 38% carry variant',
-          whatThisMeans: 'About 1 in 3 people carry a clock gene variant that gives them ~20 fewer minutes of deep sleep. You can\'t change your genes but it explains some individual variation.',
-          mechanism: 'PER2 rs6753456 minor allele alters circadian clock protein expression, shifting the timing and amplitude of the homeostatic SWS drive.',
-          dosage: 'Non-modifiable; explains individual variation',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/27089043/', label: 'Chang et al., Chronobiology International 2016' }
+          effect: 'Small differences',
+          keyFinding: 'Modest, inconsistent sex differences; hormones matter more than sex',
+          whatThisMeans: 'Unlike deep sleep, REM does not differ dramatically between men and women. Hormonal changes matter more than sex itself.',
+          mechanism: 'REM differences between sexes are modest and inconsistent in healthy adults relative to the large deep-sleep gap; hormonal states (menstrual phase, menopause) shift REM more than baseline sex does.',
+          dosage: 'Non-modifiable; hormonal state matters more than sex.',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1978369/', label: 'REM% over the adult lifespan, PMC' }
         },
         {
-          key: 'bmi-obesity',
-          name: 'BMI / Obesity',
+          key: 'menstrual-cycle',
+          name: 'Menstrual Cycle (Luteal Phase)',
           direction: 'negative',
-          evidence: 'strong',
-          effect: 'Negative',
-          keyFinding: 'N3 loss predicts BMI gain (n=1,187, 14.9yr)',
-          whatThisMeans: 'Higher body fat = less deep sleep. And it goes both ways: losing deep sleep predicts future weight gain. Sleep apnea (common in obesity) makes it worse.',
-          mechanism: 'Adipose-derived inflammatory cytokines (TNF-α, IL-6) impair thalamocortical slow-oscillation generation. OSA-induced arousals fragment N3.',
-          dosage: 'Maintain healthy BMI; treat sleep apnea if present',
-          source: { url: 'https://academic.oup.com/sleep/article/44/8/zsab031/6305987', label: 'Wisconsin Sleep Cohort' }
-        },
-        {
-          key: 'gut-microbiome',
-          name: 'Gut Microbiome',
-          direction: 'positive',
-          evidence: 'emerging',
-          effect: 'Positive (diversity)',
-          keyFinding: 'Diversity correlated with sleep efficiency (n=26)',
-          whatThisMeans: 'More diverse gut bacteria = better sleep efficiency. The gut-brain axis communicates via the vagus nerve. Note: this study used actigraphy not PSG, so N3-specific data is limited.',
-          mechanism: 'Gut microbiota produce SCFAs, serotonin precursors, and GABA that influence central sleep regulation via vagal afferents and systemic inflammation modulation.',
-          dosage: 'High-fiber diet; fermented foods; probiotic diversity',
-          source: { url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0222394', label: 'Smith et al. 2019' }
+          evidence: 'moderate',
+          effect: 'Negative (luteal dip)',
+          keyFinding: 'REM lower in the luteal phase; tracks the luteal rise in body temperature',
+          whatThisMeans: 'In the roughly two weeks before a period, REM tends to dip and sleep gets lighter, partly because body temperature runs higher then and REM is temperature-sensitive. This is a normal hormonal pattern, not a disorder.',
+          mechanism: 'REM duration is lower in the luteal phase than the follicular phase, with more arousals and lighter sleep; the drop tracks the luteal rise in core body temperature and progesterone.',
+          dosage: 'Cyclical and normal; not a disorder.',
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2864880/', label: 'Shechter & Boivin, Sleep 2010' }
         }
       ]
     };
@@ -432,53 +353,53 @@ class KygoDeepSleepFactors extends HTMLElement {
   get _topPicks() {
     return [
       {
-        icon: 'trophy',
-        label: 'Best Single Habit',
-        answer: 'Exercise',
-        note: '33% increase in SWS plus enhanced delta power — the most reliable, repeatable way to boost deep sleep',
-        stat: '33% SWS increase',
-        category: 'Lifestyle'
-      },
-      {
         icon: 'moon',
-        label: 'Most Underrated',
-        answer: 'Sleep Consistency',
-        note: 'Same bed/wake time = significantly more SWS. Irregular patterns linked to mortality risk.',
-        stat: 'n=38,838',
-        category: 'Lifestyle'
+        label: 'Best Lever You Control',
+        answer: 'Sleep Longer',
+        note: 'REM is back-loaded into the early morning, so trimming the end of your night cuts dream sleep before any other stage. Protect the back half of the night.',
+        stat: '4 h vs 9 h: REM duration & % drop',
+        category: 'Environment & Sleep Hygiene'
       },
       {
         icon: 'thermometer',
-        label: 'Quickest Impact',
-        answer: 'Temperature Control',
-        note: '+7.5 min N3/night from a cooling mattress — works from night one. Keep room at 18-22°C.',
-        stat: '+7.5 min N3, p=0.004',
-        category: 'Environment'
+        label: 'Quickest Environmental Win',
+        answer: 'Keep the Room Cool',
+        note: 'During REM your body\'s thermostat goes offline, so a hot room hits REM hardest. Heat is one of the most direct environmental levers on dream sleep.',
+        stat: 'Thermoregulation suspended during REM',
+        category: 'Environment & Sleep Hygiene'
       },
       {
-        icon: 'brain',
-        label: 'Largest Long-Term Effect',
-        answer: 'Vipassana Meditation',
-        note: 'Meditators age 50-60 had 2.7x more deep sleep than controls',
-        stat: '10.63% vs 3.94% SWS',
-        category: 'Stress & Mental Health'
+        icon: 'alert',
+        label: 'Biggest REM Killer',
+        answer: 'Alcohol',
+        note: 'Even two drinks delay and shorten dream sleep, and it gets worse with every additional drink. A nightcap leaves you under-recovered.',
+        stat: '−11.3 min REM, +18 min latency',
+        category: 'Nutrition & Substances',
+        warning: true
+      },
+      {
+        icon: 'trophy',
+        label: 'Most Defended',
+        answer: 'REM Rebound',
+        note: 'Lose REM and your brain pays itself back, front-loading extra dream sleep on recovery nights. The bigger the debt, the longer the payback.',
+        stat: '140% of baseline on recovery night',
+        category: 'Environment & Sleep Hygiene'
       },
       {
         icon: 'pill',
         label: 'Best Supplement',
-        answer: 'Tart Cherry Juice',
-        note: '+84 min total sleep via tryptophan pathway — small sample but impressive magnitude',
-        stat: '+84 min TST, p=0.018',
+        answer: 'Melatonin (if your REM is low)',
+        note: 'Raised REM duration in people who started below their age norm via MT1 receptors — but the trials were small and it\'s really a circadian-timing tool, not a REM booster for normal sleepers.',
+        stat: '2 RCTs, low-REM patients',
         category: 'Supplements'
       },
       {
-        icon: 'alert',
-        label: 'Biggest Deep Sleep Killer',
-        answer: 'Caffeine (Late Day)',
-        note: '400mg at 4 hours before bed = −30 minutes of N3. Even at 12 hours: still −21 min.',
-        stat: '−29.7 min N3',
-        category: 'Lifestyle',
-        warning: true
+        icon: 'dumbbell',
+        label: 'Most Overrated for REM',
+        answer: 'Exercise to Boost REM',
+        note: 'Training is great for sleep — but it mostly adds deep sleep, not REM. Hard, late, intense sessions actually trim REM slightly and push it later.',
+        stat: 'Evening exercise: −2.5% REM%',
+        category: 'Exercise & Physical Activity'
       }
     ];
   }
@@ -499,6 +420,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       dumbbell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>',
       wind: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>',
       droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>',
+      minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
       chevDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>',
       externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
       arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
@@ -515,13 +437,14 @@ class KygoDeepSleepFactors extends HTMLElement {
   // ── Direction & Evidence Config ────────────────────────────────────────
 
   // Direction → on-brand class + icon (green for positive; neutral slate for the rest,
-  // differentiated by the up/down/shuffle icon — no off-brand red/amber).
+  // differentiated by the up/down/shuffle/minus icon — no off-brand red/amber).
   _directionConfig(d) {
     const map = {
       positive: { cls: 'dir-pos', icon: 'arrowUp', label: 'Positive' },
       negative: { cls: 'dir-neg', icon: 'arrowDown', label: 'Negative' },
       mixed: { cls: 'dir-mix', icon: 'arrowLeftRight', label: 'Mixed' },
-      variable: { cls: 'dir-var', icon: 'arrowLeftRight', label: 'Variable' }
+      variable: { cls: 'dir-var', icon: 'arrowLeftRight', label: 'Variable' },
+      neutral: { cls: 'dir-var', icon: 'minus', label: 'Neutral' }
     };
     return map[d] || map.variable;
   }
@@ -582,9 +505,9 @@ class KygoDeepSleepFactors extends HTMLElement {
         <div class="factor-body">
           <div class="detail-row"><span class="detail-label">What this means</span><span class="detail-value">${f.whatThisMeans}</span></div>
           <div class="detail-row"><span class="detail-label">Mechanism</span><span class="detail-value">${f.mechanism}</span></div>
-          <div class="detail-row"><span class="detail-label">Dosage / context</span><span class="detail-value">${f.dosage}</span></div>
+          <div class="detail-row"><span class="detail-label">Dose / context</span><span class="detail-value">${f.dosage}</span></div>
           <a href="${f.source.url}" class="factor-src" target="_blank" rel="noopener nofollow" data-action="source-link">${f.source.label} ${this._icon('externalLink')}</a>
-          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate">Check it out on Amazon ${this._icon('externalLink')}</a>` : ''}
+          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate">Check it out on Amazon ${this._icon('externalLink')}</a><span class="factor-affiliate-note">Affiliate link — we may earn a commission at no extra cost to you.</span>` : ''}
         </div>
       </div>`;
   }
@@ -611,25 +534,64 @@ class KygoDeepSleepFactors extends HTMLElement {
     }).join('');
   }
 
-  // Compact source list (tag = category, title = factor + study).
-  _renderSources() {
-    const catLabel = {
-      lifestyle: 'Lifestyle', supplements: 'Supplements', environment: 'Environment',
-      stress: 'Stress', biology: 'Biology'
-    };
-    const items = [];
+  // Sources grouped by category, deduped by URL across the whole page.
+  _sourceGroups() {
+    const cats = this._categories;
+    const seen = new Set();
+    const groups = [];
     for (const [catKey, factors] of Object.entries(this._factors)) {
+      const items = [];
       for (const f of factors) {
-        if (f.source) items.push({ tag: catLabel[catKey] || catKey, title: `${f.name} — ${f.source.label}`, url: f.source.url });
+        if (f.source && !seen.has(f.source.url)) {
+          seen.add(f.source.url);
+          items.push({ title: `${f.name} — ${f.source.label}`, url: f.source.url });
+        }
       }
+      if (items.length) groups.push({ key: catKey, name: cats[catKey].name, icon: cats[catKey].icon, items });
     }
-    return `
-      <div class="src-count">${items.length} peer-reviewed sources</div>
-      <div class="sources">${items.map(s => `
-        <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link">
-          <span class="src-tag">${s.tag}</span>
-          <span class="src-title">${s.title}</span>
-        </a>`).join('')}</div>`;
+    return groups;
+  }
+
+  _srcLink(s, tag) {
+    return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link">
+        ${tag ? `<span class="src-tag">${tag}</span>` : ''}
+        <span class="src-title">${s.title}</span>
+      </a>`;
+  }
+
+  // Desktop = compact grid (tag = category); mobile = one collapsible <details>
+  // per category (first open) so it isn't one long wall of every source at once.
+  _renderSources() {
+    const groups = this._sourceGroups();
+    const total = groups.reduce((n, g) => n + g.items.length, 0);
+    const desktop = `<div class="src-desktop">${
+      groups.map(g => g.items.map(s => this._srcLink(s, g.name)).join('')).join('')
+    }</div>`;
+    const mobile = `<div class="src-mobile">${
+      groups.map((g, i) => `
+        <details class="src-group"${i === 0 ? ' open' : ''}>
+          <summary class="src-group-head">
+            <span class="src-group-ico">${this._icon(g.icon)}</span>
+            <span class="src-group-name">${g.name}</span>
+            <span class="src-group-n">${g.items.length}</span>
+            <span class="src-group-chev">${this._icon('chevDown')}</span>
+          </summary>
+          <div class="src-group-body">${g.items.map(s => this._srcLink(s, null)).join('')}</div>
+        </details>`).join('')
+    }</div>`;
+    return `<div class="src-count">${total} peer-reviewed sources across ${groups.length} categories</div>${desktop}${mobile}`;
+  }
+
+  _sourceCount() {
+    const seen = new Set();
+    for (const factors of Object.values(this._factors)) {
+      for (const f of factors) if (f.source) seen.add(f.source.url);
+    }
+    return seen.size;
+  }
+
+  _factorCount() {
+    return Object.values(this._factors).reduce((n, arr) => n + arr.length, 0);
   }
 
   _toggleFactor(key) {
@@ -664,6 +626,9 @@ class KygoDeepSleepFactors extends HTMLElement {
     const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
     const healthConnectImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
 
+    const factorCount = this._factorCount();
+    const sourceCount = this._sourceCount();
+
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
@@ -673,7 +638,7 @@ class KygoDeepSleepFactors extends HTMLElement {
             <img src="${logoUrl}" alt="Kygo" loading="lazy" />
             <span>Kygo Health</span>
           </a>
-          <a href="${iosUrl}" class="nav-cta-link" target="_blank" rel="noopener">Get Kygo App ${this._icon('arrowRight')}</a>
+          <a href="${iosUrl}" class="nav-cta-link" target="_blank" rel="noopener">Get Kygo Health ${this._icon('arrowRight')}</a>
         </div>
       </header>
 
@@ -681,29 +646,29 @@ class KygoDeepSleepFactors extends HTMLElement {
         <div class="hero-light-inner">
           <div class="hero-grid">
             <div class="hero-copy">
-              <div class="hero-pill"><span class="dot"></span> 29 FACTORS · 5 CATEGORIES · PEER-REVIEWED</div>
-              <h1>What actually drives your <span class="hl">deep sleep?</span></h1>
-              <p class="hero-lede">We dug into every credible study on slow-wave sleep — supplements, lifestyle, environment, stress, and biology — <strong>ranked by evidence strength.</strong> Here's what moves the needle and what doesn't.</p>
+              <div class="hero-pill"><span class="dot"></span> ${factorCount} FACTORS · 5 CATEGORIES · PEER-REVIEWED</div>
+              <h1>What actually influences your <span class="hl">REM sleep?</span></h1>
+              <p class="hero-lede">REM is the stage tied to dreaming, emotional processing, and memory — and it's unusually sensitive to chemistry and body temperature. We dug into the research on what really moves dream sleep, <strong>ranked by evidence strength.</strong> Here's what helps, what hurts, and what's just hype.</p>
             </div>
             <div class="hero-vis">
               <div class="hero-vis-head">
-                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Biggest lever</span>
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> REM is defended</span>
                 <span class="hero-vis-tag">peer-reviewed</span>
               </div>
               <div class="hv-body">
-                <div class="hv-big">+33%</div>
+                <div class="hv-big">140%</div>
                 <div class="hv-text">
-                  <p>more <strong>slow-wave (deep) sleep</strong> from regular moderate exercise — the single most reliable lever you control.</p>
-                  <span class="hv-src">Aritake-Okada 2019</span>
+                  <p>of baseline <strong>REM on the first recovery night</strong> after REM loss — your brain pays back its dream-sleep debt automatically.</p>
+                  <span class="hv-src">Endo et al. 1998</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="hero-stats">
-            <div class="hero-stat"><div class="num">29</div><div class="lbl">Factors analyzed</div></div>
-            <div class="hero-stat"><div class="num">29</div><div class="lbl">Peer-reviewed sources</div></div>
+            <div class="hero-stat"><div class="num">${factorCount}</div><div class="lbl">Factors analyzed</div></div>
+            <div class="hero-stat"><div class="num">${sourceCount}</div><div class="lbl">Peer-reviewed sources</div></div>
             <div class="hero-stat"><div class="num">5</div><div class="lbl">Categories of influence</div></div>
-            <div class="hero-stat"><div class="num">−30<span class="unit">min</span></div><div class="lbl">Late caffeine's hit to deep sleep</div></div>
+            <div class="hero-stat"><div class="num">−11<span class="unit">min</span></div><div class="lbl">Alcohol's nightly hit to REM</div></div>
           </div>
         </div>
       </section>
@@ -723,8 +688,8 @@ class KygoDeepSleepFactors extends HTMLElement {
         <div class="section-inner">
           <div class="kygo-cta-card animate-on-scroll">
             <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-            <h3>Track your <span>deep sleep</span> recovery.</h3>
-            <p>Kygo connects your wearable data to your nutrition and lifestyle, so you can see what actually improves your sleep.</p>
+            <h3>Track your <span>REM sleep</span> recovery.</h3>
+            <p>Kygo connects your wearable data to your nutrition and lifestyle, so you can see what actually improves your dream sleep.</p>
             <div class="cta-btn-row">
               <a class="btn btn-primary btn-lg" href="${iosUrl}" target="_blank" rel="noopener" data-track-position="article-cta">${this._icon('apple')} Download for iOS</a>
               <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="article-cta">${this._icon('android')} Download for Android</a>
@@ -748,7 +713,7 @@ class KygoDeepSleepFactors extends HTMLElement {
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">The library</div>
-            <h2>Explore all <span class="hl">29 factors.</span></h2>
+            <h2>Explore all <span class="hl">${factorCount} factors.</span></h2>
             <p class="lede">Jump to a category, then tap any factor to expand its plain-English takeaway, mechanism, dose, and source.</p>
           </div>
           <div class="cat-nav animate-on-scroll">${this._renderCategoryNav()}</div>
@@ -758,12 +723,12 @@ class KygoDeepSleepFactors extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/how-to-increase-deep-sleep-factors-ranked" target="_blank" rel="noopener">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/what-influences-rem-sleep-factors-ranked" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Full Guide</span>
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Read the complete guide</div>
-              <div class="blog-cta-title">How to Increase Deep Sleep</div>
-              <div class="blog-cta-sub">Every factor ranked by evidence — what actually moves slow-wave sleep, and what's just hype, in plain English.</div>
+              <div class="blog-cta-title">What Influences REM Sleep</div>
+              <div class="blog-cta-sub">Every factor ranked by evidence — what actually moves dream sleep, and what's just hype, in plain English.</div>
             </div>
             <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
           </a>
@@ -775,7 +740,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
             <h2>Every claim, <span class="hl">traceable.</span></h2>
-            <p class="lede">Each factor is anchored to a primary peer-reviewed source. Last updated March 2026.</p>
+            <p class="lede">Each factor is anchored to a primary peer-reviewed source. Last updated June 2026.</p>
           </div>
           <div class="animate-on-scroll">${this._renderSources()}</div>
         </div>
@@ -797,8 +762,8 @@ class KygoDeepSleepFactors extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
-          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated March 2026.</p>
-          <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
+          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated June 2026.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links — we may earn a commission at no extra cost to you.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -865,7 +830,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .hero-vis-dot { width:7px; height:7px; border-radius:50%; background:var(--kygo-green); box-shadow:0 0 0 3px rgba(34,197,94,.18); }
       .hero-vis-tag { font-family:var(--font-display); font-size:11px; font-weight:700; letter-spacing:.3px; color:var(--kygo-green-dark); background:var(--kygo-green-light); padding:4px 10px; border-radius:999px; }
       .hv-body { position:relative; display:flex; align-items:center; gap:18px; }
-      .hv-big { flex:none; font-family:var(--font-display); font-weight:700; font-size:clamp(46px,10vw,72px); line-height:.92; letter-spacing:-.03em; color:var(--kygo-green-dark); }
+      .hv-big { flex:none; font-family:var(--font-display); font-weight:700; font-size:clamp(42px,9vw,68px); line-height:.92; letter-spacing:-.03em; color:var(--kygo-green-dark); }
       .hv-text { flex:1; min-width:0; }
       .hv-text p { margin:0 0 8px; font-size:14px; line-height:1.55; color:var(--fg-2); }
       .hv-text p strong { color:var(--fg-1); font-weight:600; }
@@ -978,6 +943,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       .factor-affiliate { display:inline-flex; align-items:center; gap:6px; align-self:flex-start; padding:10px 14px; border-radius:10px; border:1.5px solid var(--kygo-green-light); background:rgba(34,197,94,.06); color:var(--kygo-green-dark); font-family:var(--font-body); font-weight:600; font-size:13px; }
       .factor-affiliate:hover { border-color:var(--kygo-green); background:rgba(34,197,94,.12); }
       .factor-affiliate svg { width:13px; height:13px; }
+      .factor-affiliate-note { font-size:11px; color:var(--fg-3); line-height:1.4; margin-top:-6px; }
 
       /* Blog CTA */
       .blog-cta { display:grid; grid-template-columns:auto 1fr auto; gap:18px; align-items:center; background:linear-gradient(135deg,rgba(34,197,94,.06) 0%,rgba(34,197,94,.02) 100%); border:1.5px solid var(--kygo-green-light); border-radius:18px; padding:22px; transition:all .25s var(--ease-out); color:var(--fg-1); }
@@ -998,14 +964,32 @@ class KygoDeepSleepFactors extends HTMLElement {
 
       /* Sources */
       .src-count { font-size:13px; color:var(--fg-3); margin-bottom:14px; }
-      .sources { display:grid; grid-template-columns:1fr; gap:8px; }
-      @media (min-width:600px){ .sources { grid-template-columns:1fr 1fr; } }
-      @media (min-width:960px){ .sources { grid-template-columns:repeat(3,1fr); } }
       .src { display:flex; flex-direction:column; gap:4px; background:#fff; border:1.5px solid var(--border-subtle); border-radius:12px; padding:12px 14px; transition:border-color .15s, box-shadow .15s; }
       .src:hover { border-color:var(--kygo-green); box-shadow:var(--shadow-md); }
       .src-tag { align-self:flex-start; font-family:var(--font-display); font-size:9.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--kygo-green-dark); }
       .src-title { font-family:var(--font-display); font-weight:600; font-size:13px; color:var(--fg-1); line-height:1.3; }
       .src:hover .src-title { color:var(--kygo-green-dark); }
+
+      /* Mobile = collapsible accordion by category; desktop = compact grid */
+      .src-desktop { display:none; }
+      .src-mobile { display:flex; flex-direction:column; gap:10px; }
+      .src-group { background:#fff; border:1.5px solid var(--border-subtle); border-radius:14px; overflow:hidden; transition:border-color .2s; }
+      .src-group[open] { border-color:var(--kygo-green-light); }
+      .src-group-head { display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; list-style:none; }
+      .src-group-head::-webkit-details-marker { display:none; }
+      .src-group-ico { width:30px; height:30px; border-radius:8px; background:var(--kygo-green-light); color:var(--kygo-green-dark); display:inline-flex; align-items:center; justify-content:center; flex:none; }
+      .src-group-ico svg { width:16px; height:16px; }
+      .src-group-name { font-family:var(--font-display); font-weight:600; font-size:14px; color:var(--fg-1); flex:1; min-width:0; }
+      .src-group-n { font-family:var(--font-display); font-size:11px; font-weight:600; color:var(--fg-3); background:var(--bg-raised); padding:3px 9px; border-radius:999px; flex:none; }
+      .src-group-chev { color:var(--fg-3); display:inline-flex; flex:none; }
+      .src-group-chev svg { width:16px; height:16px; transition:transform .2s; }
+      .src-group[open] .src-group-chev svg { transform:rotate(180deg); color:var(--kygo-green-dark); }
+      .src-group-body { display:flex; flex-direction:column; gap:8px; padding:0 16px 16px; }
+      @media (min-width:768px){
+        .src-mobile { display:none; }
+        .src-desktop { display:grid; gap:8px; grid-template-columns:1fr 1fr; }
+      }
+      @media (min-width:960px){ .src-desktop { grid-template-columns:repeat(3,1fr); } }
 
       /* Footer */
       .tool-footer { padding:56px 20px 40px; background:var(--kygo-light); color:var(--fg-2); border-top:1px solid var(--border-subtle); }
@@ -1018,11 +1002,12 @@ class KygoDeepSleepFactors extends HTMLElement {
       .footer-links a:hover { color:var(--kygo-green-dark); }
       .footer-disclaimer { font-size:12px; color:var(--fg-3); line-height:1.6; max-width:620px; margin:0 auto 14px; }
       .footer-copyright { font-size:12px; color:var(--fg-3); margin:4px 0; }
-      .footer-affiliate { font-style:italic; }
+      .footer-affiliate { font-style:italic; max-width:620px; margin-left:auto; margin-right:auto; }
 
       @media (prefers-reduced-motion:reduce){ .animate-on-scroll { opacity:1; transform:none; transition:none; } }
     `;
   }
+
   // ── Event Delegation ──────────────────────────────────────────────────
 
   _setupEventDelegation() {
@@ -1085,6 +1070,10 @@ class KygoDeepSleepFactors extends HTMLElement {
       const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
       if (!els.length) return;
       if (this._observer) this._observer.disconnect();
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('visible'));
+        return;
+      }
       this._observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -1100,7 +1089,7 @@ class KygoDeepSleepFactors extends HTMLElement {
   // ── JSON-LD ───────────────────────────────────────────────────────────
 
   _injectStructuredData() {
-    const guardAttr = 'data-kygo-deep-sleep-factors-ld';
+    const guardAttr = 'data-kygo-rem-sleep-ld';
     if (document.querySelector(`script[${guardAttr}]`)) return;
 
     // WebApplication schema is managed via Wix site-level LD+JSON to avoid duplicates
@@ -1124,7 +1113,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       'itemListElement': [
         { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
         { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
-        { '@type': 'ListItem', 'position': 3, 'name': 'Deep Sleep Factors', 'item': 'https://www.kygo.app/tools/deep-sleep-factors' }
+        { '@type': 'ListItem', 'position': 3, 'name': 'What Influences REM Sleep', 'item': 'https://www.kygo.app/tools/rem-sleep-factors' }
       ]
     };
 
@@ -1138,6 +1127,6 @@ class KygoDeepSleepFactors extends HTMLElement {
   }
 }
 
-if (!customElements.get('kygo-deep-sleep-factors')) {
-  customElements.define('kygo-deep-sleep-factors', KygoDeepSleepFactors);
+if (!customElements.get('kygo-rem-sleep')) {
+  customElements.define('kygo-rem-sleep', KygoRemSleep);
 }

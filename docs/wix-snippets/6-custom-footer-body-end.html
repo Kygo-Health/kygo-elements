@@ -1,0 +1,291 @@
+<!-- Kygo Health Custom Footer -->
+<div id="kygo-footer-root"></div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+  #kygo-footer-root {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  .kygo-footer {
+    background: #1E293B;
+    color: #94A3B8;
+    padding: 48px 24px 32px;
+  }
+
+  .kygo-footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .kygo-footer-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  @media (min-width: 768px) {
+    .kygo-footer-top {
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px;
+    }
+  }
+
+  .kygo-footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .kygo-footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .kygo-footer-logo img {
+    height: 40px;
+    width: auto;
+  }
+
+  .kygo-footer-logo span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: #22C55E;
+    letter-spacing: -0.02em;
+  }
+
+  .kygo-footer-socials {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .kygo-footer-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #94A3B8;
+    transition: all 0.2s;
+  }
+
+  .kygo-footer-socials a:hover {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22C55E;
+    transform: translateY(-2px);
+  }
+
+  .kygo-footer-contact {
+    margin-top: 8px;
+  }
+
+  .kygo-footer-contact p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #94A3B8;
+    margin: 0;
+  }
+
+  .kygo-footer-contact a {
+    color: #94A3B8;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .kygo-footer-contact a:hover {
+    color: #22C55E;
+  }
+
+  .kygo-footer-column h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #F1F5F9;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 16px 0;
+  }
+
+  .kygo-footer-column ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .kygo-footer-column li {
+    margin-bottom: 10px;
+  }
+
+  .kygo-footer-column a {
+    color: #94A3B8;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+    display: inline-block;
+  }
+
+  .kygo-footer-column a:hover {
+    color: #22C55E;
+  }
+
+  .kygo-footer-cta {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.05) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .kygo-footer-cta p {
+    font-size: 14px;
+    color: #CBD5E1;
+    margin: 0 0 12px 0;
+  }
+
+  .kygo-footer-cta-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .kygo-footer-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+    color: white !important;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.25);
+    line-height: 1;
+    width: 100%;
+  }
+
+  .kygo-footer-cta-btn svg {
+    flex-shrink: 0;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  .kygo-footer-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(34, 197, 94, 0.35);
+  }
+
+  .kygo-footer-cta-btn-android {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: transparent;
+    border: 1.5px solid rgba(34, 197, 94, 0.5);
+    color: #22C55E !important;
+    padding: 11px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    line-height: 1;
+    width: 100%;
+  }
+
+  .kygo-footer-cta-btn-android svg {
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  .kygo-footer-cta-btn-android:hover {
+    background: rgba(34, 197, 94, 0.08);
+    transform: translateY(-2px);
+    border-color: #22C55E;
+  }
+
+  .kygo-footer-divider {
+    height: 1px;
+    background: rgba(148, 163, 184, 0.15);
+    margin: 32px 0;
+  }
+
+  .kygo-footer-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  @media (min-width: 768px) {
+    .kygo-footer-bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+
+  .kygo-footer-legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+
+  .kygo-footer-legal-links a {
+    color: #94A3B8;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-size: 13px;
+    transition: color 0.2s;
+  }
+
+  .kygo-footer-legal-links a:hover {
+    color: #CBD5E1;
+  }
+
+  .kygo-footer-disclaimer {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #94A3B8;
+    max-width: 900px;
+  }
+
+  .kygo-footer-disclaimer p {
+    margin: 0;
+  }
+</style>
+
+<script>
+(function() {
+  var appleIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>';
+  var androidIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.236a.5.5 0 0 0-.86.508l1.08 1.83a7.504 7.504 0 0 0-11.486 0l1.08-1.83a.5.5 0 0 0-.86-.508L5.28 5.12A7.502 7.502 0 0 0 1.5 11.5h21A7.502 7.502 0 0 0 18.72 5.12l-1.197-2.884zM8.5 9a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm7 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2zM3.5 13v6.5A2.5 2.5 0 0 0 6 22h1v-9H3.5zm14 0H17v9h1a2.5 2.5 0 0 0 2.5-2.5V13zM7 13v9h4v-9H7zm4 0v9h4v-9h-4zM1 13.5a1.5 1.5 0 0 1 3 0v5a1.5 1.5 0 0 1-3 0v-5zm19 0a1.5 1.5 0 0 1 3 0v5a1.5 1.5 0 0 1-3 0v-5z"/></svg>';
+  var fbIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
+  var redditIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>';
+  var xIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+
+  var footerHTML = '<footer class="kygo-footer"><div class="kygo-footer-inner"><div class="kygo-footer-top">'
+    + '<div class="kygo-footer-brand"><a href="https://www.kygo.app/" class="kygo-footer-logo"><img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo Health" /><span>KYGO</span></a>'
+    + '<div class="kygo-footer-socials"><a href="https://www.facebook.com/profile.php?id=61586603470107" target="_blank" rel="noopener" aria-label="Facebook">' + fbIcon + '</a><a href="https://www.reddit.com/user/KygoApp/" target="_blank" rel="noopener" aria-label="Reddit">' + redditIcon + '</a><a href="https://x.com/KygoApp" target="_blank" rel="noopener" aria-label="X (Twitter)">' + xIcon + '</a></div>'
+    + '<div class="kygo-footer-contact"><p>Jersey City, NJ</p><p><a href="mailto:support@kygo.app">support@kygo.app</a></p></div></div>'
+    + '<div class="kygo-footer-column"><h4>Product</h4><ul><li><a href="https://www.kygo.app/how-it-works">How It Works</a></li><li><a href="https://www.kygo.app/faq">FAQ</a></li><li><a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener">Download iOS</a></li><li><a href="https://www.kygo.app/android" target="_blank" rel="noopener">Download Android</a></li></ul></div>'
+    + '<div class="kygo-footer-column"><h4>Resources</h4><ul><li><a href="https://www.kygo.app/blog">Blog</a></li><li><a href="https://www.kygo.app/tools">Tools</a></li><li><a href="https://www.kygo.app/contact">Contact</a></li></ul></div>'
+    + '<div class="kygo-footer-column"><div class="kygo-footer-cta"><p>Start tracking smarter today</p><div class="kygo-footer-cta-buttons">'
+    + '<a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="kygo-footer-cta-btn" target="_blank" rel="noopener">' + appleIcon + 'Get on iOS</a>'
+    + '<a href="https://www.kygo.app/android" class="kygo-footer-cta-btn-android" target="_blank" rel="noopener">' + androidIcon + 'Get on Android</a>'
+    + '</div></div></div>'
+    + '</div><div class="kygo-footer-divider"></div><div class="kygo-footer-bottom"><div class="kygo-footer-legal-links"><a href="https://www.kygo.app/privacy-policy">Privacy Policy</a><a href="https://www.kygo.app/terms-conditions">Terms of Service</a><a href="https://www.kygo.app/accessibility-statement">Accessibility</a></div><div class="kygo-footer-disclaimer"><p>© 2026 by KYGO Health LLC. Kygo Health LLC is not intended to diagnose, treat, cure, or prevent any disease. The information provided is for educational purposes only and is not a substitute for professional medical advice. Consult your physician before making any health decisions.</p></div></div></div></footer>';
+
+  document.getElementById('kygo-footer-root').innerHTML = footerHTML;
+})();
+</script>
