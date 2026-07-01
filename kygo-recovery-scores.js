@@ -155,11 +155,11 @@ class KygoRecoveryScores extends HTMLElement {
         modelLine: 'Training Readiness · 0–100 · Body Battery is separate · free',
         sensors: { hrv: true, rhr: false, sleep: true, temp: false, rr: false, load: true, subj: false },
         free: true,
-        algorithm: 'A 0–100 continuous score weighted toward training workload: sleep score, recovery time, HRV status, acute load, sleep history (3 nights), and stress history (3 days). Body Battery is a SEPARATE Firstbeat energy gauge — a common point of confusion. The 6th Training Readiness factor is sleep history, NOT Body Battery. Available on Forerunner / Fenix / Epix / Venu X1.',
+        algorithm: 'A 0–100 continuous score that blends your overnight recovery with your training workload: sleep score, recovery time, HRV status, acute load, sleep history (3 nights), and stress history (3 days). Body Battery is a SEPARATE Firstbeat energy gauge, a common point of confusion. The 6th Training Readiness factor is sleep history, NOT Body Battery. Available on Forerunner / Fenix / Epix / Venu X1.',
         scale: '0–100 (continuous)',
         inputs: 'Sleep score, recovery time, HRV status, acute load, sleep history (3 nights), stress history (3 days)',
         window: 'Continuous',
-        strength: 'The most training-load-oriented of the mainstream scores — built for athletes managing workload, and free.',
+        strength: 'The most training-load-oriented of the mainstream scores. Built for athletes managing workload, and free.',
         limitation: 'No independent validation of the composite. Garmin\'s nocturnal HRV/RHR were poor in Dial 2025 (excluded from the RHR analysis on methodology grounds).',
         validation: { score: 'none', signal: 'poor', evidence: 'Firstbeat white papers cover components, not the composite. Nocturnal HRV poor (Dial 2025).' },
         color: ACC
