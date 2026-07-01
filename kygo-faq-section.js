@@ -157,21 +157,29 @@ class KygoFaqSection extends HTMLElement {
 
     });
 
-    // Search input listener with debouncing
-    const searchInput = shadow.getElementById('faq-search');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        // Clear existing debounce timer
-        if (this._searchDebounceTimer) {
-          clearTimeout(this._searchDebounceTimer);
-        }
+    // Search input listener with debouncing.
+    // Delegate on the shadow root (not the input element) so it survives
+    // re-renders: render() replaces the shadow DOM innerHTML, destroying the
+    // #faq-search element, but this listener lives on the persistent shadow
+    // root — same reason the click handler above is robust.
+    shadow.addEventListener('input', (e) => {
+      if (!e.target.matches('#faq-search')) return;
 
-        // Debounce search by 150ms
-        this._searchDebounceTimer = setTimeout(() => {
-          this._performSearch(e.target.value);
-        }, 150);
-      });
-    }
+      // Capture the value synchronously — reading e.target inside the debounced
+      // callback is unreliable because the browser detaches the event target
+      // after dispatch, leaving e.target null/undefined by the time it fires.
+      const query = e.target.value;
+
+      // Clear existing debounce timer
+      if (this._searchDebounceTimer) {
+        clearTimeout(this._searchDebounceTimer);
+      }
+
+      // Debounce search by 150ms
+      this._searchDebounceTimer = setTimeout(() => {
+        this._performSearch(query);
+      }, 150);
+    });
   }
 
   _setupScrollAnimations() {
