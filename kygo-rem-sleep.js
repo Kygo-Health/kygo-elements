@@ -623,8 +623,8 @@ class KygoRemSleep extends HTMLElement {
     const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
     const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
     const garminImg = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
-    const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
-    const healthConnectImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
+    const googleHealthImg = 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png';
+    const healthConnectImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
 
     const factorCount = this._factorCount();
     const sourceCount = this._sourceCount();
@@ -701,7 +701,7 @@ class KygoRemSleep extends HTMLElement {
                 <img src="${appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
                 <img src="${fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
                 <img src="${garminImg}" alt="Garmin" title="Garmin" loading="lazy" />
-                <img src="${whoopImg}" alt="WHOOP" title="WHOOP" loading="lazy" />
+                <img src="${googleHealthImg}" alt="Google Health" title="Google Health" loading="lazy" />
                 <img src="${healthConnectImg}" alt="Health Connect" title="Health Connect" loading="lazy" />
               </div>
             </div>
