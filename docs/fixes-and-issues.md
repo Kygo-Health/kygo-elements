@@ -139,10 +139,15 @@ No live conflict — `/blog` uses `kygo-blog.js`, posts use `kygo-blog-post.js`.
 **`kygo-blog-page.js`** also defines `class KygoBlog` / registers `kygo-blog` and appears **unused
 live**. **Action:** confirm it's dead and delete it (removes the latent duplicate-registration risk).
 
-### 10. [Spot-check] Asset `46b3b6ce` double-labeled
-The Whoop card renders the correct WHOOP logo live, so no visible bug. But the same asset
-(`273a63_46b3b6ce…`) is referenced as both a Whoop image and `alt="Health Connect"`. Quick check:
-do the **Health Connect** logo rows show the right icon? If yes, just a naming quirk; close it.
+### 10. [Resolved in integration strips] Asset `46b3b6ce` / `0c0e48cc` double-labeled
+Several "Works with" strips had the Whoop wordmark (`0c0e48cc`) and Health Connect logo
+(`46b3b6ce`) swapped between the two badges. As part of the Whoop→Google Health logo swap
+(2026-07) these strips were corrected: the Whoop badge became the Google Health logo and the
+Health Connect badge was repointed to the true `46b3b6ce` asset, so no Whoop wordmark lingers.
+**Still open (editorial):** the comparison pages (`kygo-fitbit-air-vs-whoop.js` WHOOP hero +
+tables, and the `whoopImg` in the vo2max/sleep factor comparison scopes) still use `46b3b6ce`
+(the Health Connect logo) as the WHOOP product image — left untouched, out of scope for the
+integration-only swap.
 
 ### 11. Font `@import` drift — two Google Fonts URLs (one with DM Sans 700). Standardize on one.
 ### 12. `kygo-sleep-latency-factors.js` — affiliate chip slots wired but empty. Populate or leave.
