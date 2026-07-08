@@ -1,9 +1,10 @@
 # Affiliate Links Inventory
 
 > Every affiliate link in the `kygo-elements` components — what product it points to and where
-> it's listed. Affiliate links are **Amazon short links (`amzn.to/...`)** except: two non-Amazon
-> referrals (a WHOOP membership link and the HLTH Code Refersion banner — both in Section C), and
-> one **full-URL Amazon Associates link** (the Sleep Mask on the staying-asleep page — a tagged
+> it's listed. Affiliate links are **Amazon short links (`amzn.to/...`)** except: one non-Amazon
+> referral (the HLTH Code Refersion banner — Section C; the former WHOOP `join.whoop.com` referral
+> was removed in the 2026-07 calorie-burn-accuracy rebuild, which now uses the WHOOP Amazon slug),
+> and one **full-URL Amazon Associates link** (the Sleep Mask on the staying-asleep page — a tagged
 > `amazon.com/dp/...?tag=kygohealthapp-20` link rather than an `amzn.to` short link).
 > **40 unique** Amazon links across **12 files**.
 
@@ -25,7 +26,7 @@ data object (`affiliateUrl`, `{name,url}`, or `affiliate:{url,label}`).
 | `amzn.to/4aF8l5D` | **Garmin** | sensor-comparison:75 · sleep-metrics:97 · step-count-accuracy:74 · wearable-accuracy:90 · calorie-burn-accuracy:1219 |
 | `amzn.to/4aF93jj` | **Oura Ring** (Ring 4) | sensor-comparison:97 · sleep-metrics:51 · step-count-accuracy:243 · wearable-accuracy:74 · calorie-burn-accuracy:1269 |
 | `amzn.to/4suRaen` | **Whoop 5.0** | sensor-comparison:86 |
-| `amzn.to/4rRoziQ` | **WHOOP** | step-count-accuracy:267 · wearable-accuracy:106 |
+| `amzn.to/4rRoziQ` | **WHOOP** | step-count-accuracy:267 · wearable-accuracy:106 · calorie-burn-accuracy (`_devices.whoop.affiliate`) |
 | `amzn.to/3PUMS23` | **Samsung Galaxy Watch** (unified across all 3 pages) | step-count-accuracy:159 · wearable-accuracy:138 · calorie-burn-accuracy:1294 |
 | `amzn.to/4rkOv6I` | **COROS** | step-count-accuracy:186 |
 | `amzn.to/4rqpdnL` | **Polar** | step-count-accuracy:214 |
@@ -220,7 +221,7 @@ which is a new client-supplied full tagged URL (added 2026-06-14).
 
 | Link | Product | Listed in |
 |---|---|---|
-| `https://join.whoop.com/` | **WHOOP** membership referral (WHOOP's own program, not Amazon) | calorie-burn-accuracy.js:1244 |
+| `https://join.whoop.com/` | **WHOOP** membership referral (WHOOP's own program, not Amazon) | _(removed 2026-07 — the calorie-burn-accuracy rebuild now uses the WHOOP Amazon slug `amzn.to/4rRoziQ` like the other tool pages, so no non-Amazon referral remains in this repo)_ |
 | `https://gethlth.com/?rfsn=9131461.c81405e` | **HLTH Code** meal-replacement shake — **Refersion** affiliate (referral `aid` `9131461.c81405e`) | kygo-oura-ring-comparison.js (`_setupAffiliateBanner`) |
 
 *(Other `whoop.com` / `support.whoop.com` URLs in the codebase are editorial citations, not affiliate links.)*
