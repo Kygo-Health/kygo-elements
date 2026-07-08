@@ -25,11 +25,12 @@ Small brand logos, used in headers, footers, and "connect your wearable" section
 | `273a63_7ac49e91323749f49cadfe795ff3680f` | **Kygo Health logo** (primary) | 37 refs — site header/footer **and** the `logo` in every JSON-LD Organization block |
 | `273a63_d0b94a6b9cb54aff93a61cb4f2229b21` | **Kygo logo** (glossy 3D render of the same mark) | only `kygo-sensor-comparison.js` (alt="Kygo") — QA-confirmed same logo, not wrong |
 | `273a63_56ac2eb53faf43fab1903643b29c0bce` | **Oura Ring** logo | 22 refs (connect-wearable rows, Oura comparison table head) |
-| `273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7` | **Health Connect** logo | 21 refs · also referenced as a Whoop `imageUrl` in sensor-comparison, but the WHOOP card renders correctly live (QA) |
+| `273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7` | **Health Connect** logo | connect-wearable rows. Still used editorially as the WHOOP `imageUrl`/`whoopImg` in the comparison pages (`kygo-fitbit-air-vs-whoop.js` hero + tables, `kygo-vo2max-accuracy.js` etc.) — a pre-existing mislabel left in place |
+| `273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e` | **Google Health** logo | 21 refs — replaced the Whoop badge in every "Works with" / "Connect your wearable" integration strip (2026-07) |
 | `273a63_c451e954ff8740338204915f904d8798` | **Fitbit** logo | 20 refs |
 | `273a63_1a1ba0e735ea4d4d865c04f7c9540e69` | **Apple / Apple Health** logo | 20 refs |
 | `273a63_0a60d1d6c15b421e9f0eca5c4c9e592b` | **Garmin** logo | 18 refs |
-| `273a63_0c0e48cc065d4ee3bf506f6d47440518` | **Whoop** logo | 17 refs |
+| `273a63_0c0e48cc065d4ee3bf506f6d47440518` | **Whoop** logo | **Retired (2026-07)** — the Whoop wordmark badge in the integration strips was swapped to the Google Health logo; this asset is no longer referenced anywhere |
 
 ## 2. Device product images
 

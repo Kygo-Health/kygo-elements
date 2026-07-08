@@ -58,8 +58,8 @@ const CTA_BADGES = {
   apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
   fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
   garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
-  whoop: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
-  healthConnect: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png',
+  googleHealth: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
+  healthConnect: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
 };
 
 class KygoBlog extends HTMLElement {
@@ -1078,7 +1078,7 @@ class KygoBlog extends HTMLElement {
                 <img src="${CTA_BADGES.apple}" alt="Apple Health" title="Apple Health" loading="lazy" />
                 <img src="${CTA_BADGES.fitbit}" alt="Fitbit" title="Fitbit" loading="lazy" />
                 <img src="${CTA_BADGES.garmin}" alt="Garmin" title="Garmin" loading="lazy" />
-                <img src="${CTA_BADGES.whoop}" alt="WHOOP" title="WHOOP" loading="lazy" />
+                <img src="${CTA_BADGES.googleHealth}" alt="Google Health" title="Google Health" loading="lazy" />
                 <img src="${CTA_BADGES.healthConnect}" alt="Health Connect" title="Health Connect" loading="lazy" />
               </div>
             </div>
