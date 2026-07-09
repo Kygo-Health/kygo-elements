@@ -38,11 +38,15 @@ the remaining 41.
 
 ### ⏳ / ⚠️ Remaining (resolved reference for phase 2 — not yet applied)
 
-11 of these are **intentional Amazon search pages**, not product ASINs (converted to
-`/s?k=…&rh=…&tag=…`; `rh` is an Amazon filter — `p_123`=brand, `p_72`=4★+ — preserved). Product
-links get `&th=1` only where the resolved URL had it (variant-specific card). **`4suRaen`
-(Whoop 5.0 · `kygo-sensor-comparison.js`) was not in the resolution data — it still needs an ASIN
-before phase 2.**
+12 of these are **intentional Amazon search pages**, not product ASINs (converted to
+`/s?k=…&rh=…&tag=…`; `rh` is an Amazon filter — `p_123`=brand, `p_72`=4★+, `p_6`=official-seller —
+all preserved, comma-joined filters kept). Product links get `&th=1` only where the resolved URL
+had it (variant-specific card). All 43 hashes are now resolved.
+
+**Phase 2 also cleans 3 pre-existing full-URL Amazon links** that already carry SiteStripe cruft —
+`kygo-staying-asleep-factors.js:259` (Sleep Mask `B07PRG2CQY`), `kygo-recovery-scores.js:565`
+(Saffron `B097TKQSQD`), `kygo-supplements-by-metric.js:107` (Mag L-Threonate `B01M4GM9R1`): keep
+`tag=kygohealthapp-20`, drop `campaignId` / `linkCode` / `linkId` / `ref`.
 
 | hash | type | ASIN | New URL | `data-track-label` | status | file(s) |
 |---|---|---|---|---|---|---|
@@ -81,7 +85,7 @@ before phase 2.**
 | `4rkOv6I` | search | — | `https://www.amazon.com/s?k=COROS%20fitness%20tracker&rh=p_123%3A337787&tag=kygohealthapp-20` | `coros-search` | ⏳ pending | kygo-recovery-scores.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js |
 | `4rqpdnL` | search | — | `https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20` | `polar-search` | ⏳ pending | kygo-recovery-scores.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js |
 | `4saSeEc` | product | `B081CHLF46` | `https://www.amazon.com/dp/B081CHLF46?tag=kygohealthapp-20&th=1` | `sunrise-alarm-clock` | ⏳ pending | kygo-deep-sleep-factors.js |
-| `4suRaen` | **UNRESOLVED** | — | — | — | ⚠️ needs resolution | kygo-sensor-comparison.js |
+| `4suRaen` | search | — | `https://www.amazon.com/s?k=whoop&rh=p_72%3A1248957011%2Cp_6%3AA95DP87XYU2J1&tag=kygohealthapp-20` | `whoop-search` | ⏳ pending | kygo-sensor-comparison.js |
 | `4szGon9` | product | `B08666GMWG` | `https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1` | `melatonin-gummies` | ⏳ pending | kygo-deep-sleep-factors.js, kygo-recovery-scores.js, kygo-rem-sleep.js, kygo-sleep-latency-factors.js, kygo-supplements-by-metric.js |
 | `4tZ5Zr2` | product | `B092DXFGVH` | `https://www.amazon.com/dp/B092DXFGVH?tag=kygohealthapp-20&th=1` | `meditation-cushion` | ⏳ pending | kygo-hrv-factors.js |
 | `4uL7b1p` | product | `B0BDP24LP4` | `https://www.amazon.com/dp/B0BDP24LP4?tag=kygohealthapp-20&th=1` | `fiber-gummies` | ⏳ pending | kygo-sleep-latency-factors.js, kygo-staying-asleep-factors.js |
