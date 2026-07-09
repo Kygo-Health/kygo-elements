@@ -1074,20 +1074,20 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       .callout strong { color: var(--fg-1); font-weight: 600; }
 
       /* ── Calculator ───────────────────────────────────────────────────── */
-      .calc { display: grid; grid-template-columns: 1fr; gap: 20px; }
-      @media (min-width: 900px) { .calc { grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; } }
-      .calc-form { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 20px; }
+      .calc { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+      @media (min-width: 900px) { .calc { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; } }
+      .calc-form { min-width: 0; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 20px; }
       .calc-group { display: flex; flex-direction: column; gap: 10px; }
       .calc-group > label { font-family: var(--font-display); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--fg-3); }
-      .dev-btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-      @media (min-width: 480px) { .dev-btns { grid-template-columns: repeat(6, 1fr); } }
+      .dev-btns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+      @media (min-width: 480px) { .dev-btns { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
       .dev-btn { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 10.5px; font-weight: 600; color: var(--fg-2); cursor: pointer; transition: all .15s ease; }
       .dev-btn .brand-img { width: 30px; height: 30px; border-radius: 8px; }
       .dev-btn span { line-height: 1.1; text-align: center; }
       .dev-btn:hover { border-color: var(--fg-3); }
       .dev-btn.active { border-color: var(--kygo-green); background: rgba(34,197,94,0.06); color: var(--kygo-green-dark); box-shadow: 0 0 0 3px rgba(34,197,94,0.10); }
-      .act-btns { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-      @media (min-width: 480px) { .act-btns { grid-template-columns: repeat(4, 1fr); } }
+      .act-btns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      @media (min-width: 480px) { .act-btns { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
       .act-btn { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 10px; padding: 10px 8px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-display); font-size: 12px; font-weight: 600; color: var(--fg-2); cursor: pointer; transition: all .15s ease; }
       .act-btn .ico { width: 15px; height: 15px; color: var(--fg-3); }
       .act-btn:hover { border-color: var(--fg-3); }
@@ -1100,7 +1100,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       .calc-unit { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--fg-3); }
 
       /* Result panel */
-      .calc-result { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; padding: 24px 20px; min-height: 100%; }
+      .calc-result { min-width: 0; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; padding: 24px 20px; min-height: 100%; }
       @media (min-width: 900px) { .calc-result { padding: 28px 26px; } }
       .calc-result.show .calc-placeholder { display: none; }
       .calc-result .calc-live { display: none; }
