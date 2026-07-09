@@ -174,9 +174,12 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | Event | When | Key params |
 |---|---|---|
 | `page_view` | automatic on load (gtag config) | standard GA4 |
-| `cta_click` | any classified `<a>`/`<button>`/`[data-action]` click | `cta_category`, `cta_label`, `cta_url`, `component`, `position`, `page_path` |
+| `cta_click` | any classified `<a>`/`<button>`/`[data-action]` click | `cta_category`, `cta_label`, `cta_url`, `component`, `position`, `page_path` (+ `affiliate`, `affiliate_marketplace` for Amazon) |
 | `tool_interaction` | calculate/compare/analyze buttons | `tool_name` (= component tag), `action`, `button_label` |
 | `page_exit` | `visibilitychange` → hidden | `page_path` |
+| `email_subscribe` **(key event)** | `subscribe` CustomEvent (newsletter form) → mirrored to GA4 | `lead_type` (`newsletter`), `component`, `source` (if present), `page_path` |
+| `contact_submit` **(key event)** | `contactSubmit` CustomEvent (contact form) → mirrored to GA4 | `lead_type` (`contact_form`), `component`, `page_path`. **No PII** — email/name/message are never read from `detail` |
+| `tool_result` | `kygo-calorie-calculation` CustomEvent (calculator produced a result) | `tool_name` (= component tag), `page_path` |
 
 `cta_click` is bucketed by **`cta_category`**, derived in `classifyClick()` from the element's
 `data-action`, `href`, and CSS classes:
@@ -190,6 +193,7 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | `header_cta` | `.header-cta` (nav "Get Kygo App") |
 | `blog_cta` | `.blog-cta-btn` |
 | `primary_cta` | `.cta-primary` / `.cta-button-primary` / `.cta-btn` |
+| `affiliate_amazon` | link hostname matches an Amazon marketplace (`amazon.<tld>`) or `amzn.to` short link. Also carries `affiliate: 'amazon'` + `affiliate_marketplace` (the host), and the click handler rewrites the href with a per-click `ascsubtag` (`<page-slug>_<component>`) for Associates-report attribution, preserving the existing `tag=` param |
 | `other_action` | any other element with a `data-action` |
 | `affiliate_banner` | **not** from `classifyClick()` — fired directly by `kygo-oura-ring-comparison.js` for the HLTH Code banner (see below) |
 
@@ -254,15 +258,23 @@ The host reports results back by setting an **attribute** (e.g. `data-form-resul
 handled in `attributeChangedCallback` — never via a callback (Wix bridges events over
 postMessage/structured clone, which can't serialize functions).
 
+> **These CustomEvents are now also mirrored into GA4** by `kygo-tracking.js` (a second set of
+> document-level, capture-phase listeners): `subscribe` → `email_subscribe`, `contactSubmit` →
+> `contact_submit` (both key events), and `kygo-calorie-calculation` → `tool_result`. The mirror
+> reads only non-identifying context from `detail` — **never the email/name/message** — so no PII
+> reaches GA4. `postClick`/`categoryClick`/`seeAllClick` are **not** mirrored (the click listener
+> already covers those navigations).
+
 ## Tracking gaps / notes
 
 1. **Single GA ID via attribute** — tracking only works if the Wix embed includes
    `kygo-tracking.js` with a valid `data-ga-id`. If it's missing on a page, that page has **no
    analytics** (events go to console only). Verify the script is present wherever components ship.
-2. **Wix Velo events aren't sent to GA4** — e.g. `subscribe`, `contactSubmit`, `kygo-calculation`
-   fire as CustomEvents but aren't mirrored as GA events. If you want conversion tracking for
-   form submits / subscribes, either add matching `data-action`s the tracker classifies, or
-   extend `kygo-tracking.js` to listen for these CustomEvents.
+2. ~~**Wix Velo events aren't sent to GA4**~~ **(addressed 2026-07)** — `subscribe`,
+   `contactSubmit`, and `kygo-calorie-calculation` are now mirrored to GA4 as `email_subscribe`,
+   `contact_submit`, and `tool_result` (see the Wix Velo section above). Remaining unmirrored
+   CustomEvents (`imageUploaded`, `postClick`, `categoryClick`, `seeAllClick`) are navigation/host
+   plumbing already covered by the click listener or not conversion-relevant.
 3. **`page_view` is the only built-in pageview** — SPA-style route changes on Wix won't refire it;
    each component page is a full load so this is generally fine.
 4. No consent/CMP gating is present in `kygo-tracking.js`; GA loads immediately when `data-ga-id`

@@ -73,6 +73,11 @@
 
   /* ── Classification Logic ─────────────────────────── */
 
+  // Amazon marketplaces + amzn.to short links. Matched against the link
+  // hostname so affiliate clicks get their own cta_category instead of
+  // falling through to other_action / null (they carry no Kygo class).
+  const AMAZON_HOST = /(^|\.)amazon\.(com|de|co\.uk|ca|fr|it|es|com\.au|co\.jp)$|(^|\.)amzn\.to$/;
+
   function classifyClick(el) {
     var action = el.getAttribute('data-action');
     var href = el.getAttribute('href') || '';
@@ -121,12 +126,45 @@
       return { category: 'primary_cta', label: getLabel(el), url: href };
     }
 
+    // Amazon affiliate link (amzn.to short link or full amazon.<tld> URL).
+    // No Kygo class/data-action, so classify by hostname before the fallback.
+    try {
+      var amazonUrl = new URL(el.href);
+      if (AMAZON_HOST.test(amazonUrl.hostname)) {
+        return {
+          category: 'affiliate_amazon',
+          label: el.getAttribute('data-track-label') ||
+                 (amazonUrl.pathname.split('/').filter(Boolean)[0] || 'unknown'),
+          url: el.href,
+          affiliate: 'amazon',
+          affiliate_marketplace: amazonUrl.hostname.replace(/^www\./, '')
+        };
+      }
+    } catch (e) { /* el has no parseable href (e.g. a <button>) — ignore */ }
+
     // Any other data-action button
     if (action) {
       return { category: 'other_action', label: getLabel(el), action_type: action };
     }
 
     return null;
+  }
+
+  /** Rewrite an Amazon link's href with a per-click `ascsubtag` so Associates
+   *  order/earnings reports can attribute revenue to the page + component.
+   *  Keeps the existing `tag=` param; runs in the capture-phase click handler
+   *  before navigation. Returns the (possibly rewritten) href. */
+  function addAmazonSubtag(el, component) {
+    try {
+      var u = new URL(el.href);
+      var sub = (window.location.pathname.replace(/\//g, '-').replace(/^-|-$/g, '') || 'home') +
+                '_' + (component || 'page');
+      u.searchParams.set('ascsubtag', sub.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 90));
+      el.href = u.toString();
+      return el.href;
+    } catch (e) {
+      return el.href;
+    }
   }
 
   /* ── Event Listeners ──────────────────────────────── */
@@ -156,14 +194,22 @@
         button_label: info.label
       });
     } else {
-      track('cta_click', {
+      // Per-click Amazon attribution: rewrite the href (adds ascsubtag) before
+      // the browser navigates, so cta_url reflects the tagged link we report.
+      if (info.category === 'affiliate_amazon') {
+        info.url = addAmazonSubtag(clickable, component);
+      }
+      var ctaParams = {
         cta_category: info.category,
         cta_label: info.label,
         cta_url: info.url || '',
         component: component,
         position: position,
         page_path: window.location.pathname
-      });
+      };
+      if (info.affiliate) ctaParams.affiliate = info.affiliate;
+      if (info.affiliate_marketplace) ctaParams.affiliate_marketplace = info.affiliate_marketplace;
+      track('cta_click', ctaParams);
     }
   }, true); // capture phase to fire before any stopPropagation
 
@@ -175,5 +221,42 @@
       });
     }
   });
+
+  /* ── Conversion CustomEvents → GA4 ────────────────── */
+
+  // Components dispatch these for the Wix Velo host (bubbles + composed, so
+  // they reach document). Mirror them into GA4 as key events. NEVER read the
+  // email or any other PII out of e.detail — only non-identifying context.
+  const CONVERSION_EVENTS = {
+    subscribe:     { ga: 'email_subscribe', lead: 'newsletter' },
+    contactSubmit: { ga: 'contact_submit',  lead: 'contact_form' }
+  };
+
+  Object.keys(CONVERSION_EVENTS).forEach(function (domEvent) {
+    var cfg = CONVERSION_EVENTS[domEvent];
+    document.addEventListener(domEvent, function (e) {
+      var detail = e.detail || {};
+      var params = {
+        lead_type: cfg.lead,
+        // e.target is retargeted to the shadow host (e.g. <kygo-contact>).
+        component: detail.component ||
+                   (e.target && e.target.tagName ? e.target.tagName.toLowerCase() : 'unknown'),
+        page_path: window.location.pathname
+      };
+      // Only the subscribe form ever carries a `source`; contact detail is PII
+      // (firstName/lastName/email/subject/message) and is deliberately ignored.
+      if (detail.source) params.source = detail.source;
+      track(cfg.ga, params);
+    }, true);
+  });
+
+  // Optional (non-key): calculator completion on the calorie-burn tool.
+  // The component dispatches 'kygo-calorie-calculation' (not 'kygo-calculation').
+  document.addEventListener('kygo-calorie-calculation', function (e) {
+    track('tool_result', {
+      tool_name: (e.target && e.target.tagName ? e.target.tagName.toLowerCase() : 'unknown'),
+      page_path: window.location.pathname
+    });
+  }, true);
 
 })();
