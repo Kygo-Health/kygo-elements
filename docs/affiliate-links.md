@@ -14,6 +14,86 @@ the destination ASIN/tag isn't visible in this repo, only the `amzn.to` slug.
 
 ---
 
+## ASIN Conversion Manifest (revert path)
+
+> **Why:** the deployed `kygo-tracking.js` appends a per-click `ascsubtag` for revenue
+> attribution, but `amzn.to` short links **strip it during redirect** (empirically confirmed).
+> Only the destination `tag=kygohealthapp-20` pays, and a hand-built `/dp/<ASIN>?tag=…` link
+> attributes identically **and** preserves `ascsubtag`. So every `amzn.to/<hash>` is being
+> replaced with a full Amazon URL. ASINs resolved 2026-07-09 (browser, verified against product
+> titles). This table is the **revert path** — to roll back, restore the `amzn.to/<hash>` in the
+> listed file(s). Do **not** add `ascsubtag` in components; the tracker adds it at click time.
+> The HLTH Code / Refersion banner is **not** part of this (not an Amazon link).
+
+**Rollout is canary-first.** Commit 1 converts **only** `kygo-fitbit-air-vs-whoop.js` (2 links);
+we confirm clicks + `ascsubtag` land in the Amazon Associates report (~1 day) before converting
+the remaining 41.
+
+### ✅ Converted — canary (commit 1)
+
+| File | Old short link | ASIN | New URL | `data-track-label` |
+|---|---|---|---|---|
+| `kygo-fitbit-air-vs-whoop.js` | `amzn.to/4wogJ3y` | `B0GTMTZF3V` | `https://www.amazon.com/dp/B0GTMTZF3V?tag=kygohealthapp-20&th=1` | `fitbit-air` |
+| `kygo-fitbit-air-vs-whoop.js` | `amzn.to/431iUfG` | `B0DY2SWV16` | `https://www.amazon.com/dp/B0DY2SWV16?tag=kygohealthapp-20&th=1` | `whoop-peak-12mo` |
+
+### ⏳ / ⚠️ Remaining (resolved reference for phase 2 — not yet applied)
+
+12 of these are **intentional Amazon search pages**, not product ASINs (converted to
+`/s?k=…&rh=…&tag=…`; `rh` is an Amazon filter — `p_123`=brand, `p_72`=4★+, `p_6`=official-seller —
+all preserved, comma-joined filters kept). Product links get `&th=1` only where the resolved URL
+had it (variant-specific card). All 43 hashes are now resolved.
+
+**Phase 2 also cleans 3 pre-existing full-URL Amazon links** that already carry SiteStripe cruft —
+`kygo-staying-asleep-factors.js:259` (Sleep Mask `B07PRG2CQY`), `kygo-recovery-scores.js:565`
+(Saffron `B097TKQSQD`), `kygo-supplements-by-metric.js:107` (Mag L-Threonate `B01M4GM9R1`): keep
+`tag=kygohealthapp-20`, drop `campaignId` / `linkCode` / `linkId` / `ref`.
+
+| hash | type | ASIN | New URL | `data-track-label` | status | file(s) |
+|---|---|---|---|---|---|---|
+| `3Nbjq6C` | product | `B00151G8L8` | `https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1` | `magnesium-glycinate` | ⏳ pending | kygo-deep-sleep-factors.js, kygo-hrv-factors.js, kygo-recovery-scores.js, kygo-sleep-latency-factors.js, kygo-staying-asleep-factors.js, kygo-supplements-by-metric.js |
+| `3OEoHEh` | product | `B000H7P9M0` | `https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1` | `l-theanine-200mg` | ⏳ pending | kygo-hrv-factors.js, kygo-recovery-scores.js, kygo-sleep-latency-factors.js, kygo-staying-asleep-factors.js, kygo-supplements-by-metric.js |
+| `3OyDz7c` | product | `B0FT6GB5MB` | `https://www.amazon.com/dp/B0FT6GB5MB?tag=kygohealthapp-20&th=1` | `gaba-500mg` | ⏳ pending | kygo-hrv-factors.js, kygo-sleep-latency-factors.js, kygo-supplements-by-metric.js |
+| `3PUMS23` | search | — | `https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20` | `samsung-watch-search` | ⏳ pending | kygo-calorie-burn-accuracy.js, kygo-recovery-scores.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js, kygo-wearable-accuracy.js |
+| `3PWfatc` | search | — | `https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20` | `glycine-search` | ⏳ pending | kygo-deep-sleep-factors.js, kygo-recovery-scores.js, kygo-sleep-latency-factors.js, kygo-staying-asleep-factors.js, kygo-supplements-by-metric.js |
+| `3PXqKEh` | product | `B007RC6J72` | `https://www.amazon.com/dp/B007RC6J72?tag=kygohealthapp-20&th=1` | `tart-cherry-juice` | ⏳ pending | kygo-deep-sleep-factors.js, kygo-recovery-scores.js, kygo-staying-asleep-factors.js, kygo-supplements-by-metric.js |
+| `3PxP8fM` | product | `B0CSRF3Y2F` | `https://www.amazon.com/dp/B0CSRF3Y2F?tag=kygohealthapp-20&th=1` | `oura-ring-gen3` | ⏳ pending | kygo-oura-ring-comparison.js |
+| `3Q4f42J` | product | `B0GRK1N94H` | `https://www.amazon.com/dp/B0GRK1N94H?tag=kygohealthapp-20&th=1` | `oura-ring-5` | ⏳ pending | kygo-oura-ring-comparison.js |
+| `3RD6VCL` | product | `B0D9WT1S2T` | `https://www.amazon.com/dp/B0D9WT1S2T?tag=kygohealthapp-20&th=1` | `oura-ring-4` | ⏳ pending | kygo-oura-ring-comparison.js |
+| `3S5tosv` | product | `B09QPFVLQ5` | `https://www.amazon.com/dp/B09QPFVLQ5?tag=kygohealthapp-20` | `chamomile-750mg` | ⏳ pending | kygo-recovery-scores.js, kygo-supplements-by-metric.js |
+| `3ZPkHDc` | search | — | `https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20` | `fitbit-search` | ⏳ pending | kygo-calorie-burn-accuracy.js, kygo-recovery-scores.js, kygo-sensor-comparison.js, kygo-sleep-metrics.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js, kygo-wearable-accuracy.js |
+| `403ZgOP` | product | `B073DN2YG9` | `https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1` | `ashwagandha-600mg` | ⏳ pending | kygo-hrv-factors.js, kygo-recovery-scores.js, kygo-sleep-latency-factors.js, kygo-staying-asleep-factors.js, kygo-supplements-by-metric.js |
+| `406okEX` | product | `B01GJS8VX4` | `https://www.amazon.com/dp/B01GJS8VX4?tag=kygohealthapp-20&th=1` | `beet-nitrate-shots` | ⏳ pending | kygo-hrv-factors.js, kygo-recovery-scores.js, kygo-supplements-by-metric.js |
+| `40AsqFp` | product | `B00Y8MP4G6` | `https://www.amazon.com/dp/B00Y8MP4G6?tag=kygohealthapp-20&th=1` | `probiotic-womens` | ⏳ pending | kygo-hrv-factors.js |
+| `40gYtKD` | product | `B0CGX22CR8` | `https://www.amazon.com/dp/B0CGX22CR8?tag=kygohealthapp-20&th=1` | `co2-monitor` | ⏳ pending | kygo-deep-sleep-factors.js, kygo-staying-asleep-factors.js |
+| `46scAQQ` | product | `B00FE8N7Y4` | `https://www.amazon.com/dp/B00FE8N7Y4?tag=kygohealthapp-20` | `breathing-trainer` | ⏳ pending | kygo-hrv-factors.js |
+| `4760BIN` | product | `B0012ZQPKG` | `https://www.amazon.com/dp/B0012ZQPKG?tag=kygohealthapp-20&th=1` | `zinc-picolinate` | ⏳ pending | kygo-hrv-factors.js, kygo-supplements-by-metric.js |
+| `4aF8l5D` | search | — | `https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20` | `garmin-search` | ⏳ pending | kygo-calorie-burn-accuracy.js, kygo-recovery-scores.js, kygo-sensor-comparison.js, kygo-sleep-metrics.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js, kygo-wearable-accuracy.js |
+| `4aF93jj` | search | — | `https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20` | `oura-ring-search` | ⏳ pending | kygo-calorie-burn-accuracy.js, kygo-recovery-scores.js, kygo-sensor-comparison.js, kygo-sleep-metrics.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js, kygo-wearable-accuracy.js |
+| `4aYRATe` | product | `B0FX2MPK9P` | `https://www.amazon.com/dp/B0FX2MPK9P?tag=kygohealthapp-20&th=1` | `ice-bath-tub` | ⏳ pending | kygo-hrv-factors.js |
+| `4bfT8bC` | product | `B07RWRJ4XW` | `https://www.amazon.com/dp/B07RWRJ4XW?tag=kygohealthapp-20` | `white-noise-machine` | ⏳ pending | kygo-deep-sleep-factors.js, kygo-sleep-latency-factors.js |
+| `4cVnvGt` | product | `B002CQU564` | `https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1` | `omega-3-fish-oil` | ⏳ pending | kygo-hrv-factors.js, kygo-recovery-scores.js, kygo-supplements-by-metric.js |
+| `4cm6d5m` | product | `B00GB85JR4` | `https://www.amazon.com/dp/B00GB85JR4?tag=kygohealthapp-20&th=1` | `vitamin-d3-5000` | ⏳ pending | kygo-hrv-factors.js, kygo-supplements-by-metric.js |
+| `4cwMwI1` | product | `B07W781XWF` | `https://www.amazon.com/dp/B07W781XWF?tag=kygohealthapp-20&th=1` | `blue-light-glasses` | ⏳ pending | kygo-deep-sleep-factors.js, kygo-sleep-latency-factors.js |
+| `4e5fGyj` | product | `B0GVSB66ZY` | `https://www.amazon.com/dp/B0GVSB66ZY?tag=kygohealthapp-20&th=1` | `ringconn-gen3` | ⏳ pending | kygo-recovery-scores.js |
+| `4fHVnYW` | search | — | `https://www.amazon.com/s?k=amazfit&rh=p_123%3A321923&tag=kygohealthapp-20` | `amazfit-search` | ⏳ pending | kygo-recovery-scores.js |
+| `4fZD5Cx` | search | — | `https://www.amazon.com/s?k=suunto%20smart%20watch&rh=p_123%3A393232&tag=kygohealthapp-20` | `suunto-search` | ⏳ pending | kygo-recovery-scores.js, kygo-vo2max-accuracy.js |
+| `4lbwIg3` | product | `B002FJW3ZY` | `https://www.amazon.com/dp/B002FJW3ZY?tag=kygohealthapp-20&th=1` | `vitamin-b12` | ⏳ pending | kygo-hrv-factors.js, kygo-supplements-by-metric.js |
+| `4qYXjOD` | product | `B079K32QB6` | `https://www.amazon.com/dp/B079K32QB6?tag=kygohealthapp-20&th=1` | `ksm66-ashwagandha` | ⏳ pending | kygo-hrv-factors.js |
+| `4rM2eDY` | product | `B0FR5QMD5Y` | `https://www.amazon.com/dp/B0FR5QMD5Y?tag=kygohealthapp-20&th=1` | `thorne-multivitamin` | ⏳ pending | kygo-hrv-factors.js, kygo-supplements-by-metric.js |
+| `4rRoziQ` | search | — | `https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20` | `whoop-search` | ⏳ pending | kygo-calorie-burn-accuracy.js, kygo-recovery-scores.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js, kygo-wearable-accuracy.js |
+| `4rUcGst` | search | — | `https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20` | `apple-watch-search` | ⏳ pending | kygo-calorie-burn-accuracy.js, kygo-recovery-scores.js, kygo-sensor-comparison.js, kygo-sleep-metrics.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js, kygo-wearable-accuracy.js |
+| `4rkOv6I` | search | — | `https://www.amazon.com/s?k=COROS%20fitness%20tracker&rh=p_123%3A337787&tag=kygohealthapp-20` | `coros-search` | ⏳ pending | kygo-recovery-scores.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js |
+| `4rqpdnL` | search | — | `https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20` | `polar-search` | ⏳ pending | kygo-recovery-scores.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js |
+| `4saSeEc` | product | `B081CHLF46` | `https://www.amazon.com/dp/B081CHLF46?tag=kygohealthapp-20&th=1` | `sunrise-alarm-clock` | ⏳ pending | kygo-deep-sleep-factors.js |
+| `4suRaen` | search | — | `https://www.amazon.com/s?k=whoop&rh=p_72%3A1248957011%2Cp_6%3AA95DP87XYU2J1&tag=kygohealthapp-20` | `whoop-search` | ⏳ pending | kygo-sensor-comparison.js |
+| `4szGon9` | product | `B08666GMWG` | `https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1` | `melatonin-gummies` | ⏳ pending | kygo-deep-sleep-factors.js, kygo-recovery-scores.js, kygo-rem-sleep.js, kygo-sleep-latency-factors.js, kygo-supplements-by-metric.js |
+| `4tZ5Zr2` | product | `B092DXFGVH` | `https://www.amazon.com/dp/B092DXFGVH?tag=kygohealthapp-20&th=1` | `meditation-cushion` | ⏳ pending | kygo-hrv-factors.js |
+| `4uL7b1p` | product | `B0BDP24LP4` | `https://www.amazon.com/dp/B0BDP24LP4?tag=kygohealthapp-20&th=1` | `fiber-gummies` | ⏳ pending | kygo-sleep-latency-factors.js, kygo-staying-asleep-factors.js |
+| `4urzyRc` | product | `B0DKTCWC8X` | `https://www.amazon.com/dp/B0DKTCWC8X?tag=kygohealthapp-20&th=1` | `memory-foam-mattress` | ⏳ pending | kygo-staying-asleep-factors.js |
+| `4vGyQk9` | product | `B0FSHYJHHV` | `https://www.amazon.com/dp/B0FSHYJHHV?tag=kygohealthapp-20&th=1` | `silicone-earplugs` | ⏳ pending | kygo-staying-asleep-factors.js |
+
+---
+
 ## A. Wearable devices
 
 These appear on the accuracy/comparison tool pages, usually one affiliate link per device in a
