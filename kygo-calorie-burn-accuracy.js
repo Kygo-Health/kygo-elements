@@ -258,30 +258,42 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     ];
   }
 
+  get _sourceGroups() {
+    return [
+      { key: 'cross',   label: 'Multi-device & gold standard' },
+      { key: 'apple',   label: 'Apple Watch', device: 'apple' },
+      { key: 'fitbit',  label: 'Fitbit', device: 'fitbit' },
+      { key: 'garmin',  label: 'Garmin', device: 'garmin' },
+      { key: 'whoop',   label: 'WHOOP', device: 'whoop' },
+      { key: 'oura',    label: 'Oura Ring', device: 'oura' },
+      { key: 'samsung', label: 'Samsung Galaxy Watch', device: 'samsung' }
+    ];
+  }
+
   get _sources() {
     return [
-      { tag: 'Anchor · multi-device', title: 'Shcherbina et al. 2017 — Stanford 7-device study', cite: 'J Personalized Medicine · 27–93% EE error', url: 'https://pubmed.ncbi.nlm.nih.gov/28538708/' },
-      { tag: 'Anchor · Apple', title: 'Choe & Kang 2025 — Apple Watch meta-analysis', cite: 'Physiological Measurement · 56 studies · 27.96%', url: 'https://pubmed.ncbi.nlm.nih.gov/40199339/' },
-      { tag: 'Anchor · Fitbit', title: 'Chevance et al. 2022 — Fitbit meta-analysis', cite: 'JMIR mHealth · 52 studies · wide variance', url: 'https://mhealth.jmir.org/2022/4/e35626' },
-      { tag: 'Apple / Garmin', title: 'Frontiers in Physiology 2022 — walking & running', cite: 'Series 6 + Garmin vs COSMED K5, 20 participants', url: 'https://pubmed.ncbi.nlm.nih.gov/36225296/' },
-      { tag: 'Apple', title: 'J Sci Med Sport 2023 — resistance training', cite: 'Apple Watch 6 · 52.95% overestimation', url: 'https://www.jsams.org/article/S1440-2440(23)00177-9/fulltext' },
-      { tag: 'Apple', title: 'MDPI Sensors 2024 — Series 9 skin pigmentation', cite: 'Tracking inconsistent across pigmentation groups', url: 'https://www.mdpi.com/2411-5142/9/4/275' },
-      { tag: 'Fitbit', title: 'Health & Technology 2019 — Charge 2 breakdown', cite: 'Springer · 59 adults · walking/running/cycling', url: 'https://link.springer.com/article/10.1007/s12553-019-00392-7' },
-      { tag: 'Fitbit / Apple / Garmin', title: 'JMIR mHealth 2017 — Charge HR comparison', cite: '62 participants · error rises with intensity', url: 'https://mhealth.jmir.org/2017/3/e34/' },
-      { tag: 'Garmin', title: 'JMIR mHealth 2017 — Firstbeat modeling (PulseOn)', cite: '6.7% med/hard · 16.5% light intensity', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5548984/' },
-      { tag: 'Garmin', title: 'IJERPH 2019 — Vivosmart HR resistance', cite: '57.02% MAPE · no device < 25% for resistance', url: 'https://pubmed.ncbi.nlm.nih.gov/29189666/' },
-      { tag: 'Garmin', title: 'JMIR mHealth 2020 — wrist-wearable review', cite: 'Underestimated EE in 69% of observations', url: 'https://mhealth.jmir.org/2020/9/e18694' },
-      { tag: 'Garmin', title: 'MDPI Applied Sciences 2025 — Vivoactive 4', cite: 'Treadmill · 19.1% MAPE', url: 'https://www.mdpi.com/2076-3417/16/3/1286' },
-      { tag: 'WHOOP', title: 'Bellenger et al. 2021 — HR/HRV validation', cite: 'Sensors · validates HR & HRV only, not calories', url: 'https://www.mdpi.com/1424-8220/21/10/3571' },
-      { tag: 'WHOOP', title: 'Keytel et al. 2005 — HR-to-EE equation', cite: 'J Sports Sciences · basis of WHOOP\'s algorithm', url: 'https://pubmed.ncbi.nlm.nih.gov/15966347/' },
-      { tag: 'Oura', title: 'Kristiansson et al. 2023 — EE validation', cite: 'BMC Med Res Methodology · 13% free-living, 21.1% lab', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9950693/' },
-      { tag: 'Oura', title: 'Oura — Activity improvements (Nov 2024)', cite: 'HR integration cut median active-calorie error 53%', url: 'https://ouraring.com/blog/activity-improvements/' },
-      { tag: 'Samsung', title: 'JMIR Formative Research 2026 — Galaxy Watch 6/7', cite: 'Intermittent running · no sig. diff vs calorimetry', url: 'https://formative.jmir.org/2026/1/e83090' },
-      { tag: 'Gold standard', title: 'Murakami et al. 2019 — 12-device DLW validation', cite: 'JMIR mHealth · only 2 of 12 acceptable free-living', url: 'https://mhealth.jmir.org/2019/8/e13938' },
-      { tag: 'Apple', title: 'Apple — Heart Rate & Calorimetry white paper (2024)', cite: 'Manufacturer method documentation', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
-      { tag: 'Fitbit', title: 'Fitbit — How calorie burn is calculated', cite: 'Manufacturer method documentation', url: 'https://support.google.com/fitbit/answer/14237111' },
-      { tag: 'Garmin', title: 'Firstbeat — Energy expenditure white paper', cite: 'Manufacturer method documentation', url: 'https://assets.firstbeat.com/firstbeat/uploads/2015/10/white_paper_energy_expenditure_estimation.pdf' },
-      { tag: 'WHOOP', title: 'WHOOP — How calories are calculated', cite: 'Manufacturer method documentation', url: 'https://support.whoop.com/hc/en-us/articles/360033775513-How-does-WHOOP-calculate-calories-burned-' }
+      { group: 'cross', tag: 'Anchor · multi-device', title: 'Shcherbina et al. 2017 — Stanford 7-device study', cite: 'J Personalized Medicine · 27–93% EE error', url: 'https://pubmed.ncbi.nlm.nih.gov/28538708/' },
+      { group: 'cross', tag: 'Apple / Garmin', title: 'Frontiers in Physiology 2022 — walking & running', cite: 'Series 6 + Garmin vs COSMED K5, 20 participants', url: 'https://pubmed.ncbi.nlm.nih.gov/36225296/' },
+      { group: 'cross', tag: 'Fitbit / Apple / Garmin', title: 'JMIR mHealth 2017 — Charge HR comparison', cite: '62 participants · error rises with intensity', url: 'https://mhealth.jmir.org/2017/3/e34/' },
+      { group: 'cross', tag: 'Gold standard', title: 'Murakami et al. 2019 — 12-device DLW validation', cite: 'JMIR mHealth · only 2 of 12 acceptable free-living', url: 'https://mhealth.jmir.org/2019/8/e13938' },
+      { group: 'apple', tag: 'Anchor · Apple', title: 'Choe & Kang 2025 — Apple Watch meta-analysis', cite: 'Physiological Measurement · 56 studies · 27.96%', url: 'https://pubmed.ncbi.nlm.nih.gov/40199339/' },
+      { group: 'apple', tag: 'Apple', title: 'J Sci Med Sport 2023 — resistance training', cite: 'Apple Watch 6 · 52.95% overestimation', url: 'https://www.jsams.org/article/S1440-2440(23)00177-9/fulltext' },
+      { group: 'apple', tag: 'Apple', title: 'MDPI Sensors 2024 — Series 9 skin pigmentation', cite: 'Tracking inconsistent across pigmentation groups', url: 'https://www.mdpi.com/2411-5142/9/4/275' },
+      { group: 'apple', tag: 'Apple', title: 'Apple — Heart Rate & Calorimetry white paper (2024)', cite: 'Manufacturer method documentation', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
+      { group: 'fitbit', tag: 'Anchor · Fitbit', title: 'Chevance et al. 2022 — Fitbit meta-analysis', cite: 'JMIR mHealth · 52 studies · wide variance', url: 'https://mhealth.jmir.org/2022/4/e35626' },
+      { group: 'fitbit', tag: 'Fitbit', title: 'Health & Technology 2019 — Charge 2 breakdown', cite: 'Springer · 59 adults · walking/running/cycling', url: 'https://link.springer.com/article/10.1007/s12553-019-00392-7' },
+      { group: 'fitbit', tag: 'Fitbit', title: 'Fitbit — How calorie burn is calculated', cite: 'Manufacturer method documentation', url: 'https://support.google.com/fitbit/answer/14237111' },
+      { group: 'garmin', tag: 'Garmin', title: 'JMIR mHealth 2017 — Firstbeat modeling (PulseOn)', cite: '6.7% med/hard · 16.5% light intensity', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5548984/' },
+      { group: 'garmin', tag: 'Garmin', title: 'IJERPH 2019 — Vivosmart HR resistance', cite: '57.02% MAPE · no device < 25% for resistance', url: 'https://pubmed.ncbi.nlm.nih.gov/29189666/' },
+      { group: 'garmin', tag: 'Garmin', title: 'JMIR mHealth 2020 — wrist-wearable review', cite: 'Underestimated EE in 69% of observations', url: 'https://mhealth.jmir.org/2020/9/e18694' },
+      { group: 'garmin', tag: 'Garmin', title: 'MDPI Applied Sciences 2025 — Vivoactive 4', cite: 'Treadmill · 19.1% MAPE', url: 'https://www.mdpi.com/2076-3417/16/3/1286' },
+      { group: 'garmin', tag: 'Garmin', title: 'Firstbeat — Energy expenditure white paper', cite: 'Manufacturer method documentation', url: 'https://assets.firstbeat.com/firstbeat/uploads/2015/10/white_paper_energy_expenditure_estimation.pdf' },
+      { group: 'whoop', tag: 'WHOOP', title: 'Bellenger et al. 2021 — HR/HRV validation', cite: 'Sensors · validates HR & HRV only, not calories', url: 'https://www.mdpi.com/1424-8220/21/10/3571' },
+      { group: 'whoop', tag: 'WHOOP', title: 'Keytel et al. 2005 — HR-to-EE equation', cite: 'J Sports Sciences · basis of WHOOP\'s algorithm', url: 'https://pubmed.ncbi.nlm.nih.gov/15966347/' },
+      { group: 'whoop', tag: 'WHOOP', title: 'WHOOP — How calories are calculated', cite: 'Manufacturer method documentation', url: 'https://support.whoop.com/hc/en-us/articles/360033775513-How-does-WHOOP-calculate-calories-burned-' },
+      { group: 'oura', tag: 'Oura', title: 'Kristiansson et al. 2023 — EE validation', cite: 'BMC Med Res Methodology · 13% free-living, 21.1% lab', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9950693/' },
+      { group: 'oura', tag: 'Oura', title: 'Oura — Activity improvements (Nov 2024)', cite: 'HR integration cut median active-calorie error 53%', url: 'https://ouraring.com/blog/activity-improvements/' },
+      { group: 'samsung', tag: 'Samsung', title: 'JMIR Formative Research 2026 — Galaxy Watch 6/7', cite: 'Intermittent running · no sig. diff vs calorimetry', url: 'https://formative.jmir.org/2026/1/e83090' }
     ];
   }
 
@@ -574,13 +586,33 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         </article>`).join('')}</div>`;
   }
 
-  _renderSources() {
-    return this._sources.map(s => `
+  _sourceCard(s) {
+    return `
       <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">
         <span class="src-tag">${s.tag}</span>
         <span class="src-title">${s.title}</span>
         <span class="src-cite">${s.cite} <span class="src-go">${this._icon('externalLink')}</span></span>
-      </a>`).join('');
+      </a>`;
+  }
+
+  _renderSources() {
+    return this._sourceGroups.map((g, i) => {
+      const items = this._sources.filter(s => s.group === g.key);
+      if (!items.length) return '';
+      const logo = g.device
+        ? this._deviceLogo(g.device, g.label)
+        : `<span class="brand-img brand-img--icon">${this._icon('flame')}</span>`;
+      return `
+        <details class="src-group"${i === 0 ? ' open' : ''}>
+          <summary>
+            ${logo}
+            <span class="src-group-label">${g.label}</span>
+            <span class="src-group-count">${items.length}</span>
+            <span class="src-group-chev">${this._icon('arrowRight')}</span>
+          </summary>
+          <div class="sources">${items.map(s => this._sourceCard(s)).join('')}</div>
+        </details>`;
+    }).join('');
   }
 
   _renderFAQ() {
@@ -712,6 +744,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <p class="lede">Tap any wearable for its method, sensors, best and worst measured activities, and where it breaks down.</p>
           </div>
           <div class="animate-on-scroll">${this._renderDevices()}</div>
+          <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The "View on Amazon" links above are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases — at no extra cost to you.</span></p>
         </div>
       </section>
 
@@ -745,7 +778,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
             <p>Wearables get <strong>heart rate</strong> right (~96%) but the leap from heart rate to calories carries <strong>15–40%+ real-world error</strong> — up to 93% in the Stanford study. <strong>Steady cardio</strong> is the safe zone; <strong>strength training and cycling</strong> are the worst regardless of brand. Use the number for <strong>week-over-week trends and relative effort</strong>, never as an exact figure to eat back.</p>
-            <p class="verify-note">${this._icon('info')} <strong>Honesty note.</strong> Oura was never lab-tested for cycling, HIIT, strength or swimming, so this tool publishes no per-activity number for those. WHOOP's widely-quoted 18.4% daily error has no locatable primary publication and is treated as unverified. Research re-audited against primary sources, July 2026.</p>
           </div>
         </div>
       </section>
@@ -767,7 +799,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <h2>Every claim, <span class="hl">traceable.</span></h2>
             <p class="lede">Each checked against the primary record (PubMed / PMC / journal / manufacturer). Verified July 2026.</p>
           </div>
-          <div class="sources animate-on-scroll">${this._renderSources()}</div>
+          <div class="src-groups animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -1040,7 +1072,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
       .hv-col + .hv-col { border-left: 1px solid var(--border-subtle); }
       .hv-label { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-2); }
-      .hv-val { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 6vw, 42px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-2); }
+      .hv-val { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 5.4vw, 42px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-2); white-space: nowrap; }
       .hv-val.good { color: var(--kygo-green-dark); }
       .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--bg-raised); overflow: hidden; }
       .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--fg-3); }
@@ -1247,6 +1279,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       .dev-amazon .ico { width: 14px; height: 14px; transition: transform .15s; }
       .dev-amazon:hover .ico { transform: translateX(2px); }
       .dev-affnote { margin: 0; font-size: 11px; color: var(--fg-3); font-style: italic; }
+      .aff-disclosure { display: flex; gap: 10px; align-items: flex-start; margin: 20px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--fg-3); font-style: italic; }
+      .aff-disclosure .ico { width: 15px; height: 15px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
 
       /* ── Population factors ───────────────────────────────────────────── */
       .fac-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
@@ -1284,9 +1318,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       .bottomline-tag { position: relative; display: inline-flex; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #6EE7A0; background: rgba(34,197,94,0.14); border: 1px solid rgba(34,197,94,0.25); padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
       .bottomline p { position: relative; font-size: clamp(15px, 1.8vw, 18px); line-height: 1.65; margin: 0 0 14px; }
       .bottomline strong { color: #fff; font-weight: 600; }
-      .bottomline .verify-note { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.55); display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12); }
-      .bottomline .verify-note .ico { width: 16px; height: 16px; color: #6EE7A0; flex: none; margin-top: 2px; }
-      .bottomline .verify-note strong { color: rgba(255,255,255,0.85); }
 
       /* Blog CTA */
       .blog-cta { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(34,197,94,0.02) 100%); border: 1.5px solid var(--kygo-green-light); border-radius: 18px; padding: 22px; transition: all .25s var(--ease-out); color: var(--fg-1); }
@@ -1315,7 +1346,21 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       .faq details[open] summary::after { content: '−'; }
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
-      /* Sources */
+      /* Sources — collapsible groups by brand */
+      .src-groups { display: flex; flex-direction: column; gap: 10px; }
+      .src-group { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+      .src-group[open] { border-color: var(--kygo-green); box-shadow: var(--shadow-md); }
+      .src-group > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+      .src-group > summary::-webkit-details-marker { display: none; }
+      .src-group > summary:hover { background: var(--bg-surface); }
+      .src-group .brand-img { width: 34px; height: 34px; border-radius: 9px; flex: none; }
+      .src-group-label { flex: 1; min-width: 0; font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); line-height: 1.2; }
+      .src-group-count { flex: none; font-family: var(--font-display); font-weight: 700; font-size: 12px; color: var(--kygo-green-dark); background: var(--kygo-green-light); border-radius: 999px; min-width: 24px; height: 22px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center; }
+      .src-group-chev { flex: none; color: var(--fg-3); }
+      .src-group-chev .ico { width: 16px; height: 16px; transition: transform .2s; }
+      .src-group[open] .src-group-chev .ico { transform: rotate(90deg); color: var(--kygo-green-dark); }
+      .src-group .sources { padding: 0 14px 14px; }
+
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
       @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
