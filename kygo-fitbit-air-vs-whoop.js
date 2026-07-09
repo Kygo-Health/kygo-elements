@@ -169,7 +169,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
               <h1>Fitbit Air vs WHOOP: Accuracy, Specs &amp; Cost <span class="hl">Compared (2026)</span></h1>
               <p class="hero-lede">Same screenless silhouette. Two completely different bets. Compare every sensor, see the <strong>real accuracy numbers</strong> for heart rate, sleep, and calories, and calculate your true 3-year cost.</p>
               <div class="hero-devices">
-                <a class="hero-dev" href="https://amzn.to/4wogJ3y" target="_blank" rel="noopener sponsored">
+                <a class="hero-dev" href="https://www.amazon.com/dp/B0GTMTZF3V?tag=kygohealthapp-20&th=1" data-track-label="fitbit-air" target="_blank" rel="noopener sponsored">
                   <img src="${fitbitImg}" alt="Fitbit Air" />
                   <div>
                     <strong>Fitbit Air</strong>
@@ -178,7 +178,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
                   </div>
                 </a>
                 <div class="hero-vs">vs</div>
-                <a class="hero-dev" href="https://amzn.to/431iUfG" target="_blank" rel="noopener sponsored">
+                <a class="hero-dev" href="https://www.amazon.com/dp/B0DY2SWV16?tag=kygohealthapp-20&th=1" data-track-label="whoop-peak-12mo" target="_blank" rel="noopener sponsored">
                   <img src="${whoopImg}" alt="WHOOP 5.0 / MG" />
                   <div>
                     <strong>WHOOP 5.0 / MG</strong>
@@ -486,18 +486,18 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
   _renderTable() {
     const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
     const whoopImg = 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png';
-    const fitbitAff = 'https://amzn.to/4wogJ3y';
-    const whoopAff = 'https://amzn.to/431iUfG';
+    const fitbitAff = 'https://www.amazon.com/dp/B0GTMTZF3V?tag=kygohealthapp-20&th=1';
+    const whoopAff = 'https://www.amazon.com/dp/B0DY2SWV16?tag=kygohealthapp-20&th=1';
     const rows = this._specs[this._activeTab];
-    const amazonLink = (url) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>`;
+    const amazonLink = (url, label) => `<a class="amazon-link" href="${url}" data-track-label="${label}" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
       <table class="tbl">
         <thead>
           <tr>
             <th>Spec</th>
-            <th><div class="head-prod"><img src="${fitbitImg}" alt="" /> <span>Fitbit Air</span></div>${amazonLink(fitbitAff)}</th>
-            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> <span>WHOOP 5.0</span></div>${amazonLink(whoopAff)}</th>
-            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> <span>WHOOP MG</span></div>${amazonLink(whoopAff)}</th>
+            <th><div class="head-prod"><img src="${fitbitImg}" alt="" /> <span>Fitbit Air</span></div>${amazonLink(fitbitAff, 'fitbit-air')}</th>
+            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> <span>WHOOP 5.0</span></div>${amazonLink(whoopAff, 'whoop-peak-12mo')}</th>
+            <th><div class="head-prod"><img src="${whoopImg}" alt="" /> <span>WHOOP MG</span></div>${amazonLink(whoopAff, 'whoop-peak-12mo')}</th>
           </tr>
         </thead>
         <tbody>
