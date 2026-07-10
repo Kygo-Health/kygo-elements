@@ -76,7 +76,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: 'Recreational & general users',
         weakestFor: 'Highly trained (underestimates ~9–10%)',
         subscription: false, subLabel: 'Free',
-        affiliateUrl: 'https://amzn.to/4aF8l5D',
+        affiliateUrl: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search',
         hrSource: 'Wrist optical or paired chest strap',
         gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       },
@@ -91,7 +91,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: 'Everyday users',
         weakestFor: 'Underestimates, especially fitter people',
         subscription: false, subLabel: 'Free',
-        affiliateUrl: 'https://amzn.to/4rUcGst',
+        affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search',
         hrSource: 'Wrist optical', gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       },
       {
@@ -105,7 +105,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: 'A quick estimate with no run',
         weakestFor: 'Wide individual error',
         subscription: false, subLabel: 'Free',
-        affiliateUrl: 'https://amzn.to/4rqpdnL',
+        affiliateUrl: 'https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20', trackLabel: 'polar-search',
         hrSource: 'Wrist optical / chest, at rest', gps: false, hrv: true, restingHr: true, profile: true, maxHr: true
       },
       {
@@ -119,7 +119,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: 'Casual trend tracking',
         weakestFor: 'Overestimates the absolute number',
         subscription: false, subLabel: 'Free metric (Premium = coaching only)',
-        affiliateUrl: 'https://amzn.to/3ZPkHDc',
+        affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search',
         hrSource: 'Wrist optical', gps: 'opt', hrv: false, restingHr: true, profile: true, maxHr: true
       },
       {
@@ -133,7 +133,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: 'Samsung-ecosystem trend',
         weakestFor: 'Unverified for VO2 max; likely underestimates in trained users',
         subscription: false, subLabel: 'Free',
-        affiliateUrl: 'https://amzn.to/3PUMS23',
+        affiliateUrl: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20', trackLabel: 'samsung-watch-search',
         hrSource: 'Wrist optical', gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       },
       {
@@ -147,7 +147,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: '24/7-wear trend',
         weakestFor: 'No independent validation; under-predicts trained',
         subscription: true, subLabel: 'Membership required (WHOOP One ~$199/yr+)',
-        affiliateUrl: 'https://amzn.to/4rRoziQ',
+        affiliateUrl: 'https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'whoop-search',
         hrSource: 'Wrist/arm optical (PPG)', gps: true, hrv: 'part', restingHr: true, profile: true, maxHr: true
       },
       {
@@ -161,7 +161,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: 'Ring users wanting an estimate',
         weakestFor: 'No validation; weak for athletes/altitude',
         subscription: true, subLabel: 'Membership ($5.99/mo or $69.99/yr)',
-        affiliateUrl: 'https://amzn.to/4aF93jj',
+        affiliateUrl: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20', trackLabel: 'oura-ring-search',
         hrSource: 'Ring PPG, during the walk test', gps: false, hrv: false, restingHr: false, profile: true, maxHr: true
       },
       {
@@ -175,7 +175,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: 'Coros runners’ trend',
         weakestFor: 'No validation',
         subscription: false, subLabel: 'Free',
-        affiliateUrl: 'https://amzn.to/4rkOv6I',
+        affiliateUrl: 'https://www.amazon.com/s?k=COROS%20fitness%20tracker&rh=p_123%3A337787&tag=kygohealthapp-20', trackLabel: 'coros-search',
         hrSource: 'Wrist optical or paired chest strap', gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       },
       {
@@ -189,7 +189,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         bestFor: 'Like Garmin (shared engine)',
         weakestFor: 'No brand-specific study',
         subscription: false, subLabel: 'Free',
-        affiliateUrl: 'https://amzn.to/4fZD5Cx',
+        affiliateUrl: 'https://www.amazon.com/s?k=suunto%20smart%20watch&rh=p_123%3A393232&tag=kygohealthapp-20', trackLabel: 'suunto-search',
         hrSource: 'Wrist optical or paired chest strap', gps: true, hrv: false, restingHr: false, profile: true, maxHr: true
       }
     ];
@@ -410,7 +410,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
             <li><span class="fct-ico">${this._icon('minus')}</span><span><strong>Weakest for</strong> ${d.weakestFor}</span></li>
           </ul>
           ${d.affiliateUrl
-            ? `<a href="${d.affiliateUrl}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.short} Amazon" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
+            ? `<a href="${d.affiliateUrl}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
             : ''}
         </div>
       </details>`).join('')}</div>`;

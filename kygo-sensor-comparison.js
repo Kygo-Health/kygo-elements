@@ -72,7 +72,7 @@ class KygoSensorComparison extends HTMLElement {
         algoCount: 6,
         fdaCount: 1,
         uniqueSensor: 'Best GPS (multi-band GNSS L1/L5)',
-        affiliateUrl: 'https://amzn.to/4aF8l5D'
+        affiliateUrl: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search'
       },
       whoop: {
         name: 'Whoop 5.0',
@@ -83,7 +83,7 @@ class KygoSensorComparison extends HTMLElement {
         algoCount: 8,
         fdaCount: 0,
         uniqueSensor: 'Fastest PPG sampling (26 Hz)',
-        affiliateUrl: 'https://amzn.to/4suRaen'
+        affiliateUrl: 'https://www.amazon.com/s?k=whoop&rh=p_72%3A1248957011%2Cp_6%3AA95DP87XYU2J1&tag=kygohealthapp-20', trackLabel: 'whoop-search'
       },
       oura: {
         name: 'Oura Ring 4',
@@ -94,7 +94,7 @@ class KygoSensorComparison extends HTMLElement {
         algoCount: 4,
         fdaCount: 0,
         uniqueSensor: 'Best PPG (18-path, finger-based)',
-        affiliateUrl: 'https://amzn.to/4aF93jj'
+        affiliateUrl: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20', trackLabel: 'oura-ring-search'
       },
       appleS10: {
         name: 'Apple Watch S10',
@@ -105,7 +105,7 @@ class KygoSensorComparison extends HTMLElement {
         algoCount: 4,
         fdaCount: 2,
         uniqueSensor: 'Depth gauge (6m)',
-        affiliateUrl: 'https://amzn.to/4rUcGst'
+        affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search'
       },
       appleU3: {
         name: 'Apple Watch Ultra 3',
@@ -116,7 +116,7 @@ class KygoSensorComparison extends HTMLElement {
         algoCount: 4,
         fdaCount: 3,
         uniqueSensor: 'Depth gauge (40m) + Hypertension PPG',
-        affiliateUrl: 'https://amzn.to/4rUcGst'
+        affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search'
       },
       fitbit: {
         name: 'Fitbit Charge 6',
@@ -127,7 +127,7 @@ class KygoSensorComparison extends HTMLElement {
         algoCount: 3,
         fdaCount: 1,
         uniqueSensor: 'Only EDA stress sensor',
-        affiliateUrl: 'https://amzn.to/3ZPkHDc'
+        affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search'
       }
     };
   }
@@ -791,7 +791,7 @@ class KygoSensorComparison extends HTMLElement {
             `).join('')}
             <tr class="amazon-row">
               <td class="cell-label"></td>
-              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
+              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored" data-track-label="${devices[dk].trackLabel}">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
             </tr>
           </tbody>
         </table>
@@ -833,7 +833,7 @@ class KygoSensorComparison extends HTMLElement {
             <tr class="amazon-row">
               <td class="cell-label"></td>
               <td></td>
-              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
+              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored" data-track-label="${devices[dk].trackLabel}">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
             </tr>
           </tbody>
         </table>
@@ -898,18 +898,26 @@ class KygoSensorComparison extends HTMLElement {
       apple: devices.appleS10.affiliateUrl,
       fitbit: devices.fitbit.affiliateUrl
     };
+    const labelMap = {
+      garmin: devices.garmin.trackLabel,
+      whoop: devices.whoop.trackLabel,
+      oura: devices.oura.trackLabel,
+      apple: devices.appleS10.trackLabel,
+      fitbit: devices.fitbit.trackLabel
+    };
     return Object.entries(sources).map(([bk, srcs], i) => {
       const isOpen = this._expandedSource === bk;
       const brandColor = bk === 'apple' ? '#a855f7' : (devices[bk] ? devices[bk].color : '#6b7280');
       const brandName = bk === 'apple' ? 'Apple Watch' : (devices[bk] ? devices[bk].name : bk);
       const affUrl = affiliateMap[bk];
+      const affLabel = labelMap[bk];
       return `
         <div class="src-card ${isOpen ? 'open' : ''}" data-source="${bk}">
           <div class="src-header" role="button" tabindex="0" aria-expanded="${isOpen}">
             <span class="src-dot" style="background:${brandColor}"></span>
             <div class="src-brand-wrap">
               <span class="src-brand">${brandName}</span>
-              ${affUrl ? `<a href="${affUrl}" class="src-amazon-link" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>` : ''}
+              ${affUrl ? `<a href="${affUrl}" class="src-amazon-link" target="_blank" rel="noopener sponsored" data-track-label="${affLabel}">View on Amazon ${this._icon('arrowRight')}</a>` : ''}
             </div>
             <span class="src-count">${srcs.length} sources</span>
             <span class="src-toggle">${this._icon('chevDown')}</span>

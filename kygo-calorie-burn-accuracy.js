@@ -87,7 +87,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     return {
       apple: {
         name: 'Apple Watch', short: 'Apple', key: 'apple',
-        affiliate: 'https://amzn.to/4rUcGst',
+        affiliate: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search',
         headline: '~28%', headlineLabel: 'daily calorie error (MAPE)',
         headlineSrc: 'Choe & Kang 2025 · 56-study meta-analysis',
         bias: 'Overestimates in women, underestimates in men',
@@ -110,7 +110,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       },
       fitbit: {
         name: 'Fitbit', short: 'Fitbit', key: 'fitbit',
-        affiliate: 'https://amzn.to/3ZPkHDc',
+        affiliate: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search',
         headline: '~16%', headlineLabel: 'daily calorie error (MAPE)',
         headlineSrc: 'Free-living Flex / Charge HR studies',
         bias: 'Near-zero average bias, but wide individual swing (−5 to +6 kcal/min)',
@@ -133,7 +133,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       },
       garmin: {
         name: 'Garmin', short: 'Garmin', key: 'garmin',
-        affiliate: 'https://amzn.to/4aF8l5D',
+        affiliate: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search',
         headline: '6.7%', headlineLabel: 'best case — med/hard cardio',
         headlineSrc: 'Independent JMIR mHealth 2017 (Firstbeat modeling)',
         bias: 'Underestimates in ~69% of observations (JMIR 2020 review)',
@@ -156,7 +156,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       },
       whoop: {
         name: 'WHOOP', short: 'WHOOP', key: 'whoop',
-        affiliate: 'https://amzn.to/4rRoziQ',
+        affiliate: 'https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'whoop-search',
         headline: '~12%', headlineLabel: 'best case — steady cardio',
         headlineSrc: 'Univ. of Colorado Boulder 2022',
         bias: 'Recovery-coupled — the same workout can read differently by day',
@@ -179,7 +179,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       },
       oura: {
         name: 'Oura Ring', short: 'Oura', key: 'oura',
-        affiliate: 'https://amzn.to/4aF93jj',
+        affiliate: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20', trackLabel: 'oura-ring-search',
         headline: '13%', headlineLabel: 'daily error, free-living',
         headlineSrc: 'Kristiansson et al. 2023 (BMC) — confirmed',
         bias: 'Underestimates more as intensity rises',
@@ -204,7 +204,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       },
       samsung: {
         name: 'Samsung Galaxy Watch', short: 'Samsung', key: 'samsung',
-        affiliate: 'https://amzn.to/3PUMS23',
+        affiliate: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20', trackLabel: 'samsung-watch-search',
         headline: '~3%', headlineLabel: 'intermittent running vs gold standard',
         headlineSrc: 'JMIR Formative Research 2026 (GW6/7)',
         bias: 'Too few studies to establish a pattern',
@@ -564,7 +564,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           </div>
           <div class="dev-actions">
             <a href="${d.sourceUrl}" class="dev-source" target="_blank" rel="noopener nofollow">Read the study ${this._icon('externalLink')}</a>
-            <a href="${d.affiliate}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.short} Amazon" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>
+            <a href="${d.affiliate}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>
           </div>
           <p class="dev-affnote">Affiliate link — we may earn a commission at no extra cost to you.</p>
         </div>

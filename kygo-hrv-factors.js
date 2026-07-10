@@ -66,7 +66,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Adaptogenic withanolides modulate cortisol and reduce sympathetic overdrive, preserving vagal tone under stress.',
           dosage: '200 mg twice daily (Witholytin extract)',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/', label: 'PMC10647917' },
-          affiliate: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }
+          affiliate: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }
         },
         {
           key: 'ashwa-zenroot', name: 'Ashwagandha (Zenroot)',
@@ -77,7 +77,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Initial vagal stimulation via cortisol reduction; tolerance may develop for HRV-specific effects.',
           dosage: '500 mg daily (Zenroot KSM-66 extract)',
           source: { url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z', label: 'Springer 2025' },
-          affiliate: { url: 'https://amzn.to/4qYXjOD', label: 'KSM-66 Ashwagandha' }
+          affiliate: { url: 'https://www.amazon.com/dp/B079K32QB6?tag=kygohealthapp-20&th=1', label: 'KSM-66 Ashwagandha' , slug: 'ksm66-ashwagandha' }
         },
         {
           key: 'probiotics', name: 'Probiotics',
@@ -88,7 +88,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Probiotic-driven colonization produces SCFAs (butyrate, acetate, propionate) that reduce inflammation and engage the vagus nerve. Higher gut microbial diversity associated with higher SDNN.',
           dosage: 'Multi-strain, CFU counts vary by product',
           source: { url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full', label: 'Frontiers Neurosci 2025' },
-          affiliate: { url: 'https://amzn.to/40AsqFp', label: 'Multi-Strain Probiotic' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00Y8MP4G6?tag=kygohealthapp-20&th=1', label: 'Multi-Strain Probiotic' , slug: 'probiotic-womens' }
         },
         {
           key: 'polyphenols', name: 'Polyphenols',
@@ -109,7 +109,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Corrects subclinical micronutrient deficiencies that impair autonomic nerve function.',
           dosage: 'Standard daily multivitamin',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4rM2eDY', label: 'Daily Multivitamin' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FR5QMD5Y?tag=kygohealthapp-20&th=1', label: 'Daily Multivitamin' , slug: 'thorne-multivitamin' }
         },
         {
           key: 'gaba', name: 'GABA',
@@ -120,7 +120,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'GABAergic inhibition of central sympathetic outflow shifts autonomic balance toward parasympathetic dominance.',
           dosage: '100–200 mg daily',
           source: { url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262', label: 'Taylor & Francis 2024' },
-          affiliate: { url: 'https://amzn.to/3OyDz7c', label: 'GABA Supplement' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FT6GB5MB?tag=kygohealthapp-20&th=1', label: 'GABA Supplement' , slug: 'gaba-500mg' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine',
@@ -131,7 +131,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Crosses blood-brain barrier, increases alpha waves and GABA, reduces cortisol and sympathetic activation.',
           dosage: '200 mg daily',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/', label: 'PubMed 16930802' },
-          affiliate: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }
+          affiliate: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' }
         },
         {
           key: 'beetroot', name: 'Beetroot Juice',
@@ -142,7 +142,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Dietary nitrate → nitric oxide pathway enhances vascular function and parasympathetic reactivation post-exercise.',
           dosage: '~400 mg nitrate (70 mL concentrated juice)',
           source: { url: 'https://www.mdpi.com/2227-9032/13/19/2496', label: 'Healthcare 2025' },
-          affiliate: { url: 'https://amzn.to/406okEX', label: 'Beetroot Juice Shots' }
+          affiliate: { url: 'https://www.amazon.com/dp/B01GJS8VX4?tag=kygohealthapp-20&th=1', label: 'Beetroot Juice Shots' , slug: 'beet-nitrate-shots' }
         }
       ],
       lifestyle: [
@@ -165,7 +165,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Respiratory sinus arrhythmia at ~0.1 Hz resonance frequency maximizes baroreflex sensitivity and vagal output.',
           dosage: '20 minutes daily at 6 breaths/min',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/', label: 'PMC8924557' },
-          affiliate: { url: 'https://amzn.to/46scAQQ', label: 'Breathing Trainer' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00FE8N7Y4?tag=kygohealthapp-20', label: 'Breathing Trainer' , slug: 'breathing-trainer' }
         },
         {
           key: 'cold-exposure', name: 'Cold Exposure',
@@ -176,7 +176,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Cold-water face immersion triggers the diving reflex — strong vagal activation via trigeminal nerve afferents.',
           dosage: 'Cold shower or ice bath, 1–5 minutes; best as recovery tool',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' },
-          affiliate: { url: 'https://amzn.to/4aYRATe', label: 'Cold Plunge Tub' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FX2MPK9P?tag=kygohealthapp-20&th=1', label: 'Cold Plunge Tub' , slug: 'ice-bath-tub' }
         },
         {
           key: 'meditation', name: 'Meditation',
@@ -187,7 +187,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Reduces cortisol, shifts autonomic balance toward parasympathetic via prefrontal-amygdala regulation.',
           dosage: '20+ minutes daily',
           source: { url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142', label: 'Nesvold 2012' },
-          affiliate: { url: 'https://amzn.to/4tZ5Zr2', label: 'Meditation Cushion' }
+          affiliate: { url: 'https://www.amazon.com/dp/B092DXFGVH?tag=kygohealthapp-20&th=1', label: 'Meditation Cushion' , slug: 'meditation-cushion' }
         },
         {
           key: 'hrv-biofeedback', name: 'HRV Biofeedback',
@@ -402,7 +402,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Essential cofactor for myelin synthesis and nerve conduction. Deficiency causes demyelination of autonomic fibers.',
           dosage: 'Correct deficiency; RDA 2.4 mcg',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4lbwIg3', label: 'Vitamin B12' }
+          affiliate: { url: 'https://www.amazon.com/dp/B002FJW3ZY?tag=kygohealthapp-20&th=1', label: 'Vitamin B12' , slug: 'vitamin-b12' }
         },
         {
           key: 'vitamin-d', name: 'Vitamin D',
@@ -413,7 +413,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'VDR expression on cardiomyocytes and autonomic neurons; deficiency increases inflammatory cytokines.',
           dosage: 'Correct deficiency; target 30–50 ng/mL',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4cm6d5m', label: 'Vitamin D3' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00GB85JR4?tag=kygohealthapp-20&th=1', label: 'Vitamin D3' , slug: 'vitamin-d3-5000' }
         },
         {
           key: 'magnesium', name: 'Magnesium',
@@ -424,7 +424,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Natural calcium channel blocker; stabilizes cardiac membrane potential and modulates NMDA receptors.',
           dosage: '200–400 mg elemental Mg daily',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }
         },
         {
           key: 'omega3', name: 'Omega-3 (EPA/DHA)',
@@ -435,7 +435,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Membrane incorporation alters ion channel kinetics; anti-inflammatory effects via resolvin/protectin pathways.',
           dosage: '1–2 g EPA+DHA daily',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' },
-          affiliate: { url: 'https://amzn.to/4cVnvGt', label: 'Omega-3 Fish Oil' }
+          affiliate: { url: 'https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1', label: 'Omega-3 Fish Oil' , slug: 'omega-3-fish-oil' }
         },
         {
           key: 'zinc', name: 'Zinc',
@@ -446,7 +446,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Zinc-dependent enzymes in autonomic neurodevelopment; prenatal supplementation affects fetal ANS maturation.',
           dosage: 'RDA 8–11 mg; prenatal context',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4760BIN', label: 'Zinc Picolinate' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0012ZQPKG?tag=kygohealthapp-20&th=1', label: 'Zinc Picolinate' , slug: 'zinc-picolinate' }
         }
       ],
       demographics: [
@@ -631,7 +631,7 @@ class KygoHrvFactors extends HTMLElement {
                 <span class="detail-label">Source</span>
                 <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
               </div>
-              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored">
+              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-track-label="${f.affiliate.slug}">
                 <span>Check it out on Amazon</span>
                 <span class="factor-affiliate-arrow">${this._icon('externalLink')}</span>
               </a>` : ''}

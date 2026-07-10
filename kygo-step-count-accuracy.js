@@ -71,7 +71,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020', 'feehan2020', 'natureSR2024'],
         affiliateLinks: [
-          { name: 'Shop Garmin on Amazon', url: 'https://amzn.to/4aF8l5D' }
+          { name: 'Shop Garmin on Amazon', url: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20' , slug: 'garmin-search' }
         ]
       },
       'apple-watch': {
@@ -99,7 +99,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kim2024', 'choekang2025', 'natureSR2024'],
         affiliateLinks: [
-          { name: 'Shop Apple Watch on Amazon', url: 'https://amzn.to/4rUcGst' }
+          { name: 'Shop Apple Watch on Amazon', url: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20' , slug: 'apple-watch-search' }
         ]
       },
       fitbit: {
@@ -128,7 +128,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020', 'straczkiewicz2023', 'giurgiu2023', 'germini2022', 'delobelle2024'],
         affiliateLinks: [
-          { name: 'Shop Fitbit on Amazon', url: 'https://amzn.to/3ZPkHDc' }
+          { name: 'Shop Fitbit on Amazon', url: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20' , slug: 'fitbit-search' }
         ]
       },
       samsung: {
@@ -156,7 +156,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kim2024'],
         affiliateLinks: [
-          { name: 'Shop Samsung Galaxy Watch on Amazon', url: 'https://amzn.to/3PUMS23' }
+          { name: 'Shop Samsung Galaxy Watch on Amazon', url: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20' , slug: 'samsung-watch-search' }
         ]
       },
       coros: {
@@ -183,7 +183,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: [],
         affiliateLinks: [
-          { name: 'Shop COROS on Amazon', url: 'https://amzn.to/4rkOv6I' }
+          { name: 'Shop COROS on Amazon', url: 'https://www.amazon.com/s?k=COROS%20fitness%20tracker&rh=p_123%3A337787&tag=kygohealthapp-20' , slug: 'coros-search' }
         ]
       },
       polar: {
@@ -211,7 +211,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020'],
         affiliateLinks: [
-          { name: 'Shop Polar on Amazon', url: 'https://amzn.to/4rqpdnL' }
+          { name: 'Shop Polar on Amazon', url: 'https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20' , slug: 'polar-search' }
         ]
       },
       oura: {
@@ -240,7 +240,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kristiansson2023', 'gong2025'],
         affiliateLinks: [
-          { name: 'Shop Oura Ring on Amazon', url: 'https://amzn.to/4aF93jj' }
+          { name: 'Shop Oura Ring on Amazon', url: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20' , slug: 'oura-ring-search' }
         ]
       },
       whoop: {
@@ -264,7 +264,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         modelData: [],
         studies: [],
         affiliateLinks: [
-          { name: 'Shop WHOOP on Amazon', url: 'https://amzn.to/4rRoziQ' }
+          { name: 'Shop WHOOP on Amazon', url: 'https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20' , slug: 'whoop-search' }
         ]
       },
       'pixel-watch': {
@@ -565,7 +565,7 @@ class KygoStepCountAccuracy extends HTMLElement {
                   }
                   <div class="dd-info">
                     <div class="dd-rank-label">${d.rankLabel}</div>
-                    <h3>${d.affiliateLinks && d.affiliateLinks.length ? `<a href="${d.affiliateLinks[0].url}" class="dd-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>` : d.name}</h3>
+                    <h3>${d.affiliateLinks && d.affiliateLinks.length ? `<a href="${d.affiliateLinks[0].url}" class="dd-name-link" target="_blank" rel="noopener sponsored" data-track-label="${d.affiliateLinks[0].slug}">${d.name}</a>` : d.name}</h3>
                     <span class="dd-bestfor">${d.bestFor}</span>
                   </div>
                   <div class="dd-toggle">
@@ -591,7 +591,7 @@ class KygoStepCountAccuracy extends HTMLElement {
                   ${this._renderStudiesForDevice(k)}
                   ${d.affiliateLinks && d.affiliateLinks.length ? `
                   <div class="dd-buy">
-                    <a href="${d.affiliateLinks[0].url}" class="dd-buy-btn" target="_blank" rel="noopener sponsored">
+                    <a href="${d.affiliateLinks[0].url}" class="dd-buy-btn" target="_blank" rel="noopener sponsored" data-track-label="${d.affiliateLinks[0].slug}">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                       Shop ${d.name} on Amazon
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -853,7 +853,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       const d = devices[key];
       if (!d) return '';
       const linkName = d.affiliateLinks && d.affiliateLinks.length
-        ? `<a href="${d.affiliateLinks[0].url}" class="dsc-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>`
+        ? `<a href="${d.affiliateLinks[0].url}" class="dsc-name-link" target="_blank" rel="noopener sponsored" data-track-label="${d.affiliateLinks[0].slug}">${d.name}</a>`
         : d.name;
       return `
         <div class="device-summary-card">

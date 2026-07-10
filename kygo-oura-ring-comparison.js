@@ -584,19 +584,19 @@ class KygoOuraRingComparison extends HTMLElement {
 
   _renderTable() {
     const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
-    const gen3Link = 'https://amzn.to/3PxP8fM';
-    const ring4Link = 'https://amzn.to/3RD6VCL';
-    const ring5Link = 'https://amzn.to/3Q4f42J';
+    const gen3Link = 'https://www.amazon.com/dp/B0CSRF3Y2F?tag=kygohealthapp-20&th=1';
+    const ring4Link = 'https://www.amazon.com/dp/B0D9WT1S2T?tag=kygohealthapp-20&th=1';
+    const ring5Link = 'https://www.amazon.com/dp/B0GRK1N94H?tag=kygohealthapp-20&th=1';
     const rows = this._specs[this._activeTab];
-    const storeLink = (url) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored">View on Amazon ${this._icon('arrowRight')}</a>`;
+    const storeLink = (url, label) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored" data-track-label="${label}">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
       <table class="tbl">
         <thead>
           <tr>
             <th>Spec</th>
-            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Gen 3</span></div>${storeLink(gen3Link)}</th>
-            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 4</span></div>${storeLink(ring4Link)}</th>
-            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 5</span></div>${storeLink(ring5Link)}</th>
+            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Gen 3</span></div>${storeLink(gen3Link, 'oura-ring-gen3')}</th>
+            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 4</span></div>${storeLink(ring4Link, 'oura-ring-4')}</th>
+            <th><div class="head-prod"><img src="${ouraImg}" alt="" /> <span>Oura Ring 5</span></div>${storeLink(ring5Link, 'oura-ring-5')}</th>
           </tr>
         </thead>
         <tbody>
@@ -614,9 +614,9 @@ class KygoOuraRingComparison extends HTMLElement {
           <tr class="aff-row">
             <td colspan="4">
               <div class="aff-row-inner">
-                <a class="aff-btn" href="${gen3Link}" target="_blank" rel="noopener sponsored"><img src="${ouraImg}" alt="" /> Gen 3 on Amazon ${this._icon('arrowRight')}</a>
-                <a class="aff-btn" href="${ring4Link}" target="_blank" rel="noopener sponsored"><img src="${ouraImg}" alt="" /> Ring 4 on Amazon ${this._icon('arrowRight')}</a>
-                <a class="aff-btn" href="${ring5Link}" target="_blank" rel="noopener sponsored"><img src="${ouraImg}" alt="" /> Ring 5 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${gen3Link}" target="_blank" rel="noopener sponsored" data-track-label="oura-ring-gen3"><img src="${ouraImg}" alt="" /> Gen 3 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${ring4Link}" target="_blank" rel="noopener sponsored" data-track-label="oura-ring-4"><img src="${ouraImg}" alt="" /> Ring 4 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${ring5Link}" target="_blank" rel="noopener sponsored" data-track-label="oura-ring-5"><img src="${ouraImg}" alt="" /> Ring 5 on Amazon ${this._icon('arrowRight')}</a>
               </div>
             </td>
           </tr>
@@ -629,7 +629,8 @@ class KygoOuraRingComparison extends HTMLElement {
   _renderCalc() {
     const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
     const pick = this._ouraPick, rival = this._rival, years = this._years;
-    const ouraAmazon = pick === 'ring4' ? 'https://amzn.to/3RD6VCL' : 'https://amzn.to/3Q4f42J';
+    const ouraAmazon = pick === 'ring4' ? 'https://www.amazon.com/dp/B0D9WT1S2T?tag=kygohealthapp-20&th=1' : 'https://www.amazon.com/dp/B0GRK1N94H?tag=kygohealthapp-20&th=1';
+    const ouraSlug = pick === 'ring4' ? 'oura-ring-4' : 'oura-ring-5';
     const ouraHardware = pick === 'ring4' ? 349 : pick === 'ring5' ? 399 : 499;
     const membershipYr = 69.99;
     const ouraTotal = ouraHardware + membershipYr * years;
@@ -688,7 +689,7 @@ class KygoOuraRingComparison extends HTMLElement {
           <div class="breakdown">$${rivalHardware} hardware + $0 sub</div>
         </div>
         <div class="calc-savings">${gapMsg}</div>
-        <a class="calc-amazon" href="${ouraAmazon}" target="_blank" rel="noopener sponsored">View Oura ${pickName} on Amazon ${this._icon('arrowRight')}</a>
+        <a class="calc-amazon" href="${ouraAmazon}" target="_blank" rel="noopener sponsored" data-track-label="${ouraSlug}">View Oura ${pickName} on Amazon ${this._icon('arrowRight')}</a>
       </div>
     `;
   }
