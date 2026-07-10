@@ -952,12 +952,16 @@ class KygoBlog extends HTMLElement {
         }
 
         /* Mid-content contextual app CTA (compact green card) */
-        .kearly-section { padding: 0 0 8px; }
-        .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 780px; margin: 0 auto; }
-        .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; color: var(--dark); margin: 0 0 16px; }
-        .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
-        .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
-        @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
+        .kearly-section { padding: 24px 0; }
+        .kearly { position: relative; background: linear-gradient(135deg, rgba(34,197,94,0.10) 0%, rgba(34,197,94,0.03) 100%); border: 1px solid rgba(34,197,94,0.22); border-radius: 20px; padding: 32px 28px; text-align: center; max-width: 760px; margin: 0 auto; }
+        .kearly-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-dark); margin-bottom: 12px; }
+        .kearly-eyebrow svg { width: 14px; height: 14px; }
+        .kearly-copy { font-family: 'Space Grotesk', sans-serif; font-size: 19px; line-height: 1.35; font-weight: 600; color: var(--dark); margin: 0 auto 20px; max-width: 440px; }
+        .kearly-btns { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .kearly-btns > a { width: 100%; max-width: 300px; justify-content: center; min-height: 50px; }
+        .kearly .cta-android { background: #fff; color: var(--green-dark); border: 1px solid rgba(34,197,94,0.35); box-shadow: none; }
+        .kearly .cta-android:hover { background: var(--green); color: #fff; border-color: var(--green); }
+        @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; min-width: 190px; } }
         .cta-works {
           position: relative;
           margin-top: 26px;
@@ -1044,6 +1048,7 @@ class KygoBlog extends HTMLElement {
         <section class="kearly-section">
           <div class="container">
             <div class="kearly animate-on-scroll">
+              <div class="kearly-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Free forever plan</div>
               <p class="kearly-copy">See how your food affects your sleep, energy, and recovery.</p>
               <div class="kearly-btns">
                 <a href="${IOS_URL}" class="cta-primary" data-track-position="mid" data-track-label="blog-mid-ios" target="_blank" rel="noopener">

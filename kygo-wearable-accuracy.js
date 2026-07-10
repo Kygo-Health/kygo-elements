@@ -705,6 +705,7 @@ class KygoWearableAccuracy extends HTMLElement {
       <section class="kearly-section">
         <div class="container">
           <div class="kearly animate-on-scroll">
+            <div class="kearly-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg> Free forever plan</div>
             <p class="kearly-copy">Your wearable is only half the picture. Kygo connects its data to what you eat and shows which foods move your sleep, HRV, and energy.</p>
             <div class="kearly-btns">
               <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="blog-cta-btn cta-primary" data-track-position="early" data-track-label="wearable-accuracy-early-ios" target="_blank" rel="noopener">
@@ -944,12 +945,16 @@ class KygoWearableAccuracy extends HTMLElement {
       .header-link:hover { background: var(--green-dark); color: #fff; transform: translateY(-1px); }
 
       /* Early contextual CTA card */
-      .kearly-section { padding: 8px 16px 0; }
-      .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 780px; margin: 0 auto; }
-      .kearly-copy { font-size: 16px; line-height: 1.5; color: var(--dark); font-weight: 500; margin: 0 0 16px; }
-      .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
-      .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
-      @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
+      .kearly-section { padding: 24px 16px 0; }
+      .kearly { position: relative; background: linear-gradient(135deg, rgba(34,197,94,0.10) 0%, rgba(34,197,94,0.03) 100%); border: 1px solid rgba(34,197,94,0.22); border-radius: 20px; padding: 32px 28px; text-align: center; max-width: 760px; margin: 0 auto; }
+      .kearly-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-dark); margin-bottom: 12px; }
+      .kearly-eyebrow svg { width: 14px; height: 14px; }
+      .kearly-copy { font-family: 'Space Grotesk', sans-serif; font-size: 19px; line-height: 1.35; color: var(--dark); font-weight: 600; margin: 0 auto 20px; max-width: 460px; }
+      .kearly-btns { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+      .kearly-btns > a { width: 100%; max-width: 300px; justify-content: center; min-height: 50px; }
+      .kearly .cta-android { background: #fff; color: var(--green-dark); border: 1px solid rgba(34,197,94,0.35); box-shadow: none; }
+      .kearly .cta-android:hover { background: var(--green); color: #fff; border-color: var(--green); }
+      @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; min-width: 190px; } }
 
       /* Animations */
       .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; transition-delay: var(--delay, 0ms); }
