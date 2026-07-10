@@ -340,11 +340,17 @@ class KygoOuraRingComparison extends HTMLElement {
       <!-- Early contextual CTA -->
       <section class="kearly-section">
         <div class="section-inner">
-          <div class="kearly animate-on-scroll">
-            <p class="kearly-copy">Already own an Oura Ring, or about to? Kygo pairs it with food logging and shows what actually moves your readiness, recovery, and sleep.</p>
-            <div class="kearly-btns">
-              <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="btn btn-primary btn-lg cta-primary" data-track-position="early" data-track-label="oura-comparison-early-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-              <a href="https://www.kygo.app/android" class="btn btn-primary btn-lg cta-android" data-action="android-download" data-track-position="early" data-track-label="oura-comparison-early-android" target="_blank" rel="noopener">${this._icon('android')} Get Android</a>
+          <div class="kband animate-on-scroll">
+            <div class="kband-inner">
+              <div class="kband-glow"></div>
+              <div class="kband-copy">
+                <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+                <h2 class="kband-headline">Already own an Oura Ring, or about to? Kygo pairs it with food logging and shows what actually moves your readiness, recovery, and sleep.</h2>
+              </div>
+              <div class="kband-actions">
+                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="oura-comparison-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
+                <a href="https://www.kygo.app/android" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="oura-comparison-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a>
+              </div>
             </div>
           </div>
         </div>
@@ -439,11 +445,17 @@ class KygoOuraRingComparison extends HTMLElement {
       <!-- Late slim CTA -->
       <section class="kearly-section kearly-section-slim">
         <div class="section-inner">
-          <div class="kearly kearly-slim animate-on-scroll">
-            <p class="kearly-copy">See what your food does to your Oura scores.</p>
-            <div class="kearly-btns">
-              <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="btn btn-primary btn-lg cta-primary" data-track-position="late" data-track-label="oura-comparison-late-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-              <a href="https://www.kygo.app/android" class="btn btn-primary btn-lg cta-android" data-action="android-download" data-track-position="late" data-track-label="oura-comparison-late-android" target="_blank" rel="noopener">${this._icon('android')} Get Android</a>
+          <div class="kband animate-on-scroll">
+            <div class="kband-inner">
+              <div class="kband-glow"></div>
+              <div class="kband-copy">
+                <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+                <h2 class="kband-headline">See what your food does to your Oura scores.</h2>
+              </div>
+              <div class="kband-actions">
+                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="kband-btn kband-btn-ios" data-track-position="late" data-track-label="oura-comparison-late-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
+                <a href="https://www.kygo.app/android" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="late" data-track-label="oura-comparison-late-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a>
+              </div>
             </div>
           </div>
         </div>
@@ -1220,6 +1232,27 @@ class KygoOuraRingComparison extends HTMLElement {
       .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
       .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
       @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
+      .kband { max-width: 1100px; margin: 0 auto; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
+      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.3; color: #1E293B; }
+      .kband-actions { position: relative; display: flex; gap: 12px; flex-shrink: 0; }
+      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+      .kband-btn-ios { background: #22C55E; color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: #16A34A; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: #16A34A; border: 2px solid #E2E8F0; }
+      .kband-btn-android:hover { border-color: #22C55E; transform: translateY(-2px); }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+      @media (max-width: 720px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+        .kband-actions { width: 100%; flex-direction: column; }
+        .kband-btn { width: 100%; justify-content: center; }
+      }
+      @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
     `;
   }
 }
