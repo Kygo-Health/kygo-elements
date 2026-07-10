@@ -1,6 +1,6 @@
 /**
  * Kygo Health - Combined Custom Elements Bundle
- * All 7 elements in one file for faster loading
+ * All 8 elements in one file for faster loading
  * Host on GitHub + jsDelivr CDN
  */
 
@@ -301,7 +301,7 @@ class KygoSocialProofSection extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts sleep quality, heart rate variability, energy levels, and recovery. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. What our users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
+    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts sleep quality, heart rate variability, energy levels, and recovery. What our users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
   }
   _parseWixAttributes() {
     try {
@@ -353,9 +353,6 @@ class KygoSocialProofSection extends HTMLElement {
         .testimonial{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px}
         .testimonial p{color:rgba(255,255,255,0.85);font-size:13px;line-height:1.5;margin-bottom:8px}
         .testimonial cite{color:var(--green);font-size:11px;font-weight:600;font-style:normal;letter-spacing:0.02em}
-        .product-desc{width:100%;max-width:660px;margin:0 auto;text-align:center;opacity:0;animation:fadeInUp 0.5s ease-out 0.6s forwards}
-        .product-desc h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;color:#fff;font-size:19px;line-height:1.25;margin-bottom:10px}
-        .product-desc p{color:var(--gray-400);font-size:14px;line-height:1.65}
         @media(min-width:768px){
           .social-proof{padding:48px 0}
           .social-proof-inner{flex-direction:row;justify-content:space-between}
@@ -367,8 +364,6 @@ class KygoSocialProofSection extends HTMLElement {
           .device-logo-item img{width:22px;height:22px;border-radius:5px}
           .testimonials{grid-template-columns:repeat(3,1fr);gap:14px}
           .testimonial p{font-size:14px}
-          .product-desc h2{font-size:22px}
-          .product-desc p{font-size:15px}
         }
       </style>
       <section class="social-proof">
@@ -400,8 +395,82 @@ class KygoSocialProofSection extends HTMLElement {
               <div class="testimonial"><p>"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."</p><cite>Oura user</cite></div>
             </div>
           </div>
-          <div class="sp-divider"></div>
-          <div class="product-desc">
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-social-proof-section', KygoSocialProofSection);
+
+
+/* ========================================
+   2b. KYGO WHAT IS KYGO (GEO product-description band)
+   Tag: kygo-what-is-kygo
+   Plain-text, crawlable answer to "What is Kygo?" on its own light band.
+======================================== */
+class KygoWhatIsKygo extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    this._setupScrollAnimations();
+    __seo(this, 'What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.');
+  }
+  disconnectedCallback() { if (this._observer) this._observer.disconnect(); }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupScrollAnimations();
+  }
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!els.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      els.forEach(el => this._observer.observe(el));
+    });
+  }
+  render() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--light:#F8FAFC;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        .what-is{padding:48px 0;background:var(--light)}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .what-is-inner{max-width:720px;margin:0 auto;text-align:center;opacity:0;transform:translateY(20px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
+        .what-is-inner.visible{opacity:1;transform:translateY(0)}
+        .eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:12px}
+        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:24px;color:var(--dark);margin-bottom:14px}
+        .what-is-inner p{color:var(--gray-600);font-size:15px;line-height:1.7}
+        @media(min-width:768px){
+          .what-is{padding:64px 0}
+          h2{font-size:32px}
+          .what-is-inner p{font-size:16px}
+        }
+      </style>
+      <section class="what-is">
+        <div class="container">
+          <div class="what-is-inner animate-on-scroll">
+            <div class="eyebrow">Meet Kygo</div>
             <h2>What is Kygo?</h2>
             <p>Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.</p>
           </div>
@@ -410,7 +479,7 @@ class KygoSocialProofSection extends HTMLElement {
     `;
   }
 }
-customElements.define('kygo-social-proof-section', KygoSocialProofSection);
+customElements.define('kygo-what-is-kygo', KygoWhatIsKygo);
 
 
 /* ========================================
@@ -1178,8 +1247,8 @@ customElements.define('kygo-founder-cta', KygoFounderCta);
 /* ========================================
    8. KYGO HOME (single-embed wrapper)
    Tag: kygo-home
-   Renders all 7 homepage sections in order so the page needs only ONE Wix
-   custom-element embed (one URL to bump on each push) instead of seven.
+   Renders all 8 homepage sections in order so the page needs only ONE Wix
+   custom-element embed (one URL to bump on each push) instead of eight.
    Sections are appended to LIGHT DOM so each one's __seo text stays
    crawlable and its structured data still injects normally. Each section
    uses its built-in defaults (no per-section Wix settings are forwarded).
@@ -1191,6 +1260,7 @@ class KygoHome extends HTMLElement {
     [
       'kygo-hero-section',
       'kygo-social-proof-section',
+      'kygo-what-is-kygo',
       'kygo-problem-section',
       'kygo-features-section',
       'kygo-insights-steps',
@@ -1203,13 +1273,14 @@ customElements.define('kygo-home', KygoHome);
 
 /* ========================================
    BUNDLE COMPLETE
-   All 7 elements registered:
+   All 8 elements registered:
    - kygo-hero-section
    - kygo-social-proof-section
+   - kygo-what-is-kygo
    - kygo-problem-section
    - kygo-features-section
    - kygo-insights-steps
    - kygo-faq
    - kygo-founder-cta
-   Plus kygo-home — a wrapper that renders all 7 as a single embed.
+   Plus kygo-home — a wrapper that renders all 8 as a single embed.
 ======================================== */
