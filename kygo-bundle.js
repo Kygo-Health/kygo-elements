@@ -1,6 +1,6 @@
 /**
  * Kygo Health - Combined Custom Elements Bundle
- * All 8 elements in one file for faster loading
+ * All 9 elements in one file for faster loading
  * Host on GitHub + jsDelivr CDN
  */
 
@@ -301,7 +301,7 @@ class KygoSocialProofSection extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts sleep quality, heart rate variability, energy levels, and recovery. What our users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
+    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts sleep quality, heart rate variability, energy levels, and recovery. Users discover personal patterns like which foods improve deep sleep or raise resting heart rate within their first two weeks.');
   }
   _parseWixAttributes() {
     try {
@@ -329,7 +329,7 @@ class KygoSocialProofSection extends HTMLElement {
       <style>
         :host{--dark:#1E293B;--green:#22C55E;--gray-400:#94A3B8;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        .social-proof{background:var(--dark);padding:36px 0}
+        .social-proof{background:var(--dark);padding:24px 0}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
         .social-proof-inner{display:flex;flex-direction:column;align-items:center;gap:20px}
         .stats-bar{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
@@ -346,15 +346,8 @@ class KygoSocialProofSection extends HTMLElement {
         .device-logo-item:hover{background:rgba(255,255,255,0.15);transform:scale(1.08)}
         .device-logo-item img{width:20px;height:20px;object-fit:contain;border-radius:4px;opacity:0.7;transition:opacity 0.2s}
         .device-logo-item:hover img{opacity:1}
-        .sp-divider{width:100%;max-width:1160px;height:1px;background:rgba(255,255,255,0.08);margin:32px auto}
-        .testimonials-wrap{width:100%;opacity:0;animation:fadeInUp 0.5s ease-out 0.5s forwards}
-        .sp-eyebrow{text-align:center;font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green);margin-bottom:16px}
-        .testimonials{display:grid;grid-template-columns:1fr;gap:12px;max-width:1000px;margin:0 auto}
-        .testimonial{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px}
-        .testimonial p{color:rgba(255,255,255,0.85);font-size:13px;line-height:1.5;margin-bottom:8px}
-        .testimonial cite{color:var(--green);font-size:11px;font-weight:600;font-style:normal;letter-spacing:0.02em}
         @media(min-width:768px){
-          .social-proof{padding:48px 0}
+          .social-proof{padding:28px 0}
           .social-proof-inner{flex-direction:row;justify-content:space-between}
           .stats-bar{gap:48px}
           .stat-number{font-size:26px}
@@ -362,8 +355,6 @@ class KygoSocialProofSection extends HTMLElement {
           .device-logos{gap:16px}
           .device-logo-item{width:36px;height:36px}
           .device-logo-item img{width:22px;height:22px;border-radius:5px}
-          .testimonials{grid-template-columns:repeat(3,1fr);gap:14px}
-          .testimonial p{font-size:14px}
         }
       </style>
       <section class="social-proof">
@@ -384,17 +375,6 @@ class KygoSocialProofSection extends HTMLElement {
               <div class="device-logo-item" title="Health Connect"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect"></div>
             </div>
           </div>
-          <div class="sp-divider"></div>
-          <div class="testimonials-wrap">
-            <h3 class="sp-eyebrow">What our users say</h3>
-            <div class="testimonials">
-              <div class="testimonial"><p>"I've boosted my deep sleep after making changes to stop the age-related slow-wave decline."</p><cite>Oura user</cite></div>
-              <div class="testimonial"><p>"I love the experiments and the insights, like seeing how fat impacts my sleep."</p><cite>Kygo user</cite></div>
-              <div class="testimonial"><p>"I always get excited when I see your posts. The research is truly valued, and the app is amazing."</p><cite>Oura user</cite></div>
-              <div class="testimonial"><p>"Insights into how different nutrients impact my sleep and resting heart rate keep me engaged."</p><cite>App Store review</cite></div>
-              <div class="testimonial"><p>"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."</p><cite>Oura user</cite></div>
-            </div>
-          </div>
         </div>
       </section>
     `;
@@ -404,9 +384,10 @@ customElements.define('kygo-social-proof-section', KygoSocialProofSection);
 
 
 /* ========================================
-   2b. KYGO WHAT IS KYGO (GEO product-description band)
+   KYGO WHAT IS KYGO (GEO product-description band)
    Tag: kygo-what-is-kygo
    Plain-text, crawlable answer to "What is Kygo?" on its own light band.
+   Rendered near the bottom of the page (see kygo-home wrapper order).
 ======================================== */
 class KygoWhatIsKygo extends HTMLElement {
   constructor() {
@@ -454,17 +435,17 @@ class KygoWhatIsKygo extends HTMLElement {
       <style>
         :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--light:#F8FAFC;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        .what-is{padding:48px 0;background:var(--light)}
+        .what-is{padding:40px 0;background:var(--light)}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .what-is-inner{max-width:720px;margin:0 auto;text-align:center;opacity:0;transform:translateY(20px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
+        .what-is-inner{max-width:700px;margin:0 auto;text-align:center;opacity:0;transform:translateY(20px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
         .what-is-inner.visible{opacity:1;transform:translateY(0)}
-        .eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:12px}
-        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:24px;color:var(--dark);margin-bottom:14px}
-        .what-is-inner p{color:var(--gray-600);font-size:15px;line-height:1.7}
+        .eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:10px}
+        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:22px;color:var(--dark);margin-bottom:12px}
+        .what-is-inner p{color:var(--gray-600);font-size:14px;line-height:1.65}
         @media(min-width:768px){
-          .what-is{padding:64px 0}
-          h2{font-size:32px}
-          .what-is-inner p{font-size:16px}
+          .what-is{padding:56px 0}
+          h2{font-size:26px}
+          .what-is-inner p{font-size:15px}
         }
       </style>
       <section class="what-is">
@@ -480,6 +461,101 @@ class KygoWhatIsKygo extends HTMLElement {
   }
 }
 customElements.define('kygo-what-is-kygo', KygoWhatIsKygo);
+
+
+/* ========================================
+   KYGO TESTIMONIALS (approved, anonymized user quotes)
+   Tag: kygo-testimonials
+   Compact social-proof grid rendered just above the final CTA
+   (see kygo-home wrapper order).
+======================================== */
+class KygoTestimonials extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    this._setupScrollAnimations();
+    __seo(this, 'What Kygo users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
+  }
+  disconnectedCallback() { if (this._observer) this._observer.disconnect(); }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupScrollAnimations();
+  }
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!els.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      els.forEach(el => this._observer.observe(el));
+    });
+  }
+  render() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--light:#F8FAFC;--gray-200:#E2E8F0;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        .testimonials-section{padding:40px 0;background:var(--light)}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .t-head{text-align:center;margin-bottom:24px}
+        .t-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
+        .t-head h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:22px;color:var(--dark)}
+        .testimonials{display:grid;grid-template-columns:1fr;gap:12px;max-width:1000px;margin:0 auto}
+        .testimonial{background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:16px;opacity:0;transform:translateY(16px);transition:opacity 0.5s ease-out,transform 0.5s ease-out}
+        .testimonial.visible{opacity:1;transform:translateY(0)}
+        .testimonial:nth-child(2){transition-delay:0.05s}
+        .testimonial:nth-child(3){transition-delay:0.1s}
+        .testimonial:nth-child(4){transition-delay:0.15s}
+        .testimonial:nth-child(5){transition-delay:0.2s}
+        .testimonial p{color:var(--dark);font-size:13px;line-height:1.5;margin-bottom:8px}
+        .testimonial cite{color:var(--green-dark);font-size:11px;font-weight:600;font-style:normal;letter-spacing:0.02em}
+        @media(min-width:768px){
+          .testimonials-section{padding:56px 0}
+          .t-head{margin-bottom:32px}
+          .t-head h2{font-size:26px}
+          .testimonials{grid-template-columns:repeat(3,1fr);gap:14px}
+          .testimonial p{font-size:14px}
+        }
+      </style>
+      <section class="testimonials-section">
+        <div class="container">
+          <div class="t-head">
+            <div class="t-eyebrow">Testimonials</div>
+            <h2>What our users say</h2>
+          </div>
+          <div class="testimonials">
+            <div class="testimonial animate-on-scroll"><p>"I've boosted my deep sleep after making changes to stop the age-related slow-wave decline."</p><cite>Oura user</cite></div>
+            <div class="testimonial animate-on-scroll"><p>"I love the experiments and the insights, like seeing how fat impacts my sleep."</p><cite>Kygo user</cite></div>
+            <div class="testimonial animate-on-scroll"><p>"I always get excited when I see your posts. The research is truly valued, and the app is amazing."</p><cite>Oura user</cite></div>
+            <div class="testimonial animate-on-scroll"><p>"Insights into how different nutrients impact my sleep and resting heart rate keep me engaged."</p><cite>App Store review</cite></div>
+            <div class="testimonial animate-on-scroll"><p>"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."</p><cite>Oura user</cite></div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-testimonials', KygoTestimonials);
 
 
 /* ========================================
@@ -1245,10 +1321,10 @@ class KygoFounderCta extends HTMLElement {
 customElements.define('kygo-founder-cta', KygoFounderCta);
 
 /* ========================================
-   8. KYGO HOME (single-embed wrapper)
+   KYGO HOME (single-embed wrapper)
    Tag: kygo-home
-   Renders all 8 homepage sections in order so the page needs only ONE Wix
-   custom-element embed (one URL to bump on each push) instead of eight.
+   Renders all 9 homepage sections in order so the page needs only ONE Wix
+   custom-element embed (one URL to bump on each push) instead of nine.
    Sections are appended to LIGHT DOM so each one's __seo text stays
    crawlable and its structured data still injects normally. Each section
    uses its built-in defaults (no per-section Wix settings are forwarded).
@@ -1260,12 +1336,13 @@ class KygoHome extends HTMLElement {
     [
       'kygo-hero-section',
       'kygo-social-proof-section',
-      'kygo-what-is-kygo',
       'kygo-problem-section',
       'kygo-features-section',
       'kygo-insights-steps',
       'kygo-faq',
-      'kygo-founder-cta'
+      'kygo-testimonials',
+      'kygo-founder-cta',
+      'kygo-what-is-kygo'
     ].forEach(tag => this.appendChild(document.createElement(tag)));
   }
 }
@@ -1273,14 +1350,15 @@ customElements.define('kygo-home', KygoHome);
 
 /* ========================================
    BUNDLE COMPLETE
-   All 8 elements registered:
+   All 9 elements registered:
    - kygo-hero-section
    - kygo-social-proof-section
-   - kygo-what-is-kygo
    - kygo-problem-section
    - kygo-features-section
    - kygo-insights-steps
    - kygo-faq
+   - kygo-testimonials
    - kygo-founder-cta
-   Plus kygo-home — a wrapper that renders all 8 as a single embed.
+   - kygo-what-is-kygo
+   Plus kygo-home — a wrapper that renders all 9 as a single embed.
 ======================================== */
