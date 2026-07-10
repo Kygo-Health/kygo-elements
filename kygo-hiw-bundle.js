@@ -3221,12 +3221,14 @@ class KygoHiwFinalCta extends HTMLElement {
         .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
         .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
-        .product-desc { max-width: 840px; margin: 48px auto 0; text-align: center; }
-        .product-desc h2 { font-size: clamp(24px, 5vw, 30px); color: #1E293B; margin-bottom: 14px; }
-        .product-desc p { color: #475569; font-size: clamp(15px, 1.6vw, 16px); line-height: 1.7; }
-        .trust-security { max-width: 820px; margin: 40px auto 0; text-align: center; }
-        .trust-security h3 { font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 600; font-size: clamp(20px, 4vw, 22px); color: #1E293B; margin-bottom: 12px; }
-        .trust-security p { color: #475569; font-size: clamp(15px, 1.6vw, 16px); line-height: 1.7; margin-bottom: 16px; }
+        .product-desc { max-width: 660px; margin: 48px auto 0; text-align: center; }
+        .product-desc h2 { font-size: 20px; color: #1E293B; margin-bottom: 10px; }
+        .product-desc p { color: #475569; font-size: 14px; line-height: 1.65; }
+        .trust-security { max-width: 720px; margin: 32px auto 0; padding: 24px 20px; background: #fff; border: 1px solid #E2E8F0; border-radius: 20px; text-align: center; }
+        .trust-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-dark); margin-bottom: 10px; }
+        .trust-eyebrow svg { width: 14px; height: 14px; }
+        .trust-security h3 { font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 600; font-size: 19px; color: #1E293B; margin-bottom: 10px; }
+        .trust-security p { color: #475569; font-size: 14px; line-height: 1.65; margin-bottom: 14px; }
         .trust-security .trust-link { display: inline-flex; align-items: center; gap: 6px; color: var(--green-dark); font-weight: 600; font-size: 14px; text-decoration: none; }
         .trust-security .trust-link:hover { text-decoration: underline; }
 
@@ -3235,6 +3237,11 @@ class KygoHiwFinalCta extends HTMLElement {
         @media (min-width: 768px) {
           .final-cta { padding: 96px 0; }
           .final-cta-inner { padding: 56px 40px; }
+          .product-desc h2 { font-size: 24px; }
+          .product-desc p { font-size: 15px; }
+          .trust-security { padding: 32px; }
+          .trust-security h3 { font-size: 22px; }
+          .trust-security p { font-size: 15px; }
         }
 
         @keyframes fadeInUp {
@@ -3333,6 +3340,7 @@ class KygoHiwFinalCta extends HTMLElement {
             <p>Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.</p>
           </div>
           <div class="trust-security animate-on-scroll">
+            <div class="trust-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Privacy &amp; security</div>
             <h3>Your privacy and security</h3>
             <p>Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.</p>
             <a class="trust-link" href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy →</a>

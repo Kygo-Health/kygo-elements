@@ -346,16 +346,16 @@ class KygoSocialProofSection extends HTMLElement {
         .device-logo-item:hover{background:rgba(255,255,255,0.15);transform:scale(1.08)}
         .device-logo-item img{width:20px;height:20px;object-fit:contain;border-radius:4px;opacity:0.7;transition:opacity 0.2s}
         .device-logo-item:hover img{opacity:1}
-        .sp-divider{width:100%;max-width:1160px;height:1px;background:rgba(255,255,255,0.08);margin:28px auto}
+        .sp-divider{width:100%;max-width:1160px;height:1px;background:rgba(255,255,255,0.08);margin:32px auto}
         .testimonials-wrap{width:100%;opacity:0;animation:fadeInUp 0.5s ease-out 0.5s forwards}
-        .sp-heading{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;color:#fff;text-align:center;font-size:20px;line-height:1.2;margin-bottom:20px}
-        .testimonials{display:grid;grid-template-columns:1fr;gap:14px}
-        .testimonial{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px}
-        .testimonial p{color:rgba(255,255,255,0.9);font-size:14px;line-height:1.55;font-style:italic;margin-bottom:10px}
-        .testimonial cite{color:var(--green);font-size:12px;font-weight:600;font-style:normal}
-        .product-desc{width:100%;max-width:840px;margin:0 auto;text-align:center;opacity:0;animation:fadeInUp 0.5s ease-out 0.6s forwards}
-        .product-desc h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;color:#fff;font-size:22px;line-height:1.2;margin-bottom:14px}
-        .product-desc p{color:rgba(255,255,255,0.78);font-size:15px;line-height:1.7}
+        .sp-eyebrow{text-align:center;font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green);margin-bottom:16px}
+        .testimonials{display:grid;grid-template-columns:1fr;gap:12px;max-width:1000px;margin:0 auto}
+        .testimonial{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px}
+        .testimonial p{color:rgba(255,255,255,0.85);font-size:13px;line-height:1.5;margin-bottom:8px}
+        .testimonial cite{color:var(--green);font-size:11px;font-weight:600;font-style:normal;letter-spacing:0.02em}
+        .product-desc{width:100%;max-width:660px;margin:0 auto;text-align:center;opacity:0;animation:fadeInUp 0.5s ease-out 0.6s forwards}
+        .product-desc h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;color:#fff;font-size:19px;line-height:1.25;margin-bottom:10px}
+        .product-desc p{color:var(--gray-400);font-size:14px;line-height:1.65}
         @media(min-width:768px){
           .social-proof{padding:48px 0}
           .social-proof-inner{flex-direction:row;justify-content:space-between}
@@ -365,10 +365,10 @@ class KygoSocialProofSection extends HTMLElement {
           .device-logos{gap:16px}
           .device-logo-item{width:36px;height:36px}
           .device-logo-item img{width:22px;height:22px;border-radius:5px}
-          .sp-heading{font-size:24px}
-          .testimonials{grid-template-columns:repeat(3,1fr)}
-          .product-desc h2{font-size:26px}
-          .product-desc p{font-size:16px}
+          .testimonials{grid-template-columns:repeat(3,1fr);gap:14px}
+          .testimonial p{font-size:14px}
+          .product-desc h2{font-size:22px}
+          .product-desc p{font-size:15px}
         }
       </style>
       <section class="social-proof">
@@ -391,7 +391,7 @@ class KygoSocialProofSection extends HTMLElement {
           </div>
           <div class="sp-divider"></div>
           <div class="testimonials-wrap">
-            <h3 class="sp-heading">What our users say</h3>
+            <h3 class="sp-eyebrow">What our users say</h3>
             <div class="testimonials">
               <div class="testimonial"><p>"I've boosted my deep sleep after making changes to stop the age-related slow-wave decline."</p><cite>Oura user</cite></div>
               <div class="testimonial"><p>"I love the experiments and the insights, like seeing how fat impacts my sleep."</p><cite>Kygo user</cite></div>
@@ -1096,13 +1096,15 @@ class KygoFounderCta extends HTMLElement {
         .cta-works{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:13px}
         .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
         .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
-        .trust-security{max-width:820px;margin:32px auto 0;text-align:center}
-        .trust-security h3{font-size:20px;color:var(--dark);margin-bottom:12px}
-        .trust-security p{color:var(--gray-600);font-size:15px;line-height:1.7;margin-bottom:16px}
+        .trust-security{max-width:720px;margin:32px auto 0;padding:24px 20px;background:#fff;border:1px solid #E2E8F0;border-radius:20px;text-align:center}
+        .trust-eyebrow{display:inline-flex;align-items:center;gap:6px;font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:10px}
+        .trust-eyebrow svg{width:14px;height:14px}
+        .trust-security h3{font-size:19px;color:var(--dark);margin-bottom:10px}
+        .trust-security p{color:var(--gray-600);font-size:14px;line-height:1.65;margin-bottom:14px}
         .trust-security .trust-link{display:inline-flex;align-items:center;gap:6px;color:var(--green-dark);font-weight:600;font-size:14px;text-decoration:none}
         .trust-security .trust-link:hover{text-decoration:underline}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
-        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}.trust-security h3{font-size:22px}.trust-security p{font-size:16px}}
+        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}.trust-security{padding:32px}.trust-security h3{font-size:22px}.trust-security p{font-size:15px}}
       </style>
       <section class="founder-story">
         <div class="container">
@@ -1161,6 +1163,7 @@ class KygoFounderCta extends HTMLElement {
             </div>
           </div>
           <div class="trust-security animate-on-scroll">
+            <div class="trust-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Privacy &amp; security</div>
             <h3>Your privacy and security</h3>
             <p>Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.</p>
             <a class="trust-link" href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy →</a>
