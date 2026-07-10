@@ -701,6 +701,7 @@ class KygoSupplementsByMetric extends HTMLElement {
 
       ${this._renderExplorerSection()}
       ${this._renderCtaRow()}
+      <kygo-inline-subscribe source="tool-supplements-by-metric" variant="factors"></kygo-inline-subscribe>
       ${this._renderMatrixSection()}
       ${this._renderArticleCta()}
       ${this._renderMythSection()}

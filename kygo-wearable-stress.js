@@ -1570,6 +1570,7 @@ class KygoWearableStress extends HTMLElement {
 
       ${this._renderComparisonModule()}
       ${this._renderCtaRow()}
+      <kygo-inline-subscribe source="tool-wearable-stress" variant="factors"></kygo-inline-subscribe>
       ${this._renderFactorsSection()}
       ${this._renderArticleCta()}
       ${this._renderFullBreakdown()}

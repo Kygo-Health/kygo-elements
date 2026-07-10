@@ -241,6 +241,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-fitbit-air-vs-whoop" variant="comparison"></kygo-inline-subscribe>
+
       <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">

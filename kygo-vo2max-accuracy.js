@@ -604,6 +604,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-vo2max-accuracy" variant="comparison"></kygo-inline-subscribe>
+
       <section class="section bg-light" id="compare">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">

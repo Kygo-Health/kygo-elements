@@ -720,6 +720,9 @@ class KygoWearableAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <!-- Inline email capture (~50% depth, below the early app CTA) -->
+      <kygo-inline-subscribe source="tool-wearable-accuracy" variant="comparison"></kygo-inline-subscribe>
+
       <!-- Blog CTA -->
       <section class="blog-cta-section">
         <div class="container">

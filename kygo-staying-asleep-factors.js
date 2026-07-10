@@ -1070,6 +1070,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-staying-asleep-factors" variant="factors"></kygo-inline-subscribe>
+
       <!-- App CTA -->
       <section class="blog-cta-section">
         <div class="container">

@@ -1030,6 +1030,8 @@ class KygoSensorComparison extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-sensor-comparison" variant="comparison"></kygo-inline-subscribe>
+
       <!-- Main Comparison Section -->
       <section class="compare-section" id="compare">
         <div class="container">

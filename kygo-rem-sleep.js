@@ -709,6 +709,8 @@ class KygoRemSleep extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-rem-sleep" variant="factors"></kygo-inline-subscribe>
+
       <section class="section bg-light" id="explore">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">

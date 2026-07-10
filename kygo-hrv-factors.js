@@ -824,6 +824,8 @@ class KygoHrvFactors extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-hrv-factors" variant="factors"></kygo-inline-subscribe>
+
       <!-- Primary Interactive: Category tabs + Factor cards -->
       <section class="explore-section" id="explore">
         <div class="container">

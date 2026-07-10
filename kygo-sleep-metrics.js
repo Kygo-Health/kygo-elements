@@ -708,6 +708,8 @@ class KygoSleepMetrics extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-sleep-metrics" variant="comparison"></kygo-inline-subscribe>
+
       <!-- Exclusive Features -->
       <section class="exclusive-section">
         <div class="container">

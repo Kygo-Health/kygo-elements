@@ -1064,6 +1064,8 @@ class KygoRhrFactors extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-rhr-factors" variant="factors"></kygo-inline-subscribe>
+
       <!-- 4. Baseline "What you can't change" — expanded by default (gray) -->
       <div class="section-bg-gray">${this._renderBaselineSection()}</div>
 

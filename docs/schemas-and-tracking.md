@@ -177,9 +177,18 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | `cta_click` | any classified `<a>`/`<button>`/`[data-action]` click | `cta_category`, `cta_label`, `cta_url`, `component`, `position`, `page_path` (+ `affiliate`, `affiliate_marketplace` for Amazon) |
 | `tool_interaction` | calculate/compare/analyze buttons | `tool_name` (= component tag), `action`, `button_label` |
 | `page_exit` | `visibilitychange` → hidden | `page_path` |
-| `email_subscribe` **(key event)** | `subscribe` CustomEvent (newsletter form) → mirrored to GA4 | `lead_type` (`newsletter`), `component`, `source` (if present), `page_path` |
+| `email_subscribe` **(key event)** | `subscribe` CustomEvent (any subscribe form) → mirrored to GA4 | `lead_type` (`newsletter`), `component`, **`source`**, `page_path` |
 | `contact_submit` **(key event)** | `contactSubmit` CustomEvent (contact form) → mirrored to GA4 | `lead_type` (`contact_form`), `component`, `page_path`. **No PII** — email/name/message are never read from `detail` |
 | `tool_result` | `kygo-calorie-calculation` CustomEvent (calculator produced a result) | `tool_name` (= component tag), `page_path` |
+
+**`email_subscribe` source taxonomy** (email-capture pass, spec 24). Every subscribe form sets
+`detail.source`, which `kygo-tracking.js` copies to the GA4 `source` param, and the Velo endpoint
+writes to the `Subscribers.source` field — the two always match. Values:
+`blog-post` (blog post template), `footer` (site-wide footer strip), and `tool-<name>` — one per
+tool, e.g. `tool-wearable-accuracy`, `tool-hrv-factors`, `tool-oura-ring-comparison`. The event
+fires **only after a `200` from `/_functions/subscribe`**, so `email_subscribe` counts confirmed
+subscribers only. (Watch that `cta_click` doesn't regress on pages where a subscribe strip was
+added — attention competition — but do not add any new GA4 event to measure it.)
 
 `cta_click` is bucketed by **`cta_category`**, derived in `classifyClick()` from the element's
 `data-action`, `href`, and CSS classes:

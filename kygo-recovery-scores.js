@@ -1302,6 +1302,7 @@ class KygoRecoveryScores extends HTMLElement {
 
       ${this._renderComparisonModule()}
       ${this._renderCtaRow()}
+      <kygo-inline-subscribe source="tool-recovery-scores" variant="comparison"></kygo-inline-subscribe>
       ${this._renderFactorsSection()}
       ${this._renderArticleCta()}
       ${this._renderFullBreakdown()}

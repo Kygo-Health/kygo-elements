@@ -493,7 +493,7 @@
     connectedCallback() {
       this._state = this.getAttribute('state') || 'idle';
       this.render();
-      seoText(this, 'Subscribe to Kygo Health research digest — weekly evidence-first guides on sleep, HRV, nutrition, and wearable accuracy.');
+      seoText(this, 'Subscribe to Kygo Health — research-backed insights on sleep, HRV, nutrition, and the wearables that track them, straight to your inbox.');
     }
 
     attributeChangedCallback(name, oldV, newV) {
@@ -511,9 +511,9 @@
     render() {
       const heading = this.getAttribute('heading') || 'Stop Guessing. <span class="hl">Start Knowing.</span>';
       const sub     = this.getAttribute('subheading') ||
-        'Evidence-first guides on sleep, HRV, nutrition, and the wearables that track them — delivered when we publish, never more.';
+        'Get more research-backed insights on sleep, HRV, and the wearables that track them, straight to your inbox.';
       const successMsg = this.getAttribute('success-message') ||
-        "You're in. Next issue lands in your inbox.";
+        "You're in — new insights are on the way.";
 
       this.shadowRoot.innerHTML = `
         <style>
@@ -625,7 +625,6 @@
           .success .title { font-size: 16px; font-weight: 600; }
         </style>
         <section class="wrap" aria-labelledby="subscribe-heading">
-          <div class="kicker">${svg('mail', 14)} Weekly research digest</div>
           <h2 id="subscribe-heading">${heading}</h2>
           <p class="lead">${sub}</p>
 
@@ -663,32 +662,59 @@
             this.render();
             return;
           }
-          this._error = '';
-          this._state = 'loading';
-          this.render();
-          // Detail must be plain-data only — Wix sends Custom Element
-          // events to Velo via postMessage / structured clone, which
-          // cannot serialize functions. The host (Wix Velo or other)
-          // flips state via setAttribute('state', 'success'|'idle').
-          this.dispatchEvent(new CustomEvent('subscribe', {
-            bubbles: true, composed: true,
-            detail: { email }
-          }));
-          // Safety timeout. If the host (Wix Velo) never confirms by
-          // flipping the `state` attribute, surface an error instead of
-          // faking success — a silent "thank you" would hide dropped
-          // submissions from the visitor and from us. The window is
-          // generous so a slow wix-data insert isn't mistaken for failure.
-          clearTimeout(this._submitTimeout);
-          this._submitTimeout = setTimeout(() => {
-            if (this._state === 'loading') {
-              this._state = 'idle';
-              this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
-              this.render();
-            }
-          }, 10000);
+          this._subscribe(email);
         });
       }
+    }
+
+    // Native capture: POST { email, source } to the same-origin Velo endpoint
+    // and drive the UI straight from the HTTP response (200 → success). Also
+    // dispatch a `subscribe` document event so kygo-tracking.js mirrors
+    // email_subscribe → GA4 with the source param. Not medical advice, no PII
+    // leaves in the event beyond email/source (tracking.js never reads email).
+    _subscribe(email) {
+      const source = this.getAttribute('source') || 'blog-post';
+      const endpoint = this.getAttribute('endpoint') || '/_functions/subscribe';
+      this._error = '';
+      this._state = 'loading';
+      this.render();
+
+      clearTimeout(this._submitTimeout);
+      this._submitTimeout = setTimeout(() => {
+        if (this._state === 'loading') {
+          this._state = 'idle';
+          this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+          this.render();
+        }
+      }, 10000);
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source })
+      })
+        .then((res) => {
+          clearTimeout(this._submitTimeout);
+          if (res && res.ok) {
+            this._state = 'success';
+            this._error = '';
+            this.render();
+            this.dispatchEvent(new CustomEvent('subscribe', {
+              bubbles: true, composed: true,
+              detail: { email, source }
+            }));
+          } else {
+            this._state = 'idle';
+            this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+            this.render();
+          }
+        })
+        .catch(() => {
+          clearTimeout(this._submitTimeout);
+          this._state = 'idle';
+          this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+          this.render();
+        });
     }
   }
 

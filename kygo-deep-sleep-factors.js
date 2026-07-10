@@ -744,6 +744,8 @@ class KygoDeepSleepFactors extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-deep-sleep-factors" variant="factors"></kygo-inline-subscribe>
+
       <section class="section bg-light" id="explore">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
