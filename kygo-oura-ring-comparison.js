@@ -1222,9 +1222,9 @@ class KygoOuraRingComparison extends HTMLElement {
       .footer-affiliate { font-style: italic; }
 
       /* Early / late app-download CTA cards */
-      .kearly-section { padding: 24px 20px 0; }
+      .kearly-section { padding: 48px 20px; }
       .kearly-section .section-inner { max-width: 1200px; margin: 0 auto; }
-      .kearly-section-slim { padding: 8px 20px 0; }
+      .kearly-section-slim { padding: 48px 20px; }
       .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 780px; margin: 0 auto; }
       .kearly-slim { padding: 16px 20px; }
       .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; color: var(--fg-1); margin: 0 0 16px; }
