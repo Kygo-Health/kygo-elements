@@ -301,7 +301,7 @@ class KygoSocialProofSection extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts sleep quality, heart rate variability, energy levels, and recovery. Users discover personal patterns like which foods improve deep sleep or raise resting heart rate within their first two weeks.');
+    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts sleep quality, heart rate variability, energy levels, and recovery. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. What our users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
   }
   _parseWixAttributes() {
     try {
@@ -329,7 +329,7 @@ class KygoSocialProofSection extends HTMLElement {
       <style>
         :host{--dark:#1E293B;--green:#22C55E;--gray-400:#94A3B8;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        .social-proof{background:var(--dark);padding:24px 0}
+        .social-proof{background:var(--dark);padding:36px 0}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
         .social-proof-inner{display:flex;flex-direction:column;align-items:center;gap:20px}
         .stats-bar{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
@@ -346,8 +346,18 @@ class KygoSocialProofSection extends HTMLElement {
         .device-logo-item:hover{background:rgba(255,255,255,0.15);transform:scale(1.08)}
         .device-logo-item img{width:20px;height:20px;object-fit:contain;border-radius:4px;opacity:0.7;transition:opacity 0.2s}
         .device-logo-item:hover img{opacity:1}
+        .sp-divider{width:100%;max-width:1160px;height:1px;background:rgba(255,255,255,0.08);margin:28px auto}
+        .testimonials-wrap{width:100%;opacity:0;animation:fadeInUp 0.5s ease-out 0.5s forwards}
+        .sp-heading{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;color:#fff;text-align:center;font-size:20px;line-height:1.2;margin-bottom:20px}
+        .testimonials{display:grid;grid-template-columns:1fr;gap:14px}
+        .testimonial{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 20px}
+        .testimonial p{color:rgba(255,255,255,0.9);font-size:14px;line-height:1.55;font-style:italic;margin-bottom:10px}
+        .testimonial cite{color:var(--green);font-size:12px;font-weight:600;font-style:normal}
+        .product-desc{width:100%;max-width:840px;margin:0 auto;text-align:center;opacity:0;animation:fadeInUp 0.5s ease-out 0.6s forwards}
+        .product-desc h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;color:#fff;font-size:22px;line-height:1.2;margin-bottom:14px}
+        .product-desc p{color:rgba(255,255,255,0.78);font-size:15px;line-height:1.7}
         @media(min-width:768px){
-          .social-proof{padding:28px 0}
+          .social-proof{padding:48px 0}
           .social-proof-inner{flex-direction:row;justify-content:space-between}
           .stats-bar{gap:48px}
           .stat-number{font-size:26px}
@@ -355,6 +365,10 @@ class KygoSocialProofSection extends HTMLElement {
           .device-logos{gap:16px}
           .device-logo-item{width:36px;height:36px}
           .device-logo-item img{width:22px;height:22px;border-radius:5px}
+          .sp-heading{font-size:24px}
+          .testimonials{grid-template-columns:repeat(3,1fr)}
+          .product-desc h2{font-size:26px}
+          .product-desc p{font-size:16px}
         }
       </style>
       <section class="social-proof">
@@ -374,6 +388,22 @@ class KygoSocialProofSection extends HTMLElement {
               <div class="device-logo-item" title="Google Health"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health"></div>
               <div class="device-logo-item" title="Health Connect"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect"></div>
             </div>
+          </div>
+          <div class="sp-divider"></div>
+          <div class="testimonials-wrap">
+            <h3 class="sp-heading">What our users say</h3>
+            <div class="testimonials">
+              <div class="testimonial"><p>"I've boosted my deep sleep after making changes to stop the age-related slow-wave decline."</p><cite>Oura user</cite></div>
+              <div class="testimonial"><p>"I love the experiments and the insights, like seeing how fat impacts my sleep."</p><cite>Kygo user</cite></div>
+              <div class="testimonial"><p>"I always get excited when I see your posts. The research is truly valued, and the app is amazing."</p><cite>Oura user</cite></div>
+              <div class="testimonial"><p>"Insights into how different nutrients impact my sleep and resting heart rate keep me engaged."</p><cite>App Store review</cite></div>
+              <div class="testimonial"><p>"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."</p><cite>Oura user</cite></div>
+            </div>
+          </div>
+          <div class="sp-divider"></div>
+          <div class="product-desc">
+            <h2>What is Kygo?</h2>
+            <p>Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.</p>
           </div>
         </div>
       </section>
@@ -1004,7 +1034,7 @@ class KygoFounderCta extends HTMLElement {
     this.render();
     this.setupIntersectionObserver();
     this.setupEvents();
-    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
+    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes. Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.');
   }
   setupIntersectionObserver() {
     const observer = new IntersectionObserver((entries) => {
@@ -1066,8 +1096,13 @@ class KygoFounderCta extends HTMLElement {
         .cta-works{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:13px}
         .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
         .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
+        .trust-security{max-width:820px;margin:32px auto 0;text-align:center}
+        .trust-security h3{font-size:20px;color:var(--dark);margin-bottom:12px}
+        .trust-security p{color:var(--gray-600);font-size:15px;line-height:1.7;margin-bottom:16px}
+        .trust-security .trust-link{display:inline-flex;align-items:center;gap:6px;color:var(--green-dark);font-weight:600;font-size:14px;text-decoration:none}
+        .trust-security .trust-link:hover{text-decoration:underline}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
-        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
+        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}.trust-security h3{font-size:22px}.trust-security p{font-size:16px}}
       </style>
       <section class="founder-story">
         <div class="container">
@@ -1124,6 +1159,11 @@ class KygoFounderCta extends HTMLElement {
                 </div>
               </div>
             </div>
+          </div>
+          <div class="trust-security animate-on-scroll">
+            <h3>Your privacy and security</h3>
+            <p>Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.</p>
+            <a class="trust-link" href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy →</a>
           </div>
         </div>
       </section>
