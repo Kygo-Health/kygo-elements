@@ -154,7 +154,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <img src="${logoUrl}" alt="Kygo" loading="lazy" />
             <span>Kygo Health</span>
           </a>
-          <a href="https://www.kygo.app" class="nav-cta-link" target="_blank" rel="noopener">
+          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="nav-cta-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">
             Get Kygo App ${this._icon('arrowRight')}
           </a>
         </div>
@@ -228,6 +228,19 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
+      <!-- Early contextual CTA -->
+      <section class="kearly-section">
+        <div class="section-inner">
+          <div class="kearly animate-on-scroll">
+            <p class="kearly-copy">Whichever tracker you pick, make its data useful. Kygo connects Fitbit or WHOOP to your nutrition and finds your personal correlations.</p>
+            <div class="kearly-btns">
+              <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="btn btn-primary btn-lg cta-primary" data-track-position="early" data-track-label="fitbit-whoop-early-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
+              <a href="https://www.kygo.app/android" class="btn btn-primary btn-lg cta-android" data-action="android-download" data-track-position="early" data-track-label="fitbit-whoop-early-android" target="_blank" rel="noopener">${this._icon('android')} Get Android</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
@@ -264,8 +277,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
             <h3>Get the most accurate metric <span>from each wearable.</span></h3>
             <p>Kygo Health connects to both Fitbit and WHOOP, then cross-checks every reading against what you eat, train, and sleep — so you see which metrics are actually predictive for <em>your</em> body.</p>
             <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
+              <a class="btn btn-primary btn-lg cta-primary" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" data-track-position="late" data-track-label="fitbit-whoop-late-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg cta-android" href="https://www.kygo.app/android" data-action="android-download" data-track-position="late" data-track-label="fitbit-whoop-late-android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
             </div>
             <div class="cta-works">
               <span>Works with</span>
@@ -761,7 +774,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .nav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
       .nav-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: -0.01em; color: var(--fg-1); text-transform: uppercase; }
       .nav-brand img { width: 26px; height: 26px; }
-      .nav-cta-link { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; color: var(--kygo-green-dark); font-weight: 600; font-size: 14px; }
+      .nav-cta-link { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; background: var(--kygo-green); color: #fff; padding: 8px 14px; border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; }
+      .nav-cta-link:hover { background: var(--kygo-green-dark); color: #fff; }
       .nav-cta-link .ico { width: 16px; height: 16px; }
       @media (max-width: 480px) { .nav-brand span { display: none; } }
 
@@ -1022,6 +1036,15 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .footer-disclaimer { font-size: 12px; color: var(--fg-3); line-height: 1.6; max-width: 620px; margin: 0 auto 14px; }
       .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
       .footer-affiliate { font-style: italic; }
+
+      /* Early app-download CTA card */
+      .kearly-section { padding: 24px 20px 0; }
+      .kearly-section .section-inner { max-width: 1200px; margin: 0 auto; }
+      .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 780px; margin: 0 auto; }
+      .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; color: var(--fg-1); margin: 0 0 16px; }
+      .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+      .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
+      @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
     `;
   }
 }

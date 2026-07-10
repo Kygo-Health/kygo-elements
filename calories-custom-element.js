@@ -320,16 +320,19 @@ class CaloriesInAnything extends HTMLElement {
         }
         .logo-img { height: 28px; width: auto; }
         .header-link {
-          color: var(--green);
+          color: #fff;
+          background: var(--green);
           text-decoration: none;
           font-size: 13px;
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          gap: 4px;
-          font-weight: 500;
+          gap: 6px;
+          font-weight: 600;
+          padding: 8px 14px;
+          border-radius: 8px;
           transition: all 0.2s;
         }
-        .header-link:hover { color: var(--green-dark); }
+        .header-link:hover { background: var(--green-dark); color: #fff; }
 
         /* MAIN CONTAINER */
         .main {
@@ -908,6 +911,15 @@ class CaloriesInAnything extends HTMLElement {
         .cta-android svg{width:18px;height:18px}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons a{width:100%;max-width:280px;justify-content:center}}
 
+        /* EARLY CONTEXTUAL CTA */
+        .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 768px; margin: 24px auto 0; }
+        .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; margin: 0 0 16px; color: var(--dark); }
+        .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+        .kearly-btns > a { width: 100%; max-width: 320px; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--green); color: #fff; padding: 14px 28px; border-radius: 12px; font-weight: 600; font-size: 15px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; }
+        .kearly-btns > a:hover { background: var(--green-dark); color: #fff; }
+        .kearly-btns > a svg { width: 18px; height: 18px; }
+        @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
+
         /* EXAMPLES SECTION */
         .examples-section { margin-top: 32px; }
         .examples-title {
@@ -1202,7 +1214,7 @@ class CaloriesInAnything extends HTMLElement {
               <img src="${this.logoUrl}" alt="Kygo" class="logo-img" />
               Food Scanner
             </a>
-            <a href="https://www.kygo.app" class="header-link" target="_blank">
+            <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="header-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">
               Get Kygo App ${Icons.arrowRight}
             </a>
           </div>
@@ -1233,17 +1245,31 @@ class CaloriesInAnything extends HTMLElement {
             </div>
           ` : ''}
 
+          <!-- Early contextual CTA -->
+          <div class="kearly animate-on-scroll">
+            <p class="kearly-copy">Calorie counts are estimates. Kygo helps you log what you eat in seconds and see how it affects your sleep, energy, and recovery.</p>
+            <div class="kearly-btns">
+              <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-primary" data-track-position="early" data-track-label="calories-in-anything-early-ios" target="_blank" rel="noopener">
+                ${Icons.apple} Download for iOS
+              </a>
+              <a href="https://www.kygo.app/android" class="cta-android" data-action="android-download" data-track-position="early" data-track-label="calories-in-anything-early-android" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                Get Android
+              </a>
+            </div>
+          </div>
+
           <div class="cta-section animate-on-scroll">
             <div class="cta-section-content">
               <div class="cta-icon">${Icons.activity}</div>
               <h2>Go beyond calories. See cause and effect.</h2>
               <p>Kygo connects your meals with sleep, HRV, and recovery data from Oura, Fitbit, Garmin & Apple Watch to reveal which foods help you perform best.</p>
               <div class="cta-buttons">
-                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn-white" target="_blank">
+                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn-white cta-primary" data-track-position="footer-cta" data-track-label="calories-in-anything-footer-ios" target="_blank">
                   ${Icons.apple}
                   Download Free on iOS
                 </a>
-                <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://www.kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="calories-in-anything-footer-android">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>

@@ -525,7 +525,7 @@ class KygoVo2maxFactors extends HTMLElement {
             <img src="${logoUrl}" alt="Kygo" loading="lazy" />
             <span>Kygo Health</span>
           </a>
-          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="nav-cta-link" target="_blank" rel="noopener">
+          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="nav-cta-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">
             Get Kygo App ${this._icon('arrowRight')}
           </a>
         </div>
@@ -578,10 +578,10 @@ class KygoVo2maxFactors extends HTMLElement {
           <div class="kygo-cta-card animate-on-scroll">
             <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
             <h3>See how <span>what you eat</span> shows up in your recovery.</h3>
-            <p>Track your VO2 max trend alongside the metrics that drive it, and see how your nutrition moves your sleep, HRV, and recovery.</p>
+            <p>Your watch estimates VO2 max. Kygo shows what your training and nutrition do to it over time.</p>
             <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener" data-track-position="article-cta">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="article-cta">${this._icon('android')} Download for Android</a>
+              <a class="btn btn-primary btn-lg cta-primary" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener" data-track-position="early" data-track-label="vo2max-factors-early-ios">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg cta-android" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="vo2max-factors-early-android">${this._icon('android')} Download for Android</a>
             </div>
             <div class="cta-works">
               <span>Works with</span>
@@ -858,7 +858,8 @@ class KygoVo2maxFactors extends HTMLElement {
       .nav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
       .nav-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: -0.01em; color: var(--fg-1); text-transform: uppercase; }
       .nav-brand img { width: 26px; height: 26px; }
-      .nav-cta-link { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; color: var(--kygo-green-dark); font-weight: 600; font-size: 14px; }
+      .nav-cta-link { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; background: var(--kygo-green); color: #fff; font-weight: 600; font-size: 14px; padding: 8px 14px; border-radius: 8px; text-decoration: none; }
+      .nav-cta-link:hover { background: var(--kygo-green-dark); color: #fff; }
       .nav-cta-link .ico { width: 16px; height: 16px; }
       @media (max-width: 480px) { .nav-brand span { display: none; } }
 
