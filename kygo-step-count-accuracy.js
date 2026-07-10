@@ -513,6 +513,8 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-step-count-accuracy" variant="comparison"></kygo-inline-subscribe>
+
       <section class="factors">
         <div class="container">
           <h2 class="section-title animate-on-scroll">What Affects Step Count Accuracy?</h2>

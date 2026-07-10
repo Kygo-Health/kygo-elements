@@ -598,6 +598,8 @@ class KygoVo2maxFactors extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-vo2max-factors" variant="factors"></kygo-inline-subscribe>
+
       <section class="section bg-light" id="explorer">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">

@@ -25,13 +25,28 @@ Components are isolated in Shadow DOM and communicate with the Wix host two ways
 | `kygo-blog` | `#kygoBlog` | Wix sets `posts`; `postClick` | queries `Blog/Posts`, navigates to `/post/<slug>` | `Blog/Posts` |
 | `kygo-blog-post-categories` | `#kygoCats` | Wix sets `categories`; `categoryClick` | queries `Blog/Categories`, navigates | `Blog/Categories` |
 | `kygo-blog-post-related` | `#kygoRelated` | Wix sets `posts`; `postClick`, `seeAllClick` | related posts via Blog API, navigates | `Blog/Posts` |
-| `kygo-blog-subscribe` | `#kygoSubscribe` | `subscribe` → `state` | inserts email, sets `state=success`/`idle` | `Subscribers` |
+| `kygo-blog-subscribe` | *(none — self-posts)* | POSTs `{email, source:"blog-post"}` to `/_functions/subscribe`; also fires `subscribe` doc event for GA4 | — (no page-code binding; endpoint writes the row) | `backend/http-functions.js` → `Subscribers` |
+| `kygo-inline-subscribe` | *(none — nested in tool, self-posts)* | POSTs `{email, source:"tool-<name>"}` to `/_functions/subscribe`; fires `subscribe` doc event for GA4 | — | `backend/http-functions.js` → `Subscribers` |
+| *footer subscribe strip* (plain HTML in snippet 6) | *(none)* | POSTs `{email, source:"footer"}` to `/_functions/subscribe`; fires `subscribe` doc event for GA4 | — | `backend/http-functions.js` → `Subscribers` |
 | `calories-in-anything` | `#caloriesElement` | `imageUploaded` → `analyzing`/`result`/`error` | calls `analyzeImage` (Gemini) | `backend/gemini.web.js` (secret `GEMINI_API_KEY`) |
 | `kygo-faq-section` | `#kygoFaq` | (Wix set `app-store-url`/`email`) | — | — *(now defaults in-component; Wix wiring removable)* |
 
+> **Email capture — native POST model (email-capture pass, spec 24).** All three subscribe
+> surfaces (blog, inline-on-tools, footer) capture natively: each **POSTs `{ email, source }`
+> to the same-origin Velo HTTP endpoint `/_functions/subscribe`** and drives its own success/
+> error UI from the HTTP response — there is **no** Wix page-code element binding and **no**
+> `state`-attribute round-trip anymore (the tool + footer forms aren't standalone Wix
+> elements, so `$w('#id').on('subscribe')` could never reach them). Separately, each form also
+> dispatches a `subscribe` **document** event (`bubbles`+`composed`, `detail {email, source}`)
+> that `kygo-tracking.js` mirrors to GA4 as `email_subscribe` with the `source` param. The old
+> blog-post page code `$w('#kygoSubscribe').on('subscribe', …)` is **retired** — delete it once
+> the endpoint below is live.
+
 ## Wix Data collections & secrets used
 - **`ContactSubmissions`** — contact form entries (contactForm backend).
-- **`Subscribers`** — newsletter signups (blog post subscribe).
+- **`Subscribers`** — newsletter signups. Now written by the **`/_functions/subscribe`** HTTP
+  endpoint (below) for every source: `blog-post`, `footer`, and `tool-<name>` (one per tool, e.g.
+  `tool-wearable-accuracy`). Fields: `email` (Text), `source` (Text), `subscribedAt` (Date & Time).
 - **`Blog/Posts`, `Blog/Categories`** — native Wix Blog collections (blog + blog-post pages).
 - **Secret `GEMINI_API_KEY`** — Gemini API key for the food scanner (gemini backend).
 
@@ -88,10 +103,11 @@ $w.onReady(async function () {
 });
 ```
 
-### Blog post page — ✅ KEEP (live, required)
-Handles `#kygoCats` (categoryClick), `#kygoRelated` (postClick/seeAllClick), `#kygoSubscribe`
-(subscribe → `Subscribers` collection, state flipped via `setAttribute('state', …)`). No dead code.
-*(Full code mirrored in the Wix editor; data flow captured in the map table above.)*
+### Blog post page — ✅ KEEP (live, required) — ⚠️ REMOVE the old subscribe handler
+Handles `#kygoCats` (categoryClick) and `#kygoRelated` (postClick/seeAllClick). **Remove** the old
+`$w('#kygoSubscribe').on('subscribe', …)` block: as of the email-capture pass, `kygo-blog-subscribe`
+POSTs to `/_functions/subscribe` itself (see the endpoint below), so the page-code binding is dead.
+Keep the categories + related-posts wiring. *(Full code mirrored in the Wix editor.)*
 
 ### Calories-in-anything page — ⚠️ KEEP `imageUploaded`, REMOVE `android-signup`
 ```js
@@ -132,6 +148,54 @@ wiring (the components render standalone). Reduce each to `$w.onReady(function (
 ---
 
 # Backend web modules
+
+### `backend/http-functions.js` — 🚀 ADD (email-capture pass, spec 24) — **REQUIRED for the rollout**
+Exposes `POST /_functions/subscribe`. Every subscribe surface (blog, inline-on-tools, footer)
+POSTs `{ email, source }` here; it writes one `Subscribers` row and returns `200 {ok:true}`.
+Same-origin (served from the site domain), so **no CORS needed** from the components.
+
+```js
+// backend/http-functions.js
+import { ok, badRequest, serverError } from 'wix-http-functions';
+import wixData from 'wix-data';
+
+// POST /_functions/subscribe   body: { email, source }
+export async function post_subscribe(request) {
+  const json = (body) => ({ headers: { 'Content-Type': 'application/json' }, body });
+  try {
+    const data = await request.body.json();
+    const email = (data.email || '').trim().toLowerCase();
+    const source = (data.source || 'unknown').toString().trim().slice(0, 60);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return badRequest(json({ ok: false, error: 'invalid_email' }));
+    }
+    // De-dupe on email so repeat submits don't create duplicate rows.
+    const existing = await wixData.query('Subscribers').eq('email', email).limit(1).find({ suppressAuth: true });
+    if (existing.items.length === 0) {
+      await wixData.insert('Subscribers', { email, source, subscribedAt: new Date() }, { suppressAuth: true });
+    }
+    return ok(json({ ok: true }));
+  } catch (e) {
+    return serverError(json({ ok: false, error: 'server_error' }));
+  }
+}
+```
+
+- `Subscribers` collection must exist with fields `email` (Text), `source` (Text),
+  `subscribedAt` (Date & Time), and **"Who can add content?" = Anyone** (or rely on the
+  `suppressAuth: true` elevation above).
+- The component always shows success **only on a real `200`**; any non-2xx / network error shows a
+  retry message (never a fake "thank you"), and the `subscribe` GA4 event fires **only** on 200 —
+  so `email_subscribe` stays a clean success metric.
+
+> **QA gate (before publishing the full rollout).** On the **published** site, submit the inline
+> strip on **wearable-accuracy** and confirm **both**: (1) a `Subscribers` row appears with
+> `source = "tool-wearable-accuracy"`, and (2) GA4 fires `email_subscribe` with `source =
+> "tool-wearable-accuracy"`. If the row does **not** appear (endpoint missing/misnamed), **stop** —
+> a live form would fire GA4 while writing nothing to CMS. Deploy order: (a) add this endpoint +
+> `Subscribers` collection, (b) remove the old blog-post page `subscribe` handler, (c) deploy the
+> two snippet changes (footer strip + the site-wide `kygo-inline-subscribe.js` loader in the GA4
+> head snippet), (d) re-point the tool/blog embeds at the new commit.
 
 ### `backend/contactForm.web.js` — ✅ KEEP (live, required)
 Validates the contact form and inserts into the **`ContactSubmissions`** collection

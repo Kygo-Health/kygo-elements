@@ -725,6 +725,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-calorie-burn-accuracy" variant="comparison"></kygo-inline-subscribe>
+
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">

@@ -1259,6 +1259,8 @@ class CaloriesInAnything extends HTMLElement {
             </div>
           </div>
 
+          <kygo-inline-subscribe source="tool-calories-in-anything" variant="comparison"></kygo-inline-subscribe>
+
           <div class="cta-section animate-on-scroll">
             <div class="cta-section-content">
               <div class="cta-icon">${Icons.activity}</div>

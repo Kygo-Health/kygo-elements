@@ -1,4 +1,8 @@
 <!-- Kygo Health Custom Footer -->
+<!-- READY TO DEPLOY (Cowork → Custom Embeds API): embed id e8189881-96c7-412d-81df-af9892f149f9.
+     Adds a site-wide native email-capture strip that POSTs { email, source: "footer" }
+     to /_functions/subscribe and dispatches the `subscribe` document event for GA4.
+     Depends on the Velo /_functions/subscribe endpoint being live (see docs/wix-velo-code.md). -->
 <div id="kygo-footer-root"></div>
 
 <style>
@@ -264,6 +268,133 @@
   .kygo-footer-disclaimer p {
     margin: 0;
   }
+
+  /* ── Subscribe strip (native email capture → /_functions/subscribe) ── */
+  .kygo-footer-sub {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.12) 0%, rgba(22, 163, 74, 0.05) 100%);
+    border: 1px solid rgba(34, 197, 94, 0.22);
+    border-radius: 14px;
+    padding: 22px 20px;
+    margin-bottom: 40px;
+  }
+
+  .kygo-footer-sub-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  @media (min-width: 860px) {
+    .kygo-footer-sub-inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+  }
+
+  .kygo-footer-sub-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .kygo-footer-sub-copy strong {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: #F1F5F9;
+    line-height: 1.3;
+  }
+
+  .kygo-footer-sub-copy span {
+    font-size: 13.5px;
+    color: #94A3B8;
+    line-height: 1.5;
+  }
+
+  .kygo-footer-sub-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  @media (min-width: 520px) {
+    .kygo-footer-sub-form { flex-direction: row; }
+  }
+
+  @media (min-width: 860px) {
+    .kygo-footer-sub-form { width: auto; flex: 0 0 auto; min-width: 380px; }
+  }
+
+  .kygo-footer-sub-form input {
+    flex: 1 1 auto;
+    min-width: 0;
+    width: 100%;
+    border: 1.5px solid rgba(148, 163, 184, 0.3);
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 13px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: #F8FAFC;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .kygo-footer-sub-form input::placeholder { color: #64748B; }
+
+  .kygo-footer-sub-form input:focus {
+    border-color: #22C55E;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+  }
+
+  .kygo-footer-sub-form button {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 48px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 0 22px;
+    background: linear-gradient(135deg, #22C55E 0%, #16A34A 100%);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  }
+
+  @media (min-width: 520px) {
+    .kygo-footer-sub-form button { width: auto; }
+  }
+
+  .kygo-footer-sub-form button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(34, 197, 94, 0.3);
+  }
+
+  .kygo-footer-sub-form button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .kygo-footer-sub-trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #94A3B8;
+  }
+
+  .kygo-footer-sub-trust span { display: inline-flex; align-items: center; gap: 5px; }
+  .kygo-footer-sub-trust span::before { content: '✓'; color: #22C55E; font-weight: 700; }
+
+  .kygo-footer-sub-msg { margin-top: 10px; font-size: 13px; }
+  .kygo-footer-sub-msg.error { color: #FCA5A5; }
+  .kygo-footer-sub-msg.success { color: #22C55E; font-weight: 600; }
 </style>
 
 <script>
@@ -274,7 +405,17 @@
   var redditIcon = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>';
   var xIcon = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
 
-  var footerHTML = '<footer class="kygo-footer"><div class="kygo-footer-inner"><div class="kygo-footer-top">'
+  var subscribeStrip = '<div class="kygo-footer-sub"><div class="kygo-footer-sub-inner">'
+    + '<div class="kygo-footer-sub-copy"><strong>Get research-backed insights, straight to your inbox.</strong>'
+    + '<span>Sleep, HRV, and the wearables that track them — no spam, ever.</span></div>'
+    + '<form class="kygo-footer-sub-form" id="kygo-footer-sub-form" novalidate>'
+    + '<input type="email" required placeholder="you@email.com" aria-label="Email address" autocomplete="email" />'
+    + '<button type="submit">Subscribe</button>'
+    + '</form></div>'
+    + '<div class="kygo-footer-sub-trust"><span>No spam</span><span>Unsubscribe anytime</span><span>Research-backed only</span></div>'
+    + '<div class="kygo-footer-sub-msg" id="kygo-footer-sub-msg" role="status" aria-live="polite"></div></div>';
+
+  var footerHTML = '<footer class="kygo-footer"><div class="kygo-footer-inner">' + subscribeStrip + '<div class="kygo-footer-top">'
     + '<div class="kygo-footer-brand"><a href="https://www.kygo.app/" class="kygo-footer-logo"><img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo Health" /><span>KYGO</span></a>'
     + '<div class="kygo-footer-socials"><a href="https://www.facebook.com/profile.php?id=61586603470107" target="_blank" rel="noopener" aria-label="Facebook">' + fbIcon + '</a><a href="https://www.reddit.com/user/KygoApp/" target="_blank" rel="noopener" aria-label="Reddit">' + redditIcon + '</a><a href="https://x.com/KygoApp" target="_blank" rel="noopener" aria-label="X (Twitter)">' + xIcon + '</a></div>'
     + '<div class="kygo-footer-contact"><p>Jersey City, NJ</p><p><a href="mailto:support@kygo.app">support@kygo.app</a></p></div></div>'
@@ -287,5 +428,76 @@
     + '</div><div class="kygo-footer-divider"></div><div class="kygo-footer-bottom"><div class="kygo-footer-legal-links"><a href="https://www.kygo.app/privacy-policy">Privacy Policy</a><a href="https://www.kygo.app/terms-conditions">Terms of Service</a><a href="https://www.kygo.app/accessibility-statement">Accessibility</a></div><div class="kygo-footer-disclaimer"><p>© 2026 by KYGO Health LLC. Kygo Health LLC is not intended to diagnose, treat, cure, or prevent any disease. The information provided is for educational purposes only and is not a substitute for professional medical advice. Consult your physician before making any health decisions.</p></div></div></div></footer>';
 
   document.getElementById('kygo-footer-root').innerHTML = footerHTML;
+
+  // ── Native email capture ──────────────────────────────────────────────
+  // Same contract as the <kygo-*-subscribe> web components, but this footer
+  // is plain pasted HTML (not a custom element), so it POSTs directly and
+  // dispatches the `subscribe` document event itself:
+  //   1. POST { email, source: "footer" } to the same-origin Velo endpoint
+  //      /_functions/subscribe; drive the UI from the HTTP response.
+  //   2. On success, dispatch a `subscribe` CustomEvent on document
+  //      (bubbles + composed, detail { email, source }) so kygo-tracking.js
+  //      mirrors email_subscribe → GA4 with source "footer".
+  var subForm = document.getElementById('kygo-footer-sub-form');
+  if (subForm) {
+    subForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var input = subForm.querySelector('input');
+      var btn = subForm.querySelector('button');
+      var msg = document.getElementById('kygo-footer-sub-msg');
+      var email = (input.value || '').trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        msg.className = 'kygo-footer-sub-msg error';
+        msg.textContent = 'Please enter a valid email.';
+        return;
+      }
+      input.disabled = true;
+      btn.disabled = true;
+      msg.className = 'kygo-footer-sub-msg';
+      msg.textContent = '';
+
+      var settled = false;
+      var timeout = setTimeout(function () {
+        if (settled) return;
+        settled = true;
+        input.disabled = false;
+        btn.disabled = false;
+        msg.className = 'kygo-footer-sub-msg error';
+        msg.textContent = "Hmm — that didn't go through. Please try again.";
+      }, 10000);
+
+      fetch('/_functions/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, source: 'footer' })
+      }).then(function (res) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timeout);
+        if (res && res.ok) {
+          subForm.style.display = 'none';
+          msg.className = 'kygo-footer-sub-msg success';
+          msg.textContent = "You're in — new insights are on the way.";
+          document.dispatchEvent(new CustomEvent('subscribe', {
+            bubbles: true, composed: true,
+            detail: { email: email, source: 'footer' }
+          }));
+        } else {
+          input.disabled = false;
+          btn.disabled = false;
+          msg.className = 'kygo-footer-sub-msg error';
+          msg.textContent = "Hmm — that didn't go through. Please try again.";
+        }
+      }).catch(function () {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timeout);
+        input.disabled = false;
+        btn.disabled = false;
+        msg.className = 'kygo-footer-sub-msg error';
+        msg.textContent = "Hmm — that didn't go through. Please try again.";
+      });
+    });
+  }
 })();
 </script>

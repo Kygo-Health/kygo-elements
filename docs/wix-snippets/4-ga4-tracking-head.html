@@ -1,1 +1,6 @@
 <script src="https://kygo-health.github.io/kygo-elements/kygo-tracking.js" data-ga-id="G-P2224N75KY"></script>
+<!-- READY TO DEPLOY (email capture pass): registers <kygo-inline-subscribe> site-wide so the
+     inline email-capture strip embedded inside each tool component upgrades. Inert on pages
+     with no <kygo-inline-subscribe> tag. Deploy only once the Velo /_functions/subscribe
+     endpoint is live (see docs/wix-velo-code.md) — until then the strip's POSTs would error. -->
+<script src="https://kygo-health.github.io/kygo-elements/kygo-inline-subscribe.js" defer></script>

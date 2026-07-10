@@ -350,6 +350,8 @@ class KygoOuraRingComparison extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-oura-ring-comparison" variant="comparison"></kygo-inline-subscribe>
+
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
