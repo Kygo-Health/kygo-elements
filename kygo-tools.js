@@ -781,6 +781,14 @@ class KygoToolsPage extends HTMLElement {
       }
       .promo-btn svg { width: 18px; height: 18px; }
       .promo-btn:hover { background: var(--green-dark); }
+
+      /* Mid-content contextual app CTA (compact green card) */
+      .kearly-section { max-width: 780px; margin: 8px auto 28px; }
+      .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; }
+      .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; color: var(--dark); margin: 0 0 16px; }
+      .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+      .kearly-btns > a { width: 100%; max-width: 320px; min-width: 0; justify-content: center; min-height: 48px; }
+      @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
       .works-with {
         display: flex; align-items: center; justify-content: center;
         gap: 10px; flex-wrap: wrap;
@@ -958,6 +966,16 @@ class KygoToolsPage extends HTMLElement {
       <section class="sec sec-tools">
         <div class="wrap">
           ${featured ? this._renderFeatured(featured) : ''}
+          ${featured ? `
+          <div class="kearly-section">
+            <div class="kearly">
+              <p class="kearly-copy">See how your food affects your sleep, energy, and recovery.</p>
+              <div class="kearly-btns">
+                <a class="promo-btn cta-primary" href="${appStoreUrl}" data-track-position="mid" data-track-label="tools-mid-ios" target="_blank" rel="noopener">${this._getIcon('apple')} Download for iOS</a>
+                <a class="promo-btn cta-android" href="${playStoreUrl}" data-action="android-download" data-track-position="mid" data-track-label="tools-mid-android" target="_blank" rel="noopener">${this._getIcon('playstore')} Get Android</a>
+              </div>
+            </div>
+          </div>` : ''}
           ${groupedNoFeatured.length
             ? groupedNoFeatured.map(g => this._renderCategorySection(g)).join('')
             : `<div class="empty">
@@ -977,8 +995,8 @@ class KygoToolsPage extends HTMLElement {
                 <h2>These tools are a snapshot.<br/><span class="hl">Kygo is the full picture.</span></h2>
                 <p>Connect your wearable. Log your meals. See how food affects your sleep, HRV, energy, and recovery.</p>
                 <div class="promo-buttons">
-                  <a class="promo-btn" href="${appStoreUrl}" target="_blank" rel="noopener">${this._getIcon('apple')} Download for iOS</a>
-                  <a class="promo-btn" href="${playStoreUrl}" target="_blank" rel="noopener">${this._getIcon('playstore')} Download for Android</a>
+                  <a class="promo-btn cta-primary" href="${appStoreUrl}" data-track-position="footer-cta" data-track-label="tools-footer-ios" target="_blank" rel="noopener">${this._getIcon('apple')} Download for iOS</a>
+                  <a class="promo-btn cta-android" href="${playStoreUrl}" data-action="android-download" data-track-position="footer-cta" data-track-label="tools-footer-android" target="_blank" rel="noopener">${this._getIcon('playstore')} Download for Android</a>
                 </div>
                 <div class="works-with">
                   <span class="works-label">Works with</span>

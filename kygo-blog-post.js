@@ -719,11 +719,49 @@
       seoText(this, 'Download Kygo Health — evidence-first nutrition tracking connected to every wearable. Available free on iOS and Android. Works with Oura, Apple Health, Fitbit, Garmin, Whoop, and Health Connect.');
     }
 
+    // Contextual default copy keyed to the post's category slug / tags / URL
+    // path, so the CTA speaks to the article the reader just finished. Wix may
+    // pass `category` (slug) or `tags`; we also sniff window.location.pathname.
+    _contextCopy() {
+      const cat  = (this.getAttribute('category') || this.getAttribute('tags') || '').toLowerCase();
+      const path = (window.location.pathname || '').toLowerCase();
+      const hay  = cat + ' ' + path;
+      const has  = (re) => re.test(hay);
+
+      if (has(/hrv|recovery|readiness|resting-heart|\bstress\b|whoop/)) {
+        return {
+          heading: 'Read the research.<br/><span class="hl">Track what moves YOUR HRV.</span>',
+          sub: 'Articles show you what the science says about HRV and recovery. Kygo shows you what your own body says — connect your wearable, log your meals, and see which habits actually move your numbers.'
+        };
+      }
+      if (has(/sleep|\brem\b|deep-sleep|latency|insomnia|melatonin|circadian/)) {
+        return {
+          heading: 'Read the research.<br/><span class="hl">Find YOUR sleep disruptors.</span>',
+          sub: "Articles show you what the science says about sleep. Kygo shows you what your own body says — correlate your meals, caffeine, and alcohol with your sleep stages to find what's really keeping you up."
+        };
+      }
+      if (has(/calorie|accuracy|vo2|step-count|\bsensor\b|estimate|metabolism|tdee/)) {
+        return {
+          heading: 'Your wearable estimates.<br/><span class="hl">Kygo shows what the numbers mean.</span>',
+          sub: 'The numbers on your watch are estimates. Kygo connects them to what you actually eat, so you can see what those readings really mean for your energy, sleep, and recovery.'
+        };
+      }
+      if (has(/nutrition|food|meal|diet|protein|supplement|caffeine|alcohol|sugar|carb/)) {
+        return {
+          heading: 'Read the research.<br/><span class="hl">Log meals in seconds, see the effect.</span>',
+          sub: 'Articles show you what the science says about nutrition. Kygo makes it personal — log what you eat in seconds and watch how it moves your sleep, energy, HRV, and recovery.'
+        };
+      }
+      return {
+        heading: 'Read the research.<br/><span class="hl">Live the results.</span>',
+        sub: 'Articles show you what the science says. Kygo shows you what your body says. Connect your wearable, log your meals, and see the personal correlations hiding in your own data.'
+      };
+    }
+
     render() {
-      const heading = this.getAttribute('heading') ||
-        'Read the research.<br/><span class="hl">Live the results.</span>';
-      const sub = this.getAttribute('subheading') ||
-        'Articles show you what the science says. Kygo shows you what your body says. Connect your wearable, log your meals, and see the personal correlations hiding in your own data.';
+      const ctx = this._contextCopy();
+      const heading = this.getAttribute('heading')    || ctx.heading;
+      const sub = this.getAttribute('subheading') || ctx.sub;
       const iosUrl     = this.getAttribute('ios-url')     || APP_IOS;
       const androidUrl = this.getAttribute('android-url') || APP_ANDROID;
       const pill       = this.getAttribute('pill-text')   || 'iOS & Android';
@@ -829,10 +867,10 @@
               <h2 id="cta-heading">${heading}</h2>
               <p>${sub}</p>
               <div class="btns">
-                <a class="btn" href="${iosUrl}" target="_blank" rel="noopener">
+                <a class="btn cta-primary" href="${iosUrl}" data-track-position="post-end" data-track-label="post-cta-ios" target="_blank" rel="noopener">
                   ${svg('apple', 18)} Download for iOS
                 </a>
-                <a class="btn" href="${androidUrl}" target="_blank" rel="noopener">
+                <a class="btn cta-android" href="${androidUrl}" data-action="android-download" data-track-position="post-end" data-track-label="post-cta-android" target="_blank" rel="noopener">
                   ${svg('playstore', 18)} Download for Android
                 </a>
               </div>
@@ -958,10 +996,10 @@
           <h3>${heading}</h3>
           <p>${sub}</p>
           <div class="btns">
-            <a class="btn ios" href="${iosUrl}" target="_blank" rel="noopener">
+            <a class="btn ios cta-primary" href="${iosUrl}" data-track-position="mid" data-track-label="post-inline-ios" target="_blank" rel="noopener">
               ${svg('apple', 16)} Download for iOS
             </a>
-            <a class="btn android" href="${androidUrl}" target="_blank" rel="noopener">
+            <a class="btn android cta-android" href="${androidUrl}" data-action="android-download" data-track-position="mid" data-track-label="post-inline-android" target="_blank" rel="noopener">
               ${svg('playstore', 16)} Download for Android
             </a>
           </div>
