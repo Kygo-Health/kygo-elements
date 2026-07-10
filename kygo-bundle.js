@@ -384,12 +384,13 @@ customElements.define('kygo-social-proof-section', KygoSocialProofSection);
 
 
 /* ========================================
-   KYGO WHAT IS KYGO (GEO product-description band)
-   Tag: kygo-what-is-kygo
-   Plain-text, crawlable answer to "What is Kygo?" on its own light band.
-   Rendered near the bottom of the page (see kygo-home wrapper order).
+   KYGO SECURITY (privacy & security band)
+   Tag: kygo-security
+   Dedicated trust/security section rendered just above the FAQ
+   (see kygo-home wrapper order). Concise white card with the verbatim
+   security statement and a privacy-policy link.
 ======================================== */
-class KygoWhatIsKygo extends HTMLElement {
+class KygoSecurity extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -399,7 +400,7 @@ class KygoWhatIsKygo extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
-    __seo(this, 'What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.');
+    __seo(this, 'Your privacy and security at Kygo. Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.');
   }
   disconnectedCallback() { if (this._observer) this._observer.disconnect(); }
   _parseWixAttributes() {
@@ -433,40 +434,45 @@ class KygoWhatIsKygo extends HTMLElement {
   render() {
     this.shadowRoot.innerHTML = `
       <style>
-        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--light:#F8FAFC;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-50:#f9fafb;--gray-200:#E2E8F0;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        .what-is{padding:40px 0;background:var(--light)}
+        .security{padding:48px 0;background:var(--gray-50)}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .what-is-inner{max-width:700px;margin:0 auto;text-align:center;opacity:0;transform:translateY(20px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
-        .what-is-inner.visible{opacity:1;transform:translateY(0)}
-        .eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:10px}
-        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:22px;color:var(--dark);margin-bottom:12px}
-        .what-is-inner p{color:var(--gray-600);font-size:14px;line-height:1.65}
+        .trust-card{max-width:720px;margin:0 auto;padding:28px 24px;background:#fff;border:1px solid var(--gray-200);border-radius:20px;text-align:center;box-shadow:0 4px 16px rgba(15,23,42,0.04);opacity:0;transform:translateY(20px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
+        .trust-card.visible{opacity:1;transform:translateY(0)}
+        .trust-eyebrow{display:inline-flex;align-items:center;gap:6px;font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:10px}
+        .trust-eyebrow svg{width:14px;height:14px}
+        .trust-card h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:20px;color:var(--dark);margin-bottom:10px}
+        .trust-card p{color:var(--gray-600);font-size:14px;line-height:1.65;margin-bottom:14px}
+        .privacy-link{display:inline-flex;align-items:center;gap:6px;color:var(--green-dark);font-weight:600;font-size:14px;text-decoration:none}
+        .privacy-link:hover{text-decoration:underline}
         @media(min-width:768px){
-          .what-is{padding:56px 0}
-          h2{font-size:26px}
-          .what-is-inner p{font-size:15px}
+          .security{padding:64px 0}
+          .trust-card{padding:32px}
+          .trust-card h2{font-size:22px}
+          .trust-card p{font-size:15px}
         }
       </style>
-      <section class="what-is">
+      <section class="security">
         <div class="container">
-          <div class="what-is-inner animate-on-scroll">
-            <div class="eyebrow">Meet Kygo</div>
-            <h2>What is Kygo?</h2>
-            <p>Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.</p>
+          <div class="trust-card animate-on-scroll">
+            <div class="trust-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Privacy &amp; security</div>
+            <h2>Your privacy and security</h2>
+            <p>Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.</p>
+            <a class="privacy-link" href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy →</a>
           </div>
         </div>
       </section>
     `;
   }
 }
-customElements.define('kygo-what-is-kygo', KygoWhatIsKygo);
+customElements.define('kygo-security', KygoSecurity);
 
 
 /* ========================================
    KYGO TESTIMONIALS (approved, anonymized user quotes)
    Tag: kygo-testimonials
-   Compact social-proof grid rendered just above the final CTA
+   Swipeable social-proof carousel rendered just above the final CTA
    (see kygo-home wrapper order).
 ======================================== */
 class KygoTestimonials extends HTMLElement {
@@ -479,9 +485,13 @@ class KygoTestimonials extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
+    this._setupCarousel();
     __seo(this, 'What Kygo users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
   }
-  disconnectedCallback() { if (this._observer) this._observer.disconnect(); }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+    if (this._raf) cancelAnimationFrame(this._raf);
+  }
   _parseWixAttributes() {
     try {
       const wixsettings = this.getAttribute('wixsettings');
@@ -494,6 +504,7 @@ class KygoTestimonials extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
+    this._setupCarousel();
   }
   _setupScrollAnimations() {
     requestAnimationFrame(() => {
@@ -510,45 +521,115 @@ class KygoTestimonials extends HTMLElement {
       els.forEach(el => this._observer.observe(el));
     });
   }
+  _setupCarousel() {
+    const track = this.shadowRoot.querySelector('.t-track');
+    const cards = [...this.shadowRoot.querySelectorAll('.t-card')];
+    const dots = [...this.shadowRoot.querySelectorAll('.t-dot-btn')];
+    const prev = this.shadowRoot.querySelector('.t-prev');
+    const next = this.shadowRoot.querySelector('.t-next');
+    if (!track || !cards.length) return;
+    const pad = parseFloat(getComputedStyle(track).paddingLeft) || 0;
+    const currentIndex = () => {
+      const tr = track.getBoundingClientRect();
+      const start = tr.left + pad;
+      let best = 0, bestD = Infinity;
+      cards.forEach((c, i) => {
+        const d = Math.abs(c.getBoundingClientRect().left - start);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      return best;
+    };
+    const goTo = (i) => {
+      i = Math.max(0, Math.min(i, cards.length - 1));
+      const cr = cards[i].getBoundingClientRect();
+      const tr = track.getBoundingClientRect();
+      track.scrollBy({ left: cr.left - tr.left - pad, behavior: 'smooth' });
+    };
+    const update = () => {
+      const idx = currentIndex();
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      if (prev) prev.disabled = idx === 0;
+      if (next) next.disabled = idx === cards.length - 1;
+    };
+    if (prev) prev.addEventListener('click', () => goTo(currentIndex() - 1));
+    if (next) next.addEventListener('click', () => goTo(currentIndex() + 1));
+    dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+    track.addEventListener('scroll', () => {
+      if (this._raf) cancelAnimationFrame(this._raf);
+      this._raf = requestAnimationFrame(update);
+    }, { passive: true });
+    update();
+  }
   render() {
+    const quote = '<svg class="t-mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7.5 6C5.6 6 4 7.6 4 9.5S5.6 13 7.5 13c.2 0 .4 0 .6-.1-.4 1.6-1.7 2.8-3.3 3.1-.3.1-.5.4-.4.7.1.3.4.5.7.4 2.8-.6 4.9-3.1 4.9-6V9.5C10 7.6 8.4 6 6.5 6h1zm9 0C14.6 6 13 7.6 13 9.5s1.6 3.5 3.5 3.5c.2 0 .4 0 .6-.1-.4 1.6-1.7 2.8-3.3 3.1-.3.1-.5.4-.4.7.1.3.4.5.7.4 2.8-.6 4.9-3.1 4.9-6V9.5C19 7.6 17.4 6 15.5 6h1z"/></svg>';
+    const card = (q, a) => `<figure class="t-card"><blockquote>${quote}<p>${q}</p></blockquote><figcaption><span class="t-dotmark"></span>${a}</figcaption></figure>`;
     this.shadowRoot.innerHTML = `
       <style>
-        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--light:#F8FAFC;--gray-200:#E2E8F0;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-50:#f9fafb;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        .testimonials-section{padding:40px 0;background:var(--light)}
+        .testimonials-section{padding:48px 0;background:var(--gray-50)}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .t-head{text-align:center;margin-bottom:24px}
+        .animate-on-scroll{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
+        .animate-on-scroll.visible{opacity:1;transform:translateY(0)}
+        .t-head{text-align:center;margin-bottom:28px}
         .t-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
-        .t-head h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:22px;color:var(--dark)}
-        .testimonials{display:grid;grid-template-columns:1fr;gap:12px;max-width:1000px;margin:0 auto}
-        .testimonial{background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:16px;opacity:0;transform:translateY(16px);transition:opacity 0.5s ease-out,transform 0.5s ease-out}
-        .testimonial.visible{opacity:1;transform:translateY(0)}
-        .testimonial:nth-child(2){transition-delay:0.05s}
-        .testimonial:nth-child(3){transition-delay:0.1s}
-        .testimonial:nth-child(4){transition-delay:0.15s}
-        .testimonial:nth-child(5){transition-delay:0.2s}
-        .testimonial p{color:var(--dark);font-size:13px;line-height:1.5;margin-bottom:8px}
-        .testimonial cite{color:var(--green-dark);font-size:11px;font-weight:600;font-style:normal;letter-spacing:0.02em}
+        .t-head h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:24px;color:var(--dark)}
+        .t-track{position:relative;display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 4px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+        .t-track::-webkit-scrollbar{display:none}
+        .t-card{flex:0 0 86%;scroll-snap-align:start;background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:24px 22px;box-shadow:0 4px 16px rgba(15,23,42,0.05);display:flex;flex-direction:column;justify-content:space-between;gap:16px;transition:border-color 0.25s ease,box-shadow 0.25s ease,transform 0.25s ease}
+        .t-card:hover{border-color:var(--green);box-shadow:0 12px 28px rgba(34,197,94,0.12);transform:translateY(-3px)}
+        .t-card blockquote{border:0}
+        .t-mark{width:26px;height:26px;color:var(--green);opacity:0.9;margin-bottom:10px}
+        .t-card p{color:var(--dark);font-size:14px;line-height:1.6}
+        .t-card figcaption{display:flex;align-items:center;gap:8px;color:var(--green-dark);font-size:12px;font-weight:600;letter-spacing:0.01em}
+        .t-dotmark{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+        .t-controls{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:20px}
+        .t-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--gray-200);background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--dark);transition:border-color .2s,color .2s,box-shadow .2s,opacity .2s}
+        .t-arrow:hover{border-color:var(--green);color:var(--green);box-shadow:0 4px 12px rgba(34,197,94,0.15)}
+        .t-arrow:disabled{opacity:0.35;cursor:default;box-shadow:none;border-color:var(--gray-200);color:var(--gray-400)}
+        .t-arrow svg{width:18px;height:18px}
+        .t-dots{display:flex;align-items:center;gap:8px}
+        .t-dot-btn{width:8px;height:8px;border-radius:50%;border:none;background:var(--gray-200);cursor:pointer;padding:0;transition:all .25s ease}
+        .t-dot-btn.active{background:var(--green);width:22px;border-radius:4px}
+        @media(min-width:640px){
+          .t-card{flex:0 0 46%}
+        }
         @media(min-width:768px){
-          .testimonials-section{padding:56px 0}
-          .t-head{margin-bottom:32px}
-          .t-head h2{font-size:26px}
-          .testimonials{grid-template-columns:repeat(3,1fr);gap:14px}
-          .testimonial p{font-size:14px}
+          .testimonials-section{padding:64px 0}
+          .t-head{margin-bottom:36px}
+          .t-head h2{font-size:30px}
+          .t-card p{font-size:15px}
+        }
+        @media(min-width:1024px){
+          .testimonials-section{padding:80px 0}
+          .t-card{flex:0 0 calc((100% - 32px) / 3)}
         }
       </style>
       <section class="testimonials-section">
         <div class="container">
-          <div class="t-head">
+          <div class="t-head animate-on-scroll">
             <div class="t-eyebrow">Testimonials</div>
             <h2>What our users say</h2>
           </div>
-          <div class="testimonials">
-            <div class="testimonial animate-on-scroll"><p>"I've boosted my deep sleep after making changes to stop the age-related slow-wave decline."</p><cite>Oura user</cite></div>
-            <div class="testimonial animate-on-scroll"><p>"I love the experiments and the insights, like seeing how fat impacts my sleep."</p><cite>Kygo user</cite></div>
-            <div class="testimonial animate-on-scroll"><p>"I always get excited when I see your posts. The research is truly valued, and the app is amazing."</p><cite>Oura user</cite></div>
-            <div class="testimonial animate-on-scroll"><p>"Insights into how different nutrients impact my sleep and resting heart rate keep me engaged."</p><cite>App Store review</cite></div>
-            <div class="testimonial animate-on-scroll"><p>"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."</p><cite>Oura user</cite></div>
+          <div class="animate-on-scroll">
+            <div class="t-track">
+              ${card('"I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline."', 'Oura user')}
+              ${card('"I love the experiments and the insights, like seeing how fat impacts my sleep."', 'Kygo user')}
+              ${card('"I always get excited when I see your posts. The research is truly valued, and the app is amazing."', 'Oura user')}
+              ${card('"Insights into how different nutrients impact my sleep and resting heart rate keep me engaged."', 'App Store review')}
+              ${card('"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."', 'Oura user')}
+            </div>
+            <div class="t-controls">
+              <button class="t-arrow t-prev" type="button" aria-label="Previous testimonials"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+              <div class="t-dots">
+                <button class="t-dot-btn active" type="button" aria-label="Go to testimonial 1"></button>
+                <button class="t-dot-btn" type="button" aria-label="Go to testimonial 2"></button>
+                <button class="t-dot-btn" type="button" aria-label="Go to testimonial 3"></button>
+                <button class="t-dot-btn" type="button" aria-label="Go to testimonial 4"></button>
+                <button class="t-dot-btn" type="button" aria-label="Go to testimonial 5"></button>
+              </div>
+              <button class="t-arrow t-next" type="button" aria-label="Next testimonials"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+            </div>
           </div>
         </div>
       </section>
@@ -1086,7 +1167,7 @@ class KygoFaq extends HTMLElement {
     this.render();
     this.setupAccordion();
     this.setupIntersectionObserver();
-    __seo(this, 'Frequently asked questions about Kygo Health \u2014 nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. Common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, Samsung Galaxy Watch), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (typically 7 days of consistent logging).');
+    __seo(this, 'Frequently asked questions about Kygo Health \u2014 nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, Samsung Galaxy Watch), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (typically 7 days of consistent logging).');
   }
   setupAccordion() {
     const questions = this.shadowRoot.querySelectorAll('.faq-question');
@@ -1130,7 +1211,7 @@ class KygoFaq extends HTMLElement {
         .faq-item.open .faq-question svg{transform:rotate(180deg);color:var(--green)}
         .faq-answer{max-height:0;overflow:hidden;transition:max-height 0.3s,padding 0.3s,opacity 0.3s;opacity:0}
         .faq-answer-inner{padding-bottom:20px;color:var(--gray-600);font-size:15px;line-height:1.7}
-        .faq-item.open .faq-answer{max-height:300px;opacity:1}
+        .faq-item.open .faq-answer{max-height:640px;opacity:1}
         @media(min-width:768px){.faq{padding:80px 0}.section-header h2{font-size:36px}.faq-question{font-size:17px}}
       </style>
       <section class="faq" id="faq">
@@ -1138,6 +1219,10 @@ class KygoFaq extends HTMLElement {
           <div class="section-header"><h2>Common questions</h2></div>
           <div class="faq-list">
             <div class="faq-item open visible">
+              <div class="faq-question">What is Kygo?<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+              <div class="faq-answer"><div class="faq-answer-inner">Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.</div></div>
+            </div>
+            <div class="faq-item">
               <div class="faq-question">How is Kygo different from MyFitnessPal?<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
               <div class="faq-answer"><div class="faq-answer-inner">MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It's not about dieting—it's about understanding your body's unique responses.</div></div>
             </div>
@@ -1179,7 +1264,7 @@ class KygoFounderCta extends HTMLElement {
     this.render();
     this.setupIntersectionObserver();
     this.setupEvents();
-    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes. Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.');
+    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
   }
   setupIntersectionObserver() {
     const observer = new IntersectionObserver((entries) => {
@@ -1241,13 +1326,6 @@ class KygoFounderCta extends HTMLElement {
         .cta-works{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:13px}
         .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
         .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
-        .trust-security{max-width:720px;margin:32px auto 0;padding:24px 20px;background:#fff;border:1px solid #E2E8F0;border-radius:20px;text-align:center}
-        .trust-eyebrow{display:inline-flex;align-items:center;gap:6px;font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:10px}
-        .trust-eyebrow svg{width:14px;height:14px}
-        .trust-security h3{font-size:19px;color:var(--dark);margin-bottom:10px}
-        .trust-security p{color:var(--gray-600);font-size:14px;line-height:1.65;margin-bottom:14px}
-        .trust-security .trust-link{display:inline-flex;align-items:center;gap:6px;color:var(--green-dark);font-weight:600;font-size:14px;text-decoration:none}
-        .trust-security .trust-link:hover{text-decoration:underline}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
         @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}.trust-security{padding:32px}.trust-security h3{font-size:22px}.trust-security p{font-size:15px}}
       </style>
@@ -1307,12 +1385,6 @@ class KygoFounderCta extends HTMLElement {
               </div>
             </div>
           </div>
-          <div class="trust-security animate-on-scroll">
-            <div class="trust-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Privacy &amp; security</div>
-            <h3>Your privacy and security</h3>
-            <p>Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.</p>
-            <a class="trust-link" href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy →</a>
-          </div>
         </div>
       </section>
     `;
@@ -1339,10 +1411,10 @@ class KygoHome extends HTMLElement {
       'kygo-problem-section',
       'kygo-features-section',
       'kygo-insights-steps',
+      'kygo-security',
       'kygo-faq',
       'kygo-testimonials',
-      'kygo-founder-cta',
-      'kygo-what-is-kygo'
+      'kygo-founder-cta'
     ].forEach(tag => this.appendChild(document.createElement(tag)));
   }
 }
@@ -1356,9 +1428,9 @@ customElements.define('kygo-home', KygoHome);
    - kygo-problem-section
    - kygo-features-section
    - kygo-insights-steps
+   - kygo-security
    - kygo-faq
    - kygo-testimonials
    - kygo-founder-cta
-   - kygo-what-is-kygo
    Plus kygo-home — a wrapper that renders all 9 as a single embed.
 ======================================== */
