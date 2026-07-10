@@ -55,7 +55,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: null,
         studyIds: ['robbins2024', 'schyvens2025', 'park2023', 'wellnesspulse2025', 'caserman2024', 'lambe2025'],
         affiliateLinks: [
-          { name: 'Apple Watch', url: 'https://amzn.to/4rUcGst' }
+          { name: 'Apple Watch', url: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20' , slug: 'apple-watch-search' }
         ]
       },
       'oura': {
@@ -71,7 +71,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: 'Sleep \u03BA=0.65 is from an Oura-funded study. Independent studies found \u03BA=0.2\u20130.4.',
         studyIds: ['robbins2024', 'dial2025', 'park2023'],
         affiliateLinks: [
-          { name: 'Oura Ring', url: 'https://amzn.to/4aF93jj' }
+          { name: 'Oura Ring', url: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20' , slug: 'oura-ring-search' }
         ]
       },
       'garmin': {
@@ -87,7 +87,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: 'HRV/sleep studies used Fenix 6 / Vivosmart 4 (older models). Current devices may perform better.',
         studyIds: ['schyvens2025', 'dial2025', 'wellnesspulse2025'],
         affiliateLinks: [
-          { name: 'Garmin', url: 'https://amzn.to/4aF8l5D' }
+          { name: 'Garmin', url: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20' , slug: 'garmin-search' }
         ]
       },
       'whoop': {
@@ -103,7 +103,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: null,
         studyIds: ['schyvens2025', 'dial2025', 'khodr2024'],
         affiliateLinks: [
-          { name: 'WHOOP', url: 'https://amzn.to/4rRoziQ' }
+          { name: 'WHOOP', url: 'https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20' , slug: 'whoop-search' }
         ]
       },
       'fitbit': {
@@ -119,7 +119,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: null,
         studyIds: ['robbins2024', 'schyvens2025', 'park2023', 'wellnesspulse2025'],
         affiliateLinks: [
-          { name: 'Fitbit', url: 'https://amzn.to/3ZPkHDc' }
+          { name: 'Fitbit', url: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20' , slug: 'fitbit-search' }
         ]
       },
       'samsung': {
@@ -135,7 +135,7 @@ class KygoWearableAccuracy extends HTMLElement {
         researchNote: null,
         studyIds: ['park2023', 'park2023resp', 'lanfranchi2024'],
         affiliateLinks: [
-          { name: 'Samsung Galaxy Watch', url: 'https://amzn.to/3PUMS23' }
+          { name: 'Samsung Galaxy Watch', url: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20' , slug: 'samsung-watch-search' }
         ]
       }
     };
@@ -445,7 +445,7 @@ class KygoWearableAccuracy extends HTMLElement {
       const d = devices[dk];
       const affUrl = this._getAffiliateUrl(dk);
       const nameHtml = affUrl
-        ? `<a href="${affUrl}" class="ds-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>`
+        ? `<a href="${affUrl}" class="ds-name-link" target="_blank" rel="noopener sponsored" data-track-label="${d.affiliateLinks[0].slug}">${d.name}</a>`
         : d.name;
       return `
       <div class="device-summary-card" style="--accent:${d.color}">
@@ -750,7 +750,7 @@ class KygoWearableAccuracy extends HTMLElement {
                 <div class="dd-header">
                   <div class="dd-icon">${d.icon}</div>
                   <div class="dd-info">
-                    <h3>${d.affiliateLinks && d.affiliateLinks.length ? `<a href="${d.affiliateLinks[0].url}" class="dd-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>` : d.name}</h3>
+                    <h3>${d.affiliateLinks && d.affiliateLinks.length ? `<a href="${d.affiliateLinks[0].url}" class="dd-name-link" target="_blank" rel="noopener sponsored" data-track-label="${d.affiliateLinks[0].slug}">${d.name}</a>` : d.name}</h3>
                     <span class="dd-bestfor">${d.bestFor}</span>
                   </div>
                   <div class="dd-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div>
@@ -774,7 +774,7 @@ class KygoWearableAccuracy extends HTMLElement {
                     <h4>Available on Amazon</h4>
                     <div class="dd-buy-links">
                       ${d.affiliateLinks.map(l => `
-                        <a href="${l.url}" class="dd-buy-link" target="_blank" rel="noopener sponsored">
+                        <a href="${l.url}" class="dd-buy-link" target="_blank" rel="noopener sponsored" data-track-label="${l.slug}">
                           <span class="dd-buy-name">${l.name}</span>
                           ${l.note ? `<span class="dd-buy-note">${l.note}</span>` : ''}
                           <span class="dd-buy-cta">View on Amazon<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>

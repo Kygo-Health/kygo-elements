@@ -48,7 +48,7 @@ class KygoSleepMetrics extends HTMLElement {
         color: '#C4A97D',
         imageUrl: 'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
         totalMetrics: 22,
-        affiliateUrl: 'https://amzn.to/4aF93jj',
+        affiliateUrl: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20', trackLabel: 'oura-ring-search',
         exclusive: [
           { metric: 'Sleep Onset Latency', desc: 'Time from lying down to first detected sleep — flags sleep issues' },
           { metric: 'Sleep Efficiency', desc: 'Percentage of time in bed actually spent asleep' },
@@ -64,7 +64,7 @@ class KygoSleepMetrics extends HTMLElement {
         color: '#00B0B9',
         imageUrl: 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
         totalMetrics: 21,
-        affiliateUrl: 'https://amzn.to/3ZPkHDc',
+        affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search',
         exclusive: [
           { metric: 'Sleep Profile (10 Metrics)', desc: '10 metrics analyzed monthly, compared by age and gender (Premium)' },
           { metric: 'Sleep Animal Archetype', desc: '6 animal types assigned from 10-metric clustering (Premium)' },
@@ -79,7 +79,7 @@ class KygoSleepMetrics extends HTMLElement {
         color: '#A2AAAD',
         imageUrl: 'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
         totalMetrics: 20,
-        affiliateUrl: 'https://amzn.to/4rUcGst',
+        affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search',
         exclusive: [
           { metric: 'Sleep Apnea Notifications', desc: 'FDA-authorized — 30-day evaluation, accelerometer-based' },
           { metric: 'Breathing Disturbances', desc: 'ML-classified wrist micro-movements detect respiratory effort' },
@@ -94,7 +94,7 @@ class KygoSleepMetrics extends HTMLElement {
         color: '#007CC3',
         imageUrl: 'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
         totalMetrics: 21,
-        affiliateUrl: 'https://amzn.to/4aF8l5D',
+        affiliateUrl: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search',
         exclusive: [
           { metric: 'Training Readiness', desc: 'Combines sleep, HRV, recovery time, and training load' },
           { metric: 'Body Battery Recharge', desc: 'HRV-based recovery minus stress and activity drain' },
@@ -510,7 +510,7 @@ class KygoSleepMetrics extends HTMLElement {
     return `
       <div class="grid-header">
         <div class="grid-metric-label">Metric</div>
-        ${deviceKeys.map(dk => `<a href="${devices[dk].affiliateUrl}" class="grid-device-header" target="_blank" rel="noopener sponsored"><img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="grid-device-img" /><span>${devices[dk].short}</span></a>`).join('')}
+        ${deviceKeys.map(dk => `<a href="${devices[dk].affiliateUrl}" class="grid-device-header" target="_blank" rel="noopener sponsored" data-track-label="${devices[dk].trackLabel}"><img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="grid-device-img" /><span>${devices[dk].short}</span></a>`).join('')}
       </div>
       <div class="grid-body">
         ${metrics.map(m => {
@@ -527,7 +527,7 @@ class KygoSleepMetrics extends HTMLElement {
                   ${deviceKeys.map(dk => {
                     const d = devices[dk];
                     if (!m[dk].has) return `<div class="detail-card unavailable"><div class="detail-header"><img src="${d.imageUrl}" alt="${d.short}" class="detail-icon" loading="lazy" /><span class="detail-device">${d.short}</span></div><span class="detail-na">Not available</span></div>`;
-                    return `<div class="detail-card"><a href="${d.affiliateUrl}" class="detail-header" target="_blank" rel="noopener sponsored"><img src="${d.imageUrl}" alt="${d.short}" class="detail-icon" loading="lazy" /><span class="detail-device">${d.short}</span></a><p class="detail-desc">${m[dk].desc}</p></div>`;
+                    return `<div class="detail-card"><a href="${d.affiliateUrl}" class="detail-header" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}"><img src="${d.imageUrl}" alt="${d.short}" class="detail-icon" loading="lazy" /><span class="detail-device">${d.short}</span></a><p class="detail-desc">${m[dk].desc}</p></div>`;
                   }).join('')}
                 </div>
               </div>` : ''}
@@ -547,7 +547,7 @@ class KygoSleepMetrics extends HTMLElement {
           <div class="excl-header" role="button" aria-expanded="${isExpanded}">
             <img src="${d.imageUrl}" alt="${d.name}" class="excl-img" loading="lazy" />
             <div class="excl-info">
-              <h3><a href="${d.affiliateUrl}" class="excl-name-link" target="_blank" rel="noopener sponsored">${d.name}</a></h3>
+              <h3><a href="${d.affiliateUrl}" class="excl-name-link" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}">${d.name}</a></h3>
               <span class="excl-count">${d.exclusive.length} exclusive feature${d.exclusive.length > 1 ? 's' : ''}</span>
             </div>
             <div class="excl-toggle">${this._icon('chevDown')}</div>
@@ -556,7 +556,7 @@ class KygoSleepMetrics extends HTMLElement {
             <ul class="excl-list">
               ${d.exclusive.map(f => `<li><span class="excl-dot"></span><div><strong>${f.metric}</strong><span class="excl-fdesc">${f.desc}</span></div></li>`).join('')}
             </ul>
-            <a href="${d.affiliateUrl}" class="excl-buy" target="_blank" rel="noopener sponsored">
+            <a href="${d.affiliateUrl}" class="excl-buy" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}">
               <span>View on Amazon</span>
               <span class="excl-buy-arrow">${this._icon('externalLink')}</span>
             </a>

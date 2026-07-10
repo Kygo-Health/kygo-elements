@@ -521,8 +521,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           <tr class="aff-row">
             <td colspan="4">
               <div class="aff-row-inner">
-                <a class="aff-btn" href="${fitbitAff}" target="_blank" rel="noopener sponsored"><img src="${fitbitImg}" alt="" /> Fitbit Air on Amazon ${this._icon('arrowRight')}</a>
-                <a class="aff-btn" href="${whoopAff}" target="_blank" rel="noopener sponsored"><img src="${whoopImg}" alt="" /> WHOOP on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${fitbitAff}" target="_blank" rel="noopener sponsored" data-track-label="fitbit-air"><img src="${fitbitImg}" alt="" /> Fitbit Air on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${whoopAff}" target="_blank" rel="noopener sponsored" data-track-label="whoop-peak-12mo"><img src="${whoopImg}" alt="" /> WHOOP on Amazon ${this._icon('arrowRight')}</a>
               </div>
             </td>
           </tr>

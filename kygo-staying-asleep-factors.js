@@ -64,7 +64,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Stable overnight glucose, lower systemic inflammation, and microbiome-driven vagal tone reduce the arousals that fragment deep sleep.',
           dosage: '25–35 g/day from whole foods',
           source: { url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384', label: 'St-Onge et al. 2016' },
-          affiliate: { url: 'https://amzn.to/4uL7b1p', label: 'Dietary Fiber Supplement' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0BDP24LP4?tag=kygohealthapp-20&th=1', label: 'Dietary Fiber Supplement' , slug: 'fiber-gummies' }
         },
         {
           key: 'sugar', name: 'Sugar / Refined Carbs',
@@ -115,7 +115,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Naturally occurring melatonin and tryptophan plus anti-inflammatory anthocyanins support consolidated overnight sleep.',
           dosage: '240 mL (8 oz) twice daily; morning and 1–2 hrs pre-bed',
           source: { url: 'https://journals.sagepub.com/doi/full/10.1089/jmf.2009.0096', label: 'Pigeon et al. 2010 RCT' },
-          affiliate: { url: 'https://amzn.to/3PXqKEh', label: 'Tart Cherry Juice' }
+          affiliate: { url: 'https://www.amazon.com/dp/B007RC6J72?tag=kygohealthapp-20&th=1', label: 'Tart Cherry Juice' , slug: 'tart-cherry-juice' }
         }
       ],
       supplements: [
@@ -138,7 +138,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Withanolides reduce cortisol and overnight sympathetic tone; GABAergic activity dampens the arousals that fragment sleep.',
           dosage: '600 mg/day standardized extract, split AM/PM or taken evening',
           source: { url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843', label: 'Cheah et al. 2021 meta-analysis' },
-          affiliate: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }
+          affiliate: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }
         },
         {
           key: 'glycine', name: 'Glycine (3 g)',
@@ -149,7 +149,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Peripheral vasodilation drops core body temperature (a deep-sleep signal); NMDA modulation reduces cortical arousal.',
           dosage: '3 g, 30–60 min before bed',
           source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' },
-          affiliate: { url: 'https://amzn.to/3PWfatc', label: 'Glycine Powder' }
+          affiliate: { url: 'https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20', label: 'Glycine Powder' , slug: 'glycine-search' }
         },
         {
           key: 'magnesium', name: 'Magnesium (500 mg)',
@@ -160,7 +160,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'NMDA receptor antagonism and GABA-A potentiation reduce cortical arousal; supports melatonin rhythm.',
           dosage: '200–500 mg elemental magnesium (glycinate preferred)',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23853635/', label: 'Abbasi et al. 2012 RCT' },
-          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine (200–450 mg)',
@@ -171,7 +171,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Increases alpha brain waves and GABA/glutamate balance; reduces cortisol and sympathetic tone without sedation.',
           dosage: '200–450 mg, 30–60 min before bed',
           source: { url: 'https://www.tandfonline.com/doi/full/10.1080/1028415X.2025.2556925', label: '2025 systematic review' },
-          affiliate: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }
+          affiliate: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' }
         },
         {
           key: 'valerian', name: 'Valerian Root',
@@ -256,7 +256,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Melanopsin-containing retinal ganglion cells detect light through the eyelids, suppressing melatonin and raising cortical arousal.',
           dosage: 'Bedroom as dark as possible; cover electronics, use blackout',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/', label: 'Cho et al. 2016 PSG study' },
-          affiliate: { url: 'https://www.amazon.com/dp/B07PRG2CQY?campaignId=amzn1.campaign.3S68LT4O16LOL&linkCode=tr1&tag=kygohealthapp-20&linkId=amzn1.campaign.3S68LT4O16LOL_1780933049531', label: 'Sleep Mask' }
+          affiliate: { url: 'https://www.amazon.com/dp/B07PRG2CQY?tag=kygohealthapp-20', label: 'Sleep Mask', slug: 'sleep-mask' }
         },
         {
           key: 'noise', name: 'Noise (>50 dBA)',
@@ -267,7 +267,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Auditory cortex activation and autonomic arousal interrupt NREM stages; even sub-conscious arousals fragment sleep architecture.',
           dosage: 'Keep bedroom <30 dB; use masking (white/pink noise) or earplugs',
           source: { url: 'https://www.mdpi.com/1660-4601/15/3/519', label: 'Basner et al. 2018 WHO review' },
-          affiliate: { url: 'https://amzn.to/4vGyQk9', label: 'Earplugs' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FSHYJHHV?tag=kygohealthapp-20&th=1', label: 'Earplugs' , slug: 'silicone-earplugs' }
         },
         {
           key: 'co2-ventilation', name: 'CO₂ >1000 ppm (Poor Ventilation)',
@@ -278,7 +278,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Elevated CO₂ increases ventilatory drive, sympathetic tone, and micro-arousals; reduced O₂ saturation compounds the effect.',
           dosage: 'Crack a window or use mechanical ventilation; aim <800 ppm',
           source: { url: 'https://www.sciencedirect.com/science/article/pii/S0360132323011459', label: 'Kang et al. 2024' },
-          affiliate: { url: 'https://amzn.to/40gYtKD', label: 'CO₂ Monitor' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0CGX22CR8?tag=kygohealthapp-20&th=1', label: 'CO₂ Monitor' , slug: 'co2-monitor' }
         },
         {
           key: 'mattress', name: 'Mattress (Medium-Firm)',
@@ -289,7 +289,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           mechanism: 'Appropriate spinal support reduces micro-movements and pressure-point arousals that fragment sleep across the night.',
           dosage: 'Medium-firm mattress; replace every 7–10 years',
           source: { url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222', label: 'Hu et al. 2025 PSG study' },
-          affiliate: { url: 'https://amzn.to/4urzyRc', label: 'Medium-Firm Mattress' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0DKTCWC8X?tag=kygohealthapp-20&th=1', label: 'Medium-Firm Mattress' , slug: 'memory-foam-mattress' }
         }
       ],
       physiology: [
@@ -660,7 +660,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
   _affiliateChips(f, position) {
     if (!f.affiliate) return '';
     const list = Array.isArray(f.affiliate) ? f.affiliate : [f.affiliate];
-    return list.map(a => `<a href="${a.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${a.label}" data-track-position="${position}"><span class="aff-icon" aria-hidden="true">${this._icon('cart')}</span><span class="aff-text">View <strong>${a.label}</strong> on Amazon</span><span class="factor-affiliate-arrow" aria-hidden="true">${this._icon('externalLink')}</span></a>`).join('');
+    return list.map(a => `<a href="${a.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${a.slug}" data-track-position="${position}"><span class="aff-icon" aria-hidden="true">${this._icon('cart')}</span><span class="aff-text">View <strong>${a.label}</strong> on Amazon</span><span class="factor-affiliate-arrow" aria-hidden="true">${this._icon('externalLink')}</span></a>`).join('');
   }
 
   _renderChartDetail(f) {

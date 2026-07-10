@@ -118,7 +118,7 @@ class KygoRecoveryScores extends HTMLElement {
     return {
       whoop: {
         name: 'WHOOP',
-        amazon: 'https://amzn.to/4rRoziQ',
+        amazon: 'https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'whoop-search',
         scoreName: 'Recovery',
         modelLine: 'Recovery · 1–100% (green/yellow/red) · membership',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: true, load: false, subj: false },
@@ -134,7 +134,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       oura: {
         name: 'Oura Ring',
-        amazon: 'https://amzn.to/4aF93jj',
+        amazon: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20', trackLabel: 'oura-ring-search',
         scoreName: 'Readiness',
         modelLine: 'Readiness · 0–100 · 9 contributors · membership',
         sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: false, load: true, subj: false },
@@ -150,7 +150,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       garmin: {
         name: 'Garmin',
-        amazon: 'https://amzn.to/4aF8l5D',
+        amazon: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search',
         scoreName: 'Training Readiness',
         modelLine: 'Training Readiness · 0–100 · Body Battery is separate · free',
         sensors: { hrv: true, rhr: false, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -166,7 +166,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       fitbit: {
         name: 'Fitbit / Pixel',
-        amazon: 'https://amzn.to/3ZPkHDc',
+        amazon: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search',
         scoreName: 'Daily Readiness Score',
         modelLine: 'Daily Readiness · 1–100 · free since app v4.27',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: false, subj: false },
@@ -182,7 +182,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       samsung: {
         name: 'Samsung',
-        amazon: 'https://amzn.to/3PUMS23',
+        amazon: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20', trackLabel: 'samsung-watch-search',
         scoreName: 'Energy Score',
         modelLine: 'Energy Score · 0–100 · Galaxy Watch 7 / Ultra+ · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -198,7 +198,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       polar: {
         name: 'Polar',
-        amazon: 'https://amzn.to/4rqpdnL',
+        amazon: 'https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20', trackLabel: 'polar-search',
         scoreName: 'Nightly Recharge',
         modelLine: 'Nightly Recharge · ANS Charge −10 to +10 · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: true, load: false, subj: false },
@@ -229,7 +229,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       coros: {
         name: 'COROS',
-        amazon: 'https://amzn.to/4rkOv6I',
+        amazon: 'https://www.amazon.com/s?k=COROS%20fitness%20tracker&rh=p_123%3A337787&tag=kygohealthapp-20', trackLabel: 'coros-search',
         scoreName: 'Recovery Timer + Fatigue',
         modelLine: 'Recovery Timer + Fatigue (EvoLab) · training-load only · free',
         sensors: { hrv: false, rhr: false, sleep: false, temp: false, rr: false, load: true, subj: false },
@@ -245,7 +245,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       amazfit: {
         name: 'Amazfit / Zepp',
-        amazon: 'https://amzn.to/4fHVnYW',
+        amazon: 'https://www.amazon.com/s?k=amazfit&rh=p_123%3A321923&tag=kygohealthapp-20', trackLabel: 'amazfit-search',
         scoreName: 'HybridCharge',
         modelLine: 'HybridCharge · 0–100 · replaced BioCharge May 2026 · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: true },
@@ -261,7 +261,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       suunto: {
         name: 'Suunto',
-        amazon: 'https://amzn.to/4fZD5Cx',
+        amazon: 'https://www.amazon.com/s?k=suunto%20smart%20watch&rh=p_123%3A393232&tag=kygohealthapp-20', trackLabel: 'suunto-search',
         scoreName: 'Body Resources',
         modelLine: 'Body Resources · 0–100 gauge · free',
         sensors: { hrv: true, rhr: false, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -277,7 +277,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       apple: {
         name: 'Apple Watch',
-        amazon: 'https://amzn.to/4rUcGst',
+        amazon: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search',
         scoreName: 'No native score',
         modelLine: 'No native recovery score · third-party apps fill the gap',
         sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: false, load: true, subj: false },
@@ -293,7 +293,7 @@ class KygoRecoveryScores extends HTMLElement {
       },
       ringconn: {
         name: 'RingConn',
-        amazon: 'https://amzn.to/4e5fGyj',
+        amazon: 'https://www.amazon.com/dp/B0GVSB66ZY?tag=kygohealthapp-20&th=1', trackLabel: 'ringconn-gen3',
         scoreName: 'Wellness Balance',
         modelLine: 'Wellness Balance · 4 petals (not a true score) · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: false },
@@ -520,70 +520,70 @@ class KygoRecoveryScores extends HTMLElement {
         effect: 'Sleep onset ~17 min faster; a small HRV/readiness benefit.',
         mechanism: 'Magnesium supports GABAergic and NMDA balance involved in sleep onset; the autonomic effect is modest.',
         note: 'CORRECTED: the meta-analysis (Mah 2021) had only 3 small trials (n=151) with low-quality evidence, NOT the "27 RCTs / 2,496" figure circulating on blogs. A separate small Oura crossover (n=31) improved readiness and deep-sleep scores. Typical study dose ~200–360 mg.',
-        amazon: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' },
+        amazon: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' },
         source: SRC.magMeta },
       { key: 'glycine', cat: 'supplements', name: 'Glycine', direction: 'positive', impact: 'med', evidence: 'Moderate',
         plainEnglish: 'Small but PSG-correlated: faster sleep onset and better quality, partly by lowering core temperature.',
         effect: 'Faster sleep onset, better sleep quality; lowers core temperature ~0.28°C.',
         mechanism: 'Glycine promotes peripheral vasodilation and a core-temperature drop that helps initiate sleep.',
         note: 'Typical study dose 3 g pre-bed (Inagawa 2006 / Yamadera 2007) — PSG-correlated but small samples.',
-        amazon: { url: 'https://amzn.to/3PWfatc', label: 'Glycine Powder' },
+        amazon: { url: 'https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20', label: 'Glycine Powder' , slug: 'glycine-search' },
         source: SRC.glycine },
       { key: 'tart-cherry', cat: 'supplements', name: 'Tart cherry (Montmorency)', direction: 'positive', impact: 'med', evidence: 'Moderate (small pilots)',
         plainEnglish: 'Adds sleep time and eases muscle soreness — handy as a double-duty training-recovery aid, though the trials are small.',
         effect: '+34 to 84 min sleep, raises melatonin, eases muscle soreness. The +84 min figure is from an 8-person pilot; Pigeon 2010 (n=15) cut insomnia severity.',
         mechanism: 'Naturally contains melatonin and anti-inflammatory anthocyanins.',
         note: 'Typical dose 60 mL concentrate 2×/day or juice. Small pilots (n=8–15).',
-        amazon: { url: 'https://amzn.to/3PXqKEh', label: 'Tart Cherry Juice' },
+        amazon: { url: 'https://www.amazon.com/dp/B007RC6J72?tag=kygohealthapp-20&th=1', label: 'Tart Cherry Juice' , slug: 'tart-cherry-juice' },
         source: SRC.tartCherry },
       { key: 'l-theanine', cat: 'supplements', name: 'L-theanine', direction: 'positive', impact: 'med', evidence: 'Moderate',
         plainEnglish: 'Lowers heart rate and cortisol under acute stress and improves sleep — and it pairs well with caffeine to blunt the jitters.',
         effect: 'Lowers HR and cortisol under acute stress; improves sleep.',
         mechanism: 'Promotes alpha-wave activity and dampens the sympathetic stress response.',
         note: 'Typical dose 200 mg. Often paired with caffeine to blunt its sympathetic effect.',
-        amazon: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' },
+        amazon: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' },
         source: SRC.lTheanine },
       { key: 'ashwagandha', cat: 'supplements', name: 'Ashwagandha', direction: 'positive', impact: 'med', evidence: 'Moderate',
         plainEnglish: 'Cortisol and sleep benefits are the clearest; direct HRV evidence is thinner.',
         effect: 'Lowers cortisol and anxiety, improves sleep; some HRV gain.',
         mechanism: 'An adaptogen that lowers HPA-axis cortisol output.',
         note: 'Typical dose 300–600 mg. Cortisol/sleep clearest; direct HRV evidence thinner.',
-        amazon: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' },
+        amazon: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' },
         source: SRC.ashwagandha },
       { key: 'omega3', cat: 'supplements', name: 'Omega-3 (DHA)', direction: 'positive', impact: 'low', evidence: 'Moderate (RHR)',
         plainEnglish: 'A small, reliable resting-heart-rate drop — and notably the effect is from DHA, not EPA.',
         effect: 'Lowers resting heart rate ~2.2 bpm; HRV evidence mixed.',
         mechanism: 'DHA incorporates into cardiac membranes and modulates autonomic control of heart rate.',
         note: '51-RCT meta-analysis. Effect from DHA, not EPA.',
-        amazon: { url: 'https://amzn.to/4cVnvGt', label: 'Omega-3 Fish Oil' },
+        amazon: { url: 'https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1', label: 'Omega-3 Fish Oil' , slug: 'omega-3-fish-oil' },
         source: SRC.omega3 },
       { key: 'saffron', cat: 'supplements', name: 'Saffron', direction: 'positive', impact: 'med', evidence: 'Moderate',
         plainEnglish: 'Surprisingly solid for a botanical: a meaningful sleep-quality improvement across a large meta-analysis.',
         effect: 'Improves sleep quality (PSQI ~ −2.2 vs placebo).',
         mechanism: 'Saffron constituents (crocin, safranal) have serotonergic and mild sedative effects.',
         note: 'Meta-analysis of 21 RCTs (>1,700 people). Typical dose ~100 mg/day.',
-        amazon: { url: 'https://www.amazon.com/dp/B097TKQSQD?ref=t_ac_view_request_product_image&campaignId=amzn1.campaign.2VRN9CPN5GVH8&linkCode=tr1&tag=kygohealthapp-20&linkId=amzn1.campaign.2VRN9CPN5GVH8_1781287684808', label: 'Saffron Extract' },
+        amazon: { url: 'https://www.amazon.com/dp/B097TKQSQD?tag=kygohealthapp-20', label: 'Saffron Extract', slug: 'saffron-extract' },
         source: SRC.saffron },
       { key: 'chamomile', cat: 'supplements', name: 'Chamomile extract', direction: 'positive', impact: 'low', evidence: 'Moderate',
         plainEnglish: 'Whole-extract chamomile improves sleep and anxiety — but the trendy isolated apigenin does not have the evidence people assume.',
         effect: 'Improves sleep quality and anxiety.',
         mechanism: 'Apigenin and other flavonoids bind benzodiazepine and GABA receptors, but the human evidence is for whole extract.',
         note: 'IMPORTANT: isolated apigenin (the trendy ~50 mg version) has NO human sleep RCT; the evidence is for whole chamomile extract. Typical dose 200–560 mg.',
-        amazon: { url: 'https://amzn.to/3S5tosv', label: 'Chamomile Extract' },
+        amazon: { url: 'https://www.amazon.com/dp/B09QPFVLQ5?tag=kygohealthapp-20', label: 'Chamomile Extract' , slug: 'chamomile-750mg' },
         source: SRC.chamomile },
       { key: 'melatonin', cat: 'supplements', name: 'Melatonin', direction: 'positive', impact: 'low', evidence: 'Moderate (timing)',
         plainEnglish: 'Primarily a circadian timing aid, not a recovery booster. It speeds sleep onset and shifts timing; the HRV effect is modest and fades.',
         effect: 'Speeds sleep onset and shifts circadian timing; 2 mg modestly raises HRV and lowers overnight HR (peaks ~day 3–5, then fades).',
         mechanism: 'Melatonin shifts the circadian phase and has a small, transient autonomic effect.',
         note: 'Typical dose 0.5–3 mg. A timing aid, not a recovery booster; high doses can nudge BP/HR.',
-        amazon: { url: 'https://amzn.to/4szGon9', label: 'Melatonin Supplement' },
+        amazon: { url: 'https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1', label: 'Melatonin Supplement' , slug: 'melatonin-gummies' },
         source: SRC.melatonin },
       { key: 'nitrate', cat: 'supplements', name: 'Dietary nitrate / beetroot', direction: 'positive', impact: 'low', evidence: 'Moderate / mixed',
         plainEnglish: 'Raises HRV and lowers sympathetic outflow and blood pressure — clearest acutely, and it varies by population.',
         effect: 'Raises SDNN, lowers sympathetic outflow and blood pressure.',
         mechanism: 'Dietary nitrate boosts nitric-oxide availability, improving vascular function and autonomic balance.',
         note: 'Clearest acutely; varies by population.',
-        amazon: { url: 'https://amzn.to/406okEX', label: 'Beetroot Juice Shots' },
+        amazon: { url: 'https://www.amazon.com/dp/B01GJS8VX4?tag=kygohealthapp-20&th=1', label: 'Beetroot Juice Shots' , slug: 'beet-nitrate-shots' },
         source: SRC.nitrate },
       { key: 'weak-tier', cat: 'supplements', name: 'Weak / don’t rely on (valerian, GABA, CBD, creatine)', direction: 'positive', impact: 'low', evidence: 'Weak',
         plainEnglish: 'Kept here as one line on purpose so recovery content doesn\'t recommend these as recovery aids — the evidence doesn\'t support it.',
@@ -825,7 +825,7 @@ class KygoRecoveryScores extends HTMLElement {
                 <div class="dd-callout strong"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('sparkle')}</span>Unique strength</span><p>${d.strength}</p></div>
                 <div class="dd-callout watch"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('alert')}</span>Watch out for</span><p>${d.limitation}</p></div>
               </div>
-              ${d.amazon ? `<div class="dd-buy-row"><a class="dd-buy" href="${d.amazon}" target="_blank" rel="noopener sponsored"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>View ${d.name} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission.</span></div>` : ''}
+              ${d.amazon ? `<div class="dd-buy-row"><a class="dd-buy" href="${d.amazon}" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>View ${d.name} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission.</span></div>` : ''}
             </div>
           </div>
         </div>`;
@@ -965,7 +965,7 @@ class KygoRecoveryScores extends HTMLElement {
             <span class="fact-source-lbl">Source</span>
             <a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>
           </div>
-          ${f.amazon ? `<div class="fact-buy-row"><a class="dd-buy dd-buy--sm" href="${f.amazon.url}" target="_blank" rel="noopener sponsored"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>${f.amazon.label} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission.</span></div>` : ''}
+          ${f.amazon ? `<div class="fact-buy-row"><a class="dd-buy dd-buy--sm" href="${f.amazon.url}" target="_blank" rel="noopener sponsored" data-track-label="${f.amazon.slug}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>${f.amazon.label} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission.</span></div>` : ''}
         </div>`;
     }
 

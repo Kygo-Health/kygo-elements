@@ -129,7 +129,7 @@ class KygoRemSleep extends HTMLElement {
           mechanism: 'In animals the MT1 receptor selectively enhances REM without changing non-REM. In humans the REM benefit showed up mainly in patients who began with reduced REM.',
           dosage: 'Two double-blind RCTs (n=14, mean age 50) in patients with REM ≥25% below age norm; effect in normal sleepers unclear.',
           source: { url: 'https://academic.oup.com/jcem/article/89/1/128/2840303', label: 'Kunz et al., JCEM 2004' },
-          affiliate: { url: 'https://amzn.to/4szGon9', label: 'Melatonin Supplement' }
+          affiliate: { url: 'https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1', label: 'Melatonin Supplement' , slug: 'melatonin-gummies' }
         },
         {
           key: '5-htp',
@@ -507,7 +507,7 @@ class KygoRemSleep extends HTMLElement {
           <div class="detail-row"><span class="detail-label">Mechanism</span><span class="detail-value">${f.mechanism}</span></div>
           <div class="detail-row"><span class="detail-label">Dose / context</span><span class="detail-value">${f.dosage}</span></div>
           <a href="${f.source.url}" class="factor-src" target="_blank" rel="noopener nofollow" data-action="source-link">${f.source.label} ${this._icon('externalLink')}</a>
-          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate">Check it out on Amazon ${this._icon('externalLink')}</a><span class="factor-affiliate-note">Affiliate link — we may earn a commission at no extra cost to you.</span>` : ''}
+          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate" data-track-label="${f.affiliate.slug}">Check it out on Amazon ${this._icon('externalLink')}</a><span class="factor-affiliate-note">Affiliate link — we may earn a commission at no extra cost to you.</span>` : ''}
         </div>
       </div>`;
   }

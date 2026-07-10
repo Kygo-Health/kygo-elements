@@ -174,7 +174,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Consistent sleep timing strengthens circadian entrainment of the suprachiasmatic nucleus, optimizing the alignment between homeostatic sleep pressure and circadian SWS promotion windows.',
           dosage: 'Consistent bed/wake times; minimize weekend shift',
           source: { url: 'https://www.whoop.com/us/en/press-center/whoop-study-published-in-sleep-finds/', label: 'WHOOP/SLEEP Study' },
-          affiliate: { url: 'https://amzn.to/4saSeEc', label: 'Sunrise Alarm Clock' }
+          affiliate: { url: 'https://www.amazon.com/dp/B081CHLF46?tag=kygohealthapp-20&th=1', label: 'Sunrise Alarm Clock' , slug: 'sunrise-alarm-clock' }
         }
       ],
 
@@ -190,7 +190,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Mg²⁺ acts as a natural NMDA receptor antagonist and voltage-gated calcium channel modulator, enhancing thalamocortical delta oscillations. Also reduces nocturnal cortisol.',
           dosage: '30 mmol/day oral Mg²⁺; 20-day supplementation period',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/12163983/', label: 'Held et al. 2002' },
-          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }
         },
         {
           key: 'glycine',
@@ -203,7 +203,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Glycine acts on NMDA receptors in the suprachiasmatic nucleus, lowering core body temperature. Also acts as an inhibitory neurotransmitter facilitating NREM entry.',
           dosage: '3g before bed',
           source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007' },
-          affiliate: { url: 'https://amzn.to/3PWfatc', label: 'Glycine Powder' }
+          affiliate: { url: 'https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20', label: 'Glycine Powder' , slug: 'glycine-search' }
         },
         {
           key: 'tart-cherry',
@@ -216,7 +216,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Proanthocyanidins inhibit indoleamine 2,3-dioxygenase, reducing tryptophan degradation via kynurenine pathway. More tryptophan available for serotonin → melatonin conversion.',
           dosage: '240 mL Montmorency tart cherry juice 2x/day',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5617749/', label: 'Losso et al. 2018' },
-          affiliate: { url: 'https://amzn.to/3PXqKEh', label: 'Tart Cherry Juice' }
+          affiliate: { url: 'https://www.amazon.com/dp/B007RC6J72?tag=kygohealthapp-20&th=1', label: 'Tart Cherry Juice' , slug: 'tart-cherry-juice' }
         },
         {
           key: 'melatonin',
@@ -229,7 +229,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Selective MT2 receptor activation in the reticular thalamic nucleus promotes NREM sleep and enhances delta power. MT1 receptors primarily regulate REM.',
           dosage: '0.5-3 mg, 30-60 min before bed; timing > dose',
           source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/jpi.13011', label: 'Comai et al. 2024' },
-          affiliate: { url: 'https://amzn.to/4szGon9', label: 'Melatonin Supplement' }
+          affiliate: { url: 'https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1', label: 'Melatonin Supplement' , slug: 'melatonin-gummies' }
         }
       ],
 
@@ -257,7 +257,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Blue-enriched light (6500K) suppresses melatonin via melanopsin-expressing ipRGCs and delays circadian phase, reducing frontal slow-wave activity.',
           dosage: 'Avoid 6500K+ light 90 min before bed; blue-light filters help',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23509952/', label: 'Chellappa et al. 2013' },
-          affiliate: { url: 'https://amzn.to/4cwMwI1', label: 'Blue Light Blocking Glasses' }
+          affiliate: { url: 'https://www.amazon.com/dp/B07W781XWF?tag=kygohealthapp-20&th=1', label: 'Blue Light Blocking Glasses' , slug: 'blue-light-glasses' }
         },
         {
           key: 'aircraft-noise',
@@ -270,7 +270,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Intermittent noise causes cortical arousals that disrupt the thalamocortical slow oscillations maintaining N3. Even sub-awakening arousals shift sleep from N3 to lighter stages.',
           dosage: 'Use earplugs or white noise if exposed to environmental noise',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/37947580/', label: 'Basner et al. SLEEP 2026' },
-          affiliate: { url: 'https://amzn.to/4bfT8bC', label: 'White Noise Machine' }
+          affiliate: { url: 'https://www.amazon.com/dp/B07RWRJ4XW?tag=kygohealthapp-20', label: 'White Noise Machine' , slug: 'white-noise-machine' }
         },
         {
           key: 'closed-loop-audio',
@@ -307,7 +307,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           mechanism: 'Elevated CO₂ activates central chemoreceptors in the brainstem reticular formation, increasing respiratory drive and cortical arousal that fragments N3.',
           dosage: 'Keep CO₂ below 1,000 ppm; ventilate bedroom before and during sleep',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/32979003/', label: 'Xu et al. 2021' },
-          affiliate: { url: 'https://amzn.to/40gYtKD', label: 'CO₂ Monitor' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0CGX22CR8?tag=kygohealthapp-20&th=1', label: 'CO₂ Monitor' , slug: 'co2-monitor' }
         }
       ],
 
@@ -584,7 +584,7 @@ class KygoDeepSleepFactors extends HTMLElement {
           <div class="detail-row"><span class="detail-label">Mechanism</span><span class="detail-value">${f.mechanism}</span></div>
           <div class="detail-row"><span class="detail-label">Dosage / context</span><span class="detail-value">${f.dosage}</span></div>
           <a href="${f.source.url}" class="factor-src" target="_blank" rel="noopener nofollow" data-action="source-link">${f.source.label} ${this._icon('externalLink')}</a>
-          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate">Check it out on Amazon ${this._icon('externalLink')}</a>` : ''}
+          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate" data-track-label="${f.affiliate.slug}">Check it out on Amazon ${this._icon('externalLink')}</a>` : ''}
         </div>
       </div>`;
   }

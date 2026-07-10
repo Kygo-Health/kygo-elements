@@ -90,13 +90,13 @@ class KygoSupplementsByMetric extends HTMLElement {
   // 'X' tested-no-effect. flag = industry-funded / not-peer-reviewed / preclinical.
   get _supplements() {
     return [
-      { key: 'omega3', name: 'Omega-3 (EPA/DHA)', amazon: { url: 'https://amzn.to/4cVnvGt', label: 'Omega-3 Fish Oil' }, m: {
+      { key: 'omega3', name: 'Omega-3 (EPA/DHA)', amazon: { url: 'https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1', label: 'Omega-3 Fish Oil' , slug: 'omega-3-fish-oil' }, m: {
         deep:     { g: 'W', effect: 'Improves sleep efficiency (+1.88 pp pooled); no isolated deep-sleep (N3) gain.', study: 'DHA/EPA RCT (n=84, 26 wks) + meta-analysis (PMC11579846).' },
         hrv:      { g: 'S', effect: 'Consistently raises HF power — the most-studied dietary HRV factor.', study: 'Multiple meta-analyses.', src: 'omega3hrv' },
         rhr:      { g: 'S', effect: 'Lowers resting HR ~2.23 bpm overall; DHA alone −2.47 bpm, EPA no effect. The only Strong RHR supplement.', study: 'Hidayat 2018 meta, 51 RCTs, ~3,000 people.', src: 'omega3rhr' },
         recovery: { g: 'M', effect: 'Lowers RHR ~2.2 bpm (DHA, not EPA), which feeds the recovery score; HRV evidence mixed.', study: 'Hidayat 2018 meta, 51 RCTs.', src: 'omega3rhr' }
       } },
-      { key: 'magnesium', name: 'Magnesium (oral)', amazon: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }, m: {
+      { key: 'magnesium', name: 'Magnesium (oral)', amazon: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }, m: {
         latency:  { g: 'M', effect: 'Sleep onset ~17 min faster (−17.36 min, p=0.0006).', study: 'Mah & Pitre 2021 meta, 3 RCTs, n=151 older adults — low-quality-evidence caveat.', src: 'mag' },
         deep:     { g: 'W', effect: 'Slow-wave sleep ~+6 min; raises delta + sigma power — in older adults.', study: 'Held 2002, n=12, ages 60–80, 20-day crossover.' },
         waso:     { g: 'W', effect: 'Improves sleep efficiency in the elderly; WASO not directly measured.', study: 'Abbasi 2012 RCT, n=46, age 65+.' },
@@ -104,18 +104,18 @@ class KygoSupplementsByMetric extends HTMLElement {
         rhr:      { g: 'X', effect: 'No magnesium-specific RHR meta-analysis exists; no reliable resting-rate effect.', study: 'No RHR meta located.' },
         recovery: { g: 'W', effect: 'Faster onset plus a small readiness / deep-sleep gain on Oura.', study: 'Mah & Pitre 2021 (n=151) + Breus 2024 Oura (n=31).', src: 'mag' }
       } },
-      { key: 'mag-threonate', name: 'Magnesium L-threonate', flag: true, amazon: { url: 'https://www.amazon.com/dp/B01M4GM9R1?linkCode=tr1&tag=kygohealthapp-20&linkId=amzn1.campaign.1T536CG5MXACL_1781448054715', label: 'Magnesium L-Threonate' }, m: {
+      { key: 'mag-threonate', name: 'Magnesium L-threonate', flag: true, amazon: { url: 'https://www.amazon.com/dp/B01M4GM9R1?tag=kygohealthapp-20', label: 'Magnesium L-Threonate', slug: 'magnesium-l-threonate' }, m: {
         deep:     { g: 'M', flag: true, effect: 'Raises deep sleep, REM and readiness on Oura.', study: 'Hausenblas 2024 (n=80) + Breus 2024 (n=31).', flagNote: 'All manufacturer-funded; Lopresti 2025 found NO sleep effect.' },
         hrv:      { g: 'M', flag: true, effect: 'RMSSD +1.45 ms, RHR −1.32 bpm (p=0.036 / 0.030) on Oura.', study: 'Lopresti 2025, Oura, n=100.', src: 'mgt', flagNote: 'Manufacturer-funded; sleep was null in this same trial.' },
         recovery: { g: 'M', flag: true, effect: 'Better deep sleep, REM and readiness scores.', study: 'Hausenblas 2024 + Breus 2024.', flagNote: 'All manufacturer-funded.' }
       } },
-      { key: 'glycine', name: 'Glycine (3 g)', amazon: { url: 'https://amzn.to/3PWfatc', label: 'Glycine Powder' }, m: {
+      { key: 'glycine', name: 'Glycine (3 g)', amazon: { url: 'https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20', label: 'Glycine Powder' , slug: 'glycine-search' }, m: {
         latency:  { g: 'M', effect: 'Shortened sleep onset and slow-wave-sleep latency (p=0.01).', study: 'Yamadera 2007, PSG, n=11.', src: 'glycine' },
         deep:     { g: 'M', effect: 'Faster slow-wave-sleep onset; stage proportions unchanged.', study: 'Yamadera 2007, PSG, n=11.', src: 'glycine' },
         waso:     { g: 'M', effect: 'Reduced night-time waking alongside faster SWS onset.', study: 'Yamadera 2007, PSG, n=11.', src: 'glycine' },
         recovery: { g: 'M', effect: 'Faster onset, better sleep quality; lowers core temperature ~0.28°C.', study: 'Yamadera 2007 + Inagawa 2006.', src: 'glycine' }
       } },
-      { key: 'ashwagandha', name: 'Ashwagandha', flag: true, amazon: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }, m: {
+      { key: 'ashwagandha', name: 'Ashwagandha', flag: true, amazon: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }, m: {
         latency:  { g: 'S', flag: true, effect: 'Sleep onset SMD −0.53 (p<0.001); 600 mg most effective.', study: 'Cheah 2021 meta, 5 RCTs, n=400.', src: 'cheah', flagNote: 'Underlying RCTs industry-funded.' },
         deep:     { g: 'W', flag: true, effect: 'Raises delta power + GABA-A expression — in vitro / animal only.', study: 'Prev Nutr Food Sci 2022 (PMC9007714).', flagNote: 'Preclinical, not human PSG.' },
         waso:     { g: 'S', flag: true, effect: 'WASO SMD −0.39 (3 trials, n=281).', study: 'Cheah 2021 meta.', src: 'cheah', flagNote: 'Underlying RCTs industry-funded.' },
@@ -123,19 +123,19 @@ class KygoSupplementsByMetric extends HTMLElement {
         rhr:      { g: 'X', effect: 'There is an HRV effect, but no resting-heart-rate change.', study: 'Cheah / Witholytin trials (HRV side, not RHR).' },
         recovery: { g: 'M', flag: true, effect: 'Lowers cortisol & anxiety, improves sleep; some HRV gain.', study: 'Witholytin RCT (n=111) + cortisol RCTs.', src: 'ashhrv', flagNote: 'Proprietary-extract trials; HRV evidence thinner than cortisol.' }
       } },
-      { key: 'melatonin', name: 'Melatonin', amazon: { url: 'https://amzn.to/4szGon9', label: 'Melatonin Supplement' }, m: {
+      { key: 'melatonin', name: 'Melatonin', amazon: { url: 'https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1', label: 'Melatonin Supplement' , slug: 'melatonin-gummies' }, m: {
         latency:  { g: 'S', effect: 'Sleep onset −7.06 min (p<0.001); peaks around 4 mg.', study: 'Ferracioli-Oda 2013 meta, 19 studies, n=1,683.', src: 'mela' },
         deep:     { g: 'M', effect: 'MT2 activation in the reticular thalamus raises NREM + delta power.', study: 'Comai 2024, J Pineal Research (mechanism).' },
         waso:     { g: 'X', effect: 'No significant effect on wake after sleep onset — the most-bought form does NOT aid maintenance.', study: 'Moon 2022 meta, Neuropsychopharmacology 47:1523-1536.' },
         rhr:      { g: '~', effect: 'Mixed: some lower nocturnal HR; one CAD trial raised 24-h HR. Emerging heart-failure safety signal.', study: 'Tobeiha 2022 review.' },
         recovery: { g: 'W', effect: 'A timing aid, not a recovery booster: 2 mg modestly raises HRV / lowers overnight HR, peaks ~day 3–5 then fades.', study: 'npj Biological Timing & Sleep 2024.', src: 'melacv' }
       } },
-      { key: 'gaba', name: 'GABA', flag: true, amazon: { url: 'https://amzn.to/3OyDz7c', label: 'GABA Supplement' }, m: {
+      { key: 'gaba', name: 'GABA', flag: true, amazon: { url: 'https://www.amazon.com/dp/B0FT6GB5MB?tag=kygohealthapp-20&th=1', label: 'GABA Supplement' , slug: 'gaba-500mg' }, m: {
         latency:  { g: 'M', effect: 'Sleep onset 13.4 → 5.7 min (p=0.001).', study: 'Byun 2018, PSG, n=40.', src: 'gaba' },
         hrv:      { g: 'M', flag: true, effect: 'Raises HRV via parasympathetic predominance.', study: 'Guimarães 2024 RCT, n=30, 200 mg / 90 d.', flagNote: 'All-female sample + exercise co-intervention.' },
         recovery: { g: 'X', effect: 'Poor oral absorption — no reliable recovery-score effect.', study: 'Per recovery-factor review.' }
       } },
-      { key: 'l-theanine', name: 'L-Theanine', amazon: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }, m: {
+      { key: 'l-theanine', name: 'L-Theanine', amazon: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' }, m: {
         latency:  { g: 'M', effect: 'Subjective sleep onset SMD 0.15 (p=0.04); no objective effect.', study: 'Bulman 2025 meta, 10 RCTs, n=897 — subjective only.' },
         deep:     { g: 'W', effect: 'Raises delta and reverses caffeine’s delta suppression — animal ECoG model.', study: 'Frontiers Nutr 2022 (PMC9017334) — preclinical.' },
         waso:     { g: '~', effect: 'Mixed WASO results when used alone.', study: 'Systematic review 2025.' },
@@ -143,19 +143,19 @@ class KygoSupplementsByMetric extends HTMLElement {
         rhr:      { g: 'X', effect: 'Acute-stress effect only — not a baseline resting-rate change.', study: 'Kimura 2007 (acute stress, not resting).' },
         recovery: { g: 'M', effect: 'Lowers HR + cortisol under acute stress; improves sleep.', study: 'Kimura 2007.', src: 'theanine' }
       } },
-      { key: 'tart-cherry', name: 'Tart Cherry (Montmorency)', amazon: { url: 'https://amzn.to/3PXqKEh', label: 'Tart Cherry Juice' }, m: {
+      { key: 'tart-cherry', name: 'Tart Cherry (Montmorency)', amazon: { url: 'https://www.amazon.com/dp/B007RC6J72?tag=kygohealthapp-20&th=1', label: 'Tart Cherry Juice' , slug: 'tart-cherry-juice' }, m: {
         latency:  { g: 'X', effect: 'No sleep-onset benefit.', study: 'Stretton 2023 meta, p>0.05.' },
         deep:     { g: 'W', effect: '+84 min total sleep time on PSG (p=0.0182).', study: 'Losso 2018, n=8 insomnia.', src: 'tart' },
         waso:     { g: 'M', effect: 'Cuts WASO ~17 min vs placebo.', study: 'Pigeon 2010, RCT crossover, n=15 insomnia.', src: 'pigeon' },
         recovery: { g: 'M', effect: '+34 to 84 min sleep, raises melatonin, eases muscle soreness — double-duty training aid.', study: 'Losso 2018 (n=8) + Pigeon 2010 (n=15).', src: 'tart' }
       } },
-      { key: 'saffron', name: 'Saffron', amazon: { url: 'https://www.amazon.com/dp/B097TKQSQD?tag=kygohealthapp-20', label: 'Saffron Extract' }, m: {
+      { key: 'saffron', name: 'Saffron', amazon: { url: 'https://www.amazon.com/dp/B097TKQSQD?tag=kygohealthapp-20', label: 'Saffron Extract', slug: 'saffron-extract' }, m: {
         recovery: { g: 'M', effect: 'Sleep quality PSQI −2.14 (95% CI −2.86 to −1.42, p<0.01).', study: 'Sleep Medicine 2022 meta (PubMed 35325766).', src: 'saffron' }
       } },
-      { key: 'chamomile', name: 'Chamomile (whole extract)', amazon: { url: 'https://amzn.to/3S5tosv', label: 'Chamomile Extract' }, m: {
+      { key: 'chamomile', name: 'Chamomile (whole extract)', amazon: { url: 'https://www.amazon.com/dp/B09QPFVLQ5?tag=kygohealthapp-20', label: 'Chamomile Extract' , slug: 'chamomile-750mg' }, m: {
         recovery: { g: 'W', effect: 'Improves sleep quality + GAD; NO effect on insomnia (ISI). Use whole extract, not isolated apigenin.', study: 'Phytotherapy Research meta (ptr.6349, 12 RCTs).', src: 'chamomile' }
       } },
-      { key: 'nitrate', name: 'Dietary nitrate / beetroot', amazon: { url: 'https://amzn.to/406okEX', label: 'Beetroot Juice Shots' }, m: {
+      { key: 'nitrate', name: 'Dietary nitrate / beetroot', amazon: { url: 'https://www.amazon.com/dp/B01GJS8VX4?tag=kygohealthapp-20&th=1', label: 'Beetroot Juice Shots' , slug: 'beet-nitrate-shots' }, m: {
         hrv:      { g: '~', effect: 'Raises SDNN acutely; lowers sympathetic outflow.', study: 'Notay 2017 + SDNN RCTs.', src: 'nitrate' },
         rhr:      { g: 'X', effect: 'No resting-rate change — the effect is autonomic/HRV-side, not a resting-rate drop.', study: '6 RCTs, n=181, null for RHR.' },
         recovery: { g: '~', effect: 'Raises SDNN, lowers sympathetic outflow + BP — acute and population-dependent.', study: 'Notay 2017 (Am J Physiol).', src: 'nitrate' }
@@ -179,18 +179,18 @@ class KygoSupplementsByMetric extends HTMLElement {
         waso:     { g: '~', effect: 'Inconsistent effect on staying asleep.', study: 'Mixed small trials.' },
         recovery: { g: 'X', flag: true, effect: 'WHOOP data: no meaningful recovery change.', study: 'WHOOP cohort analysis.' }
       } },
-      { key: 'vitamin-d', name: 'Vitamin D', amazon: { url: 'https://amzn.to/4cm6d5m', label: 'Vitamin D3' }, m: {
+      { key: 'vitamin-d', name: 'Vitamin D', amazon: { url: 'https://www.amazon.com/dp/B00GB85JR4?tag=kygohealthapp-20&th=1', label: 'Vitamin D3' , slug: 'vitamin-d3-5000' }, m: {
         deep:     { g: 'X', effect: 'Supplementation gives no clear deep-sleep (N3) gain; subjective PSQI only.', study: 'Mason 2021 null RCT (n=189); Abboud 2022 meta.' },
         hrv:      { g: 'M', effect: 'Deficiency is associated with lower HRV (a deficiency-correction effect, not a booster).', study: 'Micronutrient review (PMC7231600).', src: 'micronutrient' },
         rhr:      { g: 'X', effect: 'No heart-rate effect at any dose.', study: 'BEST-D RCT, n=305, 12 mo.' }
       } },
-      { key: 'vitamin-b12', name: 'Vitamin B12', amazon: { url: 'https://amzn.to/4lbwIg3', label: 'Vitamin B12' }, m: {
+      { key: 'vitamin-b12', name: 'Vitamin B12', amazon: { url: 'https://www.amazon.com/dp/B002FJW3ZY?tag=kygohealthapp-20&th=1', label: 'Vitamin B12' , slug: 'vitamin-b12' }, m: {
         hrv:      { g: 'M', effect: 'Deficiency reduces LF power (correction effect in deficiency).', study: 'Micronutrient review (PMC7231600).', src: 'micronutrient' }
       } },
-      { key: 'zinc', name: 'Zinc', amazon: { url: 'https://amzn.to/4760BIN', label: 'Zinc Picolinate' }, m: {
+      { key: 'zinc', name: 'Zinc', amazon: { url: 'https://www.amazon.com/dp/B0012ZQPKG?tag=kygohealthapp-20&th=1', label: 'Zinc Picolinate' , slug: 'zinc-picolinate' }, m: {
         hrv:      { g: 'W', effect: 'Prenatal zinc linked to better offspring HRV; adult data limited.', study: 'Micronutrient review (PMC7231600).', src: 'micronutrient' }
       } },
-      { key: 'multivitamin', name: 'Multivitamin', amazon: { url: 'https://amzn.to/4rM2eDY', label: 'Daily Multivitamin' }, m: {
+      { key: 'multivitamin', name: 'Multivitamin', amazon: { url: 'https://www.amazon.com/dp/B0FR5QMD5Y?tag=kygohealthapp-20&th=1', label: 'Daily Multivitamin' , slug: 'thorne-multivitamin' }, m: {
         hrv:      { g: 'M', effect: 'One RCT prevented HRV decline — a buffer, not a booster.', study: 'Micronutrient review (PMC7231600).', src: 'micronutrient' }
       } },
       { key: 'potassium', name: 'Potassium', m: {
@@ -314,7 +314,7 @@ class KygoSupplementsByMetric extends HTMLElement {
             ${flag ? `<div class="fact-fields--full"><dt>Funding / quality flag</dt><dd>${c.flagNote || 'Industry-funded, not peer-reviewed, preclinical, or very small N — read with caution.'}</dd></div>` : ''}
           </dl>
           ${src ? `<div class="fact-source-row"><span class="fact-source-lbl">Source</span><a href="${src.url}" target="_blank" rel="noopener" class="source-link">${src.label} ${this._icon('externalLink')}</a></div>` : ''}
-          ${canBuy ? `<div class="fact-buy-row"><a class="dd-buy dd-buy--sm" href="${s.amazon.url}" target="_blank" rel="noopener sponsored"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>${s.amazon.label} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission. Not an endorsement or medical advice.</span></div>` : ''}
+          ${canBuy ? `<div class="fact-buy-row"><a class="dd-buy dd-buy--sm" href="${s.amazon.url}" target="_blank" rel="noopener sponsored" data-track-label="${s.amazon.slug}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>${s.amazon.label} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission. Not an endorsement or medical advice.</span></div>` : ''}
         </div>`;
     }
 
