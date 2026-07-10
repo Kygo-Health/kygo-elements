@@ -1014,7 +1014,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
       .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
       .cta-android:hover { background: var(--green-dark); color: #fff; }
       .cta-android svg { width: 18px; height: 18px; }
-      .kearly-section { padding: 8px 16px 0; }
+      .kearly-section { padding: 48px 16px; }
       .kband { max-width: 1100px; margin: 0 auto; }
       .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
       .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }

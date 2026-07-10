@@ -584,7 +584,7 @@ class KygoFaqSection extends HTMLElement {
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
 
         /* Mid-content contextual app CTA (compact green card) */
-        .kearly-section { max-width: 800px; margin: 0 auto 60px; }
+        .kearly-section { max-width: 800px; margin: 48px auto; padding: 0 20px; }
         .kband { max-width: 1100px; margin: 0 auto; }
         .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
         .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
