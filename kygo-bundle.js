@@ -1,6 +1,6 @@
 /**
  * Kygo Health - Combined Custom Elements Bundle
- * All 7 elements in one file for faster loading
+ * All 9 elements in one file for faster loading
  * Host on GitHub + jsDelivr CDN
  */
 
@@ -381,6 +381,181 @@ class KygoSocialProofSection extends HTMLElement {
   }
 }
 customElements.define('kygo-social-proof-section', KygoSocialProofSection);
+
+
+/* ========================================
+   KYGO WHAT IS KYGO (GEO product-description band)
+   Tag: kygo-what-is-kygo
+   Plain-text, crawlable answer to "What is Kygo?" on its own light band.
+   Rendered near the bottom of the page (see kygo-home wrapper order).
+======================================== */
+class KygoWhatIsKygo extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    this._setupScrollAnimations();
+    __seo(this, 'What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.');
+  }
+  disconnectedCallback() { if (this._observer) this._observer.disconnect(); }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupScrollAnimations();
+  }
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!els.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      els.forEach(el => this._observer.observe(el));
+    });
+  }
+  render() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--light:#F8FAFC;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        .what-is{padding:40px 0;background:var(--light)}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .what-is-inner{max-width:700px;margin:0 auto;text-align:center;opacity:0;transform:translateY(20px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
+        .what-is-inner.visible{opacity:1;transform:translateY(0)}
+        .eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:10px}
+        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:22px;color:var(--dark);margin-bottom:12px}
+        .what-is-inner p{color:var(--gray-600);font-size:14px;line-height:1.65}
+        @media(min-width:768px){
+          .what-is{padding:56px 0}
+          h2{font-size:26px}
+          .what-is-inner p{font-size:15px}
+        }
+      </style>
+      <section class="what-is">
+        <div class="container">
+          <div class="what-is-inner animate-on-scroll">
+            <div class="eyebrow">Meet Kygo</div>
+            <h2>What is Kygo?</h2>
+            <p>Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.</p>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-what-is-kygo', KygoWhatIsKygo);
+
+
+/* ========================================
+   KYGO TESTIMONIALS (approved, anonymized user quotes)
+   Tag: kygo-testimonials
+   Compact social-proof grid rendered just above the final CTA
+   (see kygo-home wrapper order).
+======================================== */
+class KygoTestimonials extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    this._setupScrollAnimations();
+    __seo(this, 'What Kygo users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
+  }
+  disconnectedCallback() { if (this._observer) this._observer.disconnect(); }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupScrollAnimations();
+  }
+  _setupScrollAnimations() {
+    requestAnimationFrame(() => {
+      const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
+      if (!els.length) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      els.forEach(el => this._observer.observe(el));
+    });
+  }
+  render() {
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--light:#F8FAFC;--gray-200:#E2E8F0;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        .testimonials-section{padding:40px 0;background:var(--light)}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .t-head{text-align:center;margin-bottom:24px}
+        .t-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
+        .t-head h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:22px;color:var(--dark)}
+        .testimonials{display:grid;grid-template-columns:1fr;gap:12px;max-width:1000px;margin:0 auto}
+        .testimonial{background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:16px;opacity:0;transform:translateY(16px);transition:opacity 0.5s ease-out,transform 0.5s ease-out}
+        .testimonial.visible{opacity:1;transform:translateY(0)}
+        .testimonial:nth-child(2){transition-delay:0.05s}
+        .testimonial:nth-child(3){transition-delay:0.1s}
+        .testimonial:nth-child(4){transition-delay:0.15s}
+        .testimonial:nth-child(5){transition-delay:0.2s}
+        .testimonial p{color:var(--dark);font-size:13px;line-height:1.5;margin-bottom:8px}
+        .testimonial cite{color:var(--green-dark);font-size:11px;font-weight:600;font-style:normal;letter-spacing:0.02em}
+        @media(min-width:768px){
+          .testimonials-section{padding:56px 0}
+          .t-head{margin-bottom:32px}
+          .t-head h2{font-size:26px}
+          .testimonials{grid-template-columns:repeat(3,1fr);gap:14px}
+          .testimonial p{font-size:14px}
+        }
+      </style>
+      <section class="testimonials-section">
+        <div class="container">
+          <div class="t-head">
+            <div class="t-eyebrow">Testimonials</div>
+            <h2>What our users say</h2>
+          </div>
+          <div class="testimonials">
+            <div class="testimonial animate-on-scroll"><p>"I've boosted my deep sleep after making changes to stop the age-related slow-wave decline."</p><cite>Oura user</cite></div>
+            <div class="testimonial animate-on-scroll"><p>"I love the experiments and the insights, like seeing how fat impacts my sleep."</p><cite>Kygo user</cite></div>
+            <div class="testimonial animate-on-scroll"><p>"I always get excited when I see your posts. The research is truly valued, and the app is amazing."</p><cite>Oura user</cite></div>
+            <div class="testimonial animate-on-scroll"><p>"Insights into how different nutrients impact my sleep and resting heart rate keep me engaged."</p><cite>App Store review</cite></div>
+            <div class="testimonial animate-on-scroll"><p>"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."</p><cite>Oura user</cite></div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-testimonials', KygoTestimonials);
 
 
 /* ========================================
@@ -1004,7 +1179,7 @@ class KygoFounderCta extends HTMLElement {
     this.render();
     this.setupIntersectionObserver();
     this.setupEvents();
-    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
+    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes. Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.');
   }
   setupIntersectionObserver() {
     const observer = new IntersectionObserver((entries) => {
@@ -1066,8 +1241,15 @@ class KygoFounderCta extends HTMLElement {
         .cta-works{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:13px}
         .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
         .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
+        .trust-security{max-width:720px;margin:32px auto 0;padding:24px 20px;background:#fff;border:1px solid #E2E8F0;border-radius:20px;text-align:center}
+        .trust-eyebrow{display:inline-flex;align-items:center;gap:6px;font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--green-dark);margin-bottom:10px}
+        .trust-eyebrow svg{width:14px;height:14px}
+        .trust-security h3{font-size:19px;color:var(--dark);margin-bottom:10px}
+        .trust-security p{color:var(--gray-600);font-size:14px;line-height:1.65;margin-bottom:14px}
+        .trust-security .trust-link{display:inline-flex;align-items:center;gap:6px;color:var(--green-dark);font-weight:600;font-size:14px;text-decoration:none}
+        .trust-security .trust-link:hover{text-decoration:underline}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
-        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
+        @media(min-width:768px){.founder-story{padding:100px 0}.founder-header h2{font-size:40px}.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}.trust-security{padding:32px}.trust-security h3{font-size:22px}.trust-security p{font-size:15px}}
       </style>
       <section class="founder-story">
         <div class="container">
@@ -1125,6 +1307,12 @@ class KygoFounderCta extends HTMLElement {
               </div>
             </div>
           </div>
+          <div class="trust-security animate-on-scroll">
+            <div class="trust-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Privacy &amp; security</div>
+            <h3>Your privacy and security</h3>
+            <p>Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.</p>
+            <a class="trust-link" href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy →</a>
+          </div>
         </div>
       </section>
     `;
@@ -1133,10 +1321,10 @@ class KygoFounderCta extends HTMLElement {
 customElements.define('kygo-founder-cta', KygoFounderCta);
 
 /* ========================================
-   8. KYGO HOME (single-embed wrapper)
+   KYGO HOME (single-embed wrapper)
    Tag: kygo-home
-   Renders all 7 homepage sections in order so the page needs only ONE Wix
-   custom-element embed (one URL to bump on each push) instead of seven.
+   Renders all 9 homepage sections in order so the page needs only ONE Wix
+   custom-element embed (one URL to bump on each push) instead of nine.
    Sections are appended to LIGHT DOM so each one's __seo text stays
    crawlable and its structured data still injects normally. Each section
    uses its built-in defaults (no per-section Wix settings are forwarded).
@@ -1152,7 +1340,9 @@ class KygoHome extends HTMLElement {
       'kygo-features-section',
       'kygo-insights-steps',
       'kygo-faq',
-      'kygo-founder-cta'
+      'kygo-testimonials',
+      'kygo-founder-cta',
+      'kygo-what-is-kygo'
     ].forEach(tag => this.appendChild(document.createElement(tag)));
   }
 }
@@ -1160,13 +1350,15 @@ customElements.define('kygo-home', KygoHome);
 
 /* ========================================
    BUNDLE COMPLETE
-   All 7 elements registered:
+   All 9 elements registered:
    - kygo-hero-section
    - kygo-social-proof-section
    - kygo-problem-section
    - kygo-features-section
    - kygo-insights-steps
    - kygo-faq
+   - kygo-testimonials
    - kygo-founder-cta
-   Plus kygo-home — a wrapper that renders all 7 as a single embed.
+   - kygo-what-is-kygo
+   Plus kygo-home — a wrapper that renders all 9 as a single embed.
 ======================================== */
