@@ -201,7 +201,7 @@ class KygoHiwHero extends HTMLElement {
           </div>
           
           <h1>How <span class="highlight">Kygo</span> Works</h1>
-          <p class="hero-subtitle">Three simple steps to understand the connection between what you eat and how your body responds—backed by real data from your wearables.</p>
+          <p class="hero-subtitle">Three simple steps to understand the connection between what you eat and how your body responds, backed by real data from your wearables.</p>
 
           <div class="hero-stats">
             <div class="hero-stat">
@@ -229,12 +229,12 @@ class KygoHiwHero extends HTMLElement {
       const ld = {
         '@context': 'https://schema.org',
         '@type': 'HowTo',
-        'name': 'How Kygo Health Works — From Meal Logging to Personalized Correlations',
+        'name': 'How Kygo Health Works: From Meal Logging to Personalized Correlations',
         'description': 'Kygo Health connects your nutrition data with your wearable health data to find personalized food-body correlations in 3 steps.',
         'totalTime': 'P7D',
         'step': [
           { '@type': 'HowToStep', 'position': 1, 'name': 'Log your meals', 'text': 'Use AI photo recognition, voice input, barcode scanning, or natural text to log meals in seconds. The app identifies ingredients including garnishes and toppings for accurate macro and micronutrient tracking.' },
-          { '@type': 'HowToStep', 'position': 2, 'name': 'Connect your wearable', 'text': 'Link your Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch. Your historical health data syncs automatically — sleep stages, HRV, heart rate, steps, and recovery metrics.' },
+          { '@type': 'HowToStep', 'position': 2, 'name': 'Connect your wearable', 'text': 'Link your Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch. Your historical health data syncs automatically: sleep stages, HRV, heart rate, steps, and recovery metrics.' },
           { '@type': 'HowToStep', 'position': 3, 'name': 'Discover your correlations', 'text': 'After 7 days of logging, Kygo identifies personalized patterns like "Your deep sleep increases 22 minutes when you eat dinner before 7pm" or "Your HRV drops 15% on days you consume more than 200mg caffeine after 2pm."' }
         ]
       };
@@ -713,7 +713,7 @@ class KygoHiwPhaseConnect extends HTMLElement {
               </div>
               
               <p class="phase-description">
-                Link your Oura, Apple Health, Fitbit, Garmin, Whoop, or Health Connect—we pull in your sleep, HRV, activity, and recovery data automatically. No manual entry needed, and your historical data imports so we can start finding patterns immediately.
+                Link your Oura, Apple Health, Fitbit, Garmin, Whoop, or Health Connect, and we pull in your sleep, HRV, activity, and recovery data automatically. No manual entry needed, and your historical data imports so we can start finding patterns immediately.
               </p>
 
               <div class="feature-list">
@@ -723,7 +723,7 @@ class KygoHiwPhaseConnect extends HTMLElement {
                   </div>
                   <div class="feature-text">
                     <h4>One-tap OAuth connection</h4>
-                    <p>Secure authorization in seconds—no passwords shared with us</p>
+                    <p>Secure authorization in seconds, no passwords shared with us</p>
                   </div>
                 </div>
                 <div class="feature-item">
@@ -1458,7 +1458,7 @@ class KygoHiwPhaseLog extends HTMLElement {
               </div>
               
               <p class="phase-description">
-                Four ways to log—pick whatever's fastest in the moment. Snap a photo and we'll identify every ingredient down to the cracked pepper on your eggs. Or just say "two eggs with avocado toast" and we'll handle the rest.
+                Four ways to log, pick whatever's fastest in the moment. Snap a photo and we'll identify every ingredient down to the cracked pepper on your eggs. Or just say "two eggs with avocado toast" and we'll handle the rest.
               </p>
 
               <div class="feature-list">
@@ -1468,7 +1468,7 @@ class KygoHiwPhaseLog extends HTMLElement {
                   </div>
                   <div class="feature-text">
                     <h4>Photo recognition</h4>
-                    <p>Point, shoot, done. Identifies every ingredient—even garnishes and toppings.</p>
+                    <p>Point, shoot, done. Identifies every ingredient, even garnishes and toppings.</p>
                   </div>
                 </div>
                 <div class="feature-item">
@@ -2131,7 +2131,7 @@ class KygoHiwPhaseDiscover extends HTMLElement {
               </div>
               
               <p class="phase-description">
-                After 7 days of logging both nutrition and wearable data, Kygo starts finding statistically significant correlations. We factor in outliers and calculate confidence levels—so you only see patterns we're sure about. The more you log, the more correlations you'll discover.
+                After 7 days of logging both nutrition and wearable data, Kygo starts finding statistically significant correlations. We factor in outliers and calculate confidence levels, so you only see patterns we're sure about. The more you log, the more correlations you'll discover.
               </p>
 
               <div class="feature-list">
@@ -2150,7 +2150,7 @@ class KygoHiwPhaseDiscover extends HTMLElement {
                   </div>
                   <div class="feature-text">
                     <h4>Outliers filtered out</h4>
-                    <p>One bad night doesn't skew your data—we account for anomalies</p>
+                    <p>One bad night doesn't skew your data, we account for anomalies</p>
                   </div>
                 </div>
                 <div class="feature-item">
@@ -2170,7 +2170,7 @@ class KygoHiwPhaseDiscover extends HTMLElement {
                 </div>
                 <div class="immediate-value-text">
                   <span>The Payoff</span>
-                  <p>"Your HRV improves 12% when you avoid sugar after 6pm"—that's YOUR body talking</p>
+                  <p>"Your HRV improves 12% when you avoid sugar after 6pm," that's YOUR body talking</p>
                 </div>
               </div>
             </div>
@@ -2610,7 +2610,7 @@ class KygoHiwTimeline extends HTMLElement {
         <div class="container">
           <div class="section-header animate-on-scroll">
             <h2>Your first two weeks</h2>
-            <p>You get value from day one—correlations are the bonus</p>
+            <p>You get value from day one, correlations are the bonus</p>
           </div>
 
           <div class="timeline-track">
@@ -3393,7 +3393,7 @@ class KygoHiwFinalCta extends HTMLElement {
         <div class="container">
           <div class="closing-head animate-on-scroll">
             <div class="closing-kicker">The short version</div>
-            <h2>What Kygo is &mdash; and how it's protected</h2>
+            <h2>What Kygo is, and how it's protected</h2>
             <p>Two things worth knowing before you download.</p>
           </div>
           <div class="closing-grid">
@@ -3403,7 +3403,7 @@ class KygoHiwFinalCta extends HTMLElement {
                 <div class="closing-icon is-logo"><img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo" loading="lazy"></div>
                 <h3>What is Kygo?</h3>
               </div>
-              <p class="closing-lead">Most apps hand you a sleep or HRV score and stop there. Kygo connects that wearable data to <strong>what you actually eat</strong> &mdash; so you see <strong>why</strong> your numbers move, not just what they are, across sleep, HRV, energy, and recovery.</p>
+              <p class="closing-lead">Most apps hand you a sleep or HRV score and stop there. Kygo connects that wearable data to <strong>what you actually eat</strong>, so you see <strong>why</strong> your numbers move, not just what they are, across sleep, HRV, energy, and recovery.</p>
               <div class="closing-chips">
                 <span class="closing-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Photo, voice &amp; barcode logging</span>
                 <span class="closing-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Every major wearable</span>
@@ -3417,7 +3417,7 @@ class KygoHiwFinalCta extends HTMLElement {
                 <h3>Private by design</h3>
               </div>
               <div class="closing-points">
-                <div class="closing-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><p><strong>Encrypted end to end</strong> &mdash; TLS in transit, AES-256 at rest.</p></div>
+                <div class="closing-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><p><strong>Encrypted end to end.</strong> TLS in transit, AES-256 at rest.</p></div>
                 <div class="closing-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><p><strong>Never sold.</strong> Every request is scoped so only you reach your data.</p></div>
                 <div class="closing-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><p><strong>You stay in control.</strong> Revoke a wearable anytime; deleting your account purges everything.</p></div>
                 <div class="closing-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><p><strong>Independently assessed</strong> for health-data access, with daily backups.</p></div>
