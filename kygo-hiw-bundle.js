@@ -3242,27 +3242,49 @@ class KygoHiwFinalCta extends HTMLElement {
         .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
         .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
-        .product-desc { max-width: 660px; margin: 48px auto 0; text-align: center; }
-        .product-desc h2 { font-size: 20px; color: #1E293B; margin-bottom: 10px; }
-        .product-desc p { color: #475569; font-size: 14px; line-height: 1.65; }
-        .trust-security { max-width: 720px; margin: 32px auto 0; padding: 24px 20px; background: #fff; border: 1px solid #E2E8F0; border-radius: 20px; text-align: center; }
-        .trust-eyebrow { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-dark); margin-bottom: 10px; }
-        .trust-eyebrow svg { width: 14px; height: 14px; }
-        .trust-security h3 { font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 600; font-size: 19px; color: #1E293B; margin-bottom: 10px; }
-        .trust-security p { color: #475569; font-size: 14px; line-height: 1.65; margin-bottom: 14px; }
-        .trust-security .trust-link { display: inline-flex; align-items: center; gap: 6px; color: var(--green-dark); font-weight: 600; font-size: 14px; text-decoration: none; }
-        .trust-security .trust-link:hover { text-decoration: underline; }
+        /* ===== CLOSING SECTION (What is Kygo? + Private by design) ===== */
+        .closing { padding: 56px 0 72px; background: #fff; border-top: 1px solid #EEF2F6; }
+        .closing-head { text-align: center; max-width: 640px; margin: 0 auto 36px; }
+        .closing-kicker { font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--green-dark); margin-bottom: 10px; }
+        .closing-head h2 { font-size: clamp(24px, 6vw, 34px); color: #1E293B; margin-bottom: 10px; }
+        .closing-head p { color: #64748B; font-size: 15px; line-height: 1.6; }
+
+        .closing-grid { display: grid; gap: 16px; max-width: 1000px; margin: 0 auto; align-items: stretch; }
+        .closing-card { background: var(--gray-50); border: 1px solid #E2E8F0; border-radius: 20px; padding: 24px 22px; display: flex; flex-direction: column; transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease; }
+        .closing-card:hover { border-color: var(--green); box-shadow: 0 12px 28px rgba(34,197,94,0.10); transform: translateY(-4px); }
+        .closing-card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+        .closing-icon { width: 46px; height: 46px; flex-shrink: 0; border-radius: 13px; background: linear-gradient(135deg, #22C55E, #16A34A); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(34,197,94,0.28); }
+        .closing-icon svg { width: 22px; height: 22px; color: #fff; }
+        .closing-icon.is-logo { background: rgba(34,197,94,0.12); box-shadow: none; padding: 8px; }
+        .closing-icon.is-logo img { width: 100%; height: 100%; object-fit: contain; }
+        .closing-card-head h3 { font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 600; font-size: 19px; color: #1E293B; }
+
+        .closing-lead { color: #475569; font-size: 15px; line-height: 1.65; margin-bottom: 16px; }
+        .closing-lead strong { color: #1E293B; font-weight: 600; }
+        .closing-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+        .closing-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.10); color: var(--green-dark); padding: 6px 12px; border-radius: 20px; font-size: 12.5px; font-weight: 600; }
+        .closing-chip svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        .closing-points { display: flex; flex-direction: column; gap: 11px; margin-bottom: 16px; }
+        .closing-point { display: flex; align-items: flex-start; gap: 11px; }
+        .closing-point svg { width: 18px; height: 18px; color: var(--green); flex-shrink: 0; margin-top: 2px; }
+        .closing-point p { font-size: 14px; color: #475569; line-height: 1.5; }
+        .closing-point strong { color: #1E293B; font-weight: 600; }
+        .closing-link { display: inline-flex; align-items: center; gap: 6px; color: var(--green-dark); font-weight: 600; font-size: 14px; text-decoration: none; white-space: nowrap; margin-top: auto; align-self: flex-start; }
+        .closing-link:hover { text-decoration: underline; }
+        .closing-link svg { width: 15px; height: 15px; }
 
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
 
         @media (min-width: 768px) {
           .final-cta { padding: 96px 0; }
           .final-cta-inner { padding: 56px 40px; }
-          .product-desc h2 { font-size: 24px; }
-          .product-desc p { font-size: 15px; }
-          .trust-security { padding: 32px; }
-          .trust-security h3 { font-size: 22px; }
-          .trust-security p { font-size: 15px; }
+          .closing { padding: 80px 0 96px; }
+          .closing-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+          .closing-card { padding: 30px 28px; }
+          .closing-card-head h3 { font-size: 21px; }
+          .closing-lead { font-size: 16px; }
+          .closing-point p { font-size: 15px; line-height: 1.6; }
         }
 
         @keyframes fadeInUp {
@@ -3309,6 +3331,12 @@ class KygoHiwFinalCta extends HTMLElement {
         .final-cta-inner.visible .cta-android { animation: ctaScaleIn 0.5s ease-out 0.4s forwards; }
         .final-cta-inner.visible .cta-works { animation: ctaSlideUp 0.5s ease-out 0.55s forwards; }
 
+        .closing-head.animate-on-scroll,
+        .closing-card.animate-on-scroll { opacity: 0; transform: translateY(20px); }
+        .closing-head.visible,
+        .closing-card.visible { animation: ctaSlideUp 0.6s ease-out forwards; }
+        .closing-card:nth-child(2).visible { animation-delay: 0.08s; }
+
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
           .cta-pill,
@@ -3316,7 +3344,9 @@ class KygoHiwFinalCta extends HTMLElement {
           .final-cta-content > p,
           .cta-primary,
           .cta-android,
-          .cta-works {
+          .cta-works,
+          .closing-head,
+          .closing-card {
             opacity: 1;
             transform: none;
           }
@@ -3356,15 +3386,45 @@ class KygoHiwFinalCta extends HTMLElement {
               </div>
             </div>
           </div>
-          <div class="product-desc animate-on-scroll">
-            <h2>What is Kygo?</h2>
-            <p>Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.</p>
+        </div>
+      </section>
+
+      <section class="closing">
+        <div class="container">
+          <div class="closing-head animate-on-scroll">
+            <div class="closing-kicker">The short version</div>
+            <h2>What Kygo is &mdash; and how it's protected</h2>
+            <p>Two things worth knowing before you download.</p>
           </div>
-          <div class="trust-security animate-on-scroll">
-            <div class="trust-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> Privacy &amp; security</div>
-            <h3>Your privacy and security</h3>
-            <p>Your data is protected end to end. All traffic between the app and our servers is encrypted with modern TLS, and your data is encrypted at rest with AES-256. Accounts use strong passwords, bcrypt hashing, and token-based authentication, with every request scoped so you can only ever access your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth that you can revoke at any time, and deleting your account permanently purges your data. Kygo runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access.</p>
-            <a class="trust-link" href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy →</a>
+          <div class="closing-grid">
+
+            <div class="closing-card animate-on-scroll">
+              <div class="closing-card-head">
+                <div class="closing-icon is-logo"><img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo" loading="lazy"></div>
+                <h3>What is Kygo?</h3>
+              </div>
+              <p class="closing-lead">Most apps hand you a sleep or HRV score and stop there. Kygo connects that wearable data to <strong>what you actually eat</strong> &mdash; so you see <strong>why</strong> your numbers move, not just what they are, across sleep, HRV, energy, and recovery.</p>
+              <div class="closing-chips">
+                <span class="closing-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Photo, voice &amp; barcode logging</span>
+                <span class="closing-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>Every major wearable</span>
+                <span class="closing-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="3"/><path d="M11 18h2"/></svg>iPhone &amp; Android</span>
+              </div>
+            </div>
+
+            <div class="closing-card animate-on-scroll">
+              <div class="closing-card-head">
+                <div class="closing-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <h3>Private by design</h3>
+              </div>
+              <div class="closing-points">
+                <div class="closing-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><p><strong>Encrypted end to end</strong> &mdash; TLS in transit, AES-256 at rest.</p></div>
+                <div class="closing-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><p><strong>Never sold.</strong> Every request is scoped so only you reach your data.</p></div>
+                <div class="closing-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><p><strong>You stay in control.</strong> Revoke a wearable anytime; deleting your account purges everything.</p></div>
+                <div class="closing-point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg><p><strong>Independently assessed</strong> for health-data access, with daily backups.</p></div>
+              </div>
+              <a class="closing-link" href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+
           </div>
         </div>
       </section>
