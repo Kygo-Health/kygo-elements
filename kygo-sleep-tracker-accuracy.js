@@ -602,6 +602,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
             <p class="lede">Every wearable's independent finding vs a lab PSG, the manufacturer's claim, its per-stage and timing numbers, and what it's best and weakest for.</p>
           </div>
           <div class="animate-on-scroll">${this._renderDeviceDetails()}</div>
+          <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The "View on Amazon" links above are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases — at no extra cost to you.</span></p>
         </div>
       </section>
 
@@ -996,6 +997,8 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .dev-amazon:hover { border-color: var(--kygo-green); background: rgba(34,197,94,0.12); }
       .dev-amazon .ico { width: 14px; height: 14px; transition: transform .15s; }
       .dev-amazon:hover .ico { transform: translateX(2px); }
+      .aff-disclosure { display: flex; gap: 10px; align-items: flex-start; margin: 20px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--fg-3); font-style: italic; }
+      .aff-disclosure .ico { width: 15px; height: 15px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
 
       /* Fact cards (fixed facts) */
       .sig-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
