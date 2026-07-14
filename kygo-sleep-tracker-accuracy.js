@@ -26,17 +26,67 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._observer = null;
+    this._selected = null; // Set of device ids chosen in the comparator
   }
 
   connectedCallback() {
+    if (!this._selected) {
+      // Default to the top three by healthy-adult staging (Oura, Apple, Fitbit Sense)
+      this._selected = new Set(this._devices.slice(0, 3).map(d => this._did(d)));
+    }
     this.render();
     this._setupAnimations();
+    this._wire();
     this._injectStructuredData();
     __seo(this, this._seoText());
   }
 
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
+  }
+
+  // ── Interactivity: one delegated listener on the shadow root so it
+  //    survives the innerHTML swap of the comparator result region ─────────
+  _wire() {
+    if (this._wired) return;
+    this._wired = true;
+    this.shadowRoot.addEventListener('click', (e) => {
+      const chip = e.target.closest('[data-cmpr-id]');
+      if (chip) { this._toggleDevice(chip.getAttribute('data-cmpr-id')); return; }
+      const tgl = e.target.closest('[data-src-toggle]');
+      if (tgl) { this._toggleSources(); return; }
+    });
+  }
+
+  _toggleDevice(id) {
+    const sel = this._selected;
+    if (sel.has(id)) { if (sel.size > 2) sel.delete(id); }      // keep a minimum of 2
+    else { if (sel.size < 4) sel.add(id); }                     // cap at 4
+    const root = this.shadowRoot;
+    root.querySelectorAll('[data-cmpr-id]').forEach(c => {
+      const on = sel.has(c.getAttribute('data-cmpr-id'));
+      c.classList.toggle('active', on);
+      c.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    const out = root.querySelector('[data-cmpr-out]');
+    if (out) out.innerHTML = this._renderCmprResult();
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    if (extra.hasAttribute('hidden')) {
+      extra.removeAttribute('hidden');
+      if (btn) btn.classList.add('open');
+      if (lbl) lbl.textContent = 'Show fewer sources';
+    } else {
+      extra.setAttribute('hidden', '');
+      if (btn) btn.classList.remove('open');
+      if (lbl) lbl.textContent = 'Show all ' + this._sources.length + ' sources';
+    }
   }
 
   // ── Brand product images (shared Wix assets, by device key) ─────────────
@@ -243,7 +293,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
   // ── SEO light-DOM summary ───────────────────────────────────────────────
 
   _seoText() {
-    return 'Most Accurate Sleep Tracker comparison by Kygo Health. Which wearable is most accurate for sleep versus the lab gold standard, polysomnography (PSG)? No wristband or ring measures sleep — a lab PSG reads brain waves, while a wearable only estimates stages from heart rate, movement and temperature. Two rules decide every number. Rule 1: healthy versus clinical population is the main axis — the same device scores far higher in screened healthy young sleepers than in older adults or real sleep-disorder patients (Oura Gen 3 4-stage agreement kappa 0.65 healthy but 0.35 in sleep-clinic patients; Apple Watch S8 kappa 0.53 healthy to 0.30 in a sleep-apnea population). Rule 2: manufacturer-funded means best-case population, not weaker method (Oura-funded Robbins 2024 used the same in-lab PSG rigor). Grading: a 4-stage kappa of 0.4 to 0.6 is "moderate," the current consumer ceiling; human PSG scorers agree at about 0.75, so no consumer device is accurate in an absolute sense. 4-STAGE SLEEP STAGING (Cohen\'s kappa, healthy adults): Oura Ring Gen 3 0.65 (Robbins), Apple Watch S8 0.53 (Schyvens), Fitbit Sense/Sense 2 0.42 (Schyvens), Fitbit Charge 5 0.41, WHOOP 4.0 0.37, Withings ScanWatch 0.22, Garmin Vivosmart 4 0.21. Clinical population: Oura 0.35, Apple 0.30, Fitbit 0.42 (most population-robust). DEEP SLEEP DETECTION sensitivity (healthy): Oura 79.5%, WHOOP 69.6%, Fitbit 50.9%, Apple 50.7%, Garmin 47.5%. REM DETECTION sensitivity (healthy): Oura 76.0%, Apple 68.6%, WHOOP 62.0%, Fitbit 61.3%, Garmin 33.1%. SLEEP/WAKE (2-state) agreement: Oura Gen 2 89%, Garmin 89%, Apple S6 88%, WHOOP 3.0 86%, Fitbit 81 to 91%. TOTAL SLEEP TIME bias: Oura -3.0 min, Fitbit Sense +6.3, Fitbit Charge 5 +11.1, Apple +19.6, WHOOP +24.5, Garmin +38.4, Withings +39.9 (within about plus or minus 30 min is clinically acceptable). Fixed facts: wake detection is universally poor (high sleep sensitivity, low wake specificity 27 to 52%; all overestimate sleep and underestimate WASO by 12 to 48 min); accuracy drops with age (Searles 2026: about 75 min TST underestimate and deep-sleep MAPE 400 to 700% in older adults on Fitbit Sense 2 and Oura Gen 3); EEG headbands (Muse-S, ear-EEG) reach kappa about 0.76, a better tier than any ring or watch; rings win the vitals measured during sleep (HRV CCC 0.99, resting HR CCC 0.98) while watches win stage labels; current-generation flagships (Oura Ring 4/5, WHOOP 5/MG, Apple S9/S10/Ultra, Galaxy Watch/Ring, Pixel) have no independent staging validation. Do not cite fabricated figures such as "Charge 6 84.6%," "Venu 3 85 to 90%," "Fitbit Sense 2 94%," or a "University of Salzburg 2026 ranking" — they trace to no study. Sources: Schyvens 2025, Lee 2023, Herberger 2025, Khan 2025, JCSM meta, Miller 2022, Haghayegh 2019, Searles 2026, npj EEG meta 2025, Dial 2025, Robbins 2024, Svensson 2024, Apple white paper, Google/Fitbit 2026. Oura vs Apple Watch vs Fitbit vs WHOOP vs Garmin vs Withings sleep tracking accuracy. Data verified July 2026.';
+    return 'Most Accurate Sleep Tracker comparison by Kygo Health. Interactive tool: pick 2 to 4 wearables and compare them side by side on six metrics (4-stage staging in healthy and clinical sleepers, deep-sleep detection, REM detection, sleep/wake agreement, total-sleep-time bias), with the best value in each row highlighted. Which wearable is most accurate for sleep versus the lab gold standard, polysomnography (PSG)? No wristband or ring measures sleep — a lab PSG reads brain waves, while a wearable only estimates stages from heart rate, movement and temperature. Two rules decide every number. Rule 1: healthy versus clinical population is the main axis — the same device scores far higher in screened healthy young sleepers than in older adults or real sleep-disorder patients (Oura Gen 3 4-stage agreement kappa 0.65 healthy but 0.35 in sleep-clinic patients; Apple Watch S8 kappa 0.53 healthy to 0.30 in a sleep-apnea population). Rule 2: manufacturer-funded means best-case population, not weaker method (Oura-funded Robbins 2024 used the same in-lab PSG rigor). Grading: a 4-stage kappa of 0.4 to 0.6 is "moderate," the current consumer ceiling; human PSG scorers agree at about 0.75, so no consumer device is accurate in an absolute sense. 4-STAGE SLEEP STAGING (Cohen\'s kappa, healthy adults): Oura Ring Gen 3 0.65 (Robbins), Apple Watch S8 0.53 (Schyvens), Fitbit Sense/Sense 2 0.42 (Schyvens), Fitbit Charge 5 0.41, WHOOP 4.0 0.37, Withings ScanWatch 0.22, Garmin Vivosmart 4 0.21. Clinical population: Oura 0.35, Apple 0.30, Fitbit 0.42 (most population-robust). DEEP SLEEP DETECTION sensitivity (healthy): Oura 79.5%, WHOOP 69.6%, Fitbit 50.9%, Apple 50.7%, Garmin 47.5%. REM DETECTION sensitivity (healthy): Oura 76.0%, Apple 68.6%, WHOOP 62.0%, Fitbit 61.3%, Garmin 33.1%. SLEEP/WAKE (2-state) agreement: Oura Gen 2 89%, Garmin 89%, Apple S6 88%, WHOOP 3.0 86%, Fitbit 81 to 91%. TOTAL SLEEP TIME bias: Oura -3.0 min, Fitbit Sense +6.3, Fitbit Charge 5 +11.1, Apple +19.6, WHOOP +24.5, Garmin +38.4, Withings +39.9 (within about plus or minus 30 min is clinically acceptable). Fixed facts: wake detection is universally poor (high sleep sensitivity, low wake specificity 27 to 52%; all overestimate sleep and underestimate WASO by 12 to 48 min); accuracy drops with age (Searles 2026: about 75 min TST underestimate and deep-sleep MAPE 400 to 700% in older adults on Fitbit Sense 2 and Oura Gen 3); EEG headbands (Muse-S, ear-EEG) reach kappa about 0.76, a better tier than any ring or watch; rings win the vitals measured during sleep (HRV CCC 0.99, resting HR CCC 0.98) while watches win stage labels; current-generation flagships (Oura Ring 4/5, WHOOP 5/MG, Apple S9/S10/Ultra, Galaxy Watch/Ring, Pixel) have no independent staging validation. Do not cite fabricated figures such as "Charge 6 84.6%," "Venu 3 85 to 90%," "Fitbit Sense 2 94%," or a "University of Salzburg 2026 ranking" — they trace to no study. Sources: Schyvens 2025, Lee 2023, Herberger 2025, Khan 2025, JCSM meta, Miller 2022, Haghayegh 2019, Searles 2026, npj EEG meta 2025, Dial 2025, Robbins 2024, Svensson 2024, Apple white paper, Google/Fitbit 2026. Oura vs Apple Watch vs Fitbit vs WHOOP vs Garmin vs Withings sleep tracking accuracy. Data verified July 2026.';
   }
 
   // ── Icons ───────────────────────────────────────────────────────────────
@@ -288,6 +338,136 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       : `<span class="vpill dark">Weak</span>`;
   }
 
+  // ── Interactive comparator (pick 2–4 devices → side-by-side) ────────────
+
+  // stable id + short chip label per device
+  _did(d) { return d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+  _chip(d) {
+    if (d.name.includes('Sense')) return 'Fitbit Sense';
+    if (d.name.includes('Charge')) return 'Fitbit Charge 5';
+    return d.short;
+  }
+  // numeric accessors for the comparator rows (null when a device wasn't tested)
+  _kcVal(d) { return d.kClinicalStr ? parseFloat(d.kClinicalStr) : null; }
+  _swVal(d) { if (!d.sw) return null; const m = d.sw.match(/\d+/g); if (!m) return null; const n = m.map(Number); return n.reduce((a, b) => a + b, 0) / n.length; }
+  _cmprVal(d, key) {
+    switch (key) {
+      case 'kH': return d.kHealthy;
+      case 'kC': return this._kcVal(d);
+      case 'deep': return d.deepH;
+      case 'rem': return d.remH;
+      case 'sw': return this._swVal(d);
+      case 'tst': return d.tstVal;
+    }
+    return null;
+  }
+  _cmprFmt(d, key) {
+    switch (key) {
+      case 'kH': return d.kHealthyStr;
+      case 'kC': return d.kClinicalStr || '—';
+      case 'deep': return d.deepH != null ? d.deepH + '%' : '—';
+      case 'rem': return d.remH != null ? d.remH + '%' : '—';
+      case 'sw': return d.sw || '—';
+      case 'tst': return d.tst;
+    }
+    return '—';
+  }
+  _cmprRows() {
+    return [
+      { key: 'kH', label: '4-stage staging', unit: 'κ · healthy adults', better: 'high' },
+      { key: 'kC', label: '4-stage staging', unit: 'κ · clinical patients', better: 'high' },
+      { key: 'deep', label: 'Deep sleep detection', unit: '% caught vs PSG', better: 'high' },
+      { key: 'rem', label: 'REM sleep detection', unit: '% caught vs PSG', better: 'high' },
+      { key: 'sw', label: 'Sleep / wake agreement', unit: '2-state %', better: 'high' },
+      { key: 'tst', label: 'Total sleep time bias', unit: 'min from PSG', better: 'zero' }
+    ];
+  }
+
+  _renderComparator() {
+    return `
+      <div class="cmpr">
+        <div class="cmpr-picker-head">
+          <span class="cmpr-picker-title">Choose devices to compare</span>
+          <span class="cmpr-picker-hint">Tap to add or remove · 2–4 at a time</span>
+        </div>
+        <div class="picker" role="group" aria-label="Choose sleep trackers to compare">
+          ${this._devices.map(d => {
+            const id = this._did(d), on = this._selected.has(id);
+            return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-cmpr-id="${id}" aria-pressed="${on}">
+              <span class="pick-check">${this._icon('check')}</span>
+              ${this._deviceLogo(d, 'sm')}
+              <span class="pick-name">${this._chip(d)}</span>
+              <span class="pick-type">${d.typeLabel}</span>
+            </button>`;
+          }).join('')}
+        </div>
+        <div class="cmpr-out" data-cmpr-out>${this._renderCmprResult()}</div>
+      </div>`;
+  }
+
+  _renderCmprResult() {
+    const sel = this._devices.filter(d => this._selected.has(this._did(d)));
+    if (sel.length < 2) {
+      return `<div class="cmpr-empty">${this._icon('info')} Pick at least two devices above to see them side by side.</div>`;
+    }
+    const rows = this._cmprRows();
+    const wins = {}; sel.forEach(d => { wins[this._did(d)] = 0; });
+    let scored = 0;
+
+    const body = rows.map(r => {
+      const vals = sel.map(d => ({ id: this._did(d), v: this._cmprVal(d, r.key) }));
+      const valid = vals.filter(x => x.v != null);
+      const best = new Set();
+      if (valid.length > 1) {
+        const metric = x => r.better === 'zero' ? Math.abs(x.v) : x.v;
+        const target = r.better === 'zero'
+          ? Math.min(...valid.map(metric))
+          : Math.max(...valid.map(metric));
+        valid.forEach(x => { if (metric(x) === target) best.add(x.id); });
+        if (best.size < valid.length) { scored++; best.forEach(id => { wins[id]++; }); }
+      }
+      const cells = sel.map(d => {
+        const id = this._did(d), v = this._cmprVal(d, r.key);
+        if (v == null) return `<td>${this._na()}</td>`;
+        const isBest = best.has(id) && best.size < valid.length;
+        const txt = this._cmprFmt(d, r.key);
+        return `<td>${isBest ? `<span class="vpill good">${txt}${this._icon('check')}</span>` : `<span class="vpill mid">${txt}</span>`}</td>`;
+      }).join('');
+      return `<tr>
+        <th scope="row"><span class="cr-metric">${r.label}</span><span class="cr-unit">${r.unit}</span><span class="cr-dir">${r.better === 'zero' ? 'closest to 0 wins' : 'higher wins'}</span></th>
+        ${cells}
+      </tr>`;
+    }).join('');
+
+    const head = `<tr>
+      <th class="cr-corner" scope="col">Metric</th>
+      ${sel.map(d => `<th scope="col"><span class="cr-dev">${this._deviceLogo(d, 'sm')}<span class="cr-dev-name">${this._chip(d)}</span><span class="cr-dev-type">${d.typeLabel}</span></span></th>`).join('')}
+    </tr>`;
+
+    const entries = Object.entries(wins);
+    const max = Math.max(...entries.map(([, w]) => w));
+    let verdict;
+    if (max === 0) {
+      verdict = `These devices are too close to separate on the metrics they share — and every one of them overestimates sleep and struggles to detect wake.`;
+    } else {
+      const leaders = entries.filter(([, w]) => w === max).map(([id]) => this._chip(sel.find(d => this._did(d) === id)));
+      verdict = leaders.length === 1
+        ? `<strong>${leaders[0]}</strong> wins the most metrics here (${max} of ${scored}). These are healthy-adult figures — accuracy drops in older adults and sleep-disorder patients, and no device reliably measures wake.`
+        : `It's a tie — <strong>${leaders.join('</strong> and <strong>')}</strong> each lead on ${max} of ${scored} metrics. All of them overestimate sleep and can't reliably measure wake.`;
+    }
+
+    return `
+      <div class="cr-wrap">
+        <div class="cr-scroll">
+          <table class="cr-table">
+            <thead>${head}</thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>
+      </div>
+      <div class="cr-verdict">${this._icon('info')}<span>${verdict}</span></div>`;
+  }
+
   // ── Section: headline 4-stage staging matrix (logo chart) ───────────────
 
   _renderStagingMatrix() {
@@ -323,45 +503,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
           </table>
         </div>
         <p class="cmp-legend">${this._icon('info')} Cohen's kappa vs in-lab PSG · <strong>0.4–0.6 = "moderate,"</strong> the consumer ceiling · human sleep scorers agree at ~0.75 · <span class="lg-good">green</span> ≥ 0.50. Ranked by healthy-adult agreement.</p>
-      </div>`;
-  }
-
-  // ── Section: per-stage & timing matrix (healthy adults) ─────────────────
-
-  _renderMetricsMatrix() {
-    const rows = this._devices;
-    const pct = (v, thresh) => v == null ? this._na() : this._pill(v + '%', v >= thresh ? 'good' : 'mid');
-    return `
-      <div class="cmp">
-        <div class="cmp-scroll">
-          <table class="cmp-table">
-            <thead>
-              <tr>
-                <th class="cmp-th-device" scope="col">Wearable</th>
-                <th scope="col"><span class="th-full">Deep detection</span><span class="th-short" aria-hidden="true">Deep</span></th>
-                <th scope="col"><span class="th-full">REM detection</span><span class="th-short" aria-hidden="true">REM</span></th>
-                <th scope="col"><span class="th-full">Sleep / wake</span><span class="th-short" aria-hidden="true">Sleep/wake</span></th>
-                <th scope="col"><span class="th-full">Total sleep time bias</span><span class="th-short" aria-hidden="true">TST bias</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rows.map(d => `
-                <tr>
-                  <th class="cmp-td-device" scope="row">
-                    <span class="brand">
-                      ${this._deviceLogo(d, 'sm')}
-                      <span class="brand-text"><span class="brand-name">${d.name}</span><span class="brand-type">${d.typeLabel}</span></span>
-                    </span>
-                  </th>
-                  <td>${pct(d.deepH, 65)}</td>
-                  <td>${pct(d.remH, 65)}</td>
-                  <td>${d.sw ? this._pill(d.sw, 'good') : this._na()}</td>
-                  <td>${this._pill(d.tst, Math.abs(d.tstVal) <= 30 ? 'good' : 'dark')}</td>
-                </tr>`).join('')}
-            </tbody>
-          </table>
-        </div>
-        <p class="cmp-legend">${this._icon('info')} Healthy adults · deep &amp; REM = % of epochs correctly caught vs PSG (<span class="lg-good">green</span> ≥ 65%) · sleep/wake is the easy 2-state task (prior-gen devices: Oura Gen 2, Apple S6, WHOOP 3.0, Garmin FR245; Fitbit = meta range) · TST <span class="lg-good">green</span> within ±30 min.</p>
       </div>`;
   }
 
@@ -449,8 +590,8 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
 
   // ── Section: sources (compact link list) ────────────────────────────────
 
-  _renderSources() {
-    return this._sources.map(s => `
+  _renderSourceCards(list) {
+    return list.map(s => `
       <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">
         <span class="src-tag">${s.tag}</span>
         <span class="src-title">${s.title}</span>
@@ -531,12 +672,34 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <section class="section bg-light" id="compare">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Build your comparison</div>
+            <h2>Compare sleep trackers <span class="hl">head-to-head.</span></h2>
+            <p class="lede">Pick 2–4 devices and see them side by side on the six metrics that matter — staging in healthy <em>and</em> clinical sleepers, deep &amp; REM detection, sleep/wake, and total-sleep-time bias. The best value in each row is highlighted.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderComparator()}</div>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">The full ranking</div>
+            <h2>All seven, ranked on <span class="hl">the headline metric.</span></h2>
+            <p class="lede">Sleep staging (light / deep / REM / wake) is the hard task and the number people quote. Here's every device ranked by healthy-adult agreement, with how it holds up in clinical patients. Scroll sideways on mobile.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderStagingMatrix()}</div>
+        </div>
+      </section>
+
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
-            <div class="kicker">Read this first</div>
+            <div class="kicker">Read this before you trust a number</div>
             <h2>The one thing that <span class="hl">decides accuracy.</span></h2>
-            <p class="lede">Who's wearing it matters more than which brand it is. The <strong>same device</strong> scores far higher in screened healthy sleepers than in older adults or real sleep-clinic patients.</p>
+            <p class="lede">Who's wearing it matters more than which brand it is. The <strong>same device</strong> scores far higher in screened healthy sleepers than in older adults or real sleep-clinic patients — which is why the comparison above splits staging into healthy vs clinical.</p>
           </div>
           <div class="bias animate-on-scroll">
             <div class="bias-card good">
@@ -583,18 +746,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
 
       <kygo-inline-subscribe source="tool-sleep-tracker-accuracy" variant="comparison"></kygo-inline-subscribe>
 
-      <section class="section bg-light" id="compare">
-        <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">The headline metric</div>
-            <h2>4-stage staging, <span class="hl">device by device.</span></h2>
-            <p class="lede">Sleep staging (light / deep / REM / wake) is the hard task and the number people quote. Ranked best-to-worst by healthy-adult agreement. Scroll sideways on mobile.</p>
-          </div>
-          <div class="animate-on-scroll">${this._renderStagingMatrix()}</div>
-        </div>
-      </section>
-
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">In detail</div>
@@ -603,17 +755,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
           </div>
           <div class="animate-on-scroll">${this._renderDeviceDetails()}</div>
           <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The "View on Amazon" links above are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases — at no extra cost to you.</span></p>
-        </div>
-      </section>
-
-      <section class="section bg-light">
-        <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">Beyond staging</div>
-            <h2>The four other metrics <span class="hl">that matter.</span></h2>
-            <p class="lede">Deep- and REM-stage detection, the easy sleep/wake question, and how far off total sleep time runs — all for healthy adults. Oura leads deep &amp; REM; everyone over-reports sleep.</p>
-          </div>
-          <div class="animate-on-scroll">${this._renderMetricsMatrix()}</div>
         </div>
       </section>
 
@@ -669,7 +810,11 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
             <h2>Every claim, <span class="hl">traceable.</span></h2>
             <p class="lede">Each figure checked against the primary record (PubMed / journal / manufacturer paper). Verified July 2026.</p>
           </div>
-          <div class="sources animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources animate-on-scroll">${this._renderSourceCards(this._sources.slice(0, 6))}</div>
+          <div class="sources src-extra animate-on-scroll" data-src-extra hidden>${this._renderSourceCards(this._sources.slice(6))}</div>
+          <div class="src-toggle-wrap animate-on-scroll">
+            <button type="button" class="src-toggle" data-src-toggle aria-label="Toggle full source list">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${this._sources.length} sources</span></button>
+          </div>
         </div>
       </section>
 
@@ -957,6 +1102,49 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .cmp-legend strong { color: var(--fg-2); font-weight: 600; }
       .cmp-legend .lg-good { color: var(--kygo-green-dark); font-weight: 600; }
 
+      /* ── Interactive comparator ──────────────────────────────────────── */
+      .cmpr { display: flex; flex-direction: column; gap: 16px; }
+      .cmpr-picker-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+      .cmpr-picker-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); }
+      .cmpr-picker-hint { font-size: 12px; color: var(--fg-3); }
+      .picker { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 10px; }
+      @media (min-width: 480px) { .picker { grid-template-columns: repeat(4, 1fr); } }
+      @media (min-width: 860px) { .picker { grid-template-columns: repeat(7, 1fr); } }
+      .pick-tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 6px 10px; cursor: pointer; transition: all .15s ease; font-family: var(--font-display); }
+      .pick-tile:hover { border-color: var(--fg-3); }
+      .pick-tile .brand-img.sm { width: 34px; height: 34px; border-radius: 8px; }
+      .pick-name { font-weight: 600; font-size: 11.5px; color: var(--fg-1); line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
+      .pick-type { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--fg-3); }
+      .pick-check { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: none; align-items: center; justify-content: center; }
+      .pick-check .ico { width: 10px; height: 10px; }
+      .pick-tile.active { border-color: var(--kygo-green); background: rgba(34,197,94,0.06); box-shadow: 0 0 0 3px rgba(34,197,94,0.10); }
+      .pick-tile.active .pick-name { color: var(--kygo-green-dark); }
+      .pick-tile.active .pick-check { display: inline-flex; }
+
+      .cr-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; }
+      @media (min-width: 768px) { .cr-wrap { border-radius: 22px; } }
+      .cr-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .cr-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 520px; }
+      .cr-table th, .cr-table td { padding: 12px 10px; text-align: center; vertical-align: middle; }
+      .cr-table thead th { background: #E2E8F0; border-bottom: 1px solid #CBD5E1; }
+      .cr-table thead th.cr-corner { text-align: left; font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: .4px; text-transform: uppercase; color: #334155; position: sticky; left: 0; z-index: 3; background: #E2E8F0; }
+      .cr-dev { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+      .cr-dev .brand-img.sm { width: 34px; height: 34px; border-radius: 8px; }
+      .cr-dev-name { font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-1); line-height: 1.15; }
+      .cr-dev-type { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--fg-3); }
+      .cr-table tbody tr + tr th, .cr-table tbody tr + tr td { border-top: 1px solid var(--border-subtle); }
+      .cr-table tbody th { text-align: left; position: sticky; left: 0; z-index: 1; background: #fff; box-shadow: 1px 0 0 var(--border-subtle); min-width: 152px; }
+      .cr-metric { display: block; font-family: var(--font-body); font-weight: 600; font-size: 13px; color: var(--fg-1); line-height: 1.25; }
+      .cr-unit { display: block; margin-top: 2px; font-size: 10.5px; color: var(--fg-3); }
+      .cr-dir { display: block; margin-top: 3px; font-family: var(--font-display); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--kygo-green-dark); }
+      .cr-table tbody td .vpill { min-width: 0; }
+      .cr-table .vpill .ico { width: 11px; height: 11px; margin-left: 4px; }
+      .cr-verdict { display: flex; gap: 12px; align-items: flex-start; background: var(--kygo-green-light); border: 1px solid rgba(34,197,94,0.28); border-radius: 14px; padding: 14px 16px; font-size: 13.5px; line-height: 1.55; color: var(--fg-1); }
+      .cr-verdict .ico { width: 18px; height: 18px; color: var(--kygo-green-dark); flex: none; margin-top: 1px; }
+      .cr-verdict strong { color: var(--kygo-green-dark); font-weight: 700; }
+      .cmpr-empty { display: flex; gap: 10px; align-items: center; justify-content: center; background: #fff; border: 1.5px dashed var(--border-subtle); border-radius: 16px; padding: 28px 20px; color: var(--fg-3); font-size: 14px; text-align: center; }
+      .cmpr-empty .ico { width: 18px; height: 18px; color: var(--kygo-green-dark); flex: none; }
+
       /* Device detail accordion (one row per wearable, click to expand) */
       .dev-acc { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: start; }
       @media (min-width: 768px) { .dev-acc { grid-template-columns: 1fr 1fr; gap: 12px; } }
@@ -1068,6 +1256,13 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .src-go { display: inline-flex; color: var(--kygo-green-dark); }
       .src-go .ico { width: 12px; height: 12px; transition: transform .15s; }
       .src:hover .src-go .ico { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--kygo-green-dark); font-family: var(--font-display); font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); }
+      .src-toggle .ico { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open .ico { transform: rotate(90deg); }
 
       /* Footer */
       .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
