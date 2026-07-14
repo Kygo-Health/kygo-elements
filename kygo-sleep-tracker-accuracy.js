@@ -630,15 +630,26 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
 
       <section class="section bg-light">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/sleep-metrics" target="_blank" rel="noopener">
-            <span class="blog-cta-tag">Related Tool</span>
-            <div class="blog-cta-body">
-              <div class="blog-cta-kicker">Compare what each device tracks</div>
-              <div class="blog-cta-title">Sleep Metrics Comparison</div>
-              <div class="blog-cta-sub">38 sleep metrics across Oura Ring, Fitbit, Apple Watch &amp; Garmin — see exactly what each device measures while you sleep.</div>
-            </div>
-            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
-          </a>
+          <div class="xlink-stack">
+            <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026" target="_blank" rel="noopener">
+              <span class="blog-cta-tag">Deep Dive</span>
+              <div class="blog-cta-body">
+                <div class="blog-cta-kicker">Read the full breakdown</div>
+                <div class="blog-cta-title">The Most Accurate Sleep Tracker: Oura vs Apple vs Fitbit (2026)</div>
+                <div class="blog-cta-sub">Why the "best" number depends on who's wearing it, which brands hold up in real patients, and how to actually read your own sleep stages — evidence-based.</div>
+              </div>
+              <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
+            </a>
+            <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/sleep-metrics" target="_blank" rel="noopener">
+              <span class="blog-cta-tag">Related Tool</span>
+              <div class="blog-cta-body">
+                <div class="blog-cta-kicker">Compare what each device tracks</div>
+                <div class="blog-cta-title">Sleep Metrics Comparison</div>
+                <div class="blog-cta-sub">38 sleep metrics across Oura Ring, Fitbit, Apple Watch &amp; Garmin — see exactly what each device measures while you sleep.</div>
+              </div>
+              <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
+            </a>
+          </div>
         </div>
       </section>
 
@@ -1029,6 +1040,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .bottomline .verify-note strong { color: rgba(255,255,255,0.85); }
 
       /* Blog / related-tool CTA */
+      .xlink-stack { display: flex; flex-direction: column; gap: 12px; }
       .blog-cta { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(34,197,94,0.02) 100%); border: 1.5px solid var(--kygo-green-light); border-radius: 18px; padding: 22px; transition: all .25s var(--ease-out); color: var(--fg-1); }
       .blog-cta:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
       .blog-cta-tag { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 999px; background: #fff; border: 1.5px solid var(--kygo-green-light); color: var(--kygo-green-dark); font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; white-space: nowrap; }
