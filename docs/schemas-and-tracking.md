@@ -195,8 +195,8 @@ added — attention competition — but do not add any new GA4 event to measure 
 
 | `cta_category` | Trigger |
 |---|---|
-| `ios_download` | `data-action="ios-download"`, or `href` contains `apps.apple.com`, or `.cta-primary` + apple href |
-| `android_download` | `data-action="android-download"`, `.cta-android`, or `href` contains `kygo.app/android` |
+| `ios_download` | `data-action="ios-download"`, or `href` contains `apps.apple.com` **or the Tenjin iOS link `track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`**, or `.cta-primary` + apple href |
+| `android_download` | `data-action="android-download"`, `.cta-android`, or `href` contains `kygo.app/android` **or the Tenjin Android link `track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`** |
 | `see_how_it_works` | `.cta-secondary` or label contains "how it works" |
 | `tool_interaction` | `data-action` = `calculate`/`compare`/`analyze`, or `.calculate-button` |
 | `header_cta` | `.header-cta` (nav "Get Kygo App") |
