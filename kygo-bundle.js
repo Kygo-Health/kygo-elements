@@ -27,7 +27,9 @@ class KygoHeroSection extends HTMLElement {
     this.render();
     this.setupEvents();
     __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. The free iOS app connects nutrition data with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch to reveal food-body correlations. AI photo logging identifies meals in seconds from over 5 million foods. Unlike MyFitnessPal or Lose It, Kygo shows how what you eat impacts deep sleep, HRV, resting heart rate, and recovery \u2014 not just calorie totals. Correlations appear after 7 days of logging. Free forever plan available.');
-    this._injectStructuredData();
+    // No structured-data injection here: the homepage Organization + SoftwareApplication
+    // JSON-LD is the single source of truth in the Wix head (see docs/wix-global-code.md,
+    // Blocks 2 & 3). This component previously injected duplicate, stale copies.
   }
   setupEvents() {
     const secondaryBtn = this.shadowRoot.querySelector('.cta-secondary');
@@ -236,31 +238,6 @@ class KygoHeroSection extends HTMLElement {
     `;
   }
 
-  // ── Structured Data ───────────────────────────────────────────────────
-
-  _injectStructuredData() {
-    // NOTE: The homepage SoftwareApplication schema is served from the Wix head
-    // (see docs/wix-global-code.md, Blocks 2 & 3). This component previously
-    // injected a third, duplicate SoftwareApplication block into document.head,
-    // which conflicted with those. Removed to keep a single source of truth.
-    if (!document.querySelector('script[data-kygo-org-ld]')) {
-      const org = {
-        '@context': 'https://schema.org',
-        '@type': 'Organization',
-        'name': 'Kygo Health',
-        'url': 'https://www.kygo.app',
-        'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png',
-        'description': 'Kygo Health builds AI-powered tools that help people understand how food affects their sleep, energy, HRV, and recovery by correlating nutrition data with wearable health data.',
-        'foundingDate': '2025',
-        'contactPoint': { '@type': 'ContactPoint', 'contactType': 'customer support', 'email': 'support@kygo.app' }
-      };
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.setAttribute('data-kygo-org-ld', '');
-      script.textContent = JSON.stringify(org);
-      document.head.appendChild(script);
-    }
-  }
 }
 customElements.define('kygo-hero-section', KygoHeroSection);
 
