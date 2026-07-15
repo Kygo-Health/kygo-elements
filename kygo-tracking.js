@@ -83,17 +83,23 @@
     var href = el.getAttribute('href') || '';
     var classList = el.className || '';
 
-    // iOS App Store download
+    // iOS App Store download (direct App Store link, or the Tenjin
+    // attribution link that resolves to the iOS store —
+    // track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy)
     if (action === 'ios-download' ||
         href.indexOf('apps.apple.com') !== -1 ||
+        href.indexOf('track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy') !== -1 ||
         (classList.indexOf('cta-primary') !== -1 && href.indexOf('apple') !== -1)) {
       return { category: 'ios_download', label: getLabel(el), url: href || 'button-redirect' };
     }
 
-    // Android download (Google Play via kygo.app/android)
+    // Android download (Google Play via kygo.app/android, or the Tenjin
+    // attribution link that resolves to the Play store —
+    // track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO)
     if (action === 'android-download' ||
         classList.indexOf('cta-android') !== -1 ||
-        href.indexOf('kygo.app/android') !== -1) {
+        href.indexOf('kygo.app/android') !== -1 ||
+        href.indexOf('track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO') !== -1) {
       return { category: 'android_download', label: getLabel(el), url: href || 'button-redirect' };
     }
 

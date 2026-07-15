@@ -35,8 +35,8 @@ These are the repo-wide canonical values (see `internal-and-app-store-links.md`,
 | Thing | Canonical value |
 |---|---|
 | Logo asset | `https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png` |
-| Apple App Store | `https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589` |
-| Android download | `https://www.kygo.app/android` (redirect; left as the only `/android` route) |
+| Apple App Store | `https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589` (tool pages). **Header/footer + kygo-home store buttons now use the Tenjin iOS link `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`** → App Store. |
+| Android download | `https://www.kygo.app/android` (redirect; still used by tool pages). **Header/footer + kygo-home store buttons now use the Tenjin Android link `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`** → Play Store. |
 | Host | `https://www.kygo.app` (normalized to `www`; see fixes #15) |
 | Privacy / Terms / Accessibility | `/privacy-policy`, `/terms-conditions`, `/accessibility-statement` |
 | Org name (schema) | `Kygo Health` (components) / `Kygo Health LLC` (site graph + legal) |
@@ -99,7 +99,7 @@ These are the repo-wide canonical values (see `internal-and-app-store-links.md`,
       "screenshot": "https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png",
       "softwareVersion": "1.0",
       "author": { "@id": "https://kygo.app/#organization" },
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free tier with optional premium at $7.99/month or $50/year" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": "Free tier with optional premium at $9.99/month or $39.99/year" },
       "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5", "ratingCount": "1", "bestRating": "5", "worstRating": "1" },
       "featureList": [
         "Correlates nutrition with sleep, HRV, and recovery data",
@@ -140,9 +140,13 @@ These are the repo-wide canonical values (see `internal-and-app-store-links.md`,
   ID **`G-P2224N75KY`**. ✅ Matches the documented ID.
 - The script reads `script[data-ga-id]`, bootstraps `gtag.js`, and fires `page_view` + classified
   `cta_click` / `tool_interaction` / `page_exit`. See `schemas-and-tracking.md` Part 2.
-- **Header/footer CTA tracking:** the iOS buttons match on `href` containing `apps.apple.com`
-  (→ `ios_download`) and the Android buttons on `href` containing `kygo.app/android`
-  (→ `android_download`). So both download CTAs **are** tracked even though their classes
+- **Header/footer CTA tracking:** the store buttons now point at **Tenjin attribution links**
+  (iOS `track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`, Android
+  `track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`). `kygo-tracking.js` classifies them by
+  `href`: the iOS link (and any `apps.apple.com` link) → `ios_download`; the Android link
+  (and any `kygo.app/android` link) → `android_download`. The Android buttons also carry
+  `class="cta-android"` + `data-action="android-download"`, so they classify even without the
+  href match. So both download CTAs **are** tracked even though their wrapper classes
   (`kygo-nav-cta*`, `kygo-footer-cta*`) aren't in the tracker's class list. Plain nav links
   (How It Works / FAQ / Blog / Tools / Contact) are **not** tracked (no class/`data-action`/match) —
   intentional/acceptable.
@@ -154,8 +158,8 @@ Fixed top nav rendered into `<div id="kygo-header-root">` by an IIFE. Key facts:
 
 - **Logo** → `https://www.kygo.app/` · asset = canonical logo. Wordmark: `KYGO HEALTH`.
 - **Nav links:** `/how-it-works`, `/faq`, `/blog`, `/tools`, **`/contact-8`**.
-- **iOS CTA** → `https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589` (`target=_blank`).
-- **Android CTA** → `https://www.kygo.app/android`.
+- **iOS CTA** → `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy` (Tenjin → App Store, `target=_blank`).
+- **Android CTA** → `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO` (Tenjin → Play Store).
 - Mobile menu mirrors the same links + both download CTAs; hamburger toggles via global
   `toggleKygoMobile()` / `closeKygoMobile()`; scroll adds `.scrolled` shadow to `#kygo-nav`.
 - `z-index: 99999`; `.kygo-nav-spacer` (70px) offsets the fixed bar.
@@ -169,9 +173,9 @@ Dark footer rendered into `<div id="kygo-footer-root">` by an IIFE. Key facts:
   Reddit `https://www.reddit.com/user/KygoApp/` · X `https://x.com/KygoApp`.
   *(These are the only place social URLs appear — not in any component. Recorded here as canonical.)*
 - **Contact:** `Jersey City, NJ` · email **`ryan@kygo.app`** (`mailto:`).
-- **Product col:** `/how-it-works`, `/faq`, iOS App Store, `/android`.
+- **Product col:** `/how-it-works`, `/faq`, iOS (Tenjin link), Android (Tenjin link).
 - **Resources col:** `/blog`, `/tools`, **`/contact-8`**.
-- **CTA col:** iOS App Store + `/android` buttons.
+- **CTA col:** iOS (Tenjin link) + Android (Tenjin link) buttons.
 - **Legal:** `/privacy-policy`, `/terms-conditions`, `/accessibility-statement`. ✅ matches fixes #3.
 - **Disclaimer:** "© **2025** by KYGO Health LLC … not intended to diagnose, treat, cure, or prevent
   any disease … consult your physician."
@@ -181,7 +185,8 @@ Dark footer rendered into `<div id="kygo-footer-root">` by an IIFE. Key facts:
 ## Review findings (2026-06-02)
 
 ### ✅ Correct
-- Logo asset, Apple App Store URL, and `www.kygo.app/android` all match canonical values.
+- Logo asset matches canonical value. Store buttons now route through **Tenjin attribution links**
+  (iOS `…/cD7zgIPLuiZMMWmWkXLsvy`, Android `…/eMjS3ZkseCvs2lO9AVESkO`) — trial-first launch 2026-07-14.
 - Privacy / Terms / Accessibility paths are the corrected ones (`-policy` / `-conditions` / `-statement`).
 - GA4 ID `G-P2224N75KY` is correct; both header & footer download CTAs are GA-tracked via `href` match.
 - Legal/medical disclaimer present in the footer.
@@ -242,7 +247,7 @@ duplicate carrying the conflicting `ratingCount`).
 **Block 3 — replace** "Homepage JSON-LD Schema" with the consolidated `@graph` (host → `www`,
 `screenshot` + `aggregateRating` removed, `support@kygo.app`):
 ```html
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.kygo.app/#organization","name":"Kygo Health LLC","url":"https://www.kygo.app","logo":{"@type":"ImageObject","url":"https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png"},"description":"Health technology company that correlates nutrition data with biometric data from wearables to provide personalized health insights.","email":"support@kygo.app","foundingDate":"2024","sameAs":["https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589"]},{"@type":"SoftwareApplication","@id":"https://www.kygo.app/#software","name":"Kygo","alternateName":"Kygo Health App","description":"Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body responds—including sleep quality, HRV, energy, and recovery.","applicationCategory":"HealthApplication","operatingSystem":"iOS","url":"https://www.kygo.app","downloadUrl":"https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589","softwareVersion":"1.0","author":{"@id":"https://www.kygo.app/#organization"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free tier with optional premium at $7.99/month or $50/year"},"featureList":["Correlates nutrition with sleep, HRV, and recovery data","Integrates with Oura Ring, Apple Health, Fitbit, and Garmin","AI-powered food logging via photo, voice, barcode, or text","5M+ food database","Personalized health insights based on your data","23+ micronutrient tracking","Meal templates for one-tap logging","Patent-pending correlation technology"],"keywords":"nutrition tracking, wearable integration, health correlations, sleep tracking, HRV, Oura Ring app, Apple Health, food logging, personalized nutrition, health insights"},{"@type":"WebSite","@id":"https://www.kygo.app/#website","url":"https://www.kygo.app","name":"Kygo","description":"See how your food affects your sleep, energy, and recovery","publisher":{"@id":"https://www.kygo.app/#organization"},"potentialAction":{"@type":"SearchAction","target":"https://www.kygo.app/search?q={search_term_string}","query-input":"required name=search_term_string"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.kygo.app/#organization","name":"Kygo Health LLC","url":"https://www.kygo.app","logo":{"@type":"ImageObject","url":"https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png"},"description":"Health technology company that correlates nutrition data with biometric data from wearables to provide personalized health insights.","email":"support@kygo.app","foundingDate":"2024","sameAs":["https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589"]},{"@type":"SoftwareApplication","@id":"https://www.kygo.app/#software","name":"Kygo","alternateName":"Kygo Health App","description":"Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body responds—including sleep quality, HRV, energy, and recovery.","applicationCategory":"HealthApplication","operatingSystem":"iOS","url":"https://www.kygo.app","downloadUrl":"https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589","softwareVersion":"1.0","author":{"@id":"https://www.kygo.app/#organization"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free tier with optional premium at $9.99/month or $39.99/year"},"featureList":["Correlates nutrition with sleep, HRV, and recovery data","Integrates with Oura Ring, Apple Health, Fitbit, and Garmin","AI-powered food logging via photo, voice, barcode, or text","5M+ food database","Personalized health insights based on your data","23+ micronutrient tracking","Meal templates for one-tap logging","Patent-pending correlation technology"],"keywords":"nutrition tracking, wearable integration, health correlations, sleep tracking, HRV, Oura Ring app, Apple Health, food logging, personalized nutrition, health insights"},{"@type":"WebSite","@id":"https://www.kygo.app/#website","url":"https://www.kygo.app","name":"Kygo","description":"See how your food affects your sleep, energy, and recovery","publisher":{"@id":"https://www.kygo.app/#organization"},"potentialAction":{"@type":"SearchAction","target":"https://www.kygo.app/search?q={search_term_string}","query-input":"required name=search_term_string"}}]}</script>
 ```
 - ⚠️ `potentialAction`/SearchAction **removed** (confirmed 2026-06 there is no `/search` page).
 - To re-add a rating later (real on-page reviews only), insert after `"softwareVersion":"1.0",`:
