@@ -1122,6 +1122,7 @@ class KygoBlog extends HTMLElement {
                 Download for Android
               </a>
             </div>
+            <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
             <div class="cta-works">
               <span>Works with</span>
               <div class="cta-badges">

@@ -724,11 +724,12 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
           <div class="kygo-cta-card animate-on-scroll">
             <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
             <h3>See what your <span>sleep data</span> is really telling you.</h3>
-            <p>Your tracker estimates your stages. Kygo connects your sleep, nutrition and recovery so you can act on the trend — not chase a single night's number.</p>
+            <p>Your tracker estimates your stages. Kygo connects your sleep, nutrition and recovery so you can act on the trend, not chase a single night's number.</p>
             <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="early" data-track-label="sleep-accuracy-early-ios">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="early" data-track-label="sleep-accuracy-early-ios">${this._icon('apple')} Try Free for 7 Days</a>
               <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="sleep-accuracy-early-android">${this._icon('android')} Download for Android</a>
             </div>
+            <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
             <div class="cta-works">
               <span>Works with</span>
               <div class="cta-badges">
