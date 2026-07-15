@@ -198,8 +198,12 @@ the standard Apple-mark SVG. Keep these consistent across every tool.
 - **Section backgrounds alternate** — re-check the full L/W/L/W sequence after adding/splitting
   a section.
 - **Copy = reality:** stat numbers must match what's shown (e.g. "36 sources" not "48" if the
-  list shows 36). Keep `__seo` + JSON-LD consistent with the visible content. Avoid stray
-  em-dashes in CTA headlines.
+  list shows 36). Keep `__seo` + JSON-LD consistent with the visible content.
+- **Never use em-dashes (`—`) anywhere in copy** — not in headlines, body, FAQ, `__seo`, JSON-LD,
+  source titles, or code comments. Rewrite with a comma, period, colon, semicolon, parentheses,
+  or "and". Use a real word ("n/a") for empty table cells, not a dash character. En-dashes in
+  numeric ranges (`0.4–0.6`, `12–48 min`, `2–4`) are fine. Verify before committing:
+  `grep -c "—" file.js` → must be `0`.
 
 ---
 
