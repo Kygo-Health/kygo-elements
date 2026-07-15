@@ -64,8 +64,15 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    + JSON-LD.
 3. **Content sections** — each: `kicker` pill + `<h2>` (with `.hl`) + `lede`, then the module.
 4. **Kygo CTA card** — dark card, green radial glow, pill, headline, iOS + Android buttons,
-   "Works with" badge row. (Reuse from any tool; just swap copy. iOS button **must** use the
-   canonical App Store URL `apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589`.)
+   "Works with" badge row. (Reuse from any tool; just swap copy.) **Clickable store buttons use
+   the Tenjin attribution links** (Website channel): iOS `cta-primary` →
+   `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`, Android `cta-android` →
+   `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`. These resolve to the App Store /
+   Play Store and let Tenjin attribute the install. **Only user-clickable anchor hrefs get the
+   Tenjin link** — JSON-LD `downloadUrl`/`installUrl` and any other structured-data store URL
+   must stay the real App Store URL `apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589`.
+   Keep the `data-track-position`/`data-track-label`/`data-action` attributes and the
+   `cta-primary`/`cta-android` classes so `kygo-tracking.js` still classifies the click.)
 5. **Blog cross-link** card → the matching `kygo.app/post/...` article. For a **multi-post
    cluster**, use the *hub-and-spoke* pattern: each content section also gets a small
    `section-readmore` link to its *own* matching post (matrix→comparison post, validation→trust

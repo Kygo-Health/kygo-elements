@@ -643,7 +643,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <img src="${logoUrl}" alt="Kygo" loading="lazy" />
             <span>Calorie Accuracy</span>
           </a>
-          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="nav-cta-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">
+          <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-cta-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">
             Get Kygo Health ${this._icon('arrowRight')}
           </a>
         </div>
@@ -707,8 +707,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <h3>See how <span>what you eat</span> shows up in your data.</h3>
             <p>Calorie counts are estimates. Kygo helps you log what you eat in seconds and see how it affects your sleep, energy, and recovery.</p>
             <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg cta-primary" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener" data-track-position="early" data-track-label="calorie-burn-early-ios">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg cta-android" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="calorie-burn-early-android">${this._icon('android')} Download for Android</a>
+              <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="early" data-track-label="calorie-burn-early-ios">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="calorie-burn-early-android">${this._icon('android')} Download for Android</a>
             </div>
             <div class="cta-works">
               <span>Works with</span>
