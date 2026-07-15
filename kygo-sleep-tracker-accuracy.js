@@ -1,9 +1,9 @@
 /**
- * Kygo Health — Most Accurate Sleep Tracker Comparison Tool
+ * Kygo Health · Most Accurate Sleep Tracker Comparison Tool
  * Tag name: kygo-sleep-tracker-accuracy
  * Which consumer wearable is most accurate for sleep vs the lab gold standard (PSG)?
  * Ranks 7 devices on 4-stage staging (healthy vs clinical), deep- and REM-stage
- * detection, sleep/wake agreement, and total-sleep-time bias — with the population
+ * detection, sleep/wake agreement, and total-sleep-time bias, with the population
  * caveat (healthy vs clinical) that decides every number.
  * Data: Sleep-Tracker-Accuracy research v2.8 (Schyvens 2025, Lee 2023, Robbins 2024,
  * Miller 2022, Khan 2025, Searles 2026, Haghayegh 2019, Dial 2025, npj EEG meta 2025).
@@ -121,7 +121,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         deepH: 79.5, deepC: 77.8, remH: 76.0, remC: 71.2,
         sw: '89%', swNote: 'Gen 2 · Miller 2022',
         tstVal: -3.0, tst: '−3.0 min', tstNote: 'Khan meta (pooled)',
-        independent: 'Independently tested only in clinical patients: kappa 0.35 (Lee 2023) and 53% accuracy (Herberger 2025). The strong 0.65 healthy figure is from Oura\'s own funded study (Robbins 2024) — rigorous method, but a screened, best-case sample.',
+        independent: 'Independently tested only in clinical patients: kappa 0.35 (Lee 2023) and 53% accuracy (Herberger 2025). The strong 0.65 healthy figure is from Oura\'s own funded study (Robbins 2024), a rigorous method but a screened, best-case sample.',
         vendorClaim: 'OSSA 2.0 staging accuracy 75.5–90.6%; sleep/wake sensitivity ~94% (Svensson 2024, Oura-linked). Reports raw % / PABAK, not kappa, so its figures inflate and aren\'t directly comparable.',
         bestFor: 'Total sleep time and deep/REM detection; the vitals measured while you sleep',
         weakestFor: 'Wake detection and sleep-disorder patients (0.65 → 0.35)',
@@ -136,7 +136,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         sw: '88%', swNote: 'Series 6 · Miller 2022',
         tstVal: 19.6, tst: '+19.6 min', tstNote: 'Schyvens',
         independent: 'The best independently-tested staging watch: kappa 0.53 in healthy adults (Schyvens 2025), dropping to 0.30 in a sleep-apnea sample (Lee 2023). It posts the strongest independent-healthy REM detection (68.6%), but that nearly halves in patients (42.8%).',
-        vendorClaim: 'Apple white paper (Sept 2023): ~1,400 nights, kappa 0.63, sensitivity 97.8% / specificity 76%. Its FDA-cleared apnea notifications (Sept 2024) show weighted sensitivity 66.3% — severe-OSA 89.1% but moderate-OSA only 43%.',
+        vendorClaim: 'Apple white paper (Sept 2023): ~1,400 nights, kappa 0.63, sensitivity 97.8% / specificity 76%. Its FDA-cleared apnea notifications (Sept 2024) show weighted sensitivity 66.3% (severe-OSA 89.1% but moderate-OSA only 43%).',
         bestFor: 'Independently-validated staging; REM detection in healthy sleepers',
         weakestFor: 'REM accuracy halves in apnea patients; over-reports sleep (+19.6 min)',
         affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search'
@@ -149,7 +149,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         deepH: 50.9, deepC: 67.1, remH: 61.3, remC: 68.1,
         sw: '81–91%', swNote: 'Haghayegh 2019 meta',
         tstVal: 6.3, tst: '+6.3 min', tstNote: 'Schyvens (Sense)',
-        independent: 'The most population-robust device tested: kappa 0.42 in both healthy adults (Schyvens 2025) and clinical patients (Lee 2023) — the only wearable that doesn\'t collapse between the two. Per-stage detection actually improves in patients (deep 67.1%, REM 68.1%).',
+        independent: 'The most population-robust device tested: kappa 0.42 in both healthy adults (Schyvens 2025) and clinical patients (Lee 2023), the only wearable that doesn\'t collapse between the two. Per-stage detection actually improves in patients (deep 67.1%, REM 68.1%).',
         vendorClaim: 'Google/Fitbit (2026, in press) report an updated algorithm at kappa 0.63 (up from 0.56) and 77% accuracy (up from 71%). Not yet independently validated.',
         bestFor: 'Holding up across populations (healthy and clinical alike); small TST bias',
         weakestFor: 'Middling deep/REM detection in healthy adults; still misses wake',
@@ -164,7 +164,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         sw: null, swNote: null,
         tstVal: 11.1, tst: '+11.1 min', tstNote: 'Schyvens',
         independent: 'Independent healthy staging kappa 0.41 (Schyvens 2025) with a modest total-sleep-time bias of +11.1 min. Per-stage detection for this band wasn\'t broken out separately, so treat it as roughly Fitbit-class.',
-        vendorClaim: 'Covered by the same Google/Fitbit algorithm update (kappa 0.63, 77% accuracy, 2026 in press) as the Sense line — independent validation still pending.',
+        vendorClaim: 'Covered by the same Google/Fitbit algorithm update (kappa 0.63, 77% accuracy, 2026 in press) as the Sense line; independent validation still pending.',
         bestFor: 'A low-cost band with a decent total-sleep-time bias',
         weakestFor: 'Limited independent per-stage data; shares the wake-detection weakness',
         affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search'
@@ -177,7 +177,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         deepH: 69.6, deepC: null, remH: 62.0, remC: null,
         sw: '86%', swNote: 'WHOOP 3.0 · Miller 2022',
         tstVal: 24.5, tst: '+24.5 min', tstNote: 'Schyvens',
-        independent: 'Independent healthy staging kappa 0.37 (Schyvens 2025) — but the best independent-healthy deep-sleep detection of any device tested (69.6%). No independent clinical data exists for WHOOP.',
+        independent: 'Independent healthy staging kappa 0.37 (Schyvens 2025), but the best independent-healthy deep-sleep detection of any device tested (69.6%). No independent clinical data exists for WHOOP.',
         vendorClaim: 'WHOOP cites internal validation; note its research lab (Miller / CQU) is WHOOP-affiliated. Beyond Schyvens (0.37), no independent 4-stage kappa is published for WHOOP 4.0.',
         bestFor: 'The strongest independent-healthy deep-sleep detection (69.6%)',
         weakestFor: 'No clinical data; over-reports total sleep time (+24.5 min)',
@@ -191,7 +191,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         deepH: null, deepC: null, remH: null, remC: null,
         sw: null, swNote: null,
         tstVal: 39.9, tst: '+39.9 min', tstNote: 'Schyvens',
-        independent: 'Independent healthy staging kappa 0.22 (Schyvens 2025) — near the bottom of the wrist devices — paired with the largest total-sleep-time bias of any device tested (+39.9 min, well past the ±30 min acceptable line).',
+        independent: 'Independent healthy staging kappa 0.22 (Schyvens 2025), near the bottom of the wrist devices, paired with the largest total-sleep-time bias of any device tested (+39.9 min, well past the ±30 min acceptable line).',
         vendorClaim: 'No manufacturer 4-stage staging-accuracy figure is published. The ScanWatch\'s validated strengths are ECG / afib and SpO2 detection, not sleep staging.',
         bestFor: 'ECG and clinical-grade heart features (not sleep staging)',
         weakestFor: 'Weakest staging among watches; largest TST over-report (+39.9 min)',
@@ -222,16 +222,16 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         body: 'Every wearable has high sleep sensitivity (89–95%) but low wake specificity (27–52%). They all overestimate sleep and underestimate time awake (WASO) by 12–48 min. No wrist or ring reliably tells you how long you were actually awake.',
         src: 'Schyvens 2025 · Haghayegh 2019' },
       { icon: 'user', tone: 'mid', tag: 'Age effect', title: 'Accuracy drops sharply with age',
-        body: 'In older adults, total sleep time is underestimated by roughly 75 min and deep-sleep error explodes (MAPE 400–700%) — on both the Fitbit Sense 2 and the Oura Gen 3. Numbers from young cohorts do not generalize.',
+        body: 'In older adults, total sleep time is underestimated by roughly 75 min and deep-sleep error explodes (MAPE 400–700%) on both the Fitbit Sense 2 and the Oura Gen 3. Numbers from young cohorts do not generalize.',
         src: 'Searles 2026' },
       { icon: 'brain', tone: 'good', tag: 'Better tier', title: 'EEG headbands beat every ring & watch',
-        body: 'Muse-S and ear-EEG headbands reach kappa ~0.76 — above any consumer ring or watch and matching human scorers. If you need genuine staging accuracy, that is the class to look at, not a wrist device.',
+        body: 'Muse-S and ear-EEG headbands reach kappa ~0.76, above any consumer ring or watch and matching human scorers. If you need genuine staging accuracy, that is the class to look at, not a wrist device.',
         src: 'npj Biomedical Innovations 2025 meta' },
       { icon: 'layers', tone: 'mid', tag: 'Form factor', title: 'Rings win vitals, watches win stages',
-        body: 'Rings (Oura) lead the vitals measured during sleep — HRV (CCC 0.99), resting HR (CCC 0.98), temperature. Watches (Apple) tend to win the stage labels. Both share the same wake-detection weakness.',
+        body: 'Rings (Oura) lead the vitals measured during sleep: HRV (CCC 0.99), resting HR (CCC 0.98), temperature. Watches (Apple) tend to win the stage labels. Both share the same wake-detection weakness.',
         src: 'Dial 2025' },
       { icon: 'clock', tone: 'dark', tag: 'Coverage gap', title: 'The newest models are unvalidated',
-        body: 'Every independent staging study tested a prior generation. Oura Ring 4/5, WHOOP 5/MG, Apple S9/S10/Ultra, Galaxy Watch/Ring and Pixel carry manufacturer-only claims — peer review lags hardware by 18–36 months.',
+        body: 'Every independent staging study tested a prior generation. Oura Ring 4/5, WHOOP 5/MG, Apple S9/S10/Ultra, Galaxy Watch/Ring and Pixel carry manufacturer-only claims, because peer review lags hardware by 18–36 months.',
         src: 'Validation coverage gap, 2026' }
     ];
   }
@@ -240,33 +240,33 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
 
   get _sources() {
     return [
-      { tag: 'Independent · 6 wrist devices', title: 'Schyvens et al. 2025 — Wrist wearables vs PSG',
+      { tag: 'Independent · 6 wrist devices', title: 'Schyvens et al. 2025: Wrist wearables vs PSG',
         cite: 'Sleep Advances. 2025;6(2):zpaf021. N=62.', url: 'https://doi.org/10.1093/sleepadvances/zpaf021' },
-      { tag: 'Independent · clinical', title: 'Lee T et al. 2023 — 11 devices in sleep-clinic patients',
+      { tag: 'Independent · clinical', title: 'Lee T et al. 2023: 11 devices in sleep-clinic patients',
         cite: 'JMIR mHealth uHealth. 2023;11:e50983. N=75, mean AHI 18.', url: 'https://doi.org/10.2196/50983' },
-      { tag: 'Independent · clinical', title: 'Herberger et al. 2025 — Oura Gen 3 + 2 rings vs PSG',
+      { tag: 'Independent · clinical', title: 'Herberger et al. 2025: Oura Gen 3 + 2 rings vs PSG',
         cite: 'Scientific Reports. 2025;15:9461. N=45 sleep-clinic patients.', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Herberger+2025+Oura+sleep+polysomnography' },
-      { tag: 'Independent · meta', title: 'Khan et al. 2025 — Oura sleep meta-analysis',
+      { tag: 'Independent · meta', title: 'Khan et al. 2025: Oura sleep meta-analysis',
         cite: 'OTO Open. 2025;9:e70181. 6 studies, N=388 (COI: none).', url: 'https://doi.org/10.1002/oto2.70181' },
       { tag: 'Independent · meta', title: 'JCSM wrist-wearable sleep meta (Lee et al.)',
         cite: 'J Clin Sleep Med. 24 studies, N=798.', url: 'https://doi.org/10.5664/jcsm.11460' },
-      { tag: 'Independent · 2-state', title: 'Miller et al. 2022 — Sleep/wake across 6 devices',
+      { tag: 'Independent · 2-state', title: 'Miller et al. 2022: Sleep/wake across 6 devices',
         cite: 'Sensors. 2022;22(16):6317. N=53, PSG.', url: 'https://doi.org/10.3390/s22166317' },
-      { tag: 'Independent · Fitbit meta', title: 'Haghayegh et al. 2019 — Fitbit sleep-stage meta',
+      { tag: 'Independent · Fitbit meta', title: 'Haghayegh et al. 2019: Fitbit sleep-stage meta',
         cite: 'JMIR. 2019;21(11):e16273. PMC6908975 (COI: none).', url: 'https://doi.org/10.2196/16273' },
-      { tag: 'Independent · age effect', title: 'Searles et al. 2026 — Age & sleep-tracker accuracy',
+      { tag: 'Independent · age effect', title: 'Searles et al. 2026: Age & sleep-tracker accuracy',
         cite: 'Sleep Advances. 2026;7(1):zpag006. Fitbit Sense 2 + Oura Gen 3.', url: 'https://doi.org/10.1093/sleepadvances/zpag006' },
-      { tag: 'Independent · EEG tier', title: 'npj Biomedical Innovations 2025 — Wearable-EEG meta',
+      { tag: 'Independent · EEG tier', title: 'npj Biomedical Innovations 2025: Wearable-EEG meta',
         cite: '43 studies. Muse-S / ear-EEG kappa ~0.76.', url: 'https://doi.org/10.1038/s44385-025-00034-w' },
-      { tag: 'Independent · vitals', title: 'Dial et al. 2025 — Oura Gen 4 HRV / RHR vs ECG',
+      { tag: 'Independent · vitals', title: 'Dial et al. 2025: Oura Gen 4 HRV / RHR vs ECG',
         cite: 'Physiological Reports. 2025;13:e70527 (AFRL).', url: 'https://doi.org/10.14814/phy2.70527' },
-      { tag: 'Oura-funded · healthy', title: 'Robbins et al. 2024 — Oura Gen 3 vs PSG',
+      { tag: 'Oura-funded · healthy', title: 'Robbins et al. 2024: Oura Gen 3 vs PSG',
         cite: 'Sensors. 2024;24(20):6532. Healthy-screened; deep 79.5%, REM 76.0%.', url: 'https://doi.org/10.3390/s24206532' },
-      { tag: 'Oura-linked', title: 'Svensson et al. 2024 — OSSA 2.0 staging accuracy',
+      { tag: 'Oura-linked', title: 'Svensson et al. 2024: OSSA 2.0 staging accuracy',
         cite: 'Sleep Medicine. 2024;115:251. Reports raw % / PABAK, not kappa.', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Svensson+2024+Oura+OSSA+sleep+staging' },
       { tag: 'Manufacturer', title: 'Apple Watch sleep-staging white paper (Sept 2023)',
         cite: '~1,400 nights; kappa 0.63; sens 97.8% / spec 76%.', url: 'https://www.apple.com/healthcare/docs/site/Apple_Watch_sleep_staging_white_paper.pdf' },
-      { tag: 'Manufacturer · in press', title: 'Google/Fitbit 2026 — Updated staging algorithm',
+      { tag: 'Manufacturer · in press', title: 'Google/Fitbit 2026: Updated staging algorithm',
         cite: 'kappa 0.63 (up from 0.56); accuracy 77% (up from 71%).', url: 'https://pubmed.ncbi.nlm.nih.gov/?term=Fitbit+sleep+staging+algorithm+2026' }
     ];
   }
@@ -276,7 +276,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
   get _faqs() {
     return [
       { q: 'Which wearable is the most accurate for sleep?',
-        a: 'Oura leads on sleep staging (Cohen\'s kappa 0.65 in healthy adults, from its own funded study) and on total sleep time (bias about 3 minutes). Apple is the most accurate in independent testing (kappa 0.53). But no consumer device is "accurate" in an absolute sense — the best land at moderate agreement (kappa around 0.5), while two human sleep scorers agree at about 0.75.' },
+        a: 'Oura leads on sleep staging (Cohen\'s kappa 0.65 in healthy adults, from its own funded study) and on total sleep time (bias about 3 minutes). Apple is the most accurate in independent testing (kappa 0.53). But no consumer device is "accurate" in an absolute sense: the best land at moderate agreement (kappa around 0.5), while two human sleep scorers agree at about 0.75.' },
       { q: 'Are sleep trackers accurate for sleep stages?',
         a: 'Only moderately. A 4-stage agreement of kappa 0.4 to 0.6 is the current ceiling for consumer wearables. Every device overestimates sleep, misses wake, and drops sharply in older adults and in people with sleep disorders. Use the trend over weeks, not a single night\'s stage breakdown.' },
       { q: 'Why do the accuracy numbers drop for people with sleep problems?',
@@ -284,7 +284,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       { q: 'Can my watch or ring tell how long I was awake?',
         a: 'Not reliably. Every device has high sleep sensitivity (89 to 95%) but low wake specificity (27 to 52%), so they all overestimate sleep and underestimate time awake by 12 to 48 minutes. Wake detection is the universal weakness across every brand.' },
       { q: 'Do rings or watches track sleep better?',
-        a: 'They win different things. Rings like Oura win the vitals measured during sleep — heart-rate variability, resting heart rate and temperature — and total sleep time. Watches like Apple tend to win the actual stage labels (light, deep, REM). Both share the wake-detection weakness.' },
+        a: 'They win different things. Rings like Oura win the vitals measured during sleep (heart-rate variability, resting heart rate and temperature) plus total sleep time. Watches like Apple tend to win the actual stage labels (light, deep, REM). Both share the wake-detection weakness.' },
       { q: 'Are the newest models like Oura Ring 4, WHOOP 5 and Apple Series 10 more accurate?',
         a: 'Unknown independently. Every published validation study tested a prior generation, so all current-generation accuracy claims are manufacturer-only. Peer-reviewed validation lags new hardware by roughly 18 to 36 months, so newer does not yet mean proven.' }
     ];
@@ -293,7 +293,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
   // ── SEO light-DOM summary ───────────────────────────────────────────────
 
   _seoText() {
-    return 'Most Accurate Sleep Tracker comparison by Kygo Health. Interactive tool: pick 2 to 4 wearables and compare them side by side on six metrics (4-stage staging in healthy and clinical sleepers, deep-sleep detection, REM detection, sleep/wake agreement, total-sleep-time bias), with the best value in each row highlighted. Which wearable is most accurate for sleep versus the lab gold standard, polysomnography (PSG)? No wristband or ring measures sleep — a lab PSG reads brain waves, while a wearable only estimates stages from heart rate, movement and temperature. Two rules decide every number. Rule 1: healthy versus clinical population is the main axis — the same device scores far higher in screened healthy young sleepers than in older adults or real sleep-disorder patients (Oura Gen 3 4-stage agreement kappa 0.65 healthy but 0.35 in sleep-clinic patients; Apple Watch S8 kappa 0.53 healthy to 0.30 in a sleep-apnea population). Rule 2: manufacturer-funded means best-case population, not weaker method (Oura-funded Robbins 2024 used the same in-lab PSG rigor). Grading: a 4-stage kappa of 0.4 to 0.6 is "moderate," the current consumer ceiling; human PSG scorers agree at about 0.75, so no consumer device is accurate in an absolute sense. 4-STAGE SLEEP STAGING (Cohen\'s kappa, healthy adults): Oura Ring Gen 3 0.65 (Robbins), Apple Watch S8 0.53 (Schyvens), Fitbit Sense/Sense 2 0.42 (Schyvens), Fitbit Charge 5 0.41, WHOOP 4.0 0.37, Withings ScanWatch 0.22, Garmin Vivosmart 4 0.21. Clinical population: Oura 0.35, Apple 0.30, Fitbit 0.42 (most population-robust). DEEP SLEEP DETECTION sensitivity (healthy): Oura 79.5%, WHOOP 69.6%, Fitbit 50.9%, Apple 50.7%, Garmin 47.5%. REM DETECTION sensitivity (healthy): Oura 76.0%, Apple 68.6%, WHOOP 62.0%, Fitbit 61.3%, Garmin 33.1%. SLEEP/WAKE (2-state) agreement: Oura Gen 2 89%, Garmin 89%, Apple S6 88%, WHOOP 3.0 86%, Fitbit 81 to 91%. TOTAL SLEEP TIME bias: Oura -3.0 min, Fitbit Sense +6.3, Fitbit Charge 5 +11.1, Apple +19.6, WHOOP +24.5, Garmin +38.4, Withings +39.9 (within about plus or minus 30 min is clinically acceptable). Fixed facts: wake detection is universally poor (high sleep sensitivity, low wake specificity 27 to 52%; all overestimate sleep and underestimate WASO by 12 to 48 min); accuracy drops with age (Searles 2026: about 75 min TST underestimate and deep-sleep MAPE 400 to 700% in older adults on Fitbit Sense 2 and Oura Gen 3); EEG headbands (Muse-S, ear-EEG) reach kappa about 0.76, a better tier than any ring or watch; rings win the vitals measured during sleep (HRV CCC 0.99, resting HR CCC 0.98) while watches win stage labels; current-generation flagships (Oura Ring 4/5, WHOOP 5/MG, Apple S9/S10/Ultra, Galaxy Watch/Ring, Pixel) have no independent staging validation. Do not cite fabricated figures such as "Charge 6 84.6%," "Venu 3 85 to 90%," "Fitbit Sense 2 94%," or a "University of Salzburg 2026 ranking" — they trace to no study. Sources: Schyvens 2025, Lee 2023, Herberger 2025, Khan 2025, JCSM meta, Miller 2022, Haghayegh 2019, Searles 2026, npj EEG meta 2025, Dial 2025, Robbins 2024, Svensson 2024, Apple white paper, Google/Fitbit 2026. Oura vs Apple Watch vs Fitbit vs WHOOP vs Garmin vs Withings sleep tracking accuracy. Data verified July 2026.';
+    return 'Most Accurate Sleep Tracker comparison by Kygo Health. Interactive tool: pick 2 to 4 wearables and compare them side by side on six metrics (4-stage staging in healthy and clinical sleepers, deep-sleep detection, REM detection, sleep/wake agreement, total-sleep-time bias), with the best value in each row highlighted. Which wearable is most accurate for sleep versus the lab gold standard, polysomnography (PSG)? No wristband or ring measures sleep; a lab PSG reads brain waves, while a wearable only estimates stages from heart rate, movement and temperature. Two rules decide every number. Rule 1: healthy versus clinical population is the main axis: the same device scores far higher in screened healthy young sleepers than in older adults or real sleep-disorder patients (Oura Gen 3 4-stage agreement kappa 0.65 healthy but 0.35 in sleep-clinic patients; Apple Watch S8 kappa 0.53 healthy to 0.30 in a sleep-apnea population). Rule 2: manufacturer-funded means best-case population, not weaker method (Oura-funded Robbins 2024 used the same in-lab PSG rigor). Grading: a 4-stage kappa of 0.4 to 0.6 is "moderate," the current consumer ceiling; human PSG scorers agree at about 0.75, so no consumer device is accurate in an absolute sense. 4-STAGE SLEEP STAGING (Cohen\'s kappa, healthy adults): Oura Ring Gen 3 0.65 (Robbins), Apple Watch S8 0.53 (Schyvens), Fitbit Sense/Sense 2 0.42 (Schyvens), Fitbit Charge 5 0.41, WHOOP 4.0 0.37, Withings ScanWatch 0.22, Garmin Vivosmart 4 0.21. Clinical population: Oura 0.35, Apple 0.30, Fitbit 0.42 (most population-robust). DEEP SLEEP DETECTION sensitivity (healthy): Oura 79.5%, WHOOP 69.6%, Fitbit 50.9%, Apple 50.7%, Garmin 47.5%. REM DETECTION sensitivity (healthy): Oura 76.0%, Apple 68.6%, WHOOP 62.0%, Fitbit 61.3%, Garmin 33.1%. SLEEP/WAKE (2-state) agreement: Oura Gen 2 89%, Garmin 89%, Apple S6 88%, WHOOP 3.0 86%, Fitbit 81 to 91%. TOTAL SLEEP TIME bias: Oura -3.0 min, Fitbit Sense +6.3, Fitbit Charge 5 +11.1, Apple +19.6, WHOOP +24.5, Garmin +38.4, Withings +39.9 (within about plus or minus 30 min is clinically acceptable). Fixed facts: wake detection is universally poor (high sleep sensitivity, low wake specificity 27 to 52%; all overestimate sleep and underestimate WASO by 12 to 48 min); accuracy drops with age (Searles 2026: about 75 min TST underestimate and deep-sleep MAPE 400 to 700% in older adults on Fitbit Sense 2 and Oura Gen 3); EEG headbands (Muse-S, ear-EEG) reach kappa about 0.76, a better tier than any ring or watch; rings win the vitals measured during sleep (HRV CCC 0.99, resting HR CCC 0.98) while watches win stage labels; current-generation flagships (Oura Ring 4/5, WHOOP 5/MG, Apple S9/S10/Ultra, Galaxy Watch/Ring, Pixel) have no independent staging validation. Do not cite fabricated figures such as "Charge 6 84.6%," "Venu 3 85 to 90%," "Fitbit Sense 2 94%," or a "University of Salzburg 2026 ranking" trace to no study. Sources: Schyvens 2025, Lee 2023, Herberger 2025, Khan 2025, JCSM meta, Miller 2022, Haghayegh 2019, Searles 2026, npj EEG meta 2025, Dial 2025, Robbins 2024, Svensson 2024, Apple white paper, Google/Fitbit 2026. Oura vs Apple Watch vs Fitbit vs WHOOP vs Garmin vs Withings sleep tracking accuracy. Data verified July 2026.';
   }
 
   // ── Icons ───────────────────────────────────────────────────────────────
@@ -364,13 +364,13 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
   _cmprFmt(d, key) {
     switch (key) {
       case 'kH': return d.kHealthyStr;
-      case 'kC': return d.kClinicalStr || '—';
-      case 'deep': return d.deepH != null ? d.deepH + '%' : '—';
-      case 'rem': return d.remH != null ? d.remH + '%' : '—';
-      case 'sw': return d.sw || '—';
+      case 'kC': return d.kClinicalStr || 'n/a';
+      case 'deep': return d.deepH != null ? d.deepH + '%' : 'n/a';
+      case 'rem': return d.remH != null ? d.remH + '%' : 'n/a';
+      case 'sw': return d.sw || 'n/a';
       case 'tst': return d.tst;
     }
-    return '—';
+    return 'n/a';
   }
   _cmprRows() {
     return [
@@ -448,12 +448,12 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
     const max = Math.max(...entries.map(([, w]) => w));
     let verdict;
     if (max === 0) {
-      verdict = `These devices are too close to separate on the metrics they share — and every one of them overestimates sleep and struggles to detect wake.`;
+      verdict = `These devices are too close to separate on the metrics they share, and every one of them overestimates sleep and struggles to detect wake.`;
     } else {
       const leaders = entries.filter(([, w]) => w === max).map(([id]) => this._chip(sel.find(d => this._did(d) === id)));
       verdict = leaders.length === 1
-        ? `<strong>${leaders[0]}</strong> wins the most metrics here (${max} of ${scored}). These are healthy-adult figures — accuracy drops in older adults and sleep-disorder patients, and no device reliably measures wake.`
-        : `It's a tie — <strong>${leaders.join('</strong> and <strong>')}</strong> each lead on ${max} of ${scored} metrics. All of them overestimate sleep and can't reliably measure wake.`;
+        ? `<strong>${leaders[0]}</strong> wins the most metrics here (${max} of ${scored}). These are healthy-adult figures; accuracy drops in older adults and sleep-disorder patients, and no device reliably measures wake.`
+        : `It's a tie: <strong>${leaders.join('</strong> and <strong>')}</strong> each lead on ${max} of ${scored} metrics. All of them overestimate sleep and can't reliably measure wake.`;
     }
 
     return `
@@ -525,17 +525,17 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
           <div class="dmetric">
             <span class="dm-lbl">Deep &amp; REM detection</span>
             <div class="dm-vals">
-              <span class="dm-tag">Deep</span> ${d.deepH != null ? this._pill(d.deepH + '%', d.deepH >= 65 ? 'good' : 'mid') : `<span class="dm-none">—</span>`}
-              <span class="dm-tag">REM</span> ${d.remH != null ? this._pill(d.remH + '%', d.remH >= 65 ? 'good' : 'mid') : `<span class="dm-none">—</span>`}
+              <span class="dm-tag">Deep</span> ${d.deepH != null ? this._pill(d.deepH + '%', d.deepH >= 65 ? 'good' : 'mid') : `<span class="dm-none">n/a</span>`}
+              <span class="dm-tag">REM</span> ${d.remH != null ? this._pill(d.remH + '%', d.remH >= 65 ? 'good' : 'mid') : `<span class="dm-none">n/a</span>`}
             </div>
-            ${(d.deepC != null || d.remC != null) ? `<span class="dm-note">clinical: deep ${d.deepC != null ? d.deepC + '%' : '—'} · REM ${d.remC != null ? d.remC + '%' : '—'}</span>` : ''}
+            ${(d.deepC != null || d.remC != null) ? `<span class="dm-note">clinical: deep ${d.deepC != null ? d.deepC + '%' : 'n/a'} · REM ${d.remC != null ? d.remC + '%' : 'n/a'}</span>` : ''}
           </div>`);
       }
       metrics.push(`
         <div class="dmetric">
           <span class="dm-lbl">Sleep / wake &amp; timing</span>
           <div class="dm-vals">
-            <span class="dm-tag">2-state</span> ${d.sw ? this._pill(d.sw, 'good') : `<span class="dm-none">—</span>`}
+            <span class="dm-tag">2-state</span> ${d.sw ? this._pill(d.sw, 'good') : `<span class="dm-none">n/a</span>`}
             <span class="dm-tag">TST bias</span> ${this._pill(d.tst, Math.abs(d.tstVal) <= 30 ? 'good' : 'dark')}
           </div>
           ${d.swNote ? `<span class="dm-note">2-state: ${d.swNote} · TST: ${d.tstNote}</span>` : `<span class="dm-note">TST: ${d.tstNote}</span>`}
@@ -639,7 +639,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-pill"><span class="dot"></span> 7 WEARABLES · PSG-VALIDATED ACCURACY</div>
               <h1>Which sleep tracker is <span class="hl">actually accurate?</span></h1>
-              <p class="hero-lede">No wristband or ring <strong>measures</strong> your sleep — a lab PSG reads your brain waves; a wearable only <strong>estimates</strong> stages from heart rate, movement and temperature. Here's how 7 devices really stack up against the lab.</p>
+              <p class="hero-lede">No wristband or ring <strong>measures</strong> your sleep. A lab PSG reads your brain waves; a wearable only <strong>estimates</strong> stages from heart rate, movement and temperature. Here's how 7 devices really stack up against the lab.</p>
             </div>
             <div class="hero-vis" aria-hidden="true">
               <div class="hero-vis-head">
@@ -677,7 +677,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Build your comparison</div>
             <h2>Compare sleep trackers <span class="hl">head-to-head.</span></h2>
-            <p class="lede">Pick 2–4 devices and see them side by side on the six metrics that matter — staging in healthy <em>and</em> clinical sleepers, deep &amp; REM detection, sleep/wake, and total-sleep-time bias. The best value in each row is highlighted.</p>
+            <p class="lede">Pick 2–4 devices and see them side by side on the six metrics that matter: staging in healthy <em>and</em> clinical sleepers, deep &amp; REM detection, sleep/wake, and total-sleep-time bias. The best value in each row is highlighted.</p>
           </div>
           <div class="animate-on-scroll">${this._renderComparator()}</div>
         </div>
@@ -699,22 +699,22 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Read this before you trust a number</div>
             <h2>The one thing that <span class="hl">decides accuracy.</span></h2>
-            <p class="lede">Who's wearing it matters more than which brand it is. The <strong>same device</strong> scores far higher in screened healthy sleepers than in older adults or real sleep-clinic patients — which is why the comparison above splits staging into healthy vs clinical.</p>
+            <p class="lede">Who's wearing it matters more than which brand it is. The <strong>same device</strong> scores far higher in screened healthy sleepers than in older adults or real sleep-clinic patients, which is why the comparison above splits staging into healthy vs clinical.</p>
           </div>
           <div class="bias animate-on-scroll">
             <div class="bias-card good">
               <span class="bias-tag">${this._icon('check')} Screened healthy adults</span>
               <span class="bias-stat">κ 0.65 <small>best case</small></span>
               <span class="bias-cap">Ceiling numbers live here</span>
-              <p>Young, health-screened sleepers. The manufacturer-funded "best" figures come from this population — a best-case sample, not a method trick.</p>
+              <p>Young, health-screened sleepers. The manufacturer-funded "best" figures come from this population: a best-case sample, not a method trick.</p>
             </div>
             <div class="bias-card">
               <span class="bias-tag">${this._icon('user')} Older adults &amp; patients</span>
               <span class="bias-stat">κ 0.30–0.42 <small>real users</small></span>
               <span class="bias-cap">Every device drops</span>
-              <p>Sleep-clinic patients and older adults. Apnea-fragmented sleep is harder to stage — Oura 0.65 → 0.35, Apple 0.53 → 0.30. Fitbit is the exception (0.42 in both).</p>
+              <p>Sleep-clinic patients and older adults. Apnea-fragmented sleep is harder to stage, so Oura falls 0.65 → 0.35 and Apple 0.53 → 0.30. Fitbit is the exception (0.42 in both).</p>
             </div>
-            <p class="bias-note">${this._icon('info')} <span><strong>A 4-stage kappa of 0.4–0.6 is only "moderate"</strong> — the current ceiling for consumer devices. Two human PSG scorers agree at ~0.75, so no wearable is "accurate" in an absolute sense. <em>Schyvens 2025 · Lee 2023</em></span></p>
+            <p class="bias-note">${this._icon('info')} <span><strong>A 4-stage kappa of 0.4–0.6 is only "moderate,"</strong> the current ceiling for consumer devices. Two human PSG scorers agree at ~0.75, so no wearable is "accurate" in an absolute sense. <em>Schyvens 2025 · Lee 2023</em></span></p>
           </div>
         </div>
       </section>
@@ -755,7 +755,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
             <p class="lede">Every wearable's independent finding vs a lab PSG, the manufacturer's claim, its per-stage and timing numbers, and what it's best and weakest for.</p>
           </div>
           <div class="animate-on-scroll">${this._renderDeviceDetails()}</div>
-          <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The "View on Amazon" links above are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases — at no extra cost to you.</span></p>
+          <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The "View on Amazon" links above are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases, at no extra cost to you.</span></p>
         </div>
       </section>
 
@@ -764,7 +764,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">True for every device</div>
             <h2>What no brand <span class="hl">can fix.</span></h2>
-            <p class="lede">Five findings that hold across every wearable in the tables — read these before you trust any single number.</p>
+            <p class="lede">Five findings that hold across every wearable in the tables. Read these before you trust any single number.</p>
           </div>
           <div class="animate-on-scroll">${this._renderFactCards()}</div>
         </div>
@@ -777,7 +777,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Read the full breakdown</div>
               <div class="blog-cta-title">The Most Accurate Sleep Tracker: Oura vs Apple vs Fitbit (2026)</div>
-              <div class="blog-cta-sub">Why the "best" number depends on who's wearing it, which brands hold up in real patients, and how to actually read your own sleep stages — evidence-based.</div>
+              <div class="blog-cta-sub">Why the "best" number depends on who's wearing it, which brands hold up in real patients, and how to actually read your own sleep stages, all evidence-based.</div>
             </div>
             <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
           </a>
@@ -788,8 +788,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
-            <p><strong>Oura</strong> leads sleep staging (κ 0.65 healthy, its own funded study) and total sleep time (bias ~3 min); <strong>Apple</strong> is the most accurate in independent testing (κ 0.53) and best for REM in healthy sleepers; <strong>Fitbit</strong> is the most population-robust (κ 0.42 healthy <em>and</em> clinical). <strong>WHOOP</strong> wins independent-healthy deep sleep. <strong>Garmin</strong> and <strong>Withings</strong> trail on staging and over-report sleep the most. But every device overestimates sleep, can't reliably measure wake, and collapses in older adults and clinical patients — so use the trend, not the absolute number.</p>
-            <p class="verify-note">${this._icon('info')} <strong>Verification note.</strong> Every table figure is primary-source verified. Widely-repeated numbers like "Charge 6 84.6%," "Venu 3 85–90%," "Fitbit Sense 2 94%" and a "University of Salzburg 2026 ranking" trace to no real study and are deliberately excluded. Manufacturer-funded figures (Oura's Robbins/Svensson) reflect best-case healthy sleepers, not a weaker method.</p>
+            <p><strong>Oura</strong> leads sleep staging (κ 0.65 healthy, its own funded study) and total sleep time (bias about 3 min). <strong>Apple</strong> is the most accurate in independent testing (κ 0.53) and best for REM in healthy sleepers. <strong>Fitbit</strong> is the most population-robust (κ 0.42 healthy <em>and</em> clinical). <strong>WHOOP</strong> wins independent-healthy deep sleep, while <strong>Garmin</strong> and <strong>Withings</strong> trail on staging and over-report sleep the most. But every device overestimates sleep, can't reliably measure wake, and collapses in older adults and clinical patients, so use the trend, not the absolute number.</p>
           </div>
         </div>
       </section>
@@ -836,7 +835,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Wearable sleep staging is an estimate, not a clinical measurement. Consult a qualified healthcare provider before making health decisions based on wearable data.</p>
           <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation. Last updated July 2026.</p>
-          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links — we may earn a commission at no extra cost to you.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -1019,8 +1018,9 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .lede { color: var(--fg-2); font-size: 16px; line-height: 1.55; max-width: 62ch; margin: 0; }
       .lede strong { color: var(--fg-1); font-weight: 600; }
 
-      /* Population module (compact, stays 2-up) */
-      .bias { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      /* Population module (stacks on mobile, 2-up on wider screens) */
+      .bias { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      @media (min-width: 620px) { .bias { grid-template-columns: 1fr 1fr; } }
       .bias-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 4px; }
       .bias-card.good { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.10); }
       .bias-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-2); }
@@ -1125,19 +1125,31 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .cr-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; }
       @media (min-width: 768px) { .cr-wrap { border-radius: 22px; } }
       .cr-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .cr-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 520px; }
-      .cr-table th, .cr-table td { padding: 12px 10px; text-align: center; vertical-align: middle; }
+      .cr-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 440px; }
+      .cr-table th, .cr-table td { padding: 11px 7px; text-align: center; vertical-align: middle; }
       .cr-table thead th { background: #E2E8F0; border-bottom: 1px solid #CBD5E1; }
-      .cr-table thead th.cr-corner { text-align: left; font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: .4px; text-transform: uppercase; color: #334155; position: sticky; left: 0; z-index: 3; background: #E2E8F0; }
+      .cr-table thead th.cr-corner { text-align: left; font-family: var(--font-display); font-weight: 700; font-size: 10px; letter-spacing: .4px; text-transform: uppercase; color: #334155; position: sticky; left: 0; z-index: 3; background: #E2E8F0; }
       .cr-dev { display: flex; flex-direction: column; align-items: center; gap: 5px; }
-      .cr-dev .brand-img.sm { width: 34px; height: 34px; border-radius: 8px; }
-      .cr-dev-name { font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-1); line-height: 1.15; }
-      .cr-dev-type { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--fg-3); }
+      .cr-dev .brand-img.sm { width: 30px; height: 30px; border-radius: 8px; }
+      .cr-dev-name { font-family: var(--font-display); font-weight: 600; font-size: 11.5px; color: var(--fg-1); line-height: 1.15; }
+      .cr-dev-type { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--fg-3); }
       .cr-table tbody tr + tr th, .cr-table tbody tr + tr td { border-top: 1px solid var(--border-subtle); }
-      .cr-table tbody th { text-align: left; position: sticky; left: 0; z-index: 1; background: #fff; box-shadow: 1px 0 0 var(--border-subtle); min-width: 152px; }
-      .cr-metric { display: block; font-family: var(--font-body); font-weight: 600; font-size: 13px; color: var(--fg-1); line-height: 1.25; }
-      .cr-unit { display: block; margin-top: 2px; font-size: 10.5px; color: var(--fg-3); }
-      .cr-dir { display: block; margin-top: 3px; font-family: var(--font-display); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--kygo-green-dark); }
+      .cr-table tbody th { text-align: left; position: sticky; left: 0; z-index: 1; background: #fff; box-shadow: 1px 0 0 var(--border-subtle); width: 116px; min-width: 116px; }
+      .cr-metric { display: block; font-family: var(--font-body); font-weight: 600; font-size: 12px; color: var(--fg-1); line-height: 1.25; }
+      .cr-unit { display: block; margin-top: 2px; font-size: 10px; color: var(--fg-3); }
+      .cr-dir { display: none; margin-top: 3px; font-family: var(--font-display); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--kygo-green-dark); }
+      .cr-table tbody td .vpill { font-size: 11px; padding: 4px 9px; }
+      @media (min-width: 768px) {
+        .cr-table { min-width: 560px; }
+        .cr-table th, .cr-table td { padding: 12px 10px; }
+        .cr-table thead th.cr-corner { font-size: 10.5px; }
+        .cr-dev .brand-img.sm { width: 34px; height: 34px; }
+        .cr-dev-name { font-size: 12px; }
+        .cr-table tbody th { width: 168px; min-width: 168px; }
+        .cr-metric { font-size: 13px; }
+        .cr-unit { font-size: 10.5px; }
+        .cr-dir { display: block; }
+      }
       .cr-table tbody td .vpill { min-width: 0; }
       .cr-table .vpill .ico { width: 11px; height: 11px; margin-left: 4px; }
       .cr-verdict { display: flex; gap: 12px; align-items: flex-start; background: var(--kygo-green-light); border: 1px solid rgba(34,197,94,0.28); border-radius: 14px; padding: 14px 16px; font-size: 13.5px; line-height: 1.55; color: var(--fg-1); }
@@ -1213,9 +1225,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .bottomline p { position: relative; font-size: clamp(15px, 1.8vw, 18px); line-height: 1.65; margin: 0 0 14px; }
       .bottomline strong { color: #fff; font-weight: 600; }
       .bottomline em { font-style: italic; color: #fff; }
-      .bottomline .verify-note { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.55); display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12); }
-      .bottomline .verify-note .ico { width: 16px; height: 16px; color: #6EE7A0; flex: none; margin-top: 2px; }
-      .bottomline .verify-note strong { color: rgba(255,255,255,0.85); }
 
       /* Blog CTA */
       .blog-cta { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(34,197,94,0.02) 100%); border: 1.5px solid var(--kygo-green-light); border-radius: 18px; padding: 22px; transition: all .25s var(--ease-out); color: var(--fg-1); }
@@ -1244,7 +1253,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .faq details[open] summary::after { content: '−'; }
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
-      /* Sources — compact link list */
+      /* Sources · compact link list */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
       @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
