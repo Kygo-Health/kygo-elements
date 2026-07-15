@@ -627,7 +627,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
             <img src="${logoUrl}" alt="Kygo" loading="lazy" />
             <span>Kygo Health</span>
           </a>
-          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="nav-cta-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">
+          <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-cta-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">
             Get Kygo Health ${this._icon('arrowRight')}
           </a>
         </div>
@@ -726,8 +726,8 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
             <h3>See what your <span>sleep data</span> is really telling you.</h3>
             <p>Your tracker estimates your stages. Kygo connects your sleep, nutrition and recovery so you can act on the trend — not chase a single night's number.</p>
             <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg cta-primary" href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener" data-track-position="early" data-track-label="sleep-accuracy-early-ios">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg cta-android" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="sleep-accuracy-early-android">${this._icon('android')} Download for Android</a>
+              <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="early" data-track-label="sleep-accuracy-early-ios">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="sleep-accuracy-early-android">${this._icon('android')} Download for Android</a>
             </div>
             <div class="cta-works">
               <span>Works with</span>

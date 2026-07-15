@@ -13,35 +13,37 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 
 ## 1. App-store / app-download links
 
+> **Store CTAs now use Tenjin attribution links (swapped 7/14 header/footer/home,
+> 7/15 everything else).** Every **user-clickable** store button/link — sub-nav "Get Kygo App",
+> early/mid/late CTA blocks, footer CTA blocks, blog-post CTA, how-it-works CTAs, FAQ answer
+> store links — points at a **Tenjin** click URL (Website channel), which redirects to the App
+> Store / Play Store so Tenjin attributes the install. **Direct store URLs now live *only* in
+> JSON-LD / structured data** (`downloadUrl`, `sameAs`, etc.), which must stay real store URLs.
+
 | Link | What it is | Notes |
 |---|---|---|
-| `https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589` | **Apple App Store** listing (direct) | Used in ~18 files. App ID `6749870589`. |
-| `https://kygo.app/android` | **Android / Google Play** download (redirect) | Used in ~20 files. No direct `play.google.com` link exists — Android always routes through this redirect. |
-| `https://kygo.app/iOS` | **iOS** download (redirect) | Only in `kygo-oura-ring-comparison.js` and `kygo-fitbit-air-vs-whoop.js`. Elsewhere iOS points straight at the App Store URL above. Note: capital-S `iOS` path. |
+| `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy` | **Tenjin → Apple App Store** (iOS CTA click) | Attribution redirect. Used by **every clickable iOS store button** (`cta-primary` / `kband-btn-ios`). Classified `ios_download` by `kygo-tracking.js`. |
+| `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO` | **Tenjin → Google Play** (Android CTA click) | Attribution redirect. Used by **every clickable Android store button** (`cta-android` / `kband-btn-android`) plus FAQ prose "Google Play" links. Classified `android_download`. |
+| `https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589` | **Apple App Store** listing (direct) | App ID `6749870589`. **JSON-LD / structured data only** now (e.g. homepage `SoftwareApplication.downloadUrl`, `Organization.sameAs`). Do **not** put this in a clickable anchor href. |
+| `https://www.kygo.app/android` | **Android / Google Play** download (redirect) | Superseded for CTA clicks by the Tenjin Android link above. The `/android` redirect page itself still lives Wix-side. No direct `play.google.com` link exists. |
+| `https://kygo.app/iOS` | **iOS** download (redirect) | Legacy capital-S `iOS` path; no longer in the component source after the Tenjin swap. |
 
-**Apple App Store — file locations:**
-`calories-custom-element.js:1242`, `kygo-blog-post.js:31`, `kygo-blog.js:52`,
-`kygo-bundle.js:150,876,1021`, `kygo-calorie-burn-accuracy.js:879`,
-`kygo-deep-sleep-factors.js:718`, `kygo-hiw-bundle.js:3048`, `kygo-hrv-factors.js:772`,
-`kygo-rhr-factors.js:1001`, `kygo-sensor-comparison.js:1060`,
-`kygo-sleep-latency-factors.js:659`, `kygo-sleep-metrics.js:685,747`,
-`kygo-staying-asleep-factors.js:1002`, `kygo-step-count-accuracy.js:433,490,634`,
-`kygo-tools.js:697`, `kygo-wearable-accuracy.js:716,842`, `kygo-wearable-stress.js:1187`,
-`kygo-recovery-scores.js` (app CTA — canonical App Store URL).
+**Tenjin iOS CTA (`…/cD7zgIPLuiZMMWmWkXLsvy`) — file locations:** all 19 tool components
+(sub-nav + early/mid/late + footer-cta iOS anchors), `kygo-blog.js`, `kygo-blog-post.js`,
+`kygo-tools.js`, `kygo-faq-section.js`, `kygo-hiw-bundle.js`, `calories-custom-element.js`.
 
-**`/android` redirect — file locations:**
-`calories-custom-element.js:1246`, `kygo-blog-post.js:32`, `kygo-blog.js:53`,
-`kygo-bundle.js:154,1108`, `kygo-calorie-burn-accuracy.js:565,604`,
-`kygo-deep-sleep-factors.js:791`, `kygo-faq-section.js:663,1005,1418`,
-`kygo-fitbit-air-vs-whoop.js:238`, `kygo-hiw-bundle.js:3251`, `kygo-hrv-factors.js:853`,
-`kygo-oura-ring-comparison.js:264`, `kygo-rhr-factors.js:1046`,
-`kygo-sensor-comparison.js:1064`, `kygo-sleep-latency-factors.js:740`,
-`kygo-sleep-metrics.js:689,751`, `kygo-staying-asleep-factors.js:1081`,
-`kygo-step-count-accuracy.js:494,638`, `kygo-tools.js:698`,
-`kygo-wearable-accuracy.js:720,846`, `kygo-wearable-stress.js:1202`.
+**Tenjin Android CTA (`…/eMjS3ZkseCvs2lO9AVESkO`) — file locations:** the same components'
+Android anchors (`cta-android` / `kband-btn-android`), plus the two FAQ-answer "Google Play"
+prose links in `kygo-faq-section.js`.
 
-**`/iOS` redirect — file locations:**
-`kygo-fitbit-air-vs-whoop.js:237`, `kygo-oura-ring-comparison.js:159,263`.
+**Direct App Store URL — remaining (JSON-LD only):** homepage `SoftwareApplication.downloadUrl`
+and `Organization.sameAs` (see `docs/wix-snippets/3-homepage-jsonld-head.html` and
+`docs/wix-global-code.md`). The per-tool `WebApplication` JSON-LD blocks do **not** carry a store
+URL. `kygo-tracking.js` also keeps the literal substrings `apps.apple.com` / `kygo.app/android`
+in its classifier (matches legacy links defensively) — leave those.
+
+**`kygo-bundle.js`** (combined header/footer/home bundle) was swapped 7/14 and already carries
+the Tenjin links.
 
 ---
 

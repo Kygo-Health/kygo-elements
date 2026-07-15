@@ -618,7 +618,7 @@ class KygoRemSleep extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
+    const iosUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
     const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
     const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
     const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
@@ -692,7 +692,7 @@ class KygoRemSleep extends HTMLElement {
             <p>Stop guessing which of these applies to you. Kygo correlates your meals, caffeine, and alcohol with YOUR sleep stages.</p>
             <div class="cta-btn-row">
               <a class="btn btn-primary btn-lg cta-primary" href="${iosUrl}" target="_blank" rel="noopener" data-track-position="early" data-track-label="rem-sleep-early-ios">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg cta-android" href="https://www.kygo.app/android" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="rem-sleep-early-android">${this._icon('android')} Download for Android</a>
+              <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="rem-sleep-early-android">${this._icon('android')} Download for Android</a>
             </div>
             <div class="cta-works">
               <span>Works with</span>
