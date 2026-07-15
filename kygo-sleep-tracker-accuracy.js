@@ -327,7 +327,10 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
   // value pill: tone green (good) / grey (mid) / dark (bad)
   _pill(text, tone) { return `<span class="vpill ${tone}">${text}</span>`; }
   _na() { return `<span class="mk off"><span class="dash"></span></span>`; }
-  _typePill(d) { return `<span class="t-pill">${d.typeLabel}</span>`; }
+  _amazonLink(d, position) {
+    if (!d.affiliateUrl) return '';
+    return `<a class="amz-link" href="${d.affiliateUrl}" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="${position}">Amazon ${this._icon('arrowRight')}</a>`;
+  }
 
   _kHealthyPill(d) {
     return this._pill(d.kHealthyStr, d.kHealthy >= 0.50 ? 'good' : 'mid');
@@ -397,7 +400,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
               <span class="pick-check">${this._icon('check')}</span>
               ${this._deviceLogo(d, 'sm')}
               <span class="pick-name">${this._chip(d)}</span>
-              <span class="pick-type">${d.typeLabel}</span>
             </button>`;
           }).join('')}
         </div>
@@ -441,7 +443,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
 
     const head = `<tr>
       <th class="cr-corner" scope="col">Metric</th>
-      ${sel.map(d => `<th scope="col"><span class="cr-dev">${this._deviceLogo(d, 'sm')}<span class="cr-dev-name">${this._chip(d)}</span><span class="cr-dev-type">${d.typeLabel}</span></span></th>`).join('')}
+      ${sel.map(d => `<th scope="col"><span class="cr-dev">${this._deviceLogo(d, 'sm')}<span class="cr-dev-name">${this._chip(d)}</span></span></th>`).join('')}
     </tr>`;
 
     const entries = Object.entries(wins);
@@ -479,10 +481,10 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
             <thead>
               <tr>
                 <th class="cmp-th-device" scope="col">Wearable</th>
-                <th scope="col">Type</th>
                 <th scope="col"><span class="th-full">Healthy adults (κ)</span><span class="th-short" aria-hidden="true">Healthy κ</span></th>
                 <th scope="col"><span class="th-full">Clinical patients (κ)</span><span class="th-short" aria-hidden="true">Clinical κ</span></th>
                 <th scope="col">Grade</th>
+                <th scope="col">Buy</th>
               </tr>
             </thead>
             <tbody>
@@ -491,13 +493,13 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
                   <th class="cmp-td-device" scope="row">
                     <span class="brand">
                       ${this._deviceLogo(d, 'sm')}
-                      <span class="brand-text"><span class="brand-name">${d.name}</span><span class="brand-type">${d.typeLabel}</span></span>
+                      <span class="brand-text"><span class="brand-name">${d.name}</span></span>
                     </span>
                   </th>
-                  <td>${this._typePill(d)}</td>
                   <td>${this._kHealthyPill(d)}${d.kHealthyFunded ? `<span class="cell-note">Oura-funded</span>` : ''}</td>
                   <td>${d.kClinicalStr ? this._pill(d.kClinicalStr, 'mid') : this._na()}</td>
                   <td>${this._gradePill(d)}</td>
+                  <td>${this._amazonLink(d, 'ranking')}</td>
                 </tr>`).join('')}
             </tbody>
           </table>
@@ -546,7 +548,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
           ${this._deviceLogo(d, 'sm')}
           <span class="dacc-id">
             <span class="dacc-name">${d.name}</span>
-            <span class="dacc-sub">${this._typePill(d)}<span class="vpill ${d.kHealthy >= 0.40 ? 'good' : 'dark'}">κ ${d.kHealthyStr}</span></span>
+            <span class="dacc-sub"><span class="vpill ${d.kHealthy >= 0.40 ? 'good' : 'dark'}">κ ${d.kHealthyStr}</span></span>
           </span>
           <span class="dacc-chev">${this._icon('arrowRight')}</span>
         </summary>
@@ -1078,14 +1080,12 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .brand-img.sm { width: 34px; height: 34px; border-radius: 8px; }
       .brand-text { display: flex; flex-direction: column; min-width: 0; }
       .brand-name { font-family: var(--font-display); font-weight: 600; font-size: 11px; color: var(--fg-1); line-height: 1.2; overflow-wrap: anywhere; word-break: break-word; max-width: 92px; }
-      .brand-type { font-size: 9.5px; color: var(--fg-3); line-height: 1.2; display: none; }
       @media (min-width: 768px) {
         .cmp-td-device { padding: 12px 14px 12px 8px; width: auto; min-width: 210px; position: static; box-shadow: none; }
         .brand { flex-direction: row; align-items: center; gap: 12px; text-align: left; }
         .brand-img { width: 42px; height: 42px; border-radius: 11px; }
         .brand-img.sm { width: 42px; height: 42px; border-radius: 11px; }
         .brand-name { font-size: 15px; max-width: none; }
-        .brand-type { font-size: 11.5px; display: block; }
       }
       .cmp-table tbody td { text-align: center; padding: 10px 6px; }
       @media (min-width: 768px) { .cmp-table tbody td { padding: 12px 8px; } }
@@ -1096,7 +1096,10 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .vpill.good { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
       .vpill.mid { background: var(--bg-raised); color: var(--fg-2); }
       .vpill.dark { background: var(--kygo-dark); color: #fff; }
-      .t-pill { display: inline-flex; align-items: center; font-family: var(--font-display); font-size: 11px; font-weight: 600; padding: 4px 11px; border-radius: 999px; background: var(--bg-raised); color: var(--fg-2); white-space: nowrap; }
+      .amz-link { display: inline-flex; align-items: center; gap: 3px; font-family: var(--font-display); font-weight: 600; font-size: 11px; color: var(--kygo-green-dark); white-space: nowrap; }
+      .amz-link .ico { width: 11px; height: 11px; transition: transform .15s; }
+      .amz-link:hover { color: var(--kygo-green); }
+      .amz-link:hover .ico { transform: translateX(2px); }
       .cell-note { display: block; margin-top: 4px; font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--fg-3); }
       .cmp-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin: 0; padding: 12px 16px 14px; font-size: 12px; line-height: 1.55; color: var(--fg-3); }
       .cmp-legend .ico { width: 13px; height: 13px; color: var(--kygo-green-dark); background: var(--kygo-green-light); border-radius: 50%; padding: 2px; box-sizing: content-box; flex: none; }
@@ -1115,7 +1118,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .pick-tile:hover { border-color: var(--fg-3); }
       .pick-tile .brand-img.sm { width: 34px; height: 34px; border-radius: 8px; }
       .pick-name { font-weight: 600; font-size: 11.5px; color: var(--fg-1); line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
-      .pick-type { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--fg-3); }
       .pick-check { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: none; align-items: center; justify-content: center; }
       .pick-check .ico { width: 10px; height: 10px; }
       .pick-tile.active { border-color: var(--kygo-green); background: rgba(34,197,94,0.06); box-shadow: 0 0 0 3px rgba(34,197,94,0.10); }
@@ -1132,7 +1134,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .cr-dev { display: flex; flex-direction: column; align-items: center; gap: 5px; }
       .cr-dev .brand-img.sm { width: 30px; height: 30px; border-radius: 8px; }
       .cr-dev-name { font-family: var(--font-display); font-weight: 600; font-size: 11.5px; color: var(--fg-1); line-height: 1.15; }
-      .cr-dev-type { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--fg-3); }
       .cr-table tbody tr + tr th, .cr-table tbody tr + tr td { border-top: 1px solid var(--border-subtle); }
       .cr-table tbody th { text-align: left; position: sticky; left: 0; z-index: 1; background: #fff; box-shadow: 1px 0 0 var(--border-subtle); width: 116px; min-width: 116px; }
       .cr-metric { display: block; font-family: var(--font-body); font-weight: 600; font-size: 12px; color: var(--fg-1); line-height: 1.25; }
