@@ -726,9 +726,10 @@ class KygoDeepSleepFactors extends HTMLElement {
             <h3>Track your <span>deep sleep</span> recovery.</h3>
             <p>Stop guessing which of these applies to you. Kygo correlates your meals, caffeine, and alcohol with YOUR sleep stages.</p>
             <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg cta-primary" href="${iosUrl}" target="_blank" rel="noopener" data-track-position="early" data-track-label="deep-sleep-early-ios">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg cta-primary" href="${iosUrl}" target="_blank" rel="noopener" data-track-position="early" data-track-label="deep-sleep-early-ios">${this._icon('apple')} Try Free for 7 Days</a>
               <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="deep-sleep-early-android">${this._icon('android')} Download for Android</a>
             </div>
+            <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
             <div class="cta-works">
               <span>Works with</span>
               <div class="cta-badges">

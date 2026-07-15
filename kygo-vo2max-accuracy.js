@@ -586,9 +586,10 @@ class KygoVo2maxAccuracy extends HTMLElement {
             <h3>See how <span>what you eat</span> shows up in your recovery.</h3>
             <p>Your watch estimates VO2 max. Kygo shows what your training and nutrition do to it over time.</p>
             <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="early" data-track-label="vo2max-accuracy-early-ios">${this._icon('apple')} Download for iOS</a>
+              <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="early" data-track-label="vo2max-accuracy-early-ios">${this._icon('apple')} Try Free for 7 Days</a>
               <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="vo2max-accuracy-early-android">${this._icon('android')} Download for Android</a>
             </div>
+            <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
             <div class="cta-works">
               <span>Works with</span>
               <div class="cta-badges">

@@ -894,12 +894,13 @@
               <p>${sub}</p>
               <div class="btns">
                 <a class="btn cta-primary" href="${iosUrl}" data-track-position="post-end" data-track-label="post-cta-ios" target="_blank" rel="noopener">
-                  ${svg('apple', 18)} Download for iOS
+                  ${svg('apple', 18)} Try Free for 7 Days
                 </a>
                 <a class="btn cta-android" href="${androidUrl}" data-action="android-download" data-track-position="post-end" data-track-label="post-cta-android" target="_blank" rel="noopener">
                   ${svg('playstore', 18)} Download for Android
                 </a>
               </div>
+              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
               <div class="works">
                 <span class="works-label">Works with</span>
                 <div class="dots">
@@ -1023,16 +1024,14 @@
           <p>${sub}</p>
           <div class="btns">
             <a class="btn ios cta-primary" href="${iosUrl}" data-track-position="mid" data-track-label="post-inline-ios" target="_blank" rel="noopener">
-              ${svg('apple', 16)} Download for iOS
+              ${svg('apple', 16)} Try Free for 7 Days
             </a>
             <a class="btn android cta-android" href="${androidUrl}" data-action="android-download" data-track-position="mid" data-track-label="post-inline-android" target="_blank" rel="noopener">
               ${svg('playstore', 16)} Download for Android
             </a>
           </div>
           <div class="trust">
-            <span>${svg('check', 11)} 2-min setup</span>
-            <span>${svg('check', 11)} Free forever plan</span>
-            <span>${svg('check', 11)} No credit card</span>
+            <span>7-day free trial on yearly. Free plan available. Cancel anytime.</span>
           </div>
         </aside>
       `;
