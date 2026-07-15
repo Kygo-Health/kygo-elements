@@ -35,7 +35,7 @@ Every content component implements `_injectStructuredData()`, called once from
 | File | Marker | Schemas injected |
 |---|---|---|
 | `calories-custom-element.js` | `data-kygo-food-scanner-ld` | WebApplication, Offer, FAQPage (Q&A), Organization |
-| `kygo-bundle.js` | `data-kygo-org-ld`, `data-kygo-bundle-ld` | Organization, SoftwareApplication, Offer, ContactPoint |
+| `kygo-bundle.js` | `data-kygo-org-ld` | Organization, ContactPoint. *(The `data-kygo-bundle-ld` `SoftwareApplication` block was removed — the homepage `SoftwareApplication` is served from the Wix head, see `wix-global-code.md` Blocks 2 & 3; the component's copy was a duplicate.)* |
 | `kygo-hiw-bundle.js` | `data-kygo-hiw-ld` | HowTo + HowToStep |
 | `kygo-contact.js` | `data-kygo-contact-ld` | ContactPage, Organization, ContactPoint |
 | `kygo-tools.js` | `data-kygo-tools-ld` | CollectionPage, ItemList, ListItem, Organization |

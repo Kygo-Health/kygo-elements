@@ -239,33 +239,10 @@ class KygoHeroSection extends HTMLElement {
   // ── Structured Data ───────────────────────────────────────────────────
 
   _injectStructuredData() {
-    if (!document.querySelector('script[data-kygo-bundle-ld]')) {
-      const ld = {
-        '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
-        'name': 'Kygo Health',
-        'alternateName': 'Kygo — See How Food Affects Your Health',
-        'description': 'Kygo Health is an AI-powered nutrition tracking app that correlates what you eat with your sleep, HRV, energy, and recovery using data from Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch. Log meals via photo, voice, barcode, or text and discover personalized food-body correlations after 7 days.',
-        'applicationCategory': 'HealthApplication',
-        'operatingSystem': 'iOS, Android',
-        'url': 'https://www.kygo.app',
-        'datePublished': '2025-12-01',
-        'dateModified': '2026-03-18',
-        'inLanguage': 'en',
-        'isAccessibleForFree': true,
-        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD', 'description': 'Free with optional premium features' },
-        'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
-        'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-        'featureList': 'AI photo meal logging, voice meal logging, barcode scanning, natural language food entry, food-sleep correlations, food-HRV correlations, food-energy correlations, 23+ micronutrient tracking, Apple Watch integration, Oura Ring integration, Garmin integration, WHOOP integration, Fitbit integration, Samsung Galaxy Watch integration',
-        'keywords': 'nutrition tracking app, food logging app, AI food scanner, calorie counter, macro tracker, food sleep correlation, food HRV correlation, wearable nutrition app, Kygo Health'
-      };
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.setAttribute('data-kygo-bundle-ld', '');
-      script.textContent = JSON.stringify(ld);
-      document.head.appendChild(script);
-    }
-
+    // NOTE: The homepage SoftwareApplication schema is served from the Wix head
+    // (see docs/wix-global-code.md, Blocks 2 & 3). This component previously
+    // injected a third, duplicate SoftwareApplication block into document.head,
+    // which conflicted with those. Removed to keep a single source of truth.
     if (!document.querySelector('script[data-kygo-org-ld]')) {
       const org = {
         '@context': 'https://schema.org',
