@@ -687,42 +687,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">The full ranking</div>
-            <h2>All seven, ranked on <span class="hl">the headline metric.</span></h2>
-            <p class="lede">Sleep staging (light / deep / REM / wake) is the hard task and the number people quote. Here's every device ranked by healthy-adult agreement, with how it holds up in clinical patients. Scroll sideways on mobile.</p>
-          </div>
-          <div class="animate-on-scroll">${this._renderStagingMatrix()}</div>
-        </div>
-      </section>
-
-      <section class="section bg-light">
-        <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">Read this before you trust a number</div>
-            <h2>The one thing that <span class="hl">decides accuracy.</span></h2>
-            <p class="lede">Who's wearing it matters more than which brand it is. The <strong>same device</strong> scores far higher in screened healthy sleepers than in older adults or real sleep-clinic patients, which is why the comparison above splits staging into healthy vs clinical.</p>
-          </div>
-          <div class="bias animate-on-scroll">
-            <div class="bias-card good">
-              <span class="bias-tag">${this._icon('check')} Screened healthy adults</span>
-              <span class="bias-stat">κ 0.65 <small>best case</small></span>
-              <span class="bias-cap">Ceiling numbers live here</span>
-              <p>Young, health-screened sleepers. The manufacturer-funded "best" figures come from this population: a best-case sample, not a method trick.</p>
-            </div>
-            <div class="bias-card">
-              <span class="bias-tag">${this._icon('user')} Older adults &amp; patients</span>
-              <span class="bias-stat">κ 0.30–0.42 <small>real users</small></span>
-              <span class="bias-cap">Every device drops</span>
-              <p>Sleep-clinic patients and older adults. Apnea-fragmented sleep is harder to stage, so Oura falls 0.65 → 0.35 and Apple 0.53 → 0.30. Fitbit is the exception (0.42 in both).</p>
-            </div>
-            <p class="bias-note">${this._icon('info')} <span><strong>A 4-stage kappa of 0.4–0.6 is only "moderate,"</strong> the current ceiling for consumer devices. Two human PSG scorers agree at ~0.75, so no wearable is "accurate" in an absolute sense. <em>Schyvens 2025 · Lee 2023</em></span></p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section bg-white">
-        <div class="section-inner">
           <div class="kygo-cta-card animate-on-scroll">
             <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
             <h3>See what your <span>sleep data</span> is really telling you.</h3>
@@ -747,6 +711,42 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       </section>
 
       <kygo-inline-subscribe source="tool-sleep-tracker-accuracy" variant="comparison"></kygo-inline-subscribe>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">The full ranking</div>
+            <h2>All seven, ranked on <span class="hl">the headline metric.</span></h2>
+            <p class="lede">Sleep staging (light / deep / REM / wake) is the hard task and the number people quote. Here's every device ranked by healthy-adult agreement, with how it holds up in clinical patients. Scroll sideways on mobile.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderStagingMatrix()}</div>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Read this before you trust a number</div>
+            <h2>The one thing that <span class="hl">decides accuracy.</span></h2>
+            <p class="lede">Who's wearing it matters more than which brand it is. The <strong>same device</strong> scores far higher in screened healthy sleepers than in older adults or real sleep-clinic patients, which is why the comparison above splits staging into healthy vs clinical.</p>
+          </div>
+          <div class="bias animate-on-scroll">
+            <div class="bias-card good">
+              <span class="bias-tag">${this._icon('check')} Screened healthy adults</span>
+              <span class="bias-stat">κ 0.65 <small>best case</small></span>
+              <span class="bias-cap">Ceiling numbers live here</span>
+              <p>Young, health-screened sleepers. The manufacturer-funded "best" figures come from this population: a best-case sample, not a method trick.</p>
+            </div>
+            <div class="bias-card">
+              <span class="bias-tag">${this._icon('user')} Older adults &amp; patients</span>
+              <span class="bias-stat">κ 0.30–0.42 <small>real users</small></span>
+              <span class="bias-cap">Every device drops</span>
+              <p>Sleep-clinic patients and older adults. Apnea-fragmented sleep is harder to stage, so Oura falls 0.65 → 0.35 and Apple 0.53 → 0.30. Fitbit is the exception (0.42 in both).</p>
+            </div>
+            <p class="bias-note">${this._icon('info')} <span><strong>A 4-stage kappa of 0.4–0.6 is only "moderate,"</strong> the current ceiling for consumer devices. Two human PSG scorers agree at ~0.75, so no wearable is "accurate" in an absolute sense. <em>Schyvens 2025 · Lee 2023</em></span></p>
+          </div>
+        </div>
+      </section>
 
       <section class="section bg-light">
         <div class="section-inner">
