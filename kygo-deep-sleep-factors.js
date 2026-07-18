@@ -657,6 +657,7 @@ class KygoDeepSleepFactors extends HTMLElement {
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const iosUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+    const androidUrl = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
     const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
     const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
     const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
@@ -673,7 +674,10 @@ class KygoDeepSleepFactors extends HTMLElement {
             <img src="${logoUrl}" alt="Kygo" loading="lazy" />
             <span>Kygo Health</span>
           </a>
-          <a href="${iosUrl}" class="nav-cta-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">Get Kygo App ${this._icon('arrowRight')}</a>
+          <div class="nav-cta-group">
+            <a href="${iosUrl}" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store">${this._icon('apple')}<span>iOS</span></a>
+            <a href="${androidUrl}" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play">${this._icon('android')}<span>Android</span></a>
+          </div>
         </div>
       </header>
 
@@ -838,10 +842,15 @@ class KygoDeepSleepFactors extends HTMLElement {
       .nav-inner { max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; gap:16px; }
       .nav-brand { display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; font-size:14px; letter-spacing:-.01em; color:var(--fg-1); text-transform:uppercase; }
       .nav-brand img { width:26px; height:26px; }
-      .nav-cta-link { margin-left:auto; display:inline-flex; align-items:center; gap:6px; background:var(--kygo-green); color:#fff; padding:8px 14px; border-radius:8px; font-weight:600; font-size:14px; text-decoration:none; }
-      .nav-cta-link:hover { background:var(--kygo-green-dark); color:#fff; }
-      .nav-cta-link svg { width:16px; height:16px; }
+      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+      .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+      .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+      .nav-cta-group .nav-store-ios { background:var(--kygo-green); color:#fff; }
+      .nav-cta-group .nav-store-ios:hover { background:var(--kygo-green-dark); color:#fff; }
+      .nav-cta-group .nav-store-android { background:#fff; color:var(--kygo-green-dark); border:1.5px solid var(--border-subtle); }
+      .nav-cta-group .nav-store-android:hover { border-color:var(--kygo-green); color:var(--kygo-green-dark); }
       @media (max-width:480px){ .nav-brand span { display:none; } }
+      @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* Buttons */
       .btn { font-family:var(--font-body); font-weight:600; font-size:14px; padding:10px 18px; border-radius:10px; border:0; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:all .2s var(--ease-out); white-space:nowrap; }

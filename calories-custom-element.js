@@ -319,20 +319,14 @@ class CaloriesInAnything extends HTMLElement {
           text-decoration: none;
         }
         .logo-img { height: 28px; width: auto; }
-        .header-link {
-          color: #fff;
-          background: var(--green);
-          text-decoration: none;
-          font-size: 13px;
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          font-weight: 600;
-          padding: 8px 14px;
-          border-radius: 8px;
-          transition: all 0.2s;
-        }
-        .header-link:hover { background: var(--green-dark); color: #fff; }
+        .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+        .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+        .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+        .nav-cta-group .nav-store-ios { background:var(--green); color:#fff; }
+        .nav-cta-group .nav-store-ios:hover { background:var(--green-dark); color:#fff; }
+        .nav-cta-group .nav-store-android { background:#fff; color:var(--green-dark); border:1.5px solid var(--gray-200); }
+        .nav-cta-group .nav-store-android:hover { border-color:var(--green); color:var(--green-dark); }
+        @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
         /* MAIN CONTAINER */
         .main {
@@ -1236,9 +1230,10 @@ class CaloriesInAnything extends HTMLElement {
               <img src="${this.logoUrl}" alt="Kygo" class="logo-img" />
               Food Scanner
             </a>
-            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="header-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">
-              Get Kygo App ${Icons.arrowRight}
-            </a>
+            <div class="nav-cta-group">
+              <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg><span>iOS</span></a>
+              <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+            </div>
           </div>
         </header>
 

@@ -1013,9 +1013,10 @@ class KygoStayingAsleepFactors extends HTMLElement {
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Staying Asleep
           </a>
-          <a href="${iosUrl}" class="header-link cta-primary" data-track-label="subnav-get-app" data-track-position="subnav" target="_blank" rel="noopener">
-            Get Kygo App ${this._icon('arrowRight')}
-          </a>
+          <div class="nav-cta-group">
+            <a href="${iosUrl}" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg><span>iOS</span></a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+          </div>
         </div>
       </header>
 
@@ -1387,9 +1388,14 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; max-width: 1200px; margin: 0 auto; }
       .logo { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); text-decoration: none; white-space: nowrap; min-width: 0; line-height: 1.2; }
       .logo-img { height: 26px; width: auto; flex-shrink: 0; }
-      .header-link { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: #fff; background: var(--green); padding: 7px 12px; border-radius: 50px; text-decoration: none; transition: background 0.2s; white-space: nowrap; flex-shrink: 0; line-height: 1; }
-      .header-link:hover { background: var(--green-dark); }
-      .header-link svg { width: 13px; height: 13px; }
+      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+      .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+      .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+      .nav-cta-group .nav-store-ios { background:var(--green); color:#fff; }
+      .nav-cta-group .nav-store-ios:hover { background:var(--green-dark); color:#fff; }
+      .nav-cta-group .nav-store-android { background:#fff; color:var(--green-dark); border:1.5px solid var(--gray-200); }
+      .nav-cta-group .nav-store-android:hover { border-color:var(--green); color:var(--green-dark); }
+      @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* ========== HERO (mobile-first) ========== */
       .hero { padding: 40px 0 28px; background: #fff; }
@@ -1723,7 +1729,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .blog-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
       .blog-cta .highlight { color: var(--green); }
       .blog-cta p { color: var(--gray-400); font-size: 14px; margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; white-space:nowrap; }
       .blog-cta-btn:hover { background: var(--green-dark); }
       .blog-cta-btn svg { width: 18px; height: 18px; }
       .blog-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
@@ -1800,8 +1806,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
       }
       @media (min-width: 768px) {
         .header-inner { padding: 14px 24px; }
-        .header-link { font-size: 13px; padding: 8px 16px; gap: 6px; }
-        .header-link svg { width: 14px; height: 14px; }
         .logo { font-size: 16px; }
         .logo-img { height: 28px; }
         .hero { padding: 72px 0 48px; }
