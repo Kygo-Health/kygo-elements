@@ -1384,7 +1384,6 @@ class KygoWearableAccuracy extends HTMLElement {
         .header { padding: 14px 24px; }
         .logo { font-size: 16px; gap: 10px; }
         .logo-img { height: 32px; }
-        .header-link { font-size: 14px; gap: 6px; }
         .hero h1 { font-size: clamp(36px, 5vw, 48px); }
         .hero-sub { font-size: 18px; }
         .section-title { font-size: 32px; }

@@ -1113,7 +1113,6 @@ class CaloriesInAnything extends HTMLElement {
           .header { padding: 14px 24px; }
           .logo { font-size: 18px; gap: 12px; }
           .logo-img { height: 36px; }
-          .header-link { font-size: 14px; gap: 6px; }
           .main { padding: 48px 24px; }
           .hero { margin-bottom: 40px; }
           .hero h1 { font-size: 40px; letter-spacing: -1px; margin-bottom: 16px; }

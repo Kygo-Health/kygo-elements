@@ -1370,7 +1370,6 @@ class KygoRhrFactors extends HTMLElement {
       .fact-head:focus-visible,
       .base-head:focus-visible,
       .src-group-toggle:focus-visible,
-      .header-link:focus-visible,
       .blog-cta-btn:focus-visible,
       .cta-android:focus-visible,
       .article-card:focus-visible,
