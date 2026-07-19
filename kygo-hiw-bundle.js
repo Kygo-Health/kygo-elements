@@ -3218,6 +3218,7 @@ class KygoHiwFinalCta extends HTMLElement {
           cursor: pointer;
           font-family: inherit;
           -webkit-tap-highlight-color: transparent;
+          white-space: nowrap;
         }
 
         .cta-primary:hover, .cta-android:hover {
