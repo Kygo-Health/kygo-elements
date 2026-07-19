@@ -863,6 +863,7 @@
             font-weight: 700; font-size: 15px;
             box-shadow: 0 8px 20px rgba(34,197,94,0.25);
             transition: background 180ms ease, transform 180ms ease;
+            white-space: nowrap;
           }
           .btn:hover { background: var(--green-dark); transform: translateY(-1px); }
           .btn svg { width: 18px; height: 18px; }
