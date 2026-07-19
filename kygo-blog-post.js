@@ -1090,31 +1090,33 @@
  *    });
  *
  *    // ------------------------------------------------------
- *    // 2. Related posts (uses the posts manually picked in the Wix
- *    //    Blog post editor under Settings → Advanced → Choose Posts).
- *    //    Manual picks are exposed on $w('#post1').getPost() as
- *    //    `relatedPostIds`. Falls back to 3 most-recent posts when
- *    //    no manual picks are set.
- *    //    NOTE: #post1 is the default ID of the Wix Blog Post widget.
- *    //    If your site uses a different ID, update it below.
+ *    // 2. Related posts — the posts you hand-pick per article in the
+ *    //    Wix Blog post settings ("Related Posts").
+ *    //
+ *    //    IMPORTANT: those picks are NOT on $w('#post1').getPost()
+ *    //    (the on-page Blog widget returns a limited post object with
+ *    //    no related-posts data). They live in the Blog/Posts
+ *    //    collection as the `relatedPosts` field, which is a
+ *    //    MULTI-REFERENCE — so we must look the current post up in the
+ *    //    collection by slug and `.include('relatedPosts')` to hydrate
+ *    //    the referenced posts. Order is preserved as picked.
+ *    //
+ *    //    Falls back to the 3 most-recent posts only when an article
+ *    //    has no hand-picked related posts.
  *    // ------------------------------------------------------
  *    try {
- *      const currentPost = await $w('#post1').getPost();
- *      const relatedIds = (currentPost && currentPost.relatedPostIds) || [];
+ *      const curRes = await wixData.query('Blog/Posts')
+ *        .eq('slug', currentSlug)
+ *        .include('relatedPosts')   // hydrate the multi-reference field
+ *        .limit(1)
+ *        .find();
  *
- *      let items = [];
- *      if (relatedIds.length > 0) {
- *        const relRes = await wixData.query('Blog/Posts')
- *          .hasSome('_id', relatedIds)
- *          .find();
- *        // Preserve the order the author picked
- *        items = relatedIds
- *          .map(id => relRes.items.find(p => p._id === id))
- *          .filter(Boolean);
- *      }
+ *      const currentPost = curRes.items[0];
+ *      // `relatedPosts` is an array of full Blog/Posts items (your picks)
+ *      let items = (currentPost && currentPost.relatedPosts) || [];
  *
- *      // Fallback: latest 3 (excluding current). No sort field — Wix's
- *      // default order is newest-first and firstPublishedDate errors.
+ *      // Fallback: latest 3 (excluding current). Wix's default order is
+ *      // newest-first; the collection date field is `publishedDate`.
  *      if (items.length === 0) {
  *        const recent = await wixData.query('Blog/Posts').limit(6).find();
  *        items = recent.items
@@ -1135,7 +1137,7 @@
  *          slug: p.slug,
  *          excerpt: p.excerpt || '',
  *          coverImage: img,
- *          publishedDate: p.firstPublishedDate || p.lastPublishedDate,
+ *          publishedDate: p.publishedDate || p.lastPublishedDate,
  *          category: '',
  *          readTime: p.timeToRead || Math.max(1, Math.ceil(wordCount / 200)),
  *          views: p.viewCount || null
@@ -1190,7 +1192,8 @@
  *         from Wix — we don't touch them)
  *      -- OPTIONAL: inside the post Rich Content, drop an HTML iframe
  *         block with <kygo-blog-post-inline-cta> for mid-article CTAs
- *   4. <kygo-blog-post-related>     — 3 recent posts on white
+ *   4. <kygo-blog-post-related>     — hand-picked related posts on white
+ *                                     (falls back to 3 recent posts)
  *   5. <kygo-blog-subscribe>        — grey band, keeps rhythm
  *   6. <kygo-blog-post-cta>         — big dark app CTA on white
  *   7. Sitewide FOOTER

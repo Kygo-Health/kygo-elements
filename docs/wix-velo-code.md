@@ -108,6 +108,11 @@ Handles `#kygoCats` (categoryClick) and `#kygoRelated` (postClick/seeAllClick). 
 `$w('#kygoSubscribe').on('subscribe', …)` block: as of the email-capture pass, `kygo-blog-subscribe`
 POSTs to `/_functions/subscribe` itself (see the endpoint below), so the page-code binding is dead.
 Keep the categories + related-posts wiring. *(Full code mirrored in the Wix editor.)*
+Related posts must come from each post's hand-picked selections: look the current post up in
+`Blog/Posts` by slug and `.include('relatedPosts')` (a **multi-reference** field), then read
+`currentPost.relatedPosts`. Do **not** use `$w('#post1').getPost().relatedPostIds` — the on-page
+Blog widget's post object doesn't carry related-posts data, so that path always fell through to the
+newest-3 fallback. Fall back to newest-3 only when a post has no picks. *(Mirror in `kygo-blog-post.js`.)*
 
 ### Calories-in-anything page — ⚠️ KEEP `imageUploaded`, REMOVE `android-signup`
 ```js
