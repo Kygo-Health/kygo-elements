@@ -359,14 +359,26 @@ class KygoHiw extends HTMLElement {
 
       /* iOS + Android buttons sit side by side on mobile */
       @media (max-width:520px){
-        .hiw-btnrow { flex-wrap:nowrap !important; gap:10px !important; }
-        .hiw-btnrow > a { flex:1 1 0; min-width:0; justify-content:center; padding-left:12px; padding-right:12px; font-size:14px; }
-        .hiw-btnrow > a svg { width:18px; height:18px; }
+        .hiw-btnrow { flex-wrap:nowrap !important; gap:10px !important; align-items:stretch; }
+        .hiw-btnrow > a { flex:1 1 0; min-width:0; justify-content:center; text-align:center; padding-left:10px; padding-right:10px; font-size:14px; white-space:normal; line-height:1.15; overflow-wrap:break-word; }
+        .hiw-btnrow > a svg { width:18px; height:18px; flex-shrink:0; }
       }
       @media (max-width:360px){
         .hiw-btnrow > a { font-size:13px; gap:6px; padding-left:8px; padding-right:8px; }
       }
       @media (max-width:400px){ .hiw-cta-pill { font-size:12px; padding:6px 12px; } }
+
+      /* Step 3 — desktop: card left / copy right. Mobile: heading, card, buttons. */
+      .hiw-s3 { display:flex; flex-wrap:wrap; gap:clamp(36px,5vw,80px); align-items:center; }
+      .hiw-s3-card { flex:1 1 360px; display:flex; justify-content:center; }
+      .hiw-s3-copy { flex:1 1 380px; display:flex; flex-direction:column; }
+      @media (max-width:760px){
+        .hiw-s3 { flex-direction:column; align-items:stretch; }
+        .hiw-s3-copy { display:contents; }
+        .hiw-s3-head { order:1; }
+        .hiw-s3-card { order:2; margin-bottom:8px; }
+        .hiw-s3-cta { order:3; }
+      }
 
       /* Unlock timeline — staged fill; vertical on mobile */
       .hiw-tl { position:relative; }
@@ -525,8 +537,8 @@ class KygoHiw extends HTMLElement {
       <!-- STEP 3: DISCOVER -->
       <section style="position:relative;padding:clamp(56px,7vw,92px) 20px;background:#0F172A;overflow:hidden;">
         <div style="position:absolute;top:-160px;right:-60px;width:640px;height:560px;max-width:120vw;background:radial-gradient(circle,rgba(34,197,94,0.16) 0%,transparent 60%);pointer-events:none;"></div>
-        <div style="max-width:1180px;margin:0 auto;position:relative;display:flex;flex-wrap:wrap;gap:clamp(36px,5vw,80px);align-items:center;">
-          <div style="flex:1 1 360px;display:flex;justify-content:center;">
+        <div class="hiw-s3" style="max-width:1180px;margin:0 auto;position:relative;">
+          <div class="hiw-s3-card">
             <div style="width:100%;max-width:440px;background:#fff;border-radius:20px;padding:22px;box-shadow:0 34px 70px -30px rgba(0,0,0,.7);animation:hiwUp .7s ease-out .1s both,hiwFloat 6s ease-in-out 1s infinite;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
                 <div style="display:flex;align-items:center;gap:9px;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:18px;height:18px;"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;color:#0F172A;">HRV</span></div>
@@ -548,16 +560,20 @@ class KygoHiw extends HTMLElement {
               </div>
             </div>
           </div>
-          <div style="flex:1 1 380px;">
-            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:76px;line-height:1;color:rgba(255,255,255,.09);animation:hiwUp .6s ease-out both;">03</div>
-            <div style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#22C55E;margin:8px 0 12px;animation:hiwUp .6s ease-out .04s both;">Step 03 · Discover your patterns</div>
-            <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,40px);line-height:1.08;letter-spacing:-0.03em;margin-bottom:14px;color:#fff;animation:hiwUp .6s ease-out .08s both;">See what helps. See what hurts.</h2>
-            <p style="font-size:clamp(16px,2.2vw,18px);color:#94A3B8;max-width:440px;margin-bottom:28px;animation:hiwUp .6s ease-out .12s both;">After about seven days, Kygo grades every food against your metrics and shows the ones that actually move the needle.</p>
-            <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
-              ${this._iosBtn(d, 'hiw-ios', 'step-3', 'how-it-works-step3-ios', 'Download for iOS')}
-              ${this._androidBtn(d, 'hiw-ghost', 'step-3', 'how-it-works-step3-android', 'Get it on Android')}
+          <div class="hiw-s3-copy">
+            <div class="hiw-s3-head">
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:76px;line-height:1;color:rgba(255,255,255,.09);animation:hiwUp .6s ease-out both;">03</div>
+              <div style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#22C55E;margin:8px 0 12px;animation:hiwUp .6s ease-out .04s both;">Step 03 · Discover your patterns</div>
+              <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,40px);line-height:1.08;letter-spacing:-0.03em;margin-bottom:14px;color:#fff;animation:hiwUp .6s ease-out .08s both;">See what helps. See what hurts.</h2>
+              <p style="font-size:clamp(16px,2.2vw,18px);color:#94A3B8;max-width:440px;margin-bottom:0;animation:hiwUp .6s ease-out .12s both;">After about seven days, Kygo grades every food against your metrics and shows the ones that actually move the needle.</p>
             </div>
-            <p style="font-size:14px;color:#64748B;font-weight:500;max-width:440px;animation:hiwUp .6s ease-out .24s both;">Correlations unlock after about seven days of logging. Included with Pro.</p>
+            <div class="hiw-s3-cta" style="margin-top:28px;">
+              <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
+                ${this._iosBtn(d, 'hiw-ios', 'step-3', 'how-it-works-step3-ios', 'Download for iOS')}
+                ${this._androidBtn(d, 'hiw-ghost', 'step-3', 'how-it-works-step3-android', 'Get it on Android')}
+              </div>
+              <p style="font-size:14px;color:#64748B;font-weight:500;max-width:440px;animation:hiwUp .6s ease-out .24s both;">Correlations unlock after about seven days of logging. Included with Pro.</p>
+            </div>
           </div>
         </div>
       </section>
