@@ -521,10 +521,10 @@
           :host { ${CORE_TOKENS} background: var(--light); display: block; }
           .wrap {
             max-width: 720px; margin: 0 auto;
-            padding: 56px 20px;
+            padding: 36px 20px;
             text-align: center;
           }
-          @media (min-width: 768px) { .wrap { padding: 72px 24px; } }
+          @media (min-width: 768px) { .wrap { padding: 44px 24px; } }
 
           .kicker {
             display: inline-flex; align-items: center; gap: 6px;
@@ -901,7 +901,7 @@
                   ${svg('playstore', 18)} Download for Android
                 </a>
               </div>
-              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+              <p style="margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
               <div class="works">
                 <span class="works-label">Works with</span>
                 <div class="dots">
