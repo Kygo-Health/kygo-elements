@@ -140,14 +140,19 @@ class KygoHiw extends HTMLElement {
     return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>';
   }
 
+  /** Full label on desktop, short label on mobile (keeps the store buttons on one line). */
+  _label(full, short) {
+    return `<span class="hiw-lbl-full">${full}</span><span class="hiw-lbl-short">${short}</span>`;
+  }
+
   /** iOS store CTA (Tenjin iOS link + tracking hooks). */
-  _iosBtn(d, cls, position, label, text) {
-    return `<a href="${d.iosLink}" class="${cls} cta-primary" data-track-position="${position}" data-track-label="${label}" target="_blank" rel="noopener">${this._appleIcon()}${text}</a>`;
+  _iosBtn(d, cls, position, label, text, shortText) {
+    return `<a href="${d.iosLink}" class="${cls} cta-primary" data-track-position="${position}" data-track-label="${label}" target="_blank" rel="noopener">${this._appleIcon()}${this._label(text, shortText || text)}</a>`;
   }
 
   /** Android store CTA (Tenjin Android link + tracking hooks). */
-  _androidBtn(d, cls, position, label, text) {
-    return `<a href="${d.androidLink}" class="${cls} cta-android" data-action="android-download" data-track-position="${position}" data-track-label="${label}" target="_blank" rel="noopener">${this._androidIcon()}${text}</a>`;
+  _androidBtn(d, cls, position, label, text, shortText) {
+    return `<a href="${d.androidLink}" class="${cls} cta-android" data-action="android-download" data-track-position="${position}" data-track-label="${label}" target="_blank" rel="noopener">${this._androidIcon()}${this._label(text, shortText || text)}</a>`;
   }
 
   _stars() {
@@ -358,13 +363,16 @@ class KygoHiw extends HTMLElement {
       }
 
       /* iOS + Android buttons sit side by side on mobile */
+      .hiw-lbl-short { display:none; }
       @media (max-width:520px){
         .hiw-btnrow { flex-wrap:nowrap !important; gap:10px !important; align-items:stretch; }
-        .hiw-btnrow > a { flex:1 1 0; min-width:0; justify-content:center; text-align:center; padding-left:10px; padding-right:10px; font-size:14px; white-space:normal; line-height:1.15; overflow-wrap:break-word; }
+        .hiw-btnrow > a { flex:1 1 0; min-width:0; justify-content:center; text-align:center; padding-left:10px; padding-right:10px; font-size:15px; white-space:nowrap; }
         .hiw-btnrow > a svg { width:18px; height:18px; flex-shrink:0; }
+        .hiw-btnrow .hiw-lbl-full { display:none; }
+        .hiw-btnrow .hiw-lbl-short { display:inline; }
       }
       @media (max-width:360px){
-        .hiw-btnrow > a { font-size:13px; gap:6px; padding-left:8px; padding-right:8px; }
+        .hiw-btnrow > a { gap:6px; padding-left:8px; padding-right:8px; }
       }
       @media (max-width:400px){ .hiw-cta-pill { font-size:12px; padding:6px 12px; } }
 
@@ -422,8 +430,8 @@ class KygoHiw extends HTMLElement {
               <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,5.4vw,52px);line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;animation:hiwUp .6s ease-out .06s both;">See how your food affects your <span style="color:#22C55E;">sleep, energy, and recovery</span></h1>
               <p style="font-size:clamp(16px,2.2vw,19px);color:#475569;max-width:440px;margin-bottom:30px;line-height:1.6;animation:hiwUp .6s ease-out .12s both;">Kygo pairs your wearables with effortless food logging to reveal the personal patterns a calorie counter never could.</p>
               <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
-                ${this._iosBtn(d, 'hiw-ios', 'hero', 'how-it-works-hero-ios', 'Download for iOS')}
-                ${this._androidBtn(d, 'hiw-android', 'hero', 'how-it-works-hero-android', 'Get it on Android')}
+                ${this._iosBtn(d, 'hiw-ios', 'hero', 'how-it-works-hero-ios', 'Download for iOS', 'Get iOS')}
+                ${this._androidBtn(d, 'hiw-android', 'hero', 'how-it-works-hero-android', 'Get it on Android', 'Get Android')}
               </div>
               <p style="font-size:14px;color:#94A3B8;font-weight:500;animation:hiwUp .6s ease-out .24s both;">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free forever plan&nbsp;&nbsp;•&nbsp;&nbsp;No credit card</p>
             </div>
@@ -569,8 +577,8 @@ class KygoHiw extends HTMLElement {
             </div>
             <div class="hiw-s3-cta" style="margin-top:28px;">
               <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
-                ${this._iosBtn(d, 'hiw-ios', 'step-3', 'how-it-works-step3-ios', 'Download for iOS')}
-                ${this._androidBtn(d, 'hiw-ghost', 'step-3', 'how-it-works-step3-android', 'Get it on Android')}
+                ${this._iosBtn(d, 'hiw-ios', 'step-3', 'how-it-works-step3-ios', 'Download for iOS', 'Get iOS')}
+                ${this._androidBtn(d, 'hiw-ghost', 'step-3', 'how-it-works-step3-android', 'Get it on Android', 'Get Android')}
               </div>
               <p style="font-size:14px;color:#64748B;font-weight:500;max-width:440px;animation:hiwUp .6s ease-out .24s both;">Correlations unlock after about seven days of logging. Included with Pro.</p>
             </div>
@@ -592,8 +600,8 @@ class KygoHiw extends HTMLElement {
               <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,4.2vw,46px);line-height:1.06;letter-spacing:-0.03em;color:#fff;margin-bottom:16px;">Your body is already talking.<br><span style="color:#22C55E;">Kygo helps you listen.</span></h2>
               <p style="font-size:clamp(16px,2.2vw,18px);color:#94A3B8;max-width:460px;margin:0 auto 30px;">Log your food. Connect your wearable. See what actually moves your sleep, energy, and recovery.</p>
               <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:22px;">
-                ${this._iosBtn(d, 'hiw-ios', 'footer-cta', 'how-it-works-footer-ios', 'Download for iOS')}
-                ${this._androidBtn(d, 'hiw-ghost', 'footer-cta', 'how-it-works-footer-android', 'Get it on Android')}
+                ${this._iosBtn(d, 'hiw-ios', 'footer-cta', 'how-it-works-footer-ios', 'Download for iOS', 'Get iOS')}
+                ${this._androidBtn(d, 'hiw-ghost', 'footer-cta', 'how-it-works-footer-android', 'Get it on Android', 'Get Android')}
               </div>
               <p style="font-size:14px;color:#64748B;font-weight:500;">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free forever plan&nbsp;&nbsp;•&nbsp;&nbsp;No credit card</p>
             </div>
