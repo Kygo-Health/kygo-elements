@@ -88,11 +88,15 @@ class KygoHiw extends HTMLElement {
       iosLink: this._getSetting('ios-link', 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy'),
       androidLink: this._getSetting('android-link', 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO'),
       logos: {
+        // Full-bleed app-icon badges (fill the tile)
         oura: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png',
-        apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
-        fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
         garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
-        healthConnect: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png'
+        fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
+        // Brand-mark hearts on a white chip (Apple Health + Google Health Connect).
+        // Served from GitHub Pages so the Health Connect mark is correct — the prior
+        // Wix hash rendered as the retired WHOOP wordmark.
+        apple: 'https://kygo-health.github.io/kygo-elements/assets/hiw-apple-health.png',
+        healthConnect: 'https://kygo-health.github.io/kygo-elements/assets/hiw-health-connect.png'
       },
       testimonials: [
         { quote: '"I’ve boosted my deep sleep after making changes to stop the age-related slow-wave decline."', name: 'Oura user' },
@@ -127,12 +131,13 @@ class KygoHiw extends HTMLElement {
 
   // ── Reusable snippets ─────────────────────────────────────────────────
 
+  // Canonical Kygo store-button glyphs (identical to the site header / tool pages)
   _appleIcon() {
-    return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.5 1.8c0 1.2-.5 2.4-1.3 3.2-.9.9-2.3 1.6-3.5 1.5-.1-1.2.5-2.4 1.3-3.2.9-.9 2.4-1.5 3.5-1.5zM20.6 17c-.6 1.4-.9 2-1.7 3.2-1.1 1.7-2.6 3.8-4.5 3.8-1.7 0-2.1-1.1-4.4-1.1-2.3 0-2.8 1.1-4.4 1.1-1.9 0-3.4-1.9-4.5-3.6C-.5 16.9-.9 11 1.3 7.9 2.8 5.8 5 4.6 7.1 4.6c2.1 0 3.1 1.1 4.7 1.1 1.5 0 2.4-1.1 4.7-1.1 1.7 0 3.6 1 4.9 2.6-4.3 2.4-3.6 8.5.9 9.8z"/></svg>';
+    return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>';
   }
 
   _androidIcon() {
-    return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.5l2-3.4c.1-.2 0-.5-.2-.6-.2-.1-.5 0-.6.2l-2 3.5C15.3 8.1 13.7 7.7 12 7.7s-3.3.4-4.8 1l-2-3.5c-.1-.2-.4-.3-.6-.2-.2.1-.3.4-.2.6l2 3.4C3 11.2 1.3 14 1 17.3h22c-.3-3.3-2-6.1-5.4-7.8zM7 14.8c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1zm10 0c-.6 0-1-.4-1-1s.4-1 1-1 1 .4 1 1-.4 1-1 1z"/></svg>';
+    return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>';
   }
 
   /** iOS store CTA (Tenjin iOS link + tracking hooks). */
@@ -169,13 +174,13 @@ class KygoHiw extends HTMLElement {
     ).join('');
 
     const wearableTiles = [
-      ['oura', 'Oura', 'cover'],
-      ['garmin', 'Garmin', 'cover'],
-      ['fitbit', 'Fitbit', 'cover'],
-      ['apple', 'Apple Health', 'contain'],
-      ['healthConnect', 'Health Connect', 'contain']
-    ].map(([k, alt, fit]) =>
-      `<span style="width:52px;height:52px;border-radius:14px;border:2px solid #E2E8F0;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fff;${fit === 'contain' ? 'padding:8px;' : ''}"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};"></span>`
+      ['oura', 'Oura', 'cover', '0'],
+      ['garmin', 'Garmin', 'cover', '0'],
+      ['fitbit', 'Fitbit', 'cover', '0'],
+      ['apple', 'Apple Health', 'contain', '7px'],
+      ['healthConnect', 'Health Connect', 'contain', '7px']
+    ].map(([k, alt, fit, pad]) =>
+      `<span class="hiw-logo" style="background:#fff;padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span>`
     ).join('');
 
     const features = d.features.map(f =>
@@ -215,27 +220,33 @@ class KygoHiw extends HTMLElement {
         <span style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;">Your first two weeks</span>
         <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.03em;margin:12px 0 14px;color:#0F172A;">Answers in days, not months</h2>
         <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:520px;margin:0 auto 56px;">Log a little each day. The picture sharpens fast.</p>
-        <div style="position:relative;">
-          <div style="position:absolute;top:22px;left:8%;right:8%;height:3px;background:#E2E8F0;border-radius:99px;"></div>
-          <div style="position:absolute;top:22px;left:8%;right:8%;height:3px;background:#22C55E;border-radius:99px;transform-origin:left;animation:hiwFillLoop 5.5s ease-in-out infinite;"></div>
-          <div style="position:relative;display:flex;flex-wrap:wrap;justify-content:center;gap:32px 20px;">
-            <div style="flex:1 1 220px;max-width:250px;">
-              <div style="width:46px;height:46px;border-radius:999px;background:#fff;border:3px solid #22C55E;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:hiwPopLoop 5.5s ease-in-out .2s infinite;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:20px;height:20px;"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#16A34A;margin-bottom:4px;">Day 1</div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">Log and sync</div>
-              <p style="font-size:14px;color:#64748B;">Log your meals and connect your wearable. Kygo starts building your baseline.</p>
+        <div class="hiw-tl">
+          <div class="hiw-tl-track"></div>
+          <div class="hiw-tl-fill"></div>
+          <div class="hiw-tl-nodes">
+            <div class="hiw-tl-node">
+              <div class="hiw-tl-dot hiw-tl-dot-a"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:20px;height:20px;"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+              <div class="hiw-tl-text">
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#16A34A;margin-bottom:4px;">Day 1</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">Log and sync</div>
+                <p style="font-size:14px;color:#64748B;">Log your meals and connect your wearable. Kygo starts building your baseline.</p>
+              </div>
             </div>
-            <div style="flex:1 1 220px;max-width:250px;">
-              <div style="width:46px;height:46px;border-radius:999px;background:#22C55E;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:hiwPopLoop 5.5s ease-in-out .55s infinite,hiwGlow 2.4s ease-out 1.6s infinite;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="width:20px;height:20px;"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg></div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#16A34A;margin-bottom:4px;">Day 7</div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">Patterns emerge</div>
-              <p style="font-size:14px;color:#64748B;">Your first correlations unlock. Kygo Advisor starts calling out what helps and hurts.</p>
+            <div class="hiw-tl-node">
+              <div class="hiw-tl-dot hiw-tl-dot-b"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="width:20px;height:20px;"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg></div>
+              <div class="hiw-tl-text">
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#16A34A;margin-bottom:4px;">Day 7</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">Patterns emerge</div>
+                <p style="font-size:14px;color:#64748B;">Your first correlations unlock. Kygo Advisor starts calling out what helps and hurts.</p>
+              </div>
             </div>
-            <div style="flex:1 1 220px;max-width:250px;">
-              <div style="width:46px;height:46px;border-radius:999px;background:#fff;border:3px solid #22C55E;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:hiwPopLoop 5.5s ease-in-out .9s infinite;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:20px;height:20px;"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#16A34A;margin-bottom:4px;">Day 14</div>
-              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">The full picture</div>
-              <p style="font-size:14px;color:#64748B;">More metrics dial in. Pin experiments and watch the evidence grow stronger.</p>
+            <div class="hiw-tl-node">
+              <div class="hiw-tl-dot hiw-tl-dot-c"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:20px;height:20px;"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div>
+              <div class="hiw-tl-text">
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#16A34A;margin-bottom:4px;">Day 14</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">The full picture</div>
+                <p style="font-size:14px;color:#64748B;">More metrics dial in. Pin experiments and watch the evidence grow stronger.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -249,22 +260,21 @@ class KygoHiw extends HTMLElement {
         <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.03em;margin:12px 0 14px;color:#0F172A;">Same Kygo. Better yearly.</h2>
         <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:540px;margin:0 auto 48px;">Same full feature set either way. Go yearly to save 67% and start with a 7-day free trial.</p>
         <div style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;text-align:left;">
-          <div style="flex:1 1 320px;max-width:400px;background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:30px 26px;box-shadow:0 4px 12px rgba(15,23,42,.04);">
-            <div style="font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#94A3B8;margin-bottom:6px;">Monthly</div>
-            <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$9.99</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
-            <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">Billed monthly. Cancel anytime.</p>
-            <p style="font-size:14px;color:#64748B;margin-bottom:22px;">The full Kygo feature set, month to month.</p>
-            <div class="hiwplan" style="display:flex;flex-direction:column;gap:12px;margin-bottom:26px;">${features}</div>
-            <a href="${d.iosLink}" class="hiw-outline cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-monthly" target="_blank" rel="noopener">Choose monthly</a>
-          </div>
           <div style="flex:1 1 320px;max-width:400px;position:relative;background:#fff;border:2px solid #22C55E;border-radius:20px;padding:30px 26px;box-shadow:0 20px 48px -24px rgba(34,197,94,.45);">
             <span style="position:absolute;top:-13px;left:26px;background:#22C55E;color:#fff;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:5px 12px;border-radius:999px;box-shadow:0 8px 18px -6px rgba(34,197,94,.6);">Save 67% &middot; 7-day free trial</span>
             <div style="font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#16A34A;margin-bottom:6px;">Yearly</div>
             <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$3.33</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
             <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">$39.99 billed yearly&nbsp;&nbsp;•&nbsp;&nbsp;7-day free trial</p>
-            <p style="font-size:14px;color:#64748B;margin-bottom:22px;">The same full feature set at a third of the price.</p>
+            <p style="font-size:14px;color:#64748B;margin-bottom:22px;">Everything Kygo does, at a third of the price.</p>
             <div class="hiwplan" style="display:flex;flex-direction:column;gap:12px;margin-bottom:26px;">${features}</div>
             <a href="${d.iosLink}" class="hiw-greenblock cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-yearly" target="_blank" rel="noopener">Start your free trial</a>
+          </div>
+          <div style="flex:1 1 320px;max-width:400px;background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:30px 26px;box-shadow:0 4px 12px rgba(15,23,42,.04);">
+            <div style="font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#94A3B8;margin-bottom:6px;">Monthly</div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$9.99</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
+            <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">Billed monthly. Cancel anytime.</p>
+            <p style="font-size:14px;color:#64748B;margin-bottom:24px;">The same full Kygo feature set, month to month — no commitment.</p>
+            <a href="${d.iosLink}" class="hiw-outline cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-monthly" target="_blank" rel="noopener">Choose monthly</a>
           </div>
         </div>
         <p style="font-size:14px;color:#94A3B8;font-weight:500;margin-top:28px;">7-day free trial on the yearly plan. Cancel anytime.</p>
@@ -339,10 +349,52 @@ class KygoHiw extends HTMLElement {
       details.hiwfaq:hover { border-color:#94A3B8; }
       details.hiwfaq[open]:hover { border-color:#22C55E; }
 
+      /* Wearable logo chips — one line on mobile */
+      .hiw-logos { display:flex; flex-wrap:nowrap; gap:12px; margin-bottom:22px; }
+      .hiw-logo { width:52px; height:52px; flex:0 0 auto; border-radius:12px; border:1px solid #E2E8F0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+      @media (max-width:480px){
+        .hiw-logos { gap:8px; justify-content:space-between; }
+        .hiw-logo { width:clamp(44px,15.5vw,52px); height:clamp(44px,15.5vw,52px); }
+      }
+
+      /* iOS + Android buttons sit side by side on mobile */
+      @media (max-width:520px){
+        .hiw-btnrow { flex-wrap:nowrap !important; gap:10px !important; }
+        .hiw-btnrow > a { flex:1 1 0; min-width:0; justify-content:center; padding-left:12px; padding-right:12px; font-size:14px; }
+        .hiw-btnrow > a svg { width:18px; height:18px; }
+      }
+      @media (max-width:360px){
+        .hiw-btnrow > a { font-size:13px; gap:6px; padding-left:8px; padding-right:8px; }
+      }
+      @media (max-width:400px){ .hiw-cta-pill { font-size:12px; padding:6px 12px; } }
+
+      /* Unlock timeline — staged fill; vertical on mobile */
+      .hiw-tl { position:relative; }
+      .hiw-tl-track, .hiw-tl-fill { position:absolute; top:22px; left:8%; right:8%; height:3px; border-radius:99px; }
+      .hiw-tl-track { background:#E2E8F0; }
+      .hiw-tl-fill { background:#22C55E; transform-origin:left; animation:hiwTlFillH 6s ease-in-out infinite; }
+      .hiw-tl-nodes { position:relative; display:flex; justify-content:center; gap:20px; }
+      .hiw-tl-node { flex:1 1 220px; max-width:250px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+      .hiw-tl-dot { width:46px; height:46px; border-radius:999px; display:flex; align-items:center; justify-content:center; margin-bottom:20px; flex-shrink:0; }
+      .hiw-tl-dot-a { background:#fff; border:3px solid #22C55E; animation:hiwPopLoop 6s ease-in-out .3s infinite; }
+      .hiw-tl-dot-b { background:#22C55E; animation:hiwPopLoop 6s ease-in-out 1.5s infinite, hiwGlow 2.4s ease-out 2s infinite; }
+      .hiw-tl-dot-c { background:#fff; border:3px solid #22C55E; animation:hiwPopLoop 6s ease-in-out 3.4s infinite; }
+      .hiw-tl-text { min-width:0; }
+      @keyframes hiwTlFillH { 0%{transform:scaleX(0);} 8%{transform:scaleX(0);} 25%{transform:scaleX(.5);} 42%{transform:scaleX(.5);} 58%{transform:scaleX(1);} 90%{transform:scaleX(1);} 100%{transform:scaleX(0);} }
+      @keyframes hiwTlFillV { 0%{transform:scaleY(0);} 8%{transform:scaleY(0);} 25%{transform:scaleY(.5);} 42%{transform:scaleY(.5);} 58%{transform:scaleY(1);} 90%{transform:scaleY(1);} 100%{transform:scaleY(0);} }
+      @media (max-width:640px){
+        .hiw-tl-track, .hiw-tl-fill { top:14px; bottom:14px; left:21px; right:auto; width:3px; height:auto; }
+        .hiw-tl-fill { transform-origin:top; animation-name:hiwTlFillV; }
+        .hiw-tl-nodes { flex-direction:column; align-items:stretch; gap:26px; }
+        .hiw-tl-node { flex:1 1 auto; max-width:none; flex-direction:row; align-items:flex-start; text-align:left; gap:16px; }
+        .hiw-tl-dot { margin-bottom:0; }
+      }
+
       @media (prefers-reduced-motion: reduce){
         *{ animation:none !important; }
         .hiwtrack{ animation:none !important; }
         .hiwplan .hiwfeat{ opacity:1 !important; }
+        .hiw-tl-fill{ transform:scaleX(1) scaleY(1) !important; }
       }
     </style>
 
@@ -357,7 +409,7 @@ class KygoHiw extends HTMLElement {
               <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.1);color:#16A34A;padding:8px 15px;border-radius:999px;font-weight:600;font-size:13px;margin-bottom:22px;animation:hiwUp .6s ease-out both;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Setup in minutes. Answers in days.</div>
               <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,5.4vw,52px);line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;animation:hiwUp .6s ease-out .06s both;">See how your food affects your <span style="color:#22C55E;">sleep, energy, and recovery</span></h1>
               <p style="font-size:clamp(16px,2.2vw,19px);color:#475569;max-width:440px;margin-bottom:30px;line-height:1.6;animation:hiwUp .6s ease-out .12s both;">Kygo pairs your wearables with effortless food logging to reveal the personal patterns a calorie counter never could.</p>
-              <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
+              <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
                 ${this._iosBtn(d, 'hiw-ios', 'hero', 'how-it-works-hero-ios', 'Download for iOS')}
                 ${this._androidBtn(d, 'hiw-android', 'hero', 'how-it-works-hero-android', 'Get it on Android')}
               </div>
@@ -447,7 +499,7 @@ class KygoHiw extends HTMLElement {
             <div style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;margin:8px 0 12px;animation:hiwUp .6s ease-out .04s both;">Step 02 · Connect your wearable</div>
             <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,40px);line-height:1.08;letter-spacing:-0.03em;margin-bottom:14px;color:#0F172A;animation:hiwUp .6s ease-out .08s both;">Connect your wearable in a tap</h2>
             <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:440px;margin-bottom:22px;animation:hiwUp .6s ease-out .12s both;">Link what you already wear. Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity on its own.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:22px;animation:hiwUp .6s ease-out .16s both;">${wearableTiles}</div>
+            <div class="hiw-logos" style="animation:hiwUp .6s ease-out .16s both;">${wearableTiles}</div>
             <p style="font-size:14px;color:#94A3B8;font-weight:500;max-width:440px;animation:hiwUp .6s ease-out .2s both;">Wear more than one? Kygo picks the most accurate source for each metric automatically.</p>
           </div>
           <div style="flex:1 1 360px;display:flex;justify-content:center;">
@@ -473,7 +525,7 @@ class KygoHiw extends HTMLElement {
       <!-- STEP 3: DISCOVER -->
       <section style="position:relative;padding:clamp(56px,7vw,92px) 20px;background:#0F172A;overflow:hidden;">
         <div style="position:absolute;top:-160px;right:-60px;width:640px;height:560px;max-width:120vw;background:radial-gradient(circle,rgba(34,197,94,0.16) 0%,transparent 60%);pointer-events:none;"></div>
-        <div style="max-width:1180px;margin:0 auto;position:relative;display:flex;flex-wrap:wrap-reverse;gap:clamp(36px,5vw,80px);align-items:center;">
+        <div style="max-width:1180px;margin:0 auto;position:relative;display:flex;flex-wrap:wrap;gap:clamp(36px,5vw,80px);align-items:center;">
           <div style="flex:1 1 360px;display:flex;justify-content:center;">
             <div style="width:100%;max-width:440px;background:#fff;border-radius:20px;padding:22px;box-shadow:0 34px 70px -30px rgba(0,0,0,.7);animation:hiwUp .7s ease-out .1s both,hiwFloat 6s ease-in-out 1s infinite;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
@@ -501,7 +553,7 @@ class KygoHiw extends HTMLElement {
             <div style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#22C55E;margin:8px 0 12px;animation:hiwUp .6s ease-out .04s both;">Step 03 · Discover your patterns</div>
             <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,40px);line-height:1.08;letter-spacing:-0.03em;margin-bottom:14px;color:#fff;animation:hiwUp .6s ease-out .08s both;">See what helps. See what hurts.</h2>
             <p style="font-size:clamp(16px,2.2vw,18px);color:#94A3B8;max-width:440px;margin-bottom:28px;animation:hiwUp .6s ease-out .12s both;">After about seven days, Kygo grades every food against your metrics and shows the ones that actually move the needle.</p>
-            <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
+            <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
               ${this._iosBtn(d, 'hiw-ios', 'step-3', 'how-it-works-step3-ios', 'Download for iOS')}
               ${this._androidBtn(d, 'hiw-ghost', 'step-3', 'how-it-works-step3-android', 'Get it on Android')}
             </div>
@@ -520,10 +572,10 @@ class KygoHiw extends HTMLElement {
           <div style="position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:clamp(40px,5.5vw,68px) clamp(28px,4vw,56px);text-align:center;box-shadow:0 40px 80px -36px rgba(15,23,42,.5);">
             <div style="position:absolute;top:-150px;right:-70px;width:560px;height:480px;max-width:120vw;background:radial-gradient(circle,rgba(34,197,94,0.18) 0%,transparent 60%);pointer-events:none;"></div>
             <div style="position:relative;">
-              <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.12);color:#22C55E;padding:7px 14px;border-radius:999px;font-weight:600;font-size:13px;margin-bottom:20px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg>Stop guessing. Start knowing.</div>
+              <div class="hiw-cta-pill" style="display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.12);color:#22C55E;padding:7px 14px;border-radius:999px;font-weight:600;font-size:13px;margin-bottom:20px;white-space:nowrap;max-width:100%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0;"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg>Stop guessing. Start knowing.</div>
               <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,4.2vw,46px);line-height:1.06;letter-spacing:-0.03em;color:#fff;margin-bottom:16px;">Your body is already talking.<br><span style="color:#22C55E;">Kygo helps you listen.</span></h2>
               <p style="font-size:clamp(16px,2.2vw,18px);color:#94A3B8;max-width:460px;margin:0 auto 30px;">Log your food. Connect your wearable. See what actually moves your sleep, energy, and recovery.</p>
-              <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:22px;">
+              <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:22px;">
                 ${this._iosBtn(d, 'hiw-ios', 'footer-cta', 'how-it-works-footer-ios', 'Download for iOS')}
                 ${this._androidBtn(d, 'hiw-ghost', 'footer-cta', 'how-it-works-footer-android', 'Get it on Android')}
               </div>
