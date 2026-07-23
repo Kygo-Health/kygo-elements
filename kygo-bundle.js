@@ -179,6 +179,7 @@ class KygoHeroSection extends HTMLElement {
         .hero-badge-icon.rounded img{border-radius:5px}
         .hero-badge-label{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--navy);white-space:nowrap}
         .patent-notice{position:relative;z-index:40;margin-top:40px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gray-400);font-weight:600;text-align:center;animation:hiwUp .6s ease-out .5s both}
+        .hero-demo .cta-secondary{margin-top:18px}
 
         /* ---- Keyframes ---- */
         @keyframes hiwUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
@@ -207,9 +208,17 @@ class KygoHeroSection extends HTMLElement {
         @keyframes hiwBarG{0%,73%{transform:scaleX(0)}82%,100%{transform:scaleX(1)}}
 
         /* ---- Mobile tuning ---- */
+        /* Center the copy + stack full-width CTAs once columns wrap */
+        @media(max-width:860px){
+          .hero-copy{text-align:center}
+          .hero-subheadline{margin-left:auto;margin-right:auto}
+          .cta-group-top{justify-content:center}
+        }
         @media(max-width:600px){
+          .cta-group-top{flex-direction:column;align-items:stretch}
+          .cta-primary,.cta-android{width:100%}
           .hero-badge.a{left:-14px;top:44px}
-          .hero-badge.b{right:-14px;top:150px}
+          .hero-badge.b{right:-14px;top:92px}
           .hero-badge-inner{padding:7px 11px 7px 7px}
           .hero-badge-label{font-size:12px}
         }
@@ -249,10 +258,6 @@ class KygoHeroSection extends HTMLElement {
                 </a>
               </div>
               <p class="risk-reversal">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free 7-day trial&nbsp;&nbsp;•&nbsp;&nbsp;Cancel anytime</p>
-              <a href="#kygo-features-section" class="cta-secondary" data-track-position="hero">
-                See how it works
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </a>
             </div>
 
             <!-- Right column: animated phone -->
@@ -403,6 +408,10 @@ class KygoHeroSection extends HTMLElement {
                 </div>
               </div>
               <p class="patent-notice">Patent Pending Technology</p>
+              <a href="#kygo-features-section" class="cta-secondary" data-track-position="hero">
+                See how it works
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
             </div>
           </div>
         </div>
