@@ -87,8 +87,8 @@ class KygoHeroSection extends HTMLElement {
 
         /* Screen A */
         .a-topbar{background:#F5F7FA;padding:44px 13px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px}
-        .a-pill{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--border);background:#fff;border-radius:11px;padding:7px 11px;font-weight:700;font-size:13px;color:var(--navy)}
-        .a-pill-time{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--border);background:#fff;border-radius:11px;padding:7px 10px;font-weight:600;font-size:12px;color:var(--gray-600)}
+        .a-pill{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--border);background:#fff;border-radius:11px;padding:7px 11px;font-weight:700;font-size:13px;color:var(--navy);white-space:nowrap}
+        .a-pill-time{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--border);background:#fff;border-radius:11px;padding:7px 10px;font-weight:600;font-size:12px;color:var(--gray-600);white-space:nowrap}
         .a-add{width:30px;height:30px;flex-shrink:0;border:1.5px solid var(--border);background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center}
         .a-chat{padding:10px 13px 0;display:flex;flex-direction:column;gap:9px}
         .a-advlabel{display:flex;align-items:center;gap:6px}
@@ -130,9 +130,10 @@ class KygoHeroSection extends HTMLElement {
 
         /* Screen B */
         .b-screen{height:604px;position:relative;background:#F5F7FA;display:flex;flex-direction:column}
-        .b-head{background:#fff;padding:42px 15px 10px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-        .b-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:var(--navy)}
-        .b-day{background:var(--green);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;padding:5px 10px;border-radius:999px}
+        .b-head{background:#fff;padding:42px 15px 10px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;flex-shrink:0}
+        .b-head > svg{justify-self:start}
+        .b-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:var(--navy);text-align:center}
+        .b-day{justify-self:end;background:var(--green);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;padding:5px 10px;border-radius:999px;white-space:nowrap}
         .b-tabs{background:#fff;display:flex;justify-content:center;gap:18px;padding:0 15px;border-bottom:1px solid #F1F5F9;flex-shrink:0}
         .b-tab{padding:8px 0 10px;border-bottom:2px solid transparent;font-weight:700;font-size:11px}
         .b-tab.help{animation:hiwTabHelp 15s ease-in-out infinite}
