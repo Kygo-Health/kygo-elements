@@ -71,7 +71,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020', 'feehan2020', 'natureSR2024'],
         affiliateLinks: [
-          { name: 'Shop Garmin on Amazon', url: 'https://amzn.to/4aF8l5D' }
+          { name: 'Shop Garmin on Amazon', url: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20' , slug: 'garmin-search' }
         ]
       },
       'apple-watch': {
@@ -99,7 +99,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kim2024', 'choekang2025', 'natureSR2024'],
         affiliateLinks: [
-          { name: 'Shop Apple Watch on Amazon', url: 'https://amzn.to/4rUcGst' }
+          { name: 'Shop Apple Watch on Amazon', url: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20' , slug: 'apple-watch-search' }
         ]
       },
       fitbit: {
@@ -128,7 +128,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020', 'straczkiewicz2023', 'giurgiu2023', 'germini2022', 'delobelle2024'],
         affiliateLinks: [
-          { name: 'Shop Fitbit on Amazon', url: 'https://amzn.to/3ZPkHDc' }
+          { name: 'Shop Fitbit on Amazon', url: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20' , slug: 'fitbit-search' }
         ]
       },
       samsung: {
@@ -156,7 +156,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kim2024'],
         affiliateLinks: [
-          { name: 'Shop Samsung Galaxy Watch on Amazon', url: 'https://amzn.to/4aZkBPB' }
+          { name: 'Shop Samsung Galaxy Watch on Amazon', url: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20' , slug: 'samsung-watch-search' }
         ]
       },
       coros: {
@@ -183,7 +183,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: [],
         affiliateLinks: [
-          { name: 'Shop COROS on Amazon', url: 'https://amzn.to/4rkOv6I' }
+          { name: 'Shop COROS on Amazon', url: 'https://www.amazon.com/s?k=COROS%20fitness%20tracker&rh=p_123%3A337787&tag=kygohealthapp-20' , slug: 'coros-search' }
         ]
       },
       polar: {
@@ -211,7 +211,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['roos2020'],
         affiliateLinks: [
-          { name: 'Shop Polar on Amazon', url: 'https://amzn.to/4rqpdnL' }
+          { name: 'Shop Polar on Amazon', url: 'https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20' , slug: 'polar-search' }
         ]
       },
       oura: {
@@ -240,7 +240,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         ],
         studies: ['kristiansson2023', 'gong2025'],
         affiliateLinks: [
-          { name: 'Shop Oura Ring on Amazon', url: 'https://amzn.to/4aF93jj' }
+          { name: 'Shop Oura Ring on Amazon', url: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20' , slug: 'oura-ring-search' }
         ]
       },
       whoop: {
@@ -264,7 +264,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         modelData: [],
         studies: [],
         affiliateLinks: [
-          { name: 'Shop WHOOP on Amazon', url: 'https://amzn.to/4rRoziQ' }
+          { name: 'Shop WHOOP on Amazon', url: 'https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20' , slug: 'whoop-search' }
         ]
       },
       'pixel-watch': {
@@ -426,13 +426,14 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="logo-img" />
             Step Count Accuracy
           </a>
-          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="header-cta" data-track-position="header" target="_blank" rel="noopener">
-            Get Kygo App <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
+          <div class="nav-cta-group">
+            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg><span>iOS</span></a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+          </div>
         </div>
       </header>
 
@@ -484,19 +485,19 @@ class KygoStepCountAccuracy extends HTMLElement {
               <span>Free Forever Plan</span>
             </div>
             <div class="blog-cta-headline">See how your food affects your <span class="highlight">sleep, energy, and recovery</span></div>
-            <p class="blog-cta-sub">Kygo connects your wearable data with AI-powered nutrition tracking\u2014then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.</p>
+            <p class="blog-cta-sub">Whichever device wins for you, Kygo connects its data to your nutrition and finds your personal insights.</p>
             <div class="blog-cta-actions">
               <div class="blog-cta-buttons">
-                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener noreferrer" class="blog-cta-btn" data-track-position="article-cta">
+                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener noreferrer" class="blog-cta-btn cta-primary" data-track-position="early" data-track-label="step-count-early-ios">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
+                  Try Free for 7 Days
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="early" data-track-label="step-count-early-android">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
-              <span class="blog-cta-meta"><span>2-min setup</span><span>\u2022</span><span>Free forever plan</span><span>\u2022</span><span>No credit card</span></span>
+              <span class="blog-cta-meta">7-day free trial on yearly. Free plan available. Cancel anytime.</span>
             </div>
             <div class="blog-cta-devices">
               <span class="blog-cta-devices-label">Works with</span>
@@ -505,13 +506,15 @@ class KygoStepCountAccuracy extends HTMLElement {
                 <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple">Apple</span>
                 <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit">Fitbit</span>
                 <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin">Garmin</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop">Whoop</span>
+                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health">Google Health</span>
                 <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect">Health Connect</span>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      <kygo-inline-subscribe source="tool-step-count-accuracy" variant="comparison"></kygo-inline-subscribe>
 
       <section class="factors">
         <div class="container">
@@ -565,7 +568,7 @@ class KygoStepCountAccuracy extends HTMLElement {
                   }
                   <div class="dd-info">
                     <div class="dd-rank-label">${d.rankLabel}</div>
-                    <h3>${d.affiliateLinks && d.affiliateLinks.length ? `<a href="${d.affiliateLinks[0].url}" class="dd-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>` : d.name}</h3>
+                    <h3>${d.affiliateLinks && d.affiliateLinks.length ? `<a href="${d.affiliateLinks[0].url}" class="dd-name-link" target="_blank" rel="noopener sponsored" data-track-label="${d.affiliateLinks[0].slug}">${d.name}</a>` : d.name}</h3>
                     <span class="dd-bestfor">${d.bestFor}</span>
                   </div>
                   <div class="dd-toggle">
@@ -591,7 +594,7 @@ class KygoStepCountAccuracy extends HTMLElement {
                   ${this._renderStudiesForDevice(k)}
                   ${d.affiliateLinks && d.affiliateLinks.length ? `
                   <div class="dd-buy">
-                    <a href="${d.affiliateLinks[0].url}" class="dd-buy-btn" target="_blank" rel="noopener sponsored">
+                    <a href="${d.affiliateLinks[0].url}" class="dd-buy-btn" target="_blank" rel="noopener sponsored" data-track-label="${d.affiliateLinks[0].slug}">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                       Shop ${d.name} on Amazon
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -631,15 +634,16 @@ class KygoStepCountAccuracy extends HTMLElement {
               <h2>Your steps tell a story. Kygo reads it.</h2>
               <p>Connect your wearable step data with nutrition to reveal which foods fuel your activity, sleep, and recovery best.</p>
               <div class="cta-buttons">
-                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn" target="_blank" rel="noopener" data-track-position="footer-cta">
+                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="cta-btn cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta" data-track-label="step-count-footer-ios">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                   Download for iOS
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="step-count-footer-android">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
+              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.85);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
               <div class="cta-features">
                 <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Free forever plan</span>
                 <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Syncs with 4+ wearables</span>
@@ -651,15 +655,15 @@ class KygoStepCountAccuracy extends HTMLElement {
       </section>
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app" target="_blank" rel="noopener">Kygo App</a>
-            <a href="https://kygo.app/privacy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://kygo.app/terms" target="_blank" rel="noopener">Terms</a>
+            <a href="https://www.kygo.app" target="_blank" rel="noopener">Kygo App</a>
+            <a href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
           </div>
           <p class="footer-copy">Data last updated February 2026. All accuracy claims sourced from peer-reviewed research with full bias disclosure.</p>
           <p class="footer-copy footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
@@ -853,7 +857,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       const d = devices[key];
       if (!d) return '';
       const linkName = d.affiliateLinks && d.affiliateLinks.length
-        ? `<a href="${d.affiliateLinks[0].url}" class="dsc-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>`
+        ? `<a href="${d.affiliateLinks[0].url}" class="dsc-name-link" target="_blank" rel="noopener sponsored" data-track-label="${d.affiliateLinks[0].slug}">${d.name}</a>`
         : d.name;
       return `
         <div class="device-summary-card">
@@ -1142,8 +1146,14 @@ class KygoStepCountAccuracy extends HTMLElement {
       .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
       .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: var(--dark); text-decoration: none; }
       .logo-img { height: 28px; width: auto; }
-      .header-cta { color: var(--green); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 4px; font-weight: 500; transition: color 0.2s; }
-      .header-cta:hover { color: var(--green-dark); }
+      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+      .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+      .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+      .nav-cta-group .nav-store-ios { background:var(--green); color:#fff; }
+      .nav-cta-group .nav-store-ios:hover { background:var(--green-dark); color:#fff; }
+      .nav-cta-group .nav-store-android { background:#fff; color:var(--green-dark); border:1.5px solid var(--gray-200); }
+      .nav-cta-group .nav-store-android:hover { border-color:var(--green); color:var(--green-dark); }
+      @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* Animations */
       .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; transition-delay: var(--delay, 0ms); }
@@ -1464,7 +1474,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         position: relative;
         z-index: 1;
       }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: white; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: white; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; white-space:nowrap; }
       .blog-cta-btn:hover { background: var(--green-dark); }
       .blog-cta-btn svg { width: 18px; height: 18px; }
       .blog-cta-meta {

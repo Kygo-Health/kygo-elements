@@ -66,7 +66,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Adaptogenic withanolides modulate cortisol and reduce sympathetic overdrive, preserving vagal tone under stress.',
           dosage: '200 mg twice daily (Witholytin extract)',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/', label: 'PMC10647917' },
-          affiliate: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }
+          affiliate: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }
         },
         {
           key: 'ashwa-zenroot', name: 'Ashwagandha (Zenroot)',
@@ -77,7 +77,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Initial vagal stimulation via cortisol reduction; tolerance may develop for HRV-specific effects.',
           dosage: '500 mg daily (Zenroot KSM-66 extract)',
           source: { url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z', label: 'Springer 2025' },
-          affiliate: { url: 'https://amzn.to/4qYXjOD', label: 'KSM-66 Ashwagandha' }
+          affiliate: { url: 'https://www.amazon.com/dp/B079K32QB6?tag=kygohealthapp-20&th=1', label: 'KSM-66 Ashwagandha' , slug: 'ksm66-ashwagandha' }
         },
         {
           key: 'probiotics', name: 'Probiotics',
@@ -88,7 +88,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Probiotic-driven colonization produces SCFAs (butyrate, acetate, propionate) that reduce inflammation and engage the vagus nerve. Higher gut microbial diversity associated with higher SDNN.',
           dosage: 'Multi-strain, CFU counts vary by product',
           source: { url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full', label: 'Frontiers Neurosci 2025' },
-          affiliate: { url: 'https://amzn.to/40AsqFp', label: 'Multi-Strain Probiotic' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00Y8MP4G6?tag=kygohealthapp-20&th=1', label: 'Multi-Strain Probiotic' , slug: 'probiotic-womens' }
         },
         {
           key: 'polyphenols', name: 'Polyphenols',
@@ -109,7 +109,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Corrects subclinical micronutrient deficiencies that impair autonomic nerve function.',
           dosage: 'Standard daily multivitamin',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4rM2eDY', label: 'Daily Multivitamin' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FR5QMD5Y?tag=kygohealthapp-20&th=1', label: 'Daily Multivitamin' , slug: 'thorne-multivitamin' }
         },
         {
           key: 'gaba', name: 'GABA',
@@ -120,7 +120,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'GABAergic inhibition of central sympathetic outflow shifts autonomic balance toward parasympathetic dominance.',
           dosage: '100–200 mg daily',
           source: { url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262', label: 'Taylor & Francis 2024' },
-          affiliate: { url: 'https://amzn.to/3OyDz7c', label: 'GABA Supplement' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FT6GB5MB?tag=kygohealthapp-20&th=1', label: 'GABA Supplement' , slug: 'gaba-500mg' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine',
@@ -131,7 +131,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Crosses blood-brain barrier, increases alpha waves and GABA, reduces cortisol and sympathetic activation.',
           dosage: '200 mg daily',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/', label: 'PubMed 16930802' },
-          affiliate: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }
+          affiliate: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' }
         },
         {
           key: 'beetroot', name: 'Beetroot Juice',
@@ -142,7 +142,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Dietary nitrate → nitric oxide pathway enhances vascular function and parasympathetic reactivation post-exercise.',
           dosage: '~400 mg nitrate (70 mL concentrated juice)',
           source: { url: 'https://www.mdpi.com/2227-9032/13/19/2496', label: 'Healthcare 2025' },
-          affiliate: { url: 'https://amzn.to/406okEX', label: 'Beetroot Juice Shots' }
+          affiliate: { url: 'https://www.amazon.com/dp/B01GJS8VX4?tag=kygohealthapp-20&th=1', label: 'Beetroot Juice Shots' , slug: 'beet-nitrate-shots' }
         }
       ],
       lifestyle: [
@@ -165,7 +165,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Respiratory sinus arrhythmia at ~0.1 Hz resonance frequency maximizes baroreflex sensitivity and vagal output.',
           dosage: '20 minutes daily at 6 breaths/min',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/', label: 'PMC8924557' },
-          affiliate: { url: 'https://amzn.to/46scAQQ', label: 'Breathing Trainer' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00FE8N7Y4?tag=kygohealthapp-20', label: 'Breathing Trainer' , slug: 'breathing-trainer' }
         },
         {
           key: 'cold-exposure', name: 'Cold Exposure',
@@ -176,7 +176,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Cold-water face immersion triggers the diving reflex — strong vagal activation via trigeminal nerve afferents.',
           dosage: 'Cold shower or ice bath, 1–5 minutes; best as recovery tool',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' },
-          affiliate: { url: 'https://amzn.to/4aYRATe', label: 'Cold Plunge Tub' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FX2MPK9P?tag=kygohealthapp-20&th=1', label: 'Cold Plunge Tub' , slug: 'ice-bath-tub' }
         },
         {
           key: 'meditation', name: 'Meditation',
@@ -187,7 +187,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Reduces cortisol, shifts autonomic balance toward parasympathetic via prefrontal-amygdala regulation.',
           dosage: '20+ minutes daily',
           source: { url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142', label: 'Nesvold 2012' },
-          affiliate: { url: 'https://amzn.to/4tZ5Zr2', label: 'Meditation Cushion' }
+          affiliate: { url: 'https://www.amazon.com/dp/B092DXFGVH?tag=kygohealthapp-20&th=1', label: 'Meditation Cushion' , slug: 'meditation-cushion' }
         },
         {
           key: 'hrv-biofeedback', name: 'HRV Biofeedback',
@@ -402,7 +402,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Essential cofactor for myelin synthesis and nerve conduction. Deficiency causes demyelination of autonomic fibers.',
           dosage: 'Correct deficiency; RDA 2.4 mcg',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4lbwIg3', label: 'Vitamin B12' }
+          affiliate: { url: 'https://www.amazon.com/dp/B002FJW3ZY?tag=kygohealthapp-20&th=1', label: 'Vitamin B12' , slug: 'vitamin-b12' }
         },
         {
           key: 'vitamin-d', name: 'Vitamin D',
@@ -413,7 +413,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'VDR expression on cardiomyocytes and autonomic neurons; deficiency increases inflammatory cytokines.',
           dosage: 'Correct deficiency; target 30–50 ng/mL',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4cm6d5m', label: 'Vitamin D3' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00GB85JR4?tag=kygohealthapp-20&th=1', label: 'Vitamin D3' , slug: 'vitamin-d3-5000' }
         },
         {
           key: 'magnesium', name: 'Magnesium',
@@ -424,7 +424,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Natural calcium channel blocker; stabilizes cardiac membrane potential and modulates NMDA receptors.',
           dosage: '200–400 mg elemental Mg daily',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }
         },
         {
           key: 'omega3', name: 'Omega-3 (EPA/DHA)',
@@ -435,7 +435,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Membrane incorporation alters ion channel kinetics; anti-inflammatory effects via resolvin/protectin pathways.',
           dosage: '1–2 g EPA+DHA daily',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' },
-          affiliate: { url: 'https://amzn.to/4cVnvGt', label: 'Omega-3 Fish Oil' }
+          affiliate: { url: 'https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1', label: 'Omega-3 Fish Oil' , slug: 'omega-3-fish-oil' }
         },
         {
           key: 'zinc', name: 'Zinc',
@@ -446,7 +446,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Zinc-dependent enzymes in autonomic neurodevelopment; prenatal supplementation affects fetal ANS maturation.',
           dosage: 'RDA 8–11 mg; prenatal context',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4760BIN', label: 'Zinc Picolinate' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0012ZQPKG?tag=kygohealthapp-20&th=1', label: 'Zinc Picolinate' , slug: 'zinc-picolinate' }
         }
       ],
       demographics: [
@@ -631,7 +631,7 @@ class KygoHrvFactors extends HTMLElement {
                 <span class="detail-label">Source</span>
                 <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
               </div>
-              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored">
+              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-track-label="${f.affiliate.slug}">
                 <span>Check it out on Amazon</span>
                 <span class="factor-affiliate-arrow">${this._icon('externalLink')}</span>
               </a>` : ''}
@@ -769,7 +769,7 @@ class KygoHrvFactors extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
+    const iosUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
@@ -777,13 +777,14 @@ class KygoHrvFactors extends HTMLElement {
       <!-- Header -->
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             HRV Factors
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
-            Get Kygo App ${this._icon('arrowRight')}
-          </a>
+          <div class="nav-cta-group">
+            <a href="${iosUrl}" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg><span>iOS</span></a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+          </div>
         </div>
       </header>
 
@@ -804,6 +805,27 @@ class KygoHrvFactors extends HTMLElement {
           <div class="picks-grid">${this._renderTopPicks()}</div>
         </div>
       </section>
+
+      <!-- Early contextual CTA -->
+      <section class="kearly-section">
+        <div class="container">
+          <div class="kband animate-on-scroll">
+                <div class="kband-inner">
+                  <div class="kband-glow"></div>
+                  <div class="kband-copy">
+                    <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+                    <h2 class="kband-headline">These factors are averages. Kygo shows which ones move YOUR numbers, from your own wearable + food data.</h2>
+                  </div>
+                  <div class="kband-actions">
+                    <a href="${iosUrl}" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="hrv-factors-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Try Free for 7 Days</a>
+                    <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="hrv-factors-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a><p class="kband-note">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </section>
+
+      <kygo-inline-subscribe source="tool-hrv-factors" variant="factors"></kygo-inline-subscribe>
 
       <!-- Primary Interactive: Category tabs + Factor cards -->
       <section class="explore-section" id="explore">
@@ -844,24 +866,25 @@ class KygoHrvFactors extends HTMLElement {
             <div class="blog-cta-content">
               <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
               <h2>Track Your <span class="highlight">HRV Trends</span> Automatically</h2>
-              <p>Kygo syncs with your wearable and food log to show which habits actually move your HRV — correlations personalized to your data.</p>
+              <p>Kygo syncs with your wearable and food log to show which habits actually move your HRV, correlations personalized to your data.</p>
               <div class="blog-cta-buttons">
-                <a href="${iosUrl}" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
+                <a href="${iosUrl}" class="blog-cta-btn cta-primary" data-track-position="footer-cta" data-track-label="hrv-factors-footer-ios" target="_blank" rel="noopener">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                   Download for iOS
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="hrv-factors-footer-android">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
+              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:#94A3B8;text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
               <div class="blog-cta-tags">
                 <span>Works with</span>
                 <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
                 <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
                 <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
                 <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy" />
                 <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy" />
               </div>
             </div>
@@ -881,18 +904,18 @@ class KygoHrvFactors extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Home</a>
-            <a href="https://kygo.app/how-it-works">How It Works</a>
-            <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy">Privacy</a>
-            <a href="https://kygo.app/terms">Terms</a>
+            <a href="https://www.kygo.app">Home</a>
+            <a href="https://www.kygo.app/how-it-works">How It Works</a>
+            <a href="https://www.kygo.app/blog">Blog</a>
+            <a href="https://www.kygo.app/contact">Contact</a>
+            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated February 2026.</p>
@@ -907,7 +930,7 @@ class KygoHrvFactors extends HTMLElement {
 
   _styles() {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
         --dark: #1E293B;
@@ -950,9 +973,14 @@ class KygoHrvFactors extends HTMLElement {
       .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; max-width: 1200px; margin: 0 auto; }
       .logo { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; }
       .logo-img { height: 28px; width: auto; }
-      .header-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #fff; background: var(--green); padding: 8px 16px; border-radius: 50px; text-decoration: none; transition: background 0.2s; }
-      .header-link:hover { background: var(--green-dark); }
-      .header-link svg { width: 14px; height: 14px; }
+      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+      .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+      .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+      .nav-cta-group .nav-store-ios { background:var(--green); color:#fff; }
+      .nav-cta-group .nav-store-ios:hover { background:var(--green-dark); color:#fff; }
+      .nav-cta-group .nav-store-android { background:#fff; color:var(--green-dark); border:1.5px solid var(--gray-200); }
+      .nav-cta-group .nav-store-android:hover { border-color:var(--green); color:var(--green-dark); }
+      @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* ── Hero ── */
       .hero { padding: 48px 0 32px; text-align: center; }
@@ -1085,7 +1113,7 @@ class KygoHrvFactors extends HTMLElement {
       .blog-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
       .blog-cta .highlight { color: var(--green); }
       .blog-cta p { color: var(--gray-400); font-size: 14px; margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; white-space:nowrap; }
       .blog-cta-btn:hover { background: var(--green-dark); }
       .blog-cta-btn svg { width: 18px; height: 18px; }
       .blog-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
@@ -1098,6 +1126,36 @@ class KygoHrvFactors extends HTMLElement {
       .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
       .cta-android:hover { background: var(--green-dark); color: #fff; }
       .cta-android svg { width: 18px; height: 18px; }
+
+      /* Early contextual CTA card */
+      .kearly-section { padding: 48px 16px; }
+      .kband { max-width: 1100px; margin: 0 auto; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
+      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.3; color: #1E293B; }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
+      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #475569; text-align: center; }
+      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+      .kband-btn-ios { background: #22C55E; color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: #16A34A; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: #16A34A; border: 2px solid #E2E8F0; }
+      .kband-btn-android:hover { border-color: #22C55E; transform: translateY(-2px); }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+      @media (max-width: 720px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+        .kband-actions { width: 100%; flex-direction: column; }
+        .kband-btn { width: 100%; justify-content: center; }
+      }
+      @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
+      .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 780px; margin: 0 auto; }
+      .kearly-copy { font-size: 16px; line-height: 1.5; color: var(--dark); font-weight: 500; margin: 0 0 16px; }
+      .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+      .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
+      @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
 
       /* ── Footer ── */
       .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }

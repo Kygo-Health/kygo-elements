@@ -28,14 +28,14 @@
   // Shared constants
   // ──────────────────────────────────────────────────────────────────────
   const BRAND_LOGO = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-  const APP_IOS    = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-  const APP_ANDROID = 'https://kygo.app/android';
+  const APP_IOS    = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+  const APP_ANDROID = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
   const WEARABLE_BADGES = [
     { name: 'Oura Ring',     src: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png' },
     { name: 'Apple Health',  src: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png' },
     { name: 'Fitbit',        src: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png' },
     { name: 'Garmin',        src: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png' },
-    { name: 'Whoop',         src: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png' },
+    { name: 'Google Health', src: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png' },
     { name: 'Health Connect',src: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png' }
   ];
 
@@ -493,21 +493,27 @@
     connectedCallback() {
       this._state = this.getAttribute('state') || 'idle';
       this.render();
-      seoText(this, 'Subscribe to Kygo Health research digest — weekly evidence-first guides on sleep, HRV, nutrition, and wearable accuracy.');
+      seoText(this, 'Subscribe to Kygo Health — research-backed insights on sleep, HRV, nutrition, and the wearables that track them, straight to your inbox.');
     }
 
     attributeChangedCallback(name, oldV, newV) {
       if (oldV === newV) return;
-      if (name === 'state' && newV) this._state = newV;
+      if (name === 'state' && newV) {
+        // Host (Wix Velo) has confirmed — cancel the safety timeout so it
+        // can't later overwrite a real success/idle with an error.
+        clearTimeout(this._submitTimeout);
+        this._state = newV;
+        if (newV !== 'idle') this._error = '';
+      }
       this.render();
     }
 
     render() {
       const heading = this.getAttribute('heading') || 'Stop Guessing. <span class="hl">Start Knowing.</span>';
       const sub     = this.getAttribute('subheading') ||
-        'Evidence-first guides on sleep, HRV, nutrition, and the wearables that track them — delivered when we publish, never more.';
+        'Get more research-backed insights on sleep, HRV, and the wearables that track them, straight to your inbox.';
       const successMsg = this.getAttribute('success-message') ||
-        "You're in. Next issue lands in your inbox.";
+        "You're in — new insights are on the way.";
 
       this.shadowRoot.innerHTML = `
         <style>
@@ -515,10 +521,10 @@
           :host { ${CORE_TOKENS} background: var(--light); display: block; }
           .wrap {
             max-width: 720px; margin: 0 auto;
-            padding: 56px 20px;
+            padding: 36px 20px;
             text-align: center;
           }
-          @media (min-width: 768px) { .wrap { padding: 72px 24px; } }
+          @media (min-width: 768px) { .wrap { padding: 44px 24px; } }
 
           .kicker {
             display: inline-flex; align-items: center; gap: 6px;
@@ -619,7 +625,6 @@
           .success .title { font-size: 16px; font-weight: 600; }
         </style>
         <section class="wrap" aria-labelledby="subscribe-heading">
-          <div class="kicker">${svg('mail', 14)} Weekly research digest</div>
           <h2 id="subscribe-heading">${heading}</h2>
           <p class="lead">${sub}</p>
 
@@ -657,24 +662,59 @@
             this.render();
             return;
           }
-          this._error = '';
-          this._state = 'loading';
-          this.render();
-          // Detail must be plain-data only — Wix sends Custom Element
-          // events to Velo via postMessage / structured clone, which
-          // cannot serialize functions. The host (Wix Velo or other)
-          // flips state via setAttribute('state', 'success'|'idle').
-          this.dispatchEvent(new CustomEvent('subscribe', {
-            bubbles: true, composed: true,
-            detail: { email }
-          }));
-          // Fallback for non-Wix hosts that don't flip the state attr —
-          // assume success after 4s so the UI doesn't hang in "loading".
-          setTimeout(() => {
-            if (this._state === 'loading') { this._state = 'success'; this.render(); }
-          }, 4000);
+          this._subscribe(email);
         });
       }
+    }
+
+    // Native capture: POST { email, source } to the same-origin Velo endpoint
+    // and drive the UI straight from the HTTP response (200 → success). Also
+    // dispatch a `subscribe` document event so kygo-tracking.js mirrors
+    // email_subscribe → GA4 with the source param. Not medical advice, no PII
+    // leaves in the event beyond email/source (tracking.js never reads email).
+    _subscribe(email) {
+      const source = this.getAttribute('source') || 'blog-post';
+      const endpoint = this.getAttribute('endpoint') || '/_functions/subscribe';
+      this._error = '';
+      this._state = 'loading';
+      this.render();
+
+      clearTimeout(this._submitTimeout);
+      this._submitTimeout = setTimeout(() => {
+        if (this._state === 'loading') {
+          this._state = 'idle';
+          this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+          this.render();
+        }
+      }, 10000);
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source })
+      })
+        .then((res) => {
+          clearTimeout(this._submitTimeout);
+          if (res && res.ok) {
+            this._state = 'success';
+            this._error = '';
+            this.render();
+            this.dispatchEvent(new CustomEvent('subscribe', {
+              bubbles: true, composed: true,
+              detail: { email, source }
+            }));
+          } else {
+            this._state = 'idle';
+            this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+            this.render();
+          }
+        })
+        .catch(() => {
+          clearTimeout(this._submitTimeout);
+          this._state = 'idle';
+          this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+          this.render();
+        });
     }
   }
 
@@ -705,11 +745,49 @@
       seoText(this, 'Download Kygo Health — evidence-first nutrition tracking connected to every wearable. Available free on iOS and Android. Works with Oura, Apple Health, Fitbit, Garmin, Whoop, and Health Connect.');
     }
 
+    // Contextual default copy keyed to the post's category slug / tags / URL
+    // path, so the CTA speaks to the article the reader just finished. Wix may
+    // pass `category` (slug) or `tags`; we also sniff window.location.pathname.
+    _contextCopy() {
+      const cat  = (this.getAttribute('category') || this.getAttribute('tags') || '').toLowerCase();
+      const path = (window.location.pathname || '').toLowerCase();
+      const hay  = cat + ' ' + path;
+      const has  = (re) => re.test(hay);
+
+      if (has(/hrv|recovery|readiness|resting-heart|\bstress\b|whoop/)) {
+        return {
+          heading: 'Read the research.<br/><span class="hl">Track what moves YOUR HRV.</span>',
+          sub: 'Articles show you what the science says about HRV and recovery. Kygo shows you what your own body says — connect your wearable, log your meals, and see which habits actually move your numbers.'
+        };
+      }
+      if (has(/sleep|\brem\b|deep-sleep|latency|insomnia|melatonin|circadian/)) {
+        return {
+          heading: 'Read the research.<br/><span class="hl">Find YOUR sleep disruptors.</span>',
+          sub: "Articles show you what the science says about sleep. Kygo shows you what your own body says — correlate your meals, caffeine, and alcohol with your sleep stages to find what's really keeping you up."
+        };
+      }
+      if (has(/calorie|accuracy|vo2|step-count|\bsensor\b|estimate|metabolism|tdee/)) {
+        return {
+          heading: 'Your wearable estimates.<br/><span class="hl">Kygo shows what the numbers mean.</span>',
+          sub: 'The numbers on your watch are estimates. Kygo connects them to what you actually eat, so you can see what those readings really mean for your energy, sleep, and recovery.'
+        };
+      }
+      if (has(/nutrition|food|meal|diet|protein|supplement|caffeine|alcohol|sugar|carb/)) {
+        return {
+          heading: 'Read the research.<br/><span class="hl">Log meals in seconds, see the effect.</span>',
+          sub: 'Articles show you what the science says about nutrition. Kygo makes it personal — log what you eat in seconds and watch how it moves your sleep, energy, HRV, and recovery.'
+        };
+      }
+      return {
+        heading: 'Read the research.<br/><span class="hl">Live the results.</span>',
+        sub: 'Articles show you what the science says. Kygo shows you what your body says. Connect your wearable, log your meals, and see the personal correlations hiding in your own data.'
+      };
+    }
+
     render() {
-      const heading = this.getAttribute('heading') ||
-        'Read the research.<br/><span class="hl">Live the results.</span>';
-      const sub = this.getAttribute('subheading') ||
-        'Articles show you what the science says. Kygo shows you what your body says. Connect your wearable, log your meals, and see the personal correlations hiding in your own data.';
+      const ctx = this._contextCopy();
+      const heading = this.getAttribute('heading')    || ctx.heading;
+      const sub = this.getAttribute('subheading') || ctx.sub;
       const iosUrl     = this.getAttribute('ios-url')     || APP_IOS;
       const androidUrl = this.getAttribute('android-url') || APP_ANDROID;
       const pill       = this.getAttribute('pill-text')   || 'iOS & Android';
@@ -785,6 +863,7 @@
             font-weight: 700; font-size: 15px;
             box-shadow: 0 8px 20px rgba(34,197,94,0.25);
             transition: background 180ms ease, transform 180ms ease;
+            white-space: nowrap;
           }
           .btn:hover { background: var(--green-dark); transform: translateY(-1px); }
           .btn svg { width: 18px; height: 18px; }
@@ -815,13 +894,14 @@
               <h2 id="cta-heading">${heading}</h2>
               <p>${sub}</p>
               <div class="btns">
-                <a class="btn" href="${iosUrl}" target="_blank" rel="noopener">
-                  ${svg('apple', 18)} Download for iOS
+                <a class="btn cta-primary" href="${iosUrl}" data-track-position="post-end" data-track-label="post-cta-ios" target="_blank" rel="noopener">
+                  ${svg('apple', 18)} Try Free for 7 Days
                 </a>
-                <a class="btn" href="${androidUrl}" target="_blank" rel="noopener">
+                <a class="btn cta-android" href="${androidUrl}" data-action="android-download" data-track-position="post-end" data-track-label="post-cta-android" target="_blank" rel="noopener">
                   ${svg('playstore', 18)} Download for Android
                 </a>
               </div>
+              <p style="margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
               <div class="works">
                 <span class="works-label">Works with</span>
                 <div class="dots">
@@ -944,17 +1024,15 @@
           <h3>${heading}</h3>
           <p>${sub}</p>
           <div class="btns">
-            <a class="btn ios" href="${iosUrl}" target="_blank" rel="noopener">
-              ${svg('apple', 16)} Download for iOS
+            <a class="btn ios cta-primary" href="${iosUrl}" data-track-position="mid" data-track-label="post-inline-ios" target="_blank" rel="noopener">
+              ${svg('apple', 16)} Try Free for 7 Days
             </a>
-            <a class="btn android" href="${androidUrl}" target="_blank" rel="noopener">
+            <a class="btn android cta-android" href="${androidUrl}" data-action="android-download" data-track-position="mid" data-track-label="post-inline-android" target="_blank" rel="noopener">
               ${svg('playstore', 16)} Download for Android
             </a>
           </div>
           <div class="trust">
-            <span>${svg('check', 11)} 2-min setup</span>
-            <span>${svg('check', 11)} Free forever plan</span>
-            <span>${svg('check', 11)} No credit card</span>
+            <span>7-day free trial on yearly. Free plan available. Cancel anytime.</span>
           </div>
         </aside>
       `;
@@ -1013,31 +1091,33 @@
  *    });
  *
  *    // ------------------------------------------------------
- *    // 2. Related posts (uses the posts manually picked in the Wix
- *    //    Blog post editor under Settings → Advanced → Choose Posts).
- *    //    Manual picks are exposed on $w('#post1').getPost() as
- *    //    `relatedPostIds`. Falls back to 3 most-recent posts when
- *    //    no manual picks are set.
- *    //    NOTE: #post1 is the default ID of the Wix Blog Post widget.
- *    //    If your site uses a different ID, update it below.
+ *    // 2. Related posts — the posts you hand-pick per article in the
+ *    //    Wix Blog post settings ("Related Posts").
+ *    //
+ *    //    IMPORTANT: those picks are NOT on $w('#post1').getPost()
+ *    //    (the on-page Blog widget returns a limited post object with
+ *    //    no related-posts data). They live in the Blog/Posts
+ *    //    collection as the `relatedPosts` field, which is a
+ *    //    MULTI-REFERENCE — so we must look the current post up in the
+ *    //    collection by slug and `.include('relatedPosts')` to hydrate
+ *    //    the referenced posts. Order is preserved as picked.
+ *    //
+ *    //    Falls back to the 3 most-recent posts only when an article
+ *    //    has no hand-picked related posts.
  *    // ------------------------------------------------------
  *    try {
- *      const currentPost = await $w('#post1').getPost();
- *      const relatedIds = (currentPost && currentPost.relatedPostIds) || [];
+ *      const curRes = await wixData.query('Blog/Posts')
+ *        .eq('slug', currentSlug)
+ *        .include('relatedPosts')   // hydrate the multi-reference field
+ *        .limit(1)
+ *        .find();
  *
- *      let items = [];
- *      if (relatedIds.length > 0) {
- *        const relRes = await wixData.query('Blog/Posts')
- *          .hasSome('_id', relatedIds)
- *          .find();
- *        // Preserve the order the author picked
- *        items = relatedIds
- *          .map(id => relRes.items.find(p => p._id === id))
- *          .filter(Boolean);
- *      }
+ *      const currentPost = curRes.items[0];
+ *      // `relatedPosts` is an array of full Blog/Posts items (your picks)
+ *      let items = (currentPost && currentPost.relatedPosts) || [];
  *
- *      // Fallback: latest 3 (excluding current). No sort field — Wix's
- *      // default order is newest-first and firstPublishedDate errors.
+ *      // Fallback: latest 3 (excluding current). Wix's default order is
+ *      // newest-first; the collection date field is `publishedDate`.
  *      if (items.length === 0) {
  *        const recent = await wixData.query('Blog/Posts').limit(6).find();
  *        items = recent.items
@@ -1058,7 +1138,7 @@
  *          slug: p.slug,
  *          excerpt: p.excerpt || '',
  *          coverImage: img,
- *          publishedDate: p.firstPublishedDate || p.lastPublishedDate,
+ *          publishedDate: p.publishedDate || p.lastPublishedDate,
  *          category: '',
  *          readTime: p.timeToRead || Math.max(1, Math.ceil(wordCount / 200)),
  *          views: p.viewCount || null
@@ -1113,7 +1193,8 @@
  *         from Wix — we don't touch them)
  *      -- OPTIONAL: inside the post Rich Content, drop an HTML iframe
  *         block with <kygo-blog-post-inline-cta> for mid-article CTAs
- *   4. <kygo-blog-post-related>     — 3 recent posts on white
+ *   4. <kygo-blog-post-related>     — hand-picked related posts on white
+ *                                     (falls back to 3 recent posts)
  *   5. <kygo-blog-subscribe>        — grey band, keeps rhythm
  *   6. <kygo-blog-post-cta>         — big dark app CTA on white
  *   7. Sitewide FOOTER

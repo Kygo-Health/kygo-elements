@@ -1,7 +1,7 @@
 /**
  * Kygo Health - Tools Page Custom Element
  * Tag: kygo-tools-page
- * Mobile-first tools index: hero, category chips, featured navy card, tool grid, dark navy app promo.
+ * Mobile-first tools index: hero, image-led featured card, data-motif tool grid, dark navy app promo.
  * Tools are configurable via the 'tools' attribute (JSON array).
  */
 
@@ -29,7 +29,7 @@ class KygoToolsPage extends HTMLElement {
     this.render();
     this._setupEvents();
     this._setupAnimations();
-    __seo(this, 'Kygo Health Free Tools — Free research-backed tools to understand your nutrition and health. Food Scanner, Wearable Accuracy, HRV Factors, Sleep Factors, Step Count Accuracy, Sleep Metrics, Calorie Burn Accuracy, Sensor Comparison, and more. No signup required.');
+    __seo(this, 'Kygo Health Free Tools — Free research-backed tools to understand your nutrition and health. Food Scanner, Wearable Accuracy, VO2 Max Accuracy, VO2 Max Factors, HRV Factors, Sleep Factors, Step Count Accuracy, Sleep Metrics, Calorie Burn Accuracy, Sensor Comparison, and more. No signup required.');
     this._injectStructuredData();
   }
 
@@ -53,7 +53,34 @@ class KygoToolsPage extends HTMLElement {
       const attr = this.getAttribute('tools');
       if (attr) { this._tools = JSON.parse(attr); return; }
     } catch (e) {}
-    this._tools = [];
+    // No Wix-provided `tools` attribute → use the built-in default list (kept in-repo,
+    // version-controlled). Wix can still override by setting the `tools` attribute.
+    this._tools = this._defaultTools();
+  }
+
+  _defaultTools() {
+    return [
+      { slug: 'wearable-accuracy', title: 'Most Accurate Wearable', description: 'Compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research.', icon: 'activity', badge: 'Most Popular', url: '/tools/wearable-accuracy', features: ['17+ peer-reviewed studies', 'Head-to-head comparison', 'Full bias disclosure'] },
+      { slug: 'sleep-tracker-accuracy', title: 'Most Accurate Sleep Tracker', description: 'Which wearable is most accurate for sleep vs a lab PSG? Compare Oura, Apple Watch, Fitbit, WHOOP, Garmin & Withings on 4-stage staging (healthy vs clinical), deep & REM detection, sleep/wake agreement, and total-sleep-time bias.', icon: 'moon', badge: 'New', url: '/tools/sleep-tracker-accuracy', category: 'wearables', features: ['Compare any 2–4 devices', 'Healthy vs clinical accuracy', '14 verified sources'] },
+      { slug: 'recovery-score-explorer', title: 'Recovery Score Explorer', description: 'Compare recovery and readiness scores across 12 wearables — WHOOP, Oura, Garmin, Fitbit, Samsung, Polar, Ultrahuman, Coros, Amazfit, Suunto, Apple & RingConn — see the 35 factors that move yours, and find which scores are actually validated.', icon: 'heart', badge: 'New', url: '/tools/recovery-score-explorer', category: 'recovery', features: ['12 wearables compared', '35 factors ranked', 'Only 2/12 scores validated'] },
+      { slug: 'supplements-by-metric', title: 'Supplements by Metric', description: 'Pick a wearable metric — sleep latency, deep sleep, staying asleep, HRV, resting heart rate, or recovery — and see which of 27 supplements the research actually supports, graded by evidence with industry-funding flags and the popular stuff that doesn\'t work.', icon: 'sparkles', badge: 'New', url: '/tools/supplements-by-metric', category: 'nutrition', features: ['6 metrics × 27 supplements', 'Evidence-graded with funding flags', '19 primary sources'] },
+      { slug: 'vo2-max-accuracy', title: 'Most Accurate VO2 Max Wearable', description: 'How accurately do Garmin, Apple, Polar, Fitbit, WHOOP, Oura, Samsung & Coros estimate VO2 max vs a lab CPET? Compare 9 devices by method and see which brands are actually independently validated.', icon: 'activity', badge: 'New', url: '/tools/vo2-max-accuracy', category: 'wearables', features: ['9 devices compared', 'Independent vs vendor validation', '13 peer-reviewed sources'] },
+      { slug: 'vo2-max-factors', title: 'VO2 Max Factor Explorer', description: 'Explore 39 research-backed factors that raise or lower VO2 max — training, nutrition, environment, lifestyle & clinical — ranked by evidence strength, with doses and sources.', icon: 'zap', badge: 'New', url: '/tools/vo2-max-factors', category: 'recovery', features: ['39 factors ranked', '6 categories', '36 peer-reviewed sources'] },
+      { slug: 'oura-ring-comparison-tool', title: 'Oura Ring 5 vs 4 vs 3 Comparison (2026)', description: 'Compare Oura Ring 5, Ring 4, and Gen 3 side-by-side. Size & dimensions, peer-reviewed accuracy data (Dial 2025, Khan 2025), and the real 3-year cost with subscription math included.', icon: 'scale', badge: 'New', url: '/tools/oura-ring-comparison-tool', features: ['3 generations compared', 'Peer-reviewed accuracy data', '3-year TCO calculator'] },
+      { slug: 'fitbit-air-vs-whoop-comparison', title: 'Fitbit Air vs WHOOP: Accuracy & Cost (2026)', description: 'Compare Fitbit Air, WHOOP 5.0, and WHOOP MG side by side: heart-rate, sleep, and calorie accuracy with numbers, sensors, battery, price, and 3-year cost of ownership.', icon: 'scale', badge: 'New', url: '/tools/fitbit-air-vs-whoop-comparison', features: ['35 specs across 5 categories', 'HR/sleep/calorie accuracy', '3-year cost calculator'] },
+      { slug: 'stress-factors', title: 'Stress Factor Explorer', description: 'What actually moves your wearable stress score? Explore every factor by device — Garmin, WHOOP, Oura, Fitbit, Samsung, Apple Watch — broken down by signal, direction & evidence.', icon: 'brain', badge: 'New', url: '/tools/stress-factors', features: ['10 wearables compared', '5 signal types mapped', '30+ peer-reviewed sources'] },
+      { slug: 'staying-asleep-factors', title: 'Staying Asleep Factors', description: 'Explore 27 research-backed factors that affect whether you stay asleep through the night — nutrition, supplements, exercise, environment & demographics ranked by evidence.', icon: 'moon', badge: 'New', url: '/tools/staying-asleep-factors', features: ['27 factors ranked', '40+ peer-reviewed studies', '5 categories'] },
+      { slug: 'hrv-factors', title: 'HRV Factor Explorer', description: 'Explore 38 research-backed factors that affect Heart Rate Variability across supplements, lifestyle, exercise, micronutrients & demographics — ranked by evidence strength.', icon: 'heart', badge: 'Trending', url: '/tools/hrv-factors', features: ['38 factors ranked', '5 categories explored', 'Peer-reviewed sources'] },
+      { slug: 'resting-heart-rate-factors', title: 'Resting Heart Rate Factors', description: '37 research-backed factors that move your resting heart rate — sorted by exact bpm impact. See what actually lowers, raises, or doesn\'t change your RHR.', icon: 'heart', badge: 'New', url: '/tools/resting-heart-rate-factors', features: ['37 peer-reviewed factors', 'Sortable by bpm impact', '33 myths debunked'] },
+      { slug: 'sleep-latency-factors', title: 'Sleep Latency Factors', description: 'Explore 33 research-backed factors that affect how fast you fall asleep — nutrition, supplements, exercise, environment & demographics ranked by evidence.', icon: 'moon', badge: 'Sleep', url: '/tools/sleep-latency-factors', features: ['33 factors ranked', '42+ peer-reviewed studies', '5 categories'] },
+      { slug: 'calorie-burn-accuracy', title: 'Calorie Burn Accuracy Calculator', description: 'Enter your wearable\'s reported calorie burn and see the likely actual range — with peer-reviewed per-activity accuracy for Apple Watch, Fitbit, Garmin, WHOOP, Oura & Samsung.', icon: 'calculator', badge: 'Activity', url: '/tools/calorie-burn-accuracy', features: ['6 devices × 7 activities', 'Peer-reviewed per-activity data', '22 verified sources'] },
+      { slug: 'deep-sleep-factors', title: 'Deep Sleep Factor Explorer', description: 'What affects your deep sleep? 28 factors ranked by research — with evidence strength, doses, and mechanisms from 40+ studies.', icon: 'moon', badge: 'Sleep', url: '/tools/deep-sleep-factors', features: ['28 evidence-based factors', '5 categories', '40+ peer-reviewed sources'] },
+      { slug: 'food-scanner', title: 'Food Scanner', description: 'Snap a photo of any meal and get instant calories, macros, health score, and nutrition insights powered by AI.', icon: 'camera', badge: 'Food', url: '/tools/calories-in-anything', features: ['Instant calorie count', 'Macro & vitamin breakdown', 'Health score 1–10'] },
+      { slug: 'step-count-accuracy', title: 'Step Count Accuracy', description: 'See which wearable counts steps most accurately — Garmin, Apple Watch, Fitbit, Samsung, Oura & more, ranked by 20+ peer-reviewed studies.', icon: 'steps', badge: 'Activity', url: '/tools/step-count-accuracy', features: ['20+ peer-reviewed studies', 'Head-to-head comparison', '9 devices ranked'] },
+      { slug: 'sleep-metrics', title: 'Sleep Metrics Comparison', description: 'Compare 38 sleep metrics tracked by Oura Ring, Fitbit, Apple Watch & Garmin across 10 categories — see exactly what each device measures while you sleep.', icon: 'moon', badge: 'Sleep', url: '/tools/sleep-metrics', features: ['38 metrics compared', '10 sleep categories', '29 verified sources'] },
+      { slug: 'sensor-comparison', title: 'Hardware & Software Differences', description: 'See what actually makes Garmin, Whoop, Oura, Apple Watch, and Fitbit different — hardware sensors, health metrics, and proprietary software compared.', icon: 'activity', badge: 'Hardware', url: '/tools/sensor-comparison', features: ['Hardware vs software breakdown', '25 proprietary algorithms', '6 latest-gen devices'] },
+      { slug: 'rem-sleep-factors', title: 'REM Sleep Factor Explorer', description: 'What influences your REM (dream) sleep? Explore 23 research-backed factors across nutrition, supplements, exercise, environment & demographics — ranked by evidence strength, with mechanisms and sources.', icon: 'moon', badge: 'Sleep', url: '/tools/rem-sleep-factors', features: ['23 factors ranked', '5 categories', '23 peer-reviewed sources'] }
+    ];
   }
 
   // Slug → category mapping (overridable via tool.category)
@@ -68,6 +95,7 @@ class KygoToolsPage extends HTMLElement {
       'sleep-latency-factors': 'sleep',
       'staying-asleep-factors': 'sleep',
       'deep-sleep-factors': 'sleep',
+      'rem-sleep-factors': 'sleep',
       'hrv-factors': 'recovery',
       'resting-heart-rate-factors': 'recovery',
       'food-scanner': 'nutrition'
@@ -118,6 +146,187 @@ class KygoToolsPage extends HTMLElement {
       }
       return { n: '', l: s };
     });
+  }
+
+  // Collapse features to a short "A · B" meta line (first two features).
+  _metaFor(tool) {
+    if (tool.meta) return tool.meta;
+    const f = Array.isArray(tool.features) ? tool.features : [];
+    // Normalize factor-count phrasing so every factor explorer reads "N factors"
+    // (not "N evidence-based factors" / "N factors ranked" / "N peer-reviewed factors").
+    const norm = s => {
+      const m = String(s).match(/^(\d+\+?)[\s\S]*?\bfactors?\b/i);
+      return m ? `${m[1]} factors` : String(s);
+    };
+    return f.slice(0, 2).map(norm).join(' · ');
+  }
+
+  // Per-tool data-motif config (slug → motif + illustrative params). A tool may
+  // override via its own `motif`/`caption`/etc. fields (e.g. from Wix).
+  _motifFor(tool) {
+    if (tool.motif) {
+      return { motif: tool.motif, caption: tool.caption || '', stage: tool.stage, rows: tool.rows,
+        ringValue: tool.ringValue, ringNote: tool.ringNote, bpm: tool.bpm,
+        gaugePct: tool.gaugePct, gaugeValue: tool.gaugeValue, gaugeUnit: tool.gaugeUnit, rangeLabel: tool.rangeLabel,
+        radar: tool.radar, bars: tool.bars, versusA: tool.versusA, versusB: tool.versusB, versus: tool.versus, tiers: tool.tiers, dots: tool.dots, rings: tool.rings };
+    }
+    const map = {
+      'wearable-accuracy': { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] },
+      'recovery-score-explorer': { motif: 'ring', caption: 'Readiness score', ringValue: 72, ringNote: 'Validated' },
+      'supplements-by-metric': { motif: 'ranked', caption: 'Graded by evidence' },
+      'vo2-max-accuracy': { motif: 'compare', caption: 'Accuracy vs lab CPET', rows: [{ label: 'Garmin', pct: 93 }, { label: 'Apple', pct: 85 }, { label: 'Polar', pct: 80 }, { label: 'Fitbit', pct: 64 }] },
+      'sleep-tracker-accuracy': { motif: 'compare', caption: 'Sleep staging vs PSG', rows: [{ label: 'Oura', pct: 90 }, { label: 'Apple', pct: 78 }, { label: 'Fitbit', pct: 64 }, { label: 'Garmin', pct: 36 }] },
+      'vo2-max-factors': { motif: 'gauge', caption: 'VO2 max estimate', gaugePct: 78, gaugeValue: '48', gaugeUnit: 'VO2 MAX' },
+      'oura-ring-comparison-tool': { motif: 'rings', caption: 'Relative thickness', rings: [{ label: 'Gen 3' }, { label: 'Ring 4' }, { label: 'Ring 5' }] },
+      'fitbit-air-vs-whoop-comparison': { motif: 'versus', caption: 'Head-to-head accuracy', versusA: 'WHOOP', versusB: 'Fitbit Air', versus: [{ a: 90, b: 72 }, { a: 88, b: 68 }, { a: 82, b: 64 }] },
+      'stress-factors': { motif: 'gauge', caption: 'Stress load', gaugePct: 62, gaugeValue: '62', gaugeUnit: 'STRESS' },
+      'staying-asleep-factors': { motif: 'ranked', caption: 'Factors ranked by evidence' },
+      'hrv-factors': { motif: 'pulse', caption: 'HRV · beat-to-beat' },
+      'resting-heart-rate-factors': { motif: 'pulse', caption: 'Resting heart rate', bpm: '58 bpm' },
+      'sleep-latency-factors': { motif: 'decay', caption: 'Time to fall asleep' },
+      'calorie-burn-accuracy': { motif: 'diverging', caption: 'Reported vs actual', bars: [{ label: 'Oura', val: 9 }, { label: 'Apple', val: 22 }, { label: 'Fitbit', val: -16 }, { label: 'Garmin', val: -31 }] },
+      'deep-sleep-factors': { motif: 'hypno', stage: 'deep', caption: 'Sleep stages overnight' },
+      'food-scanner': { motif: 'donut', caption: 'Macros & calories' },
+      'step-count-accuracy': { motif: 'steps', caption: 'Daily step counts' },
+      'sleep-metrics': { motif: 'dots', caption: 'Metrics tracked', dots: [{ label: 'Oura', n: 9 }, { label: 'Garmin', n: 7 }, { label: 'Apple', n: 6 }, { label: 'Fitbit', n: 5 }] },
+      'sensor-comparison': { motif: 'radar', caption: 'Sensor & software focus', radar: [0.92, 0.6, 0.78, 0.5, 0.85] },
+      'rem-sleep-factors': { motif: 'hypno', stage: 'rem', caption: 'Sleep stages overnight' }
+    };
+    return map[tool.slug] || { motif: 'ranked', caption: 'Ranked by evidence' };
+  }
+
+  // The motif graphic (SVG/markup) that goes inside the white data panel.
+  // Geometry mirrors ToolCard2.dc.html exactly.
+  _motifBody(c) {
+    const m = c.motif || 'ranked';
+    if (m === 'compare') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.rows) ? c.rows : [];
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const w = Math.max(0, Math.min(100, r.pct));
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:48px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.label}</span><span style="flex:1;height:9px;border-radius:5px;background:#EEF1F4;overflow:hidden;"><span style="display:block;height:100%;border-radius:5px;background:${fill};width:${w}%;"></span></span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:8px;padding:2px 0;">${body}</div>`;
+    }
+    if (m === 'ring') {
+      const v = c.ringValue != null ? c.ringValue : 72;
+      const off = (238.8 * (1 - v / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 96 96" width="80" height="80"><circle cx="48" cy="48" r="38" fill="none" stroke="#E2E8F0" stroke-width="11"/><circle cx="48" cy="48" r="38" fill="none" stroke="#22C55E" stroke-width="11" stroke-linecap="round" stroke-dasharray="238.8" stroke-dashoffset="${off}" transform="rotate(-90 48 48)"/><text x="48" y="46" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="26" fill="#1E293B">${v}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" letter-spacing="0.5" fill="#94A3B8">SCORE</text></svg><div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:#16A34A;">↑ ${c.ringNote || 'Validated'}</div></div>`;
+    }
+    if (m === 'pulse') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><path d="M0 48 L34 48 L44 48 L52 18 L60 60 L70 30 L80 48 L118 48 L128 48 L136 14 L144 58 L154 34 L164 48 L200 48" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="136" cy="14" r="4" fill="#22C55E"/>${c.bpm ? `<text x="200" y="68" text-anchor="end" font-family="Space Grotesk" font-weight="700" font-size="13" fill="#1E293B">${c.bpm}</text>` : ''}</svg>`;
+    }
+    if (m === 'gauge') {
+      const pct = c.gaugePct != null ? c.gaugePct : 70;
+      const off = (125.7 * (1 - pct / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;padding:2px 0;"><svg viewBox="0 0 96 64" width="118" height="78"><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#E2E8F0" stroke-width="10" stroke-linecap="round"/><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#22C55E" stroke-width="10" stroke-linecap="round" stroke-dasharray="125.7" stroke-dashoffset="${off}"/><text x="48" y="50" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="22" fill="#1E293B">${c.gaugeValue || ''}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">${c.gaugeUnit || ''}</text></svg></div>`;
+    }
+    if (m === 'decay') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtDecay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(34,197,94,0.22)"/><stop offset="1" stop-color="rgba(34,197,94,0)"/></linearGradient></defs><path d="M0 10 C40 10 46 58 96 66 L200 74 L200 88 L0 88 Z" fill="url(#mtDecay)"/><path d="M0 10 C40 10 46 58 96 66 L200 74" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round"/><circle cx="96" cy="66" r="4" fill="#22C55E"/></svg>`;
+    }
+    if (m === 'hypno') {
+      const rem = c.stage === 'rem', deep = c.stage === 'deep';
+      return `<svg viewBox="0 0 200 80" width="100%" style="display:block;"><g font-family="Space Grotesk" font-weight="600" font-size="7" fill="#94A3B8"><text x="0" y="11">Awake</text><text x="0" y="33">REM</text><text x="0" y="55">Light</text><text x="0" y="77">Deep</text></g><path d="M36 8 L54 8 L54 52 L80 52 L80 74 L106 74 L106 30 L128 30 L128 52 L152 52 L152 30 L176 30 L176 52 L200 52" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${rem ? '<rect x="106" y="24" width="22" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}${deep ? '<rect x="80" y="68" width="26" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}</svg>`;
+    }
+    if (m === 'donut') {
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 84 84" width="78" height="78"><circle cx="42" cy="42" r="34" fill="none" stroke="#16A34A" stroke-width="12" stroke-dasharray="96 213.6" stroke-dashoffset="0" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#22C55E" stroke-width="12" stroke-dasharray="64 213.6" stroke-dashoffset="-96" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#86EFAC" stroke-width="12" stroke-dasharray="53 213.6" stroke-dashoffset="-160" transform="rotate(-90 42 42)"/><text x="42" y="40" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="17" fill="#1E293B">540</text><text x="42" y="53" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">KCAL</text></svg><div style="display:flex;flex-direction:column;gap:5px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#16A34A;"></span>Protein</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#22C55E;"></span>Carbs</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#86EFAC;"></span>Fat</span></div></div>`;
+    }
+    if (m === 'range') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><defs><linearGradient id="mtRange" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="6" y1="50" x2="194" y2="50" stroke="#E2E8F0" stroke-width="2"/><g stroke="#CBD5E1" stroke-width="2"><line x1="6" y1="46" x2="6" y2="54"/><line x1="100" y1="46" x2="100" y2="54"/><line x1="194" y1="46" x2="194" y2="54"/></g><rect x="78" y="22" width="76" height="16" rx="8" fill="rgba(34,197,94,0.18)"/><rect x="78" y="44" width="76" height="12" rx="6" fill="url(#mtRange)"/><circle cx="116" cy="50" r="7" fill="#16A34A" stroke="#fff" stroke-width="2.5"/><text x="116" y="16" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="12" fill="#1E293B">${c.rangeLabel || ''}</text></svg>`;
+    }
+    if (m === 'steps') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtSteps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><g><rect x="2" y="50" width="20" height="34" rx="4" fill="#CBD5E1"/><rect x="30" y="40" width="20" height="44" rx="4" fill="#86EFAC"/><rect x="58" y="58" width="20" height="26" rx="4" fill="#CBD5E1"/><rect x="86" y="20" width="20" height="64" rx="4" fill="url(#mtSteps)"/><rect x="114" y="44" width="20" height="40" rx="4" fill="#86EFAC"/><rect x="142" y="34" width="20" height="50" rx="4" fill="#22C55E" opacity="0.8"/><rect x="170" y="54" width="20" height="30" rx="4" fill="#CBD5E1"/></g></svg>`;
+    }
+    if (m === 'radar') {
+      const vals = Array.isArray(c.radar) && c.radar.length === 5 ? c.radar : [0.92, 0.6, 0.78, 0.5, 0.85];
+      const cx = 100, cy = 52, R = 38;
+      const ang = k => (-90 + 72 * k) * Math.PI / 180;
+      const pt = (k, r) => [cx + r * Math.cos(ang(k)), cy + r * Math.sin(ang(k))];
+      const ring = r => 'M ' + [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, r); return x.toFixed(1) + ' ' + y.toFixed(1); }).join(' L ') + ' Z';
+      const dataPts = [0, 1, 2, 3, 4].map(k => pt(k, R * Math.max(0.08, Math.min(1, vals[k]))));
+      const dataPath = 'M ' + dataPts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L ') + ' Z';
+      const spokes = [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, R); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#E2E8F0" stroke-width="1"/>`; }).join('');
+      const dots = dataPts.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2" fill="#22C55E"/>`).join('');
+      return `<svg viewBox="0 0 200 104" width="100%" style="display:block;"><path d="${ring(R)}" fill="none" stroke="#E2E8F0" stroke-width="1"/><path d="${ring(R * 0.5)}" fill="none" stroke="#EEF1F4" stroke-width="1"/>${spokes}<path d="${dataPath}" fill="rgba(34,197,94,0.18)" stroke="#16A34A" stroke-width="2" stroke-linejoin="round"/>${dots}</svg>`;
+    }
+    if (m === 'diverging') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.bars) ? c.bars : [];
+      const cx = 124, maxLen = 70;
+      const dmax = Math.max(20, ...rows.map(r => Math.abs(r.val || 0)));
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const v = r.val || 0;
+        const len = Math.max(5, Math.abs(v) / dmax * maxLen);
+        const x = v >= 0 ? cx : cx - len;
+        const y = 6 + i * 20;
+        return `<text x="0" y="${y + 11}" font-family="Space Grotesk" font-weight="600" font-size="9" fill="#475569">${r.label}</text><rect x="${x.toFixed(1)}" y="${y}" width="${len.toFixed(1)}" height="11" rx="3" fill="${fill}"/>`;
+      }).join('');
+      const h = 6 + rows.length * 20;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><line x1="${cx}" y1="2" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'rings') {
+      // Same outer size, different wall thickness — mirrors the Oura tool hero's
+      // "relative thickness" visual (Ring 5 thinnest, in green).
+      const r = Array.isArray(c.rings) ? c.rings : [];
+      const OE = 27, cy = 44;
+      const sw = [10, 12, 8];
+      const colors = ['#CBD5E1', '#94A3B8', '#16A34A'];
+      const lbl = ['#94A3B8', '#94A3B8', '#16A34A'];
+      const cxs = [34, 100, 166];
+      const body = r.map((rr, i) => {
+        const w = sw[i] != null ? sw[i] : 10;
+        const rad = OE - w / 2;
+        const cx = cxs[i] != null ? cxs[i] : (200 / r.length) * (i + 0.5);
+        return `<circle cx="${cx}" cy="${cy}" r="${rad.toFixed(1)}" fill="none" stroke="${colors[i] || '#16A34A'}" stroke-width="${w}"/><text x="${cx}" y="90" text-anchor="middle" font-family="Space Grotesk" font-weight="${i === r.length - 1 ? 700 : 600}" font-size="9" fill="${lbl[i] || '#94A3B8'}">${rr.label}</text>`;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;">${body}</svg>`;
+    }
+    if (m === 'versus') {
+      const a = c.versusA || 'A', b = c.versusB || 'B';
+      const rows = Array.isArray(c.versus) ? c.versus : [];
+      const cx = 100, maxLen = 84;
+      const body = rows.map((r, i) => {
+        const y = 24 + i * 22;
+        const la = Math.max(0, Math.min(100, r.a)) / 100 * maxLen;
+        const lb = Math.max(0, Math.min(100, r.b)) / 100 * maxLen;
+        return `<rect x="${(cx - la).toFixed(1)}" y="${y}" width="${la.toFixed(1)}" height="10" rx="5" fill="#16A34A"/><rect x="${cx}" y="${y}" width="${lb.toFixed(1)}" height="10" rx="5" fill="#86EFAC"/>`;
+      }).join('');
+      const h = 24 + rows.length * 22;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><text x="2" y="12" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#16A34A">${a}</text><text x="198" y="12" text-anchor="end" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#94A3B8">${b}</text><line x1="${cx}" y1="18" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'tiers') {
+      const t = Array.isArray(c.tiers) ? c.tiers : [];
+      const n = t.length || 3;
+      const gap = 16, colW = (200 - gap * (n + 1)) / n, base = 84;
+      const fills = ['#86EFAC', '#22C55E', '#16A34A'];
+      let x = gap;
+      const bars = t.map((tt, i) => {
+        const hh = Math.max(0.1, Math.min(1, tt.h)) * (base - 14);
+        const y = base - hh;
+        const fill = i === n - 1 ? 'url(#mtTier)' : (fills[i] || '#86EFAC');
+        const out = `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${colW.toFixed(1)}" height="${hh.toFixed(1)}" rx="6" fill="${fill}"/><text x="${(x + colW / 2).toFixed(1)}" y="96" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" fill="#94A3B8">${tt.label}</text>`;
+        x += colW + gap;
+        return out;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;"><defs><linearGradient id="mtTier" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="0" y1="84" x2="200" y2="84" stroke="#E2E8F0" stroke-width="1.5"/>${bars}</svg>`;
+    }
+    if (m === 'dots') {
+      const rows = Array.isArray(c.dots) ? c.dots : [];
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const TOT = 10;
+      const body = rows.map((r, i) => {
+        const fill = fills[i] || '#86EFAC';
+        const n = Math.max(0, Math.min(TOT, r.n || 0));
+        let dots = '';
+        for (let k = 0; k < TOT; k++) dots += `<span style="width:7px;height:7px;border-radius:50%;background:${k < n ? fill : '#E2E8F0'};display:block;"></span>`;
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:42px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;">${r.label}</span><span style="display:flex;gap:4px;">${dots}</span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:7px;padding:2px 0;">${body}</div>`;
+    }
+    // ranked (default)
+    return `<svg viewBox="0 0 200 96" width="100%" style="display:block;"><defs><linearGradient id="mtRank" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect x="0" y="4" width="186" height="11" rx="5.5" fill="url(#mtRank)"/><rect x="0" y="25" width="150" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.85"/><rect x="0" y="46" width="116" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.7"/><rect x="0" y="67" width="82" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.55"/><rect x="0" y="88" width="54" height="6" rx="3" fill="#CBD5E1"/></svg>`;
   }
 
   _featured() {
@@ -345,162 +554,158 @@ class KygoToolsPage extends HTMLElement {
 
   _styles2() {
     return `
-      /* ===== FEATURED ===== */
+      /* ===== FEATURED (image-led, light) ===== */
       .featured-wrap { padding: 24px 0 4px; }
-      .featured {
-        display: block; width: 100%; text-align: left;
-        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-        color: #fff; border-radius: 24px; padding: 22px;
-        border: none; position: relative; overflow: hidden;
-        box-shadow: 0 12px 32px rgba(15,23,42,0.25);
+      .feat-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+      .feat-star {
+        flex: 0 0 auto; width: 36px; height: 36px; border-radius: 10px;
+        background: linear-gradient(135deg, #22C55E, #16A34A); color: #fff;
+        display: inline-flex; align-items: center; justify-content: center;
+        box-shadow: 0 6px 14px rgba(34,197,94,0.3);
       }
-      .featured::before {
-        content: ''; position: absolute; top: -40px; right: -40px;
-        width: 220px; height: 220px; border-radius: 50%;
-        background: radial-gradient(circle, rgba(34,197,94,0.35) 0%, transparent 70%);
-        pointer-events: none;
+      .feat-head-text { min-width: 0; }
+      .feat-head-title {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+        font-size: 20px; letter-spacing: -0.01em; color: var(--dark); margin: 0;
       }
-      .featured-inner { position: relative; z-index: 1; }
-      .featured-top {
-        display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
-      }
-      .featured-meta {
-        font-size: 10px; font-weight: 600; letter-spacing: 0.5px;
-        text-transform: uppercase; color: rgba(255,255,255,0.5);
-      }
-      .featured-icon {
-        width: 50px; height: 50px; border-radius: 14px;
-        background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
-        display: flex; align-items: center; justify-content: center;
-        color: #fff; margin-bottom: 16px;
-        box-shadow: 0 8px 20px rgba(34,197,94,0.4);
-      }
-      .featured-icon svg { width: 26px; height: 26px; }
-      .featured h2 {
-        font-size: 26px; color: #fff; margin: 0 0 8px; line-height: 1.15;
-      }
-      .featured-blurb {
-        font-size: 14px; color: rgba(255,255,255,0.72);
-        line-height: 1.5; margin: 0 0 20px;
-      }
-      .featured-stats {
-        display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-        padding: 14px 0; margin-bottom: 18px;
-        border-top: 1px solid rgba(255,255,255,0.12);
-        border-bottom: 1px solid rgba(255,255,255,0.12);
-      }
-      .featured-stats .n {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 20px; font-weight: 700; color: var(--green); line-height: 1;
-      }
-      .featured-stats .l {
-        font-size: 10px; color: rgba(255,255,255,0.55);
-        margin-top: 4px; line-height: 1.2;
-      }
-      .featured-cta {
-        display: inline-flex; align-items: center; gap: 8px;
-        background: var(--green); color: #fff;
-        padding: 12px 18px; border-radius: 12px;
-        font-weight: 600; font-size: 14px;
-        border: none;
-      }
-      .featured-cta svg { width: 16px; height: 16px; }
+      .feat-head-sub { font-size: 13px; color: #64748B; margin: 2px 0 0; }
+      .feat-rule { flex: 1; height: 1px; background: var(--gray-200); margin-left: 4px; }
 
-      /* ===== TAG PILLS ===== */
-      .tag {
-        display: inline-flex; align-items: center; gap: 5px;
-        font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
-        text-transform: uppercase;
-        padding: 4px 9px; border-radius: 9999px;
+      .feat-card {
+        display: flex; flex-direction: column; width: 100%; text-align: left;
+        background: #fff; border: 1px solid var(--gray-200);
+        border-radius: 22px; overflow: hidden;
+        box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
       }
-      .tag.popular { background: var(--green); color: #fff; }
-      .tag.new { background: var(--dark); color: #fff; }
-      .tag.trending, .tag.soft {
-        background: var(--green-light); color: var(--green-dark);
+      .feat-card:hover {
+        transform: translateY(-4px); box-shadow: 0 18px 48px rgba(15,23,42,0.12);
+        border-color: #CBD5E1; cursor: pointer;
       }
-      .tag .dot {
-        width: 5px; height: 5px; border-radius: 9999px;
-        background: var(--green); display: inline-block;
+      .feat-scene {
+        position: relative; min-height: 300px; background: var(--gray-100);
+        overflow: hidden; display: flex; align-items: center; justify-content: center;
       }
+      .feat-panel {
+        position: relative; background: #fff; border: 1px solid #EAECEF;
+        border-radius: 18px; box-shadow: 0 12px 32px rgba(15,23,42,0.10);
+        padding: 20px 22px; width: 74%; max-width: 330px;
+      }
+      @media (max-width: 560px) {
+        .feat-panel { width: 90%; max-width: none; padding: 16px 14px; }
+      }
+      .feat-panel-cap {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 10px;
+        letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 14px;
+      }
+      .feat-matrix { display: flex; flex-direction: column; gap: 9px; }
+      .fm-row { display: grid; grid-template-columns: 62px repeat(4, 1fr); align-items: center; column-gap: 2px; }
+      .fm-dev { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 8px; color: var(--gray-400); text-align: center; }
+      .fm-metric { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 9.5px; color: var(--gray-600); }
+      .fm-cell { display: flex; justify-content: center; }
+      .fm-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gray-200); }
+      .fm-dot.on { background: #16A34A; box-shadow: 0 0 0 3px rgba(34,197,94,0.14); }
+
+      .feat-content { padding: 28px; display: flex; flex-direction: column; gap: 14px; }
+      .feat-pop {
+        display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+        padding: 5px 12px; border-radius: 9999px;
+        background: linear-gradient(135deg, #22C55E, #16A34A); color: #fff;
+        font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+        box-shadow: 0 4px 10px rgba(34,197,94,0.25);
+      }
+      .feat-content h2 {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 26px;
+        line-height: 1.15; letter-spacing: -0.01em; color: var(--dark); margin: 0;
+      }
+      .feat-blurb { font-size: 15px; color: var(--gray-600); line-height: 1.55; margin: 0; }
+      .feat-stats { display: flex; gap: 24px; padding: 14px 0 4px; border-top: 1px solid var(--gray-100); margin-top: 4px; }
+      .feat-stats .n { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--green); line-height: 1; }
+      .feat-stats .l { font-size: 11px; color: var(--gray-400); margin-top: 4px; }
+      .feat-open {
+        display: inline-flex; align-items: center; gap: 8px; align-self: flex-start;
+        background: var(--green); color: #fff; padding: 12px 20px; border-radius: 12px;
+        font-weight: 600; font-size: 14px; margin-top: 6px;
+      }
+      .feat-open svg { width: 16px; height: 16px; }
+      @media (min-width: 900px) {
+        .feat-card { flex-direction: row; align-items: stretch; }
+        .feat-scene { flex: 0 0 52%; min-height: 380px; }
+        .feat-content { flex: 1; justify-content: center; }
+      }
+      @media (max-width: 600px) { .feat-rule { display: none; } }
 
     `;
   }
 
   _styles3() {
     return `
-      /* ===== TOOL CARDS ===== */
+      /* ===== TOOL CARDS (data-motif) ===== */
       .grid {
         padding: 0 0 8px;
-        display: grid; grid-template-columns: 1fr; gap: 12px;
+        display: grid; grid-template-columns: 1fr; gap: 22px;
       }
       .tool-card {
-        width: 100%; text-align: left;
-        background: #fff; border: 1px solid var(--gray-200);
-        border-radius: 16px; padding: 18px;
         position: relative;
+        display: flex; flex-direction: column;
+        background: #fff; border: 1px solid var(--gray-200);
+        border-radius: 18px; overflow: hidden;
+        box-shadow: 0 2px 12px rgba(15,23,42,0.05);
         opacity: 0; transform: translateY(12px);
         transition: opacity 400ms ease, transform 400ms ease,
-                    border-color 160ms ease, box-shadow 160ms ease;
+                    border-color .25s ease, box-shadow .25s ease;
+      }
+      .tool-card::after {
+        content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+        background: linear-gradient(90deg, var(--green), var(--green-dark));
+        opacity: 0; transition: opacity .25s ease; pointer-events: none; z-index: 2;
       }
       .tool-card.visible { opacity: 1; transform: translateY(0); }
-      .tool-card:hover {
-        border-color: var(--green);
-        box-shadow: 0 10px 28px rgba(15,23,42,0.06);
-        cursor: pointer;
+      .tool-card:hover, .tool-card:active {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 40px rgba(15,23,42,0.10);
+        border-color: #CBD5E1; cursor: pointer;
       }
-      .tool-card:hover .card-cta {
-        background: var(--green); color: #fff;
-      }
-      .card-head {
-        display: flex; align-items: flex-start; justify-content: space-between;
-        gap: 10px; margin-bottom: 14px;
-      }
-      .card-icon {
-        width: 42px; height: 42px; border-radius: 11px;
-        background: var(--green-light); color: var(--green-dark);
+      .tool-card:hover::after, .tool-card:active::after { opacity: 1; }
+      .card-media {
+        position: relative; aspect-ratio: 16 / 10; overflow: hidden;
+        background: var(--gray-100);
         display: flex; align-items: center; justify-content: center;
-        flex-shrink: 0;
       }
-      .card-icon svg { width: 22px; height: 22px; }
+      .card-panel {
+        position: relative; background: #fff; border: 1px solid #EAECEF;
+        border-radius: 14px; box-shadow: 0 6px 18px rgba(15,23,42,0.08);
+        padding: 13px 15px; width: 76%;
+      }
+      .panel-cap {
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 9px;
+        letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400);
+        margin-bottom: 8px;
+      }
+      .card-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 7px; }
       .card-title {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 18px; font-weight: 600; color: var(--dark);
-        margin: 0 0 8px; line-height: 1.25; letter-spacing: -0.01em;
+        font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px;
+        line-height: 1.25; letter-spacing: -0.01em; color: var(--dark); margin: 0;
       }
       .card-blurb {
-        font-size: 13.5px; color: var(--gray-600);
-        line-height: 1.5; margin: 0 0 14px;
+        font-family: 'DM Sans', sans-serif; font-size: 13.5px; line-height: 1.55;
+        color: var(--gray-600); margin: 0;
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
       }
-      .card-foot {
-        display: flex; align-items: center; gap: 10px;
-        padding-top: 12px;
-        border-top: 1px solid var(--gray-200);
+      .card-foot2 {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 10px; margin-top: 5px;
       }
-      .card-stats {
-        display: flex; gap: 14px; flex: 1; min-width: 0;
+      .card-meta {
+        font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+        color: var(--gray-400); min-width: 0;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
       }
-      .card-stat { min-width: 0; }
-      .card-stat .n {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 16px; font-weight: 700; color: var(--dark); line-height: 1;
+      .card-open {
+        display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0;
+        font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--green-dark);
       }
-      .card-stat .n.check {
-        display: inline-flex; align-items: center; color: var(--green);
-      }
-      .card-stat .n.check svg { width: 16px; height: 16px; }
-      .card-stat .l {
-        font-size: 10px; color: var(--gray-400); margin-top: 3px;
-        line-height: 1.2; white-space: nowrap;
-        overflow: hidden; text-overflow: ellipsis;
-      }
-      .card-cta {
-        flex-shrink: 0;
-        width: 36px; height: 36px; border-radius: 9999px;
-        background: var(--green-light); color: var(--green-dark);
-        display: flex; align-items: center; justify-content: center;
-        transition: background 160ms, color 160ms;
-      }
-      .card-cta svg { width: 16px; height: 16px; }
+      .card-open svg { width: 15px; height: 15px; }
 
       /* ===== EMPTY STATE ===== */
       .empty {
@@ -578,6 +783,40 @@ class KygoToolsPage extends HTMLElement {
       }
       .promo-btn svg { width: 18px; height: 18px; }
       .promo-btn:hover { background: var(--green-dark); }
+
+      /* Mid-content contextual app CTA (compact green card) */
+      .kearly-section { margin: 48px auto; }
+      .kband { max-width: 1100px; margin: 0 auto; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid var(--border-subtle, #E2E8F0); border-radius: 20px; padding: 28px 36px; display: flex; align-items: center; justify-content: space-between; gap: 36px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-width: 0; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--green-dark, #16A34A); }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green, #22C55E); animation: kygoPulse 2s ease-out infinite; flex-shrink: 0; }
+      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 26px; line-height: 1.25; color: var(--dark, #1E293B); }
+      .kband-actions { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; flex: 0 0 auto; }
+      .kband-btns { display: flex; gap: 12px; }
+      .kband-note { margin: 0; max-width: 340px; font-size: 13px; line-height: 1.5; color: #475569; }
+      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 14px 22px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+      .kband-btn-ios { background: var(--green, #22C55E); color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: var(--green-dark, #16A34A); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: var(--green-dark, #16A34A); border: 2px solid var(--border-subtle, #E2E8F0); }
+      .kband-btn-android:hover { border-color: var(--green, #22C55E); transform: translateY(-2px); }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+      @media (max-width: 820px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
+        .kband-actions { width: 100%; }
+        .kband-btns { flex-wrap: wrap; }
+        .kband-btn { flex: 1 1 auto; justify-content: center; }
+        .kband-note { max-width: none; }
+      }
+      @media (max-width: 640px) {
+        .kband-inner { padding: 26px 22px; gap: 18px; }
+        .kband-btns { flex-direction: column; }
+        .kband-note { text-align: center; }
+        .kband-headline { font-size: 22px; }
+      }
+      @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
       .works-with {
         display: flex; align-items: center; justify-content: center;
         gap: 10px; flex-wrap: wrap;
@@ -602,11 +841,11 @@ class KygoToolsPage extends HTMLElement {
       .wd:hover img { opacity: 1; }
 
       /* ===== RESPONSIVE ===== */
-      @media (min-width: 640px) {
-        .grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      @media (min-width: 600px) {
+        .grid { grid-template-columns: repeat(2, 1fr); }
       }
-      @media (min-width: 1024px) {
-        .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+      @media (min-width: 900px) {
+        .grid { grid-template-columns: repeat(3, 1fr); }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -617,55 +856,71 @@ class KygoToolsPage extends HTMLElement {
 
   _renderFeatured(tool) {
     if (!tool) return '';
-    const stats = this._statsFor(tool);
+    // "Leader by metric" grid — the accuracy crown moves between devices, so
+    // no single wearable wins everything (a teaser of the real per-metric data).
+    const devices = ['Oura', 'Apple', 'Garmin', 'WHOOP'];
+    const metrics = [
+      { label: 'Sleep', winner: 0 },
+      { label: 'HRV', winner: 0 },
+      { label: 'Steps', winner: 1 },
+      { label: 'VO₂ max', winner: 2 },
+      { label: 'Recovery', winner: 3 }
+    ];
+    const matrixHtml = `<div class="fm-row fm-head"><span class="fm-metric"></span>${devices.map(d => `<span class="fm-dev">${d}</span>`).join('')}</div>` +
+      metrics.map(m => `<div class="fm-row"><span class="fm-metric">${m.label}</span>${devices.map((d, i) => `<span class="fm-cell"><span class="fm-dot${i === m.winner ? ' on' : ''}"></span></span>`).join('')}</div>`).join('');
+    const stats = [
+      { n: '17+', l: 'peer-reviewed studies' },
+      { n: '6', l: 'wearables compared' },
+      { n: '9', l: 'health metrics' }
+    ];
     return `
       <div class="featured-wrap">
-        <button class="featured" data-open-tool="${tool.url || '#'}" aria-label="${tool.title}">
-          <div class="featured-inner">
-            <div class="featured-top">
-              ${tool.badge ? `<span class="tag ${this._badgeTone(tool.badge)}">${tool.badge}</span>` : ''}
-              <span class="featured-meta">Featured Tool</span>
-            </div>
-            <div class="featured-icon">${this._getIcon(tool.icon || 'sparkles')}</div>
-            <h2>${tool.title}</h2>
-            <p class="featured-blurb">${tool.description || ''}</p>
-            ${stats.length ? `
-              <div class="featured-stats">
-                ${stats.map(s => `
-                  <div>
-                    <div class="n">${s.n || '✓'}</div>
-                    <div class="l">${s.l || ''}</div>
-                  </div>
-                `).join('')}
-              </div>
-            ` : ''}
-            <span class="featured-cta">Open tool ${this._getIcon('arrow-right')}</span>
+        <header class="feat-head">
+          <span class="feat-star"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2l2.39 6.94H22l-6.18 4.49L18.21 21 12 16.77 5.79 21l2.39-7.57L2 8.94h7.61L12 2z"/></svg></span>
+          <div class="feat-head-text">
+            <h2 class="feat-head-title">Featured Tool</h2>
+            <p class="feat-head-sub">Our most-used comparison, backed by peer-reviewed data</p>
           </div>
-        </button>
+          <span class="feat-rule"></span>
+        </header>
+        <div class="feat-card" data-open-tool="${tool.url || '#'}" role="button" tabindex="0" aria-label="${tool.title}">
+          <div class="feat-scene">
+            <div class="feat-panel">
+              <div class="feat-panel-cap">Accuracy leader by metric</div>
+              <div class="feat-matrix">${matrixHtml}</div>
+            </div>
+          </div>
+          <div class="feat-content">
+            <span class="feat-pop">Most Popular</span>
+            <h2>${tool.title}</h2>
+            <p class="feat-blurb">${tool.description || ''}</p>
+            <div class="feat-stats">
+              ${stats.map(s => `<div><div class="n">${s.n}</div><div class="l">${s.l}</div></div>`).join('')}
+            </div>
+            <span class="feat-open">Open tool ${this._getIcon('arrow-right')}</span>
+          </div>
+        </div>
       </div>
     `;
   }
 
   _renderCard(tool) {
-    const stats = this._statsFor(tool);
+    const motif = this._motifFor(tool);
     return `
       <div class="tool-card" data-open-tool="${tool.url || '#'}" role="button" tabindex="0" aria-label="${tool.title}">
-        <div class="card-head">
-          <div class="card-icon">${this._getIcon(tool.icon || 'sparkles')}</div>
-          ${tool.badge ? `<span class="tag ${this._badgeTone(tool.badge)}">${(this._badgeTone(tool.badge) === 'trending' || this._badgeTone(tool.badge) === 'soft') ? '<span class="dot"></span>' : ''}${tool.badge}</span>` : ''}
-        </div>
-        <h3 class="card-title">${tool.title}</h3>
-        <p class="card-blurb">${tool.description || ''}</p>
-        <div class="card-foot">
-          <div class="card-stats">
-            ${stats.map(s => `
-              <div class="card-stat">
-                <div class="n${s.n ? '' : ' check'}">${s.n || this._getIcon('check')}</div>
-                <div class="l">${s.l || ''}</div>
-              </div>
-            `).join('')}
+        <div class="card-media">
+          <div class="card-panel">
+            <div class="panel-cap">${motif.caption || ''}</div>
+            ${this._motifBody(motif)}
           </div>
-          <span class="card-cta">${this._getIcon('arrow-right')}</span>
+        </div>
+        <div class="card-body">
+          <h3 class="card-title">${tool.title}</h3>
+          <p class="card-blurb">${tool.description || ''}</p>
+          <div class="card-foot2">
+            <span class="card-meta">${this._metaFor(tool)}</span>
+            <span class="card-open">Open ${this._getIcon('arrow-right')}</span>
+          </div>
         </div>
       </div>
     `;
@@ -694,8 +949,8 @@ class KygoToolsPage extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const appStoreUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-    const playStoreUrl = 'https://kygo.app/android';
+    const appStoreUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+    const playStoreUrl = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
 
     const featured = this._featured();
     const grouped = this._groupedByCategory();
@@ -713,7 +968,7 @@ class KygoToolsPage extends HTMLElement {
       <section class="sec sec-hero">
         <div class="wrap">
           <header class="page-header">
-            <a class="brand" href="https://kygo.app">
+            <a class="brand" href="https://www.kygo.app">
               <img class="brand-logo" src="${logoUrl}" alt="Kygo Health" />
               <span class="brand-name">Kygo</span>
               <span class="brand-sub">/ Tools</span>
@@ -739,6 +994,25 @@ class KygoToolsPage extends HTMLElement {
       <section class="sec sec-tools">
         <div class="wrap">
           ${featured ? this._renderFeatured(featured) : ''}
+          ${featured ? `
+          <div class="kearly-section">
+            <div class="kband">
+              <div class="kband-inner">
+                <div class="kband-glow"></div>
+                <div class="kband-copy">
+                  <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+                  <h2 class="kband-headline">See how your food affects your sleep, energy &amp; recovery.</h2>
+                </div>
+                <div class="kband-actions">
+                  <div class="kband-btns">
+                    <a class="kband-btn kband-btn-ios" href="${appStoreUrl}" data-track-position="mid" data-track-label="tools-mid-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Try Free for 7 Days</a>
+                    <a class="kband-btn kband-btn-android" href="${playStoreUrl}" data-action="android-download" data-track-position="mid" data-track-label="tools-mid-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a>
+                  </div>
+                  <p class="kband-note">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+                </div>
+              </div>
+            </div>
+          </div>` : ''}
           ${groupedNoFeatured.length
             ? groupedNoFeatured.map(g => this._renderCategorySection(g)).join('')
             : `<div class="empty">
@@ -758,9 +1032,10 @@ class KygoToolsPage extends HTMLElement {
                 <h2>These tools are a snapshot.<br/><span class="hl">Kygo is the full picture.</span></h2>
                 <p>Connect your wearable. Log your meals. See how food affects your sleep, HRV, energy, and recovery.</p>
                 <div class="promo-buttons">
-                  <a class="promo-btn" href="${appStoreUrl}" target="_blank" rel="noopener">${this._getIcon('apple')} Download for iOS</a>
-                  <a class="promo-btn" href="${playStoreUrl}" target="_blank" rel="noopener">${this._getIcon('playstore')} Download for Android</a>
+                  <a class="promo-btn cta-primary" href="${appStoreUrl}" data-track-position="footer-cta" data-track-label="tools-footer-ios" target="_blank" rel="noopener">${this._getIcon('apple')} Download for iOS</a>
+                  <a class="promo-btn cta-android" href="${playStoreUrl}" data-action="android-download" data-track-position="footer-cta" data-track-label="tools-footer-android" target="_blank" rel="noopener">${this._getIcon('playstore')} Download for Android</a>
                 </div>
+                <p style="position:relative;margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.82);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
                 <div class="works-with">
                   <span class="works-label">Works with</span>
                   <div class="works-dots">
@@ -768,7 +1043,7 @@ class KygoToolsPage extends HTMLElement {
                     <span class="wd" title="Apple Health"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" loading="lazy"/></span>
                     <span class="wd" title="Fitbit"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy"/></span>
                     <span class="wd" title="Garmin"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy"/></span>
-                    <span class="wd" title="Whoop"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy"/></span>
+                    <span class="wd" title="Google Health"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy"/></span>
                     <span class="wd" title="Health Connect"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy"/></span>
                   </div>
                 </div>

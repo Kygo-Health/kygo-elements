@@ -1,6 +1,20 @@
 /**
- * Kygo Health - How It Works Hero Section
- * Tag name: kygo-hiw-hero
+ * Kygo Health - How It Works (single-embed page)
+ * Tag name: kygo-hiw
+ *
+ * The whole "How It Works" page rendered by ONE Wix custom-element embed, so the
+ * page needs only a single script URL to bump on each push. Everything lives in
+ * one shadow root; the crawlable summary is copied into the LIGHT DOM via
+ * __seo(), and the page's structured data (HowTo + FAQPage) is injected into
+ * <head>, each guarded by a unique data-kygo-*-ld marker.
+ *
+ * Preserved from the previous version (do not drop on redesign):
+ *  - Store CTAs use the Tenjin attribution links (iOS …/cD7zgIPLuiZMMWmWkXLsvy,
+ *    Android …/eMjS3ZkseCvs2lO9AVESkO) with class cta-primary / cta-android,
+ *    data-action="android-download", and data-track-position / data-track-label.
+ *    kygo-tracking.js classifies these clicks across the shadow boundary.
+ *  - __seo() light-DOM summary for SEO / LLM crawlers (GEO).
+ *  - HowTo JSON-LD under the data-kygo-hiw-ld marker.
  */
 
 /** Injects accessible text into light DOM so crawlers and AI tools can read component content */
@@ -13,7 +27,7 @@ function __seo(el, text) {
   el.appendChild(d);
 }
 
-class KygoHiwHero extends HTMLElement {
+class KygoHiw extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -23,10 +37,26 @@ class KygoHiwHero extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'How Kygo Health Works \u2014 Three simple steps to understand how food affects your body. Step 1: Connect your wearable (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch) for automatic health data sync. Step 2: Log meals using AI photo recognition, voice, text, or barcode scanning from a database of over 5 million foods. Step 3: After 7 days of consistent logging, Kygo reveals statistically significant correlations between your diet and sleep quality, HRV, energy, and recovery metrics. Setup takes about 2 minutes.');
+    this._setupFeatureReveal();
+    __seo(this, 'How Kygo Health works. Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body performs — sleep, HRV, resting heart rate, energy, and recovery. Step 1: log your food in seconds with photo AI, chat, barcode, voice, search, or saved meals, or import nutrition automatically from Apple Health and Health Connect. Step 2: connect a wearable in a tap — Oura Ring, Garmin, Fitbit, Apple Health, or Health Connect — and Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity on its own, picking the most accurate source for each metric. Step 3: after about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts, with evidence strength and same-day and next-day lag checks. Setup takes about two minutes. Free forever plan; correlations and Kygo Advisor are included with Pro at $9.99/month or $39.99/year (a 7-day free trial and 67% savings on the yearly plan). Your data is protected end to end: all traffic is encrypted with modern TLS, data is encrypted at rest with AES-256, accounts use bcrypt hashing and token-based authentication, every request is scoped so only you can reach your own data, and Kygo never sells your data. Wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data.');
     this._injectStructuredData();
   }
 
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+  }
+
+  static get observedAttributes() { return ['wixsettings', 'wixconfig']; }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    if (name === 'wixsettings' || name === 'wixconfig') {
+      this._parseWixAttributes();
+      this.render();
+      this._setupFeatureReveal();
+    }
+  }
+
   _parseWixAttributes() {
     try {
       const wixconfig = this.getAttribute('wixconfig');
@@ -34,19 +64,7 @@ class KygoHiwHero extends HTMLElement {
       if (wixconfig) this._config = JSON.parse(wixconfig);
       if (wixsettings) this._settings = JSON.parse(wixsettings);
     } catch (e) {
-      console.warn('KygoHiwHero: Could not parse Wix attributes', e);
-    }
-  }
-
-  static get observedAttributes() {
-    return ['wixsettings'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    if (name === 'wixsettings') {
-      this._parseWixAttributes();
-      this.render();
+      console.warn('KygoHiw: Could not parse Wix attributes', e);
     }
   }
 
@@ -54,3218 +72,639 @@ class KygoHiwHero extends HTMLElement {
     return this._settings[key] || this.getAttribute(key) || fallback;
   }
 
+  /** Boolean flag that honors an explicit `false` from Wix settings or attribute. */
+  _getFlag(key, fallback) {
+    if (this._settings && Object.prototype.hasOwnProperty.call(this._settings, key)) {
+      return String(this._settings[key]) !== 'false';
+    }
+    if (this.hasAttribute(key)) return this.getAttribute(key) !== 'false';
+    return fallback;
+  }
+
+  // ── Data ──────────────────────────────────────────────────────────────
+
+  _data() {
+    return {
+      iosLink: this._getSetting('ios-link', 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy'),
+      androidLink: this._getSetting('android-link', 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO'),
+      logos: {
+        // Full-bleed app-icon badges (fill the tile)
+        oura: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png',
+        garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
+        fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
+        // Brand-mark hearts on a white chip (Apple Health + Google Health Connect).
+        // Served from GitHub Pages so the Health Connect mark is correct — the prior
+        // Wix hash rendered as the retired WHOOP wordmark.
+        apple: 'https://kygo-health.github.io/kygo-elements/assets/hiw-apple-health.png',
+        healthConnect: 'https://kygo-health.github.io/kygo-elements/assets/hiw-health-connect.png'
+      },
+      testimonials: [
+        { quote: '"I’ve boosted my deep sleep after making changes to stop the age-related slow-wave decline."', name: 'Oura user' },
+        { quote: '"I love the experiments and the insights, like seeing how fat impacts my sleep."', name: 'Kygo user' },
+        { quote: '"I always get excited when I see your posts. The research is truly valued, and the app is amazing."', name: 'Oura user' },
+        { quote: '"Insights into how different nutrients impact my sleep and resting heart rate keep me engaged."', name: 'App Store review' },
+        { quote: '"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."', name: 'Oura user' }
+      ],
+      features: [
+        'Insights on which foods move your sleep, energy, and recovery',
+        'Image logging: snap or upload and we identify the ingredients and log it',
+        'Supplement tracking with reminders and insights',
+        'Quick add: frequent, favorites, and saved meals for one-tap logging',
+        'Write-back to Apple Health and Health Connect'
+      ],
+      faqs: [
+        {
+          q: 'Is my health data secure?',
+          a: 'Yes, protected end to end. All traffic is encrypted with modern TLS and your data is encrypted at rest with AES-256, on accounts secured with bcrypt hashing and token-based authentication, with every request scoped so only you can reach your own data. We never sell your data. Your wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data. ',
+          link: { href: 'https://www.kygo.app/privacy-policy', text: 'Read our privacy policy →' }
+        },
+        { q: 'What is Kygo?', a: 'Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device.' },
+        { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
+        { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
+        { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
+        { q: 'Is it really free?', a: 'Yes! Food logging, wearable sync, and trend tracking are free forever. The correlation engine is premium, $9.99/month or $39.99/year to unlock personalized insights.' }
+      ],
+      showTimeline: this._getFlag('show-timeline', true),
+      showFreeVsPro: this._getFlag('show-free-vs-pro', true)
+    };
+  }
+
+  // ── Reusable snippets ─────────────────────────────────────────────────
+
+  // Canonical Kygo store-button glyphs (identical to the site header / tool pages)
+  _appleIcon() {
+    return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>';
+  }
+
+  _androidIcon() {
+    return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>';
+  }
+
+  /** Full label on desktop, short label on mobile (keeps the store buttons on one line). */
+  _label(full, short) {
+    return `<span class="hiw-lbl-full">${full}</span><span class="hiw-lbl-short">${short}</span>`;
+  }
+
+  /** iOS store CTA (Tenjin iOS link + tracking hooks). */
+  _iosBtn(d, cls, position, label, text, shortText) {
+    return `<a href="${d.iosLink}" class="${cls} cta-primary" data-track-position="${position}" data-track-label="${label}" target="_blank" rel="noopener">${this._appleIcon()}${this._label(text, shortText || text)}</a>`;
+  }
+
+  /** Android store CTA (Tenjin Android link + tracking hooks). */
+  _androidBtn(d, cls, position, label, text, shortText) {
+    return `<a href="${d.androidLink}" class="${cls} cta-android" data-action="android-download" data-track-position="${position}" data-track-label="${label}" target="_blank" rel="noopener">${this._androidIcon()}${this._label(text, shortText || text)}</a>`;
+  }
+
+  _stars() {
+    const p = 'M12 2.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L12 19.9 6.5 19.1l1.4-6.1L3.2 8.8l6.2-.6z';
+    let s = '';
+    for (let i = 0; i < 5; i++) s += `<svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px;"><path d="${p}"/></svg>`;
+    return s;
+  }
+
+  // ── Render ────────────────────────────────────────────────────────────
+
   render() {
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          --dark: #1E293B;
-          --light: #F8FAFC;
-          --green: #22C55E;
-          --green-dark: #16A34A;
-          --green-light: rgba(34, 197, 94, 0.1);
-          --gray-50: #f9fafb;
-          --gray-600: #475569;
-          
-          display: block;
-          font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background: linear-gradient(180deg, var(--gray-50) 0%, var(--light) 100%);
-          color: var(--dark);
-          line-height: 1.6;
-          -webkit-font-smoothing: antialiased;
-        }
+    const d = this._data();
 
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    const ticker = [
+      ['Caffeine after 3pm', 'HRV ↓ 8 ms', '#EF4444'],
+      ['Dinner before 7pm', 'Deep sleep ↑ 23 min', '#22C55E'],
+      ['High sodium day', 'Resting HR ↑ 4 bpm', '#EF4444'],
+      ['Magnesium before bed', 'HRV ↑ 6 ms', '#22C55E'],
+      ['Hit fiber target', 'Readiness ↑ 11 pts', '#22C55E']
+    ];
+    const tickerItems = [...ticker, ...ticker].map(t =>
+      `<span style="display:inline-flex;align-items:center;gap:8px;white-space:nowrap;font-size:14px;color:#E2E8F0;font-weight:500;">${t[0]} <span style="color:${t[2]};font-family:'Space Grotesk',sans-serif;font-weight:700;">${t[1]}</span></span><span style="color:#334155;">•</span>`
+    ).join('');
 
-        h1, h2 {
-          font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-          font-weight: 600;
-          line-height: 1.2;
-        }
+    const wearableTiles = [
+      ['oura', 'Oura', 'cover', '0'],
+      ['garmin', 'Garmin', 'cover', '0'],
+      ['fitbit', 'Fitbit', 'cover', '0'],
+      ['apple', 'Apple Health', 'contain', '7px'],
+      ['healthConnect', 'Health Connect', 'contain', '7px']
+    ].map(([k, alt, fit, pad]) =>
+      `<span class="hiw-logo" style="background:#fff;padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span>`
+    ).join('');
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    const features = d.features.map(f =>
+      `<div class="hiwfeat" style="display:flex;align-items:flex-start;gap:10px;"><svg viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.5" style="width:18px;height:18px;flex-shrink:0;margin-top:2px;"><path d="M20 6L9 17l-5-5"/></svg><span style="font-size:14.5px;color:#334155;font-weight:500;">${f}</span></div>`
+    ).join('');
 
-        .hero {
-          padding: 40px 0 48px;
-          text-align: center;
-        }
+    const testimonials = [...d.testimonials, ...d.testimonials].map(t => {
+      const initial = t.name.charAt(0);
+      return `<figure style="flex:0 0 auto;width:clamp(300px,80vw,360px);margin-right:16px;background:#fff;border:1px solid #E2E8F0;border-radius:20px;padding:24px 22px;box-shadow:0 4px 16px rgba(15,23,42,.05);display:flex;flex-direction:column;gap:16px;">
+        <blockquote style="border:0;display:flex;flex-direction:column;gap:12px;flex:1;margin:0;">
+          <div style="display:flex;gap:3px;color:#22C55E;">${this._stars()}</div>
+          <p style="color:#1E293B;font-size:15px;line-height:1.6;font-weight:500;">${t.quote}</p>
+        </blockquote>
+        <figcaption style="display:flex;align-items:center;gap:11px;padding-top:14px;border-top:1px solid #F1F5F9;">
+          <span style="width:36px;height:36px;flex-shrink:0;border-radius:50%;background:rgba(34,197,94,.12);color:#16A34A;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;">${initial}</span>
+          <span style="color:#1E293B;font-size:13.5px;font-weight:600;">${t.name}</span>
+        </figcaption>
+      </figure>`;
+    }).join('');
 
-        .hero-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          background: var(--green-light);
-          color: var(--green-dark);
-          padding: 8px 16px;
-          border-radius: 50px;
-          font-size: 13px;
-          font-weight: 600;
-          margin-bottom: 20px;
-        }
+    const faqs = d.faqs.map(f => {
+      const answer = f.link
+        ? `${f.a}<a href="${f.link.href}" target="_blank" rel="noopener" style="color:#16A34A;font-weight:600;white-space:nowrap;">${f.link.text}</a>`
+        : f.a;
+      return `<details class="hiwfaq" style="background:#fff;border:2px solid #E2E8F0;border-radius:20px;overflow:hidden;box-shadow:0 4px 12px rgba(15,23,42,.04);">
+        <summary style="padding:20px 24px;font-weight:600;font-size:16px;color:#1E293B;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer;">
+          <span>${f.q}</span>
+          <svg class="hiwchev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;width:20px;height:20px;color:#94A3B8;"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <div style="padding:0 24px 20px;color:#475569;font-size:15px;line-height:1.7;">${answer}</div>
+      </details>`;
+    }).join('');
 
-        .hero-badge svg {
-          width: 16px;
-          height: 16px;
-        }
-
-        .hero h1 {
-          font-size: clamp(32px, 8vw, 40px);
-          margin-bottom: 16px;
-          color: var(--dark);
-        }
-
-        .hero h1 .highlight {
-          color: var(--green);
-        }
-
-        .hero-subtitle {
-          font-size: clamp(16px, 4vw, 18px);
-          color: var(--gray-600);
-          max-width: 600px;
-          margin: 0 auto 32px;
-          line-height: 1.7;
-        }
-
-        .hero-stats {
-          display: flex;
-          justify-content: center;
-          gap: 32px;
-          flex-wrap: wrap;
-        }
-
-        .hero-stat {
-          text-align: center;
-        }
-
-        .hero-stat-number {
-          font-family: 'Space Grotesk', sans-serif;
-          font-size: clamp(24px, 6vw, 32px);
-          font-weight: 700;
-          color: var(--green);
-        }
-
-        .hero-stat-label {
-          font-size: 14px;
-          color: var(--gray-600);
-        }
-
-        @media (min-width: 768px) {
-          .hero { padding: 80px 0 100px; }
-          .hero h1 { font-size: 52px; }
-          .hero-stats { gap: 40px; }
-        }
-
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-badge {
-          opacity: 0;
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        .hero h1 {
-          opacity: 0;
-          animation: fadeInUp 0.6s ease-out 0.1s forwards;
-        }
-
-        .hero-subtitle {
-          opacity: 0;
-          animation: fadeInUp 0.6s ease-out 0.2s forwards;
-        }
-
-        .hero-stats {
-          opacity: 0;
-          animation: fadeInUp 0.6s ease-out 0.3s forwards;
-        }
-
-        .hero-stat {
-          opacity: 0;
-          animation: fadeInUp 0.5s ease-out forwards;
-        }
-
-        .hero-stat:nth-child(1) { animation-delay: 0.3s; }
-        .hero-stat:nth-child(2) { animation-delay: 0.4s; }
-        .hero-stat:nth-child(3) { animation-delay: 0.5s; }
-
-        @media (prefers-reduced-motion: reduce) {
-          * { animation: none !important; transition: none !important; }
-        }
-      </style>
-
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            Setup in minutes, correlations in days
+    const timeline = !d.showTimeline ? '' : `
+    <section style="position:relative;padding:clamp(56px,7vw,92px) 20px;background:#fff;border-bottom:1px solid #F1F5F9;">
+      <div style="max-width:960px;margin:0 auto;text-align:center;">
+        <span style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;">Your first two weeks</span>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.03em;margin:12px 0 14px;color:#0F172A;">Answers in days, not months</h2>
+        <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:520px;margin:0 auto 56px;">Log a little each day. The picture sharpens fast.</p>
+        <div class="hiw-tl">
+          <div class="hiw-tl-track"></div>
+          <div class="hiw-tl-fill"></div>
+          <div class="hiw-tl-nodes">
+            <div class="hiw-tl-node">
+              <div class="hiw-tl-dot hiw-tl-dot-a"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:20px;height:20px;"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+              <div class="hiw-tl-text">
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#16A34A;margin-bottom:4px;">Day 1</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">Log and sync</div>
+                <p style="font-size:14px;color:#64748B;">Log your meals and connect your wearable. Kygo starts building your baseline.</p>
+              </div>
+            </div>
+            <div class="hiw-tl-node">
+              <div class="hiw-tl-dot hiw-tl-dot-b"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="width:20px;height:20px;"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg></div>
+              <div class="hiw-tl-text">
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#16A34A;margin-bottom:4px;">Day 7</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">Patterns emerge</div>
+                <p style="font-size:14px;color:#64748B;">Your first correlations unlock. Kygo Advisor starts calling out what helps and hurts.</p>
+              </div>
+            </div>
+            <div class="hiw-tl-node">
+              <div class="hiw-tl-dot hiw-tl-dot-c"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:20px;height:20px;"><path d="M3 3v18h18M7 15l4-4 3 3 5-6"/></svg></div>
+              <div class="hiw-tl-text">
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#16A34A;margin-bottom:4px;">Day 14</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;">The full picture</div>
+                <p style="font-size:14px;color:#64748B;">More metrics dial in. Pin experiments and watch the evidence grow stronger.</p>
+              </div>
+            </div>
           </div>
-          
-          <h1>How <span class="highlight">Kygo</span> Works</h1>
-          <p class="hero-subtitle">Three simple steps to understand the connection between what you eat and how your body responds—backed by real data from your wearables.</p>
+        </div>
+      </div>
+    </section>`;
 
-          <div class="hero-stats">
-            <div class="hero-stat">
-              <div class="hero-stat-number">2 min</div>
-              <div class="hero-stat-label">Setup time</div>
+    const pricing = !d.showFreeVsPro ? '' : `
+    <section style="position:relative;padding:clamp(56px,7vw,92px) 20px;background:#F8FAFC;border-bottom:1px solid #E2E8F0;">
+      <div style="max-width:940px;margin:0 auto;text-align:center;">
+        <span style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;">One plan. Pick your billing.</span>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.03em;margin:12px 0 14px;color:#0F172A;">Same Kygo. Better yearly.</h2>
+        <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:540px;margin:0 auto 48px;">Same full feature set either way. Go yearly to save 67% and start with a 7-day free trial.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;text-align:left;">
+          <div style="flex:1 1 320px;max-width:400px;position:relative;background:#fff;border:2px solid #22C55E;border-radius:20px;padding:30px 26px;box-shadow:0 20px 48px -24px rgba(34,197,94,.45);">
+            <span style="position:absolute;top:-13px;left:26px;background:#22C55E;color:#fff;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:5px 12px;border-radius:999px;box-shadow:0 8px 18px -6px rgba(34,197,94,.6);">Save 67% &middot; 7-day free trial</span>
+            <div style="font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#16A34A;margin-bottom:6px;">Yearly</div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$3.33</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
+            <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">$39.99 billed yearly&nbsp;&nbsp;•&nbsp;&nbsp;7-day free trial</p>
+            <p style="font-size:14px;color:#64748B;margin-bottom:22px;">Everything Kygo does, at a third of the price.</p>
+            <div class="hiwplan" style="display:flex;flex-direction:column;gap:12px;margin-bottom:26px;">${features}</div>
+            <a href="${d.iosLink}" class="hiw-greenblock cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-yearly" target="_blank" rel="noopener">Start your free trial</a>
+          </div>
+          <div style="flex:1 1 320px;max-width:400px;background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:30px 26px;box-shadow:0 4px 12px rgba(15,23,42,.04);">
+            <div style="font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#94A3B8;margin-bottom:6px;">Monthly</div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$9.99</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
+            <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">Billed monthly. Cancel anytime.</p>
+            <p style="font-size:14px;color:#64748B;margin-bottom:24px;">The same full Kygo feature set, month to month — no commitment.</p>
+            <a href="${d.iosLink}" class="hiw-outline cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-monthly" target="_blank" rel="noopener">Choose monthly</a>
+          </div>
+        </div>
+        <p style="font-size:14px;color:#94A3B8;font-weight:500;margin-top:28px;">7-day free trial on the yearly plan. Cancel anytime.</p>
+      </div>
+    </section>`;
+
+    this.shadowRoot.innerHTML = `
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+      *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+      :host {
+        display:block;
+        font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+        background:#fff;
+        color:#1E293B;
+        line-height:1.6;
+        -webkit-font-smoothing:antialiased;
+        overflow-x:hidden;
+      }
+      .hiw-root { overflow-x:hidden; }
+      a { color:#16A34A; text-decoration:none; }
+      a:hover { color:#15803d; }
+
+      /* Store CTA buttons */
+      .hiw-ios,.hiw-android,.hiw-ghost { display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:16px;border-radius:12px;white-space:nowrap; }
+      .hiw-ios svg,.hiw-android svg,.hiw-ghost svg { width:20px;height:20px; }
+      .hiw-ios { background:#22C55E;color:#fff;padding:15px 26px;box-shadow:0 10px 24px -8px rgba(34,197,94,0.5);transition:transform .2s,background .2s; }
+      .hiw-ios:hover { transform:translateY(-2px);background:#16A34A;color:#fff; }
+      .hiw-android { background:#1E293B;color:#fff;padding:15px 26px;transition:transform .2s; }
+      .hiw-android:hover { transform:translateY(-2px);color:#fff; }
+      .hiw-ghost { background:rgba(255,255,255,.08);color:#fff;border:2px solid rgba(255,255,255,.16);padding:13px 24px;transition:background .2s,border-color .2s; }
+      .hiw-ghost:hover { background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);color:#fff; }
+      .hiw-outline { display:flex;align-items:center;justify-content:center;background:#fff;color:#16A34A;border:2px solid #E2E8F0;font-weight:600;font-size:15px;padding:13px;border-radius:12px;transition:border-color .2s,color .2s; }
+      .hiw-outline:hover { border-color:#22C55E;color:#16A34A; }
+      .hiw-greenblock { display:flex;align-items:center;justify-content:center;background:#22C55E;color:#fff;font-weight:600;font-size:15px;padding:13px;border-radius:12px;box-shadow:0 10px 24px -8px rgba(34,197,94,.5);transition:transform .2s,background .2s; }
+      .hiw-greenblock:hover { transform:translateY(-2px);background:#16A34A;color:#fff; }
+
+      /* Keyframes */
+      @keyframes hiwUp { from { opacity:0; transform:translateY(22px);} to { opacity:1; transform:translateY(0);} }
+      @keyframes hiwBar { 0%{transform:scaleX(0);} 24%{transform:scaleX(1);} 86%{transform:scaleX(1);} 100%{transform:scaleX(0);} }
+      @keyframes hiwFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+      @keyframes hiwFloatB { 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+      @keyframes hiwRing { 0%{stroke-dashoffset:326.7;} 32%{stroke-dashoffset:79;} 86%{stroke-dashoffset:79;} 100%{stroke-dashoffset:326.7;} }
+      @keyframes hiwRowUp { 0%{opacity:0;transform:translateY(12px);} 16%{opacity:1;transform:translateY(0);} 88%{opacity:1;transform:translateY(0);} 100%{opacity:0;transform:translateY(12px);} }
+      @keyframes hiwCount { 0%{opacity:0;} 30%{opacity:1;} 86%{opacity:1;} 100%{opacity:0;} }
+      @keyframes hiwPulse { 0%,100%{opacity:.35;transform:scale(1);} 50%{opacity:1;transform:scale(1.12);} }
+      @keyframes hiwGlow { 0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5);} 70%{box-shadow:0 0 0 12px rgba(34,197,94,0);} }
+      @keyframes hiwFillLoop { 0%{transform:scaleX(0);} 24%{transform:scaleX(1);} 88%{transform:scaleX(1);} 100%{transform:scaleX(0);} }
+      @keyframes hiwPopLoop { 0%{opacity:0;transform:scale(.4);} 9%{opacity:1;transform:scale(1.14);} 15%{transform:scale(1);} 88%{opacity:1;transform:scale(1);} 100%{opacity:0;transform:scale(.4);} }
+      @keyframes hiwMarquee { from{transform:translateX(0);} to{transform:translateX(-50%);} }
+      @keyframes hiwFeat { from{opacity:0;transform:translateY(-10px);} to{opacity:1;transform:translateY(0);} }
+
+      /* Pricing feature reveal on scroll */
+      .hiwplan .hiwfeat { opacity:0; }
+      .hiwplan.hiwseen .hiwfeat { animation:hiwFeat .5s ease-out both; }
+      .hiwplan.hiwseen .hiwfeat:nth-child(1){ animation-delay:.05s; }
+      .hiwplan.hiwseen .hiwfeat:nth-child(2){ animation-delay:.15s; }
+      .hiwplan.hiwseen .hiwfeat:nth-child(3){ animation-delay:.25s; }
+      .hiwplan.hiwseen .hiwfeat:nth-child(4){ animation-delay:.35s; }
+      .hiwplan.hiwseen .hiwfeat:nth-child(5){ animation-delay:.45s; }
+
+      /* Marquees pause on hover */
+      .hiwmarquee:hover .hiwtrack { animation-play-state:paused; }
+
+      /* FAQ accordion */
+      details.hiwfaq summary { list-style:none; }
+      details.hiwfaq summary::-webkit-details-marker { display:none; }
+      details.hiwfaq summary .hiwchev { transition:transform .25s ease; }
+      details.hiwfaq[open] summary .hiwchev { transform:rotate(180deg); color:#22C55E; }
+      details.hiwfaq[open] { border-color:#22C55E !important; box-shadow:0 4px 20px rgba(34,197,94,.1); }
+      details.hiwfaq[open] summary { color:#16A34A; }
+      details.hiwfaq:hover { border-color:#94A3B8; }
+      details.hiwfaq[open]:hover { border-color:#22C55E; }
+
+      /* Wearable logo chips — one line on mobile */
+      .hiw-logos { display:flex; flex-wrap:nowrap; gap:12px; margin-bottom:22px; }
+      .hiw-logo { width:52px; height:52px; flex:0 0 auto; border-radius:12px; border:1px solid #E2E8F0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+      @media (max-width:480px){
+        .hiw-logos { gap:8px; justify-content:space-between; }
+        .hiw-logo { width:clamp(44px,15.5vw,52px); height:clamp(44px,15.5vw,52px); }
+      }
+
+      /* iOS + Android buttons sit side by side on mobile */
+      .hiw-lbl-short { display:none; }
+      @media (max-width:520px){
+        .hiw-btnrow { flex-wrap:nowrap !important; gap:10px !important; align-items:stretch; }
+        .hiw-btnrow > a { flex:1 1 0; min-width:0; justify-content:center; text-align:center; padding-left:10px; padding-right:10px; font-size:15px; white-space:nowrap; }
+        .hiw-btnrow > a svg { width:18px; height:18px; flex-shrink:0; }
+        .hiw-btnrow .hiw-lbl-full { display:none; }
+        .hiw-btnrow .hiw-lbl-short { display:inline; }
+      }
+      @media (max-width:360px){
+        .hiw-btnrow > a { gap:6px; padding-left:8px; padding-right:8px; }
+      }
+      @media (max-width:400px){ .hiw-cta-pill { font-size:12px; padding:6px 12px; } }
+
+      /* Step 3 — desktop: card left / copy right. Mobile: heading, card, buttons. */
+      .hiw-s3 { display:flex; flex-wrap:wrap; gap:clamp(36px,5vw,80px); align-items:center; }
+      .hiw-s3-card { flex:1 1 360px; display:flex; justify-content:center; }
+      .hiw-s3-copy { flex:1 1 380px; display:flex; flex-direction:column; }
+      @media (max-width:760px){
+        .hiw-s3 { flex-direction:column; align-items:stretch; }
+        .hiw-s3-copy { display:contents; }
+        .hiw-s3-head { order:1; }
+        .hiw-s3-card { order:2; margin-bottom:8px; }
+        .hiw-s3-cta { order:3; }
+      }
+
+      /* Unlock timeline — staged fill; vertical on mobile */
+      .hiw-tl { position:relative; }
+      .hiw-tl-track, .hiw-tl-fill { position:absolute; top:22px; left:8%; right:8%; height:3px; border-radius:99px; }
+      .hiw-tl-track { background:#E2E8F0; }
+      .hiw-tl-fill { background:#22C55E; transform-origin:left; animation:hiwTlFillH 6s ease-in-out infinite; }
+      .hiw-tl-nodes { position:relative; display:flex; justify-content:center; gap:20px; }
+      .hiw-tl-node { flex:1 1 220px; max-width:250px; display:flex; flex-direction:column; align-items:center; text-align:center; }
+      .hiw-tl-dot { width:46px; height:46px; border-radius:999px; display:flex; align-items:center; justify-content:center; margin-bottom:20px; flex-shrink:0; }
+      .hiw-tl-dot-a { background:#fff; border:3px solid #22C55E; animation:hiwPopLoop 6s ease-in-out .3s infinite; }
+      .hiw-tl-dot-b { background:#22C55E; animation:hiwPopLoop 6s ease-in-out 1.5s infinite, hiwGlow 2.4s ease-out 2s infinite; }
+      .hiw-tl-dot-c { background:#fff; border:3px solid #22C55E; animation:hiwPopLoop 6s ease-in-out 3.4s infinite; }
+      .hiw-tl-text { min-width:0; }
+      @keyframes hiwTlFillH { 0%{transform:scaleX(0);} 8%{transform:scaleX(0);} 25%{transform:scaleX(.5);} 42%{transform:scaleX(.5);} 58%{transform:scaleX(1);} 90%{transform:scaleX(1);} 100%{transform:scaleX(0);} }
+      @keyframes hiwTlFillV { 0%{transform:scaleY(0);} 8%{transform:scaleY(0);} 25%{transform:scaleY(.5);} 42%{transform:scaleY(.5);} 58%{transform:scaleY(1);} 90%{transform:scaleY(1);} 100%{transform:scaleY(0);} }
+      @media (max-width:640px){
+        .hiw-tl-track, .hiw-tl-fill { top:14px; bottom:14px; left:21px; right:auto; width:3px; height:auto; }
+        .hiw-tl-fill { transform-origin:top; animation-name:hiwTlFillV; }
+        .hiw-tl-nodes { flex-direction:column; align-items:stretch; gap:26px; }
+        .hiw-tl-node { flex:1 1 auto; max-width:none; flex-direction:row; align-items:flex-start; text-align:left; gap:16px; }
+        .hiw-tl-dot { margin-bottom:0; }
+      }
+
+      @media (prefers-reduced-motion: reduce){
+        *{ animation:none !important; }
+        .hiwtrack{ animation:none !important; }
+        .hiwplan .hiwfeat{ opacity:1 !important; }
+        .hiw-tl-fill{ transform:scaleX(1) scaleY(1) !important; }
+      }
+    </style>
+
+    <div class="hiw-root">
+
+      <!-- HERO -->
+      <section style="position:relative;padding:clamp(48px,6vw,84px) 20px clamp(52px,6vw,80px);background:#fff;border-bottom:1px solid #F1F5F9;overflow:hidden;">
+        <div style="position:absolute;top:-160px;right:-80px;width:640px;height:640px;max-width:120vw;background:radial-gradient(circle,rgba(34,197,94,0.12) 0%,transparent 62%);pointer-events:none;"></div>
+        <div style="max-width:1180px;margin:0 auto;position:relative;">
+          <div style="display:flex;flex-wrap:wrap;gap:clamp(40px,5vw,64px);align-items:center;">
+            <div style="flex:1 1 420px;">
+              <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.1);color:#16A34A;padding:8px 15px;border-radius:999px;font-weight:600;font-size:13px;margin-bottom:22px;animation:hiwUp .6s ease-out both;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Setup in minutes. Answers in days.</div>
+              <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,5.4vw,52px);line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;animation:hiwUp .6s ease-out .06s both;">How Kygo connects your food to your <span style="color:#22C55E;">sleep, HRV &amp; recovery</span></h1>
+              <p style="font-size:clamp(16px,2.2vw,19px);color:#475569;max-width:440px;margin-bottom:30px;line-height:1.6;animation:hiwUp .6s ease-out .12s both;">Kygo pairs your wearables with effortless food logging to reveal the personal patterns a calorie counter never could.</p>
+              <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
+                ${this._iosBtn(d, 'hiw-ios', 'hero', 'how-it-works-hero-ios', 'Download for iOS', 'Get iOS')}
+                ${this._androidBtn(d, 'hiw-android', 'hero', 'how-it-works-hero-android', 'Get it on Android', 'Get Android')}
+              </div>
+              <p style="font-size:14px;color:#94A3B8;font-weight:500;animation:hiwUp .6s ease-out .24s both;">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free forever plan&nbsp;&nbsp;•&nbsp;&nbsp;No credit card</p>
             </div>
-            <div class="hero-stat">
-              <div class="hero-stat-number">7 days</div>
-              <div class="hero-stat-label">To first correlations</div>
-            </div>
-            <div class="hero-stat">
-              <div class="hero-stat-number">5M+</div>
-              <div class="hero-stat-label">Foods in database</div>
+            <div style="flex:1 1 380px;position:relative;animation:hiwUp .7s ease-out .2s both;">
+              <div style="position:relative;max-width:430px;margin:0 auto;">
+                <div style="position:relative;z-index:2;background:#fff;border:2px solid #E2E8F0;border-radius:20px;overflow:hidden;box-shadow:0 34px 70px -30px rgba(15,23,42,.42);animation:hiwFloat 6s ease-in-out infinite;">
+                  <div style="padding:24px 24px 18px;">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;"><div style="width:30px;height:30px;border-radius:9px;background:rgba(34,197,94,.12);display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:16px;height:16px;"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg></div><span style="font-weight:600;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:#94A3B8;">Kygo Advisor</span></div>
+                    <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:22px;line-height:1.25;margin-bottom:8px;">Late caffeine is costing you <span style="color:#EF4444;">8 ms</span> of HRV</div>
+                    <p style="font-size:14px;color:#475569;margin-bottom:18px;">On days you go over 95mg, your HRV runs lower the next morning.</p>
+                    <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#94A3B8;width:78px;flex-shrink:0;">Confidence</span><div style="flex:1;height:9px;background:#F1F5F9;border-radius:99px;overflow:hidden;"><div style="width:80%;height:100%;background:#22C55E;border-radius:99px;transform-origin:left;animation:hiwBar 6s ease-in-out infinite;"></div></div></div>
+                  </div>
+                  <div style="display:flex;background:#F8FAFC;border-top:1px solid #E2E8F0;">
+                    <div style="flex:1;padding:13px 20px;border-right:1px solid #E2E8F0;"><div style="font-size:10px;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:2px;">Oura · HRV</div><div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;">42<span style="font-size:11px;color:#94A3B8;font-weight:600;"> ms</span></div></div>
+                    <div style="flex:1;padding:13px 20px;"><div style="font-size:10px;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:2px;">Lunch logged</div><div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;">690<span style="font-size:11px;color:#94A3B8;font-weight:600;"> kcal</span></div></div>
+                  </div>
+                </div>
+                <div style="position:absolute;top:-24px;right:-24px;z-index:3;background:#1E293B;color:#fff;border-radius:16px;padding:12px 17px 12px 14px;box-shadow:0 20px 40px -16px rgba(15,23,42,.5);animation:hiwFloatB 5s ease-in-out infinite;"><div style="display:flex;align-items:center;gap:10px;"><span style="display:flex;"><span style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;"><img src="${d.logos.oura}" alt="Oura" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></span><span style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;margin-left:-9px;padding:4px;"><img src="${d.logos.apple}" alt="Apple Health" loading="lazy" style="width:100%;height:100%;object-fit:contain;"></span></span><span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:99px;background:#22C55E;animation:hiwPulse 2.2s ease-in-out infinite;"></span><span style="font-size:13px;color:#fff;font-weight:600;letter-spacing:.3px;">Synced</span></span></div></div>
+              </div>
             </div>
           </div>
         </div>
       </section>
-    `;
+
+      <!-- CORRELATION TICKER -->
+      <section style="background:#0F172A;padding:15px 0;overflow:hidden;">
+        <div style="max-width:1180px;margin:0 auto;padding:0 20px;display:flex;align-items:center;overflow:hidden;">
+          <span style="flex-shrink:0;padding-right:20px;margin-right:4px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:#fff;line-height:1.25;border-right:1px solid rgba(255,255,255,.1);">Patterns<br>users found</span>
+          <div class="hiwmarquee" style="flex:1;min-width:0;overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);">
+            <div class="hiwtrack" style="display:flex;align-items:center;width:max-content;gap:26px;padding-left:26px;animation:hiwMarquee 34s linear infinite;">${tickerItems}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 1: LOG -->
+      <section style="position:relative;padding:clamp(56px,7vw,92px) 20px;background:#F8FAFC;border-bottom:1px solid #E2E8F0;overflow:hidden;">
+        <div style="max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap-reverse;gap:clamp(36px,5vw,80px);align-items:center;">
+          <div style="flex:1 1 360px;display:flex;justify-content:center;">
+            <div style="width:100%;max-width:400px;background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:22px;box-shadow:0 28px 60px -30px rgba(15,23,42,.4);animation:hiwUp .7s ease-out .1s both,hiwFloat 6s ease-in-out 1s infinite;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+                <div>
+                  <div style="font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:#94A3B8;">Lunch</div>
+                  <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;">Today, 12:40 PM</div>
+                </div>
+                <div style="position:relative;width:78px;height:78px;flex-shrink:0;">
+                  <svg viewBox="0 0 120 120" style="width:78px;height:78px;transform:rotate(-90deg);"><circle cx="60" cy="60" r="52" fill="none" stroke="#F1F5F9" stroke-width="11"/><circle cx="60" cy="60" r="52" fill="none" stroke="#22C55E" stroke-width="11" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="79" style="animation:hiwRing 6s ease-in-out infinite;"/></svg>
+                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:hiwCount 6s ease-in-out infinite;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;line-height:1;">690</span><span style="font-size:10px;color:#94A3B8;font-weight:600;">kcal</span></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:11px;padding:8px 0;border-top:1px solid #F1F5F9;animation:hiwRowUp 6s ease-in-out infinite;"><span style="font-size:18px;">🍚</span><span style="flex:1;font-weight:500;font-size:14.5px;">White rice</span><span style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:#64748B;font-size:14px;">260</span></div>
+                <div style="display:flex;align-items:center;gap:11px;padding:8px 0;border-top:1px solid #F1F5F9;animation:hiwRowUp 6s ease-in-out .5s infinite;"><span style="font-size:18px;">🥩</span><span style="flex:1;font-weight:500;font-size:14.5px;">Cooked beef strips</span><span style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:#64748B;font-size:14px;">375</span></div>
+                <div style="display:flex;align-items:center;gap:11px;padding:8px 0;border-top:1px solid #F1F5F9;border-bottom:1px solid #F1F5F9;animation:hiwRowUp 6s ease-in-out 1s infinite;"><span style="font-size:18px;">🍊</span><span style="flex:1;font-weight:500;font-size:14.5px;">Clementine</span><span style="font-family:'Space Grotesk',sans-serif;font-weight:600;color:#64748B;font-size:14px;">55</span></div>
+              </div>
+              <div style="display:flex;gap:14px;">
+                <div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:600;margin-bottom:5px;"><span style="color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;">Protein</span><span>44g</span></div><div style="height:7px;background:#F1F5F9;border-radius:99px;overflow:hidden;"><div style="width:72%;height:100%;background:#22C55E;border-radius:99px;transform-origin:left;animation:hiwBar 6s ease-in-out infinite;"></div></div></div>
+                <div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:600;margin-bottom:5px;"><span style="color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;">Carbs</span><span>61g</span></div><div style="height:7px;background:#F1F5F9;border-radius:99px;overflow:hidden;"><div style="width:100%;height:100%;background:#22C55E;border-radius:99px;transform-origin:left;animation:hiwBar 6s ease-in-out .15s infinite;"></div></div></div>
+                <div style="flex:1;"><div style="display:flex;justify-content:space-between;font-size:11.5px;font-weight:600;margin-bottom:5px;"><span style="color:#94A3B8;text-transform:uppercase;letter-spacing:.4px;">Fats</span><span>19g</span></div><div style="height:7px;background:#F1F5F9;border-radius:99px;overflow:hidden;"><div style="width:31%;height:100%;background:#22C55E;border-radius:99px;transform-origin:left;animation:hiwBar 6s ease-in-out .3s infinite;"></div></div></div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1 1 380px;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:76px;line-height:1;color:#E2E8F0;animation:hiwUp .6s ease-out both;">01</div>
+            <div style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;margin:8px 0 12px;animation:hiwUp .6s ease-out .04s both;">Step 01 · Log your food</div>
+            <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,40px);line-height:1.08;letter-spacing:-0.03em;margin-bottom:14px;color:#0F172A;animation:hiwUp .6s ease-out .08s both;">Log a meal in seconds</h2>
+            <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:440px;margin-bottom:22px;animation:hiwUp .6s ease-out .12s both;">Snap a photo. Say it out loud. Scan a barcode. However you log, Kygo does the math.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;max-width:460px;animation:hiwUp .6s ease-out .16s both;">
+              <span style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:2px solid #E2E8F0;border-radius:999px;padding:9px 15px;font-weight:600;font-size:13.5px;color:#334155;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:15px;height:15px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Photo AI</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:2px solid #E2E8F0;border-radius:999px;padding:9px 15px;font-weight:600;font-size:13.5px;color:#334155;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:15px;height:15px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Chat</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:2px solid #E2E8F0;border-radius:999px;padding:9px 15px;font-weight:600;font-size:13.5px;color:#334155;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:15px;height:15px;"><path d="M3 5v14M7 5v14M11 5v14M15 5v14M19 5v14M21 5v14"/></svg>Barcode</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:2px solid #E2E8F0;border-radius:999px;padding:9px 15px;font-weight:600;font-size:13.5px;color:#334155;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:15px;height:15px;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/></svg>Voice</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:2px solid #E2E8F0;border-radius:999px;padding:9px 15px;font-weight:600;font-size:13.5px;color:#334155;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:15px;height:15px;"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>Search</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;background:#fff;border:2px solid #E2E8F0;border-radius:999px;padding:9px 15px;font-weight:600;font-size:13.5px;color:#334155;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:15px;height:15px;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>Saved meals</span>
+            </div>
+            <p style="font-size:14px;color:#94A3B8;font-weight:500;max-width:440px;animation:hiwUp .6s ease-out .2s both;">Already tracking elsewhere? Kygo imports nutrition automatically from Apple Health and Health Connect.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: CONNECT -->
+      <section style="position:relative;padding:clamp(56px,7vw,92px) 20px;background:#fff;border-bottom:1px solid #F1F5F9;overflow:hidden;">
+        <div style="max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(36px,5vw,80px);align-items:center;">
+          <div style="flex:1 1 380px;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:76px;line-height:1;color:#EEF2F6;animation:hiwUp .6s ease-out both;">02</div>
+            <div style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;margin:8px 0 12px;animation:hiwUp .6s ease-out .04s both;">Step 02 · Connect your wearable</div>
+            <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,40px);line-height:1.08;letter-spacing:-0.03em;margin-bottom:14px;color:#0F172A;animation:hiwUp .6s ease-out .08s both;">Connect your wearable in a tap</h2>
+            <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:440px;margin-bottom:22px;animation:hiwUp .6s ease-out .12s both;">Link what you already wear. Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity on its own.</p>
+            <div class="hiw-logos" style="animation:hiwUp .6s ease-out .16s both;">${wearableTiles}</div>
+            <p style="font-size:14px;color:#94A3B8;font-weight:500;max-width:440px;animation:hiwUp .6s ease-out .2s both;">Wear more than one? Kygo picks the most accurate source for each metric automatically.</p>
+          </div>
+          <div style="flex:1 1 360px;display:flex;justify-content:center;">
+            <div style="width:100%;max-width:430px;background:#0F172A;border-radius:20px;padding:22px;box-shadow:0 30px 64px -30px rgba(15,23,42,.6);animation:hiwUp .7s ease-out .1s both,hiwFloat 6s ease-in-out 1s infinite;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span style="width:8px;height:8px;border-radius:99px;background:#22C55E;animation:hiwPulse 2.2s ease-in-out infinite;"></span>
+                  <span style="font-weight:600;font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:#94A3B8;">Auto synced today</span>
+                </div>
+                <span style="font-weight:600;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:#22C55E;">Best source</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08);animation:hiwRowUp 7s ease-in-out infinite;"><span style="width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0;"><img src="${d.logos.oura}" alt="Oura Ring" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></span><span style="flex:1;"><span style="display:block;color:#E2E8F0;font-weight:500;font-size:14.5px;line-height:1.2;">Sleep</span><span style="color:#94A3B8;font-size:11.5px;">Oura Ring</span></span><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:15px;">7h 42m</span></div>
+                <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08);animation:hiwRowUp 7s ease-in-out .45s infinite;"><span style="width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0;"><img src="${d.logos.oura}" alt="Oura Ring" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></span><span style="flex:1;"><span style="display:block;color:#E2E8F0;font-weight:500;font-size:14.5px;line-height:1.2;">HRV</span><span style="color:#94A3B8;font-size:11.5px;">Oura Ring</span></span><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#22C55E;font-size:15px;">42 ms</span></div>
+                <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08);animation:hiwRowUp 7s ease-in-out .9s infinite;"><span style="width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0;background:#fff;padding:5px;"><img src="${d.logos.apple}" alt="Apple Health" loading="lazy" style="width:100%;height:100%;object-fit:contain;"></span><span style="flex:1;"><span style="display:block;color:#E2E8F0;font-weight:500;font-size:14.5px;line-height:1.2;">Resting HR</span><span style="color:#94A3B8;font-size:11.5px;">Apple Watch</span></span><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#fff;font-size:15px;">54 bpm</span></div>
+                <div style="display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid rgba(255,255,255,.08);animation:hiwRowUp 7s ease-in-out 1.35s infinite;"><span style="width:32px;height:32px;border-radius:8px;overflow:hidden;flex-shrink:0;"><img src="${d.logos.garmin}" alt="Garmin" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></span><span style="flex:1;"><span style="display:block;color:#E2E8F0;font-weight:500;font-size:14.5px;line-height:1.2;">Recovery</span><span style="color:#94A3B8;font-size:11.5px;">Garmin</span></span><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:#22C55E;font-size:15px;">88%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3: DISCOVER -->
+      <section style="position:relative;padding:clamp(56px,7vw,92px) 20px;background:#0F172A;overflow:hidden;">
+        <div style="position:absolute;top:-160px;right:-60px;width:640px;height:560px;max-width:120vw;background:radial-gradient(circle,rgba(34,197,94,0.16) 0%,transparent 60%);pointer-events:none;"></div>
+        <div class="hiw-s3" style="max-width:1180px;margin:0 auto;position:relative;">
+          <div class="hiw-s3-card">
+            <div style="width:100%;max-width:440px;background:#fff;border-radius:20px;padding:22px;box-shadow:0 34px 70px -30px rgba(0,0,0,.7);animation:hiwUp .7s ease-out .1s both,hiwFloat 6s ease-in-out 1s infinite;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+                <div style="display:flex;align-items:center;gap:9px;"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:18px;height:18px;"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;color:#0F172A;">HRV</span></div>
+                <span style="font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;color:#94A3B8;">Pattern over 29 days</span>
+              </div>
+              <div style="font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:#16A34A;margin-bottom:8px;">Helping</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+                <div style="display:flex;align-items:center;gap:11px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:11px;padding:11px 13px;animation:hiwRowUp 7s ease-in-out infinite;"><span style="font-size:16px;">🥗</span><span style="flex:1;color:#1E293B;font-weight:500;font-size:14px;">Dinner before 7pm</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#16A34A;background:#F0FDF4;border:1px solid #BBF7D0;padding:3px 9px;border-radius:999px;">↑ Strong</span></div>
+                <div style="display:flex;align-items:center;gap:11px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:11px;padding:11px 13px;animation:hiwRowUp 7s ease-in-out .4s infinite;"><span style="font-size:16px;">💊</span><span style="flex:1;color:#1E293B;font-weight:500;font-size:14px;">Magnesium before bed</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#16A34A;background:#F0FDF4;border:1px solid #BBF7D0;padding:3px 9px;border-radius:999px;">↑ Likely</span></div>
+              </div>
+              <div style="font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:#EF4444;margin-bottom:8px;">Hurting</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:11px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:11px;padding:11px 13px;animation:hiwRowUp 7s ease-in-out .8s infinite;"><span style="font-size:16px;">☕</span><span style="flex:1;color:#1E293B;font-weight:500;font-size:14px;">Caffeine after 3pm</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;color:#EF4444;background:#FEF2F2;border:1px solid #FECACA;padding:3px 9px;border-radius:999px;">↓ Strong</span></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid #F1F5F9;">
+                <span style="font-size:11px;color:#94A3B8;">Lags checked:</span>
+                <span style="font-size:11px;font-weight:600;color:#475569;background:#F1F5F9;padding:3px 9px;border-radius:999px;white-space:nowrap;">Same day</span>
+                <span style="font-size:11px;font-weight:600;color:#475569;background:#F1F5F9;padding:3px 9px;border-radius:999px;white-space:nowrap;">Next day</span>
+              </div>
+            </div>
+          </div>
+          <div class="hiw-s3-copy">
+            <div class="hiw-s3-head">
+              <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:76px;line-height:1;color:rgba(255,255,255,.09);animation:hiwUp .6s ease-out both;">03</div>
+              <div style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#22C55E;margin:8px 0 12px;animation:hiwUp .6s ease-out .04s both;">Step 03 · Discover your patterns</div>
+              <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.6vw,40px);line-height:1.08;letter-spacing:-0.03em;margin-bottom:14px;color:#fff;animation:hiwUp .6s ease-out .08s both;">See what helps. See what hurts.</h2>
+              <p style="font-size:clamp(16px,2.2vw,18px);color:#94A3B8;max-width:440px;margin-bottom:0;animation:hiwUp .6s ease-out .12s both;">After about seven days, Kygo grades every food against your metrics and shows the ones that actually move the needle.</p>
+            </div>
+            <div class="hiw-s3-cta" style="margin-top:28px;">
+              <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
+                ${this._iosBtn(d, 'hiw-ios', 'step-3', 'how-it-works-step3-ios', 'Download for iOS', 'Get iOS')}
+                ${this._androidBtn(d, 'hiw-ghost', 'step-3', 'how-it-works-step3-android', 'Get it on Android', 'Get Android')}
+              </div>
+              <p style="font-size:14px;color:#64748B;font-weight:500;max-width:440px;animation:hiwUp .6s ease-out .24s both;">Correlations unlock after about seven days of logging. Included with Pro.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      ${timeline}
+
+      ${pricing}
+
+      <!-- CTA -->
+      <section style="padding:clamp(56px,7vw,96px) 20px;background:#fff;">
+        <div style="max-width:1000px;margin:0 auto;">
+          <div style="position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:clamp(40px,5.5vw,68px) clamp(28px,4vw,56px);text-align:center;box-shadow:0 40px 80px -36px rgba(15,23,42,.5);">
+            <div style="position:absolute;top:-150px;right:-70px;width:560px;height:480px;max-width:120vw;background:radial-gradient(circle,rgba(34,197,94,0.18) 0%,transparent 60%);pointer-events:none;"></div>
+            <div style="position:relative;">
+              <div class="hiw-cta-pill" style="display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.12);color:#22C55E;padding:7px 14px;border-radius:999px;font-weight:600;font-size:13px;margin-bottom:20px;white-space:nowrap;max-width:100%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0;"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg>Stop guessing. Start knowing.</div>
+              <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,4.2vw,46px);line-height:1.06;letter-spacing:-0.03em;color:#fff;margin-bottom:16px;">Your body is already talking.<br><span style="color:#22C55E;">Kygo helps you listen.</span></h2>
+              <p style="font-size:clamp(16px,2.2vw,18px);color:#94A3B8;max-width:460px;margin:0 auto 30px;">Log your food. Connect your wearable. See what actually moves your sleep, energy, and recovery.</p>
+              <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:22px;">
+                ${this._iosBtn(d, 'hiw-ios', 'footer-cta', 'how-it-works-footer-ios', 'Download for iOS', 'Get iOS')}
+                ${this._androidBtn(d, 'hiw-ghost', 'footer-cta', 'how-it-works-footer-android', 'Get it on Android', 'Get Android')}
+              </div>
+              <p style="font-size:14px;color:#64748B;font-weight:500;">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free forever plan&nbsp;&nbsp;•&nbsp;&nbsp;No credit card</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS -->
+      <section style="padding:clamp(52px,7vw,80px) 0;background:#F8FAFC;border-top:1px solid #E2E8F0;overflow:hidden;">
+        <div style="max-width:560px;margin:0 auto 34px;padding:0 20px;text-align:center;">
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:#16A34A;margin-bottom:8px;">Testimonials</div>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(26px,4vw,34px);line-height:1.1;letter-spacing:-0.02em;color:#0F172A;margin-bottom:10px;">What our users say</h2>
+          <p style="font-size:15px;color:#64748B;">Real reviews from people who connected a wearable and started seeing their own patterns.</p>
+        </div>
+        <div style="max-width:1040px;margin:0 auto;">
+          <div class="hiwmarquee" style="overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);">
+            <div class="hiwtrack" style="display:flex;width:max-content;padding:8px 0 12px;animation:hiwMarquee 52s linear infinite;">${testimonials}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section style="padding:clamp(56px,7vw,88px) 20px;background:#fff;">
+        <div style="max-width:760px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:36px;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:#16A34A;margin-bottom:8px;">Questions &amp; answers</div>
+            <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,4vw,40px);line-height:1.08;letter-spacing:-0.03em;color:#0F172A;margin-bottom:12px;">Frequently asked questions</h2>
+            <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;">Everything you need to know before you start. <a href="https://www.kygo.app/faq">See the full help center</a>.</p>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">${faqs}</div>
+        </div>
+      </section>
+
+    </div>`;
   }
 
-  // ── Structured Data ───────────────────────────────────────────────────
+  // ── Scroll reveal for pricing feature rows ────────────────────────────
+
+  _setupFeatureReveal() {
+    if (this._observer) this._observer.disconnect();
+    const plans = this.shadowRoot.querySelectorAll('.hiwplan');
+    if (!plans.length) return;
+    if (!('IntersectionObserver' in window)) {
+      plans.forEach(p => p.classList.add('hiwseen'));
+      return;
+    }
+    this._observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('hiwseen');
+          this._observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    plans.forEach(p => this._observer.observe(p));
+  }
+
+  // ── Structured Data (SEO / GEO) ───────────────────────────────────────
 
   _injectStructuredData() {
+    // HowTo (preserved marker: data-kygo-hiw-ld)
     if (!document.querySelector('script[data-kygo-hiw-ld]')) {
-      const ld = {
+      const howTo = {
         '@context': 'https://schema.org',
         '@type': 'HowTo',
-        'name': 'How Kygo Health Works — From Meal Logging to Personalized Correlations',
+        'name': 'How Kygo Health Works: From Meal Logging to Personalized Correlations',
         'description': 'Kygo Health connects your nutrition data with your wearable health data to find personalized food-body correlations in 3 steps.',
         'totalTime': 'P7D',
         'step': [
-          { '@type': 'HowToStep', 'position': 1, 'name': 'Log your meals', 'text': 'Use AI photo recognition, voice input, barcode scanning, or natural text to log meals in seconds. The app identifies ingredients including garnishes and toppings for accurate macro and micronutrient tracking.' },
-          { '@type': 'HowToStep', 'position': 2, 'name': 'Connect your wearable', 'text': 'Link your Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch. Your historical health data syncs automatically — sleep stages, HRV, heart rate, steps, and recovery metrics.' },
-          { '@type': 'HowToStep', 'position': 3, 'name': 'Discover your correlations', 'text': 'After 7 days of logging, Kygo identifies personalized patterns like "Your deep sleep increases 22 minutes when you eat dinner before 7pm" or "Your HRV drops 15% on days you consume more than 200mg caffeine after 2pm."' }
+          { '@type': 'HowToStep', 'position': 1, 'name': 'Log your food', 'text': 'Log a meal in seconds with photo AI, chat, barcode scanning, voice, search, or saved meals. Kygo does the macro and micronutrient math, and can import nutrition automatically from Apple Health and Health Connect.' },
+          { '@type': 'HowToStep', 'position': 2, 'name': 'Connect your wearable', 'text': 'Link a wearable in a tap: Oura Ring, Garmin, Fitbit, Apple Health, or Health Connect. Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity automatically, and picks the most accurate source for each metric.' },
+          { '@type': 'HowToStep', 'position': 3, 'name': 'Discover your patterns', 'text': 'After about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts by evidence strength, checking same-day and next-day lags. For example, "Dinner before 7pm raises deep sleep 23 minutes" or "Caffeine after 3pm lowers HRV 8 ms."' }
         ]
       };
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      script.setAttribute('data-kygo-hiw-ld', '');
-      script.textContent = JSON.stringify(ld);
-      document.head.appendChild(script);
+      const s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.setAttribute('data-kygo-hiw-ld', '');
+      s.textContent = JSON.stringify(howTo);
+      document.head.appendChild(s);
+    }
+
+    // FAQPage (matches the on-page FAQ section — improves SEO / GEO)
+    if (!document.querySelector('script[data-kygo-hiw-faq-ld]')) {
+      const d = this._data();
+      const faqLd = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': d.faqs.map(f => ({
+          '@type': 'Question',
+          'name': f.q,
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': f.link ? (f.a + f.link.text.replace(/\s*→\s*$/, '') + ': ' + f.link.href).trim() : f.a
+          }
+        }))
+      };
+      const s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.setAttribute('data-kygo-hiw-faq-ld', '');
+      s.textContent = JSON.stringify(faqLd);
+      document.head.appendChild(s);
     }
   }
 }
 
-customElements.define('kygo-hiw-hero', KygoHiwHero);
-
-/**
- * Kygo Health - Phase 1: Connect Your Wearables
- * Tag name: kygo-hiw-phase-connect
- */
-
-class KygoHiwPhaseConnect extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-  }
-
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    this._setupScrollAnimations();
-    __seo(this, 'Step 1: Connect your wearables \u2014 Sync Apple Watch, Oura Ring, WHOOP, Garmin, and more with Kygo Health for automatic health data tracking.');
-  }
-
-  disconnectedCallback() {
-    if (this._observer) this._observer.disconnect();
-  }
-
-  _parseWixAttributes() {
-    try {
-      const wixconfig = this.getAttribute('wixconfig');
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixconfig) this._config = JSON.parse(wixconfig);
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {
-      console.warn('KygoHiwPhaseConnect: Could not parse Wix attributes', e);
-    }
-  }
-
-  _setupScrollAnimations() {
-    requestAnimationFrame(() => {
-      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!elements.length) return;
-      this._observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            this._observer.unobserve(entry.target);
-          }
-        });
-      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-      elements.forEach(el => this._observer.observe(el));
-    });
-  }
-
-  static get observedAttributes() {
-    return ['wixsettings'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    if (name === 'wixsettings') {
-      this._parseWixAttributes();
-      this.render();
-    }
-  }
-
-  _getSetting(key, fallback) {
-    return this._settings[key] || this.getAttribute(key) || fallback;
-  }
-
-  render() {
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          --dark: #1E293B;
-          --dark-card: #0f172a;
-          --dark-surface: #1a2332;
-          --light: #F8FAFC;
-          --green: #22C55E;
-          --green-dark: #16A34A;
-          --green-light: rgba(34, 197, 94, 0.1);
-          --green-glow: rgba(34, 197, 94, 0.3);
-          --gray-50: #f9fafb;
-          --gray-100: #F1F5F9;
-          --gray-400: #94A3B8;
-          --gray-600: #475569;
-          --gray-700: #334155;
-          
-          display: block;
-          font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background: var(--gray-50);
-          color: var(--dark);
-          line-height: 1.6;
-          -webkit-font-smoothing: antialiased;
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        h2, h4 {
-          font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-          font-weight: 600;
-          line-height: 1.2;
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        .phase-section { padding: 48px 0; }
-
-        .phase-header {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 12px;
-        }
-
-        .phase-number {
-          width: 40px;
-          height: 40px;
-          background: var(--green);
-          color: white;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-family: 'Space Grotesk', sans-serif;
-          font-weight: 700;
-          font-size: 18px;
-          flex-shrink: 0;
-        }
-
-        .phase-label {
-          font-size: 13px;
-          color: var(--green);
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .phase-title {
-          font-size: clamp(24px, 6vw, 32px);
-          color: var(--dark);
-          margin-bottom: 6px;
-        }
-
-        .phase-time {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: var(--gray-100);
-          padding: 5px 12px;
-          border-radius: 20px;
-          font-size: 13px;
-          color: var(--gray-600);
-          margin-bottom: 16px;
-        }
-
-        .phase-time svg { width: 14px; height: 14px; }
-
-        .phase-content { display: grid; gap: 28px; }
-
-        .phase-description {
-          font-size: 15px;
-          color: var(--gray-600);
-          line-height: 1.6;
-          margin-bottom: 20px;
-          max-width: 560px;
-        }
-
-        .feature-list { display: flex; flex-direction: column; gap: 12px; }
-
-        .feature-item {
-          display: flex;
-          gap: 12px;
-          align-items: flex-start;
-        }
-
-        .feature-icon {
-          width: 36px;
-          height: 36px;
-          background: linear-gradient(135deg, var(--green), var(--green-dark));
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
-        }
-
-        .feature-icon svg {
-          width: 18px;
-          height: 18px;
-          color: white;
-        }
-
-        .feature-text h4 {
-          font-size: 15px;
-          color: var(--dark);
-          margin-bottom: 1px;
-        }
-
-        .feature-text p {
-          font-size: 13px;
-          color: var(--gray-600);
-          line-height: 1.5;
-        }
-
-        .immediate-value {
-          background: linear-gradient(135deg, var(--dark), var(--gray-700));
-          border-radius: 14px;
-          padding: 14px 16px;
-          margin-top: 16px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .immediate-value-icon {
-          width: 36px;
-          height: 36px;
-          background: var(--green);
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .immediate-value-icon svg {
-          width: 18px;
-          height: 18px;
-          color: white;
-        }
-
-        .immediate-value-text { color: white; }
-
-        .immediate-value-text span {
-          font-size: 11px;
-          color: var(--green);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          font-weight: 600;
-        }
-
-        .immediate-value-text p {
-          font-size: 14px;
-          margin-top: 2px;
-        }
-
-        .phase-visual {
-          background: var(--dark);
-          border-radius: 20px;
-          padding: 18px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .phase-visual::before {
-          content: '';
-          position: absolute;
-          top: -30%;
-          right: -20%;
-          width: 300px;
-          height: 300px;
-          background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
-          pointer-events: none;
-        }
-
-        .connect-flow { position: relative; z-index: 1; }
-
-        .connect-step {
-          background: var(--dark-surface);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 14px;
-          padding: 12px 14px;
-          margin-bottom: 10px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          transition: all 0.3s;
-        }
-
-        .connect-step:last-child { margin-bottom: 0; }
-
-        .connect-step.active {
-          border-color: var(--green);
-          box-shadow: 0 0 20px var(--green-glow);
-        }
-
-        .connect-step-icon {
-          width: 38px;
-          height: 38px;
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          overflow: hidden;
-        }
-
-        .connect-step-icon img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          border-radius: 5px;
-        }
-
-        .connect-step-content { flex: 1; min-width: 0; }
-
-        .connect-step-content strong {
-          color: white;
-          font-size: 14px;
-          display: block;
-          margin-bottom: 1px;
-        }
-
-        .connect-step-content span {
-          color: var(--gray-400);
-          font-size: 12px;
-        }
-
-        .connect-step-status {
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          font-size: 11px;
-          font-weight: 500;
-          flex-shrink: 0;
-        }
-
-        .connect-step-status.connected { color: var(--green); }
-        .connect-step-status.pending { color: var(--gray-400); }
-        .connect-step-status svg { width: 14px; height: 14px; }
-
-        @media (min-width: 768px) {
-          .phase-section { padding: 80px 0; }
-          .phase-header { gap: 16px; margin-bottom: 16px; }
-          .phase-number { width: 48px; height: 48px; border-radius: 14px; font-size: 20px; }
-          .phase-title { font-size: 32px; margin-bottom: 8px; }
-          .phase-time { margin-bottom: 24px; }
-          .phase-description { font-size: 17px; line-height: 1.7; margin-bottom: 32px; }
-          .feature-list { gap: 16px; }
-          .feature-item { gap: 14px; }
-          .feature-icon { width: 40px; height: 40px; }
-          .feature-icon svg { width: 20px; height: 20px; }
-          .feature-text h4 { font-size: 16px; margin-bottom: 2px; }
-          .feature-text p { font-size: 14px; }
-          .immediate-value { padding: 20px 24px; margin-top: 24px; border-radius: 16px; gap: 14px; }
-          .immediate-value-icon { width: 44px; height: 44px; border-radius: 12px; }
-          .immediate-value-icon svg { width: 22px; height: 22px; }
-          .immediate-value-text p { font-size: 15px; }
-          .phase-content {
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 64px;
-          }
-          .phase-visual { padding: 28px; border-radius: 24px; }
-          .connect-step { padding: 14px 18px; border-radius: 16px; gap: 14px; margin-bottom: 12px; }
-          .connect-step-icon { width: 44px; height: 44px; border-radius: 12px; }
-          .connect-step-content strong { font-size: 15px; }
-          .connect-step-content span { font-size: 13px; }
-          .connect-step-status { font-size: 12px; gap: 6px; }
-          .connect-step-status svg { width: 16px; height: 16px; }
-        }
-
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-on-scroll {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
-        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
-        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
-
-        @keyframes pulse {
-          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
-          50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.5); }
-        }
-
-        .animate-on-scroll.visible .phase-number {
-          animation: pulse 2s ease-in-out infinite;
-          animation-delay: 0.5s;
-        }
-
-        /* Override parent containers - children cascade individually */
-        .phase-info.animate-on-scroll,
-        .phase-visual.animate-on-scroll {
-          opacity: 1;
-          transform: none;
-          transition: none;
-        }
-
-        /* Phase info children - start hidden */
-        .phase-info .phase-header,
-        .phase-info .phase-title,
-        .phase-info .phase-time,
-        .phase-info .phase-description,
-        .phase-info .feature-item,
-        .phase-info .immediate-value {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-
-        /* Phase info children - cascade on scroll */
-        .phase-info.visible .phase-header { animation: fadeInUp 0.5s ease-out forwards; }
-        .phase-info.visible .phase-title { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
-        .phase-info.visible .phase-time { animation: fadeInUp 0.5s ease-out 0.15s forwards; }
-        .phase-info.visible .phase-description { animation: fadeInUp 0.5s ease-out 0.25s forwards; }
-        .phase-info.visible .feature-item { animation: fadeInUp 0.5s ease-out forwards; }
-        .phase-info.visible .feature-item:nth-child(1) { animation-delay: 0.35s; }
-        .phase-info.visible .feature-item:nth-child(2) { animation-delay: 0.45s; }
-        .phase-info.visible .feature-item:nth-child(3) { animation-delay: 0.55s; }
-        .phase-info.visible .immediate-value { animation: fadeInUp 0.5s ease-out 0.65s forwards; }
-
-        /* Visual panel children - staggered slide up */
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(16px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .phase-visual .connect-step {
-          opacity: 0;
-          transform: translateY(16px);
-        }
-        .phase-visual.visible .connect-step { animation: slideUp 0.5s ease-out forwards; }
-        .phase-visual.visible .connect-step:nth-child(1) { animation-delay: 0.15s; }
-        .phase-visual.visible .connect-step:nth-child(2) { animation-delay: 0.25s; }
-        .phase-visual.visible .connect-step:nth-child(3) { animation-delay: 0.35s; }
-        .phase-visual.visible .connect-step:nth-child(4) { animation-delay: 0.45s; }
-
-        @media (prefers-reduced-motion: reduce) {
-          * { animation: none !important; transition: none !important; }
-          .phase-info .phase-header,
-          .phase-info .phase-title,
-          .phase-info .phase-time,
-          .phase-info .phase-description,
-          .phase-info .feature-item,
-          .phase-info .immediate-value,
-          .phase-visual .connect-step {
-            opacity: 1;
-            transform: none;
-          }
-        }
-      </style>
-
-      <section class="phase-section">
-        <div class="container">
-          <div class="phase-content">
-            <div class="phase-info animate-on-scroll">
-              <div class="phase-header">
-                <div class="phase-number">1</div>
-                <div class="phase-label">Phase One</div>
-              </div>
-              <h2 class="phase-title">Connect your wearables</h2>
-              <div class="phase-time">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                2 minutes
-              </div>
-              
-              <p class="phase-description">
-                Link your Oura, Apple Health, Fitbit, Garmin, Whoop, or Health Connect—we pull in your sleep, HRV, activity, and recovery data automatically. No manual entry needed, and your historical data imports so we can start finding patterns immediately.
-              </p>
-
-              <div class="feature-list">
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>One-tap OAuth connection</h4>
-                    <p>Secure authorization in seconds—no passwords shared with us</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>Historical data import</h4>
-                    <p>Your past sleep, HRV, and activity data imports automatically</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>Connect multiple devices</h4>
-                    <p>Use Oura for sleep and Garmin for workouts? We combine the data.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="immediate-value">
-                <div class="immediate-value-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                </div>
-                <div class="immediate-value-text">
-                  <span>Day 1 Value</span>
-                  <p>See unified trends from all your devices immediately</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="phase-visual animate-on-scroll delay-2">
-              <div class="connect-flow">
-                <div class="connect-step active">
-                  <div class="connect-step-icon">
-                    <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura">
-                  </div>
-                  <div class="connect-step-content">
-                    <strong>Oura Ring</strong>
-                    <span>Sleep, HRV, readiness</span>
-                  </div>
-                  <div class="connect-step-status connected">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                    Connected
-                  </div>
-                </div>
-
-                <div class="connect-step active">
-                  <div class="connect-step-icon">
-                    <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health">
-                  </div>
-                  <div class="connect-step-content">
-                    <strong>Apple Health</strong>
-                    <span>Activity, workouts, steps</span>
-                  </div>
-                  <div class="connect-step-status connected">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                    Connected
-                  </div>
-                </div>
-
-                <div class="connect-step">
-                  <div class="connect-step-icon">
-                    <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit">
-                  </div>
-                  <div class="connect-step-content">
-                    <strong>Fitbit</strong>
-                    <span>Steps, heart rate, sleep</span>
-                  </div>
-                  <div class="connect-step-status pending">+ Add</div>
-                </div>
-
-                <div class="connect-step">
-                  <div class="connect-step-icon">
-                    <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin">
-                  </div>
-                  <div class="connect-step-content">
-                    <strong>Garmin</strong>
-                    <span>Training, recovery, body battery</span>
-                  </div>
-                  <div class="connect-step-status pending">+ Add</div>
-                </div>
-
-                <div class="connect-step">
-                  <div class="connect-step-icon">
-                    <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop">
-                  </div>
-                  <div class="connect-step-content">
-                    <strong>Whoop</strong>
-                    <span>Recovery, strain, sleep</span>
-                  </div>
-                  <div class="connect-step-status pending">+ Add</div>
-                </div>
-
-                <div class="connect-step">
-                  <div class="connect-step-icon">
-                    <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect">
-                  </div>
-                  <div class="connect-step-content">
-                    <strong>Health Connect</strong>
-                    <span>Android health data hub</span>
-                  </div>
-                  <div class="connect-step-status pending">+ Add</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-
-customElements.define('kygo-hiw-phase-connect', KygoHiwPhaseConnect);
-
-
-/**
- * Kygo Health - Phase 2: Log Your Meals
- * Tag name: kygo-hiw-phase-log
- */
-
-class KygoHiwPhaseLog extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-  }
-
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    this._setupScrollAnimations();
-    __seo(this, 'Step 2: Log your nutrition \u2014 Use AI-powered food scanning to log meals in seconds. Snap a photo or search for foods to track calories, macros, and nutrients.');
-  }
-
-  disconnectedCallback() {
-    if (this._observer) this._observer.disconnect();
-  }
-
-  _parseWixAttributes() {
-    try {
-      const wixconfig = this.getAttribute('wixconfig');
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixconfig) this._config = JSON.parse(wixconfig);
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {
-      console.warn('KygoHiwPhaseLog: Could not parse Wix attributes', e);
-    }
-  }
-
-  _setupScrollAnimations() {
-    requestAnimationFrame(() => {
-      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!elements.length) return;
-      this._observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            this._observer.unobserve(entry.target);
-          }
-        });
-      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-      elements.forEach(el => this._observer.observe(el));
-    });
-  }
-
-  static get observedAttributes() {
-    return ['wixsettings'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    if (name === 'wixsettings') {
-      this._parseWixAttributes();
-      this.render();
-    }
-  }
-
-  _getSetting(key, fallback) {
-    return this._settings[key] || this.getAttribute(key) || fallback;
-  }
-
-  render() {
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          --dark: #1E293B;
-          --dark-card: #0f172a;
-          --dark-surface: #1a2332;
-          --light: #F8FAFC;
-          --green: #22C55E;
-          --green-dark: #16A34A;
-          --green-light: rgba(34, 197, 94, 0.1);
-          --green-glow: rgba(34, 197, 94, 0.3);
-          --gray-100: #F1F5F9;
-          --gray-400: #94A3B8;
-          --gray-600: #475569;
-          --gray-700: #334155;
-          
-          display: block;
-          font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background: white;
-          color: var(--dark);
-          line-height: 1.6;
-          -webkit-font-smoothing: antialiased;
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        h2, h4 {
-          font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-          font-weight: 600;
-          line-height: 1.2;
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        .phase-section { padding: 48px 0; }
-
-        .phase-header {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 12px;
-        }
-
-        .phase-number {
-          width: 40px;
-          height: 40px;
-          background: var(--green);
-          color: white;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-family: 'Space Grotesk', sans-serif;
-          font-weight: 700;
-          font-size: 18px;
-          flex-shrink: 0;
-        }
-
-        .phase-label {
-          font-size: 13px;
-          color: var(--green);
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .phase-title {
-          font-size: clamp(24px, 6vw, 32px);
-          color: var(--dark);
-          margin-bottom: 6px;
-        }
-
-        .phase-time {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: var(--gray-100);
-          padding: 5px 12px;
-          border-radius: 20px;
-          font-size: 13px;
-          color: var(--gray-600);
-          margin-bottom: 16px;
-        }
-
-        .phase-time svg { width: 14px; height: 14px; }
-
-        .phase-content { display: grid; gap: 28px; }
-
-        .phase-description {
-          font-size: 15px;
-          color: var(--gray-600);
-          line-height: 1.6;
-          margin-bottom: 20px;
-          max-width: 560px;
-        }
-
-        .feature-list { display: flex; flex-direction: column; gap: 12px; }
-
-        .feature-item {
-          display: flex;
-          gap: 12px;
-          align-items: flex-start;
-        }
-
-        .feature-icon {
-          width: 36px;
-          height: 36px;
-          background: linear-gradient(135deg, var(--green), var(--green-dark));
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
-        }
-
-        .feature-icon svg {
-          width: 18px;
-          height: 18px;
-          color: white;
-        }
-
-        .feature-text h4 {
-          font-size: 15px;
-          color: var(--dark);
-          margin-bottom: 1px;
-        }
-
-        .feature-text p {
-          font-size: 13px;
-          color: var(--gray-600);
-          line-height: 1.5;
-        }
-
-        .immediate-value {
-          background: linear-gradient(135deg, var(--dark), var(--gray-700));
-          border-radius: 14px;
-          padding: 14px 16px;
-          margin-top: 16px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .immediate-value-icon {
-          width: 36px;
-          height: 36px;
-          background: var(--green);
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .immediate-value-icon svg {
-          width: 18px;
-          height: 18px;
-          color: white;
-        }
-
-        .immediate-value-text { color: white; }
-
-        .immediate-value-text span {
-          font-size: 11px;
-          color: var(--green);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          font-weight: 600;
-        }
-
-        .immediate-value-text p {
-          font-size: 14px;
-          margin-top: 2px;
-        }
-
-        .phase-visual {
-          background: var(--dark);
-          border-radius: 20px;
-          padding: 16px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .phase-visual::before {
-          content: '';
-          position: absolute;
-          top: -30%;
-          right: -20%;
-          width: 300px;
-          height: 300px;
-          background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
-          pointer-events: none;
-        }
-
-        .log-demo { position: relative; z-index: 1; }
-
-        .log-input-area {
-          background: var(--dark-surface);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 14px;
-          padding: 14px;
-          margin-bottom: 12px;
-        }
-
-        .log-input-methods {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 6px;
-          margin-bottom: 12px;
-        }
-
-        .log-method {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 10px;
-          padding: 10px 6px;
-          text-align: center;
-          transition: all 0.2s;
-          cursor: pointer;
-        }
-
-        .log-method:hover,
-        .log-method.active {
-          background: rgba(34, 197, 94, 0.15);
-          border-color: var(--green);
-        }
-
-        .log-method svg {
-          width: 18px;
-          height: 18px;
-          color: var(--gray-400);
-          margin-bottom: 3px;
-        }
-
-        .log-method:hover svg,
-        .log-method.active svg {
-          color: var(--green);
-        }
-
-        .log-method span {
-          display: block;
-          font-size: 10px;
-          color: var(--gray-400);
-          font-weight: 500;
-        }
-
-        .log-example {
-          background: rgba(255,255,255,0.03);
-          border-radius: 10px;
-          padding: 12px;
-        }
-
-        .log-example-header {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-bottom: 8px;
-        }
-
-        .log-example-header svg {
-          width: 14px;
-          height: 14px;
-          color: var(--green);
-        }
-
-        .log-example-header span {
-          font-size: 12px;
-          color: var(--green);
-          font-weight: 500;
-        }
-
-        .log-example-text {
-          color: white;
-          font-size: 13px;
-          font-style: italic;
-          line-height: 1.5;
-        }
-
-        .log-result {
-          background: var(--dark-surface);
-          border: 1px solid var(--green);
-          border-radius: 14px;
-          padding: 14px;
-          box-shadow: 0 0 20px var(--green-glow);
-        }
-
-        .log-result-header {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 12px;
-        }
-
-        .log-result-image {
-          width: 44px;
-          height: 44px;
-          border-radius: 10px;
-          background: linear-gradient(135deg, #4ade80, #22c55e);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 20px;
-        }
-
-        .log-result-info { flex: 1; }
-
-        .log-result-info strong {
-          color: white;
-          font-size: 14px;
-          display: block;
-        }
-
-        .log-result-info span {
-          color: var(--gray-400);
-          font-size: 12px;
-        }
-
-        .log-result-cals { text-align: right; }
-
-        .log-result-cals strong {
-          color: var(--green);
-          font-family: 'Space Grotesk', sans-serif;
-          font-size: 22px;
-          font-weight: 700;
-        }
-
-        .log-result-cals span {
-          color: var(--gray-400);
-          font-size: 10px;
-          display: block;
-        }
-
-        .log-result-breakdown {
-          display: flex;
-          gap: 6px;
-        }
-
-        .log-breakdown-item {
-          flex: 1;
-          background: rgba(255,255,255,0.03);
-          border-radius: 8px;
-          padding: 8px 6px;
-          text-align: center;
-        }
-
-        .log-breakdown-item strong {
-          color: white;
-          font-size: 13px;
-          display: block;
-        }
-
-        .log-breakdown-item span {
-          color: var(--gray-400);
-          font-size: 9px;
-          text-transform: uppercase;
-        }
-
-        .log-detail-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: rgba(34, 197, 94, 0.15);
-          border: 1px solid rgba(34, 197, 94, 0.3);
-          color: var(--green);
-          padding: 6px 10px;
-          border-radius: 8px;
-          font-size: 11px;
-          margin-top: 10px;
-        }
-
-        .log-detail-badge svg { width: 12px; height: 12px; }
-
-        @media (min-width: 768px) {
-          .phase-section { padding: 80px 0; }
-          .phase-header { gap: 16px; margin-bottom: 16px; }
-          .phase-number { width: 48px; height: 48px; border-radius: 14px; font-size: 20px; }
-          .phase-title { font-size: 32px; margin-bottom: 8px; }
-          .phase-time { margin-bottom: 24px; }
-          .phase-description { font-size: 17px; line-height: 1.7; margin-bottom: 32px; }
-          .feature-list { gap: 16px; }
-          .feature-item { gap: 14px; }
-          .feature-icon { width: 40px; height: 40px; }
-          .feature-icon svg { width: 20px; height: 20px; }
-          .feature-text h4 { font-size: 16px; margin-bottom: 2px; }
-          .feature-text p { font-size: 14px; }
-          .immediate-value { padding: 20px 24px; margin-top: 24px; border-radius: 16px; gap: 14px; }
-          .immediate-value-icon { width: 44px; height: 44px; border-radius: 12px; }
-          .immediate-value-icon svg { width: 22px; height: 22px; }
-          .immediate-value-text p { font-size: 15px; }
-          .phase-content {
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 64px;
-          }
-          .phase-visual { order: -1; padding: 28px; border-radius: 24px; }
-          .log-input-area { padding: 18px; border-radius: 16px; margin-bottom: 16px; }
-          .log-input-methods { gap: 8px; margin-bottom: 16px; }
-          .log-method { padding: 12px 8px; }
-          .log-method svg { width: 20px; height: 20px; }
-          .log-example { padding: 14px; border-radius: 12px; }
-          .log-example-text { font-size: 14px; }
-          .log-result { padding: 16px; border-radius: 16px; }
-          .log-result-header { gap: 12px; margin-bottom: 14px; }
-          .log-result-image { width: 52px; height: 52px; font-size: 24px; border-radius: 12px; }
-          .log-result-info strong { font-size: 16px; }
-          .log-result-info span { font-size: 13px; }
-          .log-result-cals strong { font-size: 24px; }
-          .log-result-cals span { font-size: 11px; }
-          .log-result-breakdown { gap: 8px; }
-          .log-breakdown-item { padding: 10px; }
-          .log-breakdown-item strong { font-size: 14px; }
-          .log-breakdown-item span { font-size: 10px; }
-          .log-detail-badge { padding: 8px 12px; font-size: 12px; margin-top: 14px; }
-          .log-detail-badge svg { width: 14px; height: 14px; }
-          .connect-step { padding: 14px 18px; border-radius: 16px; gap: 14px; margin-bottom: 12px; }
-          .connect-step-icon { width: 44px; height: 44px; border-radius: 12px; }
-          .connect-step-content strong { font-size: 15px; }
-          .connect-step-content span { font-size: 13px; }
-        }
-
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-on-scroll {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
-        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
-        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
-
-        @keyframes pulse {
-          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
-          50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.5); }
-        }
-
-        .animate-on-scroll.visible .phase-number {
-          animation: pulse 2s ease-in-out infinite;
-          animation-delay: 0.5s;
-        }
-
-        /* Override parent containers - children cascade individually */
-        .phase-info.animate-on-scroll,
-        .phase-visual.animate-on-scroll {
-          opacity: 1;
-          transform: none;
-          transition: none;
-        }
-
-        /* Phase info children - start hidden */
-        .phase-info .phase-header,
-        .phase-info .phase-title,
-        .phase-info .phase-time,
-        .phase-info .phase-description,
-        .phase-info .feature-item,
-        .phase-info .immediate-value {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-
-        /* Phase info children - cascade on scroll */
-        .phase-info.visible .phase-header { animation: fadeInUp 0.5s ease-out forwards; }
-        .phase-info.visible .phase-title { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
-        .phase-info.visible .phase-time { animation: fadeInUp 0.5s ease-out 0.15s forwards; }
-        .phase-info.visible .phase-description { animation: fadeInUp 0.5s ease-out 0.25s forwards; }
-        .phase-info.visible .feature-item { animation: fadeInUp 0.5s ease-out forwards; }
-        .phase-info.visible .feature-item:nth-child(1) { animation-delay: 0.35s; }
-        .phase-info.visible .feature-item:nth-child(2) { animation-delay: 0.45s; }
-        .phase-info.visible .feature-item:nth-child(3) { animation-delay: 0.55s; }
-        .phase-info.visible .feature-item:nth-child(4) { animation-delay: 0.65s; }
-        .phase-info.visible .immediate-value { animation: fadeInUp 0.5s ease-out 0.75s forwards; }
-
-        /* Visual panel children - staggered slide up */
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(16px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .phase-visual .log-input-area,
-        .phase-visual .log-result {
-          opacity: 0;
-          transform: translateY(16px);
-        }
-        .phase-visual.visible .log-input-area { animation: slideUp 0.6s ease-out 0.1s forwards; }
-        .phase-visual.visible .log-result { animation: slideUp 0.6s ease-out 0.35s forwards; }
-
-        /* Log method icons stagger */
-        .phase-visual .log-method {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        .phase-visual.visible .log-method { animation: slideUp 0.4s ease-out forwards; }
-        .phase-visual.visible .log-method:nth-child(1) { animation-delay: 0.2s; }
-        .phase-visual.visible .log-method:nth-child(2) { animation-delay: 0.3s; }
-        .phase-visual.visible .log-method:nth-child(3) { animation-delay: 0.4s; }
-        .phase-visual.visible .log-method:nth-child(4) { animation-delay: 0.5s; }
-
-        /* Log result breakdown items stagger */
-        .phase-visual .log-breakdown-item {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        .phase-visual.visible .log-breakdown-item { animation: slideUp 0.4s ease-out forwards; }
-        .phase-visual.visible .log-breakdown-item:nth-child(1) { animation-delay: 0.5s; }
-        .phase-visual.visible .log-breakdown-item:nth-child(2) { animation-delay: 0.6s; }
-        .phase-visual.visible .log-breakdown-item:nth-child(3) { animation-delay: 0.7s; }
-        .phase-visual.visible .log-breakdown-item:nth-child(4) { animation-delay: 0.8s; }
-
-        @media (prefers-reduced-motion: reduce) {
-          * { animation: none !important; transition: none !important; }
-          .phase-info .phase-header,
-          .phase-info .phase-title,
-          .phase-info .phase-time,
-          .phase-info .phase-description,
-          .phase-info .feature-item,
-          .phase-info .immediate-value,
-          .phase-visual .log-input-area,
-          .phase-visual .log-result,
-          .phase-visual .log-method,
-          .phase-visual .log-breakdown-item {
-            opacity: 1;
-            transform: none;
-          }
-        }
-      </style>
-
-      <section class="phase-section">
-        <div class="container">
-          <div class="phase-content">
-            <div class="phase-info animate-on-scroll">
-              <div class="phase-header">
-                <div class="phase-number">2</div>
-                <div class="phase-label">Phase Two</div>
-              </div>
-              <h2 class="phase-title">Log your meals</h2>
-              <div class="phase-time">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                Seconds, not minutes
-              </div>
-              
-              <p class="phase-description">
-                Four ways to log—pick whatever's fastest in the moment. Snap a photo and we'll identify every ingredient down to the cracked pepper on your eggs. Or just say "two eggs with avocado toast" and we'll handle the rest.
-              </p>
-
-              <div class="feature-list">
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>Photo recognition</h4>
-                    <p>Point, shoot, done. Identifies every ingredient—even garnishes and toppings.</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>Voice and natural text</h4>
-                    <p>"Chicken salad with ranch dressing" → logged in seconds</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h2M7 5h2M11 5h2M15 5h2M19 5h2M3 10h2M7 10h2M11 10h2M15 10h2M19 10h2M3 15h2M7 15h2M11 15h2M15 15h2M19 15h2"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>Barcode scanner</h4>
-                    <p>5M+ foods in our database. Scan any packaged item.</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8"/><path d="M7 3v5h8"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>Meal templates</h4>
-                    <p>Your frequent meals saved. One tap to log your regular breakfast.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="immediate-value">
-                <div class="immediate-value-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                </div>
-                <div class="immediate-value-text">
-                  <span>Day 1 Value</span>
-                  <p>Full macro and micronutrient breakdown with every meal</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="phase-visual animate-on-scroll delay-2">
-              <div class="log-demo">
-                <div class="log-input-area">
-                  <div class="log-input-methods">
-                    <div class="log-method active">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                      <span>Photo</span>
-                    </div>
-                    <div class="log-method">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h2M7 5h2M11 5h2M15 5h2M19 5h2M3 10h2M7 10h2M11 10h2M15 10h2M19 10h2"/></svg>
-                      <span>Barcode</span>
-                    </div>
-                    <div class="log-method">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
-                      <span>Voice</span>
-                    </div>
-                    <div class="log-method">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                      <span>Text</span>
-                    </div>
-                  </div>
-
-                  <div class="log-example">
-                    <div class="log-example-header">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                      <span>Analyzing photo...</span>
-                    </div>
-                    <p class="log-example-text">"Scrambled eggs with avocado, whole grain toast, cracked black pepper, cherry tomatoes"</p>
-                  </div>
-                </div>
-
-                <div class="log-result">
-                  <div class="log-result-header">
-                    <div class="log-result-image">🍳</div>
-                    <div class="log-result-info">
-                      <strong>Breakfast Bowl</strong>
-                      <span>4 items identified</span>
-                    </div>
-                    <div class="log-result-cals">
-                      <strong>485</strong>
-                      <span>calories</span>
-                    </div>
-                  </div>
-                  <div class="log-result-breakdown">
-                    <div class="log-breakdown-item">
-                      <strong>32g</strong>
-                      <span>Protein</span>
-                    </div>
-                    <div class="log-breakdown-item">
-                      <strong>28g</strong>
-                      <span>Carbs</span>
-                    </div>
-                    <div class="log-breakdown-item">
-                      <strong>26g</strong>
-                      <span>Fat</span>
-                    </div>
-                    <div class="log-breakdown-item">
-                      <strong>8g</strong>
-                      <span>Fiber</span>
-                    </div>
-                  </div>
-                  <div class="log-detail-badge">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/></svg>
-                    + 23 micronutrients tracked
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-
-customElements.define('kygo-hiw-phase-log', KygoHiwPhaseLog);
-
-
-/**
- * Kygo Health - Phase 3: Discover Your Patterns
- * Tag name: kygo-hiw-phase-discover
- */
-
-class KygoHiwPhaseDiscover extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-  }
-
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    this._setupScrollAnimations();
-    __seo(this, 'Step 3: Discover insights \u2014 See how your food choices affect your sleep quality, HRV, energy levels, and recovery with Kygo AI-powered analysis.');
-  }
-
-  disconnectedCallback() {
-    if (this._observer) this._observer.disconnect();
-  }
-
-  _parseWixAttributes() {
-    try {
-      const wixconfig = this.getAttribute('wixconfig');
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixconfig) this._config = JSON.parse(wixconfig);
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {
-      console.warn('KygoHiwPhaseDiscover: Could not parse Wix attributes', e);
-    }
-  }
-
-  _setupScrollAnimations() {
-    requestAnimationFrame(() => {
-      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!elements.length) return;
-      this._observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            this._observer.unobserve(entry.target);
-          }
-        });
-      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-      elements.forEach(el => this._observer.observe(el));
-    });
-  }
-
-  static get observedAttributes() {
-    return ['wixsettings'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    if (name === 'wixsettings') {
-      this._parseWixAttributes();
-      this.render();
-    }
-  }
-
-  _getSetting(key, fallback) {
-    return this._settings[key] || this.getAttribute(key) || fallback;
-  }
-
-  render() {
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          --dark: #1E293B;
-          --dark-card: #0f172a;
-          --dark-surface: #1a2332;
-          --light: #F8FAFC;
-          --green: #22C55E;
-          --green-dark: #16A34A;
-          --green-light: rgba(34, 197, 94, 0.1);
-          --green-glow: rgba(34, 197, 94, 0.3);
-          --gray-50: #f9fafb;
-          --gray-100: #F1F5F9;
-          --gray-400: #94A3B8;
-          --gray-600: #475569;
-          --gray-700: #334155;
-          --yellow: #FBBF24;
-          
-          display: block;
-          font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background: var(--gray-50);
-          color: var(--dark);
-          line-height: 1.6;
-          -webkit-font-smoothing: antialiased;
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        h2, h4 {
-          font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-          font-weight: 600;
-          line-height: 1.2;
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        .phase-section { padding: 48px 0; }
-
-        .phase-header {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 12px;
-        }
-
-        .phase-number {
-          width: 40px;
-          height: 40px;
-          background: var(--green);
-          color: white;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-family: 'Space Grotesk', sans-serif;
-          font-weight: 700;
-          font-size: 18px;
-          flex-shrink: 0;
-        }
-
-        .phase-label {
-          font-size: 13px;
-          color: var(--green);
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-        }
-
-        .phase-title {
-          font-size: clamp(24px, 6vw, 32px);
-          color: var(--dark);
-          margin-bottom: 6px;
-        }
-
-        .phase-time {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-          background: var(--gray-100);
-          padding: 5px 12px;
-          border-radius: 20px;
-          font-size: 13px;
-          color: var(--gray-600);
-          margin-bottom: 16px;
-        }
-
-        .phase-time svg { width: 14px; height: 14px; }
-
-        .phase-content { display: grid; gap: 28px; }
-
-        .phase-description {
-          font-size: 15px;
-          color: var(--gray-600);
-          line-height: 1.6;
-          margin-bottom: 20px;
-          max-width: 560px;
-        }
-
-        .feature-list { display: flex; flex-direction: column; gap: 12px; }
-
-        .feature-item {
-          display: flex;
-          gap: 12px;
-          align-items: flex-start;
-        }
-
-        .feature-icon {
-          width: 36px;
-          height: 36px;
-          background: linear-gradient(135deg, var(--green), var(--green-dark));
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
-        }
-
-        .feature-icon svg {
-          width: 18px;
-          height: 18px;
-          color: white;
-        }
-
-        .feature-text h4 {
-          font-size: 15px;
-          color: var(--dark);
-          margin-bottom: 1px;
-        }
-
-        .feature-text p {
-          font-size: 13px;
-          color: var(--gray-600);
-          line-height: 1.5;
-        }
-
-        .immediate-value {
-          background: linear-gradient(135deg, var(--dark), var(--gray-700));
-          border-radius: 14px;
-          padding: 14px 16px;
-          margin-top: 16px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .immediate-value-icon {
-          width: 36px;
-          height: 36px;
-          background: var(--green);
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .immediate-value-icon svg {
-          width: 18px;
-          height: 18px;
-          color: white;
-        }
-
-        .immediate-value-text { color: white; }
-
-        .immediate-value-text span {
-          font-size: 11px;
-          color: var(--green);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          font-weight: 600;
-        }
-
-        .immediate-value-text p {
-          font-size: 14px;
-          margin-top: 2px;
-        }
-
-        .phase-visual {
-          background: var(--dark);
-          border-radius: 20px;
-          padding: 16px;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .phase-visual::before {
-          content: '';
-          position: absolute;
-          top: -30%;
-          right: -20%;
-          width: 300px;
-          height: 300px;
-          background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
-          pointer-events: none;
-        }
-
-        .discover-demo { position: relative; z-index: 1; }
-
-        .correlation-example {
-          background: var(--dark-surface);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 14px;
-          padding: 14px;
-          margin-bottom: 10px;
-          transition: all 0.3s;
-        }
-
-        .correlation-example:last-child { margin-bottom: 0; }
-
-        .correlation-example:hover {
-          border-color: var(--green);
-          transform: translateX(4px);
-        }
-
-        .correlation-example-header {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 10px;
-        }
-
-        .correlation-example-icon {
-          width: 38px;
-          height: 38px;
-          background: linear-gradient(135deg, var(--green), var(--green-dark));
-          border-radius: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
-        }
-
-        .correlation-example-icon svg {
-          width: 18px;
-          height: 18px;
-          color: white;
-        }
-
-        .correlation-example-content { flex: 1; min-width: 0; }
-
-        .correlation-example-content strong {
-          color: white;
-          font-size: 14px;
-          display: block;
-          margin-bottom: 1px;
-        }
-
-        .correlation-example-content strong span {
-          color: var(--green);
-        }
-
-        .correlation-example-content p {
-          color: var(--gray-400);
-          font-size: 12px;
-        }
-
-        .correlation-metrics {
-          display: flex;
-          gap: 12px;
-        }
-
-        .correlation-metric { flex: 1; }
-
-        .correlation-metric-label {
-          font-size: 9px;
-          color: var(--gray-400);
-          text-transform: uppercase;
-          letter-spacing: 0.5px;
-          margin-bottom: 5px;
-        }
-
-        .correlation-metric-bar {
-          height: 5px;
-          background: var(--gray-700);
-          border-radius: 3px;
-          overflow: hidden;
-        }
-
-        .correlation-metric-fill {
-          height: 100%;
-          background: var(--green);
-          border-radius: 3px;
-        }
-
-        .correlation-metric-fill.medium {
-          background: var(--yellow);
-        }
-
-        @media (min-width: 768px) {
-          .phase-section { padding: 80px 0; }
-          .phase-header { gap: 16px; margin-bottom: 16px; }
-          .phase-number { width: 48px; height: 48px; border-radius: 14px; font-size: 20px; }
-          .phase-title { font-size: 32px; margin-bottom: 8px; }
-          .phase-time { margin-bottom: 24px; }
-          .phase-description { font-size: 17px; line-height: 1.7; margin-bottom: 32px; }
-          .feature-list { gap: 16px; }
-          .feature-item { gap: 14px; }
-          .feature-icon { width: 40px; height: 40px; }
-          .feature-icon svg { width: 20px; height: 20px; }
-          .feature-text h4 { font-size: 16px; margin-bottom: 2px; }
-          .feature-text p { font-size: 14px; }
-          .immediate-value { padding: 20px 24px; margin-top: 24px; border-radius: 16px; gap: 14px; }
-          .immediate-value-icon { width: 44px; height: 44px; border-radius: 12px; }
-          .immediate-value-icon svg { width: 22px; height: 22px; }
-          .immediate-value-text p { font-size: 15px; }
-          .phase-content {
-            grid-template-columns: 1fr 1fr;
-            align-items: center;
-            gap: 64px;
-          }
-          .phase-visual { padding: 28px; border-radius: 24px; }
-          .correlation-example { padding: 18px; border-radius: 16px; margin-bottom: 12px; }
-          .correlation-example-header { gap: 12px; margin-bottom: 14px; }
-          .correlation-example-icon { width: 44px; height: 44px; border-radius: 12px; }
-          .correlation-example-icon svg { width: 22px; height: 22px; }
-          .correlation-example-content strong { font-size: 15px; }
-          .correlation-example-content p { font-size: 13px; }
-          .correlation-metrics { gap: 16px; }
-          .correlation-metric-label { font-size: 10px; margin-bottom: 6px; }
-          .correlation-metric-bar { height: 6px; }
-        }
-
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-on-scroll {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
-        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
-        .animate-on-scroll.delay-3 { transition-delay: 0.3s; }
-
-        @keyframes pulse {
-          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
-          50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.5); }
-        }
-
-        .animate-on-scroll.visible .phase-number {
-          animation: pulse 2s ease-in-out infinite;
-          animation-delay: 0.5s;
-        }
-
-        /* Override parent containers - children cascade individually */
-        .phase-info.animate-on-scroll,
-        .phase-visual.animate-on-scroll {
-          opacity: 1;
-          transform: none;
-          transition: none;
-        }
-
-        /* Phase info children - start hidden */
-        .phase-info .phase-header,
-        .phase-info .phase-title,
-        .phase-info .phase-time,
-        .phase-info .phase-description,
-        .phase-info .feature-item,
-        .phase-info .immediate-value {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-
-        /* Phase info children - cascade on scroll */
-        .phase-info.visible .phase-header { animation: fadeInUp 0.5s ease-out forwards; }
-        .phase-info.visible .phase-title { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
-        .phase-info.visible .phase-time { animation: fadeInUp 0.5s ease-out 0.15s forwards; }
-        .phase-info.visible .phase-description { animation: fadeInUp 0.5s ease-out 0.25s forwards; }
-        .phase-info.visible .feature-item { animation: fadeInUp 0.5s ease-out forwards; }
-        .phase-info.visible .feature-item:nth-child(1) { animation-delay: 0.35s; }
-        .phase-info.visible .feature-item:nth-child(2) { animation-delay: 0.45s; }
-        .phase-info.visible .feature-item:nth-child(3) { animation-delay: 0.55s; }
-        .phase-info.visible .immediate-value { animation: fadeInUp 0.5s ease-out 0.65s forwards; }
-
-        /* Visual panel children - staggered slide up */
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(16px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .phase-visual .correlation-example {
-          opacity: 0;
-          transform: translateY(16px);
-        }
-        .phase-visual.visible .correlation-example { animation: slideUp 0.5s ease-out forwards; }
-        .phase-visual.visible .correlation-example:nth-child(1) { animation-delay: 0.1s; }
-        .phase-visual.visible .correlation-example:nth-child(2) { animation-delay: 0.25s; }
-        .phase-visual.visible .correlation-example:nth-child(3) { animation-delay: 0.4s; }
-
-        /* Metric bar grow animation */
-        @keyframes barGrow {
-          from { transform: scaleX(0); }
-          to { transform: scaleX(1); }
-        }
-
-        .phase-visual .correlation-metric-fill {
-          transform: scaleX(0);
-          transform-origin: left;
-        }
-        .phase-visual.visible .correlation-example:nth-child(1) .correlation-metric-fill { animation: barGrow 0.8s ease-out 0.4s forwards; }
-        .phase-visual.visible .correlation-example:nth-child(2) .correlation-metric-fill { animation: barGrow 0.8s ease-out 0.55s forwards; }
-        .phase-visual.visible .correlation-example:nth-child(3) .correlation-metric-fill { animation: barGrow 0.8s ease-out 0.7s forwards; }
-
-        @media (prefers-reduced-motion: reduce) {
-          * { animation: none !important; transition: none !important; }
-          .phase-info .phase-header,
-          .phase-info .phase-title,
-          .phase-info .phase-time,
-          .phase-info .phase-description,
-          .phase-info .feature-item,
-          .phase-info .immediate-value,
-          .phase-visual .correlation-example,
-          .phase-visual .correlation-metric-fill {
-            opacity: 1;
-            transform: none;
-          }
-        }
-      </style>
-
-      <section class="phase-section">
-        <div class="container">
-          <div class="phase-content">
-            <div class="phase-info animate-on-scroll">
-              <div class="phase-header">
-                <div class="phase-number">3</div>
-                <div class="phase-label">Phase Three</div>
-              </div>
-              <h2 class="phase-title">Discover your patterns</h2>
-              <div class="phase-time">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                Insights start at day 7
-              </div>
-              
-              <p class="phase-description">
-                After 7 days of logging both nutrition and wearable data, Kygo starts finding statistically significant correlations. We factor in outliers and calculate confidence levels—so you only see patterns we're sure about. The more you log, the more correlations you'll discover.
-              </p>
-
-              <div class="feature-list">
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-6"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>Real correlations, not guesses</h4>
-                    <p>We calculate confidence and strength for every pattern we find</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>Outliers filtered out</h4>
-                    <p>One bad night doesn't skew your data—we account for anomalies</p>
-                  </div>
-                </div>
-                <div class="feature-item">
-                  <div class="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/></svg>
-                  </div>
-                  <div class="feature-text">
-                    <h4>More data, more correlations</h4>
-                    <p>New patterns emerge as your dataset grows over time</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="immediate-value">
-                <div class="immediate-value-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                </div>
-                <div class="immediate-value-text">
-                  <span>The Payoff</span>
-                  <p>"Your HRV improves 12% when you avoid sugar after 6pm"—that's YOUR body talking</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="phase-visual animate-on-scroll delay-2">
-              <div class="discover-demo">
-                <div class="correlation-example">
-                  <div class="correlation-example-header">
-                    <div class="correlation-example-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                    </div>
-                    <div class="correlation-example-content">
-                      <strong>Sleep latency <span>+8 min</span></strong>
-                      <p>When you consume caffeine after 3pm</p>
-                    </div>
-                  </div>
-                  <div class="correlation-metrics">
-                    <div class="correlation-metric">
-                      <div class="correlation-metric-label">Confidence</div>
-                      <div class="correlation-metric-bar">
-                        <div class="correlation-metric-fill" style="width: 85%;"></div>
-                      </div>
-                    </div>
-                    <div class="correlation-metric">
-                      <div class="correlation-metric-label">Strength</div>
-                      <div class="correlation-metric-bar">
-                        <div class="correlation-metric-fill" style="width: 72%;"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="correlation-example">
-                  <div class="correlation-example-header">
-                    <div class="correlation-example-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                    </div>
-                    <div class="correlation-example-content">
-                      <strong>HRV <span>+12% average</span></strong>
-                      <p>Days with no sugar after 6pm</p>
-                    </div>
-                  </div>
-                  <div class="correlation-metrics">
-                    <div class="correlation-metric">
-                      <div class="correlation-metric-label">Confidence</div>
-                      <div class="correlation-metric-bar">
-                        <div class="correlation-metric-fill" style="width: 78%;"></div>
-                      </div>
-                    </div>
-                    <div class="correlation-metric">
-                      <div class="correlation-metric-label">Strength</div>
-                      <div class="correlation-metric-bar">
-                        <div class="correlation-metric-fill medium" style="width: 65%;"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="correlation-example">
-                  <div class="correlation-example-header">
-                    <div class="correlation-example-icon">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-                    </div>
-                    <div class="correlation-example-content">
-                      <strong>Deep sleep <span>+23 min</span></strong>
-                      <p>High protein dinners (40g+)</p>
-                    </div>
-                  </div>
-                  <div class="correlation-metrics">
-                    <div class="correlation-metric">
-                      <div class="correlation-metric-label">Confidence</div>
-                      <div class="correlation-metric-bar">
-                        <div class="correlation-metric-fill medium" style="width: 68%;"></div>
-                      </div>
-                    </div>
-                    <div class="correlation-metric">
-                      <div class="correlation-metric-label">Strength</div>
-                      <div class="correlation-metric-bar">
-                        <div class="correlation-metric-fill" style="width: 71%;"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-
-customElements.define('kygo-hiw-phase-discover', KygoHiwPhaseDiscover);
-
-
-/**
- * Kygo Health - Timeline Section (Your First Two Weeks)
- * Tag name: kygo-hiw-timeline
- */
-
-class KygoHiwTimeline extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-  }
-
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    this._setupScrollAnimations();
-    __seo(this, 'Your Kygo Health Timeline \u2014 Track how nutrition impacts your health metrics over your first two weeks and beyond with personalized trend analysis.');
-  }
-
-  disconnectedCallback() {
-    if (this._observer) this._observer.disconnect();
-  }
-
-  _parseWixAttributes() {
-    try {
-      const wixconfig = this.getAttribute('wixconfig');
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixconfig) this._config = JSON.parse(wixconfig);
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {
-      console.warn('KygoHiwTimeline: Could not parse Wix attributes', e);
-    }
-  }
-
-  _setupScrollAnimations() {
-    requestAnimationFrame(() => {
-      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!elements.length) return;
-      this._observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            this._observer.unobserve(entry.target);
-          }
-        });
-      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-      elements.forEach(el => this._observer.observe(el));
-    });
-  }
-
-  static get observedAttributes() {
-    return ['wixsettings'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    if (name === 'wixsettings') {
-      this._parseWixAttributes();
-      this.render();
-    }
-  }
-
-  _getSetting(key, fallback) {
-    return this._settings[key] || this.getAttribute(key) || fallback;
-  }
-
-  render() {
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          --dark: #1E293B;
-          --light: #F8FAFC;
-          --green: #22C55E;
-          --green-glow: rgba(34, 197, 94, 0.3);
-          --gray-400: #94A3B8;
-          --gray-700: #334155;
-          
-          display: block;
-          font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700) 100%);
-          color: white;
-          line-height: 1.6;
-          -webkit-font-smoothing: antialiased;
-          position: relative;
-          overflow: hidden;
-        }
-
-        :host::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-          pointer-events: none;
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        h2, h3 {
-          font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-          font-weight: 600;
-          line-height: 1.2;
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        .timeline-section { padding: 48px 0; position: relative; z-index: 1; }
-
-        .section-header {
-          text-align: center;
-          margin-bottom: 32px;
-        }
-
-        .section-header h2 {
-          color: white;
-          font-size: clamp(24px, 7vw, 36px);
-          margin-bottom: 10px;
-        }
-
-        .section-header p {
-          color: var(--gray-400);
-          font-size: 15px;
-          max-width: 500px;
-          margin: 0 auto;
-        }
-
-        .timeline-track {
-          max-width: 900px;
-          margin: 0 auto;
-          position: relative;
-        }
-
-        .timeline-line {
-          display: none;
-          position: absolute;
-          top: 50%;
-          left: 0;
-          right: 0;
-          height: 4px;
-          background: var(--gray-700);
-          transform: translateY(-50%);
-          border-radius: 2px;
-        }
-
-        .timeline-line-fill {
-          position: absolute;
-          top: 0;
-          left: 0;
-          height: 100%;
-          background: var(--green);
-          border-radius: 2px;
-          width: 100%;
-        }
-
-        .timeline-items {
-          display: grid;
-          gap: 14px;
-        }
-
-        .timeline-item {
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 16px;
-          padding: 20px;
-          text-align: center;
-          transition: all 0.3s;
-        }
-
-        .timeline-item:hover {
-          background: rgba(255,255,255,0.08);
-          border-color: var(--green);
-          transform: translateY(-4px);
-        }
-
-        .timeline-item.active {
-          border-color: var(--green);
-          box-shadow: 0 0 30px var(--green-glow);
-        }
-
-        .timeline-day {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          width: 48px;
-          height: 48px;
-          background: var(--green);
-          color: white;
-          border-radius: 50%;
-          font-family: 'Space Grotesk', sans-serif;
-          font-weight: 700;
-          font-size: 13px;
-          margin-bottom: 12px;
-        }
-
-        .timeline-item h3 {
-          color: white;
-          font-size: 17px;
-          margin-bottom: 6px;
-        }
-
-        .timeline-item p {
-          color: var(--gray-400);
-          font-size: 13px;
-          line-height: 1.5;
-        }
-
-        .timeline-features {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 6px;
-          justify-content: center;
-          margin-top: 12px;
-        }
-
-        .timeline-feature {
-          background: rgba(34, 197, 94, 0.15);
-          color: var(--green);
-          padding: 4px 10px;
-          border-radius: 20px;
-          font-size: 11px;
-          font-weight: 500;
-        }
-
-        @media (min-width: 768px) {
-          .timeline-section { padding: 80px 0; }
-          .section-header { margin-bottom: 48px; }
-          .section-header h2 { font-size: 36px; }
-          .section-header p { font-size: 17px; }
-          .timeline-line { display: none; }
-          .timeline-items {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-          }
-          .timeline-item { padding: 24px; border-radius: 20px; }
-          .timeline-day { width: 56px; height: 56px; font-size: 14px; margin-bottom: 16px; }
-          .timeline-item h3 { font-size: 18px; margin-bottom: 8px; }
-          .timeline-item p { font-size: 14px; line-height: 1.6; }
-          .timeline-features { gap: 8px; margin-top: 16px; }
-          .timeline-feature { padding: 6px 12px; font-size: 12px; }
-        }
-
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-on-scroll {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .animate-on-scroll.delay-1 { transition-delay: 0.15s; }
-        .animate-on-scroll.delay-2 { transition-delay: 0.3s; }
-
-        /* Timeline day badge pulse */
-        @keyframes pulse {
-          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
-          50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.5); }
-        }
-
-        .animate-on-scroll.visible .timeline-day {
-          animation: pulse 2s ease-in-out infinite;
-          animation-delay: 0.3s;
-        }
-
-        /* Timeline feature badges cascade */
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .timeline-feature {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        .animate-on-scroll.visible .timeline-feature { animation: slideUp 0.4s ease-out forwards; }
-        .animate-on-scroll.visible .timeline-feature:nth-child(1) { animation-delay: 0.3s; }
-        .animate-on-scroll.visible .timeline-feature:nth-child(2) { animation-delay: 0.4s; }
-        .animate-on-scroll.visible .timeline-feature:nth-child(3) { animation-delay: 0.5s; }
-
-        /* Timeline item internal elements cascade */
-        .timeline-item h3,
-        .timeline-item p {
-          opacity: 0;
-          transform: translateY(12px);
-        }
-        .animate-on-scroll.visible h3 { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
-        .animate-on-scroll.visible p { animation: fadeInUp 0.5s ease-out 0.2s forwards; }
-
-        /* Section header children cascade */
-        .section-header.animate-on-scroll.visible h2 { animation: fadeInUp 0.5s ease-out forwards; }
-        .section-header.animate-on-scroll.visible p { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
-        .section-header h2,
-        .section-header p {
-          opacity: 0;
-          transform: translateY(15px);
-        }
-        .section-header.animate-on-scroll {
-          opacity: 1;
-          transform: none;
-          transition: none;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          * { animation: none !important; transition: none !important; }
-          .timeline-feature,
-          .timeline-item h3,
-          .timeline-item p,
-          .section-header h2,
-          .section-header p {
-            opacity: 1;
-            transform: none;
-          }
-        }
-      </style>
-
-      <section class="timeline-section">
-        <div class="container">
-          <div class="section-header animate-on-scroll">
-            <h2>Your first two weeks</h2>
-            <p>You get value from day one—correlations are the bonus</p>
-          </div>
-
-          <div class="timeline-track">
-            <div class="timeline-line">
-              <div class="timeline-line-fill"></div>
-            </div>
-            
-            <div class="timeline-items">
-              <div class="timeline-item animate-on-scroll">
-                <div class="timeline-day">Day 1</div>
-                <h3>Value right away</h3>
-                <p>See unified health trends from all your devices. Track detailed nutrition with full macro and micro breakdowns. Log your weight.</p>
-                <div class="timeline-features">
-                  <span class="timeline-feature">Health trends</span>
-                  <span class="timeline-feature">Calorie & macro tracking</span>
-                  <span class="timeline-feature">Micronutrients</span>
-                </div>
-              </div>
-
-              <div class="timeline-item animate-on-scroll delay-1 active">
-                <div class="timeline-day">Day 7</div>
-                <h3>First correlations</h3>
-                <p>With a week of nutrition and wearable data, Kygo starts identifying patterns between what you eat and how your body responds.</p>
-                <div class="timeline-features">
-                  <span class="timeline-feature">Pattern detection</span>
-                  <span class="timeline-feature">Initial correlations</span>
-                  <span class="timeline-feature">Personalized to you</span>
-                </div>
-              </div>
-
-              <div class="timeline-item animate-on-scroll delay-2">
-                <div class="timeline-day">Day 14+</div>
-                <h3>Higher confidence</h3>
-                <p>More data means stronger correlations and new patterns. The more you put in, the more you get out.</p>
-                <div class="timeline-features">
-                  <span class="timeline-feature">Stronger confidence</span>
-                  <span class="timeline-feature">More correlations</span>
-                  <span class="timeline-feature">Deeper patterns</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-
-customElements.define('kygo-hiw-timeline', KygoHiwTimeline);
-
-
-/**
- * Kygo Health - Objections Section (Built for Real Life)
- * Tag name: kygo-hiw-objections
- */
-
-class KygoHiwObjections extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-  }
-
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    this._setupScrollAnimations();
-    __seo(this, 'Why Kygo Health? Built for real life \u2014 Answers to common questions about nutrition tracking, data privacy, and how Kygo compares to other health apps.');
-  }
-
-  disconnectedCallback() {
-    if (this._observer) this._observer.disconnect();
-  }
-
-  _parseWixAttributes() {
-    try {
-      const wixconfig = this.getAttribute('wixconfig');
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixconfig) this._config = JSON.parse(wixconfig);
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {
-      console.warn('KygoHiwObjections: Could not parse Wix attributes', e);
-    }
-  }
-
-  _setupScrollAnimations() {
-    requestAnimationFrame(() => {
-      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!elements.length) return;
-      this._observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            this._observer.unobserve(entry.target);
-          }
-        });
-      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-      elements.forEach(el => this._observer.observe(el));
-    });
-  }
-
-  static get observedAttributes() {
-    return ['wixsettings'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    if (name === 'wixsettings') {
-      this._parseWixAttributes();
-      this.render();
-    }
-  }
-
-  _getSetting(key, fallback) {
-    return this._settings[key] || this.getAttribute(key) || fallback;
-  }
-
-  render() {
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          --dark: #1E293B;
-          --light: #F8FAFC;
-          --green: #22C55E;
-          --green-light: rgba(34, 197, 94, 0.1);
-          --gray-50: #f9fafb;
-          --gray-200: #E2E8F0;
-          --gray-600: #475569;
-          
-          display: block;
-          font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background: white;
-          color: var(--dark);
-          line-height: 1.6;
-          -webkit-font-smoothing: antialiased;
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        h2, h3 {
-          font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-          font-weight: 600;
-          line-height: 1.2;
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        .objections-section { padding: 48px 0; }
-
-        .section-header {
-          text-align: center;
-          margin-bottom: 32px;
-        }
-
-        .section-header h2 {
-          font-size: clamp(24px, 7vw, 36px);
-          color: var(--dark);
-          margin-bottom: 10px;
-        }
-
-        .section-header p {
-          color: var(--gray-600);
-          font-size: 15px;
-        }
-
-        .objections-grid {
-          display: grid;
-          gap: 16px;
-          max-width: 1000px;
-          margin: 0 auto;
-        }
-
-        .objection-card {
-          background: var(--gray-50);
-          border: 1px solid var(--gray-200);
-          border-radius: 16px;
-          padding: 20px;
-          display: grid;
-          gap: 16px;
-          transition: all 0.3s;
-        }
-
-        .objection-card:hover {
-          border-color: var(--green);
-          box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-        }
-
-        .objection-header {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        .objection-icon {
-          width: 44px;
-          height: 44px;
-          background: linear-gradient(135deg, var(--green), #16A34A);
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
-        }
-
-        .objection-icon svg {
-          width: 22px;
-          height: 22px;
-          color: white;
-        }
-
-        .objection-header h3 {
-          font-size: 17px;
-          color: var(--dark);
-        }
-
-        .objection-content {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-        }
-
-        .objection-point {
-          display: flex;
-          align-items: flex-start;
-          gap: 10px;
-        }
-
-        .objection-point svg {
-          width: 18px;
-          height: 18px;
-          color: var(--green);
-          flex-shrink: 0;
-          margin-top: 2px;
-        }
-
-        .objection-point p {
-          font-size: 14px;
-          color: var(--gray-600);
-          line-height: 1.5;
-        }
-
-        .objection-point strong {
-          color: var(--dark);
-        }
-
-        @media (min-width: 768px) {
-          .objections-section { padding: 80px 0; }
-          .section-header { margin-bottom: 48px; }
-          .section-header h2 { font-size: 36px; }
-          .section-header p { font-size: 17px; }
-          .objections-grid {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-          }
-          .objection-card {
-            display: flex;
-            flex-direction: column;
-            padding: 28px;
-            gap: 20px;
-            border-radius: 20px;
-          }
-          .objection-header { gap: 16px; }
-          .objection-icon { width: 52px; height: 52px; border-radius: 14px; }
-          .objection-icon svg { width: 26px; height: 26px; }
-          .objection-header h3 { font-size: 20px; }
-          .objection-content { gap: 12px; }
-          .objection-point { gap: 12px; }
-          .objection-point svg { width: 20px; height: 20px; }
-          .objection-point p { font-size: 15px; line-height: 1.6; }
-        }
-
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-on-scroll {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .animate-on-scroll.delay-1 { transition-delay: 0.1s; }
-        .animate-on-scroll.delay-2 { transition-delay: 0.2s; }
-
-        /* Section header children cascade */
-        .section-header.animate-on-scroll {
-          opacity: 1;
-          transform: none;
-          transition: none;
-        }
-        .section-header h2,
-        .section-header p {
-          opacity: 0;
-          transform: translateY(15px);
-        }
-        .section-header.animate-on-scroll.visible h2 { animation: fadeInUp 0.5s ease-out forwards; }
-        .section-header.animate-on-scroll.visible p { animation: fadeInUp 0.5s ease-out 0.1s forwards; }
-
-        /* Objection card hover lift */
-        .objection-card.animate-on-scroll:hover {
-          transform: translateY(-4px);
-        }
-
-        /* Objection card internal elements cascade */
-        @keyframes slideUp {
-          from { opacity: 0; transform: translateY(12px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .objection-header,
-        .objection-point {
-          opacity: 0;
-          transform: translateY(12px);
-        }
-        .animate-on-scroll.visible .objection-header { animation: slideUp 0.5s ease-out 0.1s forwards; }
-        .animate-on-scroll.visible .objection-point { animation: slideUp 0.4s ease-out forwards; }
-        .animate-on-scroll.visible .objection-point:nth-child(1) { animation-delay: 0.25s; }
-        .animate-on-scroll.visible .objection-point:nth-child(2) { animation-delay: 0.4s; }
-
-        /* Objection icon pulse */
-        @keyframes pulse {
-          0%, 100% { box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2); }
-          50% { box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4); }
-        }
-        .animate-on-scroll.visible .objection-icon {
-          animation: pulse 2.5s ease-in-out infinite;
-          animation-delay: 0.5s;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          * { animation: none !important; transition: none !important; }
-          .section-header h2,
-          .section-header p,
-          .objection-header,
-          .objection-point {
-            opacity: 1;
-            transform: none;
-          }
-        }
-      </style>
-
-      <section class="objections-section">
-        <div class="container">
-          <div class="section-header animate-on-scroll">
-            <h2>Built for real life</h2>
-            <p>We know you've tried tracking before. Here's why this time is different.</p>
-          </div>
-
-          <div class="objections-grid">
-            <div class="objection-card animate-on-scroll">
-              <div class="objection-header">
-                <div class="objection-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                </div>
-                <h3>Your data stays yours</h3>
-              </div>
-              <div class="objection-content">
-                <div class="objection-point">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                  <p><strong>Encrypted and never sold.</strong> We exist to help you understand your health, not monetize your information.</p>
-                </div>
-                <div class="objection-point">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                  <p><strong>Export or delete anytime.</strong> Your data, your control.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="objection-card animate-on-scroll delay-1">
-              <div class="objection-header">
-                <div class="objection-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                </div>
-                <h3>Seconds, not minutes</h3>
-              </div>
-              <div class="objection-content">
-                <div class="objection-point">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                  <p><strong>Photo, voice, barcode, or text.</strong> Whatever's fastest in the moment.</p>
-                </div>
-                <div class="objection-point">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                  <p><strong>Templates learn your habits.</strong> Logging gets easier over time, not harder.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="objection-card animate-on-scroll delay-2">
-              <div class="objection-header">
-                <div class="objection-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                </div>
-                <h3>Actually accurate</h3>
-              </div>
-              <div class="objection-content">
-                <div class="objection-point">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                  <p><strong>Photo recognition that works.</strong> Identifies every ingredient down to the garnishes.</p>
-                </div>
-                <div class="objection-point">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
-                  <p><strong>5M+ foods in our database.</strong> Correlations backed by real statistical analysis.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-
-customElements.define('kygo-hiw-objections', KygoHiwObjections);
-
-
-/**
- * Kygo Health - Final CTA Section
- * Tag name: kygo-hiw-final-cta
- */
-
-class KygoHiwFinalCta extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-  }
-
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    this._setupScrollAnimations();
-    __seo(this, 'Start your health journey with Kygo \u2014 Download free on iOS. Connect nutrition with wearable data for insights you cannot get anywhere else. Free forever plan available.');
-  }
-
-  disconnectedCallback() {
-    if (this._observer) this._observer.disconnect();
-  }
-
-  _parseWixAttributes() {
-    try {
-      const wixconfig = this.getAttribute('wixconfig');
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixconfig) this._config = JSON.parse(wixconfig);
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {
-      console.warn('KygoHiwFinalCta: Could not parse Wix attributes', e);
-    }
-  }
-
-  _setupScrollAnimations() {
-    requestAnimationFrame(() => {
-      const elements = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!elements.length) return;
-      this._observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            this._observer.unobserve(entry.target);
-          }
-        });
-      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-      elements.forEach(el => this._observer.observe(el));
-    });
-  }
-
-  static get observedAttributes() {
-    return ['wixsettings', 'cta-link', 'app-store-url'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    this._parseWixAttributes();
-    this.render();
-  }
-
-  _getSetting(key, fallback) {
-    return this._settings[key] || this.getAttribute(key) || fallback;
-  }
-
-  render() {
-    const ctaLink = this._getSetting('cta-link', 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589') || this._getSetting('app-store-url', 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589');
-
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          --light: #F8FAFC;
-          --green: #22C55E;
-          --green-dark: #16A34A;
-          --gray-50: #f9fafb;
-          
-          display: block;
-          font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-          background: var(--gray-50);
-          line-height: 1.6;
-          -webkit-font-smoothing: antialiased;
-        }
-
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        h2 {
-          font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-          font-weight: 600;
-          line-height: 1.2;
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-        .final-cta { padding: 48px 0; }
-
-        .final-cta-inner {
-          background: linear-gradient(135deg, var(--green), var(--green-dark));
-          border-radius: 20px;
-          padding: 36px 24px;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-        }
-
-        .final-cta-inner::before {
-          content: '';
-          position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%);
-          pointer-events: none;
-        }
-
-        .final-cta-content {
-          position: relative;
-          z-index: 1;
-        }
-
-        .final-cta h2 {
-          font-size: clamp(28px, 7vw, 36px);
-          color: white;
-          margin-bottom: 12px;
-        }
-
-        .final-cta-content > p {
-          color: rgba(255,255,255,0.85);
-          margin-bottom: 20px;
-          font-size: 17px;
-        }
-
-        .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-
-        .cta-primary {
-          background: white;
-          color: var(--green-dark);
-          padding: 14px 24px;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 15px;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          transition: all 0.2s;
-          border: none;
-          cursor: pointer;
-        }
-
-        .cta-primary:hover {
-          background: var(--light);
-          transform: translateY(-2px);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .cta-primary svg {
-          width: 18px;
-          height: 18px;
-        }
-
-        .risk-reversal {
-          margin-top: 20px;
-          color: rgba(255,255,255,0.7);
-          font-size: 13px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          justify-content: center;
-          flex-wrap: wrap;
-        }
-
-        @media (min-width: 768px) {
-          .final-cta { padding: 60px 0; }
-          .final-cta-inner { padding: 48px 40px; border-radius: 24px; }
-          .final-cta h2 { font-size: 44px; }
-        }
-
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .animate-on-scroll {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        /* Internal element cascade within CTA */
-        .final-cta-inner.animate-on-scroll {
-          opacity: 1;
-          transform: none;
-          transition: none;
-        }
-
-        @keyframes ctaSlideUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes ctaScaleIn {
-          from { opacity: 0; transform: scale(0.9); }
-          to { opacity: 1; transform: scale(1); }
-        }
-
-        .final-cta-inner h2,
-        .final-cta-content > p,
-        .cta-primary,
-        .cta-android,
-        .risk-reversal {
-          opacity: 0;
-        }
-        .final-cta-inner h2 { transform: translateY(20px); }
-        .final-cta-content > p { transform: translateY(15px); }
-        .cta-primary { transform: scale(0.9); }
-        .cta-android { transform: scale(0.9); }
-        .risk-reversal { transform: translateY(10px); }
-
-        .final-cta-inner.visible h2 { animation: ctaSlideUp 0.6s ease-out 0.1s forwards; }
-        .final-cta-inner.visible .final-cta-content > p { animation: ctaSlideUp 0.5s ease-out 0.25s forwards; }
-        .final-cta-inner.visible .cta-primary { animation: ctaScaleIn 0.5s ease-out 0.4s forwards; }
-        .final-cta-inner.visible .cta-android { animation: ctaScaleIn 0.5s ease-out 0.4s forwards; }
-        .final-cta-inner.visible .risk-reversal { animation: ctaSlideUp 0.5s ease-out 0.55s forwards; }
-
-        /* CTA button glow pulse */
-        @keyframes ctaPulse {
-          0%, 100% { box-shadow: 0 4px 15px rgba(255,255,255,0.3); }
-          50% { box-shadow: 0 8px 30px rgba(255,255,255,0.5); }
-        }
-        .final-cta-inner.visible .cta-primary {
-          animation: ctaScaleIn 0.5s ease-out 0.4s forwards, ctaPulse 2s ease-in-out 1s infinite;
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          * { animation: none !important; transition: none !important; }
-          .final-cta-inner h2,
-          .final-cta-content > p,
-          .cta-primary,
-          .cta-android,
-          .risk-reversal {
-            opacity: 1;
-            transform: none;
-          }
-        }
-        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit;-webkit-tap-highlight-color:transparent}
-        .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-        .cta-android svg{width:18px;height:18px}
-        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
-      </style>
-
-      <section class="final-cta">
-        <div class="container">
-          <div class="final-cta-inner animate-on-scroll">
-            <div class="final-cta-content">
-              <h2>Ready to understand your body?</h2>
-              <p>Stop guessing. Start seeing the correlations between what you eat and how you feel.</p>
-              
-              <div class="cta-buttons">
-                <a href="${ctaLink}" class="cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-                  </svg>
-                  Download for iOS
-                </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <p class="risk-reversal">
-                <span>Free forever plan</span>
-                <span>•</span>
-                <span>No credit card required</span>
-                <span>•</span>
-                <span>Upgrade anytime</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-
-customElements.define('kygo-hiw-final-cta', KygoHiwFinalCta);
+customElements.define('kygo-hiw', KygoHiw);

@@ -95,7 +95,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Higher-fiber days predicted falling asleep ~12 minutes faster in a tightly controlled RCT. Fiber, deep sleep, and short sleep latency travel together.',
           mechanism: 'Fiber-driven gut microbiome diversity modulates vagal signaling and systemic inflammation; stable glucose reduces nocturnal cortisol spikes.',
           dosage: '25–35 g/day from whole foods',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26156950/', label: 'St-Onge et al. 2016 RCT' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26156950/', label: 'St-Onge et al. 2016 RCT' },
+          affiliate: { url: 'https://www.amazon.com/dp/B0BDP24LP4?tag=kygohealthapp-20&th=1', label: 'Dietary Fiber Supplement' , slug: 'fiber-gummies' }
         },
         {
           key: 'saturated-fat', name: 'Saturated Fat',
@@ -157,7 +158,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'The best-studied sleep-onset supplement. Pooled across 19 RCTs with 1,683 subjects, melatonin cuts sleep latency by an average of 7.06 minutes (95% CI 4.37–9.75, p<0.001), with peak effect around 4 mg. Best for circadian misalignment (jet lag, shift work, DSPS); less impressive for ordinary insomnia.',
           mechanism: 'Exogenous melatonin binds MT1/MT2 receptors in the SCN, signaling "biological night" and promoting sleep onset.',
           dosage: '0.3–1 mg, 30–60 min before bed (low dose); up to 4 mg if needed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23691095/', label: 'Ferracioli-Oda et al. 2013 meta-analysis' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23691095/', label: 'Ferracioli-Oda et al. 2013 meta-analysis' },
+          affiliate: { url: 'https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1', label: 'Melatonin Supplement' , slug: 'melatonin-gummies' }
         },
         {
           key: 'ashwagandha', name: 'Ashwagandha',
@@ -167,7 +169,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Pooled analysis of 5 RCTs with 400 participants found a standardized mean difference of −0.53 (95% CI −0.77 to −0.29, p<0.001) for sleep onset, with 600 mg/day showing the largest effect. Also reduces anxiety scores, likely part of the mechanism.',
           mechanism: 'Withanolides reduce cortisol and pre-sleep arousal; GABAergic activity may directly promote sleep onset.',
           dosage: '600 mg/day standardized extract (most effective dose)',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/34559859/', label: 'Cheah et al. 2021 meta-analysis' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/34559859/', label: 'Cheah et al. 2021 meta-analysis' },
+          affiliate: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }
         },
         {
           key: 'magnesium', name: 'Magnesium',
@@ -177,7 +180,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Pooled across 3 RCTs in 151 older adults, magnesium supplementation cut sleep onset by 17.36 minutes (p=0.0006). Best evidence is in older adults and people with low dietary magnesium. Less clear in already-replete younger people. Glycinate form is better tolerated than oxide.',
           mechanism: 'NMDA receptor antagonism and GABA-A potentiation reduce cortical arousal; regulates melatonin synthesis.',
           dosage: '200–400 mg elemental magnesium (glycinate preferred)',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/33865376/', label: 'Mah & Pitre 2021 meta-analysis' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/33865376/', label: 'Mah & Pitre 2021 meta-analysis' },
+          affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }
         },
         {
           key: 'glycine', name: 'Glycine',
@@ -187,7 +191,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Polysomnography-verified: 3 g glycine taken before bed shortens objective sleep onset and improves subjective sleep quality. Japanese RCTs are small but consistent, and the mechanism is well-characterized.',
           mechanism: 'Peripheral vasodilation lowers core body temperature (a key sleep-onset signal); NMDA modulation in the SCN.',
           dosage: '3 g, 30–60 min before bed',
-          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' }
+          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' },
+          affiliate: { url: 'https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20', label: 'Glycine Powder' , slug: 'glycine-search' }
         },
         {
           key: 'gaba', name: 'GABA',
@@ -197,7 +202,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'In a controlled trial, 300 mg of oral GABA dropped sleep onset from 13.4 min to 5.7 min (p=0.001). 75 mg was also effective. The blood-brain barrier debate continues, but the clinical signal is clean.',
           mechanism: 'Likely peripheral vagal afferent signaling; direct CNS effect is debated but enteric GABA receptors appear involved.',
           dosage: '75–300 mg, 30–60 min before bed',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6031986/', label: 'Byun et al. 2018 RCT' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6031986/', label: 'Byun et al. 2018 RCT' },
+          affiliate: { url: 'https://www.amazon.com/dp/B0FT6GB5MB?tag=kygohealthapp-20&th=1', label: 'GABA Supplement' , slug: 'gaba-500mg' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine',
@@ -207,7 +213,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: "Meta-analysis of 10 RCTs in 897 people found a small subjective benefit (SMD 0.15, p=0.04) but no objective sleep-onset effect on polysomnography. People report feeling more relaxed, but the SOL reduction doesn't show up on instruments.",
           mechanism: 'Increases alpha brain waves and GABA/glutamate ratio; reduces cortisol and sympathetic tone without sedation.',
           dosage: '200–400 mg, 30–60 min before bed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/40056718/', label: 'Bulman et al. 2025 meta-analysis' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/40056718/', label: 'Bulman et al. 2025 meta-analysis' },
+          affiliate: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' }
         },
         {
           key: 'cbd-isolate', name: 'CBD Isolate',
@@ -301,7 +308,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: "Just normal indoor room lighting in the hour before bed is enough to suppress and delay melatonin, pushing sleep onset later. You don't need to be scrolling your phone — the ceiling lights alone are doing it.",
           mechanism: 'Melanopsin-containing retinal ganglion cells detect evening light and suppress SCN-driven melatonin release.',
           dosage: 'Dim lights below ~30 lux in the hour before bed; use warm-tone lighting',
-          source: { url: 'https://journals.sagepub.com/doi/10.1177/07487304221100826', label: 'Cajochen et al. 2022' }
+          source: { url: 'https://journals.sagepub.com/doi/10.1177/07487304221100826', label: 'Cajochen et al. 2022' },
+          affiliate: { url: 'https://www.amazon.com/dp/B07W781XWF?tag=kygohealthapp-20&th=1', label: 'Blue Light Blocking Glasses' , slug: 'blue-light-glasses' }
         },
         {
           key: 'noise', name: 'Environmental Noise',
@@ -311,7 +319,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           whatThisMeans: 'Ambient noise above ~30 dB measurably delays sleep onset and fragments sleep. Traffic, aircraft, and neighborhood noise all show dose-response effects. White/pink noise or earplugs help mask it when the source is unavoidable.',
           mechanism: 'Auditory cortex activation keeps the brain partially alert; autonomic arousal prevents transition to NREM sleep.',
           dosage: 'Keep bedroom <30 dB; use earplugs or masking if needed',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5877064/', label: 'Basner & McGuire 2018' }
+          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5877064/', label: 'Basner & McGuire 2018' },
+          affiliate: { url: 'https://www.amazon.com/dp/B07RWRJ4XW?tag=kygohealthapp-20', label: 'White Noise Machine' , slug: 'white-noise-machine' }
         },
         {
           key: 'stimulus-control', name: 'Stimulus Control Therapy',
@@ -515,7 +524,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
                 <span class="detail-label">Source</span>
                 <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
               </div>
-              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored">
+              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-track-label="${f.affiliate.slug}">
                 <span>Check it out on Amazon</span>
                 <span class="factor-affiliate-arrow">${this._icon('externalLink')}</span>
               </a>` : ''}
@@ -656,7 +665,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
+    const iosUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
@@ -664,13 +673,14 @@ class KygoSleepLatencyFactors extends HTMLElement {
       <!-- Header -->
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Sleep Latency
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
-            Get Kygo App ${this._icon('arrowRight')}
-          </a>
+          <div class="nav-cta-group">
+            <a href="${iosUrl}" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg><span>iOS</span></a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+          </div>
         </div>
       </header>
 
@@ -691,6 +701,27 @@ class KygoSleepLatencyFactors extends HTMLElement {
           <div class="picks-grid">${this._renderTopPicks()}</div>
         </div>
       </section>
+
+      <!-- Early contextual CTA -->
+      <section class="kearly-section">
+        <div class="container">
+          <div class="kband animate-on-scroll">
+                <div class="kband-inner">
+                  <div class="kband-glow"></div>
+                  <div class="kband-copy">
+                    <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+                    <h2 class="kband-headline">Stop guessing which of these applies to you. Kygo correlates your meals, caffeine, and alcohol with YOUR sleep stages.</h2>
+                  </div>
+                  <div class="kband-actions">
+                    <a href="${iosUrl}" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="sleep-latency-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Try Free for 7 Days</a>
+                    <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="sleep-latency-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a><p class="kband-note">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </section>
+
+      <kygo-inline-subscribe source="tool-sleep-latency-factors" variant="factors"></kygo-inline-subscribe>
 
       <!-- Primary Interactive: Category tabs + Factor cards -->
       <section class="explore-section" id="explore">
@@ -733,22 +764,23 @@ class KygoSleepLatencyFactors extends HTMLElement {
               <h2>See How Your Food Affects Your <span class="highlight">Sleep</span></h2>
               <p>Kygo Health connects your wearable data with nutrition tracking to surface personal correlations between what you eat and how you sleep, recover, and perform.</p>
               <div class="blog-cta-buttons">
-                <a href="${iosUrl}" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
+                <a href="${iosUrl}" class="blog-cta-btn cta-primary" data-track-position="footer-cta" data-track-label="sleep-latency-footer-ios" target="_blank" rel="noopener">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                   Download for iOS
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="sleep-latency-footer-android">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
+              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:#94A3B8;text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
               <div class="blog-cta-tags">
                 <span>Works with</span>
                 <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
                 <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
                 <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
                 <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy" />
+                <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy" />
                 <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy" />
               </div>
             </div>
@@ -768,18 +800,18 @@ class KygoSleepLatencyFactors extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Home</a>
-            <a href="https://kygo.app/how-it-works">How It Works</a>
-            <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy">Privacy</a>
-            <a href="https://kygo.app/terms">Terms</a>
+            <a href="https://www.kygo.app">Home</a>
+            <a href="https://www.kygo.app/how-it-works">How It Works</a>
+            <a href="https://www.kygo.app/blog">Blog</a>
+            <a href="https://www.kygo.app/contact">Contact</a>
+            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated April 2026.</p>
@@ -793,7 +825,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
 
   _styles() {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
         --dark: #1E293B;
@@ -836,9 +868,14 @@ class KygoSleepLatencyFactors extends HTMLElement {
       .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; max-width: 1200px; margin: 0 auto; }
       .logo { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; }
       .logo-img { height: 28px; width: auto; }
-      .header-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #fff; background: var(--green); padding: 8px 16px; border-radius: 50px; text-decoration: none; transition: background 0.2s; }
-      .header-link:hover { background: var(--green-dark); }
-      .header-link svg { width: 14px; height: 14px; }
+      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+      .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+      .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+      .nav-cta-group .nav-store-ios { background:var(--green); color:#fff; }
+      .nav-cta-group .nav-store-ios:hover { background:var(--green-dark); color:#fff; }
+      .nav-cta-group .nav-store-android { background:#fff; color:var(--green-dark); border:1.5px solid var(--gray-200); }
+      .nav-cta-group .nav-store-android:hover { border-color:var(--green); color:var(--green-dark); }
+      @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* ── Hero ── */
       .hero { padding: 48px 0 32px; text-align: center; }
@@ -971,7 +1008,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
       .blog-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
       .blog-cta .highlight { color: var(--green); }
       .blog-cta p { color: var(--gray-400); font-size: 14px; margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; white-space:nowrap; }
       .blog-cta-btn:hover { background: var(--green-dark); }
       .blog-cta-btn svg { width: 18px; height: 18px; }
       .blog-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
@@ -984,6 +1021,34 @@ class KygoSleepLatencyFactors extends HTMLElement {
       .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
       .cta-android:hover { background: var(--green-dark); color: #fff; }
       .cta-android svg { width: 18px; height: 18px; }
+      .kearly-section { padding: 48px 16px; }
+      .kband { max-width: 1100px; margin: 0 auto; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
+      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.3; color: #1E293B; }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
+      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #475569; text-align: center; }
+      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+      .kband-btn-ios { background: #22C55E; color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: #16A34A; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: #16A34A; border: 2px solid #E2E8F0; }
+      .kband-btn-android:hover { border-color: #22C55E; transform: translateY(-2px); }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+      @media (max-width: 720px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+        .kband-actions { width: 100%; flex-direction: column; }
+        .kband-btn { width: 100%; justify-content: center; }
+      }
+      @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
+      .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 780px; margin: 0 auto; }
+      .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; margin: 0 0 16px; color: var(--dark); }
+      .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+      .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
+      @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
 
       /* ── Footer ── */
       .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }

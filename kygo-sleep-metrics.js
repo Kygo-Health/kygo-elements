@@ -48,7 +48,7 @@ class KygoSleepMetrics extends HTMLElement {
         color: '#C4A97D',
         imageUrl: 'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
         totalMetrics: 22,
-        affiliateUrl: 'https://amzn.to/4aF93jj',
+        affiliateUrl: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20', trackLabel: 'oura-ring-search',
         exclusive: [
           { metric: 'Sleep Onset Latency', desc: 'Time from lying down to first detected sleep — flags sleep issues' },
           { metric: 'Sleep Efficiency', desc: 'Percentage of time in bed actually spent asleep' },
@@ -64,7 +64,7 @@ class KygoSleepMetrics extends HTMLElement {
         color: '#00B0B9',
         imageUrl: 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
         totalMetrics: 21,
-        affiliateUrl: 'https://amzn.to/3ZPkHDc',
+        affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search',
         exclusive: [
           { metric: 'Sleep Profile (10 Metrics)', desc: '10 metrics analyzed monthly, compared by age and gender (Premium)' },
           { metric: 'Sleep Animal Archetype', desc: '6 animal types assigned from 10-metric clustering (Premium)' },
@@ -79,7 +79,7 @@ class KygoSleepMetrics extends HTMLElement {
         color: '#A2AAAD',
         imageUrl: 'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
         totalMetrics: 20,
-        affiliateUrl: 'https://amzn.to/4rUcGst',
+        affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search',
         exclusive: [
           { metric: 'Sleep Apnea Notifications', desc: 'FDA-authorized — 30-day evaluation, accelerometer-based' },
           { metric: 'Breathing Disturbances', desc: 'ML-classified wrist micro-movements detect respiratory effort' },
@@ -94,7 +94,7 @@ class KygoSleepMetrics extends HTMLElement {
         color: '#007CC3',
         imageUrl: 'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
         totalMetrics: 21,
-        affiliateUrl: 'https://amzn.to/4aF8l5D',
+        affiliateUrl: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search',
         exclusive: [
           { metric: 'Training Readiness', desc: 'Combines sleep, HRV, recovery time, and training load' },
           { metric: 'Body Battery Recharge', desc: 'HRV-based recovery minus stress and activity drain' },
@@ -510,7 +510,7 @@ class KygoSleepMetrics extends HTMLElement {
     return `
       <div class="grid-header">
         <div class="grid-metric-label">Metric</div>
-        ${deviceKeys.map(dk => `<a href="${devices[dk].affiliateUrl}" class="grid-device-header" target="_blank" rel="noopener sponsored"><img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="grid-device-img" /><span>${devices[dk].short}</span></a>`).join('')}
+        ${deviceKeys.map(dk => `<a href="${devices[dk].affiliateUrl}" class="grid-device-header" target="_blank" rel="noopener sponsored" data-track-label="${devices[dk].trackLabel}"><img src="${devices[dk].imageUrl}" alt="${devices[dk].short}" class="grid-device-img" /><span>${devices[dk].short}</span></a>`).join('')}
       </div>
       <div class="grid-body">
         ${metrics.map(m => {
@@ -527,7 +527,7 @@ class KygoSleepMetrics extends HTMLElement {
                   ${deviceKeys.map(dk => {
                     const d = devices[dk];
                     if (!m[dk].has) return `<div class="detail-card unavailable"><div class="detail-header"><img src="${d.imageUrl}" alt="${d.short}" class="detail-icon" loading="lazy" /><span class="detail-device">${d.short}</span></div><span class="detail-na">Not available</span></div>`;
-                    return `<div class="detail-card"><a href="${d.affiliateUrl}" class="detail-header" target="_blank" rel="noopener sponsored"><img src="${d.imageUrl}" alt="${d.short}" class="detail-icon" loading="lazy" /><span class="detail-device">${d.short}</span></a><p class="detail-desc">${m[dk].desc}</p></div>`;
+                    return `<div class="detail-card"><a href="${d.affiliateUrl}" class="detail-header" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}"><img src="${d.imageUrl}" alt="${d.short}" class="detail-icon" loading="lazy" /><span class="detail-device">${d.short}</span></a><p class="detail-desc">${m[dk].desc}</p></div>`;
                   }).join('')}
                 </div>
               </div>` : ''}
@@ -547,7 +547,7 @@ class KygoSleepMetrics extends HTMLElement {
           <div class="excl-header" role="button" aria-expanded="${isExpanded}">
             <img src="${d.imageUrl}" alt="${d.name}" class="excl-img" loading="lazy" />
             <div class="excl-info">
-              <h3><a href="${d.affiliateUrl}" class="excl-name-link" target="_blank" rel="noopener sponsored">${d.name}</a></h3>
+              <h3><a href="${d.affiliateUrl}" class="excl-name-link" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}">${d.name}</a></h3>
               <span class="excl-count">${d.exclusive.length} exclusive feature${d.exclusive.length > 1 ? 's' : ''}</span>
             </div>
             <div class="excl-toggle">${this._icon('chevDown')}</div>
@@ -556,7 +556,7 @@ class KygoSleepMetrics extends HTMLElement {
             <ul class="excl-list">
               ${d.exclusive.map(f => `<li><span class="excl-dot"></span><div><strong>${f.metric}</strong><span class="excl-fdesc">${f.desc}</span></div></li>`).join('')}
             </ul>
-            <a href="${d.affiliateUrl}" class="excl-buy" target="_blank" rel="noopener sponsored">
+            <a href="${d.affiliateUrl}" class="excl-buy" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}">
               <span>View on Amazon</span>
               <span class="excl-buy-arrow">${this._icon('externalLink')}</span>
             </a>
@@ -637,13 +637,14 @@ class KygoSleepMetrics extends HTMLElement {
       <!-- Header -->
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Sleep Metrics
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
-            Get Kygo App ${this._icon('arrowRight')}
-          </a>
+          <div class="nav-cta-group">
+            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg><span>iOS</span></a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+          </div>
         </div>
       </header>
 
@@ -679,19 +680,19 @@ class KygoSleepMetrics extends HTMLElement {
               <span>Free Forever Plan</span>
             </div>
             <div class="blog-cta-headline">See how your food affects your <span class="highlight">sleep, energy, and recovery</span></div>
-            <p class="blog-cta-sub">Kygo connects your wearable data with AI-powered nutrition tracking\u2014then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.</p>
+            <p class="blog-cta-sub">Stop guessing which of these applies to you. Kygo correlates your meals, caffeine, and alcohol with YOUR sleep stages.</p>
             <div class="blog-cta-actions">
               <div class="blog-cta-buttons">
-                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener noreferrer" class="blog-cta-btn" data-track-position="article-cta">
+                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener noreferrer" class="blog-cta-btn cta-primary" data-track-position="early" data-track-label="sleep-metrics-early-ios">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
+                  Try Free for 7 Days
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="early" data-track-label="sleep-metrics-early-android">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
-              <span class="blog-cta-meta"><span>2-min setup</span><span>\u2022</span><span>Free forever plan</span><span>\u2022</span><span>No credit card</span></span>
+              <span class="blog-cta-meta">7-day free trial on yearly. Free plan available. Cancel anytime.</span>
             </div>
             <div class="blog-cta-devices">
               <span class="blog-cta-devices-label">Works with</span>
@@ -700,13 +701,15 @@ class KygoSleepMetrics extends HTMLElement {
                 <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple">Apple</span>
                 <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit">Fitbit</span>
                 <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin">Garmin</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop">Whoop</span>
+                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health">Google Health</span>
                 <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect">Health Connect</span>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      <kygo-inline-subscribe source="tool-sleep-metrics" variant="comparison"></kygo-inline-subscribe>
 
       <!-- Exclusive Features -->
       <section class="exclusive-section">
@@ -742,17 +745,18 @@ class KygoSleepMetrics extends HTMLElement {
             <div class="cta-box-content">
               <div class="cta-icon-wrap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
               <h2>Your sleep data tells half the story. Nutrition tells the rest.</h2>
-              <p>What you eat directly impacts how you sleep. Kygo connects your wearable\u2019s sleep data with your nutrition to show you which foods improve your deep sleep, HRV, and recovery \u2014 and which ones don\u2019t.</p>
+              <p>What you eat directly impacts how you sleep. Kygo connects your wearable\u2019s sleep data with your nutrition to show you which foods improve your deep sleep, HRV, and recovery, and which ones don\u2019t.</p>
               <div class="cta-buttons">
-                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn" target="_blank" rel="noopener" data-track-position="footer-cta">
+                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="cta-btn cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta" data-track-label="sleep-metrics-footer-ios">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                   Download for iOS
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="sleep-metrics-footer-android">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
+              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.85);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
               <div class="cta-features">
                 <span class="cta-feat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Free forever plan</span>
                 <span class="cta-feat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Syncs with Oura, Fitbit, Apple Watch &amp; Garmin</span>
@@ -765,15 +769,15 @@ class KygoSleepMetrics extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app" target="_blank" rel="noopener">Kygo App</a>
-            <a href="https://kygo.app/privacy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://kygo.app/terms" target="_blank" rel="noopener">Terms</a>
+            <a href="https://www.kygo.app" target="_blank" rel="noopener">Kygo App</a>
+            <a href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
           </div>
           <p class="footer-copyright">Data sourced from official manufacturer documentation. Last updated February 2025.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
@@ -824,9 +828,14 @@ class KygoSleepMetrics extends HTMLElement {
       .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
       .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: var(--dark); text-decoration: none; }
       .logo-img { height: 28px; width: auto; }
-      .header-link { color: var(--green); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 4px; font-weight: 500; transition: color 0.2s; }
-      .header-link:hover { color: var(--green-dark); }
-      .header-link svg { width: 14px; height: 14px; }
+      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+      .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+      .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+      .nav-cta-group .nav-store-ios { background:var(--green); color:#fff; }
+      .nav-cta-group .nav-store-ios:hover { background:var(--green-dark); color:#fff; }
+      .nav-cta-group .nav-store-android { background:#fff; color:var(--green-dark); border:1.5px solid var(--gray-200); }
+      .nav-cta-group .nav-store-android:hover { border-color:var(--green); color:var(--green-dark); }
+      @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* ── Hero ── */
       .hero { padding: 48px 0 40px; text-align: center; }
@@ -1040,7 +1049,7 @@ class KygoSleepMetrics extends HTMLElement {
         position: relative;
         z-index: 1;
       }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; white-space:nowrap; }
       .blog-cta-btn:hover { background: var(--green-dark); }
       .blog-cta-btn svg { width: 18px; height: 18px; }
       .blog-cta-meta {
@@ -1137,7 +1146,6 @@ class KygoSleepMetrics extends HTMLElement {
         .header { padding: 14px 24px; }
         .logo { font-size: 16px; gap: 10px; }
         .logo-img { height: 32px; }
-        .header-link { font-size: 14px; gap: 6px; }
         .hero h1 { font-size: clamp(32px, 5vw, 44px); }
         .hero-sub { font-size: 18px; }
         .section-title { font-size: 32px; }

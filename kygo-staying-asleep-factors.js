@@ -27,7 +27,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
     this._chartSelectedKey = null;
     this._listSort = 'impact';
     this._listExpandedKey = null;
-    this._qualOpen = null;
     this._eventsBound = false;
   }
 
@@ -64,7 +63,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A tightly controlled inpatient study with polysomnography found higher-fiber days independently predicted fewer sleep arousals. Fiber is one of the strongest dietary signals for staying asleep through the night.',
           mechanism: 'Stable overnight glucose, lower systemic inflammation, and microbiome-driven vagal tone reduce the arousals that fragment deep sleep.',
           dosage: '25–35 g/day from whole foods',
-          source: { url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384', label: 'St-Onge et al. 2016' }
+          source: { url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384', label: 'St-Onge et al. 2016' },
+          affiliate: { url: 'https://www.amazon.com/dp/B0BDP24LP4?tag=kygohealthapp-20&th=1', label: 'Dietary Fiber Supplement' , slug: 'fiber-gummies' }
         },
         {
           key: 'sugar', name: 'Sugar / Refined Carbs',
@@ -114,7 +114,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A small but clean pilot RCT found tart cherry juice cut WASO by about 17 minutes versus placebo in older adults with insomnia. Needs replication at larger scale, but the mechanism is plausible and the signal is direct.',
           mechanism: 'Naturally occurring melatonin and tryptophan plus anti-inflammatory anthocyanins support consolidated overnight sleep.',
           dosage: '240 mL (8 oz) twice daily; morning and 1–2 hrs pre-bed',
-          source: { url: 'https://journals.sagepub.com/doi/full/10.1089/jmf.2009.0096', label: 'Pigeon et al. 2010 RCT' }
+          source: { url: 'https://journals.sagepub.com/doi/full/10.1089/jmf.2009.0096', label: 'Pigeon et al. 2010 RCT' },
+          affiliate: { url: 'https://www.amazon.com/dp/B007RC6J72?tag=kygohealthapp-20&th=1', label: 'Tart Cherry Juice' , slug: 'tart-cherry-juice' }
         }
       ],
       supplements: [
@@ -136,7 +137,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'The strongest supplement-specific evidence for staying asleep. Pooled across 3 RCTs with 281 participants, ashwagandha produced a standardized mean difference of −0.39 for WASO — meaningfully less nighttime waking. 600 mg/day of standardized extract shows the largest effect.',
           mechanism: 'Withanolides reduce cortisol and overnight sympathetic tone; GABAergic activity dampens the arousals that fragment sleep.',
           dosage: '600 mg/day standardized extract, split AM/PM or taken evening',
-          source: { url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843', label: 'Cheah et al. 2021 meta-analysis' }
+          source: { url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843', label: 'Cheah et al. 2021 meta-analysis' },
+          affiliate: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }
         },
         {
           key: 'glycine', name: 'Glycine (3 g)',
@@ -146,7 +148,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A small but polysomnography-verified study: 3 g of glycine before bed reduced nighttime waking and sped entry into slow-wave sleep. Small sample, but the mechanism is clean and the objective measurement is solid.',
           mechanism: 'Peripheral vasodilation drops core body temperature (a deep-sleep signal); NMDA modulation reduces cortical arousal.',
           dosage: '3 g, 30–60 min before bed',
-          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' }
+          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' },
+          affiliate: { url: 'https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20', label: 'Glycine Powder' , slug: 'glycine-search' }
         },
         {
           key: 'magnesium', name: 'Magnesium (500 mg)',
@@ -156,7 +159,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'Magnesium improved overall sleep efficiency in older adults with insomnia (P=0.03), but WASO itself was not directly measured. Early-morning awakening was only marginally better (P=0.08). Best evidence is in elderly people with low dietary magnesium.',
           mechanism: 'NMDA receptor antagonism and GABA-A potentiation reduce cortical arousal; supports melatonin rhythm.',
           dosage: '200–500 mg elemental magnesium (glycinate preferred)',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23853635/', label: 'Abbasi et al. 2012 RCT' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23853635/', label: 'Abbasi et al. 2012 RCT' },
+          affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine (200–450 mg)',
@@ -166,7 +170,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'L-theanine shows subjective relaxation benefits and some sleep-maintenance signal at 200–450 mg/day, but WASO results are inconsistent when it is isolated from combination products. Promising, not yet proven for staying asleep.',
           mechanism: 'Increases alpha brain waves and GABA/glutamate balance; reduces cortisol and sympathetic tone without sedation.',
           dosage: '200–450 mg, 30–60 min before bed',
-          source: { url: 'https://www.tandfonline.com/doi/full/10.1080/1028415X.2025.2556925', label: '2025 systematic review' }
+          source: { url: 'https://www.tandfonline.com/doi/full/10.1080/1028415X.2025.2556925', label: '2025 systematic review' },
+          affiliate: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' }
         },
         {
           key: 'valerian', name: 'Valerian Root',
@@ -250,7 +255,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: "Even dim light during sleep — roughly a nightlight at 5–10 lux — significantly increased WASO and shallow REM on polysomnography. You don't have to be looking at a screen; ambient bedroom light is enough to fragment sleep.",
           mechanism: 'Melanopsin-containing retinal ganglion cells detect light through the eyelids, suppressing melatonin and raising cortical arousal.',
           dosage: 'Bedroom as dark as possible; cover electronics, use blackout',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/', label: 'Cho et al. 2016 PSG study' }
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/', label: 'Cho et al. 2016 PSG study' },
+          affiliate: { url: 'https://www.amazon.com/dp/B07PRG2CQY?tag=kygohealthapp-20', label: 'Sleep Mask', slug: 'sleep-mask' }
         },
         {
           key: 'noise', name: 'Noise (>50 dBA)',
@@ -260,7 +266,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'The most comprehensive environmental sleep review to date. Nighttime noise above 50 dBA added roughly 30 minutes of WASO in the reviewed field studies. Traffic, aircraft, and intermittent neighborhood noise all show dose-response effects.',
           mechanism: 'Auditory cortex activation and autonomic arousal interrupt NREM stages; even sub-conscious arousals fragment sleep architecture.',
           dosage: 'Keep bedroom <30 dB; use masking (white/pink noise) or earplugs',
-          source: { url: 'https://www.mdpi.com/1660-4601/15/3/519', label: 'Basner et al. 2018 WHO review' }
+          source: { url: 'https://www.mdpi.com/1660-4601/15/3/519', label: 'Basner et al. 2018 WHO review' },
+          affiliate: { url: 'https://www.amazon.com/dp/B0FSHYJHHV?tag=kygohealthapp-20&th=1', label: 'Earplugs' , slug: 'silicone-earplugs' }
         },
         {
           key: 'co2-ventilation', name: 'CO₂ >1000 ppm (Poor Ventilation)',
@@ -270,7 +277,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A well-designed balanced crossover study found even moderate CO₂ buildup (~1,000 ppm) added measurable wake time during the night. A stuffy, poorly ventilated bedroom is a real and often-overlooked WASO driver.',
           mechanism: 'Elevated CO₂ increases ventilatory drive, sympathetic tone, and micro-arousals; reduced O₂ saturation compounds the effect.',
           dosage: 'Crack a window or use mechanical ventilation; aim <800 ppm',
-          source: { url: 'https://www.sciencedirect.com/science/article/pii/S0360132323011459', label: 'Kang et al. 2024' }
+          source: { url: 'https://www.sciencedirect.com/science/article/pii/S0360132323011459', label: 'Kang et al. 2024' },
+          affiliate: { url: 'https://www.amazon.com/dp/B0CGX22CR8?tag=kygohealthapp-20&th=1', label: 'CO₂ Monitor' , slug: 'co2-monitor' }
         },
         {
           key: 'mattress', name: 'Mattress (Medium-Firm)',
@@ -280,7 +288,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           whatThisMeans: 'A small polysomnography study found a medium-firm mattress produced the most stable sleep and lowest WASO across three firmness levels. Very small sample, but the direction is consistent with broader ergonomic data.',
           mechanism: 'Appropriate spinal support reduces micro-movements and pressure-point arousals that fragment sleep across the night.',
           dosage: 'Medium-firm mattress; replace every 7–10 years',
-          source: { url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222', label: 'Hu et al. 2025 PSG study' }
+          source: { url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222', label: 'Hu et al. 2025 PSG study' },
+          affiliate: { url: 'https://www.amazon.com/dp/B0DKTCWC8X?tag=kygohealthapp-20&th=1', label: 'Medium-Firm Mattress' , slug: 'memory-foam-mattress' }
         }
       ],
       physiology: [
@@ -413,6 +422,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       chevDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>',
       arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
       externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+      cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>',
       arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>',
       arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       arrowLeftRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>'
@@ -448,6 +458,12 @@ class KygoStayingAsleepFactors extends HTMLElement {
       environment: { label: 'Environment & Hygiene',     hue: '#06B6D4' },
       physiology:  { label: 'Demographics & Physiology', hue: '#EC4899' }
     };
+  }
+
+  /** Category-relevant icon (single brand-green color) — replaces the old per-category color dots */
+  _catIcon(catKey) {
+    const c = this._categories[catKey];
+    return this._icon(c ? c.icon : 'moon');
   }
 
   get _factorMeta() {
@@ -562,7 +578,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       const active = this._catFilter === k;
       chips.push(`
         <button class="cat-chip ${active ? 'active' : ''}" data-cat="${k}" aria-pressed="${active}">
-          <span class="cat-hue" style="background:${m.hue}"></span>${m.label}
+          <span class="cat-hue" aria-hidden="true">${this._catIcon(k)}</span>${m.label}
           <span class="count">${count}</span>
         </button>`);
     });
@@ -589,12 +605,11 @@ class KygoStayingAsleepFactors extends HTMLElement {
       const isNeg = val > 0;
       const isSelected = selectedKey === f.key;
       const dim = selectedKey && !isSelected ? 'dim' : '';
-      const hue = (meta[f.category] || {}).hue || '#94A3B8';
       return `
         <div class="chart-row ${dim}">
           <button class="chart-label" data-chart-key="${f.key}" aria-expanded="${isSelected}">
             <span class="chart-label-name">${f.name}</span>
-            <span class="chart-label-dot" style="background:${hue}" aria-hidden="true"></span>
+            <span class="chart-label-dot" aria-hidden="true">${this._catIcon(f.category)}</span>
           </button>
           <div class="chart-bar">
             <span class="chart-axis" aria-hidden="true"></span>
@@ -642,6 +657,12 @@ class KygoStayingAsleepFactors extends HTMLElement {
       </div>`;
   }
 
+  _affiliateChips(f, position) {
+    if (!f.affiliate) return '';
+    const list = Array.isArray(f.affiliate) ? f.affiliate : [f.affiliate];
+    return list.map(a => `<a href="${a.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${a.slug}" data-track-position="${position}"><span class="aff-icon" aria-hidden="true">${this._icon('cart')}</span><span class="aff-text">View <strong>${a.label}</strong> on Amazon</span><span class="factor-affiliate-arrow" aria-hidden="true">${this._icon('externalLink')}</span></a>`).join('');
+  }
+
   _renderChartDetail(f) {
     if (!f) return '';
     const val = f.waso;
@@ -663,6 +684,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           <div class="chart-detail-row"><span class="lbl">Key finding</span><p>${f.keyFinding}</p></div>
           <div class="chart-detail-row"><span class="lbl">What to do</span><p>${f.dosage}</p></div>
           <div class="chart-detail-row"><span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p></div>
+          ${this._affiliateChips(f, 'factor-chart')}
         </div>
       </div>`;
   }
@@ -700,11 +722,10 @@ class KygoStayingAsleepFactors extends HTMLElement {
     const rows = shown.map((f, i) => {
       const waso = this._wasoDisplay(f);
       const isExp = this._listExpandedKey === f.key;
-      const hue = (meta[f.category] || {}).hue || '#94A3B8';
       return `
         <div class="list-row ${isExp ? 'expanded' : ''}" data-list-key="${f.key}" role="button" tabindex="0" aria-expanded="${isExp}">
           <div class="list-rank">${String(i + 1).padStart(2, '0')}</div>
-          <div class="list-name"><span class="list-dot" style="background:${hue}" aria-hidden="true"></span>${f.name}</div>
+          <div class="list-name"><span class="list-dot" aria-hidden="true">${this._catIcon(f.category)}</span>${f.name}</div>
           <div class="list-col-dir"><span class="list-dir ${this._dirClass(f.direction)}">${dirLabel(f.direction)}</span></div>
           <div class="list-eff hide-m">${f.effect}</div>
           <div class="list-ev hide-m" style="color:${evColor[f.evidence]}">${f.evidence.toUpperCase()}</div>
@@ -722,6 +743,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
                 <span class="lbl">Key finding</span><p>${f.keyFinding}</p>
                 <span class="lbl">What to do</span><p>${f.dosage}</p>
                 <span class="lbl">Source</span><p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
+                ${this._affiliateChips(f, 'factor-list')}
               </div>
             </div>
           </div>` : ''}`;
@@ -759,9 +781,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           return bw - aw;
         });
       const chips = bucket.length ? bucket.map(f => {
-        const hue = (meta[f.category] || {}).hue || '#94A3B8';
-        return `<div class="tl-chip ${this._dirClass(f.direction)}">
-          <span class="tl-dot" style="background:${hue}" aria-hidden="true"></span>
+          return `<div class="tl-chip ${this._dirClass(f.direction)}">
+          <span class="tl-dot" aria-hidden="true">${this._catIcon(f.category)}</span>
           <div class="tl-text"><span class="tl-name">${f.name}</span><span class="tl-eff">${f.effect}</span></div>
         </div>`;
       }).join('') : '<p class="tl-empty">No factors in this slot.</p>';
@@ -791,14 +812,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
       </div>`;
   }
 
-  _renderQualGrid() {
-    const flat = this._flatFactors();
-    const qual = flat
-      .filter(f => f.waso === null || f.waso === undefined)
-      .filter(f => !this._catFilter || f.category === this._catFilter);
-    if (qual.length === 0) return '';
-
-    const buildCard = (f) => `
+  _factorCard(f) {
+    return `
       <article class="qual-card ${this._dirClass(f.direction)}">
         <div class="qual-row">
           <h4 class="qual-name">${f.name}</h4>
@@ -815,46 +830,33 @@ class KygoStayingAsleepFactors extends HTMLElement {
             <p><strong>Mechanism.</strong> ${f.mechanism}</p>
             <p><strong>What to do.</strong> ${f.dosage}</p>
             <p><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
+            ${this._affiliateChips(f, 'factor-breakdown')}
           </div>
         </details>
       </article>`;
-
-    const groups = Object.entries(this._categoryMeta).map(([catKey, meta]) => {
-      const items = qual.filter(f => f.category === catKey);
-      if (items.length === 0) return '';
-      const open = this._qualOpen === catKey;
-      return `
-        <div class="qual-group ${open ? 'open' : ''}" data-qual-cat="${catKey}">
-          <button class="qual-group-head" aria-expanded="${open}" data-qual-toggle="${catKey}">
-            <span class="qual-group-dot" style="background:${meta.hue}" aria-hidden="true"></span>
-            <span class="qual-group-title">${meta.label}</span>
-            <span class="qual-group-count">${items.length}</span>
-            <span class="qual-group-chev" aria-hidden="true">${this._icon('chevDown')}</span>
-          </button>
-          <div class="qual-group-body" ${open ? '' : 'hidden'}>
-            <div class="qual-grid">${items.map(buildCard).join('')}</div>
-          </div>
-        </div>`;
-    }).filter(Boolean).join('');
-
-    return `
-      <div class="qual-wrap">
-        <div class="qual-head">
-          <h3>Also matters — directional evidence without a minute-figure</h3>
-          <span class="qual-count">${qual.length} qualitative factor${qual.length === 1 ? '' : 's'}</span>
-        </div>
-        <div class="qual-accordion">${groups}</div>
-      </div>`;
   }
 
-  _toggleQualCat(key) {
-    this._qualOpen = this._qualOpen === key ? null : key;
-    const bodyEl = this.shadowRoot.querySelector('.dash-body');
-    if (bodyEl) bodyEl.innerHTML = this._renderDashboardBody();
+  /** Full factor breakdown as cards, grouped by category (native <details> accordion). */
+  _renderFactorBreakdown() {
+    const flat = this._flatFactors();
+    return Object.entries(this._categoryMeta).map(([catKey, meta], idx) => {
+      const items = flat.filter(f => f.category === catKey);
+      if (!items.length) return '';
+      return `
+        <details class="bd-group" ${idx === 0 ? 'open' : ''}>
+          <summary class="bd-group-head">
+            <span class="bd-group-dot" aria-hidden="true">${this._catIcon(catKey)}</span>
+            <span class="bd-group-title">${meta.label}</span>
+            <span class="bd-group-count">${items.length}</span>
+            <span class="bd-group-chev" aria-hidden="true">${this._icon('chevDown')}</span>
+          </summary>
+          <div class="bd-grid">${items.map(f => this._factorCard(f)).join('')}</div>
+        </details>`;
+    }).filter(Boolean).join('');
   }
 
   _renderDashboardBody() {
-    if (this._view === 'chart')    return `${this._renderChartView()}${this._renderQualGrid()}`;
+    if (this._view === 'chart')    return this._renderChartView();
     if (this._view === 'list')     return this._renderListView();
     if (this._view === 'timeline') return this._renderTimelineView();
     return '';
@@ -999,7 +1001,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
+    const iosUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
@@ -1007,13 +1009,14 @@ class KygoStayingAsleepFactors extends HTMLElement {
       <!-- Header -->
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Staying Asleep
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
-            Get App ${this._icon('arrowRight')}
-          </a>
+          <div class="nav-cta-group">
+            <a href="${iosUrl}" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg><span>iOS</span></a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+          </div>
         </div>
       </header>
 
@@ -1028,7 +1031,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
         </div>
       </section>
 
-      <!-- Data Dashboard: chart / leaderboard / timeline -->
+      <!-- Data Dashboard: "What the evidence actually says" -->
       <section class="dash-section" id="explore">
         <div class="container">
           <div class="dash-head animate-on-scroll">
@@ -1049,6 +1052,75 @@ class KygoStayingAsleepFactors extends HTMLElement {
         </div>
       </section>
 
+      <!-- Early contextual CTA -->
+      <section class="kearly-section">
+        <div class="container">
+              <div class="kband animate-on-scroll">
+                <div class="kband-inner">
+                  <div class="kband-glow"></div>
+                  <div class="kband-copy">
+                    <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+                    <h2 class="kband-headline">Stop guessing which of these applies to you. Kygo correlates your meals, caffeine, and alcohol with YOUR sleep stages.</h2>
+                  </div>
+                  <div class="kband-actions">
+                    <a href="${iosUrl}" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="staying-asleep-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Try Free for 7 Days</a>
+                    <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="staying-asleep-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a><p class="kband-note">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </section>
+
+      <kygo-inline-subscribe source="tool-staying-asleep-factors" variant="factors"></kygo-inline-subscribe>
+
+      <!-- App CTA -->
+      <section class="blog-cta-section">
+        <div class="container">
+          <div class="blog-cta animate-on-scroll">
+            <div class="blog-cta-glow"></div>
+            <div class="blog-cta-content">
+              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
+              <h2>See What's Influencing <span class="highlight">Your Sleep</span></h2>
+              <p>Kygo Health connects your wearable data with nutrition tracking to pinpoint personal correlations between what you eat, how you move, and how well you stay asleep.</p>
+              <div class="blog-cta-buttons">
+                <a href="${iosUrl}" class="blog-cta-btn cta-primary" data-track-position="footer-cta" data-track-label="staying-asleep-footer-ios" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                  Download for iOS
+                </a>
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="staying-asleep-footer-android">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                  Download for Android
+                </a>
+              </div>
+              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:#94A3B8;text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+              <div class="blog-cta-tags">
+                <span class="blog-cta-tags-label">Works with</span>
+                <div class="blog-cta-tags-logos">
+                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Factor breakdown (cards) -->
+      <section class="breakdown-section">
+        <div class="container">
+          <div class="bd-head animate-on-scroll">
+            <span class="dash-eyebrow">The full breakdown</span>
+            <h2 class="dash-h2">Every factor, <em>explained</em>.</h2>
+            <p class="bd-lede">Browse all 31 by category — direction, evidence grade, mechanism, what to do, and the source. Tap a card to expand.</p>
+          </div>
+          <div class="bd-groups animate-on-scroll">${this._renderFactorBreakdown()}</div>
+        </div>
+      </section>
+
       <!-- Read the Full Article — its own section -->
       <section class="article-section">
         <div class="container">
@@ -1061,41 +1133,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
             </div>
             <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
           </a>
-        </div>
-      </section>
-
-      <!-- App CTA -->
-      <section class="blog-cta-section">
-        <div class="container">
-          <div class="blog-cta animate-on-scroll">
-            <div class="blog-cta-glow"></div>
-            <div class="blog-cta-content">
-              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-              <h2>See What's Influencing <span class="highlight">Your Sleep</span></h2>
-              <p>Kygo Health connects your wearable data with nutrition tracking to pinpoint personal correlations between what you eat, how you move, and how well you stay asleep.</p>
-              <div class="blog-cta-buttons">
-                <a href="${iosUrl}" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <div class="blog-cta-tags">
-                <span class="blog-cta-tags-label">Works with</span>
-                <div class="blog-cta-tags-logos">
-                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy" />
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -1125,18 +1162,18 @@ class KygoStayingAsleepFactors extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Home</a>
-            <a href="https://kygo.app/how-it-works">How It Works</a>
-            <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy">Privacy</a>
-            <a href="https://kygo.app/terms">Terms</a>
+            <a href="https://www.kygo.app">Home</a>
+            <a href="https://www.kygo.app/how-it-works">How It Works</a>
+            <a href="https://www.kygo.app/blog">Blog</a>
+            <a href="https://www.kygo.app/contact">Contact</a>
+            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated April 2026.</p>
@@ -1191,12 +1228,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
         this._listSort = sortBtn.dataset.sort;
         const bodyEl = shadow.querySelector('.dash-body');
         if (bodyEl) bodyEl.innerHTML = this._renderDashboardBody();
-        return;
-      }
-
-      const qualToggle = e.target.closest('[data-qual-toggle]');
-      if (qualToggle) {
-        this._toggleQualCat(qualToggle.dataset.qualToggle);
         return;
       }
 
@@ -1316,7 +1347,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
 
   _styles() {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
         --dark: #1E293B;
@@ -1357,9 +1388,14 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; max-width: 1200px; margin: 0 auto; }
       .logo { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); text-decoration: none; white-space: nowrap; min-width: 0; line-height: 1.2; }
       .logo-img { height: 26px; width: auto; flex-shrink: 0; }
-      .header-link { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: #fff; background: var(--green); padding: 7px 12px; border-radius: 50px; text-decoration: none; transition: background 0.2s; white-space: nowrap; flex-shrink: 0; line-height: 1; }
-      .header-link:hover { background: var(--green-dark); }
-      .header-link svg { width: 13px; height: 13px; }
+      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+      .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+      .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+      .nav-cta-group .nav-store-ios { background:var(--green); color:#fff; }
+      .nav-cta-group .nav-store-ios:hover { background:var(--green-dark); color:#fff; }
+      .nav-cta-group .nav-store-android { background:#fff; color:var(--green-dark); border:1.5px solid var(--gray-200); }
+      .nav-cta-group .nav-store-android:hover { border-color:var(--green); color:var(--green-dark); }
+      @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* ========== HERO (mobile-first) ========== */
       .hero { padding: 40px 0 28px; background: #fff; }
@@ -1386,7 +1422,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
       /* ========== SIX HEADLINES ========== */
-      .picks-section { padding: 40px 0; background: #fff; }
+      .picks-section { padding: 40px 0; background: var(--gray-100); }
       .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
       .picks-glow { position: absolute; top: -40%; right: -15%; width: 70%; height: 160%; background: radial-gradient(circle at center, rgba(34,197,94,0.22), transparent 60%); pointer-events: none; }
       .picks-head { position: relative; z-index: 1; margin-bottom: 24px; }
@@ -1435,7 +1471,9 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .cat-rail { display: flex; gap: 6px; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 2px 0 6px; margin: 0 -20px 18px; padding-left: 20px; padding-right: 20px; scroll-padding-left: 20px; }
       .cat-rail::-webkit-scrollbar { display: none; }
       .cat-chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 12px; border-radius: 9999px; background: #fff; border: 1px solid var(--gray-200); font-size: 12px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all .15s; font-family: inherit; white-space: nowrap; flex-shrink: 0; }
-      .cat-chip .cat-hue { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+      .cat-chip .cat-hue { width: 15px; height: 15px; display: inline-flex; color: var(--green); flex-shrink: 0; }
+      .cat-chip .cat-hue svg { width: 100%; height: 100%; }
+      .cat-chip.active .cat-hue { color: #fff; }
       .cat-chip:hover { border-color: var(--gray-400); }
       .cat-chip.active { background: var(--dark); color: #fff; border-color: var(--dark); }
       .cat-chip .count { font-size: 11px; color: var(--gray-400); padding-left: 6px; border-left: 1px solid var(--gray-200); }
@@ -1460,7 +1498,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .chart-label { grid-column: 1; grid-row: 1; display: inline-flex; align-items: center; gap: 6px; padding: 0; background: none; border: 0; cursor: pointer; text-align: left; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--dark); line-height: 1.25; min-width: 0; max-width: 100%; padding-right: 8px; }
       .chart-label:hover { color: var(--green-dark); }
       .chart-label-name { min-width: 0; overflow-wrap: anywhere; word-break: normal; hyphens: auto; }
-      .chart-label-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+      .chart-label-dot { width: 14px; height: 14px; display: inline-flex; color: var(--green); flex-shrink: 0; }
+      .chart-label-dot svg { width: 100%; height: 100%; }
       .chart-val { grid-column: 2; grid-row: 1; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; letter-spacing: -0.01em; text-align: right; white-space: nowrap; align-self: start; }
       .chart-val.pos { color: var(--green-dark); }
       .chart-val.neg { color: var(--red); }
@@ -1494,6 +1533,14 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green-dark); font-weight: 500; font-size: 13px; }
       .source-link svg { width: 12px; height: 12px; }
       .source-link:hover { color: var(--green); }
+      .factor-affiliate { display: flex; align-items: center; gap: 10px; padding: 11px 14px; margin-top: 12px; background: #fff; border: 1.5px solid var(--green); border-radius: var(--radius-sm, 12px); text-decoration: none; color: var(--green-dark); font-size: 13px; font-weight: 600; transition: all 0.2s; }
+      .factor-affiliate:hover { background: var(--green-light); box-shadow: 0 2px 12px rgba(34,197,94,0.18); }
+      .aff-icon { width: 18px; height: 18px; display: inline-flex; flex-shrink: 0; color: var(--green); }
+      .aff-icon svg { width: 100%; height: 100%; }
+      .aff-text { flex: 1; min-width: 0; }
+      .aff-text strong { font-weight: 700; }
+      .factor-affiliate-arrow { width: 14px; height: 14px; display: flex; flex-shrink: 0; color: var(--green); }
+      .factor-affiliate-arrow svg { width: 100%; height: 100%; }
 
       /* List / leaderboard view */
       .list-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -1512,7 +1559,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .list-row .hide-m { display: none; }
       .list-rank { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; color: var(--gray-400); font-feature-settings: "tnum" 1; }
       .list-name { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--dark); font-size: 13.5px; line-height: 1.2; min-width: 0; }
-      .list-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+      .list-dot { width: 16px; height: 16px; display: inline-flex; color: var(--green); flex-shrink: 0; }
+      .list-dot svg { width: 100%; height: 100%; }
       .list-dir { font-size: 10.5px; font-weight: 600; padding: 3px 8px; border-radius: 9999px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
       .list-dir.pos { background: var(--green-light); color: var(--green-dark); }
       .list-dir.neg { background: rgba(239,68,68,0.1); color: var(--red); }
@@ -1558,7 +1606,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .tl-chip.neg { border-left: 3px solid var(--red); }
       .tl-chip.neu { border-left: 3px solid var(--gray-400); }
       .tl-slot.overnight .tl-chip { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
-      .tl-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+      .tl-dot { width: 14px; height: 14px; display: inline-flex; color: var(--green); margin-top: 1px; flex-shrink: 0; }
+      .tl-dot svg { width: 100%; height: 100%; }
       .tl-text { flex: 1; min-width: 0; }
       .tl-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12.5px; color: var(--dark); display: block; line-height: 1.2; }
       .tl-slot.overnight .tl-name { color: #fff; }
@@ -1578,7 +1627,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .qual-group.open { border-color: var(--gray-300); box-shadow: 0 1px 0 rgba(30,41,59,0.03); }
       .qual-group-head { display: flex; width: 100%; align-items: center; gap: 10px; padding: 14px 16px; background: #fff; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .qual-group-head:hover { background: var(--gray-50); }
-      .qual-group-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+      .qual-group-dot { width: 18px; height: 18px; display: inline-flex; color: var(--green); flex-shrink: 0; }
+      .qual-group-dot svg { width: 100%; height: 100%; }
       .qual-group-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; color: var(--dark); letter-spacing: -0.005em; flex: 1; }
       .qual-group-count { font-size: 11px; font-weight: 700; color: var(--gray-600); background: var(--gray-100); padding: 3px 10px; border-radius: 9999px; }
       .qual-group-chev { width: 20px; height: 20px; color: var(--gray-400); transition: transform .25s ease-out; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -1589,6 +1639,28 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .qual-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
       .qual-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 10px 12px; transition: border-color .2s, box-shadow .2s; }
       .qual-card:hover { border-color: var(--gray-400); }
+
+      /* Factor breakdown (full card library, native <details> accordion) */
+      .breakdown-section { padding: 40px 0; background: var(--gray-100); }
+      .bd-head { margin-bottom: 18px; }
+      .bd-lede { color: var(--gray-600); font-size: 14px; margin-top: 8px; max-width: 640px; }
+      .bd-groups { display: flex; flex-direction: column; gap: 8px; }
+      .bd-group { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+      .bd-group:hover { border-color: var(--gray-400); }
+      .bd-group[open] { border-color: var(--gray-300); box-shadow: 0 1px 0 rgba(30,41,59,0.03); }
+      .bd-group-head { display: flex; align-items: center; gap: 10px; padding: 14px 16px; cursor: pointer; list-style: none; user-select: none; }
+      .bd-group-head::-webkit-details-marker { display: none; }
+      .bd-group-head:hover { background: var(--gray-50); }
+      .bd-group-dot { width: 18px; height: 18px; display: inline-flex; color: var(--green); flex-shrink: 0; }
+      .bd-group-dot svg { width: 100%; height: 100%; }
+      .bd-group-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; color: var(--dark); letter-spacing: -0.005em; flex: 1; }
+      .bd-group-count { font-size: 11px; font-weight: 700; color: var(--gray-600); background: var(--gray-100); padding: 3px 10px; border-radius: 9999px; }
+      .bd-group-chev { width: 20px; height: 20px; color: var(--gray-400); transition: transform .25s ease-out; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+      .bd-group-chev svg { width: 18px; height: 18px; }
+      .bd-group[open] .bd-group-chev { transform: rotate(180deg); color: var(--green-dark); }
+      .bd-grid { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 0 12px 14px; }
+      @media (min-width: 768px) { .bd-grid { grid-template-columns: repeat(2, 1fr); } }
+      @media (min-width: 1024px) { .bd-grid { grid-template-columns: repeat(3, 1fr); } }
       .qual-card.pos { border-left: 3px solid var(--green); }
       .qual-card.neg { border-left: 3px solid var(--red); }
       .qual-card.neu { border-left: 3px solid var(--gray-400); }
@@ -1612,7 +1684,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .qual-body strong { color: var(--dark); font-weight: 600; }
       .qual-body a { color: var(--green-dark); font-weight: 500; }
 
-      .sources-section { padding: 48px 0; }
+      .sources-section { padding: 48px 0; background: #fff; }
       .src-accordion { max-width: 720px; margin: 0 auto; }
       .src-count-badge { text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-400); margin-bottom: 16px; }
       .src-group { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: #fff; }
@@ -1647,7 +1719,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .article-card:hover .article-go { background: var(--green-dark); }
       .article-go svg { width: 16px; height: 16px; }
 
-      .blog-cta-section { padding: 48px 0; }
+      .blog-cta-section { padding: 48px 0; background: #fff; }
       .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
       .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
       .blog-cta-content { position: relative; z-index: 1; }
@@ -1657,7 +1729,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .blog-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
       .blog-cta .highlight { color: var(--green); }
       .blog-cta p { color: var(--gray-400); font-size: 14px; margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
+      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; white-space:nowrap; }
       .blog-cta-btn:hover { background: var(--green-dark); }
       .blog-cta-btn svg { width: 18px; height: 18px; }
       .blog-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
@@ -1672,6 +1744,34 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
       .cta-android:hover { background: var(--green-dark); color: #fff; }
       .cta-android svg { width: 18px; height: 18px; }
+      .kearly-section { padding: 48px 16px; }
+      .kband { max-width: 1100px; margin: 0 auto; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
+      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.3; color: #1E293B; }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
+      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #475569; text-align: center; }
+      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+      .kband-btn-ios { background: #22C55E; color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: #16A34A; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: #16A34A; border: 2px solid #E2E8F0; }
+      .kband-btn-android:hover { border-color: #22C55E; transform: translateY(-2px); }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+      @media (max-width: 720px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+        .kband-actions { width: 100%; flex-direction: column; }
+        .kband-btn { width: 100%; justify-content: center; }
+      }
+      @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
+      .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 780px; margin: 0 auto; }
+      .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; margin: 0 0 16px; color: var(--dark); }
+      .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+      .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
+      @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
 
       .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
@@ -1706,8 +1806,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
       }
       @media (min-width: 768px) {
         .header-inner { padding: 14px 24px; }
-        .header-link { font-size: 13px; padding: 8px 16px; gap: 6px; }
-        .header-link svg { width: 14px; height: 14px; }
         .logo { font-size: 16px; }
         .logo-img { height: 28px; }
         .hero { padding: 72px 0 48px; }

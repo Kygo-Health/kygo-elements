@@ -49,8 +49,18 @@ const CATEGORY_CONFIG = [
 const ALL_TAB = { slug: 'all', label: 'All Posts' };
 
 const PINNED_FEATURED_SLUG = 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device';
-const IOS_URL = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-const ANDROID_URL = 'https://kygo.app/android';
+const IOS_URL = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+const ANDROID_URL = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
+
+// "Works with" brand-logo badges for the final CTA card (Wix media)
+const CTA_BADGES = {
+  oura: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png',
+  apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
+  fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
+  garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
+  googleHealth: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
+  healthConnect: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
+};
 
 class KygoBlog extends HTMLElement {
   constructor() {
@@ -152,12 +162,11 @@ class KygoBlog extends HTMLElement {
   }
 
   _handleCategoryClick(slug) {
+    if (slug === this._activeSlug) return;
     this._activeSlug = slug;
     this.render();
-    const top = this.shadowRoot.querySelector('.blog-body');
-    if (top && typeof top.scrollIntoView === 'function') {
-      top.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // No scroll: the pill bar is a sticky in-place filter; jumping the
+    // viewport on select is disorienting.
   }
 
   _handlePostClick(slug) {
@@ -192,16 +201,18 @@ class KygoBlog extends HTMLElement {
     return `<div class="image-fallback">${this._placeholderSvg()}</div>`;
   }
 
-  _renderFeaturedPost(post) {
+  _renderFeaturedPost(post, opts = {}) {
     if (!post) return '';
+    const title = opts.title || 'Featured Article';
+    const descriptor = opts.descriptor || 'Our most-read deep dive on wearable accuracy';
     return `
       <header class="featured-header-row">
         <span class="featured-badge" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 6.94H22l-6.18 4.49L18.21 21 12 16.77 5.79 21l2.39-7.57L2 8.94h7.61L12 2z"/></svg>
         </span>
         <div class="featured-heading">
-          <h2 class="featured-section-title">Featured Article</h2>
-          <p class="featured-section-descriptor">Our most-read deep dive on wearable accuracy</p>
+          <h2 class="featured-section-title">${title}</h2>
+          <p class="featured-section-descriptor">${descriptor}</p>
         </div>
         <span class="featured-rule" aria-hidden="true"></span>
       </header>
@@ -253,16 +264,7 @@ class KygoBlog extends HTMLElement {
           <span class="category-rule" aria-hidden="true"></span>
         </header>
         <div class="post-grid">
-          ${posts.slice(0, 6).map(p => this._renderPostCard(p)).join('')}
-        </div>
-        <div class="view-all-row">
-          <a class="view-all" href="/blog/categories/${cfg.slug}">
-            View all ${cfg.label}
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
-                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M9 6l6 6-6 6"/>
-            </svg>
-          </a>
+          ${posts.map(p => this._renderPostCard(p)).join('')}
         </div>
       </section>
     `;
@@ -304,7 +306,19 @@ class KygoBlog extends HTMLElement {
       sectionsHtml = groups.map(g => this._renderCategorySection(g)).join('');
     } else {
       const filtered = this._getFilteredPosts();
-      sectionsHtml = this._renderFilteredGrid(filtered);
+      if (filtered.length === 0) {
+        sectionsHtml = this._renderFilteredGrid(filtered);
+      } else {
+        const cfg = CATEGORY_CONFIG.find(c => c.slug === this._activeSlug);
+        const pinned = filtered.find(p => p.slug === PINNED_FEATURED_SLUG);
+        const featured = pinned || filtered[0];
+        const rest = filtered.filter(p => p !== featured);
+        heroHtml = this._renderFeaturedPost(featured, {
+          title: cfg ? `Featured in ${cfg.label}` : 'Featured Article',
+          descriptor: cfg ? cfg.descriptor : ''
+        });
+        sectionsHtml = rest.length ? this._renderFilteredGrid(rest) : '';
+      }
     }
 
     this.shadowRoot.innerHTML = `
@@ -352,11 +366,27 @@ class KygoBlog extends HTMLElement {
         .blog-header {
           text-align: center;
           padding: 40px 0 20px;
+          background: #fff;
         }
         .blog-header h1 {
           font-size: 32px;
           color: var(--dark);
+          letter-spacing: -0.02em;
         }
+        .blog-header h1 .hl { color: var(--green); }
+        .kicker-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: var(--green-light);
+          color: var(--green-dark);
+          padding: 6px 14px;
+          border-radius: 9999px;
+          font-size: 12px;
+          font-weight: 600;
+          margin-bottom: 16px;
+        }
+        .kicker-pill svg { width: 14px; height: 14px; }
         .blog-header .subtitle {
           margin-top: 10px;
           color: var(--gray-500);
@@ -368,16 +398,24 @@ class KygoBlog extends HTMLElement {
 
         /* CATEGORY TABS */
         .category-tabs {
-          position: sticky;
-          top: 0;
-          z-index: 5;
-          background: var(--light);
+          background: #fff;
           border-bottom: 1px solid var(--gray-200);
+        }
+        .category-tabs-label {
+          display: block;
+          font-family: 'Space Grotesk', -apple-system, sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: var(--gray-500);
+          padding-top: 18px;
+          margin-bottom: 10px;
         }
         .category-tabs-inner {
           display: flex;
           gap: 8px;
-          padding: 14px 0;
+          padding: 0 0 16px;
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
           scrollbar-width: none;
@@ -408,24 +446,24 @@ class KygoBlog extends HTMLElement {
           border-color: var(--green);
         }
 
-        /* HERO BAND (grey) */
+        /* HERO BAND (grey — featured card pops here, like the list) */
         .hero-band {
           background: var(--light);
-          padding: 32px 0 56px;
+          padding: 24px 0 48px;
         }
 
         /* FEATURED SECTION HEADER */
         .featured-header-row {
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 20px;
+          gap: 10px;
+          margin-bottom: 14px;
         }
         .featured-badge {
           flex: 0 0 auto;
-          width: 36px;
-          height: 36px;
-          border-radius: 10px;
+          width: 30px;
+          height: 30px;
+          border-radius: 9px;
           background: linear-gradient(135deg, var(--green), var(--green-dark));
           color: white;
           display: inline-flex;
@@ -433,14 +471,14 @@ class KygoBlog extends HTMLElement {
           justify-content: center;
           box-shadow: 0 6px 14px rgba(34, 197, 94, 0.3);
         }
-        .featured-badge svg { width: 18px; height: 18px; }
+        .featured-badge svg { width: 16px; height: 16px; }
         .featured-heading { flex: 0 1 auto; min-width: 0; }
         .featured-section-title {
-          font-size: 20px;
+          font-size: 16.5px;
           color: var(--dark);
         }
         .featured-section-descriptor {
-          font-size: 13px;
+          font-size: 12px;
           color: var(--gray-500);
           margin-top: 2px;
         }
@@ -452,11 +490,10 @@ class KygoBlog extends HTMLElement {
           margin-left: 4px;
         }
 
-        /* SECTIONS BAND (white - cards pop here) */
+        /* SECTIONS BAND (grey — white cards pop here) */
         .sections-band {
-          background: white;
-          padding: 48px 0 72px;
-          border-top: 1px solid var(--gray-200);
+          background: var(--light);
+          padding: 32px 0 72px;
           position: relative;
         }
 
@@ -628,9 +665,9 @@ class KygoBlog extends HTMLElement {
         }
         .post-card:hover::after { opacity: 1; }
         .post-card-image {
-          flex: 0 0 110px;
-          width: 110px;
-          height: 110px;
+          flex: 0 0 86px;
+          width: 86px;
+          height: 86px;
           border-radius: 10px;
           overflow: hidden;
           background: var(--gray-100);
@@ -658,7 +695,8 @@ class KygoBlog extends HTMLElement {
           gap: 6px;
         }
         .post-card-title {
-          font-size: 15px;
+          font-size: 13.5px;
+          line-height: 1.3;
           color: var(--dark);
           display: -webkit-box;
           -webkit-line-clamp: 2;
@@ -666,7 +704,8 @@ class KygoBlog extends HTMLElement {
           overflow: hidden;
         }
         .post-card-excerpt {
-          font-size: 13px;
+          font-size: 12px;
+          line-height: 1.45;
           color: var(--gray-600);
           display: -webkit-box;
           -webkit-line-clamp: 2;
@@ -676,28 +715,6 @@ class KygoBlog extends HTMLElement {
         .post-card-meta {
           font-size: 12px;
           margin-top: 2px;
-        }
-
-        /* VIEW ALL */
-        .view-all-row {
-          margin-top: 18px;
-          display: flex;
-          justify-content: flex-end;
-        }
-        .view-all {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          font-size: 14px;
-          font-weight: 600;
-          color: var(--green-dark);
-          padding: 6px 0;
-          transition: gap 0.2s ease, color 0.2s ease;
-        }
-        .view-all svg { width: 16px; height: 16px; }
-        .view-all:hover {
-          color: var(--dark);
-          gap: 8px;
         }
 
         /* EMPTY / LOADING */
@@ -728,12 +745,16 @@ class KygoBlog extends HTMLElement {
           .blog-header { padding: 56px 0 24px; }
           .blog-header h1 { font-size: 40px; }
           .blog-header .subtitle { font-size: 16px; }
-          .category-tabs-inner { gap: 10px; padding: 16px 0; }
+          .category-tabs-inner { gap: 10px; padding: 0 0 16px; }
           .category-tab { padding: 9px 18px; font-size: 14px; }
           .hero-band { padding: 40px 0 72px; }
-          .sections-band { padding: 64px 0 96px; }
+          .sections-band { padding: 40px 0 96px; }
 
-          .featured-header-row { margin-bottom: 24px; }
+          .featured-header-row { margin-bottom: 24px; gap: 12px; }
+          .featured-badge { width: 36px; height: 36px; border-radius: 10px; }
+          .featured-badge svg { width: 18px; height: 18px; }
+          .featured-section-title { font-size: 20px; }
+          .featured-section-descriptor { font-size: 13px; }
           .featured-post-content { padding: 32px; gap: 14px; }
           .featured-post-title { font-size: 26px; }
 
@@ -775,7 +796,7 @@ class KygoBlog extends HTMLElement {
           .blog-header { padding: 72px 0 28px; }
           .blog-header h1 { font-size: 48px; }
           .hero-band { padding: 40px 0 80px; }
-          .sections-band { padding: 72px 0 120px; }
+          .sections-band { padding: 48px 0 120px; }
 
           .featured-header-row { margin-bottom: 24px; }
           .featured-section-title { font-size: 22px; }
@@ -807,53 +828,94 @@ class KygoBlog extends HTMLElement {
           }
         }
 
-        /* FINAL CTA */
+        /* FINAL CTA — dark card (matches tool pages) */
         .final-cta {
-          padding: 48px 0 72px;
-          background: var(--light);
+          padding: 72px 0;
+          background: #fff;
         }
-        .final-cta-inner {
-          background: linear-gradient(135deg, var(--green), var(--green-dark));
+        .kygo-cta-card {
+          background: #0F172A;
           border-radius: 24px;
-          padding: 36px 24px;
-          text-align: center;
+          padding: 40px 24px;
           position: relative;
           overflow: hidden;
+          color: #fff;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
-        .final-cta-inner::before {
+        .kygo-cta-card::before {
           content: '';
           position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+          top: -160px;
+          right: -160px;
+          width: 520px;
+          height: 520px;
+          background: radial-gradient(closest-side, rgba(34, 197, 94, 0.30), transparent);
           pointer-events: none;
         }
-        .final-cta-content {
+        .kygo-cta-card::after {
+          content: '';
+          position: absolute;
+          bottom: -180px;
+          left: -180px;
+          width: 480px;
+          height: 480px;
+          background: radial-gradient(closest-side, rgba(34, 197, 94, 0.12), transparent);
+          pointer-events: none;
+        }
+        .kygo-cta-card .cta-pill {
           position: relative;
-          z-index: 1;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(34, 197, 94, 0.16);
+          color: #6EE7A0;
+          padding: 6px 14px;
+          border-radius: 999px;
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          border: 1px solid rgba(34, 197, 94, 0.25);
         }
-        .final-cta h2 {
-          font-size: 28px;
-          color: white;
-          margin-bottom: 12px;
+        .kygo-cta-card .cta-pill .dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: var(--green);
+          box-shadow: 0 0 8px var(--green);
         }
-        .final-cta-content > p {
-          color: rgba(255, 255, 255, 0.88);
-          margin-bottom: 20px;
-          font-size: 16px;
+        .kygo-cta-card h2 {
+          position: relative;
+          color: #fff;
+          font-size: clamp(26px, 4.5vw, 42px);
+          line-height: 1.05;
+          margin: 18px 0 14px;
+          max-width: 22ch;
         }
+        .kygo-cta-card h2 span { color: var(--green); }
+        .kygo-cta-card > p {
+          position: relative;
+          color: rgba(255, 255, 255, 0.72);
+          font-size: clamp(14px, 1.6vw, 16px);
+          line-height: 1.6;
+          max-width: 56ch;
+          margin: 0 auto 24px;
+        }
+        .kygo-cta-card > p em { font-style: italic; color: #fff; }
         .cta-buttons {
+          position: relative;
           display: flex;
           gap: 12px;
           justify-content: center;
           flex-wrap: wrap;
+          width: 100%;
         }
         .cta-primary,
         .cta-android {
-          background: white;
-          color: var(--green-dark);
+          background: var(--green);
+          color: #fff;
           padding: 14px 24px;
           border-radius: 12px;
           font-weight: 600;
@@ -863,7 +925,7 @@ class KygoBlog extends HTMLElement {
           align-items: center;
           justify-content: center;
           gap: 8px;
-          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
           border: none;
           cursor: pointer;
           font-family: inherit;
@@ -871,8 +933,9 @@ class KygoBlog extends HTMLElement {
         }
         .cta-primary:hover,
         .cta-android:hover {
+          background: var(--green-dark);
           transform: translateY(-2px);
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+          box-shadow: 0 10px 30px rgba(34, 197, 94, 0.30);
         }
         .cta-primary:active,
         .cta-primary:focus,
@@ -880,25 +943,63 @@ class KygoBlog extends HTMLElement {
         .cta-android:focus {
           outline: none;
           transform: translateY(0);
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+          box-shadow: 0 4px 15px rgba(34, 197, 94, 0.20);
         }
         .cta-primary svg,
         .cta-android svg {
           width: 18px;
           height: 18px;
         }
-        .risk-reversal {
-          margin-top: 16px;
-          color: rgba(255, 255, 255, 0.75);
+
+        /* Mid-content contextual app CTA (compact green card) */
+        .kearly-section { padding: 48px 0; }
+        .kband { max-width: 1100px; margin: 0 auto; }
+        .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid var(--border-subtle, #E2E8F0); border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+        .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 560px; }
+        .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--green-dark, #16A34A); }
+        .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green, #22C55E); animation: kygoPulse 2s ease-out infinite; }
+        .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 28px; line-height: 1.25; color: var(--dark, #1E293B); }
+        .kband-actions { position: relative; display: flex; gap: 12px; flex-shrink: 0; }
+        .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+        .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+        .kband-btn-ios { background: var(--green, #22C55E); color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+        .kband-btn-ios:hover { background: var(--green-dark, #16A34A); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+        .kband-btn-android { background: #fff; color: var(--green-dark, #16A34A); border: 2px solid var(--border-subtle, #E2E8F0); }
+        .kband-btn-android:hover { border-color: var(--green, #22C55E); transform: translateY(-2px); }
+        @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+        @media (max-width: 640px) {
+          .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+          .kband-actions { width: 100%; flex-direction: column; }
+          .kband-btn { width: 100%; justify-content: center; }
+          .kband-headline { font-size: 24px; }
+        }
+        @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
+        .cta-works {
+          position: relative;
+          margin-top: 26px;
           display: flex;
-          flex-wrap: wrap;
-          gap: 8px;
-          justify-content: center;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          color: rgba(255, 255, 255, 0.6);
           font-size: 13px;
         }
-        .risk-reversal span {
-          display: inline-flex;
+        .cta-badges {
+          display: flex;
+          gap: 10px;
           align-items: center;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+        .cta-badges img {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.10);
+          padding: 4px;
+          object-fit: contain;
         }
 
         @media (max-width: 480px) {
@@ -911,10 +1012,8 @@ class KygoBlog extends HTMLElement {
         }
 
         @media (min-width: 768px) {
-          .final-cta { padding: 64px 0 96px; }
-          .final-cta-inner { padding: 48px 40px; }
-          .final-cta h2 { font-size: 36px; }
-          .final-cta-content > p { font-size: 17px; }
+          .final-cta { padding: 96px 0; }
+          .kygo-cta-card { padding: 56px 40px; }
         }
 
         /* ANIMATIONS */
@@ -944,13 +1043,49 @@ class KygoBlog extends HTMLElement {
 
       <header class="blog-header">
         <div class="container">
-          <h1>The Kygo Blog</h1>
-          <p class="subtitle">Evidence-first guides on sleep, HRV, nutrition, and the wearables that track them &mdash; so you can stop guessing and start acting on what the research actually shows.</p>
+          <div class="kicker-pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg> Research-Based Guides</div>
+          <h1>Kygo Health's <span class="hl">Blog</span></h1>
+          <p class="subtitle">Research-backed deep dives on sleep, HRV, nutrition, and the accuracy of the wearables that track them.</p>
         </div>
       </header>
 
+      ${heroHtml ? `
+        <section class="hero-band">
+          <div class="container">
+            ${heroHtml}
+          </div>
+        </section>
+      ` : ''}
+
+      ${heroHtml ? `
+        <section class="kearly-section">
+          <div class="container">
+            <div class="kband animate-on-scroll">
+              <div class="kband-inner">
+                <div class="kband-glow"></div>
+                <div class="kband-copy">
+                  <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+                  <h2 class="kband-headline">See how your food affects your sleep, energy &amp; recovery.</h2>
+                </div>
+                <div class="kband-actions">
+                  <a href="${IOS_URL}" class="kband-btn kband-btn-ios" data-track-position="mid" data-track-label="blog-mid-ios" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>
+                    Download for iOS
+                  </a>
+                  <a href="${ANDROID_URL}" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="mid" data-track-label="blog-mid-android" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>
+                    Get Android
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      ` : ''}
+
       <nav class="category-tabs" aria-label="Blog categories">
         <div class="container">
+          <span class="category-tabs-label">Browse by topic</span>
           <div class="category-tabs-inner" role="tablist">
             ${tabs.map(t => `
               <button
@@ -965,14 +1100,6 @@ class KygoBlog extends HTMLElement {
         </div>
       </nav>
 
-      ${heroHtml ? `
-        <section class="hero-band">
-          <div class="container">
-            ${heroHtml}
-          </div>
-        </section>
-      ` : ''}
-
       <main class="blog-body sections-band">
         <div class="container">
           ${sectionsHtml}
@@ -981,21 +1108,31 @@ class KygoBlog extends HTMLElement {
 
       <section class="final-cta">
         <div class="container">
-          <div class="final-cta-inner">
-            <div class="final-cta-content">
-              <h2>Ready to understand your body?</h2>
-              <p>Stop guessing. Start discovering what actually works for you.</p>
-              <div class="cta-buttons">
-                <a href="${IOS_URL}" class="cta-primary" data-track-position="blog-footer-cta" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="${ANDROID_URL}" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="blog-footer-cta">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
+          <div class="kygo-cta-card animate-on-scroll">
+            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+            <h2>Research talks averages. <span>Your body doesn't.</span></h2>
+            <p>Kygo cross-checks your own wearable data against what you eat, train, and sleep, so you see what's actually true for you.</p>
+            <div class="cta-buttons">
+              <a href="${IOS_URL}" class="cta-primary" data-track-position="footer-cta" data-track-label="blog-footer-ios" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                Download for iOS
+              </a>
+              <a href="${ANDROID_URL}" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="blog-footer-android">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                Download for Android
+              </a>
+            </div>
+            <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+            <div class="cta-works">
+              <span>Works with</span>
+              <div class="cta-badges">
+                <img src="${CTA_BADGES.oura}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+                <img src="${CTA_BADGES.apple}" alt="Apple Health" title="Apple Health" loading="lazy" />
+                <img src="${CTA_BADGES.fitbit}" alt="Fitbit" title="Fitbit" loading="lazy" />
+                <img src="${CTA_BADGES.garmin}" alt="Garmin" title="Garmin" loading="lazy" />
+                <img src="${CTA_BADGES.googleHealth}" alt="Google Health" title="Google Health" loading="lazy" />
+                <img src="${CTA_BADGES.healthConnect}" alt="Health Connect" title="Health Connect" loading="lazy" />
               </div>
-              <p class="risk-reversal"><span>Free forever plan</span><span>•</span><span>No credit card required</span><span>•</span><span>Cancel anytime</span></p>
             </div>
           </div>
         </div>
