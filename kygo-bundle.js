@@ -49,184 +49,356 @@ class KygoHeroSection extends HTMLElement {
   render() {
     this.shadowRoot.innerHTML = `
       <style>
-        :host{--dark:#1E293B;--dark-card:#0f172a;--dark-surface:#1a2332;--light:#F8FAFC;--green:#22C55E;--green-dark:#16A34A;--green-glow:rgba(34,197,94,0.3);--gray-400:#94A3B8;--gray-600:#475569;--gray-700:#334155;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--light);color:var(--dark);line-height:1.6;-webkit-font-smoothing:antialiased}
+        :host{--dark:#1E293B;--navy:#0F172A;--light:#F8FAFC;--green:#22C55E;--green-dark:#16A34A;--green-glow:rgba(34,197,94,0.12);--gray-400:#94A3B8;--gray-500:#64748B;--gray-600:#475569;--border:#E2E8F0;--red:#EF4444;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:var(--dark);line-height:1.6;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        h1{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .hero{padding:32px 0 48px;overflow:hidden}
-        .hero-content{display:flex;flex-direction:column;gap:32px}
-        .hero-copy{text-align:center}
-        .hero h1{font-size:clamp(28px,7vw,36px);margin-bottom:16px;color:var(--dark)}
-        .hero h1 .highlight{color:var(--green)}
-        .hero-subheadline{font-size:clamp(16px,4vw,18px);color:var(--gray-600);margin-bottom:24px;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
-        .cta-container{display:flex;flex-direction:column;align-items:center;gap:16px}
-        .cta-group-top{display:flex;flex-direction:column;gap:12px;width:100%;align-items:center}
-        .cta-primary{background:var(--green);color:white;padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;border:none;cursor:pointer;width:100%;max-width:260px;white-space:nowrap}
-        .cta-primary:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 10px 20px rgba(34,197,94,0.3)}
-        .cta-primary svg{width:18px;height:18px;flex-shrink:0}
-        .cta-secondary{background:none;border:none;color:var(--gray-600);font-weight:500;font-size:14px;text-decoration:none;text-underline-offset:4px;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:all .2s;cursor:pointer;padding:8px 0}
-        .cta-secondary:hover{color:var(--dark);text-decoration-color:var(--green)}
-        .cta-secondary svg{width:16px;height:16px;transition:transform .2s}
-        .cta-secondary:hover svg{transform:translateX(3px)}
-        .risk-reversal{font-size:13px;color:var(--gray-400);display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
-        .risk-reversal span{white-space:nowrap}
-        .cta-android{background:white;color:var(--green-dark);padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;border:2px solid var(--green);cursor:pointer;width:100%;max-width:260px;white-space:nowrap}
-        .cta-android:hover{background:var(--green);color:white;transform:translateY(-2px);box-shadow:0 10px 20px rgba(34,197,94,0.3)}
-        .cta-android svg{width:18px;height:18px;flex-shrink:0}
-        .hero-demo{display:flex;flex-direction:column;align-items:center;perspective:1000px}
-        .app-demo-container{position:relative;width:100%;max-width:300px}
-        .phone-frame{background:var(--dark);border-radius:36px;padding:10px;box-shadow:0 25px 50px rgba(30,41,59,0.3),0 0 0 1px rgba(255,255,255,0.1) inset}
-        .phone-screen{background:var(--dark-card);border-radius:28px;overflow:hidden;aspect-ratio:9/19}
-        .app-ui{height:100%;display:flex;flex-direction:column;padding:14px 12px}
-        .app-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-        .app-logo{display:flex;align-items:center;gap:6px;color:white;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px}
-        .app-logo img{width:20px;height:20px;border-radius:4px}
-        .app-time{color:var(--gray-400);font-size:10px}
-        .insight-card{background:var(--dark-surface);border-radius:12px;padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.05);animation:slideUp .6s ease-out forwards}
-        .insight-card.highlight{border:1px solid var(--green);box-shadow:0 0 16px var(--green-glow)}
-        @keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-        .insight-label{display:flex;align-items:center;gap:5px;color:var(--green);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-        .insight-label svg{width:10px;height:10px}
-        .insight-title{color:white;font-size:11px;font-weight:500;line-height:1.4;margin-bottom:8px}
-        .insight-title strong{color:var(--green)}
-        .insight-chart{display:flex;align-items:flex-end;gap:3px;height:32px;margin-bottom:6px}
-        .chart-bar{flex:1;background:var(--gray-700);border-radius:2px;animation:barGrow .8s ease-out forwards;animation-delay:calc(var(--i)*.08s);transform-origin:bottom}
-        .chart-bar.active{background:var(--green)}
-        @keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-        .insight-meta{display:flex;justify-content:space-between;color:var(--gray-400);font-size:8px}
-        .chat-exchange{animation:slideUp .6s ease-out .15s forwards;opacity:0;display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
-        .advisor-bubble{background:var(--dark-surface);border-radius:12px 12px 12px 4px;padding:8px 10px;border:1px solid rgba(34,197,94,0.15);max-width:85%;align-self:flex-start}
-        .advisor-bubble .advisor-label{display:flex;align-items:center;gap:4px;color:var(--green);font-size:7px;font-weight:600;margin-bottom:3px}
-        .advisor-bubble .advisor-label svg{width:9px;height:9px}
-        .advisor-bubble p{color:white;font-size:10px;line-height:1.4}
-        .user-message{align-self:flex-end;background:var(--gray-700);color:white;padding:8px 10px;border-radius:12px 12px 4px 12px;font-size:10px;max-width:80%}
-        .advisor-response{background:var(--dark-surface);border-radius:12px;padding:10px;border:1px solid rgba(34,197,94,0.2);align-self:flex-start;max-width:95%}
-        .advisor-label{display:flex;align-items:center;gap:4px;color:var(--green);font-size:7px;font-weight:600;margin-bottom:6px}
-        .advisor-label svg{width:9px;height:9px}
-        .food-items-row{display:flex;gap:5px}
-        .food-chip{flex:1;background:rgba(255,255,255,0.05);border-radius:6px;padding:6px;display:flex;align-items:center;gap:4px;font-size:9px;color:white;font-weight:500}
-        .food-emoji{font-size:12px}
-        .chip-cal{margin-left:auto;color:var(--green);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:10px}
-        .meal-footer{display:flex;justify-content:center;margin-top:6px}
-        .meal-card{background:var(--dark-surface);border-radius:8px;padding:6px 12px;display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(255,255,255,0.05)}
-        .meal-total{display:flex;align-items:baseline;gap:2px}
-        .meal-total-cal{color:white;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px}
-        .meal-total-label{color:var(--gray-400);font-size:8px}
-        .log-meal-btn{background:var(--green);color:white;border:none;border-radius:6px;padding:5px 10px;font-size:9px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap}
-        .input-bar{margin-top:auto;background:var(--dark-surface);border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,0.05);animation:slideUp .6s ease-out .3s forwards;opacity:0}
-        .input-placeholder{flex:1;color:var(--gray-400);font-size:11px}
-        .input-actions{display:flex;gap:5px}
-        .input-action{width:26px;height:26px;background:rgba(34,197,94,0.15);border:1px solid rgba(34,197,94,0.3);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--green);cursor:pointer}
-        .input-action svg{width:12px;height:12px}
-        .floating-badge{position:absolute;background:white;border-radius:10px;padding:8px 12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);display:flex;align-items:center;gap:8px;font-size:11px;font-weight:500;color:var(--dark);animation:float 3s ease-in-out infinite;z-index:10}
-        .floating-badge.top-left{top:8%;left:-8px}
-        .floating-badge.top-right{top:22%;right:-8px;animation-delay:1s}
-        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-        .badge-icon{width:24px;height:24px;overflow:hidden;flex-shrink:0}
-        .badge-icon img{width:100%;height:100%;object-fit:cover}
-        .badge-icon.rounded{border-radius:5px}
-        .patent-notice{text-align:center;margin-top:16px;font-size:11px;color:var(--gray-400);letter-spacing:0.5px;text-transform:uppercase}
-        @media(min-width:768px){
-          .hero{padding:60px 0 80px}
-          .hero-content{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-          .hero-copy{text-align:left;order:1}
-          .hero-demo{order:2}
-          .hero h1{font-size:clamp(36px,5vw,48px)}
-          .hero-subheadline{margin-left:0;margin-right:0}
-          .cta-container{align-items:flex-start}
-          .cta-group-top{flex-direction:row;justify-content:flex-start;align-items:center}
-          .cta-primary{width:auto}
-          .cta-android{width:auto}
-          .cta-secondary{padding:0}
-          .risk-reversal{justify-content:flex-start}
+
+        .hero{position:relative;padding:clamp(48px,6vw,84px) 20px clamp(52px,6vw,80px);background:#fff;border-bottom:1px solid #F1F5F9;overflow:hidden}
+        .hero-glow{position:absolute;top:-160px;right:-80px;width:640px;height:640px;max-width:120vw;background:radial-gradient(circle,var(--green-glow) 0%,transparent 62%);pointer-events:none}
+        .container{max-width:1180px;margin:0 auto;position:relative}
+        .hero-row{display:flex;flex-wrap:wrap;gap:clamp(40px,5vw,64px);align-items:center}
+
+        /* ---- Left column (copy) ---- */
+        .hero-copy{flex:1 1 420px;min-width:0}
+        .hero-copy h1{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,5.4vw,52px);line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;color:var(--dark);animation:hiwUp .6s ease-out .06s both}
+        .hero-copy h1 .highlight{color:var(--green)}
+        .hero-subheadline{font-size:clamp(16px,2.2vw,19px);color:var(--gray-600);max-width:440px;margin-bottom:30px;line-height:1.6;animation:hiwUp .6s ease-out .12s both}
+        .cta-group-top{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both}
+        .cta-primary{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--green);color:#fff;font-weight:600;font-size:16px;padding:15px 26px;border-radius:12px;white-space:nowrap;text-decoration:none;box-shadow:0 10px 24px -8px rgba(34,197,94,0.5);transition:transform .2s,background .2s;border:none;cursor:pointer}
+        .cta-primary:hover{transform:translateY(-2px);background:var(--green-dark)}
+        .cta-primary svg{width:20px;height:20px;flex-shrink:0}
+        .cta-android{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--dark);color:#fff;font-weight:600;font-size:16px;padding:15px 26px;border-radius:12px;white-space:nowrap;text-decoration:none;transition:transform .2s,background .2s;border:none;cursor:pointer}
+        .cta-android:hover{transform:translateY(-2px);background:var(--navy)}
+        .cta-android svg{width:20px;height:20px;flex-shrink:0}
+        .risk-reversal{font-size:14px;color:var(--gray-400);font-weight:500;margin-bottom:14px;animation:hiwUp .6s ease-out .24s both}
+        .cta-secondary{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:var(--green-dark);text-decoration:none;cursor:pointer;background:none;border:none;transition:gap .2s ease,color .2s ease;animation:hiwUp .6s ease-out .3s both}
+        .cta-secondary:hover{color:#15803d;gap:12px}
+        .cta-secondary svg{width:16px;height:16px;flex-shrink:0}
+
+        /* ---- Right column (animated phone) ---- */
+        .hero-demo{flex:1 1 380px;display:flex;flex-direction:column;align-items:center;animation:hiwUp .7s ease-out .2s both}
+        .phone-wrap{position:relative;width:300px;max-width:82vw}
+        .phone-float{position:relative;animation:hiwFloat 6s ease-in-out infinite}
+        .phone-bezel{position:relative;background:var(--navy);border-radius:44px;padding:11px;box-shadow:0 44px 84px -34px rgba(15,23,42,.6),0 0 0 1px rgba(255,255,255,.06) inset}
+        .phone-screen{position:relative;background:#F5F7FA;border-radius:34px;overflow:hidden;height:604px}
+        .phone-notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);z-index:9;width:104px;height:26px;background:var(--navy);border-radius:99px}
+        .swap-track{position:absolute;top:0;left:0;right:0;height:1208px;animation:hiwSwap 15s ease-in-out infinite}
+        .app-screen{height:604px;position:relative;background:#F5F7FA}
+        .sg{font-family:'Space Grotesk',sans-serif}
+
+        /* Screen A */
+        .a-topbar{background:#F5F7FA;padding:44px 13px 8px;display:flex;align-items:center;justify-content:space-between;gap:6px}
+        .a-pill{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--border);background:#fff;border-radius:11px;padding:7px 11px;font-weight:700;font-size:13px;color:var(--navy)}
+        .a-pill-time{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--border);background:#fff;border-radius:11px;padding:7px 10px;font-weight:600;font-size:12px;color:var(--gray-600)}
+        .a-add{width:30px;height:30px;flex-shrink:0;border:1.5px solid var(--border);background:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center}
+        .a-chat{padding:10px 13px 0;display:flex;flex-direction:column;gap:9px}
+        .a-advlabel{display:flex;align-items:center;gap:6px}
+        .a-advlabel img{width:16px;height:16px;object-fit:contain}
+        .a-advlabel span{font-size:11px;font-weight:600;color:var(--gray-500)}
+        .a-bub-ai{align-self:flex-start;max-width:82%;background:#fff;border-radius:15px 15px 15px 5px;padding:9px 14px;font-weight:600;font-size:13px;color:var(--navy);box-shadow:0 3px 10px rgba(15,23,42,.06)}
+        .a-bub-user{align-self:flex-end;max-width:82%;background:var(--green);color:#fff;border-radius:15px 15px 5px 15px;padding:9px 14px;font-size:12.5px;font-weight:500;box-shadow:0 6px 14px -6px rgba(34,197,94,.6);opacity:0;animation:hiwUserBub 15s ease-in-out infinite}
+        .a-logged{align-self:flex-start;display:flex;align-items:center;gap:6px;opacity:0;animation:hiwAdv 15s ease-in-out infinite}
+        .a-logged img{width:15px;height:15px;object-fit:contain}
+        .a-logged span{font-size:11px;font-weight:700;color:var(--green-dark)}
+        .a-row{display:flex;align-items:center;gap:10px;background:#fff;border-radius:13px;padding:9px 12px;box-shadow:0 3px 10px rgba(15,23,42,.06);opacity:0}
+        .a-row.r1{animation:hiwR1 15s ease-in-out infinite}
+        .a-row.r2{animation:hiwR2 15s ease-in-out infinite}
+        .a-row.r3{animation:hiwR3 15s ease-in-out infinite}
+        .a-tile{width:30px;height:30px;border-radius:9px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+        .a-rowmid{flex:1;min-width:0}
+        .a-rowname{display:block;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--navy);line-height:1.25}
+        .a-rowmeta{display:block;font-size:10px;color:var(--gray-400)}
+        .a-rowkcal{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--navy);flex-shrink:0}
+        .a-rowkcal small{font-size:9px;color:var(--gray-400);font-weight:600}
+        .a-total{position:absolute;left:50%;bottom:104px;transform:translate(-50%,0);display:flex;align-items:center;gap:9px;background:#fff;border-radius:14px;padding:9px 10px 9px 15px;box-shadow:0 16px 34px -10px rgba(15,23,42,.3);border:1px solid #EEF2F6;white-space:nowrap;opacity:0;animation:hiwTotal 15s ease-in-out infinite}
+        .a-total-lbl{display:block;font-size:9px;font-weight:600;color:var(--gray-400)}
+        .a-total-val{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;color:var(--navy)}
+        .a-total-val small{font-size:9px;color:var(--gray-400);font-weight:600}
+        .a-bookmark{width:32px;height:32px;border-radius:9px;background:#F1F5F9;display:flex;align-items:center;justify-content:center}
+        .a-logbtn{position:relative;background:var(--green);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;padding:10px 16px;border-radius:10px;animation:hiwLift 15s ease-in-out infinite}
+        .a-ripple{position:absolute;top:50%;left:50%;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:99px;background:rgba(255,255,255,.5);animation:hiwTap 15s ease-in-out infinite}
+        .a-dock{position:absolute;left:0;right:0;bottom:0;background:rgba(248,250,252,.97);border-top:1px solid #EEF2F6;padding:9px 12px 12px;display:flex;flex-direction:column;gap:8px}
+        .a-dockrow{display:flex;align-items:center;gap:8px}
+        .a-input{flex:1;position:relative;background:#fff;border:1px solid var(--border);border-radius:99px;height:34px;padding:0 14px;display:flex;align-items:center;overflow:hidden}
+        .a-place{position:absolute;left:14px;font-size:11px;color:var(--gray-400);animation:hiwPlace 15s ease-in-out infinite}
+        .a-typewrap{display:inline-flex;align-items:center;max-width:100%;overflow:hidden}
+        .a-type{display:inline-block;overflow:hidden;white-space:nowrap;width:0;font-size:11px;font-weight:500;color:var(--navy);animation:hiwType 15s ease-in-out infinite}
+        .a-caret{width:1.5px;height:14px;background:var(--green);margin-left:1px;flex-shrink:0;opacity:0;animation:hiwCaret 15s ease-in-out infinite}
+        .a-send{width:32px;height:32px;border-radius:10px;background:#CBD5E1;display:flex;align-items:center;justify-content:center;flex-shrink:0;animation:hiwSend 15s ease-in-out infinite}
+        .a-tools{display:flex;align-items:center;justify-content:space-between}
+        .a-toolgrp{display:flex;gap:7px}
+        .a-tool{width:30px;height:30px;border:1px solid var(--border);border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center}
+
+        /* Screen B */
+        .b-screen{height:604px;position:relative;background:#F5F7FA;display:flex;flex-direction:column}
+        .b-head{background:#fff;padding:42px 15px 10px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+        .b-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:var(--navy)}
+        .b-day{background:var(--green);color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;padding:5px 10px;border-radius:999px}
+        .b-tabs{background:#fff;display:flex;justify-content:center;gap:18px;padding:0 15px;border-bottom:1px solid #F1F5F9;flex-shrink:0}
+        .b-tab{padding:8px 0 10px;border-bottom:2px solid transparent;font-weight:700;font-size:11px}
+        .b-tab.help{animation:hiwTabHelp 15s ease-in-out infinite}
+        .b-tab.hurt{animation:hiwTabHurt 15s ease-in-out infinite}
+        .b-tab.dev{font-weight:600;color:var(--gray-400)}
+        .b-views{position:relative;flex:1;min-height:0}
+        .b-view{position:absolute;inset:0;padding:13px 14px;display:flex;flex-direction:column;gap:12px}
+        .b-view.hurt{animation:hiwHurt 15s ease-in-out infinite}
+        .b-view.help{opacity:0;animation:hiwHelp 15s ease-in-out infinite}
+        .b-src{display:flex;align-items:center;gap:6px;font-size:10.5px;font-weight:600;color:var(--gray-400)}
+        .b-card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 4px 14px rgba(15,23,42,.06)}
+        .b-cap{font-size:9.5px;font-weight:700;letter-spacing:.5px;color:var(--gray-400);margin-bottom:8px}
+        .b-see{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;line-height:1.22;color:var(--navy);margin-bottom:16px}
+        .b-stats{display:flex;justify-content:space-between;border-top:1px solid #F1F5F9;padding-top:13px}
+        .b-statlbl{display:block;font-size:9px;font-weight:700;letter-spacing:.4px;color:var(--gray-400);margin-bottom:2px}
+        .b-statval{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--navy)}
+        .b-dethead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+        .b-detname{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;color:var(--navy)}
+        .b-pill-neg{font-size:11px;font-weight:700;color:var(--red);background:#FEF2F2;padding:4px 9px;border-radius:999px}
+        .b-pill-pos{font-size:11px;font-weight:700;color:var(--green-dark);background:#ECFDF5;padding:4px 9px;border-radius:999px}
+        .b-detdesc{font-size:11.5px;color:var(--gray-600);line-height:1.5;margin-bottom:12px}
+        .b-bars{background:#F5F7FA;border-radius:11px;padding:11px 12px;display:flex;flex-direction:column;gap:9px}
+        .b-barrow{display:flex;align-items:center;gap:8px}
+        .b-barlbl{font-size:10px;color:var(--gray-500);width:64px;flex-shrink:0}
+        .b-track{flex:1;height:7px;background:var(--border);border-radius:99px;overflow:hidden}
+        .b-fill{display:block;height:100%;border-radius:99px;transform-origin:left}
+        .b-view.hurt .b-fill{animation:hiwBarH 15s ease-in-out infinite}
+        .b-view.help .b-fill{animation:hiwBarG 15s ease-in-out infinite}
+        .b-barval{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:11px;color:var(--navy)}
+        .b-rank{display:flex;align-items:center;gap:7px;margin-top:12px}
+        .b-badge{color:#fff;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9.5px;padding:3px 7px;border-radius:6px}
+        .b-real{font-size:11px;font-weight:600;color:var(--navy)}
+        .b-meta{font-size:11px;color:var(--gray-400)}
+
+        /* Floating connected badges (real Oura + Apple logos) */
+        .hero-badge{position:absolute;z-index:40}
+        .hero-badge.a{top:60px;left:-64px;animation:heroBadgeCycle 15s ease-in-out infinite}
+        .hero-badge.b{top:140px;right:-68px;animation:heroBadgeCycle 15s ease-in-out infinite .4s}
+        .hero-badge-inner{display:inline-flex;align-items:center;gap:9px;background:#fff;border-radius:13px;padding:8px 13px 8px 8px;box-shadow:0 14px 30px -12px rgba(15,23,42,.4)}
+        .hero-badge.a .hero-badge-inner{animation:heroBadgeA 3.4s ease-in-out infinite}
+        .hero-badge.b .hero-badge-inner{animation:heroBadgeB 3.9s ease-in-out infinite 1s}
+        .hero-badge-icon{width:30px;height:30px;flex-shrink:0;border-radius:9px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;overflow:hidden}
+        .hero-badge-icon img{width:22px;height:22px;object-fit:contain}
+        .hero-badge-icon.rounded img{border-radius:5px}
+        .hero-badge-label{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--navy);white-space:nowrap}
+        .patent-notice{position:relative;z-index:40;margin-top:40px;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:var(--gray-400);font-weight:600;text-align:center;animation:hiwUp .6s ease-out .5s both}
+
+        /* ---- Keyframes ---- */
+        @keyframes hiwUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+        @keyframes heroBadgeA{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        @keyframes heroBadgeB{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+        @keyframes heroBadgeCycle{0%{opacity:0;transform:scale(.92)}5%,42%{opacity:1;transform:scale(1)}50%,94%{opacity:0;transform:scale(.96)}100%{opacity:0;transform:scale(.92)}}
+        @keyframes hiwSwap{0%,46%{transform:translateY(0)}52%,94%{transform:translateY(-50%)}99%,100%{transform:translateY(0)}}
+        @keyframes hiwType{0%,4%{width:0}15%,19%{width:23ch}21%,100%{width:0}}
+        @keyframes hiwPlace{0%,3%{opacity:1}5%,20%{opacity:0}22%,100%{opacity:1}}
+        @keyframes hiwCaret{0%,3.6%{opacity:0}4%,20%{opacity:1}20.4%,100%{opacity:0}}
+        @keyframes hiwSend{0%,4%{background:#CBD5E1}6%,19%{background:#22C55E}21%,100%{background:#CBD5E1}}
+        @keyframes hiwUserBub{0%,19%{opacity:0;transform:translateY(10px) scale(.96)}22%,100%{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes hiwAdv{0%,23%{opacity:0;transform:translateY(8px)}26%,100%{opacity:1;transform:translateY(0)}}
+        @keyframes hiwR1{0%,26%{opacity:0;transform:translateY(10px)}30%,100%{opacity:1;transform:translateY(0)}}
+        @keyframes hiwR2{0%,30%{opacity:0;transform:translateY(10px)}34%,100%{opacity:1;transform:translateY(0)}}
+        @keyframes hiwR3{0%,34%{opacity:0;transform:translateY(10px)}38%,100%{opacity:1;transform:translateY(0)}}
+        @keyframes hiwTap{0%,41%{transform:scale(1);opacity:0}43%{transform:scale(1);opacity:.9}46%{transform:scale(2.4);opacity:0}100%{opacity:0}}
+        @keyframes hiwLift{0%,41%{transform:translateY(0);box-shadow:0 8px 16px -6px rgba(34,197,94,.55)}43.5%{transform:translateY(-2px);box-shadow:0 12px 22px -6px rgba(34,197,94,.7)}47%,100%{transform:translateY(0);box-shadow:0 8px 16px -6px rgba(34,197,94,.55)}}
+        @keyframes hiwTotal{0%,37%{opacity:0;transform:translate(-50%,16px) scale(.9)}44%,100%{opacity:1;transform:translate(-50%,0) scale(1)}}
+        @keyframes hiwHurt{0%,64%{opacity:1}70%,100%{opacity:0}}
+        @keyframes hiwHelp{0%,66%{opacity:0}72%,94%{opacity:1}98%,100%{opacity:0}}
+        @keyframes hiwTabHurt{0%,64%{color:#0F172A;border-bottom-color:#EF4444}70%,100%{color:#94A3B8;border-bottom-color:transparent}}
+        @keyframes hiwTabHelp{0%,66%{color:#94A3B8;border-bottom-color:transparent}72%,94%{color:#0F172A;border-bottom-color:#22C55E}98%,100%{color:#94A3B8;border-bottom-color:transparent}}
+        @keyframes hiwBarH{0%,53%{transform:scaleX(0)}62%,100%{transform:scaleX(1)}}
+        @keyframes hiwBarG{0%,73%{transform:scaleX(0)}82%,100%{transform:scaleX(1)}}
+
+        /* ---- Mobile tuning ---- */
+        @media(max-width:600px){
+          .hero-badge.a{left:-14px;top:44px}
+          .hero-badge.b{right:-14px;top:150px}
+          .hero-badge-inner{padding:7px 11px 7px 7px}
+          .hero-badge-label{font-size:12px}
+        }
+        @media(max-width:360px){
+          .hero-badge.a{left:-6px}
+          .hero-badge.b{right:-6px}
+        }
+
+        /* ---- Reduced motion: freeze animation, force the static resting state visible ---- */
+        @media (prefers-reduced-motion: reduce){
+          *{animation:none !important;transition:none !important}
+          .a-bub-user,.a-logged,.a-row,.a-total{opacity:1 !important;transform:none !important}
+          .a-total{transform:translate(-50%,0) !important}
+          .a-type{width:auto !important}
+          .a-place,.a-caret{opacity:0 !important}
+          .a-send{background:var(--green) !important}
+          .b-view.help{opacity:0 !important}
+          .hero-badge{opacity:1 !important}
         }
       </style>
       <section class="hero">
+        <div class="hero-glow"></div>
         <div class="container">
-          <div class="hero-content">
+          <div class="hero-row">
+            <!-- Left column: copy + CTAs -->
             <div class="hero-copy">
               <h1>See how your food affects your <span class="highlight">sleep, energy, and recovery</span></h1>
-              <p class="hero-subheadline">Kygo connects your wearables with nutrition tracking to reveal personalized correlations—so you can stop guessing and start understanding your body.</p>
-              <div class="cta-container">
-                <div class="cta-group-top">
-                  <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" class="cta-primary" data-track-position="early" data-track-label="home-hero-ios">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    Try Kygo free for 7 days
-                  </a>
-                  <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="early" data-track-label="home-hero-android">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                    Download for Android
-                  </a>
-                </div>
-                <p class="risk-reversal"><span>7-day free trial on yearly</span><span>•</span><span>Free forever plan</span><span>•</span><span>Cancel anytime</span></p>
-                <a href="#kygo-features-section" class="cta-secondary" data-track-position="hero">
-                  See how it works
-                  <svg viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <p class="hero-subheadline">Kygo connects your wearables with nutrition tracking to reveal personalized correlations, so you can stop guessing and start understanding your body.</p>
+              <div class="cta-group-top">
+                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" class="cta-primary" data-track-position="early" data-track-label="home-hero-ios">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                  Download for iOS
+                </a>
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="early" data-track-label="home-hero-android">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                  Get it on Android
                 </a>
               </div>
+              <p class="risk-reversal">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free 7-day trial&nbsp;&nbsp;•&nbsp;&nbsp;Cancel anytime</p>
+              <a href="#kygo-features-section" class="cta-secondary" data-track-position="hero">
+                See how it works
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
             </div>
+
+            <!-- Right column: animated phone -->
             <div class="hero-demo">
-              <div class="app-demo-container">
-                <div class="floating-badge top-left">
-                  <div class="badge-icon rounded"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura"></div>
-                  <span>Oura synced</span>
-                </div>
-                <div class="floating-badge top-right">
-                  <div class="badge-icon"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health"></div>
-                  <span>Health connected</span>
-                </div>
-                <div class="phone-frame">
-                  <div class="phone-screen">
-                    <div class="app-ui">
-                      <div class="app-header">
-                        <div class="app-logo">
-                          <img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo">
-                          Kygo
-                        </div>
-                        <span class="app-time">Today</span>
-                      </div>
-                      <div class="insight-card highlight">
-                        <div class="insight-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>New Insight</div>
-                        <p class="insight-title">Your <strong>deep sleep decreases 18 min</strong> when you consume over 250g carbs daily</p>
-                        <div class="insight-chart">
-                          <div class="chart-bar" style="height:45%;--i:0"></div>
-                          <div class="chart-bar" style="height:60%;--i:1"></div>
-                          <div class="chart-bar active" style="height:90%;--i:2"></div>
-                          <div class="chart-bar active" style="height:85%;--i:3"></div>
-                          <div class="chart-bar" style="height:50%;--i:4"></div>
-                          <div class="chart-bar" style="height:40%;--i:5"></div>
-                          <div class="chart-bar" style="height:35%;--i:6"></div>
-                        </div>
-                        <div class="insight-meta"><span>Based on 14 days</span><span>High confidence</span></div>
-                      </div>
-                      <div class="chat-exchange">
-                        <div class="advisor-bubble">
-                          <div class="advisor-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Kygo Advisor</div>
-                          <p>What's cooking for breakfast?</p>
-                        </div>
-                        <div class="user-message">2 pancakes with syrup</div>
-                        <div class="advisor-response">
-                          <div class="advisor-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>Kygo Advisor</div>
-                          <div class="food-items-row">
-                            <div class="food-chip"><span class="food-emoji">🥞</span><span>Pancakes</span><span class="chip-cal">296</span></div>
-                            <div class="food-chip"><span class="food-emoji">🍯</span><span>Syrup</span><span class="chip-cal">104</span></div>
+              <div class="phone-wrap">
+                <div class="phone-float">
+                  <div class="phone-bezel">
+                    <div class="phone-screen">
+                      <div class="phone-notch"></div>
+                      <div class="swap-track">
+
+                        <!-- Screen A: breakfast chat / meal log -->
+                        <div class="app-screen">
+                          <div class="a-topbar">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.4" style="width:17px;height:17px;flex-shrink:0"><path d="M15 18l-6-6 6-6"/></svg>
+                            <span class="a-pill">Breakfast <svg viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.4" style="width:12px;height:12px"><path d="M6 9l6 6 6-6"/></svg></span>
+                            <span class="a-pill-time"><svg viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" style="width:12px;height:12px"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>8:14 AM</span>
+                            <span class="a-add"><svg viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.2" style="width:15px;height:15px"><path d="M12 5v14M5 12h14"/></svg></span>
+                          </div>
+                          <div class="a-chat">
+                            <span class="a-advlabel"><img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo"><span>Kygo Advisor</span></span>
+                            <span class="a-bub-ai">Morning! What are we logging?</span>
+                            <span class="a-bub-user">Oatmeal, banana &amp; coffee</span>
+                            <span class="a-logged"><img src="https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png" alt="Kygo"><span>Logged 3 items · 268 kcal</span></span>
+                            <div class="a-row r1">
+                              <span class="a-tile">☕</span>
+                              <span class="a-rowmid"><span class="a-rowname">Coffee</span><span class="a-rowmeta">1 cup · 95mg caffeine</span></span>
+                              <span class="a-rowkcal">5<small> kcal</small></span>
+                            </div>
+                            <div class="a-row r2">
+                              <span class="a-tile">🥣</span>
+                              <span class="a-rowmid"><span class="a-rowname">Oatmeal</span><span class="a-rowmeta">1 cup cooked · 6P · 27C · 3F</span></span>
+                              <span class="a-rowkcal">158<small> kcal</small></span>
+                            </div>
+                            <div class="a-row r3">
+                              <span class="a-tile">🍌</span>
+                              <span class="a-rowmid"><span class="a-rowname">Banana</span><span class="a-rowmeta">1 medium · 1P · 27C · 0F</span></span>
+                              <span class="a-rowkcal">105<small> kcal</small></span>
+                            </div>
+                          </div>
+                          <div class="a-total">
+                            <span><span class="a-total-lbl">Meal Total</span><span class="a-total-val">268<small> kcal</small></span></span>
+                            <span class="a-bookmark"><svg viewBox="0 0 24 24" fill="#16A34A" stroke="#16A34A" stroke-width="1.5" style="width:14px;height:14px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>
+                            <span class="a-logbtn">Log Meal<span class="a-ripple"></span></span>
+                          </div>
+                          <div class="a-dock">
+                            <div class="a-dockrow">
+                              <span class="a-input">
+                                <span class="a-place">Log food, water, supplements…</span>
+                                <span class="a-typewrap">
+                                  <span class="a-type">Oatmeal, banana &amp; coffee</span>
+                                  <span class="a-caret"></span>
+                                </span>
+                              </span>
+                              <span class="a-send"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" style="width:15px;height:15px"><path d="M12 19V5M5 12l7-7 7 7"/></svg></span>
+                            </div>
+                            <div class="a-tools">
+                              <span class="a-toolgrp">
+                                <span class="a-tool"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:14px;height:14px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                                <span class="a-tool"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:14px;height:14px"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.8"/><path d="M21 15l-5-5L5 21"/></svg></span>
+                                <span class="a-tool"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:14px;height:14px"><path d="M3 5v14M7 5v14M11 5v14M15 5v14M19 5v14"/></svg></span>
+                              </span>
+                              <span class="a-toolgrp">
+                                <span class="a-tool"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:14px;height:14px"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/></svg></span>
+                                <span class="a-tool"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="width:14px;height:14px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></span>
+                              </span>
+                            </div>
                           </div>
                         </div>
-                        <div class="meal-footer">
-                          <div class="meal-card">
-                            <div class="meal-total"><span class="meal-total-cal">400</span><span class="meal-total-label">cal</span></div>
-                            <button class="log-meal-btn">Log Meal</button>
+
+                        <!-- Screen B: HRV Insights -->
+                        <div class="b-screen">
+                          <div class="b-head">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.4" style="width:17px;height:17px"><path d="M15 18l-6-6 6-6"/></svg>
+                            <span class="b-title">HRV</span>
+                            <span class="b-day">Day 52</span>
+                          </div>
+                          <div class="b-tabs">
+                            <span class="b-tab help">Helping <span style="color:#16A34A">3</span></span>
+                            <span class="b-tab hurt">Hurting <span style="color:#EF4444">2</span></span>
+                            <span class="b-tab dev">Developing 54</span>
+                          </div>
+                          <div class="b-views">
+                            <!-- Hurting view -->
+                            <div class="b-view hurt">
+                              <span class="b-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 6h2"/></svg>Data from Apple Health · Fitbit</span>
+                              <div class="b-card">
+                                <div class="b-cap">WHAT WE SEE</div>
+                                <div class="b-see">Late caffeine is your <span style="color:#EF4444">biggest drag</span> on HRV.</div>
+                                <div class="b-stats">
+                                  <span><span class="b-statlbl">TRACKING</span><span class="b-statval">64 days</span></span>
+                                  <span><span class="b-statlbl">AVERAGE</span><span class="b-statval">31 ms</span></span>
+                                  <span><span class="b-statlbl">RANGE</span><span class="b-statval">14–56</span></span>
+                                </div>
+                              </div>
+                              <div class="b-card">
+                                <div class="b-dethead"><span class="b-detname">Late caffeine intake</span><span class="b-pill-neg">−8 ms</span></div>
+                                <p class="b-detdesc">Days you go over <b>94.7 mg</b>, your HRV runs <span style="color:#EF4444;font-weight:700">8 ms lower</span> the next day.</p>
+                                <div class="b-bars">
+                                  <span class="b-barrow"><span class="b-barlbl">Under 95mg</span><span class="b-track"><span class="b-fill" style="width:72%;background:#64748B"></span></span><span class="b-barval">32 ms</span></span>
+                                  <span class="b-barrow"><span class="b-barlbl">Over 95mg</span><span class="b-track"><span class="b-fill" style="width:48%;background:#EF4444"></span></span><span class="b-barval">24 ms</span></span>
+                                </div>
+                                <div class="b-rank"><span class="b-badge" style="background:#0F172A">#1</span><span class="b-real">Likely real</span><span class="b-meta">· 47 days · 1 day later</span></div>
+                              </div>
+                            </div>
+                            <!-- Helping view -->
+                            <div class="b-view help">
+                              <span class="b-src"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><rect x="6" y="3" width="12" height="18" rx="3"/><path d="M11 6h2"/></svg>Data from Apple Health · Fitbit</span>
+                              <div class="b-card">
+                                <div class="b-cap">WHAT WE SEE</div>
+                                <div class="b-see">Magnesium at night is your <span style="color:#22C55E">biggest boost</span> to HRV.</div>
+                                <div class="b-stats">
+                                  <span><span class="b-statlbl">TRACKING</span><span class="b-statval">47 days</span></span>
+                                  <span><span class="b-statlbl">AVERAGE</span><span class="b-statval">34 ms</span></span>
+                                  <span><span class="b-statlbl">RANGE</span><span class="b-statval">18–58</span></span>
+                                </div>
+                              </div>
+                              <div class="b-card">
+                                <div class="b-dethead"><span class="b-detname">Magnesium before bed</span><span class="b-pill-pos">+6 ms</span></div>
+                                <p class="b-detdesc">Nights you take <b>magnesium</b>, your HRV runs <span style="color:#16A34A;font-weight:700">6 ms higher</span> the next morning.</p>
+                                <div class="b-bars">
+                                  <span class="b-barrow"><span class="b-barlbl">With Mg</span><span class="b-track"><span class="b-fill" style="width:82%;background:#22C55E"></span></span><span class="b-barval">38 ms</span></span>
+                                  <span class="b-barrow"><span class="b-barlbl">Without</span><span class="b-track"><span class="b-fill" style="width:64%;background:#64748B"></span></span><span class="b-barval">30 ms</span></span>
+                                </div>
+                                <div class="b-rank"><span class="b-badge" style="background:#16A34A">#1</span><span class="b-real">Likely real</span><span class="b-meta">· 47 days · 1 day later</span></div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="input-bar">
-                        <span class="input-placeholder">What did you eat?</span>
-                        <div class="input-actions">
-                          <button class="input-action" aria-label="AI food recognition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/><path d="M5 19l1 3 1-3 3-1-3-1-1-3-1 3-3 1 3 1z"/></svg></button>
-                          <button class="input-action" aria-label="Voice meal logging"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></button>
-                        </div>
+
                       </div>
                     </div>
+                  </div>
+                </div>
+
+                <!-- Floating connected badges: real Oura + Apple logos -->
+                <div class="hero-badge a">
+                  <div class="hero-badge-inner">
+                    <span class="hero-badge-icon rounded"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring"></span>
+                    <span class="hero-badge-label">Oura synced</span>
+                  </div>
+                </div>
+                <div class="hero-badge b">
+                  <div class="hero-badge-inner">
+                    <span class="hero-badge-icon"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health"></span>
+                    <span class="hero-badge-label">Apple connected</span>
                   </div>
                 </div>
               </div>
