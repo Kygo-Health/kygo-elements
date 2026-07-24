@@ -1034,7 +1034,7 @@ class KygoInsightsSteps extends HTMLElement {
         .result-pill{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;border-radius:12px;padding:8px 11px;line-height:1.25}
         .result-pill.good{background:#F0FDF4;border:1px solid #BBF7D0}
         .result-pill.bad{background:#FEF2F2;border:1px solid #FECACA}
-        .result-line{font-size:12.5px;font-weight:600;color:var(--label)}
+        .result-line{font-size:12.5px;font-weight:600;color:var(--label);white-space:nowrap}
         .result-line .arrow{font-weight:700}
         .result-pill.good .arrow{color:var(--green-dark)}
         .result-pill.bad .arrow{color:#EF4444}
@@ -1061,10 +1061,19 @@ class KygoInsightsSteps extends HTMLElement {
         .reveal .hfoot .chip:nth-child(3){animation-delay:.46s}
         .reveal .hfoot .chip:nth-child(4){animation-delay:.54s}
         .reveal .hfoot .chip:nth-child(5){animation-delay:.62s}
+        @media(max-width:480px){
+          /* Stack the store buttons and give them a single, consistent width */
+          .steps-cta{flex-direction:column;align-items:center}
+          .cta-primary,.cta-android{width:100%;max-width:320px;justify-content:center}
+          /* Keep the result pills to a single line on small screens */
+          .result-pill{padding:8px 10px}
+          .result-line{font-size:12px}
+        }
         @media(max-width:360px){
           .step-card{padding:24px 18px}
           .hfoot-devices{gap:6px}
           .chip-tile{width:40px;height:40px}
+          .result-line{font-size:11.5px}
         }
         @media(prefers-reduced-motion:reduce){*{animation:none !important}}
       </style>
