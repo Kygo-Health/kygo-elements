@@ -1141,7 +1141,7 @@ class KygoInsightsSteps extends HTMLElement {
               <span class="ghost-num" aria-hidden="true">03</span>
               <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg></span>
               <h3>Discover your patterns</h3>
-              <p>Kygo connects the dots between your meals and your metrics, showing which foods help or hurt your sleep, energy, and recovery.</p>
+              <p>Kygo connects your meals and your metrics to show which foods are helping or hurting your sleep, energy, and recovery.</p>
               <div class="hfoot hfoot-results">
                 <span class="result-pill good">
                   <span class="result-line"><span class="arrow">&#8593;</span> Dinner before 7pm</span>
