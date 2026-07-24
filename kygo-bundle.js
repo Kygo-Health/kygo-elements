@@ -482,6 +482,8 @@ class KygoSocialProofSection extends HTMLElement {
         .device-logo-item:hover{background:rgba(255,255,255,0.15);transform:scale(1.08)}
         .device-logo-item img{width:20px;height:20px;object-fit:contain;border-radius:4px;opacity:0.7;transition:opacity 0.2s}
         .device-logo-item:hover img{opacity:1}
+        /* Mobile: hide the "Works with" logo row so the band stays compact */
+        @media(max-width:767px){.device-logos{display:none}}
         @media(min-width:768px){
           .social-proof{padding:28px 0}
           .social-proof-inner{flex-direction:row;justify-content:space-between}
@@ -995,7 +997,7 @@ class KygoInsightsSteps extends HTMLElement {
       garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
       fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
       apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
-      health: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png'
+      health: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png'
     };
   }
   render() {
@@ -1028,8 +1030,8 @@ class KygoInsightsSteps extends HTMLElement {
         .chip:hover{transform:translateY(-3px)}
         .chip-tile{width:44px;height:44px;flex-shrink:0;border-radius:11px;border:1px solid var(--border);background:var(--canvas);display:flex;align-items:center;justify-content:center}
         .chip-tile svg{width:19px;height:19px}
-        .chip-tile.device{overflow:hidden;background:#fff;padding:7px}
-        .chip-tile.device img{width:100%;height:100%;object-fit:contain}
+        .chip-tile.device{overflow:hidden;background:#fff;padding:0}
+        .chip-tile.device img{width:100%;height:100%;object-fit:cover;border-radius:10px}
         .chip-label{font-size:11px;font-weight:600;color:var(--label);white-space:nowrap}
         .result-pill{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;border-radius:12px;padding:8px 11px;line-height:1.25}
         .result-pill.good{background:#F0FDF4;border:1px solid #BBF7D0}
@@ -1066,14 +1068,14 @@ class KygoInsightsSteps extends HTMLElement {
           .steps-cta{flex-direction:column;align-items:center}
           .cta-primary,.cta-android{width:100%;max-width:320px;justify-content:center}
           /* Keep the result pills to a single line on small screens */
-          .result-pill{padding:8px 10px}
-          .result-line{font-size:12px}
+          .result-pill{padding:8px 8px}
+          .result-line{font-size:11px}
         }
         @media(max-width:360px){
           .step-card{padding:24px 18px}
           .hfoot-devices{gap:6px}
           .chip-tile{width:40px;height:40px}
-          .result-line{font-size:11.5px}
+          .result-line{font-size:10.5px}
         }
         @media(prefers-reduced-motion:reduce){*{animation:none !important}}
       </style>
@@ -1429,7 +1431,7 @@ class KygoFinalCta extends HTMLElement {
         .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
         .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
         @media(prefers-reduced-motion:reduce){.final-cta-inner{animation:none}}
-        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
+        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:320px;justify-content:center;white-space:nowrap}}
         @media(min-width:768px){.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
       </style>
       <section class="final-cta">
