@@ -988,168 +988,192 @@ class KygoInsightsSteps extends HTMLElement {
     if (this.animationObserver) this.animationObserver.disconnect();
   }
   getWearableIcons() {
+    // Real Wix-hosted Kygo brand logos (connect-wearable rows). Keep in sync
+    // with docs/assets-and-urls.md so the homepage matches the rest of the site.
     return {
+      oura: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png',
+      garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
+      fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
       apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
-      oura: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png'
+      health: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png'
     };
   }
   render() {
     const icons = this.getWearableIcons();
     this.shadowRoot.innerHTML = `
       <style>
-        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-50:#f9fafb;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--dark);line-height:1.6;-webkit-font-smoothing:antialiased}
-        *{margin:0;padding:0;box-sizing:border-box}
-        .insights-section{padding:48px 0 56px;background:white}
-        .container{max-width:900px;margin:0 auto;padding:0 20px}
-        .section-header{text-align:center;margin-bottom:36px}
-        .section-header h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:28px;font-weight:600;line-height:1.2;margin-bottom:10px;color:var(--dark)}
-        .section-subtitle{color:var(--gray-600);font-size:15px;max-width:400px;margin:0 auto}
-        .steps-container{display:flex;flex-direction:column;gap:16px}
-        .step-card{background:var(--gray-50);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:20px;opacity:0;transform:translateY(20px);transition:all 0.5s cubic-bezier(0.4,0,0.2,1);border:1px solid var(--gray-200)}
-        .step-card.visible{opacity:1;transform:translateY(0)}
-        .step-card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.06)}
-        .step-card[data-step="1"]{transition-delay:0s}
-        .step-card[data-step="2"]{transition-delay:0.15s}
-        .step-card[data-step="3"]{transition-delay:0.3s}
-        .step-indicator{display:flex;align-items:flex-start;gap:16px}
-        .step-number{width:48px;height:48px;min-width:48px;background:var(--green);color:white;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;font-size:20px;flex-shrink:0;box-shadow:0 4px 12px rgba(34,197,94,0.3)}
-        .step-text h3{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:18px;font-weight:600;margin-bottom:4px;color:var(--dark);line-height:1.3}
-        .step-text p{color:var(--gray-600);font-size:14px;line-height:1.5}
-        .step-visual{background:white;border-radius:14px;padding:16px;border:1px solid var(--gray-200)}
-        .visual-items{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-        .visual-item{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--gray-600);transition:all 0.2s;min-width:90px;justify-content:center}
-        .visual-item:hover{border-color:var(--green);background:white}
-        .visual-item svg{color:var(--green);flex-shrink:0}
-        .device-icon{width:20px;height:20px;object-fit:contain;flex-shrink:0;border-radius:5px}
-        .visual-item.highlight{background:var(--green);color:white;border-color:var(--green);font-weight:600}
-        .visual-item.highlight svg{color:white}
-        .visual-item.highlight:hover{background:var(--green-dark);border-color:var(--green-dark)}
-        .steps-cta{text-align:center;margin-top:36px}
-        .cta-primary{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:white;padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;transition:all 0.25s;box-shadow:0 4px 14px rgba(34,197,94,0.3);cursor:pointer;border:none;font-family:inherit;white-space:nowrap}
-        .cta-primary:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 6px 20px rgba(34,197,94,0.4)}
-        .cta-primary svg{width:18px;height:18px;flex-shrink:0;transition:transform 0.2s}
-        .cta-primary:hover svg{transform:translateX(4px)}
-        .cta-group-top{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center}
-        .cta-android{display:inline-flex;align-items:center;gap:8px;background:white;color:var(--green-dark);padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;transition:all 0.25s;border:2px solid var(--green);cursor:pointer;font-family:inherit;white-space:nowrap}
-        .cta-android:hover{background:var(--green);color:white;transform:translateY(-2px);box-shadow:0 6px 20px rgba(34,197,94,0.4)}
-        .cta-android svg{width:18px;height:18px;flex-shrink:0}
-        @media(min-width:600px){
-          .insights-section{padding:64px 0 72px}
-          .section-header h2{font-size:32px}
-          .section-subtitle{font-size:16px}
-          .steps-container{gap:20px}
-          .step-card{padding:28px;flex-direction:row;align-items:center;justify-content:space-between;gap:24px}
-          .step-content{flex:1;max-width:400px}
-          .step-number{width:52px;height:52px;min-width:52px;font-size:22px}
-          .step-text h3{font-size:19px}
-          .step-text p{font-size:15px}
-          .step-visual{flex-shrink:0;min-width:280px;padding:18px}
-          .visual-items{gap:12px;flex-wrap:nowrap}
-          .visual-item{padding:12px 16px;font-size:14px;flex:1;min-width:80px}
-          .cta-primary{padding:16px 32px;font-size:16px}
+        :host{--dark:#0F172A;--green:#22C55E;--green-dark:#16A34A;--navy:#1E293B;--navy-deep:#0F172A;--canvas:#F8FAFC;--slate-100:#F1F5F9;--border:#E2E8F0;--body:#475569;--label:#64748B;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--dark);line-height:1.6;-webkit-font-smoothing:antialiased}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwPop{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
+        .insights-section{padding:clamp(56px,7vw,92px) 20px;background:var(--canvas)}
+        .container{max-width:1180px;margin:0 auto}
+        .section-header{text-align:center;max-width:640px;margin:0 auto 48px}
+        .kicker{font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--green-dark);margin-bottom:12px}
+        .section-header h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;font-size:clamp(28px,3.8vw,40px);line-height:1.08;letter-spacing:-0.03em;color:var(--dark);margin-bottom:14px}
+        .section-subtitle{font-size:clamp(16px,2.2vw,18px);color:var(--body)}
+        .steps-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+        .step-card{position:relative;overflow:hidden;display:flex;flex-direction:column;background:#fff;border:2px solid var(--border);border-radius:18px;padding:28px 24px;box-shadow:0 4px 12px rgba(15,23,42,.04);transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+        .step-card:hover{transform:translateY(-5px);border-color:var(--green);box-shadow:0 18px 40px -22px rgba(15,23,42,.4)}
+        .ghost-num{position:absolute;top:10px;right:18px;font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;font-size:66px;line-height:1;color:var(--slate-100);pointer-events:none;user-select:none}
+        .step-icon{position:relative;width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,#22C55E,#16A34A);display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 8px 16px -8px rgba(34,197,94,.7)}
+        .step-icon svg{width:23px;height:23px}
+        .step-card h3{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;font-size:21px;color:var(--dark);margin-bottom:8px;line-height:1.2}
+        .step-card p{font-size:15px;color:var(--body);margin-bottom:20px}
+        .hfoot{margin-top:auto;padding-top:18px;border-top:1px solid var(--slate-100)}
+        .hfoot-methods{display:flex;justify-content:center;gap:10px}
+        .hfoot-devices{display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:center;gap:8px}
+        .hfoot-results{display:flex;align-items:center;gap:8px;min-height:82px}
+        .chip{display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .18s ease}
+        .chip:hover{transform:translateY(-3px)}
+        .chip-tile{width:44px;height:44px;flex-shrink:0;border-radius:11px;border:1px solid var(--border);background:var(--canvas);display:flex;align-items:center;justify-content:center}
+        .chip-tile svg{width:19px;height:19px}
+        .chip-tile.device{overflow:hidden;background:#fff;padding:7px}
+        .chip-tile.device img{width:100%;height:100%;object-fit:contain}
+        .chip-label{font-size:11px;font-weight:600;color:var(--label);white-space:nowrap}
+        .result-pill{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;border-radius:12px;padding:8px 11px;line-height:1.25}
+        .result-pill.good{background:#F0FDF4;border:1px solid #BBF7D0}
+        .result-pill.bad{background:#FEF2F2;border:1px solid #FECACA}
+        .result-line{font-size:12.5px;font-weight:600;color:var(--label)}
+        .result-line .arrow{font-weight:700}
+        .result-pill.good .arrow{color:var(--green-dark)}
+        .result-pill.bad .arrow{color:#EF4444}
+        .result-stat{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11.5px;font-weight:700}
+        .result-pill.good .result-stat{color:var(--green-dark)}
+        .result-pill.bad .result-stat{color:#EF4444}
+        .steps-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:40px}
+        .cta-primary{display:inline-flex;align-items:center;gap:9px;background:var(--green);color:#fff;font-weight:600;font-size:16px;padding:15px 26px;border-radius:12px;white-space:nowrap;text-decoration:none;box-shadow:0 10px 24px -8px rgba(34,197,94,.5);transition:transform .2s ease,background .2s ease,box-shadow .2s ease;cursor:pointer;border:none;font-family:inherit}
+        .cta-primary:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 14px 30px -10px rgba(34,197,94,.6)}
+        .cta-primary svg{width:20px;height:20px;flex-shrink:0}
+        .cta-android{display:inline-flex;align-items:center;gap:9px;background:var(--navy);color:#fff;font-weight:600;font-size:16px;padding:15px 26px;border-radius:12px;white-space:nowrap;text-decoration:none;transition:transform .2s ease,background .2s ease,box-shadow .2s ease;cursor:pointer;border:none;font-family:inherit}
+        .cta-android:hover{background:var(--navy-deep);transform:translateY(-2px)}
+        .cta-android svg{width:20px;height:20px;flex-shrink:0}
+        /* Entrance animations, gated on .reveal so they play when scrolled into view */
+        .reveal .kicker{animation:hiwUp .6s ease-out both}
+        .reveal .section-header h2{animation:hiwUp .6s ease-out .06s both}
+        .reveal .section-subtitle{animation:hiwUp .6s ease-out .12s both}
+        .reveal .step-card:nth-child(1){animation:hiwUp .6s ease-out .16s both}
+        .reveal .step-card:nth-child(2){animation:hiwUp .6s ease-out .24s both}
+        .reveal .step-card:nth-child(3){animation:hiwUp .6s ease-out .32s both}
+        .reveal .hfoot .chip,.reveal .hfoot .result-pill{animation:hiwPop .5s ease-out both}
+        .reveal .hfoot .chip:nth-child(1),.reveal .hfoot .result-pill:nth-child(1){animation-delay:.30s}
+        .reveal .hfoot .chip:nth-child(2),.reveal .hfoot .result-pill:nth-child(2){animation-delay:.38s}
+        .reveal .hfoot .chip:nth-child(3){animation-delay:.46s}
+        .reveal .hfoot .chip:nth-child(4){animation-delay:.54s}
+        .reveal .hfoot .chip:nth-child(5){animation-delay:.62s}
+        @media(max-width:360px){
+          .step-card{padding:24px 18px}
+          .hfoot-devices{gap:6px}
+          .chip-tile{width:40px;height:40px}
         }
-        @media(min-width:900px){
-          .insights-section{padding:80px 0 88px}
-          .section-header{margin-bottom:48px}
-          .section-header h2{font-size:36px}
-          .steps-container{gap:24px}
-          .step-card{padding:32px 36px;gap:32px}
-          .step-number{width:56px;height:56px;min-width:56px;font-size:24px;border-radius:16px}
-          .step-text h3{font-size:20px}
-          .step-visual{min-width:320px;padding:20px}
-          .steps-cta{margin-top:48px}
-        }
-        @keyframes pulse{0%,100%{box-shadow:0 4px 12px rgba(34,197,94,0.3)}50%{box-shadow:0 4px 20px rgba(34,197,94,0.5)}}
-        .step-card.visible .step-number{animation:pulse 2s ease-in-out infinite;animation-delay:0.5s}
+        @media(prefers-reduced-motion:reduce){*{animation:none !important}}
       </style>
       <section class="insights-section">
         <div class="container">
           <div class="section-header">
-            <h2>Get insights in 3 steps</h2>
-            <p class="section-subtitle">Setup takes 2 minutes. First correlations appear in 7-14 days.</p>
+            <div class="kicker">How it works</div>
+            <h2>From first meal to real answers</h2>
+            <p class="section-subtitle">Three steps. About a week of logging. Patterns you can actually act on.</p>
           </div>
           <div class="steps-container">
-            <div class="step-card step-1" data-step="1">
-              <div class="step-content">
-                <div class="step-indicator">
-                  <div class="step-number">1</div>
-                  <div class="step-text">
-                    <h3>Connect your devices</h3>
-                    <p>Link your wearables in seconds. Historical data syncs automatically.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="step-visual">
-                <div class="visual-items">
-                  <div class="visual-item device-item"><img src="${icons.oura}" alt="Oura" class="device-icon"/><span>Oura</span></div>
-                  <div class="visual-item device-item"><img src="${icons.apple}" alt="Apple" class="device-icon"/><span>Apple</span></div>
-                  <div class="visual-item highlight connected-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Connected</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="step-card step-2" data-step="2">
-              <div class="step-content">
-                <div class="step-indicator">
-                  <div class="step-number">2</div>
-                  <div class="step-text">
-                    <h3>Log your meals</h3>
-                    <p>Snap a photo, scan a barcode, or just tell us what you ate.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="step-visual">
-                <div class="visual-items">
-                  <div class="visual-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg><span>Photo</span></div>
-                  <div class="visual-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg><span>Voice</span></div>
-                  <div class="visual-item highlight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><path d="M5 12l5 5L20 7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Logged</span></div>
-                </div>
+            <div class="step-card" data-step="1">
+              <span class="ghost-num" aria-hidden="true">01</span>
+              <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+              <h3>Log your food</h3>
+              <p>Photo, voice, barcode, or text. Logging takes seconds and Kygo does the counting so you don't have to.</p>
+              <div class="hfoot hfoot-methods">
+                <span class="chip">
+                  <span class="chip-tile"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>
+                  <span class="chip-label">Photo</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/></svg></span>
+                  <span class="chip-label">Voice</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M3 5v14M7 5v14M11 5v14M15 5v14M19 5v14"/></svg></span>
+                  <span class="chip-label">Barcode</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile"><svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                  <span class="chip-label">Chat</span>
+                </span>
               </div>
             </div>
-            <div class="step-card step-3" data-step="3">
-              <div class="step-content">
-                <div class="step-indicator">
-                  <div class="step-number">3</div>
-                  <div class="step-text">
-                    <h3>Discover your patterns</h3>
-                    <p>The more you log the more you learn with stronger correlations.</p>
-                  </div>
-                </div>
+            <div class="step-card" data-step="2">
+              <span class="ghost-num" aria-hidden="true">02</span>
+              <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="5.5"/><path d="M12 9.5V12l1.6 1.2"/><path d="M8.6 6.6 8 3.4A1 1 0 0 1 9 2.2h6a1 1 0 0 1 1 1.2l-.6 3.2"/><path d="m8.6 17.4-.6 3.2a1 1 0 0 0 1 1.2h6a1 1 0 0 0 1-1.2l-.6-3.2"/></svg></span>
+              <h3>Connect your wearable</h3>
+              <p>One device or five, we sync them all, then prioritize the most accurate source for each metric automatically.</p>
+              <div class="hfoot hfoot-devices">
+                <span class="chip">
+                  <span class="chip-tile device"><img src="${icons.oura}" alt="Oura" loading="lazy"/></span>
+                  <span class="chip-label">Oura</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile device"><img src="${icons.garmin}" alt="Garmin" loading="lazy"/></span>
+                  <span class="chip-label">Garmin</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile device"><img src="${icons.fitbit}" alt="Fitbit" loading="lazy"/></span>
+                  <span class="chip-label">Fitbit</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile device"><img src="${icons.apple}" alt="Apple Health" loading="lazy"/></span>
+                  <span class="chip-label">Apple</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile device"><img src="${icons.health}" alt="Health Connect" loading="lazy"/></span>
+                  <span class="chip-label">Health</span>
+                </span>
               </div>
-              <div class="step-visual">
-                <div class="visual-items">
-                  <div class="visual-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg><span>Food</span></div>
-                  <div class="visual-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>Biometrics</span></div>
-                  <div class="visual-item highlight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M8 11h6"/><path d="M11 8v6"/></svg><span>Discovered</span></div>
-                </div>
+            </div>
+            <div class="step-card" data-step="3">
+              <span class="ghost-num" aria-hidden="true">03</span>
+              <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg></span>
+              <h3>Discover your patterns</h3>
+              <p>Kygo connects the dots between your meals and your metrics, showing which foods help or hurt your sleep, energy, and recovery.</p>
+              <div class="hfoot hfoot-results">
+                <span class="result-pill good">
+                  <span class="result-line"><span class="arrow">&#8593;</span> Dinner before 7pm</span>
+                  <span class="result-stat">+23 min sleep</span>
+                </span>
+                <span class="result-pill bad">
+                  <span class="result-line"><span class="arrow">&#8595;</span> Late caffeine</span>
+                  <span class="result-stat">&#8722;9 pt Sleep</span>
+                </span>
               </div>
             </div>
           </div>
           <div class="steps-cta">
-            <div class="cta-group-top">
-              <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" class="cta-primary" data-track-position="bottom" data-track-label="home-insights-ios">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                Download for iOS
-              </a>
-              <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="bottom" data-track-label="home-insights-android">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" class="cta-primary" aria-label="Download Kygo on the App Store" data-track-position="bottom" data-track-label="home-insights-ios">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              <span>Download for iOS</span>
+            </a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" aria-label="Download Kygo on Google Play" data-track-position="bottom" data-track-label="home-insights-android">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
               <span>Download for Android</span>
-              </a>
-            </div>
+            </a>
           </div>
         </div>
       </section>
     `;
   }
   setupAnimations() {
+    const section = this.shadowRoot.querySelector('.insights-section');
+    if (!section) return;
     if ('IntersectionObserver' in window) {
-      this.animationObserver = new IntersectionObserver((entries) => {
+      this.animationObserver = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) entry.target.classList.add('visible');
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal');
+            obs.unobserve(entry.target);
+          }
         });
-      }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' });
-      this.shadowRoot.querySelectorAll('.step-card').forEach(card => this.animationObserver.observe(card));
+      }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+      this.animationObserver.observe(section);
     } else {
-      this.shadowRoot.querySelectorAll('.step-card').forEach(card => card.classList.add('visible'));
+      section.classList.add('reveal');
     }
   }
 }
