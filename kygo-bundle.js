@@ -724,7 +724,7 @@ class KygoProblemSection extends HTMLElement {
         .why-eyebrow{font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--green-dark);margin-bottom:12px}
         .why-header h2{font-size:clamp(28px,3.8vw,40px);letter-spacing:-0.03em;color:var(--navy);margin-bottom:14px}
         .why-header p{font-size:clamp(16px,2.2vw,18px);color:var(--slate-600)}
-        .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+        .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:22px}
         .why-card{border-radius:18px;padding:30px 26px}
         .why-card.old-way{background:var(--gray-100);border:1px solid var(--gray-200)}
         .why-card.kygo-way{position:relative;background:#fff;border:2px solid var(--green);box-shadow:0 16px 40px -22px rgba(34,197,94,.4);transition:transform .25s ease-out,box-shadow .25s ease-out}
