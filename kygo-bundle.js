@@ -642,11 +642,16 @@ class KygoProblemSection extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._settings = {};
+    this._observer = null;
   }
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
     __seo(this, 'Stop guessing how food affects your body. Kygo Health uses AI to connect your nutrition data with wearable health metrics including sleep stages, HRV, resting heart rate, blood oxygen, skin temperature, and respiratory rate. The app identifies statistically significant correlations between specific foods and health outcomes \u2014 for example, showing that high-glycemic meals before bed reduce your deep sleep by a measurable percentage.');
+  }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
   _parseWixAttributes() {
     try {
@@ -654,89 +659,124 @@ class KygoProblemSection extends HTMLElement {
       if (wixsettings) this._settings = JSON.parse(wixsettings);
     } catch (e) {}
   }
-  static get observedAttributes() { return ['wixsettings', 'headline', 'subheadline']; }
+  static get observedAttributes() { return ['wixsettings', 'eyebrow', 'headline', 'subheadline']; }
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue) return;
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
   }
   _getSetting(key, fallback) {
     return this._settings[key] || this.getAttribute(key) || fallback;
   }
+  _setupScrollAnimations() {
+    if (this._observer) this._observer.disconnect();
+    requestAnimationFrame(() => {
+      const root = this.shadowRoot.querySelector('.why-section');
+      if (!root) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      this._observer.observe(root);
+    });
+  }
   render() {
+    const eyebrow = this._getSetting('eyebrow', 'Why Kygo');
     const headline = this._getSetting('headline', "There's a better way to understand your health");
     const subheadline = this._getSetting('subheadline', "Your wearable shows what's happening. We show you why.");
+    const oldWay = [
+      'You log for months and learn nothing',
+      'Your score drops and you never find out why',
+      'You cut foods that were never the problem',
+      'Logging takes so long you quit by week two'
+    ];
+    const kygoWay = [
+      'Answers start showing up in 7 days',
+      'See what moved your HRV, and by how much',
+      "Stop cutting foods that don't affect you",
+      'Photo, voice or chat, all under 10 seconds a meal'
+    ];
+    const xIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    const checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+    // Row/badge stagger: old-way rows start at 0.24s, Kygo-way rows at 0.32s; +70ms per index; badge lands +80ms behind its row.
+    const rows = (items, baseDelay, iconHtml) => items.map((text, i) => {
+      const rowDelay = (baseDelay + i * 0.07).toFixed(2);
+      const popDelay = (baseDelay + i * 0.07 + 0.08).toFixed(2);
+      return `
+              <div class="why-row" style="--row-delay:${rowDelay}s">
+                <span class="why-badge" style="--pop-delay:${popDelay}s">${iconHtml}</span>
+                <span class="why-item-text">${text}</span>
+              </div>`;
+    }).join('');
     this.shadowRoot.innerHTML = `
       <style>
-        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        :host{--dark:#1E293B;--navy:#0F172A;--green:#22C55E;--green-dark:#16A34A;--slate-600:#475569;--slate-500:#64748B;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-400:#94A3B8;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
-        .problem-section{padding:48px 0;background:white}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .section-header{text-align:center;margin-bottom:32px;opacity:0;animation:fadeInUp 0.6s ease-out forwards}
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-        .section-header h2{font-size:24px;margin-bottom:8px;color:var(--dark)}
-        .section-header p{color:var(--gray-600);font-size:15px;max-width:500px;margin:0 auto}
-        .comparison-grid{display:grid;gap:16px;max-width:900px;margin:0 auto}
-        .comparison-column{padding:24px;border-radius:20px;opacity:0;animation:fadeInUp 0.6s ease-out forwards;transition:all 0.3s ease}
-        .comparison-column.old-way{background:var(--gray-100);animation-delay:0.1s}
-        .comparison-column.new-way{background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(34,197,94,0.02));border:2px solid var(--green);animation-delay:0.2s}
-        .comparison-column h3{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:15px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;line-height:1.3}
-        .comparison-column.old-way h3{color:var(--gray-600)}
-        .comparison-column.new-way h3{color:var(--green-dark)}
-        .comparison-column h3 svg{flex-shrink:0}
-        .comparison-list{list-style:none;display:grid;gap:12px}
-        .comparison-list li{font-size:14px;display:flex;align-items:flex-start;gap:10px;line-height:1.5}
-        .comparison-list li svg{flex-shrink:0;margin-top:6px}
-        .comparison-list li strong{color:var(--dark);font-weight:600}
-        .comparison-list li span{color:var(--gray-600)}
-        .comparison-column:hover{transform:translateY(-4px)}
-        .comparison-column.old-way:hover{box-shadow:0 8px 24px rgba(0,0,0,0.08)}
-        .comparison-column.new-way:hover{box-shadow:0 8px 24px rgba(34,197,94,0.15)}
-        @media(min-width:768px){
-          .problem-section{padding:60px 0}
-          .section-header{margin-bottom:40px}
-          .section-header h2{font-size:32px}
-          .section-header p{font-size:16px}
-          .comparison-grid{grid-template-columns:1fr 1fr;gap:24px}
-          .comparison-column{padding:28px}
-          .comparison-column h3{font-size:16px}
-        }
-        @media(min-width:1024px){
-          .problem-section{padding:80px 0}
-          .section-header h2{font-size:36px}
-          .comparison-column{padding:32px}
-          .comparison-list li{font-size:15px}
+        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;line-height:1.08}
+        .why-section{padding:clamp(56px,7vw,92px) 20px;background:#fff;border-bottom:1px solid #F1F5F9}
+        .container{max-width:1180px;margin:0 auto}
+        .why-header{text-align:center;max-width:660px;margin:0 auto 48px}
+        .why-eyebrow{font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--green-dark);margin-bottom:12px}
+        .why-header h2{font-size:clamp(28px,3.8vw,40px);letter-spacing:-0.03em;color:var(--navy);margin-bottom:14px}
+        .why-header p{font-size:clamp(16px,2.2vw,18px);color:var(--slate-600)}
+        .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+        .why-card{border-radius:18px;padding:30px 26px}
+        .why-card.old-way{background:var(--gray-100);border:1px solid var(--gray-200)}
+        .why-card.kygo-way{position:relative;background:#fff;border:2px solid var(--green);box-shadow:0 16px 40px -22px rgba(34,197,94,.4);transition:transform .25s ease-out,box-shadow .25s ease-out}
+        .why-card-label{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+        .why-card.old-way .why-card-label{color:var(--gray-400)}
+        .why-card.kygo-way .why-card-label{color:var(--green-dark)}
+        .why-rows{display:flex;flex-direction:column;gap:14px}
+        .why-row{display:flex;align-items:flex-start;gap:12px}
+        .why-badge{width:24px;height:24px;flex-shrink:0;border-radius:99px;display:flex;align-items:center;justify-content:center}
+        .why-badge svg{width:13px;height:13px}
+        .why-card.old-way .why-badge{background:var(--gray-200)}
+        .why-card.kygo-way .why-badge{background:rgba(34,197,94,.14)}
+        .why-item-text{font-size:15.5px;font-weight:500}
+        .why-card.old-way .why-item-text{color:var(--slate-500)}
+        .why-card.kygo-way .why-item-text{color:var(--dark)}
+
+        /* Entry animations — gated on .visible so they fire when the section scrolls into view */
+        @keyframes hiwUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwRow{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwPop{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
+        .why-eyebrow,.why-header h2,.why-header p,.why-card,.why-row,.why-badge{opacity:0}
+        .why-section.visible .why-eyebrow{animation:hiwUp .6s ease-out 0s both}
+        .why-section.visible .why-header h2{animation:hiwUp .6s ease-out .06s both}
+        .why-section.visible .why-header p{animation:hiwUp .6s ease-out .12s both}
+        .why-section.visible .why-card.old-way{animation:hiwUp .6s ease-out .18s both}
+        .why-section.visible .why-card.kygo-way{animation:hiwUp .6s ease-out .26s both}
+        .why-section.visible .why-row{animation:hiwRow .5s ease-out var(--row-delay) both}
+        .why-section.visible .why-badge{animation:hiwPop .42s ease-out var(--pop-delay) both}
+        .why-card.kygo-way:hover{transform:translateY(-4px);box-shadow:0 22px 48px -20px rgba(34,197,94,.45)}
+
+        @media(prefers-reduced-motion:reduce){
+          .why-eyebrow,.why-header h2,.why-header p,.why-card,.why-row,.why-badge{opacity:1!important;animation:none!important}
+          .why-card.kygo-way:hover{transform:none}
         }
       </style>
-      <section class="problem-section">
+      <section class="why-section">
         <div class="container">
-          <div class="section-header">
+          <div class="why-header">
+            <div class="why-eyebrow">${eyebrow}</div>
             <h2>${headline}</h2>
             <p>${subheadline}</p>
           </div>
-          <div class="comparison-grid">
-            <div class="comparison-column old-way">
-              <h3>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#94A3B8" stroke-width="2"/><path d="M8 8l8 8M16 8l-8 8" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/></svg>
-                The Old Way
-              </h3>
-              <ul class="comparison-list">
-                <li><svg width="6" height="6" fill="#94A3B8"><circle cx="3" cy="3" r="3"/></svg><span><strong>Wearable shows your HRV is down</strong> — but not why</span></li>
-                <li><svg width="6" height="6" fill="#94A3B8"><circle cx="3" cy="3" r="3"/></svg><span><strong>Food Loggers tracks calories</strong> — can't connect to how you feel</span></li>
-                <li><svg width="6" height="6" fill="#94A3B8"><circle cx="3" cy="3" r="3"/></svg><span><strong>Generic health advice</strong> — not personalized to your body</span></li>
-              </ul>
+          <div class="why-grid">
+            <div class="why-card old-way">
+              <div class="why-card-label">The old way</div>
+              <div class="why-rows">${rows(oldWay, 0.24, xIcon)}
+              </div>
             </div>
-            <div class="comparison-column new-way">
-              <h3>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#22C55E" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                The Kygo Way
-              </h3>
-              <ul class="comparison-list">
-                <li><svg width="6" height="6" fill="#22C55E"><circle cx="3" cy="3" r="3"/></svg><span><strong>See cause-and-effect</strong> — correlations from YOUR data</span></li>
-                <li><svg width="6" height="6" fill="#22C55E"><circle cx="3" cy="3" r="3"/></svg><span><strong>Log meals in seconds</strong> — with AI assisted logging</span></li>
-                <li><svg width="6" height="6" fill="#22C55E"><circle cx="3" cy="3" r="3"/></svg><span><strong>All devices, one place</strong> — sleep from Oura, activity from Apple</span></li>
-              </ul>
+            <div class="why-card kygo-way">
+              <div class="why-card-label">The Kygo way</div>
+              <div class="why-rows">${rows(kygoWay, 0.32, checkIcon)}
+              </div>
             </div>
           </div>
         </div>
@@ -1202,86 +1242,70 @@ class KygoFaq extends HTMLElement {
   }
   connectedCallback() {
     this.render();
-    this.setupAccordion();
-    __seo(this, 'Frequently asked questions about Kygo Health \u2014 nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, Samsung Galaxy Watch), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (typically 7 days of consistent logging).');
+    __seo(this, 'Frequently asked questions about Kygo Health — nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (about seven days of consistent logging).');
   }
-  setupAccordion() {
-    const questions = this.shadowRoot.querySelectorAll('.faq-question');
-    questions.forEach(question => {
-      question.addEventListener('click', () => {
-        const item = question.parentElement;
-        const wasOpen = item.classList.contains('open');
-        this.shadowRoot.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-        if (!wasOpen) item.classList.add('open');
-      });
-    });
+  _faqData() {
+    return [
+      {
+        q: 'Is my health data secure?',
+        a: 'Yes, protected end to end. All traffic is encrypted with modern TLS and your data is encrypted at rest with AES-256, on accounts secured with bcrypt hashing and token-based authentication, with every request scoped so only you can reach your own data. We never sell your data. Your wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data. ',
+        link: { href: 'https://www.kygo.app/privacy-policy', text: 'Read our privacy policy →' }
+      },
+      { q: 'What is Kygo?', a: 'Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device.' },
+      { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
+      { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
+      { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
+      { q: 'Is it really free?', a: 'Yes! Food logging, wearable sync, and trend tracking are free forever. The correlation engine is premium, $9.99/month or $39.99/year to unlock personalized insights.' }
+    ];
   }
   render() {
+    const faqs = this._faqData().map(f => {
+      const answer = f.link
+        ? `${f.a}<a href="${f.link.href}" target="_blank" rel="noopener">${f.link.text}</a>`
+        : f.a;
+      return `
+            <details class="faq-item">
+              <summary>
+                <span>${f.q}</span>
+                <svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </summary>
+              <div class="faq-answer">${answer}</div>
+            </details>`;
+    }).join('');
     this.shadowRoot.innerHTML = `
       <style>
-        :host{display:block;--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        :host{display:block;--dark:#1E293B;--navy:#0F172A;--green:#22C55E;--green-dark:#16A34A;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-        .faq{padding:60px 0;background:#fff}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .section-header{text-align:center;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto}
-        .kicker{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--green-dark);margin-bottom:10px}
-        .section-header h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:28px;color:var(--dark);margin-bottom:10px}
-        .section-header p{color:#64748B;font-size:15px;line-height:1.6}
-        .faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
-        .faq-item{background:#fff;border:1px solid var(--gray-200);border-radius:16px;animation:revealUp .5s ease-out both;transition:border-color .25s ease,box-shadow .25s ease,background .25s ease}
-        .faq-item:hover{border-color:var(--green);box-shadow:0 6px 20px rgba(34,197,94,0.08)}
-        .faq-item.open{border-color:var(--green);background:rgba(34,197,94,0.035);box-shadow:0 6px 22px rgba(34,197,94,0.09)}
-        .faq-question{padding:18px 20px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:color .2s;color:var(--dark);gap:16px}
-        .faq-question:hover{color:var(--green-dark)}
-        .faq-icon{width:30px;height:30px;flex-shrink:0;border-radius:50%;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;color:var(--green);transition:transform .3s ease,background .25s ease,color .25s ease}
-        .faq-icon svg{width:18px;height:18px}
-        .faq-item.open .faq-icon{transform:rotate(180deg);background:var(--green);color:#fff}
-        .faq-answer{max-height:0;overflow:hidden;transition:max-height .3s,opacity .3s;opacity:0}
-        .faq-answer-inner{padding:0 20px 20px;color:var(--gray-600);font-size:15px;line-height:1.7}
-        .faq-item.open .faq-answer{max-height:720px;opacity:1}
-        .faq-answer-inner a{color:var(--green-dark);font-weight:600;text-decoration:none;white-space:nowrap}
-        .faq-answer-inner a:hover{text-decoration:underline}
-        @media(prefers-reduced-motion:reduce){.faq-item{animation:none}}
-        @media(min-width:768px){
-          .faq{padding:80px 0}
-          .section-header h2{font-size:36px}
-          .faq-question{font-size:17px;padding:20px 24px}
-          .faq-answer-inner{padding:0 24px 22px}
-        }
+        .faq{padding:clamp(56px,7vw,88px) 20px;background:#fff}
+        .container{max-width:760px;margin:0 auto}
+        .section-header{text-align:center;margin-bottom:36px}
+        .kicker{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:.9px;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
+        .section-header h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;line-height:1.08;letter-spacing:-0.03em;font-size:clamp(28px,4vw,40px);color:var(--navy);margin-bottom:12px}
+        .section-header p{color:var(--gray-600);font-size:clamp(16px,2.2vw,18px)}
+        .section-header p a{color:var(--green-dark);font-weight:600;text-decoration:none}
+        .section-header p a:hover{text-decoration:underline}
+        .faq-list{display:flex;flex-direction:column;gap:12px}
+        .faq-item{background:#fff;border:2px solid var(--gray-200);border-radius:20px;overflow:hidden;box-shadow:0 4px 12px rgba(15,23,42,.04);transition:border-color .25s ease,box-shadow .25s ease}
+        .faq-item summary{list-style:none;padding:20px 24px;font-weight:600;font-size:16px;color:var(--dark);display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer}
+        .faq-item summary::-webkit-details-marker{display:none}
+        .faq-chev{flex-shrink:0;width:20px;height:20px;color:var(--gray-400);transition:transform .25s ease,color .25s ease}
+        .faq-item[open] .faq-chev{transform:rotate(180deg);color:var(--green)}
+        .faq-item[open]{border-color:var(--green);box-shadow:0 4px 20px rgba(34,197,94,.1)}
+        .faq-item[open] summary{color:var(--green-dark)}
+        .faq-item:hover{border-color:var(--gray-400)}
+        .faq-item[open]:hover{border-color:var(--green)}
+        .faq-answer{padding:0 24px 20px;color:var(--gray-600);font-size:15px;line-height:1.7}
+        .faq-answer a{color:var(--green-dark);font-weight:600;text-decoration:none;white-space:nowrap}
+        .faq-answer a:hover{text-decoration:underline}
       </style>
       <section class="faq" id="faq">
         <div class="container">
           <div class="section-header">
-            <div class="kicker">FAQ</div>
-            <h2>Common questions</h2>
-            <p>Everything worth knowing before you connect a device and start logging.</p>
+            <div class="kicker">Questions &amp; answers</div>
+            <h2>Frequently asked questions</h2>
+            <p>Everything you need to know before you start. <a href="https://www.kygo.app/faq">See the full help center</a>.</p>
           </div>
-          <div class="faq-list">
-            <div class="faq-item open">
-              <div class="faq-question"><span>Is my health data secure?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">Yes — protected end to end. All traffic is encrypted with modern TLS and your data is encrypted at rest with AES-256, on accounts secured with bcrypt hashing and token-based authentication, with every request scoped so only you can reach your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth you can revoke anytime, and deleting your account permanently purges your data. Kygo also runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access. <a href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy →</a></div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>What is Kygo?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.</div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>How is Kygo different from MyFitnessPal?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It's not about dieting—it's about understanding your body's unique responses.</div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>Which devices do you support?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">We integrate with Oura Ring, Apple Health, Fitbit, Garmin, and WHOOP. You can connect one device or multiple—we'll combine the data to fill gaps and give you the most complete picture.</div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>How long until I see correlations?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">Basic trends show immediately. Meaningful correlations typically appear after 7-14 days of consistent logging. The more data you provide, the better and more accurate your insights become.</div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>Is it really free?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">Yes! Food logging, wearable sync, and trend tracking are free forever. The correlation engine is premium—$9.99/month or $39.99/year to unlock personalized insights.</div></div>
-            </div>
+          <div class="faq-list">${faqs}
           </div>
         </div>
       </section>
