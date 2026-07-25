@@ -1242,86 +1242,70 @@ class KygoFaq extends HTMLElement {
   }
   connectedCallback() {
     this.render();
-    this.setupAccordion();
-    __seo(this, 'Frequently asked questions about Kygo Health \u2014 nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, Samsung Galaxy Watch), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (typically 7 days of consistent logging).');
+    __seo(this, 'Frequently asked questions about Kygo Health — nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (about seven days of consistent logging).');
   }
-  setupAccordion() {
-    const questions = this.shadowRoot.querySelectorAll('.faq-question');
-    questions.forEach(question => {
-      question.addEventListener('click', () => {
-        const item = question.parentElement;
-        const wasOpen = item.classList.contains('open');
-        this.shadowRoot.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-        if (!wasOpen) item.classList.add('open');
-      });
-    });
+  _faqData() {
+    return [
+      {
+        q: 'Is my health data secure?',
+        a: 'Yes, protected end to end. All traffic is encrypted with modern TLS and your data is encrypted at rest with AES-256, on accounts secured with bcrypt hashing and token-based authentication, with every request scoped so only you can reach your own data. We never sell your data. Your wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data. ',
+        link: { href: 'https://www.kygo.app/privacy-policy', text: 'Read our privacy policy →' }
+      },
+      { q: 'What is Kygo?', a: 'Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device.' },
+      { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
+      { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
+      { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
+      { q: 'Is it really free?', a: 'Yes! Food logging, wearable sync, and trend tracking are free forever. The correlation engine is premium, $9.99/month or $39.99/year to unlock personalized insights.' }
+    ];
   }
   render() {
+    const faqs = this._faqData().map(f => {
+      const answer = f.link
+        ? `${f.a}<a href="${f.link.href}" target="_blank" rel="noopener">${f.link.text}</a>`
+        : f.a;
+      return `
+            <details class="faq-item">
+              <summary>
+                <span>${f.q}</span>
+                <svg class="faq-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+              </summary>
+              <div class="faq-answer">${answer}</div>
+            </details>`;
+    }).join('');
     this.shadowRoot.innerHTML = `
       <style>
-        :host{display:block;--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        :host{display:block;--dark:#1E293B;--navy:#0F172A;--green:#22C55E;--green-dark:#16A34A;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-        .faq{padding:60px 0;background:#fff}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .section-header{text-align:center;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto}
-        .kicker{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--green-dark);margin-bottom:10px}
-        .section-header h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:28px;color:var(--dark);margin-bottom:10px}
-        .section-header p{color:#64748B;font-size:15px;line-height:1.6}
-        .faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
-        .faq-item{background:#fff;border:1px solid var(--gray-200);border-radius:16px;animation:revealUp .5s ease-out both;transition:border-color .25s ease,box-shadow .25s ease,background .25s ease}
-        .faq-item:hover{border-color:var(--green);box-shadow:0 6px 20px rgba(34,197,94,0.08)}
-        .faq-item.open{border-color:var(--green);background:rgba(34,197,94,0.035);box-shadow:0 6px 22px rgba(34,197,94,0.09)}
-        .faq-question{padding:18px 20px;font-weight:600;font-size:16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:color .2s;color:var(--dark);gap:16px}
-        .faq-question:hover{color:var(--green-dark)}
-        .faq-icon{width:30px;height:30px;flex-shrink:0;border-radius:50%;background:rgba(34,197,94,0.1);display:flex;align-items:center;justify-content:center;color:var(--green);transition:transform .3s ease,background .25s ease,color .25s ease}
-        .faq-icon svg{width:18px;height:18px}
-        .faq-item.open .faq-icon{transform:rotate(180deg);background:var(--green);color:#fff}
-        .faq-answer{max-height:0;overflow:hidden;transition:max-height .3s,opacity .3s;opacity:0}
-        .faq-answer-inner{padding:0 20px 20px;color:var(--gray-600);font-size:15px;line-height:1.7}
-        .faq-item.open .faq-answer{max-height:720px;opacity:1}
-        .faq-answer-inner a{color:var(--green-dark);font-weight:600;text-decoration:none;white-space:nowrap}
-        .faq-answer-inner a:hover{text-decoration:underline}
-        @media(prefers-reduced-motion:reduce){.faq-item{animation:none}}
-        @media(min-width:768px){
-          .faq{padding:80px 0}
-          .section-header h2{font-size:36px}
-          .faq-question{font-size:17px;padding:20px 24px}
-          .faq-answer-inner{padding:0 24px 22px}
-        }
+        .faq{padding:clamp(56px,7vw,88px) 20px;background:#fff}
+        .container{max-width:760px;margin:0 auto}
+        .section-header{text-align:center;margin-bottom:36px}
+        .kicker{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:.9px;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
+        .section-header h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;line-height:1.08;letter-spacing:-0.03em;font-size:clamp(28px,4vw,40px);color:var(--navy);margin-bottom:12px}
+        .section-header p{color:var(--gray-600);font-size:clamp(16px,2.2vw,18px)}
+        .section-header p a{color:var(--green-dark);font-weight:600;text-decoration:none}
+        .section-header p a:hover{text-decoration:underline}
+        .faq-list{display:flex;flex-direction:column;gap:12px}
+        .faq-item{background:#fff;border:2px solid var(--gray-200);border-radius:20px;overflow:hidden;box-shadow:0 4px 12px rgba(15,23,42,.04);transition:border-color .25s ease,box-shadow .25s ease}
+        .faq-item summary{list-style:none;padding:20px 24px;font-weight:600;font-size:16px;color:var(--dark);display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer}
+        .faq-item summary::-webkit-details-marker{display:none}
+        .faq-chev{flex-shrink:0;width:20px;height:20px;color:var(--gray-400);transition:transform .25s ease,color .25s ease}
+        .faq-item[open] .faq-chev{transform:rotate(180deg);color:var(--green)}
+        .faq-item[open]{border-color:var(--green);box-shadow:0 4px 20px rgba(34,197,94,.1)}
+        .faq-item[open] summary{color:var(--green-dark)}
+        .faq-item:hover{border-color:var(--gray-400)}
+        .faq-item[open]:hover{border-color:var(--green)}
+        .faq-answer{padding:0 24px 20px;color:var(--gray-600);font-size:15px;line-height:1.7}
+        .faq-answer a{color:var(--green-dark);font-weight:600;text-decoration:none;white-space:nowrap}
+        .faq-answer a:hover{text-decoration:underline}
       </style>
       <section class="faq" id="faq">
         <div class="container">
           <div class="section-header">
-            <div class="kicker">FAQ</div>
-            <h2>Common questions</h2>
-            <p>Everything worth knowing before you connect a device and start logging.</p>
+            <div class="kicker">Questions &amp; answers</div>
+            <h2>Frequently asked questions</h2>
+            <p>Everything you need to know before you start. <a href="https://www.kygo.app/faq">See the full help center</a>.</p>
           </div>
-          <div class="faq-list">
-            <div class="faq-item open">
-              <div class="faq-question"><span>Is my health data secure?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">Yes — protected end to end. All traffic is encrypted with modern TLS and your data is encrypted at rest with AES-256, on accounts secured with bcrypt hashing and token-based authentication, with every request scoped so only you can reach your own data. We never sell your data. Your wearable connections (Oura, Fitbit, Garmin, Apple Health, and Health Connect) use official OAuth you can revoke anytime, and deleting your account permanently purges your data. Kygo also runs automated security scanning in its build pipeline, backs up data daily, and has passed an independent third-party security assessment required by Google for health-data access. <a href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Read our privacy policy →</a></div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>What is Kygo?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you.</div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>How is Kygo different from MyFitnessPal?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It's not about dieting—it's about understanding your body's unique responses.</div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>Which devices do you support?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">We integrate with Oura Ring, Apple Health, Fitbit, Garmin, and WHOOP. You can connect one device or multiple—we'll combine the data to fill gaps and give you the most complete picture.</div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>How long until I see correlations?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">Basic trends show immediately. Meaningful correlations typically appear after 7-14 days of consistent logging. The more data you provide, the better and more accurate your insights become.</div></div>
-            </div>
-            <div class="faq-item">
-              <div class="faq-question"><span>Is it really free?</span><span class="faq-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
-              <div class="faq-answer"><div class="faq-answer-inner">Yes! Food logging, wearable sync, and trend tracking are free forever. The correlation engine is premium—$9.99/month or $39.99/year to unlock personalized insights.</div></div>
-            </div>
+          <div class="faq-list">${faqs}
           </div>
         </div>
       </section>
