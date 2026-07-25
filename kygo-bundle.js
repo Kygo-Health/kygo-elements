@@ -642,11 +642,16 @@ class KygoProblemSection extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._settings = {};
+    this._observer = null;
   }
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
     __seo(this, 'Stop guessing how food affects your body. Kygo Health uses AI to connect your nutrition data with wearable health metrics including sleep stages, HRV, resting heart rate, blood oxygen, skin temperature, and respiratory rate. The app identifies statistically significant correlations between specific foods and health outcomes \u2014 for example, showing that high-glycemic meals before bed reduce your deep sleep by a measurable percentage.');
+  }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
   _parseWixAttributes() {
     try {
@@ -654,89 +659,124 @@ class KygoProblemSection extends HTMLElement {
       if (wixsettings) this._settings = JSON.parse(wixsettings);
     } catch (e) {}
   }
-  static get observedAttributes() { return ['wixsettings', 'headline', 'subheadline']; }
+  static get observedAttributes() { return ['wixsettings', 'eyebrow', 'headline', 'subheadline']; }
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue === newValue) return;
     this._parseWixAttributes();
     this.render();
+    this._setupScrollAnimations();
   }
   _getSetting(key, fallback) {
     return this._settings[key] || this.getAttribute(key) || fallback;
   }
+  _setupScrollAnimations() {
+    if (this._observer) this._observer.disconnect();
+    requestAnimationFrame(() => {
+      const root = this.shadowRoot.querySelector('.why-section');
+      if (!root) return;
+      this._observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            this._observer.unobserve(entry.target);
+          }
+        });
+      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      this._observer.observe(root);
+    });
+  }
   render() {
+    const eyebrow = this._getSetting('eyebrow', 'Why Kygo');
     const headline = this._getSetting('headline', "There's a better way to understand your health");
     const subheadline = this._getSetting('subheadline', "Your wearable shows what's happening. We show you why.");
+    const oldWay = [
+      'You log for months and learn nothing',
+      'Your score drops and you never find out why',
+      'You cut foods that were never the problem',
+      'Logging takes so long you quit by week two'
+    ];
+    const kygoWay = [
+      'Answers start showing up in 7 days',
+      'See what moved your HRV, and by how much',
+      "Stop cutting foods that don't affect you",
+      'Photo, voice or chat, all under 10 seconds a meal'
+    ];
+    const xIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+    const checkIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+    // Row/badge stagger: old-way rows start at 0.24s, Kygo-way rows at 0.32s; +70ms per index; badge lands +80ms behind its row.
+    const rows = (items, baseDelay, iconHtml) => items.map((text, i) => {
+      const rowDelay = (baseDelay + i * 0.07).toFixed(2);
+      const popDelay = (baseDelay + i * 0.07 + 0.08).toFixed(2);
+      return `
+              <div class="why-row" style="--row-delay:${rowDelay}s">
+                <span class="why-badge" style="--pop-delay:${popDelay}s">${iconHtml}</span>
+                <span class="why-item-text">${text}</span>
+              </div>`;
+    }).join('');
     this.shadowRoot.innerHTML = `
       <style>
-        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        :host{--dark:#1E293B;--navy:#0F172A;--green:#22C55E;--green-dark:#16A34A;--slate-600:#475569;--slate-500:#64748B;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-400:#94A3B8;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
-        .problem-section{padding:48px 0;background:white}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .section-header{text-align:center;margin-bottom:32px;opacity:0;animation:fadeInUp 0.6s ease-out forwards}
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-        .section-header h2{font-size:24px;margin-bottom:8px;color:var(--dark)}
-        .section-header p{color:var(--gray-600);font-size:15px;max-width:500px;margin:0 auto}
-        .comparison-grid{display:grid;gap:16px;max-width:900px;margin:0 auto}
-        .comparison-column{padding:24px;border-radius:20px;opacity:0;animation:fadeInUp 0.6s ease-out forwards;transition:all 0.3s ease}
-        .comparison-column.old-way{background:var(--gray-100);animation-delay:0.1s}
-        .comparison-column.new-way{background:linear-gradient(135deg,rgba(34,197,94,0.08),rgba(34,197,94,0.02));border:2px solid var(--green);animation-delay:0.2s}
-        .comparison-column h3{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:15px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:10px;line-height:1.3}
-        .comparison-column.old-way h3{color:var(--gray-600)}
-        .comparison-column.new-way h3{color:var(--green-dark)}
-        .comparison-column h3 svg{flex-shrink:0}
-        .comparison-list{list-style:none;display:grid;gap:12px}
-        .comparison-list li{font-size:14px;display:flex;align-items:flex-start;gap:10px;line-height:1.5}
-        .comparison-list li svg{flex-shrink:0;margin-top:6px}
-        .comparison-list li strong{color:var(--dark);font-weight:600}
-        .comparison-list li span{color:var(--gray-600)}
-        .comparison-column:hover{transform:translateY(-4px)}
-        .comparison-column.old-way:hover{box-shadow:0 8px 24px rgba(0,0,0,0.08)}
-        .comparison-column.new-way:hover{box-shadow:0 8px 24px rgba(34,197,94,0.15)}
-        @media(min-width:768px){
-          .problem-section{padding:60px 0}
-          .section-header{margin-bottom:40px}
-          .section-header h2{font-size:32px}
-          .section-header p{font-size:16px}
-          .comparison-grid{grid-template-columns:1fr 1fr;gap:24px}
-          .comparison-column{padding:28px}
-          .comparison-column h3{font-size:16px}
-        }
-        @media(min-width:1024px){
-          .problem-section{padding:80px 0}
-          .section-header h2{font-size:36px}
-          .comparison-column{padding:32px}
-          .comparison-list li{font-size:15px}
+        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;line-height:1.08}
+        .why-section{padding:clamp(56px,7vw,92px) 20px;background:#fff;border-bottom:1px solid #F1F5F9}
+        .container{max-width:1180px;margin:0 auto}
+        .why-header{text-align:center;max-width:660px;margin:0 auto 48px}
+        .why-eyebrow{font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--green-dark);margin-bottom:12px}
+        .why-header h2{font-size:clamp(28px,3.8vw,40px);letter-spacing:-0.03em;color:var(--navy);margin-bottom:14px}
+        .why-header p{font-size:clamp(16px,2.2vw,18px);color:var(--slate-600)}
+        .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+        .why-card{border-radius:18px;padding:30px 26px}
+        .why-card.old-way{background:var(--gray-100);border:1px solid var(--gray-200)}
+        .why-card.kygo-way{position:relative;background:#fff;border:2px solid var(--green);box-shadow:0 16px 40px -22px rgba(34,197,94,.4);transition:transform .25s ease-out,box-shadow .25s ease-out}
+        .why-card-label{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px}
+        .why-card.old-way .why-card-label{color:var(--gray-400)}
+        .why-card.kygo-way .why-card-label{color:var(--green-dark)}
+        .why-rows{display:flex;flex-direction:column;gap:14px}
+        .why-row{display:flex;align-items:flex-start;gap:12px}
+        .why-badge{width:24px;height:24px;flex-shrink:0;border-radius:99px;display:flex;align-items:center;justify-content:center}
+        .why-badge svg{width:13px;height:13px}
+        .why-card.old-way .why-badge{background:var(--gray-200)}
+        .why-card.kygo-way .why-badge{background:rgba(34,197,94,.14)}
+        .why-item-text{font-size:15.5px;font-weight:500}
+        .why-card.old-way .why-item-text{color:var(--slate-500)}
+        .why-card.kygo-way .why-item-text{color:var(--dark)}
+
+        /* Entry animations — gated on .visible so they fire when the section scrolls into view */
+        @keyframes hiwUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwRow{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwPop{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
+        .why-eyebrow,.why-header h2,.why-header p,.why-card,.why-row,.why-badge{opacity:0}
+        .why-section.visible .why-eyebrow{animation:hiwUp .6s ease-out 0s both}
+        .why-section.visible .why-header h2{animation:hiwUp .6s ease-out .06s both}
+        .why-section.visible .why-header p{animation:hiwUp .6s ease-out .12s both}
+        .why-section.visible .why-card.old-way{animation:hiwUp .6s ease-out .18s both}
+        .why-section.visible .why-card.kygo-way{animation:hiwUp .6s ease-out .26s both}
+        .why-section.visible .why-row{animation:hiwRow .5s ease-out var(--row-delay) both}
+        .why-section.visible .why-badge{animation:hiwPop .42s ease-out var(--pop-delay) both}
+        .why-card.kygo-way:hover{transform:translateY(-4px);box-shadow:0 22px 48px -20px rgba(34,197,94,.45)}
+
+        @media(prefers-reduced-motion:reduce){
+          .why-eyebrow,.why-header h2,.why-header p,.why-card,.why-row,.why-badge{opacity:1!important;animation:none!important}
+          .why-card.kygo-way:hover{transform:none}
         }
       </style>
-      <section class="problem-section">
+      <section class="why-section">
         <div class="container">
-          <div class="section-header">
+          <div class="why-header">
+            <div class="why-eyebrow">${eyebrow}</div>
             <h2>${headline}</h2>
             <p>${subheadline}</p>
           </div>
-          <div class="comparison-grid">
-            <div class="comparison-column old-way">
-              <h3>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#94A3B8" stroke-width="2"/><path d="M8 8l8 8M16 8l-8 8" stroke="#94A3B8" stroke-width="2" stroke-linecap="round"/></svg>
-                The Old Way
-              </h3>
-              <ul class="comparison-list">
-                <li><svg width="6" height="6" fill="#94A3B8"><circle cx="3" cy="3" r="3"/></svg><span><strong>Wearable shows your HRV is down</strong> — but not why</span></li>
-                <li><svg width="6" height="6" fill="#94A3B8"><circle cx="3" cy="3" r="3"/></svg><span><strong>Food Loggers tracks calories</strong> — can't connect to how you feel</span></li>
-                <li><svg width="6" height="6" fill="#94A3B8"><circle cx="3" cy="3" r="3"/></svg><span><strong>Generic health advice</strong> — not personalized to your body</span></li>
-              </ul>
+          <div class="why-grid">
+            <div class="why-card old-way">
+              <div class="why-card-label">The old way</div>
+              <div class="why-rows">${rows(oldWay, 0.24, xIcon)}
+              </div>
             </div>
-            <div class="comparison-column new-way">
-              <h3>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#22C55E" stroke-width="2"/><path d="M8 12l3 3 5-6" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                The Kygo Way
-              </h3>
-              <ul class="comparison-list">
-                <li><svg width="6" height="6" fill="#22C55E"><circle cx="3" cy="3" r="3"/></svg><span><strong>See cause-and-effect</strong> — correlations from YOUR data</span></li>
-                <li><svg width="6" height="6" fill="#22C55E"><circle cx="3" cy="3" r="3"/></svg><span><strong>Log meals in seconds</strong> — with AI assisted logging</span></li>
-                <li><svg width="6" height="6" fill="#22C55E"><circle cx="3" cy="3" r="3"/></svg><span><strong>All devices, one place</strong> — sleep from Oura, activity from Apple</span></li>
-              </ul>
+            <div class="why-card kygo-way">
+              <div class="why-card-label">The Kygo way</div>
+              <div class="why-rows">${rows(kygoWay, 0.32, checkIcon)}
+              </div>
             </div>
           </div>
         </div>
