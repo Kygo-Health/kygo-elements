@@ -142,7 +142,7 @@ class KygoHeroSection extends HTMLElement {
         .a-dock{position:absolute;left:0;right:0;bottom:0;background:rgba(248,250,252,.97);border-top:1px solid #EEF2F6;padding:9px 12px 12px;display:flex;flex-direction:column;gap:8px}
         .a-dockrow{display:flex;align-items:center;gap:8px}
         .a-input{flex:1;position:relative;background:#fff;border:1px solid var(--border);border-radius:99px;height:34px;padding:0 14px;display:flex;align-items:center;overflow:hidden}
-        .a-place{position:absolute;left:14px;font-size:11px;color:var(--gray-400);animation:hiwPlace 15s ease-in-out infinite}
+        .a-place{position:absolute;left:14px;right:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:11px;color:var(--gray-400);animation:hiwPlace 15s ease-in-out infinite}
         .a-typewrap{display:inline-flex;align-items:center;max-width:100%;overflow:hidden}
         .a-type{display:inline-block;overflow:hidden;white-space:nowrap;width:0;font-size:11px;font-weight:500;color:var(--navy);animation:hiwType 15s ease-in-out infinite}
         .a-caret{width:1.5px;height:14px;background:var(--green);margin-left:1px;flex-shrink:0;opacity:0;animation:hiwCaret 15s ease-in-out infinite}
@@ -1018,6 +1018,11 @@ class KygoCorrelationsOverview extends HTMLElement {
         .ladder{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
         .ladder .pill{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.4px;padding:6px 12px;border-radius:6px;white-space:nowrap}
         .ladder .arrow{color:#475569}
+        @media(max-width:480px){
+          .ladder{flex-wrap:nowrap;gap:5px}
+          .ladder .pill{font-size:10.5px;letter-spacing:.2px;padding:5px 7px}
+          .ladder .arrow{font-size:11px}
+        }
         .pill.developing{color:#94A3B8;background:rgba(255,255,255,.07)}
         .pill.emerging{color:#CBD5E1;background:rgba(255,255,255,.14)}
         .pill.likely{color:#22C55E;background:rgba(34,197,94,.16)}
@@ -1094,7 +1099,7 @@ class KygoCorrelationsOverview extends HTMLElement {
             <div class="wcard-head">
               <div>
                 <div class="wcard-eyebrow">LATE CAFFEINE &#8594; HRV</div>
-                <div class="wcard-title">Over 95mg after 2pm costs you 8 ms</div>
+                <div class="wcard-title">Over 95mg of caffeine after 2pm drops HRV by 8ms next day</div>
               </div>
               <span class="delta">&#8722;8 ms</span>
             </div>
