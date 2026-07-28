@@ -961,19 +961,19 @@ class KygoCorrelationsOverview extends HTMLElement {
   }
   _setupContributorPanel() {
     requestAnimationFrame(() => {
-      const section = this.shadowRoot.querySelector('.corr-section');
+      const anchor = this.shadowRoot.querySelector('.compare');
       const panel = this.shadowRoot.querySelector('.panel');
-      if (!section || !panel) return;
+      if (!anchor || !panel) return;
       if (!('IntersectionObserver' in window)) { panel.classList.add('expanded'); return; }
-      this._panelObserver = new IntersectionObserver((entries) => {
-        const inView = entries.some(e => e.isIntersecting);
-        clearTimeout(this._panelTimer);
-        this._panelTimer = setTimeout(() => {
-          if (inView) panel.classList.add('expanded');
-          else panel.classList.remove('expanded');
-        }, inView ? 500 : 0);
-      }, { threshold: 0.35 });
-      this._panelObserver.observe(section);
+      // Expand once the comparison bars are well in view, then leave it open —
+      // no re-collapse on scroll-away (that read as jumpy / half-open).
+      this._panelObserver = new IntersectionObserver((entries, obs) => {
+        if (entries.some(e => e.isIntersecting)) {
+          this._panelTimer = setTimeout(() => panel.classList.add('expanded'), 220);
+          obs.disconnect();
+        }
+      }, { threshold: 0.6, rootMargin: '0px 0px -40px 0px' });
+      this._panelObserver.observe(anchor);
     });
   }
   render() {
@@ -1011,9 +1011,10 @@ class KygoCorrelationsOverview extends HTMLElement {
         .crow-track{flex:1;min-width:40px;height:9px;background:#E2E8F0;border-radius:99px;overflow:hidden}
         .crow-fill{display:block;height:100%;border-radius:99px}
         .crow-val{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#0F172A;width:44px;text-align:right}
-        .panel{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows 1.6s cubic-bezier(.4,0,.2,1),opacity 1.1s ease-out .3s}
+        .panel{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .55s cubic-bezier(.4,0,.2,1),opacity .4s ease-out}
         .panel.expanded{grid-template-rows:1fr;opacity:1}
-        .panel-inner{overflow:hidden;min-height:0;padding-top:20px}
+        .panel-inner{overflow:hidden;min-height:0}
+        .panel-pad{padding-top:20px}
         .panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:11px}
         .panel-head .lbl{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94A3B8}
         .panel-head .total{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#0F172A}
@@ -1024,10 +1025,12 @@ class KygoCorrelationsOverview extends HTMLElement {
         .legend .dot{width:8px;height:8px;border-radius:99px;flex-shrink:0}
         .legend .name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:#0F172A}
         .legend .pct{font-size:12.5px;color:#64748B}
-        .chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:20px;padding-top:18px;border-top:1px solid #F1F5F9}
+        .chips{display:flex;flex-wrap:nowrap;align-items:center;gap:8px;margin-top:20px;padding-top:18px;border-top:1px solid #F1F5F9}
         .chip{display:inline-flex;align-items:center;font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:999px;white-space:nowrap;background:#F1F5F9;color:#475569}
         .chip.real{gap:6px;background:#ECFDF5;color:#16A34A;font-weight:700}
         .chip.real svg{width:13px;height:13px}
+        @media(max-width:480px){.chips{gap:7px}.chip{font-size:12px;padding:5px 10px}.chip.real{gap:5px}.chip.real svg{width:12px;height:12px}}
+        @media(max-width:339px){.chips{flex-wrap:wrap}}
         .corr-section.reveal .corr-copy{animation:hiwUp .6s ease-out both}
         .corr-section.reveal .wcard{animation:hiwUp .6s ease-out .1s both}
         @media(min-width:480px){
@@ -1086,26 +1089,28 @@ class KygoCorrelationsOverview extends HTMLElement {
             </div>
             <div class="panel">
               <div class="panel-inner">
-                <div class="panel-head">
-                  <span class="lbl">WHERE THE CAFFEINE CAME FROM</span>
-                  <span class="total">365mg</span>
-                </div>
-                <div class="seg">
-                  <span style="width:62%;background:#EF4444"></span>
-                  <span style="width:28%;background:#F87171"></span>
-                  <span style="width:10%;background:#CBD5E1"></span>
-                </div>
-                <div class="legend">
-                  <span class="item"><span class="dot" style="background:#EF4444"></span><span class="name">Coffee</span><span class="pct">62%</span></span>
-                  <span class="item"><span class="dot" style="background:#F87171"></span><span class="name">Pre-workout</span><span class="pct">28%</span></span>
-                  <span class="item"><span class="dot" style="background:#CBD5E1"></span><span class="name">Chocolate</span><span class="pct">10%</span></span>
+                <div class="panel-pad">
+                  <div class="panel-head">
+                    <span class="lbl">WHERE THE CAFFEINE CAME FROM</span>
+                    <span class="total">365mg</span>
+                  </div>
+                  <div class="seg">
+                    <span style="width:62%;background:#EF4444"></span>
+                    <span style="width:28%;background:#F87171"></span>
+                    <span style="width:10%;background:#CBD5E1"></span>
+                  </div>
+                  <div class="legend">
+                    <span class="item"><span class="dot" style="background:#EF4444"></span><span class="name">Coffee</span><span class="pct">62%</span></span>
+                    <span class="item"><span class="dot" style="background:#F87171"></span><span class="name">Pre-workout</span><span class="pct">28%</span></span>
+                    <span class="item"><span class="dot" style="background:#CBD5E1"></span><span class="name">Chocolate</span><span class="pct">10%</span></span>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="chips">
               <span class="chip real"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Likely real</span>
-              <span class="chip">47 days compared</span>
-              <span class="chip">Measured 1 day later</span>
+              <span class="chip">47 days</span>
+              <span class="chip">Next-day effect</span>
             </div>
           </div>
         </div>
@@ -1223,6 +1228,16 @@ class KygoFeaturesUsersLove extends HTMLElement {
         .ful-section.reveal .fcard:nth-child(4){animation-delay:.4s}
         .ful-section.reveal .fcard:nth-child(5){animation-delay:.5s}
         .ful-section.reveal .fcard:nth-child(6){animation-delay:.6s}
+        @media(max-width:600px){
+          .ful-head{margin-bottom:28px}
+          .ful-grid{gap:12px}
+          .fcard{padding:16px 16px;border-radius:16px}
+          .fcard-row{gap:12px}
+          .fic{width:40px;height:40px;border-radius:10px;box-shadow:0 3px 9px rgba(34,197,94,0.22)}
+          .fic svg{width:20px;height:20px}
+          .fcard h3{font-size:16px;margin-bottom:2px}
+          .fcard p{font-size:13px;line-height:1.45}
+        }
         @media(prefers-reduced-motion:reduce){
           .ful-section.reveal .ful-head,.ful-section.reveal .fcard{animation:none}
           .fcard:hover{transform:none}
