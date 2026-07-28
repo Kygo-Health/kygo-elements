@@ -1,6 +1,6 @@
 /**
  * Kygo Health - Combined Custom Elements Bundle
- * All 9 elements in one file for faster loading
+ * All 11 elements in one file for faster loading
  * Host on GitHub + jsDelivr CDN
  */
 
@@ -37,11 +37,11 @@ class KygoHeroSection extends HTMLElement {
     if (secondaryBtn) {
       secondaryBtn.addEventListener('click', e => {
         e.preventDefault();
-        const target = parent.document.getElementById('kygo-features-section');
+        const target = parent.document.getElementById('kygo-insights-steps');
         if (target) {
           target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         } else {
-          window.parent.location.hash = 'kygo-features-section';
+          window.parent.location.hash = 'kygo-insights-steps';
         }
       });
     }
@@ -409,7 +409,7 @@ class KygoHeroSection extends HTMLElement {
                 </div>
               </div>
               <p class="patent-notice">Patent Pending Technology</p>
-              <a href="#kygo-features-section" class="cta-secondary" data-track-position="hero">
+              <a href="#kygo-insights-steps" class="cta-secondary" data-track-position="hero">
                 See how it works
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
               </a>
@@ -788,10 +788,231 @@ customElements.define('kygo-problem-section', KygoProblemSection);
 
 
 /* ========================================
-   4. KYGO FEATURES SECTION
-   Tag: kygo-features-section
+   4. KYGO CORRELATIONS OVERVIEW
+   Tag: kygo-correlations-overview
+   Dark navy section: narrative copy + an example correlation card with an
+   IntersectionObserver-driven contributor panel that expands in view.
 ======================================== */
-class KygoFeaturesSection extends HTMLElement {
+class KygoCorrelationsOverview extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+    this._revealObserver = null;
+    this._panelObserver = null;
+    this._panelTimer = null;
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+    this._setupContributorPanel();
+    __seo(this, 'How Kygo correlations work — Kygo finds personal food-body patterns from your own logged data, not generic studies. Example: caffeine over 95mg after 2pm lowers HRV by about 8 ms (32 ms on low-caffeine days vs 24 ms on high-caffeine days), based on 47 days compared and measured one day later. Findings build confidence over time — Developing, then Emerging, then Likely Real — and every correlation opens to the meals behind it (coffee 62%, pre-workout 28%, chocolate 10%).');
+  }
+  disconnectedCallback() {
+    if (this._revealObserver) this._revealObserver.disconnect();
+    if (this._panelObserver) this._panelObserver.disconnect();
+    clearTimeout(this._panelTimer);
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+    this._setupContributorPanel();
+  }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  _getSetting(key, fallback) {
+    return this._settings[key] || this.getAttribute(key) || fallback;
+  }
+  _setupReveal() {
+    requestAnimationFrame(() => {
+      const section = this.shadowRoot.querySelector('.corr-section');
+      if (!section) return;
+      if ('IntersectionObserver' in window) {
+        this._revealObserver = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        this._revealObserver.observe(section);
+      } else {
+        section.classList.add('reveal');
+      }
+    });
+  }
+  _setupContributorPanel() {
+    requestAnimationFrame(() => {
+      const section = this.shadowRoot.querySelector('.corr-section');
+      const panel = this.shadowRoot.querySelector('.panel');
+      if (!section || !panel) return;
+      if (!('IntersectionObserver' in window)) { panel.classList.add('expanded'); return; }
+      this._panelObserver = new IntersectionObserver((entries) => {
+        const inView = entries.some(e => e.isIntersecting);
+        clearTimeout(this._panelTimer);
+        this._panelTimer = setTimeout(() => {
+          if (inView) panel.classList.add('expanded');
+          else panel.classList.remove('expanded');
+        }, inView ? 500 : 0);
+      }, { threshold: 0.35 });
+      this._panelObserver.observe(section);
+    });
+  }
+  render() {
+    const kicker = this._getSetting('kicker', 'How correlations work');
+    const heading = this._getSetting('heading', 'Patterns only your data could show.');
+    this.shadowRoot.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#0F172A;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .corr-section{position:relative;background:#0F172A;padding:clamp(44px,5.5vw,72px) 0;overflow:hidden}
+        .corr-glow{position:absolute;top:-180px;right:-120px;width:600px;height:600px;background:radial-gradient(circle,rgba(34,197,94,.16) 0%,transparent 62%);pointer-events:none}
+        .corr-grid{position:relative;max-width:1200px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:minmax(0,1fr);gap:32px;align-items:center}
+        .kicker{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#22C55E;margin-bottom:12px}
+        .corr-copy h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,40px);line-height:1.08;letter-spacing:-0.03em;color:#fff;margin-bottom:16px}
+        .corr-copy p{font-size:clamp(16px,2vw,18px);color:#94A3B8;margin-bottom:14px}
+        .corr-copy p.p2{margin-bottom:26px}
+        .ladder{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+        .ladder .pill{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.4px;padding:6px 12px;border-radius:6px;white-space:nowrap}
+        .ladder .arrow{color:#475569}
+        .pill.developing{color:#94A3B8;background:rgba(255,255,255,.07)}
+        .pill.emerging{color:#CBD5E1;background:rgba(255,255,255,.14)}
+        .pill.likely{color:#22C55E;background:rgba(34,197,94,.16)}
+        .wcard{background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:22px 18px;box-shadow:0 20px 40px -20px rgba(0,0,0,.5);transition:border-color .3s ease,box-shadow .3s ease,transform .3s ease}
+        .wcard:hover{border-color:#22C55E;box-shadow:0 16px 36px rgba(0,0,0,.28);transform:translateY(-4px)}
+        .wcard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+        .wcard-eyebrow{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94A3B8;margin-bottom:4px}
+        .wcard-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,4.5vw,22px);color:#0F172A;line-height:1.2}
+        .delta{flex-shrink:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#EF4444;background:#FEF2F2;padding:6px 12px;border-radius:999px;white-space:nowrap}
+        .compare{display:flex;flex-direction:column;gap:12px;background:#F5F7FA;border-radius:14px;padding:16px}
+        .crow{display:flex;align-items:center;gap:12px}
+        .crow-label{width:104px;flex-shrink:0;font-size:12.5px;color:#475569}
+        .crow-label .days{color:#94A3B8}
+        .crow-track{flex:1;min-width:40px;height:9px;background:#E2E8F0;border-radius:99px;overflow:hidden}
+        .crow-fill{display:block;height:100%;border-radius:99px}
+        .crow-val{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#0F172A;width:44px;text-align:right}
+        .panel{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows 1.6s cubic-bezier(.4,0,.2,1),opacity 1.1s ease-out .3s}
+        .panel.expanded{grid-template-rows:1fr;opacity:1}
+        .panel-inner{overflow:hidden;min-height:0;padding-top:20px}
+        .panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:11px}
+        .panel-head .lbl{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94A3B8}
+        .panel-head .total{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#0F172A}
+        .seg{display:flex;gap:3px;height:14px;border-radius:99px;overflow:hidden;margin-bottom:14px}
+        .seg span{border-radius:99px}
+        .legend{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+        .legend .item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+        .legend .dot{width:8px;height:8px;border-radius:99px;flex-shrink:0}
+        .legend .name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:#0F172A}
+        .legend .pct{font-size:12.5px;color:#64748B}
+        .chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:20px;padding-top:18px;border-top:1px solid #F1F5F9}
+        .chip{display:inline-flex;align-items:center;font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:999px;white-space:nowrap;background:#F1F5F9;color:#475569}
+        .chip.real{gap:6px;background:#ECFDF5;color:#16A34A;font-weight:700}
+        .chip.real svg{width:13px;height:13px}
+        .corr-section.reveal .corr-copy{animation:hiwUp .6s ease-out both}
+        .corr-section.reveal .wcard{animation:hiwUp .6s ease-out .1s both}
+        @media(min-width:480px){
+          .wcard{padding:clamp(24px,2.4vw,30px)}
+          .compare{gap:14px;padding:18px 20px}
+          .crow{gap:14px}
+          .crow-label{width:152px;font-size:13px}
+          .crow-track{min-width:60px}
+          .crow-val{font-size:15px;width:52px}
+          .wcard-title{font-size:22px}
+        }
+        @media(min-width:900px){
+          .corr-grid{padding:0 40px;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(40px,5vw,72px)}
+        }
+        @media(prefers-reduced-motion:reduce){
+          .corr-section.reveal .corr-copy,.corr-section.reveal .wcard{animation:none}
+          .wcard:hover{transform:none}
+          .panel{transition:none;grid-template-rows:1fr;opacity:1}
+        }
+      </style>
+      <section class="corr-section">
+        <div class="corr-glow"></div>
+        <div class="corr-grid">
+          <div class="corr-copy">
+            <div class="kicker">${kicker}</div>
+            <h2>${heading}</h2>
+            <p>See how your body responds every time a food shows up in your log.</p>
+            <p class="p2">Patterns surface once they've held up long enough to trust, and every finding opens to the meals behind it.</p>
+            <div class="ladder">
+              <span class="pill developing">DEVELOPING</span>
+              <span class="arrow">&#8594;</span>
+              <span class="pill emerging">EMERGING</span>
+              <span class="arrow">&#8594;</span>
+              <span class="pill likely">LIKELY REAL</span>
+            </div>
+          </div>
+          <div class="wcard">
+            <div class="wcard-head">
+              <div>
+                <div class="wcard-eyebrow">LATE CAFFEINE &#8594; HRV</div>
+                <div class="wcard-title">Over 95mg after 2pm costs you 8 ms</div>
+              </div>
+              <span class="delta">&#8722;8 ms</span>
+            </div>
+            <div class="compare">
+              <div class="crow">
+                <span class="crow-label">Under 95mg <span class="days">&#183; 31 days</span></span>
+                <span class="crow-track"><span class="crow-fill" style="width:72%;background:#64748B"></span></span>
+                <span class="crow-val">32 ms</span>
+              </div>
+              <div class="crow">
+                <span class="crow-label">Over 95mg <span class="days">&#183; 16 days</span></span>
+                <span class="crow-track"><span class="crow-fill" style="width:48%;background:#EF4444"></span></span>
+                <span class="crow-val">24 ms</span>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-inner">
+                <div class="panel-head">
+                  <span class="lbl">WHERE THE CAFFEINE CAME FROM</span>
+                  <span class="total">365mg</span>
+                </div>
+                <div class="seg">
+                  <span style="width:62%;background:#EF4444"></span>
+                  <span style="width:28%;background:#F87171"></span>
+                  <span style="width:10%;background:#CBD5E1"></span>
+                </div>
+                <div class="legend">
+                  <span class="item"><span class="dot" style="background:#EF4444"></span><span class="name">Coffee</span><span class="pct">62%</span></span>
+                  <span class="item"><span class="dot" style="background:#F87171"></span><span class="name">Pre-workout</span><span class="pct">28%</span></span>
+                  <span class="item"><span class="dot" style="background:#CBD5E1"></span><span class="name">Chocolate</span><span class="pct">10%</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="chips">
+              <span class="chip real"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Likely real</span>
+              <span class="chip">47 days compared</span>
+              <span class="chip">Measured 1 day later</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-correlations-overview', KygoCorrelationsOverview);
+
+
+/* ========================================
+   5. KYGO FEATURES USERS LOVE
+   Tag: kygo-features-users-love
+   Gray-50 section: centered header + six equal feature cards.
+======================================== */
+class KygoFeaturesUsersLove extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -801,11 +1022,18 @@ class KygoFeaturesSection extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    this._setupIntersectionObserver();
-    __seo(this, 'Kygo Health Features \u2014 AI food logging via photo, voice, text, or barcode scan. Automatic wearable sync with Apple Watch, Oura Ring, WHOOP, Garmin, Fitbit, and Samsung Galaxy Watch. Health Score tracking rates each meal on a 0\u2013100 scale based on nutritional quality. Personalized food-body correlation dashboard shows how meals affect your sleep, HRV, energy, and recovery over time. Macro and micronutrient breakdown for every logged meal from a database of over 5 million foods.');
+    this._setupReveal();
+    __seo(this, 'Features Kygo users love — the everyday details that keep you logging past week two. Dietitian Verified Database: over 5 million foods cross-checked against USDA, with full vitamin and mineral detail, not just macros. Track Your Supplement Stack by voice and see whether it moved anything. Water and Weight sit next to your macros on the Today screen. Best Source Wins: when two wearables disagree, Kygo knows which one to trust for each metric. Run an Experiment: put one food on trial for two weeks and get a verdict. One Tap Repeats for saved foods, reusable meals, and yesterday’s dinner.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
   }
   _parseWixAttributes() {
     try {
@@ -813,202 +1041,217 @@ class KygoFeaturesSection extends HTMLElement {
       if (wixsettings) this._settings = JSON.parse(wixsettings);
     } catch (e) {}
   }
-  static get observedAttributes() { return ['wixsettings']; }
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    this._parseWixAttributes();
-    this.render();
-    this._setupIntersectionObserver();
-  }
   _getSetting(key, fallback) {
     return this._settings[key] || this.getAttribute(key) || fallback;
   }
-  _setupIntersectionObserver() {
+  _setupReveal() {
     requestAnimationFrame(() => {
-      const cards = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!cards.length) return;
-      this._observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => entry.target.classList.add('visible'), index * 100);
-          }
-        });
-      }, { root: null, rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
-      cards.forEach(card => this._observer.observe(card));
+      const section = this.shadowRoot.querySelector('.ful-section');
+      if (!section) return;
+      if ('IntersectionObserver' in window) {
+        this._observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        this._observer.observe(section);
+      } else {
+        section.classList.add('reveal');
+      }
     });
   }
   render() {
-    const sectionTitle = this._getSetting('section-title', 'From guessing to knowing');
-    const sectionSubtitle = this._getSetting('section-subtitle', 'Track nutrition, sync your wearables, discover what works for your body.');
-    const appleIcon = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
-    const ouraIcon = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
-    const fitbitIcon = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
-    const garminIcon = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
+    const kicker = this._getSetting('kicker', 'Features our users love');
+    const heading = this._getSetting('heading', "The details you'll use every day");
+    const lead = this._getSetting('lead', 'Not the headline features. The ones that keep you logging past week two.');
+    const cards = [
+      { t: 'Dietitian Verified Database', p: 'Over 5 million foods, cross checked against USDA. Full vitamin and mineral detail, not just macros.', svg: '<path d="M20 6.5V17c0 1.7-3.6 3-8 3s-8-1.3-8-3V6.5"/><ellipse cx="12" cy="6.5" rx="8" ry="3"/><path d="M9 13.2l2 2 4-4"/>' },
+      { t: 'Track Your Supplement Stack', p: 'Build your stack, log it by voice, keep the streak. Then see whether it moved anything.', svg: '<path d="M11.5 21.5a4.95 4.95 0 0 1-7-7l7-7a4.95 4.95 0 0 1 7 7z"/><path d="M8 13l6-6"/>' },
+      { t: 'Water and Weight, Same View', p: 'Hydration and weight sit next to your macros on the Today screen. One glance, whole day.', svg: '<path d="M12 2.7l4.9 6.6a6.1 6.1 0 1 1-9.8 0z"/><path d="M9.5 14.5h5"/>' },
+      { t: 'Best Source Wins', p: 'Wear two devices and they will disagree. Kygo knows which one to trust for each metric.', svg: '<path d="M12 3v18"/><path d="M4 8h16"/><path d="M4 8l-2 6h6z"/><path d="M18 8l-2 6h6z"/>' },
+      { t: 'Run an Experiment', p: 'Put one food on trial for two weeks. Kygo tracks the days and gives you a verdict.', svg: '<path d="M9 3h6"/><path d="M10 3v5.5L5.2 18A2 2 0 0 0 7 21h10a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M7.5 14h9"/>' },
+      { t: 'One Tap Repeats', p: "Saved foods, reusable meals, and yesterday's dinner copied straight into today.", svg: '<path d="M4 9V7a3 3 0 0 1 3-3h10"/><path d="M14 1.5L17 4l-3 2.5"/><path d="M20 15v2a3 3 0 0 1-3 3H7"/><path d="M10 22.5L7 20l3-2.5"/>' }
+    ];
+    const cardHtml = cards.map(c => `
+            <div class="fcard">
+              <div class="fcard-row">
+                <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${c.svg}</svg></span>
+                <div>
+                  <h3>${c.t}</h3>
+                  <p>${c.p}</p>
+                </div>
+              </div>
+            </div>`).join('');
     this.shadowRoot.innerHTML = `
       <style>
-        :host{--dark:#1E293B;--dark-card:#0f172a;--dark-surface:#1a2332;--green:#22C55E;--green-dark:#16A34A;--green-light:rgba(34,197,94,0.1);--green-glow:rgba(34,197,94,0.3);--gray-50:#f9fafb;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;--gray-700:#334155;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--gray-50);color:var(--dark);line-height:1.6;-webkit-font-smoothing:antialiased}
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f9fafb;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        h2,h3{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .ful-section{padding:clamp(48px,6vw,80px) 0;background:#f9fafb}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .features-section{padding:48px 0}
-        .section-header{text-align:center;margin-bottom:32px}
-        .section-header h2{font-size:clamp(24px,6vw,36px);margin-bottom:10px;color:var(--dark)}
-        .section-header p{color:var(--gray-600);font-size:clamp(14px,4vw,16px);max-width:500px;margin:0 auto;line-height:1.6}
-        .animate-on-scroll{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease-out,transform 0.6s ease-out}
-        .animate-on-scroll.visible{opacity:1;transform:translateY(0)}
-        .feature-hero{background:var(--dark);border-radius:20px;padding:28px 20px;margin-bottom:16px;display:grid;gap:28px;overflow:hidden;position:relative;border:2px solid transparent;transition:all 0.3s ease}
-        .feature-hero:hover{border-color:var(--green);box-shadow:0 12px 32px rgba(0,0,0,0.15);transform:translateY(-4px)}
-        .feature-hero::before{content:'';position:absolute;top:-50%;right:-30%;width:300px;height:300px;background:radial-gradient(circle,var(--green-glow) 0%,transparent 70%);pointer-events:none}
-        .feature-hero-content{position:relative;z-index:1}
-        .feature-badge{background:var(--green);color:white;font-size:10px;font-weight:600;padding:5px 10px;border-radius:16px;display:inline-block;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.5px}
-        .feature-hero h3{color:white;font-size:clamp(22px,5vw,32px);margin-bottom:10px}
-        .feature-hero>.feature-hero-content>p{color:var(--gray-400);font-size:clamp(14px,3.5vw,16px);line-height:1.6;max-width:400px}
-        .feature-hero-demo{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px}
-        .correlation-card{background:var(--dark-surface);border-radius:14px;padding:14px;border:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:12px;transition:all 0.3s ease;cursor:default}
-        .correlation-card:hover{border-color:var(--green);transform:translateX(4px);box-shadow:0 0 20px rgba(34,197,94,0.15)}
-        .correlation-icon{width:44px;height:44px;background:rgba(34,197,94,0.15);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-        .correlation-icon svg{width:22px;height:22px;color:var(--green)}
-        .correlation-content{flex:1;min-width:0}
-        .correlation-metric{color:white;font-weight:600;font-size:14px;margin-bottom:2px}
-        .correlation-metric span{color:var(--green)}
-        .correlation-cause{color:var(--gray-400);font-size:12px}
-        .correlation-confidence{text-align:right;flex-shrink:0}
-        .confidence-label{color:var(--gray-400);font-size:9px;text-transform:uppercase;margin-bottom:4px;letter-spacing:0.3px}
-        .confidence-bar{width:50px;height:4px;background:var(--gray-700);border-radius:2px;overflow:hidden}
-        .confidence-fill{height:100%;background:var(--green);border-radius:2px;transition:width 1s ease-out 0.3s}
-        .features-row{display:grid;gap:16px}
-        .feature-card{background:white;border-radius:20px;padding:24px 20px;border:2px solid var(--gray-200);transition:all 0.3s ease;box-shadow:0 4px 12px rgba(0,0,0,0.04)}
-        .feature-card:hover{border-color:var(--green);box-shadow:0 12px 32px rgba(0,0,0,0.08);transform:translateY(-4px)}
-        .feature-card-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px}
-        .feature-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--green),var(--green-dark));border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 12px rgba(34,197,94,0.25)}
-        .feature-icon svg{width:24px;height:24px;color:white}
-        .feature-card-header h3{font-size:clamp(18px,4.5vw,20px);color:var(--dark);margin-bottom:4px}
-        .feature-card-header p{color:var(--gray-600);font-size:clamp(13px,3.5vw,14px);line-height:1.5}
-        .logging-methods,.device-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-        .log-method{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:16px 12px;text-align:center;transition:all 0.25s ease;cursor:pointer}
-        .log-method:hover{background:white;border-color:var(--green);transform:scale(1.02)}
-        .log-method-icon{width:44px;height:44px;background:white;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:all 0.25s ease}
-        .log-method:hover .log-method-icon{box-shadow:0 4px 12px rgba(34,197,94,0.2)}
-        .log-method-icon svg{width:22px;height:22px;color:var(--green)}
-        .log-method span{font-size:13px;font-weight:600;color:var(--dark)}
-        .device-item{background:var(--gray-50);border:2px solid var(--gray-200);border-radius:14px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:all 0.25s ease;cursor:pointer}
-        .device-item:hover{border-color:var(--green);background:white;transform:scale(1.02)}
-        .device-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;background:white;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
-        .device-icon img{width:32px;height:32px;object-fit:contain;border-radius:5px}
-        .device-info{text-align:center}
-        .device-info strong{display:block;font-size:13px;font-weight:600;color:var(--dark)}
-        @media(min-width:768px){
-          .features-section{padding:64px 0}
-          .section-header{margin-bottom:40px}
-          .feature-hero{grid-template-columns:1fr 1fr;padding:40px;align-items:center;border-radius:24px;margin-bottom:20px}
-          .features-row{grid-template-columns:1fr 1fr;gap:20px}
-          .feature-card{padding:28px}
-          .logging-methods,.device-grid{gap:12px}
-          .correlation-card{padding:16px}
-          .correlation-icon{width:48px;height:48px}
-          .correlation-icon svg{width:24px;height:24px}
-          .correlation-metric{font-size:15px}
-          .correlation-cause{font-size:13px}
-          .confidence-bar{width:60px}
-        }
-        @media(min-width:1024px){
-          .features-section{padding:80px 0}
-          .feature-hero{padding:48px;gap:40px}
-          .feature-card{padding:32px}
-          .feature-icon{width:52px;height:52px}
-          .feature-icon svg{width:26px;height:26px}
-          .log-method-icon,.device-icon{width:48px;height:48px}
-          .device-icon img{width:36px;height:36px;border-radius:5px}
-          .log-method-icon svg{width:24px;height:24px}
-          .log-method span,.device-info strong{font-size:14px}
+        .ful-head{text-align:center;max-width:660px;margin:0 auto 48px}
+        .kicker{font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;margin-bottom:12px}
+        .ful-head h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.8vw,40px);line-height:1.08;letter-spacing:-0.03em;color:#0F172A;margin-bottom:14px}
+        .ful-head p{font-size:clamp(16px,2.2vw,18px);color:#475569}
+        .ful-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+        .fcard{background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:clamp(24px,3vw,32px) clamp(20px,2.6vw,28px);box-shadow:0 4px 12px rgba(0,0,0,0.04);transition:border-color .3s ease,box-shadow .3s ease,transform .6s ease-out}
+        .fcard:hover{border-color:#22C55E;box-shadow:0 12px 32px rgba(0,0,0,0.08);transform:translateY(-4px)}
+        .fcard-row{display:flex;align-items:flex-start;gap:14px}
+        .fic{flex-shrink:0;display:flex;width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#22C55E,#16A34A);align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,197,94,0.25)}
+        .fic svg{width:24px;height:24px}
+        .fcard h3{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:clamp(18px,4.5vw,20px);color:#1E293B;margin-bottom:4px;transition:color .3s ease}
+        .fcard:hover h3{color:#16A34A}
+        .fcard p{color:#475569;font-size:clamp(13px,3.5vw,14px);line-height:1.5}
+        .ful-section.reveal .ful-head{animation:hiwUp .6s ease-out both}
+        .ful-section.reveal .fcard{animation:hiwUp .6s ease-out both}
+        .ful-section.reveal .fcard:nth-child(1){animation-delay:.1s}
+        .ful-section.reveal .fcard:nth-child(2){animation-delay:.2s}
+        .ful-section.reveal .fcard:nth-child(3){animation-delay:.3s}
+        .ful-section.reveal .fcard:nth-child(4){animation-delay:.4s}
+        .ful-section.reveal .fcard:nth-child(5){animation-delay:.5s}
+        .ful-section.reveal .fcard:nth-child(6){animation-delay:.6s}
+        @media(prefers-reduced-motion:reduce){
+          .ful-section.reveal .ful-head,.ful-section.reveal .fcard{animation:none}
+          .fcard:hover{transform:none}
         }
       </style>
-      <section class="features-section" id="features">
+      <section class="ful-section">
         <div class="container">
-          <div class="section-header animate-on-scroll">
-            <h2>${sectionTitle}</h2>
-            <p>${sectionSubtitle}</p>
+          <div class="ful-head">
+            <div class="kicker">${kicker}</div>
+            <h2>${heading}</h2>
+            <p>${lead}</p>
           </div>
-          <div class="feature-hero animate-on-scroll">
-            <div class="feature-hero-content">
-              <span class="feature-badge">Key Feature</span>
-              <h3>Personalized Correlations</h3>
-              <p>Discover statistically significant relationships between what you eat and how your body responds. Real insights from your data—not generic advice.</p>
-            </div>
-            <div class="feature-hero-demo">
-              <div class="correlation-card">
-                <div class="correlation-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
-                <div class="correlation-content">
-                  <div class="correlation-metric">Sleep latency <span>+8 min</span></div>
-                  <div class="correlation-cause">Caffeine after 3pm</div>
-                </div>
-                <div class="correlation-confidence">
-                  <div class="confidence-label">Confidence</div>
-                  <div class="confidence-bar"><div class="confidence-fill" style="width:85%"></div></div>
-                </div>
-              </div>
-              <div class="correlation-card">
-                <div class="correlation-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-                <div class="correlation-content">
-                  <div class="correlation-metric">HRV <span>+12% avg</span></div>
-                  <div class="correlation-cause">No sugar after 6pm</div>
-                </div>
-                <div class="correlation-confidence">
-                  <div class="confidence-label">Confidence</div>
-                  <div class="confidence-bar"><div class="confidence-fill" style="width:72%"></div></div>
-                </div>
-              </div>
-              <div class="correlation-card">
-                <div class="correlation-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
-                <div class="correlation-content">
-                  <div class="correlation-metric">Deep sleep <span>+23 min</span></div>
-                  <div class="correlation-cause">High protein dinner</div>
-                </div>
-                <div class="correlation-confidence">
-                  <div class="confidence-label">Confidence</div>
-                  <div class="confidence-bar"><div class="confidence-fill" style="width:68%"></div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="features-row">
-            <div class="feature-card animate-on-scroll">
-              <div class="feature-card-header">
-                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
-                <div>
-                  <h3>Log Meals in Seconds</h3>
-                  <p>Snap a pic, type it out. AI assisted logging.</p>
-                </div>
-              </div>
-              <div class="logging-methods">
-                <div class="log-method"><div class="log-method-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div><span>Photo</span></div>
-                <div class="log-method"><div class="log-method-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h2M7 5h2M11 5h2M15 5h2M19 5h2M3 10h2M7 10h2M11 10h2M15 10h2M19 10h2M3 15h2M7 15h2M11 15h2M15 15h2M19 15h2"/></svg></div><span>Barcode</span></div>
-                <div class="log-method"><div class="log-method-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div><span>Voice</span></div>
-                <div class="log-method"><div class="log-method-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div><span>Text</span></div>
-              </div>
-            </div>
-            <div class="feature-card animate-on-scroll">
-              <div class="feature-card-header">
-                <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
-                <div>
-                  <h3>All Devices, One App</h3>
-                  <p>Connect multiple wearables. See the best metrics together.</p>
-                </div>
-              </div>
-              <div class="device-grid">
-                <div class="device-item"><div class="device-icon"><img src="${ouraIcon}" alt="Oura Ring" loading="lazy"/></div><div class="device-info"><strong>Oura</strong></div></div>
-                <div class="device-item"><div class="device-icon"><img src="${appleIcon}" alt="Apple Health" loading="lazy"/></div><div class="device-info"><strong>Apple</strong></div></div>
-                <div class="device-item"><div class="device-icon"><img src="${fitbitIcon}" alt="Fitbit" loading="lazy"/></div><div class="device-info"><strong>Fitbit</strong></div></div>
-                <div class="device-item"><div class="device-icon"><img src="${garminIcon}" alt="Garmin" loading="lazy"/></div><div class="device-info"><strong>Garmin</strong></div></div>
-              </div>
-            </div>
+          <div class="ful-grid">${cardHtml}
           </div>
         </div>
       </section>
     `;
   }
 }
-customElements.define('kygo-features-section', KygoFeaturesSection);
+customElements.define('kygo-features-users-love', KygoFeaturesUsersLove);
+
+
+/* ========================================
+   6. KYGO INLINE CTA BAND
+   Tag: kygo-inline-cta
+   Thin one-line CTA band below Testimonials: headline + proof strip + the two
+   store buttons. Deliberately the lightest CTA on the page.
+======================================== */
+class KygoInlineCta extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+    this._observer = null;
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+    __seo(this, 'Your patterns are already in your data. Go find them. Download Kygo Health free — 2-minute setup, every wearable connected (Oura, WHOOP, Apple Watch, Garmin, Fitbit), and first correlations in about 7 days. Available for iOS and Android.');
+  }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+  }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  _getSetting(key, fallback) {
+    return this._settings[key] || this.getAttribute(key) || fallback;
+  }
+  _setupReveal() {
+    requestAnimationFrame(() => {
+      const section = this.shadowRoot.querySelector('.band');
+      const row = this.shadowRoot.querySelector('.band-row');
+      if (!section || !row) return;
+      if ('IntersectionObserver' in window) {
+        this._observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              row.classList.add('reveal');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+        this._observer.observe(section);
+      } else {
+        row.classList.add('reveal');
+      }
+    });
+  }
+  render() {
+    const appStoreUrl = this._getSetting('app-store-url', 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy');
+    const androidUrl = this._getSetting('android-url', 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO');
+    this.shadowRoot.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f9fafb;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .band{background:#f9fafb;border-top:1px solid #E2E8F0;padding:clamp(24px,3.4vw,32px) 20px}
+        .band-row{display:flex;align-items:center;justify-content:space-between;gap:clamp(16px,3vw,40px);max-width:1160px;margin:0 auto}
+        .band-headline{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(19px,2.4vw,24px);line-height:1.25;letter-spacing:-0.02em;color:#0F172A}
+        .band-headline span{color:#16A34A}
+        .band-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px;color:#94A3B8;margin-top:8px}
+        .band-meta .sep{color:#CBD5E1}
+        .band-btns{display:flex;align-items:center;gap:12px;flex-shrink:0}
+        .cta-primary{display:flex;align-items:center;gap:8px;background:#22C55E;color:#fff;font-weight:600;font-size:15px;padding:14px 24px;border-radius:12px;white-space:nowrap;text-decoration:none;transition:background .25s ease,transform .25s ease,box-shadow .25s ease}
+        .cta-primary:hover{background:#16A34A;transform:translateY(-2px);box-shadow:0 10px 20px rgba(34,197,94,0.3)}
+        .cta-primary svg{width:17px;height:17px;flex-shrink:0}
+        .cta-android{display:flex;align-items:center;gap:8px;background:#fff;color:#1E293B;font-weight:600;font-size:15px;padding:14px 22px;border-radius:12px;border:2px solid #E2E8F0;white-space:nowrap;text-decoration:none;transition:border-color .25s ease,color .25s ease,transform .25s ease}
+        .cta-android:hover{border-color:#22C55E;color:#16A34A;transform:translateY(-2px)}
+        .cta-android svg{width:18px;height:18px;flex-shrink:0}
+        .reveal{animation:hiwUp .6s ease-out both}
+        @media(max-width:820px){
+          .band-row{flex-direction:column;align-items:stretch;text-align:center;gap:20px}
+          .band-btns{flex-direction:column;align-items:stretch}
+          .band-btns > a{justify-content:center}
+          .band-meta{justify-content:center}
+        }
+        @media(prefers-reduced-motion:reduce){
+          .reveal{animation:none}
+          .cta-primary:hover,.cta-android:hover{transform:none}
+        }
+      </style>
+      <section class="band">
+        <div class="band-row">
+          <div>
+            <div class="band-headline">Your patterns are already in your data. <span>Go find them.</span></div>
+            <div class="band-meta">
+              <span>2-min setup</span><span class="sep">&#8226;</span><span>Every wearable connected</span><span class="sep">&#8226;</span><span>First correlations in 7 days</span>
+            </div>
+          </div>
+          <div class="band-btns">
+            <a class="cta-primary" href="${appStoreUrl}" target="_blank" rel="noopener noreferrer" data-action="ios-download" data-track-position="testimonials-inline" data-track-label="home-inline-ios">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.7-.8-2.9-.8-1.5 0-2.9.9-3.7 2.2-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.8 2.2 1.1 0 1.5-.7 2.9-.7 1.3 0 1.7.7 2.9.7 1.2 0 2-1.1 2.7-2.2.8-1.2 1.2-2.4 1.2-2.5-.1 0-2.2-.9-2.2-3.4zM14.2 5.6c.6-.7 1-1.7.9-2.7-.9 0-2 .6-2.6 1.3-.6.6-1.1 1.7-.9 2.6 1 .1 2-.5 2.6-1.2z"/></svg>
+              Download for iOS
+            </a>
+            <a class="cta-android" href="${androidUrl}" target="_blank" rel="noopener" data-action="android-download" data-track-position="testimonials-inline" data-track-label="home-inline-android">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+              Get it on Android
+            </a>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-inline-cta', KygoInlineCta);
 
 
 /* ========================================
@@ -1503,7 +1746,10 @@ customElements.define('kygo-final-cta', KygoFinalCta);
    Sections are appended to LIGHT DOM so each one's __seo text stays
    crawlable and its structured data still injects normally. Each section
    uses its built-in defaults (no per-section Wix settings are forwarded).
-   Bottom-of-page order: Founder → FAQ → Testimonials → Final CTA.
+   Each child also gets id=tag so in-page anchors (e.g. the hero's
+   "See how it works" → #kygo-insights-steps) resolve within the light DOM.
+   Page order: Hero → Stats → Why Kygo → How it works → Correlations →
+   Features Users Love → Testimonials → Inline CTA → FAQ → Final CTA → Founder.
 ======================================== */
 class KygoHome extends HTMLElement {
   connectedCallback() {
@@ -1513,28 +1759,36 @@ class KygoHome extends HTMLElement {
       'kygo-hero-section',
       'kygo-social-proof-section',
       'kygo-problem-section',
-      'kygo-features-section',
       'kygo-insights-steps',
-      'kygo-founder',
-      'kygo-faq',
+      'kygo-correlations-overview',
+      'kygo-features-users-love',
       'kygo-testimonials',
-      'kygo-final-cta'
-    ].forEach(tag => this.appendChild(document.createElement(tag)));
+      'kygo-inline-cta',
+      'kygo-faq',
+      'kygo-final-cta',
+      'kygo-founder'
+    ].forEach(tag => {
+      const el = document.createElement(tag);
+      el.id = tag;
+      this.appendChild(el);
+    });
   }
 }
 customElements.define('kygo-home', KygoHome);
 
 /* ========================================
    BUNDLE COMPLETE
-   All 9 elements registered:
+   All 11 elements registered:
    - kygo-hero-section
    - kygo-social-proof-section
    - kygo-problem-section
-   - kygo-features-section
    - kygo-insights-steps
-   - kygo-founder
-   - kygo-faq
+   - kygo-correlations-overview
+   - kygo-features-users-love
    - kygo-testimonials
+   - kygo-inline-cta
+   - kygo-faq
    - kygo-final-cta
-   Plus kygo-home — a wrapper that renders all 9 as a single embed.
+   - kygo-founder
+   Plus kygo-home — a wrapper that renders all 11 as a single embed.
 ======================================== */
