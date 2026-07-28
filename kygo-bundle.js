@@ -425,7 +425,7 @@ customElements.define('kygo-hero-section', KygoHeroSection);
 
 
 /* ========================================
-   2. KYGO SOCIAL PROOF SECTION
+   2. KYGO SOCIAL PROOF SECTION (dark navy stats band)
    Tag: kygo-social-proof-section
 ======================================== */
 class KygoSocialProofSection extends HTMLElement {
@@ -523,118 +523,7 @@ customElements.define('kygo-social-proof-section', KygoSocialProofSection);
 
 
 /* ========================================
-   KYGO TESTIMONIALS (approved, anonymized user quotes)
-   Tag: kygo-testimonials
-   Continuously auto-scrolling social-proof marquee rendered between the FAQ
-   and the final CTA (see kygo-home wrapper order). Star-rated cards with a
-   green initial-avatar; the set is duplicated once for a seamless loop, the
-   marquee pauses on hover, and it falls back to a scrollable row under
-   prefers-reduced-motion.
-======================================== */
-class KygoTestimonials extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-  }
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    __seo(this, 'What Kygo users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
-  }
-  disconnectedCallback() {
-    if (this._observer) this._observer.disconnect();
-  }
-  _parseWixAttributes() {
-    try {
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {}
-  }
-  static get observedAttributes() { return ['wixsettings']; }
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    this._parseWixAttributes();
-    this.render();
-  }
-  render() {
-    const stars = `<div class="t-stars">${Array(5).fill('<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L12 19.9 6.5 19.1l1.4-6.1L3.2 8.8l6.2-.6z"/></svg>').join('')}</div>`;
-    const card = (q, a, dup) => `<figure class="t-card"${dup ? ' aria-hidden="true"' : ''}><blockquote>${stars}<p>${q}</p></blockquote><figcaption><span class="t-avatar">${a.charAt(0)}</span><span class="t-meta"><span class="t-name">${a}</span></span></figcaption></figure>`;
-    const data = [
-      ['"I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline."', 'Oura user'],
-      ['"I love the experiments and the insights, like seeing how fat impacts my sleep."', 'Kygo user'],
-      ['"I always get excited when I see your posts. The research is truly valued, and the app is amazing."', 'Oura user'],
-      ['"Insights into how different nutrients impact my sleep and resting heart rate keep me engaged."', 'App Store review'],
-      ['"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."', 'Oura user']
-    ];
-    const cards = data.map(([q, a]) => card(q, a, false)).join('\n            ');
-    const dupes = data.map(([q, a]) => card(q, a, true)).join('\n            ');
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-50:#f9fafb;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes tmarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-        .testimonials-section{padding:48px 0;background:var(--gray-50)}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .reveal{animation:revealUp .6s ease-out both}
-        .t-head{text-align:center;margin-bottom:28px;max-width:560px;margin-left:auto;margin-right:auto}
-        .t-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
-        .t-head h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:24px;color:var(--dark);margin-bottom:10px}
-        .t-head p{color:#64748B;font-size:15px;line-height:1.6}
-        .t-viewport{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
-        .t-track{display:flex;width:max-content;padding:8px 0 12px;animation:tmarquee 48s linear infinite;will-change:transform}
-        .t-viewport:hover .t-track{animation-play-state:paused}
-        .t-card{flex:0 0 auto;width:300px;margin-right:16px;background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:24px 22px;box-shadow:0 4px 16px rgba(15,23,42,0.05);display:flex;flex-direction:column;gap:16px;transition:border-color 0.25s ease,box-shadow 0.25s ease,transform 0.25s ease}
-        .t-card:hover{border-color:var(--green);box-shadow:0 12px 28px rgba(34,197,94,0.12);transform:translateY(-4px)}
-        .t-card blockquote{border:0;display:flex;flex-direction:column;gap:12px;flex:1}
-        .t-stars{display:flex;gap:3px;color:var(--green)}
-        .t-stars svg{width:16px;height:16px}
-        .t-card p{color:var(--dark);font-size:15px;line-height:1.6;font-weight:500}
-        .t-card figcaption{display:flex;align-items:center;gap:11px;padding-top:14px;border-top:1px solid #F1F5F9}
-        .t-avatar{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:rgba(34,197,94,0.12);color:var(--green-dark);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;font-size:15px}
-        .t-meta{display:flex;flex-direction:column;line-height:1.3;min-width:0}
-        .t-meta .t-name{color:var(--dark);font-size:13.5px;font-weight:600}
-        @media(min-width:768px){
-          .testimonials-section{padding:64px 0}
-          .t-head{margin-bottom:36px}
-          .t-head h2{font-size:30px}
-          .t-card{width:360px}
-        }
-        @media(min-width:1024px){
-          .testimonials-section{padding:80px 0}
-        }
-        @media(prefers-reduced-motion:reduce){
-          .t-viewport{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
-          .t-track{animation:none}
-          .reveal{animation:none}
-        }
-      </style>
-      <section class="testimonials-section">
-        <div class="container">
-          <div class="t-head reveal">
-            <div class="t-eyebrow">Testimonials</div>
-            <h2>What our users say</h2>
-            <p>Real reviews from people who connected a wearable and started seeing their own patterns.</p>
-          </div>
-          <div class="reveal">
-            <div class="t-viewport">
-              <div class="t-track">
-            ${cards}
-            ${dupes}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-customElements.define('kygo-testimonials', KygoTestimonials);
-
-
-/* ========================================
-   3. KYGO PROBLEM SECTION
+   3. KYGO PROBLEM SECTION (Why Kygo)
    Tag: kygo-problem-section
 ======================================== */
 class KygoProblemSection extends HTMLElement {
@@ -788,474 +677,7 @@ customElements.define('kygo-problem-section', KygoProblemSection);
 
 
 /* ========================================
-   4. KYGO CORRELATIONS OVERVIEW
-   Tag: kygo-correlations-overview
-   Dark navy section: narrative copy + an example correlation card with an
-   IntersectionObserver-driven contributor panel that expands in view.
-======================================== */
-class KygoCorrelationsOverview extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-    this._revealObserver = null;
-    this._panelObserver = null;
-    this._panelTimer = null;
-  }
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    this._setupReveal();
-    this._setupContributorPanel();
-    __seo(this, 'How Kygo correlations work — Kygo finds personal food-body patterns from your own logged data, not generic studies. Example: caffeine over 95mg after 2pm lowers HRV by about 8 ms (32 ms on low-caffeine days vs 24 ms on high-caffeine days), based on 47 days compared and measured one day later. Findings build confidence over time — Developing, then Emerging, then Likely Real — and every correlation opens to the meals behind it (coffee 62%, pre-workout 28%, chocolate 10%).');
-  }
-  disconnectedCallback() {
-    if (this._revealObserver) this._revealObserver.disconnect();
-    if (this._panelObserver) this._panelObserver.disconnect();
-    clearTimeout(this._panelTimer);
-  }
-  static get observedAttributes() { return ['wixsettings']; }
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    this._parseWixAttributes();
-    this.render();
-    this._setupReveal();
-    this._setupContributorPanel();
-  }
-  _parseWixAttributes() {
-    try {
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {}
-  }
-  _getSetting(key, fallback) {
-    return this._settings[key] || this.getAttribute(key) || fallback;
-  }
-  _setupReveal() {
-    requestAnimationFrame(() => {
-      const section = this.shadowRoot.querySelector('.corr-section');
-      if (!section) return;
-      if ('IntersectionObserver' in window) {
-        this._revealObserver = new IntersectionObserver((entries, obs) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('reveal');
-              obs.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-        this._revealObserver.observe(section);
-      } else {
-        section.classList.add('reveal');
-      }
-    });
-  }
-  _setupContributorPanel() {
-    requestAnimationFrame(() => {
-      const section = this.shadowRoot.querySelector('.corr-section');
-      const panel = this.shadowRoot.querySelector('.panel');
-      if (!section || !panel) return;
-      if (!('IntersectionObserver' in window)) { panel.classList.add('expanded'); return; }
-      this._panelObserver = new IntersectionObserver((entries) => {
-        const inView = entries.some(e => e.isIntersecting);
-        clearTimeout(this._panelTimer);
-        this._panelTimer = setTimeout(() => {
-          if (inView) panel.classList.add('expanded');
-          else panel.classList.remove('expanded');
-        }, inView ? 500 : 0);
-      }, { threshold: 0.35 });
-      this._panelObserver.observe(section);
-    });
-  }
-  render() {
-    const kicker = this._getSetting('kicker', 'How correlations work');
-    const heading = this._getSetting('heading', 'Patterns only your data could show.');
-    this.shadowRoot.innerHTML = `
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-        :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#0F172A;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes hiwUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-        .corr-section{position:relative;background:#0F172A;padding:clamp(44px,5.5vw,72px) 0;overflow:hidden}
-        .corr-glow{position:absolute;top:-180px;right:-120px;width:600px;height:600px;background:radial-gradient(circle,rgba(34,197,94,.16) 0%,transparent 62%);pointer-events:none}
-        .corr-grid{position:relative;max-width:1200px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:minmax(0,1fr);gap:32px;align-items:center}
-        .kicker{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#22C55E;margin-bottom:12px}
-        .corr-copy h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,40px);line-height:1.08;letter-spacing:-0.03em;color:#fff;margin-bottom:16px}
-        .corr-copy p{font-size:clamp(16px,2vw,18px);color:#94A3B8;margin-bottom:14px}
-        .corr-copy p.p2{margin-bottom:26px}
-        .ladder{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-        .ladder .pill{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.4px;padding:6px 12px;border-radius:6px;white-space:nowrap}
-        .ladder .arrow{color:#475569}
-        .pill.developing{color:#94A3B8;background:rgba(255,255,255,.07)}
-        .pill.emerging{color:#CBD5E1;background:rgba(255,255,255,.14)}
-        .pill.likely{color:#22C55E;background:rgba(34,197,94,.16)}
-        .wcard{background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:22px 18px;box-shadow:0 20px 40px -20px rgba(0,0,0,.5);transition:border-color .3s ease,box-shadow .3s ease,transform .3s ease}
-        .wcard:hover{border-color:#22C55E;box-shadow:0 16px 36px rgba(0,0,0,.28);transform:translateY(-4px)}
-        .wcard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
-        .wcard-eyebrow{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94A3B8;margin-bottom:4px}
-        .wcard-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,4.5vw,22px);color:#0F172A;line-height:1.2}
-        .delta{flex-shrink:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#EF4444;background:#FEF2F2;padding:6px 12px;border-radius:999px;white-space:nowrap}
-        .compare{display:flex;flex-direction:column;gap:12px;background:#F5F7FA;border-radius:14px;padding:16px}
-        .crow{display:flex;align-items:center;gap:12px}
-        .crow-label{width:104px;flex-shrink:0;font-size:12.5px;color:#475569}
-        .crow-label .days{color:#94A3B8}
-        .crow-track{flex:1;min-width:40px;height:9px;background:#E2E8F0;border-radius:99px;overflow:hidden}
-        .crow-fill{display:block;height:100%;border-radius:99px}
-        .crow-val{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#0F172A;width:44px;text-align:right}
-        .panel{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows 1.6s cubic-bezier(.4,0,.2,1),opacity 1.1s ease-out .3s}
-        .panel.expanded{grid-template-rows:1fr;opacity:1}
-        .panel-inner{overflow:hidden;min-height:0;padding-top:20px}
-        .panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:11px}
-        .panel-head .lbl{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94A3B8}
-        .panel-head .total{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#0F172A}
-        .seg{display:flex;gap:3px;height:14px;border-radius:99px;overflow:hidden;margin-bottom:14px}
-        .seg span{border-radius:99px}
-        .legend{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
-        .legend .item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
-        .legend .dot{width:8px;height:8px;border-radius:99px;flex-shrink:0}
-        .legend .name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:#0F172A}
-        .legend .pct{font-size:12.5px;color:#64748B}
-        .chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:20px;padding-top:18px;border-top:1px solid #F1F5F9}
-        .chip{display:inline-flex;align-items:center;font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:999px;white-space:nowrap;background:#F1F5F9;color:#475569}
-        .chip.real{gap:6px;background:#ECFDF5;color:#16A34A;font-weight:700}
-        .chip.real svg{width:13px;height:13px}
-        .corr-section.reveal .corr-copy{animation:hiwUp .6s ease-out both}
-        .corr-section.reveal .wcard{animation:hiwUp .6s ease-out .1s both}
-        @media(min-width:480px){
-          .wcard{padding:clamp(24px,2.4vw,30px)}
-          .compare{gap:14px;padding:18px 20px}
-          .crow{gap:14px}
-          .crow-label{width:152px;font-size:13px}
-          .crow-track{min-width:60px}
-          .crow-val{font-size:15px;width:52px}
-          .wcard-title{font-size:22px}
-        }
-        @media(min-width:900px){
-          .corr-grid{padding:0 40px;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(40px,5vw,72px)}
-        }
-        @media(prefers-reduced-motion:reduce){
-          .corr-section.reveal .corr-copy,.corr-section.reveal .wcard{animation:none}
-          .wcard:hover{transform:none}
-          .panel{transition:none;grid-template-rows:1fr;opacity:1}
-        }
-      </style>
-      <section class="corr-section">
-        <div class="corr-glow"></div>
-        <div class="corr-grid">
-          <div class="corr-copy">
-            <div class="kicker">${kicker}</div>
-            <h2>${heading}</h2>
-            <p>See how your body responds every time a food shows up in your log.</p>
-            <p class="p2">Patterns surface once they've held up long enough to trust, and every finding opens to the meals behind it.</p>
-            <div class="ladder">
-              <span class="pill developing">DEVELOPING</span>
-              <span class="arrow">&#8594;</span>
-              <span class="pill emerging">EMERGING</span>
-              <span class="arrow">&#8594;</span>
-              <span class="pill likely">LIKELY REAL</span>
-            </div>
-          </div>
-          <div class="wcard">
-            <div class="wcard-head">
-              <div>
-                <div class="wcard-eyebrow">LATE CAFFEINE &#8594; HRV</div>
-                <div class="wcard-title">Over 95mg after 2pm costs you 8 ms</div>
-              </div>
-              <span class="delta">&#8722;8 ms</span>
-            </div>
-            <div class="compare">
-              <div class="crow">
-                <span class="crow-label">Under 95mg <span class="days">&#183; 31 days</span></span>
-                <span class="crow-track"><span class="crow-fill" style="width:72%;background:#64748B"></span></span>
-                <span class="crow-val">32 ms</span>
-              </div>
-              <div class="crow">
-                <span class="crow-label">Over 95mg <span class="days">&#183; 16 days</span></span>
-                <span class="crow-track"><span class="crow-fill" style="width:48%;background:#EF4444"></span></span>
-                <span class="crow-val">24 ms</span>
-              </div>
-            </div>
-            <div class="panel">
-              <div class="panel-inner">
-                <div class="panel-head">
-                  <span class="lbl">WHERE THE CAFFEINE CAME FROM</span>
-                  <span class="total">365mg</span>
-                </div>
-                <div class="seg">
-                  <span style="width:62%;background:#EF4444"></span>
-                  <span style="width:28%;background:#F87171"></span>
-                  <span style="width:10%;background:#CBD5E1"></span>
-                </div>
-                <div class="legend">
-                  <span class="item"><span class="dot" style="background:#EF4444"></span><span class="name">Coffee</span><span class="pct">62%</span></span>
-                  <span class="item"><span class="dot" style="background:#F87171"></span><span class="name">Pre-workout</span><span class="pct">28%</span></span>
-                  <span class="item"><span class="dot" style="background:#CBD5E1"></span><span class="name">Chocolate</span><span class="pct">10%</span></span>
-                </div>
-              </div>
-            </div>
-            <div class="chips">
-              <span class="chip real"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Likely real</span>
-              <span class="chip">47 days compared</span>
-              <span class="chip">Measured 1 day later</span>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-customElements.define('kygo-correlations-overview', KygoCorrelationsOverview);
-
-
-/* ========================================
-   5. KYGO FEATURES USERS LOVE
-   Tag: kygo-features-users-love
-   Gray-50 section: centered header + six equal feature cards.
-======================================== */
-class KygoFeaturesUsersLove extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-    this._observer = null;
-  }
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    this._setupReveal();
-    __seo(this, 'Features Kygo users love — the everyday details that keep you logging past week two. Dietitian Verified Database: over 5 million foods cross-checked against USDA, with full vitamin and mineral detail, not just macros. Track Your Supplement Stack by voice and see whether it moved anything. Water and Weight sit next to your macros on the Today screen. Best Source Wins: when two wearables disagree, Kygo knows which one to trust for each metric. Run an Experiment: put one food on trial for two weeks and get a verdict. One Tap Repeats for saved foods, reusable meals, and yesterday’s dinner.');
-  }
-  disconnectedCallback() {
-    if (this._observer) this._observer.disconnect();
-  }
-  static get observedAttributes() { return ['wixsettings']; }
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    this._parseWixAttributes();
-    this.render();
-    this._setupReveal();
-  }
-  _parseWixAttributes() {
-    try {
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {}
-  }
-  _getSetting(key, fallback) {
-    return this._settings[key] || this.getAttribute(key) || fallback;
-  }
-  _setupReveal() {
-    requestAnimationFrame(() => {
-      const section = this.shadowRoot.querySelector('.ful-section');
-      if (!section) return;
-      if ('IntersectionObserver' in window) {
-        this._observer = new IntersectionObserver((entries, obs) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('reveal');
-              obs.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-        this._observer.observe(section);
-      } else {
-        section.classList.add('reveal');
-      }
-    });
-  }
-  render() {
-    const kicker = this._getSetting('kicker', 'Features our users love');
-    const heading = this._getSetting('heading', "The details you'll use every day");
-    const lead = this._getSetting('lead', 'Not the headline features. The ones that keep you logging past week two.');
-    const cards = [
-      { t: 'Dietitian Verified Database', p: 'Over 5 million foods, cross checked against USDA. Full vitamin and mineral detail, not just macros.', svg: '<path d="M20 6.5V17c0 1.7-3.6 3-8 3s-8-1.3-8-3V6.5"/><ellipse cx="12" cy="6.5" rx="8" ry="3"/><path d="M9 13.2l2 2 4-4"/>' },
-      { t: 'Track Your Supplement Stack', p: 'Build your stack, log it by voice, keep the streak. Then see whether it moved anything.', svg: '<path d="M11.5 21.5a4.95 4.95 0 0 1-7-7l7-7a4.95 4.95 0 0 1 7 7z"/><path d="M8 13l6-6"/>' },
-      { t: 'Water and Weight, Same View', p: 'Hydration and weight sit next to your macros on the Today screen. One glance, whole day.', svg: '<path d="M12 2.7l4.9 6.6a6.1 6.1 0 1 1-9.8 0z"/><path d="M9.5 14.5h5"/>' },
-      { t: 'Best Source Wins', p: 'Wear two devices and they will disagree. Kygo knows which one to trust for each metric.', svg: '<path d="M12 3v18"/><path d="M4 8h16"/><path d="M4 8l-2 6h6z"/><path d="M18 8l-2 6h6z"/>' },
-      { t: 'Run an Experiment', p: 'Put one food on trial for two weeks. Kygo tracks the days and gives you a verdict.', svg: '<path d="M9 3h6"/><path d="M10 3v5.5L5.2 18A2 2 0 0 0 7 21h10a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M7.5 14h9"/>' },
-      { t: 'One Tap Repeats', p: "Saved foods, reusable meals, and yesterday's dinner copied straight into today.", svg: '<path d="M4 9V7a3 3 0 0 1 3-3h10"/><path d="M14 1.5L17 4l-3 2.5"/><path d="M20 15v2a3 3 0 0 1-3 3H7"/><path d="M10 22.5L7 20l3-2.5"/>' }
-    ];
-    const cardHtml = cards.map(c => `
-            <div class="fcard">
-              <div class="fcard-row">
-                <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${c.svg}</svg></span>
-                <div>
-                  <h3>${c.t}</h3>
-                  <p>${c.p}</p>
-                </div>
-              </div>
-            </div>`).join('');
-    this.shadowRoot.innerHTML = `
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-        :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f9fafb;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes hiwUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        .ful-section{padding:clamp(48px,6vw,80px) 0;background:#f9fafb}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .ful-head{text-align:center;max-width:660px;margin:0 auto 48px}
-        .kicker{font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;margin-bottom:12px}
-        .ful-head h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.8vw,40px);line-height:1.08;letter-spacing:-0.03em;color:#0F172A;margin-bottom:14px}
-        .ful-head p{font-size:clamp(16px,2.2vw,18px);color:#475569}
-        .ful-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
-        .fcard{background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:clamp(24px,3vw,32px) clamp(20px,2.6vw,28px);box-shadow:0 4px 12px rgba(0,0,0,0.04);transition:border-color .3s ease,box-shadow .3s ease,transform .6s ease-out}
-        .fcard:hover{border-color:#22C55E;box-shadow:0 12px 32px rgba(0,0,0,0.08);transform:translateY(-4px)}
-        .fcard-row{display:flex;align-items:flex-start;gap:14px}
-        .fic{flex-shrink:0;display:flex;width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#22C55E,#16A34A);align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,197,94,0.25)}
-        .fic svg{width:24px;height:24px}
-        .fcard h3{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:clamp(18px,4.5vw,20px);color:#1E293B;margin-bottom:4px;transition:color .3s ease}
-        .fcard:hover h3{color:#16A34A}
-        .fcard p{color:#475569;font-size:clamp(13px,3.5vw,14px);line-height:1.5}
-        .ful-section.reveal .ful-head{animation:hiwUp .6s ease-out both}
-        .ful-section.reveal .fcard{animation:hiwUp .6s ease-out both}
-        .ful-section.reveal .fcard:nth-child(1){animation-delay:.1s}
-        .ful-section.reveal .fcard:nth-child(2){animation-delay:.2s}
-        .ful-section.reveal .fcard:nth-child(3){animation-delay:.3s}
-        .ful-section.reveal .fcard:nth-child(4){animation-delay:.4s}
-        .ful-section.reveal .fcard:nth-child(5){animation-delay:.5s}
-        .ful-section.reveal .fcard:nth-child(6){animation-delay:.6s}
-        @media(prefers-reduced-motion:reduce){
-          .ful-section.reveal .ful-head,.ful-section.reveal .fcard{animation:none}
-          .fcard:hover{transform:none}
-        }
-      </style>
-      <section class="ful-section">
-        <div class="container">
-          <div class="ful-head">
-            <div class="kicker">${kicker}</div>
-            <h2>${heading}</h2>
-            <p>${lead}</p>
-          </div>
-          <div class="ful-grid">${cardHtml}
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-customElements.define('kygo-features-users-love', KygoFeaturesUsersLove);
-
-
-/* ========================================
-   6. KYGO INLINE CTA BAND
-   Tag: kygo-inline-cta
-   Thin one-line CTA band below Testimonials: headline + proof strip + the two
-   store buttons. Deliberately the lightest CTA on the page.
-======================================== */
-class KygoInlineCta extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-    this._settings = {};
-    this._observer = null;
-  }
-  connectedCallback() {
-    this._parseWixAttributes();
-    this.render();
-    this._setupReveal();
-    __seo(this, 'Your patterns are already in your data. Go find them. Download Kygo Health free — 2-minute setup, every wearable connected (Oura, WHOOP, Apple Watch, Garmin, Fitbit), and first correlations in about 7 days. Available for iOS and Android.');
-  }
-  disconnectedCallback() {
-    if (this._observer) this._observer.disconnect();
-  }
-  static get observedAttributes() { return ['wixsettings']; }
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue === newValue) return;
-    this._parseWixAttributes();
-    this.render();
-    this._setupReveal();
-  }
-  _parseWixAttributes() {
-    try {
-      const wixsettings = this.getAttribute('wixsettings');
-      if (wixsettings) this._settings = JSON.parse(wixsettings);
-    } catch (e) {}
-  }
-  _getSetting(key, fallback) {
-    return this._settings[key] || this.getAttribute(key) || fallback;
-  }
-  _setupReveal() {
-    requestAnimationFrame(() => {
-      const section = this.shadowRoot.querySelector('.band');
-      const row = this.shadowRoot.querySelector('.band-row');
-      if (!section || !row) return;
-      if ('IntersectionObserver' in window) {
-        this._observer = new IntersectionObserver((entries, obs) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              row.classList.add('reveal');
-              obs.unobserve(entry.target);
-            }
-          });
-        }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
-        this._observer.observe(section);
-      } else {
-        row.classList.add('reveal');
-      }
-    });
-  }
-  render() {
-    const appStoreUrl = this._getSetting('app-store-url', 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy');
-    const androidUrl = this._getSetting('android-url', 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO');
-    this.shadowRoot.innerHTML = `
-      <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-        :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f9fafb;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes hiwUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        .band{background:#f9fafb;border-top:1px solid #E2E8F0;padding:clamp(24px,3.4vw,32px) 20px}
-        .band-row{display:flex;align-items:center;justify-content:space-between;gap:clamp(16px,3vw,40px);max-width:1160px;margin:0 auto}
-        .band-headline{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(19px,2.4vw,24px);line-height:1.25;letter-spacing:-0.02em;color:#0F172A}
-        .band-headline span{color:#16A34A}
-        .band-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px;color:#94A3B8;margin-top:8px}
-        .band-meta .sep{color:#CBD5E1}
-        .band-btns{display:flex;align-items:center;gap:12px;flex-shrink:0}
-        .cta-primary{display:flex;align-items:center;gap:8px;background:#22C55E;color:#fff;font-weight:600;font-size:15px;padding:14px 24px;border-radius:12px;white-space:nowrap;text-decoration:none;transition:background .25s ease,transform .25s ease,box-shadow .25s ease}
-        .cta-primary:hover{background:#16A34A;transform:translateY(-2px);box-shadow:0 10px 20px rgba(34,197,94,0.3)}
-        .cta-primary svg{width:17px;height:17px;flex-shrink:0}
-        .cta-android{display:flex;align-items:center;gap:8px;background:#fff;color:#1E293B;font-weight:600;font-size:15px;padding:14px 22px;border-radius:12px;border:2px solid #E2E8F0;white-space:nowrap;text-decoration:none;transition:border-color .25s ease,color .25s ease,transform .25s ease}
-        .cta-android:hover{border-color:#22C55E;color:#16A34A;transform:translateY(-2px)}
-        .cta-android svg{width:18px;height:18px;flex-shrink:0}
-        .reveal{animation:hiwUp .6s ease-out both}
-        @media(max-width:820px){
-          .band-row{flex-direction:column;align-items:stretch;text-align:center;gap:20px}
-          .band-btns{flex-direction:column;align-items:stretch}
-          .band-btns > a{justify-content:center}
-          .band-meta{justify-content:center}
-        }
-        @media(prefers-reduced-motion:reduce){
-          .reveal{animation:none}
-          .cta-primary:hover,.cta-android:hover{transform:none}
-        }
-      </style>
-      <section class="band">
-        <div class="band-row">
-          <div>
-            <div class="band-headline">Your patterns are already in your data. <span>Go find them.</span></div>
-            <div class="band-meta">
-              <span>2-min setup</span><span class="sep">&#8226;</span><span>Every wearable connected</span><span class="sep">&#8226;</span><span>First correlations in 7 days</span>
-            </div>
-          </div>
-          <div class="band-btns">
-            <a class="cta-primary" href="${appStoreUrl}" target="_blank" rel="noopener noreferrer" data-action="ios-download" data-track-position="testimonials-inline" data-track-label="home-inline-ios">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.7-.8-2.9-.8-1.5 0-2.9.9-3.7 2.2-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.8 2.2 1.1 0 1.5-.7 2.9-.7 1.3 0 1.7.7 2.9.7 1.2 0 2-1.1 2.7-2.2.8-1.2 1.2-2.4 1.2-2.5-.1 0-2.2-.9-2.2-3.4zM14.2 5.6c.6-.7 1-1.7.9-2.7-.9 0-2 .6-2.6 1.3-.6.6-1.1 1.7-.9 2.6 1 .1 2-.5 2.6-1.2z"/></svg>
-              Download for iOS
-            </a>
-            <a class="cta-android" href="${androidUrl}" target="_blank" rel="noopener" data-action="android-download" data-track-position="testimonials-inline" data-track-label="home-inline-android">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-              Get it on Android
-            </a>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-customElements.define('kygo-inline-cta', KygoInlineCta);
-
-
-/* ========================================
-   5. KYGO INSIGHTS STEPS
+   4. KYGO INSIGHTS STEPS (How it works — 3-step block)
    Tag: kygo-insights-steps
 ======================================== */
 class KygoInsightsSteps extends HTMLElement {
@@ -1475,7 +897,585 @@ customElements.define('kygo-insights-steps', KygoInsightsSteps);
 
 
 /* ========================================
-   6. KYGO FAQ
+   5. KYGO CORRELATIONS OVERVIEW
+   Tag: kygo-correlations-overview
+   Dark navy section: narrative copy + an example correlation card with an
+   IntersectionObserver-driven contributor panel that expands in view.
+======================================== */
+class KygoCorrelationsOverview extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+    this._revealObserver = null;
+    this._panelObserver = null;
+    this._panelTimer = null;
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+    this._setupContributorPanel();
+    __seo(this, 'How Kygo correlations work — Kygo finds personal food-body patterns from your own logged data, not generic studies. Example: caffeine over 95mg after 2pm lowers HRV by about 8 ms (32 ms on low-caffeine days vs 24 ms on high-caffeine days), based on 47 days compared and measured one day later. Findings build confidence over time — Developing, then Emerging, then Likely Real — and every correlation opens to the meals behind it (coffee 62%, pre-workout 28%, chocolate 10%).');
+  }
+  disconnectedCallback() {
+    if (this._revealObserver) this._revealObserver.disconnect();
+    if (this._panelObserver) this._panelObserver.disconnect();
+    clearTimeout(this._panelTimer);
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+    this._setupContributorPanel();
+  }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  _getSetting(key, fallback) {
+    return this._settings[key] || this.getAttribute(key) || fallback;
+  }
+  _setupReveal() {
+    requestAnimationFrame(() => {
+      const section = this.shadowRoot.querySelector('.corr-section');
+      if (!section) return;
+      if ('IntersectionObserver' in window) {
+        this._revealObserver = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        this._revealObserver.observe(section);
+      } else {
+        section.classList.add('reveal');
+      }
+    });
+  }
+  _setupContributorPanel() {
+    requestAnimationFrame(() => {
+      const section = this.shadowRoot.querySelector('.corr-section');
+      const panel = this.shadowRoot.querySelector('.panel');
+      if (!section || !panel) return;
+      if (!('IntersectionObserver' in window)) { panel.classList.add('expanded'); return; }
+      this._panelObserver = new IntersectionObserver((entries) => {
+        const inView = entries.some(e => e.isIntersecting);
+        clearTimeout(this._panelTimer);
+        this._panelTimer = setTimeout(() => {
+          if (inView) panel.classList.add('expanded');
+          else panel.classList.remove('expanded');
+        }, inView ? 500 : 0);
+      }, { threshold: 0.35 });
+      this._panelObserver.observe(section);
+    });
+  }
+  render() {
+    const kicker = this._getSetting('kicker', 'How correlations work');
+    const heading = this._getSetting('heading', 'Patterns only your data could show.');
+    this.shadowRoot.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#0F172A;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        .corr-section{position:relative;background:#0F172A;padding:clamp(44px,5.5vw,72px) 0;overflow:hidden}
+        .corr-glow{position:absolute;top:-180px;right:-120px;width:600px;height:600px;background:radial-gradient(circle,rgba(34,197,94,.16) 0%,transparent 62%);pointer-events:none}
+        .corr-grid{position:relative;max-width:1200px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:minmax(0,1fr);gap:32px;align-items:center}
+        .kicker{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#22C55E;margin-bottom:12px}
+        .corr-copy h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.4vw,40px);line-height:1.08;letter-spacing:-0.03em;color:#fff;margin-bottom:16px}
+        .corr-copy p{font-size:clamp(16px,2vw,18px);color:#94A3B8;margin-bottom:14px}
+        .corr-copy p.p2{margin-bottom:26px}
+        .ladder{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+        .ladder .pill{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:12px;letter-spacing:.4px;padding:6px 12px;border-radius:6px;white-space:nowrap}
+        .ladder .arrow{color:#475569}
+        .pill.developing{color:#94A3B8;background:rgba(255,255,255,.07)}
+        .pill.emerging{color:#CBD5E1;background:rgba(255,255,255,.14)}
+        .pill.likely{color:#22C55E;background:rgba(34,197,94,.16)}
+        .wcard{background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:22px 18px;box-shadow:0 20px 40px -20px rgba(0,0,0,.5);transition:border-color .3s ease,box-shadow .3s ease,transform .3s ease}
+        .wcard:hover{border-color:#22C55E;box-shadow:0 16px 36px rgba(0,0,0,.28);transform:translateY(-4px)}
+        .wcard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px}
+        .wcard-eyebrow{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94A3B8;margin-bottom:4px}
+        .wcard-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(19px,4.5vw,22px);color:#0F172A;line-height:1.2}
+        .delta{flex-shrink:0;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#EF4444;background:#FEF2F2;padding:6px 12px;border-radius:999px;white-space:nowrap}
+        .compare{display:flex;flex-direction:column;gap:12px;background:#F5F7FA;border-radius:14px;padding:16px}
+        .crow{display:flex;align-items:center;gap:12px}
+        .crow-label{width:104px;flex-shrink:0;font-size:12.5px;color:#475569}
+        .crow-label .days{color:#94A3B8}
+        .crow-track{flex:1;min-width:40px;height:9px;background:#E2E8F0;border-radius:99px;overflow:hidden}
+        .crow-fill{display:block;height:100%;border-radius:99px}
+        .crow-val{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#0F172A;width:44px;text-align:right}
+        .panel{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows 1.6s cubic-bezier(.4,0,.2,1),opacity 1.1s ease-out .3s}
+        .panel.expanded{grid-template-rows:1fr;opacity:1}
+        .panel-inner{overflow:hidden;min-height:0;padding-top:20px}
+        .panel-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:11px}
+        .panel-head .lbl{font-size:11px;font-weight:700;letter-spacing:.6px;color:#94A3B8}
+        .panel-head .total{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#0F172A}
+        .seg{display:flex;gap:3px;height:14px;border-radius:99px;overflow:hidden;margin-bottom:14px}
+        .seg span{border-radius:99px}
+        .legend{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+        .legend .item{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+        .legend .dot{width:8px;height:8px;border-radius:99px;flex-shrink:0}
+        .legend .name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:#0F172A}
+        .legend .pct{font-size:12.5px;color:#64748B}
+        .chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:20px;padding-top:18px;border-top:1px solid #F1F5F9}
+        .chip{display:inline-flex;align-items:center;font-weight:600;font-size:12.5px;padding:6px 12px;border-radius:999px;white-space:nowrap;background:#F1F5F9;color:#475569}
+        .chip.real{gap:6px;background:#ECFDF5;color:#16A34A;font-weight:700}
+        .chip.real svg{width:13px;height:13px}
+        .corr-section.reveal .corr-copy{animation:hiwUp .6s ease-out both}
+        .corr-section.reveal .wcard{animation:hiwUp .6s ease-out .1s both}
+        @media(min-width:480px){
+          .wcard{padding:clamp(24px,2.4vw,30px)}
+          .compare{gap:14px;padding:18px 20px}
+          .crow{gap:14px}
+          .crow-label{width:152px;font-size:13px}
+          .crow-track{min-width:60px}
+          .crow-val{font-size:15px;width:52px}
+          .wcard-title{font-size:22px}
+        }
+        @media(min-width:900px){
+          .corr-grid{padding:0 40px;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(40px,5vw,72px)}
+        }
+        @media(prefers-reduced-motion:reduce){
+          .corr-section.reveal .corr-copy,.corr-section.reveal .wcard{animation:none}
+          .wcard:hover{transform:none}
+          .panel{transition:none;grid-template-rows:1fr;opacity:1}
+        }
+      </style>
+      <section class="corr-section">
+        <div class="corr-glow"></div>
+        <div class="corr-grid">
+          <div class="corr-copy">
+            <div class="kicker">${kicker}</div>
+            <h2>${heading}</h2>
+            <p>See how your body responds every time a food shows up in your log.</p>
+            <p class="p2">Patterns surface once they've held up long enough to trust, and every finding opens to the meals behind it.</p>
+            <div class="ladder">
+              <span class="pill developing">DEVELOPING</span>
+              <span class="arrow">&#8594;</span>
+              <span class="pill emerging">EMERGING</span>
+              <span class="arrow">&#8594;</span>
+              <span class="pill likely">LIKELY REAL</span>
+            </div>
+          </div>
+          <div class="wcard">
+            <div class="wcard-head">
+              <div>
+                <div class="wcard-eyebrow">LATE CAFFEINE &#8594; HRV</div>
+                <div class="wcard-title">Over 95mg after 2pm costs you 8 ms</div>
+              </div>
+              <span class="delta">&#8722;8 ms</span>
+            </div>
+            <div class="compare">
+              <div class="crow">
+                <span class="crow-label">Under 95mg <span class="days">&#183; 31 days</span></span>
+                <span class="crow-track"><span class="crow-fill" style="width:72%;background:#64748B"></span></span>
+                <span class="crow-val">32 ms</span>
+              </div>
+              <div class="crow">
+                <span class="crow-label">Over 95mg <span class="days">&#183; 16 days</span></span>
+                <span class="crow-track"><span class="crow-fill" style="width:48%;background:#EF4444"></span></span>
+                <span class="crow-val">24 ms</span>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-inner">
+                <div class="panel-head">
+                  <span class="lbl">WHERE THE CAFFEINE CAME FROM</span>
+                  <span class="total">365mg</span>
+                </div>
+                <div class="seg">
+                  <span style="width:62%;background:#EF4444"></span>
+                  <span style="width:28%;background:#F87171"></span>
+                  <span style="width:10%;background:#CBD5E1"></span>
+                </div>
+                <div class="legend">
+                  <span class="item"><span class="dot" style="background:#EF4444"></span><span class="name">Coffee</span><span class="pct">62%</span></span>
+                  <span class="item"><span class="dot" style="background:#F87171"></span><span class="name">Pre-workout</span><span class="pct">28%</span></span>
+                  <span class="item"><span class="dot" style="background:#CBD5E1"></span><span class="name">Chocolate</span><span class="pct">10%</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="chips">
+              <span class="chip real"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Likely real</span>
+              <span class="chip">47 days compared</span>
+              <span class="chip">Measured 1 day later</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-correlations-overview', KygoCorrelationsOverview);
+
+
+/* ========================================
+   6. KYGO FEATURES USERS LOVE
+   Tag: kygo-features-users-love
+   Gray-50 section: centered header + six equal feature cards.
+======================================== */
+class KygoFeaturesUsersLove extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+    this._observer = null;
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+    __seo(this, 'Features Kygo users love — the everyday details that keep you logging past week two. Dietitian Verified Database: over 5 million foods cross-checked against USDA, with full vitamin and mineral detail, not just macros. Track Your Supplement Stack by voice and see whether it moved anything. Water and Weight sit next to your macros on the Today screen. Best Source Wins: when two wearables disagree, Kygo knows which one to trust for each metric. Run an Experiment: put one food on trial for two weeks and get a verdict. One Tap Repeats for saved foods, reusable meals, and yesterday’s dinner.');
+  }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+  }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  _getSetting(key, fallback) {
+    return this._settings[key] || this.getAttribute(key) || fallback;
+  }
+  _setupReveal() {
+    requestAnimationFrame(() => {
+      const section = this.shadowRoot.querySelector('.ful-section');
+      if (!section) return;
+      if ('IntersectionObserver' in window) {
+        this._observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        this._observer.observe(section);
+      } else {
+        section.classList.add('reveal');
+      }
+    });
+  }
+  render() {
+    const kicker = this._getSetting('kicker', 'Features our users love');
+    const heading = this._getSetting('heading', "The details you'll use every day");
+    const lead = this._getSetting('lead', 'Not the headline features. The ones that keep you logging past week two.');
+    const cards = [
+      { t: 'Dietitian Verified Database', p: 'Over 5 million foods, cross checked against USDA. Full vitamin and mineral detail, not just macros.', svg: '<path d="M20 6.5V17c0 1.7-3.6 3-8 3s-8-1.3-8-3V6.5"/><ellipse cx="12" cy="6.5" rx="8" ry="3"/><path d="M9 13.2l2 2 4-4"/>' },
+      { t: 'Track Your Supplement Stack', p: 'Build your stack, log it by voice, keep the streak. Then see whether it moved anything.', svg: '<path d="M11.5 21.5a4.95 4.95 0 0 1-7-7l7-7a4.95 4.95 0 0 1 7 7z"/><path d="M8 13l6-6"/>' },
+      { t: 'Water and Weight, Same View', p: 'Hydration and weight sit next to your macros on the Today screen. One glance, whole day.', svg: '<path d="M12 2.7l4.9 6.6a6.1 6.1 0 1 1-9.8 0z"/><path d="M9.5 14.5h5"/>' },
+      { t: 'Best Source Wins', p: 'Wear two devices and they will disagree. Kygo knows which one to trust for each metric.', svg: '<path d="M12 3v18"/><path d="M4 8h16"/><path d="M4 8l-2 6h6z"/><path d="M18 8l-2 6h6z"/>' },
+      { t: 'Run an Experiment', p: 'Put one food on trial for two weeks. Kygo tracks the days and gives you a verdict.', svg: '<path d="M9 3h6"/><path d="M10 3v5.5L5.2 18A2 2 0 0 0 7 21h10a2 2 0 0 0 1.8-3L14 8.5V3"/><path d="M7.5 14h9"/>' },
+      { t: 'One Tap Repeats', p: "Saved foods, reusable meals, and yesterday's dinner copied straight into today.", svg: '<path d="M4 9V7a3 3 0 0 1 3-3h10"/><path d="M14 1.5L17 4l-3 2.5"/><path d="M20 15v2a3 3 0 0 1-3 3H7"/><path d="M10 22.5L7 20l3-2.5"/>' }
+    ];
+    const cardHtml = cards.map(c => `
+            <div class="fcard">
+              <div class="fcard-row">
+                <span class="fic"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${c.svg}</svg></span>
+                <div>
+                  <h3>${c.t}</h3>
+                  <p>${c.p}</p>
+                </div>
+              </div>
+            </div>`).join('');
+    this.shadowRoot.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f9fafb;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .ful-section{padding:clamp(48px,6vw,80px) 0;background:#f9fafb}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .ful-head{text-align:center;max-width:660px;margin:0 auto 48px}
+        .kicker{font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;margin-bottom:12px}
+        .ful-head h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,3.8vw,40px);line-height:1.08;letter-spacing:-0.03em;color:#0F172A;margin-bottom:14px}
+        .ful-head p{font-size:clamp(16px,2.2vw,18px);color:#475569}
+        .ful-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+        .fcard{background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:clamp(24px,3vw,32px) clamp(20px,2.6vw,28px);box-shadow:0 4px 12px rgba(0,0,0,0.04);transition:border-color .3s ease,box-shadow .3s ease,transform .6s ease-out}
+        .fcard:hover{border-color:#22C55E;box-shadow:0 12px 32px rgba(0,0,0,0.08);transform:translateY(-4px)}
+        .fcard-row{display:flex;align-items:flex-start;gap:14px}
+        .fic{flex-shrink:0;display:flex;width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#22C55E,#16A34A);align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(34,197,94,0.25)}
+        .fic svg{width:24px;height:24px}
+        .fcard h3{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:clamp(18px,4.5vw,20px);color:#1E293B;margin-bottom:4px;transition:color .3s ease}
+        .fcard:hover h3{color:#16A34A}
+        .fcard p{color:#475569;font-size:clamp(13px,3.5vw,14px);line-height:1.5}
+        .ful-section.reveal .ful-head{animation:hiwUp .6s ease-out both}
+        .ful-section.reveal .fcard{animation:hiwUp .6s ease-out both}
+        .ful-section.reveal .fcard:nth-child(1){animation-delay:.1s}
+        .ful-section.reveal .fcard:nth-child(2){animation-delay:.2s}
+        .ful-section.reveal .fcard:nth-child(3){animation-delay:.3s}
+        .ful-section.reveal .fcard:nth-child(4){animation-delay:.4s}
+        .ful-section.reveal .fcard:nth-child(5){animation-delay:.5s}
+        .ful-section.reveal .fcard:nth-child(6){animation-delay:.6s}
+        @media(prefers-reduced-motion:reduce){
+          .ful-section.reveal .ful-head,.ful-section.reveal .fcard{animation:none}
+          .fcard:hover{transform:none}
+        }
+      </style>
+      <section class="ful-section">
+        <div class="container">
+          <div class="ful-head">
+            <div class="kicker">${kicker}</div>
+            <h2>${heading}</h2>
+            <p>${lead}</p>
+          </div>
+          <div class="ful-grid">${cardHtml}
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-features-users-love', KygoFeaturesUsersLove);
+
+
+/* ========================================
+   7. KYGO TESTIMONIALS (approved, anonymized user quotes)
+   Tag: kygo-testimonials
+   Continuously auto-scrolling social-proof marquee rendered between the FAQ
+   and the final CTA (see kygo-home wrapper order). Star-rated cards with a
+   green initial-avatar; the set is duplicated once for a seamless loop, the
+   marquee pauses on hover, and it falls back to a scrollable row under
+   prefers-reduced-motion.
+======================================== */
+class KygoTestimonials extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    __seo(this, 'What Kygo users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
+  }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+  }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+  }
+  render() {
+    const stars = `<div class="t-stars">${Array(5).fill('<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L12 19.9 6.5 19.1l1.4-6.1L3.2 8.8l6.2-.6z"/></svg>').join('')}</div>`;
+    const card = (q, a, dup) => `<figure class="t-card"${dup ? ' aria-hidden="true"' : ''}><blockquote>${stars}<p>${q}</p></blockquote><figcaption><span class="t-avatar">${a.charAt(0)}</span><span class="t-meta"><span class="t-name">${a}</span></span></figcaption></figure>`;
+    const data = [
+      ['"I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline."', 'Oura user'],
+      ['"I love the experiments and the insights, like seeing how fat impacts my sleep."', 'Kygo user'],
+      ['"I always get excited when I see your posts. The research is truly valued, and the app is amazing."', 'Oura user'],
+      ['"Insights into how different nutrients impact my sleep and resting heart rate keep me engaged."', 'App Store review'],
+      ['"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."', 'Oura user']
+    ];
+    const cards = data.map(([q, a]) => card(q, a, false)).join('\n            ');
+    const dupes = data.map(([q, a]) => card(q, a, true)).join('\n            ');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-50:#f9fafb;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        @keyframes tmarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+        .testimonials-section{padding:48px 0;background:var(--gray-50)}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .reveal{animation:revealUp .6s ease-out both}
+        .t-head{text-align:center;margin-bottom:28px;max-width:560px;margin-left:auto;margin-right:auto}
+        .t-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
+        .t-head h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:24px;color:var(--dark);margin-bottom:10px}
+        .t-head p{color:#64748B;font-size:15px;line-height:1.6}
+        .t-viewport{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+        .t-track{display:flex;width:max-content;padding:8px 0 12px;animation:tmarquee 48s linear infinite;will-change:transform}
+        .t-viewport:hover .t-track{animation-play-state:paused}
+        .t-card{flex:0 0 auto;width:300px;margin-right:16px;background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:24px 22px;box-shadow:0 4px 16px rgba(15,23,42,0.05);display:flex;flex-direction:column;gap:16px;transition:border-color 0.25s ease,box-shadow 0.25s ease,transform 0.25s ease}
+        .t-card:hover{border-color:var(--green);box-shadow:0 12px 28px rgba(34,197,94,0.12);transform:translateY(-4px)}
+        .t-card blockquote{border:0;display:flex;flex-direction:column;gap:12px;flex:1}
+        .t-stars{display:flex;gap:3px;color:var(--green)}
+        .t-stars svg{width:16px;height:16px}
+        .t-card p{color:var(--dark);font-size:15px;line-height:1.6;font-weight:500}
+        .t-card figcaption{display:flex;align-items:center;gap:11px;padding-top:14px;border-top:1px solid #F1F5F9}
+        .t-avatar{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:rgba(34,197,94,0.12);color:var(--green-dark);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;font-size:15px}
+        .t-meta{display:flex;flex-direction:column;line-height:1.3;min-width:0}
+        .t-meta .t-name{color:var(--dark);font-size:13.5px;font-weight:600}
+        @media(min-width:768px){
+          .testimonials-section{padding:64px 0}
+          .t-head{margin-bottom:36px}
+          .t-head h2{font-size:30px}
+          .t-card{width:360px}
+        }
+        @media(min-width:1024px){
+          .testimonials-section{padding:80px 0}
+        }
+        @media(prefers-reduced-motion:reduce){
+          .t-viewport{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+          .t-track{animation:none}
+          .reveal{animation:none}
+        }
+      </style>
+      <section class="testimonials-section">
+        <div class="container">
+          <div class="t-head reveal">
+            <div class="t-eyebrow">Testimonials</div>
+            <h2>What our users say</h2>
+            <p>Real reviews from people who connected a wearable and started seeing their own patterns.</p>
+          </div>
+          <div class="reveal">
+            <div class="t-viewport">
+              <div class="t-track">
+            ${cards}
+            ${dupes}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-testimonials', KygoTestimonials);
+
+
+/* ========================================
+   8. KYGO INLINE CTA BAND
+   Tag: kygo-inline-cta
+   Thin one-line CTA band below Testimonials: headline + proof strip + the two
+   store buttons. Deliberately the lightest CTA on the page.
+======================================== */
+class KygoInlineCta extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this._settings = {};
+    this._observer = null;
+  }
+  connectedCallback() {
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+    __seo(this, 'Your patterns are already in your data. Go find them. Download Kygo Health free — 2-minute setup, every wearable connected (Oura, WHOOP, Apple Watch, Garmin, Fitbit), and first correlations in about 7 days. Available for iOS and Android.');
+  }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+  }
+  static get observedAttributes() { return ['wixsettings']; }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue === newValue) return;
+    this._parseWixAttributes();
+    this.render();
+    this._setupReveal();
+  }
+  _parseWixAttributes() {
+    try {
+      const wixsettings = this.getAttribute('wixsettings');
+      if (wixsettings) this._settings = JSON.parse(wixsettings);
+    } catch (e) {}
+  }
+  _getSetting(key, fallback) {
+    return this._settings[key] || this.getAttribute(key) || fallback;
+  }
+  _setupReveal() {
+    requestAnimationFrame(() => {
+      const section = this.shadowRoot.querySelector('.band');
+      const row = this.shadowRoot.querySelector('.band-row');
+      if (!section || !row) return;
+      if ('IntersectionObserver' in window) {
+        this._observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              row.classList.add('reveal');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+        this._observer.observe(section);
+      } else {
+        row.classList.add('reveal');
+      }
+    });
+  }
+  render() {
+    const appStoreUrl = this._getSetting('app-store-url', 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy');
+    const androidUrl = this._getSetting('android-url', 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO');
+    this.shadowRoot.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f9fafb;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .band{background:#f9fafb;border-top:1px solid #E2E8F0;padding:clamp(24px,3.4vw,32px) 20px}
+        .band-row{display:flex;align-items:center;justify-content:space-between;gap:clamp(16px,3vw,40px);max-width:1160px;margin:0 auto}
+        .band-headline{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(19px,2.4vw,24px);line-height:1.25;letter-spacing:-0.02em;color:#0F172A}
+        .band-headline span{color:#16A34A}
+        .band-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px;color:#94A3B8;margin-top:8px}
+        .band-meta .sep{color:#CBD5E1}
+        .band-btns{display:flex;align-items:center;gap:12px;flex-shrink:0}
+        .cta-primary{display:flex;align-items:center;gap:8px;background:#22C55E;color:#fff;font-weight:600;font-size:15px;padding:14px 24px;border-radius:12px;white-space:nowrap;text-decoration:none;transition:background .25s ease,transform .25s ease,box-shadow .25s ease}
+        .cta-primary:hover{background:#16A34A;transform:translateY(-2px);box-shadow:0 10px 20px rgba(34,197,94,0.3)}
+        .cta-primary svg{width:17px;height:17px;flex-shrink:0}
+        .cta-android{display:flex;align-items:center;gap:8px;background:#fff;color:#1E293B;font-weight:600;font-size:15px;padding:14px 22px;border-radius:12px;border:2px solid #E2E8F0;white-space:nowrap;text-decoration:none;transition:border-color .25s ease,color .25s ease,transform .25s ease}
+        .cta-android:hover{border-color:#22C55E;color:#16A34A;transform:translateY(-2px)}
+        .cta-android svg{width:18px;height:18px;flex-shrink:0}
+        .reveal{animation:hiwUp .6s ease-out both}
+        @media(max-width:820px){
+          .band-row{flex-direction:column;align-items:stretch;text-align:center;gap:20px}
+          .band-btns{flex-direction:column;align-items:stretch}
+          .band-btns > a{justify-content:center}
+          .band-meta{justify-content:center}
+        }
+        @media(prefers-reduced-motion:reduce){
+          .reveal{animation:none}
+          .cta-primary:hover,.cta-android:hover{transform:none}
+        }
+      </style>
+      <section class="band">
+        <div class="band-row">
+          <div>
+            <div class="band-headline">Your patterns are already in your data. <span>Go find them.</span></div>
+            <div class="band-meta">
+              <span>2-min setup</span><span class="sep">&#8226;</span><span>Every wearable connected</span><span class="sep">&#8226;</span><span>First correlations in 7 days</span>
+            </div>
+          </div>
+          <div class="band-btns">
+            <a class="cta-primary" href="${appStoreUrl}" target="_blank" rel="noopener noreferrer" data-action="ios-download" data-track-position="testimonials-inline" data-track-label="home-inline-ios">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.7-.8-2.9-.8-1.5 0-2.9.9-3.7 2.2-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.8 2.2 1.1 0 1.5-.7 2.9-.7 1.3 0 1.7.7 2.9.7 1.2 0 2-1.1 2.7-2.2.8-1.2 1.2-2.4 1.2-2.5-.1 0-2.2-.9-2.2-3.4zM14.2 5.6c.6-.7 1-1.7.9-2.7-.9 0-2 .6-2.6 1.3-.6.6-1.1 1.7-.9 2.6 1 .1 2-.5 2.6-1.2z"/></svg>
+              Download for iOS
+            </a>
+            <a class="cta-android" href="${androidUrl}" target="_blank" rel="noopener" data-action="android-download" data-track-position="testimonials-inline" data-track-label="home-inline-android">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+              Get it on Android
+            </a>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-inline-cta', KygoInlineCta);
+
+
+/* ========================================
+   9. KYGO FAQ
    Tag: kygo-faq
 ======================================== */
 class KygoFaq extends HTMLElement {
@@ -1559,7 +1559,91 @@ customElements.define('kygo-faq', KygoFaq);
 
 
 /* ========================================
-   7. KYGO FOUNDER (compact, expandable founder note)
+   10. KYGO FINAL CTA
+   Tag: kygo-final-cta
+   The closing call-to-action (dark card on a WHITE section background) that
+   sits at the bottom of the homepage, after the testimonials. Entrance reveal
+   is pure CSS.
+======================================== */
+class KygoFinalCta extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    this.render();
+    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
+  }
+  render() {
+    const appStoreUrl = this.getAttribute('app-store-url') || 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;--green:#22C55E;--green-dark:#16A34A;line-height:1.6;-webkit-font-smoothing:antialiased}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
+        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .final-cta{padding:72px 0;background:#fff}
+        .final-cta-inner{background:#0F172A;border-radius:24px;padding:40px 24px;text-align:center;position:relative;overflow:hidden;color:#fff;animation:revealUp .6s ease-out both}
+        .final-cta-inner::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,0.30),transparent);pointer-events:none}
+        .final-cta-inner::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,0.12),transparent);pointer-events:none}
+        .final-cta-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
+        .cta-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,0.25);margin-bottom:18px}
+        .cta-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+        .final-cta h2{font-size:clamp(26px,4.5vw,42px);line-height:1.05;color:#fff;margin-bottom:14px;max-width:22ch}
+        .final-cta h2 span{color:var(--green)}
+        .final-cta-content>p{color:rgba(255,255,255,0.72);margin-bottom:24px;font-size:clamp(14px,1.6vw,16px);max-width:56ch;line-height:1.6}
+        .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+        .cta-primary,.cta-android{background:var(--green);color:#fff;padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;cursor:pointer;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
+        .cta-primary:hover,.cta-android:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 10px 30px rgba(34,197,94,0.30)}
+        .cta-primary:active,.cta-primary:focus,.cta-android:active,.cta-android:focus{outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(34,197,94,0.20)}
+        .cta-primary svg,.cta-android svg{width:18px;height:18px}
+        .cta-works{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:13px}
+        .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+        .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
+        @media(prefers-reduced-motion:reduce){.final-cta-inner{animation:none}}
+        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:320px;justify-content:center;white-space:nowrap}}
+        @media(min-width:768px){.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
+      </style>
+      <section class="final-cta">
+        <div class="container">
+          <div class="final-cta-inner">
+            <div class="final-cta-content">
+              <div class="cta-pill"><span class="dot"></span> 7-Day Free Trial</div>
+              <h2>Your wearable tracks it. <span>Kygo explains it.</span></h2>
+              <p>Log meals in seconds and Kygo connects them to your sleep, HRV, and energy, so you finally see what works for you.</p>
+              <div class="cta-buttons">
+                <a href="${appStoreUrl}" class="cta-primary" data-track-position="footer-cta" data-track-label="home-footer-ios" target="_blank" rel="noopener noreferrer">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                  Try Kygo free for 7 days
+                </a>
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="home-footer-android">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
+                  Download for Android
+                </a>
+              </div>
+              <div class="cta-works">
+                <span>Works with</span>
+                <div class="cta-badges">
+                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" title="Google Health" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-final-cta', KygoFinalCta);
+
+/* ========================================
+   11. KYGO FOUNDER (compact, expandable founder note)
    Tag: kygo-founder
    Compact dark founder card that sits ABOVE the FAQ (see kygo-home order).
    A visible lead paragraph plus a "Read the full story" toggle that expands
@@ -1653,90 +1737,6 @@ class KygoFounder extends HTMLElement {
 }
 customElements.define('kygo-founder', KygoFounder);
 
-
-/* ========================================
-   8. KYGO FINAL CTA
-   Tag: kygo-final-cta
-   The closing call-to-action (dark card on a WHITE section background) that
-   sits at the bottom of the homepage, after the testimonials. Entrance reveal
-   is pure CSS.
-======================================== */
-class KygoFinalCta extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-  }
-  connectedCallback() {
-    this.render();
-    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
-  }
-  render() {
-    const appStoreUrl = this.getAttribute('app-store-url') || 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;--green:#22C55E;--green-dark:#16A34A;line-height:1.6;-webkit-font-smoothing:antialiased}
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
-        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .final-cta{padding:72px 0;background:#fff}
-        .final-cta-inner{background:#0F172A;border-radius:24px;padding:40px 24px;text-align:center;position:relative;overflow:hidden;color:#fff;animation:revealUp .6s ease-out both}
-        .final-cta-inner::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,0.30),transparent);pointer-events:none}
-        .final-cta-inner::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,0.12),transparent);pointer-events:none}
-        .final-cta-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
-        .cta-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,0.25);margin-bottom:18px}
-        .cta-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
-        .final-cta h2{font-size:clamp(26px,4.5vw,42px);line-height:1.05;color:#fff;margin-bottom:14px;max-width:22ch}
-        .final-cta h2 span{color:var(--green)}
-        .final-cta-content>p{color:rgba(255,255,255,0.72);margin-bottom:24px;font-size:clamp(14px,1.6vw,16px);max-width:56ch;line-height:1.6}
-        .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-        .cta-primary,.cta-android{background:var(--green);color:#fff;padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .2s ease,box-shadow .2s ease,background .2s ease;cursor:pointer;border:none;font-family:inherit;-webkit-tap-highlight-color:transparent}
-        .cta-primary:hover,.cta-android:hover{background:var(--green-dark);transform:translateY(-2px);box-shadow:0 10px 30px rgba(34,197,94,0.30)}
-        .cta-primary:active,.cta-primary:focus,.cta-android:active,.cta-android:focus{outline:none;transform:translateY(0);box-shadow:0 4px 15px rgba(34,197,94,0.20)}
-        .cta-primary svg,.cta-android svg{width:18px;height:18px}
-        .cta-works{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:13px}
-        .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
-        .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
-        @media(prefers-reduced-motion:reduce){.final-cta-inner{animation:none}}
-        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:320px;justify-content:center;white-space:nowrap}}
-        @media(min-width:768px){.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
-      </style>
-      <section class="final-cta">
-        <div class="container">
-          <div class="final-cta-inner">
-            <div class="final-cta-content">
-              <div class="cta-pill"><span class="dot"></span> 7-Day Free Trial</div>
-              <h2>Your wearable tracks it. <span>Kygo explains it.</span></h2>
-              <p>Log meals in seconds and Kygo connects them to your sleep, HRV, and energy, so you finally see what works for you.</p>
-              <div class="cta-buttons">
-                <a href="${appStoreUrl}" class="cta-primary" data-track-position="footer-cta" data-track-label="home-footer-ios" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Try Kygo free for 7 days
-                </a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="home-footer-android">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <div class="cta-works">
-                <span>Works with</span>
-                <div class="cta-badges">
-                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" title="Oura Ring" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" title="Google Health" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-customElements.define('kygo-final-cta', KygoFinalCta);
 
 /* ========================================
    KYGO HOME (single-embed wrapper)
