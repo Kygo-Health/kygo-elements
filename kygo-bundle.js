@@ -14,6 +14,29 @@ function __seo(el, text) {
   el.appendChild(d);
 }
 
+/** Consistent scroll-in reveal: adds `.reveal` to each element the first time it
+ *  enters the viewport, then stops observing it. Sections gate their entrance
+ *  animations on `.reveal` so every section fades/slides up the same way as it
+ *  scrolls into view. Returns the observer so callers can disconnect it. */
+function __revealOnScroll(els) {
+  const list = (Array.isArray(els) ? els : [els]).filter(Boolean);
+  if (!list.length) return null;
+  if (!('IntersectionObserver' in window)) {
+    list.forEach(el => el.classList.add('reveal'));
+    return null;
+  }
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+  list.forEach(el => io.observe(el));
+  return io;
+}
+
 /* ========================================
    1. KYGO HERO SECTION
    Tag: kygo-hero-section
@@ -183,7 +206,7 @@ class KygoHeroSection extends HTMLElement {
         .hero-demo .cta-secondary{margin-top:18px}
 
         /* ---- Keyframes ---- */
-        @keyframes hiwUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
         @keyframes hiwFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
         @keyframes heroBadgeA{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
         @keyframes heroBadgeB{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
@@ -631,7 +654,7 @@ class KygoProblemSection extends HTMLElement {
         .why-card.kygo-way .why-item-text{color:var(--dark)}
 
         /* Entry animations — gated on .visible so they fire when the section scrolls into view */
-        @keyframes hiwUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
         @keyframes hiwRow{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
         @keyframes hiwPop{from{opacity:0;transform:scale(.55)}to{opacity:1;transform:scale(1)}}
         .why-eyebrow,.why-header h2,.why-header p,.why-card,.why-row,.why-badge{opacity:0}
@@ -711,7 +734,7 @@ class KygoInsightsSteps extends HTMLElement {
       <style>
         :host{--dark:#0F172A;--green:#22C55E;--green-dark:#16A34A;--navy:#1E293B;--navy-deep:#0F172A;--canvas:#F8FAFC;--slate-100:#F1F5F9;--border:#E2E8F0;--body:#475569;--label:#64748B;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;color:var(--dark);line-height:1.6;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes hiwUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
         @keyframes hiwPop{from{opacity:0;transform:translateY(10px) scale(.96)}to{opacity:1;transform:none}}
         .insights-section{padding:clamp(56px,7vw,92px) 20px;background:var(--canvas)}
         .container{max-width:1180px;margin:0 auto}
@@ -984,7 +1007,7 @@ class KygoCorrelationsOverview extends HTMLElement {
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
         :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#0F172A;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes hiwUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
         .corr-section{position:relative;background:#0F172A;padding:clamp(44px,5.5vw,72px) 0;overflow:hidden}
         .corr-glow{position:absolute;top:-180px;right:-120px;width:600px;height:600px;background:radial-gradient(circle,rgba(34,197,94,.16) 0%,transparent 62%);pointer-events:none}
         .corr-grid{position:relative;max-width:1200px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:minmax(0,1fr);gap:32px;align-items:center}
@@ -1204,7 +1227,7 @@ class KygoFeaturesUsersLove extends HTMLElement {
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
         :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f9fafb;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes hiwUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
         .ful-section{padding:clamp(48px,6vw,80px) 0;background:#f9fafb}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
         .ful-head{text-align:center;max-width:660px;margin:0 auto 48px}
@@ -1222,12 +1245,12 @@ class KygoFeaturesUsersLove extends HTMLElement {
         .fcard p{color:#475569;font-size:clamp(13px,3.5vw,14px);line-height:1.5}
         .ful-section.reveal .ful-head{animation:hiwUp .6s ease-out both}
         .ful-section.reveal .fcard{animation:hiwUp .6s ease-out both}
-        .ful-section.reveal .fcard:nth-child(1){animation-delay:.1s}
-        .ful-section.reveal .fcard:nth-child(2){animation-delay:.2s}
-        .ful-section.reveal .fcard:nth-child(3){animation-delay:.3s}
-        .ful-section.reveal .fcard:nth-child(4){animation-delay:.4s}
-        .ful-section.reveal .fcard:nth-child(5){animation-delay:.5s}
-        .ful-section.reveal .fcard:nth-child(6){animation-delay:.6s}
+        .ful-section.reveal .fcard:nth-child(1){animation-delay:.08s}
+        .ful-section.reveal .fcard:nth-child(2){animation-delay:.16s}
+        .ful-section.reveal .fcard:nth-child(3){animation-delay:.24s}
+        .ful-section.reveal .fcard:nth-child(4){animation-delay:.32s}
+        .ful-section.reveal .fcard:nth-child(5){animation-delay:.40s}
+        .ful-section.reveal .fcard:nth-child(6){animation-delay:.48s}
         @media(max-width:600px){
           .ful-head{margin-bottom:28px}
           .ful-grid{gap:12px}
@@ -1261,7 +1284,109 @@ customElements.define('kygo-features-users-love', KygoFeaturesUsersLove);
 
 
 /* ========================================
-   7. KYGO TESTIMONIALS (approved, anonymized user quotes)
+   7. KYGO FOUNDER (Why I built Kygo — below Features Users Love)
+   Tag: kygo-founder
+   Compact dark founder card that sits ABOVE the FAQ (see kygo-home order).
+   A visible lead paragraph plus a "Read the full story" toggle that expands
+   the pull-quote and closing paragraphs. Entrance reveal is pure CSS.
+======================================== */
+class KygoFounder extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    this.render();
+    this.setupToggle();
+    this._observer = __revealOnScroll(this.shadowRoot.querySelector('.founder-story'));
+    __seo(this, 'Why I built Kygo — a note from Ryan, Founder of Kygo Health. I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That is why I built Kygo. "Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That is not from a study — that is YOUR body telling you something specifically. Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data. I hope Kygo can make a positive impact in your life as well.');
+  }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+  }
+  setupToggle() {
+    const note = this.shadowRoot.querySelector('.founder-note');
+    const btn = this.shadowRoot.querySelector('.founder-toggle');
+    if (!note || !btn) return;
+    const label = btn.childNodes[0];
+    btn.addEventListener('click', () => {
+      const open = note.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (label) label.nodeValue = open ? 'Show less ' : 'Read the full story ';
+    });
+  }
+  render() {
+    const founderName = this.getAttribute('founder-name') || 'Ryan';
+    const founderTitle = this.getAttribute('founder-title') || 'Founder, Kygo Health';
+    const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-400:#94A3B8;--gray-700:#334155;line-height:1.6;-webkit-font-smoothing:antialiased}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        h4{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
+        @keyframes revealUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .founder-story{padding:48px 0;background:#0F172A;position:relative;overflow:hidden}
+        .founder-story::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+        .founder-content{max-width:720px;margin:0 auto;position:relative;z-index:1}
+        .founder-note{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:26px 28px}
+        .founder-story.reveal .founder-note{animation:revealUp .6s ease-out both}
+        @media(prefers-reduced-motion:reduce){.founder-story.reveal .founder-note{animation:none}}
+        .founder-note-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+        .founder-avatar{width:46px;height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,0.12);border-radius:50%;padding:9px}
+        .founder-avatar img{width:100%;height:100%;object-fit:contain}
+        .founder-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:#4ADE80;margin-bottom:3px}
+        .founder-info h4{color:#fff;font-size:15px;font-weight:600;line-height:1.25}
+        .founder-info h4 span{color:var(--gray-400);font-weight:500}
+        .founder-lead{color:#CBD5E1;font-size:15.5px;line-height:1.75}
+        .founder-more{max-height:0;overflow:hidden;opacity:0;transition:max-height .4s ease,opacity .35s ease,margin-top .4s ease}
+        .founder-note.open .founder-more{max-height:640px;opacity:1;margin-top:18px}
+        .founder-quote{background:rgba(34,197,94,0.1);border-left:4px solid var(--green);padding:16px 20px;border-radius:0 12px 12px 0;margin-bottom:16px}
+        .founder-quote p{color:#fff;font-style:italic;font-size:15.5px;line-height:1.6}
+        .founder-more>p{color:var(--gray-400);font-size:15px;line-height:1.75;margin-bottom:14px}
+        .founder-more>p:last-child{margin-bottom:0}
+        .founder-toggle{margin-top:16px;background:none;border:none;cursor:pointer;color:#4ADE80;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;padding:0;transition:color .2s ease}
+        .founder-toggle:hover{color:#6EE7A0}
+        .founder-toggle .chev{transition:transform .3s ease;display:inline-block;font-size:15px}
+        .founder-note.open .founder-toggle .chev{transform:rotate(90deg)}
+        @media(prefers-reduced-motion:reduce){.founder-note{animation:none}}
+        @media(min-width:768px){
+          .founder-story{padding:64px 0}
+          .founder-note{padding:32px 34px}
+        }
+      </style>
+      <section class="founder-story">
+        <div class="container">
+          <div class="founder-content">
+            <div class="founder-note">
+              <div class="founder-note-head">
+                <div class="founder-avatar"><img src="${logoUrl}" alt="Kygo Health"></div>
+                <div class="founder-info">
+                  <div class="founder-eyebrow">Why I built Kygo</div>
+                  <h4>${founderName} <span>· ${founderTitle}</span></h4>
+                </div>
+              </div>
+              <p class="founder-lead">I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That's why I built Kygo.</p>
+              <div class="founder-more">
+                <div class="founder-quote">
+                  <p>"Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That's not from a study—that's YOUR body telling you something specifically.</p>
+                </div>
+                <p>Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data.</p>
+                <p>I hope Kygo can make a positive impact in your life as well.</p>
+              </div>
+              <button class="founder-toggle" type="button" aria-expanded="false">Read the full story <span class="chev">→</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-founder', KygoFounder);
+
+
+/* ========================================
+   8. KYGO TESTIMONIALS (approved, anonymized user quotes)
    Tag: kygo-testimonials
    Continuously auto-scrolling social-proof marquee rendered between the FAQ
    and the final CTA (see kygo-home wrapper order). Star-rated cards with a
@@ -1278,6 +1403,7 @@ class KygoTestimonials extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    this._observer = __revealOnScroll(this.shadowRoot.querySelector('.testimonials-section'));
     __seo(this, 'What Kygo users say: "I\'ve boosted my deep sleep after making changes to stop the age-related slow-wave decline." (Oura user) "I love the experiments and the insights, like seeing how fat impacts my sleep." (Kygo user) "I always get excited when I see your posts. The research is truly valued, and the app is amazing." (Oura user) "Insights into how different nutrients impact my sleep and resting heart rate keep me engaged." (App Store review) "Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved." (Oura user)');
   }
   disconnectedCallback() {
@@ -1312,10 +1438,11 @@ class KygoTestimonials extends HTMLElement {
         :host{--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-50:#f9fafb;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         @keyframes tmarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+        @keyframes revealUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
         .testimonials-section{padding:48px 0;background:#fff}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .reveal{animation:revealUp .6s ease-out both}
+        .testimonials-section.reveal .t-head{animation:revealUp .6s ease-out both}
+        .testimonials-section.reveal .t-marquee{animation:revealUp .6s ease-out .1s both}
         .t-head{text-align:center;margin-bottom:28px;max-width:560px;margin-left:auto;margin-right:auto}
         .t-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
         .t-head h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2;font-size:24px;color:var(--dark);margin-bottom:10px}
@@ -1323,12 +1450,12 @@ class KygoTestimonials extends HTMLElement {
         .t-viewport{overflow:hidden;position:relative;-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
         .t-track{display:flex;width:max-content;padding:8px 0 12px;animation:tmarquee 48s linear infinite;will-change:transform}
         .t-viewport:hover .t-track{animation-play-state:paused}
-        .t-card{flex:0 0 auto;width:300px;margin-right:16px;background:#fff;border:1px solid var(--gray-200);border-radius:20px;padding:24px 22px;box-shadow:0 4px 16px rgba(15,23,42,0.05);display:flex;flex-direction:column;gap:16px;transition:border-color 0.25s ease,box-shadow 0.25s ease,transform 0.25s ease}
+        .t-card{flex:0 0 auto;width:262px;margin-right:14px;background:#fff;border:1px solid var(--gray-200);border-radius:18px;padding:18px 18px;box-shadow:0 4px 16px rgba(15,23,42,0.05);display:flex;flex-direction:column;gap:12px;transition:border-color 0.25s ease,box-shadow 0.25s ease,transform 0.25s ease}
         .t-card:hover{border-color:var(--green);box-shadow:0 12px 28px rgba(34,197,94,0.12);transform:translateY(-4px)}
         .t-card blockquote{border:0;display:flex;flex-direction:column;gap:12px;flex:1}
         .t-stars{display:flex;gap:3px;color:var(--green)}
         .t-stars svg{width:16px;height:16px}
-        .t-card p{color:var(--dark);font-size:15px;line-height:1.6;font-weight:500}
+        .t-card p{color:var(--dark);font-size:13.5px;line-height:1.5;font-weight:500}
         .t-card figcaption{display:flex;align-items:center;gap:11px;padding-top:14px;border-top:1px solid #F1F5F9}
         .t-avatar{width:36px;height:36px;flex-shrink:0;border-radius:50%;background:rgba(34,197,94,0.12);color:var(--green-dark);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;font-size:15px}
         .t-meta{display:flex;flex-direction:column;line-height:1.3;min-width:0}
@@ -1337,7 +1464,8 @@ class KygoTestimonials extends HTMLElement {
           .testimonials-section{padding:64px 0}
           .t-head{margin-bottom:36px}
           .t-head h2{font-size:30px}
-          .t-card{width:360px}
+          .t-card{width:340px;padding:24px 22px;gap:16px;border-radius:20px}
+          .t-card p{font-size:15px;line-height:1.6}
         }
         @media(min-width:1024px){
           .testimonials-section{padding:80px 0}
@@ -1345,17 +1473,17 @@ class KygoTestimonials extends HTMLElement {
         @media(prefers-reduced-motion:reduce){
           .t-viewport{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
           .t-track{animation:none}
-          .reveal{animation:none}
+          .testimonials-section.reveal .t-head,.testimonials-section.reveal .t-marquee{animation:none}
         }
       </style>
       <section class="testimonials-section">
         <div class="container">
-          <div class="t-head reveal">
+          <div class="t-head">
             <div class="t-eyebrow">Testimonials</div>
             <h2>What our users say</h2>
             <p>Real reviews from people who connected a wearable and started seeing their own patterns.</p>
           </div>
-          <div class="reveal">
+          <div class="t-marquee">
             <div class="t-viewport">
               <div class="t-track">
             ${cards}
@@ -1372,7 +1500,7 @@ customElements.define('kygo-testimonials', KygoTestimonials);
 
 
 /* ========================================
-   8. KYGO INLINE CTA BAND
+   9. KYGO INLINE CTA BAND
    Tag: kygo-inline-cta
    Thin one-line CTA band below Testimonials: headline + proof strip + the two
    store buttons. Deliberately the lightest CTA on the page.
@@ -1437,7 +1565,7 @@ class KygoInlineCta extends HTMLElement {
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
         :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f9fafb;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        @keyframes hiwUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
         .band{background:#fff;padding:6px 20px clamp(28px,3.4vw,36px);margin-top:clamp(-40px,-4vw,-20px)}
         .band-row{display:flex;align-items:center;justify-content:space-between;gap:clamp(16px,3vw,40px);max-width:1160px;margin:0 auto}
         .band-headline{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(19px,2.4vw,24px);line-height:1.25;letter-spacing:-0.02em;color:#0F172A}
@@ -1490,102 +1618,6 @@ customElements.define('kygo-inline-cta', KygoInlineCta);
 
 
 /* ========================================
-   9. KYGO FOUNDER (Why I built Kygo — above the FAQ)
-   Tag: kygo-founder
-   Compact dark founder card that sits ABOVE the FAQ (see kygo-home order).
-   A visible lead paragraph plus a "Read the full story" toggle that expands
-   the pull-quote and closing paragraphs. Entrance reveal is pure CSS.
-======================================== */
-class KygoFounder extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-  }
-  connectedCallback() {
-    this.render();
-    this.setupToggle();
-    __seo(this, 'Why I built Kygo — a note from Ryan, Founder of Kygo Health. I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That is why I built Kygo. "Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That is not from a study — that is YOUR body telling you something specifically. Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data. I hope Kygo can make a positive impact in your life as well.');
-  }
-  setupToggle() {
-    const note = this.shadowRoot.querySelector('.founder-note');
-    const btn = this.shadowRoot.querySelector('.founder-toggle');
-    if (!note || !btn) return;
-    const label = btn.childNodes[0];
-    btn.addEventListener('click', () => {
-      const open = note.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (label) label.nodeValue = open ? 'Show less ' : 'Read the full story ';
-    });
-  }
-  render() {
-    const founderName = this.getAttribute('founder-name') || 'Ryan';
-    const founderTitle = this.getAttribute('founder-title') || 'Founder, Kygo Health';
-    const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-400:#94A3B8;--gray-700:#334155;line-height:1.6;-webkit-font-smoothing:antialiased}
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        h4{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
-        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .founder-story{padding:48px 0;background:#0F172A;position:relative;overflow:hidden}
-        .founder-story::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
-        .founder-content{max-width:720px;margin:0 auto;position:relative;z-index:1}
-        .founder-note{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:26px 28px;animation:revealUp .6s ease-out both}
-        .founder-note-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-        .founder-avatar{width:46px;height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,0.12);border-radius:50%;padding:9px}
-        .founder-avatar img{width:100%;height:100%;object-fit:contain}
-        .founder-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:#4ADE80;margin-bottom:3px}
-        .founder-info h4{color:#fff;font-size:15px;font-weight:600;line-height:1.25}
-        .founder-info h4 span{color:var(--gray-400);font-weight:500}
-        .founder-lead{color:#CBD5E1;font-size:15.5px;line-height:1.75}
-        .founder-more{max-height:0;overflow:hidden;opacity:0;transition:max-height .4s ease,opacity .35s ease,margin-top .4s ease}
-        .founder-note.open .founder-more{max-height:640px;opacity:1;margin-top:18px}
-        .founder-quote{background:rgba(34,197,94,0.1);border-left:4px solid var(--green);padding:16px 20px;border-radius:0 12px 12px 0;margin-bottom:16px}
-        .founder-quote p{color:#fff;font-style:italic;font-size:15.5px;line-height:1.6}
-        .founder-more>p{color:var(--gray-400);font-size:15px;line-height:1.75;margin-bottom:14px}
-        .founder-more>p:last-child{margin-bottom:0}
-        .founder-toggle{margin-top:16px;background:none;border:none;cursor:pointer;color:#4ADE80;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;padding:0;transition:color .2s ease}
-        .founder-toggle:hover{color:#6EE7A0}
-        .founder-toggle .chev{transition:transform .3s ease;display:inline-block;font-size:15px}
-        .founder-note.open .founder-toggle .chev{transform:rotate(90deg)}
-        @media(prefers-reduced-motion:reduce){.founder-note{animation:none}}
-        @media(min-width:768px){
-          .founder-story{padding:64px 0}
-          .founder-note{padding:32px 34px}
-        }
-      </style>
-      <section class="founder-story">
-        <div class="container">
-          <div class="founder-content">
-            <div class="founder-note">
-              <div class="founder-note-head">
-                <div class="founder-avatar"><img src="${logoUrl}" alt="Kygo Health"></div>
-                <div class="founder-info">
-                  <div class="founder-eyebrow">Why I built Kygo</div>
-                  <h4>${founderName} <span>· ${founderTitle}</span></h4>
-                </div>
-              </div>
-              <p class="founder-lead">I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That's why I built Kygo.</p>
-              <div class="founder-more">
-                <div class="founder-quote">
-                  <p>"Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That's not from a study—that's YOUR body telling you something specifically.</p>
-                </div>
-                <p>Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data.</p>
-                <p>I hope Kygo can make a positive impact in your life as well.</p>
-              </div>
-              <button class="founder-toggle" type="button" aria-expanded="false">Read the full story <span class="chev">→</span></button>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-customElements.define('kygo-founder', KygoFounder);
-
-
-/* ========================================
    10. KYGO FAQ
    Tag: kygo-faq
 ======================================== */
@@ -1594,8 +1626,12 @@ class KygoFaq extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
   }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
+  }
   connectedCallback() {
     this.render();
+    this._observer = __revealOnScroll(this.shadowRoot.querySelector('.faq'));
     __seo(this, 'Frequently asked questions about Kygo Health — nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (about seven days of consistent logging).');
   }
   _faqData() {
@@ -1630,7 +1666,17 @@ class KygoFaq extends HTMLElement {
       <style>
         :host{display:block;--dark:#1E293B;--navy:#0F172A;--green:#22C55E;--green-dark:#16A34A;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
         .faq{padding:clamp(56px,7vw,88px) 20px;background:#f9fafb}
+        .faq.reveal .section-header{animation:hiwUp .6s ease-out both}
+        .faq.reveal .faq-item{animation:hiwUp .6s ease-out both}
+        .faq.reveal .faq-item:nth-child(1){animation-delay:.08s}
+        .faq.reveal .faq-item:nth-child(2){animation-delay:.16s}
+        .faq.reveal .faq-item:nth-child(3){animation-delay:.24s}
+        .faq.reveal .faq-item:nth-child(4){animation-delay:.32s}
+        .faq.reveal .faq-item:nth-child(5){animation-delay:.40s}
+        .faq.reveal .faq-item:nth-child(6){animation-delay:.48s}
+        @media(prefers-reduced-motion:reduce){.faq.reveal .section-header,.faq.reveal .faq-item{animation:none}}
         .container{max-width:760px;margin:0 auto}
         .section-header{text-align:center;margin-bottom:36px}
         .kicker{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:.9px;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
@@ -1683,7 +1729,11 @@ class KygoFinalCta extends HTMLElement {
   }
   connectedCallback() {
     this.render();
+    this._observer = __revealOnScroll(this.shadowRoot.querySelector('.final-cta'));
     __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
+  }
+  disconnectedCallback() {
+    if (this._observer) this._observer.disconnect();
   }
   render() {
     const appStoreUrl = this.getAttribute('app-store-url') || 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
@@ -1692,10 +1742,11 @@ class KygoFinalCta extends HTMLElement {
         :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;--green:#22C55E;--green-dark:#16A34A;line-height:1.6;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
-        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+        @keyframes revealUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
         .final-cta{padding:72px 0;background:#fff}
-        .final-cta-inner{background:#0F172A;border-radius:24px;padding:40px 24px;text-align:center;position:relative;overflow:hidden;color:#fff;animation:revealUp .6s ease-out both}
+        .final-cta-inner{background:#0F172A;border-radius:24px;padding:40px 24px;text-align:center;position:relative;overflow:hidden;color:#fff}
+        .final-cta.reveal .final-cta-inner{animation:revealUp .6s ease-out both}
         .final-cta-inner::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,0.30),transparent);pointer-events:none}
         .final-cta-inner::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,0.12),transparent);pointer-events:none}
         .final-cta-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
@@ -1713,7 +1764,7 @@ class KygoFinalCta extends HTMLElement {
         .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
         .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
         @media(max-width:600px){.cta-badges{display:grid;grid-template-columns:repeat(3,auto);justify-content:center;gap:12px}}
-        @media(prefers-reduced-motion:reduce){.final-cta-inner{animation:none}}
+        @media(prefers-reduced-motion:reduce){.final-cta.reveal .final-cta-inner{animation:none}}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:320px;justify-content:center;white-space:nowrap}}
         @media(min-width:768px){.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
       </style>
@@ -1778,9 +1829,9 @@ class KygoHome extends HTMLElement {
       'kygo-insights-steps',
       'kygo-correlations-overview',
       'kygo-features-users-love',
+      'kygo-founder',
       'kygo-testimonials',
       'kygo-inline-cta',
-      'kygo-founder',
       'kygo-faq',
       'kygo-final-cta'
     ].forEach(tag => {
