@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kygo Home (single embed) · Live Preview</title>
+  <title>Kygo Home — new sections · Live Preview</title>
   <style>
     body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F8FAFC; }
     .preview-banner {
@@ -21,19 +21,22 @@
 </head>
 <body>
   <div class="preview-banner">
-    <span>🟢 <b>LIVE PREVIEW</b> · <b>kygo-home</b> (all 11 sections, single embed)</span>
+    <span>🟢 <b>LIVE PREVIEW</b> · new homepage sections (Correlations · Features Users Love · Inline CTA)</span>
     <button onclick="location.href = location.pathname + '?v=' + Date.now()">Hard refresh</button>
   </div>
   <div class="preview-spacer"></div>
 
-  <kygo-home></kygo-home>
+  <kygo-correlations-overview></kygo-correlations-overview>
+  <kygo-features-users-love></kygo-features-users-love>
+  <kygo-inline-cta></kygo-inline-cta>
 
   <script>
+    // Cache-bust so you always see the latest commit of the bundle.
     const cacheBust = '?v=' + Date.now();
     const s = document.createElement('script');
     s.src = 'kygo-bundle.js' + cacheBust;
-    // jsDelivr branch URL alternative:
-    // s.src = 'https://cdn.jsdelivr.net/gh/Kygo-Health/kygo-elements@<branch>/kygo-bundle.js' + cacheBust;
+    // jsDelivr branch fallback:
+    // s.src = 'https://cdn.jsdelivr.net/gh/Kygo-Health/kygo-elements@claude/homepage-final-edits-ek53j6/kygo-bundle.js' + cacheBust;
     document.body.appendChild(s);
   </script>
 </body>
