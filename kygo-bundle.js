@@ -1313,7 +1313,7 @@ class KygoTestimonials extends HTMLElement {
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         @keyframes tmarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
         @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-        .testimonials-section{padding:48px 0;background:var(--gray-50)}
+        .testimonials-section{padding:48px 0;background:#fff}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
         .reveal{animation:revealUp .6s ease-out both}
         .t-head{text-align:center;margin-bottom:28px;max-width:560px;margin-left:auto;margin-right:auto}
@@ -1438,7 +1438,7 @@ class KygoInlineCta extends HTMLElement {
         :host{--green:#22C55E;--green-dark:#16A34A;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#f9fafb;color:#1E293B;line-height:1.6;-webkit-font-smoothing:antialiased}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         @keyframes hiwUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        .band{background:#f9fafb;border-top:1px solid #E2E8F0;padding:clamp(24px,3.4vw,32px) 20px}
+        .band{background:#fff;padding:6px 20px clamp(28px,3.4vw,36px);margin-top:clamp(-40px,-4vw,-20px)}
         .band-row{display:flex;align-items:center;justify-content:space-between;gap:clamp(16px,3vw,40px);max-width:1160px;margin:0 auto}
         .band-headline{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(19px,2.4vw,24px);line-height:1.25;letter-spacing:-0.02em;color:#0F172A}
         .band-headline span{color:#16A34A}
@@ -1490,7 +1490,103 @@ customElements.define('kygo-inline-cta', KygoInlineCta);
 
 
 /* ========================================
-   9. KYGO FAQ
+   9. KYGO FOUNDER (Why I built Kygo — above the FAQ)
+   Tag: kygo-founder
+   Compact dark founder card that sits ABOVE the FAQ (see kygo-home order).
+   A visible lead paragraph plus a "Read the full story" toggle that expands
+   the pull-quote and closing paragraphs. Entrance reveal is pure CSS.
+======================================== */
+class KygoFounder extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    this.render();
+    this.setupToggle();
+    __seo(this, 'Why I built Kygo — a note from Ryan, Founder of Kygo Health. I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That is why I built Kygo. "Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That is not from a study — that is YOUR body telling you something specifically. Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data. I hope Kygo can make a positive impact in your life as well.');
+  }
+  setupToggle() {
+    const note = this.shadowRoot.querySelector('.founder-note');
+    const btn = this.shadowRoot.querySelector('.founder-toggle');
+    if (!note || !btn) return;
+    const label = btn.childNodes[0];
+    btn.addEventListener('click', () => {
+      const open = note.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (label) label.nodeValue = open ? 'Show less ' : 'Read the full story ';
+    });
+  }
+  render() {
+    const founderName = this.getAttribute('founder-name') || 'Ryan';
+    const founderTitle = this.getAttribute('founder-title') || 'Founder, Kygo Health';
+    const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-400:#94A3B8;--gray-700:#334155;line-height:1.6;-webkit-font-smoothing:antialiased}
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        h4{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
+        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+        .container{max-width:1200px;margin:0 auto;padding:0 20px}
+        .founder-story{padding:48px 0;background:#0F172A;position:relative;overflow:hidden}
+        .founder-story::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+        .founder-content{max-width:720px;margin:0 auto;position:relative;z-index:1}
+        .founder-note{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:26px 28px;animation:revealUp .6s ease-out both}
+        .founder-note-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+        .founder-avatar{width:46px;height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,0.12);border-radius:50%;padding:9px}
+        .founder-avatar img{width:100%;height:100%;object-fit:contain}
+        .founder-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:#4ADE80;margin-bottom:3px}
+        .founder-info h4{color:#fff;font-size:15px;font-weight:600;line-height:1.25}
+        .founder-info h4 span{color:var(--gray-400);font-weight:500}
+        .founder-lead{color:#CBD5E1;font-size:15.5px;line-height:1.75}
+        .founder-more{max-height:0;overflow:hidden;opacity:0;transition:max-height .4s ease,opacity .35s ease,margin-top .4s ease}
+        .founder-note.open .founder-more{max-height:640px;opacity:1;margin-top:18px}
+        .founder-quote{background:rgba(34,197,94,0.1);border-left:4px solid var(--green);padding:16px 20px;border-radius:0 12px 12px 0;margin-bottom:16px}
+        .founder-quote p{color:#fff;font-style:italic;font-size:15.5px;line-height:1.6}
+        .founder-more>p{color:var(--gray-400);font-size:15px;line-height:1.75;margin-bottom:14px}
+        .founder-more>p:last-child{margin-bottom:0}
+        .founder-toggle{margin-top:16px;background:none;border:none;cursor:pointer;color:#4ADE80;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;padding:0;transition:color .2s ease}
+        .founder-toggle:hover{color:#6EE7A0}
+        .founder-toggle .chev{transition:transform .3s ease;display:inline-block;font-size:15px}
+        .founder-note.open .founder-toggle .chev{transform:rotate(90deg)}
+        @media(prefers-reduced-motion:reduce){.founder-note{animation:none}}
+        @media(min-width:768px){
+          .founder-story{padding:64px 0}
+          .founder-note{padding:32px 34px}
+        }
+      </style>
+      <section class="founder-story">
+        <div class="container">
+          <div class="founder-content">
+            <div class="founder-note">
+              <div class="founder-note-head">
+                <div class="founder-avatar"><img src="${logoUrl}" alt="Kygo Health"></div>
+                <div class="founder-info">
+                  <div class="founder-eyebrow">Why I built Kygo</div>
+                  <h4>${founderName} <span>· ${founderTitle}</span></h4>
+                </div>
+              </div>
+              <p class="founder-lead">I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That's why I built Kygo.</p>
+              <div class="founder-more">
+                <div class="founder-quote">
+                  <p>"Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That's not from a study—that's YOUR body telling you something specifically.</p>
+                </div>
+                <p>Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data.</p>
+                <p>I hope Kygo can make a positive impact in your life as well.</p>
+              </div>
+              <button class="founder-toggle" type="button" aria-expanded="false">Read the full story <span class="chev">→</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-founder', KygoFounder);
+
+
+/* ========================================
+   10. KYGO FAQ
    Tag: kygo-faq
 ======================================== */
 class KygoFaq extends HTMLElement {
@@ -1534,7 +1630,7 @@ class KygoFaq extends HTMLElement {
       <style>
         :host{display:block;--dark:#1E293B;--navy:#0F172A;--green:#22C55E;--green-dark:#16A34A;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        .faq{padding:clamp(56px,7vw,88px) 20px;background:#fff}
+        .faq{padding:clamp(56px,7vw,88px) 20px;background:#f9fafb}
         .container{max-width:760px;margin:0 auto}
         .section-header{text-align:center;margin-bottom:36px}
         .kicker{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:.9px;text-transform:uppercase;color:var(--green-dark);margin-bottom:8px}
@@ -1574,7 +1670,7 @@ customElements.define('kygo-faq', KygoFaq);
 
 
 /* ========================================
-   10. KYGO FINAL CTA
+   11. KYGO FINAL CTA
    Tag: kygo-final-cta
    The closing call-to-action (dark card on a WHITE section background) that
    sits at the bottom of the homepage, after the testimonials. Entrance reveal
@@ -1658,102 +1754,6 @@ class KygoFinalCta extends HTMLElement {
 customElements.define('kygo-final-cta', KygoFinalCta);
 
 /* ========================================
-   11. KYGO FOUNDER (compact, expandable founder note)
-   Tag: kygo-founder
-   Compact dark founder card that sits ABOVE the FAQ (see kygo-home order).
-   A visible lead paragraph plus a "Read the full story" toggle that expands
-   the pull-quote and closing paragraphs. Entrance reveal is pure CSS.
-======================================== */
-class KygoFounder extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-  }
-  connectedCallback() {
-    this.render();
-    this.setupToggle();
-    __seo(this, 'Why I built Kygo — a note from Ryan, Founder of Kygo Health. I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That is why I built Kygo. "Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That is not from a study — that is YOUR body telling you something specifically. Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data. I hope Kygo can make a positive impact in your life as well.');
-  }
-  setupToggle() {
-    const note = this.shadowRoot.querySelector('.founder-note');
-    const btn = this.shadowRoot.querySelector('.founder-toggle');
-    if (!note || !btn) return;
-    const label = btn.childNodes[0];
-    btn.addEventListener('click', () => {
-      const open = note.classList.toggle('open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (label) label.nodeValue = open ? 'Show less ' : 'Read the full story ';
-    });
-  }
-  render() {
-    const founderName = this.getAttribute('founder-name') || 'Ryan';
-    const founderTitle = this.getAttribute('founder-title') || 'Founder, Kygo Health';
-    const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    this.shadowRoot.innerHTML = `
-      <style>
-        :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;--dark:#1E293B;--green:#22C55E;--green-dark:#16A34A;--gray-400:#94A3B8;--gray-700:#334155;line-height:1.6;-webkit-font-smoothing:antialiased}
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        h4{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
-        @keyframes revealUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-        .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .founder-story{padding:48px 0;background:linear-gradient(135deg,var(--dark) 0%,var(--gray-700) 100%);position:relative;overflow:hidden}
-        .founder-story::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
-        .founder-content{max-width:720px;margin:0 auto;position:relative;z-index:1}
-        .founder-note{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:26px 28px;animation:revealUp .6s ease-out both}
-        .founder-note-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-        .founder-avatar{width:46px;height:46px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(34,197,94,0.12);border-radius:50%;padding:9px}
-        .founder-avatar img{width:100%;height:100%;object-fit:contain}
-        .founder-eyebrow{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.09em;text-transform:uppercase;color:#4ADE80;margin-bottom:3px}
-        .founder-info h4{color:#fff;font-size:15px;font-weight:600;line-height:1.25}
-        .founder-info h4 span{color:var(--gray-400);font-weight:500}
-        .founder-lead{color:#CBD5E1;font-size:15.5px;line-height:1.75}
-        .founder-more{max-height:0;overflow:hidden;opacity:0;transition:max-height .4s ease,opacity .35s ease,margin-top .4s ease}
-        .founder-note.open .founder-more{max-height:640px;opacity:1;margin-top:18px}
-        .founder-quote{background:rgba(34,197,94,0.1);border-left:4px solid var(--green);padding:16px 20px;border-radius:0 12px 12px 0;margin-bottom:16px}
-        .founder-quote p{color:#fff;font-style:italic;font-size:15.5px;line-height:1.6}
-        .founder-more>p{color:var(--gray-400);font-size:15px;line-height:1.75;margin-bottom:14px}
-        .founder-more>p:last-child{margin-bottom:0}
-        .founder-toggle{margin-top:16px;background:none;border:none;cursor:pointer;color:#4ADE80;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:8px;padding:0;transition:color .2s ease}
-        .founder-toggle:hover{color:#6EE7A0}
-        .founder-toggle .chev{transition:transform .3s ease;display:inline-block;font-size:15px}
-        .founder-note.open .founder-toggle .chev{transform:rotate(90deg)}
-        @media(prefers-reduced-motion:reduce){.founder-note{animation:none}}
-        @media(min-width:768px){
-          .founder-story{padding:64px 0}
-          .founder-note{padding:32px 34px}
-        }
-      </style>
-      <section class="founder-story">
-        <div class="container">
-          <div class="founder-content">
-            <div class="founder-note">
-              <div class="founder-note-head">
-                <div class="founder-avatar"><img src="${logoUrl}" alt="Kygo Health"></div>
-                <div class="founder-info">
-                  <div class="founder-eyebrow">Why I built Kygo</div>
-                  <h4>${founderName} <span>· ${founderTitle}</span></h4>
-                </div>
-              </div>
-              <p class="founder-lead">I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That's why I built Kygo.</p>
-              <div class="founder-more">
-                <div class="founder-quote">
-                  <p>"Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That's not from a study—that's YOUR body telling you something specifically.</p>
-                </div>
-                <p>Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data.</p>
-                <p>I hope Kygo can make a positive impact in your life as well.</p>
-              </div>
-              <button class="founder-toggle" type="button" aria-expanded="false">Read the full story <span class="chev">→</span></button>
-            </div>
-          </div>
-        </div>
-      </section>
-    `;
-  }
-}
-customElements.define('kygo-founder', KygoFounder);
-
-
-/* ========================================
    KYGO HOME (single-embed wrapper)
    Tag: kygo-home
    Renders all homepage sections in order so the page needs only ONE Wix
@@ -1779,9 +1779,9 @@ class KygoHome extends HTMLElement {
       'kygo-features-users-love',
       'kygo-testimonials',
       'kygo-inline-cta',
+      'kygo-founder',
       'kygo-faq',
-      'kygo-final-cta',
-      'kygo-founder'
+      'kygo-final-cta'
     ].forEach(tag => {
       const el = document.createElement(tag);
       el.id = tag;
