@@ -1448,8 +1448,8 @@ class KygoInlineCta extends HTMLElement {
         .cta-primary{display:flex;align-items:center;gap:8px;background:#22C55E;color:#fff;font-weight:600;font-size:15px;padding:14px 24px;border-radius:12px;white-space:nowrap;text-decoration:none;transition:background .25s ease,transform .25s ease,box-shadow .25s ease}
         .cta-primary:hover{background:#16A34A;transform:translateY(-2px);box-shadow:0 10px 20px rgba(34,197,94,0.3)}
         .cta-primary svg{width:17px;height:17px;flex-shrink:0}
-        .cta-android{display:flex;align-items:center;gap:8px;background:#fff;color:#1E293B;font-weight:600;font-size:15px;padding:14px 22px;border-radius:12px;border:2px solid #E2E8F0;white-space:nowrap;text-decoration:none;transition:border-color .25s ease,color .25s ease,transform .25s ease}
-        .cta-android:hover{border-color:#22C55E;color:#16A34A;transform:translateY(-2px)}
+        .cta-android{display:flex;align-items:center;gap:8px;background:#1E293B;color:#fff;font-weight:600;font-size:15px;padding:14px 24px;border-radius:12px;white-space:nowrap;text-decoration:none;transition:background .25s ease,transform .25s ease,box-shadow .25s ease}
+        .cta-android:hover{background:#0F172A;transform:translateY(-2px);box-shadow:0 10px 20px rgba(15,23,42,0.22)}
         .cta-android svg{width:18px;height:18px;flex-shrink:0}
         .reveal{animation:hiwUp .6s ease-out both}
         @media(max-width:820px){
@@ -1712,6 +1712,7 @@ class KygoFinalCta extends HTMLElement {
         .cta-works{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:13px}
         .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
         .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
+        @media(max-width:600px){.cta-badges{display:grid;grid-template-columns:repeat(3,auto);justify-content:center;gap:12px}}
         @media(prefers-reduced-motion:reduce){.final-cta-inner{animation:none}}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:320px;justify-content:center;white-space:nowrap}}
         @media(min-width:768px){.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
