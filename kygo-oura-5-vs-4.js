@@ -840,11 +840,12 @@ class KygoOura5vs4 extends HTMLElement {
       .kband { max-width: 1100px; margin: 0 auto; }
       .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
       .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
-      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; flex: 1 1 auto; min-width: 0; max-width: 640px; }
       .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-display); font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--kygo-green-dark); }
       .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); animation: kygoPulse 2s ease-out infinite; }
       .kband-headline { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(18px, 2.4vw, 24px); line-height: 1.3; color: var(--fg-1); }
-      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
+      .kband-actions { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 12px; flex: 0 0 auto; width: 300px; }
+      .kband-actions .kband-btn { width: 100%; justify-content: center; }
       .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--fg-2); text-align: center; }
       .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
       .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
