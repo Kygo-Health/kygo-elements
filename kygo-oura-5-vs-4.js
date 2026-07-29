@@ -23,6 +23,7 @@ class KygoOura5vs4 extends HTMLElement {
     this._observer = null;
     this._activeMetric = 'sleep';
     this._billing = 'yearly'; // 'yearly' | 'monthly'
+    this._tier = 'base'; // 'base' ($399: Silver, Black) | 'premium' ($499: Gold, Stealth, Brushed Silver, Deep Rose)
     this._includeCase = false;
   }
 
@@ -82,7 +83,7 @@ class KygoOura5vs4 extends HTMLElement {
       },
       {
         icon: 'wallet', who: 'First-time buyer', verdict: 'Ring 4 for most people',
-        body: 'The Ring 4 is cheaper (~$559 vs ~$609 over 3 years), fully validated, and fits fingers Ring 5 can’t (sizes 4–5, 14–15). Pick the Ring 5 if comfort and near-invisibility matter more than proven accuracy — it’s 40% lighter — and you’re comfortable being an early adopter of unvalidated hardware.',
+        body: 'The Ring 4 is cheaper (~$559 vs ~$609 over 3 years), fully validated, and fits fingers Ring 5 can’t (sizes 4–5, 14–15). Pick the Ring 5 if comfort and near-invisibility matter more than proven accuracy — it’s about 40% smaller and lighter (2–2.6 g vs 3.3–5.2 g) — and you’re comfortable being an early adopter of unvalidated hardware.',
         tagLabel: 'Start here'
       }
     ];
@@ -137,7 +138,7 @@ class KygoOura5vs4 extends HTMLElement {
   get _costModel() {
     return {
       ring4: { name: 'Oura Ring 4', hardware: 349, caseCost: 0 },
-      ring5: { name: 'Oura Ring 5', hardware: 399, caseCost: 99 }
+      ring5: { name: 'Oura Ring 5', hardware: this._tier === 'premium' ? 499 : 399, caseCost: 99 }
     };
   }
   _membership3yr(billing) { return billing === 'monthly' ? 5.99 * 36 : 69.99 * 3; }
@@ -147,15 +148,15 @@ class KygoOura5vs4 extends HTMLElement {
     return [
       {
         q: 'Is the Oura Ring 5 worth upgrading from the 4?',
-        a: 'For most Ring 4 owners, not yet. The Ring 5 is a form-factor and signal-quality refinement — it’s about 40% lighter, slightly thinner, and has marginally longer battery — not a new-metric leap. Every new software feature rolls back to the Ring 4 with an active membership, the Ring 5 has no independent accuracy validation, its size range shrinks to 6–13, and its signal pathways drop from 18 to 12. If your Ring 4 fits and works, there is little evidence-based reason to pay again.'
+        a: 'For most Ring 4 owners, not yet. The Ring 5 is a form-factor and signal-quality refinement — Oura’s claim is that it’s about 40% smaller (thinner and narrower), and it’s also lighter at 2–2.6 g versus the Ring 4’s 3.3–5.2 g, with a marginally longer battery — not a new-metric leap. Every new software feature rolls back to the Ring 4 with an active membership, the Ring 5 has no independent accuracy validation, its size range shrinks to 6–13, and its signal pathways drop from 18 to 12. If your Ring 4 fits and works, there is little evidence-based reason to pay again.'
       },
       {
         q: 'What’s new in the Oura Ring 5?',
-        a: 'The headline change is size: the Ring 5 is the world’s smallest smart ring at 2–2.6 g and 2.28 mm thick, roughly 40% lighter than the Ring 4. It adds an optional $99 charging case that extends total time between wall charges to about a month, a 6–9 day battery, redesigned optics (LEDs rotated 180° with a larger photodiode), and a digital temperature sensor. Sensor signal pathways drop from 18 to 12, which Oura describes as fewer but individually stronger.'
+        a: 'The headline change is size: the Ring 5 is the world’s smallest smart ring at 2–2.6 g and 2.28 mm thick — Oura says it’s roughly 40% smaller than the Ring 4, which is 3.3–5.2 g and 2.88 mm thick. It adds an optional $99 charging case that extends total time between wall charges to about a month, a 6–9 day battery, redesigned optics (LEDs rotated 180° with a larger photodiode), and a digital temperature sensor. Sensor signal pathways drop from 18 to 12, which Oura describes as fewer but individually stronger.'
       },
       {
         q: 'Does the Oura Ring 5 need a subscription?',
-        a: 'Yes. Like every current Oura ring, the Ring 5 requires an Oura Membership ($5.99/month or $69.99/year) for full features. Without it, the app shows only your Sleep, Readiness, and Activity scores. Trends, detailed HRV, temperature deviations, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools are all gated behind membership. That subscription is why the real 3-year cost of a Ring 5 is roughly $609, not $399.'
+        a: 'Yes. Like every current Oura ring, the Ring 5 requires an Oura Membership ($5.99/month or $69.99/year) for full features. Without it, the app shows only your Sleep, Readiness, and Activity scores. Trends, detailed HRV, temperature deviations, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools are all gated behind membership. That subscription is why the real 3-year cost of a Ring 5 is roughly $609 for a base finish — or about $709 for the $499 premium finishes — not $399.'
       },
       {
         q: 'Is the Oura Ring 5 more accurate than the Ring 4?',
@@ -163,7 +164,7 @@ class KygoOura5vs4 extends HTMLElement {
       },
       {
         q: 'How much does the Oura Ring 5 cost over 3 years?',
-        a: 'About $609 with the yearly membership: $399 for the hardware plus roughly $210 for three years of Oura Membership at $69.99/year. Paying membership monthly at $5.99 pushes the three-year total closer to $615, and the optional $99 charging case adds to that. The Ring 4 works out to about $559 over the same period because its hardware is $50 cheaper. Subscription-free rivals like RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349) avoid the membership entirely.'
+        a: 'It depends on the finish. A base Ring 5 (Silver or Black, $399) runs about $609 over three years with the yearly membership: $399 for the hardware plus roughly $210 for three years of Oura Membership at $69.99/year. The four premium finishes (Gold, Stealth, Brushed Silver, Deep Rose) start at $499, which brings the three-year total to about $709. Paying membership monthly at $5.99 instead adds about $6, and the optional $99 charging case adds to either total. The Ring 4 works out to about $559 over the same period because its hardware is $50 cheaper. Subscription-free rivals like RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349) avoid the membership entirely.'
       },
       {
         q: 'What sizes does the Oura Ring 5 come in?',
@@ -286,6 +287,13 @@ class KygoOura5vs4 extends HTMLElement {
     return `
       <div class="calc-controls">
         <div class="calc-block">
+          <div class="label"><span>Ring 5 finish</span></div>
+          <div class="seg" data-seg="tier">
+            <button data-tier="base" class="${this._tier === 'base' ? 'active' : ''}">Base <span class="px">$399 · Silver, Black</span></button>
+            <button data-tier="premium" class="${this._tier === 'premium' ? 'active' : ''}">Premium <span class="px">$499 · Gold, Stealth, Rose…</span></button>
+          </div>
+        </div>
+        <div class="calc-block">
           <div class="label"><span>Oura Membership billing</span></div>
           <div class="seg" data-seg="billing">
             <button data-val="yearly" class="${this._billing === 'yearly' ? 'active' : ''}">Yearly <span class="px">$69.99/yr</span></button>
@@ -299,7 +307,7 @@ class KygoOura5vs4 extends HTMLElement {
             <span>Ring 5 charging case (+$99, optional)</span>
           </label>
         </div>
-        <p class="calc-foot">The Oura Membership is required for trends, HRV detail, temperature, Advisor AI, Health Radar, and most insights on both rings. Hardware is a one-time cost; membership repeats every year. Subscription-free rivals RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349) skip the membership entirely.</p>
+        <p class="calc-foot">Two of the six Ring 5 finishes (Silver, Black) launch at $399; the other four (Gold, Stealth, Brushed Silver, Deep Rose) are $499. The Oura Membership is required for trends, HRV detail, temperature, Advisor AI, Health Radar, and most insights on both rings. Hardware is a one-time cost; membership repeats every year. Subscription-free rivals RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349) skip the membership entirely.</p>
       </div>
       <div class="calc-result">
         <h4>3-year total cost of ownership</h4>
@@ -358,9 +366,9 @@ class KygoOura5vs4 extends HTMLElement {
             <p class="hero-lede">The two-generation comparison, decided on the numbers: what actually changed, the peer-reviewed accuracy neither reviewer site has, and the real 3-year cost with membership. Just comparing Gen 5 and Gen 4 — <a class="hero-link" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">need Gen 3 too?</a></p>
           </div>
           <div class="hero-stats">
-            <div class="hero-stat"><div class="num">40<span class="unit">%</span></div><div class="lbl">Ring 5 lighter than Ring 4</div></div>
+            <div class="hero-stat"><div class="num">40<span class="unit">%</span></div><div class="lbl">Smaller than Ring 4 (Oura's claim)</div></div>
             <div class="hero-stat"><div class="num">2<span class="unit">g</span></div><div class="lbl">Ring 5 — world's smallest smart ring</div></div>
-            <div class="hero-stat"><div class="num">$609</div><div class="lbl">Real 3-yr Ring 5 cost with membership</div></div>
+            <div class="hero-stat"><div class="num">$609</div><div class="lbl">Real 3-yr Ring 5 cost, base finish</div></div>
             <div class="hero-stat"><div class="num">0</div><div class="lbl">Independent Ring 5 validation studies</div></div>
           </div>
         </div>
@@ -373,12 +381,12 @@ class KygoOura5vs4 extends HTMLElement {
             <div class="kicker">The short answer</div>
             <h2>Is the Ring 5 worth it over the Ring 4? <span class="hl">For most people, no.</span></h2>
           </div>
-          <p class="tldr-lead animate-on-scroll">The <strong>Oura Ring 5</strong> is smaller and lighter — about 40% lighter than the Ring 4 — with a longer battery and an optional charging case. But it costs more, shrinks the size range to 6–13, and has <strong>no independent accuracy validation</strong>. The Ring 4 stays the smarter buy for most people; upgrade only if comfort matters more than proven data.</p>
+          <p class="tldr-lead animate-on-scroll">The <strong>Oura Ring 5</strong> is smaller and lighter — Oura’s headline claim is about 40% smaller than the Ring 4, and it drops to 2–2.6 g (from 3.3–5.2 g) — with a longer battery and an optional charging case. But it costs more, shrinks the size range to 6–13, and has <strong>no independent accuracy validation</strong>. The Ring 4 stays the smarter buy for most people; upgrade only if comfort matters more than proven data.</p>
           <div class="gaps">
             <div class="gap animate-on-scroll">
               <h4>What Ring 5 gains</h4>
               <ul>
-                <li><span class="num-tag">1</span><span><strong>Smaller and lighter.</strong> 2–2.6 g and 2.28 mm thick — Oura’s smallest ring, ~40% lighter than Ring 4.</span></li>
+                <li><span class="num-tag">1</span><span><strong>Smaller and lighter.</strong> 2–2.6 g and 2.28 mm thick — Oura’s smallest ring, ~40% smaller than Ring 4 (down from 3.3–5.2 g).</span></li>
                 <li><span class="num-tag">2</span><span><strong>Longer battery + case.</strong> 6–9 days claimed, plus an optional $99 charging case (~1 month between wall charges).</span></li>
                 <li><span class="num-tag">3</span><span><strong>Refined optics.</strong> LEDs rotated 180° with a larger photodiode and a digital temperature sensor.</span></li>
               </ul>
@@ -886,11 +894,19 @@ class KygoOura5vs4 extends HTMLElement {
     const calc = root.querySelector('[data-calc]');
     if (calc) {
       calc.addEventListener('click', (e) => {
-        const btn = e.target.closest('button[data-val]');
-        if (!btn) return;
-        if (btn.dataset.val === this._billing) return;
-        this._billing = btn.dataset.val;
-        calc.innerHTML = this._renderCost();
+        const billBtn = e.target.closest('button[data-val]');
+        if (billBtn) {
+          if (billBtn.dataset.val === this._billing) return;
+          this._billing = billBtn.dataset.val;
+          calc.innerHTML = this._renderCost();
+          return;
+        }
+        const tierBtn = e.target.closest('button[data-tier]');
+        if (tierBtn) {
+          if (tierBtn.dataset.tier === this._tier) return;
+          this._tier = tierBtn.dataset.tier;
+          calc.innerHTML = this._renderCost();
+        }
       });
       calc.addEventListener('change', (e) => {
         if (e.target.matches('input[data-toggle="case"]')) {

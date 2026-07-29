@@ -465,12 +465,12 @@ class KygoOuraRingComparison extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based" target="_blank" rel="noopener">
-            <span class="blog-cta-tag">Deep Dive</span>
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/oura-ring-5-vs-4" target="_self" rel="noopener">
+            <span class="blog-cta-tag">Ring 5 vs 4</span>
             <div class="blog-cta-body">
-              <div class="blog-cta-kicker">Read the full article</div>
-              <div class="blog-cta-title">Oura Ring 5 vs Ring 4: Is the Upgrade Worth It? <span class="yr">(Evidence-Based)</span></div>
-              <div class="blog-cta-sub">Smaller and lighter — but with no independent validation, a shrunken size range, and fewer signal pathways. We walk through the peer-reviewed accuracy data and the real cost, so you know whether to upgrade.</div>
+              <div class="blog-cta-kicker">Just comparing Gen 5 and Gen 4?</div>
+              <div class="blog-cta-title">Oura Ring 5 vs Ring 4 <span class="yr">— the two-generation tool</span></div>
+              <div class="blog-cta-sub">Skip Gen 3 and go head-to-head on the two newest rings: every spec difference, a direct upgrade verdict, peer-reviewed accuracy, and the real 3-year cost with membership.</div>
             </div>
             <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
           </a>
