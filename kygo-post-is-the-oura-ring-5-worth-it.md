@@ -12,13 +12,13 @@
 
 ---
 
-Is the Oura Ring 5 worth it? For most people, only if all-day comfort matters more than proven accuracy. The Ring 5 is the smallest, lightest smart ring ever made — about 40% lighter than the Ring 4 at 2–2.6 grams — with a longer 6–9 day battery and an optional charging case. But it launches at $399–499, requires a $5.99/month membership for full features, ships with a narrower 6–13 size range, and has **zero independent accuracy validation**. If you want the most invisible ring on the market and you're comfortable being an early adopter, it's worth it. If you want the best evidence-backed data for your money, it probably isn't — yet.
+Is the Oura Ring 5 worth it? For most people, only if all-day comfort matters more than proven accuracy. The Ring 5 is the smallest smart ring ever made — about 40% smaller than the Ring 4 (6.09 mm wide and 2.28 mm thick) and lighter too, dropping to 2–2.6 grams — with a longer 6–9 day battery and an optional charging case. But it launches at $399–499, requires a $5.99/month membership for full features, ships with a narrower 6–13 size range, and has **zero independent accuracy validation**. If you want the most invisible ring on the market and you're comfortable being an early adopter, it's worth it. If you want the best evidence-backed data for your money, it probably isn't — yet.
 
 That gap between "impressive hardware" and "proven value" is the whole story with the Ring 5, so let's break it down honestly.
 
 ## What the Oura Ring 5 Actually Is
 
-The Oura Ring 5, announced May 28, 2026 and shipping June 4, is a form-factor refinement of the Ring 4 rather than a new-metric leap. Oura's headline achievement is size: at 2.28 mm thick and 6.09 mm wide, it's the thinnest and lightest ring the company has shipped, and Oura calls it the world's smallest smart ring.
+The Oura Ring 5, announced May 28, 2026 and shipping June 4, 2026, is a form-factor refinement of the Ring 4 rather than a new-metric leap. Oura's headline achievement is dimensional: at 2.28 mm thick and 6.09 mm wide, it's about 40% smaller than the Ring 4 — the thinnest ring the company has shipped, and one Oura calls the world's smallest smart ring. As a separate fact, weight also drops, from the Ring 4's 3.3–5.2 grams to 2–2.6 grams. That launch timing matters: the Ring 5 arrived just as search interest in "Oura Ring 5 vs 4" spiked, and it's still early enough that independent reviewers and lab studies haven't caught up.
 
 The internal changes support that shrink. Oura rotated the LEDs 180 degrees for shorter optical paths, enlarged the photodiode to compensate, and moved to a digital temperature sensor. Battery life improves to a claimed 6–9 days, and a new optional $99 charging case extends total time between wall charges to roughly a month.
 
@@ -40,15 +40,29 @@ You cannot evaluate whether the Oura Ring 5 is worth it without factoring in the
 
 Without an active Oura Membership ($5.99/month or $69.99/year), the app shows only your Sleep, Readiness, and Activity scores. Everything people actually buy Oura for — detailed HRV, temperature deviations, trends over time, period prediction, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools — sits behind the paywall.
 
-That turns the sticker price into a floor, not a ceiling. Here's the real three-year cost:
+That turns the sticker price into a floor, not a ceiling. And the Ring 5 has two price tiers, which most comparisons ignore: the $399 base finishes are Silver and Black, while the $499 premium finishes — Gold, Stealth, Brushed Silver, and Deep Rose — cover four of the six colorways. Pick a premium finish and you're on the higher line before you've paid a cent of membership. Here's the real three-year cost:
 
-| Cost component | Oura Ring 5 | Oura Ring 4 |
-|---|---|---|
-| Hardware | $399 | $349 |
-| Membership (3 years, yearly) | ~$210 | ~$210 |
-| **Three-year total** | **~$609** | **~$559** |
+| Cost component | Ring 5 (base) | Ring 5 (premium) | Oura Ring 4 |
+|---|---|---|---|
+| Hardware | $399 | $499 | $349 |
+| Membership (3 years, yearly) | ~$210 | ~$210 | ~$210 |
+| **Three-year total** | **~$609** | **~$709** | **~$559** |
 
-The optional $99 charging case pushes the Ring 5 higher still. Subscription-free competitors change the calculation entirely: the RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349) skip the membership completely, so if you only want sleep and HRV tracking, they can cost less than half of an Oura over three years.
+The optional $99 charging case pushes any of those higher still, and paying membership monthly ($5.99) instead of yearly adds a few more dollars. Subscription-free competitors change the calculation entirely: the RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349) skip the membership completely, so if you only want sleep and HRV tracking, they can cost less than half of a premium Ring 5 over three years.
+
+## Fewer Signal Pathways: A Detail Worth Understanding
+
+One under-reported change deserves its own paragraph, because it cuts against the "newer is better" instinct. The Ring 4 used up to 18 sensor signal pathways as part of Oura's "Smart Sensing" system — the redundancy that lets the ring keep reading cleanly when your finger shifts or the fit loosens overnight. The Ring 5 drops to 12.
+
+Oura's explanation is that the 12 pathways are individually stronger: the LEDs were rotated 180 degrees to shorten the optical path, and the photodiode was enlarged to capture more signal. That's a reasonable engineering story, and it may well be true. But "fewer but stronger" is a design trade-off made to fit a smaller body, not a proven upgrade. Whether 12 stronger pathways actually match or beat 18 in real-world gap-filling is precisely the kind of question that only independent testing can answer — and that testing does not exist yet for the Ring 5. Until it does, the honest read is that the Ring 5 changed its sensing approach to get smaller, and we don't yet know the accuracy cost, if any.
+
+## Ring 5 vs. the Subscription-Free Rivals
+
+If the membership is what gives you pause, it's worth knowing the Ring 5 no longer competes in a vacuum. Two rings now offer credible sleep and HRV tracking with no ongoing fee.
+
+The **RingConn Gen 2** ($299) undercuts the Ring 5 on price, adds a charging case in the box, and claims longer battery life — but its app and insight depth are narrower than Oura's. The **Ultrahuman Ring Air** ($349) is closer to Oura in polish and adds features like glucose-monitor integration, again with no subscription. Neither has Oura's breadth of validated research or its ecosystem of newer features like Health Radar and Blood Pressure Signals.
+
+The trade is straightforward: Oura gives you the deepest app, the most features, and the strongest research backing — for a recurring fee that, over three years, roughly doubles the cost versus a one-time purchase. If you want a ring that "just tracks sleep and recovery" and never bills you again, the rivals are genuinely competitive. If you want the full Oura experience and don't mind paying for it, the Ring 4 is still the value pick within Oura's own lineup, and the Ring 5 is the comfort-first splurge.
 
 ## Who the Oura Ring 5 Is Actually Worth It For
 
@@ -56,7 +70,7 @@ Cutting through the marketing, the Ring 5 is genuinely the right pick for a spec
 
 ### It's worth it if:
 
-1. **Comfort and invisibility are your top priority.** The 40% weight reduction is real and noticeable. If you've found previous rings bulky, disliked how they felt while typing or sleeping, or simply want the least intrusive wearable possible, the Ring 5 delivers something no other ring does.
+1. **Comfort and invisibility are your top priority.** The 40% size reduction — plus the drop to 2–2.6 grams — is real and noticeable. If you've found previous rings bulky, disliked how they felt while typing or sleeping, or simply want the least intrusive wearable possible, the Ring 5 delivers something no other ring does.
 2. **You want the longest battery and least charging hassle.** The 6–9 day battery plus the optional charging case is the most convenient power setup Oura has offered.
 3. **You're an established Oura user who upgrades on principle.** If you always want the latest hardware and the extra ~$50 doesn't concern you, there's no reason not to.
 

@@ -7,7 +7,7 @@
       "name": "Is the Oura Ring 5 worth it?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "For most people, the Oura Ring 5 is worth it only if all-day comfort matters more than proven accuracy. It is the smallest, lightest smart ring ever made — about 40% lighter than the Ring 4 — with a longer 6–9 day battery and an optional charging case. But it launches at $399–499, requires a $5.99/month membership for full features, ships in a narrower 6–13 size range, and has no independent accuracy validation. If you want the most invisible ring on the market and are comfortable being an early adopter, it is worth it. If you want the best evidence-backed data for your money, the Ring 4 is the smarter buy."
+        "text": "For most people, the Oura Ring 5 is worth it only if all-day comfort matters more than proven accuracy. It is the smallest smart ring ever made — about 40% smaller than the Ring 4 (6.09 mm wide, 2.28 mm thick) and lighter too, at 2–2.6 g — with a longer 6–9 day battery and an optional charging case. But it launches at $399–499, requires a $5.99/month membership for full features, ships in a narrower 6–13 size range, and has no independent accuracy validation. If you want the most invisible ring on the market and are comfortable being an early adopter, it is worth it. If you want the best evidence-backed data for your money, the Ring 4 is the smarter buy."
       }
     },
     {
@@ -15,7 +15,7 @@
       "name": "Does the Oura Ring 5 need a subscription?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Yes. The Ring 5 requires an Oura Membership ($5.99/month or $69.99/year) for full features. Without it, the app shows only your Sleep, Readiness, and Activity scores. Trends, detailed HRV, temperature deviations, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools are all gated behind membership, which is why the real 3-year cost of a Ring 5 is roughly $609, not $399."
+        "text": "Yes. The Ring 5 requires an Oura Membership ($5.99/month or $69.99/year) for full features. Without it, the app shows only your Sleep, Readiness, and Activity scores. Trends, detailed HRV, temperature deviations, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools are all gated behind membership, which is why the real 3-year cost of a Ring 5 is roughly $609 for the base finishes (or about $709 for premium), not $399."
       }
     },
     {
@@ -23,7 +23,7 @@
       "name": "How much does the Oura Ring 5 cost over 3 years?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "About $609 with the yearly membership: $399 for the hardware plus roughly $210 for three years of Oura Membership at $69.99/year. Paying monthly at $5.99 pushes the total closer to $615, and the optional $99 charging case adds more. The Ring 4 works out to about $559 over the same period because its hardware is $50 cheaper."
+        "text": "It depends on the finish. The base $399 finishes (Silver, Black) come to about $609 over three years — $399 hardware plus roughly $210 for three years of Oura Membership at $69.99/year — while the premium $499 finishes (Gold, Stealth, Brushed Silver, Deep Rose) come to about $709. Paying monthly at $5.99 adds a few dollars, and the optional $99 charging case adds more. The Ring 4 works out to about $559 over the same period because its hardware is $50 cheaper."
       }
     },
     {
@@ -47,7 +47,7 @@
       "name": "What's the difference between the Oura Ring 5 and Ring 4?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "The Ring 5 is about 40% lighter (2–2.6 g vs 3.3–5.2 g), thinner (2.28 mm vs 2.88 mm), and narrower (6.09 mm vs 7.90 mm) than the Ring 4, with a slightly longer battery and an optional charging case. The Ring 4 is $50 cheaper, has a wider 4–15 size range, uses up to 18 signal pathways versus the Ring 5's 12, and is the only Oura ring with independent accuracy validation. Both share the same sensing platform and both require the Oura Membership."
+        "text": "The Ring 5 is about 40% smaller than the Ring 4 — narrower (6.09 mm vs 7.90 mm) and thinner (2.28 mm vs 2.88 mm) — and lighter (2–2.6 g vs 3.3–5.2 g), with a slightly longer battery and an optional charging case. The Ring 4 is $50 cheaper, has a wider 4–15 size range, uses up to 18 signal pathways versus the Ring 5's 12, and is the only Oura ring with independent accuracy validation. Both share the same sensing platform and both require the Oura Membership."
       }
     },
     {

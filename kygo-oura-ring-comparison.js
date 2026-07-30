@@ -565,6 +565,7 @@ class KygoOuraRingComparison extends HTMLElement {
           <h3>Oura Ring 5 vs Ring 4</h3>
           <p class="cmp-verdict">Ring 4 still wins for most people.</p>
           <p>Ring 5 is thinner, lighter, and lasts a day or two longer. But Ring 4 is cheaper ($349 vs $399–499), keeps the wider 4–15 size range, is the only Oura with an independent accuracy study (Dial 2025), and gets every Ring 5 software feature via membership.</p>
+          <p style="margin:12px 0 0;"><a href="https://www.kygo.app/tools/oura-ring-5-vs-4" target="_self" rel="noopener" style="display:inline-flex;align-items:center;gap:5px;color:var(--kygo-green-dark);font-family:var(--font-display);font-weight:600;font-size:14px;">Just comparing Gen 5 and Gen 4? ${this._icon('arrowRight')}</a></p>
         </div>
         <div class="cmp-block">
           <h3>Oura Ring 5 vs Gen 3 (Ring 3)</h3>
