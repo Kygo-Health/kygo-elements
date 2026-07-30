@@ -199,11 +199,26 @@ separate it from the white table.
 ### Affiliate buy buttons (Amazon) — `kygo-recovery-scores.js`
 - Put a green **"View <product> on Amazon"** button (cart + external-link icon) in the expanded
   **device card** *and* expanded **supplement factor card**. Add `rel="noopener sponsored"` and a
-  small per-link "Affiliate link — we may earn a commission." note. Plus the footer disclosure (§2.8).
-- **Reuse the existing per-product slug** from `docs/affiliate-links.md` (same physical item =
-  same link across tools). **Never fabricate an `amzn.to` slug.** If a product has no slug, omit
-  the button and **ask the client for the link** (don't ship a bare search URL). Products not
-  sold on Amazon (e.g. Ultrahuman) get no button.
+  small per-link "Affiliate link, we may earn a commission." note. Plus the footer disclosure (§2.8).
+- **`docs/affiliate-links.md` is the source of truth** for every Amazon link (same physical item =
+  same link across tools). Reuse the existing entry for a product; if one doesn't exist, **add it
+  there** (with a `data-track-label` slug) as part of the change. Products not sold on Amazon
+  (e.g. Ultrahuman) get no button.
+
+**Link format — full tagged URLs only, never `amzn.to` short links.** The repo migrated off
+`amzn.to/<hash>` short links (July 2026, canary-tested) because the deployed `kygo-tracking.js`
+appends a per-click `ascsubtag` for revenue attribution and **short links strip it on redirect**.
+A full tagged URL attributes identically *and* preserves `ascsubtag`. Two valid shapes, both
+carrying `tag=kygohealthapp-20`:
+- **Specific product (known ASIN):** `https://www.amazon.com/dp/<ASIN>?tag=kygohealthapp-20&th=1`
+  (drop `&th=1` unless the resolved product URL actually had it — it's a variant selector).
+- **Brand / category with no single right SKU** (e.g. "Samsung Galaxy Watch" spans many models):
+  `https://www.amazon.com/s?k=<query>&rh=<filters>&tag=kygohealthapp-20`. Search pages are a
+  **sanctioned** pattern, not a fallback to avoid. Add `rh=` filters to keep results clean:
+  `p_72`=4★+, `p_123`=brand, `p_6`=official-seller (comma-join multiple, e.g. `p_72:…,p_123:…`).
+- **Never** add `ascsubtag` yourself — the tracker injects it at click time. Every anchor keeps
+  `target="_blank" rel="noopener sponsored"` + a `data-track-label`, and is listed in
+  `docs/affiliate-links.md`.
 
 ### Callout / keystone card
 Dark card, green icon chip + body. On mobile **stack the icon above the text**
