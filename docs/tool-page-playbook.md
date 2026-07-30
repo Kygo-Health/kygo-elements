@@ -279,6 +279,24 @@ In comparison tables, show a compact "View on Amazon" link in each header cell o
 separate full-width button row (`.aff-row`, `display:none` → shown on mobile) so touch targets stay
 large on phones. Keep `rel="noopener sponsored"` on every affiliate anchor.
 
+### Conversion modules (CTA / app band / email capture)
+The page carries **three** conversion touchpoints beyond the nav buttons — don't skip any:
+- **Big Kygo CTA card** (§2.4) — the primary dark conversion card near the end: green radial glow,
+  pill, headline, iOS + Android **Tenjin** buttons (`cta-primary`/`cta-android`), "Works with"
+  badge row. Keep the `data-action`/`data-track-position="footer-cta"`/`data-track-label` attrs.
+- **Mid-page app-download band** (`.kband`) — a lighter, white variant used once or twice higher up
+  (e.g. `data-track-position="early"` and `"late"`): white card, `.kband-glow` radial glow, a
+  pulsing eyebrow dot (`@keyframes kygoPulse`), iOS/Android buttons, a one-line note. Reuse the
+  canonical store icons (§4) and the standard trial microcopy ("7-day free trial on yearly. Free
+  plan available. Cancel anytime.").
+- **Inline email capture** — drop the shared sibling element straight into the page:
+  `<kygo-inline-subscribe source="tool-<slug>" variant="comparison"></kygo-inline-subscribe>`.
+  It renders its own styled capture UI and handles the submit; you only set `source` (unique per
+  tool) and `variant`. Place it mid-page, between two content sections (not adjacent to the big
+  CTA card).
+- **Blog cross-link** (§2.5) is the fourth touchpoint — the read-more card to the matching
+  `kygo.app/post/...` article, plus per-section `section-readmore` links for a multi-post cluster.
+
 ---
 
 ## 4. Brand logos & store badges
