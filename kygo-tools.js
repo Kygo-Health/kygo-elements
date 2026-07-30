@@ -1037,7 +1037,7 @@ class KygoToolsPage extends HTMLElement {
                   <a class="promo-btn cta-primary" href="${appStoreUrl}" data-track-position="footer-cta" data-track-label="tools-footer-ios" target="_blank" rel="noopener">${this._getIcon('apple')} Download for iOS</a>
                   <a class="promo-btn cta-android" href="${playStoreUrl}" data-action="android-download" data-track-position="footer-cta" data-track-label="tools-footer-android" target="_blank" rel="noopener">${this._getIcon('playstore')} Download for Android</a>
                 </div>
-                <p style="position:relative;margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.82);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+                <p style="position:relative;margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.82);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
                 <div class="works-with">
                   <span class="works-label">Works with</span>
                   <div class="works-dots">
