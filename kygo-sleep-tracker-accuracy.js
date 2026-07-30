@@ -609,6 +609,108 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       </details>`).join('');
   }
 
+  // ── Related tools (cross-link cards) ────────────────────────────────────
+  _relatedTools() {
+    return [
+      {
+        title: 'Sleep Metrics Comparison',
+        blurb: 'Compare 38 sleep metrics tracked by Oura, Fitbit, Apple Watch and Garmin across 10 categories.',
+        url: 'https://www.kygo.app/tools/sleep-metrics',
+        meta: 'Sleep · 29 sources',
+        motif: { motif: 'dots', caption: 'Metrics tracked', dots: [{ label: 'Oura', n: 9 }, { label: 'Garmin', n: 7 }, { label: 'Apple', n: 6 }, { label: 'Fitbit', n: 5 }] }
+      },
+      {
+        title: 'Most Accurate Wearable',
+        blurb: 'See which wearable is most accurate across 9 health metrics, backed by peer-reviewed research.',
+        url: 'https://www.kygo.app/tools/wearable-accuracy',
+        meta: 'Wearables · 17+ studies',
+        motif: { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] }
+      },
+      {
+        title: 'Calorie Burn Accuracy',
+        blurb: 'Enter your reported calorie burn and see the likely real range, with per-activity accuracy.',
+        url: 'https://www.kygo.app/tools/calorie-burn-accuracy',
+        meta: 'Activity · 22 sources',
+        motif: { motif: 'diverging', caption: 'Reported vs actual', bars: [{ label: 'Oura', val: 9 }, { label: 'Apple', val: 22 }, { label: 'Fitbit', val: -16 }, { label: 'Garmin', val: -31 }] }
+      }
+    ];
+  }
+
+  _relatedMotif(c) {
+    const m = c.motif || 'compare';
+    if (m === 'compare') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.rows) ? c.rows : [];
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const w = Math.max(0, Math.min(100, r.pct));
+        return `<span style="display:flex;align-items:center;gap:8px;"><span style="width:48px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.label}</span><span style="flex:1;height:9px;border-radius:5px;background:#EEF1F4;overflow:hidden;"><span style="display:block;height:100%;border-radius:5px;background:${fill};width:${w}%;"></span></span></span>`;
+      }).join('');
+      return `<span style="display:flex;flex-direction:column;gap:8px;padding:2px 0;">${body}</span>`;
+    }
+    if (m === 'dots') {
+      const rows = Array.isArray(c.dots) ? c.dots : [];
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const TOT = 10;
+      const body = rows.map((r, i) => {
+        const fill = fills[i] || '#86EFAC';
+        const n = Math.max(0, Math.min(TOT, r.n || 0));
+        let dots = '';
+        for (let k = 0; k < TOT; k++) dots += `<span style="width:7px;height:7px;border-radius:50%;background:${k < n ? fill : '#E2E8F0'};display:block;"></span>`;
+        return `<span style="display:flex;align-items:center;gap:8px;"><span style="width:42px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;">${r.label}</span><span style="display:flex;gap:4px;">${dots}</span></span>`;
+      }).join('');
+      return `<span style="display:flex;flex-direction:column;gap:7px;padding:2px 0;">${body}</span>`;
+    }
+    if (m === 'diverging') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.bars) ? c.bars : [];
+      const cx = 124, maxLen = 70;
+      const dmax = Math.max(20, ...rows.map(r => Math.abs(r.val || 0)));
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const v = r.val || 0;
+        const len = Math.max(5, Math.abs(v) / dmax * maxLen);
+        const x = v >= 0 ? cx : cx - len;
+        const y = 6 + i * 20;
+        return `<text x="0" y="${y + 11}" font-family="Space Grotesk" font-weight="600" font-size="9" fill="#475569">${r.label}</text><rect x="${x.toFixed(1)}" y="${y}" width="${len.toFixed(1)}" height="11" rx="3" fill="${fill}"/>`;
+      }).join('');
+      const h = 6 + rows.length * 20;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><line x1="${cx}" y1="2" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    return '';
+  }
+
+  _renderRelatedTools() {
+    const cards = this._relatedTools().map(t => `
+      <a class="related-card animate-on-scroll" href="${t.url}" aria-label="${t.title}">
+        <span class="rc-media">
+          <span class="rc-panel">
+            <span class="rc-cap">${t.motif.caption || ''}</span>
+            ${this._relatedMotif(t.motif)}
+          </span>
+        </span>
+        <span class="rc-body">
+          <span class="rc-title">${t.title}</span>
+          <span class="rc-blurb">${t.blurb}</span>
+          <span class="rc-foot">
+            <span class="rc-meta">${t.meta || ''}</span>
+            <span class="rc-open">Open ${this._icon('arrowRight')}</span>
+          </span>
+        </span>
+      </a>`).join('');
+    return `
+      <section class="section bg-white" id="related">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Keep exploring</div>
+            <h2>Related <span class="hl">tools.</span></h2>
+            <p class="lede">More free, evidence-based tools to get the most out of your wearable.</p>
+          </div>
+          <div class="related-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
   // ── Main render ─────────────────────────────────────────────────────────
 
   render() {
@@ -806,7 +908,9 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      ${this._renderRelatedTools()}
+
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
@@ -1261,6 +1365,47 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
       /* Sources · compact link list */
+      /* ===== RELATED TOOLS (cross-link cards) ===== */
+      .related-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+      @media (min-width: 720px) { .related-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; } }
+      .related-card {
+        position: relative; display: flex; flex-direction: column;
+        background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+        border-radius: 18px; overflow: hidden; text-decoration: none; color: inherit;
+        box-shadow: 0 2px 12px rgba(15,23,42,.05);
+        transition: transform .25s var(--ease-out), box-shadow .25s var(--ease-out), border-color .25s var(--ease-out);
+      }
+      .related-card::after {
+        content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+        background: linear-gradient(90deg, var(--kygo-green), var(--kygo-green-dark));
+        opacity: 0; transition: opacity .25s ease; pointer-events: none;
+      }
+      .related-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(15,23,42,.10); border-color: #CBD5E1; }
+      .related-card:hover::after { opacity: 1; }
+      .rc-media {
+        position: relative; aspect-ratio: 16 / 10; overflow: hidden;
+        background: var(--bg-raised); display: flex; align-items: center; justify-content: center;
+      }
+      .rc-panel {
+        display: block; background: var(--bg-canvas); border: 1px solid #EAECEF;
+        border-radius: 14px; box-shadow: 0 6px 18px rgba(15,23,42,.08);
+        padding: 13px 15px; width: 78%;
+      }
+      .rc-cap {
+        display: block; font-family: var(--font-display); font-weight: 600; font-size: 9px;
+        letter-spacing: .6px; text-transform: uppercase; color: var(--fg-3); margin-bottom: 8px;
+      }
+      .rc-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 7px; }
+      .rc-title { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.25; letter-spacing: -.01em; color: var(--fg-1); }
+      .rc-blurb {
+        font-family: var(--font-body); font-size: 13.5px; line-height: 1.55; color: var(--fg-2);
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      }
+      .rc-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 5px; }
+      .rc-meta { font-family: var(--font-body); font-size: 12px; font-weight: 500; color: var(--fg-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .rc-open { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--kygo-green-dark); }
+      .rc-open svg { width: 15px; height: 15px; }
+
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
       @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
