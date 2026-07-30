@@ -204,3 +204,25 @@ paths, GA4 ID `G-P2224N75KY`, and GA tracking of both download CTAs (via `href` 
 - #7 — one working **Samsung Galaxy Watch** affiliate URL.
 - #9 — confirm `kygo-blog-page.js` is dead so I can delete it.
 - #6 (Wix side) & #13 — your call (Wix redirect; consent policy).
+
+## Open — 2026-07-30 (site URL index reconciliation)
+
+- **#18 — stale tool count on two live surfaces (Wix-side, not in repo).** `/post/free-health-wearable-tools`
+  still says **19** in title/H1/body and omits `sleep-tracker-accuracy` + `oura-ring-5-vs-4`;
+  `llms.txt` link text still reads "All **20** Free Tools" (though it lists all 21 URLs). Both are
+  Wix-generated, so they can't be fixed in this repo. `kygo-tools.js` derives the count from the
+  array (21), so the repo side is correct. **Needs input:** client update in Wix. *(Severity P2 SEO.)*
+- **#19 — three surfaces compete for the "is the Oura Ring 5 worth it" query.** Two live posts
+  (`/post/is-the-oura-ring-5-worth-it`, 2026-07-30, in-repo; and the older
+  `/post/oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based`, which is **not** 301'd and
+  still serves a full post) plus the tool `/tools/oura-ring-5-vs-4`. **Needs input:** decide which is
+  canonical and 301 the losers. Blocks the blog cross-link (playbook §2.5) on the two Oura tools.
+  *(Severity P2 SEO / cannibalization.)*
+- **#20 — tool pages span 2+ design generations.** Family A (semantic palette + `.section bg-light/white`):
+  calorie-burn-accuracy, deep-sleep-factors, fitbit-air-vs-whoop, oura-5-vs-4, oura-ring-comparison,
+  rem-sleep, vo2max-accuracy, vo2max-factors, sleep-tracker-accuracy. Family B (canonical palette
+  `--green/--dark/--gray-*`, `.container` sections, no bg-light/white): hrv-factors, recovery-scores,
+  rhr-factors, sensor-comparison, sleep-latency-factors, sleep-metrics, staying-asleep-factors,
+  step-count-accuracy, supplements-by-metric, wearable-stress, wearable-accuracy. `calories-in-anything`
+  is a third, separate pattern. Relevant to any cross-page UI (see the related-tools rollout).
+  *(Severity P3 / architectural note.)*
