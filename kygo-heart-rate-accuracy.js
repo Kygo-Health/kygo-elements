@@ -32,8 +32,9 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
   connectedCallback() {
     if (!this._selected) {
-      // Default to the top three by daytime MAPE (Fitbit Charge 6, Garmin Vivoactive 5, Pixel Watch 2)
-      this._selected = new Set(this._devices.slice(0, 3).map(d => this._did(d)));
+      // Default comparison: one device per major brand (Fitbit, Garmin, Apple, Oura)
+      const defaults = ['Fitbit Charge 6', 'Garmin Vivoactive 5', 'Apple Watch SE', 'Oura Ring Gen 3'];
+      this._selected = new Set(this._devices.filter(d => defaults.includes(d.name)).map(d => this._did(d)));
     }
     this.render();
     this._setupAnimations();
@@ -79,8 +80,9 @@ class KygoHeartRateAccuracy extends HTMLElement {
       apple:   'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
       polar:   'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png',
       fitbit:  'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
-      oura:    'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png'
-    })[key] || null; // google (Pixel) and xiaomi fall back to a neutral type icon
+      oura:    'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
+      google:  'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png' // Google Health logo, reused for the Pixel Watch
+    })[key] || null; // xiaomi falls back to a neutral type icon
   }
 
   _deviceLogo(d, size) {
