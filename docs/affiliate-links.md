@@ -114,6 +114,21 @@ data object (`affiliateUrl`, `{name,url}`, or `affiliate:{url,label}`).
 | `amzn.to/4rkOv6I` | **COROS** | step-count-accuracy:186 |
 | `amzn.to/4rqpdnL` | **Polar** | step-count-accuracy:214 |
 
+### Heart-rate accuracy tool (`kygo-heart-rate-accuracy.js`)
+Added 2026-08. One affiliate per device in the `_devices` array (`affiliateUrl`). Reuses existing
+per-brand full-URL search slugs (Fitbit, Garmin, Apple, Polar) and the Oura Gen 3 product ASIN.
+**Google Pixel Watch (`google-pixel-watch-search`) and Xiaomi (`xiaomi-watch-search`) are new
+search-page links.** Full tagged URLs only (no `amzn.to`), per the July-2026 migration.
+| Full URL | Product | `data-track-label` |
+|---|---|---|
+| `amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20` | **Fitbit** (Charge 6, Inspire 3) | `fitbit-search` |
+| `amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20` | **Garmin** (Vivoactive 5, Vivosmart 5) | `garmin-search` |
+| `amazon.com/s?k=google%20pixel%20watch&tag=kygohealthapp-20` | **Google Pixel Watch** (new) | `google-pixel-watch-search` |
+| `amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20` | **Apple Watch** (SE) | `apple-watch-search` |
+| `amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20` | **Polar** (Ignite 3, Pacer) | `polar-search` |
+| `amazon.com/s?k=xiaomi%20smart%20watch&tag=kygohealthapp-20` | **Xiaomi** (Watch 2, new) | `xiaomi-watch-search` |
+| `amazon.com/dp/B0CSRF3Y2F?tag=kygohealthapp-20&th=1` | **Oura Ring Gen 3** | `oura-ring-gen3` |
+
 ### Oura comparison page (`kygo-oura-ring-comparison.js`)
 | Short link | Product | Line(s) |
 |---|---|---|
