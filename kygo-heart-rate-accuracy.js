@@ -781,8 +781,6 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <kygo-inline-subscribe source="tool-heart-rate-accuracy" variant="comparison"></kygo-inline-subscribe>
-
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
@@ -819,6 +817,8 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-heart-rate-accuracy" variant="comparison"></kygo-inline-subscribe>
+
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
@@ -844,7 +844,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
       <section class="section bg-light">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/most-accurate-heart-rate-wearable-2026" target="_blank" rel="noopener">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/most-accurate-heart-rate-wearable-2026" target="_self" rel="noopener">
             <span class="blog-cta-tag">Deep Dive</span>
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Read the full breakdown</div>
@@ -1074,8 +1074,8 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .hero-lede strong { color: var(--fg-1); font-weight: 600; }
       .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
       .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
-      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); white-space: nowrap; }
       .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
       .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
       .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
@@ -1113,7 +1113,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
       /* Axis module (stacks on mobile, 2-up on wider screens) */
       .bias { display: grid; grid-template-columns: 1fr; gap: 12px; }
       @media (min-width: 620px) { .bias { grid-template-columns: 1fr 1fr; } }
-      .bias-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 4px; }
+      .bias-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 4px; box-shadow: var(--shadow-md); }
       .bias-card.good { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.10); }
       .bias-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-2); }
       .bias-tag .ico { width: 14px; height: 14px; color: var(--fg-3); }
@@ -1143,10 +1143,11 @@ class KygoHeartRateAccuracy extends HTMLElement {
       @media (max-width: 560px) { .kygo-cta-card .cta-btn-row .btn-lg { width: 100%; justify-content: center; } }
       .kygo-cta-card .cta-works { position: relative; margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.6); font-size: 13px; }
       .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+      @media (max-width: 560px) { .kygo-cta-card .cta-badges { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; } }
       .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
       /* ── Comparison matrix (logo chart) ───────────────────────────────── */
-      .cmp { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; }
+      .cmp { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-md); }
       @media (min-width: 768px) { .cmp { border-radius: 22px; } }
       .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
       @media (min-width: 768px) { .cmp-scroll { overflow-x: visible; } }
@@ -1211,7 +1212,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .pick-tile.active .pick-check { display: inline-flex; }
       @media (max-width: 400px) { .pick-tile .brand-img.sm { width: 22px; height: 22px; } .pick-name { font-size: 12px; } }
 
-      .cr-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; }
+      .cr-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-md); }
       @media (min-width: 768px) { .cr-wrap { border-radius: 22px; } }
       .cr-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .cr-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 440px; }
@@ -1249,7 +1250,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
       /* Device detail accordion (one row per wearable, click to expand) */
       .dev-acc { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: start; }
       @media (min-width: 768px) { .dev-acc { grid-template-columns: 1fr 1fr; gap: 12px; } }
-      .dacc { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
+      .dacc { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-md); transition: border-color .2s, box-shadow .2s; }
       .dacc.is-validated { border-color: rgba(34,197,94,0.40); }
       .dacc[open] { box-shadow: var(--shadow-md); border-color: var(--kygo-green); }
       .dacc > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
@@ -1292,7 +1293,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .sig-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
       @media (min-width: 620px) { .sig-grid { grid-template-columns: 1fr 1fr; } }
       @media (min-width: 1000px) { .sig-grid { grid-template-columns: repeat(3, 1fr); } }
-      .sig-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px; }
+      .sig-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow-md); }
       .sig-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
       .fact-ico { width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; }
       .fact-ico .ico { width: 17px; height: 17px; }
