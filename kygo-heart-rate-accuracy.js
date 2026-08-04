@@ -226,6 +226,159 @@ class KygoHeartRateAccuracy extends HTMLElement {
     ];
   }
 
+  // ── Accuracy by activity (Ceugniez, one device/one sample = comparable) ──
+
+  get _activities() {
+    // Fitbit Charge 4 vs Polar H10, MAPE and signed bias. Ordered best to worst.
+    return [
+      { name: 'Running', sub: 'steady, best case', mape: 1.2, dir: 'reads true (+0.1 bpm)' },
+      { name: 'Cycling', sub: 'some wrist flex', mape: 8.1, dir: 'over-reads +4.8 bpm' },
+      { name: 'Tennis', sub: 'sharp arm rotation', mape: 8.9, dir: 'under-reads 6.2 bpm' },
+      { name: 'Orienteering', sub: 'run + map handling', mape: 9.5, dir: 'under-reads 8.6 bpm' },
+      { name: 'Badminton', sub: 'sharp arm whips', mape: 16.2, dir: 'under-reads 16.5 bpm' },
+      { name: 'Soccer', sub: 'random arm actions', mape: 17.5, dir: 'under-reads 16.5 bpm' }
+    ];
+  }
+
+  _actTone(m) { return m <= 5 ? 'good' : (m <= 10 ? 'ok' : 'poor'); }
+  _actPillTone(m) { return m <= 5 ? 'good' : (m <= 10 ? 'mid' : 'dark'); }
+
+  _renderActivities() {
+    const max = 18;
+    const rows = this._activities.map(a => {
+      const w = Math.max(6, Math.min(100, a.mape / max * 100));
+      return `<div class="act-row">
+        <div class="act-lbl"><span class="act-name">${a.name}</span><span class="act-sub">${a.sub}</span></div>
+        <div class="act-track"><span class="act-fill ${this._actTone(a.mape)}" style="width:${w.toFixed(0)}%"></span></div>
+        <span class="vpill ${this._actPillTone(a.mape)} act-val">${a.mape.toFixed(1)}%</span>
+      </div>`;
+    }).join('');
+    return `
+      <div class="act">
+        ${rows}
+        <p class="cmp-legend">${this._icon('info')} Median MAPE, Fitbit Charge 4 vs a Polar H10 chest strap, same 26 people (Ceugniez 2025). <strong>Badminton produces about 13x the error of steady running on the same watch.</strong> During racquet and field sport the watch under-reads, telling you that you worked less hard than you did. Rowing lands the same way (13.4% MAPE, Vermunicht 2025).</p>
+      </div>`;
+  }
+
+  // ── Day vs night boards (the same sensor, two worlds) ───────────────────
+
+  get _dayBoard() {
+    return [
+      { dev: 'Fitbit Charge 6', v: '5.5%' },
+      { dev: 'Google Pixel Watch 2', v: '6.7%' },
+      { dev: 'Apple Watch SE', v: '7.3%' },
+      { dev: 'Oura Ring Gen 3', v: '15.0%', flag: true }
+    ];
+  }
+  get _nightBoard() {
+    return [
+      { dev: 'Oura Ring Gen 3', v: '1.67%', flag: true },
+      { dev: 'Oura Ring Gen 4', v: '1.94%' },
+      { dev: 'Polar Grit X Pro', v: '2.71%' },
+      { dev: 'WHOOP 4.0', v: '3.00%' }
+    ];
+  }
+
+  _dnRows(list) {
+    return list.map(r => `<div class="dn-row${r.flag ? ' flag' : ''}"><span class="dn-dev">${r.dev}</span><span class="dn-val">${r.v}</span></div>`).join('');
+  }
+
+  _renderDayNight() {
+    return `
+      <div class="dn">
+        <div class="dn-col">
+          <div class="dn-head"><span class="dn-ico">${this._icon('activity')}</span><span class="dn-title">By day, on the move</span><span class="dn-tag">mixed motion</span></div>
+          ${this._dnRows(this._dayBoard)}
+          <p class="dn-foot">Median MAPE vs chest strap (Gielen 2026)</p>
+        </div>
+        <div class="dn-col night">
+          <div class="dn-head"><span class="dn-ico good">${this._icon('moon')}</span><span class="dn-title">At night, lying still</span><span class="dn-tag good">resting HR</span></div>
+          ${this._dnRows(this._nightBoard)}
+          <p class="dn-foot">Nocturnal MAPE vs ECG (Dial 2025)</p>
+        </div>
+        <p class="dn-note">${this._icon('info')} <span><strong>The Oura Ring Gen 3 is 9th of 10 by day (15.0%) and best in the field at night (1.67%).</strong> A finger sensor is superb when you are still and loses the pulse the moment you move. Night is the easy case, and it is where almost every "99% accurate" claim is actually measured. <em>Dial 2025 · Gielen 2026 · Miller 2022</em></span></p>
+      </div>`;
+  }
+
+  // ── How to improve your reading (the free levers) ───────────────────────
+
+  get _levers() {
+    return [
+      { icon: 'arrowUp', tone: 'good', tag: 'Biggest lever', title: 'Wear it higher up your arm',
+        body: 'Moving a watch from one finger-width to three finger-widths above the wrist bone cut error by about 11 points and raised agreement from 0.59 to 0.92. The wrist bone is the worst possible spot for a sensor.',
+        src: 'Vermunicht 2025' },
+      { icon: 'gauge', tone: 'good', tag: 'Free', title: 'Tighten the band (snug, not cutting off)',
+        body: 'Contact pressure changes signal quality as much as, or more than, exercise intensity. A loose watch that slides lets in light and motion. Snug it up before a workout, then loosen it after.',
+        src: 'Scardulla 2020' },
+      { icon: 'strap', tone: 'good', tag: 'For hard sessions', title: 'Use an armband or strap for racquet & rowing',
+        body: 'An optical band on the upper arm hit 1.35% error versus 6.82% on the wrist, a 5x difference. For badminton, tennis, soccer, rowing and weights, a chest strap or upper-arm band beats any wrist device.',
+        src: 'Schweizer 2025' },
+      { icon: 'user', tone: 'mid', tag: 'Sensor contact', title: 'Keep the sensor on bare, unmarked skin',
+        body: 'Tattoos directly under the sensor attenuate the signal, worst at rest. A shirt sleeve, a grimy sensor window or a gap over ink all cost you accuracy. Clean skin, direct contact.',
+        src: 'Navalta 2025' },
+      { icon: 'activity', tone: 'good', tag: 'Know its limits', title: 'Trust it for the right activities',
+        body: 'Believe your wrist HR for running, walking, cycling and sleep, where error is a few percent. Distrust it for racquet sport, rowing and weightlifting, where it can be 13 to 17% off and usually reads low.',
+        src: 'Ceugniez 2025 · Zhang 2020' }
+    ];
+  }
+
+  _renderLevers() {
+    return `<div class="sig-grid">${this._levers.map(f => `
+      <article class="sig-card">
+        <div class="sig-top">
+          <span class="fact-ico tone-${f.tone}">${this._icon(f.icon)}</span>
+          <span class="sig-rank">${f.tag}</span>
+        </div>
+        <h4 class="sig-name">${f.title}</h4>
+        <p class="sig-find">${f.body}</p>
+        <span class="sig-src">${f.src}</span>
+      </article>`).join('')}</div>`;
+  }
+
+  // ── Marketing claims vs reality ─────────────────────────────────────────
+
+  get _claims() {
+    return [
+      { brand: 'WHOOP', verdict: 'Misleading', good: false,
+        claim: 'WHOOP is 99.7% accurate in measuring heart rate.',
+        reality: 'Traces to one study that measured <strong>nocturnal HR only, one night, on the WHOOP 3.0</strong>. The scope is silently dropped, and the page is still live while WHOOP sells the 5.0 and MG. Against a real exercise ECG, WHOOP 4.0 was second worst of five.',
+        src: 'WHOOP marketing page vs Miller 2022 / Van Oost 2025' },
+      { brand: 'Oura', verdict: 'Misleading', good: false,
+        claim: 'Resting heart rate r-squared of 0.996.',
+        reality: 'All four authors of the source study carry an <strong>Oura affiliation</strong>, and it is a nightly-average figure. For 5-minute segments the same relationship falls to about 0.87, and by day the Gen 3 is 9th of 10.',
+        src: 'Oura blog vs Kinnunen 2020' },
+      { brand: 'Samsung', verdict: 'Misleading', good: false,
+        claim: '30% more accurate; 90% correlation while running.',
+        reality: 'The 30% baseline is <strong>Samsung’s own previous watch</strong>, so it is a relative claim with no absolute figure and no reference standard. The supporting university work is Samsung-commissioned, unpublished, with no model or sample size disclosed.',
+        src: 'Samsung Newsroom' },
+      { brand: 'Google / Fitbit', verdict: 'Misleading', good: false,
+        claim: '40% more accurate for vigorous activity like HIIT and rowing.',
+        reality: 'Applies to the <strong>Pixel Watch 2 specifically</strong> and is frequently misapplied to the Charge 6. There is no baseline, no reference standard and no study; the Fitbit support page lists no numerical HR figure at all.',
+        src: 'Google blog 2023' },
+      { brand: 'Garmin', verdict: 'No figure', good: false,
+        claim: 'None. Manuals redirect to a general accuracy page.',
+        reality: 'Garmin publishes <strong>no numerical wrist-HR accuracy figure</strong> in its technology pages, manuals or support docs, alone among the major brands. Independent testing is the only way to judge it.',
+        src: 'garmin.com/ataccuracy' },
+      { brand: 'Apple', verdict: 'Transparent', good: true,
+        claim: 'Within 5 bpm: 98% sedentary down to 87% walking; background 89% (Series 6+) vs 72% (SE).',
+        reality: '<strong>Nothing wrong.</strong> The most transparent disclosure in the category, across 100,000+ workouts, and the 72% background figure is the most useful number any brand publishes. Not peer reviewed, but honest about its own limits.',
+        src: 'Apple white paper, Nov 2024' }
+    ];
+  }
+
+  _renderClaims() {
+    return `<div class="claims-grid">${this._claims.map(c => `
+      <article class="claim-card${c.good ? ' good' : ''}">
+        <div class="claim-top">
+          <span class="claim-brand">${c.brand}</span>
+          <span class="vpill ${c.good ? 'good' : 'dark'}">${c.verdict}</span>
+        </div>
+        <p class="claim-quote">${this._icon('info')} <span>&ldquo;${c.claim}&rdquo;</span></p>
+        <p class="claim-reality">${c.reality}</p>
+        <span class="claim-src">${c.src}</span>
+      </article>`).join('')}</div>`;
+  }
+
   // ── Sources (compact link list, all shown) ──────────────────────────────
 
   get _sources() {
@@ -269,7 +422,15 @@ class KygoHeartRateAccuracy extends HTMLElement {
       { tag: 'Manufacturer', title: 'WHOOP: 99.7% accuracy claim page',
         cite: 'Traces to Miller 2022 (nocturnal, one night, WHOOP 3.0).', url: 'https://www.whoop.com/us/en/thelocker/whoop-proven-most-accurate-wearable-in-heart-rate-heart-rate-variability-measurements/' },
       { tag: 'Manufacturer', title: 'Oura: resting-HR r-squared 0.996 claim',
-        cite: 'Kinnunen et al. 2020, all authors Oura-affiliated.', url: 'https://ouraring.com/blog/how-accurate-is-oura/' }
+        cite: 'Kinnunen et al. 2020, all authors Oura-affiliated.', url: 'https://ouraring.com/blog/how-accurate-is-oura/' },
+      { tag: 'Independent · wear position', title: 'Schweizer & Gilgen-Ammann 2025: upper arm vs wrist',
+        cite: 'JMIR Cardio. 2025;9:e67110. Upper-arm 1.35% vs wrist 6.82%.', url: 'https://cardio.jmir.org/2025/1/e67110/' },
+      { tag: 'Independent · contact pressure', title: 'Scardulla et al. 2020: sensor contact pressure & PPG',
+        cite: 'Sensors. 2020;20(18):5052. N=17 (research prototype).', url: 'https://www.mdpi.com/1424-8220/20/18/5052' },
+      { tag: 'Manufacturer', title: 'Samsung: "30% more accurate" Galaxy Watch claim',
+        cite: 'Samsung Newsroom, Jul & Sep 2024. Baseline is prior watch.', url: 'https://news.samsung.com/us/samsung-new-galaxy-watch-bioactive-sensor-unlocking-new-possibilities-for-preventative-wellness/' },
+      { tag: 'Manufacturer', title: 'Google: Pixel Watch 2 "40% more accurate" claim',
+        cite: 'Google blog, Oct 2023. No baseline or study cited.', url: 'https://blog.google/products/pixel/pixel-watch-2-fitbit-charge-6-heart-rate/' }
     ];
   }
 
@@ -313,6 +474,9 @@ class KygoHeartRateAccuracy extends HTMLElement {
       moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
       user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
       heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+      arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
+      gauge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14a2 2 0 1 0 0-4"/><path d="M13.4 10.6 16 8"/><path d="M4 20a9 9 0 1 1 16 0"/></svg>',
+      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
       clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
       layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
       alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
@@ -666,7 +830,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </span>
       </a>`).join('');
     return `
-      <section class="section bg-white" id="related">
+      <section class="section bg-light" id="related">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Keep exploring</div>
@@ -676,6 +840,53 @@ class KygoHeartRateAccuracy extends HTMLElement {
           <div class="related-grid">${cards}</div>
         </div>
       </section>`;
+  }
+
+  // ── Conversion modules ──────────────────────────────────────────────────
+
+  // Thin mid-page app-download band (lighter than the big dark CTA card)
+  _renderKband(pos, labelSlug) {
+    return `
+      <div class="kband animate-on-scroll">
+        <div class="kband-inner">
+          <div class="kband-glow"></div>
+          <div class="kband-copy">
+            <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+            <h2 class="kband-headline">Your watch gives you a number. Kygo tells you what to do with it, pairing your heart rate with recovery, sleep and nutrition.</h2>
+          </div>
+          <div class="kband-actions">
+            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios cta-primary" data-track-position="${pos}" data-track-label="${labelSlug}-ios" target="_blank" rel="noopener">${this._icon('apple')} Try Free for 7 Days</a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android cta-android" data-action="android-download" data-track-position="${pos}" data-track-label="${labelSlug}-android" target="_blank" rel="noopener">${this._icon('android')} Get Android</a>
+            <p class="kband-note">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // Big dark conversion card (the primary "act now" moment, near the end)
+  _renderBigCta(imgs) {
+    return `
+      <div class="kygo-cta-card animate-on-scroll">
+        <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+        <h3>See what your <span>heart data</span> is really telling you.</h3>
+        <p>Your watch estimates your heart rate. Kygo connects your HR, recovery, sleep and nutrition so you can act on the trend, not chase a single noisy reading.</p>
+        <div class="cta-btn-row">
+          <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="footer-cta" data-track-label="hr-accuracy-footer-ios">${this._icon('apple')} Try Free for 7 Days</a>
+          <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="footer-cta" data-track-label="hr-accuracy-footer-android">${this._icon('android')} Download for Android</a>
+        </div>
+        <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+        <div class="cta-works">
+          <span>Works with</span>
+          <div class="cta-badges">
+            <img src="${imgs.oura}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+            <img src="${imgs.apple}" alt="Apple Health" title="Apple Health" loading="lazy" />
+            <img src="${imgs.fitbit}" alt="Fitbit" title="Fitbit" loading="lazy" />
+            <img src="${imgs.garmin}" alt="Garmin" title="Garmin" loading="lazy" />
+            <img src="${imgs.google}" alt="Google Health" title="Google Health" loading="lazy" />
+            <img src="${imgs.hc}" alt="Health Connect" title="Health Connect" loading="lazy" />
+          </div>
+        </div>
+      </div>`;
   }
 
   // ── Main render ─────────────────────────────────────────────────────────
@@ -757,27 +968,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <div class="kygo-cta-card animate-on-scroll">
-            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-            <h3>See what your <span>heart data</span> is really telling you.</h3>
-            <p>Your watch estimates your heart rate. Kygo connects your HR, recovery, sleep and nutrition so you can act on the trend, not chase a single noisy reading.</p>
-            <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="early" data-track-label="hr-accuracy-early-ios">${this._icon('apple')} Try Free for 7 Days</a>
-              <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="hr-accuracy-early-android">${this._icon('android')} Download for Android</a>
-            </div>
-            <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
-            <div class="cta-works">
-              <span>Works with</span>
-              <div class="cta-badges">
-                <img src="${ouraImg}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
-                <img src="${appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
-                <img src="${fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
-                <img src="${garminImg}" alt="Garmin" title="Garmin" loading="lazy" />
-                <img src="${googleHealthImg}" alt="Google Health" title="Google Health" loading="lazy" />
-                <img src="${healthConnectImg}" alt="Health Connect" title="Health Connect" loading="lazy" />
-              </div>
-            </div>
-          </div>
+          ${this._renderKband('early', 'hr-accuracy-early')}
         </div>
       </section>
 
@@ -822,6 +1013,30 @@ class KygoHeartRateAccuracy extends HTMLElement {
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
+            <div class="kicker">Where it helps, where it lies</div>
+            <h2>Accuracy by <span class="hl">activity.</span></h2>
+            <p class="lede">This is the most useful chart on the page. On one watch, one wrist and the same 26 people, error swings from near-perfect to badly wrong depending purely on how much your arm is moving. Steady wins; sharp and random arm movement loses.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderActivities()}</div>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">The same sensor, two worlds</div>
+            <h2>Great at night, <span class="hl">shaky by day.</span></h2>
+            <p class="lede">Wearables look their best when you are asleep, because a still body and steady blood flow are the easy case. That is also where nearly every manufacturer accuracy claim is measured, then quoted as if it held all day.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderDayNight()}</div>
+        </div>
+      </section>
+
+      <kygo-inline-subscribe source="tool-heart-rate-accuracy" variant="comparison"></kygo-inline-subscribe>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
             <div class="kicker">In detail</div>
             <h2>The full breakdown, <span class="hl">tap any device.</span></h2>
             <p class="lede">Every wearable's independent finding versus a criterion standard, the manufacturer's claim, its error, bias and agreement numbers, and what it is best and weakest for.</p>
@@ -834,6 +1049,17 @@ class KygoHeartRateAccuracy extends HTMLElement {
       <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
+            <div class="kicker">Make yours more accurate</div>
+            <h2>Five ways to get a <span class="hl">better reading.</span></h2>
+            <p class="lede">You cannot change the sensor, but you control more than you think. These five levers move accuracy more than upgrading to a newer watch does, and four of them are free.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderLevers()}</div>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
             <div class="kicker">True for every device</div>
             <h2>What no brand <span class="hl">can fix.</span></h2>
             <p class="lede">Six findings that hold across every wearable in the research. Read these before you trust any single number a spec sheet gives you.</p>
@@ -842,9 +1068,20 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Claim vs reality</div>
+            <h2>What the marketing says, <span class="hl">and what the studies show.</span></h2>
+            <p class="lede">Every big HR accuracy claim traces back to a study. When you read the study, the scope is almost always narrower than the ad. Here is each brand's headline claim next to what the research actually supports.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderClaims()}</div>
+        </div>
+      </section>
+
       <section class="section bg-light">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/most-accurate-heart-rate-wearable-2026" target="_self" rel="noopener">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/how-accurate-is-your-heart-rate-monitor" target="_self" rel="noopener">
             <span class="blog-cta-tag">Deep Dive</span>
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Read the full breakdown</div>
@@ -867,6 +1104,12 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
       <section class="section bg-light">
         <div class="section-inner">
+          ${this._renderBigCta({ oura: ouraImg, apple: appleImg, fitbit: fitbitImg, garmin: garminImg, google: googleHealthImg, hc: healthConnectImg })}
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
             <h2>Common <span class="hl">questions.</span></h2>
@@ -877,7 +1120,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
       ${this._renderRelatedTools()}
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
@@ -1305,6 +1548,61 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .sig-find { margin: 0; font-size: 13px; line-height: 1.55; color: var(--fg-2); }
       .sig-src { margin-top: auto; padding-top: 8px; font-size: 11.5px; color: var(--fg-3); border-top: 1px solid var(--border-subtle); }
 
+      /* Accuracy-by-activity ranked bars */
+      .act { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 16px 18px 6px; box-shadow: var(--shadow-md); }
+      @media (min-width: 768px) { .act { border-radius: 22px; padding: 20px 24px 8px; } }
+      .act-row { display: grid; grid-template-columns: 96px 1fr 58px; gap: 10px; align-items: center; padding: 9px 0; }
+      .act-row + .act-row { border-top: 1px solid var(--border-subtle); }
+      @media (min-width: 560px) { .act-row { grid-template-columns: 140px 1fr 64px; gap: 14px; } }
+      .act-lbl { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+      .act-name { font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--fg-1); line-height: 1.2; }
+      .act-sub { font-size: 10px; color: var(--fg-3); line-height: 1.25; }
+      .act-track { height: 12px; border-radius: 999px; background: var(--bg-raised); overflow: hidden; }
+      .act-fill { display: block; height: 100%; border-radius: 999px; }
+      .act-fill.good { background: var(--kygo-green); }
+      .act-fill.ok { background: #86EFAC; }
+      .act-fill.poor { background: #CBD5E1; }
+      .act-val { justify-self: end; font-family: var(--font-numeric, var(--font-display)); }
+      .act .cmp-legend { padding: 12px 0 12px; }
+
+      /* Day vs night boards */
+      .dn { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      @media (min-width: 720px) { .dn { grid-template-columns: 1fr 1fr; } }
+      .dn-col { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 16px 18px; box-shadow: var(--shadow-md); }
+      .dn-col.night { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.10); }
+      .dn-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+      .dn-ico { width: 30px; height: 30px; border-radius: 9px; background: var(--bg-raised); color: var(--fg-2); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+      .dn-ico.good { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .dn-ico .ico { width: 15px; height: 15px; }
+      .dn-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); }
+      .dn-tag { margin-left: auto; font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--fg-3); background: var(--bg-raised); padding: 3px 9px; border-radius: 999px; }
+      .dn-tag.good { color: var(--kygo-green-dark); background: var(--kygo-green-light); }
+      .dn-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; border-top: 1px solid var(--border-subtle); }
+      .dn-row.flag { margin: 0 -10px; padding: 10px; border-radius: 10px; background: var(--kygo-green-light); border-top-color: transparent; }
+      .dn-dev { font-size: 13px; font-weight: 500; color: var(--fg-1); }
+      .dn-row.flag .dn-dev { font-weight: 700; color: var(--kygo-green-dark); }
+      .dn-val { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--fg-2); letter-spacing: -0.01em; }
+      .dn-row.flag .dn-val { color: var(--kygo-green-dark); }
+      .dn-foot { margin: 10px 0 0; font-size: 11px; color: var(--fg-3); }
+      .dn-note { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; margin: 2px 0 0; font-size: 13px; line-height: 1.55; color: var(--fg-2); background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px 16px; }
+      .dn-note .ico { width: 16px; height: 16px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
+      .dn-note strong { color: var(--fg-1); font-weight: 600; }
+      .dn-note em { font-style: normal; color: var(--fg-3); font-size: 12px; }
+
+      /* Marketing claims vs reality */
+      .claims-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      @media (min-width: 720px) { .claims-grid { grid-template-columns: 1fr 1fr; } }
+      .claim-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow-md); }
+      .claim-card.good { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.10); }
+      .claim-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .claim-brand { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--fg-1); }
+      .claim-quote { display: flex; gap: 8px; align-items: flex-start; margin: 0; background: var(--bg-surface); border-left: 3px solid var(--border-subtle); border-radius: 0 10px 10px 0; padding: 10px 12px; font-size: 13px; font-style: italic; color: var(--fg-2); line-height: 1.5; }
+      .claim-card.good .claim-quote { border-left-color: var(--kygo-green); }
+      .claim-quote .ico { width: 14px; height: 14px; color: var(--fg-3); flex: none; margin-top: 2px; font-style: normal; }
+      .claim-reality { margin: 0; font-size: 13px; line-height: 1.55; color: var(--fg-1); }
+      .claim-reality strong { font-weight: 600; }
+      .claim-src { margin-top: auto; padding-top: 8px; font-size: 11px; color: var(--fg-3); border-top: 1px solid var(--border-subtle); }
+
       /* Bottom line */
       .bottomline { background: var(--kygo-dark); color: rgba(255,255,255,0.82); border-radius: 22px; padding: 32px 26px; position: relative; overflow: hidden; }
       @media (min-width: 720px) { .bottomline { padding: 44px 40px; } }
@@ -1330,6 +1628,30 @@ class KygoHeartRateAccuracy extends HTMLElement {
         .blog-cta-arrow { grid-area: arrow; width: 40px; height: 40px; }
         .blog-cta-body { grid-area: body; }
       }
+
+      /* Thin app-download band (lighter than the big dark CTA card) */
+      .kband { max-width: 1100px; margin: 0 auto; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 36px; box-shadow: var(--shadow-md); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-width: 0; max-width: 640px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-display); font-weight: 600; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); animation: kygoPulse 2s ease-out infinite; }
+      .kband-headline { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(18px, 2.4vw, 23px); line-height: 1.3; color: var(--fg-1); }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; max-width: 420px; }
+      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--fg-2); text-align: center; }
+      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 15px; padding: 14px 22px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-btn .ico { width: 17px; height: 17px; flex-shrink: 0; }
+      .kband-btn-ios { background: var(--kygo-green); color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: var(--kygo-green-dark); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: var(--kygo-green-dark); border: 1.5px solid var(--border-subtle); }
+      .kband-btn-android:hover { border-color: var(--kygo-green); transform: translateY(-2px); }
+      @media (max-width: 820px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 26px 22px; }
+        .kband-actions { width: 100%; max-width: none; flex-direction: column; }
+        .kband-btn { width: 100%; justify-content: center; }
+      }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); } 70% { box-shadow: 0 0 0 7px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+      @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
 
       /* FAQ */
       .faq { display: flex; flex-direction: column; gap: 10px; }
