@@ -255,8 +255,12 @@ class KygoHeartRateAccuracy extends HTMLElement {
     }).join('');
     return `
       <div class="act">
+        <div class="act-head">
+          <span class="act-head-l">Activity</span>
+          <span class="act-head-r">Heart-rate error (MAPE) · lower is better</span>
+        </div>
         ${rows}
-        <p class="cmp-legend">${this._icon('info')} Median MAPE, Fitbit Charge 4 vs a Polar H10 chest strap, same 26 people (Ceugniez 2025). <strong>Badminton produces about 13x the error of steady running on the same watch.</strong> During racquet and field sport the watch under-reads, telling you that you worked less hard than you did. Rowing lands the same way (13.4% MAPE, Vermunicht 2025).</p>
+        <p class="cmp-legend">${this._icon('info')} <strong>These are error rates, not accuracy:</strong> the number is how far the watch is off (median MAPE), so a smaller bar is better. Fitbit Charge 4 vs a Polar H10 chest strap, same 26 people (Ceugniez 2025). <strong>Badminton produces about 13x the error of steady running on the same watch.</strong> During racquet and field sport the watch under-reads, telling you that you worked less hard than you did. Rowing lands the same way (13.4% MAPE, Vermunicht 2025).</p>
       </div>`;
   }
 
@@ -307,16 +311,16 @@ class KygoHeartRateAccuracy extends HTMLElement {
       { icon: 'arrowUp', tone: 'good', tag: 'Biggest lever', title: 'Wear it higher up your arm',
         body: 'Moving a watch from one finger-width to three finger-widths above the wrist bone cut error by about 11 points and raised agreement from 0.59 to 0.92. The wrist bone is the worst possible spot for a sensor.',
         src: 'Vermunicht 2025' },
-      { icon: 'gauge', tone: 'good', tag: 'Free', title: 'Tighten the band (snug, not cutting off)',
+      { icon: 'arrowUp', tone: 'good', tag: 'Free', title: 'Tighten the band (snug, not cutting off)',
         body: 'Contact pressure changes signal quality as much as, or more than, exercise intensity. A loose watch that slides lets in light and motion. Snug it up before a workout, then loosen it after.',
         src: 'Scardulla 2020' },
-      { icon: 'strap', tone: 'good', tag: 'For hard sessions', title: 'Use an armband or strap for racquet & rowing',
+      { icon: 'arrowUp', tone: 'good', tag: 'For hard sessions', title: 'Use an armband or strap for racquet & rowing',
         body: 'An optical band on the upper arm hit 1.35% error versus 6.82% on the wrist, a 5x difference. For badminton, tennis, soccer, rowing and weights, a chest strap or upper-arm band beats any wrist device.',
         src: 'Schweizer 2025' },
-      { icon: 'user', tone: 'mid', tag: 'Sensor contact', title: 'Keep the sensor on bare, unmarked skin',
+      { icon: 'arrowUp', tone: 'good', tag: 'Sensor contact', title: 'Keep the sensor on bare, unmarked skin',
         body: 'Tattoos directly under the sensor attenuate the signal, worst at rest. A shirt sleeve, a grimy sensor window or a gap over ink all cost you accuracy. Clean skin, direct contact.',
         src: 'Navalta 2025' },
-      { icon: 'activity', tone: 'good', tag: 'Know its limits', title: 'Trust it for the right activities',
+      { icon: 'arrowUp', tone: 'good', tag: 'Know its limits', title: 'Trust it for the right activities',
         body: 'Believe your wrist HR for running, walking, cycling and sleep, where error is a few percent. Distrust it for racquet sport, rowing and weightlifting, where it can be 13 to 17% off and usually reads low.',
         src: 'Ceugniez 2025 · Zhang 2020' }
     ];
@@ -367,16 +371,21 @@ class KygoHeartRateAccuracy extends HTMLElement {
   }
 
   _renderClaims() {
-    return `<div class="claims-grid">${this._claims.map(c => `
-      <article class="claim-card${c.good ? ' good' : ''}">
-        <div class="claim-top">
+    return `<div class="claim-acc">${this._claims.map(c => `
+      <details class="claim-item${c.good ? ' good' : ''}">
+        <summary>
           <span class="claim-brand">${c.brand}</span>
-          <span class="vpill ${c.good ? 'good' : 'dark'}">${c.verdict}</span>
+          <span class="claim-sum-right">
+            <span class="vpill ${c.good ? 'good' : 'dark'}">${c.verdict}</span>
+            <span class="claim-chev">${this._icon('arrowRight')}</span>
+          </span>
+        </summary>
+        <div class="claim-body">
+          <p class="claim-quote">${this._icon('info')} <span>&ldquo;${c.claim}&rdquo;</span></p>
+          <p class="claim-reality">${c.reality}</p>
+          <span class="claim-src">${c.src}</span>
         </div>
-        <p class="claim-quote">${this._icon('info')} <span>&ldquo;${c.claim}&rdquo;</span></p>
-        <p class="claim-reality">${c.reality}</p>
-        <span class="claim-src">${c.src}</span>
-      </article>`).join('')}</div>`;
+      </details>`).join('')}</div>`;
   }
 
   // ── Sources (compact link list, all shown) ──────────────────────────────
@@ -659,7 +668,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
             </tbody>
           </table>
         </div>
-        <p class="cmp-legend">${this._icon('info')} Median MAPE and CCC vs a Zephyr chest strap, one 45-person protocol (Gielen 2026). <strong>&lt;5% MAPE is the acceptability line</strong> and none clears it cleanly. Ranked best to worst. <span class="lg-good">green</span> ≤ 7.5% MAPE / CCC ≥ 0.80.</p>
+        <p class="cmp-legend">${this._icon('info')} <strong>What was measured:</strong> each device against a Zephyr chest strap across one 45-person daytime protocol (seated rest, a stress task, treadmill and intermittent walking; Gielen 2026). <strong>MAPE</strong> is the average percent a reading is off, so lower is better; <strong>CCC</strong> is agreement with the reference from 0 to 1, where 1.00 is perfect. No device cleanly clears the &lt;5% MAPE acceptability line. <span class="lg-good">Green</span> = MAPE ≤ 7.5% and CCC ≥ 0.80. Ranked best to worst.</p>
       </div>`;
   }
 
@@ -920,7 +929,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         <div class="hero-light-inner">
           <div class="hero-grid">
             <div class="hero-copy">
-              <div class="hero-pill"><span class="dot"></span> 10 WEARABLES · ECG &amp; CHEST-STRAP VALIDATED</div>
+              <div class="hero-pill"><span class="dot"></span> 10 WEARABLES · LAB-VALIDATED</div>
               <h1>Which wearable is <span class="hl">actually accurate for heart rate?</span></h1>
               <p class="hero-lede">At rest, your watch is nearly flawless. Then you move. The same wrist sensor that <strong>nails steady running</strong> can be 13x further off during racquet sport or weights. Here's how 10 devices really compare, and why <strong>arm motion, not intensity</strong>, is what breaks them.</p>
             </div>
@@ -1267,6 +1276,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         --font-body: 'DM Sans', sans-serif;
         --ease-out: cubic-bezier(.16,1,.3,1);
         display: block;
+        overflow-x: clip;
         font-family: var(--font-body);
         color: var(--fg-1);
         background: var(--bg-canvas);
@@ -1308,8 +1318,10 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .hero-light { background: #fff; border-bottom: 1px solid var(--border-subtle); }
       .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
       .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      .hero-copy { min-width: 0; }
       @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
-      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--kygo-green-dark); padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; background: rgba(34,197,94,0.10); color: var(--kygo-green-dark); padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; line-height: 1.35; }
+      .hero-light h1 { overflow-wrap: break-word; }
       .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kygo-green); flex: none; }
       .hero-light h1 { font-family: var(--font-display); font-weight: 700; color: var(--fg-1); font-size: clamp(30px, 5.5vw, 58px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
       .hero-light h1 .hl { color: var(--kygo-green); }
@@ -1333,7 +1345,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .hv-cap { font-family: var(--font-display); font-size: 11px; font-weight: 600; color: var(--fg-3); }
       .hv-cap.good { color: var(--kygo-green-dark); }
       .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--fg-3); }
-      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; min-width: 0; margin: 4px auto 0; } }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
       .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; }
@@ -1443,18 +1455,18 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .cmpr-picker-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); }
       .cmpr-picker-hint { font-size: 12px; color: var(--fg-3); }
       /* Compact wrapping chip row so 10 devices don't build a tall block on mobile */
-      .picker { display: flex; flex-wrap: wrap; gap: 8px; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 10px; }
-      .pick-tile { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 999px; padding: 6px 13px 6px 7px; cursor: pointer; transition: all .15s ease; font-family: var(--font-display); }
+      .picker { display: flex; flex-wrap: wrap; gap: 6px; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 8px; }
+      .pick-tile { display: inline-flex; align-items: center; gap: 5px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 999px; padding: 4px 10px 4px 4px; cursor: pointer; transition: all .15s ease; font-family: var(--font-display); }
       .pick-tile:hover { border-color: var(--fg-3); }
-      .pick-tile .brand-img.sm { width: 26px; height: 26px; border-radius: 7px; }
-      .pick-name { font-weight: 600; font-size: 12.5px; color: var(--fg-1); line-height: 1.1; white-space: nowrap; }
-      .pick-check { width: 15px; height: 15px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: none; align-items: center; justify-content: center; flex: none; }
-      .pick-check .ico { width: 9px; height: 9px; }
+      .pick-tile .brand-img.sm { width: 20px; height: 20px; border-radius: 6px; }
+      .pick-name { font-weight: 600; font-size: 11.5px; color: var(--fg-1); line-height: 1.1; white-space: nowrap; }
+      .pick-check { width: 13px; height: 13px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: none; align-items: center; justify-content: center; flex: none; }
+      .pick-check .ico { width: 8px; height: 8px; }
       .pick-tile.active { border-color: var(--kygo-green); background: rgba(34,197,94,0.06); box-shadow: 0 0 0 3px rgba(34,197,94,0.10); }
       .pick-tile.active .pick-name { color: var(--kygo-green-dark); }
       .pick-tile.active .pick-check { display: inline-flex; }
-      @media (max-width: 400px) { .pick-tile .brand-img.sm { width: 22px; height: 22px; } .pick-name { font-size: 12px; } }
 
+      .cmpr-out { display: flex; flex-direction: column; gap: 12px; }
       .cr-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-md); }
       @media (min-width: 768px) { .cr-wrap { border-radius: 22px; } }
       .cr-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -1551,6 +1563,10 @@ class KygoHeartRateAccuracy extends HTMLElement {
       /* Accuracy-by-activity ranked bars */
       .act { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 16px 18px 6px; box-shadow: var(--shadow-md); }
       @media (min-width: 768px) { .act { border-radius: 22px; padding: 20px 24px 8px; } }
+      .act-head { display: grid; grid-template-columns: 96px 1fr auto; gap: 10px; align-items: baseline; padding: 0 0 10px; border-bottom: 1px solid var(--border-subtle); }
+      @media (min-width: 560px) { .act-head { grid-template-columns: 140px 1fr auto; gap: 14px; } }
+      .act-head-l { font-family: var(--font-display); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); }
+      .act-head-r { grid-column: 2 / -1; justify-self: end; text-align: right; font-family: var(--font-display); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: var(--kygo-green-dark); line-height: 1.3; }
       .act-row { display: grid; grid-template-columns: 96px 1fr 58px; gap: 10px; align-items: center; padding: 9px 0; }
       .act-row + .act-row { border-top: 1px solid var(--border-subtle); }
       @media (min-width: 560px) { .act-row { grid-template-columns: 140px 1fr 64px; gap: 14px; } }
@@ -1589,19 +1605,27 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .dn-note strong { color: var(--fg-1); font-weight: 600; }
       .dn-note em { font-style: normal; color: var(--fg-3); font-size: 12px; }
 
-      /* Marketing claims vs reality */
-      .claims-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
-      @media (min-width: 720px) { .claims-grid { grid-template-columns: 1fr 1fr; } }
-      .claim-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 10px; box-shadow: var(--shadow-md); }
-      .claim-card.good { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.10); }
-      .claim-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      /* Marketing claims vs reality (expandable list) */
+      .claim-acc { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: start; }
+      @media (min-width: 768px) { .claim-acc { grid-template-columns: 1fr 1fr; gap: 12px; } }
+      .claim-item { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-md); transition: border-color .2s; }
+      .claim-item.good { border-color: rgba(34,197,94,0.40); }
+      .claim-item[open] { border-color: var(--kygo-green); }
+      .claim-item > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; }
+      .claim-item > summary::-webkit-details-marker { display: none; }
+      .claim-item > summary:hover { background: var(--bg-surface); }
       .claim-brand { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--fg-1); }
+      .claim-sum-right { display: inline-flex; align-items: center; gap: 10px; flex: none; }
+      .claim-chev { color: var(--fg-3); display: inline-flex; }
+      .claim-chev .ico { width: 15px; height: 15px; transition: transform .2s; }
+      .claim-item[open] .claim-chev .ico { transform: rotate(90deg); color: var(--kygo-green-dark); }
+      .claim-body { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 10px; }
       .claim-quote { display: flex; gap: 8px; align-items: flex-start; margin: 0; background: var(--bg-surface); border-left: 3px solid var(--border-subtle); border-radius: 0 10px 10px 0; padding: 10px 12px; font-size: 13px; font-style: italic; color: var(--fg-2); line-height: 1.5; }
-      .claim-card.good .claim-quote { border-left-color: var(--kygo-green); }
+      .claim-item.good .claim-quote { border-left-color: var(--kygo-green); }
       .claim-quote .ico { width: 14px; height: 14px; color: var(--fg-3); flex: none; margin-top: 2px; font-style: normal; }
       .claim-reality { margin: 0; font-size: 13px; line-height: 1.55; color: var(--fg-1); }
       .claim-reality strong { font-weight: 600; }
-      .claim-src { margin-top: auto; padding-top: 8px; font-size: 11px; color: var(--fg-3); border-top: 1px solid var(--border-subtle); }
+      .claim-src { padding-top: 8px; font-size: 11px; color: var(--fg-3); border-top: 1px solid var(--border-subtle); }
 
       /* Bottom line */
       .bottomline { background: var(--kygo-dark); color: rgba(255,255,255,0.82); border-radius: 22px; padding: 32px 26px; position: relative; overflow: hidden; }
