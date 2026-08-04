@@ -226,7 +226,7 @@ class CaloriesInAnything extends HTMLElement {
     const r = this.result;
     const score = r.healthScore ? ` | Health Score: ${r.healthScore}/10` : '';
     const text = `I just scanned "${r.item}" with Kygo Food Scanner — ${r.calories} calories${score}!\n\n"${r.verdict}"\n\nTry it yourself:`;
-    const url = 'https://kygo.app/tools/food-scanner';
+    const url = 'https://www.kygo.app/tools/calories-in-anything';
     if (navigator.share) {
       navigator.share({ text, url }).catch(() => this.copyToClipboard(text + ' ' + url));
     } else {
@@ -319,17 +319,14 @@ class CaloriesInAnything extends HTMLElement {
           text-decoration: none;
         }
         .logo-img { height: 28px; width: auto; }
-        .header-link {
-          color: var(--green);
-          text-decoration: none;
-          font-size: 13px;
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          font-weight: 500;
-          transition: all 0.2s;
-        }
-        .header-link:hover { color: var(--green-dark); }
+        .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+        .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+        .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+        .nav-cta-group .nav-store-ios { background:var(--green); color:#fff; }
+        .nav-cta-group .nav-store-ios:hover { background:var(--green-dark); color:#fff; }
+        .nav-cta-group .nav-store-android { background:#fff; color:var(--green-dark); border:1.5px solid var(--gray-200); }
+        .nav-cta-group .nav-store-android:hover { border-color:var(--green); color:var(--green-dark); }
+        @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
         /* MAIN CONTAINER */
         .main {
@@ -908,6 +905,37 @@ class CaloriesInAnything extends HTMLElement {
         .cta-android svg{width:18px;height:18px}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons a{width:100%;max-width:280px;justify-content:center}}
 
+        /* EARLY CONTEXTUAL CTA */
+        .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 768px; margin: 24px auto 0; }
+        .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; margin: 0 0 16px; color: var(--dark); }
+        .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+        .kearly-btns > a { width: 100%; max-width: 320px; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--green); color: #fff; padding: 14px 28px; border-radius: 12px; font-weight: 600; font-size: 15px; text-decoration: none; border: none; cursor: pointer; transition: all 0.2s; }
+        .kearly-btns > a:hover { background: var(--green-dark); color: #fff; }
+        .kearly-btns > a svg { width: 18px; height: 18px; }
+        @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
+        .kband { max-width: 1100px; margin: 0 auto; }
+        .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+        .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+        .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
+        .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
+        .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.3; color: #1E293B; }
+        .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
+        .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #475569; text-align: center; }
+        .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+        .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+        .kband-btn-ios { background: #22C55E; color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+        .kband-btn-ios:hover { background: #16A34A; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+        .kband-btn-android { background: #fff; color: #16A34A; border: 2px solid #E2E8F0; }
+        .kband-btn-android:hover { border-color: #22C55E; transform: translateY(-2px); }
+        @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+        @media (max-width: 720px) {
+          .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+          .kband-actions { width: 100%; flex-direction: column; }
+          .kband-btn { width: 100%; justify-content: center; }
+        }
+        @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
+
         /* EXAMPLES SECTION */
         .examples-section { margin-top: 32px; }
         .examples-title {
@@ -1085,7 +1113,6 @@ class CaloriesInAnything extends HTMLElement {
           .header { padding: 14px 24px; }
           .logo { font-size: 18px; gap: 12px; }
           .logo-img { height: 36px; }
-          .header-link { font-size: 14px; gap: 6px; }
           .main { padding: 48px 24px; }
           .hero { margin-bottom: 40px; }
           .hero h1 { font-size: 40px; letter-spacing: -1px; margin-bottom: 16px; }
@@ -1198,13 +1225,14 @@ class CaloriesInAnything extends HTMLElement {
       <div class="calories-app">
         <header class="header">
           <div class="header-inner">
-            <a href="https://kygo.app" class="logo" target="_blank">
+            <a href="https://www.kygo.app" class="logo" target="_blank">
               <img src="${this.logoUrl}" alt="Kygo" class="logo-img" />
               Food Scanner
             </a>
-            <a href="https://kygo.app" class="header-link" target="_blank">
-              Get Kygo App ${Icons.arrowRight}
-            </a>
+            <div class="nav-cta-group">
+              <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg><span>iOS</span></a>
+              <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+            </div>
           </div>
         </header>
 
@@ -1229,9 +1257,26 @@ class CaloriesInAnything extends HTMLElement {
           </div>
           ${!this.result && !this.error && !this.analyzing && remaining <= 5 ? `
             <div class="rate-notice">
-              ${Icons.zap} ${remaining} free scan${remaining !== 1 ? 's' : ''} remaining today. <a href="https://kygo.app" target="_blank">Get unlimited with Kygo app</a>
+              ${Icons.zap} ${remaining} free scan${remaining !== 1 ? 's' : ''} remaining today. <a href="https://www.kygo.app" target="_blank">Get unlimited with Kygo app</a>
             </div>
           ` : ''}
+
+          <!-- Early contextual CTA -->
+          <div class="kband animate-on-scroll">
+            <div class="kband-inner">
+              <div class="kband-glow"></div>
+              <div class="kband-copy">
+                <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+                <h2 class="kband-headline">Calorie counts are estimates. Kygo helps you log what you eat in seconds and see how it affects your sleep, energy, and recovery.</h2>
+              </div>
+              <div class="kband-actions">
+                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="calories-in-anything-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Try Free for 7 Days</a>
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="calories-in-anything-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a><p class="kband-note">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+              </div>
+            </div>
+          </div>
+
+          <kygo-inline-subscribe source="tool-calories-in-anything" variant="comparison"></kygo-inline-subscribe>
 
           <div class="cta-section animate-on-scroll">
             <div class="cta-section-content">
@@ -1239,15 +1284,16 @@ class CaloriesInAnything extends HTMLElement {
               <h2>Go beyond calories. See cause and effect.</h2>
               <p>Kygo connects your meals with sleep, HRV, and recovery data from Oura, Fitbit, Garmin & Apple Watch to reveal which foods help you perform best.</p>
               <div class="cta-buttons">
-                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn-white" target="_blank">
+                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="cta-btn-white cta-primary" data-track-position="footer-cta" data-track-label="calories-in-anything-footer-ios" target="_blank">
                   ${Icons.apple}
                   Download Free on iOS
                 </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="calories-in-anything-footer-android">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
               </div>
+              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.85);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
               <div class="cta-features">
                 <span class="cta-feature"><span class="cta-check">${Icons.check}</span> Free forever plan</span>
                 <span class="cta-feature"><span class="cta-check">${Icons.check}</span> Syncs with 4+ wearables</span>
@@ -1292,22 +1338,22 @@ class CaloriesInAnything extends HTMLElement {
               ${this.renderFaqItem(0, "How accurate are the nutrition estimates?", "Our AI identifies ingredients and estimates portion sizes using visual analysis. Results are reliable for everyday tracking and meal awareness. For clinical dietary planning, we recommend pairing this with a registered dietitian. Accuracy improves with well-lit, overhead photos of plated meals.")}
               ${this.renderFaqItem(1, "What info does each scan include?", "Every scan returns calories, six macronutrients (protein, carbs, fat, fiber, sugar, sodium), a 1\u201310 health score, key vitamins and minerals with % daily value, dietary tags like <strong>High Protein</strong> or <strong>Heart Healthy</strong>, and actionable health insights specific to that food.")}
               ${this.renderFaqItem(2, "What photo formats are supported?", "JPG, PNG, WebP, and HEIC (iPhone photos). You can upload from your camera roll, take a photo directly, or drag and drop. Images are compressed client-side before analysis\u2014your original photo never leaves your device.")}
-              ${this.renderFaqItem(3, "How does this connect to the Kygo app?", "This scanner gives you instant one-off nutrition checks. The <a href=\"https://kygo.app\" target=\"_blank\">Kygo app</a> takes it further\u2014log meals daily and connect your wearable (Oura, Apple Watch, Fitbit, Garmin, Whoop, or Health Connect) to discover how specific foods affect your sleep, HRV, energy, and recovery over time.")}
-              ${this.renderFaqItem(4, "Is there a daily limit?", "You get ${this.dailyLimit} free scans per day with no sign-up required. The Kygo app includes unlimited AI-powered food logging along with wearable correlations and a free forever plan.")}
+              ${this.renderFaqItem(3, "How does this connect to the Kygo app?", "This scanner gives you instant one-off nutrition checks. The <a href=\"https://www.kygo.app\" target=\"_blank\">Kygo app</a> takes it further\u2014log meals daily and connect your wearable (Oura, Apple Watch, Fitbit, Garmin, Whoop, or Health Connect) to discover how specific foods affect your sleep, HRV, energy, and recovery over time.")}
+              ${this.renderFaqItem(4, "Is there a daily limit?", `You get ${this.dailyLimit} free scans per day with no sign-up required. The Kygo app includes unlimited AI-powered food logging along with wearable correlations and a free forever plan.`)}
               ${this.renderFaqItem(5, "What if I scan something that isn't food?", "The AI will detect non-food items and let you know. You'll see a notice that the image doesn't appear to be food, along with a prompt to try again with a meal photo.")}
             </div>
           </div>
 
           <footer class="footer">
-            <a href="https://kygo.app" class="footer-brand" target="_blank">
+            <a href="https://www.kygo.app" class="footer-brand" target="_blank">
               <img src="${this.logoUrl}" alt="Kygo Health" class="footer-logo" />
               Kygo Health
             </a>
             <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
             <div class="footer-links">
-              <a href="https://kygo.app" target="_blank">Kygo App</a>
-              <a href="https://kygo.app/privacy" target="_blank">Privacy</a>
-              <a href="https://kygo.app/terms" target="_blank">Terms</a>
+              <a href="https://www.kygo.app" target="_blank">Kygo App</a>
+              <a href="https://www.kygo.app/privacy-policy" target="_blank">Privacy</a>
+              <a href="https://www.kygo.app/terms-conditions" target="_blank">Terms</a>
             </div>
             <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC</p>
           </footer>
@@ -1612,7 +1658,7 @@ class CaloriesInAnything extends HTMLElement {
         'description': 'Free AI-powered food scanner by Kygo Health. Take a photo of any meal and get instant calorie counts, macronutrient breakdown (protein, carbs, fat, fiber), and full micronutrient analysis. Powered by advanced image recognition trained on 5+ million foods from the USDA FoodData Central database.',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
-        'url': 'https://www.kygo.app/food-scanner',
+        'url': 'https://www.kygo.app/tools/calories-in-anything',
         'datePublished': '2026-01-15',
         'dateModified': '2026-03-18',
         'softwareVersion': '1.0',
