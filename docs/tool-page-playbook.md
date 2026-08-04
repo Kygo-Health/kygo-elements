@@ -48,6 +48,12 @@ Use the **semantic palette only**. Copy this `:host` block verbatim:
 **Surface & motion recipes (copy these verbatim — they are the house look):**
 - **Card idiom (near-universal):** `background:#fff; border:1.5px solid var(--border-subtle);
   border-radius:18px; padding:22px`. The `1.5px` border and `18px` radius are the house values.
+  Give resting content cards a soft **`box-shadow:var(--shadow-md)`** so they lift off the section
+  background instead of sitting flat (border-only cards read as flat; this was a fix on
+  `kygo-oura-vs-ringconn`). Reserve the green-border + green-shadow treatment for the highlighted
+  "winner" card only. For **brand-specific cards** (e.g. an "Oura's posture" vs "RingConn's posture"
+  pair), use the actual brand logo in the card's icon slot (a white, bordered tile), not a generic
+  line icon.
 - **Frosted sticky nav:** `background:rgba(255,255,255,.92); backdrop-filter:saturate(160%) blur(14px)`
   (include the `-webkit-backdrop-filter` prefix).
 - **Green radial glow on dark** (the glow the CTA / keystone cards use): a `::before`/`::after`
@@ -228,16 +234,43 @@ paragraph behind it on a phone.
 ### Tabbed spec table (product-as-columns) — `kygo-oura-ring-comparison.js`
 A second valid comparison layout, distinct from the logo matrix: category **tabs** (`.tbl-tabs`,
 active tab = dark chip with a count badge `.ct`) switch a table whose **columns are the products**
-(e.g. 3 generations). Unlike the logo matrix, this one **stacks into labelled cards on mobile**
-(`thead{display:none}; td.cell::before{content:attr(data-label)}`) instead of horizontal-scrolling.
-Rule of thumb: use the **logo matrix** to compare many devices on binary/pill attributes; use this
-**tabbed column table** to deep-compare 2–3 variants across many spec rows.
+(e.g. 3 generations). Rule of thumb: use the **logo matrix** to compare many devices on binary/pill
+attributes; use this **tabbed column table** to deep-compare a handful of variants across many spec rows.
+
+**Mobile behaviour — pick by column count (this was reworked repeatedly on `kygo-oura-vs-ringconn`):**
+- **2–3 product columns:** stacking into labelled cards on mobile (`thead{display:none};
+  td.cell::before{content:attr(data-label)}`) is fine.
+- **4+ product columns:** do **not** stack — a stacked N-column table becomes a multi-thousand-px
+  wall (each spec repeats every product). Instead **horizontal-scroll with a fixed, narrow, sticky
+  first column**, exactly like the logo matrix (§3 "Comparison matrix"). The proven recipe:
+  - Wrap **only the `<table>`** in the `overflow-x:auto` scroller (`.tbl-scroll`); on desktop flip it
+    to `overflow-x:visible` at ≥768px. **Keep any `.tbl-note` / footnote OUTSIDE that scroller**
+    (a sibling below it) — a block note left inside the scroller stretches to the table's `min-width`
+    and clips off-screen.
+  - `border-collapse:separate; border-spacing:0` on the table (sticky cells render cleanly; row lines
+    come from `border-top` on the cells).
+  - First column: `position:sticky; left:0; z-index:2; box-shadow:1px 0 0 var(--border-subtle)` for a
+    divider, with a matching header cell z-index above it. It **must have a fixed pixel width on mobile
+    (~120–130px), never a percentage** — a percentage of the wide `min-width` table eats the screen
+    and hides the data columns. Add `overflow-wrap:anywhere` so long labels wrap instead of widening it.
+  - **Specificity trap:** put the desktop label-column widths (e.g. `.tbl .spec-name{width:26%}`,
+    `.tbl.ftbl .spec-name{width:44%}`) **inside the `@media (min-width:768px)` block only**. Left in
+    the base CSS, `.tbl.ftbl .spec-name` (0,3,0) outranks the mobile cap on `.tbl td:first-child`
+    (0,2,1) and silently overrides it — the first column stays wide on one table but not the other.
+  - At ≥768px, **unstick** the first column (`position:static; box-shadow:none`) and drop the table
+    `min-width` so the full table shows with no scroll.
 
 ### Interactive calculator — `kygo-oura-ring-comparison.js` (cost calc)
 Segmented controls (`.seg`, track `--bg-raised`, active = white + shadow) and/or a native
 `input[type=range]` with `accent-color:var(--kygo-green)`, feeding a **dark result panel**
 (`.calc-result` on `--kygo-dark`, with the green radial glow) that shows a per-row winner highlight
 and a dynamic prose takeaway. Re-render only `[data-calc].innerHTML` on input, never the whole root.
+**The calculator's numbers must agree with every static number on the page** — the hero stat, the
+spec-table cost rows, any "$X apart" hero-vis tag, the TL;DR. If a headline figure bakes in a promo
+(e.g. Oura's first-month-free making the 3-yr total ~$603, not the naive $609), the calculator has to
+apply the same adjustment, or a sharp-eyed reader catches the mismatch (this happened on
+`kygo-oura-vs-ringconn`). Keep the buy-affiliate buttons in the spec table's header/rows, **not** in
+the calculator result panel — the result panel is for the cost verdict, not a store CTA.
 
 ### Interactive comparator (pick 2–4 → live table) — `kygo-sleep-tracker-accuracy.js`
 A tile picker (`.pick-tile`, `aria-pressed`, a `Set` with min 2 / max 4) drives a live side-by-side
@@ -284,11 +317,24 @@ The page carries **three** conversion touchpoints beyond the nav buttons — don
 - **Big Kygo CTA card** (§2.4) — the primary dark conversion card near the end: green radial glow,
   pill, headline, iOS + Android **Tenjin** buttons (`cta-primary`/`cta-android`), "Works with"
   badge row. Keep the `data-action`/`data-track-position="footer-cta"`/`data-track-label` attrs.
+  The badge row is a single centered `flex-wrap` row on desktop; if you want it as a tidy grid
+  (e.g. two rows of three), **scope that grid to a mobile `@media (max-width:560px)` block only** so
+  desktop keeps the single row (regression fixed on `kygo-oura-vs-ringconn`).
 - **Mid-page app-download band** (`.kband`) — a lighter, white variant used once or twice higher up
   (e.g. `data-track-position="early"` and `"late"`): white card, `.kband-glow` radial glow, a
   pulsing eyebrow dot (`@keyframes kygoPulse`), iOS/Android buttons, a one-line note. Reuse the
   canonical store icons (§4) and the standard trial microcopy ("7-day free trial on yearly. Free
-  plan available. Cancel anytime.").
+  plan available. Cancel anytime."). **Desktop layout:** the copy column must be `flex:1 1 auto;
+  min-width:0` so it fills the row and pushes the buttons to the right edge; the actions column is
+  `flex:0 0 auto` with a small `max-width` (~470px) so the two store buttons sit side by side. Do
+  **not** use `justify-content:space-between` with a `max-width`-capped copy column — it leaves a
+  big dead gap in the middle (fixed on `kygo-oura-vs-ringconn`). Keep the headline short (1–2 lines);
+  a long headline turns the band into a tall, awkward block.
+- **CTA rhythm — spread them out.** Never place two conversion cards back to back (e.g. the `.kband`
+  and the blog cross-link), and don't glue a `.kband` directly under the hero where it reads as part
+  of the hero. Put a content section between each conversion touchpoint. A good spine: hero →
+  quick-answer → `.kband` (early) → content → inline-subscribe → content → big CTA card → content →
+  `.kband` (late) → FAQ → blog cross-link.
 - **Inline email capture** — drop the shared sibling element straight into the page:
   `<kygo-inline-subscribe source="tool-<slug>" variant="comparison"></kygo-inline-subscribe>`.
   It renders its own styled capture UI and handles the submit; you only set `source` (unique per
@@ -341,6 +387,14 @@ stray "robot" Android path `M6 9v7…` that still lingers in some older `.kband`
   or "and". Use a real word ("n/a") for empty table cells, not a dash character. En-dashes in
   numeric ranges (`0.4–0.6`, `12–48 min`, `2–4`) are fine. Verify before committing:
   `grep -c "—" file.js` → must be `0`.
+- **Hero-vis must stay legible + on one line at 390px.** Keep the SVG `viewBox` tight to its content
+  (no big empty margins) so it scales up, not down, on a phone. Give the `hero-vis-title` and the
+  `hero-vis-tag` `white-space:nowrap` and let the head `flex-wrap` — otherwise a long title squeezes
+  the tag into a 2-line wrap (bug on `kygo-oura-vs-ringconn`).
+- **Scope layout overrides to the right breakpoint, and mind CSS specificity.** A grid/width override
+  meant for mobile must live in a `max-width` media query (or it hits desktop too); a base rule with
+  more classes (e.g. `.tbl.ftbl .spec-name`, 0,3,0) will silently outrank a single-class mobile cap
+  (`.tbl td:first-child`, 0,2,1). When a cap "isn't working," check specificity first.
 
 ---
 
@@ -411,7 +465,17 @@ Pre-commit checklist:
 - [ ] `node -c file.js` passes; no off-brand colours (grep above is empty).
 - [ ] Every `_icon('x')` has a matching key in the icon map.
 - [ ] Desktop + mobile reviewed per section; long lists are collapsible; stat cards 2-up on
-      mobile; tables scroll with a sticky first column; chart headers flush; sources compact.
+      mobile; chart headers flush; sources compact.
+- [ ] Comparison tables with 4+ columns **horizontal-scroll** on mobile (they do NOT stack into a
+      tall wall); first column is a **fixed ~120–130px** sticky label (not a percentage), the
+      footnote sits **outside** the scroller, and the table **unsticks + shows full-width at ≥768px**.
+      Confirm the first-column width is actually capped on *every* table (specificity trap, §3).
+- [ ] Content cards have depth (`--shadow-md`), not flat border-only; brand cards use brand logos.
+- [ ] Interactive calculator output matches every static cost figure on the page (promos included);
+      no store buttons inside the result panel.
+- [ ] Conversion CTAs are spread out (no two adjacent; `.kband` not glued under the hero); the
+      `.kband` copy fills the row on desktop with buttons side by side (no dead centre gap); any
+      mobile-only badge grid is scoped to a `max-width` media query.
 - [ ] Scroll-reveal works on mobile (no section stuck invisible).
 - [ ] Section backgrounds alternate; each block is its own section.
 - [ ] FAQ visible + JSON-LD from one source; `__seo` + counts match the UI.
