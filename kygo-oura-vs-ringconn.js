@@ -329,10 +329,10 @@ class KygoOuraVsRingConn extends HTMLElement {
             </div>
             <div class="hero-vis" aria-hidden="true">
               <div class="hero-vis-head">
-                <span class="hero-vis-title"><span class="hero-vis-dot"></span> 3-year cost of ownership</span>
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> 3-year cost</span>
                 <span class="hero-vis-tag">~$254 apart</span>
               </div>
-              <svg viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet" role="img" font-family="'Space Grotesk',sans-serif">
+              <svg viewBox="0 0 560 210" preserveAspectRatio="xMidYMid meet" role="img" font-family="'Space Grotesk',sans-serif">
                 <defs>
                   <linearGradient id="orSlate" x1="0" y1="0" x2="1" y2="0">
                     <stop offset="0" stop-color="#94A3B8"/>
@@ -343,24 +343,24 @@ class KygoOuraVsRingConn extends HTMLElement {
                     <stop offset="1" stop-color="#4ADE80"/>
                   </linearGradient>
                 </defs>
-                <!-- Oura Ring 5 bar: hardware + membership -->
-                <text x="24" y="70" fill="#64748B" font-size="17" font-weight="600">Oura Ring 5</text>
-                <rect x="24" y="84" width="216" height="34" rx="8" fill="url(#orSlate)"/>
-                <rect x="244" y="84" width="114" height="34" rx="8" fill="#0F172A" opacity="0.82"/>
-                <text x="132" y="106" fill="#fff" font-size="13" font-weight="600" text-anchor="middle">$399 ring</text>
-                <text x="301" y="106" fill="#fff" font-size="12" font-weight="600" text-anchor="middle">+ $210 sub</text>
-                <text x="576" y="108" fill="#334155" font-size="17" font-weight="700" text-anchor="end">~$603</text>
+                <!-- Oura Ring 5 bar: hardware + membership (first month free) -->
+                <text x="20" y="26" fill="#64748B" font-size="16" font-weight="600">Oura Ring 5</text>
+                <rect x="20" y="38" width="265" height="42" rx="9" fill="url(#orSlate)"/>
+                <rect x="289" y="38" width="135" height="42" rx="9" fill="#0F172A" opacity="0.82"/>
+                <text x="152" y="64" fill="#fff" font-size="14" font-weight="600" text-anchor="middle">$399 ring</text>
+                <text x="356" y="64" fill="#fff" font-size="13" font-weight="600" text-anchor="middle">+$204 sub</text>
+                <text x="548" y="66" fill="#334155" font-size="18" font-weight="700" text-anchor="end">~$603</text>
 
                 <!-- RingConn Gen 3 bar: hardware only -->
-                <text x="24" y="176" fill="#16A34A" font-size="17" font-weight="700">RingConn Gen 3</text>
-                <rect x="24" y="190" width="188" height="34" rx="8" fill="url(#orGreen)"/>
-                <text x="118" y="212" fill="#fff" font-size="13" font-weight="600" text-anchor="middle">$349 ring</text>
-                <text x="576" y="214" fill="#16A34A" font-size="17" font-weight="700" text-anchor="end">$349</text>
+                <text x="20" y="112" fill="#16A34A" font-size="16" font-weight="700">RingConn Gen 3</text>
+                <rect x="20" y="124" width="231" height="42" rx="9" fill="url(#orGreen)"/>
+                <text x="135" y="150" fill="#fff" font-size="14" font-weight="600" text-anchor="middle">$349 ring</text>
+                <text x="548" y="152" fill="#16A34A" font-size="18" font-weight="700" text-anchor="end">$349</text>
 
                 <!-- no-subscription badge -->
-                <g transform="translate(300,266)">
-                  <rect x="-118" y="-15" width="236" height="26" rx="13" fill="#DCFCE7"/>
-                  <text x="0" y="3" fill="#16A34A" font-size="12" font-weight="700" letter-spacing="0.4" text-anchor="middle">RINGCONN: $0 SUBSCRIPTION</text>
+                <g transform="translate(284,196)">
+                  <rect x="-132" y="-14" width="264" height="26" rx="13" fill="#DCFCE7"/>
+                  <text x="0" y="4" fill="#16A34A" font-size="12" font-weight="700" letter-spacing="0.4" text-anchor="middle">RINGCONN: $0 SUBSCRIPTION</text>
                 </g>
               </svg>
             </div>
@@ -459,7 +459,7 @@ class KygoOuraVsRingConn extends HTMLElement {
           </div>
           <div class="tbl-wrap">
             <div class="tbl-tabs" data-ftabs role="tablist" aria-label="Feature categories">${this._renderFeatTabs()}</div>
-            <div data-feat-body>${this._renderFeatTable()}</div>
+            <div class="tbl-scroll"><div data-feat-body>${this._renderFeatTable()}</div></div>
           </div>
         </div>
       </section>
@@ -521,12 +521,12 @@ class KygoOuraVsRingConn extends HTMLElement {
           </div>
           <div class="valid-grid">
             <div class="valid-card animate-on-scroll">
-              <div class="valid-head"><span class="valid-ico">${this._icon('shield')}</span><h3>Oura's posture</h3></div>
+              <div class="valid-head"><span class="valid-ico"><img src="${ouraImg}" alt="Oura" loading="lazy" /></span><h3>Oura's posture</h3></div>
               <p>Points to multiple peer-reviewed validation studies and a medical advisory board. Positions itself as "research-grade," with a claimed pulse signal up to 100x stronger than wrist devices. Commercial signals like roughly 5M paid members and a 2026 IPO filing are scale, not accuracy evidence.</p>
               <div class="valid-tag">Peer-reviewed studies + advisory board</div>
             </div>
             <div class="valid-card animate-on-scroll">
-              <div class="valid-head"><span class="valid-ico">${this._icon('flask')}</span><h3>RingConn's posture</h3></div>
+              <div class="valid-head"><span class="valid-ico"><img src="${ringconnImg}" alt="RingConn" loading="lazy" /></span><h3>RingConn's posture</h3></div>
               <p>Lists strong per-metric numbers on the Gen 3 page (HR over 98%, SpO₂ under 1.9% MAE, sleep time over 99%, steps over 95%) but publishes no methodology on that page. Its strongest external evidence is a Ruijin Hospital feasibility study (IEEE AICAS 2024, 230 volunteers, r=0.93 vs a sleep lab for apnea patterns).</p>
               <div class="valid-tag">Marketing stats + one feasibility study</div>
             </div>
@@ -618,22 +618,22 @@ class KygoOuraVsRingConn extends HTMLElement {
   // Static, crawlable comparison summary for the long-tail matchups.
   _renderTLDR() {
     return `
-      <p class="tldr-lead"><strong>Oura</strong> and <strong>RingConn</strong> both make excellent smart rings, but they sell different things. Oura sells a deep, membership-funded software platform. RingConn sells capable hardware with no subscription. Here is how the matchup actually breaks down.</p>
+      <p class="tldr-lead"><strong>Oura</strong> sells a deep, membership-funded software platform. <strong>RingConn</strong> sells capable hardware with no subscription. Here is the short version.</p>
       <div class="cmp-blocks">
         <div class="cmp-block">
           <h3>Oura Ring 5 vs RingConn Gen 3</h3>
           <p class="cmp-verdict">Depth vs no-subscription value.</p>
-          <p>Ring 5 is the smallest ring and brings the widest feature set plus a published validation program, all behind a $69.99/yr membership. Gen 3 costs $349 flat forever, rates up to 14-day battery, includes its case, and adds sleep apnea and vascular monitoring.</p>
+          <p>Ring 5 is smaller with the widest feature set. Gen 3 is $349 flat forever, rates up to 14-day battery, and adds sleep apnea and vascular monitoring.</p>
         </div>
         <div class="cmp-block">
           <h3>The subscription question</h3>
-          <p class="cmp-verdict">RingConn wins on price, Oura on depth.</p>
-          <p>Over 3 years an Oura Ring 5 runs about $603 versus $349 for RingConn Gen 3. The fee funds a real feature cadence (Health Panels, Cumulative Stress, GLP-1 Insights, Health Radar), so weigh feature depth, not just the dollar gap. Oura is cancelable anytime; you keep the three scores.</p>
+          <p class="cmp-verdict">RingConn on price, Oura on depth.</p>
+          <p>Over 3 years Oura Ring 5 runs about $603 vs $349 for RingConn. But the fee funds a real feature cadence, so weigh depth, not just the dollar gap.</p>
         </div>
         <div class="cmp-block cmp-block-wide">
           <h3>Which should you buy?</h3>
           <p class="cmp-verdict">Oura for the ecosystem, RingConn for the value.</p>
-          <p>Pick Oura if you want metabolic tracking (CGM, GLP-1), the largest integration library, and peer-reviewed validation, and you are fine paying yearly. Pick RingConn if you want long battery, sleep apnea and vascular trends, and a one-time price with no lock-in. Both share the same core PPG sensing, so sleep, HRV, and heart-rate tracking are broadly comparable.</p>
+          <p>Pick Oura for metabolic tracking (CGM, GLP-1), the biggest integration library, and peer-reviewed validation. Pick RingConn for long battery, apnea and vascular trends, and a one-time price. Both share the same core PPG sensing, so sleep, HRV, and heart-rate tracking are broadly comparable.</p>
         </div>
       </div>
     `;
@@ -759,23 +759,21 @@ class KygoOuraVsRingConn extends HTMLElement {
     const ringconnImg = 'https://static.wixstatic.com/media/273a63_fc0ed00ac88441138f7b4c7e398f7aa8~mv2.png';
     const pick = this._ouraPick, rival = this._rival, years = this._years;
     const ouraHardware = pick === 'ring4' ? 349 : 399;
-    const ouraAmazon = pick === 'ring4' ? 'https://www.amazon.com/dp/B0D9WT1S2T?tag=kygohealthapp-20&th=1' : 'https://www.amazon.com/dp/B0GRK1N94H?tag=kygohealthapp-20&th=1';
-    const ouraSlug = pick === 'ring4' ? 'oura-ring-4' : 'oura-ring-5';
     const membershipYr = 69.99;
-    const ouraTotal = ouraHardware + membershipYr * years;
+    const firstMonthFree = membershipYr / 12; // Oura gives new members their first month free
+    const ouraMembership = membershipYr * years - firstMonthFree;
+    const ouraTotal = ouraHardware + ouraMembership;
     const pickName = pick === 'ring4' ? 'Ring 4' : 'Ring 5';
     const pickSub = pick === 'ring4' ? '$349 hardware' : '$399 hardware';
 
     const rivalHardware = rival === 'gen2air' ? 199 : rival === 'gen2' ? 299 : 349;
     const rivalName = rival === 'gen2air' ? 'RingConn Gen 2 Air' : rival === 'gen2' ? 'RingConn Gen 2' : 'RingConn Gen 3';
-    const rivalAmazon = rival === 'gen2' ? 'https://www.amazon.com/s?k=RingConn+Gen+2&tag=kygohealthapp-20' : rival === 'gen2air' ? 'https://www.amazon.com/s?k=RingConn+Gen+2+Air&tag=kygohealthapp-20' : 'https://www.amazon.com/dp/B0GVSB66ZY?tag=kygohealthapp-20&th=1';
-    const rivalSlug = rival === 'gen2air' ? 'ringconn-gen2-air' : rival === 'gen2' ? 'ringconn-gen2' : 'ringconn-gen3';
     const rivalTotal = rivalHardware; // no required subscription
 
     const fmt = n => '$' + Math.round(n).toLocaleString();
     const gap = ouraTotal - rivalTotal;
     const gapMsg = gap > 0
-      ? `Oura costs <strong>${fmt(gap)} more</strong> than ${rivalName} over ${years} ${years === 1 ? 'year' : 'years'}, and about ${fmt(membershipYr * years)} of that is membership. You are paying for the deeper feature set, the metabolic suite, and a published validation program; ${rivalName} has no subscription and includes its charging case.`
+      ? `Oura costs <strong>${fmt(gap)} more</strong> than ${rivalName} over ${years} ${years === 1 ? 'year' : 'years'}, and about ${fmt(ouraMembership)} of that is membership. You are paying for the deeper feature set, the metabolic suite, and a published validation program; ${rivalName} has no subscription and includes its charging case.`
       : gap < 0
         ? `${rivalName} costs <strong>${fmt(-gap)} more</strong> at this setup.`
         : `Both options total <strong>${fmt(ouraTotal)}</strong> here.`;
@@ -804,14 +802,14 @@ class KygoOuraVsRingConn extends HTMLElement {
             <div class="yrs">${years} <span>${years === 1 ? 'year' : 'years'}</span></div>
           </div>
         </div>
-        <p class="calc-foot">Oura Membership is $5.99/mo or $69.99/yr and is required for trends, HRV detail, the metabolic suite, and most insights. RingConn has no required subscription on any model. Both hardware and Oura membership are HSA/FSA eligible.</p>
+        <p class="calc-foot">Oura Membership is $5.99/mo or $69.99/yr (first month free for new members) and is required for trends, HRV detail, the metabolic suite, and most insights. RingConn has no required subscription on any model. Both hardware and Oura membership are HSA/FSA eligible.</p>
       </div>
       <div class="calc-result">
         <h4>${years}-year total cost of ownership</h4>
         <div class="calc-row ${ouraTotal < rivalTotal ? 'win' : ''}">
           <div class="who"><img src="${ouraImg}" alt="" /><div>Oura ${pickName}<span class="sub">${pickSub} + membership</span></div></div>
           <div class="total">${fmt(ouraTotal)}</div>
-          <div class="breakdown">${pickSub} + ${years} × $69.99/yr membership</div>
+          <div class="breakdown">${pickSub} + ${years} × $69.99/yr membership (first month free)</div>
         </div>
         <div class="calc-row ${rivalTotal < ouraTotal ? 'win' : ''}">
           <div class="who"><img src="${ringconnImg}" alt="${rivalName}" /><div>${rivalName}<span class="sub">No subscription</span></div></div>
@@ -819,10 +817,6 @@ class KygoOuraVsRingConn extends HTMLElement {
           <div class="breakdown">$${rivalHardware} hardware + $0 subscription</div>
         </div>
         <div class="calc-savings">${gapMsg}</div>
-        <div class="calc-amazon-row">
-          <a class="calc-amazon" href="${ouraAmazon}" target="_blank" rel="noopener sponsored" data-track-position="ranking" data-track-label="${ouraSlug}">Oura ${pickName} on Amazon ${this._icon('arrowRight')}</a>
-          <a class="calc-amazon calc-amazon-alt" href="${rivalAmazon}" target="_blank" rel="noopener sponsored" data-track-position="ranking" data-track-label="${rivalSlug}">${rivalName} on Amazon ${this._icon('arrowRight')}</a>
-        </div>
       </div>
     `;
   }
@@ -1091,10 +1085,10 @@ class KygoOuraVsRingConn extends HTMLElement {
       .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 6px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 16px 18px; aspect-ratio: 5 / 3; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
       .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
       .hero-vis::after { content: ''; position: absolute; bottom: -110px; left: -70px; width: 230px; height: 230px; background: radial-gradient(closest-side, rgba(148,163,184,0.16), transparent); pointer-events: none; }
-      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; }
-      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); }
-      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); }
-      .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); white-space: nowrap; }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
       .hero-vis svg { position: relative; width: 100%; flex: 1; min-height: 0; display: block; }
       @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 460px; margin: 4px auto 0; padding: 14px 16px; } }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
@@ -1165,8 +1159,13 @@ class KygoOuraVsRingConn extends HTMLElement {
       .tbl-tabs button.active { background: var(--kygo-dark); color: #fff; }
       .tbl-tabs button .ct { font-size: 11px; padding: 2px 7px; border-radius: 999px; background: rgba(0,0,0,0.06); }
       .tbl-tabs button.active .ct { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
-      .tbl { width: 100%; border-collapse: collapse; font-family: var(--font-body); min-width: 720px; }
+      .tbl { width: 100%; border-collapse: collapse; font-family: var(--font-body); min-width: 860px; }
       .tbl.ftbl { min-width: 560px; }
+      /* Sticky first column so the spec/feature label stays pinned while columns scroll */
+      .tbl th:first-child, .tbl td:first-child { position: sticky; left: 0; z-index: 2; box-shadow: 1px 0 0 var(--border-subtle); }
+      .tbl thead th:first-child { z-index: 3; background: var(--bg-raised); }
+      .tbl tbody td:first-child { background: #fff; }
+      .tbl tbody tr:hover td:first-child { background: var(--bg-raised); }
       .tbl thead th { text-align: left; padding: 16px 18px; font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.4px; background: var(--bg-raised); vertical-align: top; }
       .tbl thead th .head-prod { display: flex; align-items: center; gap: 10px; color: var(--fg-1); text-transform: none; letter-spacing: 0; font-size: 14px; }
       .tbl thead th .head-prod img { width: 22px; height: 22px; border-radius: 5px; background: #fff; padding: 2px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); object-fit: contain; }
@@ -1199,16 +1198,8 @@ class KygoOuraVsRingConn extends HTMLElement {
       .aff-btn img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 2px; object-fit: contain; }
       .aff-btn .ico { width: 13px; height: 13px; }
       @media (max-width: 720px) {
-        .tbl { min-width: 0; }
-        .tbl.ftbl { min-width: 0; }
-        .tbl thead { display: none; }
-        .tbl tbody td { display: block; padding: 6px 16px; border-top: 0; }
-        .tbl tbody tr { display: block; padding: 14px 0; border-top: 1px solid var(--border-subtle); }
-        .tbl .spec-name { width: auto; padding-top: 14px; }
-        .tbl.ftbl .spec-name { width: auto; }
-        .tbl tbody td.cell::before { content: attr(data-label); display: block; font-size: 10px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; font-weight: 600; }
-        .tbl tbody tr.aff-row { display: block; padding: 16px; background: var(--bg-surface); }
-        .tbl tbody tr.aff-row td { display: block; padding: 0; }
+        .tbl thead th, .tbl tbody td { padding: 12px 14px; font-size: 13px; }
+        .tbl .spec-name { width: 34%; }
       }
 
       /* Cost calculator */
@@ -1245,21 +1236,14 @@ class KygoOuraVsRingConn extends HTMLElement {
       .calc-row .breakdown { grid-column: 1 / -1; color: rgba(255,255,255,0.5); font-size: 12px; margin-top: 2px; line-height: 1.4; }
       .calc-savings { margin-top: auto; position: relative; padding: 12px 14px; border-radius: 12px; background: rgba(34,197,94,0.12); color: #6EE7A0; font-size: 13px; font-weight: 500; line-height: 1.5; }
       .calc-savings strong { color: #fff; }
-      .calc-amazon-row { position: relative; display: flex; flex-wrap: wrap; gap: 10px; }
-      .calc-amazon { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 18px; border-radius: 10px; background: var(--kygo-green); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: 13px; text-decoration: none; transition: all .15s ease; }
-      .calc-amazon:hover { background: var(--kygo-green-dark); transform: translateY(-1px); }
-      .calc-amazon-alt { background: rgba(255,255,255,0.08); color: #fff; border: 1.5px solid rgba(255,255,255,0.18); }
-      .calc-amazon-alt:hover { background: rgba(255,255,255,0.14); }
-      .calc-amazon .ico { width: 14px; height: 14px; transition: transform .15s; }
-      .calc-amazon:hover .ico { transform: translateX(2px); }
 
       /* Validation cards */
       .valid-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
       @media (min-width: 720px) { .valid-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
       .valid-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-md); }
       .valid-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-      .valid-ico { width: 40px; height: 40px; border-radius: 10px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: flex; align-items: center; justify-content: center; flex: none; }
-      .valid-ico .ico { width: 22px; height: 22px; }
+      .valid-ico { width: 44px; height: 44px; border-radius: 11px; background: #fff; border: 1.5px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
+      .valid-ico img { width: 28px; height: 28px; object-fit: contain; }
       .valid-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin: 0; color: var(--fg-1); }
       .valid-card p { font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0 0 14px; }
       .valid-tag { display: inline-block; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 6px 12px; border-radius: 999px; }
@@ -1279,7 +1263,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       .kygo-cta-card .cta-btn-row { position: relative; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%; }
       @media (max-width: 560px) { .kygo-cta-card .cta-btn-row .btn-lg { width: 100%; justify-content: center; } }
       .kygo-cta-card .cta-works { position: relative; margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.6); font-size: 13px; }
-      .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+      .kygo-cta-card .cta-badges { display: grid; grid-template-columns: repeat(3, auto); gap: 10px; align-items: center; justify-content: center; }
       .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
       /* Sources */
