@@ -374,27 +374,6 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <!-- Early contextual CTA -->
-      <section class="kearly-section">
-        <div class="section-inner">
-          <div class="kband animate-on-scroll">
-            <div class="kband-inner">
-              <div class="kband-glow"></div>
-              <div class="kband-copy">
-                <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
-                <h2 class="kband-headline">Own a smart ring, or about to buy one? Kygo pairs it with food logging and shows what actually moves your sleep, HRV, and recovery.</h2>
-              </div>
-              <div class="kband-actions">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="oura-ringconn-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Try Free for 7 Days</a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="oura-ringconn-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg> Get Android</a><p class="kband-note">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <kygo-inline-subscribe source="tool-oura-vs-ringconn" variant="comparison"></kygo-inline-subscribe>
-
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
@@ -406,7 +385,26 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <!-- Contextual CTA (below the quick answer) -->
+      <section class="kearly-section bg-white">
+        <div class="section-inner">
+          <div class="kband animate-on-scroll">
+            <div class="kband-inner">
+              <div class="kband-glow"></div>
+              <div class="kband-copy">
+                <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+                <h2 class="kband-headline">Own a smart ring, or shopping for one? Kygo shows what actually moves your sleep, HRV, and recovery.</h2>
+              </div>
+              <div class="kband-actions">
+                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="oura-ringconn-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Try Free for 7 Days</a>
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="oura-ringconn-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg> Get Android</a><p class="kband-note">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">The core trade-off</div>
@@ -436,7 +434,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Side by side</div>
@@ -450,7 +448,9 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <kygo-inline-subscribe source="tool-oura-vs-ringconn" variant="comparison"></kygo-inline-subscribe>
+
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Feature by feature</div>
@@ -464,7 +464,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="kygo-cta-card animate-on-scroll">
             <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
@@ -490,7 +490,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Cost calculator</div>
@@ -501,7 +501,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Quick winner</div>
@@ -512,7 +512,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Accuracy honesty</div>
@@ -536,7 +536,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       </section>
 
       <!-- Late slim CTA -->
-      <section class="kearly-section kearly-section-slim">
+      <section class="kearly-section kearly-section-slim bg-white">
         <div class="section-inner">
           <div class="kband animate-on-scroll">
             <div class="kband-inner">
@@ -554,6 +554,16 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">FAQ</div>
+            <h2>Common <span class="hl">questions.</span></h2>
+          </div>
+          <div class="faq">${this._renderFAQ()}</div>
+        </div>
+      </section>
+
       <section class="section bg-white">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">
@@ -568,19 +578,9 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
-        <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">FAQ</div>
-            <h2>Common <span class="hl">questions.</span></h2>
-          </div>
-          <div class="faq">${this._renderFAQ()}</div>
-        </div>
-      </section>
+      ${this._renderRelatedTools('bg-light')}
 
-      ${this._renderRelatedTools('bg-white')}
-
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
@@ -1121,7 +1121,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       .tldr-lead strong { color: var(--fg-1); font-weight: 600; }
       .cmp-blocks { display: grid; grid-template-columns: 1fr; gap: 16px; }
       @media (min-width: 760px) { .cmp-blocks { grid-template-columns: 1fr 1fr; } }
-      .cmp-block { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; }
+      .cmp-block { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-md); }
       .cmp-block.cmp-block-wide { grid-column: 1 / -1; }
       .cmp-block h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(17px, 2vw, 20px); line-height: 1.2; margin: 0 0 6px; color: var(--fg-1); }
       .cmp-verdict { font-family: var(--font-display); font-weight: 600; font-size: 14px; line-height: 1.4; color: var(--kygo-green-dark); margin: 0 0 12px; }
@@ -1131,7 +1131,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       /* Verdict gaps / trade-off cards */
       .gaps { display: grid; grid-template-columns: 1fr; gap: 16px; }
       @media (min-width: 720px) { .gaps { grid-template-columns: 1fr 1fr; } }
-      .gap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; }
+      .gap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-md); }
       .gap h4 { font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 16px; }
       .gap ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px; }
       .gap li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; font-size: 14px; line-height: 1.55; color: var(--fg-2); }
@@ -1143,7 +1143,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       .bestfor-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
       @media (min-width: 560px) { .bestfor-grid { grid-template-columns: repeat(2, 1fr); } }
       @media (min-width: 1000px) { .bestfor-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
-      .bestfor { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px; transition: all .25s var(--ease-out); }
+      .bestfor { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow-md); transition: all .25s var(--ease-out); }
       .bestfor:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-3px); }
       .bestfor .for-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: flex; align-items: center; justify-content: center; font-size: 20px; }
       .bestfor .for-icon .ico { width: 22px; height: 22px; }
@@ -1156,7 +1156,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       .bestfor .yrly { color: var(--fg-3); font-size: 12px; }
 
       /* Spec + feature tables */
-      .tbl-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; overflow: hidden; }
+      .tbl-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-md); }
       .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .tbl-note { color: var(--fg-3); font-size: 12.5px; line-height: 1.55; margin: 0; padding: 14px 18px 16px; border-top: 1px solid var(--border-subtle); background: var(--bg-surface); }
       .tbl-tabs { display: flex; gap: 4px; padding: 12px; border-bottom: 1px solid var(--border-subtle); overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -1214,7 +1214,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       /* Cost calculator */
       .calc { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: stretch; }
       @media (min-width: 880px) { .calc { grid-template-columns: 1.1fr 1fr; gap: 24px; } }
-      .calc-controls { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 20px; }
+      .calc-controls { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 20px; box-shadow: var(--shadow-md); }
       @media (min-width: 720px) { .calc-controls { padding: 28px; } }
       .calc-block { display: flex; flex-direction: column; gap: 10px; }
       .calc-block .label { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); }
@@ -1256,7 +1256,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       /* Validation cards */
       .valid-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
       @media (min-width: 720px) { .valid-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
-      .valid-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; }
+      .valid-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-md); }
       .valid-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
       .valid-ico { width: 40px; height: 40px; border-radius: 10px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: flex; align-items: center; justify-content: center; flex: none; }
       .valid-ico .ico { width: 22px; height: 22px; }
@@ -1286,7 +1286,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       .sources { display: grid; grid-template-columns: 1fr; gap: 16px; }
       @media (min-width: 560px) { .sources { grid-template-columns: repeat(2, 1fr); } }
       @media (min-width: 1000px) { .sources { grid-template-columns: repeat(4, 1fr); } }
-      .source-group { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; }
+      .source-group { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; box-shadow: var(--shadow-md); }
       .source-group h4 { font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 14px; }
       .source-group ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
       .source-group li { font-size: 13px; line-height: 1.45; }
@@ -1297,7 +1297,7 @@ class KygoOuraVsRingConn extends HTMLElement {
 
       /* FAQ */
       .faq { display: flex; flex-direction: column; gap: 10px; }
-      .faq details { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 20px; transition: border-color .2s; }
+      .faq details { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 20px; box-shadow: var(--shadow-md); transition: border-color .2s, box-shadow .2s; }
       .faq details[open] { border-color: var(--kygo-green); }
       .faq summary { list-style: none; padding: 16px 0; font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); display: flex; align-items: center; justify-content: space-between; cursor: pointer; gap: 14px; }
       .faq summary::-webkit-details-marker { display: none; }
@@ -1338,16 +1338,18 @@ class KygoOuraVsRingConn extends HTMLElement {
 
       /* Early / late app-download CTA cards */
       .kearly-section { padding: 48px 20px; }
+      .kearly-section.bg-white { background: #fff; }
+      .kearly-section.bg-light { background: var(--kygo-light); }
       .kearly-section .section-inner { max-width: 1200px; margin: 0 auto; }
       .kearly-section-slim { padding: 48px 20px; }
       .kband { max-width: 1100px; margin: 0 auto; }
-      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; padding: 28px 36px; display: flex; align-items: center; gap: 36px; box-shadow: var(--shadow-md); }
       .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
-      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; flex: 1 1 auto; min-width: 0; }
       .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
       .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
       .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.3; color: #1E293B; }
-      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; flex: 0 0 auto; max-width: 470px; }
       .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #475569; text-align: center; }
       .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
       .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
