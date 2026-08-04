@@ -668,8 +668,8 @@ class KygoOuraVsRingConn extends HTMLElement {
     const ring5Link = 'https://www.amazon.com/dp/B0GRK1N94H?tag=kygohealthapp-20&th=1';
     const ring4Link = 'https://www.amazon.com/dp/B0D9WT1S2T?tag=kygohealthapp-20&th=1';
     const gen3Link = 'https://www.amazon.com/dp/B0GVSB66ZY?tag=kygohealthapp-20&th=1';
-    const gen2Link = 'https://www.amazon.com/s?k=RingConn+Gen+2&tag=kygohealthapp-20';
-    const gen2airLink = 'https://www.amazon.com/s?k=RingConn+Gen+2+Air&tag=kygohealthapp-20';
+    const gen2Link = 'https://www.amazon.com/dp/B0DG2S6GC1?tag=kygohealthapp-20&th=1';
+    const gen2airLink = 'https://www.amazon.com/dp/B0DWJR7F6T?tag=kygohealthapp-20&th=1';
     const cols = [
       { key: 'ring5', img: ouraImg, name: 'Oura Ring 5', link: ring5Link, slug: 'oura-ring-5' },
       { key: 'ring4', img: ouraImg, name: 'Oura Ring 4', link: ring4Link, slug: 'oura-ring-4' },

@@ -78,8 +78,8 @@ canary file (`fitbit-air` / `whoop-peak-12mo`).
 | `4cm6d5m` | product | `B00GB85JR4` | `https://www.amazon.com/dp/B00GB85JR4?tag=kygohealthapp-20&th=1` | `vitamin-d3-5000` | ✅ converted | kygo-hrv-factors.js, kygo-supplements-by-metric.js |
 | `4cwMwI1` | product | `B07W781XWF` | `https://www.amazon.com/dp/B07W781XWF?tag=kygohealthapp-20&th=1` | `blue-light-glasses` | ✅ converted | kygo-deep-sleep-factors.js, kygo-sleep-latency-factors.js |
 | `4e5fGyj` | product | `B0GVSB66ZY` | `https://www.amazon.com/dp/B0GVSB66ZY?tag=kygohealthapp-20&th=1` | `ringconn-gen3` | ✅ converted | kygo-recovery-scores.js, kygo-oura-vs-ringconn.js |
-| n/a | search | — | `https://www.amazon.com/s?k=RingConn+Gen+2&tag=kygohealthapp-20` | `ringconn-gen2` | new | kygo-oura-vs-ringconn.js |
-| n/a | search | — | `https://www.amazon.com/s?k=RingConn+Gen+2+Air&tag=kygohealthapp-20` | `ringconn-gen2-air` | new | kygo-oura-vs-ringconn.js |
+| `4hNHA3W` | product | `B0DG2S6GC1` | `https://www.amazon.com/dp/B0DG2S6GC1?tag=kygohealthapp-20&th=1` | `ringconn-gen2` | new | kygo-oura-vs-ringconn.js |
+| `4yVWYRV` | product | `B0DWJR7F6T` | `https://www.amazon.com/dp/B0DWJR7F6T?tag=kygohealthapp-20&th=1` | `ringconn-gen2-air` | new | kygo-oura-vs-ringconn.js |
 | `4fHVnYW` | search | — | `https://www.amazon.com/s?k=amazfit&rh=p_123%3A321923&tag=kygohealthapp-20` | `amazfit-search` | ✅ converted | kygo-recovery-scores.js |
 | `4fZD5Cx` | search | — | `https://www.amazon.com/s?k=suunto%20smart%20watch&rh=p_123%3A393232&tag=kygohealthapp-20` | `suunto-search` | ✅ converted | kygo-recovery-scores.js, kygo-vo2max-accuracy.js |
 | `4lbwIg3` | product | `B002FJW3ZY` | `https://www.amazon.com/dp/B002FJW3ZY?tag=kygohealthapp-20&th=1` | `vitamin-b12` | ✅ converted | kygo-hrv-factors.js, kygo-supplements-by-metric.js |
