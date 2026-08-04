@@ -1182,8 +1182,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       .tbl thead th .amazon-link:hover .ico { transform: translateX(2px); }
       .tbl tbody td { padding: 14px 18px; border-top: 1px solid var(--border-subtle); vertical-align: top; font-size: 14px; line-height: 1.5; }
       .tbl tbody tr:hover { background: var(--bg-raised); }
-      .tbl .spec-name { font-weight: 600; color: var(--fg-1); width: 26%; }
-      .tbl.ftbl .spec-name { width: 44%; }
+      .tbl .spec-name { font-weight: 600; color: var(--fg-1); overflow-wrap: anywhere; }
       .tbl .spec-name .info { font-size: 12px; font-weight: 400; color: var(--fg-3); margin-top: 2px; line-height: 1.4; }
       .tbl .y { color: var(--kygo-green-dark); font-weight: 600; }
       .tbl .n { color: var(--fg-2); }
@@ -1205,12 +1204,14 @@ class KygoOuraVsRingConn extends HTMLElement {
       @media (max-width: 767px) {
         .tbl thead th, .tbl tbody td { padding: 12px 12px; font-size: 13px; }
         .tbl thead th .head-prod { font-size: 13px; gap: 7px; }
-        .tbl th:first-child, .tbl td:first-child { width: 130px; min-width: 130px; max-width: 130px; }
+        .tbl th:first-child, .tbl td:first-child { width: 124px; min-width: 124px; max-width: 124px; }
       }
       @media (min-width: 768px) {
         .tbl { min-width: 0; }
         .tbl.ftbl { min-width: 0; }
         .tbl th:first-child, .tbl td:first-child { position: static; box-shadow: none; }
+        .tbl .spec-name { width: 26%; }
+        .tbl.ftbl .spec-name { width: 44%; }
       }
 
       /* Cost calculator */
