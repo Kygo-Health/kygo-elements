@@ -443,7 +443,7 @@ class KygoOuraVsRingConn extends HTMLElement {
           </div>
           <div class="tbl-wrap">
             <div class="tbl-tabs" data-tabs role="tablist" aria-label="Spec categories">${this._renderTabs()}</div>
-            <div class="tbl-scroll"><div data-tbl-body>${this._renderTable()}</div></div>
+            <div data-tbl-body>${this._renderTable()}</div>
           </div>
         </div>
       </section>
@@ -459,7 +459,7 @@ class KygoOuraVsRingConn extends HTMLElement {
           </div>
           <div class="tbl-wrap">
             <div class="tbl-tabs" data-ftabs role="tablist" aria-label="Feature categories">${this._renderFeatTabs()}</div>
-            <div class="tbl-scroll"><div data-feat-body>${this._renderFeatTable()}</div></div>
+            <div data-feat-body>${this._renderFeatTable()}</div>
           </div>
         </div>
       </section>
@@ -680,6 +680,7 @@ class KygoOuraVsRingConn extends HTMLElement {
     const rows = this._specs[this._activeTab];
     const storeLink = (url, label) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored" data-track-position="ranking" data-track-label="${label}">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
+      <div class="tbl-scroll">
       <table class="tbl">
         <thead>
           <tr>
@@ -706,6 +707,7 @@ class KygoOuraVsRingConn extends HTMLElement {
           </tr>
         </tbody>
       </table>
+      </div>
       ${this._activeTab === 'Overview' ? `<p class="tbl-note">Note: Oura also sells a Ring 4 Ceramic ($399, zirconia exterior) not shown here. RingConn Gen 3 pricing showed $349 with an anniversary promo running; regional prices vary. Oura membership is first-month-free for new members.</p>` : ''}
       ${this._activeTab === 'Battery' ? `<p class="tbl-note">Note: All battery figures are manufacturer ratings under each company's own test conditions and vary by size and settings. RingConn's sleep-apnea monitoring increases power draw; Gen 3 rates 10 to 12 days with vibration on.</p>` : ''}
       ${this._activeTab === 'Cost' ? `<p class="tbl-note">Note: Oura totals assume continuous $69.99/yr membership; it is cancelable anytime and you keep the three daily scores. Ring 4 shown at its $349 sale price. Both hardware and membership are HSA/FSA eligible.</p>` : ''}
@@ -730,6 +732,7 @@ class KygoOuraVsRingConn extends HTMLElement {
     const ringconnImg = 'https://static.wixstatic.com/media/273a63_fc0ed00ac88441138f7b4c7e398f7aa8~mv2.png';
     const rows = this._features[this._featTab];
     return `
+      <div class="tbl-scroll">
       <table class="tbl ftbl">
         <thead>
           <tr>
@@ -751,6 +754,7 @@ class KygoOuraVsRingConn extends HTMLElement {
           `).join('')}
         </tbody>
       </table>
+      </div>
     `;
   }
 
@@ -1152,6 +1156,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       /* Spec + feature tables */
       .tbl-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-md); }
       .tbl-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      @media (min-width: 768px) { .tbl-scroll { overflow-x: visible; } }
       .tbl-note { color: var(--fg-3); font-size: 12.5px; line-height: 1.55; margin: 0; padding: 14px 18px 16px; border-top: 1px solid var(--border-subtle); background: var(--bg-surface); }
       .tbl-tabs { display: flex; gap: 4px; padding: 12px; border-bottom: 1px solid var(--border-subtle); overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .tbl-tabs button { font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 9px 14px; border-radius: 10px; border: 0; background: transparent; color: var(--fg-2); cursor: pointer; white-space: nowrap; transition: all .15s ease; display: inline-flex; align-items: center; gap: 8px; }
@@ -1159,9 +1164,9 @@ class KygoOuraVsRingConn extends HTMLElement {
       .tbl-tabs button.active { background: var(--kygo-dark); color: #fff; }
       .tbl-tabs button .ct { font-size: 11px; padding: 2px 7px; border-radius: 999px; background: rgba(0,0,0,0.06); }
       .tbl-tabs button.active .ct { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.85); }
-      .tbl { width: 100%; border-collapse: collapse; font-family: var(--font-body); min-width: 860px; }
-      .tbl.ftbl { min-width: 560px; }
-      /* Sticky first column so the spec/feature label stays pinned while columns scroll */
+      .tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-family: var(--font-body); min-width: 760px; }
+      .tbl.ftbl { min-width: 480px; }
+      /* Mobile: a fixed, narrow, sticky first column keeps the row label pinned and readable while the data columns scroll (unsticks on desktop) */
       .tbl th:first-child, .tbl td:first-child { position: sticky; left: 0; z-index: 2; box-shadow: 1px 0 0 var(--border-subtle); }
       .tbl thead th:first-child { z-index: 3; background: var(--bg-raised); }
       .tbl tbody td:first-child { background: #fff; }
@@ -1197,9 +1202,15 @@ class KygoOuraVsRingConn extends HTMLElement {
       .aff-btn:hover { border-color: var(--kygo-green); background: rgba(34,197,94,0.1); }
       .aff-btn img { width: 18px; height: 18px; border-radius: 4px; background: #fff; padding: 2px; object-fit: contain; }
       .aff-btn .ico { width: 13px; height: 13px; }
-      @media (max-width: 720px) {
-        .tbl thead th, .tbl tbody td { padding: 12px 14px; font-size: 13px; }
-        .tbl .spec-name { width: 34%; }
+      @media (max-width: 767px) {
+        .tbl thead th, .tbl tbody td { padding: 12px 12px; font-size: 13px; }
+        .tbl thead th .head-prod { font-size: 13px; gap: 7px; }
+        .tbl th:first-child, .tbl td:first-child { width: 130px; min-width: 130px; max-width: 130px; }
+      }
+      @media (min-width: 768px) {
+        .tbl { min-width: 0; }
+        .tbl.ftbl { min-width: 0; }
+        .tbl th:first-child, .tbl td:first-child { position: static; box-shadow: none; }
       }
 
       /* Cost calculator */
@@ -1263,7 +1274,8 @@ class KygoOuraVsRingConn extends HTMLElement {
       .kygo-cta-card .cta-btn-row { position: relative; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%; }
       @media (max-width: 560px) { .kygo-cta-card .cta-btn-row .btn-lg { width: 100%; justify-content: center; } }
       .kygo-cta-card .cta-works { position: relative; margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.6); font-size: 13px; }
-      .kygo-cta-card .cta-badges { display: grid; grid-template-columns: repeat(3, auto); gap: 10px; align-items: center; justify-content: center; }
+      .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+      @media (max-width: 560px) { .kygo-cta-card .cta-badges { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; } }
       .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
       /* Sources */
