@@ -387,9 +387,9 @@ class KygoHeartRateAccuracy extends HTMLElement {
           ${this._devices.map(d => {
             const id = this._did(d), on = this._selected.has(id);
             return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-cmpr-id="${id}" aria-pressed="${on}">
-              <span class="pick-check">${this._icon('check')}</span>
               ${this._deviceLogo(d, 'sm')}
               <span class="pick-name">${d.chip}</span>
+              <span class="pick-check">${this._icon('check')}</span>
             </button>`;
           }).join('')}
         </div>
@@ -1198,18 +1198,18 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .cmpr-picker-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
       .cmpr-picker-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); }
       .cmpr-picker-hint { font-size: 12px; color: var(--fg-3); }
-      .picker { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 10px; }
-      @media (min-width: 480px) { .picker { grid-template-columns: repeat(5, 1fr); } }
-      @media (min-width: 860px) { .picker { grid-template-columns: repeat(5, 1fr); } }
-      .pick-tile { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 6px 10px; cursor: pointer; transition: all .15s ease; font-family: var(--font-display); }
+      /* Compact wrapping chip row so 10 devices don't build a tall block on mobile */
+      .picker { display: flex; flex-wrap: wrap; gap: 8px; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 10px; }
+      .pick-tile { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 999px; padding: 6px 13px 6px 7px; cursor: pointer; transition: all .15s ease; font-family: var(--font-display); }
       .pick-tile:hover { border-color: var(--fg-3); }
-      .pick-tile .brand-img.sm { width: 34px; height: 34px; border-radius: 8px; }
-      .pick-name { font-weight: 600; font-size: 11.5px; color: var(--fg-1); line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
-      .pick-check { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: none; align-items: center; justify-content: center; }
-      .pick-check .ico { width: 10px; height: 10px; }
+      .pick-tile .brand-img.sm { width: 26px; height: 26px; border-radius: 7px; }
+      .pick-name { font-weight: 600; font-size: 12.5px; color: var(--fg-1); line-height: 1.1; white-space: nowrap; }
+      .pick-check { width: 15px; height: 15px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: none; align-items: center; justify-content: center; flex: none; }
+      .pick-check .ico { width: 9px; height: 9px; }
       .pick-tile.active { border-color: var(--kygo-green); background: rgba(34,197,94,0.06); box-shadow: 0 0 0 3px rgba(34,197,94,0.10); }
       .pick-tile.active .pick-name { color: var(--kygo-green-dark); }
       .pick-tile.active .pick-check { display: inline-flex; }
+      @media (max-width: 400px) { .pick-tile .brand-img.sm { width: 22px; height: 22px; } .pick-name { font-size: 12px; } }
 
       .cr-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; }
       @media (min-width: 768px) { .cr-wrap { border-radius: 22px; } }
