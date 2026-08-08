@@ -2,8 +2,9 @@
  * Kygo Health · Most Accurate Heart Rate Wearable Comparison Tool
  * Tag name: kygo-heart-rate-accuracy
  * Which consumer wearable is most accurate for heart rate vs a criterion standard (ECG / chest strap)?
- * Ranks 10 devices on one 45-person protocol (Gielen 2026) by median MAPE, MAE, bias, limits of
- * agreement and CCC, with the axis that decides every number: steady/rest vs irregular arm movement.
+ * Groups 10 devices into four tiers from Gielen 2026 (45-participant rotation, ~10 sessions per
+ * device — ordering within a tier is not meaningful) by median MAPE, MAE, bias, limits of agreement
+ * and CCC, with the axis that decides every number: steady/rest vs irregular arm movement.
  * Data: Heart-Rate-Accuracy research v2.1 (Gielen 2026, Van Oost 2025, Dial 2025, Miller 2022,
  * Zhang 2020, Ceugniez 2025, Vermunicht 2025, Lee 2026, Lambe 2026, Chevance 2022, Fuller 2020,
  * Quinn 2024, Moghaddam 2026, Navalta 2025, Hung 2025, Singh 2024, Kitagaki 2025).
@@ -93,108 +94,108 @@ class KygoHeartRateAccuracy extends HTMLElement {
       : `<span class="${cls} brand-img--icon">${this._typeIcon(d.type)}</span>`;
   }
 
-  // ── Device data (Gielen 2026: 10 devices, one 45-person protocol, Zephyr strap) ──
-  //    Ordered best to worst by median MAPE. MAPE and MAE are MEDIANS.
+  // ── Device data (Gielen 2026: 10 devices, 45-participant rotation, Zephyr strap) ──
+  //    Grouped into four tiers; within-tier order is not meaningful. MAPE and MAE are MEDIANS.
 
   get _devices() {
     return [
       {
-        key: 'fitbit', name: 'Fitbit Charge 6', short: 'Fitbit Charge 6', chip: 'Charge 6', type: 'watch',
+        key: 'fitbit', name: 'Fitbit Charge 6', short: 'Fitbit Charge 6', chip: 'Charge 6', type: 'watch', tier: 1,
         method: 'Wrist band, optical PPG plus motion; Fitbit HR algorithm.',
         mape: 5.5, mae: 4.5, bias: 0.7, loLo: -11.2, loHi: 12.7, ccc: 0.93,
-        independent: 'The single most accurate of ten devices on one 45-person protocol: median MAPE 5.5%, the tightest limits of agreement in the table (-11.2 to +12.7) and the only CCC above 0.90. It still does not clear the 5% acceptability line cleanly, and this is a daytime-motion figure, not a marketing sleep number.',
+        independent: 'Top tier in the Gielen daytime protocol: median MAPE 5.5%, the tightest limits of agreement in the study (-11.2 to +12.7) and the only CCC above 0.90. It still does not clear the 5% acceptability line cleanly, and this is a daytime-motion figure, not a marketing sleep number. Devices were rotated (about 10 of the 45 people each), so read this as a tier, not a rank.',
         vendorClaim: 'Google says a 2023 update made HR tracking "40% more accurate" for vigorous activity, but that claim attaches to the Pixel Watch 2, not the Charge 6, and cites no baseline, reference standard or study.',
-        bestFor: 'The most accurate wrist device in the only clean 10-device head-to-head',
+        bestFor: 'Top-tier daytime accuracy in the Gielen protocol',
         weakestFor: 'Still above the 5% line; racquet sport and rowing degrade it like any wrist PPG',
         affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search'
       },
       {
-        key: 'garmin', name: 'Garmin Vivoactive 5', short: 'Garmin Vivoactive 5', chip: 'Vivoactive 5', type: 'watch',
+        key: 'garmin', name: 'Garmin Vivoactive 5', short: 'Garmin Vivoactive 5', chip: 'Vivoactive 5', type: 'watch', tier: 1,
         method: 'Wrist watch, optical HR (Elevate) plus motion.',
         mape: 6.3, mae: 5.1, bias: -1.0, loLo: -18.6, loHi: 16.7, ccc: 0.83,
-        independent: 'Second of ten (6.3% MAPE, CCC 0.83). Garmin is inconsistent rather than uniformly bad: strong here and in some resting data, weaker in others. It is also the only major brand that publishes no wrist-HR accuracy figure of its own.',
+        independent: 'Top tier in the Gielen protocol (6.3% MAPE, CCC 0.83). Garmin is inconsistent rather than uniformly bad: strong here and in some resting data, weaker in others. It is also the only major brand that publishes no wrist-HR accuracy figure of its own.',
         vendorClaim: 'Garmin publishes no numerical wrist-HR accuracy figure at all, alone among the major brands. Device manuals redirect to a general accuracy page with no number.',
         bestFor: 'A strong all-round daytime result and reliable steady-cardio tracking',
         weakestFor: 'No published accuracy data to check a claim against; wide agreement limits',
         affiliateUrl: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search'
       },
       {
-        key: 'google', name: 'Google Pixel Watch 2', short: 'Pixel Watch 2', chip: 'Pixel Watch 2', type: 'watch',
+        key: 'google', name: 'Google Pixel Watch 2', short: 'Pixel Watch 2', chip: 'Pixel Watch 2', type: 'watch', tier: 1,
         method: 'Wrist watch, multi-path optical HR sensor plus motion.',
         mape: 6.7, mae: 4.9, bias: -0.4, loLo: -15.0, loHi: 14.2, ccc: 0.87,
-        independent: 'Third of ten (6.7% MAPE) with the second-tightest limits of agreement (-15.0 to +14.2) and CCC 0.87. Independently validated by Gielen 2026, which corrected earlier lists that had called it unvalidated.',
+        independent: 'Top tier in the Gielen protocol (6.7% MAPE) with tight limits of agreement (-15.0 to +14.2) and CCC 0.87. Independently validated by Gielen 2026, which corrected earlier lists that had called it unvalidated.',
         vendorClaim: 'Google\'s "40% more accurate for vigorous activity" claim is specifically for this device, but it gives no baseline, no reference standard and no supporting study.',
         bestFor: 'Tight, well-centered readings across a mixed daytime protocol',
         weakestFor: 'Vendor claim is unquantified; motion still degrades it like any watch',
         affiliateUrl: 'https://www.amazon.com/s?k=google%20pixel%20watch&tag=kygohealthapp-20', trackLabel: 'google-pixel-watch-search'
       },
       {
-        key: 'apple', name: 'Apple Watch SE', short: 'Apple Watch SE', chip: 'Apple SE', type: 'watch',
+        key: 'apple', name: 'Apple Watch SE', short: 'Apple Watch SE', chip: 'Apple SE', type: 'watch', tier: 2,
         method: 'Wrist watch, second-gen optical HR sensor plus motion.',
         mape: 7.3, mae: 5.0, bias: 0.9, loLo: -21.4, loHi: 23.0, ccc: 0.70,
-        independent: 'A textbook Rule 1 row: near-zero bias (+0.9 bpm) but the sixth-widest limits of agreement of ten (-21.4 to +23.0) and a CCC of only 0.70. The average looks excellent while individual readings swing hard. Note the tested device is the budget SE, not a flagship.',
+        independent: 'A textbook Rule 1 row: one of the smallest biases in the table (+0.9 bpm) sitting next to some of its widest limits of agreement (-21.4 to +23.0) and a CCC of only 0.70. The average looks excellent while individual readings swing hard. Note the tested device is the budget SE, not a flagship.',
         vendorClaim: 'Apple\'s own white paper (Nov 2024, 100,000+ workouts) is the most transparent disclosure in the category: within 5 bpm 98% sedentary, 96% cycling, down to 87% walking. Its background algorithm reads 89% within 5 bpm on Series 6+ versus 72% on the SE and Series 4-5.',
         bestFor: 'A tiny mean bias and strong transparency from Apple\'s own data',
         weakestFor: 'Wide swings (low CCC 0.70); the flagship sensor was not the one tested',
         affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search'
       },
       {
-        key: 'garmin', name: 'Garmin Vivosmart 5', short: 'Garmin Vivosmart 5', chip: 'Vivosmart 5', type: 'watch',
+        key: 'garmin', name: 'Garmin Vivosmart 5', short: 'Garmin Vivosmart 5', chip: 'Vivosmart 5', type: 'watch', tier: 2,
         method: 'Wrist band, optical HR (Elevate) plus motion.',
         mape: 8.1, mae: 7.0, bias: 4.8, loLo: -15.8, loHi: 25.4, ccc: 0.78,
-        independent: 'Fifth of ten (8.1% MAPE) but a +4.8 bpm over-read, the largest positive bias in the table. It posts strong correlations elsewhere (r 0.96 to 0.97 in Lee 2026 resistance testing), so the story is a consistent upward offset rather than noise.',
+        independent: 'Second tier in the Gielen protocol (8.1% MAPE) but a +4.8 bpm over-read, the largest positive bias in the table. It posts strong correlations elsewhere (r 0.96 to 0.97 in Lee 2026 resistance testing), so the story is a consistent upward offset rather than noise.',
         vendorClaim: 'As with all Garmin hardware, no numerical wrist-HR accuracy figure is published.',
         bestFor: 'Consistent, predictable behavior (a steady over-read you can mentally adjust)',
         weakestFor: 'Systematically reads about 5 bpm high; no vendor figure to verify',
         affiliateUrl: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search'
       },
       {
-        key: 'polar', name: 'Polar Ignite 3', short: 'Polar Ignite 3', chip: 'Ignite 3', type: 'watch',
+        key: 'polar', name: 'Polar Ignite 3', short: 'Polar Ignite 3', chip: 'Ignite 3', type: 'watch', tier: 3,
         method: 'Wrist watch, Polar Precision Prime optical sensor.',
         mape: 11.2, mae: 9.5, bias: -4.3, loLo: -31.4, loHi: 22.9, ccc: 0.63,
-        independent: 'Mid-pack (11.2% MAPE, CCC 0.63) and notably heat-sensitive: its error roughly doubled in a hot climate chamber (9.5% to 18.2%). Polar is unusual in publishing its own weak numbers for strength and team sport.',
+        independent: 'Third tier in the Gielen protocol (11.2% MAPE, CCC 0.63) and notably heat-sensitive: its error roughly doubled in a hot climate chamber (9.5% to 18.2%). Polar is unusual in publishing its own weak numbers for strength and team sport.',
         vendorClaim: 'Polar is the only brand publishing its own bad numbers: overall MAE 4.4 bpm (3.7%), but strength training 5.8 bpm and floorball 12.6 bpm in its Precision Prime and Elixir white papers.',
         bestFor: 'An honest manufacturer that publishes its weak cases',
         weakestFor: 'Below the acceptability line, and heat degrades it sharply',
         affiliateUrl: 'https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20', trackLabel: 'polar-search'
       },
       {
-        key: 'xiaomi', name: 'Xiaomi Watch 2', short: 'Xiaomi Watch 2', chip: 'Xiaomi 2', type: 'watch',
+        key: 'xiaomi', name: 'Xiaomi Watch 2', short: 'Xiaomi Watch 2', chip: 'Xiaomi 2', type: 'watch', tier: 3,
         method: 'Wrist watch, optical HR sensor plus motion.',
         mape: 11.9, mae: 9.1, bias: -3.0, loLo: -33.3, loHi: 27.2, ccc: 0.69,
-        independent: '11.9% MAPE with the second-widest limits of agreement in the table (-33.3 to +27.2). Beyond this single study there is no independent or manufacturer HR validation to check it against.',
+        independent: 'Third tier in the Gielen protocol (11.9% MAPE) with some of the widest limits of agreement in the table (-33.3 to +27.2). Beyond this single study there is no independent or manufacturer HR validation to check it against.',
         vendorClaim: 'No independent or manufacturer HR-accuracy figure is published for the Watch 2.',
         bestFor: 'Budget option; acceptable at rest like most wrist PPG',
         weakestFor: 'Wide swings under motion and no validation record',
         affiliateUrl: 'https://www.amazon.com/s?k=xiaomi%20smart%20watch&tag=kygohealthapp-20', trackLabel: 'xiaomi-watch-search'
       },
       {
-        key: 'polar', name: 'Polar Pacer', short: 'Polar Pacer', chip: 'Polar Pacer', type: 'watch',
+        key: 'polar', name: 'Polar Pacer', short: 'Polar Pacer', chip: 'Polar Pacer', type: 'watch', tier: 3,
         method: 'Wrist watch, Polar Precision Prime optical sensor.',
         mape: 13.1, mae: 9.7, bias: -3.9, loLo: -29.7, loHi: 21.8, ccc: 0.66,
-        independent: '13.1% MAPE and CCC 0.66, below the acceptability line on this mixed daytime protocol. Like the Ignite 3, it under-reads on average, so it tends to tell you that you worked less hard than you did.',
+        independent: 'Third tier in the Gielen protocol (13.1% MAPE, CCC 0.66), below the acceptability line on this mixed daytime protocol. Like the Ignite 3, it under-reads on average, so it tends to tell you that you worked less hard than you did.',
         vendorClaim: 'Covered by Polar\'s Precision Prime white-paper figures (overall MAE 4.4 bpm), which are far better than this independent mixed-protocol result.',
         bestFor: 'Running-focused watch; steady cardio is its easy case',
         weakestFor: 'Above the error line on mixed movement; tends to under-read',
         affiliateUrl: 'https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20', trackLabel: 'polar-search'
       },
       {
-        key: 'oura', name: 'Oura Ring Gen 3', short: 'Oura Ring Gen 3', chip: 'Oura Gen 3', type: 'ring',
+        key: 'oura', name: 'Oura Ring Gen 3', short: 'Oura Ring Gen 3', chip: 'Oura Gen 3', type: 'ring', tier: 4,
         method: 'Finger ring, optical PPG plus temperature.',
         mape: 15.0, mae: 11.0, bias: -7.1, loLo: -35.5, loHi: 21.3, ccc: 0.61,
         nightNote: '1.67% at night',
-        independent: 'The split-personality device: best in the field at night (1.67% MAPE against ECG, Dial 2025) but 9th of 10 by day (15.0% MAPE), because a finger sensor is not motion-artifact resistant. It is the clearest proof that "rings are more accurate" is marketing, not data.',
+        independent: 'The split-personality device: excellent at night (1.67% MAPE against ECG, Dial 2025) but bottom tier by day (15.0% MAPE), because a finger sensor is not motion-artifact resistant. It is the clearest proof that "rings are more accurate" is marketing, not data: placement is not the variable that decides accuracy, motion is.',
         vendorClaim: 'Oura markets resting-HR r-squared of 0.996, but that traces to a study whose authors are all Oura-affiliated, and it is a nightly-average figure; for 5-minute segments it falls to about 0.87.',
         bestFor: 'Nocturnal resting heart rate and the vitals measured while you sleep',
-        weakestFor: 'Daytime and any movement; 9th of 10 by day despite topping night',
+        weakestFor: 'Daytime and any movement; bottom tier by day despite leading at night',
         affiliateUrl: 'https://www.amazon.com/dp/B0CSRF3Y2F?tag=kygohealthapp-20&th=1', trackLabel: 'oura-ring-gen3'
       },
       {
-        key: 'fitbit', name: 'Fitbit Inspire 3', short: 'Fitbit Inspire 3', chip: 'Inspire 3', type: 'watch',
+        key: 'fitbit', name: 'Fitbit Inspire 3', short: 'Fitbit Inspire 3', chip: 'Inspire 3', type: 'watch', tier: 4,
         method: 'Wrist band, optical PPG plus motion; Fitbit HR algorithm.',
         mape: 16.5, mae: 14.3, bias: -14.4, loLo: -51.3, loHi: 22.5, ccc: 0.45,
         nightNote: '5.4% in patients',
-        independent: 'Worst of ten here (16.5% MAPE, under-reading by 14 bpm, CCC 0.45). But do not over-read it: the same device measured 5.40% MAPE against ECG in cardiac patients during exercise testing (Kitagaki 2025). Protocol and population, not the device alone, drive the number.',
+        independent: 'Bottom tier in the Gielen protocol (16.5% MAPE, under-reading by 14 bpm, CCC 0.45). But do not over-read it: the same device measured 5.40% MAPE against ECG in cardiac patients during exercise testing (Kitagaki 2025). Protocol and population, not the device alone, drive the number — the clearest illustration that model and protocol beat brand.',
         vendorClaim: 'Google\'s 2023 "40% more accurate" line is often misapplied to the Inspire and Charge; it was specific to the Pixel Watch 2 and carries no study.',
         bestFor: 'A cheap tracker that is far more accurate at rest than this row suggests',
         weakestFor: 'Worst mixed-motion result of the ten; large under-read',
@@ -207,24 +208,15 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
   get _facts() {
     return [
-      { icon: 'alert', tone: 'dark', tag: 'Rule 1', title: 'Mean bias hides the real error',
-        body: 'Apple\'s pooled bias across 22 studies is -0.27 bpm, which sounds near perfect. The limits of agreement on the same data are -7.2 to +6.6 bpm. A bias near zero just means over-reads and under-reads cancelled out. Always read MAPE and the limits of agreement, never the bias figure a brand quotes.',
-        src: 'Lambe 2026 (Apple Watch meta-analysis)' },
-      { icon: 'moon', tone: 'good', tag: 'The easy case', title: 'Every device is accurate at night',
-        body: 'A still body and steady blood flow make resting heart rate the easy case: nocturnal error is about 1.7 to 3% for Oura, WHOOP and Polar. Almost every manufacturer accuracy claim is built on sleep or resting data, then quoted as if it held all day.',
-        src: 'Dial 2025 · Miller 2022' },
-      { icon: 'layers', tone: 'mid', tag: 'Rule 3', title: 'The model matters more than the brand',
-        body: 'On one sample, the Fitbit Charge 6 was the single most accurate of ten devices (5.5% MAPE) and the Fitbit Inspire 3 the single worst (16.5%). Any claim of the form "Fitbit is accurate" without a model number is meaningless. Generation, protocol and population all move the number more than brand does.',
-        src: 'Gielen 2026' },
       { icon: 'heart', tone: 'dark', tag: 'Irregular rhythm', title: 'Atrial fibrillation breaks it further',
         body: 'During peak exercise in AF the average error jumps to about 29 bpm, versus 14 bpm in normal rhythm, and devices under-read far more often than they over-read (61% vs 25% of readings). It is the rhythm during the reading that matters, not the diagnosis on your chart.',
-        src: 'Quinn 2024' },
-      { icon: 'user', tone: 'mid', tag: 'Skin & ink', title: 'Skin tone is fine at rest, off under load',
-        body: 'Pooled data shows no significant pulse-rate bias by skin pigmentation at rest. Above roughly 60% effort, one study found medium and dark skin about 11.8 bpm off while light skin stayed accurate. Tattoos directly over the sensor also attenuate the signal, worst at rest.',
-        src: 'Singh 2024 · Hung 2025 · Navalta 2025' },
-      { icon: 'watch', tone: 'good', tag: 'Free levers', title: 'Where you wear it changes the number',
-        body: 'Moving a watch from one finger-width to three finger-widths above the wrist bone cut error by about 11 points and raised agreement from 0.59 to 0.92. A snug band, worn higher on the arm on bare unmarked skin, is the cheapest accuracy upgrade there is.',
-        src: 'Vermunicht 2025' }
+        src: 'Quinn 2024 (12-lead ECG, N=81)' },
+      { icon: 'user', tone: 'mid', tag: 'Skin tone', title: 'Fine at rest, off under load',
+        body: 'Pooled data shows no significant pulse-rate bias by skin pigmentation at rest. Under exercise the picture changes: above ~60% effort, medium and dark skin ran about 11.8 bpm off while light skin stayed accurate. On current hardware (Apple Series 9) the limits of agreement widened 4.6-fold from the lightest to the darkest group. The fixes are the same for everyone.',
+        src: 'Singh 2024 · Hung 2025 · Chase 2024' },
+      { icon: 'alert', tone: 'dark', tag: 'Tattoos', title: 'Ink over the sensor attenuates the signal',
+        body: 'A tattoo directly under the sensor scatters the light the optics rely on, and the penalty is largest at rest, where the pulse signal is smallest — one study saw resting error climb from ~3% on clear skin to 23% over ink (much of it dropped readings). Movement masks it, rest exposes it. Keep the sensor on bare, unmarked skin.',
+        src: 'Navalta 2025 (within-subject, N=25)' }
     ];
   }
 
@@ -268,41 +260,34 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
   // ── Day vs night boards (the same sensor, two worlds) ───────────────────
 
-  get _dayBoard() {
-    return [
-      { dev: 'Fitbit Charge 6', v: '5.5%' },
-      { dev: 'Google Pixel Watch 2', v: '6.7%' },
-      { dev: 'Apple Watch SE', v: '7.3%' },
-      { dev: 'Oura Ring Gen 3', v: '15.0%', flag: true }
-    ];
-  }
   get _nightBoard() {
     return [
       { dev: 'Oura Ring Gen 3', v: '1.67%', flag: true },
       { dev: 'Oura Ring Gen 4', v: '1.94%' },
-      { dev: 'Polar Grit X Pro', v: '2.71%' },
+      { dev: 'Polar Grit X Pro', v: '2.71%', caveat: true },
       { dev: 'WHOOP 4.0', v: '3.00%' }
     ];
   }
 
   _dnRows(list) {
-    return list.map(r => `<div class="dn-row${r.flag ? ' flag' : ''}"><span class="dn-dev">${r.dev}</span><span class="dn-val">${r.v}</span></div>`).join('');
+    return list.map(r => `<div class="dn-row${r.flag ? ' flag' : ''}"><span class="dn-dev">${r.dev}${r.caveat ? '<sup>†</sup>' : ''}</span><span class="dn-val">${r.v}</span></div>`).join('');
   }
 
   _renderDayNight() {
     return `
       <div class="dn">
         <div class="dn-col">
-          <div class="dn-head"><span class="dn-ico">${this._icon('activity')}</span><span class="dn-title">By day, on the move</span><span class="dn-tag">mixed motion</span></div>
-          ${this._dnRows(this._dayBoard)}
-          <p class="dn-foot">Median MAPE vs chest strap (Gielen 2026)</p>
+          <div class="dn-head"><span class="dn-ico">${this._icon('gauge')}</span><span class="dn-title">One sensor, two worlds</span><span class="dn-tag">Oura Ring Gen 3</span></div>
+          <div class="dn-row flag"><span class="dn-dev">${this._icon('activity')} By day, moving</span><span class="dn-val">15.0%</span></div>
+          <div class="dn-row"><span class="dn-dev">${this._icon('moon')} At night, still</span><span class="dn-val" style="color:var(--kygo-green-dark);">1.67%</span></div>
+          <p class="dn-foot">Same finger ring · day vs night median MAPE (Gielen 2026 · Dial 2025)</p>
         </div>
         <div class="dn-col night">
-          <div class="dn-head"><span class="dn-ico good">${this._icon('moon')}</span><span class="dn-title">At night, lying still</span><span class="dn-tag good">resting HR</span></div>
+          <div class="dn-head"><span class="dn-ico good">${this._icon('moon')}</span><span class="dn-title">At night, everyone is good</span><span class="dn-tag good">resting HR</span></div>
           ${this._dnRows(this._nightBoard)}
-          <p class="dn-foot">Nocturnal MAPE vs ECG (Dial 2025)</p>
+          <p class="dn-foot">Nocturnal MAPE vs ECG (Dial 2025) · <sup>†</sup>Polar reports a 4-hour window, so it is not directly comparable to the others</p>
         </div>
-        <p class="dn-note">${this._icon('info')} <span><strong>The Oura Ring Gen 3 is 9th of 10 by day (15.0%) and best in the field at night (1.67%).</strong> A finger sensor is superb when you are still and loses the pulse the moment you move. Night is the easy case, and it is where almost every "99% accurate" claim is actually measured. <em>Dial 2025 · Gielen 2026 · Miller 2022</em></span></p>
+        <p class="dn-note">${this._icon('info')} <span><strong>The cleanest proof is a single Samsung recording: asleep the error was 1.06 bpm, awake it was 11.10 bpm</strong> — same device, same person, same night, a tenfold jump the moment they got up (Sarhaddi 2022). Night is the easy case, and it is where almost every "99% accurate" claim is actually measured, then quoted as if it held all day. <em>Dial 2025 · Sarhaddi 2022 · Gielen 2026</em></span></p>
       </div>`;
   }
 
@@ -317,7 +302,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         body: 'Contact pressure changes signal quality as much as, or more than, exercise intensity. A loose watch that slides lets in light and motion. Snug it up before a workout, then loosen it after.',
         src: 'Scardulla 2020' },
       { icon: 'arrowUp', tone: 'good', tag: 'For hard sessions', title: 'Use an armband or strap for racquet & rowing',
-        body: 'An optical band on the upper arm hit 1.35% error versus 6.82% on the wrist, a 5x difference. For badminton, tennis, soccer, rowing and weights, a chest strap or upper-arm band beats any wrist device.',
+        body: 'An optical band on the upper arm hit 1.35% error versus 6.82% on the wrist (same-brand comparison), and a chest strap is better still. For badminton, tennis, soccer, rowing and weights, an upper-arm band or chest strap beats any wrist device — the forearm moves far less than the wrist.',
         src: 'Schweizer 2025' },
       { icon: 'arrowUp', tone: 'good', tag: 'Sensor contact', title: 'Keep the sensor on bare, unmarked skin',
         body: 'Tattoos directly under the sensor attenuate the signal, worst at rest. A shirt sleeve, a grimy sensor window or a gap over ink all cost you accuracy. Clean skin, direct contact.',
@@ -351,7 +336,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         src: 'WHOOP marketing page vs Miller 2022 / Van Oost 2025' },
       { brand: 'Oura', verdict: 'Misleading', good: false,
         claim: 'Resting heart rate r-squared of 0.996.',
-        reality: 'All four authors of the source study carry an <strong>Oura affiliation</strong>, and it is a nightly-average figure. For 5-minute segments the same relationship falls to about 0.87, and by day the Gen 3 is 9th of 10.',
+        reality: 'All four authors of the source study carry an <strong>Oura affiliation</strong>, and it is a nightly-average figure (an r-squared is not an accuracy percentage). For 5-minute segments the same relationship falls to about 0.87, and by day the Gen 3 is bottom tier.',
         src: 'Oura blog vs Kinnunen 2020' },
       { brand: 'Samsung', verdict: 'Misleading', good: false,
         claim: '30% more accurate; 90% correlation while running.',
@@ -365,6 +350,10 @@ class KygoHeartRateAccuracy extends HTMLElement {
         claim: 'None. Manuals redirect to a general accuracy page.',
         reality: 'Garmin publishes <strong>no numerical wrist-HR accuracy figure</strong> in its technology pages, manuals or support docs, alone among the major brands. Independent testing is the only way to judge it.',
         src: 'garmin.com/ataccuracy' },
+      { brand: 'Ultrahuman', verdict: 'Not validation', good: false,
+        claim: 'Ring HR accurate to a mean error of 2.4–2.6 bpm.',
+        reality: 'Based on <strong>n=6</strong>, and the comparison is against an Apple Watch and a SleepImage ring, <strong>not an ECG or chest strap</strong>. Agreement between two optical estimators is not validation against a truth source.',
+        src: 'Ultrahuman self-published, Apr 2024' },
       { brand: 'Apple', verdict: 'Transparent', good: true,
         claim: 'Within 5 bpm: 98% sedentary down to 87% walking; background 89% (Series 6+) vs 72% (SE).',
         reality: '<strong>Nothing wrong.</strong> The most transparent disclosure in the category, across 100,000+ workouts, and the 72% background figure is the most useful number any brand publishes. Not peer reviewed, but honest about its own limits.',
@@ -408,6 +397,12 @@ class KygoHeartRateAccuracy extends HTMLElement {
         cite: 'JMIR mHealth uHealth. 2025;13:e54871. N=26, Polar H10.', url: 'https://mhealth.jmir.org/2025/1/e54871' },
       { tag: 'Independent · rowing & position', title: 'Vermunicht et al. 2025: wear position & rowing',
         cite: 'Eur Heart J Digital Health. 2025;6(5):1024. N=50.', url: 'https://academic.oup.com/ehjdh/article/6/5/1024/8210517' },
+      { tag: 'Independent · intervals', title: 'Reddy et al. 2018: intervals vs maximal effort',
+        cite: 'JMIR mHealth uHealth. 2018;6(12):e10338. N=20, Polar H7.', url: 'https://mhealth.jmir.org/2018/12/e10338/' },
+      { tag: 'Independent · intervals', title: 'Merrigan et al. 2023: rucking, cycling & circuits',
+        cite: 'Meas Phys Educ Exerc Sci. 2023;27(3):234. N=8, Holter ECG.', url: 'https://www.tandfonline.com/doi/full/10.1080/1091367X.2022.2161820' },
+      { tag: 'Independent · day vs night', title: 'Sarhaddi et al. 2022: 24-hour sleep vs wake split',
+        cite: 'PLOS ONE. 2022;17(12):e0268361. N=28, Shimmer3 ECG.', url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0268361' },
       { tag: 'Independent · resistance', title: 'Lee et al. 2026: endurance vs resistance, 4 watches',
         cite: 'Sensors. 2026;26(8):2526. N=62 men, ECG (SOLUM-funded).', url: 'https://www.mdpi.com/1424-8220/26/8/2526' },
       { tag: 'Independent · Apple meta', title: 'Lambe et al. 2026: Apple Watch living meta-analysis',
@@ -424,6 +419,8 @@ class KygoHeartRateAccuracy extends HTMLElement {
         cite: 'Sensors. 2025;25(22):6896. N=25, within-subject.', url: 'https://www.mdpi.com/1424-8220/25/22/6896' },
       { tag: 'Independent · skin tone', title: 'Hung et al. 2025: skin tone by exercise intensity',
         cite: 'PLOS ONE. 2025;20(2):e0318724. N=25, Fitbit vs Polar H10.', url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0318724' },
+      { tag: 'Independent · skin tone', title: 'Chase et al. 2024: skin tone on current hardware',
+        cite: 'J Funct Morphol Kinesiol. 2024;9(4):275. Apple Series 9, N=30.', url: 'https://www.mdpi.com/2411-5142/9/4/275' },
       { tag: 'Independent · pigmentation meta', title: 'Singh et al. 2024: skin pigmentation meta-analysis',
         cite: 'J Med Internet Res. 2024;26:e62769. Pulse-rate arm n=176.', url: 'https://www.jmir.org/2024/1/e62769' },
       { tag: 'Independent · contradiction', title: 'Kitagaki et al. 2025: Fitbit Inspire 3 in patients',
@@ -450,7 +447,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
   get _faqs() {
     return [
       { q: 'Which wearable is the most accurate for heart rate?',
-        a: 'In the only clean 10-device head-to-head on one sample, the Fitbit Charge 6 led (median MAPE 5.5%), then the Garmin Vivoactive 5 (6.3%) and the Google Pixel Watch 2 (6.7%). But "most accurate" depends entirely on what you are doing: at rest almost every device is within a few percent, while during racquet sport, rowing or weights even the best can be 13 to 17% off. No wrist wearable clears the 5% acceptability line cleanly across a full protocol.' },
+        a: 'On the largest daytime study, the top tier was the Fitbit Charge 6, Garmin Vivoactive 5 and Google Pixel Watch 2 (median MAPE 5.5 to 6.7%). We say "tier" rather than a strict ranking because the devices were rotated across different people and the reference strap carries its own 2 to 4% error, so the small gaps between them are not meaningful. And "most accurate" depends entirely on what you are doing: at rest almost every device is within a few percent, while during racquet sport, rowing, weights or intervals even the best can be 13 to 26% off. No wrist wearable clears the 5% acceptability line cleanly across a full protocol.' },
       { q: 'Are wrist heart rate monitors accurate during exercise?',
         a: 'For steady exercise like running or walking, yes, often within 1 to 4% error. The problem is irregular arm movement. Badminton, tennis, soccer, rowing and weightlifting whip or flex the wrist, so the optical sensor loses your pulse and error climbs to 13 to 17%, usually under-reading. For those activities a chest strap is still the honest choice.' },
       { q: 'Why is my watch accurate at night but not during workouts?',
@@ -467,7 +464,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
   // ── SEO light-DOM summary ───────────────────────────────────────────────
 
   _seoText() {
-    return 'Most Accurate Heart Rate Wearable comparison by Kygo Health. Interactive tool: pick 2 to 4 wearables and compare them side by side on five metrics (median MAPE, mean absolute error in bpm, mean bias, limits of agreement spread, and CCC agreement), with the best value in each row highlighted. Which wearable is most accurate for heart rate versus a criterion standard (ECG or chest strap)? The one axis that decides every number is steady versus irregular arm movement, not intensity. Running is one of the easiest conditions for a wrist sensor (Fitbit Charge 4 median MAPE 1.2%), while badminton, tennis, soccer, rowing and weightlifting are the hard ones (badminton 16.2% on the same watch, same wrist). At night, resting heart rate error drops to about 1.7 to 3%, which is where most manufacturer accuracy claims come from. THE HEADLINE 10-DEVICE RANKING (Gielen 2026, N=45, Zephyr chest strap, median MAPE): Fitbit Charge 6 5.5% (CCC 0.93), Garmin Vivoactive 5 6.3% (0.83), Google Pixel Watch 2 6.7% (0.87), Apple Watch SE 7.3% (0.70), Garmin Vivosmart 5 8.1% (0.78), Polar Ignite 3 11.2% (0.63), Xiaomi Watch 2 11.9% (0.69), Polar Pacer 13.1% (0.66), Oura Ring Gen 3 15.0% (0.61), Fitbit Inspire 3 16.5% (0.45). None clears the 5% acceptability line cleanly. Three rules: Rule 1, mean bias is misleading (Apple pooled bias -0.27 bpm but limits of agreement -7.2 to +6.6 bpm), read MAPE and limits of agreement instead. Rule 2, the criterion standard and data completeness vary; a chest strap carries its own 2 to 4% error. Rule 3, model matters more than brand (Fitbit Charge 6 best and Fitbit Inspire 3 worst in the same study). Nocturnal resting HR is superb: Oura Ring Gen 3 1.67% MAPE (Dial 2025), Oura Ring Gen 4 1.94%, Polar Grit X Pro 2.71%, WHOOP 4.0 3.00%. Fixed facts: the failure mode is irregular arm movement, not intensity; atrial fibrillation raises error to about 29 bpm at peak exercise; skin pigmentation shows no bias at rest but about 11.8 bpm error under load for medium and dark skin; tattoos attenuate the signal; wear position matters (moving a watch higher up the arm cut error about 11 points). Manufacturer claims to distrust: WHOOP 99.7% (sleep only, one night, WHOOP 3.0), Oura r-squared 0.996 (Oura-affiliated authors, nightly average), Samsung 30% more accurate (no absolute figure), Pixel Watch 2 / Fitbit Charge 6 40% more accurate (Pixel only, no study), Garmin publishes no figure at all. Do not cite fabricated figures like "Device 84.6% accurate" or a "University of X 2026 heart rate ranking" that trace to no real study. Sources: Gielen 2026, Van Oost 2025, Dial 2025, Miller 2022, Zhang 2020, Ceugniez 2025, Vermunicht 2025, Lee 2026, Lambe 2026, Chevance 2022, Fuller 2020, Quinn 2024, Moghaddam 2026, Navalta 2025, Hung 2025, Singh 2024, Kitagaki 2025. Fitbit vs Garmin vs Apple Watch vs Google Pixel vs Polar vs Oura vs Xiaomi heart rate accuracy. Data verified July 2026.';
+    return 'Most Accurate Heart Rate Wearable comparison by Kygo Health. Interactive tool: pick 2 to 4 wearables and compare them side by side on five metrics (median MAPE, mean absolute error in bpm, mean bias, limits of agreement spread, and CCC agreement). Which wearable is most accurate for heart rate versus a criterion standard (ECG or chest strap)? The one axis that decides every number is steady versus irregular arm movement, not intensity. Running is one of the easiest conditions for a wrist sensor (Fitbit Charge 4 median MAPE 1.2%), while badminton, tennis, soccer, rowing and weightlifting are the hard ones (badminton 16.2% on the same watch, same wrist). Intervals are worse than maximal effort: on the same bike, error was 11.8% at maximal steady effort but 26.0% on intervals, because changing exercise breaks the sensor, not hard exercise. At night, resting heart rate error drops to about 1.7 to 3%, which is where most manufacturer accuracy claims come from; one Samsung recording went from 1.06 bpm error asleep to 11.10 bpm awake, same device, same night. THE DAYTIME RESULT IS FOUR TIERS, NOT A 1-TO-10 RANKING (Gielen 2026, N=45, Zephyr chest strap, median MAPE). Important caveat: the devices were ROTATED, each tested on about 10 of the 45 participants, NOT worn head-to-head by all 45, and the chest strap carries its own 2.28 to 3.86% error, so gaps smaller than that are not meaningful and ordinal ranking (for example "second of ten" or "9th of 10") should not be used. Tier 1: Fitbit Charge 6 5.5% (CCC 0.93), Garmin Vivoactive 5 6.3% (0.83), Google Pixel Watch 2 6.7% (0.87). Tier 2: Apple Watch SE 7.3% (0.70), Garmin Vivosmart 5 8.1% (0.78). Tier 3: Polar Ignite 3 11.2% (0.63), Xiaomi Watch 2 11.9% (0.69), Polar Pacer 13.1% (0.66). Tier 4 by day: Oura Ring Gen 3 15.0% (0.61), Fitbit Inspire 3 16.5% (0.45). None clears the 5% acceptability line cleanly. How to read it: mean bias is misleading (Apple pooled bias -0.27 bpm but limits of agreement -7.2 to +6.6 bpm), read MAPE and limits of agreement instead; and model matters more than brand (the best and worst devices in the study are both Fitbits, 5.5% and 16.5%). Nocturnal resting HR is superb and every device is good at night: Oura Ring Gen 3 1.67% MAPE (Dial 2025), Oura Ring Gen 4 1.94%, WHOOP 4.0 3.00% (the Polar Grit X Pro 2.71% uses a 4-hour window and is not directly comparable). Best device by purpose: for sleep and resting HR almost any wearable is excellent (rings included); for steady cardio (running, walking, cycling) a Tier 1 or Tier 2 wrist watch is within a few percent; for racquet sport, rowing, weights or intervals no wrist device is trustworthy and a chest strap or upper-arm band is the honest choice. What hurts accuracy regardless of brand: atrial fibrillation raises error to about 29 bpm at peak exercise and devices under-read 61% of the time; skin pigmentation shows no bias at rest but about 11.8 bpm error under load for medium and dark skin, with limits of agreement widening 4.6-fold on current hardware; tattoos over the sensor attenuate the signal, worst at rest. What helps: wear it higher up the arm (cuts error about 11 points, agreement 0.59 to 0.92), tighten the band, and use an armband or strap for hard sessions. Manufacturer claims to distrust: WHOOP 99.7% (sleep only, one night, WHOOP 3.0), Oura r-squared 0.996 (Oura-affiliated authors, nightly average, and an r-squared is not an accuracy percentage), Samsung 30% more accurate (relative to its own prior watch, no absolute figure), Pixel Watch 2 / Fitbit Charge 6 40% more accurate (Pixel Watch 2 only, no study), Garmin publishes no figure at all, Ultrahuman 2.4 to 2.6 bpm (n=6, compared to another optical device not an ECG). Do not cite the common misquote "Apple Watch is 90% accurate": it comes from Wang 2017, where Apple scored a concordance coefficient of 0.91 (not 90% accuracy, and it tied with the Mio Fuse) on 2016-era hardware. Do not cite fabricated figures like "Device 84.6% accurate" or a "University of X 2026 heart rate ranking" that trace to no real study. Sources: Gielen 2026, Van Oost 2025, Dial 2025, Miller 2022, Zhang 2020, Ceugniez 2025, Vermunicht 2025, Reddy 2018, Merrigan 2023, Sarhaddi 2022, Lee 2026, Lambe 2026, Chevance 2022, Fuller 2020, Quinn 2024, Moghaddam 2026, Navalta 2025, Hung 2025, Chase 2024, Singh 2024, Kitagaki 2025. Fitbit vs Garmin vs Apple Watch vs Google Pixel vs Polar vs Oura vs Xiaomi heart rate accuracy. Data verified August 2026.';
   }
 
   // ── Icons ───────────────────────────────────────────────────────────────
@@ -511,10 +508,16 @@ class KygoHeartRateAccuracy extends HTMLElement {
   _loaWidth(d) { return d.loHi - d.loLo; }
   _mapePill(d) { return this._pill(d.mape.toFixed(1) + '%', d.mape <= 7.5 ? 'good' : 'mid'); }
   _cccPill(d) { return this._pill(d.ccc.toFixed(2), d.ccc >= 0.80 ? 'good' : 'mid'); }
-  _gradePill(d) {
-    if (d.mape <= 7.5 && d.ccc >= 0.80) return `<span class="vpill good">Good</span>`;
-    if (d.mape <= 12) return `<span class="vpill mid">Fair</span>`;
-    return `<span class="vpill dark">Poor</span>`;
+
+  // Four tiers from Gielen 2026. Within a tier, and for any gap smaller than the
+  // reference strap's own ~2–4% error, the ordering is not meaningful.
+  _tierMeta(n) {
+    return ({
+      1: { color: '#16A34A', bg: 'rgba(34,197,94,0.10)', desc: 'Closest to the 5% line — but the gaps between these three are smaller than the strap\'s own error' },
+      2: { color: '#22C55E', bg: 'rgba(34,197,94,0.06)', desc: 'Accurate on average, but individual readings swing wider' },
+      3: { color: '#D97706', bg: 'rgba(217,119,6,0.08)', desc: 'Below the acceptability line on mixed daytime movement' },
+      4: { color: '#64748B', bg: 'rgba(100,116,139,0.08)', desc: 'Bottom tier by day (the Oura ring is superb at night — see below)' }
+    })[n];
   }
 
   // ── Interactive comparator (pick 2–4 devices → side-by-side) ────────────
@@ -545,8 +548,8 @@ class KygoHeartRateAccuracy extends HTMLElement {
     return [
       { key: 'mape', label: 'Overall error (MAPE)', unit: 'median % vs strap', better: 'low' },
       { key: 'mae', label: 'Mean absolute error', unit: 'bpm off, median', better: 'low' },
-      { key: 'bias', label: 'Mean bias', unit: 'bpm (0 = none)', better: 'zero' },
-      { key: 'loa', label: 'Limits of agreement', unit: 'bpm spread, tighter wins', better: 'low' },
+      { key: 'bias', label: 'Mean bias', unit: 'bpm — read alongside the spread', better: 'zero', noWin: true },
+      { key: 'loa', label: 'Limits of agreement', unit: 'bpm spread, tighter is better', better: 'low' },
       { key: 'ccc', label: 'Agreement (CCC)', unit: 'concordance 0–1', better: 'high' }
     ];
   }
@@ -578,20 +581,17 @@ class KygoHeartRateAccuracy extends HTMLElement {
       return `<div class="cmpr-empty">${this._icon('info')} Pick at least two devices above to see them side by side.</div>`;
     }
     const rows = this._cmprRows();
-    const wins = {}; sel.forEach(d => { wins[this._did(d)] = 0; });
-    let scored = 0;
 
     const body = rows.map(r => {
       const vals = sel.map(d => ({ id: this._did(d), v: this._cmprVal(d, r.key) }));
       const valid = vals.filter(x => x.v != null);
       const best = new Set();
-      if (valid.length > 1) {
-        const metric = x => r.better === 'zero' ? Math.abs(x.v) : x.v;
-        const target = r.better === 'high'
-          ? Math.max(...valid.map(metric))
-          : Math.min(...valid.map(metric));
+      // Highlight the best value per row for genuine metrics only — never for bias,
+      // where a near-zero average is misleading (Rule 1). No overall winner is summed.
+      if (!r.noWin && valid.length > 1) {
+        const metric = x => x.v;
+        const target = r.better === 'high' ? Math.max(...valid.map(metric)) : Math.min(...valid.map(metric));
         valid.forEach(x => { if (metric(x) === target) best.add(x.id); });
-        if (best.size < valid.length) { scored++; best.forEach(id => { wins[id]++; }); }
       }
       const cells = sel.map(d => {
         const id = this._did(d), v = this._cmprVal(d, r.key);
@@ -600,7 +600,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         const txt = this._cmprFmt(d, r.key);
         return `<td>${isBest ? `<span class="vpill good">${txt}${this._icon('check')}</span>` : `<span class="vpill mid">${txt}</span>`}</td>`;
       }).join('');
-      const dir = r.better === 'zero' ? 'closest to 0 wins' : (r.better === 'high' ? 'higher wins' : 'lower wins');
+      const dir = r.noWin ? 'context, not a win condition' : (r.better === 'high' ? 'higher is better' : 'lower is better');
       return `<tr>
         <th scope="row"><span class="cr-metric">${r.label}</span><span class="cr-unit">${r.unit}</span><span class="cr-dir">${dir}</span></th>
         ${cells}
@@ -612,17 +612,10 @@ class KygoHeartRateAccuracy extends HTMLElement {
       ${sel.map(d => `<th scope="col"><span class="cr-dev">${this._deviceLogo(d, 'sm')}<span class="cr-dev-name">${d.chip}</span></span></th>`).join('')}
     </tr>`;
 
-    const entries = Object.entries(wins);
-    const max = Math.max(...entries.map(([, w]) => w));
-    let verdict;
-    if (max === 0) {
-      verdict = `These devices are too close to separate on the metrics they share. Remember these are mixed-daytime figures, so all of them get far more accurate at rest and far worse during racquet sport or rowing.`;
-    } else {
-      const leaders = entries.filter(([, w]) => w === max).map(([id]) => sel.find(d => this._did(d) === id).chip);
-      verdict = leaders.length === 1
-        ? `<strong>${leaders[0]}</strong> wins the most metrics here (${max} of ${scored}). These are one protocol's daytime numbers against a chest strap; every device is far more accurate at rest and far worse during irregular arm movement.`
-        : `It's a tie: <strong>${leaders.join('</strong> and <strong>')}</strong> each lead on ${max} of ${scored} metrics. All are mixed-daytime figures, so accuracy climbs at rest and collapses during racquet sport, rowing and weights.`;
-    }
+    const tiers = [...new Set(sel.map(d => d.tier))].sort((a, b) => a - b);
+    const verdict = tiers.length === 1
+      ? `All of these sit in <strong>Tier ${tiers[0]}</strong> of the daytime study. The gaps between them are smaller than the reference strap's own ~2–4% error, so treat them as equivalent by day — what really separates them is the activity you'll use them for. Steady cardio and sleep are easy for all of them; racquet sport, rowing and intervals are hard for all of them.`
+      : `These span <strong>Tiers ${tiers[0]}–${tiers[tiers.length - 1]}</strong> by day. Even so, this is one rotated protocol against a chest strap: every device here is far more accurate at rest and far worse during racquet sport, rowing or intervals. Read MAPE and the limits of agreement, not the bias.`;
 
     return `
       <div class="cr-wrap">
@@ -640,6 +633,32 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
   _renderRankMatrix() {
     const rows = this._devices;
+    let lastTier = 0;
+    const bodyRows = rows.map(d => {
+      let band = '';
+      if (d.tier !== lastTier) {
+        lastTier = d.tier;
+        const t = this._tierMeta(d.tier);
+        band = `<tr class="cmp-tier-row"><th colspan="4" scope="colgroup" style="text-align:left;padding:10px 14px;background:${t.bg};border-top:1px solid var(--border-subtle);">
+          <span style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;">
+            <span style="font-size:12px;letter-spacing:0.3px;color:#fff;background:${t.color};padding:2px 9px;border-radius:999px;">Tier ${d.tier}</span>
+            <span style="font-size:12.5px;font-weight:500;color:var(--fg-2);">${t.desc}</span>
+          </span>
+        </th></tr>`;
+      }
+      return `${band}
+        <tr>
+          <th class="cmp-td-device" scope="row">
+            <span class="brand">
+              ${this._deviceLogo(d, 'sm')}
+              <span class="brand-text"><span class="brand-name">${d.name}</span></span>
+            </span>
+          </th>
+          <td>${this._mapePill(d)}${d.nightNote ? `<span class="cell-note">${d.nightNote}</span>` : ''}</td>
+          <td>${this._cccPill(d)}</td>
+          <td>${this._amazonLink(d, 'ranking')}</td>
+        </tr>`;
+    }).join('');
     return `
       <div class="cmp">
         <div class="cmp-scroll">
@@ -649,28 +668,18 @@ class KygoHeartRateAccuracy extends HTMLElement {
                 <th class="cmp-th-device" scope="col">Wearable</th>
                 <th scope="col"><span class="th-full">Overall error (MAPE)</span><span class="th-short" aria-hidden="true">MAPE</span></th>
                 <th scope="col"><span class="th-full">Agreement (CCC)</span><span class="th-short" aria-hidden="true">CCC</span></th>
-                <th scope="col">Grade</th>
                 <th scope="col">Buy</th>
               </tr>
             </thead>
-            <tbody>
-              ${rows.map(d => `
-                <tr>
-                  <th class="cmp-td-device" scope="row">
-                    <span class="brand">
-                      ${this._deviceLogo(d, 'sm')}
-                      <span class="brand-text"><span class="brand-name">${d.name}</span></span>
-                    </span>
-                  </th>
-                  <td>${this._mapePill(d)}${d.nightNote ? `<span class="cell-note">${d.nightNote}</span>` : ''}</td>
-                  <td>${this._cccPill(d)}</td>
-                  <td>${this._gradePill(d)}</td>
-                  <td>${this._amazonLink(d, 'ranking')}</td>
-                </tr>`).join('')}
-            </tbody>
+            <tbody>${bodyRows}</tbody>
           </table>
         </div>
-        <p class="cmp-legend">${this._icon('info')} <strong>What was measured:</strong> each device against a Zephyr chest strap across one 45-person daytime protocol (seated rest, a stress task, treadmill and intermittent walking; Gielen 2026). <strong>MAPE</strong> is the average percent a reading is off, so lower is better; <strong>CCC</strong> is agreement with the reference from 0 to 1, where 1.00 is perfect. No device cleanly clears the &lt;5% MAPE acceptability line. <span class="lg-good">Green</span> = MAPE ≤ 7.5% and CCC ≥ 0.80. Ranked best to worst.</p>
+        <p class="cmp-legend">${this._icon('info')} <strong>What was measured:</strong> each device against a Zephyr chest strap across one daytime protocol (seated rest, a stress task, treadmill and intermittent walking; Gielen 2026). <strong>MAPE</strong> is the average percent a reading is off, so lower is better; <strong>CCC</strong> is agreement with the reference from 0 to 1, where 1.00 is perfect. No device cleanly clears the &lt;5% MAPE line.</p>
+        <div class="rank-rules">
+          <div class="rank-rule">${this._icon('alert')}<span><strong>Read the tier, not the rank.</strong> Devices were rotated — each was tested on about 10 of the 45 people, not all 45 — and the chest strap carries its own ~2–4% error. Gaps smaller than that are noise, so we group into four tiers rather than a 1-to-10 list.</span></div>
+          <div class="rank-rule">${this._icon('gauge')}<span><strong>Bias can lie.</strong> A near-zero average bias just means over-reads and under-reads cancelled out. Read MAPE and the limits of agreement, never the single bias figure a brand quotes.</span></div>
+          <div class="rank-rule">${this._icon('layers')}<span><strong>Model beats brand.</strong> The best and worst devices here are both Fitbits (5.5% and 16.5%). "Brand X is accurate" without a model number means nothing.</span></div>
+        </div>
       </div>`;
   }
 
@@ -961,7 +970,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
             <div class="hero-stat"><div class="num">5.5%</div><div class="lbl">Best daytime error (Fitbit Charge 6)</div></div>
             <div class="hero-stat"><div class="num">1.67%</div><div class="lbl">Best at night (Oura Gen 3, resting)</div></div>
             <div class="hero-stat"><div class="num">13x</div><div class="lbl">Error swing, running vs badminton</div></div>
-            <div class="hero-stat"><div class="num">10</div><div class="lbl">Wearables ranked on one protocol</div></div>
+            <div class="hero-stat"><div class="num">10</div><div class="lbl">Wearables tested, grouped in 4 tiers</div></div>
           </div>
         </div>
       </section>
@@ -971,7 +980,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Build your comparison</div>
             <h2>Compare heart rate wearables <span class="hl">head-to-head.</span></h2>
-            <p class="lede">Pick 2–4 devices and see them side by side on the five metrics that matter: overall error (MAPE), mean absolute error, bias, limits of agreement, and CCC agreement. All from one 45-person protocol against a chest strap, so it is a like-for-like comparison. The best value in each row is highlighted.</p>
+            <p class="lede">Pick 2–4 devices and see them side by side on the five metrics that matter: overall error (MAPE), mean absolute error, bias, limits of agreement, and CCC agreement. All from the same daytime study against a chest strap (Gielen 2026). The better value in each row is highlighted — but small gaps sit inside the strap's own error, so we tell you the tier rather than crown a winner.</p>
           </div>
           <div class="animate-on-scroll">${this._renderComparator()}</div>
         </div>
@@ -986,9 +995,9 @@ class KygoHeartRateAccuracy extends HTMLElement {
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
-            <div class="kicker">The full ranking</div>
-            <h2>All ten, ranked on <span class="hl">one clean protocol.</span></h2>
-            <p class="lede">The best single ranking study available: all ten devices on the same 45 participants, same protocol, same chest-strap reference (Gielen 2026). Ranked best to worst by median error. Note that only four come close to the 5% line and none clears it cleanly. Scroll sideways on mobile.</p>
+            <div class="kicker">Daytime accuracy</div>
+            <h2>All ten, grouped into <span class="hl">four tiers.</span></h2>
+            <p class="lede">The largest single daytime study puts ten devices against the same chest-strap reference (Gielen 2026). But the devices were rotated — each tested on about ten people, not all 45 — and the strap has its own error, so we read the result as four tiers rather than a 1-to-10 list. Only the top tier comes close to the 5% line, and none clears it cleanly. Scroll sideways on mobile.</p>
           </div>
           <div class="animate-on-scroll">${this._renderRankMatrix()}</div>
         </div>
@@ -997,9 +1006,9 @@ class KygoHeartRateAccuracy extends HTMLElement {
       <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
-            <div class="kicker">Read this before you trust a number</div>
-            <h2>The one thing that <span class="hl">decides accuracy.</span></h2>
-            <p class="lede">It is not the brand and it is not how hard you are working. It is whether your arm is <strong>steady or jerking around</strong>. The same device is near-perfect at rest and during steady running, then falls apart the moment the wrist whips or flexes, which is why the ranking above is a mixed-daytime average, not a verdict on any one activity.</p>
+            <div class="kicker">What actually decides accuracy</div>
+            <h2>It is your arm, <span class="hl">not the brand.</span></h2>
+            <p class="lede">Accuracy is not decided by the brand or by how hard you work. It is decided by whether your arm is <strong>steady or jerking around</strong>. The same device is near-perfect at rest and during steady running, then falls apart the moment the wrist whips or flexes — which is why the tiers above are a mixed-daytime average, not a verdict on any one activity.</p>
           </div>
           <div class="bias animate-on-scroll">
             <div class="bias-card good">
@@ -1014,21 +1023,12 @@ class KygoHeartRateAccuracy extends HTMLElement {
               <span class="bias-cap">Racquet, rowing, weights</span>
               <p>Badminton, tennis, soccer, rowing and weightlifting whip or flex the wrist, so the optical sensor loses the pulse. The same Fitbit that ran at 1.2% hit 16.2% at badminton, under-reading by about 16 bpm, telling you that you worked less hard than you did.</p>
             </div>
-            <p class="bias-note">${this._icon('info')} <span><strong>The failure mode is arm movement, not intensity.</strong> High-intensity running is one of the easiest cases; picking things up and racquet sport are the hard ones. Moving a watch higher on the forearm can cut error by about 11 points. <em>Ceugniez 2025 · Vermunicht 2025 · Zhang 2020</em></span></p>
+            <p class="bias-note">${this._icon('info')} <span><strong>The failure mode is irregular arm movement, not intensity.</strong> High-intensity running is one of the easiest cases; picking things up and racquet sport are the hard ones. <em>Ceugniez 2025 · Vermunicht 2025 · Zhang 2020</em></span></p>
           </div>
-        </div>
-      </section>
 
-      <kygo-inline-subscribe source="tool-heart-rate-accuracy" variant="comparison"></kygo-inline-subscribe>
+          <div class="animate-on-scroll" style="margin-top:28px;">${this._renderActivities()}</div>
 
-      <section class="section bg-light">
-        <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">Where it helps, where it lies</div>
-            <h2>Accuracy by <span class="hl">activity.</span></h2>
-            <p class="lede">This is the most useful chart on the page. On one watch, one wrist and the same 26 people, error swings from near-perfect to badly wrong depending purely on how much your arm is moving. Steady wins; sharp and random arm movement loses.</p>
-          </div>
-          <div class="animate-on-scroll">${this._renderActivities()}</div>
+          <div class="bias-note animate-on-scroll" style="margin-top:16px;">${this._icon('alert')} <span><strong>Intervals are worse than all-out effort.</strong> Same bike, same people: error was 11.8% at maximal steady effort but jumped to <strong>26.0% on intervals</strong> — the single worst number in the research. It is <em>changing</em> exercise that breaks the sensor, not hard exercise, which is why HIIT and stop-start sport read so poorly. <em>Reddy 2018 · Merrigan 2023</em></span></div>
         </div>
       </section>
 
@@ -1073,7 +1073,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">True for every device</div>
             <h2>What no brand <span class="hl">can fix.</span></h2>
-            <p class="lede">Six findings that hold across every wearable in the research. Read these before you trust any single number a spec sheet gives you.</p>
+            <p class="lede">Three things that hurt accuracy no matter which wearable you buy — they are about your body and your rhythm, not the sensor. Read these before you trust any single number a spec sheet gives you.</p>
           </div>
           <div class="animate-on-scroll">${this._renderFactCards()}</div>
         </div>
@@ -1108,7 +1108,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
-            <p><strong>Fitbit Charge 6</strong> tops the only clean 10-device head-to-head (5.5% MAPE), with <strong>Garmin Vivoactive 5</strong> and <strong>Google Pixel Watch 2</strong> just behind. <strong>Apple Watch SE</strong> sits mid-pack with the widest swings (near-zero bias, low CCC), and <strong>Oura Gen 3</strong>, superb at night, drops to 9th by day because a finger sensor is not motion-proof. But the honest headline is not a winner: at rest almost everything is accurate, and during racquet sport, rowing or weights almost everything is not. Read MAPE and the limits of agreement, not the bias a brand quotes, and treat any figure from a single night as a best case, not your day.</p>
+            <p>If you are buying for daytime tracking, the <strong>top tier</strong> is the <strong>Fitbit Charge 6, Garmin Vivoactive 5 and Google Pixel Watch 2</strong> — and the gaps between them are too small to call a winner. <strong>Oura Gen 3</strong> is superb at night but bottom tier by day, because a finger sensor is not motion-proof. But the honest headline is not a device at all: at rest almost everything is accurate, and during racquet sport, rowing, weights or intervals almost everything is not. Pick for the job — a top-tier watch for steady cardio and sleep, and a chest strap or upper-arm band for stop-start sport. Read MAPE and the limits of agreement, not the bias a brand quotes, and treat any figure from a single night as a best case, not your day.</p>
           </div>
         </div>
       </section>
@@ -1136,7 +1136,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
             <h2>Every claim, <span class="hl">traceable.</span></h2>
-            <p class="lede">Each figure checked against the primary record (journal, PMC or manufacturer paper). ${this._sources.length} sources. Verified July 2026.</p>
+            <p class="lede">Each figure checked against the primary record (journal, PMC or manufacturer paper). ${this._sources.length} sources. Verified August 2026.</p>
           </div>
           <div class="sources animate-on-scroll">${this._renderSourceCards(this._sources)}</div>
         </div>
@@ -1158,7 +1158,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Optical wrist and ring heart rate is an estimate, not a clinical measurement, and can be inaccurate during exercise or with an irregular heart rhythm. Consult a qualified healthcare provider before making health decisions based on wearable data.</p>
-          <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation. Last updated July 2026.</p>
+          <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation. Last updated August 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
@@ -1201,15 +1201,15 @@ class KygoHeartRateAccuracy extends HTMLElement {
         'operatingSystem': 'Web',
         'url': 'https://www.kygo.app/tools/heart-rate-accuracy',
         'datePublished': '2026-08-04',
-        'dateModified': '2026-08-04',
-        'softwareVersion': '1.0',
+        'dateModified': '2026-08-08',
+        'softwareVersion': '2.0',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'alternateName': 'Kygo Heart Rate Accuracy Comparison Tool',
-        'featureList': 'Compare 10 wearables for heart rate, median MAPE and CCC ranking, mean absolute error, bias and limits of agreement, steady vs irregular arm movement, manufacturer vs independent validation',
+        'featureList': 'Compare 10 wearables for heart rate, four daytime accuracy tiers by median MAPE and CCC, mean absolute error, bias and limits of agreement, steady vs irregular arm movement, day vs night, manufacturer vs independent validation',
         'keywords': 'most accurate heart rate wearable, heart rate monitor accuracy, fitbit heart rate accuracy, garmin heart rate accuracy, apple watch heart rate accuracy, oura heart rate accuracy, polar heart rate accuracy, are wrist heart rate monitors accurate, wearable ppg accuracy, best heart rate watch 2026'
       };
       const s1 = document.createElement('script');
@@ -1385,6 +1385,14 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .bias-note .ico { width: 16px; height: 16px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
       .bias-note strong { color: var(--fg-1); font-weight: 600; }
       .bias-note em { font-style: normal; color: var(--fg-3); font-size: 12px; }
+
+      /* Ranking "how to read" rules under the tier matrix */
+      .rank-rules { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
+      @media (min-width: 720px) { .rank-rules { grid-template-columns: repeat(3, 1fr); } }
+      .rank-rule { display: flex; gap: 10px; align-items: flex-start; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 13px 15px; font-size: 12.5px; line-height: 1.5; color: var(--fg-2); }
+      .rank-rule .ico { width: 15px; height: 15px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
+      .rank-rule strong { color: var(--fg-1); font-weight: 600; }
+      .cmp-tier-row th { font-weight: 700; }
 
       /* Kygo CTA */
       .kygo-cta-card { background: var(--kygo-dark); border-radius: 24px; padding: 40px 24px; position: relative; overflow: hidden; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; }
