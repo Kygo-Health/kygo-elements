@@ -94,6 +94,16 @@ class KygoHeartRateAccuracy extends HTMLElement {
     ];
   }
 
+  // Full-width tier band row. Badge never shrinks (mobile fix); description wraps below it.
+  _bandRow(colspan, bg, color, label, desc) {
+    return `<tr class="cmp-tier-row"><th colspan="${colspan}" scope="colgroup" style="padding:10px 14px;background:${bg};border-top:1px solid var(--border-subtle);">
+      <span style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-family:var(--font-display);">
+        <span style="flex:none;white-space:nowrap;font-size:11.5px;font-weight:700;letter-spacing:0.3px;color:#fff;background:${color};padding:3px 10px;border-radius:999px;">${label}</span>
+        <span style="flex:1 1 62%;min-width:0;font-size:12px;font-weight:500;color:var(--fg-2);line-height:1.35;">${desc}</span>
+      </span>
+    </th></tr>`;
+  }
+
   // Group devices by brand key, in first-seen (tier) order
   _brands() {
     const order = [];
@@ -304,6 +314,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
   }
 
   _splitCard(o) {
+    const num = v => `<span class="split-num">${v}<span class="split-unit">${o.unit}</span></span>`;
     return `
       <div class="split-card">
         <div class="split-head">
@@ -313,13 +324,13 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
         <div class="split-body">
           <div class="split-stat good">
-            <span class="split-lbl">${this._icon('moon')} At night, still</span>
-            <span class="split-num">${o.night}</span>
+            <span class="split-lbl">${this._icon('moon')} At night</span>
+            ${num(o.night)}
           </div>
           <span class="split-arrow">${this._icon('arrowRight')}</span>
           <div class="split-stat bad">
-            <span class="split-lbl">${this._icon('activity')} By day, moving</span>
-            <span class="split-num">${o.day}</span>
+            <span class="split-lbl">${this._icon('activity')} By day</span>
+            ${num(o.day)}
           </div>
         </div>
         <p class="split-foot"><strong>${o.multiplier}</strong> ${o.detail}</p>
@@ -330,14 +341,14 @@ class KygoHeartRateAccuracy extends HTMLElement {
     return `
       <div class="splits">
         ${this._splitCard({
-          key: 'oura', icon: 'ring', device: 'Oura Ring Gen 3', badge: 'finger ring',
-          night: '1.67%', day: '15.0%', multiplier: 'About 9× the error once you move.',
-          detail: 'Same finger sensor, measured as median MAPE. Dial 2025 · Gielen 2026'
+          key: 'oura', icon: 'ring', device: 'Oura Ring Gen 3', badge: 'finger ring', unit: '%',
+          night: '1.67', day: '15.0', multiplier: 'About 9× the error once you move.',
+          detail: 'Same finger sensor, median MAPE. Dial 2025 · Gielen 2026'
         })}
         ${this._splitCard({
-          key: 'samsung', icon: 'watch', device: 'Samsung Gear Sport', badge: 'one 24h recording',
-          night: '1.06 bpm', day: '11.10 bpm', multiplier: 'About 10× worse the moment they woke up.',
-          detail: 'Same device, same person, same night — mean absolute error asleep vs awake. Sarhaddi 2022'
+          key: 'samsung', icon: 'watch', device: 'Samsung Gear Sport', badge: '24h recording', unit: ' bpm',
+          night: '1.06', day: '11.10', multiplier: 'About 10× worse the moment they woke up.',
+          detail: 'Same device, one night, asleep vs awake (MAE). Sarhaddi 2022'
         })}
       </div>
       <p class="dn-note">${this._icon('info')} <span><strong>This is the whole story in two devices.</strong> Same sensor, same person — just add movement, and the number falls apart. For the full list of what has actually been validated overnight, flip the chart above to <em>At night, resting</em>. <em>Dial 2025 · Sarhaddi 2022</em></span></p>`;
@@ -419,7 +430,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         <summary>
           <span class="claim-brand">${c.brand}</span>
           <span class="claim-sum-right">
-            <span class="vpill ${c.good ? 'good' : 'dark'}">${c.verdict}</span>
+            <span class="vpill ${c.good ? 'good' : (/No figure|Not validation/.test(c.verdict) ? 'mid' : 'dark')}">${c.verdict}</span>
             <span class="claim-chev">${this._icon('arrowRight')}</span>
           </span>
         </summary>
@@ -722,12 +733,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
               </tr>
             </thead>
             <tbody>
-              <tr class="cmp-tier-row"><th colspan="3" scope="colgroup" style="text-align:left;padding:10px 14px;background:rgba(34,197,94,0.10);border-top:1px solid var(--border-subtle);">
-                <span style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;">
-                  <span style="font-size:12px;letter-spacing:0.3px;color:#fff;background:#16A34A;padding:2px 9px;border-radius:999px;">All excellent</span>
-                  <span style="font-size:12.5px;font-weight:500;color:var(--fg-2);">Still body, steady blood flow — at night there is really only one tier</span>
-                </span>
-              </th></tr>
+              ${this._bandRow(3, 'rgba(34,197,94,0.10)', '#16A34A', 'All excellent', 'Still body, steady blood flow — at night there is really only one tier')}
               ${rows}
             </tbody>
           </table>
@@ -744,12 +750,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
       if (d.tier !== lastTier) {
         lastTier = d.tier;
         const t = this._tierMeta(d.tier);
-        band = `<tr class="cmp-tier-row"><th colspan="4" scope="colgroup" style="text-align:left;padding:10px 14px;background:${t.bg};border-top:1px solid var(--border-subtle);">
-          <span style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;">
-            <span style="font-size:12px;letter-spacing:0.3px;color:#fff;background:${t.color};padding:2px 9px;border-radius:999px;">Tier ${d.tier}</span>
-            <span style="font-size:12.5px;font-weight:500;color:var(--fg-2);">${t.desc}</span>
-          </span>
-        </th></tr>`;
+        band = this._bandRow(4, t.bg, t.color, 'Tier ' + d.tier, t.desc);
       }
       return `${band}
         <tr>
@@ -817,7 +818,6 @@ class KygoHeartRateAccuracy extends HTMLElement {
           ${this._deviceLogo(d, 'sm')}
           <span class="dacc-id">
             <span class="dacc-name">${d.name}</span>
-            <span class="dacc-sub"><span class="vpill ${d.mape <= 7.5 ? 'good' : (d.mape <= 12 ? 'mid' : 'dark')}">MAPE ${d.mape.toFixed(1)}%</span></span>
           </span>
           <span class="dacc-chev">${this._icon('arrowRight')}</span>
         </summary>
@@ -1107,6 +1107,8 @@ class KygoHeartRateAccuracy extends HTMLElement {
           <div class="animate-on-scroll" data-rank-out>${this._renderRankMatrix()}</div>
         </div>
       </section>
+
+      <kygo-inline-subscribe source="tool-heart-rate-accuracy" variant="comparison"></kygo-inline-subscribe>
 
       <section class="section bg-white">
         <div class="section-inner">
@@ -1512,20 +1514,21 @@ class KygoHeartRateAccuracy extends HTMLElement {
       /* Day-vs-night split cards (same sensor, two numbers) */
       .splits { display: grid; grid-template-columns: 1fr; gap: 12px; }
       @media (min-width: 640px) { .splits { grid-template-columns: 1fr 1fr; } }
-      .split-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 14px; }
-      .split-head { display: flex; align-items: center; gap: 10px; }
-      .split-head .brand-img.sm { width: 30px; height: 30px; border-radius: 8px; }
-      .split-dev { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--fg-1); }
-      .split-badge { margin-left: auto; font-family: var(--font-display); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); background: var(--bg-raised); padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
+      .split-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 15px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 12px; }
+      .split-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; }
+      .split-head .brand-img.sm { width: 28px; height: 28px; border-radius: 8px; }
+      .split-dev { font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--fg-1); flex: 1 1 auto; min-width: 0; }
+      .split-badge { margin-left: auto; font-family: var(--font-display); font-weight: 600; font-size: 9px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); background: var(--bg-raised); padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
       .split-body { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: 8px; }
-      .split-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; text-align: center; padding: 14px 6px; border-radius: 12px; }
+      .split-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; padding: 11px 6px; border-radius: 12px; }
       .split-stat.good { background: var(--kygo-green-light); }
       .split-stat.bad { background: rgba(239,68,68,0.08); }
-      .split-lbl { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-weight: 600; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.3px; }
-      .split-lbl .ico { width: 13px; height: 13px; }
+      .split-lbl { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; }
+      .split-lbl .ico { width: 12px; height: 12px; }
       .split-stat.good .split-lbl { color: var(--kygo-green-dark); }
       .split-stat.bad .split-lbl { color: #DC2626; }
-      .split-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 5.5vw, 32px); line-height: 1; letter-spacing: -0.02em; }
+      .split-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(21px, 4.8vw, 27px); line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
+      .split-unit { font-size: 0.46em; font-weight: 600; letter-spacing: 0; }
       .split-stat.good .split-num { color: var(--kygo-green-dark); }
       .split-stat.bad .split-num { color: #DC2626; }
       .split-arrow { display: inline-flex; align-items: center; justify-content: center; color: var(--fg-3); }
@@ -1555,7 +1558,8 @@ class KygoHeartRateAccuracy extends HTMLElement {
       @media (min-width: 768px) { .cmp { border-radius: 22px; } }
       .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
       @media (min-width: 768px) { .cmp-scroll { overflow-x: visible; } }
-      .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 560px; }
+      .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 340px; }
+      @media (min-width: 768px) { .cmp-table { min-width: 560px; } }
       .cmp-table th, .cmp-table td { padding: 0; vertical-align: middle; }
       .cmp-table thead th { font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: 0.4px; text-transform: uppercase; color: #334155; text-align: center; padding: 12px 6px; border-bottom: 1px solid #CBD5E1; white-space: nowrap; background: #E2E8F0; }
       .cmp-table thead .cmp-th-device { text-align: left; padding-left: 14px; position: sticky; left: 0; z-index: 3; background: #E2E8F0; }
@@ -1566,7 +1570,8 @@ class KygoHeartRateAccuracy extends HTMLElement {
       }
       .cmp-table tbody tr + tr td, .cmp-table tbody tr + tr th { border-top: 1px solid var(--border-subtle); }
       .cmp-table tbody tr:hover td, .cmp-table tbody tr:hover .cmp-td-device { background: var(--bg-surface); }
-      .cmp-td-device { padding: 10px 6px; width: 108px; min-width: 108px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--border-subtle); }
+      .cmp-td-device { padding: 10px 5px; width: 88px; min-width: 88px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--border-subtle); }
+      @media (min-width: 768px) { .cmp-td-device { padding: 10px 6px; width: 108px; min-width: 108px; } }
       .brand { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
       .brand-img { width: 38px; height: 38px; border-radius: 9px; background: var(--bg-raised); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
       .brand-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
