@@ -294,37 +294,53 @@ class KygoHeartRateAccuracy extends HTMLElement {
       </div>`;
   }
 
-  // ── Day vs night boards (the same sensor, two worlds) ───────────────────
+  // ── Day vs night: the same sensor, two completely different numbers ──────
 
-  get _nightBoard() {
-    return [
-      { dev: 'Oura Ring Gen 3', v: '1.67%', flag: true },
-      { dev: 'Oura Ring Gen 4', v: '1.94%' },
-      { dev: 'Polar Grit X Pro', v: '2.71%', caveat: true },
-      { dev: 'WHOOP 4.0', v: '3.00%' }
-    ];
+  _splitLogo(key, fallback) {
+    const img = this._deviceImage(key);
+    return img
+      ? `<span class="brand-img sm"><img src="${img}" alt="" loading="lazy" /></span>`
+      : `<span class="brand-img sm brand-img--icon">${this._icon(fallback)}</span>`;
   }
 
-  _dnRows(list) {
-    return list.map(r => `<div class="dn-row${r.flag ? ' flag' : ''}"><span class="dn-dev">${r.dev}${r.caveat ? '<sup>†</sup>' : ''}</span><span class="dn-val">${r.v}</span></div>`).join('');
+  _splitCard(o) {
+    return `
+      <div class="split-card">
+        <div class="split-head">
+          ${this._splitLogo(o.key, o.icon)}
+          <span class="split-dev">${o.device}</span>
+          <span class="split-badge">${o.badge}</span>
+        </div>
+        <div class="split-body">
+          <div class="split-stat good">
+            <span class="split-lbl">${this._icon('moon')} At night, still</span>
+            <span class="split-num">${o.night}</span>
+          </div>
+          <span class="split-arrow">${this._icon('arrowRight')}</span>
+          <div class="split-stat bad">
+            <span class="split-lbl">${this._icon('activity')} By day, moving</span>
+            <span class="split-num">${o.day}</span>
+          </div>
+        </div>
+        <p class="split-foot"><strong>${o.multiplier}</strong> ${o.detail}</p>
+      </div>`;
   }
 
   _renderDayNight() {
     return `
-      <div class="dn">
-        <div class="dn-col">
-          <div class="dn-head"><span class="dn-ico">${this._icon('gauge')}</span><span class="dn-title">One sensor, two worlds</span><span class="dn-tag">Oura Ring Gen 3</span></div>
-          <div class="dn-row flag"><span class="dn-dev">${this._icon('activity')} By day, moving</span><span class="dn-val">15.0%</span></div>
-          <div class="dn-row"><span class="dn-dev">${this._icon('moon')} At night, still</span><span class="dn-val" style="color:var(--kygo-green-dark);">1.67%</span></div>
-          <p class="dn-foot">Same finger ring · day vs night median MAPE (Gielen 2026 · Dial 2025)</p>
-        </div>
-        <div class="dn-col night">
-          <div class="dn-head"><span class="dn-ico good">${this._icon('moon')}</span><span class="dn-title">At night, everyone is good</span><span class="dn-tag good">resting HR</span></div>
-          ${this._dnRows(this._nightBoard)}
-          <p class="dn-foot">Nocturnal MAPE vs ECG (Dial 2025) · <sup>†</sup>Polar reports a 4-hour window, so it is not directly comparable to the others</p>
-        </div>
-        <p class="dn-note">${this._icon('info')} <span><strong>The cleanest proof is a single Samsung recording: asleep the error was 1.06 bpm, awake it was 11.10 bpm</strong> — same device, same person, same night, a tenfold jump the moment they got up (Sarhaddi 2022). Night is the easy case, and it is where almost every "99% accurate" claim is actually measured, then quoted as if it held all day. <em>Dial 2025 · Sarhaddi 2022 · Gielen 2026</em></span></p>
-      </div>`;
+      <div class="splits">
+        ${this._splitCard({
+          key: 'oura', icon: 'ring', device: 'Oura Ring Gen 3', badge: 'finger ring',
+          night: '1.67%', day: '15.0%', multiplier: 'About 9× the error once you move.',
+          detail: 'Same finger sensor, measured as median MAPE. Dial 2025 · Gielen 2026'
+        })}
+        ${this._splitCard({
+          key: 'samsung', icon: 'watch', device: 'Samsung Gear Sport', badge: 'one 24h recording',
+          night: '1.06 bpm', day: '11.10 bpm', multiplier: 'About 10× worse the moment they woke up.',
+          detail: 'Same device, same person, same night — mean absolute error asleep vs awake. Sarhaddi 2022'
+        })}
+      </div>
+      <p class="dn-note">${this._icon('info')} <span><strong>This is the whole story in two devices.</strong> Same sensor, same person — just add movement, and the number falls apart. For the full list of what has actually been validated overnight, flip the chart above to <em>At night, resting</em>. <em>Dial 2025 · Sarhaddi 2022</em></span></p>`;
   }
 
   // ── How to improve your reading (the free levers) ───────────────────────
@@ -1500,6 +1516,30 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .pick-txt { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
       .pick-sub { font-size: 9.5px; font-weight: 500; color: var(--fg-3); white-space: nowrap; letter-spacing: 0.1px; }
       .pick-tile.active .pick-sub { color: var(--kygo-green-dark); }
+
+      /* Day-vs-night split cards (same sensor, two numbers) */
+      .splits { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      @media (min-width: 640px) { .splits { grid-template-columns: 1fr 1fr; } }
+      .split-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 14px; }
+      .split-head { display: flex; align-items: center; gap: 10px; }
+      .split-head .brand-img.sm { width: 30px; height: 30px; border-radius: 8px; }
+      .split-dev { font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--fg-1); }
+      .split-badge { margin-left: auto; font-family: var(--font-display); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); background: var(--bg-raised); padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
+      .split-body { display: grid; grid-template-columns: 1fr auto 1fr; align-items: stretch; gap: 8px; }
+      .split-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; text-align: center; padding: 14px 6px; border-radius: 12px; }
+      .split-stat.good { background: var(--kygo-green-light); }
+      .split-stat.bad { background: rgba(239,68,68,0.08); }
+      .split-lbl { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-weight: 600; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.3px; }
+      .split-lbl .ico { width: 13px; height: 13px; }
+      .split-stat.good .split-lbl { color: var(--kygo-green-dark); }
+      .split-stat.bad .split-lbl { color: #DC2626; }
+      .split-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 5.5vw, 32px); line-height: 1; letter-spacing: -0.02em; }
+      .split-stat.good .split-num { color: var(--kygo-green-dark); }
+      .split-stat.bad .split-num { color: #DC2626; }
+      .split-arrow { display: inline-flex; align-items: center; justify-content: center; color: var(--fg-3); }
+      .split-arrow .ico { width: 18px; height: 18px; }
+      .split-foot { margin: 0; font-size: 12px; line-height: 1.5; color: var(--fg-3); text-align: center; }
+      .split-foot strong { color: var(--fg-1); font-weight: 600; }
 
       /* Kygo CTA */
       .kygo-cta-card { background: var(--kygo-dark); border-radius: 24px; padding: 40px 24px; position: relative; overflow: hidden; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; }
