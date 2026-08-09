@@ -128,8 +128,11 @@ class KygoHeartRateAccuracy extends HTMLElement {
       polar:   'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png',
       fitbit:  'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
       oura:    'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
-      google:  'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png' // Google Health logo, reused for the Pixel Watch
-    })[key] || null; // xiaomi falls back to a neutral type icon
+      google:  'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png', // Google Health logo, reused for the Pixel Watch
+      xiaomi:  'https://static.wixstatic.com/media/273a63_cff7a128923a403fb37676d14ca8e623~mv2.png',
+      whoop:   'https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png',
+      samsung: 'https://static.wixstatic.com/media/273a63_83875b85add04ebd818a01ee8fc8c088~mv2.png'
+    })[key] || null;
   }
 
   _deviceLogo(d, size) {
@@ -1149,8 +1152,6 @@ class KygoHeartRateAccuracy extends HTMLElement {
           <div class="animate-on-scroll">${this._renderDayNight()}</div>
         </div>
       </section>
-
-      <kygo-inline-subscribe source="tool-heart-rate-accuracy" variant="comparison"></kygo-inline-subscribe>
 
       <section class="section bg-light">
         <div class="section-inner">
