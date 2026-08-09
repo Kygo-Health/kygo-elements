@@ -616,13 +616,10 @@ class KygoHeartRateAccuracy extends HTMLElement {
         <div class="picker" role="group" aria-label="Choose heart rate brands to compare">
           ${this._brands().map(b => {
             const on = this._selBrands.has(b.key);
-            return `<button type="button" class="pick-tile brand-tile${on ? ' active' : ''}" data-brand-id="${b.key}" aria-pressed="${on}">
+            return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-brand-id="${b.key}" aria-pressed="${on}">
               <span class="pick-check">${this._icon('check')}</span>
               ${this._deviceLogo(b.devices[0], 'sm')}
-              <span class="pick-txt">
-                <span class="pick-name">${b.name}</span>
-                <span class="pick-sub">${b.devices.map(d => d.chip).join(' · ')}</span>
-              </span>
+              <span class="pick-name">${b.name}</span>
             </button>`;
           }).join('')}
         </div>
@@ -1511,11 +1508,6 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .board-btn.active { background: #fff; color: var(--kygo-green-dark); box-shadow: 0 1px 3px rgba(15,23,42,0.10); }
       .board-hint { font-size: 12px; color: var(--fg-3); }
 
-      /* Brand tiles in the comparator picker (stacked brand + device list) */
-      .brand-tile { align-items: center; padding: 5px 12px 5px 5px; }
-      .pick-txt { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
-      .pick-sub { font-size: 9.5px; font-weight: 500; color: var(--fg-3); white-space: nowrap; letter-spacing: 0.1px; }
-      .pick-tile.active .pick-sub { color: var(--kygo-green-dark); }
 
       /* Day-vs-night split cards (same sensor, two numbers) */
       .splits { display: grid; grid-template-columns: 1fr; gap: 12px; }
