@@ -52,6 +52,9 @@ Larger device photos, used in comparison tables and device cards.
 | `273a63_01b29289863b4cd5844d575301addb6a` | **Amazfit** | `kygo-wearable-stress.js`, `kygo-recovery-scores.js` |
 | `273a63_810650aa12fe4ae59ce7e22c25c312fc` | **Ultrahuman** | `kygo-recovery-scores.js`, `kygo-oura-ring-comparison.js` (cost calculator rival) |
 | `273a63_fc0ed00ac88441138f7b4c7e398f7aa8` | **RingConn** | `kygo-recovery-scores.js`, `kygo-oura-ring-comparison.js` (cost calculator rival) |
+| `273a63_cff7a128923a403fb37676d14ca8e623` | **Xiaomi** (Watch 2) | `kygo-heart-rate-accuracy.js` (added 2026-08) |
+| `273a63_21019d0fbe9e4afcbabdb3ca9dcad89d` | **WHOOP** (4.0, night board) | `kygo-heart-rate-accuracy.js` (added 2026-08) — a distinct asset from the WHOOP *logo* (`46b3b6ce`) and WHOOP *product* (`c52aaaca`) above |
+| `273a63_83875b85add04ebd818a01ee8fc8c088` | **Samsung** (Gear Sport, day/night split card) | `kygo-heart-rate-accuracy.js` (added 2026-08) — a distinct asset from the Samsung Galaxy Watch (`21fd42e4`) above |
 
 The Oura comparison table (`kygo-oura-ring-comparison.js`) uses the **Oura logo**
 (`56ac2eb5`) for all three rings (Gen 3 / Ring 4 / Ring 5) rather than per-ring photos.
