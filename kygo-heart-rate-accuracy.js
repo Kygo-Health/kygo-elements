@@ -983,9 +983,9 @@ class KygoHeartRateAccuracy extends HTMLElement {
             <h2 class="kband-headline">Your watch gives you a number. Kygo tells you what to do with it, pairing your heart rate with recovery, sleep and nutrition.</h2>
           </div>
           <div class="kband-actions">
-            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios cta-primary" data-track-position="${pos}" data-track-label="${labelSlug}-ios" target="_blank" rel="noopener">${this._icon('apple')} Try Free for 7 Days</a>
+            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios cta-primary" data-track-position="${pos}" data-track-label="${labelSlug}-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
             <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android cta-android" data-action="android-download" data-track-position="${pos}" data-track-label="${labelSlug}-android" target="_blank" rel="noopener">${this._icon('android')} Get Android</a>
-            <p class="kband-note">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+            <p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
           </div>
         </div>
       </div>`;
@@ -999,10 +999,10 @@ class KygoHeartRateAccuracy extends HTMLElement {
         <h3>See what your <span>heart data</span> is really telling you.</h3>
         <p>Your watch estimates your heart rate. Kygo connects your HR, recovery, sleep and nutrition so you can act on the trend, not chase a single noisy reading.</p>
         <div class="cta-btn-row">
-          <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="footer-cta" data-track-label="hr-accuracy-footer-ios">${this._icon('apple')} Try Free for 7 Days</a>
+          <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="footer-cta" data-track-label="hr-accuracy-footer-ios">${this._icon('apple')} Download for iOS</a>
           <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="footer-cta" data-track-label="hr-accuracy-footer-android">${this._icon('android')} Download for Android</a>
         </div>
-        <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">7-day free trial on yearly. Free plan available. Cancel anytime.</p>
+        <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
         <div class="cta-works">
           <span>Works with</span>
           <div class="cta-badges">

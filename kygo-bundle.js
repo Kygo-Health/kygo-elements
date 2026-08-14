@@ -281,7 +281,7 @@ class KygoHeroSection extends HTMLElement {
                   Get it on Android
                 </a>
               </div>
-              <p class="risk-reversal">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free 7-day trial&nbsp;&nbsp;•&nbsp;&nbsp;Cancel anytime</p>
+              <p class="risk-reversal">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free plan available&nbsp;&nbsp;•&nbsp;&nbsp;Cancel anytime</p>
             </div>
 
             <!-- Right column: animated phone -->
@@ -1650,7 +1650,7 @@ class KygoFaq extends HTMLElement {
       { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
       { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
       { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
-      { q: 'Is it really free?', a: 'Yes! Food logging, wearable sync, and trend tracking are free forever. The correlation engine is premium, $9.99/month or $39.99/year to unlock personalized insights.' }
+      { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, supplements, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $59.99/year.' }
     ];
   }
   render() {
@@ -1777,13 +1777,13 @@ class KygoFinalCta extends HTMLElement {
         <div class="container">
           <div class="final-cta-inner">
             <div class="final-cta-content">
-              <div class="cta-pill"><span class="dot"></span> 7-Day Free Trial</div>
+              <div class="cta-pill"><span class="dot"></span> Free Plan Available</div>
               <h2>Your wearable tracks it. <span>Kygo explains it.</span></h2>
               <p>Log meals in seconds and Kygo connects them to your sleep, HRV, and energy, so you finally see what works for you.</p>
               <div class="cta-buttons">
                 <a href="${appStoreUrl}" class="cta-primary" data-track-position="footer-cta" data-track-label="home-footer-ios" target="_blank" rel="noopener noreferrer">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Try Kygo free for 7 days
+                  Get Kygo
                 </a>
                 <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="home-footer-android">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
