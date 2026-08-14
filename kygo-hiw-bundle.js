@@ -38,7 +38,7 @@ class KygoHiw extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupFeatureReveal();
-    __seo(this, 'How Kygo Health works. Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body performs — sleep, HRV, resting heart rate, energy, and recovery. Step 1: log your food in seconds with photo AI, chat, barcode, voice, search, or saved meals, or import nutrition automatically from Apple Health and Health Connect. Step 2: connect a wearable in a tap — Oura Ring, Garmin, Fitbit, Apple Health, or Health Connect — and Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity on its own, picking the most accurate source for each metric. Step 3: after about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts, with evidence strength and same-day and next-day lag checks. Setup takes about two minutes. Free forever plan; correlations and Kygo Advisor are included with Pro at $9.99/month or $39.99/year (a 7-day free trial and 67% savings on the yearly plan). Your data is protected end to end: all traffic is encrypted with modern TLS, data is encrypted at rest with AES-256, accounts use bcrypt hashing and token-based authentication, every request is scoped so only you can reach your own data, and Kygo never sells your data. Wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data.');
+    __seo(this, 'How Kygo Health works. Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body performs — sleep, HRV, resting heart rate, energy, and recovery. Step 1: log your food in seconds with photo AI, chat, barcode, voice, search, or saved meals, or import nutrition automatically from Apple Health and Health Connect. Step 2: connect a wearable in a tap — Oura Ring, Garmin, Fitbit, Apple Health, or Health Connect — and Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity on its own, picking the most accurate source for each metric. Step 3: after about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts, with evidence strength and same-day and next-day lag checks. Setup takes about two minutes. Free forever plan with 5 AI photo scans a month; Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, at $9.99/month or $59.99/year (save 50% on the yearly plan). Your data is protected end to end: all traffic is encrypted with modern TLS, data is encrypted at rest with AES-256, accounts use bcrypt hashing and token-based authentication, every request is scoped so only you can reach your own data, and Kygo never sells your data. Wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data.');
     this._injectStructuredData();
   }
 
@@ -107,10 +107,9 @@ class KygoHiw extends HTMLElement {
       ],
       features: [
         'Insights on which foods move your sleep, energy, and recovery',
-        'Image logging: snap or upload and we identify the ingredients and log it',
-        'Supplement tracking with reminders and insights',
-        'Quick add: frequent, favorites, and saved meals for one-tap logging',
-        'Write-back to Apple Health and Health Connect'
+        'Unlimited photo logging (the free plan includes 5 AI photo scans a month)',
+        'A daily spotlight on the factor moving your metrics',
+        'Nutrition write-back to Apple Health and Health Connect'
       ],
       faqs: [
         {
@@ -122,7 +121,7 @@ class KygoHiw extends HTMLElement {
         { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
         { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
         { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
-        { q: 'Is it really free?', a: 'Yes! Food logging, wearable sync, and trend tracking are free forever. The correlation engine is premium, $9.99/month or $39.99/year to unlock personalized insights.' }
+        { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, supplements, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $59.99/year.' }
       ],
       showTimeline: this._getFlag('show-timeline', true),
       showFreeVsPro: this._getFlag('show-free-vs-pro', true)
@@ -263,16 +262,16 @@ class KygoHiw extends HTMLElement {
       <div style="max-width:940px;margin:0 auto;text-align:center;">
         <span style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;">One plan. Pick your billing.</span>
         <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.03em;margin:12px 0 14px;color:#0F172A;">Same Kygo. Better yearly.</h2>
-        <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:540px;margin:0 auto 48px;">Same full feature set either way. Go yearly to save 67% and start with a 7-day free trial.</p>
+        <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:540px;margin:0 auto 48px;">Same full feature set either way. Go yearly to save 50%, or start free and upgrade when you're ready.</p>
         <div style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;text-align:left;">
           <div style="flex:1 1 320px;max-width:400px;position:relative;background:#fff;border:2px solid #22C55E;border-radius:20px;padding:30px 26px;box-shadow:0 20px 48px -24px rgba(34,197,94,.45);">
-            <span style="position:absolute;top:-13px;left:26px;background:#22C55E;color:#fff;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:5px 12px;border-radius:999px;box-shadow:0 8px 18px -6px rgba(34,197,94,.6);">Save 67% &middot; 7-day free trial</span>
+            <span style="position:absolute;top:-13px;left:26px;background:#22C55E;color:#fff;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:5px 12px;border-radius:999px;box-shadow:0 8px 18px -6px rgba(34,197,94,.6);">Save 50% &middot; best value</span>
             <div style="font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#16A34A;margin-bottom:6px;">Yearly</div>
-            <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$3.33</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
-            <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">$39.99 billed yearly&nbsp;&nbsp;•&nbsp;&nbsp;7-day free trial</p>
-            <p style="font-size:14px;color:#64748B;margin-bottom:22px;">Everything Kygo does, at a third of the price.</p>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$5.00</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
+            <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">$59.99 billed yearly&nbsp;&nbsp;•&nbsp;&nbsp;cancel anytime</p>
+            <p style="font-size:14px;color:#64748B;margin-bottom:22px;">Everything Kygo does, at half the price.</p>
             <div class="hiwplan" style="display:flex;flex-direction:column;gap:12px;margin-bottom:26px;">${features}</div>
-            <a href="${d.iosLink}" class="hiw-greenblock cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-yearly" target="_blank" rel="noopener">Start your free trial</a>
+            <a href="${d.iosLink}" class="hiw-greenblock cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-yearly" target="_blank" rel="noopener">Get Kygo</a>
           </div>
           <div style="flex:1 1 320px;max-width:400px;background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:30px 26px;box-shadow:0 4px 12px rgba(15,23,42,.04);">
             <div style="font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#94A3B8;margin-bottom:6px;">Monthly</div>
@@ -282,7 +281,7 @@ class KygoHiw extends HTMLElement {
             <a href="${d.iosLink}" class="hiw-outline cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-monthly" target="_blank" rel="noopener">Choose monthly</a>
           </div>
         </div>
-        <p style="font-size:14px;color:#94A3B8;font-weight:500;margin-top:28px;">7-day free trial on the yearly plan. Cancel anytime.</p>
+        <p style="font-size:14px;color:#94A3B8;font-weight:500;margin-top:28px;">Free plan available. Cancel anytime.</p>
       </div>
     </section>`;
 

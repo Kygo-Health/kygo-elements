@@ -111,9 +111,18 @@ day 14, etc.).
 
 ## Free vs. Pro
 
-- **Free:** food logging + wearable syncing + basic nutrition tracking.
-- **Pro (subscription):** correlations, helping/hurting food insights, personalized
-  recommendations from the **"Kygo Advisor,"** factor pinning, and experiment tracking.
+- **Free:** voice / barcode / text logging, nutrition import, wearable syncing, full macro +
+  micronutrient tracking, water, weight, supplements, and Quick-Add — plus **5 AI photo scans per
+  calendar month** (photo logging is metered, not locked; only the exhausted state paywalls).
+  All read paths to already-logged data are always free.
+- **Pro (subscription):** the food↔body **insights / correlations** (helping-vs-hurting cards and
+  the daily factor spotlight), **unlimited photo logging**, **nutrition write-back to Apple Health
+  & Health Connect**, personalized recommendations from the **"Kygo Advisor,"** factor pinning, and
+  experiment tracking.
+
+> Grandfathered accounts keep unlimited photo scans and write-back for free. Pricing (trial vs.
+> discounted first month/year) is A/B-tested and rendered from the RevenueCat offering, so the
+> marketing site stays arm-neutral: "Free plan available · $9.99/mo or $59.99/yr · cancel anytime."
 
 ## Settings & support
 
@@ -137,5 +146,6 @@ day 14, etc.).
 - **Supported wearables/sources:** Oura, Apple Health, Health Connect, Fitbit, Garmin, WHOOP.
 - **Nutrition data sources:** Edamam, USDA, Open Food Facts (barcodes), + AI photo/voice estimate.
 - **Core differentiator:** food↔body-performance correlations (sleep, HRV, readiness, stress, energy).
-- **Monetization:** freemium — free logging/syncing/basic tracking; Pro unlocks insights & advisor.
+- **Monetization:** freemium — free logging/syncing/tracking (photo logging metered at 5 AI scans/mo);
+  Pro unlocks insights, unlimited photo logging, daily spotlight, nutrition write-back, and the advisor.
 - **"Kygo Advisor":** the Pro personalized-recommendation feature name.

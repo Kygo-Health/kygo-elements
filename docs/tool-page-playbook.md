@@ -323,8 +323,8 @@ The page carries **three** conversion touchpoints beyond the nav buttons — don
 - **Mid-page app-download band** (`.kband`) — a lighter, white variant used once or twice higher up
   (e.g. `data-track-position="early"` and `"late"`): white card, `.kband-glow` radial glow, a
   pulsing eyebrow dot (`@keyframes kygoPulse`), iOS/Android buttons, a one-line note. Reuse the
-  canonical store icons (§4) and the standard trial microcopy ("7-day free trial on yearly. Free
-  plan available. Cancel anytime."). **Desktop layout:** the copy column must be `flex:1 1 auto;
+  canonical store icons (§4) and the standard plan microcopy ("Free plan available. Save 50% on
+  yearly. Cancel anytime."). **Desktop layout:** the copy column must be `flex:1 1 auto;
   min-width:0` so it fills the row and pushes the buttons to the right edge; the actions column is
   `flex:0 0 auto` with a small `max-width` (~470px) so the two store buttons sit side by side. Do
   **not** use `justify-content:space-between` with a `max-width`-capped copy column — it leaves a
