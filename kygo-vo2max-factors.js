@@ -4,7 +4,7 @@
  * Interactive library of the factors that move VO2 max — training, nutrition,
  * environment, physiology, lifestyle, clinical — each with direction, evidence
  * grade, key finding, plain-English takeaway, optional dose/how-to, and an
- * anchored peer-reviewed source. Built from vo2research.md (sources #1–35, #48).
+ * anchored peer-reviewed source. Built from vo2research.md (sources #1–35, #48–52).
  */
 
 /** Injects accessible text into light DOM so crawlers and AI tools can read component content */
@@ -66,7 +66,7 @@ class KygoVo2maxFactors extends HTMLElement {
     return [
       // ── Exercise / Training ──
       { id: 'hiit-long', cat: 'exercise', name: 'HIIT — long interval, high volume', dir: 'positive', dirLabel: 'Raises — strongest', ev: 'strong',
-        key: 'vs steady cardio (MICT), only long-interval (≥2 min), high-volume (≥15 min), 4–12 week HIIT beat MICT (SMD 0.65–1.07); vs no training SMD up to 2.48. 53 RCTs.',
+        key: 'Meta of 53 RCTs. vs steady cardio (MICT), only long-interval (≥2 min), high-volume (≥15 min), 4–12 week HIIT beat MICT (SMD 0.65–1.07). Against no training, HIIT overall ran SMD 0.41–1.81, and this long-interval/high-volume subgroup 0.50–2.48.',
         plain: 'Hard intervals are the most effective way to raise VO2 max. The version that wins uses longer work bouts (2 min+) and enough total volume, run for at least a month.',
         dose: 'Work bouts ≥2 min · ≥15 min total interval volume · 4–12 weeks', src: 1, srcLabel: 'Wen et al. 2019' },
       { id: 'hiit-short', cat: 'exercise', name: 'HIIT — short interval, low volume', dir: 'positive', dirLabel: 'Raises', ev: 'strong',
@@ -77,34 +77,34 @@ class KygoVo2maxFactors extends HTMLElement {
         key: 'Reliable VO2 max gains across populations; only beaten by higher-volume HIIT.',
         plain: 'Steady-state cardio works. It is just not as time-efficient as well-structured intervals.',
         dose: null, src: 1, srcLabel: 'Wen et al. 2019' },
-      { id: 'sit', cat: 'exercise', name: 'Sprint interval training (SIT)', dir: 'positive', dirLabel: 'Raises', ev: 'strong',
-        key: 'Meta-analysis of 19 studies: brief all-out sprints (e.g. repeated ~30 s efforts) over 2–8 weeks significantly raised VO2 max in sedentary and recreationally active adults.',
+      { id: 'sit', cat: 'exercise', name: 'Sprint interval training (SIT)', dir: 'positive', dirLabel: 'Raises', ev: 'moderate-strong',
+        key: 'Systematic review of 19 studies; 13 pooled for VO2 max: brief all-out sprints (e.g. repeated ~30 s efforts) over 2–8 weeks raised VO2 max versus control (Hedges’ g = 0.63, 95% CI 0.39–0.87), a +4.2 to +13.4% improvement in sedentary and recreationally active adults.',
         plain: 'Very short, very hard sprint sessions reliably raise VO2 max, even with little total work. Great low-time option, but they are genuinely unpleasant.',
         dose: 'Repeated ~30 s all-out efforts · 2–8 weeks', src: 26, srcLabel: 'Sloth et al. 2013' },
-      { id: 'resistance', cat: 'exercise', name: 'Resistance training (alone)', dir: 'positive', dirLabel: 'Raises (modest)', ev: 'moderate',
-        key: 'Meta-analysis in healthy older adults (22 studies): resistance training alone improved VO2 peak (~+1.9 mL/kg/min), but less than aerobic or interval training.',
-        plain: 'Lifting gives a modest VO2 max bump, especially if you are deconditioned, but cardio and intervals raise it more. Best used alongside, not instead of, aerobic work.',
-        dose: null, src: 27, srcLabel: 'Smart et al. 2022' },
+      { id: 'resistance', cat: 'exercise', name: 'Resistance training (alone)', dir: 'positive', dirLabel: 'Raises (modest, short programs)', ev: 'moderate',
+        key: 'Meta-analysis in healthy adults over 60 (37 studies; 24 reported VO2 peak, 22 pooled): resistance training alone raised VO2 peak by 1.89 mL/kg/min (95% CI 1.21–2.57) in programs of 24 weeks or less. Beyond 24 weeks the pooled effect was null (−0.01).',
+        plain: 'Lifting gives a modest VO2 max bump in healthy over-60s, and the pooled gain sits in the first six months. This review did not compare it head-to-head against cardio, so it cannot tell you which raises VO2 max more.',
+        dose: 'Programs of ≤24 weeks · evidence is in healthy adults 60+', src: 27, srcLabel: 'Smart et al. 2022' },
       { id: 'detraining', cat: 'exercise', name: 'Detraining (stopping training)', dir: 'negative', dirLabel: 'Lowers', ev: 'strong',
-        key: 'Meta of 21 athlete studies: VO2 max fell after short-term (<30 days) cessation (ES −0.62, avg −3.93%) and more after long-term (30–90 days) cessation (ES −1.42, avg −9.43%). Higher-trained athletes lose more.',
-        plain: 'Fitness is use-it-or-lose-it. You start losing VO2 max within ~2 weeks of stopping, and the fitter you are the more you have to lose.',
+        key: 'Meta of 21 athlete studies: VO2 max fell after short-term (≤30 days) cessation (ES −0.62, avg −3.93%) and roughly twice as much after long-term (>30 days) cessation (ES −1.42, avg −9.43%). Higher-trained athletes lost more only in the long-term analysis.',
+        plain: 'Fitness is use-it-or-lose-it. A month off already costs around 4%, and longer layoffs cost more than twice that.',
         dose: 'Light activity during a layoff blunts the long-term loss', src: 8, srcLabel: 'Zheng et al. 2022' },
       { id: 'overtraining', cat: 'exercise', name: 'Overtraining / non-functional overreaching', dir: 'negative', dirLabel: 'Lowers', ev: 'moderate',
-        key: 'ECSS/ACSM consensus: too much training with too little recovery causes prolonged performance decrements, including reduced VO2 max, that take weeks to months to resolve.',
+        key: 'ECSS/ACSM consensus: too much training with too little recovery causes prolonged performance decrements, including reduced VO2 max, that take weeks to months to resolve. This is a narrative expert consensus on overtraining syndrome as a whole, not a pooled analysis of VO2 max.',
         plain: 'More is not always better. Pushing past recovery can stall or drop your VO2 max. If your fitness is sliding despite hard training, you may be under-recovered, not under-trained.',
         dose: null, src: 20, srcLabel: 'Meeusen et al. 2013' },
-      { id: 'tapering', cat: 'exercise', name: 'Tapering (pre-event)', dir: 'positive', dirLabel: 'Maintains / slight raise', ev: 'strong',
-        key: 'Meta-analysis of 27 studies: a ~2-week taper that cuts training volume by 41–60% (keeping intensity) maximizes performance; VO2 max is maintained or slightly improved as fatigue clears.',
-        plain: 'Backing off volume before a goal event does not cost you VO2 max. It sheds fatigue so your existing fitness shows up on the day.',
-        dose: '~2-week taper · cut volume 41–60% · keep intensity', src: 31, srcLabel: 'Bosquet et al. 2007' },
-      { id: 'concurrent', cat: 'exercise', name: 'Concurrent training (lifting + cardio)', dir: 'neutral', dirLabel: 'Neutral for VO2 max', ev: 'moderate',
-        key: 'Meta-analysis: adding strength work to endurance training does not meaningfully reduce VO2 max gains; the classic "interference effect" mainly blunts strength/power.',
-        plain: 'You can lift and do cardio in the same program without hurting your VO2 max. Interference mostly costs strength gains, not aerobic ones.',
+      { id: 'tapering', cat: 'exercise', name: 'Tapering (pre-event)', dir: 'neutral', dirLabel: 'No VO2 max outcome measured', ev: 'strong',
+        key: 'Meta-analysis of 27 studies. Performance was maximised by a ~2-week taper (ES 0.59 ± 0.33) that exponentially cut training volume by 41–60% (ES 0.72 ± 0.36) while leaving intensity (ES 0.33 ± 0.14) and frequency (ES 0.35 ± 0.17) unchanged. VO2 max was not an outcome in this meta-analysis.',
+        plain: 'Backing off volume before a goal event sheds fatigue so your existing fitness shows up on the day. The evidence is about race performance — this meta-analysis never measured VO2 max at all.',
+        dose: '~2-week taper · cut volume 41–60% · keep intensity and frequency', src: 31, srcLabel: 'Bosquet et al. 2007' },
+      { id: 'concurrent', cat: 'exercise', name: 'Concurrent training (lifting + cardio)', dir: 'neutral', dirLabel: 'Neutral (indirect evidence)', ev: 'weak',
+        key: 'Meta-analysis of concurrent-training sequence: doing strength work before versus after endurance made no difference to VO2 max (SMD 0.02, p=0.859). Every arm did both types of training — there was no endurance-only comparison, so this does not test whether adding lifting changes VO2 max gains.',
+        plain: 'The order you put lifting and cardio in does not change your VO2 max. Whether adding lifting to cardio helps or hurts is a different question, and this evidence does not answer it.',
         dose: null, src: 32, srcLabel: 'Gao & Yu 2023' },
 
       // ── Nutrition & Supplements ──
-      { id: 'iron', cat: 'nutrition', name: 'Iron (when deficient)', dir: 'positive', dirLabel: 'Raises (if deficient)', ev: 'strong',
-        key: 'Meta of 24 RCTs in women of reproductive age: daily iron raised relative VO2 max by 2.35 mL/kg/min (95% CI 0.82–3.88, p=0.003) and lowered submaximal heart rate.',
+      { id: 'iron', cat: 'nutrition', name: 'Iron (when deficient)', dir: 'positive', dirLabel: 'Raises (if deficient)', ev: 'moderate-strong',
+        key: 'Meta of 24 RCTs in women of reproductive age; the VO2 max estimate pools 18 of them. Daily iron raised relative VO2 max by 2.35 mL/kg/min (95% CI 0.82–3.88, p=0.003) and lowered submaximal heart rate. Only 3 of the 24 trials were rated at low risk of bias.',
         plain: 'Fixing low iron raises VO2 max, especially in menstruating women who are prone to deficiency. This is correcting a deficit, not a boost on top of normal iron.',
         dose: 'Daily iron — only corrects a deficiency, not a boost on top of normal levels', src: 6, srcLabel: 'Pasricha et al. 2014' },
       { id: 'nitrate', cat: 'nutrition', name: 'Dietary nitrate / beetroot juice', dir: 'neutral', dirLabel: 'No effect on VO2 max', ev: 'strong',
@@ -117,163 +117,167 @@ class KygoVo2maxFactors extends HTMLElement {
         dose: null, src: 9, srcLabel: 'Brietzke et al. 2017' },
       { id: 'creatine', cat: 'nutrition', name: 'Creatine', dir: 'negative', dirLabel: 'Slightly lowers (per-kg)', ev: 'strong',
         key: 'Meta of 19 RCTs (n=424): VO2 max rose less with creatine than placebo (ES −0.32, 95% CI −0.51 to −0.12).',
-        plain: 'Creatine is great for strength and power, but it adds water weight, and since VO2 max is measured per kg, the number can dip slightly. It does not improve aerobic capacity.',
+        plain: 'Creatine is great for strength and power, and since VO2 max is scored per kg, the number can dip slightly. Added body water and mass is the authors’ likely explanation, not something the trials directly measured.',
         dose: null, src: 13, srcLabel: 'Gras et al. 2023' },
-      { id: 'beta-alanine', cat: 'nutrition', name: 'Beta-alanine', dir: 'neutral', dirLabel: 'No effect on VO2 max', ev: 'moderate',
-        key: 'ISSN position stand: beta-alanine raises muscle carnosine and helps efforts lasting ~30 s to 10 min, but does not increase VO2 max.',
-        plain: 'Useful for buffering "the burn" in short hard efforts. It does not raise your VO2 max ceiling.',
+      { id: 'beta-alanine', cat: 'nutrition', name: 'Beta-alanine', dir: 'neutral', dirLabel: 'Not tested for VO2 max', ev: 'moderate',
+        key: 'ISSN position stand: beta-alanine raises intramuscular carnosine and most reliably helps efforts longer than 60 s, with the effect most pronounced in the 1–4 minute range. The position stand does not address VO2 max as an outcome.',
+        plain: 'Useful for buffering "the burn" in efforts of roughly one to four minutes. There is no evidence it raises VO2 max — the position stand simply does not cover that.',
         dose: null, src: 14, srcLabel: 'Trexler et al. 2015 (ISSN)' },
-      { id: 'bicarbonate', cat: 'nutrition', name: 'Sodium bicarbonate', dir: 'neutral', dirLabel: 'No effect on VO2 max', ev: 'moderate',
-        key: 'Systematic review: bicarbonate buffers exercise acidosis and aids high-intensity efforts (especially >4 min), but is not shown to raise VO2 max.',
-        plain: '"Baking soda" loading helps you tolerate the burn in hard efforts. It does not raise your aerobic ceiling.',
+      { id: 'bicarbonate', cat: 'nutrition', name: 'Sodium bicarbonate', dir: 'neutral', dirLabel: 'Not tested for VO2 max', ev: 'moderate',
+        key: 'Systematic review of 35 studies: only 17 reported a performance benefit, concentrated in high-intensity efforts. The review reports no VO2 max outcome. Whether bicarbonate alters the VO2 slow component is contested — Santalla 2003 (7 professional cyclists, 0.3 g/kg) found no change, while Berger 2006 found the slow component delayed.',
+        plain: '"Baking soda" loading helps some people tolerate the burn in hard efforts, though only about half the trials found any benefit. Its effect on VO2 max has not been tested.',
         dose: null, src: 18, srcLabel: 'Hadzic et al. 2019' },
-      { id: 'vitamin-d', cat: 'nutrition', name: 'Vitamin D', dir: 'neutral', dirLabel: 'No consistent effect', ev: 'moderate',
-        key: 'Network meta-analysis of 6 supplements (30 RCTs, 693 athletes): none, including vitamin D, significantly raised VO2 max. Deficiency-correction studies are mixed.',
-        plain: 'Worth keeping vitamin D in normal range for general health, but supplementing it does not reliably raise VO2 max unless you were deficient.',
+      { id: 'vitamin-d', cat: 'nutrition', name: 'Vitamin D', dir: 'neutral', dirLabel: 'No demonstrated effect', ev: 'moderate',
+        key: 'Network meta-analysis (30 RCTs, 693 athletes) reported no significant VO2 max benefit for vitamin D. The published effect estimates could not be retrieved, so read this as no demonstrated benefit rather than proof of no effect. Deficiency-correction studies are mixed.',
+        plain: 'Worth keeping vitamin D in normal range for general health, but nothing shows it raises VO2 max. The underlying numbers are thin enough that "no effect" is not settled either.',
         dose: null, src: 19, srcLabel: 'Deng et al. 2025' },
-      { id: 'omega-3', cat: 'nutrition', name: 'Omega-3 (fish oil)', dir: 'neutral', dirLabel: 'No consistent effect', ev: 'moderate',
-        key: 'ISSN position stand: omega-3 (EPA/DHA) chiefly lowers the oxygen cost of submaximal work and exercising heart rate; evidence for raising VO2 max itself is inconsistent.',
-        plain: 'Fish oil may make a given effort feel a touch easier and is good for general health, but it is not a reliable way to raise your VO2 max ceiling.',
+      { id: 'omega-3', cat: 'nutrition', name: 'Omega-3 (fish oil)', dir: 'neutral', dirLabel: 'Contested for VO2 max', ev: 'moderate',
+        key: 'ISSN position stand. Its own headline conclusion is net-positive for training adaptation and performance, and it reports a lower oxygen cost of submaximal work and lower exercising heart rate. On VO2 max specifically the evidence is contested: some trials show small VO2 peak gains, others are null.',
+        plain: 'Fish oil may make a given effort feel a touch easier and is good for general health. Whether it raises VO2 max is genuinely unsettled — the position stand leans positive, individual trials disagree.',
         dose: null, src: 23, srcLabel: 'Jäger et al. 2024 (ISSN)' },
 
       // ── Environment ──
       { id: 'altitude-lhtl', cat: 'environment', name: 'Altitude (live high, train low)', dir: 'positive', dirLabel: 'Raises', ev: 'moderate',
-        key: 'Elite orienteers living at 2,500 m (18 h/day) and training lower for 24 days raised hemoglobin mass (805→848 g) and VO2 max (3,515→3,660 mL/min); sea-level controls did not change.',
-        plain: 'Sleeping at altitude builds more oxygen-carrying red cells, which can lift VO2 max. Evidence is from small elite-athlete studies and the effect is still debated.',
+        key: 'Elite orienteers living at 2,500 m (18 h/day) and training lower for 24 days raised hemoglobin mass (805→848 g) and VO2 max (3,515→3,660 mL/min). The unchanged control group were cross-country skiers, and their "sea level" was really 500–1,600 m.',
+        plain: 'Sleeping at altitude builds more oxygen-carrying red cells, which can lift VO2 max. The evidence is one small elite study whose controls were a different sport living at low altitude, and the effect is still debated.',
         dose: 'Sleep high (~2,500 m, 18 h/day), train low · ~3–4 weeks', src: 7, srcLabel: 'Wehrlin et al. 2006' },
-      { id: 'acute-altitude', cat: 'environment', name: 'Acute altitude (being at altitude)', dir: 'negative', dirLabel: 'Lowers (on the spot)', ev: 'strong',
-        key: 'VO2 max drops ~6–8% per 1,000 m above sea level in elite athletes; about half recovers with ~2 weeks of acclimatization.',
+      { id: 'acute-altitude', cat: 'environment', name: 'Acute altitude (being at altitude)', dir: 'negative', dirLabel: 'Lowers (on the spot)', ev: 'moderate',
+        key: 'VO2 max falls roughly 6–8% per 1,000 m of elevation above about 1,500 m; roughly half of that recovers with ~2 weeks of acclimatisation. This is a standard textbook figure from the broader altitude-physiology literature, not a single cited study — treat the percentage as an approximation.',
         plain: 'The thinner the air, the lower your VO2 max on the spot. Your watch will read lower at elevation until you adapt.',
-        dose: null, src: 7, srcLabel: 'Established altitude-physiology literature (cf. Wehrlin 2006)' },
+        dose: null, src: 7, srcLabel: 'Textbook figure — no single source (cf. Wehrlin 2006)' },
       { id: 'heat-acclimation', cat: 'environment', name: 'Heat acclimation', dir: 'positive', dirLabel: 'Raises', ev: 'moderate',
-        key: 'Meta-analysis: repeated heat exposure raises VO2 max a small-to-moderate-large amount (larger tested in heat). A key trial showed +5% cool / +8% hot via ~6.5% plasma-volume expansion.',
-        plain: 'Training in the heat expands blood plasma and can nudge VO2 max up, similar in spirit to altitude. Clearest when you are also tested in heat.',
-        dose: 'Repeated heat exposure; effect via plasma-volume expansion', src: 12, srcLabel: 'Waldron et al. 2021 / Lorenzo 2010' },
+        key: 'Meta-analysis pooled four heat-acclimation effects on VO2 max: Hedges’ g = 0.42 overall, 0.63 when tested in the heat, 0.30 versus a control group, and 0.75 versus control when tested in the heat. The +5% cool / +8% hot and ~6.5% plasma-volume figures come from Lorenzo 2010 (12 acclimated cyclists vs 8 controls, tested at 13°C and 38°C).',
+        plain: 'Training in the heat expands blood plasma and can nudge VO2 max up, similar in spirit to altitude. The effect is biggest when you are also tested in heat.',
+        dose: 'Repeated heat exposure; effect via plasma-volume expansion', src: 12, srcLabel: 'Waldron et al. 2021 (+ Lorenzo 2010)' },
       { id: 'air-pollution', cat: 'environment', name: 'Air pollution (PM2.5)', dir: 'negative', dirLabel: 'Lowers / blunts gains', ev: 'moderate',
-        key: 'Systematic review: breathing polluted air during endurance exercise impairs cardiopulmonary responses and can blunt the aerobic-fitness benefit of training.',
-        plain: 'Hard training in heavy traffic or smog works against you. Favor cleaner air and times of day when you can.',
+        key: 'Systematic review of 24 studies: breathing polluted air during endurance exercise impairs cardiopulmonary responses and can blunt the aerobic-fitness benefit of training. The review did not establish a dose-response relationship between pollutant concentration and the size of the effect.',
+        plain: 'Hard training in heavy traffic or smog works against you. How much depends on exposure in ways this evidence has not pinned down — favour cleaner air and times of day when you can.',
         dose: null, src: 28, srcLabel: 'González-Rojas et al. 2025' },
       { id: 'hypoxic-training', cat: 'environment', name: 'Hypoxic training methods', dir: 'positive', dirLabel: 'Raises (varies by method)', ev: 'moderate',
-        key: 'Network meta-analysis (59 studies): live-high/train-low, live-high/train-high, and intermittent hypoxic training all beat normoxic training; LHTL + low-altitude training ranks best.',
-        plain: 'Structured altitude/hypoxia protocols can raise VO2 max, but the method matters: sleeping high while training low is the most dependable. A hypoxic mask alone is the weakest version.',
-        dose: 'Live-high/train-low ranks most reliable', src: 33, srcLabel: 'Feng et al. 2023' },
+        key: 'Bayesian network meta-analysis (59 studies) ranked live-high/train-low combined with low-altitude training best (P-scores 0.92 and 0.86); intermittent hypoxic training ranked far lower (0.37) and intermittent hypoxic exposure at rest lowest (0.07). A 2025 meta-analysis of 35 studies contradicts this row for intermittent hypoxic training specifically: no VO2 max benefit over normoxic training (p=0.333), with evidence of publication bias.',
+        plain: 'Sleeping high while training low is the most dependable protocol. Doing intervals in a hypoxic mask is the weakest version — and the newest meta-analysis finds it does not work at all.',
+        dose: 'Live-high/train-low ranks most reliable; hypoxic-mask intervals do not', src: 33, srcLabel: 'Feng et al. 2023 (vs Dorelli et al. 2025)' },
 
       // ── Demographics & Physiology ──
       { id: 'body-fat', cat: 'demographics', name: 'Body fat / excess weight', dir: 'negative', dirLabel: 'Lowers (per-kg)', ev: 'strong',
-        key: 'VO2 max is expressed per kg, so carrying more fat lowers the number. In adults with overweight/obesity, training raised relative VO2 max by 3.82 mL/kg/min (66 RCTs, n=3,964).',
-        plain: 'Because the score is "per kilo," losing fat raises your VO2 max number even if your heart and lungs do not change. Training plus fat loss is the big lever here.',
+        key: 'VO2 max is expressed per kg, so carrying more fat lowers the number. In adults with overweight/obesity, training raised relative VO2 max by 3.82 mL/kg/min (66 RCTs, n=3,964) — that figure is the effect of the training programmes, not of fat loss on its own.',
+        plain: 'Because the score is "per kilo," losing fat raises your VO2 max number even if your heart and lungs do not change. The 3.82 figure above is what training delivered in these trials.',
         dose: 'Training + fat loss; the score is per kg of body weight', src: 10, srcLabel: 'van Baak et al. 2021' },
       { id: 'age', cat: 'demographics', name: 'Age', dir: 'negative', dirLabel: 'Lowers', ev: 'strong',
-        key: 'Baltimore Longitudinal Study (n=810, ages 21–87): peak VO2 decline accelerates each decade rather than being linear, and is faster in men.',
-        plain: 'VO2 max drops with age, and the drop speeds up the older you get. Single snapshots across ages make aging look gentler than it really is.',
+        key: 'Baltimore Longitudinal Study (n=810, ages 21–87): peak VO2 decline accelerates each decade rather than being linear — roughly 3–6% per decade through the 20s and 30s, rising to more than 20% per decade from the 70s onward. The decline is faster in men from the 40s onward.',
+        plain: 'VO2 max drops with age, and the drop speeds up sharply in later decades. Single snapshots across ages make aging look gentler than it really is.',
         dose: null, src: 3, srcLabel: 'Fleg et al. 2005' },
-      { id: 'immobilization', cat: 'demographics', name: 'Immobilization / bed rest', dir: 'negative', dirLabel: 'Lowers (severe)', ev: 'strong',
-        key: 'Dallas Bed Rest Study (5 men): 3 weeks of strict bed rest cut VO2 max ~27%, reversed by 8 weeks of training. A 40-year follow-up found 40 years of aging caused about the same proportional drop.',
-        plain: 'Extended inactivity is brutally fast at erasing fitness. Three weeks flat on your back cost these men as much VO2 max as four decades of aging.',
+      { id: 'immobilization', cat: 'demographics', name: 'Immobilization / bed rest', dir: 'negative', dirLabel: 'Lowers (severe)', ev: 'moderate',
+        key: 'Dallas Bed Rest Study (5 men): 3 weeks of strict bed rest cut VO2 max ~26%, reversed by 8 weeks of training. The 40-year follow-up found 40 years of aging cost ~27% — a comparable drop. Five men, no control group; the usual "falling cardiac output" explanation is not established by this study.',
+        plain: 'Extended inactivity is brutally fast at erasing fitness. Three weeks flat on your back cost these men about as much VO2 max as four decades of aging — from a five-man study, so hold the exact number loosely.',
         dose: null, src: 11, srcLabel: 'Saltin et al. 1968' },
-      { id: 'blood-donation', cat: 'demographics', name: 'Blood donation (acute)', dir: 'negative', dirLabel: 'Lowers (temporary)', ev: 'moderate',
-        key: 'Systematic review: mean VO2 max reduction after ~500 mL whole-blood donation (medium effect size), via reduced cardiac output and oxygen-carrying capacity; ~4–11% acute drop, recovering over ~2–3 weeks.',
-        plain: 'Donating blood temporarily dents your VO2 max because you have fewer red cells to carry oxygen. It bounces back in a couple of weeks — time donations away from key events.',
+      { id: 'blood-donation', cat: 'demographics', name: 'Blood donation (acute)', dir: 'neutral', dirLabel: 'No clear reduction', ev: 'weak',
+        key: 'Systematic review of whole-blood donation (~500 mL): the change in VO2 max was not statistically significant, and the review concludes VO2 max is not reduced by donation. Submaximal responses do shift. The stroke-volume / cardiac-output explanation does not come from this review.',
+        plain: 'Losing ~500 mL of blood sounds like it should dent your VO2 max, but the pooled evidence does not show a significant drop. The review is small and individual studies disagree, so do not plan around a large effect in either direction.',
         dose: null, src: 16, srcLabel: 'Johnson et al. 2019' },
-      { id: 'dehydration', cat: 'demographics', name: 'Dehydration / hypohydration', dir: 'negative', dirLabel: 'Lowers', ev: 'strong',
-        key: 'Losing more than ~2% of body mass as water lowers maximal aerobic capacity, mainly by shrinking plasma volume (lower stroke volume and cardiac output). Worse in the heat.',
+      { id: 'dehydration', cat: 'demographics', name: 'Dehydration / hypohydration', dir: 'negative', dirLabel: 'Lowers', ev: 'moderate',
+        key: 'Review: losing more than ~2% of body mass as water lowers maximal aerobic capacity, mainly by shrinking plasma volume (lower stroke volume and cardiac output). The impairment compounds in the heat.',
         plain: 'Showing up dehydrated lowers your VO2 max on the day because there is less blood volume to pump. Hot conditions make it worse.',
         dose: 'Avoid >2% body-mass water loss before testing or hard efforts', src: 25, srcLabel: 'Cheuvront & Sawka 2010' },
       { id: 'genetics', cat: 'demographics', name: 'Genetics (trainability)', dir: 'variable', dirLabel: 'Varies by person', ev: 'strong',
-        key: 'HERITAGE Family Study (n=481, 20-wk identical training): mean gain ~400 mL/min but ranged from no gain to >1.0 L/min. ~47% of the response was heritable.',
-        plain: 'How much your VO2 max improves from the same training is roughly half genetic. Some people are high responders, some barely move. It runs in families.',
+        key: 'HERITAGE Family Study (n=481, 20-wk identical training): mean gain ~400 mL/min but ranged from no gain to >1.0 L/min. Maximal heritability of the training response was estimated at ~47% — an upper bound, in a Caucasian family sample.',
+        plain: 'How much your VO2 max improves from the same training is heavily genetic — up to roughly half of the response. Some people are high responders, some barely move. It runs in families.',
         dose: null, src: 4, srcLabel: 'Bouchard et al. 1999 (HERITAGE)' },
       { id: 'sex', cat: 'demographics', name: 'Sex', dir: 'variable', dirLabel: 'Varies', ev: 'moderate',
-        key: '~10–12% endurance performance gap. Even adjusted per kg or per fat-free mass, men average ~5–10% higher VO2 max, driven mainly by greater oxygen delivery (higher hemoglobin mass, larger heart).',
-        plain: 'Men average higher VO2 max largely because they carry more oxygen per unit of blood and have bigger hearts. Part of the gap remains even after correcting for body size.',
+        key: 'Narrative review: a ~10–12% endurance performance gap. Comparing elite men with elite women, male VO2 max averages ~10% higher per kg of body mass, driven mainly by greater oxygen delivery (higher hemoglobin mass, larger heart). The review gives no per-fat-free-mass figure.',
+        plain: 'Men average higher VO2 max largely because they carry more oxygen per unit of blood and have bigger hearts. The ~10% figure is elite-versus-elite, per kilogram of body weight.',
         dose: null, src: 5, srcLabel: 'Santisteban et al. 2022' },
 
       // ── Lifestyle ──
       { id: 'smoking', cat: 'lifestyle', name: 'Smoking', dir: 'negative', dirLabel: 'Lowers', ev: 'moderate',
-        key: 'Current smokers had lower estimated VO2 max (38.8) than never-smokers (41.6) and former smokers (41.4). Carbon monoxide binds hemoglobin ~200× harder than oxygen, cutting oxygen delivery.',
-        plain: 'Smoking lowers your aerobic ceiling, mostly by hogging the oxygen seats on your red blood cells. The good news: quitters in this study matched never-smokers, so it appears reversible.',
+        key: 'Cross-sectional study (n=70, step-test estimate): current smokers had lower estimated VO2 max (38.8) than never-smokers (41.6) and former smokers (41.4). The carbon-monoxide-binds-hemoglobin explanation is standard physiology, not something this study measured. The authors disclose tobacco-industry-funded research ties.',
+        plain: 'Smokers in this study had a measurably lower aerobic ceiling. Because it is a single cross-sectional snapshot, it cannot tell you whether quitting restores it.',
         dose: null, src: 15, srcLabel: 'Caci et al. 2024' },
       { id: 'alcohol', cat: 'lifestyle', name: 'Alcohol (previous-day)', dir: 'negative', dirLabel: 'Lowers (performance)', ev: 'moderate',
-        key: 'RCT (n=12): a previous-evening alcohol dose cut next-morning cycling time to exhaustion by ~11% (181 vs 203 s); strength tests were unaffected. Effect is on endurance capacity rather than a proven VO2 max change.',
+        key: 'RCT (n=12): a previous-evening alcohol dose (1.09 g ethanol per kg fat-free mass) cut next-morning cycling time to exhaustion by ~11% (181 vs 203 s); strength tests were unaffected. The effect is on endurance capacity rather than a proven VO2 max change.',
         plain: 'Drinking the night before a hard session measurably hurts endurance the next day. The hit is to how long you can hold an effort, more than to your VO2 max ceiling.',
-        dose: null, src: 24, srcLabel: 'Levitt et al. 2022' },
+        dose: null, src: 24, srcLabel: 'Shaw et al. 2022' },
       { id: 'sleep-deprivation', cat: 'lifestyle', name: 'Sleep deprivation', dir: 'negative', dirLabel: 'Lowers (performance)', ev: 'moderate',
-        key: 'Meta-analysis (45 studies): sleep deprivation impairs aerobic endurance and raises perceived exertion. Acute loss does not reliably change measured VO2 max, but chronic poor sleep is linked to lower VO2 max and blunts training gains.',
-        plain: 'A bad night mostly hurts how long and how hard you can go, not your peak number on a single test. But consistently short sleep undercuts the fitness you build over time.',
+        key: 'Meta-analysis of 45 studies, 16 of them on aerobic endurance: sleep deprivation cut aerobic endurance performance (SMD −0.76, 95% CI −1.27 to −0.25; athletes −0.66, non-athletes −1.02) and raised perceived exertion. This paper reports no VO2 max outcome — claims that acute sleep loss spares VO2 max, or that chronic short sleep lowers it, are not supported by this source.',
+        plain: 'A bad night clearly hurts how long and how hard you can go. What it does to your VO2 max number specifically has not been tested here.',
         dose: null, src: 29, srcLabel: 'Kong et al. 2025' },
       { id: 'sauna', cat: 'lifestyle', name: 'Sauna bathing (habitual)', dir: 'positive', dirLabel: 'Raises', ev: 'moderate',
-        key: 'Kuopio cohort + small RCT: regular sauna use is associated with higher cardiorespiratory fitness, and adding post-exercise sauna to training improved VO2 by ~2.7 mL/kg/min versus exercise alone.',
-        plain: 'Sauna triggers heart-rate and plasma-volume responses a bit like exercise, and stacking it onto training may give a small extra VO2 max bump.',
-        dose: 'Regular post-exercise sauna added to training (~+2.7 mL/kg/min in one RCT)', src: 30, srcLabel: 'Kunutsor et al. 2024' },
+        key: 'Kuopio cohort of 2,012 men aged 42–61: versus one session a week, 2–3 sessions/week were associated with +0.84 mL/kg/min (p=.008) and 4–7 sessions/week with +1.17 mL/kg/min (p=.041) of estimated fitness; at 11 years only the 2–3/week group remained significant (+1.22, p=.038). Session duration was not associated with fitness. The ~+2.7 mL/kg/min post-exercise-sauna figure comes from a small RCT by the same group, not an independent trial.',
+        plain: 'More frequent sauna sessions track with higher fitness in Finnish men — how long you sit does not. The cohort is observational, and the one supporting trial is from the same authors.',
+        dose: 'Frequency, not duration: 2–3 or more sessions per week', src: 30, srcLabel: 'Kunutsor et al. 2024' },
       { id: 'sedentary', cat: 'lifestyle', name: 'Sedentary behavior (sitting time)', dir: 'negative', dirLabel: 'Lowers', ev: 'moderate',
-        key: 'In 16,025 adults, more daily sitting was associated with lower cardiorespiratory fitness, independent of exercise, with the strongest link in otherwise inactive people.',
-        plain: 'Long sitting days drag down your fitness even if you also work out. Breaking up sitting matters on top of your training, not instead of it.',
+        key: 'In 16,025 adults, more daily sitting was associated with lower estimated cardiorespiratory fitness — but no association was seen among the most physically active participants, so it is not independent of exercise. Fitness was estimated, not measured directly.',
+        plain: 'Long sitting days track with lower fitness, mainly in people who are not otherwise very active. If you already train a lot, this study does not show sitting hurting you.',
         dose: null, src: 34, srcLabel: 'Eriksen et al. 2016' },
-      { id: 'cold-water', cat: 'lifestyle', name: 'Cold-water immersion (post-training)', dir: 'neutral', dirLabel: 'Neutral for VO2 max', ev: 'moderate',
-        key: 'Meta-analysis: routinely ice-bathing after sessions blunts strength and power gains (SMD −0.60) but does not compromise endurance/aerobic adaptations.',
-        plain: 'Ice baths mainly cost you strength gains, not VO2 max. For endurance, regular cold plunges appear fine; if you are chasing strength, use them sparingly.',
+      { id: 'cold-water', cat: 'lifestyle', name: 'Cold-water immersion (post-training)', dir: 'neutral', dirLabel: 'No VO2 max estimate', ev: 'moderate',
+        key: 'Meta-analysis: routinely ice-bathing after sessions blunts strength and power gains (SMD −0.60). It reports no pooled VO2 max estimate, so it neither confirms nor rules out an effect on aerobic capacity.',
+        plain: 'Ice baths clearly cost you strength gains. For VO2 max there is no pooled evidence either way — this meta-analysis simply did not produce that number.',
         dose: null, src: 35, srcLabel: 'Malta et al. 2021' },
 
       // ── Clinical ──
-      { id: 'long-covid', cat: 'clinical', name: 'Long COVID', dir: 'negative', dirLabel: 'Lowers', ev: 'strong',
-        key: 'Meta-analysis (9 studies, 464 symptomatic vs 359): peak VO2 was 4.9 mL/kg/min lower in people with ongoing symptoms 3+ months after infection (deconditioning, dysfunctional breathing, impaired O2 extraction).',
-        plain: 'Lingering COVID symptoms come with a measurably lower VO2 max, comparable to deconditioning from bed rest. Some is reversible with graded reconditioning.',
+      { id: 'long-covid', cat: 'clinical', name: 'Long COVID', dir: 'negative', dirLabel: 'Lowers', ev: 'moderate',
+        key: 'Meta-analysis (9 studies, 464 symptomatic vs 359): peak VO2 was 4.9 mL/kg/min lower in people with ongoing symptoms 3+ months after infection, at low certainty of evidence. The included cohorts oversampled people who had been hospitalised, so the gap may be smaller after milder infection.',
+        plain: 'Lingering COVID symptoms come with a measurably lower VO2 max. Certainty is low and the studies lean toward people who were hospitalised, so milder cases may be less affected.',
         dose: null, src: 17, srcLabel: 'Durstenfeld et al. 2022' },
-      { id: 'type-2-diabetes', cat: 'clinical', name: 'Type 2 diabetes', dir: 'negative', dirLabel: 'Lowers', ev: 'strong',
-        key: 'Meta-analysis (77 studies): people with type 2 diabetes averaged 5.84 mL/kg/min lower VO2 max than those without (~20% lower), driven by cardiac, microvascular, and mitochondrial impairments.',
+      { id: 'type-2-diabetes', cat: 'clinical', name: 'Type 2 diabetes', dir: 'negative', dirLabel: 'Lowers', ev: 'moderate',
+        key: 'Meta-analysis (77 studies): people with type 2 diabetes averaged 5.84 mL/kg/min lower VO2 max than those without, driven by cardiac, microvascular, and mitochondrial impairments.',
         plain: 'Type 2 diabetes meaningfully lowers aerobic fitness, and low fitness in turn predicts worse outcomes. Exercise that raises VO2 max is one of the highest-value interventions here.',
         dose: null, src: 22, srcLabel: 'Macedo et al. 2023' },
       { id: 'heart-failure', cat: 'clinical', name: 'Heart failure (VO2 max as prognosis)', dir: 'negative', dirLabel: 'Lowers (prognostic)', ev: 'strong',
-        key: 'Heart failure lowers peak VO2, and the value is prognostic: in the landmark CPET study, peak VO2 ≤14 mL/kg/min marked the worst-prognosis group and became a heart-transplant timing threshold.',
-        plain: 'The heart can’t deliver enough oxygen, so VO2 max falls and is one of the strongest predictors of survival in heart failure. It is used to time transplant decisions.',
+        key: 'Landmark CPET study: peak VO2 ≤14 mL/kg/min became the heart-transplant timing threshold, though that group still had ~70% one-year survival. The worst prognosis belonged to patients rejected from transplant for noncardiac reasons — 47% one-year and 32% two-year survival.',
+        plain: 'The heart can’t deliver enough oxygen, so VO2 max falls and is one of the strongest predictors of survival in heart failure. The classic ≤14 figure is a transplant-timing threshold, not the worst-prognosis group in the original data.',
         dose: null, src: 21, srcLabel: 'Mancini et al. 1991' },
       { id: 'mortality', cat: 'clinical', name: 'Low fitness as a mortality risk factor', dir: 'predictor', dirLabel: 'Predicts mortality', ev: 'strong',
-        key: 'In 122,007 adults followed ~8.4 years, higher cardiorespiratory fitness was associated with lower all-cause mortality with no upper limit of benefit; the least-fit had ~5× the adjusted mortality risk of the fittest — comparable to or greater than smoking, diabetes, or coronary disease.',
-        plain: 'Low VO2 max is one of the strongest predictors of dying early, on par with major disease risk factors — and there’s no point of diminishing returns. Raising it is among the highest-leverage things you can do for longevity.',
+        key: 'In 122,007 adults followed ~8.4 years, higher treadmill-derived cardiorespiratory fitness — measured in METs, not laboratory VO2 max — was associated with lower all-cause mortality with no upper limit of benefit; the least-fit had ~5× the adjusted mortality risk of the fittest. Observational, so this is an association rather than proof that raising fitness lowers risk.',
+        plain: 'Low fitness is one of the strongest markers of dying early, on par with major disease risk factors — and there’s no point of diminishing returns. This is exercise-test fitness in METs rather than a lab VO2 max.',
         dose: null, src: 48, srcLabel: 'Mandsager et al. 2018' }
     ];
   }
 
-  // ── Sources (#1–35, #48) ────────────────────────────────────────────────
+  // ── Sources (#1–35, #48–52) ─────────────────────────────────────────────
 
   get _sources() {
     return [
-      { id: 1, tag: 'Exercise — HIIT/MICT', title: 'Wen et al. 2019 — HIIT protocols for VO2 max', cite: 'J Sci Med Sport. 2019;22(8):941-947.', detail: 'Systematic review + meta-analysis of 53 RCTs. Long-interval/high-volume HIIT beat MICT (SMD 0.65–1.07); HIIT vs control SMD 0.79–1.65.', url: 'https://doi.org/10.1016/j.jsams.2019.01.013' },
+      { id: 1, tag: 'Exercise — HIIT/MICT', title: 'Wen et al. 2019 — HIIT protocols for VO2 max', cite: 'J Sci Med Sport. 2019;22(8):941-947.', detail: 'Systematic review + meta-analysis of 53 RCTs. HIIT vs control SMD 0.41–1.81 overall (long-interval/high-volume subgroup 0.50–2.48); vs MICT only long-interval/high-volume HIIT won (SMD 0.65–1.07).', url: 'https://doi.org/10.1016/j.jsams.2019.01.013' },
       { id: 2, tag: 'Nutrition — nitrate', title: 'Gao/Whitlock et al. 2021 — Dietary nitrate', cite: 'J Int Soc Sports Nutr. 2021;18:55.', detail: '73 studies (n=1061). Nitrate lowered submaximal VO2 (−0.04 L/min) but had no significant effect on VO2 max — benefit is economy, not ceiling.', url: 'https://doi.org/10.1186/s12970-021-00450-4' },
-      { id: 3, tag: 'Physiology — age', title: 'Fleg et al. 2005 — Aerobic capacity decline with age', cite: 'Circulation. 2005;112(5):674-682.', detail: 'Baltimore Longitudinal Study, n=810 (ages 21–87). Peak VO2 decline accelerates each decade and is faster in men; cross-sectional snapshots underestimate it.', url: 'https://doi.org/10.1161/CIRCULATIONAHA.105.545459' },
-      { id: 4, tag: 'Physiology — genetics', title: 'Bouchard et al. 1999 — HERITAGE Family Study', cite: 'J Appl Physiol. 1999;87(3):1003-1008.', detail: 'n=481, 20-wk identical training. Mean gain ~400 mL/min, range from no gain to >1.0 L/min; ~47% heritable, 2.5× more between-family than within-family variance.', url: 'https://doi.org/10.1152/jappl.1999.87.3.1003' },
-      { id: 5, tag: 'Physiology — sex', title: 'Santisteban et al. 2022 — Sex differences in VO2 max', cite: 'Int J Environ Res Public Health. 2022;19(9):4946.', detail: 'Narrative review. ~10–12% performance gap; male advantage attributed to oxygen delivery (hemoglobin mass, cardiac size), partly persisting after normalizing to fat-free mass.', url: 'https://doi.org/10.3390/ijerph19094946' },
-      { id: 6, tag: 'Nutrition — iron', title: 'Pasricha et al. 2014 — Iron & physical performance', cite: 'J Nutr. 2014;144(6):906-914.', detail: 'Meta of 24 RCTs in women of reproductive age. Daily iron raised relative VO2 max by 2.35 mL/kg/min (95% CI 0.82–3.88) and lowered submaximal HR. Corrects a deficit.', url: 'https://doi.org/10.3945/jn.113.189589' },
-      { id: 7, tag: 'Environment — altitude', title: 'Wehrlin et al. 2006 — Live high, train low', cite: 'J Appl Physiol. 2006;100(6):1938-1945.', detail: '10 elite orienteers at 2,500 m (18 h/day) for 24 days. Hbmass 805→848 g, VO2 max 3,515→3,660 mL/min; sea-level controls unchanged. Small, elite-only; LHTL still debated.', url: 'https://doi.org/10.1152/japplphysiol.01284.2005' },
-      { id: 8, tag: 'Exercise — detraining', title: 'Zheng et al. 2022 — Detraining & VO2 max', cite: 'BioMed Research Int. 2022;2022:2130993.', detail: 'Meta of 21 athlete studies. Short-term (<30 d) ES −0.62 (−3.93%); long-term (30–90 d) ES −1.42 (−9.43%). Higher-trained athletes lose more; light activity blunts loss.', url: 'https://doi.org/10.1155/2022/2130993' },
+      { id: 3, tag: 'Physiology — age', title: 'Fleg et al. 2005 — Aerobic capacity decline with age', cite: 'Circulation. 2005;112(5):674-682.', detail: 'Baltimore Longitudinal Study, n=810 (ages 21–87). Peak VO2 decline accelerates from ~3–6% per decade in the 20s–30s to >20% per decade from the 70s; faster in men from the 40s onward.', url: 'https://doi.org/10.1161/CIRCULATIONAHA.105.545459' },
+      { id: 4, tag: 'Physiology — genetics', title: 'Bouchard et al. 1999 — HERITAGE Family Study', cite: 'J Appl Physiol. 1999;87(3):1003-1008.', detail: 'n=481, 20-wk identical training, Caucasian families. Mean gain ~400 mL/min, range from no gain to >1.0 L/min; maximal heritability of the response ~47% (an upper bound).', url: 'https://doi.org/10.1152/jappl.1999.87.3.1003' },
+      { id: 5, tag: 'Physiology — sex', title: 'Santisteban et al. 2022 — Sex differences in VO2 max', cite: 'Int J Environ Res Public Health. 2022;19(9):4946.', detail: 'Narrative review. ~10–12% performance gap; elite men average ~10% higher VO2 max per kg than elite women, attributed to oxygen delivery (hemoglobin mass, cardiac size). No per-fat-free-mass figure given.', url: 'https://doi.org/10.3390/ijerph19094946' },
+      { id: 6, tag: 'Nutrition — iron', title: 'Pasricha et al. 2014 — Iron & physical performance', cite: 'J Nutr. 2014;144(6):906-914.', detail: '24 RCTs in women of reproductive age; VO2 max pooled from 18 of them. Daily iron raised relative VO2 max by 2.35 mL/kg/min (95% CI 0.82–3.88) and lowered submaximal HR. Only 3 of 24 trials at low risk of bias.', url: 'https://doi.org/10.3945/jn.113.189589' },
+      { id: 7, tag: 'Environment — altitude', title: 'Wehrlin et al. 2006 — Live high, train low', cite: 'J Appl Physiol. 2006;100(6):1938-1945.', detail: '10 elite orienteers at 2,500 m (18 h/day) for 24 days. Hbmass 805→848 g, VO2 max 3,515→3,660 mL/min. Controls were cross-country skiers whose "sea level" was 500–1,600 m. Small, elite-only; LHTL still debated.', url: 'https://doi.org/10.1152/japplphysiol.01284.2005' },
+      { id: 8, tag: 'Exercise — detraining', title: 'Zheng et al. 2022 — Detraining & VO2 max', cite: 'BioMed Research Int. 2022;2022:2130993.', detail: 'Meta of 21 athlete studies. Short-term (≤30 d) ES −0.62 (−3.93%); long-term (>30 d) ES −1.42 (−9.43%). Higher-trained athletes lost more in the long-term analysis only; light activity blunts loss.', url: 'https://doi.org/10.1155/2022/2130993' },
       { id: 9, tag: 'Nutrition — caffeine', title: 'Brietzke et al. 2017 — Caffeine & VO2 max', cite: 'Nutrition and Health. 2017;23(4):231-238.', detail: 'Placebo-perceived-as-caffeine crossover, n=9. Caffeine and placebo both raised time to exhaustion/peak power but VO2 max did not change — effect attributed to expectation (lower RPE).', url: 'https://doi.org/10.1177/0260106017723547' },
-      { id: 10, tag: 'Physiology — body fat', title: 'van Baak et al. 2021 — Exercise & fitness in obesity', cite: 'Obesity Reviews. 2021;22(S4):e13239.', detail: '66 RCTs, n=3,964 adults with overweight/obesity. All training types raised relative VO2 max (MD 3.82 mL/kg/min); HIIT slightly > aerobic > resistance.', url: 'https://doi.org/10.1111/obr.13239' },
-      { id: 11, tag: 'Physiology — bed rest', title: 'Saltin et al. 1968 — Dallas Bed Rest Study', cite: 'Circulation. 1968;38(5 Suppl):VII1-78.', detail: '5 men, 3 weeks strict bed rest then 8 weeks training. VO2 max fell ~27% after bed rest; 40-yr follow-up found 40 years of aging caused a comparable proportional drop.', url: 'https://pubmed.ncbi.nlm.nih.gov/5696236/' },
-      { id: 12, tag: 'Environment — heat', title: 'Waldron et al. 2021 / Lorenzo 2010 — Heat acclimation', cite: 'Sports Medicine. 2021;51(7):1509-1525.', detail: 'Meta-analysis + meta-regression. Heat acclimation raises VO2 max small-to-moderate-large; the +5% cool / +8% hot and ~6.5% plasma-volume figures come from Lorenzo 2010.', url: 'https://doi.org/10.1007/s40279-021-01445-6' },
-      { id: 13, tag: 'Nutrition — creatine', title: 'Gras et al. 2023 — Creatine & VO2 max', cite: 'Crit Rev Food Sci Nutr. 2023;63(21):4855-4866.', detail: 'Meta of 19 RCTs, n=424. VO2 max rose less with creatine than placebo (ES −0.32). Likely mechanism: added body water/mass, and VO2 max is per kg.', url: 'https://doi.org/10.1080/10408398.2021.2008864' },
-      { id: 14, tag: 'Nutrition — beta-alanine', title: 'Trexler et al. 2015 — ISSN position stand: Beta-Alanine', cite: 'J Int Soc Sports Nutr. 2015;12:30.', detail: 'Society position stand. Beta-alanine raises muscle carnosine and helps ~30 s–10 min efforts; it is not established to increase VO2 max.', url: 'https://doi.org/10.1186/s12970-015-0090-y' },
-      { id: 15, tag: 'Lifestyle — smoking', title: 'Caci et al. 2024 — Smoking & aerobic capacity', cite: 'Intern Emerg Med. 2024.', detail: 'Cross-sectional, n=70, Chester Step Test (estimated VO2 max). Current 38.8 vs never 41.6 vs former 41.4 mL/kg/min; former and never did not differ. Small, estimated.', url: 'https://doi.org/10.1007/s11739-024-03794-2' },
-      { id: 16, tag: 'Physiology — blood donation', title: 'Johnson et al. 2019 — Whole-blood donation & exercise', cite: 'PLOS ONE. 2019;14(4):e0215346.', detail: 'Systematic review of 8 studies. Mean VO2 max reduction (medium effect) after ~500 mL donation via reduced cardiac output and O2-carrying capacity.', url: 'https://doi.org/10.1371/journal.pone.0215346' },
-      { id: 17, tag: 'Clinical — long COVID', title: 'Durstenfeld et al. 2022 — CPET in long COVID', cite: 'JAMA Netw Open. 2022;5(10):e2236057.', detail: 'Systematic review + meta-analysis. Among symptomatic vs not, peak VO2 was 4.9 mL/kg/min lower (9 studies, >3 months post-infection).', url: 'https://doi.org/10.1001/jamanetworkopen.2022.36057' },
-      { id: 18, tag: 'Nutrition — bicarbonate', title: 'Hadzic et al. 2019 — Sodium bicarbonate', cite: 'J Sport Health Sci. 2019;8(3):271-281.', detail: 'Systematic review. Bicarbonate buffers exercise acidosis and aids high-intensity efforts (especially >4 min); not shown to raise VO2 max.', url: 'https://doi.org/10.1016/j.jshs.2017.10.002' },
-      { id: 19, tag: 'Nutrition — vitamin D', title: 'Deng et al. 2025 — Supplements & VO2 max (network meta-analysis)', cite: 'Front Nutr. 2025.', detail: 'Network meta-analysis, 30 RCTs, 693 athletes, 6 supplements. None — including vitamin D — significantly raised VO2 max.', url: 'https://doi.org/10.3389/fnut.2025.1551143' },
-      { id: 20, tag: 'Exercise — overtraining', title: 'Meeusen et al. 2013 — Overtraining syndrome consensus', cite: 'Med Sci Sports Exerc. 2013;45(1):186-205.', detail: 'ECSS/ACSM joint consensus. Excess training with insufficient recovery causes prolonged performance decrements, including reduced VO2 max, lasting weeks to months.', url: 'https://doi.org/10.1249/MSS.0b013e318279a10a' },
-      { id: 21, tag: 'Clinical — heart failure', title: 'Mancini et al. 1991 — Peak VO2 & transplant timing', cite: 'Circulation. 1991;83(3):778-786.', detail: 'Landmark CPET study. Peak VO2 ≤14 mL/kg/min identified the worst-prognosis heart-failure group and became a transplant-timing threshold.', url: 'https://doi.org/10.1161/01.cir.83.3.778' },
-      { id: 22, tag: 'Clinical — type 2 diabetes', title: 'Macedo et al. 2023 — VO2 max in type 2 diabetes', cite: 'Sports Medicine. 2023.', detail: 'Meta-analysis of 77 studies. People with type 2 diabetes averaged 5.84 mL/kg/min lower VO2 max (~20%), via cardiac, microvascular, and mitochondrial impairments.', url: 'https://doi.org/10.1007/s40279-023-01931-z' },
-      { id: 23, tag: 'Nutrition — omega-3', title: 'Jäger et al. 2024 — ISSN position stand: Omega-3', cite: 'J Int Soc Sports Nutr. 2024;21(1):2323919.', detail: 'Society position stand. Omega-3 chiefly lowers the oxygen cost of submaximal work and exercising HR; evidence for raising VO2 max itself is inconsistent.', url: 'https://doi.org/10.1080/15502783.2024.2323919' },
-      { id: 24, tag: 'Lifestyle — alcohol', title: 'Levitt et al. 2022 — Previous-day alcohol & endurance', cite: 'J Strength Cond Res. 2022.', detail: 'RCT, n=12. A previous-evening alcohol dose cut next-morning cycling time to exhaustion by ~11% (181 vs 203 s); strength unaffected.', url: 'https://pubmed.ncbi.nlm.nih.gov/35438660/' },
-      { id: 25, tag: 'Physiology — dehydration', title: 'Cheuvront & Sawka 2010 — Hydration & performance', cite: 'Sports Sci Exch. 2010.', detail: 'Review. Losing >~2% body mass as water lowers maximal aerobic capacity, mainly via reduced plasma volume (lower stroke volume/cardiac output); worse in heat.', url: 'https://pubmed.ncbi.nlm.nih.gov/16028566/' },
-      { id: 26, tag: 'Exercise — SIT', title: 'Sloth et al. 2013 — Sprint interval training', cite: 'Scand J Med Sci Sports. 2013;23(6):e341-352.', detail: 'Meta-analysis of 19 studies. Brief all-out sprints over 2–8 weeks significantly raised VO2 max in sedentary and recreationally active adults.', url: 'https://doi.org/10.1111/sms.12092' },
-      { id: 27, tag: 'Exercise — resistance', title: 'Smart et al. 2022 — Resistance training & VO2 peak', cite: 'Sports Medicine. 2022.', detail: 'Meta-analysis in healthy older adults (22 studies). Resistance training alone improved VO2 peak (~+1.9 mL/kg/min), less than aerobic or interval training.', url: 'https://doi.org/10.1007/s40279-022-01664-5' },
-      { id: 28, tag: 'Environment — air pollution', title: 'González-Rojas et al. 2025 — Air pollution & exercise', cite: 'Systematic review. 2025.', detail: 'Breathing polluted air during endurance exercise impairs cardiopulmonary responses and can blunt the aerobic-fitness benefit of training.', url: 'https://pubmed.ncbi.nlm.nih.gov/39900000/' },
-      { id: 29, tag: 'Lifestyle — sleep', title: 'Kong et al. 2025 — Sleep deprivation & performance', cite: 'Meta-analysis. 2025.', detail: '45 studies. Sleep deprivation impairs aerobic endurance and raises perceived exertion; chronic poor sleep is linked to lower VO2 max and blunted training gains.', url: 'https://pubmed.ncbi.nlm.nih.gov/39800000/' },
-      { id: 30, tag: 'Lifestyle — sauna', title: 'Kunutsor et al. 2024 — Sauna & cardiorespiratory fitness', cite: 'Mayo Clin Proc / review. 2024.', detail: 'Kuopio cohort + small RCT. Regular sauna use is associated with higher fitness; post-exercise sauna added to training improved VO2 by ~2.7 mL/kg/min vs exercise alone.', url: 'https://pubmed.ncbi.nlm.nih.gov/38000000/' },
-      { id: 31, tag: 'Exercise — tapering', title: 'Bosquet et al. 2007 — Tapering & performance', cite: 'Med Sci Sports Exerc. 2007;39(8):1358-1365.', detail: 'Meta-analysis of 27 studies. A ~2-week taper cutting volume 41–60% (keeping intensity) maximizes performance; VO2 max maintained or slightly improved.', url: 'https://doi.org/10.1249/mss.0b013e31806010e0' },
-      { id: 32, tag: 'Exercise — concurrent', title: 'Gao & Yu 2023 — Concurrent training', cite: 'Meta-analysis. 2023.', detail: 'Adding strength work to endurance training does not meaningfully reduce VO2 max gains; the interference effect mainly blunts strength/power.', url: 'https://pubmed.ncbi.nlm.nih.gov/37000000/' },
-      { id: 33, tag: 'Environment — hypoxia', title: 'Feng et al. 2023 — Hypoxic training methods', cite: 'Network meta-analysis. 2023.', detail: '59 studies. LHTL, LHTH, and intermittent hypoxic training all beat normoxic training; live-high/train-low + low-altitude training ranked best.', url: 'https://pubmed.ncbi.nlm.nih.gov/37500000/' },
-      { id: 34, tag: 'Lifestyle — sedentary', title: 'Eriksen et al. 2016 — Sitting time & fitness', cite: 'Prev Med. 2016.', detail: 'n=16,025 adults. More daily sitting was associated with lower cardiorespiratory fitness, independent of exercise; strongest in otherwise inactive people.', url: 'https://pubmed.ncbi.nlm.nih.gov/27575317/' },
-      { id: 35, tag: 'Lifestyle — cold-water', title: 'Malta et al. 2021 — Cold-water immersion & adaptation', cite: 'Sports Medicine. 2021.', detail: 'Meta-analysis. Routine post-session ice baths blunt strength/power gains (SMD −0.60) but do not compromise endurance/aerobic adaptations.', url: 'https://doi.org/10.1007/s40279-020-01362-0' },
-      { id: 48, tag: 'Why it matters', title: 'Mandsager et al. 2018 — Fitness & long-term mortality', cite: 'JAMA Network Open. 2018;1(6):e183605.', detail: 'Retrospective cohort, n=122,007, mean follow-up 8.4 yr. Higher fitness was inversely associated with all-cause mortality with no upper limit; least-fit had ~5× the adjusted risk of the fittest.', url: 'https://doi.org/10.1001/jamanetworkopen.2018.3605' }
+      { id: 10, tag: 'Physiology — body fat', title: 'van Baak et al. 2021 — Exercise & fitness in obesity', cite: 'Obesity Reviews. 2021;22(S4):e13239.', detail: '66 RCTs, n=3,964 adults with overweight/obesity. Training raised relative VO2 max (MD 3.82 mL/kg/min) — a training effect, not an effect of fat loss on its own; HIIT slightly > aerobic > resistance.', url: 'https://doi.org/10.1111/obr.13239' },
+      { id: 11, tag: 'Physiology — bed rest', title: 'Saltin et al. 1968 — Dallas Bed Rest Study', cite: 'Circulation. 1968;38(5 Suppl):VII1-78.', detail: '5 men, 3 weeks strict bed rest then 8 weeks training, no control group. VO2 max fell ~26%; the 40-year follow-up found 40 years of aging cost ~27%. The cardiac-output mechanism is not established by this study.', url: 'https://pubmed.ncbi.nlm.nih.gov/5696236/' },
+      { id: 12, tag: 'Environment — heat', title: 'Waldron et al. 2021 — Heat acclimation & VO2 max', cite: 'Sports Medicine. 2021;51(7):1509-1525.', detail: 'Meta-analysis + meta-regression. Four pooled Hedges’ g for VO2 max: 0.42 overall, 0.63 tested in heat, 0.30 vs control, 0.75 vs control in heat. The +5% cool / +8% hot and ~6.5% plasma-volume figures are Lorenzo 2010 (source below).', url: 'https://doi.org/10.1007/s40279-021-01445-6' },
+      { id: 13, tag: 'Nutrition — creatine', title: 'Gras et al. 2023 — Creatine & VO2 max', cite: 'Crit Rev Food Sci Nutr. 2023;63(21):4855-4866.', detail: 'Meta of 19 RCTs, n=424. VO2 max rose less with creatine than placebo (ES −0.32). Added body water/mass is the authors’ likely explanation rather than a measured mechanism; VO2 max is scored per kg.', url: 'https://doi.org/10.1080/10408398.2021.2008864' },
+      { id: 14, tag: 'Nutrition — beta-alanine', title: 'Trexler et al. 2015 — ISSN position stand: Beta-Alanine', cite: 'J Int Soc Sports Nutr. 2015;12:30.', detail: 'Society position stand. Beta-alanine raises intramuscular carnosine and most reliably helps efforts >60 s, most pronounced at 1–4 min. The stand does not address VO2 max as an outcome.', url: 'https://doi.org/10.1186/s12970-015-0090-y' },
+      { id: 15, tag: 'Lifestyle — smoking', title: 'Caci et al. 2024 — Smoking & aerobic capacity', cite: 'Intern Emerg Med. 2024.', detail: 'Cross-sectional, n=70, Chester Step Test (estimated VO2 max). Current 38.8 vs never 41.6 vs former 41.4 mL/kg/min. Cross-sectional, so it cannot show reversibility; the CO-binding mechanism is not measured here. Authors disclose tobacco-industry-funded research ties.', url: 'https://doi.org/10.1007/s11739-024-03794-2' },
+      { id: 16, tag: 'Physiology — blood donation', title: 'Johnson et al. 2019 — Whole-blood donation & exercise', cite: 'PLOS ONE. 2019;14(4):e0215346.', detail: 'Systematic review of 8 studies. The change in VO2 max after ~500 mL donation was not statistically significant and the review concludes VO2 max is not reduced. Cardiac-output/stroke-volume mechanism is absent from the paper.', url: 'https://doi.org/10.1371/journal.pone.0215346' },
+      { id: 17, tag: 'Clinical — long COVID', title: 'Durstenfeld et al. 2022 — CPET in long COVID', cite: 'JAMA Netw Open. 2022;5(10):e2236057.', detail: 'Systematic review + meta-analysis, 9 studies. Peak VO2 4.9 mL/kg/min lower in symptomatic vs not, >3 months post-infection, at low certainty of evidence. Cohorts oversampled hospitalised patients.', url: 'https://doi.org/10.1001/jamanetworkopen.2022.36057' },
+      { id: 18, tag: 'Nutrition — bicarbonate', title: 'Hadzic et al. 2019 — Sodium bicarbonate', cite: 'J Sports Sci Med. 2019;18(2):271-281.', detail: 'Systematic review of 35 studies; 17 reported a performance benefit, concentrated in high-intensity efforts. No VO2 max outcome is reported in this review.', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6544001/' },
+      { id: 19, tag: 'Nutrition — vitamin D', title: 'Deng et al. 2025 — Supplements & VO2 max (network meta-analysis)', cite: 'Food Sci Nutr. 2025.', detail: 'Network meta-analysis, 30 RCTs, 693 athletes. No significant VO2 max benefit reported for vitamin D. The published effect estimates could not be retrieved, so this is cited for vitamin D only and read as no demonstrated benefit rather than evidence of absence.', url: 'https://doi.org/10.1002/fsn3.71243' },
+      { id: 20, tag: 'Exercise — overtraining', title: 'Meeusen et al. 2013 — Overtraining syndrome consensus', cite: 'Eur J Sport Sci. 2013;13(1):1-24 (also Med Sci Sports Exerc. 2013;45:186-205).', detail: 'ECSS/ACSM joint consensus — a narrative expert statement on overtraining syndrome broadly, not a pooled VO2 max analysis. Excess training with insufficient recovery causes prolonged performance decrements, including reduced VO2 max, lasting weeks to months.', url: 'https://doi.org/10.1080/17461391.2012.730061' },
+      { id: 21, tag: 'Clinical — heart failure', title: 'Mancini et al. 1991 — Peak VO2 & transplant timing', cite: 'Circulation. 1991;83(3):778-786.', detail: 'Landmark CPET study. Peak VO2 ≤14 mL/kg/min became the transplant-timing threshold, but that group still had ~70% one-year survival; the worst prognosis was the group rejected from transplant for noncardiac reasons (47% one-year, 32% two-year).', url: 'https://doi.org/10.1161/01.cir.83.3.778' },
+      { id: 22, tag: 'Clinical — type 2 diabetes', title: 'Macedo et al. 2023 — VO2 max in type 2 diabetes', cite: 'Arch Endocrinol Metab. 2023.', detail: 'Meta-analysis of 77 studies. People with type 2 diabetes averaged 5.84 mL/kg/min lower VO2 max, via cardiac, microvascular, and mitochondrial impairments.', url: 'https://doi.org/10.20945/2359-4292-2023-0040' },
+      { id: 23, tag: 'Nutrition — omega-3', title: 'Jäger et al. 2024 — ISSN position stand: Omega-3', cite: 'J Int Soc Sports Nutr. 2024;22(1).', detail: 'Society position stand whose own headline conclusion is net-positive for training adaptation and performance. It reports lower oxygen cost of submaximal work and lower exercising HR; VO2 max evidence is contested, not cleanly null.', url: 'https://doi.org/10.1080/15502783.2024.2441775' },
+      { id: 24, tag: 'Lifestyle — alcohol', title: 'Shaw et al. 2022 — Previous-day alcohol & performance', cite: 'Int J Sports Physiol Perform. 2022;17(1):44-50.', detail: 'RCT, n=12. A previous-evening dose of 1.09 g ethanol per kg fat-free mass cut next-morning cycling time to exhaustion by ~11% (181 vs 203 s); strength unaffected. VO2 max was not the outcome.', url: 'https://doi.org/10.1123/ijspp.2020-0790' },
+      { id: 25, tag: 'Physiology — dehydration', title: 'Cheuvront & Sawka 2010 — Hydration & performance', cite: 'J Appl Physiol. 2010;109(6):1989-1995.', detail: 'Review. Losing >~2% body mass as water lowers maximal aerobic capacity, mainly via reduced plasma volume (lower stroke volume/cardiac output); worse in heat. A review rather than a pooled analysis.', url: 'https://doi.org/10.1152/japplphysiol.00367.2010' },
+      { id: 26, tag: 'Exercise — SIT', title: 'Sloth et al. 2013 — Sprint interval training', cite: 'Scand J Med Sci Sports. 2013;23(6):e341-352.', detail: 'Systematic review of 19 studies; 13 pooled for VO2 max. Brief all-out sprints over 2–8 weeks raised VO2 max vs control (Hedges’ g 0.63, 95% CI 0.39–0.87; +4.2 to +13.4%).', url: 'https://doi.org/10.1111/sms.12092' },
+      { id: 27, tag: 'Exercise — resistance', title: 'Smart et al. 2022 — Resistance training & VO2 peak', cite: 'Age Ageing. 2022;51(6):afac143.', detail: 'Meta-analysis in healthy adults over 60: 37 studies, 24 reporting VO2 peak, 22 pooled. +1.89 mL/kg/min (95% CI 1.21–2.57) for programmes ≤24 weeks; null (−0.01) beyond 24 weeks. No head-to-head comparison with aerobic training.', url: 'https://doi.org/10.1093/ageing/afac143' },
+      { id: 28, tag: 'Environment — air pollution', title: 'González-Rojas et al. 2025 — Air pollution & exercise', cite: 'Life. 2025;15(4):595.', detail: '24 studies. Breathing polluted air during endurance exercise impairs cardiopulmonary responses and can blunt the aerobic-fitness benefit of training. A dose-response relationship was not established.', url: 'https://doi.org/10.3390/life15040595' },
+      { id: 29, tag: 'Lifestyle — sleep', title: 'Kong et al. 2025 — Sleep deprivation & performance', cite: 'Front Physiol. 2025.', detail: '45 studies, 16 on aerobic endurance. Sleep deprivation reduced aerobic endurance (SMD −0.76, 95% CI −1.27 to −0.25; athletes −0.66, non-athletes −1.02) and raised perceived exertion. VO2 max is not an outcome anywhere in this paper.', url: 'https://doi.org/10.3389/fphys.2025.1544286' },
+      { id: 30, tag: 'Lifestyle — sauna', title: 'Kunutsor et al. 2024 — Sauna & cardiorespiratory fitness', cite: 'J Cardiopulm Rehabil Prev. 2024;44(4):295-300.', detail: 'Kuopio (KIHD) cohort, 2,012 men aged 42–61. vs 1 session/week: 2–3/week +0.84 mL/kg/min (p=.008), 4–7/week +1.17 (p=.041); at 11 years only 2–3/week significant (+1.22, p=.038). Duration not associated with CRF. The ~+2.7 mL/kg/min RCT is by the same group, not independent.', url: 'https://pubmed.ncbi.nlm.nih.gov/38836690/' },
+      { id: 31, tag: 'Exercise — tapering', title: 'Bosquet et al. 2007 — Tapering & performance', cite: 'Med Sci Sports Exerc. 2007;39(8):1358-1365.', detail: 'Meta-analysis of 27 studies. Optimal taper: ~2 weeks (ES 0.59 ± 0.33), volume cut 41–60% (ES 0.72 ± 0.36), intensity unchanged (ES 0.33 ± 0.14), frequency unchanged (ES 0.35 ± 0.17). VO2 max was not an outcome.', url: 'https://doi.org/10.1249/mss.0b013e31806010e0' },
+      { id: 32, tag: 'Exercise — concurrent', title: 'Gao & Yu 2023 — Concurrent training sequence', cite: 'Front Physiol. 2023;14:1072679.', detail: 'Compares strength-before vs strength-after endurance: no difference in VO2 max (SMD 0.02, p=0.859). There is no endurance-only arm, so it is indirect evidence for whether adding strength work affects VO2 max gains.', url: 'https://doi.org/10.3389/fphys.2023.1072679' },
+      { id: 33, tag: 'Environment — hypoxia', title: 'Feng et al. 2023 — Hypoxic training methods', cite: 'Front Physiol. 2023;14:1223037.', detail: '59 studies, Bayesian network meta-analysis. Live-high/train-low plus low-altitude training ranked best (P-scores 0.92 and 0.86); intermittent hypoxic training 0.37; intermittent hypoxic exposure at rest 0.07.', url: 'https://doi.org/10.3389/fphys.2023.1223037' },
+      { id: 34, tag: 'Lifestyle — sedentary', title: 'Eriksen et al. 2016 — Sitting time & fitness', cite: 'Scand J Med Sci Sports. 2016;26(12):1435-1443.', detail: 'n=16,025 adults, estimated (not measured) cardiorespiratory fitness. More daily sitting was associated with lower fitness, but no association was found among the most physically active — so not independent of exercise.', url: 'https://doi.org/10.1111/sms.12608' },
+      { id: 35, tag: 'Lifestyle — cold-water', title: 'Malta et al. 2021 — Cold-water immersion & adaptation', cite: 'Sports Medicine. 2021.', detail: 'Meta-analysis. Routine post-session ice baths blunt strength/power gains (SMD −0.60). No pooled VO2 max estimate is reported, so aerobic adaptation is neither confirmed nor ruled out.', url: 'https://doi.org/10.1007/s40279-020-01362-0' },
+      { id: 48, tag: 'Why it matters', title: 'Mandsager et al. 2018 — Fitness & long-term mortality', cite: 'JAMA Network Open. 2018;1(6):e183605.', detail: 'Retrospective cohort, n=122,007, mean follow-up 8.4 yr. Treadmill MET-derived cardiorespiratory fitness (not laboratory VO2 max) was inversely associated with all-cause mortality with no upper limit; least-fit had ~5× the adjusted risk. Observational.', url: 'https://doi.org/10.1001/jamanetworkopen.2018.3605' },
+      { id: 49, tag: 'Nutrition — bicarbonate', title: 'Santalla et al. 2003 — Bicarbonate & the VO2 slow component', cite: 'J Sports Sci. 2003;21(1):39-47.', detail: '7 professional road cyclists, 0.3 g/kg NaHCO3 vs placebo, two 6-min bouts at 90% VO2 max. No significant difference in the VO2 slow component between conditions.', url: 'https://doi.org/10.1080/0264041031000070868' },
+      { id: 50, tag: 'Nutrition — bicarbonate', title: 'Berger et al. 2006 — Bicarbonate alters the slow phase of VO2 kinetics', cite: 'Med Sci Sports Exerc. 2006;38(11):1909-1917.', detail: 'Counterpoint to Santalla 2003: phase II VO2 kinetics were unchanged, but the onset of the slow component was delayed and end-exercise VO2 reduced. The slow-component question is contested.', url: 'https://doi.org/10.1249/01.mss.0000233791.85916.33' },
+      { id: 51, tag: 'Environment — heat', title: 'Lorenzo et al. 2010 — Heat acclimation improves exercise performance', cite: 'J Appl Physiol. 2010;109(4):1140-1147.', detail: '12 trained cyclists heat-acclimated 10 days at 40°C vs 8 controls; tested at 13°C and 38°C. VO2 max +5% cool / +8% hot, plasma volume +6.5%.', url: 'https://doi.org/10.1152/japplphysiol.00495.2010' },
+      { id: 52, tag: 'Environment — hypoxia', title: 'Dorelli et al. 2025 — Aerobic intermittent hypoxic training is not beneficial', cite: 'Scand J Med Sci Sports. 2025;35:e70088.', detail: '35 studies, 524 participants. Aerobic IHT did not improve VO2 max (p=0.333), peak power (p=0.159), or time to exhaustion (p=0.410) vs normoxic training, with publication bias detected (p=0.004). Contradicts the IHT ranking in Feng 2023.', url: 'https://doi.org/10.1111/sms.70088' }
     ];
   }
 
@@ -284,22 +288,22 @@ class KygoVo2maxFactors extends HTMLElement {
   get _faqs() {
     return [
       { q: 'What raises VO2 max the most?',
-        a: 'Training is the biggest lever: high-intensity interval training (especially long-interval, high-volume HIIT) raises VO2 max most, followed by sprint intervals and moderate continuous cardio. Because VO2 max is measured per kilogram, training plus fat loss raises the number further, and correcting iron deficiency helps in people who are low on iron.' },
+        a: 'Training is the biggest lever: high-intensity interval training raises VO2 max most, and only long-interval (2 min+), high-volume HIIT clearly beats steady cardio (SMD 0.65–1.07 across 53 RCTs). Sprint intervals follow (Hedges g 0.63), then moderate continuous cardio. Because VO2 max is measured per kilogram, training in people carrying excess weight raises the number further, and correcting iron deficiency helps in people who are low on iron.' },
       { q: 'Do supplements like beetroot, caffeine, or creatine increase VO2 max?',
-        a: 'No. Dietary nitrate (beetroot) improves exercise economy but does not raise the VO2 max ceiling; caffeine is ergogenic mostly via lower perceived effort; and creatine can slightly lower the per-kilogram number because it adds water weight. Beta-alanine, sodium bicarbonate, vitamin D (unless deficient), and omega-3 also do not reliably raise VO2 max.' },
+        a: 'No supplement in this library has been shown to raise VO2 max. Dietary nitrate (beetroot) improves exercise economy but has no significant effect on the VO2 max ceiling; caffeine is ergogenic mostly via lower perceived effort; and creatine can slightly lower the per-kilogram number because it adds water weight. Beta-alanine and sodium bicarbonate help short hard efforts but were never tested for VO2 max, vitamin D showed no demonstrated benefit in athletes, and the omega-3 evidence is contested rather than clearly null.' },
       { q: 'What lowers VO2 max?',
-        a: 'Stopping training (detraining), overtraining without recovery, aging, excess body fat, bed rest or immobilization, dehydration, blood donation, acute altitude, air pollution, smoking, previous-day alcohol, sleep deprivation, prolonged sitting, long COVID, and type 2 diabetes all lower VO2 max.' },
+        a: 'Stopping training (detraining), overtraining without recovery, aging, excess body fat, bed rest or immobilization, dehydration, acute altitude above about 1,500 m, air pollution, smoking, long COVID, and type 2 diabetes all lower VO2 max. Previous-day alcohol, sleep deprivation, and prolonged sitting hurt endurance performance or track with lower fitness, but were not shown to lower measured VO2 max itself. Blood donation is a common assumption that the pooled evidence does not support.' },
       { q: 'Why does VO2 max matter for health?',
-        a: 'In a study of 122,007 adults, the least-fit people had roughly five times the all-cause mortality risk of the fittest, with no upper limit of benefit. Low cardiorespiratory fitness was a risk factor comparable to or greater than smoking, diabetes, or coronary artery disease.' },
+        a: 'In a study of 122,007 adults, the least-fit people had roughly five times the all-cause mortality risk of the fittest, with no upper limit of benefit. Low cardiorespiratory fitness — measured as treadmill METs rather than a laboratory VO2 max — was a risk factor comparable to or greater than smoking, diabetes, or coronary artery disease. The study is observational, so this is a strong association rather than proof of cause.' },
       { q: 'How much of VO2 max trainability is genetic?',
-        a: 'About 47%. In the HERITAGE Family Study, identical 20-week training produced gains ranging from none to over 1 litre per minute, and roughly half of that response was heritable, running in families.' }
+        a: 'Up to about 47%. In the HERITAGE Family Study, identical 20-week training produced gains ranging from none to over 1 litre per minute, and the maximal heritability estimate for that response was ~47% — an upper bound, in a Caucasian family sample. Trainability clearly runs in families.' }
     ];
   }
 
   // ── SEO light-DOM summary ───────────────────────────────────────────────
 
   _seoText() {
-    return 'What Affects VO2 Max? An evidence-ranked explorer of 39 factors by Kygo Health, from 48 verified peer-reviewed sources. The why: in 122,007 adults (Mandsager 2018), low cardiorespiratory fitness carried ~5× the all-cause mortality risk of the fittest, with no upper limit of benefit — comparable to or greater than smoking, diabetes, or coronary disease. Biggest levers to raise VO2 max: high-intensity interval training, especially long-interval high-volume HIIT (Wen 2019, 53 RCTs); sprint interval training (Sloth 2013); moderate continuous cardio; training plus fat loss because VO2 max is measured per kg (van Baak 2021); and fixing iron deficiency, especially in menstruating women (Pasricha 2014, +2.35 mL/kg/min). What does NOT raise your VO2 max ceiling (myth-busters): dietary nitrate/beetroot juice (improves economy, not ceiling — Gao/Whitlock 2021), caffeine (ergogenic via lower perceived effort, largely placebo — Brietzke 2017), creatine (slightly lowers the per-kg number via water weight — Gras 2023), beta-alanine (Trexler 2015), sodium bicarbonate (Hadzic 2019), vitamin D unless deficient (Deng 2025), and omega-3 fish oil (Jäger 2024). Lowers VO2 max: detraining (use it or lose it — Zheng 2022), overtraining, acute altitude (~6–8% per 1,000 m), air pollution (PM2.5), excess body fat, aging (accelerates each decade — Fleg 2005), bed rest/immobilization (3 weeks ≈ 40 years of aging — Saltin 1968), blood donation, dehydration over 2% body mass, smoking, previous-day alcohol, sleep deprivation, sedentary sitting time, long COVID (−4.9 mL/kg/min), and type 2 diabetes (−5.84 mL/kg/min). Raises VO2 max: live-high/train-low altitude (Wehrlin 2006), heat acclimation, structured hypoxic training (Feng 2023), and habitual sauna bathing (Kunutsor 2024). Neutral for VO2 max: concurrent training (lifting + cardio) and post-training cold-water immersion (blunts strength, not endurance — Malta 2021). Varies by person: trainability is ~47% heritable (HERITAGE, Bouchard 1999); sex (men average ~5–10% higher via oxygen delivery — Santisteban 2022). Clinical: heart failure peak VO2 ≤14 mL/kg/min is a transplant-timing threshold (Mancini 1991). Each factor carries a direction, an evidence grade (strong or moderate), a key finding, a plain-English takeaway, dose/how-to where it exists, and an anchored source. Filter by category — Exercise, Nutrition & Supplements, Environment, Demographics & Physiology, Lifestyle, Clinical — direction, and evidence strength. Most supplements marketed for endurance change the oxygen cost of effort (economy), not VO2 max itself.';
+    return 'What Affects VO2 Max? An evidence-ranked explorer of 39 factors by Kygo Health, each checked against the primary record across 40 peer-reviewed sources. The why: in 122,007 adults (Mandsager 2018), low treadmill MET-derived cardiorespiratory fitness carried ~5× the all-cause mortality risk of the fittest, with no upper limit of benefit — an observational association comparable to or greater than smoking, diabetes, or coronary disease. Biggest levers to raise VO2 max: high-intensity interval training, especially long-interval high-volume HIIT (Wen 2019, 53 RCTs, SMD 0.65–1.07 vs steady cardio, 0.50–2.48 vs no training); sprint interval training (Sloth 2013, Hedges g 0.63, 95% CI 0.39–0.87, +4.2–13.4%); moderate continuous cardio; training in adults with overweight or obesity because VO2 max is measured per kg (van Baak 2021, +3.82 mL/kg/min from training); resistance training alone in healthy over-60s (Smart 2022, +1.89 mL/kg/min for programmes under 24 weeks, null beyond); and fixing iron deficiency, especially in menstruating women (Pasricha 2014, +2.35 mL/kg/min, pooled from 18 of 24 RCTs). What has NOT been shown to raise your VO2 max ceiling (myth-busters): dietary nitrate/beetroot juice (improves economy, not ceiling — Gao/Whitlock 2021), caffeine (ergogenic via lower perceived effort, largely placebo — Brietzke 2017), creatine (slightly lowers the per-kg number, likely via water weight — Gras 2023), beta-alanine and sodium bicarbonate (help efforts of roughly 1–4 minutes; neither source reports a VO2 max outcome — Trexler 2015, Hadzic 2019), and vitamin D (no demonstrated benefit in athletes — Deng 2025). Omega-3 is contested rather than null (Jäger 2024). Lowers VO2 max: detraining (−3.93% within 30 days, −9.43% beyond — Zheng 2022), overtraining, acute altitude (~6–8% per 1,000 m above ~1,500 m, a textbook figure rather than a single cited study), air pollution (24 studies, no established dose-response), excess body fat, aging (3–6% per decade in the 20s–30s rising above 20% per decade from the 70s — Fleg 2005), bed rest (3 weeks ≈ 26%, about the same as 40 years of aging — Saltin 1968), dehydration over 2% body mass, smoking, long COVID (−4.9 mL/kg/min, low certainty — Durstenfeld 2022), and type 2 diabetes (−5.84 mL/kg/min). Hurts performance without a proven VO2 max change: previous-day alcohol (−11% time to exhaustion — Shaw 2022) and sleep deprivation (SMD −0.76 for aerobic endurance; no VO2 max outcome — Kong 2025). Raises VO2 max: live-high/train-low altitude (Wehrlin 2006), heat acclimation (Hedges g 0.42 overall, 0.63 tested in heat — Waldron 2021, Lorenzo 2010), structured hypoxic training (live-high/train-low ranks best; a 2025 meta finds intermittent hypoxic training does not work — Feng 2023, Dorelli 2025), and habitual sauna bathing (2,012 men; frequency but not duration tracks with fitness — Kunutsor 2024). No clear VO2 max effect: blood donation (the pooled review found no significant reduction), concurrent training sequence, tapering (performance meta-analysis with no VO2 max outcome), and post-training cold-water immersion (no pooled VO2 max estimate). Varies by person: trainability is up to ~47% heritable (HERITAGE, Bouchard 1999); sex (elite men average ~10% higher per kg via oxygen delivery — Santisteban 2022). Clinical: heart failure peak VO2 ≤14 mL/kg/min is a transplant-timing threshold (Mancini 1991). Each factor carries a direction, an evidence grade (strong, moderate–strong, moderate, or weak), a key finding, a plain-English takeaway, dose/how-to where it exists, and an anchored source. Filter by category — Exercise, Nutrition & Supplements, Environment, Demographics & Physiology, Lifestyle, Clinical — direction, and evidence strength. Most supplements marketed for endurance change the oxygen cost of effort (economy), not VO2 max itself.';
   }
 
   // ── Icons ───────────────────────────────────────────────────────────────
@@ -340,6 +344,14 @@ class KygoVo2maxFactors extends HTMLElement {
       predictor: { label: 'Predicts outcomes', cls: 'dir-pred', icon: 'heart' }
     };
     return m[dir] || m.neutral;
+  }
+
+  _evLabel(ev) {
+    return { 'strong': 'Strong', 'moderate-strong': 'Mod–Strong', 'moderate': 'Moderate', 'weak': 'Weak' }[ev] || 'Moderate';
+  }
+
+  get _evChips() {
+    return [['strong', 'Strong'], ['moderate-strong', 'Moderate–Strong'], ['moderate', 'Moderate'], ['weak', 'Weak']];
   }
 
   get _dirChips() {
@@ -387,7 +399,7 @@ class KygoVo2maxFactors extends HTMLElement {
       const active = this._dir.has(c.v);
       return `<button class="filter-chip${active ? ' active' : ''}" data-filter="dir" data-value="${c.v}" aria-pressed="${active}">${c.l}</button>`;
     }).join('');
-    const ev = [['strong', 'Strong evidence'], ['moderate', 'Moderate evidence']].map(([v, l]) => {
+    const ev = this._evChips.map(([v, l]) => {
       const active = this._evidence.has(v);
       return `<button class="filter-chip${active ? ' active' : ''}" data-filter="ev" data-value="${v}" aria-pressed="${active}">${l}</button>`;
     }).join('');
@@ -413,7 +425,7 @@ class KygoVo2maxFactors extends HTMLElement {
     if (!factors.length) {
       return `<div class="empty-state">No factors match those filters. <button class="link-btn" data-action="reset-filters">Reset filters</button></div>`;
     }
-    const evRank = { strong: 0, moderate: 1 };
+    const evRank = { strong: 0, 'moderate-strong': 1, moderate: 2, weak: 3 };
     const filtering = this._anyFilterActive();
     const groups = this._categories.map(c => ({
       c,
@@ -445,7 +457,7 @@ class KygoVo2maxFactors extends HTMLElement {
           <span class="fx-dir ${d.cls}">${this._icon(d.icon)}</span>
           <span class="fx-acc-id"><span class="fx-acc-name">${f.name}</span></span>
           <span class="dir-badge ${d.cls} fx-hide-sm">${f.dirLabel}</span>
-          <span class="ev-badge ev-${f.ev} fx-hide-md">${f.ev === 'strong' ? 'Strong' : 'Moderate'}</span>
+          <span class="ev-badge ev-${f.ev} fx-hide-md">${this._evLabel(f.ev)}</span>
           <span class="fx-chev">${this._icon('arrowRight')}</span>
         </summary>
         <div class="fx-acc-body">
@@ -465,7 +477,7 @@ class KygoVo2maxFactors extends HTMLElement {
   _renderQuickAnswers() {
     const byId = id => this._factors.find(f => f.id === id);
     const levers = ['hiit-long', 'sit', 'body-fat', 'iron'].map(byId).filter(Boolean);
-    const dontBother = ['nitrate', 'caffeine', 'creatine', 'beta-alanine', 'bicarbonate', 'vitamin-d', 'omega-3'].map(byId).filter(Boolean);
+    const dontBother = ['nitrate', 'caffeine', 'creatine', 'beta-alanine', 'bicarbonate', 'vitamin-d'].map(byId).filter(Boolean);
     const item = (f, kind) => `
       <button class="qa-item" data-jump="${f.id}">
         <span class="qa-icon qa-${kind}">${this._icon(kind === 'lever' ? 'arrowUp' : 'minus')}</span>
@@ -480,7 +492,7 @@ class KygoVo2maxFactors extends HTMLElement {
       </div>
       <div class="qa-col">
         <div class="qa-head"><span class="qa-head-ico">${this._icon('minus')}</span><h3>Won't raise your ceiling</h3></div>
-        <p class="qa-lead">Popular, but they change economy — not VO2 max itself.</p>
+        <p class="qa-lead">Popular, but none has been shown to raise VO2 max — several were never tested for it.</p>
         ${dontBother.map(f => item(f, 'dud')).join('')}
       </div>`;
   }
@@ -729,16 +741,16 @@ class KygoVo2maxFactors extends HTMLElement {
                 <div class="hero-vis-big">≈5×</div>
                 <div class="hero-vis-text">
                   <p><strong>higher all-cause mortality</strong> for the least-fit vs the fittest, with <strong>no upper limit</strong> of benefit — low fitness rivals smoking, diabetes, and coronary disease as a risk factor.</p>
-                  <span class="hero-vis-src">Mandsager et al. 2018 · JAMA Network Open</span>
+                  <span class="hero-vis-src">Mandsager et al. 2018 · JAMA Network Open · treadmill METs</span>
                 </div>
               </div>
             </div>
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><div class="num">39</div><div class="lbl">Factors analyzed</div></div>
-            <div class="hero-stat"><div class="num">36</div><div class="lbl">Peer-reviewed sources</div></div>
+            <div class="hero-stat"><div class="num">40</div><div class="lbl">Peer-reviewed sources</div></div>
             <div class="hero-stat"><div class="num">6</div><div class="lbl">Categories of influence</div></div>
-            <div class="hero-stat"><div class="num">~47<span class="unit">%</span></div><div class="lbl">Of trainability is heritable</div></div>
+            <div class="hero-stat"><div class="num">~47<span class="unit">%</span></div><div class="lbl">Max heritability of trainability</div></div>
           </div>
         </div>
       </section>
@@ -870,7 +882,7 @@ class KygoVo2maxFactors extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making health or training decisions.</p>
-          <p class="footer-copyright">Anchored to peer-reviewed research, each source verified against the primary record. Last updated June 2026.</p>
+          <p class="footer-copyright">Anchored to peer-reviewed research, each source verified against the primary record. Last updated August 2026.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -960,20 +972,20 @@ class KygoVo2maxFactors extends HTMLElement {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         'name': 'What Affects VO2 Max? 30+ Factors Ranked by Research',
-        'description': 'See what actually raises VO2 max and what doesn’t. 30+ training, nutrition, lifestyle & clinical factors ranked by evidence from 48 studies.',
+        'description': 'See what actually raises VO2 max and what doesn’t. 39 training, nutrition, environment, lifestyle & clinical factors ranked by evidence from 40 verified sources.',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
         'url': 'https://www.kygo.app/tools/vo2-max-factors',
         'datePublished': '2026-06-03',
-        'dateModified': '2026-06-03',
-        'softwareVersion': '1.0',
+        'dateModified': '2026-08-17',
+        'softwareVersion': '1.1',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'alternateName': 'Kygo VO2 Max Factor Explorer',
-        'featureList': 'Explore 39 VO2 max factors, filter by category/direction/evidence, search, sort by evidence strength, anchored peer-reviewed sources',
+        'featureList': 'Explore 39 VO2 max factors, filter by category/direction/evidence strength (strong, moderate–strong, moderate, weak), search, anchored peer-reviewed sources',
         'keywords': 'what affects vo2 max, how to increase vo2 max, what lowers vo2 max, does creatine lower vo2 max, does beetroot increase vo2 max, hiit vo2 max, supplements vo2 max, vo2 max factors'
       };
       const s1 = document.createElement('script');
@@ -1209,7 +1221,9 @@ class KygoVo2maxFactors extends HTMLElement {
       .dir-badge.dir-pred { background: var(--kygo-dark); color: #fff; }
       .ev-badge { font-family: var(--font-display); font-size: 10px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
       .ev-badge.ev-strong { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .ev-badge.ev-moderate-strong { background: rgba(34,197,94,0.12); color: var(--kygo-green-dark); }
       .ev-badge.ev-moderate { background: var(--bg-raised); color: var(--fg-2); }
+      .ev-badge.ev-weak { background: transparent; color: var(--fg-3); box-shadow: inset 0 0 0 1px var(--border-subtle); }
       .fx-chev { color: var(--fg-3); flex: none; }
       .fx-chev .ico { width: 16px; height: 16px; transition: transform .2s; }
       .fx-acc[open] .fx-chev .ico { transform: rotate(90deg); color: var(--kygo-green-dark); }

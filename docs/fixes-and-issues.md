@@ -7,6 +7,50 @@
 > Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
 > **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
+## ✅ Resolved on branch `claude/vo2-max-factors-review-itgrnf` (2026-08)
+
+Source-accuracy pass over the **VO2 Max Factor Explorer** (`kygo-vo2max-factors.js`) and its
+canonical reference `vo2research.md`. Every factor row was re-checked against the primary record.
+
+- **#V1 (P2) — overstated or wrong figures corrected** across 30+ rows. Highlights: HIIT vs-control
+  SMD 0.41–1.81 (subgroup 0.50–2.48, was "up to 2.48"); SIT given its real pooled effect
+  (Hedges' g 0.63, 95% CI 0.39–0.87, 13 of 19 studies, +4.2–13.4%); resistance training +1.89
+  (1.21–2.57) for ≤24-week programmes with a null (−0.01) beyond, in healthy over-60s; detraining
+  re-bucketed to ≤30 d / >30 d; bed rest 26% with 40-yr aging 27% (previously transposed); sex gap
+  restated as ~10% per kg, elite-vs-elite; age given per-decade rates; sauna cohort 2,012 men with
+  its real dose-response; sleep deprivation given its SMDs; air pollution 24 studies; heat
+  acclimation given its four pooled Hedges' g.
+- **#V2 (P2) — claims removed that the cited paper does not make.** "Cardio raises VO2 max more
+  than lifting" (Smart 2022 makes no such comparison), "you start losing within ~2 weeks"
+  (Zheng 2022's shortest bucket is ≤30 d), tapering's "VO2 max maintained or slightly improved"
+  (Bosquet 2007 has no VO2 max outcome — four real effect sizes substituted), dehydration's
+  "+1.5%/°C above 27°C", air pollution's "PM2.5 into the bloodstream", smoking's "appears
+  reversible" (cross-sectional), type 2 diabetes' "roughly 20% lower", and cold-water immersion's
+  "does not compromise VO2 max" (no pooled estimate exists).
+- **#V3 (P2) — "no effect" downgraded to "not tested" where the source is silent.** Beta-alanine,
+  sodium bicarbonate, and cold-water immersion report no VO2 max outcome at all; omega-3 is
+  contested (the ISSN stand's own headline is net-positive), not a clean null; Deng 2025 is now
+  cited in the vitamin D row only.
+- **#V4 (P2) — direction/grade changes.** Blood donation flipped to *no clear reduction* (the review
+  concludes VO2 max is **not** reduced) and downgraded to Weak; concurrent training downgraded to
+  Weak (the meta tests training *sequence*, with no endurance-only arm); acute altitude, bed rest,
+  dehydration, long COVID, and type 2 diabetes → Moderate; iron and SIT → Moderate–Strong. A
+  four-tier evidence scale (Strong / Moderate–Strong / Moderate / Weak) replaces the two-tier one,
+  with matching badges and filter chips.
+- **#V5 (P2) — 9 broken or wrong citations fixed.** Hadzic (was *J Sport Health Sci* + an unrelated
+  DOI → *J Sports Sci Med* 18(2):271-281), Deng (Front Nutr → *Food Sci Nutr*), Meeusen, Macedo
+  (Sports Medicine → *Arch Endocrinol Metab*), Jäger, Shaw (first author is Shaw, not Levitt),
+  Smart (Sports Medicine → *Age Ageing*), Cheuvront (*Sports Sci Exch* + a 2005 PMID →
+  *J Appl Physiol* 2010), Eriksen (Prev Med → *Scand J Med Sci Sports*). Four placeholder PubMed
+  URLs that pointed at non-existent IDs (`39900000`, `39800000`, `38000000`, `37000000`,
+  `37500000`) replaced with real DOIs.
+- **#V6 (P3) — 4 sources added** (49 Santalla 2003, 50 Berger 2006, 51 Lorenzo 2010, 52 Dorelli
+  2025), so the bicarbonate slow-component claim is flagged contested, heat acclimation cites
+  Lorenzo directly, and the previously-uncited "2025 meta" that *contradicts* the hypoxic-training
+  row is named. Tool source count 36 → 40; `vo2research.md` 48 → 52.
+- **#V7 (P3) — `vo2research.md` note corrected.** It claimed Sloth 2013's g=0.63/13-studies figures
+  came from a different meta-analysis; they are in Sloth's own abstract, verified 2026-08-17.
+
 ## ✅ Resolved on branch `claude/hopeful-faraday-ig1PE` (2026-06)
 
 - **#2** food-scanner `${this.dailyLimit}` → now a template literal (`calories-custom-element.js:1296`).
