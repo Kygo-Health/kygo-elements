@@ -1081,7 +1081,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="kearly-section bg-white">
         <div class="section-inner">
           ${this._renderKband('early', 'step-count-early')}
         </div>
@@ -1135,8 +1135,6 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <kygo-inline-subscribe source="tool-step-count-accuracy" variant="comparison"></kygo-inline-subscribe>
-
       <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
@@ -1148,12 +1146,14 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <kygo-inline-subscribe source="tool-step-count-accuracy" variant="comparison"></kygo-inline-subscribe>
+
       <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">The gap nobody advertises</div>
             <h2>Great in a lab, <span class="hl">shaky in your life.</span></h2>
-            <p class="lede">Four devices, each with both numbers published. The left figure is what a validation study measures on a treadmill or a structured walk. The right figure is the same device worn through a normal day against a research-grade reference. Every one gets worse, by roughly the same factor.</p>
+            <p class="lede">Three devices, each with both numbers published. The left figure is what a validation study measures on a treadmill or a structured walk. The right figure is the same device worn through a normal day against a research-grade reference. Every one gets worse, by roughly the same factor.</p>
           </div>
           <div class="animate-on-scroll">${this._renderLabVsLife()}</div>
         </div>
@@ -1173,18 +1173,18 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       <section class="section bg-light">
         <div class="section-inner">
-          ${this._renderKband('late', 'step-count-late')}
-        </div>
-      </section>
-
-      <section class="section bg-white">
-        <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">True for every device</div>
             <h2>What no brand <span class="hl">can fix.</span></h2>
             <p class="lede">Four things that hurt step accuracy no matter which tracker you buy. They are about your body, your gait and what your hands are holding, not about the sensor, and they are the reason a published figure may not describe you at all.</p>
           </div>
           <div class="animate-on-scroll">${this._renderFactCards()}</div>
+        </div>
+      </section>
+
+      <section class="kearly-section bg-white">
+        <div class="section-inner">
+          ${this._renderKband('late', 'step-count-late')}
         </div>
       </section>
 
@@ -1477,6 +1477,12 @@ class KygoStepCountAccuracy extends HTMLElement {
 
       /* Sections */
       .section { padding: 56px 20px; }
+      /* Slimmer interstitial for the mid-page app-download band, so it reads as a
+         contextual CTA rather than a full-weight content section (house pattern). */
+      .kearly-section { padding: 48px 20px; }
+      .kearly-section.bg-white { background: #fff; }
+      .kearly-section.bg-light { background: var(--kygo-light); }
+      .kearly-section .section-inner { max-width: 1200px; margin: 0 auto; }
       @media (min-width: 720px) { .section { padding: 80px 24px; } }
       .section-inner { max-width: 1200px; margin: 0 auto; }
       .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
