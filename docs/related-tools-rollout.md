@@ -45,7 +45,7 @@ Status: ⬜ pending · 🟡 in progress · ✅ done+verified.
 | 1 | kygo-sleep-tracker-accuracy | sleep-tracker-accuracy | A | sleep-metrics, wearable-accuracy, calorie-burn-accuracy | ✅ (prototype) |
 | 2 | kygo-wearable-accuracy | wearable-accuracy | B | sleep-tracker-accuracy, step-count-accuracy, vo2-max-accuracy | ⬜ deferred |
 | 3 | kygo-calorie-burn-accuracy | calorie-burn-accuracy | A | wearable-accuracy, step-count-accuracy, vo2-max-accuracy | ✅ |
-| 4 | kygo-step-count-accuracy | step-count-accuracy | B | wearable-accuracy, calorie-burn-accuracy, sleep-tracker-accuracy | ⬜ deferred |
+| 4 | kygo-step-count-accuracy | step-count-accuracy | A | wearable-accuracy, calorie-burn-accuracy, sleep-tracker-accuracy | ✅ (rebuilt on the Family-A skeleton 2026-08-18) |
 | 5 | kygo-vo2max-accuracy | vo2-max-accuracy | A | vo2-max-factors, wearable-accuracy, sensor-comparison | ✅ |
 | 6 | kygo-sensor-comparison | sensor-comparison | B | wearable-accuracy, sleep-metrics, recovery-score-explorer | ⬜ deferred |
 | 7 | kygo-oura-ring-comparison | oura-ring-comparison-tool | A | oura-ring-5-vs-4, sleep-tracker-accuracy, wearable-accuracy | ✅ |
