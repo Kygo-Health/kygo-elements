@@ -109,12 +109,12 @@ data object (`affiliateUrl`, `{name,url}`, or `affiliate:{url,label}`).
 | `amzn.to/4rUcGst` | **Apple Watch** (S10 / Ultra 3) | sensor-comparison:108,119 · sleep-metrics:82 · step-count-accuracy:135 · wearable-accuracy:58 · calorie-burn-accuracy:1169 |
 | `amzn.to/3ZPkHDc` | **Fitbit** (Charge 6) | sensor-comparison:130 · sleep-metrics:67 · step-count-accuracy:149 · wearable-accuracy:122 · calorie-burn-accuracy:1194 |
 | `amzn.to/4aF8l5D` | **Garmin** | sensor-comparison:75 · sleep-metrics:97 · step-count-accuracy:121 · wearable-accuracy:90 · calorie-burn-accuracy:1219 |
-| `amzn.to/4aF93jj` | **Oura Ring** (Ring 4) | sensor-comparison:97 · sleep-metrics:51 · step-count-accuracy:191 · wearable-accuracy:74 · calorie-burn-accuracy:1269 |
+| `amzn.to/4aF93jj` | **Oura Ring** (Ring 4) | sensor-comparison:97 · sleep-metrics:51 · step-count-accuracy:205 · wearable-accuracy:74 · calorie-burn-accuracy:1269 |
 | `amzn.to/4suRaen` | **Whoop 5.0** | sensor-comparison:86 |
 | `amzn.to/4rRoziQ` | **WHOOP** | step-count-accuracy:233 · wearable-accuracy:106 · calorie-burn-accuracy (`_devices.whoop.affiliate`) |
-| `amzn.to/3PUMS23` | **Samsung Galaxy Watch** (unified across all 3 pages) | step-count-accuracy:163 · wearable-accuracy:138 · calorie-burn-accuracy:1294 |
-| `amzn.to/4rkOv6I` | **COROS** | step-count-accuracy:205 |
-| `amzn.to/4rqpdnL` | **Polar** | step-count-accuracy:177 |
+| `amzn.to/3PUMS23` | **Samsung Galaxy Watch** (unified across all 3 pages) | step-count-accuracy:177 · wearable-accuracy:138 · calorie-burn-accuracy:1294 |
+| `amzn.to/4rkOv6I` | **COROS** | step-count-accuracy:163 |
+| `amzn.to/4rqpdnL` | **Polar** | step-count-accuracy:191 |
 
 ### Heart-rate accuracy tool (`kygo-heart-rate-accuracy.js`)
 Added 2026-08. One affiliate per device in the `_devices` array (`affiliateUrl`). Reuses existing
