@@ -138,8 +138,10 @@ every tool page.**
 - Files (13): `kygo-calorie-burn-accuracy.js`, `kygo-deep-sleep-factors.js`,
   `kygo-fitbit-air-vs-whoop.js`, `kygo-hrv-factors.js`, `kygo-oura-ring-comparison.js`,
   `kygo-rhr-factors.js`, `kygo-sensor-comparison.js`, `kygo-sleep-latency-factors.js`,
-  `kygo-sleep-metrics.js`, `kygo-staying-asleep-factors.js`, `kygo-step-count-accuracy.js`,
+  `kygo-sleep-metrics.js`, `kygo-staying-asleep-factors.js`,
   `kygo-wearable-accuracy.js`, `calories-custom-element.js`.
+  (`kygo-step-count-accuracy.js` was rebuilt on the Family-A skeleton and already uses
+  `/privacy-policy` + `/terms-conditions`.)
 
 ---
 
@@ -264,9 +266,10 @@ paths, GA4 ID `G-P2224N75KY`, and GA tracking of both download CTAs (via `href` 
   *(Severity P2 SEO / cannibalization.)*
 - **#20 — tool pages span 2+ design generations.** Family A (semantic palette + `.section bg-light/white`):
   calorie-burn-accuracy, deep-sleep-factors, fitbit-air-vs-whoop, oura-5-vs-4, oura-ring-comparison,
-  rem-sleep, vo2max-accuracy, vo2max-factors, sleep-tracker-accuracy. Family B (canonical palette
+  rem-sleep, vo2max-accuracy, vo2max-factors, sleep-tracker-accuracy, heart-rate-accuracy,
+  step-count-accuracy. Family B (canonical palette
   `--green/--dark/--gray-*`, `.container` sections, no bg-light/white): hrv-factors, recovery-scores,
   rhr-factors, sensor-comparison, sleep-latency-factors, sleep-metrics, staying-asleep-factors,
-  step-count-accuracy, supplements-by-metric, wearable-stress, wearable-accuracy. `calories-in-anything`
+  supplements-by-metric, wearable-stress, wearable-accuracy. `calories-in-anything`
   is a third, separate pattern. Relevant to any cross-page UI (see the related-tools rollout).
   *(Severity P3 / architectural note.)*
