@@ -270,7 +270,9 @@ class KygoSupplementsByMetric extends HTMLElement {
       flask: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.31"/><path d="M14 9.3V1.99"/><path d="M8.5 2h7"/><path d="M14 9.3a6.5 6.5 0 1 1-4 0"/><path d="M5.58 16.5h12.85"/></svg>',
       cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>',
       target: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
-      ban: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>'
+      ban: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>',
+      apple: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>',
+      android: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>'
     };
     return icons[name] || icons.pill;
   }
@@ -466,7 +468,7 @@ class KygoSupplementsByMetric extends HTMLElement {
 
   _renderMythSection() {
     return `
-      <section class="picks-section section-bg-gray">
+      <section class="picks-section section-bg-white">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -508,7 +510,7 @@ class KygoSupplementsByMetric extends HTMLElement {
 
   _renderArticleCta() {
     return `
-      <section class="article-section section-bg-white">
+      <section class="article-section section-bg-gray">
         <div class="container">
           <a href="${this._posts.backed}" class="article-card animate-on-scroll" target="_blank" rel="noopener">
             <span class="article-badge">Read the guide</span>
@@ -523,10 +525,34 @@ class KygoSupplementsByMetric extends HTMLElement {
       </section>`;
   }
 
-  _renderCtaRow() {
+  // Thin mid-page app-download band (lighter than the big dark CTA card)
+  _renderKband(pos, labelSlug) {
+    return `
+      <section class="kband-section section-bg-white">
+        <div class="container">
+          <div class="kband animate-on-scroll">
+            <div class="kband-inner">
+              <div class="kband-glow" aria-hidden="true"></div>
+              <div class="kband-copy">
+                <span class="kband-eyebrow"><span class="kband-dot" aria-hidden="true"></span>From guessing to knowing</span>
+                <h2 class="kband-headline">Log what you take. See what it did to your sleep, HRV and resting heart rate.</h2>
+              </div>
+              <div class="kband-actions">
+                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios cta-primary" data-action="ios-download" data-track-position="${pos}" data-track-label="${labelSlug}-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android cta-android" data-action="android-download" data-track-position="${pos}" data-track-label="${labelSlug}-android" target="_blank" rel="noopener">${this._icon('android')} Get Android</a>
+                <p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  // Big dark conversion card (the primary act-now moment, near the end of the page)
+  _renderBigCta() {
     const iosUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
     return `
-      <section class="app-cta-section section-bg-white">
+      <section class="app-cta-section section-bg-gray">
         <div class="container">
           <div class="app-cta animate-on-scroll">
             <div class="app-cta-glow" aria-hidden="true"></div>
@@ -535,11 +561,11 @@ class KygoSupplementsByMetric extends HTMLElement {
               <h2>See If A Supplement Actually <span class="highlight">Moves Your Numbers</span></h2>
               <p>Supplements are guesswork until you measure. Kygo tracks what you take against your sleep, HRV, and energy so you see what actually works for you.</p>
               <div class="app-cta-buttons">
-                <a href="${iosUrl}" class="app-cta-btn cta-primary" data-track-position="early" data-track-label="supplements-early-ios" target="_blank" rel="noopener">
+                <a href="${iosUrl}" class="app-cta-btn cta-primary" data-action="ios-download" data-track-position="footer-cta" data-track-label="supplements-footer-ios" target="_blank" rel="noopener">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
                   Download for iOS
                 </a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="app-cta-android cta-android" data-action="android-download" data-track-position="early" data-track-label="supplements-early-android">
+                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="app-cta-android cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="supplements-footer-android">
                   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
                   Download for Android
                 </a>
@@ -565,7 +591,7 @@ class KygoSupplementsByMetric extends HTMLElement {
   _renderFaqSection() {
     const faqs = this._faqs();
     return `
-      <section class="faq-section section-bg-gray" id="faq">
+      <section class="faq-section section-bg-white" id="faq">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('info')}</span>Common questions</span>
@@ -702,13 +728,16 @@ class KygoSupplementsByMetric extends HTMLElement {
       </section>
 
       ${this._renderExplorerSection()}
-      ${this._renderCtaRow()}
-      <kygo-inline-subscribe source="tool-supplements-by-metric" variant="factors"></kygo-inline-subscribe>
+      ${this._renderKband('early', 'supplements-early')}
       ${this._renderMatrixSection()}
-      ${this._renderArticleCta()}
       ${this._renderMythSection()}
+      <section class="subscribe-section section-bg-gray">
+        <kygo-inline-subscribe source="tool-supplements-by-metric" variant="factors"></kygo-inline-subscribe>
+      </section>
       ${this._renderCalloutSection()}
+      ${this._renderArticleCta()}
       ${this._renderFaqSection()}
+      ${this._renderBigCta()}
       ${this._renderSourcesSection()}
 
       <footer class="tool-footer">
@@ -898,7 +927,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       }
 
       /* ARTICLE CTA */
-      .article-section { padding: 48px 0; background: #fff; }
+      .article-section { padding: 48px 0; }
       @media (min-width: 768px) { .article-section { padding: 64px 0; } }
       .article-card { position: relative; display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: 'badge . arrow' 'body body body'; align-items: center; gap: 14px 12px; max-width: 780px; margin: 0 auto; padding: 18px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
       .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
@@ -1084,8 +1113,39 @@ class KygoSupplementsByMetric extends HTMLElement {
       .dd-buy-go svg { width: 13px; height: 13px; }
       .dd-buy-aff { font-size: 10.5px; color: var(--gray-400); letter-spacing: 0.2px; line-height: 1.4; }
 
+      /* MID-PAGE APP BAND */
+      .kband-section { padding: 40px 0; }
+      @media (min-width: 768px) { .kband-section { padding: 56px 0; } }
+      .kband { max-width: 1100px; margin: 0 auto; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 20px; padding: 26px 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-width: 0; max-width: 640px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--green-dark); }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: kygoPulse 2s ease-out infinite; flex-shrink: 0; }
+      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(18px, 2.4vw, 23px); line-height: 1.3; color: var(--dark); }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
+      .kband-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; width: 100%; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 14px 22px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+      .kband-btn-ios { background: var(--green); color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: var(--green-dark); color: #fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: var(--green-dark); border: 1.5px solid var(--gray-200); }
+      .kband-btn-android:hover { border-color: var(--green); transform: translateY(-2px); }
+      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--gray-600); text-align: center; }
+      @media (min-width: 560px) { .kband-btn { width: auto; flex: 1 1 190px; } }
+      @media (min-width: 900px) {
+        .kband-inner { flex-direction: row; align-items: center; justify-content: space-between; gap: 36px; padding: 28px 32px; }
+        .kband-actions { width: auto; flex: 0 0 auto; max-width: 470px; }
+        .kband-btn { flex: 0 0 auto; }
+      }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); } 70% { box-shadow: 0 0 0 7px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+      @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
+
+      /* EMAIL CAPTURE */
+      .subscribe-section { padding: 16px 0; }
+      @media (min-width: 768px) { .subscribe-section { padding: 24px 0; } }
+
       /* APP CTA */
-      .app-cta-section { padding: 48px 0; background: #fff; }
+      .app-cta-section { padding: 48px 0; }
       @media (min-width: 768px) { .app-cta-section { padding: 64px 0; } }
       .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
       .app-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
