@@ -41,7 +41,7 @@ Every content component implements `_injectStructuredData()`, called once from
 | `kygo-tools.js` | `data-kygo-tools-ld` | CollectionPage, ItemList, ListItem, Organization |
 | `kygo-blog.js` | `data-kygo-blog-ld` | CollectionPage, Organization, ImageObject |
 | `kygo-calorie-burn-accuracy.js` | `data-kygo-calorie-burn-ld` | WebApplication, **HowTo + HowToStep + HowToTool**, FAQPage, BreadcrumbList, **7× ScholarlyArticle**, Offer, Organization |
-| `kygo-step-count-accuracy.js` | `data-kygo-step-count-accuracy-ld`, `data-kygo-step-count-accuracy-faq`, `data-kygo-step-count-accuracy-bc` | WebApplication, FAQPage (10 Q&A, from the visible `_faqs` getter), BreadcrumbList, Offer, Organization |
+| `kygo-step-count-accuracy.js` | `data-kygo-step-count-accuracy-ld`, `data-kygo-step-count-accuracy-faq`, `data-kygo-step-count-accuracy-bc` | WebApplication, FAQPage (8 Q&A, from the visible `_faqs` getter), BreadcrumbList, Offer, Organization |
 | `kygo-wearable-accuracy.js` | `data-kygo-wearable-ld` | WebApplication, FAQPage, BreadcrumbList, **MedicalScholarlyArticle**, Offer, Organization |
 | `kygo-wearable-stress.js` | `data-kygo-stress-ld` | WebApplication, FAQPage (11 Q&A), BreadcrumbList, Offer, Organization |
 | `kygo-recovery-scores.js` | `data-kygo-recovery-ld` | WebApplication, FAQPage (8 Q&A — **also rendered visibly**), BreadcrumbList, Offer, Organization. FAQ JSON-LD is built from the same `_faqs()` getter that the visible `<details>` accordion renders, so schema and page never drift. WebApplication `name` = "Recovery Score Explorer", `url` = `/tools/recovery-score-explorer`. |
