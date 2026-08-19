@@ -71,7 +71,7 @@ Footer set appears in: `kygo-calorie-burn-accuracy.js:622-627`,
 `kygo-rhr-factors.js:1122-1127`, `kygo-sensor-comparison.js:1103-1108`,
 `kygo-sleep-latency-factors.js:777-782`, `kygo-staying-asleep-factors.js:1134-1139`.
 Shorter footers (privacy + terms only) in `kygo-sleep-metrics.js:775-776`,
-`kygo-wearable-accuracy.js:869-870`. `kygo-step-count-accuracy.js:1185-1192` was rebuilt on the
+`kygo-wearable-accuracy.js:869-870`. `kygo-step-count-accuracy.js:1186-1193` was rebuilt on the
 Family-A skeleton and now carries the full footer link set.
 `calories-custom-element.js:1309-1310` also links `/privacy` + `/terms`.
 
@@ -88,7 +88,7 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/tools/sleep-latency-factors` | kygo-sleep-latency-factors.js | 1125, 1176 |
 | `/tools/sleep-metrics` | kygo-sleep-metrics.js | 1310, 1339 |
 | `/tools/staying-asleep-factors` | kygo-staying-asleep-factors.js | 1253, 1304 |
-| `/tools/step-count-accuracy` | kygo-step-count-accuracy.js | 1235, 1278 |
+| `/tools/step-count-accuracy` | kygo-step-count-accuracy.js | 1236, 1279 |
 | `/tools/wearable-accuracy` | kygo-wearable-accuracy.js | 1533, 1605 |
 | `/tools/stress-factors` | kygo-wearable-stress.js | 53, 134 |
 | `/tools/recovery-score-explorer` | kygo-recovery-scores.js | JSON-LD `url` + breadcrumb |
