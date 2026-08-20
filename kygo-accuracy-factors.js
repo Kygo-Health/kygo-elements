@@ -53,28 +53,28 @@ class KygoAccuracyFactors extends HTMLElement {
     const T = 'https://www.kygo.app/tools/';
     return [
       { key: 'hr', label: 'Heart Rate', short: 'HR', icon: 'heart',
-        what: 'Optical heart rate from a wrist, arm or finger sensor, against an ECG or chest strap.',
-        note: 'For wrist PPG, how and where you wear it moves accuracy more than which device you bought. The two largest effects in this whole list, forearm position and body site, cost nothing and take ten seconds.',
+        what: 'Optical heart rate against an ECG or chest strap.',
+        note: 'For wrist sensors, how and where you wear it moves accuracy more than which device you bought.',
         tool: T + 'heart-rate-accuracy', toolName: 'Heart Rate Accuracy comparison' },
       { key: 'sleep', label: 'Sleep', short: 'Sleep', icon: 'moon',
-        what: 'Total sleep time, wake after sleep onset, sleep efficiency and stage calls, against lab polysomnography.',
-        note: 'Every consumer device in every study finds sleep easily and finds wake badly: sensitivity above 0.90 is universal, specificity runs 0.18 to 0.54. That single fact explains most of what your sleep tracker gets wrong.',
+        what: 'Total sleep, wake time and stage calls against a lab sleep study.',
+        note: 'Every device finds sleep easily and finds wake badly. That one fact explains most of what your sleep tracker gets wrong.',
         tool: T + 'sleep-tracker-accuracy', toolName: 'Sleep Tracker Accuracy comparison' },
       { key: 'steps', label: 'Steps', short: 'Steps', icon: 'steps',
-        what: 'Daily step counts and walking bouts, against video, direct observation or an ankle criterion device.',
-        note: 'Percentage error is not constant across the range. It blows up at the edges, and the edges are slow walking and short bouts, which is exactly how the people who move least actually move.',
+        what: 'Daily step counts against video or an ankle reference device.',
+        note: 'Error is not constant. It blows up at slow speeds and short walks, which is how the people who move least actually move.',
         tool: T + 'step-count-accuracy', toolName: 'Step Count Accuracy comparison' },
       { key: 'hrv', label: 'HRV', short: 'HRV', icon: 'activity',
-        what: 'Overnight RMSSD, SDNN and frequency-domain HRV from an optical sensor, against ECG.',
-        note: 'HRV is far more fragile than heart rate, because it depends on every single beat interval rather than an average. That is why the same night can give a clean heart rate and a discarded HRV.',
+        what: 'Overnight HRV from an optical sensor, against ECG.',
+        note: 'HRV depends on every single beat rather than an average, which is why a night can give clean heart rate and unusable HRV.',
         tool: T + 'hrv-factors', toolName: 'HRV Factor Explorer' },
       { key: 'ee', label: 'Calories', short: 'Cals', icon: 'flame',
-        what: 'Active and total energy expenditure, against indirect calorimetry or doubly labelled water.',
-        note: 'Calories are the weakest metric here, and the failure is in the model rather than the sensor. The heart-rate signal is usually good enough; the equation that turns it into kilojoules has no valid mapping for lifting, gripping or hills.',
+        what: 'Energy expenditure against lab calorimetry.',
+        note: 'The weakest metric here, and the failure is the model rather than the sensor.',
         tool: T + 'calorie-burn-accuracy', toolName: 'Calorie Burn Accuracy calculator' },
       { key: 'spo2', label: 'Blood Oxygen', tileLabel: 'Blood O2', short: 'SpO2', icon: 'droplet',
-        what: 'Overnight and spot SpO2 from a consumer wearable, against a reference oximeter or arterial blood gas.',
-        note: 'Consumer SpO2 sits entirely outside the FDA pulse-oximeter draft guidance, which excludes the wellness and sporting product codes every wearable ships under. Read it as a trend line, never as a clinical number.',
+        what: 'Overnight and spot blood oxygen against a reference oximeter.',
+        note: 'Consumer blood oxygen sits outside the FDA oximeter guidance entirely. Read it as a trend, never as a clinical number.',
         tool: T + 'wearable-accuracy', toolName: 'Most Accurate Wearable comparison' }
     ];
   }
@@ -171,6 +171,7 @@ class KygoAccuracyFactors extends HTMLElement {
    *       C contested, X tested-no-effect, G never tested
    *   ctl 'you' you can change it, 'set' it is a setting, 'fixed' you cannot
    *   dev which form factors the row applies to
+   * Copy rule: head under 12 words, every field one sentence.
    */
 
   get _factors() {
@@ -178,506 +179,522 @@ class KygoAccuracyFactors extends HTMLElement {
       /* ---------------------------------------------------- FIT AND PLACEMENT */
       { key: 'forearm', name: 'Where on your forearm you wear it', cat: 'Fit and placement', ctl: 'you', dev: ['watch'], m: {
         hr: { e: 'Y', imp: 98, g: 'W', src: 'verm',
-          head: 'One finger-width above the wrist joint sits over the mobile carpal region, and the signal falls apart there.',
-          size: 'MAPE 20.5% during movement at one finger-width vs 7.3% at three. ICC 0.59 vs 0.92. Pooled across all conditions the difference was MAPE 11.4 points and MAE 8.3 bpm.',
-          fix: 'Slide the watch two more finger-widths up your forearm, so it sits three finger-widths above the wrist joint rather than on the bone.',
-          ev: 'Single study, n=10, no replication found. The largest single effect in this document and it rests on ten people, so treat it as a free thing to try rather than a settled law.' },
-        hrv: { e: '?', imp: 0, g: 'G', head: 'Never tested for HRV.', size: 'No study has repeated the forearm-position protocol with beat-to-beat intervals as the outcome.', fix: 'Assume it matters at least as much as it does for heart rate, since HRV needs every beat rather than an average.', ev: 'Gap in the literature.' },
-        sleep: { e: '?', imp: 0, g: 'G', head: 'Never tested for sleep staging.', size: 'No PSG-referenced study has varied wrist position.', fix: 'Nothing to act on yet.', ev: 'Gap in the literature.' }
+          head: 'The biggest effect in the literature, and it is free.',
+          size: 'Error during movement: 20.5% at one finger-width above the wrist joint, 7.3% at three. ICC 0.59 to 0.92.',
+          fix: 'Slide the watch two more finger-widths up your arm, off the wrist bone.',
+          ev: 'Single study, n=10, never replicated. Worth trying, not worth quoting as law.' },
+        hrv: { e: '?', imp: 0, g: 'G',
+          head: 'Never tested for HRV.',
+          size: 'Nobody has repeated the protocol with beat-to-beat intervals as the outcome.',
+          fix: 'Assume it matters at least as much as for heart rate.',
+          ev: 'Gap in the literature.' },
+        sleep: { e: '?', imp: 0, g: 'G',
+          head: 'Never tested for sleep staging.',
+          size: 'No sleep-lab study has varied wrist position.',
+          fix: 'Nothing to act on yet.',
+          ev: 'Gap in the literature.' }
       } },
 
       { key: 'site', name: 'Which part of your body it sits on', cat: 'Fit and placement', ctl: 'you', dev: ['watch', 'strap', 'other'], m: {
         hr: { e: 'Y', imp: 95, g: 'S', src: 'mogh',
-          head: 'Same sensor, same firmware, same person: moving from wrist to upper arm cuts the agreement interval roughly fourfold.',
-          size: 'Graded treadmill limits of agreement, three identical units on one person: wrist +2.90 bpm (-8.59 to +14.38) vs upper arm +0.77 (-1.95 to +3.49). A second brand replicates it: armband MAPE 1.35% vs wrist 6.82%. Outdoors over 13 hours: forehead 7.1%, chest 7.7%, ankle 9.9%, wrist 18.4% median error.',
-          fix: 'For anything harder than a walk, move the optical sensor to an upper-arm band, or wear a chest strap. It beats every wrist upgrade you could buy.',
-          ev: 'Strong. Replicated across two brands with the hardware held constant, plus a 152,000-reading outdoor comparison of four sites.' },
+          head: 'Wrist to upper arm cuts the error range roughly fourfold.',
+          size: 'Same sensor, same person, treadmill: wrist agreement span 23 bpm, upper arm 5.4 bpm. Outdoors: forehead 7.1%, chest 7.7%, wrist 18.4%.',
+          fix: 'For anything harder than a walk, use an armband or a chest strap.',
+          ev: 'Strong. Replicated across two brands with the hardware held constant.' },
         steps: { e: 'Y', imp: 88, g: 'S', src: 'toth',
-          head: 'Ankle is the accurate site for steps. Wrist and hip both err, and they err in opposite directions depending on what you are doing.',
-          size: 'Against chest-camera video across all waking hours: ankle 95.3 to 102.8% of true steps, wrist 109.0 to 122.2%, hip 69.2%. In a lab walk against frame-by-frame video, wrist MPE was -9.04% vs waist +0.18%.',
-          fix: 'If the number has to be right, put the device at the ankle or in a pocket. Wrist counts are for trends, not totals.',
-          ev: 'Strong for the site effect and replicated. The direction is not: it flips between structured walking and daily activity.' },
+          head: 'Ankle is accurate. Wrist and hip both err, in opposite directions.',
+          size: 'Against video across full days: ankle 95 to 103% of true steps, wrist 109 to 122%, hip 69%.',
+          fix: 'If the total has to be right, wear it at the ankle or in a pocket.',
+          ev: 'Strong and replicated. The direction is not: it flips between structured walking and daily activity.' },
         sleep: { e: 'Y', imp: 72, g: 'S', src: 'zink',
-          head: 'Hip placement is disqualifying for sleep. Wrist is close to right.',
-          size: 'Against in-lab PSG, n=100: wrist total sleep time off by 8.3 minutes, hip off by about 80 minutes and sleep efficiency by 17 to 18 points. Confirmed in children against home PSG, where wrist accuracy was generally above 80% and hip, thigh and back below.',
-          fix: 'Wear it on your wrist overnight. A clipped or pocketed device is not a sleep tracker.',
-          ev: 'Strong, and replicated in a second population. Note the sign convention: this paper reports PSG minus device, and secondary summaries routinely invert it.' }
+          head: 'Hip placement is disqualifying. Wrist is close to right.',
+          size: 'Against lab sleep studies, n=100: wrist total sleep off by 8 minutes, hip by about 80, and efficiency by 17 points.',
+          fix: 'Wrist only, overnight. A clipped device is not a sleep tracker.',
+          ev: 'Strong, replicated in children. Note the reversed sign convention: hip reads high, not low.' }
       } },
 
       { key: 'tight', name: 'How tight the strap is', cat: 'Fit and placement', ctl: 'you', dev: ['watch'], m: {
         hr: { e: 'Y', imp: 84, g: 'W', src: 'scard',
-          head: 'Contact pressure had a bigger effect on signal quality than exercise intensity did, and the curve is not monotonic: too loose and too tight both fail.',
-          size: 'At 12 mmHg (loose) correlation was poor at every intensity. Choosing each person\'s individual best pressure rather than one universal value improved MAPE by 47% at low intensity, 23% at medium and 38% at high, tightening limits of agreement to about 11 bpm.',
-          fix: 'Snug before a workout, looser the rest of the day. If it slides when you shake your wrist, it is too loose to trust during movement.',
-          ev: 'Two custom-rig studies, n=17 and n=27. No study has ever tested a consumer strap at graded notch settings, so no published notch advice is evidence-based.' },
+          head: 'Pressure mattered more than exercise intensity did.',
+          size: 'Each person\'s best pressure beat one universal setting by 23 to 47%. Loose (12 mmHg) failed at every intensity.',
+          fix: 'Snug for workouts, looser the rest of the day. If it slides, it is too loose.',
+          ev: 'Two custom-rig studies, n=17 and n=27. No consumer strap has been tested at graded notches.' },
         hrv: { e: 'Y', imp: 78, g: 'W', src: 'press2',
-          head: 'At the right pressure, wrist HRV is close to fingertip. At the wrong pressure it degrades fast.',
-          size: 'At optimal pressure, HR error was about 2 bpm and RMSSD error about 6 ms, comparable to a fingertip sensor. Excessive pressure loses the diastolic peak entirely. Contact-corrected processing improves RMSSD by 41 to 46%.',
-          fix: 'Get the fit stable before you care about the HRV number. Fit is doing more work here than the brand is.',
-          ev: 'Single n=27 clamp study. Pressures were normalised per person, so no transferable millimetre-of-mercury threshold exists.' }
+          head: 'At the right pressure a wrist rivals a fingertip. At the wrong one it does not.',
+          size: 'At optimal pressure, RMSSD error was about 6 ms. Too tight loses the pulse shape entirely.',
+          fix: 'Fix the fit before you read anything into the HRV number.',
+          ev: 'Single clamp study, n=27, with no transferable tightness threshold published.' }
       } },
 
       { key: 'posture', name: 'Arm position and posture', cat: 'Fit and placement', ctl: 'you', dev: ['watch'], m: {
         hr: { e: 'Y', imp: 62, g: 'S', src: 'charl',
-          head: 'Signal quality changes with where your hand is relative to your heart. Supine is the best condition there is.',
-          size: 'Signal-to-noise across n=1,142: supine 18.6 dB, sitting with the arm in your lap 13.7 dB, standing with the arm down 9.0 dB. Sitting, arm at heart height 15.5 dB vs alongside the body 10.5 dB. About 3 dB per height step.',
-          fix: 'For a spot reading, sit still and rest your forearm at heart height. Do not take it standing with your arm hanging.',
-          ev: 'Strong, and by far the largest signal-quality dataset in the field. Measured as signal-to-noise, not as heart-rate error, so treat it as an upstream cause rather than a bpm figure.' },
+          head: 'Signal quality doubles between arm-down and lying flat.',
+          size: 'Signal-to-noise, n=1,142: lying down 18.6 dB, sitting with the arm in your lap 13.7, standing arm-down 9.0.',
+          fix: 'Take spot readings sitting, with your forearm at heart height.',
+          ev: 'Strong, and the largest signal-quality dataset in the field. Measured as signal, not bpm.' },
         sleep: { e: '?', imp: 0, g: 'G', src: 'charl',
           head: 'Sleeping position should matter and has never been tested.',
-          size: 'A side sleeper with the tracked arm under a pillow or hanging off the bed sits somewhere else on that 9.6 dB posture curve than a back sleeper does.',
-          fix: 'Nothing to act on yet, but it is a reason not to over-read one night.',
-          ev: 'Mechanism established awake, never tested asleep. PSG records body position as standard, so this is the cheapest unclaimed analysis in the field.' }
+          size: 'A side sleeper with an arm under the pillow sits somewhere else on that curve than a back sleeper.',
+          fix: 'Nothing to act on, but a reason not to over-read one night.',
+          ev: 'Mechanism proven awake, never tested asleep.' }
       } },
 
       { key: 'dom', name: 'Which wrist you wear it on', cat: 'Fit and placement', ctl: 'you', dev: ['watch'], m: {
         steps: { e: 'Y', imp: 66, g: 'M', src: 'park',
-          head: 'Not null for steps. Your dominant hand simply moves more.',
-          size: 'Both wrists worn at once for a full waking day: the dominant wrist averaged 1,253 more steps per day, F(1,11)=11.81, p=.006. By method, +1,327 to +2,247 for research algorithms and a non-significant +613 for the consumer one.',
-          fix: 'Pick a wrist and stay on it. Switching hands mid-month makes your own trend line lie to you.',
-          ev: 'Single study, n=12, no criterion standard, so it bounds the disagreement rather than saying which wrist is right.' },
+          head: 'Not null for steps: your dominant hand simply moves more.',
+          size: 'Both wrists worn at once, full waking day: the dominant wrist averaged 1,253 more steps (p=.006).',
+          fix: 'Pick a wrist and stay on it, or your own trend line lies to you.',
+          ev: 'Single study, n=12, no criterion standard, so it bounds the disagreement only.' },
         hr: { e: 'N', imp: 0, g: 'X', src: 'jmirsite',
           head: 'Null for heart rate.',
-          size: 'Dominant bias +2.93 bpm vs non-dominant +2.56 bpm, trivial against limits of agreement more than 20 bpm wide either way.',
+          size: 'Bias 2.93 vs 2.56 bpm, trivial next to agreement limits more than 20 bpm wide either way.',
           fix: 'Nothing to do.',
-          ev: 'n=16. The limits of agreement are the real story in both conditions.' },
+          ev: 'n=16.' },
         sleep: { e: 'N', imp: 0, g: 'X',
-          head: 'Null for sleep, on group averages.',
-          size: 'Two actigraphs worn at once for 65 nights, n=13: no comparison reached significance for total sleep time, efficiency, latency or wake after sleep onset. Total-sleep-time bias 6 minutes, r=0.97.',
-          fix: 'Nothing to do, but do not read one night: the coefficient of variation was 102% for sleep latency and 61% for wake after sleep onset.',
-          ev: 'Moderate. The null holds on group means, not on a given night, and the criterion was another actigraph rather than PSG.' }
+          head: 'Null for sleep, on averages.',
+          size: 'Two devices, 65 nights: nothing reached significance. Total sleep differed by 6 minutes, r=0.97.',
+          fix: 'Nothing to do, but do not read one night: night-to-night variation was huge.',
+          ev: 'n=13, and the criterion was another wrist device rather than a sleep lab.' }
       } },
 
       { key: 'wrongwrist', name: 'Telling the app the wrong wrist', cat: 'Settings and data', ctl: 'set', dev: ['watch'], m: {
         steps: { e: 'Y', imp: 70, g: 'W', src: 'wrista',
-          head: 'A device set for one wrist and worn on the other moves activity by about a quarter, and people really do it.',
-          size: 'Set for non-dominant but worn on the dominant wrist: physical activity overestimated by 22.6%. The reverse switch underestimated by 25.9%. In a supervised study, 15.6% of participants broke the wrist protocol on at least one day.',
-          fix: 'Open your device settings and check the handedness and wrist fields match reality. It is a 20-second fix for a 20% error.',
-          ev: 'Single study, n=45 older adults, with a thigh reference. The baseline asymmetry it measured, dominant wrist about 13% higher, is consistent with the step finding above.' }
+          head: 'A 20-second settings check worth about a quarter of your activity.',
+          size: 'Set for one wrist, worn on the other: activity overestimated 22.6% or underestimated 25.9%. In a supervised study, 15.6% of people did it.',
+          fix: 'Check the handedness and wrist fields in your app match reality.',
+          ev: 'Single study, n=45 older adults.' }
       } },
 
       { key: 'rot', name: 'A ring rotating on your finger', cat: 'Fit and placement', ctl: 'you', dev: ['ring'], m: {
         hr: { e: 'Y', imp: 80, g: 'W', src: 'rot',
-          head: 'The largest ring-specific effect anyone has measured, and no amount of LED power fixes it.',
-          size: 'At 30 degrees off the optimal angle, signal-to-noise falls to -7.86 dB. Doubling the LED drive current from 5 to 10 mA helps somewhat and cannot compensate. Rotation-robust angles: green 550 nm about 30 degrees, red and infrared about 60.',
-          fix: 'Size the ring so the sensor stays put overnight. Ring sizing is a measurement question, not a comfort question.',
-          ev: 'Single bench study, n=10, 432 signal sets per person. Signal quality rather than beats per minute, so read it as the upstream cause.' },
+          head: 'The largest ring-specific effect measured, and LED power cannot fix it.',
+          size: 'At 30 degrees off the best angle, signal-to-noise falls to -7.86 dB. Doubling the LED current only partly compensates.',
+          fix: 'Size the ring so the sensor stays put overnight. Sizing is a measurement question.',
+          ev: 'Single bench study, n=10. Signal quality rather than bpm.' },
         hrv: { e: 'Y', imp: 82, g: 'W', src: 'rot',
-          head: 'Same mechanism, worse consequence: HRV needs every beat interval, so lost signal is lost HRV.',
-          size: 'Same rotation curve as above. A loose ring that turns overnight is losing signal at a rate no algorithm recovers.',
-          fix: 'If your ring spins freely, it is the wrong size for measurement even if it is the right size for comfort.',
-          ev: 'Single bench study, n=10. Nobody has varied ring tightness or which finger you wear it on in a validation study at all.' }
+          head: 'Same mechanism, worse consequence: HRV needs every beat.',
+          size: 'Same rotation curve. A ring that turns overnight loses signal no algorithm gets back.',
+          fix: 'If your ring spins freely it is the wrong size for measurement.',
+          ev: 'Single bench study, n=10.' }
       } },
 
       { key: 'ringfit', name: 'Ring sizing and which finger', cat: 'Fit and placement', ctl: 'you', dev: ['ring'], m: {
         hr: { e: '?', imp: 0, g: 'G',
           head: 'Nobody has tested it. Every study fixed the finger by protocol.',
-          size: 'No study systematically varies ring tightness. The one adjustable-ring paper used only the best-fitting size and ran no removal and replacement test. No comparative study of which finger exists. Seasonal swelling and gripping have zero peer-reviewed evidence.',
-          fix: 'Follow the rotation evidence above rather than the sizing guides, which are commercial content.',
-          ev: 'Confirmed gap. Hand choice is the one thing that has been tested, and it is null.' }
+          size: 'No study varies ring tightness, no study compares fingers, and seasonal swelling has zero evidence.',
+          fix: 'Go by the rotation evidence above, not by sizing guides.',
+          ev: 'Confirmed gap. Hand choice is the one part that has been tested, and it is null.' }
       } },
 
       { key: 'tattoo', name: 'A tattoo under the sensor', cat: 'Skin and perfusion', ctl: 'you', dev: ['watch', 'strap', 'ring'], m: {
         hr: { e: 'Y', imp: 86, g: 'W', src: 'tattoo',
-          head: 'The failure mode is a binary acquisition failure, not gradual drift.',
-          size: 'Tattooed vs clear skin on the same arm: at rest MAPE 22.9% vs 2.9%, CCC 0.25 vs 0.96. 9 of 25 people had the tattooed sensor drop to zero at rest, producing 1,486 zero readings. Remove those and tattooed rest becomes MAPE 4.2%.',
-          fix: 'Move the sensor to clear skin. If your resting readings look impossible, that is dropout, not your heart.',
-          ev: 'Single study, n=25, very large effect. Do not read a direction into the bias: the paper\'s sign convention and its 1,486 zero readings point opposite ways.' },
+          head: 'Not gradual drift. The sensor stops returning anything.',
+          size: 'Tattooed vs clear skin on the same arm: 22.9% vs 2.9% error at rest, and 9 of 25 people dropped to zero readings.',
+          fix: 'Move the sensor to clear skin.',
+          ev: 'Single study, n=25. Ink darkness and tattoo age were both null, so do not repeat that claim.' },
         spo2: { e: '?', imp: 0, g: 'G',
           head: 'Never tested for blood oxygen.',
-          size: 'Blood oxygen is estimated from the ratio between two wavelengths, so an ink layer that absorbs them unequally is mechanistically a bigger problem here than for heart rate. Nobody has measured it.',
-          fix: 'If you want an overnight blood-oxygen trend, put the sensor on clear skin.',
-          ev: 'Gap in the literature. The only peer-reviewed tattoo study measured heart rate.' }
+          size: 'Blood oxygen compares two wavelengths, so ink is mechanically a bigger problem here. Nobody has measured it.',
+          fix: 'Use clear skin if you want an overnight trend.',
+          ev: 'Gap. The only tattoo study measured heart rate.' }
       } },
 
       /* ---------------------------------------------------- MOVEMENT */
       { key: 'modality', name: 'What activity you are doing', cat: 'Movement', ctl: 'you', dev: ['watch'], m: {
         hr: { e: 'Y', imp: 92, g: 'S', src: 'swim',
-          head: 'Modality dominates intensity. Rowing, elliptical with arm levers and swimming defeat wrist sensors that handle a maximal treadmill test fine.',
-          size: 'Same device, same day: walking ICC 0.96 and MAPE 3.8%, cycling 0.81 and 6.9%, running 0.79 and 8.5%, rowing 0.44 and 13.4%. On an elliptical with arm levers, no device reached rc 0.80. Swimming is the largest single modality effect found: MAPE 29.95% wet vs 4.05% dry on the same device, and the device ranking inverts between the two.',
-          fix: 'Match the sensor to the sport. Rowing, elliptical and swim sets need a chest strap or an armband, not a watch.',
-          ev: 'Strong for the modality effect across several studies. The swimming figure is one n=10 study of competitive swimmers.' },
+          head: 'Rowing, elliptical with arm levers and swimming beat every wrist sensor.',
+          size: 'Same device: walking 3.8% error, cycling 6.9%, running 8.5%, rowing 13.4%. Swimming 29.95% wet vs 4.05% dry.',
+          fix: 'Match the sensor to the sport: strap or armband for rowing, elliptical and swim sets.',
+          ev: 'Strong across several studies. The swimming figure is one n=10 study.' },
         ee: { e: 'Y', imp: 62, g: 'M', src: 'grip',
-          head: 'The energy model was built on ambulatory motion, so anything that is not walking sits outside it.',
-          size: 'Cumulative steady-state smartwatch error was 42% against bout-level indirect calorimetry, versus 13% for a shank-and-thigh sensor system. The worst wrist conditions were stair climbing and biking.',
-          fix: 'Treat the calorie number for non-walking work as a relative score, not a measurement.',
+          head: 'The calorie model was built on walking, so nothing else fits it.',
+          size: 'Cumulative smartwatch error 42% against lab calorimetry, versus 13% for leg-worn sensors.',
+          fix: 'Read non-walking calories as a relative score, never a measurement.',
           ev: 'Moderate, with indirect calorimetry as the criterion.' }
       } },
 
       { key: 'burst', name: 'Bursts and transitions, not intensity', cat: 'Movement', ctl: 'you', dev: ['watch'], m: {
         hr: { e: 'Y', imp: 90, g: 'S', src: 'mogh',
-          head: 'The most repeated wrong belief in this category is that error rises smoothly with intensity. It does not. It spikes at transitions.',
-          size: 'Same protocol, same devices: rest CCC above 0.99, a graded treadmill test to maximum still 0.99 with about 2 bpm limits arm-worn, and 30 seconds of burpees with a minute of recovery collapsing to CCC 0.46 at best with limits of 40 to 60 bpm. The maximal treadmill stage was more accurate than a 30-second burst at a lower peak heart rate.',
-          fix: 'Do not judge a device by a HIIT session, and do not judge your effort by its HIIT readout. Steady work on a stable wrist is where wrist optical is fine.',
-          ev: 'Strong. Directly refuted in a controlled n=28 protocol, and supported by a clean null: an Apple Watch on a cycle ergometer ramp held MAPE below 1% at every intensity.' }
+          head: 'Error does not rise with effort. It spikes at transitions.',
+          size: 'Same protocol: a maximal treadmill test held agreement at 0.99, while 30 seconds of burpees collapsed it to 0.46 with 40 to 60 bpm swings.',
+          fix: 'Do not judge a device, or your effort, on an interval session.',
+          ev: 'Strong. An Apple Watch on a cycle ramp held error under 1% at every intensity.' }
       } },
 
       { key: 'grip', name: 'Gripping a rail, bar or handle', cat: 'Movement', ctl: 'you', dev: ['watch'], m: {
         ee: { e: 'Y', imp: 78, g: 'M', src: 'grip',
-          head: 'Gripping suppresses the accelerometer signal the calorie model depends on. Same effort, less motion, fewer calories.',
-          size: 'Stair climbing and biking were the worst wrist conditions in a bout-level calorimetry comparison, attributed by the authors to handrail and handlebar gripping minimising wrist motion.',
-          fix: 'Let go of the treadmill rail and the stair-machine handles if you want the calorie estimate to be anywhere near right.',
-          ev: 'Moderate for the mechanism. No study isolates grip force with wrist angle and gross motion controlled, so treat any specific number attributed to isometric grip as unsourced.' },
+          head: 'Same effort, less wrist motion, fewer calories counted.',
+          size: 'Stair machines and bikes were the worst wrist conditions in a lab-calorimetry comparison, blamed on handrail and handlebar gripping.',
+          fix: 'Let go of the rail and the handlebars.',
+          ev: 'Moderate for the mechanism. No study isolates grip force, so treat any exact number as unsourced.' },
         hr: { e: 'N', imp: 0, g: 'X', src: 'lee',
-          head: 'Null for heart rate. The sensor survives what the calorie model does not.',
-          size: 'During resistance training, heart-rate correlation with ECG stayed at r 0.96 to 0.97 across four devices while energy expenditure fell apart in the same sessions.',
+          head: 'Null for heart rate. The sensor survives what the model does not.',
+          size: 'During lifting, heart rate matched ECG at r 0.96 to 0.97 while calories in the same sessions fell apart.',
           fix: 'Trust the heart rate during lifting. Ignore the calories.',
-          ev: 'n=62, ECG criterion. This is the cleanest split in the whole dataset between a sensor failure and an algorithm failure.' }
+          ev: 'n=62, ECG criterion. The cleanest sensor-versus-algorithm split in this dataset.' }
       } },
 
       { key: 'resist', name: 'Resistance training', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         ee: { e: 'Y', imp: 96, g: 'M', src: 'lee',
-          head: 'Exercise-bout calories read high during lifting, and the overshoot is enormous.',
-          size: 'Against indirect calorimetry, n=62: resistance criterion 140.79 kcal vs one device\'s 304.71, an overshoot of 116.4%. The endurance session in the same protocol was +30.5%. All four devices had ICC below 0.45 for resistance energy expenditure.',
-          fix: 'Halve it, at least. If your lifting session claims 300 kcal, the measured value in this protocol was about 140.',
-          ev: 'Moderate, and read the paper\'s tables rather than its abstract: the abstract says devices underestimated, the tables show they over-read. Manufacturer-funded, though the funder makes none of the tested devices.' }
+          head: 'Lifting calories read high, and the overshoot is enormous.',
+          size: 'Measured 140.79 kcal, one device reported 304.71, an overshoot of 116%. Every device scored below 0.45 agreement.',
+          fix: 'Halve it, at least.',
+          ev: 'Moderate, n=62. Read its tables, not its abstract, which claims the opposite direction.' }
       } },
 
       { key: 'armswing', name: 'Pushing a cart, stroller or pram', cat: 'Movement', ctl: 'you', dev: ['watch'], m: {
         steps: { e: 'Y', imp: 97, g: 'M', src: 'cart',
-          head: 'The most destructive condition found for step counting. Your legs are walking and your wrist is not.',
-          size: 'Peer-reviewed replication: wrist error 19.8% while pushing a shopping cart, chest 19.8%, a pocket-clipped device 6.4%, against 3.9% for normal walking. A conference abstract across six wrist devices puts the range far worse, from -23.8% to -93.7% for a cart and up to -96.6% jogging with a stroller.',
-          fix: 'Pocket the phone or the tracker for the supermarket, the stroller walk and the lawnmower. Do not read those days as low-activity days.',
-          ev: 'Direction replicated, magnitude not. The two studies use different denominators and conditions, so do not pool them: the peer-reviewed number for the wrist is 19.8%, not 96.6%.' }
+          head: 'Your legs are walking and your wrist is not.',
+          size: 'Peer-reviewed: 19.8% wrist error pushing a cart, versus 6.4% for a pocketed device and 3.9% for normal walking. A conference abstract found far worse.',
+          fix: 'Pocket the tracker for supermarket, stroller and mower walks.',
+          ev: 'Direction replicated, magnitude not. The defensible wrist figure is 19.8%, not the abstract\'s 96%.' }
       } },
 
       { key: 'gaitspeed', name: 'Walking slower than about 4 km/h', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'ring', 'other'], m: {
         steps: { e: 'Y', imp: 94, g: 'S', src: 'gait',
-          head: 'A cliff, not a slope. Below roughly 4 km/h the error multiplies.',
-          size: 'Across 21 devices with directly observed steps, n=258: slow walking at 0.8 to 3.2 km/h gave MAPE 40%, normal walking at 4.0 to 6.4 km/h gave 7%. In youth the same threshold produced 50.1% vs 15.9%. At 0.3 m/s a waist device recorded zero steps for 40 of 42 older adults.',
-          fix: 'Nothing to change about your gait. Change what you expect: for a slow walker, the daily total is not a measurement.',
-          ev: 'Strong. Replicated in adults, youth and older adults. Worth knowing that the direction of slow-walking error is algorithm-dependent: three of four wrist algorithms overestimated at 0.6 m/s.' }
+          head: 'A cliff, not a slope.',
+          size: '21 devices, n=258: 40% error below 4 km/h against 7% at normal pace. In youth, 50% against 16%.',
+          fix: 'Nothing to change about your gait. Change what you expect from the daily total.',
+          ev: 'Strong. Replicated in adults, youth and older adults.' }
       } },
 
       { key: 'bout', name: 'Very short walking bouts', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'other'], m: {
         steps: { e: 'Y', imp: 87, g: 'W',
-          head: 'Percentage error roughly triples once the bouts get short, and low-count days are made almost entirely of short bouts.',
-          size: 'Frail older inpatients against video, n=32: complete tasks gave an ankle device 1% error and a thigh device -40%. Restricted to distances under 5 metres, the thigh device went to -74% and a hip pedometer to -79%, while the ankle held at -10%.',
-          fix: 'If your day is made of trips to the kitchen rather than walks, the total will be badly low. Track the trend, not the number.',
-          ev: 'Single study, n=32, video criterion, explicit sign convention. The clearest demonstration that error is worst for the people who move least.' }
+          head: 'Error roughly triples once the walks get short.',
+          size: 'Frail inpatients, video criterion: a thigh device went from 23% error on full tasks to 74% on walks under 5 metres. Ankle held at 10%.',
+          fix: 'If your day is trips to the kitchen rather than walks, track the trend, not the number.',
+          ev: 'Single study, n=32.' }
       } },
 
       { key: 'stairs', name: 'Stairs, hills and rough ground', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'other'], m: {
         steps: { e: 'Y', imp: 74, g: 'M', src: 'wei',
-          head: 'Wrist step counting breaks on stairs at every cadence tested.',
-          size: 'Two Fitbit models across one to three flights at 50, 75 and 100 steps per minute: neither met MAPE below 10% or Lin\'s concordance above 0.7 in any stair condition, up or down. In a three-site lab comparison, wrist test-retest reliability on stairs was 0.40 against 0.65 at the waist.',
-          fix: 'Expect stair-heavy days to read low. No consumer floors-climbed count has ever been validated against a real floor count.',
-          ev: 'Moderate, from a mix of conference abstracts and one peer-reviewed lab study. Note the lab study\'s winning midsole device was co-authored by an employee of its manufacturer, undisclosed in the paper.' },
+          head: 'Wrist step counting fails on stairs at every cadence tested.',
+          size: 'Two trackers, one to three flights: neither passed the accuracy or reliability threshold in any stair condition, up or down.',
+          fix: 'Expect stair-heavy days to read low.',
+          ev: 'Moderate, from conference abstracts plus one lab study whose winning device had an undisclosed manufacturer author.' },
         ee: { e: 'Y', imp: 70, g: 'M', src: 'terrain',
-          head: 'Any calorie model driven by speed or cadence underestimates off pavement and uphill.',
-          size: 'Waist-accelerometer energy expenditure against indirect calorimetry: mean error 2.27% at 0% grade, 10.85% at 3%, 20.97% at 6%, with ICC falling 0.877 to 0.504. Separately, walking on woodchips cost about 27% more energy than sidewalk at a speed that differed by 0.5%.',
-          fix: 'Add to the number for trail walks and climbs. The device is pricing your effort as if the ground were flat and paved.',
-          ev: 'Moderate. Two separate protocols, both with indirect calorimetry as the criterion, both with the underestimate direction stated.' }
+          head: 'A speed-driven calorie model prices your effort as if the ground were flat.',
+          size: 'Against lab calorimetry, error went 2.3% on the flat to 21% at a 6% grade. Woodchips cost 27% more than pavement at the same speed.',
+          fix: 'Add to the number for hills and trails.',
+          ev: 'Moderate, two protocols, both with indirect calorimetry as the criterion.' }
       } },
 
       { key: 'nonamb', name: 'Activity that is not walking at all', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'other'], m: {
         steps: { e: 'Y', imp: 76, g: 'M', src: 'falsestep',
-          head: 'Wrist devices invent steps from hand motion. Thigh devices invent steps from pedalling. No single site is safe.',
-          size: 'False steps per minute against synchronised video, n=37: washing dishes gave a wrist device 23 per minute and every other site zero. Functional reaching gave the wrist 27 per minute. Indoor cycling gave a thigh device 97 per minute and the wrist essentially zero. Driving gave hip devices 10 per kilometre.',
-          fix: 'Discount cooking, DIY and desk-fidgeting days. The overcount tracks how big your arm movements are, not how fast.',
-          ev: 'Moderate, video criterion, n=37. Elliptical was not tested and is the highest-risk untested case.' }
+          head: 'Wrists invent steps from hand motion. Thighs invent them from pedalling.',
+          size: 'False steps per minute on video, n=37: washing dishes gave a wrist device 23 and every other site zero. Cycling gave a thigh device 97.',
+          fix: 'Discount cooking and DIY days. The overcount tracks how big your arm movements are, not how fast.',
+          ev: 'Moderate, video criterion. Elliptical was never tested and is the obvious risk.' }
       } },
 
       /* ---------------------------------------------------- SKIN, PERFUSION, ENVIRONMENT */
       { key: 'cold', name: 'Cold hands and low perfusion', cat: 'Environment', ctl: 'you', dev: ['watch', 'ring', 'strap'], m: {
         hr: { e: 'Y', imp: 72, g: 'S', src: 'cold',
-          head: 'Cold does not make the number wrong so much as it makes the number absent. And the average error can improve while the tracking collapses.',
-          size: 'Local cooling cut PPG amplitude by 41% (14.3 microvolts, p=0.004) while impedance plethysmography was untouched. In a climate chamber at 10 C, mean absolute error was equal to or better than thermoneutral for 9 of 10 devices, but concordance collapsed: one ring went from CCC 0.78 to 0.32, and only one watch held above 0.90.',
-          fix: 'Warm your hands before you take a reading in the cold, and never quote a cold-weather error figure without the concordance beside it.',
-          ev: 'Strong for the mechanism. Nobody has quantified cold-weather dropout rates on a consumer device, which is the number that would actually matter.' },
+          head: 'Cold makes the reading absent more than it makes it wrong.',
+          size: 'Local cooling cut the raw signal 41%. In a 10 C chamber the average error improved for 9 of 10 devices while their ability to track change collapsed.',
+          fix: 'Warm your hands before a cold-weather reading, and never quote a cold error figure alone.',
+          ev: 'Strong for the mechanism. Cold-weather dropout rates have never been measured on a consumer device.' },
         hrv: { e: 'Y', imp: 74, g: 'M', src: 'coldear',
-          head: 'The finger is the worst site in the cold, which is exactly where rings sit.',
-          size: 'Whole-body cooling at 10 C for 10 minutes: finger LF/HF ratio rose from 19.2 to 86.4 (p=0.002) while an ear-canal sensor was unchanged at 1.62 to 1.38 (p=0.781). The authors describe pulses becoming indistinguishable from noise.',
-          fix: 'A cold bedroom and cold hands are a plausible reason for a missing or strange overnight HRV, before you look for a physiological one.',
-          ev: 'Moderate, n=12 and n=21. Cold attacks the amplitude of the signal, not the timing of the beats, which is why heart rate survives better than HRV.' },
+          head: 'The finger is the worst site in the cold, which is where rings sit.',
+          size: 'Ten minutes at 10 C sent a finger HRV ratio from 19.2 to 86.4, while an ear sensor did not move.',
+          fix: 'A cold bedroom is a likelier explanation for a strange HRV night than your nervous system.',
+          ev: 'Moderate, n=12 and n=21. Cold attacks signal strength, not beat timing.' },
         spo2: { e: 'Y', imp: 92, g: 'S', src: 'warm',
-          head: 'Low perfusion is the dominant SpO2 failure, and warming the site fixes it completely.',
-          size: 'Fifteen minutes of local wrist warming in critically ill adults with a perfusion index below 1.0: perfusion index 0.56 to 3.59, SpO2 bias 4.09% to 0.00%, limits of agreement narrowing from about 7.5% to about 1.2%. Skin phototype did not correlate with the improvement (rho -0.11, p=0.46).',
-          fix: 'Warm the hand before a spot reading. Perfusion is a separate axis from skin tone, and it is the one you can change.',
-          ev: 'Strong for the mechanism, with an arterial criterion. Note the population was hospital patients, not healthy people at home.' }
+          head: 'The dominant blood-oxygen failure, and warming fixes it completely.',
+          size: '15 minutes of warming took bias from 4.09% to 0.00% and narrowed the error band sixfold. Skin tone did not predict who benefited.',
+          fix: 'Warm the hand before a spot reading.',
+          ev: 'Strong, arterial criterion, though measured in hospital patients rather than at home.' }
       } },
 
       { key: 'heat', name: 'Ambient heat', cat: 'Environment', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         hr: { e: 'Y', imp: 68, g: 'M', src: 'climate',
-          head: 'Heat hurt more than cold, for every device that moved at all. The popular claim that warmth improves perfusion and therefore accuracy is not supported.',
-          size: 'Ten devices at 23 C, 36 C and 10 C against chest ECG, n=45. At 36 C the worst tracker went from 9.6 to 20.8 bpm mean absolute error and MAPE 11.4% to 24.4%. A ring rose 72%, 9.4 to 16.2 bpm. The best watch barely moved, 4.1 to 4.7.',
-          fix: 'Nothing to change about the weather. Do change what you conclude from a hot-day session, especially on a device at the wrong end of that table.',
-          ev: 'Cite the table, not the p-value. The published statistical test was null, with only 10 sessions per device at a corrected alpha of 0.005, against a raw doubling of error. The authors say so themselves.' }
+          head: 'Heat hurt more than cold, for every device that moved at all.',
+          size: 'At 36 C the worst tracker went from 9.6 to 20.8 bpm error and a ring rose 72%. The best watch barely moved, 4.1 to 4.7.',
+          fix: 'Nothing to change about the weather. Do change what you conclude from a hot-day session.',
+          ev: 'Cite the table, not the p-value: the published null had 10 sessions per device against a doubling of error.' }
       } },
 
       { key: 'water', name: 'Water and swimming', cat: 'Environment', ctl: 'you', dev: ['watch'], m: {
         hr: { e: 'Y', imp: 82, g: 'M', src: 'swimtemple',
-          head: 'A film of water between the sensor and your skin breaks the optical coupling.',
-          size: 'Front crawl against chest ECG, n=26: a temple sensor under a swim cap had limits of agreement spanning 51.6 bpm, a wrist watch 86.9 bpm. In a separate n=10 swim study the same watch went from MAPE 4.05% dry to 29.95% wet.',
-          fix: 'Use a strap, a temple sensor or the pool clock for swim heart rate. Wrist optical is not a swimming instrument.',
-          ev: 'Moderate. The temple study was supported by the device maker, and water and cold are not separated in either design.' }
+          head: 'A film of water breaks the optical coupling.',
+          size: 'Front crawl, n=26: a temple sensor spanned 52 bpm of error, a wrist watch 87.',
+          fix: 'Use a strap, a temple sensor or the pool clock for swim heart rate.',
+          ev: 'Moderate. Device-maker supported, and water and cold are not separated in the design.' }
       } },
 
       { key: 'alt', name: 'Altitude', cat: 'Environment', ctl: 'fixed', dev: ['watch'], m: {
         spo2: { e: 'N', imp: 12, g: 'C', src: 'alt',
-          head: 'Null on average, not null on spread. Same pattern as skin tone.',
-          size: 'Across four altitudes to 4,014 m, n=109: every root-mean-square error was 0.19 to 0.81%, well inside the 3% ISO threshold, and biases were within 0.22%. But error variance at 4,014 m was 17.5 times higher in acutely exposed lowlanders than in residents.',
-          fix: 'Do not use a single altitude reading to make a decision on a first day at height. The average is fine; your individual reading may not be.',
-          ev: 'Contested by design: funded by the device maker with company employees as co-authors, and the criterion was a finger pulse oximeter rather than arterial blood gas.' }
+          head: 'Null on average, not null on spread.',
+          size: 'To 4,014 m, n=109: every error was inside the ISO threshold, but the spread was 17.5 times wider in newly arrived lowlanders.',
+          fix: 'Do not make a decision on a single reading on your first day at altitude.',
+          ev: 'Manufacturer-funded with company co-authors, and referenced to a finger oximeter rather than blood gas.' }
       } },
 
       { key: 'light', name: 'Ambient light leaking into the sensor', cat: 'Environment', ctl: 'you', dev: ['watch', 'strap'], m: {
         hr: { e: 'Y', imp: 40, g: 'M', src: 'light',
-          head: 'Light gets in because the seal is broken. It is a symptom of bad contact more than an independent problem.',
-          size: 'Across 345,600 signal segments with a dedicated ambient-light channel, a contact-quality index built from that channel correlated with signal-to-noise at r=0.72. Good segments averaged 28.03 dB, poor segments 14.5 dB.',
-          fix: 'If you can see light around the sensor, fix the fit. There is no separate sunlight problem to solve.',
-          ev: 'Moderate, conference proceeding. No study has measured sunlight or bright indoor light against a consumer device\'s reported numbers in defined lux conditions.' }
+          head: 'Light gets in because the seal is broken. It is a symptom.',
+          size: 'Across 345,600 signal segments, a light-based contact score tracked signal quality at r=0.72.',
+          fix: 'If you can see light around the sensor, fix the fit. There is no separate sunlight problem.',
+          ev: 'Moderate, conference proceeding. Nobody has tested sunlight against a consumer device\'s reported numbers.' }
       } },
 
       { key: 'sweat', name: 'Sweat, sunscreen and lotion', cat: 'Skin and perfusion', ctl: 'you', dev: ['watch'], m: {
         hr: { e: 'N', imp: 8, g: 'C', src: 'sweat',
-          head: 'Widely asserted, barely tested, and what has been tested is small.',
-          size: 'The one direct test, a 14-person prototype study, found wet skin changed signal ripple by 3% and heart-rate correlation by 5%, with heart-rate error under 0.5 beats per minute either way. That is an order of magnitude smaller than motion artefact. For sunscreen, lotion or hand cream there is no peer-reviewed evidence at all, in any direction.',
-          fix: 'Wipe the sensor if you like. Do not blame your moisturiser for a bad reading.',
-          ev: 'One n=14 prototype study for sweat, labelled by its authors as first-step experiments. Zero studies for sunscreen. The largest signal-quality dataset in the field did not measure skin moisture at all.' }
+          head: 'Widely asserted, barely tested, and tiny where it has been.',
+          size: 'The one direct test found wet skin moved heart-rate error by under 0.5 bpm. For sunscreen and lotion there is no evidence at all, in any direction.',
+          fix: 'Wipe the sensor if you like. Do not blame your moisturiser.',
+          ev: 'One n=14 prototype study for sweat, zero studies for sunscreen.' }
       } },
 
       /* ---------------------------------------------------- BODY AND PHYSIOLOGY */
       { key: 'skin', name: 'Skin tone', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'ring', 'strap'], m: {
         hr: { e: 'N', imp: 30, g: 'C', src: 'meta3',
-          head: 'The honest answer: bias is null, precision is not, and the effect lives in missing data rather than in wrong numbers.',
-          size: 'Meta-analysis of 140,771 paired readings: pooled bias was null in all three pigmentation strata, but the limits of agreement for dark skin were 2.24 times wider than for light (a 66.2 bpm span vs 29.6). In an objective colorimetry study, accuracy was null for the two mainstream devices while dark-skinned participants were 36% of the sample and supplied 33 to 85% of unexplained missing data and 56 to 62% of outliers.',
-          fix: 'Judge a device on how much data it gives you, not only on its average error. That is where any real disparity shows up.',
-          ev: 'Genuinely contested, and the split is explainable: the positive studies used self-reported Fitzpatrick with cells of 4 to 9 people, and the two best-powered purpose-built studies, including the only one using objective colorimetry, are null. A 10-study review found 4 positive, 4 null, 2 mixed.' },
+          head: 'Bias is null. Precision is not. The effect lives in missing data.',
+          size: 'Across 140,771 paired readings, average bias was null in every group, while the error band for dark skin was 2.24 times wider. In one study dark-skinned participants were 36% of the sample and 33 to 85% of the unexplained missing data.',
+          fix: 'Judge a device on how much data it gives you, not only on its average error.',
+          ev: 'Genuinely contested: the two best-powered purpose-built studies are null, and the positive ones used tiny subgroups.' },
         spo2: { e: 'N', imp: 10, g: 'X', src: 'spo2skin',
           head: 'Null for blood-oxygen missingness across four smartwatches.',
-          size: 'Missingness ran 11 to 31% by device and did not vary significantly by Fitzpatrick group. Objective colorimetry showed no relationship at all. n=49, 34.7% Black participants.',
-          fix: 'Nothing to do. The blanket claim that oximeters over-read in dark skin is device-specific: only 11 of 34 devices showed it in a controlled desaturation study.',
-          ev: 'Strong for this outcome. Note that the clinical occult-hypoxemia literature is about transmissive fingertip devices in hospital, and does not transfer to consumer wearables.' },
+          size: 'Missing data ran 11 to 31% by device and did not vary by skin tone on either scale, n=49.',
+          fix: 'Nothing to do. The blanket oximeter claim is device-specific: only 11 of 34 devices showed it.',
+          ev: 'Strong for this outcome. Hospital oximeter findings do not transfer to wearables.' },
         hrv: { e: '?', imp: 0, g: 'G',
-          head: 'A total gap, and the most likely place for a real disparity to be hiding.',
-          size: 'HRV depends on beat-to-beat intervals and is far more sensitive to dropped beats than a mean heart rate is. Dropout concentrates in dark skin. Nobody has put those two facts in the same study.',
-          fix: 'Nothing to act on. Worth knowing that this question is open rather than answered.',
-          ev: 'Confirmed gap across the review literature.' }
+          head: 'A total gap, and the likeliest place for a real disparity.',
+          size: 'HRV is far more sensitive to dropped beats than heart rate, and dropout concentrates in dark skin. Nobody has combined the two.',
+          fix: 'Nothing to act on. Worth knowing the question is open.',
+          ev: 'Confirmed gap.' }
       } },
 
       { key: 'age', name: 'Age', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         hr: { e: 'Y', imp: 34, g: 'M', src: 'fitmeta',
           head: 'Precision degrades with age. Bias does not.',
-          size: 'Across 52 studies and 74 heart-rate comparisons, heterogeneity was systematically lower in younger than in older adults while mean bias stayed similar. Only 8 of those 52 studies included anyone over 65. Counterintuitively, raw wrist signal quality rises about 1.2 dB per decade.',
-          fix: 'For older users, read the range rather than the number. The average is still about right.',
-          ev: 'Moderate, meta-analytic. Pediatric validation is 6% of the activity-tracker literature and carries no separate accuracy estimates.' },
+          size: 'Across 52 studies, spread was systematically wider in older adults while average bias held. Only 8 of those studies included anyone over 65.',
+          fix: 'For older users, read the range rather than the number.',
+          ev: 'Moderate, meta-analytic.' },
         sleep: { e: 'Y', imp: 42, g: 'M', src: 'sdb',
           head: 'Sleep staging agreement declines steadily with age.',
-          size: 'In a 292-person clinical cohort against manually scored PSG: kappa rho -0.30 and accuracy rho -0.22, both p<0.001. Children and adolescents were staged slightly better than the cohort average.',
-          fix: 'Nothing to change. Set expectations: an older user\'s stage breakdown is a weaker estimate than the same device gives a 25-year-old.',
-          ev: 'Moderate, single large clinical cohort.' },
+          size: 'In a 292-person clinical cohort, both agreement measures fell with age (p<0.001). Children were staged slightly better than average.',
+          fix: 'Expect an older user\'s stage breakdown to be a weaker estimate.',
+          ev: 'Moderate, one large clinical cohort.' },
         steps: { e: 'Y', imp: 40, g: 'M', src: 'slowold',
-          head: 'Age matters mostly through gait speed, and that is where the step cliff is.',
-          size: 'Older adults at 0.3 m/s: an ankle device erred 14.5% while a waist device erred 98.4%, recording zero steps for 40 of 42 people. By 0.9 m/s both were within 6%.',
-          fix: 'For a slow walker, move the device to the ankle or accept that the total is a trend line.',
+          head: 'Age matters mostly through gait speed, and that is the cliff.',
+          size: 'At 0.3 m/s, an ankle device erred 14.5% while a waist device erred 98.4%, recording zero for 40 of 42 people.',
+          fix: 'For a slow walker, move the device to the ankle.',
           ev: 'Moderate, video criterion, n=42.' }
       } },
 
       { key: 'bmi', name: 'Body size and adiposity', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch'], m: {
         hr: { e: 'N', imp: 18, g: 'C', src: 'adip',
           head: 'Mixed, and the best-known result points the way nobody expects.',
-          size: 'In a seven-device study, higher BMI was associated with slightly lower heart-rate error, with effect sizes near zero. In a 2026 four-device study, all four were worse in the higher waist-to-height group (one went 1.57 to 2.76 bpm), and the paper\'s own results text says the opposite of its table.',
+          size: 'One large study found higher BMI paired with slightly lower error. A 2026 study found all four devices worse in the higher-adiposity group, and its own text contradicts its table.',
           fix: 'Nothing actionable. Do not repeat either direction as settled.',
-          ev: 'Contested, and both key papers have problems. No bariatric or BMI 40-plus validation study exists for any metric. In the one study that tested both, body composition was better powered and stronger than skin tone.' },
+          ev: 'Contested, and no validation study exists above BMI 40.' },
         sleep: { e: 'N', imp: 0, g: 'X', src: 'sdb',
           head: 'Null for sleep staging.',
-          size: 'No significant correlation between BMI and either kappa or accuracy in a 292-person clinical cohort scored against PSG.',
+          size: 'No significant relationship with either agreement measure, n=292.',
           fix: 'Nothing to do.',
-          ev: 'Moderate. The largest Fitbit meta-analysis ran no BMI subgroup analysis at all.' }
+          ev: 'Moderate. The largest tracker meta-analysis ran no BMI subgroup at all.' }
       } },
 
       { key: 'arr', name: 'Atrial fibrillation and arrhythmia', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         hr: { e: 'Y', imp: 64, g: 'M', src: 'af',
-          head: 'Accurate on average, and that average is conditional on the 60% of minutes the device chose to keep.',
-          size: 'Against Holter across 79,443 minutes in persistent AF, n=50: RMSE 4.7 bpm with no systematic bias, and 93.7% of segments within 10%. By rate, that is 95% at or below 80 bpm, 93% at 80 to 110, and 75% above 110. Night beat day, 97% vs 91%. PPG was assessable in only 60% of recorded minutes.',
-          fix: 'Treat high-rate readings during AF with the most caution, which is the opposite of the intuitive assumption that low rates are the problem.',
-          ev: 'Moderate, strong design. Nobody has reported whether the discarded 40% is random or concentrated in high-rate periods, and if it is concentrated, every published figure is optimistic.' },
+          head: 'Accurate on average, and worst where you would least expect it.',
+          size: 'Across 79,443 minutes against a Holter: 95% of readings in tolerance at or below 80 bpm, 75% above 110. The device kept only 60% of minutes.',
+          fix: 'Treat high-rate readings during AF with the most caution, not low ones.',
+          ev: 'Moderate, strong design. Nobody has reported whether the discarded 40% is random.' },
         hrv: { e: 'Y', imp: 60, g: 'M', src: 'cvdhrv',
-          head: 'Agreement falls as the HRV metric moves to higher frequency, and it falls a long way.',
-          size: 'Against 1000 Hz ECG in 263 cardiovascular patients: mean heart rate concordance 0.9998, SDANN 0.9617, but RMSSD 0.6617 with an ICC of 0.69. Concordance against spectral frequency correlated at r=-0.94.',
-          fix: 'In this population the daily heart rate is solid and the short-term HRV metric is not.',
-          ev: 'Moderate, large cohort. Ectopy is essentially untested: studies routinely exclude recordings with more than 10% ectopic beats, so the clinically relevant range has no published answer.' }
+          head: 'Agreement falls as the HRV measure gets shorter-term.',
+          size: 'Against clinical ECG in 263 cardiac patients: average heart rate agreed almost perfectly, RMSSD only moderately (0.66).',
+          fix: 'In this group the daily heart rate is solid and short-term HRV is not.',
+          ev: 'Moderate, large cohort. Ectopic beats are essentially untested.' }
       } },
 
       { key: 'clin', name: 'Clinical conditions and mobility aids', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'other'], m: {
         steps: { e: 'Y', imp: 90, g: 'W', src: 'aid',
-          head: 'With a wheeled walker, a wrist step count has no statistically significant relationship with the steps actually taken.',
-          size: 'Video-referenced obstacle course, n=11: no aid gave 0.1% wrist error, a single-point cane -1.9%, and a two-wheeled walker a 31.2% undercount with correlations of 0.001 to 0.206, all non-significant. Ankle and hip held at 1.5% with correlations of 0.669 to 0.888.',
-          fix: 'For a walker user, move the device to the ankle. The wrist number is not measuring walking.',
-          ev: 'Single study, n=11, very large effect. Direction also reverses by condition: Parkinson\'s patients are overcounted while slow-walking healthy adults are undercounted, and in Parkinson\'s no gait or clinical variable predicted the error at all.' },
+          head: 'With a wheeled walker, the wrist count has no relationship to real steps.',
+          size: 'Video criterion, n=11: no aid gave 0.1% error, a walker gave a 31% undercount with correlations that were not significant. Ankle and hip held at 1.5%.',
+          fix: 'For a walker user, move the device to the ankle.',
+          ev: 'Single study, n=11. Direction also reverses by condition: Parkinson\'s patients are overcounted.' },
         hr: { e: 'Y', imp: 46, g: 'M',
-          head: 'Where clinical populations have been studied, error widens, so healthy-volunteer figures understate what real users get.',
-          size: 'In heart failure, n=15, no device reached MAPE below 10% (13%, 12%, 15% and 46%) while all but one passed in healthy controls. In COPD, steps were overestimated by 1,798 per day while resting heart rate was accurate in patients and biased in the controls.',
-          fix: 'Discount published accuracy figures if you are outside the healthy 18 to 65 group they were measured in.',
-          ev: 'Moderate. Across 545 validation studies, 73.8% of participants were healthy and 86.2% were 18 to 65. The criterion standards differ between these rows, so they are an index rather than a ranking.' },
+          head: 'Error widens outside healthy volunteers, so published figures understate it.',
+          size: 'In heart failure, n=15, no device met the 10% threshold while all but one passed in healthy controls.',
+          fix: 'Discount published accuracy if you are outside the healthy 18 to 65 group it was measured in.',
+          ev: 'Moderate. Across 545 studies, 74% of participants were healthy and 86% were 18 to 65.' },
         sleep: { e: 'Y', imp: 50, g: 'M', src: 'osa',
-          head: 'Sleep apnea degrades staging modestly and total-sleep-time accuracy badly.',
-          size: 'Staging kappa 0.60 with a sleep-disordered-breathing diagnosis vs 0.63 without, p=0.024. In diagnosed obstructive sleep apnea (n=22, AHI 37), consumer devices had total-sleep-time bias from -17 to -87 minutes and every ICC below 0.45.',
-          fix: 'If you have or suspect apnea, treat the stage breakdown as decoration and the nightly total as approximate.',
-          ev: 'Moderate. Neither study tested whether accuracy tracked apnea severity, and both name it as a limitation.' }
+          head: 'Sleep apnea degrades staging a little and nightly totals a lot.',
+          size: 'In diagnosed apnea, n=22, total sleep time was off by 17 to 87 minutes and every device scored below 0.45 agreement.',
+          fix: 'With apnea, treat the stage breakdown as decoration and the total as approximate.',
+          ev: 'Moderate. Neither study tested whether accuracy tracked apnea severity.' }
       } },
 
       { key: 'fitlevel', name: 'How fit you are', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch'], m: {
         ee: { e: 'Y', imp: 52, g: 'W',
-          head: 'For VO2 max estimates, fitness level is the dominant moderator, and it works against the fittest users.',
-          size: 'The underestimate roughly triples from moderately trained (MAPE 2.8%) to highly trained (9.4%), with ICC falling from 0.66 to 0.41. Chest-strap input gives 5 to 7%; the one study using wrist optical alone gave 15.78%.',
-          fix: 'If you are well trained, expect your estimate to read low, and feed it a chest strap if the device allows it.',
-          ev: 'One protocol for the tripling, review-level otherwise. Sex was explicitly not a moderator, and neither was device model.' },
+          head: 'For VO2 max estimates, fitness is the dominant moderator, and it penalises the fittest.',
+          size: 'The underestimate roughly triples from moderately trained (2.8% error) to highly trained (9.4%).',
+          fix: 'If you are well trained, expect a low estimate, and feed the device a chest strap.',
+          ev: 'One protocol for the tripling. Sex and device model were both null.' },
         hr: { e: '?', imp: 0, g: 'G',
           head: 'Never tested for heart rate, HRV or sleep.',
-          size: 'Athlete-only samples exist. Athlete-versus-sedentary contrasts do not.',
+          size: 'Athlete-only samples exist. Athlete-versus-sedentary comparisons do not.',
           fix: 'Nothing to act on.',
           ev: 'Confirmed gap.' }
+      } },
+
+      { key: 'range', name: 'Where in the range the reading falls', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'ring'], m: {
+        spo2: { e: 'Y', imp: 88, g: 'W', src: 'aw7',
+          head: 'Accuracy is worst exactly where a low reading would matter.',
+          size: 'Under controlled low oxygen, a consumer watch was within 2 points only 32% of the time, and below 88% it read high in 85% of readings.',
+          fix: 'Use a low reading as a prompt to measure properly, never as the measurement.',
+          ev: 'Single preprint, n=9, no dark-skinned participants. FDA oximeter guidance excludes consumer wearables entirely.' }
       } },
 
       /* ---------------------------------------------------- SLEEP CONTEXT */
       { key: 'imbalance', name: 'There is far more sleep than wake to find', cat: 'Sleep context', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         sleep: { e: 'Y', imp: 95, g: 'S', src: 'six',
-          head: 'The structural artifact behind almost every sleep-tracker complaint. Devices find sleep easily and find wake badly, because 85 to 90% of the night is sleep.',
-          size: 'Across seven devices vs lab PSG, sensitivity to sleep was at least 0.93 for all of them while specificity to wake ran 0.18 to 0.54. In a six-device study, specificity ran 29 to 52% with kappas of 0.21 to 0.53. Every device underestimated wake after sleep onset and overestimated sleep efficiency.',
-          fix: 'Assume your wake time is undercounted and your efficiency is flattered. The prediction holds: in chronic insomnia, where there is more wake to find, specificity rose to 62%.',
-          ev: 'Very strong and universal, with the mechanism measured directly: oversampling wake epochs raises specificity by 20 to 35 points at a cost of 8 to 12 points of headline accuracy.' }
+          head: 'The structural reason your tracker misses the time you spent awake.',
+          size: 'Every device finds sleep above 0.93 sensitivity and finds wake at 0.18 to 0.54 specificity, because 85 to 90% of the night is sleep.',
+          fix: 'Assume your wake time is undercounted and your efficiency is flattered.',
+          ev: 'Very strong and universal. In insomnia, where there is more wake to find, specificity rises to 62%.' }
       } },
 
-      { key: 'stages', name: 'Stage calls vs the nightly total', cat: 'Sleep context', ctl: 'fixed', dev: ['watch', 'ring'], m: {
+      { key: 'stages', name: 'Stage calls versus the nightly total', cat: 'Sleep context', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         sleep: { e: 'Y', imp: 86, g: 'M', src: 'insom',
-          head: 'Devices get the night\'s total roughly right and get its architecture badly wrong. Those are two different accuracies.',
-          size: 'Fitbit Charge 4 in chronic insomnia vs PSG: total sleep time off by 11 minutes and wake after sleep onset by 9, neither significant, while deep sleep was off by 41.4 minutes (p<0.0001) and light sleep by 37.7 (p=0.0012). Stage misallocation was about four times larger than the sleep-wake error.',
-          fix: 'Use total sleep time. Do not act on a single night\'s deep or REM minutes.',
-          ev: 'Moderate, n=37 with PSG. Human scorers only agree with each other at kappa 0.76 overall and 0.24 for N1, which caps how good any device figure could ever look.' }
+          head: 'Devices get the total roughly right and the architecture badly wrong.',
+          size: 'Against a sleep lab: total sleep off by 11 minutes, but deep sleep off by 41 and light sleep by 38. Stage error was about four times the sleep-wake error.',
+          fix: 'Use total sleep time. Do not act on one night\'s deep or REM minutes.',
+          ev: 'Moderate, n=37. Human scorers only agree with each other at 0.76, which caps every device figure.' }
       } },
 
       { key: 'nap', name: 'Naps and daytime sleep', cat: 'Sleep context', ctl: 'you', dev: ['watch', 'ring'], m: {
         sleep: { e: 'Y', imp: 58, g: 'M',
-          head: 'Daytime sleep is measurably harder than nocturnal sleep for the same device.',
-          size: 'Against PSG across three conditions, wake specificity was about 54% nocturnal, 45% for daytime recovery sleep and 37% for daytime sleep after caffeine, with total sleep time over-read by 39 and 83 minutes. In a home nap study, missed episodes ran 3.6 to 6.0% for three devices and 37.3% for a fourth, which failed on episodes under 4 hours.',
-          fix: 'Do not add nap numbers to night numbers as if they were the same measurement. Check whether your device even logs the nap.',
-          ev: 'Moderate. The multi-device nap study used a digital sleep log rather than PSG, and reported no sensitivity, specificity or kappa.' }
+          head: 'Daytime sleep is measurably harder than night sleep for the same device.',
+          size: 'Wake detection fell from 54% at night to 45% in the day, with total sleep over-read by 39 minutes. One tracker missed 37% of naps entirely.',
+          fix: 'Do not add nap numbers to night numbers, and check your device logs them at all.',
+          ev: 'Moderate. The multi-device nap study used a sleep diary rather than a sleep lab.' }
       } },
 
       { key: 'fne', name: 'Your first nights with a new device', cat: 'Sleep context', ctl: 'you', dev: ['watch', 'ring'], m: {
         sleep: { e: 'Y', imp: 44, g: 'S', src: 'homelab',
-          head: 'The first-night effect is real, it is measured, and sleeping in your own bed does not remove it.',
-          size: 'Night one to night two: sleep latency 20.37 to 14.01 minutes (p=.006), total sleep time 438 to 451 (p=.045), wake after sleep onset 5.00% to 3.92% (p=.048), with no environment-by-night interaction, so it happened at home as strongly as in the lab. Stage percentages were unaffected.',
+          head: 'The first-night effect is real, and sleeping in your own bed does not remove it.',
+          size: 'Night one to night two: sleep onset 20 to 14 minutes, total sleep up 13 minutes, less wake. Stage percentages were unaffected.',
           fix: 'Give a new ring or watch a week before you read anything into its baseline.',
-          ev: 'Strong across two PSG studies, n=45 and n=30. Nobody has separated the novelty of a new device from the novelty of a new environment.' }
+          ev: 'Strong across two sleep-lab studies, n=45 and n=30.' }
       } },
 
       { key: 'cosleep', name: 'Sharing a bed', cat: 'Sleep context', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         sleep: { e: '?', imp: 20, g: 'G', src: 'cosleep',
-          head: 'A first-order change to the input every sleep algorithm reads, and not one validation study reports whether participants had a bed partner.',
-          size: 'Twelve couples with PSG on co-sleeping and individual nights: limb movements 61.5 vs 50.9 per night, a 20.8% increase (p=0.007). Total sleep time, efficiency, latency, awakening count and every stage percentage except REM were unaffected.',
-          fix: 'Nothing to act on, and that is the point: the movement input changes by a fifth and nobody has measured what the device does with it.',
-          ev: 'Predicted direction, not a measured finding. Pets and mattress motion transfer have zero peer-reviewed evidence, every search hit was retailer marketing.' }
+          head: 'The movement input changes by a fifth and nobody has measured the consequence.',
+          size: '12 couples: limb movements rose 20.8% on shared nights (p=0.007), while sleep itself barely changed.',
+          fix: 'Nothing to act on, and that is the point.',
+          ev: 'Predicted, not measured. No validation study reports whether participants had a bed partner.' }
       } },
 
       /* ---------------------------------------------------- SETTINGS, STATE AND DATA */
       { key: 'sens', name: 'The sleep sensitivity setting', cat: 'Settings and data', ctl: 'set', dev: ['watch'], m: {
         sleep: { e: 'Y', imp: 99, g: 'S', src: 'sens',
-          head: 'The largest user-settable bias in the whole literature. The two settings sit on opposite sides of the lab standard.',
-          size: 'Two studies measured both modes in the same people. Normal mode read total sleep time 46 and 41 minutes high; sensitive mode read it 86 and 105 minutes low. That is a swing of 132 minutes (n=21) and 146 minutes (n=63), and 24 to 29 points of sleep efficiency. Bigger than any device, firmware or wrist effect here. Sensitive mode buys wake specificity, 0.35 to 0.80 at the epoch level, and pays for it in total sleep time.',
-          fix: 'Find the setting in your app, note which mode you are on, and never compare nights across a change to it.',
-          ev: 'Strong: the direction flip is measured within the same cohorts. Applies to non-staging Fitbit models. Sleep-staging models were null, with no significant difference vs PSG.' }
+          head: 'The largest user-settable bias in the literature, and the two settings disagree by more than two hours.',
+          size: 'Measured in the same people: normal mode read total sleep 41 to 46 minutes high, sensitive mode read it 86 to 105 minutes low. A swing of 132 and 146 minutes.',
+          fix: 'Find the setting, note which mode you are on, and never compare nights across a change to it.',
+          ev: 'Strong: the direction flip is measured within cohorts. Applies to non-staging Fitbit models.' }
       } },
 
       { key: 'retain', name: 'How much data the device throws away', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring', 'strap'], m: {
         hrv: { e: 'Y', imp: 96, g: 'M', src: 'ourahrv',
           head: 'A clean nightly HRV average is bought by discarding most of the night.',
-          size: 'Independent study with concurrent ECG, n=114: group agreement was r above 0.90 at an 80% validity threshold, with small biases, but that threshold discards 30 to 35% of five-minute segments, and a 95% threshold would exclude most nights entirely. Individual error exceeded 10% for over half of older participants at five-minute windows.',
-          fix: 'Read the nightly HRV as a summary of the cleanest third of the night, not of the night.',
-          ev: 'Moderate, single independent study, figures verified. Another dataset retained only 22.7% of valid epochs from a research-grade sensor.' },
+          size: 'Independent study with ECG, n=114: the usual quality threshold discards 30 to 35% of segments, and a stricter one would exclude most nights entirely.',
+          fix: 'Read nightly HRV as a summary of the cleanest third of the night.',
+          ev: 'Moderate, single independent study.' },
         hr: { e: 'Y', imp: 76, g: 'S', src: 'techn',
-          head: 'Devices are built to withhold rather than to report badly, so a clean-looking average can be hiding a third of the day.',
-          size: 'Apple states its algorithms prioritise accuracy over availability and withhold measurements when signals are inadequate. In practice: one watch ranked first on sleep-staging kappa while retaining 57% of nights, another ranked fifth while retaining 100%. In atrial fibrillation, only 60% of recorded minutes were assessable.',
-          fix: 'Never read an accuracy figure without the capture rate beside it. Retention is an engineering choice, not a law: one device achieved both the best error and zero data removal.',
-          ev: 'Strong pattern across four independent studies, though most papers still do not report retention at all.' },
+          head: 'Devices are built to withhold rather than to report badly.',
+          size: 'One watch ranked first on sleep staging while keeping 57% of nights; another ranked fifth while keeping 100%. In atrial fibrillation, only 60% of minutes were usable.',
+          fix: 'Never read an accuracy figure without the capture rate beside it.',
+          ev: 'Strong pattern across four studies, though most papers still do not report retention.' },
         sleep: { e: 'Y', imp: 68, g: 'S', src: 'six',
-          head: 'The device that scores best is often the device that kept the least.',
-          size: 'Six wrist devices vs PSG: data capture ran from 57% to 100% by device, and the top-ranked device on kappa was the one that retained the least. Across three real-world datasets, missing intervals average 34.3 minutes and are more often true wake than true sleep, so naive deletion inflates sleep estimates.',
+          head: 'The device that scores best is often the one that kept the least.',
+          size: 'Six devices ranged from 57% to 100% of nights captured. Missing gaps average 34 minutes and are more often true wake than sleep, so deleting them inflates sleep.',
           fix: 'Compare devices on nights delivered as well as nights scored.',
-          ev: 'Strong and repeated across studies.' },
+          ev: 'Strong, repeated across studies.' },
         spo2: { e: 'Y', imp: 74, g: 'M', src: 'spo2skin',
           head: 'Blood oxygen is the most heavily gated metric on the wrist.',
-          size: 'Missingness at rest ran 11 to 31% across four smartwatches. Under normobaric hypoxia, success rates ran 82.6% to 98.3% across three devices that all met the ISO error threshold, a 16-point spread in yield at similar accuracy.',
-          fix: 'If your overnight blood-oxygen chart has gaps, that is the normal behaviour of the metric, not a fault.',
+          size: 'Missing data at rest ran 11 to 31% across four smartwatches, and yield varied 16 points across three devices that all met the accuracy threshold.',
+          fix: 'Gaps in an overnight blood-oxygen chart are normal behaviour, not a fault.',
           ev: 'Moderate, several independent studies.' }
       } },
 
       { key: 'charge', name: 'Charging gaps and missing nights', cat: 'Settings and data', ctl: 'you', dev: ['watch', 'ring'], m: {
         sleep: { e: 'Y', imp: 80, g: 'S', src: 'missnights',
           head: 'The most common reason a metric is wrong is that it does not exist.',
-          size: 'Across 1,495 possible nights, n=299: 30.4% of nights were missing and 58% of people lost at least one. Missingness grew across the protocol, 22% on night one to 47% on night five. In a year-long adolescent cohort, valid nights fell from 67% in month one to 5% by month seven. In the largest consumer dataset, the median contributor produced 159 valid nights across a 464-day window.',
-          fix: 'Build a charging habit that is not bedtime. Top up during a shower or a commute so the device is on your body every night.',
-          ev: 'Strong for the curve. The battery explanation is the authors\' inference, not a tested predictor, so treat the cause as plausible rather than proven.' },
+          size: 'Across 1,495 nights, n=299: 30% missing, rising from 22% on night one to 47% on night five. In a school-year cohort, valid nights fell from 67% to 5%.',
+          fix: 'Charge during a shower or commute, not at bedtime.',
+          ev: 'Strong for the curve. The battery explanation is the authors\' inference, not a tested predictor.' },
         hrv: { e: 'Y', imp: 70, g: 'S', src: 'missnights',
-          head: 'HRV needs consecutive nights more than any other metric, because it is a baseline comparison.',
-          size: 'Same 30.4% missing-night rate. Separately, it takes about 7 nights for a stable personal mean total sleep time and 43 to 65 nights for a stable estimate of that person\'s variability.',
-          fix: 'A gappy month gives you a baseline built on the nights you happened to charge correctly.',
-          ev: 'Strong for missingness. The nights-needed figures come from a manufacturer-employed team using the device\'s own distribution as the criterion.' }
+          head: 'HRV needs consecutive nights more than any other metric.',
+          size: 'Same 30% missing-night rate. It takes about 7 nights for a stable personal average and far longer for a stable sense of your variability.',
+          fix: 'A gappy month gives you a baseline built on the nights you happened to charge right.',
+          ev: 'Strong for missingness; the nights-needed figures come from a manufacturer-employed team.' }
       } },
 
       { key: 'lowpower', name: 'Battery saver and low power mode', cat: 'Settings and data', ctl: 'set', dev: ['watch'], m: {
         hr: { e: 'Y', imp: 56, g: 'G', src: 'applelpm',
-          head: 'It does not degrade the measurement. It turns the measurement off, and the export looks identical to not wearing it.',
-          size: 'Apple documents that Low Power Mode turns off background blood-oxygen measurement including during sleep, background heart-rate measurement including during sleep, and heart-rate notifications. No sampling interval and no battery-extension figure is published. Garmin documents an endurance mode that records one GPS point per minute instead of one per second.',
-          fix: 'Check whether battery saver is on before you conclude anything from a flat overnight chart.',
-          ev: 'Manufacturer documentation only. There is zero peer-reviewed validation of battery-saver modes, which makes this a plausible and entirely unquantified contributor to the missing-data numbers above.' },
+          head: 'It does not degrade the measurement. It switches it off.',
+          size: 'Apple documents that Low Power Mode turns off background heart-rate and blood-oxygen measurement, including during sleep.',
+          fix: 'Check whether battery saver is on before you conclude anything from a flat chart.',
+          ev: 'Manufacturer documentation only. Zero peer-reviewed validation exists for battery-saver modes.' },
         sleep: { e: 'Y', imp: 54, g: 'G', src: 'applelpm',
           head: 'Same mechanism, applied to the metric people most want overnight.',
-          size: 'Background heart rate and blood oxygen are explicitly switched off during sleep in low power mode, per the manufacturer.',
-          fix: 'Turn it off on nights you care about, or accept that the night is not being measured.',
-          ev: 'Manufacturer documentation only, no validation literature.' },
+          size: 'Background heart rate and blood oxygen are explicitly off during sleep in low power mode.',
+          fix: 'Turn it off on nights you care about.',
+          ev: 'Manufacturer documentation only.' },
         spo2: { e: 'Y', imp: 60, g: 'G', src: 'applelpm',
           head: 'Blood oxygen is the first thing a low power mode switches off.',
-          size: 'Apple lists background blood-oxygen measurement, including during sleep, as the first item disabled in Low Power Mode. No sampling or accuracy tradeoff figure is published.',
-          fix: 'A flat overnight blood-oxygen chart usually means the feature was off, not that nothing happened.',
-          ev: 'Manufacturer documentation only. In an export, a switched-off sensor is indistinguishable from not wearing the device.' }
+          size: 'It is the first item Apple lists as disabled, with no accuracy or battery figure published.',
+          fix: 'A flat overnight chart usually means the feature was off.',
+          ev: 'Manufacturer documentation only. In an export it looks identical to not wearing the device.' }
       } },
 
       { key: 'pipeline', name: 'The app pipeline, not the sensor', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         sleep: { e: 'Y', imp: 62, g: 'W', src: 'pipeline',
-          head: 'Some of the error is added after the measurement, by the software that decides when your night started.',
-          size: 'Epoch-by-epoch export across more than 100 nights, n=15: on 11.0% of nights sleep onset was placed 25.9 minutes earlier than the actual sleep attempt, reading pre-sleep phone use as sleep. On 5.5% of nights final wake was detected 20.4 minutes late. On 1.9% two non-overlapping sleep episodes were returned, because two different algorithms both fired. Correcting the timing moved total sleep time by 8.2 minutes on average and up to 30.5.',
-          fix: 'If your device says you fell asleep while you were still reading, that is a known pipeline behaviour rather than a physiological insight.',
-          ev: 'Single study, n=15, with detailed export access. Vendors also thin minute-level data after 5 to 7 days on device, so a device that syncs weekly can silently deliver daily summaries instead.' }
+          head: 'Some error is added after the measurement, by the software that decides when your night started.',
+          size: 'Over 100 nights: on 11% of nights sleep onset was placed 26 minutes early, reading pre-sleep phone use as sleep. Fixing the timing moved total sleep by up to 30 minutes.',
+          fix: 'If it says you fell asleep while you were still reading, that is a known behaviour.',
+          ev: 'Single study, n=15, with full export access.' }
       } },
 
       { key: 'firmware', name: 'Firmware and algorithm version', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         sleep: { e: 'Y', imp: 48, g: 'M',
-          head: 'Published validation has a shelf life, because the thing that was validated is quietly replaced.',
-          size: 'Same Fitbit hardware, new algorithm: sleep-staging kappa went 0.56 to 0.63 and accuracy 71% to 77%. Apple Watch Series 6 onward roughly halved the heart-rate agreement interval versus earlier generations. Most studies never report the firmware version they tested.',
-          fix: 'Date-stamp any accuracy claim you read, including the ones on this page. Treat sleep-staging or HRV figures more than two algorithm generations old as unverified.',
-          ev: 'Moderate. Device age itself has never been analysed as a moderator, across 24 systematic reviews, 249 validation studies and 430,465 participants.' }
+          head: 'Published validation has a shelf life, because what was validated gets replaced.',
+          size: 'Same hardware, new algorithm: sleep-staging accuracy went from 71% to 77%. Most studies never report the version they tested.',
+          fix: 'Date-stamp any accuracy claim you read, including the ones on this page.',
+          ev: 'Moderate. Device age itself has never been analysed as a moderator anywhere.' }
       } },
 
       { key: 'devage', name: 'How old your device is', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring', 'strap'], m: {
         hr: { e: '?', imp: 0, g: 'G',
           head: 'The largest single evidence gap in this whole area.',
-          size: 'No longitudinal or repeat-calibration study of a consumer wearable was found. Every validation study in this dataset used devices of unknown and unreported age. The indirect mechanism is real: across public PPG datasets only 19.6% of pulse cycles show ideal morphology, and contact-corrected processing improves heart rate by 21% and RMSSD by 41 to 46%.',
-          fix: 'Keep the sensor window clean and the band intact. Beyond that, nobody can tell you what a three-year-old sensor is doing.',
-          ev: 'Confirmed gap.' }
+          size: 'No repeat-calibration study of a consumer wearable exists, and every validation study used devices of unknown age.',
+          fix: 'Keep the sensor window clean and the band intact. Beyond that, nobody knows.',
+          ev: 'Confirmed gap across 249 validation studies.' }
       } },
 
       { key: 'samp', name: 'Sampling rate above about 25 Hz', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         hr: { e: 'N', imp: 0, g: 'X',
-          head: 'Null for mean heart rate. A spec-sheet number that does not buy accuracy.',
-          size: 'At fixed signal quality, RMSE was 1.5 ms at 15 Hz vs 1.3 ms at 50 Hz, and 64 Hz was not different from ECG for mean, minimum or maximum heart rate.',
+          head: 'Null for average heart rate. A spec-sheet number that buys nothing.',
+          size: 'At fixed signal quality, 15 Hz and 50 Hz were effectively identical, and 64 Hz did not differ from ECG.',
           fix: 'Ignore sampling-rate marketing for heart rate.',
-          ev: 'Strong, and the scope restriction is essential: this null does not extend to HRV.' },
+          ev: 'Strong, and the scope restriction matters: this null does not extend to HRV.' },
         hrv: { e: 'Y', imp: 44, g: 'M',
-          head: 'Not null for HRV, and the interpolation nobody discloses matters more than the hertz they advertise.',
-          size: 'RMSSD and pNN50 differed significantly from ECG at every rate tested up to 64 Hz. Cubic-spline interpolation drops the sampling requirement for SDNN from 200 Hz to 10 Hz, and no manufacturer discloses whether or how they interpolate.',
-          fix: 'Do not compare HRV numbers across brands. You are comparing pipelines, not physiology.',
-          ev: 'Moderate. The undisclosed interpolation makes published hertz specs nearly uninterpretable.' }
+          head: 'Not null for HRV, and the maths nobody discloses matters more than the hertz.',
+          size: 'RMSSD differed from ECG at every rate tested up to 64 Hz. How a brand interpolates matters more, and none of them publish it.',
+          fix: 'Do not compare HRV across brands. You are comparing pipelines.',
+          ev: 'Moderate.' }
       } },
 
       { key: 'prv', name: 'Optical HRV is a different quantity', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring', 'strap'], m: {
         hrv: { e: 'Y', imp: 88, g: 'S',
-          head: 'Wrist and finger sensors measure pulse rate variability, not heart rate variability. This is not an error you can correct.',
-          size: 'Against ECG at n=931, same device and site: RMSSD off by 5.6 ms, SDNN by 13.1 ms, pNN50 by 3.9 percentage points, while heart rate correlated at 0.98 to 0.99. In 103 athletes across 12,726 datasets, RMSSD bias was 23.0 ms and the optical signal captured only 23 to 49% of the autonomic events ECG identified, detecting the rest 1.8 to 5.5 days late. The underestimation is non-uniform, so no correction factor exists.',
-          fix: 'Use your own device\'s trend against itself. Never port a target number from an ECG study or another brand.',
-          ev: 'Strong, and notably both large studies came from manufacturer-employed teams publishing findings unfavourable to their own sensor.' },
+          head: 'Wrists and rings measure pulse variability, not heart rate variability, and it is not correctable.',
+          size: 'Against ECG at n=931, RMSSD ran 5.6 ms low and SDNN 13.1 ms low while heart rate correlated at 0.98. The gap is non-uniform, so no correction factor exists.',
+          fix: 'Use your own device against itself. Never port a target from an ECG study or another brand.',
+          ev: 'Strong, and both large studies came from manufacturer teams publishing against their own sensor.' },
         hr: { e: 'N', imp: 0, g: 'X',
           head: 'Null for heart rate. The same signal that fails on intervals is fine on the average.',
           size: 'Heart rate correlated at 0.98 to 0.99 in the same comparison that found the HRV gap.',
@@ -685,148 +702,138 @@ class KygoAccuracyFactors extends HTMLElement {
           ev: 'Strong.' }
       } },
 
-      { key: 'form', name: 'Ring vs watch', cat: 'Form factor', ctl: 'you', dev: ['ring', 'watch'], m: {
+      { key: 'form', name: 'Ring versus watch', cat: 'Form factor', ctl: 'you', dev: ['ring', 'watch'], m: {
         hr: { e: 'Y', imp: 66, g: 'M', src: 'climate',
-          head: 'Rings win at night and lose during the day. That is a tendency, not a law.',
-          size: 'Nocturnal heart rate: a ring led by about 0.7 to 0.8 bpm mean absolute error, which is below night-to-night biological variation. Daytime under activity, ten devices vs chest ECG: the ring placed 9th of 10 at 11.0 bpm and MAPE 15.0%, ahead only of one wrist tracker. The best watch managed 4.5 bpm.',
-          fix: 'If you buy a ring, buy it for the night. For workouts, put something else on your arm.',
-          ev: 'Moderate. The ring is at the bad end of the wrist distribution rather than outside it, so between-device spread still exceeds the ring-to-wrist gap.' },
+          head: 'Rings win at night and lose during the day.',
+          size: 'At night a ring led by about 0.8 bpm, below normal night-to-night variation. By day, under activity, it placed 9th of 10 at 11.0 bpm against 4.5 for the best watch.',
+          fix: 'Buy a ring for the night. For workouts, wear something on your arm.',
+          ev: 'Moderate. The ring is at the bad end of the wrist range rather than outside it.' },
         sleep: { e: 'N', imp: 14, g: 'C', src: 'miller',
           head: 'No form-factor winner. The ring sits inside the wrist range.',
-          size: 'In an independent head-to-head, four-stage kappa was 0.43 for the ring against a wrist range of 0.20 to 0.44. In a manufacturer-funded study the ring led at 0.65 with a wrist device at 0.60. In a clinical population the same ring fell to 0.31.',
-          fix: 'Choose on comfort, battery and data completeness rather than on staging claims.',
-          ev: 'Contested and funding-sensitive: the ring category\'s best published sleep result is funded by the manufacturer, with the first author on its medical advisory board. Note also that 72% of all smart-ring studies use a single brand.' },
+          size: 'Independently, ring staging agreement was 0.43 against a wrist range of 0.20 to 0.44. In a clinical population the same ring fell to 0.31.',
+          fix: 'Choose on comfort, battery and data completeness, not staging claims.',
+          ev: 'Contested and funding-sensitive: the ring\'s best sleep result is manufacturer-funded.' },
         hrv: { e: 'N', imp: 16, g: 'C', src: 'dial',
-          head: 'No form-factor winner. Algorithm and averaging window decide, and the two best studies disagree.',
-          size: 'One independent study puts a ring ahead on rMSSD (7.15% vs 8.17% MAPE for a wrist device). Another puts a wrist device far ahead, with a signed bias of 4.5 ms and ICC 0.99 versus the ring\'s 10.2 ms and 0.63. Different references and aggregation windows, so do not average them.',
-          fix: 'Pick one device and stay on it. Cross-brand HRV comparison is not meaningful.',
-          ev: 'Contested, with two credible studies pointing opposite ways.' },
+          head: 'No winner. Algorithm and averaging window decide, and the two best studies disagree.',
+          size: 'One independent study puts a ring ahead on RMSSD. Another puts a wrist device far ahead, on both bias and agreement.',
+          fix: 'Pick one device and stay on it.',
+          ev: 'Contested, two credible studies pointing opposite ways.' },
         steps: { e: 'Y', imp: 78, g: 'W', src: 'ourastep',
           head: 'Rings overcount steps badly.',
-          size: 'Against a pedometer in free living, a ring read 2,124 steps per day higher, with a standard deviation of 4,256.',
+          size: 'Against a pedometer in daily life, a ring read 2,124 steps a day higher.',
           fix: 'Do not use a ring as a step counter.',
-          ev: 'Single study, and the free-living comparison used pedometers and accelerometers rather than a criterion-grade standard. No peer-reviewed ring-versus-wrist step study against a real criterion exists at all.' },
+          ev: 'Single study, and no ring-versus-wrist step study against a real criterion exists.' },
+        ee: { e: 'Y', imp: 72, g: 'W', src: 'ourastep',
+          head: 'Ring calorie estimates degrade as intensity rises.',
+          size: 'Against lab calorimetry: near-perfect sitting, off by 0.8 MET at a fast walk and 3.5 MET at a hard run.',
+          fix: 'For calories during hard exercise, a ring is the wrong instrument.',
+          ev: 'Single study.' },
         spo2: { e: '?', imp: 0, g: 'G',
           head: 'No evidence exists either way, for blood oxygen or skin temperature.',
-          size: 'No head-to-head has compared a ring and a wrist device on blood oxygen against any criterion. The same is true of skin temperature.',
-          fix: 'Do not let a form-factor argument decide this one. There is nothing behind it.',
-          ev: 'Confirmed gap. And the ring category is really one brand: a 2025 review found 72% of 107 smart-ring studies used a single manufacturer, and several major rings have no independent validation at all.' },
-        ee: { e: 'Y', imp: 72, g: 'W', src: 'ourastep',
-          head: 'Ring energy expenditure degrades as intensity rises.',
-          size: 'Against indirect calorimetry: sitting off by 0.12 MET, fast walking by 0.82, and a very fast run by 3.49 MET. Overall lab bias 0.4 MET with MAPE 21.1%.',
-          fix: 'For calories during hard exercise, a ring is the wrong instrument.',
-          ev: 'Single study, with the two criteria kept separate.' }
-      } },
-
-      { key: 'range', name: 'Where in the range the reading falls', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        spo2: { e: 'Y', imp: 88, g: 'W', src: 'aw7',
-          head: 'Accuracy is worst exactly where a low reading would matter, and that is true before skin tone enters the argument.',
-          size: 'Under controlled hypoxia against arterial blood gas, n=9 with no dark-skinned participants: a consumer watch landed within 2 percentage points only 32.14% of the time overall, against 49.03% for a medical fingertip device. Below 88% saturation it read high by about 5 points and overestimated in 85.33% of readings.',
-          fix: 'Never make a decision on a single low blood-oxygen reading from a wrist device. Use it to prompt a proper measurement, not to replace one.',
-          ev: 'Single small study read from a preprint, n=9. Also worth knowing that the FDA draft guidance on pulse oximeters explicitly excludes the wellness and sporting product codes every consumer wearable ships under, so it does not cover them.' }
-      } },
-
-      { key: 'profile', name: 'The height, weight and age you typed in', cat: 'Settings and data', ctl: 'set', dev: ['watch', 'ring'], m: {
-        ee: { e: '?', imp: 30, g: 'G',
-          head: 'Energy expenditure algorithms take your body mass as an input, and nobody has ever perturbed it and measured the output.',
-          size: 'No peer-reviewed evaluation exists for profile-entry error, stride-length calibration, or manual versus automatic activity detection. Every search returns commercial content.',
-          fix: 'Keep the profile current anyway. It costs nothing, it is the one model input you control, and the size of the error is genuinely unknown.',
-          ev: 'Confirmed gap, and a cheap high-value experiment nobody has run.' },
-        steps: { e: '?', imp: 26, g: 'G', src: 'dist',
-          head: 'Stride length is where distance error comes from, and its calibration has never been evaluated.',
-          size: 'In the same 30-minute walk, step error was 3.6% and distance error was 10.5%, roughly three times larger. Step accuracy does not license distance accuracy, and the weak link is the stride-length estimate.',
-          fix: 'Trust steps over distance from the same device, and never compare distance across brands.',
-          ev: 'The step-versus-distance gap is measured, n=30, with two criteria stated. The calibration itself is unevaluated.' }
+          size: 'No head-to-head has compared a ring and a watch on blood oxygen against any criterion.',
+          fix: 'Do not let a form-factor argument decide this one.',
+          ev: 'Confirmed gap. 72% of all smart-ring studies used a single brand.' }
       } },
 
       /* ---------------------------------------------------- STUDY-SHAPED NULLS WORTH KNOWING */
-      { key: 'freeliv', name: 'Lab conditions vs real life', cat: 'Movement', ctl: 'fixed', dev: ['watch'], m: {
+      { key: 'profile', name: 'The height, weight and age you typed in', cat: 'Settings and data', ctl: 'set', dev: ['watch', 'ring'], m: {
+        ee: { e: '?', imp: 30, g: 'G',
+          head: 'Calorie models take your body mass as an input, and nobody has ever tested a wrong one.',
+          size: 'No evaluation exists for profile-entry error or stride-length calibration. Every search returns commercial content.',
+          fix: 'Keep the profile current anyway. It is the one model input you control.',
+          ev: 'Confirmed gap, and a cheap experiment nobody has run.' },
+        steps: { e: '?', imp: 26, g: 'G', src: 'dist',
+          head: 'Distance error is roughly three times step error, and stride length is why.',
+          size: 'In the same 30-minute walk, step error was 3.6% and distance error 10.5%.',
+          fix: 'Trust steps over distance, and never compare distance across brands.',
+          ev: 'The gap is measured, n=30. The calibration itself is unevaluated.' }
+      } },
+
+      { key: 'freeliv', name: 'Lab conditions versus real life', cat: 'Movement', ctl: 'fixed', dev: ['watch'], m: {
         hr: { e: 'N', imp: 0, g: 'X', src: 'freeliv',
-          head: 'The most overstated moderator in the category. For average heart rate it is null, and the bias even flipped sign.',
-          size: 'Same participants, both settings, same chest-strap criterion in both: one device went from ICC 0.51 and MAPE 13.0% in the lab to 0.71 and 10.2% in free living. What did deteriorate was moderate-to-vigorous minute detection, 62.13% to 54.27% sensitivity.',
-          fix: 'Trust the average heart rate outside the lab. Distrust the minutes-in-zone derivative, which is what you actually see in the app.',
-          ev: 'Strong design, the cleanest in this dataset: same people, same criterion, both settings.' },
+          head: 'The most overstated moderator in the category. For average heart rate it is null.',
+          size: 'Same people, same criterion, both settings: accuracy did not deteriorate outside the lab, and the bias flipped sign. What fell was minutes-in-zone detection.',
+          fix: 'Trust the average heart rate. Distrust the zone minutes, which is what the app shows you.',
+          ev: 'Strong design, the cleanest in this dataset.' },
         steps: { e: 'Y', imp: 60, g: 'W',
-          head: 'Not null for steps. Two algorithms that were unbiased in the laboratory failed catastrophically in free living.',
-          size: 'Same four open-source algorithms: the two with the lowest structured-walking bias came out at +128% and +1,054% error in free living, while the one that underestimated by half in the lab was -34% outside it.',
+          head: 'Not null for steps: the two best lab algorithms failed worst in real life.',
+          size: 'The two with the lowest treadmill bias came out at +128% and +1,054% error in daily life.',
           fix: 'Distrust any step-accuracy claim measured on a treadmill.',
-          ev: 'Single study, and the criterion changed between settings, so an unknown share of the gap is criterion rather than setting. Funded by a company whose employees were authors and whose algorithm looks conservative.' }
+          ev: 'Single study, and the criterion changed between settings. Sponsor employees were authors.' }
       } },
 
       { key: 'twodev', name: 'Wearing two devices at once', cat: 'Settings and data', ctl: 'you', dev: ['watch', 'strap'], m: {
         hr: { e: 'N', imp: 0, g: 'X',
           head: 'Null. No optical or mechanical interference detected.',
-          size: 'Two armbands and two watches worn at the same time, n=16, against a chest strap: biases from -0.05 to +2.93 bpm and no missing values on any device.',
+          size: 'Four devices worn simultaneously, n=16: biases within 3 bpm and no missing values on any of them.',
           fix: 'Wear both. If you are comparing devices, this is the right way to do it.',
-          ev: 'Single study. All devices came from one manufacturer and the paper carries no funding statement, and the chest-strap criterion itself lost 10% of its raw data to poor positioning.' }
+          ev: 'Single study, all devices from one manufacturer, no funding statement.' }
       } },
 
       { key: 'meds', name: 'Medication, caffeine and alcohol', cat: 'Body and physiology', ctl: 'you', dev: ['watch', 'ring'], m: {
         hr: { e: 'N', imp: 0, g: 'X',
-          head: 'Almost entirely untested, and the emptiness is the finding. What has been tested is mostly null.',
-          size: 'Beta blockers: null for wrist heart-rate accuracy (n=80, ECG criterion), as was atrial fibrillation as a comorbidity in the same study. Bradycardia below 40 bpm: null, 92% of readings within 10% against 95% at normal rates. Diuretics: positive, p=0.0009. Deep sedation: severe, with an ICC of 0.03 for bradycardia detection.',
-          fix: 'Nothing to change. Be aware that the foundational studies exclude people on heart-rate-affecting medication by design.',
-          ev: 'Moderate for the nulls, though the beta-blocker study gave no untreated proportion, so it is underpowered by construction.' },
+          head: 'Almost entirely untested, and the emptiness is the finding.',
+          size: 'Beta blockers: null, n=80. Slow heart rates: null. Diuretics: significant. Deep sedation: severe.',
+          fix: 'Nothing to change. The foundational studies exclude people on heart-affecting medication by design.',
+          ev: 'Moderate for the nulls, though the beta-blocker study was underpowered by construction.' },
         ee: { e: 'N', imp: 0, g: 'X',
           head: 'Null for caffeine, in the only study of its kind.',
-          size: 'Double-blind crossover against doubly labelled water, n=17: total energy expenditure bias -468 vs -407 kJ/day with similar limits of agreement.',
+          size: 'Double-blind crossover against the gold-standard energy measure, n=17: no meaningful difference.',
           fix: 'Nothing to do.',
-          ev: 'Single study from 2014, but a strong criterion. It is also the only caffeine-versus-accuracy study in existence.' },
+          ev: 'Single 2014 study, but a strong criterion.' },
         sleep: { e: 'Y', imp: 24, g: 'W',
           head: 'Alcohol changes REM staging accuracy, and it is the only such finding anywhere.',
-          size: 'Up to four drinks significantly affected REM staging, p=0.01, n=14. That is a conference abstract and the only study of its kind.',
+          size: 'Up to four drinks significantly affected REM staging, n=14.',
           fix: 'Treat stage data on drinking nights as especially soft.',
-          ev: 'Weak, single conference abstract. Antidepressants, anticholinergics, menstrual phase, hormonal contraception, meal state and acute illness have no accuracy study at all, confirmed by two umbrella reviews.' }
+          ev: 'Weak, one conference abstract. Menstrual phase, illness and most medications have no study at all.' }
       } },
 
       { key: 'wearrule', name: 'Wear-time and non-wear rules', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'other'], m: {
         steps: { e: 'Y', imp: 36, g: 'M',
-          head: 'Not about your body at all: the rule that decides which days count moves the population step count.',
-          size: 'An 80% wear-time rule discards 15 to 33% of days and shifts step counts by up to about 2,000 per day. At default settings, epoch-based non-wear algorithms had 4.6 to 19.2% precision, so most periods flagged as non-wear were actually wear, and sedentary time varied about 30% by algorithm choice.',
+          head: 'Not about your body: the rule that decides which days count moves the number.',
+          size: 'An 80% wear rule discards 15 to 33% of days and shifts step counts by up to 2,000 a day. Most periods flagged as non-wear are actually wear.',
           fix: 'If an app shows you a weekly average, ask what it did with your partial days.',
-          ev: 'Moderate, large samples with an ECG criterion for the non-wear precision figure.' },
+          ev: 'Moderate, large samples.' },
         hr: { e: 'N', imp: 0, g: 'X',
-          head: 'Null for heart rate. It is a steps problem, not a heart-rate problem.',
-          size: 'Across six samples, no wear-time rule vs an 80% rule changed mean daily heart rate by more than 3 bpm.',
+          head: 'Null for heart rate. It is a steps problem.',
+          size: 'Across six samples, wear-time rules changed mean daily heart rate by no more than 3 bpm.',
           fix: 'Nothing to do.',
           ev: 'Strong, n=302 plus n=1,074.' }
       } }
     ];
   }
 
-  /* ---------------------------------------------------------------- QUICK ANSWERS */
-
   get _quick() {
     return {
       hr: [
-        { fix: 'Move the watch two finger-widths up your forearm', stat: '20.5% to 7.3%', note: 'Mean error during movement, one finger-width above the wrist joint versus three. The single largest effect anyone has measured on wrist heart rate, and it is free. n=10, unreplicated.' },
-        { fix: 'Use an armband or chest strap for hard sessions', stat: '4x tighter', note: 'Same sensor, same firmware, same person: moving from wrist to upper arm cut the agreement interval roughly fourfold, and a second brand replicates it.' },
-        { fix: 'Snug the strap, and warm cold hands first', stat: '23 to 47%', note: 'Improvement in mean error from choosing the right contact pressure. Cold cuts the raw signal amplitude by 41%, so a loose band on a cold morning is the worst case.' }
+        { fix: 'Wear it higher up your forearm', stat: '20.5% to 7.3%', note: 'Error during movement, one finger-width above the wrist joint versus three.' },
+        { fix: 'Use an armband for hard sessions', stat: '4x tighter', note: 'Same sensor moved from wrist to upper arm, in the same person.' },
+        { fix: 'Snug the strap, warm cold hands', stat: '23 to 47%', note: 'Improvement from the right contact pressure. Cold cuts the raw signal 41%.' }
       ],
       sleep: [
-        { fix: 'Check your sleep sensitivity setting', stat: '132 to 146 min', note: 'The measured swing in total sleep time between the two settings, in the same people on the same nights. Larger than any device, firmware or wrist effect in this dataset.' },
-        { fix: 'Keep it on your wrist, never at the hip', stat: '80 min', note: 'How much extra sleep a hip-worn device reads versus lab PSG, along with 17 to 18 points of sleep efficiency. Wrist was off by 8.3 minutes.' },
-        { fix: 'Charge at a time that is not bedtime', stat: '30.4%', note: 'Share of nights missing across a five-night study of 299 people, climbing from 22% on night one to 47% on night five. A missing night is a bigger error than any bias here.' }
+        { fix: 'Check your sleep sensitivity setting', stat: '132 min', note: 'The measured gap between the two settings, in the same people.' },
+        { fix: 'Wrist only, never clipped at the hip', stat: '80 min', note: 'Extra sleep a hip-worn device reads. Wrist was off by 8 minutes.' },
+        { fix: 'Charge at a time that is not bedtime', stat: '30%', note: 'Nights missing across a five-night study of 299 people.' }
       ],
       steps: [
-        { fix: 'Pocket the tracker for cart and stroller walks', stat: '19.8% vs 6.4%', note: 'Wrist versus pocket error while pushing a shopping cart, in the peer-reviewed replication. A conference abstract puts the worst wrist case near a total loss.' },
-        { fix: 'Expect slow walks to be badly undercounted', stat: '40% vs 7%', note: 'Mean error below about 4 km/h versus normal pace, across 21 devices and 258 people. This is a cliff, not a slope.' },
-        { fix: 'Pick one wrist and set handedness correctly', stat: '1,253/day', note: 'Extra steps the dominant wrist records versus the other one. Getting the wrist setting wrong moves total activity by 22.6% one way or 25.9% the other.' }
+        { fix: 'Pocket it for cart and stroller walks', stat: '19.8% vs 6.4%', note: 'Wrist versus pocket error while pushing a shopping cart.' },
+        { fix: 'Expect slow walks to read low', stat: '40% vs 7%', note: 'Error below 4 km/h versus normal pace, across 21 devices.' },
+        { fix: 'Pick one wrist and set handedness', stat: '1,253/day', note: 'Extra steps the dominant wrist records versus the other one.' }
       ],
       hrv: [
-        { fix: 'Fix the fit before you judge the number', stat: '-7.86 dB', note: 'Signal-to-noise for a ring sitting 30 degrees off its optimal angle. On a wrist, contact pressure decides whether RMSSD error is about 6 ms or far worse.' },
-        { fix: 'Know that most of the night is thrown away', stat: '30 to 67%', note: 'Share of five-minute segments discarded to produce a clean nightly ring HRV, depending on the validity threshold used.' },
-        { fix: 'Never port an HRV target across brands', stat: '-5.6 ms', note: 'RMSSD gap between optical pulse rate variability and ECG at n=931. It is non-uniform, so no correction factor exists. Compare your device only to itself.' }
+        { fix: 'Fix the fit before you read the number', stat: '-7.86 dB', note: 'Signal quality for a ring sitting 30 degrees off its best angle.' },
+        { fix: 'Know that most of the night is binned', stat: '30 to 67%', note: 'Segments discarded to produce one clean nightly HRV average.' },
+        { fix: 'Never port an HRV target across brands', stat: '-5.6 ms', note: 'Gap between optical HRV and ECG. No correction factor exists.' }
       ],
       ee: [
-        { fix: 'Halve the calorie number for lifting sessions', stat: '+116%', note: 'How far one device over-read a resistance session against indirect calorimetry: 304.71 kcal reported against 140.79 measured.' },
-        { fix: 'Let go of the rail and the handlebars', stat: '42% vs 13%', note: 'Cumulative smartwatch error versus a leg-worn sensor system. Gripping suppresses the wrist motion the calorie model is built on.' },
-        { fix: 'Add for hills and rough ground', stat: '2.3% to 21%', note: 'Energy-expenditure error going from flat ground to a 6% grade. Walking on woodchips costs about 27% more than sidewalk at the same speed.' }
+        { fix: 'Halve the number for lifting sessions', stat: '+116%', note: 'How far one device over-read a resistance session against lab calorimetry.' },
+        { fix: 'Let go of the rail and handlebars', stat: '42% vs 13%', note: 'Smartwatch error versus leg-worn sensors. Gripping hides the motion.' },
+        { fix: 'Add for hills and rough ground', stat: '2.3% to 21%', note: 'Error going from flat ground to a 6% grade.' }
       ],
       spo2: [
-        { fix: 'Warm the hand before a spot reading', stat: '4.09% to 0.00%', note: 'Bias against an arterial criterion before and after 15 minutes of local warming in low-perfusion patients. Perfusion is the dominant SpO2 problem and the one you can change.' },
-        { fix: 'Read it as a trend, never as a clinical number', stat: '32% within 2%', note: 'How often a consumer watch landed within 2 percentage points under controlled hypoxia, in a cohort with no dark-skinned participants. Below 88% it over-read in 85% of readings.' },
-        { fix: 'Expect gaps in the overnight chart', stat: '11 to 31%', note: 'Missingness at rest across four smartwatches. Blood oxygen is the most heavily gated metric on the wrist, and gaps are normal behaviour rather than a fault.' }
+        { fix: 'Warm the hand before a spot reading', stat: '4.09% to 0.00%', note: 'Bias before and after 15 minutes of local warming.' },
+        { fix: 'Treat a low reading as a prompt', stat: '32%', note: 'How often a consumer watch was within 2 points under controlled low oxygen.' },
+        { fix: 'Expect gaps in the overnight chart', stat: '11 to 31%', note: 'Missing data at rest across four smartwatches. That is normal.' }
       ]
     };
   }
@@ -835,18 +842,16 @@ class KygoAccuracyFactors extends HTMLElement {
 
   get _patterns() {
     return [
-      { label: 'Pattern 1', stat: 'Absent', answer: 'The error usually lives in missing data, not wrong numbers', icon: 'ban',
-        note: 'Skin tone, cold, tattoos and poor fit mostly do not make readings wrong. They make readings absent. Tattoos caused total dropout in 36% of people rather than gradual drift, and devices are built to withhold rather than to report badly, so a clean-looking average can be hiding a third of the night.' },
-      { label: 'Pattern 2', stat: '40% vs 7%', answer: 'Percentage error blows up at the edges of the range', icon: 'alert',
-        note: 'Steps below 4 km/h: 40% error against 7% at normal pace. Bouts under 5 metres: a thigh device goes from 23% to 74%. Heart rate above 110 bpm in atrial fibrillation: 95% of readings in tolerance drops to 75%. This is worst for the people who move least, which is exactly who a health app is trying to help.' },
-      { label: 'Pattern 3', stat: 'Both ways', answer: 'There is no such thing as a device that overestimates', icon: 'target',
-        note: 'The same wrist tracker undercounts structured walking by 6% and overcounts daily activity by 22%. A settings toggle flips the sign of the sleep error. Anyone writing "device X overestimates Y" without naming the condition is wrong about half the time.' },
-      { label: 'Pattern 4', stat: 'How, not what', answer: 'What you do with the device rivals which one you bought', icon: 'sparkle',
-        note: 'Position on the forearm, strap tightness, activity type and a settings toggle all produce effects comparable to the whole spread across ten devices. The research also shows the reverse in three places, so do not state it flatly in either direction: between-device spread can exceed a moderator\'s effect.' },
-      { label: 'Pattern 5', stat: 'Boring wins', answer: 'The best-evidenced factors are physical. The exciting ones are null', icon: 'check',
-        note: 'Where the sensor sits, how tight it is, how the limb is moving, how warm it is: all well evidenced. Skin tone on heart-rate accuracy, sampling rate, wrist choice, tattoo darkness, beta blockers: all tested, all null. That contrast is arguably the headline of the whole thing.' },
-      { label: 'The two takeaways', stat: 'Fit first', answer: 'Fit and settings beat hardware, on almost every metric here', icon: 'shield',
-        note: 'For wrist optical sensors, how and where you wear it moves accuracy more than which one you buy. And for several metrics the biggest single moderator is a settings toggle or a charging habit, not a sensor at all.' }
+      { label: 'Pattern 1', stat: 'Absent', answer: 'The error lives in missing data, not wrong numbers', icon: 'ban',
+        note: 'Cold, tattoos and poor fit mostly do not make readings wrong. They make readings absent. A clean-looking average can be hiding a third of the night.' },
+      { label: 'Pattern 2', stat: '40% vs 7%', answer: 'Error blows up at the edges of the range', icon: 'alert',
+        note: 'Slow walking, short bouts, high heart rates in atrial fibrillation. Worst for the people who move least, which is exactly who a health app is for.' },
+      { label: 'Pattern 3', stat: 'Both ways', answer: 'No device simply overestimates', icon: 'target',
+        note: 'The same tracker undercounts structured walking by 6% and overcounts daily activity by 22%. Naming a direction without naming the condition is wrong about half the time.' },
+      { label: 'Pattern 4', stat: 'How, not what', answer: 'What you do with it rivals which one you bought', icon: 'sparkle',
+        note: 'Forearm position, strap tightness, activity type and one settings toggle each produce effects comparable to the whole spread across ten devices.' },
+      { label: 'Pattern 5', stat: 'Boring wins', answer: 'The well-evidenced factors are physical. The exciting ones are null', icon: 'check',
+        note: 'Where the sensor sits, how tight it is, how warm it is: all well evidenced. Skin tone on heart rate, sampling rate, wrist choice, beta blockers: all tested, all null.' }
     ];
   }
 
@@ -854,17 +859,14 @@ class KygoAccuracyFactors extends HTMLElement {
 
   _faqs() {
     return [
-      { q: 'What is the single biggest thing I can do to make my wearable more accurate?', a: 'For heart rate, move the watch further up your forearm. In the one study that tested it, wearing a tracker one finger-width above the wrist joint gave 20.5% mean error during movement, while three finger-widths up gave 7.3%, and the intraclass correlation went from 0.59 to 0.92. That is a bigger difference than the gap between most devices you could buy. It is a single study of ten people with no replication, so treat it as a free thing to try rather than a law. For sleep, the biggest lever is a settings toggle: on non-staging Fitbit models the normal and sensitive sleep settings sit on opposite sides of lab polysomnography, a measured swing of 132 to 146 minutes of total sleep time in the same people.' },
-      { q: 'Does skin tone affect wearable heart rate accuracy?', a: 'The honest answer is that the literature is genuinely split, and the split is explainable. The two best-powered purpose-built studies, including the only one that used objective colorimetry rather than the self-reported Fitzpatrick scale, found no significant accuracy difference. A meta-analysis of 140,771 paired readings found pooled bias was null in every pigmentation stratum. But the same meta-analysis found the limits of agreement for dark skin were 2.24 times wider than for light skin, so a device can be unbiased on average and still be unusable for an individual. And the clearest effect is not in the accuracy column at all: in one study, dark-skinned participants were 36% of the sample and supplied 33 to 85% of the unexplained missing data while mean error stayed under 5 bpm. The effect lives in whether the measurement exists, not in whether it is right.' },
-      { q: 'Do tattoos stop a wearable from reading your heart rate?', a: 'Sometimes, and the failure is binary rather than gradual. In the only peer-reviewed study, an optical sensor on tattooed skin gave 22.9% mean error at rest against 2.9% on clear skin of the same arm, and 9 of 25 people had the tattooed sensor drop to zero entirely, producing 1,486 zero readings. Remove those dropouts and the error falls to 4.2%. The counterintuitive part is what the study did not find: tattoo age and three separate ink-intensity measures were all non-significant in every condition. So do not repeat the common claim that ink darkness or density determines sensor failure, because the only test of that claim found otherwise.' },
-      { q: 'Why is my sleep tracker always wrong about how long I was awake?', a: 'Because of class imbalance, not because your device is broken. Roughly 85 to 90% of the epochs in a night are sleep, so an algorithm that leans toward calling everything sleep scores well on overall accuracy. Every consumer device in every study shows the same pattern: sensitivity to sleep above 0.93 and specificity to wake between 0.18 and 0.54. That means wake after sleep onset is underestimated and sleep efficiency is flattered, universally. The prediction this makes was confirmed: in people with chronic insomnia, where there is more wake to find, specificity rose to 62%.' },
-      { q: 'Does cold weather make my wearable less accurate?', a: 'It makes the signal weaker rather than the number wrong, and the two are easy to confuse. Local cooling cut photoplethysmography amplitude by 41% while an impedance sensor on the same arm was untouched, and beat timing was unaffected, so cold attacks the amplitude rather than the beat detection. In a climate chamber at 10 C, mean error was actually equal to or better than at room temperature for 9 of 10 devices, because heart rate itself is lower and less variable in the cold. But concordance collapsed: one ring went from 0.78 to 0.32. So a cold-weather error figure quoted on its own is misleading. Heat was worse than cold for every device that moved, with one tracker going from 9.6 to 20.8 bpm mean error at 36 C.' },
-      { q: 'Are smart rings more accurate than watches?', a: 'Rings win at night, narrowly, and lose during the day. For nocturnal heart rate a ring led by about 0.7 to 0.8 bpm, which is below night-to-night biological variation. For daytime heart rate under activity, a ring placed 9th of 10 devices at 11.0 bpm mean error, ahead only of one wrist tracker, while the best watch managed 4.5. Rings overcount steps by more than 2,000 a day and their energy expenditure degrades sharply with intensity. For sleep staging and HRV there is no form-factor winner at all: the ring sits inside the wrist range, and the two best HRV head-to-heads point in opposite directions. One more thing worth knowing: the ring category\'s best published sleep and HRV results both come from studies with a manufacturer financial or personnel relationship.' },
-      { q: 'Why does my step count miss steps when I push a stroller or a cart?', a: 'Because a wrist tracker infers steps from arm swing, and pushing something removes the arm swing while your legs keep walking. In the peer-reviewed test, wrist error while pushing a shopping cart was 19.8% against 3.9% during normal walking, while a pocket-clipped device held at 6.4%. A conference abstract across six wrist devices found far worse, with the extreme cases losing almost the entire count. Do not pool those two numbers: they used different conditions and denominators, and the defensible wrist figure is 19.8%. The mirror-image failure is just as real: wrist devices invent steps from hand motion, registering 23 false steps a minute while washing dishes, where every other wear site recorded zero.' },
-      { q: 'Can I trust the calories my watch reports?', a: 'Less than any other metric here, and the failure is in the model rather than the sensor. During resistance training one device reported 304.71 kcal against 140.79 measured by indirect calorimetry, an overshoot of 116%, while every device in that protocol had an intraclass correlation below 0.45 for the same sessions. Heart rate during those same sessions correlated with ECG at 0.96 to 0.97, so the sensor was fine and the equation was not. Gripping a handrail or handlebars makes it worse by suppressing the wrist motion the model reads, and hills and rough ground make it worse again: error went from 2.27% on flat ground to 20.97% at a 6% grade.' },
-      { q: 'Is wearable blood oxygen accurate?', a: 'Read it as a trend, never as a clinical number. Under controlled hypoxia against arterial blood gas, a consumer watch landed within 2 percentage points only 32% of the time, and below 88% saturation it over-read in 85% of readings, in a cohort that included no dark-skinned participants. The regulatory picture is often misreported: the FDA draft guidance on pulse oximeters explicitly excludes the wellness and sporting product codes that every consumer wearable ships under, so it does not apply to them, and it is still draft with no numerical thresholds. The one thing you can genuinely change is perfusion. Fifteen minutes of local warming took bias from 4.09% to 0.00% in low-perfusion patients, and skin phototype did not predict who benefited.' },
-      { q: 'What has been tested and genuinely does not matter?', a: 'A surprising amount, and the nulls are often better powered than the positive findings people repeat. Which wrist you wear it on is null for heart rate and sleep, though not for steps. Sampling rate above about 25 Hz is null for mean heart rate, though not for HRV. Beta blockers are null. Caffeine is null for calorie accuracy. Wearing two devices on the same limb causes no interference. Body hair, BMI and skin type were all null for heart rate in a cardiac-rehab cohort where age and weight were significant. Lab versus real life is null for average heart rate, with the bias even flipping sign. Adding an optical sensor to an accelerometer buys about one percentage point of sleep-wake accuracy. Each metric page in this tool carries its own null list.' },
-      { q: 'Should I believe the accuracy numbers in device marketing?', a: 'Check three things. First, the criterion: a study using another wearable or an actigraph as the reference imports that reference\'s own error, and 43 of 545 validation studies did exactly that. Second, the data-retention rate: a device that discards a third of the night can look excellent on the part it kept, and in one six-device comparison the top-ranked device retained the least data while the bottom-ranked retained everything. Third, the funding: manufacturer involvement is documented in about 9.5% of studies and 15.8% disclose nothing. Also check the date. Firmware changes move the numbers, one algorithm update took sleep-staging kappa from 0.56 to 0.63 on identical hardware, and most studies never report the version they tested.' }
+      { q: 'What is the single biggest thing I can do to make my wearable more accurate?', a: 'For heart rate, move the watch further up your forearm. One finger-width above the wrist joint gave 20.5% error during movement, three finger-widths gave 7.3%. That is a bigger difference than the gap between most devices you could buy, though it rests on a single study of ten people. For sleep, the biggest lever is a settings toggle: the normal and sensitive sleep settings on non-staging Fitbit models sit on opposite sides of a lab sleep study, a measured swing of 132 to 146 minutes in the same people.' },
+      { q: 'Does skin tone affect wearable heart rate accuracy?', a: 'The literature is genuinely split, and the split is explainable. The two best-powered purpose-built studies found no significant accuracy difference, and a meta-analysis of 140,771 paired readings found average bias was null in every pigmentation group. But the error band for dark skin was 2.24 times wider, so a device can be unbiased on average and unusable for an individual. The clearest effect is not accuracy at all: in one study dark-skinned participants were 36% of the sample and supplied 33 to 85% of the unexplained missing data.' },
+      { q: 'Do tattoos stop a wearable reading your heart rate?', a: 'Sometimes, and the failure is binary rather than gradual. On tattooed skin the error was 22.9% at rest against 2.9% on clear skin of the same arm, and 9 of 25 people had the sensor drop to zero entirely. The counterintuitive part: tattoo age and three ink-intensity measures were all non-significant, so the common claim that ink darkness determines sensor failure is not supported by the only study that tested it.' },
+      { q: 'Why is my sleep tracker always wrong about how long I was awake?', a: 'Because 85 to 90% of a night is sleep, so an algorithm that leans toward calling everything sleep still scores well. Every device shows the same pattern: it finds sleep above 0.93 sensitivity and finds wake at 0.18 to 0.54 specificity. Your wake time is undercounted and your sleep efficiency is flattered, universally. In chronic insomnia, where there is more wake to find, wake detection rises to 62%.' },
+      { q: 'Does cold weather make my wearable less accurate?', a: 'It weakens the signal rather than shifting the number, and the two are easy to confuse. Cooling cut the raw optical signal by 41% while beat timing was unaffected. In a 10 C chamber, average error was actually equal or better for 9 of 10 devices, because heart rate itself is lower and steadier in the cold, but their ability to track change collapsed. Heat was worse: one tracker went from 9.6 to 20.8 bpm error at 36 C.' },
+      { q: 'Are smart rings more accurate than watches?', a: 'Rings win at night, narrowly, and lose during the day. At night a ring led by about 0.8 bpm, below normal night-to-night variation. Under daytime activity a ring placed 9th of 10 devices at 11.0 bpm, against 4.5 for the best watch, and rings overcount steps by more than 2,000 a day. For sleep staging and HRV there is no form-factor winner, and the ring category\'s best published results both come from studies with a manufacturer relationship.' },
+      { q: 'Can I trust the calories my watch reports?', a: 'Less than any other metric here, and the failure is the model rather than the sensor. During resistance training one device reported 304.71 kcal against 140.79 measured in a lab, an overshoot of 116%, while heart rate in the same sessions matched ECG at r 0.96 to 0.97. Gripping a rail makes it worse by hiding the wrist motion the model reads, and hills make it worse again: error went from 2.3% on flat ground to 21% at a 6% grade.' },
+      { q: 'What has been tested and genuinely does not matter?', a: 'More than you would expect, and the nulls are often better powered than the positives people repeat. Which wrist you wear it on is null for heart rate and sleep, though not for steps. Sampling rate above about 25 Hz is null for heart rate, though not for HRV. Beta blockers are null, caffeine is null for calories, wearing two devices at once causes no interference, and lab versus real life is null for average heart rate. Each metric tab here carries its own null list.' }
     ];
   }
 
@@ -917,20 +919,13 @@ class KygoAccuracyFactors extends HTMLElement {
     })[g] || { full: 'Not graded', short: 'Not graded', cls: 'g-none', w: 0 };
   }
 
-  _ctlMeta(c) {
-    return ({
-      you:   { label: 'You can change this', short: 'Fixable', icon: 'tool' },
-      set:   { label: 'A setting you can change', short: 'Setting', icon: 'tool' },
-      fixed: { label: 'Not in your control', short: 'Fixed', icon: 'lock' }
-    })[c] || { label: 'Not in your control', short: 'Fixed', icon: 'lock' };
-  }
 
   get _devices() {
     return [
-      { key: 'watch', label: 'Watch or band', short: 'Watch' },
-      { key: 'ring', label: 'Smart ring', short: 'Ring' },
-      { key: 'strap', label: 'Chest strap or armband', short: 'Strap' },
-      { key: 'other', label: 'Clip, phone or ankle', short: 'Clip' }
+      { key: 'watch', label: 'Watch', short: 'Watch' },
+      { key: 'ring', label: 'Ring', short: 'Ring' },
+      { key: 'strap', label: 'Chest strap', short: 'Strap' },
+      { key: 'other', label: 'Clip or phone', short: 'Clip' }
     ];
   }
 
@@ -957,11 +952,6 @@ class KygoAccuracyFactors extends HTMLElement {
     return this._factors.filter(f => f.m[mKey] && f.m[mKey].e === 'Y').length;
   }
 
-  _totalCells() {
-    let n = 0;
-    this._factors.forEach(f => { n += Object.keys(f.m).length; });
-    return n;
-  }
 
   _totalNulls() {
     let n = 0;
@@ -969,8 +959,13 @@ class KygoAccuracyFactors extends HTMLElement {
     return n;
   }
 
-  _sourceCount() {
-    return Object.keys(this._src).length;
+
+  // Keep the "N factors" lede in step 2 honest when the filters change.
+  _syncCount() {
+    const lede = this.shadowRoot.querySelector('.factors-section .section-lede');
+    if (!lede) return;
+    const n = this._cellsFor(this._metricFilter, true).filter(x => x.c.e === 'Y').length;
+    lede.textContent = n + ' factor' + (n === 1 ? '' : 's') + ' with an effect on this metric. Tap any one for the numbers, the fix and how good the evidence is.';
   }
 
   /* ---------------------------------------------------------------- EXPLORER UI */
@@ -1001,7 +996,7 @@ class KygoAccuracyFactors extends HTMLElement {
     return `
       <div class="filter-bar">
         <div class="filter-row">
-          <span class="filter-label">Can I do anything about it?</span>
+          <span class="filter-label">Can I change it?</span>
           <div class="chip-row" role="group" aria-label="Filter by whether you can change it">${ctlChips}</div>
         </div>
         <div class="filter-row">
@@ -1015,17 +1010,14 @@ class KygoAccuracyFactors extends HTMLElement {
     const items = this._quick[mKey] || [];
     if (!items.length) return '';
     return `
-      <div class="qa-block">
-        <span class="qa-label">Start here: the three highest-leverage fixes</span>
-        <div class="qa-grid">
-          ${items.map((q, i) => `
-            <article class="qa-card">
-              <span class="qa-rank">${i + 1}</span>
-              <h4 class="qa-fix">${q.fix}</h4>
-              <div class="qa-stat">${q.stat}</div>
-              <p class="qa-note">${q.note}</p>
-            </article>`).join('')}
-        </div>
+      <div class="qa-grid">
+        ${items.map((q, i) => `
+          <article class="qa-card">
+            <span class="qa-rank">${i + 1}</span>
+            <h4 class="qa-fix">${q.fix}</h4>
+            <div class="qa-stat">${q.stat}</div>
+            <p class="qa-note">${q.note}</p>
+          </article>`).join('')}
       </div>`;
   }
 
@@ -1033,28 +1025,24 @@ class KygoAccuracyFactors extends HTMLElement {
     const id = f.key + '-' + this._metricFilter;
     const isExp = this._expandedKey === id;
     const gm = this._gradeMeta(c.g);
-    const ctl = this._ctlMeta(f.ctl);
     const src = c.src ? this._src[c.src] : null;
 
     const body = isExp ? `
       <div class="fact-body">
         <dl class="fact-fields">
-          <div class="fact-fields--full"><dt>The numbers</dt><dd>${c.size}</dd></div>
-          <div class="fact-fields--full"><dt>${f.ctl === 'fixed' ? 'What to do about it' : 'What to change'}</dt><dd>${c.fix}</dd></div>
-          <div class="fact-fields--full"><dt>How good is the evidence</dt><dd>${c.ev}</dd></div>
-          <div><dt>Applies to</dt><dd>${f.dev.map(d => this._devLabel(d)).join(', ')}</dd></div>
-          <div><dt>Category</dt><dd>${f.cat}</dd></div>
+          <div><dt>The numbers</dt><dd>${c.size}</dd></div>
+          <div><dt>${f.ctl === 'fixed' ? 'What to do about it' : 'What to change'}</dt><dd>${c.fix}</dd></div>
+          <div><dt>Evidence</dt><dd>${c.ev}</dd></div>
         </dl>
-        ${src ? `<div class="fact-source-row"><span class="fact-source-lbl">Source</span><a href="${src.url}" target="_blank" rel="noopener" class="source-link" data-action="source-click" data-track-position="factor-card" data-track-label="accuracy-factors-${f.key}">${src.label} ${this._icon('externalLink')}</a></div>` : ''}
+        <div class="fact-foot">
+          <span class="fact-devs">${f.dev.map(d => `<span class="fact-dev">${this._devLabel(d)}</span>`).join('')}</span>
+          ${src ? `<a href="${src.url}" target="_blank" rel="noopener" class="source-link" data-action="source-click" data-track-position="factor-card" data-track-label="accuracy-factors-${f.key}">Source ${this._icon('externalLink')}</a>` : ''}
+        </div>
       </div>` : '';
 
     return `
       <article class="fact-card ${isExp ? 'expanded' : ''}" data-fkey="${f.key}">
         <button class="fact-head" aria-expanded="${isExp}">
-          <span class="fact-meta-row">
-            <span class="fact-tag fact-tag--${f.ctl === 'fixed' ? 'fixed' : 'you'}"><span class="fact-tag-ic" aria-hidden="true">${this._icon(ctl.icon)}</span>${ctl.label}</span>
-            <span class="fact-devs">${f.dev.map(d => `<span class="fact-dev">${this._devLabel(d)}</span>`).join('')}</span>
-          </span>
           <span class="fact-row">
             <span class="fact-name">${f.name}</span>
             <span class="grade-badge ${gm.cls}" title="${gm.full}">${gm.short}</span>
@@ -1066,38 +1054,35 @@ class KygoAccuracyFactors extends HTMLElement {
       </article>`;
   }
 
-  _renderFactorList() {
-    const mKey = this._metricFilter;
-    const cells = this._cellsFor(mKey, true);
+  // which: 'deg' = what degrades this metric, 'null' = what does not
+  _renderGroups(which) {
+    const cells = this._cellsFor(this._metricFilter, true);
     const byImp = (a, b) => (b.c.imp || 0) - (a.c.imp || 0) || a.f.name.localeCompare(b.f.name);
 
-    const change = cells.filter(x => x.c.e === 'Y' && x.f.ctl !== 'fixed').sort(byImp);
-    const fixed  = cells.filter(x => x.c.e === 'Y' && x.f.ctl === 'fixed').sort(byImp);
-    const nulls  = cells.filter(x => x.c.e === 'N').sort(byImp);
-    const gaps   = cells.filter(x => x.c.e === '?').sort(byImp);
+    const defs = which === 'deg'
+      ? [
+          { k: 'change', label: 'You can change these', sub: 'Ranked by effect size', items: cells.filter(x => x.c.e === 'Y' && x.f.ctl !== 'fixed').sort(byImp) },
+          { k: 'fixed', label: 'You cannot', sub: 'Worth knowing, not worth worrying about', items: cells.filter(x => x.c.e === 'Y' && x.f.ctl === 'fixed').sort(byImp) }
+        ]
+      : [
+          { k: 'nul', label: 'Tested, no effect', sub: 'Better powered than most of the positives', items: cells.filter(x => x.c.e === 'N').sort(byImp) },
+          { k: 'gap', label: 'Never tested', sub: 'Plausible, unmeasured, flagged honestly', items: cells.filter(x => x.c.e === '?').sort(byImp) }
+        ];
 
-    if (!cells.length) {
-      return '<div class="fact-groups"><p class="dash-empty">Nothing matches those filters for this metric. Widen the device filter, or switch back to everything.</p></div>';
+    const live = defs.filter(g => g.items.length);
+    if (!live.length) {
+      return `<div class="fact-groups" data-list="${which}"><p class="dash-empty">Nothing matches those filters here. Widen the device filter or switch back to everything.</p></div>`;
     }
-
-    const defs = [
-      { k: 'change', label: 'What degrades it, and you can fix', sub: 'Ranked by effect size', items: change },
-      { k: 'fixed', label: 'What degrades it, and you cannot', sub: 'Worth knowing, not worth worrying about', items: fixed },
-      { k: 'nul', label: 'Tested, and it does not matter', sub: 'The null list. Better powered than most of the positives', items: nulls },
-      { k: 'gap', label: 'Nobody has tested it', sub: 'Plausible, unmeasured, honestly flagged', items: gaps }
-    ].filter(g => g.items.length);
-
-    // Never leave every group shut: if the user's filters emptied the open one,
-    // fall back to opening the first group that still has rows.
-    if (!defs.some(g => this._openGroups[g.k])) this._openGroups[defs[0].k] = true;
+    // Never leave every group shut: if the filters emptied the open one, open the first that still has rows.
+    if (!live.some(g => this._openGroups[g.k])) this._openGroups[live[0].k] = true;
 
     return `
-      <div class="fact-groups">
-        ${defs.map(g => `
+      <div class="fact-groups" data-list="${which}">
+        ${live.map(g => `
           <div class="fact-group fact-group--${g.k} ${this._openGroups[g.k] ? 'open' : ''}">
             <button class="fact-group-head" data-group="${g.k}" aria-expanded="${this._openGroups[g.k] ? 'true' : 'false'}">
               <span class="fact-group-label"><span class="fact-group-icon" aria-hidden="true"></span>${g.label}</span>
-              <span class="fact-group-meta">${g.items.length} factor${g.items.length === 1 ? '' : 's'} · ${g.sub}</span>
+              <span class="fact-group-meta">${g.items.length} · ${g.sub}</span>
               <span class="fact-group-chev" aria-hidden="true">${this._icon('chevDown')}</span>
             </button>
             <div class="fact-list">${g.items.map(x => this._renderFactorCard(x.f, x.c)).join('')}</div>
@@ -1105,32 +1090,62 @@ class KygoAccuracyFactors extends HTMLElement {
       </div>`;
   }
 
-  _renderExplorerSection() {
+  // 1. Pick a metric, get the three fixes.
+  _renderPickerSection() {
     const mt = this._metrics.find(m => m.key === this._metricFilter) || this._metrics[0];
-    const shown = this._cellsFor(mt.key, true).length;
-    const all = this._cellsFor(mt.key, false).length;
     return `
-      <section class="factors-section section-bg-gray" id="explorer">
+      <section class="picker-section section-bg-gray" id="explorer">
         <div class="container">
           <div class="section-header">
-            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('flask')}</span>The metric-first explorer</span>
-            <h2 class="section-h2">Pick the metric you care about. <em>Everything below re-filters.</em></h2>
-            <p class="section-lede">Most accuracy content is organised by device. This is organised by moderator, because the same thing does different work on different metrics: cold barely touches average heart rate and wrecks the tracking, wrist position is the largest heart-rate effect in the literature and is untested for sleep.</p>
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('flask')}</span>Step 1</span>
+            <h2 class="section-h2">Pick your metric. <em>Get the three fixes.</em></h2>
+            <p class="section-lede">The same factor does different things to different metrics, so the metric comes first. The count is how many factors have measurably degraded it.</p>
           </div>
-          <span class="metric-tiles-label">Choose a metric. The count is how many factors have measurably degraded it.</span>
           ${this._renderMetricTiles()}
-          <div class="picker-panel">
-            <div class="picker-panel-head">
-              <h3 class="picker-panel-title">${mt.label}<span class="picker-panel-meta">${shown} of ${all} factor${all === 1 ? '' : 's'} shown</span></h3>
+          <div class="qa-panel">
+            <div class="qa-head">
+              <h3 class="qa-title">${mt.label}</h3>
+              <span class="qa-sub">${mt.what}</span>
             </div>
-            <p class="picker-benefit">${mt.what}</p>
             ${this._renderQuick(mt.key)}
-            ${this._renderFilterBar()}
-            <div data-list>${this._renderFactorList()}</div>
-            <p class="picker-note"><span class="picker-note-ic" aria-hidden="true">${this._icon('info')}</span><span>${mt.note}</span></p>
-            <div class="picker-foot">
-              ${this._readMore(mt.tool, 'See the device-by-device numbers in the ' + mt.toolName)}
-            </div>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  // 2. What degrades it, filterable.
+  _renderDegradersSection() {
+    const mt = this._metrics.find(m => m.key === this._metricFilter) || this._metrics[0];
+    const n = this._cellsFor(mt.key, true).filter(x => x.c.e === 'Y').length;
+    return `
+      <section class="factors-section section-bg-white" id="factors">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('alert')}</span>Step 2 · ${mt.label}</span>
+            <h2 class="section-h2">What degrades <em>${mt.label.toLowerCase()}</em>, ranked.</h2>
+            <p class="section-lede">${n} factor${n === 1 ? '' : 's'} with an effect on this metric. Tap any one for the numbers, the fix and how good the evidence is.</p>
+          </div>
+          ${this._renderFilterBar()}
+          ${this._renderGroups('deg')}
+          <p class="picker-note"><span class="picker-note-ic" aria-hidden="true">${this._icon('info')}</span><span>${mt.note}</span></p>
+        </div>
+      </section>`;
+  }
+
+  // 3. The null list, its own section because nobody else publishes one.
+  _renderNullsSection() {
+    const mt = this._metrics.find(m => m.key === this._metricFilter) || this._metrics[0];
+    return `
+      <section class="nulls-section section-bg-gray" id="nulls">
+        <div class="container">
+          <div class="section-header">
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('ban')}</span>Step 3 · ${mt.label}</span>
+            <h2 class="section-h2">What <em>does not matter</em>, and what nobody checked.</h2>
+            <p class="section-lede">Tested, and it came back null. Nobody in this category publishes this list, and several of these nulls are better powered than the positive findings people repeat.</p>
+          </div>
+          ${this._renderGroups('null')}
+          <div class="picker-foot">
+            ${this._readMore(mt.tool, 'See the device-by-device numbers in the ' + mt.toolName)}
           </div>
         </div>
       </section>`;
@@ -1140,10 +1155,12 @@ class KygoAccuracyFactors extends HTMLElement {
 
   _renderMatrixSection() {
     const metrics = this._metrics;
+    // Only the rows whose verdict actually changes between metrics. That is the
+    // whole point of the module, and it keeps the table short enough to read.
     const rows = this._factors
-      .filter(f => Object.keys(f.m).length >= 2)
-      .map(f => ({ f, span: Object.values(f.m).filter(c => c.e === 'Y').length, top: Math.max.apply(null, Object.values(f.m).map(c => c.imp || 0)) }))
-      .sort((a, b) => b.span - a.span || b.top - a.top || a.f.name.localeCompare(b.f.name));
+      .filter(f => Object.keys(f.m).length >= 2 && new Set(Object.values(f.m).map(c => c.e)).size >= 2)
+      .map(f => ({ f, cells: Object.keys(f.m).length, top: Math.max.apply(null, Object.values(f.m).map(c => c.imp || 0)) }))
+      .sort((a, b) => b.cells - a.cells || b.top - a.top || a.f.name.localeCompare(b.f.name));
 
     const head = `
       <thead>
@@ -1170,18 +1187,17 @@ class KygoAccuracyFactors extends HTMLElement {
       <section class="comparison-section section-bg-gray" id="matrix">
         <div class="container">
           <div class="section-header">
-            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('target')}</span>The cross-metric matrix</span>
-            <h2 class="section-h2">The same factor, <em>six different answers</em>.</h2>
-            <p class="section-lede">Only the factors that have been tested against more than one metric, because that is where the interesting disagreements are. Gripping a handrail is null for heart rate and severe for calories. Which wrist you wear it on is null for heart rate and sleep and worth 1,253 steps a day. Read down a column to see what to caveat when you talk about that metric.</p>
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('target')}</span>The cross-metric view</span>
+            <h2 class="section-h2">One factor, <em>different answers</em>.</h2>
+            <p class="section-lede">The factors whose verdict changes depending on the metric. Gripping a handrail is null for heart rate and severe for calories. Which wrist you wear it on is null for heart rate and sleep and worth 1,253 steps a day.</p>
           </div>
           <div class="device-chart">
             <div class="dc-head">
               <div>
-                <span class="dc-eyebrow">Tested against more than one metric</span>
-                <h3 class="dc-title">Factor by metric, with the nulls left in</h3>
-                <p class="dc-sub">Yes means it changes accuracy with evidence behind it. No means it was tested and came back null or contested. A question mark means plausible and never measured. Blank means not applicable or not searched.</p>
+                <span class="dc-eyebrow">Where the answer flips</span>
+                <h3 class="dc-title">Factor by metric, nulls left in</h3>
               </div>
-              <div class="dc-meta">${rows.length} factors · ${metrics.length} metrics</div>
+              <div class="dc-meta">${rows.length} factors</div>
             </div>
             <div class="device-table-wrap">
               <table class="device-table mxtable">
@@ -1191,7 +1207,7 @@ class KygoAccuracyFactors extends HTMLElement {
             </div>
             <div class="mx-legend">
               <span class="mx-legend-item"><span class="gpill gpill--mx g-s">Yes</span> Affects accuracy</span>
-              <span class="mx-legend-item"><span class="gpill gpill--mx g-x">No</span> Tested, null or contested</span>
+              <span class="mx-legend-item"><span class="gpill gpill--mx g-x">No</span> Tested, null</span>
               <span class="mx-legend-item"><span class="gpill gpill--mx g-none">?</span> Never tested</span>
               <span class="mx-legend-item"><span class="mx-dash">n/a</span> Not applicable</span>
             </div>
@@ -1234,8 +1250,13 @@ class KygoAccuracyFactors extends HTMLElement {
           <div class="callout-card animate-on-scroll">
             <span class="callout-icon" aria-hidden="true">${this._icon('info')}</span>
             <div class="callout-body">
-              <h3>How to read every number on this page</h3>
-              <p>Three habits will save you from most of the bad claims in this category. <em>Ask what the criterion was:</em> a study that used another wearable or an actigraph as its reference imports that reference's own error, and 43 of 545 validation studies did exactly that. <em>Ask what the retention rate was:</em> a device that discards a third of the night looks excellent on the part it kept, and in one six-device comparison the top-ranked device retained the least data. <em>Ask who paid:</em> manufacturer involvement is documented in about 9.5% of studies and 15.8% disclose nothing, and we flag it inline wherever a funded device wins its own study. Then check the date, because firmware changes move the numbers. See <a href="https://www.kygo.app/tools/wearable-accuracy" target="_blank" rel="noopener">how accurate each wearable actually is</a> and the <a href="https://www.kygo.app/tools/sensor-comparison" target="_blank" rel="noopener">hardware and software comparison</a> for the device-level picture. This is information, not medical advice.</p>
+              <h3>How to read an accuracy claim</h3>
+              <ul class="callout-list">
+                <li><em>What was the criterion?</em> A study referenced to another wearable imports that device's error. 43 of 545 did exactly that.</li>
+                <li><em>How much data was kept?</em> A device that discards a third of the night looks excellent on the part it kept.</li>
+                <li><em>Who paid?</em> Manufacturer involvement is documented in about 9.5% of studies, and 15.8% disclose nothing.</li>
+              </ul>
+              <p>Then check the date, because firmware changes move the numbers. See <a href="https://www.kygo.app/tools/wearable-accuracy" target="_blank" rel="noopener">how accurate each wearable is</a> for the device-level picture. Information only, not medical advice.</p>
             </div>
           </div>
         </div>
@@ -1507,7 +1528,9 @@ class KygoAccuracyFactors extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderExplorerSection()}
+      ${this._renderPickerSection()}
+      ${this._renderDegradersSection()}
+      ${this._renderNullsSection()}
       ${this._renderKband('early', 'accuracy-factors-early')}
       ${this._renderMatrixSection()}
       ${this._renderPatternsSection()}
@@ -1559,15 +1582,16 @@ class KygoAccuracyFactors extends HTMLElement {
       if (newEl) oldEl.replaceWith(newEl);
     };
 
-    const redrawList = () => {
-      const host = shadow.querySelector('[data-list]');
-      if (host) host.innerHTML = this._renderFactorList();
-      const meta = shadow.querySelector('.picker-panel-meta');
-      if (meta) {
-        const shown = this._cellsFor(this._metricFilter, true).length;
-        const all = this._cellsFor(this._metricFilter, false).length;
-        meta.textContent = shown + ' of ' + all + ' factor' + (all === 1 ? '' : 's') + ' shown';
-      }
+    const redrawLists = () => {
+      ['deg', 'null'].forEach(which => {
+        replaceWithHTML(shadow.querySelector('[data-list="' + which + '"]'), this._renderGroups(which));
+      });
+    };
+
+    const redrawAll = () => {
+      replaceWithHTML(shadow.querySelector('.picker-section'), this._renderPickerSection());
+      replaceWithHTML(shadow.querySelector('.factors-section'), this._renderDegradersSection());
+      replaceWithHTML(shadow.querySelector('.nulls-section'), this._renderNullsSection());
     };
 
     shadow.addEventListener('click', (e) => {
@@ -1589,7 +1613,7 @@ class KygoAccuracyFactors extends HTMLElement {
         if (k && k !== this._metricFilter) {
           this._metricFilter = k;
           this._expandedKey = null;
-          replaceWithHTML(shadow.querySelector('.factors-section'), this._renderExplorerSection());
+          redrawAll();
         }
         return;
       }
@@ -1605,7 +1629,8 @@ class KygoAccuracyFactors extends HTMLElement {
             el.classList.toggle('active', on);
             el.setAttribute('aria-pressed', on);
           });
-          redrawList();
+          redrawLists();
+          this._syncCount();
         }
         return;
       }
@@ -1621,7 +1646,8 @@ class KygoAccuracyFactors extends HTMLElement {
             el.classList.toggle('active', on);
             el.setAttribute('aria-pressed', on);
           });
-          redrawList();
+          redrawLists();
+          this._syncCount();
         }
         return;
       }
@@ -1630,7 +1656,7 @@ class KygoAccuracyFactors extends HTMLElement {
       if (groupHead) {
         const k = groupHead.dataset.group;
         this._openGroups[k] = !this._openGroups[k];
-        redrawList();
+        redrawLists();
         return;
       }
 
@@ -1640,7 +1666,7 @@ class KygoAccuracyFactors extends HTMLElement {
         if (card) {
           const id = card.dataset.fkey + '-' + this._metricFilter;
           this._expandedKey = this._expandedKey === id ? null : id;
-          redrawList();
+          redrawLists();
         }
       }
     });
@@ -1783,11 +1809,10 @@ class KygoAccuracyFactors extends HTMLElement {
       .section-lede { font-size: 15px; color: var(--gray-600); line-height: 1.55; margin: 0; max-width: 68ch; }
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin: 0 auto 32px; max-width: 640px; }
-      .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section { padding: 48px 0 56px; }
-      @media (min-width: 768px) { .comparison-section, .factors-section, .callout-section, .sources-section, .picks-section { padding: 64px 0 72px; } }
+      .comparison-section, .factors-section, .picker-section, .nulls-section, .callout-section, .sources-section, .picks-section { padding: 44px 0 48px; }
+      @media (min-width: 768px) { .comparison-section, .factors-section, .picker-section, .nulls-section, .callout-section, .sources-section, .picks-section { padding: 64px 0 68px; } }
 
       /* METRIC TILES */
-      .metric-tiles-label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--gray-400); margin: 6px 0 8px; }
       .picker-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
       .picker-tile { display: flex; align-items: center; justify-content: space-between; gap: 7px; padding: 11px 12px; min-height: 56px; min-width: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, transform .15s, background .15s, box-shadow .15s; text-align: left; color: var(--dark); }
       .picker-tile:hover { border-color: var(--gray-300); transform: translateY(-1px); }
@@ -1804,17 +1829,16 @@ class KygoAccuracyFactors extends HTMLElement {
       @media (min-width: 560px) { .picker-tiles { grid-template-columns: repeat(3, 1fr); } }
       @media (min-width: 880px) { .picker-tiles { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
 
-      /* PANEL */
-      .picker-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 14px; box-shadow: 0 8px 24px rgba(15,23,42,0.06); min-width: 0; overflow: hidden; }
-      .picker-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
-      .picker-panel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; color: var(--dark); margin: 0; letter-spacing: -0.01em; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-      .picker-panel-meta { font-size: 11.5px; font-weight: 600; color: var(--gray-400); letter-spacing: 0.5px; text-transform: uppercase; }
-      .picker-benefit { font-size: 13px; color: var(--gray-600); line-height: 1.5; margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--gray-100); }
-      .picker-note { display: flex; gap: 9px; align-items: flex-start; font-size: 12.5px; line-height: 1.5; color: var(--gray-600); background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; padding: 11px 13px; margin: 16px 0 0; }
+      /* QUICK ANSWER PANEL */
+      .qa-panel { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 16px; box-shadow: 0 8px 24px rgba(15,23,42,0.06); min-width: 0; }
+      .qa-head { display: flex; align-items: baseline; gap: 6px 12px; flex-wrap: wrap; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--gray-100); }
+      .qa-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 18px; color: var(--dark); margin: 0; letter-spacing: -0.01em; }
+      .qa-sub { font-size: 12.5px; color: var(--gray-400); }
+      @media (min-width: 768px) { .qa-panel { padding: 24px 26px; border-radius: 22px; } }
+      .picker-note { display: flex; gap: 9px; align-items: flex-start; font-size: 12.5px; line-height: 1.5; color: var(--gray-600); background: var(--bg-note, #fff); border: 1px solid var(--gray-200); border-radius: 12px; padding: 12px 14px; margin: 18px 0 0; }
       .picker-note-ic { flex-shrink: 0; width: 15px; height: 15px; color: var(--gray-400); margin-top: 2px; }
       .picker-note-ic svg { width: 15px; height: 15px; display: block; }
-      .picker-foot { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--gray-100); }
-      @media (min-width: 768px) { .picker-panel { padding: 24px 26px; border-radius: 22px; } }
+      .picker-foot { margin-top: 20px; }
 
       .section-readmore { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; color: var(--green-dark); transition: gap .15s, color .15s; }
       .section-readmore:hover { color: var(--green); gap: 9px; }
@@ -1822,8 +1846,6 @@ class KygoAccuracyFactors extends HTMLElement {
       .section-readmore svg { width: 15px; height: 15px; }
 
       /* QUICK ANSWERS */
-      .qa-block { margin: 0 0 18px; }
-      .qa-label { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 10px; }
       .qa-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
       .qa-card { position: relative; background: var(--green-light); border: 1px solid rgba(34,197,94,0.25); border-radius: 14px; padding: 16px 16px 15px 46px; min-width: 0; }
       .qa-rank { position: absolute; left: 14px; top: 15px; width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; }
@@ -1872,14 +1894,8 @@ class KygoAccuracyFactors extends HTMLElement {
       .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; min-width: 0; transition: border-color .15s, box-shadow .15s; }
       .fact-card:hover { border-color: var(--gray-300); }
       .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); border-color: var(--gray-300); }
-      .fact-head { display: flex; flex-direction: column; align-items: stretch; gap: 7px; width: 100%; padding: 13px 15px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
+      .fact-head { display: flex; flex-direction: column; align-items: stretch; gap: 5px; width: 100%; padding: 12px 15px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
-      .fact-meta-row { display: flex; align-items: center; gap: 6px 10px; flex-wrap: wrap; }
-      .fact-tag { display: inline-flex; align-items: center; gap: 5px; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1; padding: 4px 8px; border-radius: 9999px; }
-      .fact-tag-ic { width: 11px; height: 11px; display: inline-flex; }
-      .fact-tag-ic svg { width: 11px; height: 11px; display: block; }
-      .fact-tag--you { background: var(--green-light); color: var(--green-dark); }
-      .fact-tag--fixed { background: var(--gray-100); color: var(--gray-600); }
       .fact-devs { display: inline-flex; flex-wrap: wrap; gap: 4px; }
       .fact-dev { font-size: 9.5px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: var(--gray-400); border: 1px solid var(--gray-200); border-radius: 9999px; padding: 3px 7px; line-height: 1; }
       .fact-row { display: flex; align-items: flex-start; gap: 8px; }
@@ -1897,15 +1913,14 @@ class KygoAccuracyFactors extends HTMLElement {
       }
       @media (min-width: 1000px) { .fact-list { grid-template-columns: 1fr 1fr; align-items: start; } }
 
-      .fact-body { padding: 6px 18px 18px; border-top: 1px dashed var(--gray-200); background: var(--gray-50); }
-      .fact-fields { display: grid; gap: 12px; margin: 14px 0 4px; min-width: 0; }
+      .fact-body { padding: 4px 15px 15px; border-top: 1px dashed var(--gray-200); background: var(--gray-50); }
+      .fact-fields { display: grid; gap: 11px; margin: 13px 0 0; min-width: 0; }
       .fact-fields > div { display: grid; grid-template-columns: 1fr; gap: 3px; min-width: 0; }
-      .fact-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
-      .fact-fields dd { margin: 0; font-size: 13.5px; color: var(--gray-700); line-height: 1.55; overflow-wrap: anywhere; }
-      @media (min-width: 768px) { .fact-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } .fact-fields--full { grid-column: 1 / -1; } }
-      .fact-source-row { margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--gray-200); display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-      .fact-source-lbl { font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); font-weight: 700; }
-      .source-link { display: inline-flex; align-items: center; gap: 4px; color: var(--green-dark); font-weight: 500; font-size: 13px; overflow-wrap: anywhere; min-width: 0; }
+      .fact-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
+      .fact-fields dd { margin: 0; font-size: 13px; color: var(--gray-700); line-height: 1.5; overflow-wrap: anywhere; }
+      .fact-foot { margin-top: 13px; padding-top: 11px; border-top: 1px dashed var(--gray-200); display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; }
+      .source-link { display: inline-flex; align-items: center; gap: 5px; color: var(--green-dark); font-weight: 600; font-size: 12px; white-space: nowrap; }
+      @media (min-width: 768px) { .fact-body { padding: 4px 18px 18px; } }
       .source-link svg { width: 12px; height: 12px; flex-shrink: 0; }
       .source-link:hover { color: var(--green); }
 
@@ -1981,7 +1996,10 @@ class KygoAccuracyFactors extends HTMLElement {
       .callout-icon { width: 38px; height: 38px; border-radius: 10px; background: rgba(34,197,94,0.18); color: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
       .callout-icon svg { width: 20px; height: 20px; }
       .callout-body h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 19px; margin-bottom: 8px; letter-spacing: -0.01em; }
-      .callout-body p { font-size: 14px; color: rgba(255,255,255,0.78); line-height: 1.6; margin: 0; }
+      .callout-body p { font-size: 13.5px; color: rgba(255,255,255,0.72); line-height: 1.6; margin: 0; }
+      .callout-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 8px; }
+      .callout-list li { position: relative; padding-left: 16px; font-size: 14px; color: rgba(255,255,255,0.82); line-height: 1.5; }
+      .callout-list li::before { content: ''; position: absolute; left: 0; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
       .callout-body em { color: var(--green); font-style: normal; font-weight: 600; }
       .callout-body a { color: var(--green); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
       .callout-body a:hover { color: #fff; }
