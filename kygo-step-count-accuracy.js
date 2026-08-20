@@ -1,16 +1,26 @@
 /**
- * Kygo Health — Step Count Accuracy Tool
- * Tag: kygo-step-count-accuracy
- * Compares step count accuracy across 8 wearables, backed by peer-reviewed research.
+ * Kygo Health · Step Count Accuracy by Wearable
+ * Tag name: kygo-step-count-accuracy
+ * How accurate is each wearable's step count against a research-grade reference?
+ * Nine devices grouped into four evidence tiers, split by the axis that decides every
+ * number: lab walking versus a normal day, and what your arms are doing while you walk.
+ * Data: step-count-accuracy-tool-data.json + step_count_accuracy_reference.md
+ * (Fuller 2020, Germini 2022, Kim 2024, Kristiansson 2023 corrected, Choe & Kang 2025,
+ * Feehan 2020, Roos 2020, Giurgiu 2023, Straczkiewicz 2023, Delobelle 2024, Henriksen 2022,
+ * Rider 2025, Ozel 2026, Miwa 2026, Cheung 2025, Modave 2017, Scataglini 2025, Oner 2022,
+ * Niela-Vilen 2022, Johnston 2021).
  */
 
-function __seo(el, text) {
-  if (el.querySelector('[data-seo]')) return;
-  const d = document.createElement('div');
-  d.setAttribute('data-seo', '');
-  d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
-  d.textContent = text;
-  el.appendChild(d);
+/** Injects accessible text into light DOM so crawlers and AI tools can read component content */
+if (typeof __seo === 'undefined') {
+  var __seo = function (el, text) {
+    if (el.querySelector('[data-seo]')) return;
+    const d = document.createElement('div');
+    d.setAttribute('data-seo', '');
+    d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+    d.textContent = text;
+    el.appendChild(d);
+  };
 }
 
 class KygoStepCountAccuracy extends HTMLElement {
@@ -18,1708 +28,1187 @@ class KygoStepCountAccuracy extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._observer = null;
-    this._expandedDevice = null;
-    this._expandedCaveats = new Set();
-    this._expandedFactors = new Set();
-    this._activeFactor = 0;
-    this._eventsBound = false;
-    this._selectedDevices = ['garmin', 'apple-watch'];
-    this._activeTab = 'overview';
+    this._selBrands = null; // Set of device keys chosen in the comparator
+    this._wired = false;
   }
 
   connectedCallback() {
+    if (!this._selBrands) {
+      // Default comparison: the two best-validated wrist devices plus the ring that
+      // shows the widest lab-versus-life gap in the whole dataset.
+      this._selBrands = new Set(['garmin', 'apple', 'oura']);
+    }
     this.render();
-    this._setupEventDelegation();
     this._setupAnimations();
+    this._wire();
     this._injectStructuredData();
-    __seo(this, 'Step Count Accuracy by Wearable Device — Kygo Health. Garmin is the most accurate step counter (MAPE 0.6–3.5% lab, 82.6% overall). Apple Watch ranks #2 (MAPE 0.9–3.4% lab, 81.1% overall). Fitbit ranks #3 (MAPE ~5–8% lab, mixed free-living). Samsung Galaxy Watch has moderate accuracy with overcounting issues. COROS is excellent for running. Polar is not recommended for step counting. Oura Ring has acceptable lab accuracy but +2,124 steps average overcount in free-living. WHOOP added step counting in October 2024 with no published validation data. Data sourced from 20+ peer-reviewed studies including Roos 2020, Feehan 2020, Kim 2024, Kristiansson 2023, Choe & Kang 2025. Walking speed is the #1 accuracy factor — accuracy drops dramatically below 0.9 m/s.');
+    __seo(this, this._seoText());
   }
 
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
   }
 
-  // ── Data ──────────────────────────────────────────────────────────────
+  // ── Interactivity: one delegated listener on the shadow root so it survives
+  //    the innerHTML swap of the comparator result region ────────────────────
+
+  _wire() {
+    if (this._wired) return;
+    this._wired = true;
+    this.shadowRoot.addEventListener('click', (e) => {
+      const brand = e.target.closest('[data-brand-id]');
+      if (brand) { this._toggleBrand(brand.getAttribute('data-brand-id')); }
+    });
+  }
+
+  _toggleBrand(key) {
+    const sel = this._selBrands;
+    if (sel.has(key)) { if (sel.size > 2) sel.delete(key); }   // keep a minimum of 2
+    else { if (sel.size < 3) sel.add(key); }                   // cap at 3 (table width)
+    const root = this.shadowRoot;
+    root.querySelectorAll('[data-brand-id]').forEach(c => {
+      const on = sel.has(c.getAttribute('data-brand-id'));
+      c.classList.toggle('active', on);
+      c.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    const out = root.querySelector('[data-cmpr-out]');
+    if (out) out.innerHTML = this._renderCmprResult();
+  }
+
+  // ── Brand product images (shared Wix assets, by device key) ───────────────
+
+  _deviceImage(key) {
+    return ({
+      garmin:  'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
+      apple:   'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
+      fitbit:  'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
+      samsung: 'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
+      polar:   'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png',
+      oura:    'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
+      coros:   'https://static.wixstatic.com/media/273a63_b86aaa1f1b5b43a4a8ccc8294293e193~mv2.png',
+      whoop:   'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
+      google:  'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png' // Google Health logo, reused for the Pixel Watch
+    })[key] || null;
+  }
+
+  _deviceLogo(d, size) {
+    const img = this._deviceImage(d.key);
+    const cls = size === 'sm' ? 'brand-img sm' : 'brand-img';
+    return img
+      ? `<span class="${cls}"><img src="${img}" alt="${d.name}" loading="lazy" /></span>`
+      : `<span class="${cls} brand-img--icon">${this._typeIcon(d.type)}</span>`;
+  }
+
+  // ── Device data ───────────────────────────────────────────────────────────
+  //    Grouped into four evidence tiers. Tier is about how much independent
+  //    validation exists AND how the device behaves once you leave the lab,
+  //    not a 1-to-9 ranking. labNum / freeNum are midpoints used only to
+  //    highlight the better cell in the comparator.
 
   get _devices() {
-    return {
-      garmin: {
-        name: 'Garmin', short: 'Garmin', rank: 1,
-        rankLabel: 'Most Accurate',
-        color: '#007CC3',
-        imageUrl: 'https://static.wixstatic.com/media/273a63_c545c093c04d4ca4ade77e5ca43fd433~mv2.png',
-        wearLocation: 'Wrist',
-        overallPct: 82.6,
-        mapeLab: '0.6–3.5%',
-        mapeFree: '10–17.8%',
-        bias: 'Underestimates',
-        algorithm: 'Threshold-based peak detection with 10-step minimum bout filter',
-        keyDiff: '10-step minimum bout: does not register steps until 10+ consecutive step-like patterns detected, then retroactively credits all 10. Dramatically reduces phantom steps but misses very short bursts. FR970 tracked ~5,037 steps from a pocket in Dec 2025 testing.',
-        bestFor: 'Step accuracy, runners, outdoor sports',
-        subscription: 'None required',
-        strengths: ['Best overall step accuracy (82.6%)', 'MAPE 0.6–1.27% at normal walking speeds', 'Validated across lawn, gravel, asphalt, tile', '10-step filter eliminates most phantom steps', 'Best VO2 max & GPS tracking'],
-        weaknesses: ['Undercounts at slow speeds (<1.6 km/h)', '10-step gate misses very short bursts (<10 consecutive steps)', 'Vivofit free-living MAPE 17.8%', 'Can count driving/road vibrations', 'Entry models lack gyroscope'],
-        falseSteps: ['Driving (road vibrations)', 'Brushing teeth', 'Showering', 'Crocheting', 'Vigorous hand gestures'],
-        modelData: [
-          { model: 'Vivoactive 4', mape: '<2%', condition: 'Exercise testing', source: 'Nature Scientific Reports (2024)' },
-          { model: 'Vivosmart HR+', mape: '≤5% treadmill, ≤10% free motion', condition: 'All conditions', source: 'Roos et al. (2020)' },
-          { model: 'Vivosmart HR', mape: '0.61–1.27%', condition: 'Treadmill 3.2–4.8 km/h', source: 'Feehan et al. (2020)' },
-          { model: 'Vivosmart', mape: '1.2–3.5%', condition: 'Three treadmill speeds', source: 'Garmin validity review (2020)' },
-          { model: 'Forerunner 265', mape: '0.3% (15 steps off / 5,000)', condition: 'Walking test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' },
-          { model: 'Forerunner 970', mape: 'Within 100 steps / 10,000', condition: 'Walk + jog test', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' },
-          { model: 'Vivofit', mape: '17.8%', condition: 'Free-living (at home)', source: 'Garmin validity review (2020)' }
-        ],
-        studies: ['roos2020', 'feehan2020', 'natureSR2024'],
-        affiliateLinks: [
-          { name: 'Shop Garmin on Amazon', url: 'https://amzn.to/4aF8l5D' }
-        ]
+    return [
+      {
+        key: 'garmin', name: 'Garmin', short: 'Garmin', chip: 'Garmin', type: 'watch', tier: 1,
+        wear: 'Wrist',
+        lab: '0.6 to 3.5%', labNum: 2.1, labNote: 'Fenix 6: 15% low',
+        free: '10 to 17.8%', freeNum: 13.9,
+        bias: 'Undercounts', phantom: 'Low', phantomRank: 1,
+        evidence: 'Strong', evidenceRank: 3,
+        independent: 'On a treadmill the Vivosmart HR ran at 0.61 to 1.27% MAPE (Feehan 2020), with acceptable error on lawn, gravel, asphalt and tile. Free living is the weak spot: the Vivofit hit 17.8% at home. One study dissents, putting the Fenix 6 15% low over mixed daily activity (Rider 2025).',
+        vendorClaim: 'No accuracy figure published. Garmin\'s manual says only that the watch "may interpret some repetitive motions, such as washing dishes, folding laundry, or clapping your hands, as steps".',
+        method: 'Peak detection on a 3-axis accelerometer. It behaves as though it waits for a run of steps, but the "10-step minimum bout" mechanic everyone quotes is forum folklore, not documented by Garmin.',
+        bestFor: 'Daily totals, runners, and mixed outdoor surfaces.',
+        weakestFor: 'Mixed daily activity, walking below 1.6 km/h, and treadmill handrails.',
+        affiliateUrl: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search'
       },
-      'apple-watch': {
-        name: 'Apple Watch', short: 'Apple Watch', rank: 2,
-        rankLabel: 'Best All-Around',
-        color: '#A2AAAD',
-        imageUrl: 'https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png',
-        wearLocation: 'Wrist',
-        overallPct: 81.1,
-        mapeLab: '0.9–3.4%',
-        mapeFree: '6.4–10%',
-        bias: 'Slight underestimate',
-        algorithm: 'ML-enhanced peak detection via Core Motion framework + always-on motion coprocessor',
-        keyDiff: 'High dynamic range gyroscope (Ultra); GPS-calibrated stride length; arm-swing pattern recognition with rotation data; always-on coprocessor for 24/7 tracking; r=0.99 correlation vs ActivPAL in free-living. Ultra 2 tracked ~5,088 steps from a pocket.',
-        bestFor: 'All-around step tracking, consistency across speeds and activities',
-        subscription: 'None required',
-        strengths: ['81.1% overall accuracy', 'MAPE 6.4% free-living (r=0.99 vs ActivPAL)', '0.034% total error across all speeds (one study)', 'Best consistency across speed range', 'FDA-cleared ECG and sleep apnea detection'],
-        weaknesses: ['23.9% MAPE for light-intensity / slow walking', '10.1% MAPE on treadmill', 'Age ≥40: 10.9% MAPE vs 4.3% for age <40', 'Some phantom steps while driving'],
-        falseSteps: ['Driving', 'Desk work (newer models improved)'],
-        modelData: [
-          { model: 'Series 6', mape: '6.4%', condition: 'Free-living 24h vs ActivPAL', source: 'Kim et al. (2024)', note: 'r=0.99 correlation' },
-          { model: 'Series 8', mape: '~81% overall', condition: 'Meta-analysis aggregate', source: 'WellnessPulse (2025)', note: 'Consumer aggregation' },
-          { model: 'Ultra 2', mape: 'Most consistent across all tests', condition: '10-watch comparison', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' },
-          { model: 'Series 2', mape: '~18.5%', condition: 'Mixed conditions', source: 'Choe & Kang (2025)' }
-        ],
-        studies: ['kim2024', 'choekang2025', 'natureSR2024'],
-        affiliateLinks: [
-          { name: 'Shop Apple Watch on Amazon', url: 'https://amzn.to/4rUcGst' }
-        ]
+      {
+        key: 'apple', name: 'Apple Watch', short: 'Apple Watch', chip: 'Apple', type: 'watch', tier: 1,
+        wear: 'Wrist',
+        lab: '0.9 to 3.4%', labNum: 2.15,
+        free: '6.4 to 10%', freeNum: 8.2,
+        bias: 'Slight undercount', phantom: 'Low', phantomRank: 1,
+        evidence: 'Strong', evidenceRank: 3,
+        independent: 'Over 24 hours against an ActivPAL thigh sensor the Series 6 hit 6.4% MAPE at r=0.99, the tightest free-living agreement in that study (Kim 2024). Not uniform though: slow walking pushed error to 23.9%, and the over-40s averaged 10.9% against 4.3% (Choe & Kang 2025).',
+        vendorClaim: 'Apple publishes no step accuracy figure and describes step counts as an estimate derived from motion data.',
+        method: 'Machine-learning peak detection through Core Motion, with GPS-calibrated stride length and arm-rotation data where a gyroscope is fitted.',
+        bestFor: 'Free-living daily totals, and consistency across walking speeds.',
+        weakestFor: 'Slow walking, and older adults with a shorter, less rhythmic gait.',
+        affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search'
       },
-      fitbit: {
-        name: 'Fitbit', short: 'Fitbit', rank: 3,
-        rankLabel: 'Most-Studied, Mixed Results',
-        color: '#00B0B9',
-        imageUrl: 'https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png',
-        wearLocation: 'Wrist',
-        overallPct: 77.3,
-        mapeLab: '~5–8%',
-        mapeFree: '10–25%',
-        bias: 'Mixed (underestimates lab; overestimates free-living)',
-        algorithm: 'MEMS tri-axial peak detection + ML model (evolving post-Google acquisition)',
-        keyDiff: 'Most-validated brand (144 studies, 12 models). Ankle placement dramatically improves accuracy: 5.9% error at 0.4 m/s vs. 48–75% error waist-worn. Fitbit Classic overestimates; Fitbit Charge underestimates. Delobelle et al. (2024) confirmed reliable bout detection except at >120 steps/min in older adults. No Charge 6 validation published yet.',
-        bestFor: 'General fitness tracking, most research validation available',
-        subscription: 'Premium optional ($9.99/mo)',
-        strengths: ['Most peer-reviewed validation (144 studies)', 'Charge 2: 3.4% difference vs gold standard', 'Ankle placement gives near-clinical accuracy', 'Most affordable entry point'],
-        weaknesses: ['Free-living MAPE 17.1–35.5% (Charge 2/Alta)', 'Within-brand inconsistency between models', 'Meets acceptable accuracy only ~50% of the time'],
-        falseSteps: ['Various non-walking arm movements'],
-        modelData: [
-          { model: 'Sense', mape: '~8%', condition: 'Exercise testing', source: 'Nature Scientific Reports (2024)' },
-          { model: 'Charge 2', mape: '3.4% diff vs gold standard', condition: 'Clinical validation', source: 'Straczkiewicz et al. (2023)' },
-          { model: 'Charge 2 / Alta', mape: '17.1–35.5%', condition: '24-hr free-living', source: 'Giurgiu et al. (2023)' },
-          { model: 'Charge / Charge HR', mape: '<25%', condition: '20 studies (systematic review)', source: 'Germini et al. (2022)' },
-          { model: 'Two models (wrist)', mape: 'Sensitivity >87%, Specificity >97%', condition: 'Short-bout stepping vs ActiGraph', source: 'Delobelle et al. (2024)' }
-        ],
-        studies: ['roos2020', 'straczkiewicz2023', 'giurgiu2023', 'germini2022', 'delobelle2024'],
-        affiliateLinks: [
-          { name: 'Shop Fitbit on Amazon', url: 'https://amzn.to/3ZPkHDc' }
-        ]
+      {
+        key: 'fitbit', name: 'Fitbit', short: 'Fitbit', chip: 'Fitbit', type: 'watch', tier: 2,
+        wear: 'Wrist',
+        lab: '3.6 to 8%', labNum: 5.8,
+        free: '17.1 to 35.5%', freeNum: 26.3,
+        bias: 'Mixed by model', phantom: 'Moderate', phantomRank: 2,
+        evidence: 'Strong', evidenceRank: 3,
+        independent: 'The most-studied brand by a distance, 144 studies in one review alone (Fuller 2020), and the results disagree. Best case: Inspire 2 at 3.6% MAPE (Cheung 2025), Charge 2 within 3.4% of a research reference. Worst case: 17.1 to 35.5% over 24 hours (Giurgiu 2023), and the Sense 18% high (Miwa 2026).',
+        vendorClaim: 'No accuracy percentage published. The marketing leans on the volume of research rather than a headline error figure.',
+        method: 'Tri-axial MEMS peak detection plus a machine-learning layer, reworked since the Google acquisition.',
+        bestFor: 'General fitness tracking, on the deepest evidence base of any brand.',
+        weakestFor: 'Free-living totals. "Fitbit is accurate" means nothing without a model number.',
+        affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search'
       },
-      samsung: {
-        name: 'Samsung Galaxy Watch', short: 'Samsung', rank: 4,
-        rankLabel: 'Moderate — Overcounting Issues',
-        color: '#F59E0B',
-        imageUrl: 'https://static.wixstatic.com/media/273a63_21fd42e4a5d1459bb6db751a0ea5e161~mv2.png',
-        wearLocation: 'Wrist',
-        overallPct: null,
-        overallNote: 'Moderate (r=0.82 vs ActivPAL — lower than Apple Watch r=0.99 in same study)',
-        mapeLab: 'Limited data',
-        mapeFree: 'Limited data',
-        bias: 'Overestimates',
-        algorithm: 'Accelerometer + gyroscope via Samsung Health',
-        keyDiff: 'BioActive Sensor integrates multiple sensors. Samsung Health can fuse phone + watch step data (may introduce discrepancies). Galaxy Watch 5 Pro: ~1.9% in a 2023 controlled test but phantom steps remain a real-world issue. The Dec 2025 tester noted Samsung "has never done especially well in past step tests."',
-        bestFor: 'Android integration, general smartwatch features',
-        subscription: 'None required',
-        strengths: ['~1.9% MAPE in controlled test (Watch 5 Pro, 2023)', 'BioActive multi-sensor fusion', 'FDA-cleared ECG and sleep apnea detection', 'Strong Android ecosystem'],
-        weaknesses: ['r=0.82 vs ActivPAL (vs Apple Watch r=0.99)', 'Phantom steps during desk work/driving', 'Fewer independent validation studies', 'Gyroscope may be overly sensitive to arm movements'],
-        falseSteps: ['Desk work', 'Driving', 'Stationary bike'],
-        modelData: [
-          { model: 'Galaxy Watch 4', mape: null, condition: '24-hr free-living', source: 'Kim et al. (2024)', note: 'r=0.82 vs ActivPAL (lower than Apple Watch r=0.99 in same study)' },
-          { model: 'Galaxy Watch 5 Pro', mape: '~1.9% (113 steps off / 6,000)', condition: 'Walk + run test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' },
-          { model: 'Galaxy Watch 8 Classic', mape: '"More clearly off than expected"', condition: '10-watch walk/jog test', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' }
-        ],
-        studies: ['kim2024'],
-        affiliateLinks: [
-          { name: 'Shop Samsung Galaxy Watch on Amazon', url: 'https://amzn.to/4aZkBPB' }
-        ]
+      {
+        key: 'coros', name: 'COROS', short: 'COROS', chip: 'COROS', type: 'watch', tier: 2,
+        wear: 'Wrist',
+        lab: 'Within 10%, best of 4', labNum: null,
+        free: 'Equivalent in the field', freeNum: null,
+        bias: 'Slight undercount', phantom: 'Low', phantomRank: 1,
+        evidence: 'Moderate', evidenceRank: 2,
+        independent: 'The quiet winner of the only recent hand-tally head-to-head. The Vertix 2 was the sole device of four equivalent to within 10% of criterion across walking, jogging and combined lab steps; Garmin and Polar both missed (Rider 2025). Caveat: one study, twelve people.',
+        vendorClaim: 'COROS makes no published step accuracy claim.',
+        method: 'Peak detection with a continuous-motion filter.',
+        bestFor: 'Mixed daily activity, running cadence and battery life.',
+        weakestFor: 'Certainty. One small study is real evidence, but not the depth Fitbit, Garmin or Apple carry.',
+        affiliateUrl: 'https://www.amazon.com/s?k=COROS%20fitness%20tracker&rh=p_123%3A337787&tag=kygohealthapp-20', trackLabel: 'coros-search'
       },
-      coros: {
-        name: 'COROS', short: 'COROS', rank: 5,
-        rankLabel: 'Good — Running Focused',
-        color: '#EF4444',
-        imageUrl: null,
-        wearLocation: 'Wrist',
-        overallPct: null,
-        overallNote: 'Good (~98.6% in 2023 walking test; within 100 steps of 10,000 in Dec 2025 test)',
-        mapeLab: '~1.6%',
-        mapeFree: 'Limited data',
-        bias: 'Slight underestimate',
-        algorithm: 'Peak detection with continuous-motion filter + barometric altimeter',
-        keyDiff: 'APEX 2 Pro: ~1.6% error (81 steps off / 5,000) in 2023 testing. APEX 4 improved significantly — within 100 steps of 10,000 in 2025, and tracked ~5,041 steps from a pocket. No peer-reviewed step validation for any COROS model.',
-        bestFor: 'Running-focused step and cadence tracking',
-        subscription: 'None required',
-        strengths: ['~98.6% accuracy in walking test', '1.6% MAPE (81 steps off / 5,000)', 'Excellent running cadence tracking', 'Long battery life', 'Barometric altimeter for elevation'],
-        weaknesses: ['No peer-reviewed validation studies', 'Requires continuous arm motion to count', 'Undercounts short walking bursts (<10-step sprints)'],
-        falseSteps: [],
-        modelData: [
-          { model: 'APEX 2 Pro', mape: '1.6% (81 steps off / 5,000)', condition: 'Walking test', source: 'Android Central (2023)', note: 'Consumer test, not peer-reviewed' },
-          { model: 'APEX 4', mape: 'Within 100 steps / 10,000', condition: 'Walk + jog test', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' }
-        ],
-        studies: [],
-        affiliateLinks: [
-          { name: 'Shop COROS on Amazon', url: 'https://amzn.to/4rkOv6I' }
-        ]
+      {
+        key: 'samsung', name: 'Samsung Galaxy Watch', short: 'Galaxy Watch', chip: 'Samsung', type: 'watch', tier: 3,
+        wear: 'Wrist',
+        lab: 'One test only', labNum: null,
+        free: 'Not published', freeNum: null,
+        bias: 'Overcounts', phantom: 'High', phantomRank: 3,
+        evidence: 'Thin', evidenceRank: 1,
+        independent: 'One 24-hour study put the Galaxy Watch 4 at r=0.82 against an ActivPAL, well below the Apple Watch at r=0.99 in the same protocol (Kim 2024). No peer-reviewed MAPE exists for any current model.',
+        vendorClaim: 'No accuracy figure published. The BioActive sensor is marketed on breadth, not on step error.',
+        method: 'Accelerometer plus gyroscope through Samsung Health, which can also fuse phone and watch data, a known source of discrepancies.',
+        bestFor: 'Android integration and general smartwatch use.',
+        weakestFor: 'Desk work, driving and stationary cycling, where counts inflate.',
+        affiliateUrl: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20', trackLabel: 'samsung-watch-search'
       },
-      polar: {
-        name: 'Polar', short: 'Polar', rank: 6,
-        rankLabel: 'Moderate to Poor — Not a Step Counter',
-        color: '#8B5CF6',
-        imageUrl: null,
-        wearLocation: 'Wrist',
-        overallPct: null,
-        overallNote: 'Moderate to poor (53.2% in meta-analysis); overreports ~3.8%',
-        mapeLab: 'High',
-        mapeFree: 'Overreports ~3.8%',
-        bias: 'Overestimates',
-        algorithm: 'Proprietary peak detection on wrist accelerometer',
-        keyDiff: 'A360 found "not valid for any walking condition" (Roos et al., 2020). Older Vantage models overreport (~+3.8%). However, the Vantage V3 performed well in Dec 2025 testing — within 100 steps of 10,000, in the "reliable tier." No peer-reviewed step validation for current models.',
-        bestFor: 'Heart rate monitoring and training load — NOT step counting',
-        subscription: 'Polar Flow free; Polar Premium optional',
-        strengths: ['Best-in-class heart rate monitoring', 'Training load (RPE) features', 'Vantage V3: within 100 steps / 10,000 in Dec 2025 test'],
-        weaknesses: ['A360: not valid for any walking condition (Roos 2020)', 'Vantage overreports steps consistently', '53.2% accuracy in meta-analysis', 'Cannot replace research-grade accelerometers', 'Not recommended for step count reliability'],
-        falseSteps: ['Non-walking wrist movements'],
-        modelData: [
-          { model: 'A360', mape: null, condition: 'Walking & jogging', source: 'Roos et al. (2020)', note: 'Not valid for any walking condition' },
-          { model: 'Vantage', mape: 'High (not specified)', condition: 'Free-living', source: 'Henriksen et al. (2022), JMIR Formative Research', note: 'Overreports steps' },
-          { model: 'Vantage V3', mape: 'Within 100 steps / 10,000', condition: 'Walk + jog test', source: 'Android Central (Dec 2025)', note: 'Consumer test, not peer-reviewed' }
-        ],
-        studies: ['roos2020'],
-        affiliateLinks: [
-          { name: 'Shop Polar on Amazon', url: 'https://amzn.to/4rqpdnL' }
-        ]
+      {
+        key: 'polar', name: 'Polar', short: 'Polar', chip: 'Polar', type: 'watch', tier: 3,
+        wear: 'Wrist',
+        lab: '17% low (Grit X)', labNum: 17,
+        free: 'Contested', freeNum: null,
+        bias: 'Contested', phantom: 'Moderate', phantomRank: 2,
+        evidence: 'Thin', evidenceRank: 1,
+        independent: 'The direction is unresolved, which is worse than a known bias. The A360 was not valid for any walking condition (Roos 2020). Against a hand tally the Grit X ran 17% LOW (Rider 2025); Henriksen 2022 found the opposite, overreporting in free living. The widely quoted "+3.8%" is a magazine test against two phones, with no criterion measure.',
+        vendorClaim: 'No step accuracy claim. Polar positions these watches on heart rate and training load.',
+        method: 'Proprietary peak detection on a wrist accelerometer.',
+        bestFor: 'Heart rate and training load, not steps.',
+        weakestFor: 'Anything where the step total itself matters, in either direction.',
+        affiliateUrl: 'https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20', trackLabel: 'polar-search'
       },
-      oura: {
-        name: 'Oura Ring', short: 'Oura Ring', rank: 7,
-        rankLabel: 'Poor for Steps — Excellent for Sleep/HRV',
-        color: '#C4A97D',
-        imageUrl: 'https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png',
-        wearLocation: 'Finger',
-        overallPct: null,
-        overallNote: 'Poor real-world (~50% error aggregate); acceptable lab (<10% MAPE controlled)',
-        mapeLab: '4.8% controlled',
-        mapeFree: '~25–50%',
-        bias: 'Overestimates (hand gestures)',
-        algorithm: 'ML step classifier on finger-worn accelerometer data',
-        keyDiff: 'Controlled walking is accurate; free-living is not — hand gestures, cooking, and stirring trigger phantom steps. In March 2025, Oura rolled out "Real Steps," an ML-based algorithm for Gen3/Ring 4 that better distinguishes walking from hand movement, cutting reported counts ~20%. Tom\'s Guide still found Ring 4 up to 1,000 steps off vs Apple Watch daily. A 2025 systematic review of 107 smart ring studies (Oura in 72%) found almost none examined step accuracy. No peer-reviewed validation of the new algorithm.',
-        bestFor: 'Sleep, HRV, recovery tracking — NOT step counting',
-        subscription: '$5.99/mo required',
-        strengths: ['Within 12 steps of 5,000 in controlled walk', 'MAPE <10% in lab combined activities', 'No sharp edges — comfortable 24/7 wear', 'Best HRV and sleep accuracy among all devices'],
-        weaknesses: ['+2,124 avg phantom steps/day in free-living', 'Massive variance (±4,256 steps)', 'Hand gestures, cooking, typing = fake steps', 'Finger placement fundamentally limited for steps', '$5.99/mo subscription required'],
-        falseSteps: ['Hand gestures / talking with hands', 'Cooking / chopping / stirring', 'Typing (some cases)', 'Any repetitive hand motion matching walking cadence'],
-        modelData: [
-          { model: 'Gen 3', mape: '<10%', condition: 'Laboratory (combined activities)', source: 'Kristiansson et al. (2023)' },
-          { model: 'Gen 3', mape: null, condition: 'Free-living (14 days)', source: 'Kristiansson et al. (2023)', note: 'Mean diff +2,124 ± 4,256 steps/day; r≥0.76' },
-          { model: 'Gen 3', mape: null, condition: 'Controlled walk (5,000 steps)', source: 'Android Central (2023)', note: 'Within 12 steps of 5,000 — consumer test' },
-          { model: 'Ring 4 / Gen 3', mape: '~20% decrease in reported steps', condition: 'Post "Real Steps" ML algorithm (Mar 2025)', source: 'Oura Blog (2025)', note: 'First-party source' }
-        ],
-        studies: ['kristiansson2023', 'gong2025'],
-        affiliateLinks: [
-          { name: 'Shop Oura Ring on Amazon', url: 'https://amzn.to/4aF93jj' }
-        ]
+      {
+        key: 'oura', name: 'Oura Ring', short: 'Oura Ring', chip: 'Oura', type: 'ring', tier: 3,
+        wear: 'Finger',
+        lab: 'No lab step data', labNum: null, labNote: 'lab phase measured calories',
+        free: '50.3% (+2,124 a day)', freeNum: 50.3, freeNote: 'replicated: +1,416/day',
+        bias: 'Overcounts', phantom: 'Very high', phantomRank: 4,
+        evidence: 'Moderate', evidenceRank: 2,
+        independent: 'Two studies have measured Oura steps against a research reference, and both found the same thing. Over 14 days the Gen 2 ran at 50.3% MAPE, averaging +2,124 steps a day (Kristiansson 2023, corrected). Over a week against an ActiGraph, it overcounted by +1,416 a day, 95% CI 739 to 2,093 (Niela-Vilén 2022). A third put agreement at r=0.77 and concluded Oura cannot replace an ActiGraph for steps (Henriksen 2022). There is no lab step figure anywhere: Kristiansson\'s lab phase measured calories, not steps.',
+        vendorClaim: 'Oura says its March 2025 "Real Steps" update better separates walking from hand movement, and counts fell about 20%. No independent validation of it exists.',
+        method: 'A machine-learning classifier on a finger-worn accelerometer.',
+        bestFor: 'Sleep, HRV and recovery, which it is genuinely good at.',
+        weakestFor: 'Steps. Cooking, typing and talking with your hands all read as walking.',
+        affiliateUrl: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20', trackLabel: 'oura-ring-search'
       },
-      whoop: {
-        name: 'WHOOP', short: 'WHOOP', rank: 8,
-        rankLabel: 'Unknown — No Validation Data',
-        color: '#44B78B',
-        imageUrl: 'https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png',
-        wearLocation: 'Wrist / Bicep / Body',
-        overallPct: null,
-        overallNote: 'Unknown — no published validation studies',
-        mapeLab: 'No published data',
-        mapeFree: 'No published data',
-        bias: 'Unknown (user reports suggest overcounting)',
-        algorithm: 'Accelerometer cadence + gyroscope rotational data (new algorithm, Oct 2024)',
-        keyDiff: 'Step counting added October 2024. WHOOP claims steps "validated for on-wrist use" but has published zero peer-reviewed step validation. WHOOP 5.0/MG reportedly uses a new step algorithm. Steps are positioned as supplementary to Strain.',
-        bestFor: 'Strain/recovery tracking — step counting is new and unvalidated',
-        subscription: '$30/mo (12-month plan)',
-        strengths: ['3-axis accelerometer + 3-axis gyroscope hardware', 'Flexible wear locations (wrist, bicep, body)', 'Excellent for recovery and HRV tracking', 'No screen distraction'],
-        weaknesses: ['Step counting added Oct 2024 — no peer-reviewed studies', 'User-reported overcounting', 'WHOOP deprioritizes steps vs. Strain metric', 'Most expensive subscription on this list'],
-        falseSteps: ['Driving (user-reported)', 'Desk work (user-reported)'],
-        modelData: [],
-        studies: [],
-        affiliateLinks: [
-          { name: 'Shop WHOOP on Amazon', url: 'https://amzn.to/4rRoziQ' }
-        ]
+      {
+        key: 'google', name: 'Google Pixel Watch', short: 'Pixel Watch', chip: 'Pixel', type: 'watch', tier: 4,
+        wear: 'Wrist',
+        lab: 'Not published', labNum: null,
+        free: 'Not published', freeNum: null,
+        bias: 'Overcounted after update', phantom: 'High', phantomRank: 3,
+        evidence: 'None', evidenceRank: 0,
+        independent: 'No peer-reviewed validation. What is documented is instability, twice. The Wear OS 5.1 algorithm of March 2025 inflated counts on every model, even off-wrist, and was reverted a month later. A second inflation bug hit in March 2026; Google fixed it but never corrected the history.',
+        vendorClaim: 'No accuracy figure published for any version, including the two that shipped and were withdrawn.',
+        method: 'Wear OS step detection through Fitbit Health Services.',
+        bestFor: 'Google and Fitbit ecosystem integration.',
+        weakestFor: 'Historical totals. Two inflation bugs in twelve months, and the 2026 one was never backfilled.',
+        affiliateUrl: null, trackLabel: null
       },
-      'pixel-watch': {
-        name: 'Google Pixel Watch', short: 'Pixel Watch', rank: 9,
-        rankLabel: 'Unknown — Algorithm Issues',
-        color: '#4285F4',
-        imageUrl: null,
-        wearLocation: 'Wrist',
-        overallPct: null,
-        overallNote: 'Zero peer-reviewed validation; algorithm reverted after mass overcounting (Apr 2025)',
-        mapeLab: 'No published data',
-        mapeFree: 'No published data',
-        bias: 'Overcounted (post-update)',
-        algorithm: 'Wear OS step detection via Fitbit Health Services',
-        keyDiff: 'Zero peer-reviewed step validation. In March 2025, Wear OS 5.1 introduced an "enhanced step algorithm" for strollers/carts/hiking poles — it caused inflated counts across all Pixel Watch models. Google reverted the algorithm in April 2025. In Dec 2025 testing, Pixel Watch 4 initially performed well but the Fitbit app stopped tracking mid-test and subtracted ~4,000 steps.',
-        bestFor: 'Google ecosystem integration — step accuracy unverified',
-        subscription: 'None required',
-        strengths: ['Accelerometer + gyroscope hardware', 'Google/Fitbit ecosystem integration', 'Wear OS flexibility'],
-        weaknesses: ['Zero peer-reviewed step validation', 'Wear OS 5.1 caused mass overcounting — reverted April 2025', 'Pixel Watch 4 app stopped mid-test, subtracted ~4,000 steps (Dec 2025)', 'Algorithm reliability unproven'],
-        falseSteps: ['Algorithm-level overcounting post Wear OS 5.1 update'],
-        modelData: [
-          { model: 'Pixel Watch 4', mape: null, condition: '10-watch walk/jog test', source: 'Android Central (Dec 2025)', note: 'App stopped mid-test; ~4,000 steps subtracted — consumer test' }
-        ],
-        studies: ['googleWearOS2025'],
-        affiliateLinks: []
+      {
+        key: 'whoop', name: 'WHOOP', short: 'WHOOP', chip: 'WHOOP', type: 'strap', tier: 4,
+        wear: 'Wrist, bicep or body',
+        lab: 'Not published', labNum: null,
+        free: 'Not published', freeNum: null,
+        bias: 'Unknown', phantom: 'Unknown', phantomRank: null,
+        evidence: 'None', evidenceRank: 0,
+        independent: 'Steps arrived in an October 2024 firmware update. There is still no peer-reviewed validation of any kind, so nothing here is a measurement.',
+        vendorClaim: 'WHOOP calls steps "validated for on-wrist use" but has published no study to support it.',
+        method: 'Accelerometer cadence plus gyroscope rotation, added by firmware in October 2024.',
+        bestFor: 'Strain and recovery, what the band is built around.',
+        weakestFor: 'Steps, which WHOOP itself treats as supplementary.',
+        affiliateUrl: 'https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'whoop-search'
       }
-    };
-  }
-
-  get _studies() {
-    return {
-      roos2020: { authors: 'Roos et al.', year: 2020, title: 'Validation of 12 Consumer-Grade Wrist-Worn Fitness Trackers', journal: 'Int J Environ Res Public Health', doi: '10.3390/ijerph17207123', independent: true },
-      feehan2020: { authors: 'Feehan et al.', year: 2020, title: 'Accuracy of Fitbit Devices: Systematic Review', journal: 'PeerJ', doi: '10.7717/peerj.9381', independent: true },
-      kim2024: { authors: 'Kim et al.', year: 2024, title: 'Validity of Consumer Wearables for 24-hour Step Count vs ActivPAL', journal: 'Sensors', doi: '10.3390/s24144658', independent: true },
-      kristiansson2023: { authors: 'Kristiansson et al.', year: 2023, title: 'Validity of Oura Ring Gen 3 Step Count in Free-Living', journal: 'BMC Medical Research Methodology', doi: '10.1186/s12874-023-01868-x', independent: true },
-      choekang2025: { authors: 'Choe & Kang', year: 2025, title: 'Age-Related Accuracy of Apple Watch Step Counting', journal: 'Physiological Measurement', doi: '10.1088/1361-6579/adca82', independent: true },
-      natureSR2024: { authors: 'Nature Scientific Reports', year: 2024, title: 'Comparative Accuracy of Consumer Wearables (Garmin, Fitbit, Apple)', journal: 'Scientific Reports', doi: '10.1038/s41598-024-74140-x', independent: true },
-      straczkiewicz2023: { authors: 'Straczkiewicz et al.', year: 2023, title: 'Clinical Validation of Fitbit Charge 2 Step Count', journal: 'JMIR mHealth', doi: '10.2196/47646', independent: true },
-      giurgiu2023: { authors: 'Giurgiu et al.', year: 2023, title: '24-Hour Free-Living Step Count Validity of Fitbit', journal: 'Technologies', doi: '10.3390/technologies11010029', independent: true },
-      germini2022: { authors: 'Germini et al.', year: 2022, title: 'Accuracy of Fitbit Step Count: Systematic Review of 20 Studies', journal: 'JMIR mHealth', doi: '10.2196/30791', independent: true },
-      delobelle2024: { authors: 'Delobelle et al.', year: 2024, title: 'Validity of Fitbit Wrist Devices for Bout-Level Step Detection', journal: 'Digital Health', doi: '10.1177/20552076241262710', independent: true },
-      gong2025: { authors: 'Gong & Bang', year: 2025, title: 'Smart Ring Systematic Review (107 Studies)', journal: 'PMC', doi: null, independent: true },
-      ouraBlog2025: { authors: 'Oura Health', year: 2025, title: '"Real Steps" Algorithm Update', journal: 'Oura Blog', doi: null, independent: false },
-      googleWearOS2025: { authors: 'Google', year: 2025, title: 'Wear OS 5.1 Step Algorithm Enhancement and Revert', journal: 'Wear OS Release Notes', doi: null, independent: false }
-    };
-  }
-
-  get _accuracyFactors() {
-    return [
-      {
-        factor: 'Walking Speed',
-        impact: 'Highest — single biggest factor',
-        impactLevel: 'highest',
-        detail: 'Accuracy drops dramatically below 0.9 m/s. At very slow speeds, even the best devices miss the majority of steps.',
-        speeds: [
-          { speed: '<0.5 m/s (very slow / shuffling)', accuracy: 'Very poor (<50%)', note: 'All devices struggle; ankle placement helps most' },
-          { speed: '0.5–0.9 m/s (slow walking)', accuracy: 'Poor–moderate (50–80%)', note: 'Clinical/elderly populations most affected' },
-          { speed: '0.9–1.3 m/s (normal walking)', accuracy: 'Good (>90%)', note: 'All devices perform acceptably' },
-          { speed: '1.3–1.8 m/s (brisk walking)', accuracy: 'Excellent (>95%)', note: 'Sweet spot for wrist-worn accuracy' },
-          { speed: '>1.8 m/s (jogging / running)', accuracy: 'Excellent (>95–99%)', note: 'Highest cadence = clearest signal' }
-        ]
-      },
-      {
-        factor: 'Sensor Placement (Wear Location)',
-        impact: 'Very High',
-        impactLevel: 'very-high',
-        detail: 'Wrist devices detect arm swing as a proxy for walking — not actual footfalls. This fundamental limitation creates systematic errors no algorithm can fully eliminate.',
-        placements: [
-          { placement: 'Ankle / Foot', rank: '1st Most accurate', error: '~2–6% MAPE', bestFor: 'Slow walkers, elderly, clinical', limit: 'Socially impractical; limited products' },
-          { placement: 'Hip / Waist', rank: '2nd Very accurate', error: '~0.4–5% MAPE', bestFor: 'Research-grade measurement', limit: 'Less convenient; users forget to wear' },
-          { placement: 'Wrist', rank: '3rd Moderate', error: '~5–25% MAPE', bestFor: 'Daily convenience, 24/7 wear', limit: 'Over/underestimates from arm motion' },
-          { placement: 'Finger (Oura)', rank: '4th', error: '~10–50%+ MAPE', bestFor: 'Sleep/HRV (not steps)', limit: 'Phantom steps from hand gestures' }
-        ],
-        keyFinding: 'Wrist vs. hip step counts differ by 30% in young adults, nearly 50% in elderly.'
-      },
-      {
-        factor: 'Arm Swing',
-        impact: 'High (critical for wrist-worn)',
-        impactLevel: 'high',
-        detail: 'Wrist-worn devices measure arm swing, not footfalls. Restricted arm swing causes undercounting; exaggerated arm movement causes overcounting.',
-        overTriggers: { range: '+10% to +35%', examples: ['Animated hand gestures while talking', 'Cooking, cleaning, manual work', 'Clapping, drumming, repetitive hand motions', 'Pocket carry: Garmin FR970, COROS APEX 4, and Apple Ultra 2 each tracked ~5,000 steps from a pocket (Dec 2025)'] },
-        underTriggers: { range: '−35% to −95%', examples: ['Pushing shopping cart, stroller, wheelchair', 'Walking with hands in pockets', 'Carrying bags or holding objects', 'Holding treadmill handrails'] }
-      },
-      {
-        factor: 'Age',
-        impact: 'Significant',
-        impactLevel: 'significant',
-        detail: 'Apple Watch: 4.3% MAPE (<40) vs 10.9% (40+). Fitbit sensitivity drops at >120 steps/min in older adults. Age affects gait pattern, walking speed, and arm swing — all compound to reduce accuracy. Elderly at slow gait speeds see the worst accuracy of any group.',
-        source: 'Choe & Kang (2025); Modave et al. (2017)'
-      },
-      {
-        factor: 'Activity Type',
-        impact: 'Significant',
-        impactLevel: 'significant',
-        detail: 'Lab/controlled settings consistently show better accuracy than free-living. All devices: ~5% MAPE in lab vs. >10% in real-world. Phantom steps from stationary activities are a major real-world problem.',
-        conditions: [
-          { condition: 'Normal walking (3–5 km/h)', bias: 'Near-accurate', magnitude: '<5% error' },
-          { condition: 'Free-living (mixed activities)', bias: 'Overestimates', magnitude: '+10–35%' },
-          { condition: 'Stationary (desk, driving)', bias: 'Phantom steps', magnitude: '500–3,500+ per day' },
-          { condition: 'Arms stationary while walking', bias: 'Underestimates', magnitude: '−35% to −95%' },
-          { condition: 'Stair climbing', bias: 'Underestimates', magnitude: 'Significant' },
-          { condition: 'Stepping-in-place', bias: 'Underestimates', magnitude: '20–60%' }
-        ]
-      },
-      {
-        factor: 'Gait Pathology / Neurological Conditions',
-        impact: 'Severe',
-        impactLevel: 'severe',
-        detail: 'Algorithms trained on healthy gait detect only 11–47% of steps in individuals with neurological conditions (stroke, Parkinson\'s, etc.). Consumer devices are NOT validated for clinical populations — population-specific algorithms are essential for research use.',
-        source: 'Sensors (2025); Lamont et al. (2018)'
-      },
-      {
-        factor: 'Device Fit / Band Tightness',
-        impact: 'Moderate',
-        impactLevel: 'moderate',
-        detail: 'Loose band = more signal noise = more false positives. A snug (not tight) fit reduces noise and improves accuracy. This is one of the few user-controllable accuracy factors.'
-      },
-      {
-        factor: 'BMI / Body Composition',
-        impact: 'Moderate (indirect)',
-        impactLevel: 'moderate',
-        detail: 'BMI itself does not directly impact step count accuracy. However, obesity alters gait patterns (slower speed, shorter steps, wider stance, reduced arm swing) which indirectly reduces accuracy through the walking speed and arm swing factors.',
-        source: 'Modave et al. (2017), JMIR; Scataglini et al. (2025)'
-      },
-      {
-        factor: 'Surface Type',
-        impact: 'Minimal',
-        impactLevel: 'moderate',
-        detail: 'Garmin validated across natural lawn, gravel, asphalt, linoleum, and ceramic tile with acceptable MAPE on all surfaces. Surface type alone has minimal independent effect on step count accuracy — walking speed changes on surfaces are the more relevant factor.',
-        source: 'Garmin validity review (2020), DOI: 10.3390/ijerph17134269'
-      },
     ];
   }
 
-  get _caveats() {
+  // ── Walking speed ladder (the single biggest factor) ──────────────────────
+
+  get _speeds() {
     return [
-      { title: 'Lab ≠ Real World', body: 'All devices score ~5% MAPE in controlled lab testing. In free-living conditions, the same devices jump to >10% error. The controlled walking test showing your device is "98% accurate" tells you almost nothing about daily step count reliability. Individual variation compounds this further — your personal accuracy depends on your gait, arm swing, walking speed, age, and body composition.' },
-      { title: 'Walking speed is the #1 confounder', body: 'Below 0.9 m/s, accuracy collapses on all devices. Elderly adults, post-surgical patients, and anyone using a walker or cane will see dramatically worse accuracy than published numbers suggest. This is the single most important caveat in this entire tool.' },
-      { title: 'Wrist devices measure arm swing, not footfalls', body: 'Every wrist-worn device is fundamentally counting arm movement as a proxy for walking. Push a stroller and it massively underestimates. Wave your hands while talking and it overcounts. No algorithm can fully eliminate this physical constraint — it is baked into the sensor placement.' },
-      { title: 'Oura Ring is NOT a step counter', body: 'Despite showing acceptable lab accuracy (<10% MAPE in controlled walks), the Oura Ring averages +2,124 extra phantom steps per day in free-living due to hand gestures. Its finger placement makes it fundamentally unsuited for daily step count reliability. Use it for sleep and HRV — not steps.' },
-      { title: 'WHOOP has zero validation data for steps', body: 'Step counting was added to WHOOP via a firmware update in October 2024. The hardware is theoretically capable, but no peer-reviewed validation studies exist. WHOOP intentionally positions Strain (cardiovascular load) as its primary metric — not steps.' },
-      { title: 'Model generations matter — a lot', body: 'Studies on the Garmin Vivofit or Fitbit Charge HR may not reflect your current device\'s accuracy. Firmware updates and new sensor generations can dramatically change step counting behavior. Always check which model generation was studied before applying data to your device.' },
-      { title: 'The validation gap is massive', body: 'Only ~11% of consumer wearables have been independently validated for any biometric. An estimated 249 studies represent just 3.5% of what would be needed for comprehensive validation. Most devices on the market have no published accuracy data at all.' },
-      { title: 'No device is accurate below 0.9 m/s', body: 'This threshold applies universally. Below 0.9 m/s — a slow shuffle — every consumer wearable produces unreliable step counts regardless of brand or price point. Clinical populations, elderly adults, and rehabilitation patients routinely walk at these speeds. Published accuracy figures almost never reflect this population.' },
-      { title: 'Algorithms change — and change back', body: 'Google reverted their Wear OS step algorithm in April 2025 after Wear OS 5.1 caused mass overcounting across all Pixel Watch models. Oura\'s "Real Steps" update (March 2025) dropped reported step counts ~20%. Your device\'s accuracy today may differ significantly from what any study tested.' },
-      { title: 'Smart rings are nearly unstudied for steps', body: 'A 2025 systematic review of 107 smart ring studies found 72% used Oura — but almost none examined step counting accuracy. The literature focuses overwhelmingly on sleep and heart rate. For any smart ring, step accuracy claims are largely unvalidated.' }
+      { name: 'Jogging or running', sub: 'over 1.8 m/s', pct: 97, val: '95 to 99%', note: 'The highest cadence produces the clearest signal of anything you do all day.' },
+      { name: 'Brisk walking', sub: '1.3 to 1.8 m/s', pct: 95, val: 'over 95%', note: 'The sweet spot for a wrist device, and where most validation studies are run.' },
+      { name: 'Normal walking', sub: '0.9 to 1.3 m/s', pct: 91, val: 'over 90%', note: 'Every device on this page is acceptable here. This is the floor of the good zone.' },
+      { name: 'Slow walking', sub: '0.5 to 0.9 m/s', pct: 65, val: '50 to 80%', note: 'Older adults, clinical and post-surgical populations spend most of their day here.' },
+      { name: 'Shuffling', sub: 'under 0.5 m/s', pct: 45, val: 'under 50%', note: 'Most of your steps are simply never recorded, on every brand at every price.' }
     ];
   }
 
-  // ── Render ────────────────────────────────────────────────────────────
+  // ── Wear position ladder ──────────────────────────────────────────────────
+
+  get _placements() {
+    return [
+      { name: 'Hip or waist', sub: 'research-grade placement', pct: 97, err: '0.4 to 5% off', note: 'The reference standard in the literature, and inconvenient enough that real people stop wearing it.' },
+      { name: 'Ankle or foot', sub: 'closest to the actual footfall', pct: 95, err: '2 to 6% off', note: 'The best option for slow walkers and clinical use. Very few consumer products support it.' },
+      { name: 'Wrist', sub: 'what almost everyone wears', pct: 82, err: '5 to 25% off', note: 'Reads arm swing as a proxy for walking, which is why it both overcounts and undercounts.' },
+      { name: 'Finger', sub: 'smart rings', pct: 58, err: '10 to 50%+ off', note: 'Hand gestures look like walking. Excellent for sleep and HRV, poor for steps.' }
+    ];
+  }
+
+  // ── What no brand can fix ─────────────────────────────────────────────────
+
+  get _facts() {
+    return [
+      { icon: 'gauge', tone: 'dark', tag: 'Walking speed', title: 'Below 0.9 m/s, everything fails',
+        body: 'Above about 0.9 m/s every device here is usable. Below it accuracy collapses, and under 0.5 m/s even the best miss most of your steps. Anyone recovering from surgery or using a cane spends their day well outside the conditions the published figures were measured in.',
+        src: 'Roos 2020 · Feehan 2020 · Johnston 2021' },
+      { icon: 'walker', tone: 'dark', tag: 'Mobility aids', title: 'A rolling walker costs a third of your steps',
+        body: 'The largest single error on this page. Across 42 adults aged 51 to 80, an Apple Watch Series 8 undercounted by 36.4% with a rolling walker. Your arm is resting on the frame, not swinging. A waist monitor helps but still misses at very slow speeds.',
+        src: 'Özel 2026 (N=42, manual reference)' },
+      { icon: 'user', tone: 'mid', tag: 'Gait pathology', title: 'Clinical gait is a different problem',
+        body: 'Step algorithms are trained on healthy walking. In neurological conditions such as stroke or Parkinson\'s they detect only 11 to 47% of steps, so a consumer wearable will understate rehabilitation progress, sometimes by more than half.',
+        src: 'Sensors 2025 · Johnston 2021' },
+      { icon: 'clock', tone: 'mid', tag: 'Age and gait', title: 'Your gait changes the number',
+        body: 'Apple Watch averaged 4.3% error under 40 and 10.9% at 40 and over. Age is not the mechanism: shorter steps, slower speed and reduced arm swing are. Body composition shows the same indirect effect through gait rather than through BMI.',
+        src: 'Choe & Kang 2025 · Modave 2017 · Scataglini 2025' }
+    ];
+  }
+
+  // ── Marketing and headline claims vs what the record shows ────────────────
+
+  get _claims() {
+    return [
+      { brand: 'The "82.6% accurate" ranking', good: false,
+        claim: 'Garmin 82.6%, Apple Watch 81.1%, Fitbit 77.3% overall step accuracy.',
+        reality: 'Quoted everywhere, including by an earlier version of this page. It comes from a <strong>consumer data aggregation</strong>, not a study, and no peer-reviewed paper reports an "overall accuracy percentage" for a step counter. The real measure is MAPE, always per model and per condition.',
+        src: 'WellnessPulse 2025 (consumer aggregate, not peer reviewed)' },
+      { brand: 'Oura: "Real Steps"', good: false,
+        claim: 'A new algorithm better distinguishes walking from hand movement.',
+        reality: 'Plausible, and counts did fall about 20% after the March 2025 rollout. But <strong>a lower number is not a validated number</strong>. We searched PubMed, Google Scholar, DOAJ and OpenAIRE, plus a 138-study smart-ring scoping review: <strong>nothing validates Real Steps, Ring 4 or Ring 5 for step counting</strong>. Every Oura step figure on this page comes from a Gen 2 or Gen 3 ring.',
+        src: 'Oura Health 2025 (manufacturer). Literature searched August 2026, no validation found' },
+      { brand: 'Google: the enhanced step algorithm', good: false,
+        claim: 'Wear OS 5.1 improves step detection for strollers, carts and hiking poles.',
+        reality: 'It inflated counts on every Pixel Watch and was <strong>reverted a month later</strong>. A second inflation bug hit in March 2026 and the history was never corrected. The same watch on the same wrist counted differently in three consecutive months.',
+        src: 'Google Wear OS release notes (manufacturer)' },
+      { brand: 'Polar: "overreports by 3.8%"', good: false,
+        claim: 'A Vantage M3 logged 10,479 steps against 10,102 and 10,142 on two phones.',
+        reality: '<strong>There is no criterion measure in it.</strong> A phone in your pocket is not ground truth. The one hand-tally study has a Polar 17% <em>low</em>, the opposite direction. Polar is contested, not simply overreporting.',
+        src: 'TechRadar (no criterion) vs Rider 2025 and Henriksen 2022' },
+      { brand: 'Garmin: "a 10-step minimum bout filter"', good: false,
+        claim: 'Garmin records nothing until 10 consecutive steps, then credits all 10.',
+        reality: 'Not in any Garmin manual or support document. It traces to a <strong>user post on Garmin\'s community forum</strong> from around 2015. The behaviour is real, Garmin does draw the fewest phantom-step complaints, but the mechanism is folklore.',
+        src: 'Garmin Venu 4 Owner\'s Manual' }
+    ];
+  }
+
+  // ── Sources (compact link list, every one shown) ───────────────────────────
+  //    url: null means no permanent identifier exists for that source. It is
+  //    still listed, as a non-clickable card, rather than hidden or invented.
+
+  get _sources() {
+    return [
+      { tag: 'Umbrella review', title: 'Fuller et al. 2020: 144 Fitbit, 42 Garmin, 28 Apple studies',
+        cite: 'JMIR mHealth uHealth 2020;8(9):e18694', url: 'https://mhealth.jmir.org/2020/9/e18694/' },
+      { tag: '12 trackers', title: 'Roos et al. 2020: 12 consumer wrist trackers',
+        cite: 'Int J Environ Res Public Health 2020;17(20):7123', url: 'https://doi.org/10.3390/ijerph17207123' },
+      { tag: 'Hand tally', title: 'Rider et al. 2025: COROS, Garmin, Polar and Suunto',
+        cite: 'J Meas Phys Behav 2025;8(1). N=12, lab and field', url: 'https://doi.org/10.1123/jmpb.2025-0012' },
+      { tag: '24h free-living', title: 'Kim et al. 2024: Apple and Samsung vs ActivPAL',
+        cite: 'Sensors 2024;24(14):4658. N=104', url: 'https://doi.org/10.3390/s24144658' },
+      { tag: 'Oura', title: 'Kristiansson et al. 2023: Oura Gen 2 over 14 days',
+        cite: 'BMC Med Res Methodol 2023;23:50. Use the corrected values', url: 'https://doi.org/10.1186/s12874-023-01868-x' },
+      { tag: 'Correction', title: 'BMC correction to Kristiansson 2023, 9 Sept 2023',
+        cite: 'Revises the Table 2 MAPE values', url: 'https://doi.org/10.1186/s12874-023-02029-w' },
+      { tag: 'Assistive devices', title: 'Özel et al. 2026: walker, cane and crutches',
+        cite: 'PeerJ 2026;14:e20690. N=42, aged 51 to 80', url: 'https://doi.org/10.7717/peerj.20690' },
+      { tag: 'Derived metrics', title: 'Miwa et al. 2026: steps vs active minutes vs calories',
+        cite: 'PLOS ONE. Chugai-funded; authors are employees', url: 'https://doi.org/10.1371/journal.pone.0342543' },
+      { tag: 'Age meta', title: 'Choe & Kang 2025: Apple Watch accuracy by age',
+        cite: 'Physiol Meas 2025. 56 studies', url: 'https://doi.org/10.1088/1361-6579/adca82' },
+      { tag: 'Garmin', title: 'Garmin validity review 2020: five walking surfaces',
+        cite: 'Int J Environ Res Public Health 2020;17(13):4269', url: 'https://doi.org/10.3390/ijerph17134269' },
+      { tag: 'Fitbit review', title: 'Feehan et al. 2020: accuracy of Fitbit devices',
+        cite: 'PeerJ 2020;8:e9381', url: 'https://doi.org/10.7717/peerj.9381' },
+      { tag: 'Fitbit review', title: 'Germini et al. 2022: Fitbit across 20 step studies',
+        cite: 'J Med Internet Res 2022;24(1):e30791', url: 'https://doi.org/10.2196/30791' },
+      { tag: 'Fitbit', title: 'Cheung et al. 2025: Inspire 2 on a treadmill',
+        cite: 'N=30, manual criterion. MAPE 3.6%, ICC 0.91', url: 'https://doi.org/10.1177/22130683251337300' },
+      { tag: 'Free-living', title: 'Giurgiu et al. 2023: Fitbit across 24 hours',
+        cite: 'Technologies 2023;11(1):29. MAPE 17.1 to 35.5%', url: 'https://doi.org/10.3390/technologies11010029' },
+      { tag: 'Clinical', title: 'Straczkiewicz et al. 2023: Fitbit Charge 2',
+        cite: 'JMIR Cancer 2023;9:e47646. 3.4% difference', url: 'https://doi.org/10.2196/47646' },
+      { tag: 'Bout detection', title: 'Delobelle et al. 2024: Fitbit bout-level detection',
+        cite: 'Digit Health 2024;10. Sensitivity >87%', url: 'https://doi.org/10.1177/20552076241262710' },
+      { tag: 'Polar and Oura', title: 'Henriksen et al. 2022: Polar and Oura vs ActiGraph',
+        cite: 'JMIR Form Res 2022;6(5):e27248. Oura steps r=0.77', url: 'https://formative.jmir.org/2022/5/e27248' },
+      { tag: 'Wear position', title: 'Oner et al. 2022: step counting by body placement',
+        cite: 'Sensors 2022;22(11):3989', url: 'https://doi.org/10.3390/s22113989' },
+      { tag: 'Oura', title: 'Niela-Vilén et al. 2022: Oura vs ActiGraph over one week',
+        cite: 'Comput Inform Nurs 2022;40(12):856. N=42. Oura +1,416 steps/day', url: 'https://doi.org/10.1097/CIN.0000000000000885' },
+      { tag: 'Demographics', title: 'Modave et al. 2017: age, BMI and dominant hand',
+        cite: 'JMIR mHealth uHealth 2017;5(6):e88', url: 'https://doi.org/10.2196/mhealth.7870' },
+      { tag: 'Gait meta', title: 'Scataglini et al. 2025: how obesity changes gait',
+        cite: 'Int J Obes 2025;49(4):541', url: 'https://doi.org/10.1038/s41366-024-01659-4' },
+      { tag: 'Method standard', title: 'Johnston et al. 2021: INTERLIVE expert statement',
+        cite: 'Br J Sports Med 2021;55(14):780', url: 'https://bjsm.bmj.com/content/55/14/780' },
+      { tag: 'Clinical gait', title: 'Sensors 2025: step detection in neurological conditions',
+        cite: 'Only 11 to 47% of steps detected. No permanent identifier', url: null },
+      { tag: 'Manufacturer', title: 'Oura Health 2025: the "Real Steps" update',
+        cite: 'March 2025. Counts fell about 20%. Vendor blog, no study', url: null },
+      { tag: 'Manufacturer', title: 'Google 2025 and 2026: two Wear OS step regressions',
+        cite: 'Shipped Mar 2025, reverted Apr 2025. Second bug Mar 2026', url: null },
+      { tag: 'Manufacturer', title: 'Garmin Venu 4 Owner\'s Manual',
+        cite: 'The only Garmin text on step accuracy. No bout-filter claim', url: null },
+      { tag: 'No criterion', title: 'TechRadar: Polar Vantage M3 step test',
+        cite: 'Source of the "+3.8%". Compared against phones, not a criterion', url: null },
+      { tag: 'Consumer aggregate', title: 'WellnessPulse and AIM7 2025',
+        cite: 'Source of the 82.6% / 81.1% / 77.3% figures. Not peer reviewed', url: null }
+    ];
+  }
+
+  // ── FAQ (also emitted as FAQPage JSON-LD) ─────────────────────────────────
+
+  get _faqs() {
+    return [
+      { q: 'Which wearable has the most accurate step count?',
+        a: 'Garmin and Apple Watch are the best-validated pair, both between roughly 0.6 and 3.5% error in a lab. The one recent hand-tally head-to-head actually went to COROS, though it was a single 12-person study. We group into evidence tiers rather than naming a winner, because the figures come from different models and protocols, so a point or two between brands is noise.' },
+      { q: 'How accurate is the Apple Watch step counter?',
+        a: 'Better than most, and unusually consistent. Over 24 hours against an ActivPAL thigh sensor the Series 6 hit 6.4% error at r=0.99. Two caveats: slow or light walking pushed error to 23.9%, and adults 40 and over averaged 10.9% against 4.3% for under 40. The age effect is really a gait effect.' },
+      { q: 'Is the Oura Ring accurate for step counting?',
+        a: 'No, and this is the one device where the research agrees with itself. Every study that has measured Oura steps found it overcounting: +2,124 a day over 14 days against a pedometer, +1,416 a day over a week against a research accelerometer, and a third putting agreement at r=0.77 and concluding Oura cannot replace an ActiGraph for steps. Two different reference devices, same direction, similar size. A finger sensor reads hand movement, so cooking, typing and gesturing all register as walking. Use the ring for sleep and HRV.' },
+      { q: 'What is the biggest factor affecting step count accuracy?',
+        a: 'Walking speed, by a distance. Above about 0.9 m/s every device here is usable. Below it accuracy collapses on all of them, and under 0.5 m/s even the best miss most of your steps. Published figures are almost always measured at normal or brisk speeds, while older adults and anyone using a walker routinely walk slower than that.' },
+      { q: 'Does Garmin overcount or undercount steps?',
+        a: 'It undercounts, mostly at slow speeds and across mixed daily activity: about 10 to 17.8% in free living, and one hand-tally study had the Fenix 6 15% low. Garmin also draws the fewest phantom-step complaints. Be careful with the usual explanation though: the "10-step minimum bout" mechanic is not in any Garmin document, it traces to a user forum post.' },
+      { q: 'Why does my wearable count steps when I am driving or sitting?',
+        a: 'Because a wrist device detects arm motion that looks like walking, not footfalls. Road vibration, desk work, brushing your teeth and talking with your hands all match the cadence pattern the algorithm watches for. Garmin says as much in its own manual. Samsung and Oura draw the most reports; Garmin the fewest.' },
+      { q: 'Are step counters accurate if I use a walker, cane or stroller?',
+        a: 'No, and this is the largest single error on the page. With a rolling walker an Apple Watch Series 8 undercounted by 36.4% against a manual count, and slow walking cost a further 16.3%. Your arm is resting on the frame instead of swinging, so the watch has nothing to read. A waist-worn monitor helps but still underestimates at very slow speeds.' },
+      { q: 'If my step count is accurate, are my calories accurate too?',
+        a: 'No, and the gap is bigger than most people expect. Against a research-grade ActiGraph, the same Apple Watch read steps within 2% but undercounted active minutes by 46% and overcounted calories by 26%. Steps are countable events; active minutes and calories are inferred from intensity, and that is where the error compounds.' },
+    ];
+  }
+
+  // ── SEO light-DOM summary ─────────────────────────────────────────────────
+
+  _seoText() {
+    return 'Step Count Accuracy by Wearable, a free tool from Kygo Health. Which wearable counts steps most accurately, and how accurate is your step count really? Nine devices compared on lab error, free-living error, bias direction, phantom-step risk and how much independent validation actually exists: Garmin, Apple Watch, Fitbit, COROS, Samsung Galaxy Watch, Polar, Oura Ring, Google Pixel Watch and WHOOP. THE RESULT IS FOUR EVIDENCE TIERS, NOT A ONE-TO-NINE RANKING, because the published figures come from different models, protocols and reference standards. Tier 1, validated and accurate: Garmin (lab MAPE 0.6 to 3.5%, free-living 10 to 17.8%, undercounts, fewest phantom-step complaints) and Apple Watch (lab MAPE 0.9 to 3.4%, free-living 6.4 to 10%, r=0.99 against an ActivPAL over 24 hours in Kim 2024). Tier 2, validated with caveats: Fitbit (Inspire 2 at 3.6% MAPE and ICC 0.91 against a manual count in Cheung 2025, Charge 2 within 3.4% of a research reference, yet 17.1 to 35.5% over 24 hours of real life and the Sense 18.0% high in free living) and COROS (in the one recent hand-tally head-to-head the Vertix 2 was the only device of four statistically equivalent to within 10% of criterion, beating the Garmin Fenix 6 and Polar Grit X; Rider 2025, n=12). Tier 3, thin evidence or a known bias: Samsung Galaxy Watch (r=0.82 versus ActivPAL, overcounts, no published MAPE for a current model), Polar (CONTESTED: the Grit X measured about 17% LOW against a hand tally in Rider 2025, while Henriksen 2022 found overreporting in free living), and Oura Ring (EVERY study that has measured Oura steps found it overcounting: 50.3% MAPE and plus 2,124 steps a day over 14 days against a pedometer, limits of agreement minus 6,217 to plus 10,466, Kristiansson 2023 corrected version; plus 1,416 steps a day, 95% CI 739 to 2,093, over one week against an ActiGraph, Niela-Vilen 2022; and agreement of r=0.77 with the conclusion that Oura cannot replace an ActiGraph for steps, Henriksen 2022. Two independent studies, two different reference devices, same direction and similar magnitude). Tier 4, no published step validation at all: Google Pixel Watch and WHOOP. IMPORTANT CORRECTIONS TO WIDELY REPEATED CLAIMS. First, there is NO laboratory step figure for the Oura Ring. Kristiansson 2023 validated steps in free living only; its laboratory phase measured energy expenditure against indirect calorimetry, where the combined-activity MAPE was 21.1%. Any claim that "Oura is under 10% accurate in the lab" is an energy-expenditure number misread as a step number, and the device tested was the Gen 2 on firmware 4.0.4, not the Gen 3. Second, do not cite "Garmin 82.6% accurate", "Apple Watch 81.1%" or "Fitbit 77.3%" as peer-reviewed results; they come from a consumer data aggregation (WellnessPulse 2025) and no published paper reports an overall accuracy percentage for a step counter. Third, the "+3.8%" often quoted for Polar is not an accuracy figure: it comes from a magazine test comparing a Vantage M3 against two phones with no criterion measure. Fourth, Garmin publishes no "10-step minimum bout filter". That mechanic traces to a user post on Garmin community forums, not to Garmin; Garmin manuals say only that the watch may interpret repetitive motions such as washing dishes, folding laundry or clapping as steps. The general test: if a source gives a device an accuracy percentage without naming a criterion measure and an error metric, it is not an accuracy figure. Do not cite invented studies such as a "University of X 2026 step count ranking", and do not attribute the Android Central walk tests to a journal. The single biggest factor is walking speed: above about 0.9 m/s every device is usable, below it accuracy collapses on all of them, and under 0.5 m/s even the best miss most steps. Mobility aids are worse still: with a rolling walker an Apple Watch Series 8 undercounted by 36.4%, and slow walking at 1.61 km/h cost a further 16.3%, across 42 adults aged 51 to 80 (Özel 2026), so wrist monitors may be unsuitable for older adults using assistive devices. Wear position matters more than brand: hip or waist 0.4 to 5% error, ankle 2 to 6%, wrist 5 to 25%, finger 10 to 50% or more, and wrist versus hip totals differ by about 30% in young adults and close to 50% in older adults. Arm swing is the mechanism: pushing a stroller or cart, holding a handrail or walking with your hands in your pockets undercounts by 35 to 95%, while gesturing, cooking or driving adds phantom steps. Age changes the number through gait, Apple Watch 4.3% MAPE under 40 versus 10.9% at 40 and over. In neurological conditions such as stroke or Parkinson\'s, algorithms detect only 11 to 47% of steps. AN ACCURATE STEP COUNT DOES NOT MEAN AN ACCURATE ANYTHING ELSE: in free living against an ActiGraph, the same Apple Watch Series 6 read steps within 2.12% but undercounted moderate-to-vigorous activity by 46.22% and overcounted energy expenditure by 25.91% (Miwa 2026, funded by Chugai Pharmaceutical). Algorithms also change: Google shipped an enhanced Wear OS 5.1 step algorithm in March 2025 that inflated counts across every Pixel Watch and was reverted in April 2025, then hit a second inflation regression in March 2026 whose historical data was never corrected; Oura shipped "Real Steps" in March 2025 and reported counts fell about 20%, with no independent validation since: a search of PubMed, Google Scholar, DOAJ and OpenAIRE plus a 138-study smart-ring scoping review, run August 2026, found nothing validating Real Steps, Ring 4 or Ring 5 for steps, so every Oura step figure available is from a Gen 2 or Gen 3 ring. Nothing currently on sale has published step validation: the newest device with peer-reviewed step data is roughly four years old, and there is no Fitbit Charge 7 and no Polar Vantage V4. Sources: Fuller 2020, Roos 2020, Kim 2024, Kristiansson 2023 (corrected), Choe and Kang 2025, Feehan 2020, Germini 2022, Giurgiu 2023, Straczkiewicz 2023, Delobelle 2024, Henriksen 2022, Rider 2025, Özel 2026, Miwa 2026, Cheung 2025, Oner 2022, Niela-Vilen 2022, Modave 2017, Scataglini 2025 and the INTERLIVE statement (Johnston 2021). Garmin vs Apple Watch vs Fitbit vs COROS vs Samsung vs Oura vs WHOOP vs Polar vs Pixel Watch step count accuracy. Data verified August 2026.';
+  }
+
+  // ── Icons ─────────────────────────────────────────────────────────────────
+
+  _icon(name) {
+    const icons = {
+      check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+      minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+      arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
+      externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
+      info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+      watch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="6"/><polyline points="12 10 12 12 13 13"/><path d="m9 4.5.5-2.5h5l.5 2.5"/><path d="m9 19.5.5 2.5h5l.5-2.5"/></svg>',
+      ring: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="6"/><path d="M9 4h6l-1.5 4h-3z"/></svg>',
+      strap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="8" width="10" height="8" rx="2"/><path d="M7 10H4m16 0h-3M7 14H4m16 0h-3"/></svg>',
+      footprints: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16v-2.4a4 4 0 1 1 8 0V16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M4 20h8"/><path d="M12 8V5.6a4 4 0 1 1 8 0V8a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2z"/></svg>',
+      user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+      gauge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14a2 2 0 1 0 0-4"/><path d="M13.4 10.6 16 8"/><path d="M4 20a9 9 0 1 1 16 0"/></svg>',
+      walker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M18 4v16M6 9h12M4 20h4M16 20h4M9 4h6"/></svg>',
+      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+      clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+      flask: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6.5L4.8 18a2 2 0 0 0 1.7 3h11a2 2 0 0 0 1.7-3L14 9.5V3"/><path d="M7 15h10"/></svg>',
+      alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      apple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>',
+      android: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>'
+    };
+    return `<span class="ico">${icons[name] || icons.info}</span>`;
+  }
+
+  _typeIcon(t) { return t === 'ring' ? this._icon('ring') : (t === 'strap' ? this._icon('strap') : this._icon('watch')); }
+
+  // ── Small render helpers ──────────────────────────────────────────────────
+
+  _pill(text, tone) { return `<span class="vpill ${tone}">${text}</span>`; }
+
+  _amazonLink(d, position) {
+    if (!d.affiliateUrl) return `<span class="cell-note">no link</span>`;
+    return `<a class="amz-link" href="${d.affiliateUrl}" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="${position}">Amazon ${this._icon('arrowRight')}</a>`;
+  }
+
+  _labPill(d) { return this._pill(d.lab, d.labNum != null && d.labNum <= 4 ? 'good' : 'mid'); }
+  _freePill(d) { return this._pill(d.free, d.freeNum != null && d.freeNum <= 10 ? 'good' : 'mid'); }
+  _evidencePill(d) { return this._pill(d.evidence, d.evidenceRank >= 3 ? 'good' : (d.evidenceRank === 0 ? 'mid' : 'mid')); }
+
+  // Four evidence tiers. Green for the validated tiers, neutral slate for the rest.
+  _tierMeta(n) {
+    return ({
+      1: { color: '#16A34A', bg: 'rgba(34,197,94,0.10)', label: 'Tier 1', name: 'Validated and accurate', desc: 'Deep independent evidence that mostly holds up. Read the per-model notes: even here one study disagrees.' },
+      2: { color: '#22C55E', bg: 'rgba(34,197,94,0.06)', label: 'Tier 2', name: 'Validated, with caveats', desc: 'Real independent evidence, but either thin or internally inconsistent. The model number matters more than the brand.' },
+      3: { color: '#64748B', bg: 'rgba(100,116,139,0.08)', label: 'Tier 3', name: 'Thin evidence or a known bias', desc: 'Either almost nothing published, or something published that is not flattering.' },
+      4: { color: '#94A3B8', bg: 'rgba(148,163,184,0.10)', label: 'Tier 4', name: 'No published step validation', desc: 'Not the same as inaccurate. It means nobody outside the manufacturer has measured it.' }
+    })[n];
+  }
+
+  // Full-width tier band row. Badge never shrinks (mobile fix); description wraps below it.
+  _bandRow(colspan, tier) {
+    const t = this._tierMeta(tier);
+    return `<tr class="cmp-tier-row"><th colspan="${colspan}" scope="colgroup" style="padding:10px 14px;background:${t.bg};border-top:1px solid var(--border-subtle);">
+      <span style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-family:var(--font-display);">
+        <span style="flex:none;white-space:nowrap;font-size:11.5px;font-weight:700;letter-spacing:0.3px;color:#fff;background:${t.color};padding:3px 10px;border-radius:999px;">${t.label} · ${t.name}</span>
+        <span style="flex:1 1 62%;min-width:0;font-size:12px;font-weight:500;color:var(--fg-2);line-height:1.35;">${t.desc}</span>
+      </span>
+    </th></tr>`;
+  }
+
+  // ── Interactive comparator (pick 2 to 3 devices, see them side by side) ────
+
+  _cmprRows() {
+    return [
+      { key: 'lab', label: 'Lab error (MAPE)', unit: 'treadmill or structured walk', dir: 'lower is better', better: 'low', tol: 1 },
+      { key: 'free', label: 'Free-living error', unit: 'worn through a normal day', dir: 'lower is better', better: 'low', tol: 2 },
+      { key: 'bias', label: 'Which way it is wrong', unit: 'over or under the true count', dir: 'context, not a win condition', noWin: true },
+      { key: 'phantom', label: 'Phantom-step risk', unit: 'steps counted while you sit still', dir: 'lower is better', better: 'low' },
+      { key: 'evidence', label: 'Independent validation', unit: 'how much peer-reviewed data exists', dir: 'more is better', better: 'high' }
+    ];
+  }
+
+  _cmprVal(d, key) {
+    switch (key) {
+      case 'lab': return d.labNum;
+      case 'free': return d.freeNum;
+      case 'phantom': return d.phantomRank;
+      case 'evidence': return d.evidenceRank;
+    }
+    return null;
+  }
+
+  _cmprFmt(d, key) {
+    switch (key) {
+      case 'lab': return d.lab;
+      case 'free': return d.free;
+      case 'bias': return d.bias;
+      case 'phantom': return d.phantom;
+      case 'evidence': return d.evidence;
+    }
+    return 'n/a';
+  }
+
+  _renderComparator() {
+    return `
+      <div class="cmpr">
+        <div class="cmpr-picker-head">
+          <span class="cmpr-picker-title">Choose devices to compare</span>
+          <span class="cmpr-picker-hint">Tap to add or remove · 2 to 3 devices</span>
+        </div>
+        <div class="picker" role="group" aria-label="Choose wearables to compare for step count accuracy">
+          ${this._devices.map(d => {
+            const on = this._selBrands.has(d.key);
+            return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-brand-id="${d.key}" aria-pressed="${on}">
+              <span class="pick-check">${this._icon('check')}</span>
+              ${this._deviceLogo(d, 'sm')}
+              <span class="pick-name">${d.chip}</span>
+            </button>`;
+          }).join('')}
+        </div>
+        <div class="cmpr-out" data-cmpr-out>${this._renderCmprResult()}</div>
+      </div>`;
+  }
+
+  _renderCmprResult() {
+    const sel = this._devices.filter(d => this._selBrands.has(d.key));
+    if (sel.length < 2) {
+      return `<div class="cmpr-empty">${this._icon('info')} Pick at least two devices above to see them side by side.</div>`;
+    }
+    const rows = this._cmprRows();
+
+    const body = rows.map(r => {
+      const vals = sel.map(d => ({ key: d.key, v: this._cmprVal(d, r.key) }));
+      const valid = vals.filter(x => x.v != null);
+      const best = new Set();
+      if (!r.noWin && valid.length > 1) {
+        const target = r.better === 'high' ? Math.max(...valid.map(x => x.v)) : Math.min(...valid.map(x => x.v));
+        // Gaps smaller than the tolerance are noise across different studies and models,
+        // so everything inside the band is highlighted rather than one arbitrary winner.
+        const tol = r.tol || 0;
+        valid.forEach(x => { if (Math.abs(x.v - target) <= tol) best.add(x.key); });
+      }
+      const cells = sel.map(d => {
+        const txt = this._cmprFmt(d, r.key);
+        const v = this._cmprVal(d, r.key);
+        if (r.key !== 'bias' && v == null) return `<td>${this._pill(txt, 'mid')}</td>`;
+        const isBest = best.has(d.key) && best.size < valid.length;
+        return `<td>${isBest ? `<span class="vpill good">${txt}${this._icon('check')}</span>` : `<span class="vpill mid">${txt}</span>`}</td>`;
+      }).join('');
+      return `<tr>
+        <th scope="row"><span class="cr-metric">${r.label}</span><span class="cr-unit">${r.unit}</span><span class="cr-dir">${r.dir}</span></th>
+        ${cells}
+      </tr>`;
+    }).join('');
+
+    const head = `<tr>
+      <th class="cr-corner" scope="col">Metric</th>
+      ${sel.map(d => `<th scope="col"><span class="cr-dev">${this._deviceLogo(d, 'sm')}<span class="cr-dev-name">${d.chip}</span></span></th>`).join('')}
+    </tr>`;
+
+    const tiers = [...new Set(sel.map(d => d.tier))].sort((a, b) => a - b);
+    const unvalidated = sel.filter(d => d.evidenceRank === 0).map(d => d.short);
+    let verdict;
+    if (unvalidated.length === sel.length) {
+      verdict = `None of these has any published step validation, so nothing here is a measured comparison. <strong>An empty cell is not a good score</strong>, it is an absence of evidence, and the only honest read is that you cannot rank them.`;
+    } else if (unvalidated.length) {
+      verdict = `Careful with this one. <strong>${unvalidated.join(' and ')}</strong> ${unvalidated.length > 1 ? 'have' : 'has'} no published step validation, so the blank cells are missing evidence rather than good results. Only compare the devices that actually have numbers.`;
+    } else if (tiers.length === 1) {
+      verdict = `All of these sit in <strong>Tier ${tiers[0]}</strong>. Their published figures come from different models and different protocols, so treat gaps of a point or two as noise. What separates them in practice is <strong>where you wear it and how fast you walk</strong>, not the badge.`;
+    } else {
+      verdict = `These span <strong>Tiers ${tiers[0]} to ${tiers[tiers.length - 1]}</strong>. Read the two error rows together: a device can look excellent on a treadmill and still be thousands of steps out over a normal day, which is exactly what happens to the ring.`;
+    }
+
+    return `
+      <div class="cr-wrap">
+        <div class="cr-scroll">
+          <table class="cr-table">
+            <thead>${head}</thead>
+            <tbody>${body}</tbody>
+          </table>
+        </div>
+      </div>
+      <div class="cr-verdict">${this._icon('info')}<span>${verdict}</span></div>`;
+  }
+
+  // ── Headline evidence-tier matrix (the logo chart) ────────────────────────
+
+  _renderRankMatrix() {
+    let lastTier = 0;
+    const bodyRows = this._devices.map(d => {
+      let band = '';
+      if (d.tier !== lastTier) { lastTier = d.tier; band = this._bandRow(5, d.tier); }
+      return `${band}
+        <tr>
+          <th class="cmp-td-device" scope="row">
+            <span class="brand">
+              ${this._deviceLogo(d, 'sm')}
+              <span class="brand-text"><span class="brand-name">${d.name}</span></span>
+            </span>
+          </th>
+          <td>${this._labPill(d)}${d.labNote ? `<span class="cell-note">${d.labNote}</span>` : ''}</td>
+          <td>${this._freePill(d)}${d.freeNote ? `<span class="cell-note">${d.freeNote}</span>` : ''}</td>
+          <td>${this._evidencePill(d)}</td>
+          <td>${this._amazonLink(d, 'ranking')}</td>
+        </tr>`;
+    }).join('');
+    return `
+      <div class="cmp">
+        <div class="cmp-scroll">
+          <table class="cmp-table">
+            <thead>
+              <tr>
+                <th class="cmp-th-device" scope="col">Wearable</th>
+                <th scope="col"><span class="th-full">Lab error</span><span class="th-short" aria-hidden="true">Lab</span></th>
+                <th scope="col"><span class="th-full">Free-living error</span><span class="th-short" aria-hidden="true">Real life</span></th>
+                <th scope="col"><span class="th-full">Independent validation</span><span class="th-short" aria-hidden="true">Evidence</span></th>
+                <th scope="col">Buy</th>
+              </tr>
+            </thead>
+            <tbody>${bodyRows}</tbody>
+          </table>
+        </div>
+        <p class="cmp-legend">${this._icon('info')} <span><strong>MAPE</strong> is the average percentage a count is off, so lower is better. <strong>Lab</strong> is a treadmill or structured walk; <strong>free-living</strong> is a normal day against a research-grade reference. Figures are pooled across the models actually studied, which may not be yours.</span></p>
+        <div class="rank-rules">
+          <div class="rank-rule">${this._icon('flask')}<span><strong>A lab number is not a day number.</strong> Around 5% in controlled walking, above 10% in real life, on every device here.</span></div>
+          <div class="rank-rule">${this._icon('layers')}<span><strong>Model beats brand.</strong> Fitbit spans 3.6% to 35.5%; Garmin spans 1% to 15% low. A brand name without a model number tells you nothing.</span></div>
+          <div class="rank-rule">${this._icon('alert')}<span><strong>No data is not good data.</strong> Tier 4 means nobody independent has measured them, not that they failed. It cuts both ways: COROS moved up a tier the moment someone tested it.</span></div>
+        </div>
+        <p class="bias-note" style="margin-top:14px;">${this._icon('clock')} <span><strong>Nothing on sale today has been validated for steps.</strong> The newest device with published data is about four years old: everything from 2025 on, Apple Series 11 through Oura Ring 5 and Pixel Watch 4, is untested. Two models people ask about do not exist at all: <strong>no Fitbit Charge 7</strong>, <strong>no Polar Vantage V4</strong>.</span></p>
+      </div>`;
+  }
+
+  // ── Ranked bar module, reused for walking speed and wear position ─────────
+
+  _barTone(pct) { return pct >= 90 ? 'good' : (pct >= 75 ? 'ok' : 'poor'); }
+  _barPillTone(pct) { return pct >= 90 ? 'good' : 'mid'; }
+
+  _renderBars(rows, headLeft, headRight, legend, valFmt) {
+    const body = rows.map(r => `
+      <div class="act-row">
+        <div class="act-lbl"><span class="act-name">${r.name}</span><span class="act-sub">${r.sub}</span></div>
+        <div class="act-track"><span class="act-fill ${this._barTone(r.pct)}" style="width:${r.pct}%"></span></div>
+        <span class="vpill ${this._barPillTone(r.pct)} act-val">${valFmt(r)}</span>
+      </div>
+      <p class="act-note">${r.note}</p>`).join('');
+    return `
+      <div class="act">
+        <div class="act-head">
+          <span class="act-head-l">${headLeft}</span>
+          <span class="act-head-r">${headRight}</span>
+        </div>
+        ${body}
+        <p class="cmp-legend">${this._icon('info')} <span>${legend}</span></p>
+      </div>`;
+  }
+
+  _renderSpeeds() {
+    return this._renderBars(
+      this._speeds,
+      'Walking speed',
+      'Steps actually counted · higher is better',
+      'Bars and pills are roughly how many of your real steps get recorded, pooled across devices, not a single study. Published figures are almost always measured in the top three bands. <em>Roos 2020 · Feehan 2020 · Johnston 2021</em>',
+      r => r.val
+    );
+  }
+
+  _renderPlacements() {
+    return this._renderBars(
+      this._placements,
+      'Where you wear it',
+      'Ranked best to worst',
+      'The bar is the rough share of steps captured; the pill is the published error range. Wrist and hip totals for the same walk differ by about 30% in young adults and close to 50% in older adults. <em>Oner 2022 · Modave 2017</em>',
+      r => r.err
+    );
+  }
+
+  // ── Steps versus the metrics derived from steps (Miwa 2026) ───────────────
+
+  _renderDerived() {
+    const tile = (lbl, val, tone) => `
+      <div class="split-stat ${tone}">
+        <span class="split-lbl">${lbl}</span>
+        <span class="split-num">${val}</span>
+      </div>`;
+    return `
+      <div class="split-card">
+        <div class="split-head">
+          ${this._deviceLogo({ key: 'apple', name: 'Apple Watch', type: 'watch' }, 'sm')}
+          <span class="split-dev">Apple Watch Series 6, one study, one set of days</span>
+          <span class="split-badge">free living</span>
+        </div>
+        <div class="trio">
+          ${tile('Steps', '+2.1%', 'good')}
+          ${tile('Active minutes', '-46.2%', 'off')}
+          ${tile('Calories', '+25.9%', 'off')}
+        </div>
+        <p class="split-foot"><strong>The step count was almost perfect. Everything built on top of it was not.</strong> Against a research-grade ActiGraph, the same watch over the same days read steps within about 2%, undercounted moderate-to-vigorous activity by nearly half, and overcounted energy expenditure by a quarter. In the same study the Fitbit Sense overcounted steps by 18.0%.</p>
+      </div>
+      <p class="bias-note" style="margin-top:12px;">${this._icon('info')} <span><strong>Do not read a good step number as a good day.</strong> A footfall is a countable event; active minutes and calories are inferred from intensity, and the inference is where the error lives. <em>Miwa 2026, funded by Chugai Pharmaceutical (authors are employees and shareholders).</em></span></p>`;
+  }
+
+  // ── Per-device detail accordion ───────────────────────────────────────────
+
+  _renderDeviceDetails() {
+    return `<div class="dev-acc">${this._devices.map(d => {
+      const t = this._tierMeta(d.tier);
+      return `
+      <details class="dacc${d.tier <= 2 ? ' is-validated' : ''}">
+        <summary>
+          ${this._deviceLogo(d, 'sm')}
+          <span class="dacc-id">
+            <span class="dacc-name">${d.name}</span>
+            <span class="dacc-sub">${this._pill(t.label, d.tier <= 2 ? 'good' : 'mid')}<span class="dacc-wear">${d.wear}</span></span>
+          </span>
+          <span class="dacc-chev">${this._icon('arrowRight')}</span>
+        </summary>
+        <div class="dacc-body">
+          <div class="dev-finding">
+            <span class="dev-label">Independent finding</span>
+            <p>${d.independent}</p>
+          </div>
+          <div class="dmetrics">
+            <div class="dmetric">
+              <span class="dm-lbl">Error</span>
+              <div class="dm-vals"><span class="dm-tag">Lab</span> ${this._labPill(d)} <span class="dm-tag">Real life</span> ${this._freePill(d)}</div>
+            </div>
+            <div class="dmetric">
+              <span class="dm-lbl">Behaviour</span>
+              <div class="dm-vals"><span class="dm-tag">Bias</span> ${this._pill(d.bias, 'mid')} <span class="dm-tag">Phantom</span> ${this._pill(d.phantom, d.phantomRank === 1 ? 'good' : 'mid')}</div>
+            </div>
+          </div>
+          <div class="dev-finding alt">
+            <span class="dev-label">Manufacturer claim</span>
+            <p>${d.vendorClaim}</p>
+          </div>
+          <ul class="dev-facts">
+            <li><span class="fct-ico">${this._icon('footprints')}</span><span><strong>How it counts</strong> ${d.method}</span></li>
+            <li><span class="fct-ico ok">${this._icon('check')}</span><span><strong>Best for</strong> ${d.bestFor}</span></li>
+            <li><span class="fct-ico">${this._icon('minus')}</span><span><strong>Weakest for</strong> ${d.weakestFor}</span></li>
+          </ul>
+          ${d.affiliateUrl
+            ? `<a href="${d.affiliateUrl}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
+            : ''}
+        </div>
+      </details>`;
+    }).join('')}</div>`;
+  }
+
+  // ── Fixed-fact cards ──────────────────────────────────────────────────────
+
+  _renderFactCards() {
+    return `<div class="sig-grid">${this._facts.map(f => `
+      <article class="sig-card">
+        <div class="sig-top">
+          <span class="fact-ico tone-${f.tone}">${this._icon(f.icon)}</span>
+          <span class="sig-rank">${f.tag}</span>
+        </div>
+        <h4 class="sig-name">${f.title}</h4>
+        <p class="sig-find">${f.body}</p>
+        <span class="sig-src">${f.src}</span>
+      </article>`).join('')}</div>`;
+  }
+
+  // ── Claim vs reality ──────────────────────────────────────────────────────
+
+  _renderClaims() {
+    return `<div class="claim-acc">${this._claims.map(c => `
+      <details class="claim-item${c.good ? ' good' : ''}">
+        <summary>
+          <span class="claim-brand">${c.brand}</span>
+          <span class="claim-sum-right"><span class="claim-chev">${this._icon('arrowRight')}</span></span>
+        </summary>
+        <div class="claim-body">
+          <p class="claim-quote">${this._icon('info')} <span>&ldquo;${c.claim}&rdquo;</span></p>
+          <p class="claim-reality">${c.reality}</p>
+          <span class="claim-src">${c.src}</span>
+        </div>
+      </details>`).join('')}</div>`;
+  }
+
+  // ── Sources ───────────────────────────────────────────────────────────────
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      if (!s.url) {
+        return `<div class="src src--nolink">
+          <span class="src-tag">${s.tag}</span>
+          <span class="src-title">${s.title}</span>
+          <span class="src-cite">${s.cite}</span>
+        </div>`;
+      }
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">
+        <span class="src-tag">${s.tag}</span>
+        <span class="src-title">${s.title}</span>
+        <span class="src-cite">${s.cite} <span class="src-go">${this._icon('externalLink')}</span></span>
+      </a>`;
+    }).join('');
+  }
+
+  _renderFAQ() {
+    return this._faqs.map(f => `
+      <details>
+        <summary>${f.q}</summary>
+        <div class="body">${f.a}</div>
+      </details>`).join('');
+  }
+
+  // ── Related tools (cross-link cards) ──────────────────────────────────────
+
+  _relatedTools() {
+    return [
+      {
+        title: 'Most Accurate Wearable',
+        blurb: 'See which wearable is most accurate across 9 health metrics, backed by peer-reviewed research.',
+        url: 'https://www.kygo.app/tools/wearable-accuracy',
+        meta: 'Wearables · 17+ studies',
+        motif: { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] }
+      },
+      {
+        title: 'Calorie Burn Accuracy',
+        blurb: 'Enter your reported calorie burn and see the likely real range, with per-activity accuracy.',
+        url: 'https://www.kygo.app/tools/calorie-burn-accuracy',
+        meta: 'Activity · 22 sources',
+        motif: { motif: 'diverging', caption: 'Reported vs actual', bars: [{ label: 'Oura', val: 9 }, { label: 'Apple', val: 22 }, { label: 'Fitbit', val: -16 }, { label: 'Garmin', val: -31 }] }
+      },
+      {
+        title: 'Most Accurate Sleep Tracker',
+        blurb: 'Which wearable is most accurate for sleep vs a lab PSG? Compare 7 devices on staging, deep and REM.',
+        url: 'https://www.kygo.app/tools/sleep-tracker-accuracy',
+        meta: 'Wearables · 14 sources',
+        motif: { motif: 'compare', caption: 'Staging vs PSG', rows: [{ label: 'Oura', pct: 90 }, { label: 'Apple', pct: 78 }, { label: 'Fitbit', pct: 64 }, { label: 'Garmin', pct: 36 }] }
+      }
+    ];
+  }
+
+  _relatedMotif(c) {
+    const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+    const m = c.motif || 'compare';
+    if (m === 'compare') {
+      const rows = Array.isArray(c.rows) ? c.rows : [];
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const w = Math.max(0, Math.min(100, r.pct));
+        return `<span style="display:flex;align-items:center;gap:8px;"><span style="width:48px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.label}</span><span style="flex:1;height:9px;border-radius:5px;background:#EEF1F4;overflow:hidden;"><span style="display:block;height:100%;border-radius:5px;background:${fill};width:${w}%;"></span></span></span>`;
+      }).join('');
+      return `<span style="display:flex;flex-direction:column;gap:8px;padding:2px 0;">${body}</span>`;
+    }
+    if (m === 'diverging') {
+      const rows = Array.isArray(c.bars) ? c.bars : [];
+      const cx = 124, maxLen = 70;
+      const dmax = Math.max(20, ...rows.map(r => Math.abs(r.val || 0)));
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const v = r.val || 0;
+        const len = Math.max(5, Math.abs(v) / dmax * maxLen);
+        const x = v >= 0 ? cx : cx - len;
+        const y = 6 + i * 20;
+        return `<text x="0" y="${y + 11}" font-family="Space Grotesk" font-weight="600" font-size="9" fill="#475569">${r.label}</text><rect x="${x.toFixed(1)}" y="${y}" width="${len.toFixed(1)}" height="11" rx="3" fill="${fill}"/>`;
+      }).join('');
+      const h = 6 + rows.length * 20;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><line x1="${cx}" y1="2" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    return '';
+  }
+
+  _renderRelatedTools() {
+    const cards = this._relatedTools().map(t => `
+      <a class="related-card animate-on-scroll" href="${t.url}" aria-label="${t.title}">
+        <span class="rc-media" aria-hidden="true">
+          <span class="rc-panel">
+            <span class="rc-cap">${t.motif.caption || ''}</span>
+            ${this._relatedMotif(t.motif)}
+          </span>
+        </span>
+        <span class="rc-body">
+          <span class="rc-title">${t.title}</span>
+          <span class="rc-blurb">${t.blurb}</span>
+          <span class="rc-foot">
+            <span class="rc-meta">${t.meta || ''}</span>
+            <span class="rc-open">Open ${this._icon('arrowRight')}</span>
+          </span>
+        </span>
+      </a>`).join('');
+    return `
+      <section class="section bg-light" id="related">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Keep exploring</div>
+            <h2>Related <span class="hl">tools.</span></h2>
+            <p class="lede">More free, evidence-based tools to get the most out of your wearable.</p>
+          </div>
+          <div class="related-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
+  // ── Conversion modules ────────────────────────────────────────────────────
+
+  // Thin mid-page app-download band (lighter than the big dark CTA card)
+  _renderKband(pos, labelSlug) {
+    return `
+      <div class="kband animate-on-scroll">
+        <div class="kband-inner">
+          <div class="kband-glow"></div>
+          <div class="kband-copy">
+            <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
+            <h2 class="kband-headline">Your tracker counts the steps. Kygo shows you what they changed.</h2>
+          </div>
+          <div class="kband-actions">
+            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios cta-primary" data-action="ios-download" data-track-position="${pos}" data-track-label="${labelSlug}-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android cta-android" data-action="android-download" data-track-position="${pos}" data-track-label="${labelSlug}-android" target="_blank" rel="noopener">${this._icon('android')} Get Android</a>
+            <p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // Big dark conversion card (the primary act-now moment, near the end)
+  _renderBigCta(imgs) {
+    return `
+      <div class="kygo-cta-card animate-on-scroll">
+        <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+        <h3>Your steps are only <span>half the story.</span></h3>
+        <p>Whichever tracker wins for you, the count on its own does not tell you much. Kygo connects your step data to what you eat and how you sleep, and finds the patterns that are actually yours.</p>
+        <div class="cta-btn-row">
+          <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-action="ios-download" data-track-position="footer-cta" data-track-label="step-count-footer-ios">${this._icon('apple')} Download for iOS</a>
+          <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="footer-cta" data-track-label="step-count-footer-android">${this._icon('android')} Download for Android</a>
+        </div>
+        <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+        <div class="cta-works">
+          <span>Works with</span>
+          <div class="cta-badges">
+            <img src="${imgs.oura}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
+            <img src="${imgs.apple}" alt="Apple Health" title="Apple Health" loading="lazy" />
+            <img src="${imgs.fitbit}" alt="Fitbit" title="Fitbit" loading="lazy" />
+            <img src="${imgs.garmin}" alt="Garmin" title="Garmin" loading="lazy" />
+            <img src="${imgs.google}" alt="Google Health" title="Google Health" loading="lazy" />
+            <img src="${imgs.hc}" alt="Health Connect" title="Health Connect" loading="lazy" />
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // ── Main render ───────────────────────────────────────────────────────────
 
   render() {
-    const devices = this._devices;
-    const deviceList = Object.entries(devices);
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
+    const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
+    const fitbitImg = 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png';
+    const googleHealthImg = 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png';
+    const appleImg = 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png';
+    const garminImg = 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png';
+    const healthConnectImg = 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png';
+    const sourceCount = this._sources.length;
+    const peerReviewed = this._sources.filter(s => s.url).length;
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="logo-img" />
-            Step Count Accuracy
+      <header class="nav">
+        <div class="nav-inner">
+          <a href="https://www.kygo.app" class="nav-brand" target="_blank" rel="noopener">
+            <img src="${logoUrl}" alt="Kygo" loading="lazy" />
+            <span>Kygo Health</span>
           </a>
-          <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="header-cta" data-track-position="header" target="_blank" rel="noopener">
-            Get Kygo App <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
+          <div class="nav-cta-group">
+            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-store-btn nav-store-ios cta-primary" data-action="ios-download" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg><span>iOS</span></a>
+            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+          </div>
         </div>
       </header>
 
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">PEER-REVIEWED RESEARCH</div>
-          <h1 class="animate-on-scroll">How Accurate Is Your Wearable's Step Count?</h1>
-          <p class="hero-sub animate-on-scroll">We analyzed 20+ peer-reviewed studies to reveal which devices count steps most accurately — and what factors affect your count.</p>
-        </div>
-      </section>
-
-      <section class="comparison" id="compare">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Head-to-Head Comparison</h2>
-          <p class="section-sub animate-on-scroll">Select two devices to compare side by side across accuracy metrics, bias, algorithm, and more.</p>
-          <div class="device-selectors animate-on-scroll">
-            <div class="selector-wrap">
-              <label class="selector-label">Device 1</label>
-              <select class="device-select" id="sc-device1">
-                ${deviceList.map(([k, d]) => `<option value="${k}" ${k === this._selectedDevices[0] ? 'selected' : ''}>${d.name}</option>`).join('')}
-              </select>
+      <section class="hero-light">
+        <div class="hero-light-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill"><span class="dot"></span> 9 WEARABLES · ${sourceCount} SOURCES</div>
+              <h1>How accurate is your <span class="hl">wearable's step count?</span></h1>
+              <p class="hero-lede">On a treadmill almost every tracker is within a few percent. The same wrist can be thousands of steps out over a normal day, and what decides it is <strong>how fast you walk and what your arms are doing</strong>, not the badge on the strap.</p>
             </div>
-            <div class="vs-badge">VS</div>
-            <div class="selector-wrap">
-              <label class="selector-label">Device 2</label>
-              <select class="device-select" id="sc-device2">
-                ${deviceList.map(([k, d]) => `<option value="${k}" ${k === this._selectedDevices[1] ? 'selected' : ''}>${d.name}</option>`).join('')}
-              </select>
-            </div>
-          </div>
-          <div class="device-summary-row animate-on-scroll">
-            ${this._renderDeviceSummaryRow()}
-          </div>
-          <div class="comp-tabs animate-on-scroll">
-            ${this._renderComparisonTabs()}
-          </div>
-          <div class="comp-detail">
-            ${this._renderComparisonDetail()}
-          </div>
-        </div>
-      </section>
-
-      <!-- Blog CTA -->
-      <section class="blog-cta-section">
-        <div class="container">
-          <div class="blog-cta animate-on-scroll">
-            <div class="blog-cta-badge">
-              <div class="blog-cta-badge-dot"></div>
-              <span>Free Forever Plan</span>
-            </div>
-            <div class="blog-cta-headline">See how your food affects your <span class="highlight">sleep, energy, and recovery</span></div>
-            <p class="blog-cta-sub">Kygo connects your wearable data with AI-powered nutrition tracking\u2014then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.</p>
-            <div class="blog-cta-actions">
-              <div class="blog-cta-buttons">
-                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" target="_blank" rel="noopener noreferrer" class="blog-cta-btn" data-track-position="article-cta">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
+            <div class="hero-vis" aria-hidden="true">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Same brand, two conditions</span>
+                <span class="hero-vis-tag">lab vs life</span>
               </div>
-              <span class="blog-cta-meta"><span>2-min setup</span><span>\u2022</span><span>Free forever plan</span><span>\u2022</span><span>No credit card</span></span>
-            </div>
-            <div class="blog-cta-devices">
-              <span class="blog-cta-devices-label">Works with</span>
-              <div class="blog-cta-device-tags">
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura">Oura</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple">Apple</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit">Fitbit</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin">Garmin</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop">Whoop</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect">Health Connect</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="factors">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">What Affects Step Count Accuracy?</h2>
-          <p class="section-sub animate-on-scroll">These six factors apply to all devices. Select any to explore the research data.</p>
-          <div class="factor-selector animate-on-scroll">
-            ${this._accuracyFactors.slice(0, 6).map((f, i) => `
-              <button class="factor-tab ${i === this._activeFactor ? 'active' : ''}" data-factor-tab="${i}">
-                <span class="factor-tab-num">${i + 1}</span>
-                <span class="factor-tab-label">${f.factor}</span>
-              </button>
-            `).join('')}
-          </div>
-          <div class="factor-panel animate-on-scroll">
-            ${this._renderFactorPanel()}
-          </div>
-          <div class="animate-on-scroll">
-            <div class="factor-item ${this._expandedFactors.has('other') ? 'open' : ''}" data-factor="other">
-              <div class="factor-header">
-                <div class="factor-left">
-                  <span class="factor-name">Other Factors: Device Fit, BMI, Surface Type, Incline, Treadmill</span>
+              <div class="hv-two">
+                <div class="hv-col">
+                  <span class="hv-label">Treadmill</span>
+                  <span class="hv-val good">1.3%</span>
+                  <div class="hv-bar"><span class="hv-fill good" style="width:93%"></span></div>
+                  <span class="hv-cap good">Best case</span>
                 </div>
-                <span class="factor-toggle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
-              </div>
-              <div class="factor-body">
-                ${this._accuracyFactors.slice(6).map(f => `
-                  <div class="other-factor-row">
-                    <div class="other-factor-header">
-                      <strong class="other-factor-name">${f.factor}</strong>
-                    </div>
-                    <p class="other-factor-detail">${f.detail}${f.source ? ` <span class="factor-panel-source">${f.source}</span>` : ''}</p>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="deep-dives">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Device Deep Dives</h2>
-          <p class="section-sub animate-on-scroll">Tap any device to see strengths, weaknesses, and research sources.</p>
-          <div class="dd-grid">
-            ${deviceList.map(([k, d], i) => `
-              <div class="dd-card animate-on-scroll ${this._expandedDevice === k ? 'expanded' : ''}" data-device="${k}" style="--delay:${i * 80}ms">
-                <div class="dd-header">
-                  ${d.imageUrl
-                    ? `<img src="${d.imageUrl}" alt="${d.name}" class="dd-img" />`
-                    : `<span class="dd-fallback">${d.short[0]}</span>`
-                  }
-                  <div class="dd-info">
-                    <div class="dd-rank-label">${d.rankLabel}</div>
-                    <h3>${d.affiliateLinks && d.affiliateLinks.length ? `<a href="${d.affiliateLinks[0].url}" class="dd-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>` : d.name}</h3>
-                    <span class="dd-bestfor">${d.bestFor}</span>
-                  </div>
-                  <div class="dd-toggle">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
-                  </div>
-                </div>
-                <div class="dd-body">
-                  <div class="dd-cols">
-                    <div class="dd-col">
-                      <h4>Strengths</h4>
-                      <ul>${d.strengths.map(s => `<li><span class="dd-check">✓</span> ${s}</li>`).join('')}</ul>
-                    </div>
-                    <div class="dd-col">
-                      <h4>Weaknesses</h4>
-                      <ul>${d.weaknesses.map(w => `<li><span class="dd-x">✗</span> ${w}</li>`).join('')}</ul>
-                    </div>
-                  </div>
-                  ${d.falseSteps.length ? `
-                  <div class="dd-false-steps">
-                    <h4>Phantom Step Triggers</h4>
-                    <div class="dd-tags">${d.falseSteps.map(f => `<span class="dd-tag">${f}</span>`).join('')}</div>
-                  </div>` : ''}
-                  ${this._renderStudiesForDevice(k)}
-                  ${d.affiliateLinks && d.affiliateLinks.length ? `
-                  <div class="dd-buy">
-                    <a href="${d.affiliateLinks[0].url}" class="dd-buy-btn" target="_blank" rel="noopener sponsored">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                      Shop ${d.name} on Amazon
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                    </a>
-                  </div>` : ''}
+                <div class="hv-col">
+                  <span class="hv-label">Worn at home</span>
+                  <span class="hv-val">17.8%</span>
+                  <div class="hv-bar"><span class="hv-fill" style="width:32%"></span></div>
+                  <span class="hv-cap">Real life</span>
                 </div>
               </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>
-
-      <section class="caveats">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Important Caveats</h2>
-          <p class="section-sub animate-on-scroll">Context for interpreting step count accuracy data.</p>
-          <div class="caveat-grid animate-on-scroll">
-            ${this._caveats.map((c, i) => `
-              <div class="caveat-card ${this._expandedCaveats.has(i) ? 'open' : ''}" data-caveat="${i}">
-                <div class="caveat-header">
-                  <span class="caveat-num">${i + 1}</span>
-                  <span class="caveat-title">${c.title}</span>
-                  <span class="caveat-toggle"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
-                </div>
-                <div class="caveat-body"><p>${c.body}</p></div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </section>
-
-      <section class="cta-section">
-        <div class="container">
-          <div class="cta-box animate-on-scroll">
-            <div class="cta-box-content">
-              <div class="cta-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-              <h2>Your steps tell a story. Kygo reads it.</h2>
-              <p>Connect your wearable step data with nutrition to reveal which foods fuel your activity, sleep, and recovery best.</p>
-              <div class="cta-buttons">
-                <a href="https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589" class="cta-btn" target="_blank" rel="noopener" data-track-position="footer-cta">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <div class="cta-features">
-                <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Free forever plan</span>
-                <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Syncs with 4+ wearables</span>
-                <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> AI food logging</span>
-              </div>
+              <span class="hv-foot">MAPE · Garmin wrist trackers · Feehan 2020 and the 2020 Garmin validity review</span>
             </div>
           </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="num">0.9 m/s</div><div class="lbl">Speed below which every device fails</div></div>
+            <div class="hero-stat"><div class="num">50.3%</div><div class="lbl">Oura's free-living error, +2,124 steps a day</div></div>
+            <div class="hero-stat"><div class="num">9</div><div class="lbl">Wearables, grouped in 4 evidence tiers</div></div>
+            <div class="hero-stat"><div class="num">${sourceCount}</div><div class="lbl">Sources listed, ${peerReviewed} with a permanent link</div></div>
+          </div>
         </div>
       </section>
+
+      <section class="section bg-light" id="compare">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Build your comparison</div>
+            <h2>Compare devices <span class="hl">side by side.</span></h2>
+            <p class="lede">Pick 2 or 3 and compare them on the five things that decide whether a step total is trustworthy. The better value in each row is highlighted.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderComparator()}</div>
+        </div>
+      </section>
+
+      <section class="kearly-section bg-white">
+        <div class="section-inner">
+          ${this._renderKband('early', 'step-count-early')}
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">The ranking, honestly</div>
+            <h2>Four evidence tiers, <span class="hl">not a leaderboard.</span></h2>
+            <p class="lede">The "Garmin is 82.6% accurate" figure everyone quotes comes from a consumer aggregation, not a study. What the research supports is grouping, not ranking.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderRankMatrix()}</div>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">What actually decides it</div>
+            <h2>It is your speed and your arms, <span class="hl">not the brand.</span></h2>
+            <p class="lede">A wrist tracker does not detect footfalls. It detects arm movement that looks like walking, and everything else follows from that.</p>
+          </div>
+          <div class="bias animate-on-scroll">
+            <div class="bias-card good">
+              <span class="bias-tag">${this._icon('check')} Normal arm swing, normal pace</span>
+              <span class="bias-stat">Under 5% <small>error</small></span>
+              <span class="bias-cap">0.9 to 1.8 m/s, arms free</span>
+              <p>Walk at a normal or brisk pace with your arms swinging and every device on this page is usable. This is also the condition almost every published accuracy figure was measured in, which is why the marketing sounds so good.</p>
+            </div>
+            <div class="bias-card">
+              <span class="bias-tag">${this._icon('alert')} Arms occupied, or a slow pace</span>
+              <span class="bias-stat">35 to 95% <small>of steps missed</small></span>
+              <span class="bias-cap">Stroller, cart, pockets, handrail</span>
+              <p>Push a pram or a shopping trolley, carry bags, hold a treadmill handrail or walk with your hands in your pockets and the arm swing disappears. The steps still happen; the watch just does not see them. Slow walking does the same thing for a different reason.</p>
+            </div>
+            <p class="bias-note">${this._icon('info')} <span><strong>It runs both ways.</strong> Gesturing, cooking and road vibration while driving all hit roughly walking cadence, so they add steps you never took. Garmin draws the fewest of these complaints; a finger-worn ring the most. <em>Roos 2020 · Kristiansson 2023 · Kim 2024</em></span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">The two things that decide it</div>
+            <h2>How fast you walk, <span class="hl">and where you wear it.</span></h2>
+            <p class="lede">These two move your step count more than any brand choice. Both are things you control, and neither appears on a spec sheet.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderSpeeds()}</div>
+          <div class="animate-on-scroll" style="margin-top:16px;">${this._renderPlacements()}</div>
+          <a class="section-readmore animate-on-scroll" href="https://www.kygo.app/post/step-count-accuracy-factors" target="_self" rel="noopener" data-action="internal-link" data-track-position="mid" data-track-label="step-count-factors-post">Read the full factor breakdown ${this._icon('arrowRight')}</a>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">In detail</div>
+            <h2>The full breakdown, <span class="hl">tap any device.</span></h2>
+            <p class="lede">What independent research found, what the manufacturer says, and what each device is best and weakest for.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderDeviceDetails()}</div>
+          <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The "View on Amazon" links above are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases, at no extra cost to you.</span></p>
+        </div>
+      </section>
+
+      <kygo-inline-subscribe source="tool-step-count-accuracy" variant="comparison"></kygo-inline-subscribe>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">True for every device</div>
+            <h2>What no brand <span class="hl">can fix.</span></h2>
+            <p class="lede">Four things no tracker can fix, because they are about your gait and your hands rather than the sensor.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderFactCards()}</div>
+        </div>
+      </section>
+
+      <section class="kearly-section bg-white">
+        <div class="section-inner">
+          ${this._renderKband('late', 'step-count-late')}
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Claim vs reality</div>
+            <h2>What gets quoted, <span class="hl">and what holds up.</span></h2>
+            <p class="lede">Where the headline figures actually come from, including one this page used to quote itself.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderClaims()}</div>
+          <p class="bias-note animate-on-scroll" style="margin-top:14px;">${this._icon('gauge')} <span><strong>The test that catches all of these.</strong> If a source gives an accuracy percentage without naming a criterion measure and an error metric, it is not an accuracy figure.</span></p>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Beyond the step count</div>
+            <h2>An accurate step count is not <span class="hl">an accurate anything else.</span></h2>
+            <p class="lede">Steps, active minutes and calories come off the same sensor on the same wrist, and they are nowhere near equally trustworthy.</p>
+          </div>
+          <div class="animate-on-scroll">${this._renderDerived()}</div>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/which-wearable-has-the-most-accurate-step-count-a-2024-2025-research-analysis" target="_self" rel="noopener" data-action="internal-link" data-track-position="late" data-track-label="step-count-blog-post">
+            <span class="blog-cta-tag">Deep Dive</span>
+            <div class="blog-cta-body">
+              <div class="blog-cta-kicker">Read the full research analysis</div>
+              <div class="blog-cta-title">Which Wearable Has the Most Accurate Step Count?</div>
+              <div class="blog-cta-sub">Every study broken down by device, with methodology and limitations disclosed so you can judge the numbers yourself.</div>
+            </div>
+            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="bottomline animate-on-scroll">
+            <div class="bottomline-tag">The bottom line</div>
+            <p>If the step total matters to you, wear a <strong>Garmin</strong> or an <strong>Apple Watch</strong>. <strong>COROS</strong> is the surprise, beating both in the one recent hand-tally test. Do not buy an <strong>Oura Ring</strong> for steps, or judge it by them. <strong>Polar</strong> is contested, and nobody has measured <strong>the Pixel Watch or WHOOP</strong> at all.</p>
+            <p>But no purchase fixes the real limits: nothing is accurate below <strong>0.9 m/s</strong>, a walker costs you a third of your steps, where you wear it matters more than what you buy, and an accurate step count still buys you a calorie number that is 26% out. Use it as a trend against your own yesterday, not a measurement against someone else's watch.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section bg-light">
+        <div class="section-inner">
+          ${this._renderBigCta({ oura: ouraImg, apple: appleImg, fitbit: fitbitImg, garmin: garminImg, google: googleHealthImg, hc: healthConnectImg })}
+        </div>
+      </section>
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">FAQ</div>
+            <h2>Common <span class="hl">questions.</span></h2>
+          </div>
+          <div class="faq">${this._renderFAQ()}</div>
+        </div>
+      </section>
+
+      ${this._renderRelatedTools()}
+
+      <section class="section bg-white">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Sources</div>
+            <h2>Every claim, <span class="hl">traceable.</span></h2>
+            <p class="lede">All ${sourceCount} sources, nothing hidden behind a "show more". ${peerReviewed} have a permanent link; the rest are manufacturer posts and consumer tests, listed unlinked rather than dropped. Verified August 2026.</p>
+          </div>
+          <div class="sources animate-on-scroll">${this._renderSourceCards(this._sources)}</div>
+        </div>
+      </section>
+
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" />
-            Kygo Health
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
+            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
+            <span>Kygo Health</span>
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app" target="_blank" rel="noopener">Kygo App</a>
-            <a href="https://kygo.app/privacy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://kygo.app/terms" target="_blank" rel="noopener">Terms</a>
+            <a href="https://www.kygo.app">Home</a>
+            <a href="https://www.kygo.app/how-it-works">How It Works</a>
+            <a href="https://www.kygo.app/blog">Blog</a>
+            <a href="https://www.kygo.app/contact">Contact</a>
+            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
-          <p class="footer-copy">Data last updated February 2026. All accuracy claims sourced from peer-reviewed research with full bias disclosure.</p>
-          <p class="footer-copy footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
-          <p class="footer-copy">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
+          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Consumer step counters are estimates, not clinical measurements, and they are not validated for clinical populations or for gait assessment. Consult a qualified healthcare provider before making health decisions based on wearable data.</p>
+          <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation, with non-peer-reviewed sources labelled as such. Last updated August 2026.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
+          <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
     `;
   }
 
-  _renderModelData(deviceKey) {
-    const device = this._devices[deviceKey];
-    if (!device || !device.modelData || !device.modelData.length) return '';
-    return `
-      <div class="dd-model-data">
-        <h4>Model-Specific Research Data</h4>
-        <table class="model-table">
-          <thead><tr><th>Model</th><th>MAPE / Accuracy</th><th>Condition</th><th>Source</th></tr></thead>
-          <tbody>
-            ${device.modelData.map(m => `
-              <tr>
-                <td style="font-weight:600;white-space:nowrap">${m.model}</td>
-                <td>${m.mape || '—'}</td>
-                <td>${m.condition}</td>
-                <td>${m.source}${m.note ? `<br><span class="model-note">${m.note}</span>` : ''}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
-    `;
-  }
-
-  _renderStudiesForDevice(deviceKey) {
-    const device = this._devices[deviceKey];
-    if (!device || !device.studies || !device.studies.length) return '';
-    const studies = this._studies;
-    const relevant = device.studies.filter(id => studies[id]).map(id => studies[id]);
-    if (!relevant.length) return '';
-    return `
-      <div class="dd-studies">
-        <h4>Research Sources</h4>
-        ${relevant.map(s => `
-          <div class="dd-study-row ${s.independent ? '' : 'dd-study-funded'}">
-            <span class="dd-study-badge ${s.independent ? 'independent' : 'funded'}">${s.independent ? 'Independent' : 'Funded'}</span>
-            <span class="dd-study-cite">${s.authors} (${s.year}). ${s.title}. <em>${s.journal}</em>${s.doi ? `. DOI: ${s.doi}` : ''}</span>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  // ── Factor interactive panel ──────────────────────────────────────────
-
-  _renderFactorViz(f) {
-    if (f.speeds) {
-      const colors = ['#EF4444', '#F97316', '#EAB308', '#22C55E', '#16A34A'];
-      const widths = [35, 62, 90, 97, 99];
-      return `
-        <div class="fv-speed">
-          ${f.speeds.map((s, i) => `
-            <div class="fv-speed-row">
-              <div class="fv-speed-label">${s.speed}</div>
-              <div class="fv-bar-wrap"><div class="fv-bar" style="width:${widths[i]}%;background:${colors[i]}"></div></div>
-              <div class="fv-speed-acc">${s.accuracy}</div>
-            </div>
-          `).join('')}
-          <p class="fv-note">All devices lose accuracy below 0.9 m/s — the most critical threshold in this entire tool.</p>
-        </div>
-      `;
-    }
-    if (f.placements) {
-      const barWidths = [88, 91, 68, 38];
-      const colors = ['#16A34A', '#22C55E', '#EAB308', '#EF4444'];
-      return `
-        <div class="fv-placements">
-          ${f.placements.map((p, i) => `
-            <div class="fv-placement-row">
-              <div class="fv-placement-rank">${p.rank.split(' ')[0]}</div>
-              <div class="fv-placement-info">
-                <div class="fv-placement-name">${p.placement}</div>
-                <div class="fv-bar-wrap"><div class="fv-bar" style="width:${barWidths[i]}%;background:${colors[i]}"></div></div>
-                <div class="fv-placement-error">${p.error} error</div>
-              </div>
-            </div>
-          `).join('')}
-          <p class="fv-note">${f.keyFinding}</p>
-        </div>
-      `;
-    }
-    if (f.overTriggers) {
-      return `
-        <div class="fv-triggers">
-          <div class="fv-trigger-col fv-trigger-col--over">
-            <div class="fv-trigger-head">Overcounting</div>
-            <div class="fv-trigger-range">${f.overTriggers.range}</div>
-            <ul>${f.overTriggers.examples.map(ex => `<li>${ex}</li>`).join('')}</ul>
-          </div>
-          <div class="fv-trigger-col fv-trigger-col--under">
-            <div class="fv-trigger-head">Undercounting</div>
-            <div class="fv-trigger-range">${f.underTriggers.range}</div>
-            <ul>${f.underTriggers.examples.map(ex => `<li>${ex}</li>`).join('')}</ul>
-          </div>
-        </div>
-      `;
-    }
-    if (f.factor === 'Age') {
-      return `
-        <div class="fv-stats">
-          <div class="fv-stat-card fv-stat-card--good">
-            <div class="fv-stat-num">4.3%</div>
-            <div class="fv-stat-label">MAPE for under 40</div>
-          </div>
-          <div class="fv-stat-card fv-stat-card--warn">
-            <div class="fv-stat-num">10.9%</div>
-            <div class="fv-stat-label">MAPE for 40 and over</div>
-          </div>
-        </div>
-      `;
-    }
-    if (f.conditions) {
-      return `
-        <div class="fv-conditions">
-          ${f.conditions.map(c => `
-            <div class="fv-condition-row">
-              <div class="fv-condition-name">${c.condition}</div>
-              <div class="fv-condition-bias bias-tag ${
-                c.bias === 'Overestimates' || c.bias === 'Phantom steps' ? 'bias-over' :
-                c.bias === 'Underestimates' ? 'bias-under' : 'bias-mixed'
-              }">${c.bias}</div>
-              <div class="fv-condition-mag">${c.magnitude}</div>
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-    // Gait Pathology fallback → alert card
-    return `
-      <div class="fv-alert">
-        <div class="fv-alert-stat">11–47%</div>
-        <div class="fv-alert-text">of steps detected in people with neurological conditions (stroke, Parkinson's, etc.)</div>
-        <p class="fv-alert-note">Consumer devices are NOT validated for clinical populations. Population-specific algorithms are required for any research use.</p>
-      </div>
-    `;
-  }
-
-  _renderFactorPanel() {
-    const f = this._accuracyFactors[this._activeFactor];
-    if (!f) return '';
-    return `
-      <div class="factor-panel-inner">
-        <h3 class="factor-panel-title">${f.factor}</h3>
-        <p class="factor-panel-text">${f.detail}</p>
-        ${this._renderFactorViz(f)}
-        ${f.source ? `<p class="factor-panel-source">Source: ${f.source}</p>` : ''}
-      </div>
-    `;
-  }
-
-  _updateFactors() {
-    const shadow = this.shadowRoot;
-    shadow.querySelectorAll('.factor-tab').forEach(tab => {
-      tab.classList.toggle('active', parseInt(tab.dataset.factorTab, 10) === this._activeFactor);
-    });
-    const panel = shadow.querySelector('.factor-panel');
-    if (panel) panel.innerHTML = this._renderFactorPanel();
-  }
-
-  // ── Comparison ────────────────────────────────────────────────────────
-
-  _parseMapeNum(s) {
-    if (!s || typeof s !== 'string') return null;
-    const lower = s.toLowerCase();
-    if (lower.includes('no published') || lower.includes('limited') || lower === 'high' || lower === '—' || lower === '-') return null;
-    const match = s.match(/[\d]+(?:\.[\d]+)?/);
-    return match ? parseFloat(match[0]) : null;
-  }
-
-  _updateComparison() {
-    const shadow = this.shadowRoot;
-    const summaryRow = shadow.querySelector('.device-summary-row');
-    if (summaryRow) summaryRow.innerHTML = this._renderDeviceSummaryRow();
-    const tabs = shadow.querySelector('.comp-tabs');
-    if (tabs) tabs.innerHTML = this._renderComparisonTabs();
-    const detail = shadow.querySelector('.comp-detail');
-    if (detail) detail.innerHTML = this._renderComparisonDetail();
-  }
-
-  _renderDeviceSummaryRow() {
-    const devices = this._devices;
-    return this._selectedDevices.map((key, i) => {
-      const d = devices[key];
-      if (!d) return '';
-      const linkName = d.affiliateLinks && d.affiliateLinks.length
-        ? `<a href="${d.affiliateLinks[0].url}" class="dsc-name-link" target="_blank" rel="noopener sponsored">${d.name}</a>`
-        : d.name;
-      return `
-        <div class="device-summary-card">
-          <div class="dsc-num">${i + 1}</div>
-          ${d.imageUrl ? `<img src="${d.imageUrl}" alt="${d.name}" class="dsc-img" />` : `<span class="dsc-fallback">${d.short[0]}</span>`}
-          <div class="dsc-info">
-            <h3 class="dsc-name">${linkName}</h3>
-            <span class="dsc-bestfor">${d.bestFor}</span>
-            <span class="dsc-sub ${d.subscription === 'None required' ? 'dsc-sub-free' : 'dsc-sub-paid'}">${d.subscription}</span>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  _renderComparisonTabs() {
-    const tabs = [
-      { id: 'overview', label: 'Overview' },
-      { id: 'lab', label: 'Lab Accuracy' },
-      { id: 'free-living', label: 'Free-Living' },
-      { id: 'bias', label: 'Bias & Direction' },
-      { id: 'speed', label: 'Speed Sensitivity' },
-      { id: 'phantom', label: 'Phantom Steps' }
-    ];
-    return tabs.map(t => `
-      <button class="comp-tab ${this._activeTab === t.id ? 'active' : ''}" data-tab="${t.id}">${t.label}</button>
-    `).join('');
-  }
-
-  _renderComparisonDetail() {
-    switch (this._activeTab) {
-      case 'overview':    return this._renderOverviewTab();
-      case 'lab':         return this._renderLabTab();
-      case 'free-living': return this._renderFreeLivingTab();
-      case 'bias':        return this._renderBiasTab();
-      case 'speed':       return this._renderSpeedTab();
-      case 'phantom':     return this._renderPhantomTab();
-      default:            return this._renderOverviewTab();
-    }
-  }
-
-  _renderOverviewTab() {
-    const devices = this._devices;
-    const [k1, k2] = this._selectedDevices;
-    const d1 = devices[k1] || {};
-    const d2 = devices[k2] || {};
-
-    const rows = [
-      {
-        metric: 'Overall Accuracy', note: 'Higher is better',
-        v1: d1.overallPct ? `${d1.overallPct}%` : (d1.overallNote || '—'),
-        v2: d2.overallPct ? `${d2.overallPct}%` : (d2.overallNote || '—'),
-        winner: d1.overallPct && d2.overallPct ? (d1.overallPct >= d2.overallPct ? 1 : 2) : 0
-      },
-      {
-        metric: 'MAPE (Lab)', note: 'Lower is better',
-        v1: d1.mapeLab || '—', v2: d2.mapeLab || '—',
-        winner: (() => {
-          const n1 = this._parseMapeNum(d1.mapeLab), n2 = this._parseMapeNum(d2.mapeLab);
-          return (n1 !== null && n2 !== null) ? (n1 <= n2 ? 1 : 2) : 0;
-        })()
-      },
-      {
-        metric: 'MAPE (Free-Living)', note: 'Lower is better',
-        v1: d1.mapeFree || '—', v2: d2.mapeFree || '—',
-        winner: (() => {
-          const n1 = this._parseMapeNum(d1.mapeFree), n2 = this._parseMapeNum(d2.mapeFree);
-          return (n1 !== null && n2 !== null) ? (n1 <= n2 ? 1 : 2) : 0;
-        })()
-      },
-      {
-        metric: 'Bias Direction', note: '',
-        v1: d1.bias || '—', v2: d2.bias || '—', winner: 0
-      },
-      {
-        metric: 'Algorithm', note: '',
-        v1: d1.algorithm || '—', v2: d2.algorithm || '—', winner: 0
-      },
-      {
-        metric: 'Wear Location', note: '',
-        v1: d1.wearLocation || '—', v2: d2.wearLocation || '—', winner: 0
-      },
-      {
-        metric: 'Subscription', note: 'Free = win',
-        v1: d1.subscription || '—', v2: d2.subscription || '—',
-        winner: (() => {
-          const f1 = (d1.subscription || '').toLowerCase().includes('none');
-          const f2 = (d2.subscription || '').toLowerCase().includes('none');
-          return (f1 && !f2) ? 1 : (f2 && !f1) ? 2 : 0;
-        })()
-      }
-    ];
-
-    return `
-      <div class="ov-table-wrap">
-        <table class="ov-table">
-          <thead>
-            <tr>
-              <th class="ov-metric-col">Metric</th>
-              <th class="ov-dev-col">${d1.short || k1}</th>
-              <th class="ov-dev-col">${d2.short || k2}</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rows.map(r => `
-              <tr>
-                <td class="ov-metric">${r.metric}${r.note ? `<span class="ov-note">${r.note}</span>` : ''}</td>
-                <td class="ov-val ${r.winner === 1 ? 'ov-winner' : ''}">${r.v1}</td>
-                <td class="ov-val ${r.winner === 2 ? 'ov-winner' : ''}">${r.v2}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
-      <div class="ov-strengths">
-        ${this._selectedDevices.map(k => {
-          const d = devices[k] || {};
-          return `
-            <div class="ov-strengths-card">
-              <h4>Best For: ${d.short || k}</h4>
-              <p>${d.bestFor || '—'}</p>
-            </div>
-          `;
-        }).join('')}
-      </div>
-    `;
-  }
-
-  _renderLabTab() {
-    return `
-      <div class="comp-2col">
-        ${this._selectedDevices.map(k => {
-          const d = this._devices[k] || {};
-          return `
-            <div class="comp-col">
-              <h4 class="comp-col-title">${d.short || k}</h4>
-              ${this._renderModelData(k) || '<p class="comp-no-data">No published lab data</p>'}
-            </div>
-          `;
-        }).join('')}
-      </div>
-      <p class="comp-insight"><strong>Lab conditions:</strong> Treadmill or structured walking tests. MAPE = Mean Absolute Percentage Error; lower is better. See model-specific rows for study sources.</p>
-    `;
-  }
-
-  _renderFreeLivingTab() {
-    const devices = this._devices;
-    return `
-      <div class="comp-2col">
-        ${this._selectedDevices.map(k => {
-          const d = devices[k] || {};
-          return `
-            <div class="comp-col">
-              <h4 class="comp-col-title">${d.short || k}</h4>
-              <div class="comp-stat-block">
-                <span class="comp-stat-label">MAPE (Free-Living)</span>
-                <span class="comp-stat-value">${d.mapeFree || '—'}</span>
-              </div>
-              ${d.strengths && d.strengths.length ? `<p class="comp-fl-note">${d.strengths.slice(0, 2).join(' · ')}</p>` : ''}
-            </div>
-          `;
-        }).join('')}
-      </div>
-      <div class="comp-insight-box">
-        <strong>Free-living vs. lab:</strong> Expect free-living MAPE to be 2–5× higher than lab MAPE. Oura Ring uniquely worsens due to hand gestures; Garmin underestimates at slow speeds. Apple Watch best balances lab and real-world performance.
-      </div>
-    `;
-  }
-
-  _renderBiasTab() {
-    const devices = this._devices;
-    return `
-      <div class="comp-2col">
-        ${this._selectedDevices.map(k => {
-          const d = devices[k] || {};
-          const biasDir = (d.bias || '').toLowerCase();
-          const biasClass = biasDir.includes('under') ? 'bias-under' : biasDir.includes('over') ? 'bias-over' : biasDir.includes('mixed') ? 'bias-mixed' : 'bias-unknown';
-          return `
-            <div class="comp-col">
-              <h4 class="comp-col-title">${d.short || k}</h4>
-              <span class="bias-tag ${biasClass}" style="margin-bottom:12px;display:inline-block">${d.bias || '—'}</span>
-              <p class="comp-fl-note">${d.keyDiff || d.algorithm || '—'}</p>
-            </div>
-          `;
-        }).join('')}
-      </div>
-      <div class="comp-insight-box">
-        <strong>Bias direction matters:</strong> Undercounting devices feel less motivating but give more honest data. Overcounting devices (Oura, Samsung) can create a false sense of activity. Garmin's 10-step filter biases toward undercounting — a deliberate accuracy trade-off that minimises phantom steps.
-      </div>
-    `;
-  }
-
-  _renderSpeedTab() {
-    const speedFactor = this._accuracyFactors[0];
-    const devices = this._devices;
-    const speedNotes = (key) => {
-      const d = devices[key] || {};
-      return [...(d.weaknesses || []), ...(d.strengths || [])]
-        .filter(s => /speed|slow|fast|km\/h|m\/s|walk/i.test(s))
-        .slice(0, 3);
-    };
-    return `
-      ${speedFactor && speedFactor.speeds ? `
-        <div class="speed-table-wrap">
-          <table class="speed-table">
-            <thead><tr><th>Walking Speed</th><th>Global Accuracy</th><th>Notes</th></tr></thead>
-            <tbody>${speedFactor.speeds.map(s => `<tr><td><strong>${s.speed}</strong></td><td>${s.accuracy}</td><td>${s.note}</td></tr>`).join('')}</tbody>
-          </table>
-        </div>
-      ` : ''}
-      <div class="comp-2col">
-        ${this._selectedDevices.map(k => {
-          const d = devices[k] || {};
-          const notes = speedNotes(k);
-          return `
-            <div class="comp-col">
-              <h4 class="comp-col-title">${d.short || k}</h4>
-              ${notes.length ? `<ul class="comp-speed-list">${notes.map(n => `<li>${n}</li>`).join('')}</ul>` : '<p class="comp-no-data">No speed-specific data</p>'}
-            </div>
-          `;
-        }).join('')}
-      </div>
-      <div class="comp-insight-box">
-        <strong>Speed threshold:</strong> Below 0.9 m/s (~3.2 km/h), all consumer wearables produce unreliable step counts. Garmin's 10-step filter makes it miss more steps at very low speeds. Apple Watch has the most stable performance across the normal walking speed range.
-      </div>
-    `;
-  }
-
-  _renderPhantomTab() {
-    const devices = this._devices;
-    return `
-      <div class="comp-2col">
-        ${this._selectedDevices.map(k => {
-          const d = devices[k] || {};
-          return `
-            <div class="comp-col">
-              <h4 class="comp-col-title">${d.short || k}</h4>
-              ${d.falseSteps && d.falseSteps.length
-                ? `<div class="dd-tags">${d.falseSteps.map(f => `<span class="dd-tag">${f}</span>`).join('')}</div>`
-                : '<p class="comp-no-data">No published data</p>'
-              }
-            </div>
-          `;
-        }).join('')}
-      </div>
-      <div class="comp-insight-box">
-        <strong>Phantom steps:</strong> Garmin's 10-step minimum bout filter provides the strongest defence against false counts. Oura Ring and Samsung generate the most phantom steps in daily use. Driving on rough roads affects most wrist-worn devices.
-      </div>
-    `;
-  }
-
-  // ── Styles ────────────────────────────────────────────────────────────
-
-  _styles() {
-    return `
-      :host {
-        --dark: #1E293B;
-        --dark-card: #0f172a;
-        --light: #F8FAFC;
-        --green: #22C55E;
-        --green-dark: #16A34A;
-        --green-light: rgba(34,197,94,0.1);
-        --yellow: #FBBF24;
-        --red: #EF4444;
-        --gray-100: #F1F5F9;
-        --gray-200: #E2E8F0;
-        --gray-300: #CBD5E1;
-        --gray-400: #94A3B8;
-        --gray-600: #475569;
-        --radius: 20px;
-        --radius-sm: 10px;
-        display: block;
-        font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: var(--light);
-        color: var(--dark);
-        line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
-      }
-      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-      h1, h2, h3, h4 { font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 600; line-height: 1.2; }
-      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-
-      /* Header */
-      .header { background: #fff; border-bottom: 1px solid var(--gray-200); padding: 12px 16px; position: sticky; top: 0; z-index: 50; }
-      .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-      .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: var(--dark); text-decoration: none; }
-      .logo-img { height: 28px; width: auto; }
-      .header-cta { color: var(--green); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 4px; font-weight: 500; transition: color 0.2s; }
-      .header-cta:hover { color: var(--green-dark); }
-
-      /* Animations */
-      .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; transition-delay: var(--delay, 0ms); }
-      .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
-
-      /* Hero */
-      .hero { padding: 56px 0 48px; text-align: center; background: #fff; }
-      .hero-badge { display: inline-block; padding: 8px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 16px; }
-      .hero h1 { font-size: clamp(28px, 6vw, 42px); margin-bottom: 16px; }
-      .hero-sub { font-size: clamp(15px, 3.5vw, 18px); color: var(--gray-600); max-width: 640px; margin: 0 auto; line-height: 1.7; }
-
-      /* Shared section utilities */
-      .section-title { font-size: clamp(24px, 5vw, 36px); text-align: center; margin-bottom: 8px; }
-      .section-sub { font-size: clamp(14px, 3.5vw, 16px); color: var(--gray-600); text-align: center; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
-      .bias-tag { display: inline-block; padding: 3px 10px; border-radius: 50px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-      .bias-under { background: rgba(34,197,94,0.12); color: #16A34A; }
-      .bias-over { background: rgba(239,68,68,0.12); color: #DC2626; }
-      .bias-mixed { background: rgba(251,191,36,0.15); color: #B45309; }
-      .bias-unknown { background: var(--gray-100); color: var(--gray-600); }
-
-      /* Comparison */
-      .comparison { padding: 56px 0; background: var(--light); }
-      .device-selectors { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 28px; flex-wrap: wrap; }
-      .selector-wrap { display: flex; flex-direction: column; gap: 6px; flex: 1; max-width: 280px; }
-      .selector-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray-600); }
-      .device-select { padding: 10px 14px; border-radius: var(--radius-sm); border: 2px solid var(--gray-200); background: #fff; font-size: 14px; font-weight: 600; color: var(--dark); cursor: pointer; transition: border-color 0.2s; appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
-      .device-select:focus { outline: none; border-color: var(--green); }
-      .vs-badge { font-size: 14px; font-weight: 800; color: var(--gray-400); background: var(--gray-100); padding: 8px 16px; border-radius: 50px; flex-shrink: 0; }
-      .device-summary-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-      .device-summary-card { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #fff; border-radius: var(--radius); border: 2px solid var(--green); position: relative; }
-      .dsc-num { position: absolute; top: 10px; right: 12px; font-size: 11px; font-weight: 700; color: var(--green-dark); }
-      .dsc-img { width: 44px; height: 44px; object-fit: contain; border-radius: 10px; flex-shrink: 0; }
-      .dsc-fallback { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 20px; flex-shrink: 0; background: var(--green-dark); }
-      .dsc-info { flex: 1; min-width: 0; }
-      .dsc-name { font-size: 16px; margin-bottom: 4px; }
-      .dsc-name-link { color: inherit; text-decoration: underline; text-decoration-color: var(--gray-300); text-underline-offset: 2px; }
-      .dsc-name-link:hover { text-decoration-color: var(--green); }
-      .dsc-bestfor { font-size: 12px; color: var(--gray-600); display: block; margin-bottom: 6px; }
-      .dsc-sub { display: inline-block; padding: 2px 8px; border-radius: 50px; font-size: 11px; font-weight: 600; }
-      .dsc-sub-free { background: var(--green-light); color: var(--green-dark); }
-      .dsc-sub-paid { background: rgba(239,68,68,0.08); color: #DC2626; }
-      .comp-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-      .comp-tab { padding: 8px 16px; border-radius: 50px; border: 2px solid var(--gray-200); background: #fff; font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: all 0.2s; font-family: inherit; }
-      .comp-tab:hover { border-color: var(--green); color: var(--green-dark); }
-      .comp-tab.active { background: var(--green); border-color: var(--green); color: #fff; }
-      .comp-detail { background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); padding: 24px; min-height: 200px; }
-      /* Overview tab */
-      .ov-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 20px; }
-      .ov-table { width: 100%; border-collapse: collapse; min-width: 400px; }
-      .ov-table thead th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 2px solid var(--gray-200); color: var(--gray-600); }
-      .ov-metric-col { width: 40%; }
-      .ov-dev-col { width: 30%; }
-      .ov-table tbody tr { border-bottom: 1px solid var(--gray-100); transition: background 0.15s; }
-      .ov-table tbody tr:last-child { border-bottom: none; }
-      .ov-table tbody tr:hover { background: var(--gray-100); }
-      .ov-metric { padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--dark); }
-      .ov-note { display: block; font-size: 11px; font-weight: 400; color: var(--gray-400); margin-top: 2px; }
-      .ov-val { padding: 12px 16px; font-size: 14px; color: var(--gray-600); }
-      .ov-winner { background: rgba(34,197,94,0.05); color: var(--green-dark); font-weight: 700; }
-      .ov-strengths { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-      .ov-strengths-card { padding: 14px 18px; border-radius: var(--radius-sm); border-left: 3px solid var(--green); background: var(--gray-100); }
-      .ov-strengths-card h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 4px; }
-      .ov-strengths-card p { font-size: 14px; font-weight: 600; color: var(--dark); margin: 0; }
-      /* Shared comp tab styles */
-      .comp-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-      .comp-col { min-width: 0; }
-      .comp-col-title { font-size: 15px; margin-bottom: 12px; }
-      .comp-stat-block { padding: 12px 16px; background: var(--gray-100); border-radius: var(--radius-sm); margin-bottom: 10px; }
-      .comp-stat-label { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 4px; }
-      .comp-stat-value { font-size: 22px; font-weight: 700; color: var(--dark); font-family: 'Space Grotesk', sans-serif; }
-      .comp-fl-note { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin: 0; overflow-wrap: break-word; }
-      .comp-insight { font-size: 13px; color: var(--gray-400); font-style: italic; margin-top: 8px; }
-      .comp-insight-box { background: rgba(34,197,94,0.06); border: 1px solid rgba(34,197,94,0.2); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 13px; color: var(--gray-600); line-height: 1.6; }
-      .comp-no-data { font-size: 13px; color: var(--gray-400); font-style: italic; }
-      /* Speed tab */
-      .speed-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 16px; }
-      .speed-table { width: 100%; border-collapse: collapse; min-width: 400px; font-size: 13px; }
-      .speed-table thead th { background: var(--gray-100); padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 600; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.3px; }
-      .speed-table td { padding: 10px 14px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); }
-      .speed-table tr:last-child td { border-bottom: none; }
-      .speed-table tr:hover td { background: var(--gray-100); }
-      .comp-speed-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-      .comp-speed-list li { font-size: 13px; color: var(--gray-600); padding-left: 14px; position: relative; line-height: 1.5; }
-      .comp-speed-list li::before { content: '•'; position: absolute; left: 0; color: var(--green); }
-      /* Model table (used in Lab tab via _renderModelData) */
-      .dd-model-data { margin-bottom: 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .dd-model-data h4 { font-size: 13px; color: var(--gray-600); margin-bottom: 8px; }
-      .model-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 440px; }
-      .model-table thead th { background: var(--gray-100); padding: 8px 10px; text-align: left; font-weight: 600; color: var(--gray-600); font-size: 11px; text-transform: uppercase; }
-      .model-table td { padding: 8px 10px; border-bottom: 1px solid var(--gray-100); color: var(--gray-600); vertical-align: top; }
-      .model-table tr:last-child td { border-bottom: none; }
-      .model-note { font-size: 10px; color: var(--gray-400); font-style: italic; }
-
-      /* Deep Dives */
-      .deep-dives { padding: 56px 0; background: var(--light); }
-      .dd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
-      .dd-card { border-radius: var(--radius); border: 2px solid var(--gray-200); background: #fff; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }
-      .dd-card:hover { border-color: var(--green); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-      .dd-card.expanded { border-color: var(--green); box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
-      .dd-header { display: flex; align-items: center; gap: 12px; padding: 16px; }
-      .dd-img { width: 40px; height: 40px; object-fit: contain; border-radius: 10px; flex-shrink: 0; }
-      .dd-fallback { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 18px; flex-shrink: 0; background: var(--green-dark); }
-      .dd-info { flex: 1; min-width: 0; }
-      .dd-rank-label { font-size: 11px; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 2px; color: var(--green-dark); }
-      .dd-info h3 { font-size: 16px; margin-bottom: 2px; }
-      .dd-bestfor { font-size: 12px; color: var(--gray-600); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-      .dd-name-link { color: inherit; text-decoration: underline; text-decoration-color: var(--gray-300); text-underline-offset: 2px; }
-      .dd-name-link:hover { text-decoration-color: var(--green); }
-      .dd-toggle { color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
-      .dd-card.expanded .dd-toggle { transform: rotate(180deg); }
-      .dd-body { display: none; padding: 0 16px 16px; border-top: 1px solid var(--gray-100); padding-top: 16px; }
-      .dd-card.expanded .dd-body { display: block; }
-      .dd-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-      .dd-col h4 { font-size: 13px; margin-bottom: 8px; color: var(--dark); }
-      .dd-col ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-      .dd-col li { display: flex; gap: 6px; align-items: flex-start; font-size: 12px; color: var(--gray-600); }
-      .dd-check { color: var(--green); font-size: 14px; flex-shrink: 0; }
-      .dd-x { color: var(--red); font-size: 14px; flex-shrink: 0; }
-      .dd-false-steps { margin-bottom: 12px; }
-      .dd-false-steps h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; }
-      .dd-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-      .dd-tag { padding: 3px 10px; background: rgba(239,68,68,0.08); color: #DC2626; border-radius: 50px; font-size: 11px; font-weight: 500; }
-      .dd-studies { margin-bottom: 12px; }
-      .dd-studies h4 { font-size: 12px; color: var(--gray-600); margin-bottom: 8px; }
-      .dd-study-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 6px; font-size: 12px; }
-      .dd-study-badge { padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
-      .dd-study-badge.independent { background: var(--green-light); color: var(--green-dark); }
-      .dd-study-badge.funded { background: rgba(251,191,36,0.15); color: #B45309; }
-      .dd-study-cite { color: var(--gray-600); line-height: 1.5; }
-      .dd-buy { margin-top: 10px; }
-      .dd-buy-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; background: var(--green-light); border: 2px solid rgba(34,197,94,0.25); border-radius: var(--radius-sm); text-decoration: none; color: var(--green-dark); font-size: 13px; font-weight: 700; transition: background 0.2s, border-color 0.2s; }
-      .dd-buy-btn:hover { background: rgba(34,197,94,0.18); border-color: var(--green); }
-
-      /* Factors — interactive tab-panel */
-      .factors { padding: 56px 0; background: #fff; }
-
-      /* Tab selector */
-      .factor-selector { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-      .factor-tab { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border: 2px solid var(--gray-200); border-radius: 50px; background: #fff; cursor: pointer; transition: border-color 0.2s, background 0.2s; font-family: inherit; text-align: left; }
-      .factor-tab:hover { border-color: var(--green); background: var(--gray-100); }
-      .factor-tab.active { border-color: var(--green); background: var(--green-light); }
-      .factor-tab-num { width: 22px; height: 22px; border-radius: 50%; background: var(--gray-200); color: var(--gray-600); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; transition: background 0.2s, color 0.2s; }
-      .factor-tab.active .factor-tab-num { background: var(--green); color: #fff; }
-      .factor-tab-label { font-size: 13px; font-weight: 600; color: var(--dark); white-space: nowrap; }
-
-      /* Content panel */
-      .factor-panel { background: var(--gray-100); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 12px; min-height: 200px; }
-      .factor-panel-inner { }
-      .factor-panel-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
-      .factor-panel-text { font-size: 14px; color: var(--gray-600); line-height: 1.7; margin-bottom: 20px; }
-      .factor-panel-source { font-size: 12px; color: var(--gray-400); font-style: italic; margin-top: 12px; }
-
-      /* Speed viz */
-      .fv-speed { display: flex; flex-direction: column; gap: 10px; }
-      .fv-speed-row { display: grid; grid-template-columns: 200px 1fr 140px; align-items: center; gap: 12px; }
-      .fv-speed-label { font-size: 12px; font-weight: 600; color: var(--dark); }
-      .fv-bar-wrap { height: 10px; background: var(--gray-200); border-radius: 5px; overflow: hidden; }
-      .fv-bar { height: 100%; border-radius: 5px; transition: width 0.4s ease; }
-      .fv-speed-acc { font-size: 12px; color: var(--gray-600); }
-      .fv-note { font-size: 12px; color: var(--gray-600); font-style: italic; margin-top: 12px; padding: 8px 12px; background: rgba(34,197,94,0.06); border-left: 3px solid var(--green); border-radius: 0 4px 4px 0; }
-
-      /* Placement viz */
-      .fv-placements { display: flex; flex-direction: column; gap: 12px; }
-      .fv-placement-row { display: flex; align-items: flex-start; gap: 14px; }
-      .fv-placement-rank { font-size: 20px; flex-shrink: 0; width: 30px; }
-      .fv-placement-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-      .fv-placement-name { font-size: 14px; font-weight: 600; }
-      .fv-placement-error { font-size: 12px; color: var(--gray-600); }
-
-      /* Arm swing triggers */
-      .fv-triggers { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-      .fv-trigger-col { border-radius: var(--radius-sm); padding: 16px; }
-      .fv-trigger-col--over { background: rgba(239,68,68,0.06); border: 1px solid rgba(239,68,68,0.15); }
-      .fv-trigger-col--under { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.2); }
-      .fv-trigger-head { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
-      .fv-trigger-col--over .fv-trigger-head { color: #DC2626; }
-      .fv-trigger-col--under .fv-trigger-head { color: #B45309; }
-      .fv-trigger-range { font-size: 18px; font-weight: 800; margin-bottom: 10px; }
-      .fv-trigger-col--over .fv-trigger-range { color: #DC2626; }
-      .fv-trigger-col--under .fv-trigger-range { color: #B45309; }
-      .fv-trigger-col ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
-      .fv-trigger-col li { font-size: 13px; color: var(--gray-600); padding-left: 14px; position: relative; line-height: 1.4; }
-      .fv-trigger-col li::before { content: '•'; position: absolute; left: 0; color: var(--gray-400); }
-
-      /* Age stat cards */
-      .fv-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-      .fv-stat-card { border-radius: var(--radius-sm); padding: 20px 24px; text-align: center; }
-      .fv-stat-card--good { background: rgba(34,197,94,0.08); border: 2px solid rgba(34,197,94,0.25); }
-      .fv-stat-card--warn { background: rgba(239,68,68,0.06); border: 2px solid rgba(239,68,68,0.2); }
-      .fv-stat-num { font-size: 36px; font-weight: 800; margin-bottom: 6px; }
-      .fv-stat-card--good .fv-stat-num { color: var(--green-dark); }
-      .fv-stat-card--warn .fv-stat-num { color: #DC2626; }
-      .fv-stat-label { font-size: 13px; color: var(--gray-600); font-weight: 500; }
-
-      /* Activity conditions */
-      .fv-conditions { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; }
-      .fv-condition-row { display: grid; grid-template-columns: 1fr auto 120px; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid var(--gray-100); background: #fff; }
-      .fv-condition-row:last-child { border-bottom: none; }
-      .fv-condition-name { font-size: 13px; font-weight: 500; }
-      .fv-condition-bias { flex-shrink: 0; }
-      .fv-condition-mag { font-size: 12px; color: var(--gray-600); text-align: right; }
-
-      /* Gait alert */
-      .fv-alert { background: rgba(239,68,68,0.06); border: 2px solid rgba(239,68,68,0.2); border-radius: var(--radius-sm); padding: 24px; text-align: center; }
-      .fv-alert-stat { font-size: 48px; font-weight: 800; color: #DC2626; margin-bottom: 8px; }
-      .fv-alert-text { font-size: 16px; font-weight: 600; color: var(--dark); margin-bottom: 12px; }
-      .fv-alert-note { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
-
-      /* "Other factors" collapsible */
-      .factor-item { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
-      .factor-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; cursor: pointer; gap: 12px; transition: background 0.15s; }
-      .factor-header:hover { background: var(--gray-100); }
-      .factor-left { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
-      .factor-name { font-size: 15px; font-weight: 600; }
-      .factor-toggle { color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; }
-      .factor-item.open .factor-toggle { transform: rotate(180deg); }
-      .factor-body { display: none; padding: 4px 20px 16px; }
-      .factor-item.open .factor-body { display: block; }
-      .other-factor-row { padding: 12px 0; border-bottom: 1px solid var(--gray-100); }
-      .other-factor-row:last-child { border-bottom: none; padding-bottom: 0; }
-      .other-factor-header { margin-bottom: 4px; }
-      .other-factor-name { font-size: 14px; }
-      .other-factor-detail { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin: 0; }
-
-      /* Caveats */
-      .caveats { padding: 56px 0; background: #fff; }
-      .caveat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-      @media (max-width: 600px) { .caveat-grid { grid-template-columns: 1fr; } }
-      .caveat-card { border-radius: var(--radius-sm); border: 1px solid var(--gray-200); background: #fff; overflow: hidden; }
-      .caveat-header { display: flex; align-items: center; gap: 12px; padding: 14px 20px; cursor: pointer; transition: background 0.15s; }
-      .caveat-header:hover { background: var(--gray-100); }
-      .caveat-num { width: 24px; height: 24px; border-radius: 50%; background: var(--green-light); color: var(--green-dark); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
-      .caveat-title { flex: 1; font-size: 15px; font-weight: 600; }
-      .caveat-toggle { color: var(--gray-400); transition: transform 0.3s; }
-      .caveat-card.open .caveat-toggle { transform: rotate(180deg); }
-      .caveat-body { display: none; padding: 0 20px 16px 56px; }
-      .caveat-card.open .caveat-body { display: block; }
-      .caveat-body p { font-size: 14px; color: var(--gray-600); line-height: 1.7; }
-
-      /* Blog CTA (below comparison) */
-      .blog-cta-section { padding: 48px 0; }
-      .blog-cta {
-        width: 100%;
-        max-width: 680px;
-        margin: 0 auto;
-        position: relative;
-        overflow: hidden;
-        border-radius: 16px;
-        background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700, #334155) 100%);
-        padding: 24px 20px;
-        border: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 16px 40px rgba(30,41,59,0.25);
-      }
-      .blog-cta::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -30%;
-        width: 260px;
-        height: 260px;
-        background: radial-gradient(circle, rgba(34,197,94,0.3) 0%, transparent 70%);
-        pointer-events: none;
-      }
-      .blog-cta-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: rgba(34,197,94,0.1);
-        border: 1px solid rgba(34,197,94,0.2);
-        border-radius: 16px;
-        padding: 4px 10px;
-        margin-bottom: 16px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-badge-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--green);
-        animation: blogCtaPulse 2s ease-in-out infinite;
-      }
-      @keyframes blogCtaPulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-      }
-      .blog-cta-badge span {
-        font-size: 10px;
-        font-weight: 600;
-        color: var(--green);
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-      }
-      .blog-cta-headline {
-        font-family: 'Space Grotesk', -apple-system, sans-serif;
-        font-size: 20px;
-        font-weight: 600;
-        color: white;
-        line-height: 1.25;
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-headline .highlight { color: var(--green); }
-      .blog-cta-sub {
-        font-size: 14px;
-        color: #94A3B8;
-        line-height: 1.65;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-actions {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: white; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
-      .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-btn svg { width: 18px; height: 18px; }
-      .blog-cta-meta {
-        font-size: 12px;
-        color: #94A3B8;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .blog-cta-devices {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255,255,255,0.08);
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-devices-label {
-        font-size: 10px;
-        font-weight: 500;
-        color: #94A3B8;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-      .blog-cta-device-tags {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 6px;
-        width: 100%;
-      }
-      .blog-cta-device-tag {
-        font-size: 11px;
-        font-weight: 500;
-        color: #94A3B8;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 8px;
-        padding: 4px 8px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        transition: all 0.2s;
-      }
-      .blog-cta-device-tag:hover {
-        background: rgba(255,255,255,0.1);
-        border-color: rgba(255,255,255,0.15);
-      }
-      .blog-cta-device-tag img {
-        width: 14px;
-        height: 14px;
-        border-radius: 3px;
-        object-fit: contain;
-      }
-
-      /* CTA */
-      .cta-section { padding: 44px 0; }
-      .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-      .cta-box { background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: var(--radius); padding: 36px 32px; text-align: center; position: relative; overflow: hidden; }
-      .cta-box::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 50%); pointer-events: none; }
-      .cta-box-content { max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
-      .cta-icon { width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; }
-      .cta-box h2 { color: #fff; font-size: clamp(22px, 4vw, 30px); margin-bottom: 12px; }
-      .cta-box p { color: rgba(255,255,255,0.85); font-size: 16px; margin-bottom: 28px; line-height: 1.7; }
-      .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--green-dark); padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
-      .cta-btn:hover { background: var(--gray-100); }
-      .cta-features { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
-      .cta-feature { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.9); font-size: 13px; }
-      .cta-feature svg { color: white; flex-shrink: 0; }
-      .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-      .cta-android{background:white;color:var(--green-dark);padding:12px 24px;border-radius:var(--radius-sm, 10px);font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.2s;border:none;cursor:pointer}
-      .cta-android:hover{background:var(--gray-100)}
-      .cta-android svg{width:18px;height:18px}
-      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:stretch}.cta-buttons a{width:100%;justify-content:center;text-align:center}.blog-cta-buttons{flex-direction:column;align-items:stretch}.blog-cta-buttons a{width:100%;justify-content:center;text-align:center}}
-
-      /* Footer */
-      .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); text-decoration: none; font-weight: 600; margin-bottom: 8px; }
-      .footer-logo { height: 28px; width: auto; }
-      .footer-tagline { color: var(--gray-400); font-size: 13px; margin-bottom: 16px; }
-      .footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 16px; }
-      .footer-links a { color: var(--gray-400); text-decoration: none; font-size: 13px; transition: color 0.2s; }
-      .footer-links a:hover { color: var(--dark); }
-      .footer-copy { color: var(--gray-600); font-size: 12px; margin-bottom: 4px; }
-      .footer-affiliate { color: var(--gray-600); }
-
-      /* Responsive */
-      @media (max-width: 640px) {
-        /* Sections — reduce padding */
-        .comparison, .factors, .deep-dives, .caveats, .cta-section, .blog-cta-section { padding: 40px 0; }
-
-        /* Comparison */
-        .device-selectors { flex-direction: column; align-items: stretch; }
-        .vs-badge { align-self: center; }
-        .selector-wrap { max-width: 100%; }
-        .device-summary-row { grid-template-columns: 1fr; }
-        .device-summary-card { gap: 10px; padding: 14px 16px; }
-        .dsc-img { width: 36px; height: 36px; }
-        .dsc-fallback { width: 36px; height: 36px; font-size: 16px; }
-        .comp-tabs { gap: 4px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; scrollbar-width: none; -ms-overflow-style: none; }
-        .comp-tabs::-webkit-scrollbar { display: none; }
-        .comp-tab { padding: 6px 12px; font-size: 12px; flex-shrink: 0; }
-        .comp-detail { padding: 14px; }
-        .comp-2col { grid-template-columns: 1fr; }
-        .comp-stat-value { font-size: 18px; }
-        .ov-strengths { grid-template-columns: 1fr; }
-
-        /* Factors */
-        .factor-selector { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 8px; scrollbar-width: none; -ms-overflow-style: none; }
-        .factor-selector::-webkit-scrollbar { display: none; }
-        .factor-tab { flex-shrink: 0; }
-        .factor-panel { padding: 20px 16px; }
-        .fv-speed-row { grid-template-columns: 1fr; gap: 4px; }
-        .fv-speed-acc { font-size: 11px; }
-        .fv-triggers { grid-template-columns: 1fr; }
-        .fv-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
-        .fv-stat-card { padding: 14px 14px; }
-        .fv-stat-num { font-size: 26px; }
-        .fv-stat-label { font-size: 12px; }
-        .fv-condition-row { grid-template-columns: 1fr; gap: 4px; }
-        .fv-condition-mag { text-align: left; }
-        .fv-alert-stat { font-size: 36px; }
-
-        /* Deep Dives */
-        .dd-grid { grid-template-columns: 1fr; }
-        .dd-cols { grid-template-columns: 1fr; }
-        .dd-header { padding: 14px; gap: 10px; }
-        .dd-body { padding: 0 14px 14px; padding-top: 14px; }
-        .model-table { min-width: 0; font-size: 11px; }
-        .model-table thead th:last-child, .model-table tbody td:last-child { display: none; }
-
-        /* Caveats */
-        .caveat-body { padding: 0 20px 16px 44px; }
-
-        /* CTA + Footer */
-        .cta-box { padding: 32px 20px; }
-        .cta-features { gap: 12px; }
-      }
-
-      /* ── Blog CTA Tablet (768px+) ── */
-      @media (min-width: 768px) {
-        .blog-cta-section { padding: 64px 0; }
-        .blog-cta { padding: 32px 28px; border-radius: 18px; }
-        .blog-cta-headline { font-size: 24px; }
-        .blog-cta-sub { font-size: 15px; }
-        .blog-cta-actions { flex-direction: row; align-items: center; gap: 16px; }
-        .blog-cta-btn { width: auto; }
-        .blog-cta-devices { flex-direction: row; align-items: center; gap: 14px; }
-        .blog-cta-device-tags { grid-template-columns: repeat(4, auto); width: auto; }
-      }
-
-      /* ── Blog CTA Desktop (1024px+) ── */
-      @media (min-width: 1024px) {
-        .blog-cta-section { padding: 80px 0; }
-        .blog-cta { padding: 40px 36px; border-radius: 20px; }
-        .blog-cta-badge { padding: 5px 12px; margin-bottom: 20px; }
-        .blog-cta-headline { font-size: 26px; margin-bottom: 12px; }
-        .blog-cta-sub { font-size: 15px; margin-bottom: 28px; max-width: 560px; }
-        .blog-cta-meta { font-size: 13px; }
-        .blog-cta-devices { margin-top: 24px; padding-top: 24px; gap: 16px; }
-        .blog-cta-device-tag { padding: 5px 10px; font-size: 11px; gap: 6px; }
-        .blog-cta-device-tag img { width: 16px; height: 16px; }
-      }
-    `;
-  }
-
-  // ── Events ────────────────────────────────────────────────────────────
-
-  _setupEventDelegation() {
-    if (this._eventsBound) return;
-    this._eventsBound = true;
-    const shadow = this.shadowRoot;
-
-    shadow.addEventListener('change', (e) => {
-      if (e.target.id === 'sc-device1') {
-        this._selectedDevices = [e.target.value, this._selectedDevices[1]];
-        this._updateComparison();
-      } else if (e.target.id === 'sc-device2') {
-        this._selectedDevices = [this._selectedDevices[0], e.target.value];
-        this._updateComparison();
-      }
-    });
-
-    shadow.addEventListener('click', (e) => {
-      // Comparison tabs
-      const compTab = e.target.closest('.comp-tab');
-      if (compTab) {
-        this._activeTab = compTab.dataset.tab;
-        this._updateComparison();
-        return;
-      }
-
-      // Device card expand/collapse (ignore affiliate link clicks)
-      if (e.target.closest('.dd-name-link') || e.target.closest('.dd-buy-btn') || e.target.closest('.dsc-name-link')) return;
-      const ddHeader = e.target.closest('.dd-header');
-      if (ddHeader) {
-        const card = ddHeader.closest('.dd-card');
-        const key = card.dataset.device;
-        this._expandedDevice = this._expandedDevice === key ? null : key;
-        shadow.querySelectorAll('.dd-card').forEach(c => {
-          c.classList.toggle('expanded', c.dataset.device === this._expandedDevice);
-        });
-        return;
-      }
-
-      // Factor selector tabs
-      const factorTab = e.target.closest('.factor-tab');
-      if (factorTab) {
-        this._activeFactor = parseInt(factorTab.dataset.factorTab, 10);
-        this._updateFactors();
-        return;
-      }
-
-      // "Other factors" collapsible
-      const factorHeader = e.target.closest('.factor-header');
-      if (factorHeader) {
-        const item = factorHeader.closest('.factor-item');
-        if (this._expandedFactors.has('other')) {
-          this._expandedFactors.delete('other');
-          item.classList.remove('open');
-        } else {
-          this._expandedFactors.add('other');
-          item.classList.add('open');
-        }
-        return;
-      }
-
-      // Caveats accordion
-      const caveatHeader = e.target.closest('.caveat-header');
-      if (caveatHeader) {
-        const item = caveatHeader.closest('.caveat-card');
-        const idx = parseInt(item.dataset.caveat, 10);
-        if (this._expandedCaveats.has(idx)) {
-          this._expandedCaveats.delete(idx);
-          item.classList.remove('open');
-        } else {
-          this._expandedCaveats.add(idx);
-          item.classList.add('open');
-        }
-        return;
-      }
-    });
-
-  }
-
-  // ── Animations ────────────────────────────────────────────────────────
+  // ── Scroll animations ─────────────────────────────────────────────────────
 
   _setupAnimations() {
     requestAnimationFrame(() => {
       const els = this.shadowRoot.querySelectorAll('.animate-on-scroll');
-      if (!els.length) return;
+      if (!els.length || !('IntersectionObserver' in window)) {
+        els.forEach(el => el.classList.add('visible'));
+        return;
+      }
       if (this._observer) this._observer.disconnect();
       this._observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -1728,102 +1217,598 @@ class KygoStepCountAccuracy extends HTMLElement {
             this._observer.unobserve(entry.target);
           }
         });
-      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.1 });
+      }, { rootMargin: '0px 0px -40px 0px', threshold: 0.01 });
       els.forEach(el => this._observer.observe(el));
     });
   }
 
-  // ── Structured Data (JSON-LD) ─────────────────────────────────────────
+  // ── JSON-LD ───────────────────────────────────────────────────────────────
 
   _injectStructuredData() {
-    if (document.querySelector('script[data-kygo-step-ld]')) return;
+    if (!document.querySelector('script[data-kygo-step-count-accuracy-ld]')) {
+      const ld = {
+        '@context': 'https://schema.org',
+        '@type': 'WebApplication',
+        'name': 'Step Count Accuracy by Wearable: Garmin, Apple Watch, Fitbit, Samsung, Oura & WHOOP',
+        'description': 'How accurate is your wearable step count? Compare 9 devices on lab error, free-living error, bias direction, phantom-step risk and how much independent validation exists, grouped into four evidence tiers. Includes assisted-gait accuracy and why an accurate step count does not mean accurate calories.',
+        'applicationCategory': 'HealthApplication',
+        'operatingSystem': 'Web',
+        'url': 'https://www.kygo.app/tools/step-count-accuracy',
+        'datePublished': '2026-02-15',
+        'dateModified': '2026-08-18',
+        'softwareVersion': '2.1',
+        'inLanguage': 'en',
+        'isAccessibleForFree': true,
+        'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
+        'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
+        'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
+        'alternateName': 'Kygo Step Count Accuracy Comparison Tool',
+        'featureList': 'Compare 9 wearables for step count accuracy, four evidence tiers, lab versus free-living error, bias direction and phantom-step risk, walking speed and wear position effects, accuracy with a walker or cane, steps versus active minutes versus calories, manufacturer claim versus independent finding',
+        'keywords': 'step count accuracy, wearable step counter accuracy, most accurate step counter, garmin step count accuracy, apple watch step count accuracy, fitbit step count accuracy, samsung galaxy watch steps, oura ring step count, whoop step count, polar step accuracy, coros step accuracy, pixel watch step count, phantom steps, are step counters accurate, step counter accuracy with a walker, do fitness trackers work for older adults'
+      };
+      const s1 = document.createElement('script');
+      s1.type = 'application/ld+json';
+      s1.setAttribute('data-kygo-step-count-accuracy-ld', '');
+      s1.textContent = JSON.stringify(ld);
+      document.head.appendChild(s1);
+    }
 
-    const webApp = {
-      '@context': 'https://schema.org',
-      '@type': 'WebApplication',
-      'name': 'Step Count Accuracy by Wearable Device — Kygo Health',
-      'description': 'Compare step count accuracy across 8 wearable devices including Garmin, Apple Watch, Fitbit, Samsung Galaxy Watch, COROS, Polar, Oura Ring, and WHOOP. Data sourced from 20+ peer-reviewed studies with full bias disclosure.',
-      'applicationCategory': 'HealthApplication',
-      'operatingSystem': 'Web',
-      'url': 'https://www.kygo.app/tools/step-count-accuracy',
-      'datePublished': '2026-02-15',
-      'dateModified': '2026-03-18',
-      'softwareVersion': '1.0',
-      'inLanguage': 'en',
-      'isAccessibleForFree': true,
-      'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
-      'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
-      'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'alternateName': 'Kygo Step Count Accuracy Comparison Tool',
-      'featureList': 'Compare 8 wearable devices, lab vs free-living accuracy, peer-reviewed data from 20+ studies, bias direction analysis, walking speed impact analysis',
-      'keywords': 'step count accuracy, wearable step counter accuracy, Garmin step count accuracy, Apple Watch step count accuracy, Fitbit step count accuracy, Samsung Galaxy Watch steps, Oura Ring step count, WHOOP step count, COROS accuracy, step counter comparison, pedometer accuracy'
-    };
+    if (!document.querySelector('script[data-kygo-step-count-accuracy-faq]')) {
+      const faq = {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': this._faqs.map(f => ({
+          '@type': 'Question', 'name': f.q,
+          'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
+        }))
+      };
+      const s2 = document.createElement('script');
+      s2.type = 'application/ld+json';
+      s2.setAttribute('data-kygo-step-count-accuracy-faq', '');
+      s2.textContent = JSON.stringify(faq);
+      document.head.appendChild(s2);
+    }
 
-    const faq = {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      'mainEntity': [
-        {
-          '@type': 'Question',
-          'name': 'Which wearable has the most accurate step counter?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Garmin ranks #1 for step count accuracy with 82.6% overall accuracy and MAPE of 0.6–3.5% in lab conditions. Apple Watch ranks #2 with 81.1% overall accuracy and r=0.99 correlation against ActivPAL in 24-hour free-living testing. Both significantly outperform other devices.' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'How accurate is the Apple Watch step counter?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch has 81.1% overall step count accuracy, with MAPE of 0.9–3.4% in lab conditions and 6.4–10% in free-living conditions. It achieved r=0.99 correlation against ActivPAL in a 24-hour free-living study. Accuracy drops to 23.9% MAPE for light-intensity or slow walking, and accuracy is lower for adults aged 40+ (10.9% MAPE vs 4.3% for under 40).' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'Is the Oura Ring accurate for step counting?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. While the Oura Ring shows acceptable lab accuracy (<10% MAPE in controlled walking tests), it averages +2,124 phantom steps per day in free-living conditions due to hand gestures being misclassified as steps. The finger placement makes it fundamentally unsuited for reliable daily step counting. Use the Oura Ring for sleep and HRV, not step counts.' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'What is the biggest factor affecting step count accuracy?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Walking speed is the single biggest factor. All wearables perform well at normal walking speeds (0.9–1.8 m/s) but accuracy drops dramatically below 0.9 m/s. At very slow speeds (<0.5 m/s), even the best devices miss the majority of steps. Sensor placement (ankle vs. wrist) and arm swing are the next most important factors.' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'Does Garmin overcount or undercount steps?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Garmin predominantly underestimates steps, especially at slow walking speeds and on treadmills. Its 10-step minimum bout filter — which waits for 10 consecutive step-like patterns before recording — eliminates phantom steps but causes it to miss very short walking bursts. In free-living conditions, MAPE ranges from 10–17.8% depending on the model.' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'How does WHOOP count steps?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'WHOOP added step counting via a firmware update in October 2024. It uses a 3-axis accelerometer plus 3-axis gyroscope to detect step cadence. However, as of early 2026, no peer-reviewed validation studies exist for WHOOP step counting. WHOOP intentionally focuses on Strain (cardiovascular load) rather than steps.' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'Why does my wearable count steps when I\'m driving or sitting?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Wrist-worn devices detect arm motion as a proxy for walking. Road vibrations during driving, desk work, and repetitive hand movements can all trigger the step detection algorithm. Samsung and Oura users report the most phantom steps (2,000–3,500+ per day). Garmin\'s 10-step minimum bout filter provides the best defense against phantom steps.' }
-        }
-      ]
-    };
+    if (!document.querySelector('script[data-kygo-step-count-accuracy-bc]')) {
+      const bc = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.kygo.app' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
+          { '@type': 'ListItem', 'position': 3, 'name': 'Step Count Accuracy', 'item': 'https://www.kygo.app/tools/step-count-accuracy' }
+        ]
+      };
+      const s3 = document.createElement('script');
+      s3.type = 'application/ld+json';
+      s3.setAttribute('data-kygo-step-count-accuracy-bc', '');
+      s3.textContent = JSON.stringify(bc);
+      document.head.appendChild(s3);
+    }
+  }
 
-    // Remove any existing FAQPage LD+JSON to prevent Google "duplicate field" error
-    document.querySelectorAll('script[type="application/ld+json"]').forEach(function(s) {
-      try { if (JSON.parse(s.textContent)['@type'] === 'FAQPage') s.remove(); } catch(e) {}
-    });
+  // ── Styles ────────────────────────────────────────────────────────────────
 
-    const breadcrumb = {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      'itemListElement': [
-        { '@type': 'ListItem', 'position': 1, 'name': 'Kygo Health', 'item': 'https://www.kygo.app' },
-        { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
-        { '@type': 'ListItem', 'position': 3, 'name': 'Step Count Accuracy', 'item': 'https://www.kygo.app/tools/step-count-accuracy' }
-      ]
-    };
+  _styles() {
+    return `
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
-    [webApp, faq, breadcrumb].forEach((schema, i) => {
-      const script = document.createElement('script');
-      script.type = 'application/ld+json';
-      if (i === 0) script.setAttribute('data-kygo-step-ld', '');
-      script.textContent = JSON.stringify(schema);
-      document.head.appendChild(script);
-    });
+      :host {
+        --kygo-green: #22C55E;
+        --kygo-green-dark: #16A34A;
+        --kygo-green-light: #DCFCE7;
+        --kygo-dark: #0F172A;
+        --kygo-light: #F8FAFC;
+        --bg-canvas: #FFFFFF;
+        --bg-surface: #F8FAFC;
+        --bg-raised: #F1F5F9;
+        --fg-1: #0F172A;
+        --fg-2: #475569;
+        --fg-3: #94A3B8;
+        --border-subtle: #E2E8F0;
+        --shadow-md: 0 8px 24px rgba(15,23,42,0.06);
+        --shadow-cta: 0 8px 24px rgba(34,197,94,0.30);
+        --font-display: 'Space Grotesk', sans-serif;
+        --font-body: 'DM Sans', sans-serif;
+        --font-numeric: 'Space Grotesk', sans-serif;
+        --ease-out: cubic-bezier(.16,1,.3,1);
+        display: block;
+        overflow-x: clip;
+        font-family: var(--font-body);
+        color: var(--fg-1);
+        background: var(--bg-canvas);
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      * { box-sizing: border-box; }
+      a { color: inherit; text-decoration: none; }
+      .ico { display: inline-flex; align-items: center; justify-content: center; }
+      .ico svg { width: 1em; height: 1em; }
+
+      .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity .6s var(--ease-out), transform .6s var(--ease-out); }
+      .animate-on-scroll.visible { opacity: 1; transform: none; }
+
+      /* Nav */
+      .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--border-subtle); }
+      .nav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
+      .nav-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: -0.01em; color: var(--fg-1); text-transform: uppercase; }
+      .nav-brand img { width: 26px; height: 26px; }
+      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
+      .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
+      .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
+      .nav-cta-group .nav-store-ios { background:var(--kygo-green); color:#fff; }
+      .nav-cta-group .nav-store-ios:hover { background:var(--kygo-green-dark); color:#fff; }
+      .nav-cta-group .nav-store-android { background:#fff; color:var(--kygo-green-dark); border:1.5px solid var(--border-subtle); }
+      .nav-cta-group .nav-store-android:hover { border-color:var(--kygo-green); color:var(--kygo-green-dark); }
+      @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
+      @media (max-width: 480px) { .nav-brand span { display: none; } }
+
+      /* Buttons */
+      .btn { font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 10px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all .2s var(--ease-out); white-space: nowrap; }
+      .btn .ico { width: 16px; height: 16px; }
+      .btn-primary { background: var(--kygo-green); color: #fff; box-shadow: 0 4px 12px rgba(34,197,94,0.25); }
+      .btn-primary:hover { background: var(--kygo-green-dark); transform: translateY(-1px); box-shadow: var(--shadow-cta); }
+      .btn-lg { padding: 14px 22px; font-size: 15px; border-radius: 12px; }
+      .btn-lg .ico { width: 18px; height: 18px; }
+
+      /* Hero */
+      .hero-light { background: #fff; border-bottom: 1px solid var(--border-subtle); }
+      .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      .hero-copy { min-width: 0; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; max-width: 100%; background: rgba(34,197,94,0.10); color: var(--kygo-green-dark); padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; line-height: 1.35; }
+      .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kygo-green); flex: none; }
+      .hero-light h1 { overflow-wrap: break-word; font-family: var(--font-display); font-weight: 700; color: var(--fg-1); font-size: clamp(30px, 5.5vw, 58px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
+      .hero-light h1 .hl { color: var(--kygo-green); }
+      .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--fg-2); max-width: 60ch; margin: 0; }
+      .hero-lede strong { color: var(--fg-1); font-weight: 600; }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); white-space: nowrap; }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--border-subtle); }
+      .hv-label { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-2); }
+      .hv-val { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-2); }
+      .hv-val.good { color: var(--kygo-green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--bg-raised); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--fg-3); }
+      .hv-fill.good { background: var(--kygo-green); }
+      .hv-cap { font-family: var(--font-display); font-size: 11px; font-weight: 600; color: var(--fg-3); }
+      .hv-cap.good { color: var(--kygo-green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--fg-3); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; min-width: 0; margin: 4px auto 0; } }
+      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; }
+      @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
+      .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 3.6vw, 38px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; }
+      .hero-stat .lbl { margin-top: 10px; color: var(--fg-3); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; line-height: 1.4; }
+
+      /* Sections */
+      .section { padding: 56px 20px; }
+      /* Slimmer interstitial for the mid-page app-download band, so it reads as a
+         contextual CTA rather than a full-weight content section (house pattern). */
+      .kearly-section { padding: 48px 20px; }
+      .kearly-section.bg-white { background: #fff; }
+      .kearly-section.bg-light { background: var(--kygo-light); }
+      .kearly-section .section-inner { max-width: 1200px; margin: 0 auto; }
+      @media (min-width: 720px) { .section { padding: 80px 24px; } }
+      .section-inner { max-width: 1200px; margin: 0 auto; }
+      .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+      .section.bg-white { background: #fff; }
+      .section.bg-light { background: var(--kygo-light); }
+      .section-head { margin-bottom: 28px; max-width: 720px; }
+      .kicker { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 6px 12px; border-radius: 999px; }
+      .section h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 4vw, 42px); line-height: 1.1; margin: 16px 0 10px; letter-spacing: -0.01em; }
+      .section h2 .hl { color: var(--kygo-green); }
+      .lede { color: var(--fg-2); font-size: 16px; line-height: 1.55; max-width: 62ch; margin: 0; }
+      .lede strong { color: var(--fg-1); font-weight: 600; }
+
+      /* Per-section read-more link to the matching blog post */
+      .section-readmore { display: inline-flex; align-items: center; gap: 7px; margin-top: 16px; font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--kygo-green-dark); }
+      .section-readmore .ico { width: 15px; height: 15px; transition: transform .15s; }
+      .section-readmore:hover .ico { transform: translateX(3px); }
+
+      /* Axis module (stacks on mobile, 2-up on wider screens) */
+      .bias { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      @media (min-width: 620px) { .bias { grid-template-columns: 1fr 1fr; } }
+      .bias-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 4px; box-shadow: var(--shadow-md); }
+      .bias-card.good { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.10); }
+      .bias-tag { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-2); }
+      .bias-tag .ico { width: 14px; height: 14px; color: var(--fg-3); }
+      .bias-card.good .bias-tag .ico { color: var(--kygo-green-dark); }
+      .bias-stat { font-family: var(--font-display); font-weight: 700; font-size: clamp(24px, 6vw, 36px); line-height: 1.05; letter-spacing: -0.02em; color: var(--fg-2); margin-top: 6px; }
+      .bias-card.good .bias-stat { color: var(--kygo-green-dark); }
+      .bias-stat small { font-size: 12px; font-weight: 500; color: var(--fg-3); }
+      .bias-cap { font-family: var(--font-display); font-weight: 600; font-size: 11px; letter-spacing: 0.2px; text-transform: uppercase; color: var(--fg-3); }
+      .bias-card.good .bias-cap { color: var(--kygo-green-dark); }
+      .bias-card p { margin: 6px 0 0; font-size: 13px; line-height: 1.5; color: var(--fg-2); }
+      .bias-note { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; margin: 2px 0 0; font-size: 13px; line-height: 1.55; color: var(--fg-2); background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 14px 16px; }
+      .bias-note .ico { width: 16px; height: 16px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
+      .bias-note strong { color: var(--fg-1); font-weight: 600; }
+      .bias-note em { font-style: normal; color: var(--fg-3); font-size: 12px; }
+
+      /* "How to read it" rules under the tier matrix */
+      .rank-rules { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 14px; }
+      @media (min-width: 720px) { .rank-rules { grid-template-columns: repeat(3, 1fr); } }
+      .rank-rule { display: flex; gap: 10px; align-items: flex-start; background: #fff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 13px 15px; font-size: 12.5px; line-height: 1.5; color: var(--fg-2); }
+      .rank-rule .ico { width: 15px; height: 15px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
+      .rank-rule strong { color: var(--fg-1); font-weight: 600; }
+      .cmp-tier-row th { font-weight: 700; }
+
+      /* Lab vs life split cards (same device, two numbers) */
+      .split-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 15px; box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 12px; }
+      .split-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; }
+      .split-head .brand-img.sm { width: 28px; height: 28px; border-radius: 8px; }
+      .split-dev { font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--fg-1); flex: 1 1 auto; min-width: 0; }
+      .split-badge { margin-left: auto; font-family: var(--font-display); font-weight: 600; font-size: 9px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); background: var(--bg-raised); padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+      .split-stat { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; padding: 11px 6px; border-radius: 12px; }
+      .split-stat.good { background: var(--kygo-green-light); }
+      .split-stat.off { background: var(--bg-raised); }
+      .split-lbl { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-display); font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; }
+      .split-lbl .ico { width: 12px; height: 12px; }
+      .split-stat.good .split-lbl { color: var(--kygo-green-dark); }
+      .split-stat.off .split-lbl { color: var(--fg-2); }
+      .split-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(19px, 4.4vw, 25px); line-height: 1.05; letter-spacing: -0.02em; }
+      .split-stat.good .split-num { color: var(--kygo-green-dark); }
+      .split-stat.off .split-num { color: var(--fg-1); }
+      .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .split-foot { margin: 0; font-size: 12px; line-height: 1.5; color: var(--fg-3); text-align: center; }
+      .split-foot strong { color: var(--fg-1); font-weight: 600; display: block; margin-bottom: 3px; }
+
+      /* Kygo CTA */
+      .kygo-cta-card { background: var(--kygo-dark); border-radius: 24px; padding: 40px 24px; position: relative; overflow: hidden; color: #fff; text-align: center; display: flex; flex-direction: column; align-items: center; }
+      @media (min-width: 720px) { .kygo-cta-card { padding: 56px 40px; } }
+      .kygo-cta-card::before { content: ''; position: absolute; top: -160px; right: -160px; width: 520px; height: 520px; background: radial-gradient(closest-side, rgba(34,197,94,0.30), transparent); pointer-events: none; }
+      .kygo-cta-card::after { content: ''; position: absolute; bottom: -180px; left: -180px; width: 480px; height: 480px; background: radial-gradient(closest-side, rgba(34,197,94,0.12), transparent); pointer-events: none; }
+      .kygo-cta-card .cta-pill { position: relative; display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.16); color: #6EE7A0; padding: 6px 14px; border-radius: 999px; font-family: var(--font-display); font-size: 12px; font-weight: 600; border: 1px solid rgba(34,197,94,0.25); }
+      .kygo-cta-card .cta-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 8px var(--kygo-green); }
+      .kygo-cta-card h3 { position: relative; font-family: var(--font-display); font-weight: 600; color: #fff; font-size: clamp(26px, 4.5vw, 42px); line-height: 1.05; letter-spacing: -0.01em; margin: 18px 0 14px; max-width: 22ch; }
+      .kygo-cta-card h3 span { color: var(--kygo-green); }
+      .kygo-cta-card p { position: relative; color: rgba(255,255,255,0.72); font-size: clamp(14px, 1.6vw, 16px); line-height: 1.6; max-width: 56ch; margin: 0 auto 24px; }
+      .kygo-cta-card .cta-btn-row { position: relative; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%; }
+      @media (max-width: 560px) { .kygo-cta-card .cta-btn-row .btn-lg { width: 100%; justify-content: center; } }
+      .kygo-cta-card .cta-works { position: relative; margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.6); font-size: 13px; }
+      .kygo-cta-card .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
+      @media (max-width: 560px) { .kygo-cta-card .cta-badges { display: grid; grid-template-columns: repeat(3, auto); justify-content: center; } }
+      .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
+
+      /* ── Evidence-tier matrix (logo chart) ────────────────────────────── */
+      .cmp { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-md); }
+      @media (min-width: 768px) { .cmp { border-radius: 22px; } }
+      .cmp-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      @media (min-width: 768px) { .cmp-scroll { overflow-x: visible; } }
+      .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 480px; }
+      @media (min-width: 768px) { .cmp-table { min-width: 620px; } }
+      .cmp-table th, .cmp-table td { padding: 0; vertical-align: middle; }
+      .cmp-table thead th { font-family: var(--font-display); font-weight: 700; font-size: 10.5px; letter-spacing: 0.4px; text-transform: uppercase; color: #334155; text-align: center; padding: 12px 6px; border-bottom: 1px solid #CBD5E1; white-space: nowrap; background: #E2E8F0; }
+      .cmp-table thead .cmp-th-device { text-align: left; padding-left: 14px; position: sticky; left: 0; z-index: 3; background: #E2E8F0; }
+      .th-full { display: none; } .th-short { display: inline; }
+      @media (min-width: 768px) {
+        .th-full { display: inline; } .th-short { display: none; }
+        .cmp-table thead th { font-size: 11px; padding: 14px 8px; }
+      }
+      .cmp-table tbody tr + tr td, .cmp-table tbody tr + tr th { border-top: 1px solid var(--border-subtle); }
+      .cmp-table tbody tr:hover td, .cmp-table tbody tr:hover .cmp-td-device { background: var(--bg-surface); }
+      .cmp-td-device { padding: 10px 5px; width: 88px; min-width: 88px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; box-shadow: 1px 0 0 var(--border-subtle); }
+      @media (min-width: 768px) { .cmp-td-device { padding: 10px 6px; width: 108px; min-width: 108px; } }
+      .brand { display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
+      .brand-img { width: 38px; height: 38px; border-radius: 9px; background: var(--bg-raised); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+      .brand-img img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
+      .brand-img.brand-img--icon { color: var(--fg-3); }
+      .brand-img.brand-img--icon .ico { width: 18px; height: 18px; }
+      .brand-img.sm { width: 34px; height: 34px; border-radius: 8px; }
+      .brand-text { display: flex; flex-direction: column; min-width: 0; }
+      .brand-name { font-family: var(--font-display); font-weight: 600; font-size: 11px; color: var(--fg-1); line-height: 1.2; overflow-wrap: anywhere; word-break: break-word; max-width: 86px; }
+      @media (min-width: 768px) {
+        .cmp-td-device { padding: 12px 14px 12px 8px; width: auto; min-width: 210px; position: static; box-shadow: none; }
+        .brand { flex-direction: row; align-items: center; gap: 12px; text-align: left; }
+        .brand-img { width: 42px; height: 42px; border-radius: 11px; }
+        .brand-img.sm { width: 42px; height: 42px; border-radius: 11px; }
+        .brand-name { font-size: 15px; max-width: none; }
+      }
+      .cmp-table tbody td { text-align: center; padding: 10px 6px; }
+      @media (min-width: 768px) { .cmp-table tbody td { padding: 12px 8px; } }
+      .vpill { display: inline-flex; align-items: center; font-family: var(--font-display); font-size: 11.5px; font-weight: 600; padding: 4px 11px; border-radius: 999px; line-height: 1.3; }
+      .vpill.good { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .vpill.mid { background: var(--bg-raised); color: var(--fg-2); }
+      .vpill.dark { background: var(--kygo-dark); color: #fff; }
+      .amz-link { display: inline-flex; align-items: center; gap: 3px; font-family: var(--font-display); font-weight: 600; font-size: 11px; color: var(--kygo-green-dark); white-space: nowrap; }
+      .amz-link .ico { width: 11px; height: 11px; transition: transform .15s; }
+      .amz-link:hover { color: var(--kygo-green); }
+      .amz-link:hover .ico { transform: translateX(2px); }
+      .cell-note { display: block; font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--fg-3); }
+      .cmp-legend { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 12px 16px 14px; font-size: 12px; line-height: 1.55; color: var(--fg-3); }
+      .cmp-legend > span { min-width: 0; }
+      .cmp-legend .ico { width: 13px; height: 13px; color: var(--kygo-green-dark); background: var(--kygo-green-light); border-radius: 50%; padding: 2px; box-sizing: content-box; flex: none; margin-top: 2px; }
+      .cmp-legend strong { color: var(--fg-2); font-weight: 600; }
+      .cmp-legend em { font-style: normal; color: var(--fg-3); }
+
+      /* ── Interactive comparator ───────────────────────────────────────── */
+      .cmpr { display: flex; flex-direction: column; gap: 16px; }
+      .cmpr-picker-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+      .cmpr-picker-title { font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); }
+      .cmpr-picker-hint { font-size: 12px; color: var(--fg-3); }
+      .picker { display: flex; flex-wrap: wrap; gap: 6px; background: var(--bg-raised); border: 1px solid var(--border-subtle); border-radius: 16px; padding: 8px; }
+      .pick-tile { display: inline-flex; align-items: center; gap: 5px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 999px; padding: 4px 10px 4px 4px; cursor: pointer; transition: all .15s ease; font-family: var(--font-display); }
+      .pick-tile:hover { border-color: var(--fg-3); }
+      .pick-tile .brand-img.sm { width: 20px; height: 20px; border-radius: 6px; }
+      .pick-name { font-weight: 600; font-size: 11.5px; color: var(--fg-1); line-height: 1.1; white-space: nowrap; }
+      .pick-check { width: 13px; height: 13px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: none; align-items: center; justify-content: center; flex: none; }
+      .pick-check .ico { width: 8px; height: 8px; }
+      .pick-tile.active { border-color: var(--kygo-green); background: rgba(34,197,94,0.06); box-shadow: 0 0 0 3px rgba(34,197,94,0.10); }
+      .pick-tile.active .pick-name { color: var(--kygo-green-dark); }
+      .pick-tile.active .pick-check { display: inline-flex; }
+
+      .cmpr-out { display: flex; flex-direction: column; gap: 12px; }
+      .cr-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-md); }
+      @media (min-width: 768px) { .cr-wrap { border-radius: 22px; } }
+      .cr-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .cr-table { width: 100%; border-collapse: separate; border-spacing: 0; min-width: 460px; }
+      .cr-table th, .cr-table td { padding: 11px 7px; text-align: center; vertical-align: middle; }
+      .cr-table thead th { background: #E2E8F0; border-bottom: 1px solid #CBD5E1; }
+      .cr-table thead th.cr-corner { text-align: left; font-family: var(--font-display); font-weight: 700; font-size: 10px; letter-spacing: .4px; text-transform: uppercase; color: #334155; position: sticky; left: 0; z-index: 3; background: #E2E8F0; }
+      .cr-dev { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+      .cr-dev .brand-img.sm { width: 30px; height: 30px; border-radius: 8px; }
+      .cr-dev-name { font-family: var(--font-display); font-weight: 600; font-size: 11.5px; color: var(--fg-1); line-height: 1.15; }
+      .cr-table tbody tr + tr th, .cr-table tbody tr + tr td { border-top: 1px solid var(--border-subtle); }
+      .cr-table tbody th { text-align: left; position: sticky; left: 0; z-index: 1; background: #fff; box-shadow: 1px 0 0 var(--border-subtle); width: 120px; min-width: 120px; }
+      .cr-metric { display: block; font-family: var(--font-body); font-weight: 600; font-size: 12px; color: var(--fg-1); line-height: 1.25; overflow-wrap: anywhere; }
+      .cr-unit { display: block; margin-top: 2px; font-size: 10px; color: var(--fg-3); }
+      .cr-dir { display: none; margin-top: 3px; font-family: var(--font-display); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: .3px; color: var(--kygo-green-dark); }
+      .cr-table tbody td .vpill { font-size: 11px; padding: 4px 9px; }
+      @media (min-width: 768px) {
+        .cr-table { min-width: 620px; }
+        .cr-table th, .cr-table td { padding: 12px 10px; }
+        .cr-table thead th.cr-corner { font-size: 10.5px; }
+        .cr-dev .brand-img.sm { width: 34px; height: 34px; }
+        .cr-dev-name { font-size: 12px; }
+        .cr-table tbody th { width: 172px; min-width: 172px; }
+        .cr-metric { font-size: 13px; }
+        .cr-unit { font-size: 10.5px; }
+        .cr-dir { display: block; }
+      }
+      .cr-table .vpill .ico { width: 11px; height: 11px; margin-left: 4px; }
+      .cr-verdict { display: flex; gap: 12px; align-items: flex-start; background: var(--kygo-green-light); border: 1px solid rgba(34,197,94,0.28); border-radius: 14px; padding: 14px 16px; font-size: 13.5px; line-height: 1.55; color: var(--fg-1); }
+      .cr-verdict .ico { width: 18px; height: 18px; color: var(--kygo-green-dark); flex: none; margin-top: 1px; }
+      .cr-verdict strong { color: var(--kygo-green-dark); font-weight: 700; }
+      .cmpr-empty { display: flex; gap: 10px; align-items: center; justify-content: center; background: #fff; border: 1.5px dashed var(--border-subtle); border-radius: 16px; padding: 28px 20px; color: var(--fg-3); font-size: 14px; text-align: center; }
+      .cmpr-empty .ico { width: 18px; height: 18px; color: var(--kygo-green-dark); flex: none; }
+
+      /* Device detail accordion */
+      .dev-acc { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: start; }
+      @media (min-width: 768px) { .dev-acc { grid-template-columns: 1fr 1fr; gap: 12px; } }
+      .dacc { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-md); transition: border-color .2s, box-shadow .2s; }
+      .dacc.is-validated { border-color: rgba(34,197,94,0.40); }
+      .dacc[open] { box-shadow: var(--shadow-md); border-color: var(--kygo-green); }
+      .dacc > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+      .dacc > summary::-webkit-details-marker { display: none; }
+      .dacc > summary:hover { background: var(--bg-surface); }
+      .dacc .brand-img.sm { width: 40px; height: 40px; border-radius: 10px; flex: none; }
+      .dacc-id { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+      .dacc-name { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); line-height: 1.2; }
+      .dacc-sub { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+      .dacc-sub .vpill { font-size: 10px; padding: 3px 9px; }
+      .dacc-wear { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--fg-3); }
+      .dacc-chev { color: var(--fg-3); flex: none; }
+      .dacc-chev .ico { width: 16px; height: 16px; transition: transform .2s; }
+      .dacc[open] .dacc-chev .ico { transform: rotate(90deg); color: var(--kygo-green-dark); }
+      .dacc-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+      .dev-finding { background: var(--bg-surface); border-radius: 12px; padding: 12px 14px; margin-top: 4px; }
+      .dev-finding.alt { background: #fff; border: 1px solid var(--border-subtle); margin-top: 0; }
+      .dev-label { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-3); }
+      .dev-finding p { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--fg-1); }
+      .dev-finding.alt p { color: var(--fg-2); }
+      .dmetrics { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 460px) { .dmetrics { grid-template-columns: 1fr 1fr; } }
+      .dmetric { background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: 11px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+      .dm-lbl { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); }
+      .dm-vals { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+      .dm-tag { font-family: var(--font-display); font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; color: var(--fg-3); }
+      .dev-facts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+      .dev-facts li { display: grid; grid-template-columns: 22px 1fr; gap: 9px; font-size: 13px; line-height: 1.45; color: var(--fg-2); }
+      .dev-facts .fct-ico { width: 22px; height: 22px; border-radius: 6px; background: var(--bg-raised); color: var(--fg-3); display: inline-flex; align-items: center; justify-content: center; }
+      .dev-facts .fct-ico.ok { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .dev-facts .fct-ico .ico { width: 13px; height: 13px; }
+      .dev-facts strong { color: var(--fg-1); font-weight: 600; display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
+      .dev-amazon { margin-top: auto; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--kygo-green-light); background: rgba(34,197,94,0.06); color: var(--kygo-green-dark); font-family: var(--font-body); font-weight: 600; font-size: 13px; transition: all .15s ease; }
+      .dev-amazon:hover { border-color: var(--kygo-green); background: rgba(34,197,94,0.12); }
+      .dev-amazon .ico { width: 14px; height: 14px; transition: transform .15s; }
+      .dev-amazon:hover .ico { transform: translateX(2px); }
+      .aff-disclosure { display: flex; gap: 10px; align-items: flex-start; margin: 20px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--fg-3); font-style: italic; }
+      .aff-disclosure .ico { width: 15px; height: 15px; color: var(--kygo-green-dark); flex: none; margin-top: 2px; }
+
+      /* Fact cards */
+      .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      @media (min-width: 620px) { .sig-grid { gap: 14px; } }
+      .sig-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 16px; padding: 13px; display: flex; flex-direction: column; gap: 7px; box-shadow: var(--shadow-md); }
+      @media (min-width: 620px) { .sig-card { padding: 18px; gap: 8px; } }
+      .sig-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+      .fact-ico { width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; }
+      .fact-ico .ico { width: 17px; height: 17px; }
+      .fact-ico.tone-good { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
+      .fact-ico.tone-mid { background: var(--bg-raised); color: var(--fg-2); }
+      .fact-ico.tone-dark { background: var(--kygo-dark); color: #fff; }
+      .sig-rank { font-family: var(--font-display); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); }
+      .sig-name { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; margin: 2px 0 0; line-height: 1.25; color: var(--fg-1); }
+      .sig-find { margin: 0; font-size: 12px; line-height: 1.5; color: var(--fg-2); }
+      @media (min-width: 620px) { .sig-name { font-size: 15px; line-height: 1.3; } .sig-find { font-size: 13px; line-height: 1.55; } }
+      .sig-src { margin-top: auto; padding-top: 8px; font-size: 11.5px; color: var(--fg-3); border-top: 1px solid var(--border-subtle); }
+
+      /* Ranked bars (walking speed, wear position) */
+      .act { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 16px 18px 6px; box-shadow: var(--shadow-md); }
+      @media (min-width: 768px) { .act { border-radius: 22px; padding: 20px 24px 8px; } }
+      .act-head { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: baseline; padding: 0 0 10px; border-bottom: 1px solid var(--border-subtle); }
+      .act-head-l { font-family: var(--font-display); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-3); }
+      .act-head-r { justify-self: end; text-align: right; font-family: var(--font-display); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: var(--kygo-green-dark); line-height: 1.3; }
+      .act-row { display: grid; grid-template-columns: 104px 1fr 74px; gap: 10px; align-items: center; padding: 12px 0 4px; }
+      .act-row + .act-row, .act-note + .act-row { border-top: 1px solid var(--border-subtle); }
+      @media (min-width: 560px) { .act-row { grid-template-columns: 160px 1fr 88px; gap: 14px; } }
+      .act-lbl { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+      .act-name { font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--fg-1); line-height: 1.2; overflow-wrap: anywhere; }
+      .act-sub { font-size: 10px; color: var(--fg-3); line-height: 1.25; }
+      .act-track { height: 12px; border-radius: 999px; background: var(--bg-raised); overflow: hidden; }
+      .act-fill { display: block; height: 100%; border-radius: 999px; }
+      .act-fill.good { background: var(--kygo-green); }
+      .act-fill.ok { background: #86EFAC; }
+      .act-fill.poor { background: #CBD5E1; }
+      .act-val { justify-self: end; font-family: var(--font-numeric); font-size: 11px; padding: 4px 9px; text-align: center; }
+      .act-note { margin: 0 0 10px; font-size: 11.5px; line-height: 1.45; color: var(--fg-3); }
+      @media (min-width: 560px) { .act-note { padding-left: 174px; } }
+      .act .cmp-legend { padding: 12px 0 12px; }
+
+      /* Claim vs reality */
+      .claim-acc { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: start; }
+      @media (min-width: 768px) { .claim-acc { grid-template-columns: 1fr 1fr; gap: 12px; } }
+      .claim-item { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-md); transition: border-color .2s; }
+      .claim-item.good { border-color: rgba(34,197,94,0.40); }
+      .claim-item[open] { border-color: var(--kygo-green); }
+      .claim-item > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; }
+      .claim-item > summary::-webkit-details-marker { display: none; }
+      .claim-item > summary:hover { background: var(--bg-surface); }
+      .claim-brand { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--fg-1); line-height: 1.25; }
+      .claim-sum-right { display: inline-flex; align-items: center; gap: 10px; flex: none; }
+      .claim-chev { color: var(--fg-3); display: inline-flex; }
+      .claim-chev .ico { width: 15px; height: 15px; transition: transform .2s; }
+      .claim-item[open] .claim-chev .ico { transform: rotate(90deg); color: var(--kygo-green-dark); }
+      .claim-body { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 10px; }
+      .claim-quote { display: flex; gap: 8px; align-items: flex-start; margin: 0; background: var(--bg-surface); border-left: 3px solid var(--border-subtle); border-radius: 0 10px 10px 0; padding: 10px 12px; font-size: 13px; font-style: italic; color: var(--fg-2); line-height: 1.5; }
+      .claim-item.good .claim-quote { border-left-color: var(--kygo-green); }
+      .claim-quote .ico { width: 14px; height: 14px; color: var(--fg-3); flex: none; margin-top: 2px; font-style: normal; }
+      .claim-reality { margin: 0; font-size: 13px; line-height: 1.55; color: var(--fg-1); }
+      .claim-reality strong { font-weight: 600; }
+      .claim-src { padding-top: 8px; font-size: 11px; color: var(--fg-3); border-top: 1px solid var(--border-subtle); }
+
+      /* Bottom line */
+      .bottomline { background: var(--kygo-dark); color: rgba(255,255,255,0.82); border-radius: 22px; padding: 32px 26px; position: relative; overflow: hidden; }
+      @media (min-width: 720px) { .bottomline { padding: 44px 40px; } }
+      .bottomline::before { content: ''; position: absolute; top: -120px; right: -120px; width: 360px; height: 360px; background: radial-gradient(closest-side, rgba(34,197,94,0.22), transparent); pointer-events: none; }
+      .bottomline-tag { position: relative; display: inline-flex; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: #6EE7A0; background: rgba(34,197,94,0.14); border: 1px solid rgba(34,197,94,0.25); padding: 6px 12px; border-radius: 999px; margin-bottom: 18px; }
+      .bottomline p { position: relative; font-size: clamp(15px, 1.8vw, 18px); line-height: 1.65; margin: 0 0 14px; }
+      .bottomline p:last-child { margin-bottom: 0; }
+      .bottomline strong { color: #fff; font-weight: 600; }
+
+      /* Blog CTA */
+      .blog-cta { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(34,197,94,0.02) 100%); border: 1.5px solid var(--kygo-green-light); border-radius: 18px; padding: 22px; transition: all .25s var(--ease-out); color: var(--fg-1); }
+      .blog-cta:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+      .blog-cta-tag { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 999px; background: #fff; border: 1.5px solid var(--kygo-green-light); color: var(--kygo-green-dark); font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; white-space: nowrap; }
+      .blog-cta-body { min-width: 0; }
+      .blog-cta-kicker { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--kygo-green-dark); margin-bottom: 4px; }
+      .blog-cta-title { font-family: var(--font-display); font-size: clamp(15px, 2vw, 18px); font-weight: 600; color: var(--fg-1); line-height: 1.3; }
+      .blog-cta-sub { font-size: 13px; color: var(--fg-2); margin-top: 4px; line-height: 1.5; }
+      .blog-cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 4px 12px rgba(34,197,94,0.30); }
+      .blog-cta-arrow .ico { width: 20px; height: 20px; }
+      @media (max-width: 600px) {
+        .blog-cta { grid-template-columns: 1fr auto; grid-template-areas: 'tag arrow' 'body body'; padding: 18px; gap: 14px; }
+        .blog-cta-tag { grid-area: tag; justify-self: start; }
+        .blog-cta-arrow { grid-area: arrow; width: 40px; height: 40px; }
+        .blog-cta-body { grid-area: body; }
+      }
+
+      /* Thin app-download band */
+      .kband { max-width: 1100px; margin: 0 auto; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; padding: 28px 32px; display: flex; align-items: center; justify-content: space-between; gap: 36px; box-shadow: var(--shadow-md); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-width: 0; max-width: 640px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-display); font-weight: 600; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); animation: kygoPulse 2s ease-out infinite; }
+      .kband-headline { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(18px, 2.4vw, 23px); line-height: 1.3; color: var(--fg-1); }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex: 0 0 auto; max-width: 470px; }
+      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--fg-2); text-align: center; }
+      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 15px; padding: 14px 22px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-btn .ico { width: 17px; height: 17px; flex-shrink: 0; }
+      .kband-btn-ios { background: var(--kygo-green); color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: var(--kygo-green-dark); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: var(--kygo-green-dark); border: 1.5px solid var(--border-subtle); }
+      .kband-btn-android:hover { border-color: var(--kygo-green); transform: translateY(-2px); }
+      @media (max-width: 820px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 26px 22px; }
+        .kband-actions { width: 100%; max-width: none; flex-direction: column; }
+        .kband-btn { width: 100%; justify-content: center; }
+      }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); } 70% { box-shadow: 0 0 0 7px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+      @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
+
+      /* FAQ */
+      .faq { display: flex; flex-direction: column; gap: 10px; }
+      .faq details { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; padding: 4px 20px; transition: border-color .2s; }
+      .faq details[open] { border-color: var(--kygo-green); }
+      .faq summary { list-style: none; padding: 16px 0; font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); display: flex; align-items: center; justify-content: space-between; cursor: pointer; gap: 14px; }
+      .faq summary::-webkit-details-marker { display: none; }
+      .faq summary::after { content: '+'; color: var(--kygo-green-dark); font-weight: 600; font-size: 22px; transition: transform .2s; line-height: 1; }
+      .faq details[open] summary::after { content: '\\2212'; }
+      .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
+
+      /* Related tools */
+      .related-grid { display: grid; grid-template-columns: 1fr; gap: 18px; }
+      @media (min-width: 720px) { .related-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; } }
+      .related-card {
+        position: relative; display: flex; flex-direction: column;
+        background: var(--bg-canvas); border: 1px solid var(--border-subtle);
+        border-radius: 18px; overflow: hidden; text-decoration: none; color: inherit;
+        box-shadow: 0 2px 12px rgba(15,23,42,.05);
+        transition: transform .25s var(--ease-out), box-shadow .25s var(--ease-out), border-color .25s var(--ease-out);
+      }
+      .related-card::after {
+        content: ''; position: absolute; left: 0; right: 0; top: 0; height: 3px;
+        background: linear-gradient(90deg, var(--kygo-green), var(--kygo-green-dark));
+        opacity: 0; transition: opacity .25s ease; pointer-events: none;
+      }
+      .related-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(15,23,42,.10); border-color: #CBD5E1; }
+      .related-card:hover::after { opacity: 1; }
+      .rc-media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--bg-raised); display: flex; align-items: center; justify-content: center; }
+      .rc-panel { display: block; background: var(--bg-canvas); border: 1px solid #EAECEF; border-radius: 14px; box-shadow: 0 6px 18px rgba(15,23,42,.08); padding: 13px 15px; width: 78%; }
+      .rc-cap { display: block; font-family: var(--font-display); font-weight: 600; font-size: 9px; letter-spacing: .6px; text-transform: uppercase; color: var(--fg-3); margin-bottom: 8px; }
+      .rc-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 7px; }
+      .rc-title { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.25; letter-spacing: -.01em; color: var(--fg-1); }
+      .rc-blurb { font-family: var(--font-body); font-size: 13.5px; line-height: 1.55; color: var(--fg-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+      .rc-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 5px; }
+      .rc-meta { font-family: var(--font-body); font-size: 12px; font-weight: 500; color: var(--fg-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .rc-open { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--kygo-green-dark); }
+      .rc-open .ico { width: 15px; height: 15px; }
+
+      /* Sources · compact link list */
+      .sources { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: repeat(3, 1fr); gap: 8px; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(4, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 3px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 10px 11px; transition: border-color .15s, box-shadow .15s; }
+      @media (min-width: 600px) { .src { padding: 12px 14px; gap: 4px; } }
+      a.src:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); }
+      .src--nolink { background: var(--bg-surface); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .src--nolink .src-tag { color: var(--fg-3); }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-1); line-height: 1.3; overflow-wrap: anywhere; }
+      @media (min-width: 600px) { .src-title { font-size: 13.5px; } }
+      a.src:hover .src-title { color: var(--kygo-green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 10.5px; color: var(--fg-3); line-height: 1.35; overflow-wrap: anywhere; }
+      @media (min-width: 600px) { .src-cite { font-size: 11.5px; } }
+      .src-go { display: inline-flex; color: var(--kygo-green-dark); }
+      .src-go .ico { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go .ico { transform: translate(1px,-1px); }
+
+      /* Footer */
+      .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
+      .tool-footer .container { max-width: 720px; margin: 0 auto; text-align: center; padding: 0; }
+      .footer-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--fg-1); font-family: var(--font-display); font-weight: 700; font-size: 17px; }
+      .footer-logo { width: 28px; height: 28px; }
+      .footer-tagline { color: var(--fg-3); font-size: 14px; margin: 10px 0 22px; }
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 28px; font-size: 14px; }
+      .footer-links a { color: var(--fg-2); }
+      .footer-links a:hover { color: var(--kygo-green-dark); }
+      .footer-disclaimer { font-size: 12px; color: var(--fg-3); line-height: 1.6; max-width: 620px; margin: 0 auto 14px; }
+      .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
+      .footer-affiliate { font-style: italic; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .animate-on-scroll { opacity: 1; transform: none; transition: none; }
+      }
+    `;
   }
 }
 
-customElements.define('kygo-step-count-accuracy', KygoStepCountAccuracy);
+if (!customElements.get('kygo-step-count-accuracy')) {
+  customElements.define('kygo-step-count-accuracy', KygoStepCountAccuracy);
+}
