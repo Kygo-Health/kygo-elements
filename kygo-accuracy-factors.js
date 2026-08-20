@@ -241,17 +241,17 @@ class KygoAccuracyFactors extends HTMLElement {
 
       { key: 'dom', name: 'Which wrist you wear it on', cat: 'Fit and placement', ctl: 'you', dev: ['watch'], m: {
         steps: { e: 'Y', imp: 66, g: 'M', src: 'park',
-          head: 'Not null for steps: your dominant hand simply moves more.',
+          head: 'It does matter for steps: your dominant hand simply moves more.',
           size: 'Both wrists worn at once, full waking day: the dominant wrist averaged 1,253 more steps (p=.006).',
           fix: 'Pick a wrist and stay on it, or your own trend line lies to you.',
           ev: 'Single study, n=12, no criterion standard, so it bounds the disagreement only.' },
         hr: { e: 'N', imp: 0, g: 'X', src: 'jmirsite',
-          head: 'Null for heart rate.',
+          head: 'No effect on heart rate.',
           size: 'Bias 2.93 vs 2.56 bpm, trivial next to agreement limits more than 20 bpm wide either way.',
           fix: 'Nothing to do.',
           ev: 'n=16.' },
         sleep: { e: 'N', imp: 0, g: 'X',
-          head: 'Null for sleep, on averages.',
+          head: 'No effect on sleep, on averages.',
           size: 'Two devices, 65 nights: nothing reached significance. Total sleep differed by 6 minutes, r=0.97.',
           fix: 'Nothing to do, but do not read one night: night-to-night variation was huge.',
           ev: 'n=13, and the criterion was another wrist device rather than a sleep lab.' }
@@ -328,7 +328,7 @@ class KygoAccuracyFactors extends HTMLElement {
           fix: 'Let go of the rail and the handlebars.',
           ev: 'Moderate for the mechanism. No study isolates grip force, so treat any exact number as unsourced.' },
         hr: { e: 'N', imp: 0, g: 'X', src: 'lee',
-          head: 'Null for heart rate. The sensor survives what the model does not.',
+          head: 'No effect on heart rate. The sensor survives what the calorie model does not.',
           size: 'During lifting, heart rate matched ECG at r 0.96 to 0.97 while calories in the same sessions fell apart.',
           fix: 'Trust the heart rate during lifting. Ignore the calories.',
           ev: 'n=62, ECG criterion. The cleanest sensor-versus-algorithm split in this dataset.' }
@@ -424,7 +424,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
       { key: 'alt', name: 'Altitude', cat: 'Environment', ctl: 'fixed', dev: ['watch'], m: {
         spo2: { e: 'N', imp: 12, g: 'C', src: 'alt',
-          head: 'Null on average, not null on spread.',
+          head: 'Fine on average, not fine on any single reading.',
           size: 'To 4,014 m, n=109: every error was inside the ISO threshold, but the spread was 17.5 times wider in newly arrived lowlanders.',
           fix: 'Do not make a decision on a single reading on your first day at altitude.',
           ev: 'Manufacturer-funded with company co-authors, and referenced to a finger oximeter rather than blood gas.' }
@@ -454,7 +454,7 @@ class KygoAccuracyFactors extends HTMLElement {
           fix: 'Judge a device on how much data it gives you, not only on its average error.',
           ev: 'Genuinely contested: the two best-powered purpose-built studies are null, and the positive ones used tiny subgroups.' },
         spo2: { e: 'N', imp: 10, g: 'X', src: 'spo2skin',
-          head: 'Null for blood-oxygen missingness across four smartwatches.',
+          head: 'No effect on how much blood-oxygen data you get.',
           size: 'Missing data ran 11 to 31% by device and did not vary by skin tone on either scale, n=49.',
           fix: 'Nothing to do. The blanket oximeter claim is device-specific: only 11 of 34 devices showed it.',
           ev: 'Strong for this outcome. Hospital oximeter findings do not transfer to wearables.' },
@@ -490,7 +490,7 @@ class KygoAccuracyFactors extends HTMLElement {
           fix: 'Nothing actionable. Do not repeat either direction as settled.',
           ev: 'Contested, and no validation study exists above BMI 40.' },
         sleep: { e: 'N', imp: 0, g: 'X', src: 'sdb',
-          head: 'Null for sleep staging.',
+          head: 'No effect on sleep staging.',
           size: 'No significant relationship with either agreement measure, n=292.',
           fix: 'Nothing to do.',
           ev: 'Moderate. The largest tracker meta-analysis ran no BMI subgroup at all.' }
@@ -678,12 +678,12 @@ class KygoAccuracyFactors extends HTMLElement {
 
       { key: 'samp', name: 'Sampling rate above about 25 Hz', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring'], m: {
         hr: { e: 'N', imp: 0, g: 'X',
-          head: 'Null for average heart rate. A spec-sheet number that buys nothing.',
+          head: 'No effect on average heart rate. A spec-sheet number that buys nothing.',
           size: 'At fixed signal quality, 15 Hz and 50 Hz were effectively identical, and 64 Hz did not differ from ECG.',
           fix: 'Ignore sampling-rate marketing for heart rate.',
           ev: 'Strong, and the scope restriction matters: this null does not extend to HRV.' },
         hrv: { e: 'Y', imp: 44, g: 'M',
-          head: 'Not null for HRV, and the maths nobody discloses matters more than the hertz.',
+          head: 'It does matter for HRV, and the maths nobody publishes matters more than the hertz.',
           size: 'RMSSD differed from ECG at every rate tested up to 64 Hz. How a brand interpolates matters more, and none of them publish it.',
           fix: 'Do not compare HRV across brands. You are comparing pipelines.',
           ev: 'Moderate.' }
@@ -696,7 +696,7 @@ class KygoAccuracyFactors extends HTMLElement {
           fix: 'Use your own device against itself. Never port a target from an ECG study or another brand.',
           ev: 'Strong, and both large studies came from manufacturer teams publishing against their own sensor.' },
         hr: { e: 'N', imp: 0, g: 'X',
-          head: 'Null for heart rate. The same signal that fails on intervals is fine on the average.',
+          head: 'No effect on heart rate. The same signal that fails on intervals is fine on the average.',
           size: 'Heart rate correlated at 0.98 to 0.99 in the same comparison that found the HRV gap.',
           fix: 'Nothing to do.',
           ev: 'Strong.' }
@@ -751,12 +751,12 @@ class KygoAccuracyFactors extends HTMLElement {
 
       { key: 'freeliv', name: 'Lab conditions versus real life', cat: 'Movement', ctl: 'fixed', dev: ['watch'], m: {
         hr: { e: 'N', imp: 0, g: 'X', src: 'freeliv',
-          head: 'The most overstated moderator in the category. For average heart rate it is null.',
+          head: 'The most overstated claim in the category. For average heart rate it changes nothing.',
           size: 'Same people, same criterion, both settings: accuracy did not deteriorate outside the lab, and the bias flipped sign. What fell was minutes-in-zone detection.',
           fix: 'Trust the average heart rate. Distrust the zone minutes, which is what the app shows you.',
           ev: 'Strong design, the cleanest in this dataset.' },
         steps: { e: 'Y', imp: 60, g: 'W',
-          head: 'Not null for steps: the two best lab algorithms failed worst in real life.',
+          head: 'It does matter for steps: the two best lab algorithms failed worst in real life.',
           size: 'The two with the lowest treadmill bias came out at +128% and +1,054% error in daily life.',
           fix: 'Distrust any step-accuracy claim measured on a treadmill.',
           ev: 'Single study, and the criterion changed between settings. Sponsor employees were authors.' }
@@ -764,7 +764,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
       { key: 'twodev', name: 'Wearing two devices at once', cat: 'Settings and data', ctl: 'you', dev: ['watch', 'strap'], m: {
         hr: { e: 'N', imp: 0, g: 'X',
-          head: 'Null. No optical or mechanical interference detected.',
+          head: 'No effect. The devices do not interfere with each other.',
           size: 'Four devices worn simultaneously, n=16: biases within 3 bpm and no missing values on any of them.',
           fix: 'Wear both. If you are comparing devices, this is the right way to do it.',
           ev: 'Single study, all devices from one manufacturer, no funding statement.' }
@@ -777,7 +777,7 @@ class KygoAccuracyFactors extends HTMLElement {
           fix: 'Nothing to change. The foundational studies exclude people on heart-affecting medication by design.',
           ev: 'Moderate for the nulls, though the beta-blocker study was underpowered by construction.' },
         ee: { e: 'N', imp: 0, g: 'X',
-          head: 'Null for caffeine, in the only study of its kind.',
+          head: 'No effect from caffeine, in the only study of its kind.',
           size: 'Double-blind crossover against the gold-standard energy measure, n=17: no meaningful difference.',
           fix: 'Nothing to do.',
           ev: 'Single 2014 study, but a strong criterion.' },
@@ -795,7 +795,7 @@ class KygoAccuracyFactors extends HTMLElement {
           fix: 'If an app shows you a weekly average, ask what it did with your partial days.',
           ev: 'Moderate, large samples.' },
         hr: { e: 'N', imp: 0, g: 'X',
-          head: 'Null for heart rate. It is a steps problem.',
+          head: 'No effect on heart rate. It is a steps problem.',
           size: 'Across six samples, wear-time rules changed mean daily heart rate by no more than 3 bpm.',
           fix: 'Nothing to do.',
           ev: 'Strong, n=302 plus n=1,074.' }
@@ -803,37 +803,45 @@ class KygoAccuracyFactors extends HTMLElement {
     ];
   }
 
+  /* ---------------------------------------------------------------- QUICK ANSWERS
+   * Two kinds of card, because not everything here is something you can do.
+   *   t 'do'   an action, in plain words, that changes the reading
+   *   t 'know' an interpretation, where the honest answer is that you cannot
+   *            fix it and should read the number differently
+   * Copy rule: no jargon, and the stat has to be parseable without the note.
+   */
+
   get _quick() {
     return {
       hr: [
-        { fix: 'Wear it higher up your forearm', stat: '20.5% to 7.3%', note: 'Error during movement, one finger-width above the wrist joint versus three.' },
-        { fix: 'Use an armband for hard sessions', stat: '4x tighter', note: 'Same sensor moved from wrist to upper arm, in the same person.' },
-        { fix: 'Snug the strap, warm cold hands', stat: '23 to 47%', note: 'Improvement from the right contact pressure. Cold cuts the raw signal 41%.' }
+        { t: 'do', fix: 'Wear the watch higher up your arm', stat: '20.5% to 7.3%', note: 'Error during movement when the watch sits three finger-widths above the wrist bone instead of one.' },
+        { t: 'do', fix: 'Use an armband or chest strap for hard workouts', stat: '4x closer', note: 'The same sensor moved from the wrist to the upper arm, on the same person, in the same session.' },
+        { t: 'do', fix: 'Tighten the strap, and warm cold hands first', stat: 'Up to 47% better', note: 'Getting the strap pressure right cut error by 23 to 47%. Cold cuts the sensor signal by 41%.' }
       ],
       sleep: [
-        { fix: 'Check your sleep sensitivity setting', stat: '132 min', note: 'The measured gap between the two settings, in the same people.' },
-        { fix: 'Wrist only, never clipped at the hip', stat: '80 min', note: 'Extra sleep a hip-worn device reads. Wrist was off by 8 minutes.' },
-        { fix: 'Charge at a time that is not bedtime', stat: '30%', note: 'Nights missing across a five-night study of 299 people.' }
+        { t: 'do', fix: 'Check your sleep sensitivity setting', stat: '2 hours apart', note: 'Fitbit ships two sleep settings that disagree by over two hours of sleep a night in the same people. Most users never look.' },
+        { t: 'do', fix: 'Wear it on your wrist, not clipped to your waist', stat: '80 minutes too much', note: 'A hip-worn device credits you about 80 extra minutes of sleep. On the wrist it is out by 8.' },
+        { t: 'do', fix: 'Charge it in the shower, not at bedtime', stat: '1 night in 3 lost', note: 'Across 299 people, 30% of nights recorded nothing at all. A missing night beats every accuracy problem on this page.' }
       ],
       steps: [
-        { fix: 'Pocket it for cart and stroller walks', stat: '19.8% vs 6.4%', note: 'Wrist versus pocket error while pushing a shopping cart.' },
-        { fix: 'Expect slow walks to read low', stat: '40% vs 7%', note: 'Error below 4 km/h versus normal pace, across 21 devices.' },
-        { fix: 'Pick one wrist and set handedness', stat: '1,253/day', note: 'Extra steps the dominant wrist records versus the other one.' }
+        { t: 'do', fix: 'Pocket it when you push a cart or stroller', stat: '1 in 5 steps lost', note: 'Pushing a shopping cart cost a wrist tracker 19.8% of its steps. The same walk with the device in a pocket lost 6.4%.' },
+        { t: 'know', fix: 'Slow strolls get badly undercounted', stat: '40% out', note: 'Below about 2.5 mph, error hits 40% across 21 devices. At a normal walking pace it is 7%. Nothing you wear fixes this.' },
+        { t: 'do', fix: 'Stay on one wrist, and tell the app which one', stat: '1,253 steps a day', note: 'Your dominant hand moves more, so swapping wrists mid-month makes your own trend line lie to you.' }
       ],
       hrv: [
-        { fix: 'Fix the fit before you read the number', stat: '-7.86 dB', note: 'Signal quality for a ring sitting 30 degrees off its best angle.' },
-        { fix: 'Know that most of the night is binned', stat: '30 to 67%', note: 'Segments discarded to produce one clean nightly HRV average.' },
-        { fix: 'Never port an HRV target across brands', stat: '-5.6 ms', note: 'Gap between optical HRV and ECG. No correction factor exists.' }
+        { t: 'do', fix: 'Stop the ring or strap moving overnight', stat: '30 degrees is enough', note: 'A ring turned about that far on your finger loses most of its signal quality overnight, and no software gets it back. Fit matters more than brand here.' },
+        { t: 'know', fix: 'Your nightly HRV comes from part of the night', stat: 'Up to two thirds dropped', note: 'Devices throw out the noisy stretches before averaging, so the number summarises the cleanest hours, not the whole night.' },
+        { t: 'know', fix: 'HRV does not transfer between brands', stat: 'Reads 5.6 ms low', note: 'Wrist and ring sensors read lower than a medical ECG, by a different amount each time. A target from another device or article will not fit yours.' }
       ],
       ee: [
-        { fix: 'Halve the number for lifting sessions', stat: '+116%', note: 'How far one device over-read a resistance session against lab calorimetry.' },
-        { fix: 'Let go of the rail and handlebars', stat: '42% vs 13%', note: 'Smartwatch error versus leg-worn sensors. Gripping hides the motion.' },
-        { fix: 'Add for hills and rough ground', stat: '2.3% to 21%', note: 'Error going from flat ground to a 6% grade.' }
+        { t: 'do', fix: 'Cut the calories from a weights session in half', stat: '304 vs 141 kcal', note: 'One watch reported 304 calories for a lifting session a lab measured at 141. Every device tested was well over.' },
+        { t: 'do', fix: 'Let go of the treadmill rail and the bike handles', stat: '3x more error', note: 'Holding on hides the arm motion the calorie estimate is built from: 42% error against 13% for sensors worn on the legs.' },
+        { t: 'know', fix: 'Hills and trails burn more than it gives you', stat: '2% to 21% low', note: 'On flat ground the estimate was 2% out. On a 6% incline it was 21% out, and always under.' }
       ],
       spo2: [
-        { fix: 'Warm the hand before a spot reading', stat: '4.09% to 0.00%', note: 'Bias before and after 15 minutes of local warming.' },
-        { fix: 'Treat a low reading as a prompt', stat: '32%', note: 'How often a consumer watch was within 2 points under controlled low oxygen.' },
-        { fix: 'Expect gaps in the overnight chart', stat: '11 to 31%', note: 'Missing data at rest across four smartwatches. That is normal.' }
+        { t: 'do', fix: 'Warm your hand before you check it', stat: '4 points to none', note: 'That is what fifteen minutes of warming did to the error in poorly circulated patients. Cold fingers are the main reason these readings go wrong.' },
+        { t: 'know', fix: 'One low reading is not a measurement', stat: 'Right 1 time in 3', note: 'Under controlled low-oxygen testing a consumer watch landed within 2 points only 32% of the time. Use it to prompt a real check, never to replace one.' },
+        { t: 'know', fix: 'Gaps in the overnight chart are normal', stat: '11 to 31% missing', note: 'That much data was simply absent across four smartwatches at rest. The device withholds readings it does not trust.' }
       ]
     };
   }
@@ -1012,8 +1020,9 @@ class KygoAccuracyFactors extends HTMLElement {
     return `
       <div class="qa-grid">
         ${items.map((q, i) => `
-          <article class="qa-card">
+          <article class="qa-card qa-card--${q.t}">
             <span class="qa-rank">${i + 1}</span>
+            <span class="qa-type">${q.t === 'do' ? 'Do this' : 'Know this'}</span>
             <h4 class="qa-fix">${q.fix}</h4>
             <div class="qa-stat">${q.stat}</div>
             <p class="qa-note">${q.note}</p>
@@ -1098,8 +1107,8 @@ class KygoAccuracyFactors extends HTMLElement {
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('flask')}</span>Step 1</span>
-            <h2 class="section-h2">Pick your metric. <em>Get the three fixes.</em></h2>
-            <p class="section-lede">The same factor does different things to different metrics, so the metric comes first. The count is how many factors have measurably degraded it.</p>
+            <h2 class="section-h2">Pick your metric. <em>Start with these three.</em></h2>
+            <p class="section-lede">Some of it you can fix tonight. Some of it you cannot, and the honest answer is to read the number differently. Each card says which. The count on a tab is how many factors have measurably degraded that metric.</p>
           </div>
           ${this._renderMetricTiles()}
           <div class="qa-panel">
@@ -1847,10 +1856,15 @@ class KygoAccuracyFactors extends HTMLElement {
 
       /* QUICK ANSWERS */
       .qa-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-      .qa-card { position: relative; background: var(--green-light); border: 1px solid rgba(34,197,94,0.25); border-radius: 14px; padding: 16px 16px 15px 46px; min-width: 0; }
+      .qa-card { position: relative; background: var(--green-light); border: 1px solid rgba(34,197,94,0.25); border-radius: 14px; padding: 15px 16px 15px 46px; min-width: 0; }
+      .qa-card--know { background: #fff; border-color: var(--gray-200); }
       .qa-rank { position: absolute; left: 14px; top: 15px; width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; }
+      .qa-card--know .qa-rank { background: var(--gray-300); color: var(--dark); }
+      .qa-type { display: block; font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 5px; }
+      .qa-card--know .qa-type { color: var(--gray-400); }
       .qa-fix { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); margin: 0; line-height: 1.25; letter-spacing: -0.01em; }
-      .qa-stat { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; color: var(--green-dark); margin: 8px 0 4px; letter-spacing: -0.02em; line-height: 1; font-feature-settings: "tnum" 1; }
+      .qa-stat { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 21px; color: var(--green-dark); margin: 8px 0 4px; letter-spacing: -0.02em; line-height: 1.1; font-feature-settings: "tnum" 1; }
+      .qa-card--know .qa-stat { color: var(--dark); }
       .qa-note { font-size: 12.5px; color: var(--gray-700); line-height: 1.5; margin: 0; }
       @media (min-width: 760px) { .qa-grid { grid-template-columns: repeat(3, 1fr); align-items: start; } }
 
