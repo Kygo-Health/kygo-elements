@@ -89,6 +89,7 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/tools/sleep-metrics` | kygo-sleep-metrics.js | 1310, 1339 |
 | `/tools/staying-asleep-factors` | kygo-staying-asleep-factors.js | 1253, 1304 |
 | `/tools/step-count-accuracy` | kygo-step-count-accuracy.js | 1236, 1279 |
+| `/tools/accuracy-factors` | kygo-accuracy-factors.js | JSON-LD `url` + breadcrumb. Also deep-links out to `/tools/heart-rate-accuracy`, `/tools/sleep-tracker-accuracy`, `/tools/step-count-accuracy`, `/tools/hrv-factors`, `/tools/calorie-burn-accuracy`, `/tools/wearable-accuracy` (one per metric tab) and `/tools/sensor-comparison` |
 | `/tools/wearable-accuracy` | kygo-wearable-accuracy.js | 1533, 1605 |
 | `/tools/stress-factors` | kygo-wearable-stress.js | 53, 134 |
 | `/tools/recovery-score-explorer` | kygo-recovery-scores.js | JSON-LD `url` + breadcrumb |

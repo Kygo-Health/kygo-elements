@@ -82,6 +82,7 @@ class KygoToolsPage extends HTMLElement {
       { slug: 'step-count-accuracy', title: 'Step Count Accuracy', description: 'See which wearable counts steps most accurately: Garmin, Apple Watch, Fitbit, Samsung, Oura and more, grouped into four evidence tiers.', icon: 'steps', badge: 'Activity', url: '/tools/step-count-accuracy', features: ['20+ peer-reviewed studies', 'Head-to-head comparison', '9 devices ranked'] },
       { slug: 'sleep-metrics', title: 'Sleep Metrics Comparison', description: 'Compare 38 sleep metrics tracked by Oura Ring, Fitbit, Apple Watch & Garmin across 10 categories — see exactly what each device measures while you sleep.', icon: 'moon', badge: 'Sleep', url: '/tools/sleep-metrics', features: ['38 metrics compared', '10 sleep categories', '29 verified sources'] },
       { slug: 'sensor-comparison', title: 'Hardware & Software Differences', description: 'See what actually makes Garmin, Whoop, Oura, Apple Watch, and Fitbit different — hardware sensors, health metrics, and proprietary software compared.', icon: 'activity', badge: 'Hardware', url: '/tools/sensor-comparison', features: ['Hardware vs software breakdown', '25 proprietary algorithms', '6 latest-gen devices'] },
+      { slug: 'accuracy-factors', title: 'Wearable Accuracy Factor Explorer', description: 'Pick a metric (heart rate, sleep, steps, HRV, calories or blood oxygen) and see what has been tested and changes its accuracy, what you can fix tonight, and what has been tested and does not matter. 51 factors with effect sizes, evidence strength and sources.', icon: 'activity', badge: 'New', url: '/tools/accuracy-factors', category: 'wearables', features: ['6 metrics, 51 factors', 'Filter by what you can change', '18 tested nulls, 73 sources'] },
       { slug: 'rem-sleep-factors', title: 'REM Sleep Factor Explorer', description: 'What influences your REM (dream) sleep? Explore 23 research-backed factors across nutrition, supplements, exercise, environment & demographics — ranked by evidence strength, with mechanisms and sources.', icon: 'moon', badge: 'Sleep', url: '/tools/rem-sleep-factors', features: ['23 factors ranked', '5 categories', '23 peer-reviewed sources'] }
     ];
   }
@@ -98,6 +99,7 @@ class KygoToolsPage extends HTMLElement {
       'sleep-latency-factors': 'sleep',
       'staying-asleep-factors': 'sleep',
       'deep-sleep-factors': 'sleep',
+      'accuracy-factors': { motif: 'ranked', caption: 'Factors by effect size' },
       'rem-sleep-factors': 'sleep',
       'hrv-factors': 'recovery',
       'resting-heart-rate-factors': 'recovery',
