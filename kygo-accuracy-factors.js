@@ -31,13 +31,15 @@ class KygoAccuracyFactors extends HTMLElement {
     this._ctlFilter = 'all';     // all | you | fixed
     this._devFilter = 'all';     // all | watch | ring | strap | other
     this._expandedKey = null;
-    this._openGroups = { change: true, fixed: false, nul: false, gap: false };
+    this._showAll = { change: false, fixed: false };
     this._eventsBound = false;
   }
 
   connectedCallback() {
     this.render();
+    this._paintHeaderChips();
     this._setupEventDelegation();
+    this._setupStickySwitcher();
     this._setupAnimations();
     this._injectStructuredData();
     __seo(this, this._seoText());
@@ -45,6 +47,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
+    if (this._switchObserver) this._switchObserver.disconnect();
   }
 
   /* ---------------------------------------------------------------- METRICS */
@@ -178,17 +181,17 @@ class KygoAccuracyFactors extends HTMLElement {
     return [
       /* ---------------------------------------------------- FIT AND PLACEMENT */
       { key: 'forearm', name: 'Where on your forearm you wear it', cat: 'Fit and placement', ctl: 'you', dev: ['watch'], m: {
-        hr: { e: 'Y', imp: 98, g: 'W', src: 'verm',
+        hr: { e: 'Y', punch: '20.5% to 7.3%', imp: 98, g: 'W', src: 'verm',
           head: 'The biggest effect in the literature, and it is free.',
           size: 'Error during movement: 20.5% at one finger-width above the wrist joint, 7.3% at three. Agreement with a chest ECG went from poor to excellent.',
           fix: 'Slide the watch two more finger-widths up your arm, off the wrist bone.',
           ev: 'Single study, n=10, never replicated. Worth trying, not worth quoting as law.' },
-        hrv: { e: '?', imp: 0, g: 'G',
+        hrv: { e: '?', punch: 'Untested', imp: 0, g: 'G',
           head: 'Never tested for HRV.',
           size: 'Nobody has repeated the experiment with HRV as the thing being measured.',
           fix: 'Assume it matters at least as much as for heart rate.',
           ev: 'Gap in the literature.' },
-        sleep: { e: '?', imp: 0, g: 'G',
+        sleep: { e: '?', punch: 'Untested', imp: 0, g: 'G',
           head: 'Never tested for sleep staging.',
           size: 'No sleep-lab study has varied wrist position.',
           fix: 'Nothing to act on yet.',
@@ -196,17 +199,17 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'site', name: 'Which part of your body it sits on', cat: 'Fit and placement', ctl: 'you', dev: ['watch', 'strap', 'other'], m: {
-        hr: { e: 'Y', imp: 95, g: 'S', src: 'mogh',
+        hr: { e: 'Y', punch: '4x tighter', imp: 95, g: 'S', src: 'mogh',
           head: 'Wrist to upper arm cuts the error range roughly fourfold.',
           size: 'Same sensor, same person, treadmill: wrist agreement span 23 bpm, upper arm 5.4 bpm. Outdoors: forehead 7.1%, chest 7.7%, wrist 18.4%.',
           fix: 'For anything harder than a walk, use an armband or a chest strap.',
           ev: 'Strong. Replicated across two brands with the hardware held constant.' },
-        steps: { e: 'Y', imp: 88, g: 'S', src: 'toth',
+        steps: { e: 'Y', punch: '69% to 122%', imp: 88, g: 'S', src: 'toth',
           head: 'Ankle is accurate. Wrist and hip both err, in opposite directions.',
           size: 'Against video across full days: ankle 95 to 103% of true steps, wrist 109 to 122%, hip 69%.',
           fix: 'If the total has to be right, wear it at the ankle or in a pocket.',
           ev: 'Strong and replicated. The direction is not: it flips between structured walking and daily activity.' },
-        sleep: { e: 'Y', imp: 72, g: 'S', src: 'zink',
+        sleep: { e: 'Y', punch: '80 min off', imp: 72, g: 'S', src: 'zink',
           head: 'Hip placement is disqualifying. Wrist is close to right.',
           size: 'Against lab sleep studies, n=100: wrist total sleep off by 8 minutes, hip by about 80, and efficiency by 17 points.',
           fix: 'Wrist only, overnight. A clipped device is not a sleep tracker.',
@@ -214,12 +217,12 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'tight', name: 'How tight the strap is', cat: 'Fit and placement', ctl: 'you', dev: ['watch'], m: {
-        hr: { e: 'Y', imp: 84, g: 'W', src: 'scard',
+        hr: { e: 'Y', punch: 'Up to 47% better', imp: 84, g: 'W', src: 'scard',
           head: 'Pressure mattered more than exercise intensity did.',
           size: 'Each person\'s best pressure beat one universal setting by 23 to 47%. Loose (12 mmHg) failed at every intensity.',
           fix: 'Snug for workouts, looser the rest of the day. If it slides, it is too loose.',
           ev: 'Two custom-rig studies, n=17 and n=27. No consumer strap has been tested at graded notches.' },
-        hrv: { e: 'Y', imp: 78, g: 'W', src: 'press2',
+        hrv: { e: 'Y', punch: 'About 6 ms', imp: 78, g: 'W', src: 'press2',
           head: 'At the right pressure a wrist rivals a fingertip. At the wrong one it does not.',
           size: 'At the right pressure, HRV error was about 6 ms, close to a fingertip sensor. Too tight and the pulse shape is lost entirely.',
           fix: 'Fix the fit before you read anything into the HRV number.',
@@ -227,12 +230,12 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'posture', name: 'Arm position and posture', cat: 'Fit and placement', ctl: 'you', dev: ['watch'], m: {
-        hr: { e: 'Y', imp: 62, g: 'S', src: 'charl',
-          head: 'Signal quality doubles between arm-down and lying flat.',
+        hr: { e: 'Y', punch: 'Best lying flat', imp: 62, g: 'S', src: 'charl',
+          head: 'Where your arm is changes the signal more than anything except fit.',
           size: 'Signal quality in decibels, higher being better, across 1,142 people: 18.6 lying down, 13.7 sitting with your arm in your lap, 9.0 standing with it hanging.',
           fix: 'Take spot readings sitting, with your forearm at heart height.',
           ev: 'Strong, and the largest signal-quality dataset in the field. Measured as signal, not bpm.' },
-        sleep: { e: '?', imp: 0, g: 'G', src: 'charl',
+        sleep: { e: '?', punch: 'Untested', imp: 0, g: 'G', src: 'charl',
           head: 'Sleeping position should matter and has never been tested.',
           size: 'A side sleeper with an arm under the pillow sits somewhere else on that curve than a back sleeper.',
           fix: 'Nothing to act on, but a reason not to over-read one night.',
@@ -240,25 +243,25 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'dom', name: 'Which wrist you wear it on', cat: 'Fit and placement', ctl: 'you', dev: ['watch'], m: {
-        steps: { e: 'Y', imp: 66, g: 'M', src: 'park',
+        steps: { e: 'Y', punch: '1,253 a day', imp: 66, g: 'M', src: 'park',
           head: 'It does matter for steps: your dominant hand simply moves more.',
           size: 'Both wrists worn at once, full waking day: the dominant wrist averaged 1,253 more steps (p=.006).',
           fix: 'Pick a wrist and stay on it, or your own trend line lies to you.',
           ev: 'Single study, n=12, and neither wrist was checked against a true count, so it shows the two disagree rather than which is right.' },
-        hr: { e: 'N', imp: 0, g: 'X', src: 'jmirsite',
-          head: 'No effect on heart rate.',
+        hr: { e: 'N', punch: 'No effect', imp: 0, g: 'X', src: 'jmirsite',
+          head: 'The two wrists differ by 0.4 bpm, against an error range 20 bpm wide.',
           size: 'Bias 2.93 vs 2.56 bpm, trivial next to agreement limits more than 20 bpm wide either way.',
           fix: 'Nothing to do.',
           ev: 'n=16.' },
-        sleep: { e: 'N', imp: 0, g: 'X',
-          head: 'No effect on sleep, on averages.',
+        sleep: { e: 'N', punch: 'No effect', imp: 0, g: 'X',
+          head: 'Nothing reached significance across 65 nights on two devices.',
           size: 'Two devices, 65 nights: nothing reached significance. Total sleep differed by 6 minutes, r=0.97.',
           fix: 'Nothing to do, but do not read one night: night-to-night variation was huge.',
           ev: 'n=13, and it was checked against another wrist device rather than a sleep lab.' }
       } },
 
       { key: 'wrongwrist', name: 'Telling the app the wrong wrist', cat: 'Settings and data', ctl: 'set', dev: ['watch'], m: {
-        steps: { e: 'Y', imp: 70, g: 'W', src: 'wrista',
+        steps: { e: 'Y', punch: '23 to 26% out', imp: 70, g: 'W', src: 'wrista',
           head: 'A 20-second settings check worth about a quarter of your activity.',
           size: 'Set for one wrist, worn on the other: activity overestimated 22.6% or underestimated 25.9%. In a supervised study, 15.6% of people did it.',
           fix: 'Check the handedness and wrist fields in your app match reality.',
@@ -266,12 +269,12 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'rot', name: 'A ring rotating on your finger', cat: 'Fit and placement', ctl: 'you', dev: ['ring'], m: {
-        hr: { e: 'Y', imp: 80, g: 'W', src: 'rot',
+        hr: { e: 'Y', punch: '30 degrees off', imp: 80, g: 'W', src: 'rot',
           head: 'The largest ring-specific effect measured, and LED power cannot fix it.',
           size: 'Turn the ring 30 degrees from its best position and signal quality drops below usable. Doubling the light output of the sensor only partly compensates.',
           fix: 'Size the ring so the sensor stays put overnight. Sizing is a measurement question.',
           ev: 'Single bench study, n=10. Signal quality rather than bpm.' },
-        hrv: { e: 'Y', imp: 82, g: 'W', src: 'rot',
+        hrv: { e: 'Y', punch: '30 degrees off', imp: 82, g: 'W', src: 'rot',
           head: 'Same problem as heart rate, but worse: HRV needs every single beat.',
           size: 'Turn the ring about 30 degrees from its best spot and most of the signal quality is gone. A ring that moves overnight keeps losing it.',
           fix: 'If your ring spins freely it is the wrong size for measurement.',
@@ -279,7 +282,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'ringfit', name: 'Ring sizing and which finger', cat: 'Fit and placement', ctl: 'you', dev: ['ring'], m: {
-        hr: { e: '?', imp: 0, g: 'G',
+        hr: { e: '?', punch: 'Untested', imp: 0, g: 'G',
           head: 'Nobody has tested it. Every study picked one finger and stuck with it.',
           size: 'No study varies ring tightness, no study compares fingers, and seasonal swelling has zero evidence.',
           fix: 'Go by the rotation evidence above, not by sizing guides.',
@@ -287,12 +290,12 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'tattoo', name: 'A tattoo under the sensor', cat: 'Skin and perfusion', ctl: 'you', dev: ['watch', 'strap', 'ring'], m: {
-        hr: { e: 'Y', imp: 86, g: 'W', src: 'tattoo',
+        hr: { e: 'Y', punch: '22.9% vs 2.9%', imp: 86, g: 'W', src: 'tattoo',
           head: 'Not gradual drift. The sensor stops returning anything.',
           size: 'Tattooed vs clear skin on the same arm: 22.9% vs 2.9% error at rest, and 9 of 25 people dropped to zero readings.',
           fix: 'Move the sensor to clear skin.',
           ev: 'Single study, n=25. Ink darkness and tattoo age made no measurable difference, so do not repeat that claim.' },
-        spo2: { e: '?', imp: 0, g: 'G',
+        spo2: { e: '?', punch: 'Untested', imp: 0, g: 'G',
           head: 'Never tested for blood oxygen.',
           size: 'Blood oxygen compares two wavelengths, so ink is mechanically a bigger problem here. Nobody has measured it.',
           fix: 'Use clear skin if you want an overnight trend.',
@@ -301,12 +304,12 @@ class KygoAccuracyFactors extends HTMLElement {
 
       /* ---------------------------------------------------- MOVEMENT */
       { key: 'modality', name: 'What activity you are doing', cat: 'Movement', ctl: 'you', dev: ['watch'], m: {
-        hr: { e: 'Y', imp: 92, g: 'S', src: 'swim',
+        hr: { e: 'Y', punch: '3.8% to 30%', imp: 92, g: 'S', src: 'swim',
           head: 'Rowing, elliptical with arm levers and swimming beat every wrist sensor.',
           size: 'Same device: walking 3.8% error, cycling 6.9%, running 8.5%, rowing 13.4%. Swimming 29.95% wet vs 4.05% dry.',
           fix: 'Match the sensor to the sport: strap or armband for rowing, elliptical and swim sets.',
           ev: 'Strong across several studies. The swimming figure is one n=10 study.' },
-        ee: { e: 'Y', imp: 62, g: 'M', src: 'grip',
+        ee: { e: 'Y', punch: '42% vs 13%', imp: 62, g: 'M', src: 'grip',
           head: 'The calorie model was built on walking, so nothing else fits it.',
           size: 'Smartwatch error added up to 42% when calories were measured properly in a lab, against 13% for sensors worn on the legs.',
           fix: 'Read non-walking calories as a relative score, never a measurement.',
@@ -314,7 +317,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'burst', name: 'Bursts and transitions, not intensity', cat: 'Movement', ctl: 'you', dev: ['watch'], m: {
-        hr: { e: 'Y', imp: 90, g: 'S', src: 'mogh',
+        hr: { e: 'Y', punch: '40 to 60 bpm', imp: 90, g: 'S', src: 'mogh',
           head: 'Error does not rise with effort. It spikes at transitions.',
           size: 'Same session, same devices: an all-out treadmill test held near-perfect agreement, while 30 seconds of burpees collapsed it, with swings of 40 to 60 bpm.',
           fix: 'Do not judge a device, or your effort, on an interval session.',
@@ -322,20 +325,20 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'grip', name: 'Gripping a rail, bar or handle', cat: 'Movement', ctl: 'you', dev: ['watch'], m: {
-        ee: { e: 'Y', imp: 78, g: 'M', src: 'grip',
+        ee: { e: 'Y', punch: '3x more error', imp: 78, g: 'M', src: 'grip',
           head: 'Same effort, less wrist motion, fewer calories counted.',
           size: 'Stair machines and bikes were the worst conditions for a wrist device when calories were measured properly in a lab, and the authors blamed gripping the rail and the handlebars.',
           fix: 'Let go of the rail and the handlebars.',
           ev: 'Moderate. The reason is well established, but no study has tested grip on its own, so treat any exact number for it as made up.' },
-        hr: { e: 'N', imp: 0, g: 'X', src: 'lee',
-          head: 'No effect on heart rate. The sensor survives what the calorie model does not.',
+        hr: { e: 'N', punch: 'No effect', imp: 0, g: 'X', src: 'lee',
+          head: 'The sensor survives what the calorie model does not.',
           size: 'During lifting, heart rate tracked an ECG almost perfectly while calories in the same sessions fell apart.',
           fix: 'Trust the heart rate during lifting. Ignore the calories.',
           ev: 'n=62, measured against ECG. The cleanest split in this dataset between a sensor problem and a maths problem.' }
       } },
 
       { key: 'resist', name: 'Resistance training', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        ee: { e: 'Y', imp: 96, g: 'M', src: 'lee',
+        ee: { e: 'Y', punch: 'Reads 116% high', imp: 96, g: 'M', src: 'lee',
           head: 'Lifting calories read high, and the overshoot is enormous.',
           size: 'Measured 140.79 kcal, one device reported 304.71, an overshoot of 116%. Every device scored below 0.45 agreement.',
           fix: 'Halve it, at least.',
@@ -343,7 +346,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'armswing', name: 'Pushing a cart, stroller or pram', cat: 'Movement', ctl: 'you', dev: ['watch'], m: {
-        steps: { e: 'Y', imp: 97, g: 'M', src: 'cart',
+        steps: { e: 'Y', punch: '1 in 5 steps', imp: 97, g: 'M', src: 'cart',
           head: 'Your legs are walking and your wrist is not.',
           size: 'Peer-reviewed: 19.8% wrist error pushing a cart, versus 6.4% for a pocketed device and 3.9% for normal walking. A conference abstract found far worse.',
           fix: 'Pocket the tracker for supermarket, stroller and mower walks.',
@@ -351,7 +354,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'gaitspeed', name: 'Walking slower than about 4 km/h', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'ring', 'other'], m: {
-        steps: { e: 'Y', imp: 94, g: 'S', src: 'gait',
+        steps: { e: 'Y', punch: '40% vs 7%', imp: 94, g: 'S', src: 'gait',
           head: 'A cliff, not a slope.',
           size: '21 devices, n=258: 40% error below 4 km/h against 7% at normal pace. In youth, 50% against 16%.',
           fix: 'Nothing to change about your gait. Change what you expect from the daily total.',
@@ -359,7 +362,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'bout', name: 'Very short walking bouts', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'other'], m: {
-        steps: { e: 'Y', imp: 87, g: 'W',
+        steps: { e: 'Y', punch: '23% to 74%', imp: 87, g: 'W',
           head: 'Error roughly triples once the walks get short.',
           size: 'Frail hospital inpatients, counted from video: a thigh device went from 23% error on full tasks to 74% on walks under 5 metres. Ankle held at 10%.',
           fix: 'If your day is trips to the kitchen rather than walks, track the trend, not the number.',
@@ -367,12 +370,12 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'stairs', name: 'Stairs, hills and rough ground', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'other'], m: {
-        steps: { e: 'Y', imp: 74, g: 'M', src: 'wei',
+        steps: { e: 'Y', punch: 'None passed', imp: 74, g: 'M', src: 'wei',
           head: 'Wrist step counting fails on stairs at every cadence tested.',
           size: 'Two trackers, one to three flights: neither passed the accuracy or reliability threshold in any stair condition, up or down.',
           fix: 'Expect stair-heavy days to read low.',
           ev: 'Moderate, from conference abstracts plus one lab study whose winning device had an undisclosed manufacturer author.' },
-        ee: { e: 'Y', imp: 70, g: 'M', src: 'terrain',
+        ee: { e: 'Y', punch: '2.3% to 21%', imp: 70, g: 'M', src: 'terrain',
           head: 'A speed-driven calorie model prices your effort as if the ground were flat.',
           size: 'With calories measured properly in a lab, error went from 2.3% on the flat to 21% at a 6% incline. Walking on woodchips cost 27% more than pavement at the same speed.',
           fix: 'Add to the number for hills and trails.',
@@ -380,7 +383,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'nonamb', name: 'Activity that is not walking at all', cat: 'Movement', ctl: 'fixed', dev: ['watch', 'other'], m: {
-        steps: { e: 'Y', imp: 76, g: 'M', src: 'falsestep',
+        steps: { e: 'Y', punch: '23 fake a minute', imp: 76, g: 'M', src: 'falsestep',
           head: 'Wrists invent steps from hand motion. Thighs invent them from pedalling.',
           size: 'False steps per minute on video, n=37: washing dishes gave a wrist device 23 and every other site zero. Cycling gave a thigh device 97.',
           fix: 'Discount cooking and DIY days. The overcount tracks how big your arm movements are, not how fast.',
@@ -389,17 +392,17 @@ class KygoAccuracyFactors extends HTMLElement {
 
       /* ---------------------------------------------------- SKIN, PERFUSION, ENVIRONMENT */
       { key: 'cold', name: 'Cold hands and low perfusion', cat: 'Environment', ctl: 'you', dev: ['watch', 'ring', 'strap'], m: {
-        hr: { e: 'Y', imp: 72, g: 'S', src: 'cold',
+        hr: { e: 'Y', punch: '41% weaker', imp: 72, g: 'S', src: 'cold',
           head: 'Cold makes the reading absent more than it makes it wrong.',
           size: 'Local cooling cut the raw signal 41%. In a 10 C chamber the average error improved for 9 of 10 devices while their ability to track change collapsed.',
           fix: 'Warm your hands before a cold-weather reading, and never quote a cold error figure alone.',
           ev: 'Strong for why it happens. How often a consumer device actually gives up in the cold has never been measured.' },
-        hrv: { e: 'Y', imp: 74, g: 'M', src: 'coldear',
+        hrv: { e: 'Y', punch: '4x worse', imp: 74, g: 'M', src: 'coldear',
           head: 'The finger is the worst site in the cold, which is where rings sit.',
           size: 'Ten minutes at 10 C sent a finger HRV ratio from 19.2 to 86.4, while an ear sensor did not move.',
           fix: 'A cold bedroom is a likelier explanation for a strange HRV night than your nervous system.',
           ev: 'Moderate, n=12 and n=21. Cold attacks signal strength, not beat timing.' },
-        spo2: { e: 'Y', imp: 92, g: 'S', src: 'warm',
+        spo2: { e: 'Y', punch: '4.09 to 0 points', imp: 92, g: 'S', src: 'warm',
           head: 'The dominant blood-oxygen failure, and warming fixes it completely.',
           size: '15 minutes of warming took the error from 4.09 points to zero and narrowed the spread sixfold. Skin tone did not predict who benefited.',
           fix: 'Warm the hand before a spot reading.',
@@ -407,7 +410,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'heat', name: 'Ambient heat', cat: 'Environment', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        hr: { e: 'Y', imp: 68, g: 'M', src: 'climate',
+        hr: { e: 'Y', punch: '9.6 to 20.8 bpm', imp: 68, g: 'M', src: 'climate',
           head: 'Heat hurt more than cold, for every device that moved at all.',
           size: 'At 36 C the worst tracker went from 9.6 to 20.8 bpm error and a ring rose 72%. The best watch barely moved, 4.1 to 4.7.',
           fix: 'Nothing to change about the weather. Do change what you conclude from a hot-day session.',
@@ -415,7 +418,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'water', name: 'Water and swimming', cat: 'Environment', ctl: 'you', dev: ['watch'], m: {
-        hr: { e: 'Y', imp: 82, g: 'M', src: 'swimtemple',
+        hr: { e: 'Y', punch: '87 bpm spread', imp: 82, g: 'M', src: 'swimtemple',
           head: 'A film of water between the sensor and your skin breaks the reading.',
           size: 'Front crawl, n=26: a temple sensor spanned 52 bpm of error, a wrist watch 87.',
           fix: 'Use a strap, a temple sensor or the pool clock for swim heart rate.',
@@ -423,7 +426,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'alt', name: 'Altitude', cat: 'Environment', ctl: 'fixed', dev: ['watch'], m: {
-        spo2: { e: 'N', imp: 12, g: 'C', src: 'alt',
+        spo2: { e: 'N', punch: 'Fine on average', imp: 12, g: 'C', src: 'alt',
           head: 'Fine on average, not fine on any single reading.',
           size: 'To 4,014 m, n=109: every error was inside the ISO threshold, but the spread was 17.5 times wider in newly arrived lowlanders.',
           fix: 'Do not make a decision on a single reading on your first day at altitude.',
@@ -431,7 +434,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'light', name: 'Ambient light leaking into the sensor', cat: 'Environment', ctl: 'you', dev: ['watch', 'strap'], m: {
-        hr: { e: 'Y', imp: 40, g: 'M', src: 'light',
+        hr: { e: 'Y', punch: '20% flagged bad', imp: 40, g: 'M', src: 'light',
           head: 'Light gets in because the seal is broken. It is a symptom.',
           size: 'Across 345,600 signal segments, a light-based contact score tracked signal quality at r=0.72.',
           fix: 'If you can see light around the sensor, fix the fit. There is no separate sunlight problem.',
@@ -439,7 +442,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'sweat', name: 'Sweat, sunscreen and lotion', cat: 'Skin and perfusion', ctl: 'you', dev: ['watch'], m: {
-        hr: { e: 'N', imp: 8, g: 'C', src: 'sweat',
+        hr: { e: 'N', punch: 'Under 0.5 bpm', imp: 8, g: 'C', src: 'sweat',
           head: 'Widely asserted, barely tested, and tiny where it has been.',
           size: 'The one direct test found wet skin moved heart-rate error by under 0.5 bpm. For sunscreen and lotion there is no evidence at all, in any direction.',
           fix: 'Wipe the sensor if you like. Do not blame your moisturiser.',
@@ -448,17 +451,17 @@ class KygoAccuracyFactors extends HTMLElement {
 
       /* ---------------------------------------------------- BODY AND PHYSIOLOGY */
       { key: 'skin', name: 'Skin tone', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'ring', 'strap'], m: {
-        hr: { e: 'N', imp: 30, g: 'C', src: 'meta3',
+        hr: { e: 'N', punch: 'No effect on average', imp: 30, g: 'C', src: 'meta3',
           head: 'Average error is the same. The spread is not, and the effect lives in missing data.',
           size: 'Across 140,771 paired readings, average error was the same in every group, while the spread for dark skin was 2.24 times wider. In one study dark-skinned participants were 36% of the sample and 33 to 85% of the unexplained missing data.',
           fix: 'Judge a device on how much data it gives you, not only on its average error.',
           ev: 'Genuinely contested: the two biggest purpose-built studies found no difference, and the ones that did used very small groups.' },
-        spo2: { e: 'N', imp: 10, g: 'X', src: 'spo2skin',
-          head: 'No effect on how much blood-oxygen data you get.',
+        spo2: { e: 'N', punch: 'No effect', imp: 10, g: 'X', src: 'spo2skin',
+          head: 'Missing data ran 11 to 31% by device and did not track skin tone.',
           size: 'Missing data ran 11 to 31% by device and did not vary by skin tone on either scale, n=49.',
           fix: 'Nothing to do. The blanket oximeter claim is device-specific: only 11 of 34 devices showed it.',
           ev: 'Strong for this outcome. Hospital oximeter findings do not transfer to wearables.' },
-        hrv: { e: '?', imp: 0, g: 'G',
+        hrv: { e: '?', punch: 'Untested', imp: 0, g: 'G',
           head: 'A total gap, and the likeliest place for a real disparity.',
           size: 'HRV is far more sensitive to dropped beats than heart rate, and dropout concentrates in dark skin. Nobody has combined the two.',
           fix: 'Nothing to act on. Worth knowing the question is open.',
@@ -466,17 +469,17 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'age', name: 'Age', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        hr: { e: 'Y', imp: 34, g: 'M', src: 'fitmeta',
+        hr: { e: 'Y', punch: 'Spread widens', imp: 34, g: 'M', src: 'fitmeta',
           head: 'Precision degrades with age. Bias does not.',
           size: 'Across 52 studies, results were more scattered in older adults while the average error held. Only 8 of those studies included anyone over 65.',
           fix: 'For older users, read the range rather than the number.',
           ev: 'Moderate, meta-analytic.' },
-        sleep: { e: 'Y', imp: 42, g: 'M', src: 'sdb',
+        sleep: { e: 'Y', punch: 'Falls with age', imp: 42, g: 'M', src: 'sdb',
           head: 'Sleep staging agreement declines steadily with age.',
           size: 'In a 292-person clinical study, agreement with the sleep lab fell steadily with age. Children were staged slightly better than average.',
           fix: 'Expect an older user\'s stage breakdown to be a weaker estimate.',
           ev: 'Moderate, one large clinical study.' },
-        steps: { e: 'Y', imp: 40, g: 'M', src: 'slowold',
+        steps: { e: 'Y', punch: 'Up to 98% off', imp: 40, g: 'M', src: 'slowold',
           head: 'Age matters mostly through gait speed, and that is the cliff.',
           size: 'At 0.3 m/s, an ankle device erred 14.5% while a waist device erred 98.4%, recording zero for 40 of 42 people.',
           fix: 'For a slow walker, move the device to the ankle.',
@@ -484,25 +487,25 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'bmi', name: 'Body size and adiposity', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch'], m: {
-        hr: { e: 'N', imp: 18, g: 'C', src: 'adip',
+        hr: { e: 'N', punch: 'Contested', imp: 18, g: 'C', src: 'adip',
           head: 'Mixed, and the best-known result points the way nobody expects.',
           size: 'One large study found higher BMI paired with slightly lower error. A 2026 study found all four devices worse in the higher-adiposity group, and its own text contradicts its table.',
           fix: 'Nothing actionable. Do not repeat either direction as settled.',
           ev: 'Contested, and no validation study exists above BMI 40.' },
-        sleep: { e: 'N', imp: 0, g: 'X', src: 'sdb',
-          head: 'No effect on sleep staging.',
+        sleep: { e: 'N', punch: 'No effect', imp: 0, g: 'X', src: 'sdb',
+          head: 'No relationship with staging agreement across 292 people.',
           size: 'No significant relationship with either agreement measure, n=292.',
           fix: 'Nothing to do.',
           ev: 'Moderate. The largest tracker meta-analysis ran no BMI subgroup at all.' }
       } },
 
       { key: 'arr', name: 'Atrial fibrillation and arrhythmia', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        hr: { e: 'Y', imp: 64, g: 'M', src: 'af',
+        hr: { e: 'Y', punch: '95% to 75%', imp: 64, g: 'M', src: 'af',
           head: 'Accurate on average, and worst where you would least expect it.',
           size: 'Across 79,443 minutes against a Holter: 95% of readings in tolerance at or below 80 bpm, 75% above 110. The device kept only 60% of minutes.',
           fix: 'Treat high-rate readings during AF with the most caution, not low ones.',
           ev: 'Moderate, strong design. Nobody has reported whether the discarded 40% is random.' },
-        hrv: { e: 'Y', imp: 60, g: 'M', src: 'cvdhrv',
+        hrv: { e: 'Y', punch: '0.66 of perfect', imp: 60, g: 'M', src: 'cvdhrv',
           head: 'Agreement falls as the HRV measure gets shorter-term.',
           size: 'Against clinical ECG in 263 cardiac patients: average heart rate agreed almost perfectly, short-term HRV only moderately.',
           fix: 'In this group the daily heart rate is solid and short-term HRV is not.',
@@ -510,17 +513,17 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'clin', name: 'Clinical conditions and mobility aids', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'other'], m: {
-        steps: { e: 'Y', imp: 90, g: 'W', src: 'aid',
+        steps: { e: 'Y', punch: '31% undercount', imp: 90, g: 'W', src: 'aid',
           head: 'With a wheeled walker, the wrist count has no relationship to real steps.',
           size: 'Counted from video, n=11: no aid gave 0.1% error, a walker gave a 31% undercount with no reliable relationship to the real count. Ankle and hip held at 1.5%.',
           fix: 'For a walker user, move the device to the ankle.',
           ev: 'Single study, n=11. Direction also reverses by condition: Parkinson\'s patients are overcounted.' },
-        hr: { e: 'Y', imp: 46, g: 'M',
+        hr: { e: 'Y', punch: 'None under 10%', imp: 46, g: 'M',
           head: 'Error widens outside healthy volunteers, so published figures understate it.',
           size: 'In heart failure, n=15, no device met the 10% threshold while all but one passed in healthy controls.',
           fix: 'Discount published accuracy if you are outside the healthy 18 to 65 group it was measured in.',
           ev: 'Moderate. Across 545 studies, 74% of participants were healthy and 86% were 18 to 65.' },
-        sleep: { e: 'Y', imp: 50, g: 'M', src: 'osa',
+        sleep: { e: 'Y', punch: '17 to 87 min', imp: 50, g: 'M', src: 'osa',
           head: 'Sleep apnea degrades staging a little and nightly totals a lot.',
           size: 'In diagnosed apnea, n=22, total sleep time was off by 17 to 87 minutes and every device scored below 0.45 agreement.',
           fix: 'With apnea, treat the stage breakdown as decoration and the total as approximate.',
@@ -528,12 +531,12 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'fitlevel', name: 'How fit you are', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch'], m: {
-        ee: { e: 'Y', imp: 52, g: 'W',
+        ee: { e: 'Y', punch: '2.8% to 9.4%', imp: 52, g: 'W',
           head: 'For VO2 max estimates, fitness matters most, and it penalises the fittest.',
           size: 'The underestimate roughly triples from moderately trained (2.8% error) to highly trained (9.4%).',
           fix: 'If you are well trained, expect a low estimate, and feed the device a chest strap.',
           ev: 'One study for the tripling. Sex and device model made no difference.' },
-        hr: { e: '?', imp: 0, g: 'G',
+        hr: { e: '?', punch: 'Untested', imp: 0, g: 'G',
           head: 'Never tested for heart rate, HRV or sleep.',
           size: 'Athlete-only samples exist. Athlete-versus-sedentary comparisons do not.',
           fix: 'Nothing to act on.',
@@ -541,7 +544,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'range', name: 'Where in the range the reading falls', cat: 'Body and physiology', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        spo2: { e: 'Y', imp: 88, g: 'W', src: 'aw7',
+        spo2: { e: 'Y', punch: 'Right 1 in 3', imp: 88, g: 'W', src: 'aw7',
           head: 'Accuracy is worst exactly where a low reading would matter.',
           size: 'Under controlled low oxygen, a consumer watch was within 2 points only 32% of the time, and below 88% it read high in 85% of readings.',
           fix: 'Use a low reading as a prompt to measure properly, never as the measurement.',
@@ -550,7 +553,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
       /* ---------------------------------------------------- SLEEP CONTEXT */
       { key: 'imbalance', name: 'There is far more sleep than wake to find', cat: 'Sleep context', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        sleep: { e: 'Y', imp: 95, g: 'S', src: 'six',
+        sleep: { e: 'Y', punch: 'Wake: 18 to 54%', imp: 95, g: 'S', src: 'six',
           head: 'The structural reason your tracker misses the time you spent awake.',
           size: 'Every device spots sleep almost perfectly, above 93%, and spots wake badly, 18 to 54%, because 85 to 90% of the night is sleep.',
           fix: 'Assume your wake time is undercounted and your efficiency is flattered.',
@@ -558,7 +561,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'stages', name: 'Stage calls versus the nightly total', cat: 'Sleep context', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        sleep: { e: 'Y', imp: 86, g: 'M', src: 'insom',
+        sleep: { e: 'Y', punch: '41 min misplaced', imp: 86, g: 'M', src: 'insom',
           head: 'Devices get the total roughly right and the architecture badly wrong.',
           size: 'Against a sleep lab: total sleep off by 11 minutes, but deep sleep off by 41 and light sleep by 38. Stage error was about four times the sleep-wake error.',
           fix: 'Use total sleep time. Do not act on one night\'s deep or REM minutes.',
@@ -566,7 +569,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'nap', name: 'Naps and daytime sleep', cat: 'Sleep context', ctl: 'you', dev: ['watch', 'ring'], m: {
-        sleep: { e: 'Y', imp: 58, g: 'M',
+        sleep: { e: 'Y', punch: '54% to 45%', imp: 58, g: 'M',
           head: 'Daytime sleep is measurably harder than night sleep for the same device.',
           size: 'Wake detection fell from 54% at night to 45% in the day, with total sleep over-read by 39 minutes. One tracker missed 37% of naps entirely.',
           fix: 'Do not add nap numbers to night numbers, and check your device logs them at all.',
@@ -574,7 +577,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'fne', name: 'Your first nights with a new device', cat: 'Sleep context', ctl: 'you', dev: ['watch', 'ring'], m: {
-        sleep: { e: 'Y', imp: 44, g: 'S', src: 'homelab',
+        sleep: { e: 'Y', punch: '20 to 14 min', imp: 44, g: 'S', src: 'homelab',
           head: 'The first-night effect is real, and sleeping in your own bed does not remove it.',
           size: 'Night one to night two: sleep onset 20 to 14 minutes, total sleep up 13 minutes, less wake. Stage percentages were unaffected.',
           fix: 'Give a new ring or watch a week before you read anything into its baseline.',
@@ -582,7 +585,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'cosleep', name: 'Sharing a bed', cat: 'Sleep context', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        sleep: { e: '?', imp: 20, g: 'G', src: 'cosleep',
+        sleep: { e: '?', punch: '21% more movement', imp: 20, g: 'G', src: 'cosleep',
           head: 'The movement input changes by a fifth and nobody has measured the consequence.',
           size: '12 couples: limb movements rose 20.8% on shared nights, while sleep itself barely changed.',
           fix: 'Nothing to act on, and that is the point.',
@@ -591,7 +594,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
       /* ---------------------------------------------------- SETTINGS, STATE AND DATA */
       { key: 'sens', name: "Fitbit's sleep sensitivity setting", cat: 'Settings and data', ctl: 'set', dev: ['watch'], m: {
-        sleep: { e: 'Y', imp: 99, g: 'S', src: 'sens',
+        sleep: { e: 'Y', punch: '132 min apart', imp: 99, g: 'S', src: 'sens',
           head: 'The biggest setting-driven error anyone has measured, and it is one tap away.',
           size: 'Measured in the same people: normal mode read total sleep 41 to 46 minutes high, sensitive mode read it 86 to 105 minutes low. A swing of 132 and 146 minutes.',
           fix: 'On a Fitbit, open the sleep settings, note which mode you are on, and never compare nights across a change to it. On other brands there is nothing to check, because the choice is made for you.',
@@ -599,22 +602,22 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'retain', name: 'How much data the device throws away', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring', 'strap'], m: {
-        hrv: { e: 'Y', imp: 96, g: 'M', src: 'ourahrv',
+        hrv: { e: 'Y', punch: '30 to 67% cut', imp: 96, g: 'M', src: 'ourahrv',
           head: 'A clean nightly HRV average is bought by discarding most of the night.',
           size: 'Independent study with ECG, n=114: the usual quality threshold discards 30 to 35% of segments, and a stricter one would exclude most nights entirely.',
           fix: 'Read nightly HRV as a summary of the cleanest third of the night.',
           ev: 'Moderate, single independent study.' },
-        hr: { e: 'Y', imp: 76, g: 'S', src: 'techn',
+        hr: { e: 'Y', punch: '40% withheld', imp: 76, g: 'S', src: 'techn',
           head: 'Devices are built to withhold rather than to report badly.',
           size: 'One watch ranked first on sleep staging while keeping 57% of nights; another ranked fifth while keeping 100%. In atrial fibrillation, only 60% of minutes were usable.',
           fix: 'Never read an accuracy figure without the capture rate beside it.',
           ev: 'Strong pattern across four studies, though most papers still do not report retention.' },
-        sleep: { e: 'Y', imp: 68, g: 'S', src: 'six',
+        sleep: { e: 'Y', punch: '57 to 100% kept', imp: 68, g: 'S', src: 'six',
           head: 'The device that scores best is often the one that kept the least.',
           size: 'Six devices ranged from 57% to 100% of nights captured. Missing gaps average 34 minutes and are more often true wake than sleep, so deleting them inflates sleep.',
           fix: 'Compare devices on nights delivered as well as nights scored.',
           ev: 'Strong, repeated across studies.' },
-        spo2: { e: 'Y', imp: 74, g: 'M', src: 'spo2skin',
+        spo2: { e: 'Y', punch: '11 to 31% gone', imp: 74, g: 'M', src: 'spo2skin',
           head: 'Blood oxygen is the most heavily gated metric on the wrist.',
           size: 'Missing data at rest ran 11 to 31% across four smartwatches, and yield varied 16 points across three devices that all met the accuracy threshold.',
           fix: 'Gaps in an overnight blood-oxygen chart are normal behaviour, not a fault.',
@@ -622,12 +625,12 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'charge', name: 'Charging gaps and missing nights', cat: 'Settings and data', ctl: 'you', dev: ['watch', 'ring'], m: {
-        sleep: { e: 'Y', imp: 80, g: 'S', src: 'missnights',
+        sleep: { e: 'Y', punch: '1 night in 3', imp: 80, g: 'S', src: 'missnights',
           head: 'The most common reason a metric is wrong is that it does not exist.',
           size: 'Across 1,495 nights from 299 people: 30% missing, rising from 22% on night one to 47% on night five. In a school-year study, usable nights fell from 67% to 5%.',
           fix: 'Charge during a shower or commute, not at bedtime.',
           ev: 'Strong for the curve. The battery explanation is the authors\' inference, not a tested predictor.' },
-        hrv: { e: 'Y', imp: 70, g: 'S', src: 'missnights',
+        hrv: { e: 'Y', punch: '1 night in 3', imp: 70, g: 'S', src: 'missnights',
           head: 'HRV needs consecutive nights more than any other metric.',
           size: 'Same 30% missing-night rate. It takes about 7 nights for a stable personal average and far longer for a stable sense of your variability.',
           fix: 'A gappy month gives you a baseline built on the nights you happened to charge right.',
@@ -635,17 +638,17 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'lowpower', name: 'Battery saver and low power mode', cat: 'Settings and data', ctl: 'set', dev: ['watch'], m: {
-        hr: { e: 'Y', imp: 56, g: 'G', src: 'applelpm',
+        hr: { e: 'Y', punch: 'Switched off', imp: 56, g: 'G', src: 'applelpm',
           head: 'It does not degrade the measurement. It switches it off.',
           size: 'Apple documents that Low Power Mode turns off background heart-rate and blood-oxygen measurement, including during sleep.',
           fix: 'Check whether battery saver is on before you conclude anything from a flat chart.',
           ev: 'Manufacturer documentation only. Zero peer-reviewed validation exists for battery-saver modes.' },
-        sleep: { e: 'Y', imp: 54, g: 'G', src: 'applelpm',
+        sleep: { e: 'Y', punch: 'Switched off', imp: 54, g: 'G', src: 'applelpm',
           head: 'The same switch, applied to the metric people most want overnight.',
           size: 'Background heart rate and blood oxygen are explicitly off during sleep in low power mode.',
           fix: 'Turn it off on nights you care about.',
           ev: 'Manufacturer documentation only.' },
-        spo2: { e: 'Y', imp: 60, g: 'G', src: 'applelpm',
+        spo2: { e: 'Y', punch: 'Switched off', imp: 60, g: 'G', src: 'applelpm',
           head: 'Blood oxygen is the first thing a low power mode switches off.',
           size: 'It is the first item Apple lists as disabled, with no accuracy or battery figure published.',
           fix: 'A flat overnight chart usually means the feature was off.',
@@ -653,7 +656,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'pipeline', name: 'The app pipeline, not the sensor', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        sleep: { e: 'Y', imp: 62, g: 'W', src: 'pipeline',
+        sleep: { e: 'Y', punch: '26 min early', imp: 62, g: 'W', src: 'pipeline',
           head: 'Some error is added after the measurement, by the software that decides when your night started.',
           size: 'Over 100 nights: on 11% of nights sleep onset was placed 26 minutes early, reading pre-sleep phone use as sleep. Fixing the timing moved total sleep by up to 30 minutes.',
           fix: 'If it says you fell asleep while you were still reading, that is a known behaviour.',
@@ -661,7 +664,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'firmware', name: 'Firmware and algorithm version', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        sleep: { e: 'Y', imp: 48, g: 'M',
+        sleep: { e: 'Y', punch: '71% to 77%', imp: 48, g: 'M',
           head: 'Published validation has a shelf life, because what was validated gets replaced.',
           size: 'Same hardware, new algorithm: sleep-staging accuracy went from 71% to 77%. Most studies never report the version they tested.',
           fix: 'Date-stamp any accuracy claim you read, including the ones on this page.',
@@ -669,7 +672,7 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'devage', name: 'How old your device is', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring', 'strap'], m: {
-        hr: { e: '?', imp: 0, g: 'G',
+        hr: { e: '?', punch: 'Untested', imp: 0, g: 'G',
           head: 'The largest single evidence gap in this whole area.',
           size: 'No repeat-calibration study of a consumer wearable exists, and every validation study used devices of unknown age.',
           fix: 'Keep the sensor window clean and the band intact. Beyond that, nobody knows.',
@@ -677,12 +680,12 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'samp', name: 'Sampling rate above about 25 Hz', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring'], m: {
-        hr: { e: 'N', imp: 0, g: 'X',
-          head: 'No effect on average heart rate. A spec-sheet number that buys nothing.',
+        hr: { e: 'N', punch: 'No effect', imp: 0, g: 'X',
+          head: 'A spec-sheet number that buys nothing above about 25 Hz.',
           size: 'At fixed signal quality, 15 Hz and 50 Hz were effectively identical, and 64 Hz did not differ from ECG.',
           fix: 'Ignore sampling-rate marketing for heart rate.',
           ev: 'Strong, and the limit matters: it applies to average heart rate only, not to HRV.' },
-        hrv: { e: 'Y', imp: 44, g: 'M',
+        hrv: { e: 'Y', punch: 'At every rate', imp: 44, g: 'M',
           head: 'It does matter for HRV, and the maths nobody publishes matters more than the hertz.',
           size: 'HRV differed from ECG at every sampling rate tested up to 64 Hz. How a brand fills the gaps between samples matters more, and none of them publish it.',
           fix: 'Do not compare HRV across brands. You are comparing pipelines.',
@@ -690,45 +693,45 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'prv', name: 'Optical HRV is a different quantity', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'ring', 'strap'], m: {
-        hrv: { e: 'Y', imp: 88, g: 'S',
+        hrv: { e: 'Y', punch: 'Reads 5.6 ms low', imp: 88, g: 'S',
           head: 'Wrists and rings measure pulse variability, not heart rate variability, and it is not correctable.',
           size: 'Against ECG at n=931, short-term HRV ran 5.6 ms low and the longer-term measure 13.1 ms low, while heart rate matched almost exactly. The gap changes size night to night, so no correction factor exists.',
           fix: 'Use your own device against itself. Never port a target from an ECG study or another brand.',
           ev: 'Strong, and both large studies came from manufacturer teams publishing against their own sensor.' },
-        hr: { e: 'N', imp: 0, g: 'X',
-          head: 'No effect on heart rate. The same signal that fails on intervals is fine on the average.',
+        hr: { e: 'N', punch: 'No effect', imp: 0, g: 'X',
+          head: 'The same signal that fails on beat intervals is fine on the average.',
           size: 'Heart rate tracked the ECG almost exactly in the same comparison that found the HRV gap.',
           fix: 'Nothing to do.',
           ev: 'Strong.' }
       } },
 
       { key: 'form', name: 'Ring versus watch', cat: 'Form factor', ctl: 'you', dev: ['ring', 'watch'], m: {
-        hr: { e: 'Y', imp: 66, g: 'M', src: 'climate',
+        hr: { e: 'Y', punch: '9th of 10 by day', imp: 66, g: 'M', src: 'climate',
           head: 'Rings win at night and lose during the day.',
           size: 'At night a ring led by about 0.8 bpm, below normal night-to-night variation. By day, under activity, it placed 9th of 10 at 11.0 bpm against 4.5 for the best watch.',
           fix: 'Buy a ring for the night. For workouts, wear something on your arm.',
           ev: 'Moderate. The ring is at the bad end of the wrist range rather than outside it.' },
-        sleep: { e: 'N', imp: 14, g: 'C', src: 'miller',
+        sleep: { e: 'N', punch: 'No winner', imp: 14, g: 'C', src: 'miller',
           head: 'No form-factor winner. The ring sits inside the wrist range.',
           size: 'Independently, ring staging agreement was 0.43 against a wrist range of 0.20 to 0.44. In a clinical population the same ring fell to 0.31.',
           fix: 'Choose on comfort, battery and data completeness, not staging claims.',
           ev: 'Contested and funding-sensitive: the ring\'s best sleep result is manufacturer-funded.' },
-        hrv: { e: 'N', imp: 16, g: 'C', src: 'dial',
+        hrv: { e: 'N', punch: 'No winner', imp: 16, g: 'C', src: 'dial',
           head: 'No winner. Algorithm and averaging window decide, and the two best studies disagree.',
           size: 'One independent study puts a ring ahead on HRV. Another puts a wrist device far ahead, on both average error and agreement.',
           fix: 'Pick one device and stay on it.',
           ev: 'Contested, two credible studies pointing opposite ways.' },
-        steps: { e: 'Y', imp: 78, g: 'W', src: 'ourastep',
+        steps: { e: 'Y', punch: '2,124 a day', imp: 78, g: 'W', src: 'ourastep',
           head: 'Rings overcount steps badly.',
           size: 'Against a pedometer in daily life, a ring read 2,124 steps a day higher.',
           fix: 'Do not use a ring as a step counter.',
           ev: 'Single study, and no ring-versus-wrist step comparison against a true count exists.' },
-        ee: { e: 'Y', imp: 72, g: 'W', src: 'ourastep',
+        ee: { e: 'Y', punch: 'Fails at intensity', imp: 72, g: 'W', src: 'ourastep',
           head: 'Ring calorie estimates degrade as intensity rises.',
           size: 'With calories measured properly in a lab: near-perfect sitting, off by 0.8 at a fast walk and 3.5 at a hard run, on an effort scale where sitting still is 1.',
           fix: 'For calories during hard exercise, a ring is the wrong instrument.',
           ev: 'Single study.' },
-        spo2: { e: '?', imp: 0, g: 'G',
+        spo2: { e: '?', punch: 'Untested', imp: 0, g: 'G',
           head: 'No evidence exists either way, for blood oxygen or skin temperature.',
           size: 'No head-to-head has compared a ring and a watch on blood oxygen against any reference at all.',
           fix: 'Do not let a form-factor argument decide this one.',
@@ -737,12 +740,12 @@ class KygoAccuracyFactors extends HTMLElement {
 
       /* ---------------------------------------------------- STUDY-SHAPED NULLS WORTH KNOWING */
       { key: 'profile', name: 'The height, weight and age you typed in', cat: 'Settings and data', ctl: 'set', dev: ['watch', 'ring'], m: {
-        ee: { e: '?', imp: 30, g: 'G',
+        ee: { e: '?', punch: 'Untested', imp: 30, g: 'G',
           head: 'Calorie models take your body mass as an input, and nobody has ever tested a wrong one.',
           size: 'No evaluation exists for profile-entry error or stride-length calibration. Every search returns commercial content.',
           fix: 'Keep the profile current anyway. It is the one model input you control.',
           ev: 'Confirmed gap, and a cheap experiment nobody has run.' },
-        steps: { e: '?', imp: 26, g: 'G', src: 'dist',
+        steps: { e: '?', punch: '3.6% vs 10.5%', imp: 26, g: 'G', src: 'dist',
           head: 'Distance error is roughly three times step error, and stride length is why.',
           size: 'In the same 30-minute walk, step error was 3.6% and distance error 10.5%.',
           fix: 'Trust steps over distance, and never compare distance across brands.',
@@ -750,12 +753,12 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'freeliv', name: 'Lab conditions versus real life', cat: 'Movement', ctl: 'fixed', dev: ['watch'], m: {
-        hr: { e: 'N', imp: 0, g: 'X', src: 'freeliv',
+        hr: { e: 'N', punch: 'No effect', imp: 0, g: 'X', src: 'freeliv',
           head: 'The most overstated claim in the category. For average heart rate it changes nothing.',
           size: 'Same people, same reference, both settings: accuracy did not deteriorate outside the lab, and the error even flipped direction. What fell was minutes-in-zone detection.',
           fix: 'Trust the average heart rate. Distrust the zone minutes, which is what the app shows you.',
           ev: 'Strong design, the cleanest in this dataset.' },
-        steps: { e: 'Y', imp: 60, g: 'W',
+        steps: { e: 'Y', punch: 'Up to 1,054%', imp: 60, g: 'W',
           head: 'It does matter for steps: the two best lab algorithms failed worst in real life.',
           size: 'The two with the lowest treadmill error came out at +128% and +1,054% error in daily life.',
           fix: 'Distrust any step-accuracy claim measured on a treadmill.',
@@ -763,25 +766,25 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'twodev', name: 'Wearing two devices at once', cat: 'Settings and data', ctl: 'you', dev: ['watch', 'strap'], m: {
-        hr: { e: 'N', imp: 0, g: 'X',
-          head: 'No effect. The devices do not interfere with each other.',
+        hr: { e: 'N', punch: 'No effect', imp: 0, g: 'X',
+          head: 'Four devices worn at once and none interfered with the others.',
           size: 'Four devices worn at once, n=16: all within 3 bpm of each other and no missing values on any of them.',
           fix: 'Wear both. If you are comparing devices, this is the right way to do it.',
           ev: 'Single study, all devices from one manufacturer, no funding statement.' }
       } },
 
       { key: 'meds', name: 'Medication, caffeine and alcohol', cat: 'Body and physiology', ctl: 'you', dev: ['watch', 'ring'], m: {
-        hr: { e: 'N', imp: 0, g: 'X',
+        hr: { e: 'N', punch: 'No effect', imp: 0, g: 'X',
           head: 'Almost entirely untested, and the emptiness is the finding.',
           size: 'Beta blockers: no effect, n=80. Slow heart rates: no effect. Diuretics: a real effect. Deep sedation: severe.',
           fix: 'Nothing to change. The foundational studies exclude people on heart-affecting medication by design.',
           ev: 'Moderate, though the beta-blocker study was too small to detect an effect either way.' },
-        ee: { e: 'N', imp: 0, g: 'X',
+        ee: { e: 'N', punch: 'No effect', imp: 0, g: 'X',
           head: 'No effect from caffeine, in the only study of its kind.',
           size: 'Double-blind crossover against the gold-standard energy measure, n=17: no meaningful difference.',
           fix: 'Nothing to do.',
           ev: 'Single 2014 study, but a strong reference standard.' },
-        sleep: { e: 'Y', imp: 24, g: 'W',
+        sleep: { e: 'Y', punch: 'REM shifts', imp: 24, g: 'W',
           head: 'Alcohol changes REM staging accuracy, and it is the only such finding anywhere.',
           size: 'Up to four drinks significantly affected REM staging, n=14.',
           fix: 'Treat stage data on drinking nights as especially soft.',
@@ -789,13 +792,13 @@ class KygoAccuracyFactors extends HTMLElement {
       } },
 
       { key: 'wearrule', name: 'Wear-time and non-wear rules', cat: 'Settings and data', ctl: 'fixed', dev: ['watch', 'other'], m: {
-        steps: { e: 'Y', imp: 36, g: 'M',
+        steps: { e: 'Y', punch: '2,000 a day', imp: 36, g: 'M',
           head: 'Not about your body: the rule that decides which days count moves the number.',
           size: 'An 80% wear rule discards 15 to 33% of days and shifts step counts by up to 2,000 a day. Most periods flagged as non-wear are actually wear.',
           fix: 'If an app shows you a weekly average, ask what it did with your partial days.',
           ev: 'Moderate, large samples.' },
-        hr: { e: 'N', imp: 0, g: 'X',
-          head: 'No effect on heart rate. It is a steps problem.',
+        hr: { e: 'N', punch: 'Under 3 bpm', imp: 0, g: 'X',
+          head: 'It moves step counts, not heart rate.',
           size: 'Across six samples, wear-time rules changed mean daily heart rate by no more than 3 bpm.',
           fix: 'Nothing to do.',
           ev: 'Strong, n=302 plus n=1,074.' }
@@ -968,12 +971,20 @@ class KygoAccuracyFactors extends HTMLElement {
   }
 
 
-  // Keep the "N factors" lede in step 2 honest when the filters change.
+  // Keep the counts in the step 2 lede and the step 3 headline honest when the
+  // filters change, since only the lists themselves get re-rendered.
   _syncCount() {
+    const cells = this._cellsFor(this._metricFilter, true);
     const lede = this.shadowRoot.querySelector('.factors-section .section-lede');
-    if (!lede) return;
-    const n = this._cellsFor(this._metricFilter, true).filter(x => x.c.e === 'Y').length;
-    lede.textContent = n + ' factor' + (n === 1 ? '' : 's') + ' with an effect on this metric. Tap any one for the numbers, the fix and how good the evidence is.';
+    if (lede) {
+      const n = cells.filter(x => x.c.e === 'Y').length;
+      lede.textContent = n + ' factor' + (n === 1 ? '' : 's') + ' with a measured effect. The number on each row is the size of it. Tap a row for the study, the fix and how good the evidence is.';
+    }
+    const h2 = this.shadowRoot.querySelector('.nulls-section .section-h2');
+    if (h2) {
+      const n = cells.filter(x => x.c.e === 'N').length;
+      h2.innerHTML = n ? n + ' things that <em>do not matter</em>.' : 'Nothing here <em>matches those filters</em>.';
+    }
   }
 
   /* ---------------------------------------------------------------- EXPLORER UI */
@@ -1035,6 +1046,7 @@ class KygoAccuracyFactors extends HTMLElement {
     const isExp = this._expandedKey === id;
     const gm = this._gradeMeta(c.g);
     const src = c.src ? this._src[c.src] : null;
+    const bar = c.imp > 0 ? `<span class="fact-bar" aria-hidden="true"><span style="width:${Math.max(6, c.imp)}%"></span></span>` : '';
 
     const body = isExp ? `
       <div class="fact-body">
@@ -1052,50 +1064,85 @@ class KygoAccuracyFactors extends HTMLElement {
     return `
       <article class="fact-card ${isExp ? 'expanded' : ''}" data-fkey="${f.key}">
         <button class="fact-head" aria-expanded="${isExp}">
-          <span class="fact-row">
-            <span class="fact-name">${f.name}</span>
-            <span class="grade-badge ${gm.cls}" title="${gm.full}">${gm.short}</span>
+          <span class="fact-top">
+            <span class="fact-text">
+              <span class="fact-name">${f.name}</span>
+              <span class="fact-effect">${c.head}</span>
+            </span>
+            <span class="fact-right">
+              <span class="fact-punch">${c.punch}</span>
+              <span class="grade-badge ${gm.cls}" title="${gm.full}">${gm.short}</span>
+            </span>
             <span class="fact-chev" aria-hidden="true">${this._icon('chevDown')}</span>
           </span>
-          <span class="fact-effect">${c.head}</span>
+          ${bar}
         </button>
         ${body}
       </article>`;
   }
 
-  // which: 'deg' = what degrades this metric, 'null' = what does not
-  _renderGroups(which) {
+  // The ranked degrader list. One column, because a ranking read left-to-right
+  // is not a ranking. Top five by default, the rest behind one button.
+  _renderGroups() {
     const cells = this._cellsFor(this._metricFilter, true);
     const byImp = (a, b) => (b.c.imp || 0) - (a.c.imp || 0) || a.f.name.localeCompare(b.f.name);
+    const TOP = 5;
 
-    const defs = which === 'deg'
-      ? [
-          { k: 'change', label: 'You can change these', sub: 'Ranked by effect size', items: cells.filter(x => x.c.e === 'Y' && x.f.ctl !== 'fixed').sort(byImp) },
-          { k: 'fixed', label: 'You cannot', sub: 'Worth knowing, not worth worrying about', items: cells.filter(x => x.c.e === 'Y' && x.f.ctl === 'fixed').sort(byImp) }
-        ]
-      : [
-          { k: 'nul', label: 'Tested, no effect', sub: 'Bigger studies than most of the positives', items: cells.filter(x => x.c.e === 'N').sort(byImp) },
-          { k: 'gap', label: 'Never tested', sub: 'Plausible, unmeasured, flagged honestly', items: cells.filter(x => x.c.e === '?').sort(byImp) }
-        ];
+    const defs = [
+      { k: 'change', label: 'You can change these', items: cells.filter(x => x.c.e === 'Y' && x.f.ctl !== 'fixed').sort(byImp) },
+      { k: 'fixed', label: 'You cannot change these', items: cells.filter(x => x.c.e === 'Y' && x.f.ctl === 'fixed').sort(byImp) }
+    ].filter(g => g.items.length);
 
-    const live = defs.filter(g => g.items.length);
-    if (!live.length) {
-      return `<div class="fact-groups" data-list="${which}"><p class="dash-empty">Nothing matches those filters here. Widen the device filter or switch back to everything.</p></div>`;
+    if (!defs.length) {
+      return '<div class="fact-groups" data-list="deg"><p class="dash-empty">Nothing matches those filters here. Widen the device filter or switch back to everything.</p></div>';
     }
-    // Never leave every group shut: if the filters emptied the open one, open the first that still has rows.
-    if (!live.some(g => this._openGroups[g.k])) this._openGroups[live[0].k] = true;
 
     return `
-      <div class="fact-groups" data-list="${which}">
-        ${live.map(g => `
-          <div class="fact-group fact-group--${g.k} ${this._openGroups[g.k] ? 'open' : ''}">
-            <button class="fact-group-head" data-group="${g.k}" aria-expanded="${this._openGroups[g.k] ? 'true' : 'false'}">
+      <div class="fact-groups" data-list="deg">
+        ${defs.map(g => {
+          const all = this._showAll[g.k];
+          const shown = all ? g.items : g.items.slice(0, TOP);
+          const hidden = g.items.length - shown.length;
+          return `
+          <div class="fact-group fact-group--${g.k}">
+            <div class="fact-group-head">
               <span class="fact-group-label"><span class="fact-group-icon" aria-hidden="true"></span>${g.label}</span>
-              <span class="fact-group-meta">${g.items.length} · ${g.sub}</span>
-              <span class="fact-group-chev" aria-hidden="true">${this._icon('chevDown')}</span>
-            </button>
-            <div class="fact-list">${g.items.map(x => this._renderFactorCard(x.f, x.c)).join('')}</div>
-          </div>`).join('')}
+              <span class="fact-group-meta">${g.items.length} factor${g.items.length === 1 ? '' : 's'}, biggest first</span>
+            </div>
+            <div class="fact-list">${shown.map(x => this._renderFactorCard(x.f, x.c)).join('')}</div>
+            ${hidden > 0 ? `<button class="show-all" data-showall="${g.k}">Show all ${g.items.length} ${this._icon('chevDown')}</button>` : ''}
+            ${all && g.items.length > TOP ? `<button class="show-all" data-showall="${g.k}">Show the top ${TOP} only</button>` : ''}
+          </div>`;
+        }).join('')}
+      </div>`;
+  }
+
+  // Nulls are a second read, not a co-equal section: one line each, no clicking.
+  _renderNullList() {
+    const cells = this._cellsFor(this._metricFilter, true);
+    const nulls = cells.filter(x => x.c.e === 'N').sort((a, b) => a.f.name.localeCompare(b.f.name));
+    const gaps = cells.filter(x => x.c.e === '?').sort((a, b) => a.f.name.localeCompare(b.f.name));
+
+    if (!nulls.length && !gaps.length) {
+      return '<div data-list="null"><p class="dash-empty">Nothing matches those filters here.</p></div>';
+    }
+
+    return `
+      <div data-list="null">
+        ${nulls.length ? `
+        <ul class="null-list">
+          ${nulls.map(({ f, c }) => {
+            const src = c.src ? this._src[c.src] : null;
+            return `
+            <li class="null-row">
+              <span class="null-name">${f.name}</span>
+              <span class="null-verdict">${c.punch}</span>
+              <span class="null-note">${c.head}</span>
+              ${src ? `<a class="null-src" href="${src.url}" target="_blank" rel="noopener" aria-label="Source" data-action="source-click" data-track-position="null-list" data-track-label="accuracy-factors-${f.key}">${this._icon('externalLink')}</a>` : ''}
+            </li>`;
+          }).join('')}
+        </ul>` : ''}
+        ${gaps.length ? `<p class="gap-line"><span class="gap-lbl">Never tested at all</span>${gaps.map(x => x.f.name.toLowerCase()).join(', ')}. Plausible, unmeasured, and flagged rather than guessed at.</p>` : ''}
       </div>`;
   }
 
@@ -1108,7 +1155,7 @@ class KygoAccuracyFactors extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('flask')}</span>Step 1</span>
             <h2 class="section-h2">Pick your metric. <em>Start with these three.</em></h2>
-            <p class="section-lede">Some of it you can fix tonight. Some of it you cannot, and the honest answer is to read the number differently. Each card says which. The count on a tab is how many factors have measurably degraded that metric.</p>
+            <p class="section-lede">Some of it you can fix tonight. Some of it you cannot, and the honest answer is to read the number differently. Each card says which.</p>
           </div>
           ${this._renderMetricTiles()}
           <div class="qa-panel">
@@ -1122,7 +1169,7 @@ class KygoAccuracyFactors extends HTMLElement {
       </section>`;
   }
 
-  // 2. What degrades it, filterable.
+  // 2. What degrades it, ranked, with the number on the row.
   _renderDegradersSection() {
     const mt = this._metrics.find(m => m.key === this._metricFilter) || this._metrics[0];
     const n = this._cellsFor(mt.key, true).filter(x => x.c.e === 'Y').length;
@@ -1131,28 +1178,29 @@ class KygoAccuracyFactors extends HTMLElement {
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('alert')}</span>Step 2 · ${mt.label}</span>
-            <h2 class="section-h2">What degrades <em>${mt.label.toLowerCase()}</em>, ranked.</h2>
-            <p class="section-lede">${n} factor${n === 1 ? '' : 's'} with an effect on this metric. Tap any one for the numbers, the fix and how good the evidence is.</p>
+            <h2 class="section-h2">What degrades <em>${mt.label.toLowerCase()}</em>, biggest first.</h2>
+            <p class="section-lede">${n} factor${n === 1 ? '' : 's'} with a measured effect. The number on each row is the size of it. Tap a row for the study, the fix and how good the evidence is.</p>
           </div>
           ${this._renderFilterBar()}
-          ${this._renderGroups('deg')}
+          ${this._renderGroups()}
           <p class="picker-note"><span class="picker-note-ic" aria-hidden="true">${this._icon('info')}</span><span>${mt.note}</span></p>
         </div>
       </section>`;
   }
 
-  // 3. The null list, its own section because nobody else publishes one.
+  // 3. The null list, one line each.
   _renderNullsSection() {
     const mt = this._metrics.find(m => m.key === this._metricFilter) || this._metrics[0];
+    const n = this._cellsFor(mt.key, true).filter(x => x.c.e === 'N').length;
     return `
       <section class="nulls-section section-bg-gray" id="nulls">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('ban')}</span>Step 3 · ${mt.label}</span>
-            <h2 class="section-h2">What <em>does not matter</em>, and what nobody checked.</h2>
+            <h2 class="section-h2">${n ? n + ' things that <em>do not matter</em>.' : 'Nothing here <em>matches those filters</em>.'}</h2>
             <p class="section-lede">Tested, and it changed nothing. Nobody in this category publishes this list, and several of these studies are bigger than the positive findings people repeat.</p>
           </div>
-          ${this._renderGroups('null')}
+          ${this._renderNullList()}
           <div class="picker-foot">
             ${this._readMore(mt.tool, 'See the device-by-device numbers in the ' + mt.toolName)}
           </div>
@@ -1160,66 +1208,38 @@ class KygoAccuracyFactors extends HTMLElement {
       </section>`;
   }
 
-  /* ---------------------------------------------------------------- MATRIX */
+  /* ---------------------------------------------------------------- WHERE IT FLIPS */
 
-  _renderMatrixSection() {
-    const metrics = this._metrics;
-    // Only the rows whose verdict actually changes between metrics. That is the
-    // whole point of the module, and it keeps the table short enough to read.
+  // Replaces the old 82-cell Yes/No matrix, which was 65% "nobody checked" and
+  // carried no magnitude. Same point, made with numbers.
+  _renderFlipSection() {
     const rows = this._factors
       .filter(f => Object.keys(f.m).length >= 2 && new Set(Object.values(f.m).map(c => c.e)).size >= 2)
       .map(f => ({ f, cells: Object.keys(f.m).length, top: Math.max.apply(null, Object.values(f.m).map(c => c.imp || 0)) }))
-      .sort((a, b) => b.cells - a.cells || b.top - a.top || a.f.name.localeCompare(b.f.name));
+      .sort((a, b) => b.top - a.top || b.cells - a.cells || a.f.name.localeCompare(b.f.name));
 
-    const head = `
-      <thead>
-        <tr>
-          <th class="dt-th-device" scope="col">Factor</th>
-          ${metrics.map(m => `<th scope="col">${m.short}</th>`).join('')}
-        </tr>
-      </thead>`;
-
-    const cellPill = (c) => {
-      if (!c) return '<span class="mx-dash" aria-label="not applicable or not searched">n/a</span>';
-      if (c.e === 'Y') return '<span class="gpill gpill--mx g-s" title="Affects accuracy, with evidence">Yes</span>';
-      if (c.e === 'N') return '<span class="gpill gpill--mx g-x" title="Tested and null or contested">No</span>';
-      return '<span class="gpill gpill--mx g-none" title="Plausible, never tested">?</span>';
-    };
-
-    const body = rows.map(({ f }) => `
-      <tr>
-        <th class="dt-td-device" scope="row"><span class="mx-name">${f.name}</span></th>
-        ${metrics.map(m => `<td class="mx-cell">${cellPill(f.m[m.key])}</td>`).join('')}
-      </tr>`).join('');
+    const label = k => (this._metrics.find(m => m.key === k) || {}).label || k;
 
     return `
       <section class="comparison-section section-bg-gray" id="matrix">
         <div class="container">
           <div class="section-header">
-            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('target')}</span>The cross-metric view</span>
-            <h2 class="section-h2">One factor, <em>different answers</em>.</h2>
-            <p class="section-lede">The factors whose verdict changes depending on the metric. Gripping a handrail is null for heart rate and severe for calories. Which wrist you wear it on is null for heart rate and sleep and worth 1,253 steps a day.</p>
+            <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('target')}</span>Where the answer flips</span>
+            <h2 class="section-h2">One factor, <em>opposite answers</em>.</h2>
+            <p class="section-lede">Every factor here has been tested against more than one metric and come back differently. This is the case for organising accuracy by metric rather than by device.</p>
           </div>
-          <div class="device-chart">
-            <div class="dc-head">
-              <div>
-                <span class="dc-eyebrow">Where the answer flips</span>
-                <h3 class="dc-title">Factor by metric, nulls left in</h3>
-              </div>
-              <div class="dc-meta">${rows.length} factors</div>
-            </div>
-            <div class="device-table-wrap">
-              <table class="device-table mxtable">
-                ${head}
-                <tbody>${body}</tbody>
-              </table>
-            </div>
-            <div class="mx-legend">
-              <span class="mx-legend-item"><span class="gpill gpill--mx g-s">Yes</span> Affects accuracy</span>
-              <span class="mx-legend-item"><span class="gpill gpill--mx g-x">No</span> Tested, null</span>
-              <span class="mx-legend-item"><span class="gpill gpill--mx g-none">?</span> Never tested</span>
-              <span class="mx-legend-item"><span class="mx-dash">n/a</span> Not applicable</span>
-            </div>
+          <div class="flip-grid">
+            ${rows.map(({ f }) => `
+              <article class="flip-row animate-on-scroll">
+                <h3 class="flip-name">${f.name}</h3>
+                <div class="flip-cells">
+                  ${Object.entries(f.m).map(([k, c]) => `
+                    <span class="flip-cell flip-cell--${c.e === 'Y' ? 'y' : c.e === 'N' ? 'n' : 'q'}">
+                      <span class="flip-metric">${label(k)}</span>
+                      <span class="flip-val">${c.punch}</span>
+                    </span>`).join('')}
+                </div>
+              </article>`).join('')}
           </div>
         </div>
       </section>`;
@@ -1492,6 +1512,7 @@ class KygoAccuracyFactors extends HTMLElement {
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             Accuracy Factors
           </a>
+          <div class="hdr-metrics" data-hdrmetrics aria-hidden="true"></div>
           <div class="nav-cta-group">
             <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-store-btn nav-store-ios cta-primary" data-action="ios-download" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store">${this._icon('apple')}<span>iOS</span></a>
             <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play">${this._icon('android')}<span>Android</span></a>
@@ -1541,7 +1562,7 @@ class KygoAccuracyFactors extends HTMLElement {
       ${this._renderDegradersSection()}
       ${this._renderNullsSection()}
       ${this._renderKband('early', 'accuracy-factors-early')}
-      ${this._renderMatrixSection()}
+      ${this._renderFlipSection()}
       ${this._renderPatternsSection()}
       <section class="subscribe-section section-bg-gray">
         <kygo-inline-subscribe source="tool-accuracy-factors" variant="factors"></kygo-inline-subscribe>
@@ -1592,15 +1613,15 @@ class KygoAccuracyFactors extends HTMLElement {
     };
 
     const redrawLists = () => {
-      ['deg', 'null'].forEach(which => {
-        replaceWithHTML(shadow.querySelector('[data-list="' + which + '"]'), this._renderGroups(which));
-      });
+      replaceWithHTML(shadow.querySelector('[data-list="deg"]'), this._renderGroups());
+      replaceWithHTML(shadow.querySelector('[data-list="null"]'), this._renderNullList());
     };
 
     const redrawAll = () => {
       replaceWithHTML(shadow.querySelector('.picker-section'), this._renderPickerSection());
       replaceWithHTML(shadow.querySelector('.factors-section'), this._renderDegradersSection());
       replaceWithHTML(shadow.querySelector('.nulls-section'), this._renderNullsSection());
+      this._paintHeaderChips();
     };
 
     shadow.addEventListener('click', (e) => {
@@ -1622,6 +1643,7 @@ class KygoAccuracyFactors extends HTMLElement {
         if (k && k !== this._metricFilter) {
           this._metricFilter = k;
           this._expandedKey = null;
+          this._showAll = { change: false, fixed: false };
           redrawAll();
         }
         return;
@@ -1661,10 +1683,10 @@ class KygoAccuracyFactors extends HTMLElement {
         return;
       }
 
-      const groupHead = e.target.closest('[data-group]');
-      if (groupHead) {
-        const k = groupHead.dataset.group;
-        this._openGroups[k] = !this._openGroups[k];
+      const showAll = e.target.closest('[data-showall]');
+      if (showAll) {
+        const k = showAll.dataset.showall;
+        this._showAll[k] = !this._showAll[k];
         redrawLists();
         return;
       }
@@ -1679,6 +1701,32 @@ class KygoAccuracyFactors extends HTMLElement {
         }
       }
     });
+  }
+
+  // Compact metric switcher that lives in the sticky page header, so you can
+  // change metric from 3,000px down without scrolling back up.
+  _paintHeaderChips() {
+    const host = this.shadowRoot.querySelector('[data-hdrmetrics]');
+    if (!host) return;
+    host.innerHTML = this._metrics.map(mt => {
+      const active = this._metricFilter === mt.key;
+      return `<button class="hdr-chip ${active ? 'active' : ''}" data-metric="${mt.key}" aria-pressed="${active}">${mt.tileLabel || mt.label}</button>`;
+    }).join('');
+  }
+
+  _setupStickySwitcher() {
+    const header = this.shadowRoot.querySelector('.header');
+    const picker = this.shadowRoot.querySelector('.picker-section');
+    if (!header || !picker || !('IntersectionObserver' in window)) return;
+    if (this._switchObserver) this._switchObserver.disconnect();
+    this._switchObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // Reveal once the picker has scrolled past, hide again above it.
+        const past = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+        header.classList.toggle('compact', past);
+      });
+    }, { threshold: 0 });
+    this._switchObserver.observe(picker);
   }
 
   _setupAnimations() {
@@ -1758,6 +1806,14 @@ class KygoAccuracyFactors extends HTMLElement {
       .nav-cta-group .nav-store-android { background: #fff; color: var(--green-dark); border: 1.5px solid var(--gray-200); }
       .nav-cta-group .nav-store-android:hover { border-color: var(--green); color: var(--green-dark); }
       @media (max-width: 360px) { .nav-cta-group .nav-store-btn span { display: none; } .nav-cta-group .nav-store-btn { padding: 8px 10px; } }
+      .hdr-metrics { display: none; order: 3; flex-basis: 100%; gap: 6px; padding: 2px 0 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .hdr-metrics::-webkit-scrollbar { display: none; }
+      .header.compact .hdr-metrics { display: flex; }
+      .hdr-chip { flex: 0 0 auto; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; padding: 6px 11px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); cursor: pointer; white-space: nowrap; transition: background .15s, color .15s, border-color .15s; }
+      .hdr-chip:hover { border-color: var(--gray-300); color: var(--dark); }
+      @media (max-width: 560px) { .hdr-chip { font-size: 11.5px; padding: 5px 10px; } .hdr-metrics { padding: 0 0 7px; } }
+      .hdr-chip.active { background: var(--dark); border-color: var(--dark); color: #fff; }
+      .header-inner { flex-wrap: wrap; }
 
       /* HERO */
       .hero { padding: 40px 0 28px; background: #fff; }
@@ -1879,53 +1935,49 @@ class KygoAccuracyFactors extends HTMLElement {
       @media (min-width: 760px) { .filter-bar { grid-template-columns: 1fr 1fr; gap: 12px 22px; padding: 14px 16px; } }
 
       /* FACTOR GROUPS */
-      .fact-groups { display: grid; grid-template-columns: 1fr; gap: 18px; min-width: 0; }
-      .fact-group { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-      .fact-group-head { display: flex; align-items: center; justify-content: flex-start; gap: 2px 12px; flex-wrap: wrap; width: 100%; padding: 0 2px 8px; border: 0; border-bottom: 1px dashed var(--gray-200); background: none; font-family: inherit; cursor: pointer; text-align: left; }
-      .fact-group-chev { width: 18px; height: 18px; margin-left: auto; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
-      .fact-group-chev svg { width: 17px; height: 17px; }
-      .fact-group.open .fact-group-chev { transform: rotate(180deg); }
-      .fact-group:not(.open) .fact-list { display: none; }
+      .fact-groups { display: grid; grid-template-columns: 1fr; gap: 22px; min-width: 0; }
+      .fact-group { display: flex; flex-direction: column; gap: 9px; min-width: 0; }
+      .fact-group-head { display: flex; align-items: baseline; justify-content: space-between; gap: 2px 12px; flex-wrap: wrap; padding: 0 2px 8px; border-bottom: 1px dashed var(--gray-200); }
       .fact-group-label { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px; }
       .fact-group-icon { width: 18px; height: 18px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; line-height: 1; flex-shrink: 0; color: #fff; }
-      .fact-group-meta { font-size: 11px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: var(--gray-400); white-space: normal; }
+      .fact-group-meta { font-size: 11px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: var(--gray-400); }
       .fact-group--change .fact-group-label { color: var(--green-dark); }
       .fact-group--change .fact-group-icon { background: var(--green); }
       .fact-group--change .fact-group-icon::after { content: '✓'; }
       .fact-group--fixed .fact-group-label { color: var(--gray-600); }
       .fact-group--fixed .fact-group-icon { background: var(--gray-400); }
       .fact-group--fixed .fact-group-icon::after { content: '!'; }
-      .fact-group--nul .fact-group-label { color: var(--dark); }
-      .fact-group--nul .fact-group-icon { background: var(--dark); }
-      .fact-group--nul .fact-group-icon::after { content: '✗'; }
-      .fact-group--gap .fact-group-label { color: var(--gray-600); }
-      .fact-group--gap .fact-group-icon { background: var(--gray-300); }
-      .fact-group--gap .fact-group-icon::after { content: '?'; }
-      @media (min-width: 1000px) { .fact-groups { gap: 26px; } }
+
+      .show-all { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; margin-top: 2px; padding: 9px 15px; border: 1px solid var(--gray-200); border-radius: 9999px; background: #fff; color: var(--green-dark); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; cursor: pointer; transition: border-color .15s, background .15s; }
+      .show-all:hover { border-color: var(--green); background: var(--green-light); }
+      .show-all svg { width: 14px; height: 14px; }
 
       /* FACTOR CARDS */
       .fact-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
       .fact-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; min-width: 0; transition: border-color .15s, box-shadow .15s; }
       .fact-card:hover { border-color: var(--gray-300); }
       .fact-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); border-color: var(--gray-300); }
-      .fact-head { display: flex; flex-direction: column; align-items: stretch; gap: 5px; width: 100%; padding: 12px 15px; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
+      .fact-head { display: block; width: 100%; padding: 0; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .fact-head:hover { background: var(--gray-50); }
-      .fact-devs { display: inline-flex; flex-wrap: wrap; gap: 4px; }
-      .fact-dev { font-size: 9.5px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: var(--gray-400); border: 1px solid var(--gray-200); border-radius: 9999px; padding: 3px 7px; line-height: 1; }
-      .fact-row { display: flex; align-items: flex-start; gap: 8px; }
-      .fact-name { flex: 1; min-width: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: break-word; }
-      .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.45; }
+      .fact-top { display: flex; align-items: flex-start; gap: 10px; padding: 13px 15px 12px; }
+      .fact-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+      .fact-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.25; letter-spacing: -0.005em; overflow-wrap: break-word; }
+      .fact-effect { font-size: 12.5px; color: var(--gray-600); line-height: 1.4; }
+      .fact-right { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 5px; text-align: right; max-width: 42%; }
+      .fact-punch { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; line-height: 1.15; color: var(--green-dark); letter-spacing: -0.01em; font-feature-settings: "tnum" 1; }
       .fact-chev { width: 18px; height: 18px; margin-top: 1px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .fact-chev svg { width: 16px; height: 16px; }
       .fact-card.expanded .fact-chev { transform: rotate(180deg); color: var(--green-dark); }
-      @media (min-width: 768px) {
-        .fact-list { gap: 10px; }
-        .fact-card { border-radius: 16px; }
-        .fact-head { padding: 16px 18px; }
+      .fact-bar { display: block; height: 3px; background: var(--gray-100); }
+      .fact-bar > span { display: block; height: 100%; background: var(--green); border-radius: 0 2px 2px 0; }
+      .fact-card.expanded .fact-bar > span { background: var(--green-dark); }
+      @media (min-width: 560px) {
+        .fact-punch { font-size: 17px; }
         .fact-name { font-size: 16px; }
         .fact-effect { font-size: 13px; }
+        .fact-top { padding: 15px 18px 14px; }
       }
-      @media (min-width: 1000px) { .fact-list { grid-template-columns: 1fr 1fr; align-items: start; } }
+      @media (max-width: 400px) { .fact-right { max-width: 38%; } .fact-punch { font-size: 14px; } }
 
       .fact-body { padding: 4px 15px 15px; border-top: 1px dashed var(--gray-200); background: var(--gray-50); }
       .fact-fields { display: grid; gap: 11px; margin: 13px 0 0; min-width: 0; }
@@ -1933,10 +1985,43 @@ class KygoAccuracyFactors extends HTMLElement {
       .fact-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
       .fact-fields dd { margin: 0; font-size: 13px; color: var(--gray-700); line-height: 1.5; overflow-wrap: anywhere; }
       .fact-foot { margin-top: 13px; padding-top: 11px; border-top: 1px dashed var(--gray-200); display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; }
+      .fact-devs { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+      .fact-dev { font-size: 9.5px; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: var(--gray-400); border: 1px solid var(--gray-200); border-radius: 9999px; padding: 3px 7px; line-height: 1; }
       .source-link { display: inline-flex; align-items: center; gap: 5px; color: var(--green-dark); font-weight: 600; font-size: 12px; white-space: nowrap; }
-      @media (min-width: 768px) { .fact-body { padding: 4px 18px 18px; } }
       .source-link svg { width: 12px; height: 12px; flex-shrink: 0; }
       .source-link:hover { color: var(--green); }
+      @media (min-width: 768px) { .fact-body { padding: 4px 18px 18px; } .fact-fields { grid-template-columns: 1fr 1fr; gap: 12px 22px; } .fact-fields > div:first-child { grid-column: 1 / -1; } }
+
+      /* NULL LIST */
+      .null-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; }
+      .null-row { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 2px 12px; padding: 12px 15px; }
+      .null-row + .null-row { border-top: 1px solid var(--gray-100); }
+      .null-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; color: var(--dark); line-height: 1.25; }
+      .null-verdict { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-600); background: var(--gray-100); border-radius: 9999px; padding: 4px 9px; white-space: nowrap; justify-self: end; }
+      .null-note { grid-column: 1 / -1; font-size: 12.5px; color: var(--gray-600); line-height: 1.45; }
+      .null-src { grid-column: 1 / -1; justify-self: start; display: inline-flex; align-items: center; color: var(--gray-400); margin-top: 2px; }
+      .null-src svg { width: 12px; height: 12px; }
+      .null-src:hover { color: var(--green-dark); }
+      @media (min-width: 720px) {
+        .null-row { grid-template-columns: minmax(0, 15em) auto 1fr auto; align-items: center; gap: 14px; padding: 13px 18px; }
+        .null-note { grid-column: auto; }
+        .null-src { grid-column: auto; justify-self: end; margin-top: 0; }
+      }
+      .gap-line { margin: 14px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--gray-600); }
+      .gap-lbl { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 4px; }
+
+      /* WHERE IT FLIPS */
+      .flip-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+      @media (min-width: 860px) { .flip-grid { grid-template-columns: 1fr 1fr; } }
+      .flip-row { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; padding: 14px 16px; min-width: 0; }
+      .flip-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14.5px; color: var(--dark); margin: 0 0 9px; line-height: 1.25; }
+      .flip-cells { display: flex; flex-wrap: wrap; gap: 6px; }
+      .flip-cell { display: inline-flex; align-items: baseline; gap: 6px; border-radius: 9px; padding: 6px 10px; font-size: 12px; line-height: 1.2; }
+      .flip-metric { font-weight: 600; opacity: 0.75; }
+      .flip-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-feature-settings: "tnum" 1; }
+      .flip-cell--y { background: var(--green-light); color: var(--green-dark); }
+      .flip-cell--n { background: var(--dark); color: #fff; }
+      .flip-cell--q { background: #fff; color: var(--gray-400); box-shadow: inset 0 0 0 1px var(--gray-200); }
 
       /* GRADE CHIPS */
       .grade-badge { display: inline-flex; align-items: center; flex-shrink: 0; margin-top: 1px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.4px; text-transform: uppercase; padding: 4px 9px; border-radius: 9999px; white-space: nowrap; background: var(--gray-100); color: var(--gray-400); }
@@ -1947,44 +2032,6 @@ class KygoAccuracyFactors extends HTMLElement {
       .grade-badge.g-mix { background: var(--gray-100); color: var(--gray-600); }
       .grade-badge.g-x { background: var(--dark); color: #fff; }
       .grade-badge.g-none { background: #fff; color: var(--gray-400); box-shadow: inset 0 0 0 1px var(--gray-200); }
-
-      .gpill { display: inline-flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 0.2px; padding: 5px 9px; border-radius: 9px; white-space: nowrap; background: var(--gray-100); color: var(--gray-400); }
-      .gpill--mx { min-width: 42px; }
-      .gpill.g-s { background: var(--green); color: #fff; }
-      .gpill.g-x { background: var(--dark); color: #fff; }
-      .gpill.g-none { background: #fff; color: var(--gray-400); box-shadow: inset 0 0 0 1px var(--gray-200); }
-
-      /* MATRIX */
-      .device-chart { background: #fff; border: 1px solid var(--gray-200); border-radius: 18px; padding: 18px 16px 16px; box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
-      @media (min-width: 768px) { .device-chart { padding: 26px 28px 22px; border-radius: 22px; } }
-      .dc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-bottom: 14px; margin-bottom: 6px; border-bottom: 1px dashed var(--gray-200); }
-      .dc-eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-dark); margin-bottom: 4px; }
-      .dc-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 19px; color: var(--dark); margin: 0 0 6px; letter-spacing: -0.01em; line-height: 1.2; }
-      .dc-sub { font-size: 13px; color: var(--gray-600); margin: 0; line-height: 1.5; max-width: 64ch; }
-      .dc-meta { font-size: 11.5px; color: var(--gray-400); font-weight: 600; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.6px; }
-      .device-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -16px; padding: 0 16px 4px; }
-      @media (min-width: 768px) { .device-table-wrap { margin: 0; padding: 0; overflow-x: visible; } }
-      .device-table { width: 100%; border-collapse: separate; border-spacing: 0; font-feature-settings: "tnum" 1; }
-      .mxtable { min-width: 620px; }
-      @media (min-width: 768px) { .mxtable { min-width: 0; } }
-      .device-table th, .device-table td { padding: 0; vertical-align: middle; }
-      .device-table thead th { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 10.5px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); text-align: center; padding: 12px 4px; border-bottom: 1px solid var(--gray-200); white-space: nowrap; background: #fff; }
-      .device-table thead .dt-th-device { text-align: left; padding-left: 4px; position: sticky; left: 0; z-index: 3; background: #fff; }
-      @media (min-width: 768px) { .device-table thead th { font-size: 11px; padding: 14px 6px; } .device-table thead .dt-th-device { position: static; } }
-      .device-table tbody tr + tr td, .device-table tbody tr + tr th { border-top: 1px solid var(--gray-100); }
-      .device-table tbody tr:hover { background: var(--gray-50); }
-      .device-table tbody tr:hover .dt-td-device { background: var(--gray-50); }
-      .dt-td-device { padding: 10px 10px 10px 4px; width: 130px; min-width: 130px; max-width: 130px; text-align: left; background: #fff; position: sticky; left: 0; z-index: 1; transition: background .15s; box-shadow: 1px 0 0 var(--gray-200); }
-      .mx-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; color: var(--dark); line-height: 1.2; overflow-wrap: anywhere; display: inline-block; }
-      @media (min-width: 768px) {
-        .dt-td-device { width: 300px; min-width: 300px; max-width: none; position: static; box-shadow: none; padding: 14px 14px 14px 4px; }
-        .mx-name { font-size: 14.5px; }
-      }
-      .device-table tbody td.mx-cell { text-align: center; padding: 10px 5px; }
-      @media (min-width: 768px) { .device-table tbody td.mx-cell { padding: 12px 8px; } }
-      .mx-dash { display: inline-block; color: var(--gray-300); font-weight: 700; font-size: 11px; }
-      .mx-legend { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--gray-100); }
-      .mx-legend-item { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 600; color: var(--gray-600); }
 
       /* PATTERNS (dark card) */
       .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
