@@ -812,18 +812,26 @@ class KygoStayingAsleepFactors extends HTMLElement {
       </div>`;
   }
 
+  /** Effect text with the redundant direction prefix stripped - the group header states direction. */
+  _effectDetail(f) {
+    const raw = (f.effect || '').trim();
+    const m = raw.match(/^(?:Positive|Negative|Null|Mixed|Variable)\s*\((.+)\)$/i);
+    const text = m ? m[1] : raw;
+    return text.replace(/^[a-z]/, c => c.toUpperCase());
+  }
+
   _factorCard(f) {
     return `
-      <article class="qual-card ${this._dirClass(f.direction)}">
+      <article class="qual-card">
         <div class="qual-row">
           <h4 class="qual-name">${f.name}</h4>
           <span class="qual-ev ${f.evidence}" title="${f.evidence} evidence">${f.evidence[0].toUpperCase()}</span>
         </div>
-        <p class="qual-effect">${f.effect}</p>
+        <p class="qual-effect">${this._effectDetail(f)}</p>
         <details class="qual-details">
           <summary class="qual-more">
-            <span class="qual-more-closed">Read more ↓</span>
-            <span class="qual-more-open">Collapse ↑</span>
+            <span class="qual-more-closed">Read more &#8595;</span>
+            <span class="qual-more-open">Collapse &#8593;</span>
           </summary>
           <div class="qual-body">
             <p>${f.whatThisMeans}</p>
@@ -836,12 +844,35 @@ class KygoStayingAsleepFactors extends HTMLElement {
       </article>`;
   }
 
-  /** Full factor breakdown as cards, grouped by category (native <details> accordion). */
+  /** Helping / hurting split rendered inside every category group. */
+  get _splitGroups() {
+    return [
+      { key: 'positive', cls: 'pos', label: 'Helps you stay asleep',    icon: 'arrowUp' },
+      { key: 'negative', cls: 'neg', label: 'Wakes you up',             icon: 'arrowDown' },
+      { key: 'variable', cls: 'neu', label: 'Mixed or no clear effect', icon: 'arrowLeftRight' }
+    ];
+  }
+
+  /** Full factor breakdown - grouped by category, then split into helping vs hurting. */
   _renderFactorBreakdown() {
     const flat = this._flatFactors();
+    const bucket = f => (f.direction === 'positive' || f.direction === 'negative') ? f.direction : 'variable';
     return Object.entries(this._categoryMeta).map(([catKey, meta], idx) => {
       const items = flat.filter(f => f.category === catKey);
       if (!items.length) return '';
+      const splits = this._splitGroups.map(g => {
+        const group = items.filter(f => bucket(f) === g.key);
+        if (!group.length) return '';
+        return `
+            <div class="bd-split">
+              <div class="bd-split-head ${g.cls}">
+                <span class="bd-split-icon" aria-hidden="true">${this._icon(g.icon)}</span>
+                <span class="bd-split-label">${g.label}</span>
+                <span class="bd-split-count">${group.length}</span>
+              </div>
+              <div class="bd-grid">${group.map(f => this._factorCard(f)).join('')}</div>
+            </div>`;
+      }).filter(Boolean).join('');
       return `
         <details class="bd-group" ${idx === 0 ? 'open' : ''}>
           <summary class="bd-group-head">
@@ -850,9 +881,32 @@ class KygoStayingAsleepFactors extends HTMLElement {
             <span class="bd-group-count">${items.length}</span>
             <span class="bd-group-chev" aria-hidden="true">${this._icon('chevDown')}</span>
           </summary>
-          <div class="bd-grid">${items.map(f => this._factorCard(f)).join('')}</div>
+          <div class="bd-splits">${splits}</div>
         </details>`;
     }).filter(Boolean).join('');
+  }
+
+  /** Cross-links to the other free Kygo tools. */
+  _relatedTools() {
+    return [
+      { title: 'Sleep Latency Factors', blurb: '33 factors that change how fast you fall asleep, ranked by evidence.', url: 'https://www.kygo.app/tools/sleep-latency-factors', meta: 'Sleep &middot; 42+ studies', icon: 'moon' },
+      { title: 'Deep Sleep Factors', blurb: '28 factors that move deep sleep, with doses, mechanisms and sources.', url: 'https://www.kygo.app/tools/deep-sleep-factors', meta: 'Sleep &middot; 40+ studies', icon: 'moon' },
+      { title: 'REM Sleep Factors', blurb: '23 research-backed factors that shape how much REM sleep you get.', url: 'https://www.kygo.app/tools/rem-sleep-factors', meta: 'Sleep &middot; 23 sources', icon: 'brain' },
+      { title: 'Supplements by Metric', blurb: 'Pick a wearable metric and see which of 27 supplements the research supports.', url: 'https://www.kygo.app/tools/supplements-by-metric', meta: 'Nutrition &middot; 19 sources', icon: 'pill' }
+    ];
+  }
+
+  _renderRelatedTools() {
+    return this._relatedTools().map((t, i) => {
+      const slug = t.url.split('/').pop();
+      return `
+        <a class="rel-card animate-on-scroll" style="--delay:${i * 60}ms" href="${t.url}" target="_blank" rel="noopener" aria-label="${t.title}" data-action="tool-click" data-track-position="related-tools" data-track-label="staying-asleep-related-${slug}">
+          <span class="rel-icon" aria-hidden="true">${this._icon(t.icon)}</span>
+          <h3 class="rel-title">${t.title}</h3>
+          <p class="rel-blurb">${t.blurb}</p>
+          <span class="rel-foot"><span class="rel-meta">${t.meta}</span><span class="rel-open">Open ${this._icon('arrowRight')}</span></span>
+        </a>`;
+    }).join('');
   }
 
   _renderDashboardBody() {
@@ -1021,7 +1075,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       </header>
 
       <!-- Hero -->
-      <section class="hero">
+      <section class="hero section-bg-white">
         <div class="container hero-inner">
           <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>31 Factors • 28 Studies • Updated Apr 2026</div>
           <h1 class="hero-title animate-on-scroll">The things <em>keeping you up</em> at 3&nbsp;AM — ranked.</h1>
@@ -1032,7 +1086,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       </section>
 
       <!-- Data Dashboard: "What the evidence actually says" -->
-      <section class="dash-section" id="explore">
+      <section class="dash-section section-bg-gray" id="explore">
         <div class="container">
           <div class="dash-head animate-on-scroll">
             <div>
@@ -1052,15 +1106,15 @@ class KygoStayingAsleepFactors extends HTMLElement {
         </div>
       </section>
 
-      <!-- Early contextual CTA -->
-      <section class="kearly-section">
+      <!-- Mid-page app band -->
+      <section class="kband-section section-bg-white">
         <div class="container">
               <div class="kband animate-on-scroll">
                 <div class="kband-inner">
                   <div class="kband-glow"></div>
                   <div class="kband-copy">
                     <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
-                    <h2 class="kband-headline">Stop guessing which of these applies to you. Kygo correlates your meals, caffeine, and alcohol with YOUR sleep stages.</h2>
+                    <h2 class="kband-headline">Stop guessing which of these applies to you. Kygo correlates your meals, caffeine and alcohol with your own sleep.</h2>
                   </div>
                   <div class="kband-actions">
                     <a href="${iosUrl}" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="staying-asleep-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
@@ -1071,10 +1125,75 @@ class KygoStayingAsleepFactors extends HTMLElement {
         </div>
       </section>
 
-      <kygo-inline-subscribe source="tool-staying-asleep-factors" variant="factors"></kygo-inline-subscribe>
+      <!-- Factor breakdown (cards) -->
+      <section class="breakdown-section section-bg-gray">
+        <div class="container">
+          <div class="bd-head animate-on-scroll">
+            <span class="dash-eyebrow">The full breakdown</span>
+            <h2 class="dash-h2">Every factor, <em>explained</em>.</h2>
+            <p class="bd-lede">Browse all 31 by category — direction, evidence grade, mechanism, what to do, and the source. Tap a card to expand.</p>
+          </div>
+          <div class="bd-groups animate-on-scroll">${this._renderFactorBreakdown()}</div>
+        </div>
+      </section>
+
+      <!-- Email capture -->
+      <section class="subscribe-section section-bg-white">
+        <kygo-inline-subscribe source="tool-staying-asleep-factors" variant="factors"></kygo-inline-subscribe>
+      </section>
+
+      <!-- Six headlines from the data -->
+      <section class="picks-section section-bg-gray" id="headlines">
+        <div class="container">
+          <div class="picks-card">
+            <div class="picks-glow" aria-hidden="true"></div>
+            <div class="picks-head animate-on-scroll">
+              <span class="picks-eyebrow">Six headlines from the data</span>
+              <h2 class="picks-title">If you only remember <em>six things</em>.</h2>
+            </div>
+            <div class="picks-grid">${this._renderTopPicks()}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Read the Full Article — its own section -->
+      <section class="article-section section-bg-white">
+        <div class="container">
+          <a href="https://www.kygo.app/post/how-to-stay-asleep-factors-ranked-by-evidence" class="article-card animate-on-scroll" target="_blank" rel="noopener">
+            <span class="article-badge">Deep Dive</span>
+            <div class="article-body">
+              <span class="article-kicker">Read the full article</span>
+              <h3 class="article-title">How to Stay Asleep: 31 Factors Ranked by Evidence <span class="article-year">(2026)</span></h3>
+              <p class="article-desc">Every mechanism, dosage, and source in one long-form read.</p>
+            </div>
+            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Related tools -->
+      <section class="related-section section-bg-gray" id="more-tools">
+        <div class="container">
+          <div class="rel-head animate-on-scroll">
+            <span class="dash-eyebrow">Keep exploring</span>
+            <h2 class="dash-h2">The other <em>tools</em>.</h2>
+            <p class="bd-lede">More free, evidence-graded explorers for the rest of what your wearable measures.</p>
+          </div>
+          <div class="rel-grid">${this._renderRelatedTools()}</div>
+        </div>
+      </section>
+
+      <!-- Sources -->
+      <section class="sources-section section-bg-white">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Sources</h2>
+          <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
+          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
+        </div>
+      </section>
 
       <!-- App CTA -->
-      <section class="blog-cta-section">
+      <section class="blog-cta-section section-bg-gray">
         <div class="container">
           <div class="blog-cta animate-on-scroll">
             <div class="blog-cta-glow"></div>
@@ -1106,56 +1225,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- Factor breakdown (cards) -->
-      <section class="breakdown-section">
-        <div class="container">
-          <div class="bd-head animate-on-scroll">
-            <span class="dash-eyebrow">The full breakdown</span>
-            <h2 class="dash-h2">Every factor, <em>explained</em>.</h2>
-            <p class="bd-lede">Browse all 31 by category — direction, evidence grade, mechanism, what to do, and the source. Tap a card to expand.</p>
-          </div>
-          <div class="bd-groups animate-on-scroll">${this._renderFactorBreakdown()}</div>
-        </div>
-      </section>
-
-      <!-- Read the Full Article — its own section -->
-      <section class="article-section">
-        <div class="container">
-          <a href="https://www.kygo.app/post/how-to-stay-asleep-factors-ranked-by-evidence" class="article-card animate-on-scroll" target="_blank" rel="noopener">
-            <span class="article-badge">Deep Dive</span>
-            <div class="article-body">
-              <span class="article-kicker">Read the full article</span>
-              <h3 class="article-title">How to Stay Asleep: 31 Factors Ranked by Evidence <span class="article-year">(2026)</span></h3>
-              <p class="article-desc">Every mechanism, dosage, and source in one long-form read.</p>
-            </div>
-            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
-          </a>
-        </div>
-      </section>
-
-      <!-- Six headlines from the data -->
-      <section class="picks-section" id="headlines">
-        <div class="container">
-          <div class="picks-card">
-            <div class="picks-glow" aria-hidden="true"></div>
-            <div class="picks-head animate-on-scroll">
-              <span class="picks-eyebrow">Six headlines from the data</span>
-              <h2 class="picks-title">If you only remember <em>six things</em>.</h2>
-            </div>
-            <div class="picks-grid">${this._renderTopPicks()}</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Sources -->
-      <section class="sources-section">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Sources</h2>
-          <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
-          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -1381,6 +1450,10 @@ class KygoStayingAsleepFactors extends HTMLElement {
       a { color: var(--green); text-decoration: none; }
       .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
+      /* Alternating section bands - every section declares one of these, never its own background */
+      .section-bg-white { background: #fff; }
+      .section-bg-gray { background: var(--gray-100); }
+
       .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; transition-delay: var(--delay, 0ms); }
       .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
@@ -1398,7 +1471,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* ========== HERO (mobile-first) ========== */
-      .hero { padding: 40px 0 28px; background: #fff; }
+      .hero { padding: 40px 0 28px; }
       .hero-inner { position: relative; }
       .hero-kicker { display: inline-flex; align-items: center; gap: 7px; font-size: 9.5px; font-weight: 700; color: var(--green-dark); background: var(--green-light); padding: 5px 10px; border-radius: 9999px; letter-spacing: 0.4px; text-transform: uppercase; margin-bottom: 20px; white-space: nowrap; max-width: 100%; }
       .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse 2.2s infinite; flex-shrink: 0; }
@@ -1422,7 +1495,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .section-sub { text-align: center; color: var(--gray-600); font-size: 15px; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
       /* ========== SIX HEADLINES ========== */
-      .picks-section { padding: 40px 0; background: var(--gray-100); }
+      .picks-section { padding: 40px 0; }
       .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
       .picks-glow { position: absolute; top: -40%; right: -15%; width: 70%; height: 160%; background: radial-gradient(circle at center, rgba(34,197,94,0.22), transparent 60%); pointer-events: none; }
       .picks-head { position: relative; z-index: 1; margin-bottom: 24px; }
@@ -1442,7 +1515,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .pick-note { margin: 10px 0 0; font-size: 13px; color: rgba(255,255,255,0.62); line-height: 1.5; }
 
       /* ========== DATA DASHBOARD (mobile-first) ========== */
-      .dash-section { padding: 40px 0 56px; background: var(--gray-100); }
+      .dash-section { padding: 40px 0 56px; }
       .dash-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
       .dash-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: var(--green-dark); margin-bottom: 10px; }
       .dash-eyebrow::before { content: ''; width: 14px; height: 1px; background: currentColor; }
@@ -1641,7 +1714,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .qual-card:hover { border-color: var(--gray-400); }
 
       /* Factor breakdown (full card library, native <details> accordion) */
-      .breakdown-section { padding: 40px 0; background: var(--gray-100); }
+      .breakdown-section { padding: 40px 0; }
       .bd-head { margin-bottom: 18px; }
       .bd-lede { color: var(--gray-600); font-size: 14px; margin-top: 8px; max-width: 640px; }
       .bd-groups { display: flex; flex-direction: column; gap: 8px; }
@@ -1658,12 +1731,18 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .bd-group-chev { width: 20px; height: 20px; color: var(--gray-400); transition: transform .25s ease-out; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
       .bd-group-chev svg { width: 18px; height: 18px; }
       .bd-group[open] .bd-group-chev { transform: rotate(180deg); color: var(--green-dark); }
-      .bd-grid { display: grid; grid-template-columns: 1fr; gap: 6px; padding: 0 12px 14px; }
+      .bd-splits { display: flex; flex-direction: column; gap: 16px; padding: 4px 12px 14px; }
+      .bd-split-head { display: flex; align-items: center; gap: 8px; padding: 7px 11px; margin-bottom: 8px; border-radius: 10px; border: 1px solid var(--gray-200); background: var(--gray-50); }
+      .bd-split-icon { width: 15px; height: 15px; display: inline-flex; flex-shrink: 0; }
+      .bd-split-icon svg { width: 100%; height: 100%; }
+      .bd-split-label { flex: 1; min-width: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12.5px; letter-spacing: -0.005em; }
+      .bd-split-count { font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 9999px; background: #fff; border: 1px solid var(--gray-200); color: var(--gray-600); }
+      .bd-split-head.pos { background: rgba(34,197,94,0.08); border-color: rgba(34,197,94,0.22); color: var(--green-dark); }
+      .bd-split-head.neg { background: rgba(30,41,59,0.05); border-color: var(--gray-300); color: var(--dark); }
+      .bd-split-head.neu { background: #fff; border-color: var(--gray-200); color: var(--gray-600); }
+      .bd-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
       @media (min-width: 768px) { .bd-grid { grid-template-columns: repeat(2, 1fr); } }
       @media (min-width: 1024px) { .bd-grid { grid-template-columns: repeat(3, 1fr); } }
-      .qual-card.pos { border-left: 3px solid var(--green); }
-      .qual-card.neg { border-left: 3px solid var(--red); }
-      .qual-card.neu { border-left: 3px solid var(--gray-400); }
       .qual-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
       .qual-ev { font-size: 10px; font-weight: 700; width: 18px; height: 18px; border-radius: 9999px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; letter-spacing: 0; }
       .qual-ev.strong { background: var(--green-light); color: var(--green-dark); }
@@ -1684,7 +1763,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .qual-body strong { color: var(--dark); font-weight: 600; }
       .qual-body a { color: var(--green-dark); font-weight: 500; }
 
-      .sources-section { padding: 48px 0; background: #fff; }
+      .sources-section { padding: 48px 0; }
       .src-accordion { max-width: 720px; margin: 0 auto; }
       .src-count-badge { text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-400); margin-bottom: 16px; }
       .src-group { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: #fff; }
@@ -1705,21 +1784,21 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .src-ext svg { width: 14px; height: 14px; }
 
       /* Read-the-full-article — own section */
-      .article-section { padding: 40px 0; background: #fff; }
-      .article-card { position: relative; display: flex; align-items: center; gap: 14px; max-width: 780px; margin: 0 auto; padding: 20px 20px 20px 22px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
-      .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(circle at center, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
+      .article-section { padding: 40px 0; }
+      .article-card { position: relative; display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: 'badge . arrow' 'body body body'; align-items: center; gap: 14px 12px; max-width: 880px; margin: 0 auto; padding: 18px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
+      .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
       .article-card:hover { border-color: var(--green); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(34,197,94,0.14); }
-      .article-badge { position: relative; z-index: 1; align-self: flex-start; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; }
-      .article-body { position: relative; z-index: 1; flex: 1; min-width: 0; }
+      .article-badge { grid-area: badge; justify-self: start; position: relative; z-index: 1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; }
+      .article-body { grid-area: body; position: relative; z-index: 1; min-width: 0; }
       .article-kicker { display: block; font-size: 11px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
-      .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.25; letter-spacing: -0.01em; }
+      .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.3; letter-spacing: -0.01em; overflow-wrap: anywhere; }
       .article-year { color: var(--gray-400); font-weight: 500; }
       .article-desc { display: none; font-size: 13px; color: var(--gray-600); margin: 6px 0 0; line-height: 1.45; }
-      .article-go { position: relative; z-index: 1; width: 34px; height: 34px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; }
+      .article-go { grid-area: arrow; justify-self: end; position: relative; z-index: 2; width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; }
       .article-card:hover .article-go { background: var(--green-dark); }
       .article-go svg { width: 16px; height: 16px; }
 
-      .blog-cta-section { padding: 48px 0; background: #fff; }
+      .blog-cta-section { padding: 48px 0; }
       .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
       .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
       .blog-cta-content { position: relative; z-index: 1; }
@@ -1744,36 +1823,56 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
       .cta-android:hover { background: var(--green-dark); color: #fff; }
       .cta-android svg { width: 18px; height: 18px; }
-      .kearly-section { padding: 48px 16px; }
+      /* MID-PAGE APP BAND */
+      .kband-section { padding: 40px 0; }
+      @media (min-width: 768px) { .kband-section { padding: 56px 0; } }
       .kband { max-width: 1100px; margin: 0 auto; }
-      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
-      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
-      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
-      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
-      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
-      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.3; color: #1E293B; }
-      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
-      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #475569; text-align: center; }
-      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 20px; padding: 26px 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 9px; flex: 1 1 auto; min-width: 0; max-width: 640px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--green-dark); }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: kygoPulse 2s ease-out infinite; flex-shrink: 0; }
+      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(18px, 2.4vw, 23px); line-height: 1.3; color: var(--dark); }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
+      .kband-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; width: 100%; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 14px 22px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
       .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
-      .kband-btn-ios { background: #22C55E; color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
-      .kband-btn-ios:hover { background: #16A34A; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
-      .kband-btn-android { background: #fff; color: #16A34A; border: 2px solid #E2E8F0; }
-      .kband-btn-android:hover { border-color: #22C55E; transform: translateY(-2px); }
-      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
-      @media (max-width: 720px) {
-        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
-        .kband-actions { width: 100%; flex-direction: column; }
-        .kband-btn { width: 100%; justify-content: center; }
+      .kband-btn-ios { background: var(--green); color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: var(--green-dark); color: #fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: var(--green-dark); border: 1.5px solid var(--gray-200); }
+      .kband-btn-android:hover { border-color: var(--green); transform: translateY(-2px); }
+      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--gray-600); text-align: center; }
+      @media (min-width: 560px) { .kband-btn { width: auto; flex: 1 1 190px; } }
+      @media (min-width: 900px) {
+        .kband-inner { flex-direction: row; align-items: center; justify-content: space-between; gap: 36px; padding: 28px 32px; }
+        .kband-actions { width: auto; flex: 0 0 auto; max-width: 470px; }
+        .kband-btn { flex: 0 0 auto; }
       }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
       @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
-      .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 780px; margin: 0 auto; }
-      .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; margin: 0 0 16px; color: var(--dark); }
-      .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
-      .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
-      @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
 
-      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
+      /* EMAIL CAPTURE */
+      .subscribe-section { padding: 16px 0; }
+      @media (min-width: 768px) { .subscribe-section { padding: 24px 0; } }
+
+      /* RELATED TOOLS */
+      .related-section { padding: 40px 0; }
+      @media (min-width: 768px) { .related-section { padding: 56px 0; } }
+      .rel-head { margin-bottom: 18px; }
+      .rel-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      @media (min-width: 560px) { .rel-grid { grid-template-columns: repeat(2, 1fr); } }
+      @media (min-width: 1024px) { .rel-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; } }
+      .rel-card { display: flex; flex-direction: column; gap: 8px; padding: 18px 18px 16px; background: #fff; border: 1px solid var(--gray-200); border-radius: 16px; text-decoration: none; color: inherit; box-shadow: 0 1px 0 rgba(30,41,59,0.03); transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .25s ease; }
+      .rel-card:hover { transform: translateY(-3px); border-color: rgba(34,197,94,0.45); box-shadow: 0 14px 30px rgba(15,23,42,0.08); }
+      .rel-icon { width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: var(--green-light); color: var(--green-dark); flex-shrink: 0; }
+      .rel-icon svg { width: 18px; height: 18px; }
+      .rel-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15.5px; line-height: 1.25; letter-spacing: -0.01em; color: var(--dark); margin: 2px 0 0; }
+      .rel-blurb { font-size: 13px; line-height: 1.5; color: var(--gray-600); margin: 0; flex: 1; }
+      .rel-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--gray-100); }
+      .rel-meta { font-size: 11.5px; font-weight: 500; color: var(--gray-400); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .rel-open { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; font-size: 12.5px; font-weight: 600; color: var(--green-dark); }
+      .rel-open svg { width: 14px; height: 14px; }
+
+      .tool-footer { padding: 48px 0 32px; text-align: center; background: #fff; border-top: 1px solid var(--gray-200); }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
@@ -1815,7 +1914,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
         .blog-cta { padding: 48px 40px; }
         .blog-cta-tags-logos img { height: 22px; }
         .article-section { padding: 56px 0; }
-        .article-card { padding: 24px 28px; gap: 18px; border-radius: 22px; }
+        .article-card { grid-template-areas: 'badge body arrow'; padding: 24px 28px; gap: 18px; border-radius: 22px; }
         .article-title { font-size: 19px; }
         .article-desc { display: block; }
         .article-go { width: 40px; height: 40px; }
