@@ -69,7 +69,7 @@ Footer set appears in: `kygo-calorie-burn-accuracy.js:622-627`,
 `kygo-deep-sleep-factors.js:828-833`, `kygo-fitbit-air-vs-whoop.js:336-341`,
 `kygo-hrv-factors.js:890-895`, `kygo-oura-ring-comparison.js:373-378`,
 `kygo-rhr-factors.js:1122-1127`, `kygo-sensor-comparison.js:1103-1108`,
-`kygo-sleep-latency-factors.js:777-782`, `kygo-staying-asleep-factors.js:1134-1139`.
+`kygo-sleep-latency-factors.js:777-782`, `kygo-staying-asleep-factors.js:1240-1245`.
 Shorter footers (privacy + terms only) in `kygo-sleep-metrics.js:775-776`,
 `kygo-wearable-accuracy.js:869-870`. `kygo-step-count-accuracy.js:1186-1193` was rebuilt on the
 Family-A skeleton and now carries the full footer link set.
@@ -87,7 +87,7 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/tools/sensor-comparison` | kygo-sensor-comparison.js | 1451, 1517 |
 | `/tools/sleep-latency-factors` | kygo-sleep-latency-factors.js | 1125, 1176 |
 | `/tools/sleep-metrics` | kygo-sleep-metrics.js | 1310, 1339 |
-| `/tools/staying-asleep-factors` | kygo-staying-asleep-factors.js | 1253, 1304 |
+| `/tools/staying-asleep-factors` | kygo-staying-asleep-factors.js | 1353, 1404. Also cross-links out to `/tools/sleep-latency-factors`, `/tools/deep-sleep-factors`, `/tools/rem-sleep-factors`, `/tools/supplements-by-metric` from the "The other tools" section (`_relatedTools()`) |
 | `/tools/step-count-accuracy` | kygo-step-count-accuracy.js | 1236, 1279 |
 | `/tools/accuracy-factors` | kygo-accuracy-factors.js | JSON-LD `url` + breadcrumb. Also deep-links out to `/tools/heart-rate-accuracy`, `/tools/sleep-tracker-accuracy`, `/tools/step-count-accuracy`, `/tools/hrv-factors`, `/tools/calorie-burn-accuracy`, `/tools/wearable-accuracy` (one per metric tab) and `/tools/sensor-comparison` |
 | `/tools/wearable-accuracy` | kygo-wearable-accuracy.js | 1533, 1605 |
@@ -111,7 +111,7 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/post/how-to-improve-hrv-factors-ranked-by-evidence` | kygo-hrv-factors.js:827 |
 | `/post/resting-heart-rate-factors` | kygo-rhr-factors.js:1073 |
 | `/post/how-to-fall-asleep-faster-factors-ranked-by-evidence` | kygo-sleep-latency-factors.js:714 |
-| `/post/how-to-stay-asleep-factors-ranked-by-evidence` | kygo-staying-asleep-factors.js:1055 |
+| `/post/how-to-stay-asleep-factors-ranked-by-evidence` | kygo-staying-asleep-factors.js:1162 |
 | `/post/oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based` | kygo-oura-ring-comparison.js:305 |
 | `/post/fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it` | kygo-fitbit-air-vs-whoop.js:279 |
 | `/post/wearable-hardware-vs-software-differences-2025` | kygo-sensor-comparison.js:1020 |
