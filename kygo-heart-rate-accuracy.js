@@ -1081,6 +1081,93 @@ class KygoHeartRateAccuracy extends HTMLElement {
   // property carries a literal fallback, so the same block drops into either
   // palette unchanged. Pass 'gray' to sit the section on the tinted band.
 
+  // The three posts this page links to. The only per-page part of the module.
+  // Card copy is defined once per post and reused wherever that post is linked,
+  // so it cannot drift between tools. Titles, excerpts and cover images come
+  // from the Wix Blog collection - see docs/blog-cross-links.md.
+  _relatedPosts() {
+    return [
+      { slug: 'how-accurate-is-your-heart-rate-monitor',
+        title: 'How Accurate Is Your Heart Rate Monitor? 10 Devices Ranked',
+        blurb: 'Ten wearables, the same 45 wrists, the same day, and error running from 5.5% to 16.5%. Which device you own matters less than you think.',
+        cat: 'Wearables & Data', min: 12, img: '273a63_0160a65e547b4b539b2b8be66e2749cf~mv2.png' },
+      { slug: 'heart-rate-accuracy-by-activity-type',
+        title: 'Heart Rate Accuracy by Activity Type: What Breaks Your Watch',
+        blurb: '1.2% error during a run and 16.2% during badminton, on the same watch. What breaks wrist heart rate is not how hard you work.',
+        cat: 'HRV & Recovery', min: 13, img: '273a63_9cf51f2ccc2b492fb52f1e15958fe3e1~mv2.png' },
+      { slug: 'why-is-my-resting-heart-rate-suddenly-higher-a-data-driven-breakdown',
+        title: 'Why Is My Resting Heart Rate Suddenly Higher? A Data-Driven Breakdown',
+        blurb: 'Your resting heart rate jumped overnight and your wearable cannot say why. The ten most common causes, from late meals to overtraining.',
+        cat: 'HRV & Recovery', min: 7, img: '273a63_03df52034a544018aef1e44af7e6afa7~mv2.png' }
+    ];
+  }
+
+  // -- Related reading (the standard module) -------------------------------
+  // One design, every tool page: three blog cards in a grid (1 col mobile ->
+  // 3 col >=720px) with the post's real cover image, category, title, a
+  // two-line blurb and read time - the same card the main blog page uses.
+  // Self-contained under `rp-*` names with a literal fallback behind every
+  // custom property, so the identical block renders the same on either
+  // palette. Copy this method verbatim; only `_relatedPosts()` is per page.
+  // Placement: its own section, directly above the related-tools section.
+  // A tool content section always separates it from the app CTA and from the
+  // email capture - it never sits directly above or below either one.
+  // Pass 'gray' to sit the section on the tinted band.
+  _renderRelatedPosts(bg) {
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+    const cards = this._relatedPosts().map(p => `
+      <a class="rp-card animate-on-scroll" href="https://www.kygo.app/post/${p.slug}" aria-label="${p.title}" data-action="blog-post" data-post-slug="${p.slug}" data-track-position="related-posts" data-track-label="${p.slug}">
+        <span class="rp-media"><img src="https://static.wixstatic.com/media/${p.img}" alt="${p.title}" loading="lazy" decoding="async" onerror="this.closest('.rp-media').classList.add('rp-noimg')"></span>
+        <span class="rp-body">
+          <span class="rp-cat">${p.cat}</span>
+          <span class="rp-title">${p.title}</span>
+          <span class="rp-blurb">${p.blurb}</span>
+          <span class="rp-foot"><span class="rp-meta">${p.min} min read</span><span class="rp-open">Read ${arrow}</span></span>
+        </span>
+      </a>`).join('');
+    return `
+      <style>
+      .rp-section{padding:56px 20px;background:#fff}
+      .rp-section.rp-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.rp-section{padding:80px 24px}}
+      .rp-inner{max-width:1200px;margin:0 auto}
+      .rp-head{margin-bottom:28px;max-width:720px}
+      .rp-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rp-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A))}
+      .rp-h2 .rp-hl{color:var(--kygo-green,var(--green,#22C55E))}
+      .rp-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,var(--gray-600,#475569));font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rp-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rp-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rp-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,var(--gray-200,#E2E8F0));border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rp-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,var(--green,#22C55E)),var(--kygo-green-dark,var(--green-dark,#16A34A)));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rp-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rp-card:hover::after{opacity:1}
+      .rp-card:focus-visible{outline:2px solid var(--kygo-green,var(--green,#22C55E));outline-offset:3px}
+      .rp-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,var(--gray-100,#F1F5F9))}
+      .rp-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+      .rp-card:hover .rp-media img{transform:scale(1.03)}
+      .rp-media.rp-noimg img{display:none}
+      .rp-body{flex:1;padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rp-cat{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:10.5px;letter-spacing:.7px;text-transform:uppercase;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A));display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,var(--gray-600,#475569));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:5px}
+      .rp-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,var(--gray-400,#94A3B8));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rp-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-open svg{width:15px;height:15px}
+      </style>
+      <section class="rp-section${bg === 'gray' ? ' rp-gray' : ''}" id="related-reading">
+        <div class="rp-inner">
+          <div class="rp-head animate-on-scroll">
+            <div class="rp-kicker">From the blog</div>
+            <h2 class="rp-h2">Keep <span class="rp-hl">reading.</span></h2>
+            <p class="rp-lede">The long-form, evidence-based articles behind this tool.</p>
+          </div>
+          <div class="rp-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
   _renderRelatedTools(bg) {
     const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
     const cards = this._relatedTools().map(t => {
@@ -1098,7 +1185,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
     return `
       <style>
       .rt-section{padding:56px 20px;background:#fff}
-      .rt-section.rt-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
       @media(min-width:720px){.rt-section{padding:80px 24px}}
       .rt-inner{max-width:1200px;margin:0 auto}
       .rt-head{margin-bottom:28px;max-width:720px}
@@ -1182,7 +1269,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
     return `
       <style>
       .kc-section{padding:56px 20px;background:#fff}
-      .kc-section.kc-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
       @media(min-width:720px){.kc-section{padding:72px 24px}}
       .kc-inner{max-width:1100px;margin:0 auto}
       .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
@@ -1243,7 +1330,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
     return `
       <style>
       .ke-section{padding:8px 20px 12px;background:#fff}
-      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
       @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
       .ke-inner{max-width:1100px;margin:0 auto}
       </style>
@@ -1437,20 +1524,6 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/how-accurate-is-your-heart-rate-monitor" target="_self" rel="noopener">
-            <span class="blog-cta-tag">Deep Dive</span>
-            <div class="blog-cta-body">
-              <div class="blog-cta-kicker">Read the full breakdown</div>
-              <div class="blog-cta-title">The Most Accurate Heart Rate Wearable (2026): Fitbit vs Garmin vs Apple vs Oura</div>
-              <div class="blog-cta-sub">Why the "best" watch depends on the activity, how to read the numbers a brand quotes, and when a chest strap is still the honest choice, all evidence-based.</div>
-            </div>
-            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
-          </a>
-        </div>
-      </section>
-
-      <section class="section bg-light">
-        <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
             <p>If you are buying for daytime tracking, the <strong>top tier</strong> is the <strong>Fitbit Charge 6, Garmin Vivoactive 5 and Google Pixel Watch 2</strong> — and the gaps between them are too small to call a winner. <strong>Oura Gen 3</strong> is superb at night but bottom tier by day, because a finger sensor is not motion-proof. But the honest headline is not a device at all: at rest almost everything is accurate, and during racquet sport, rowing, weights or intervals almost everything is not. Pick for the job — a top-tier watch for steady cardio and sleep, and a chest strap or upper-arm band for stop-start sport. Read MAPE and the limits of agreement, not the bias a brand quotes, and treat any figure from a single night as a best case, not your day.</p>
@@ -1458,10 +1531,12 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
         </div>
       </section>
+
+      ${this._renderRelatedPosts()}
 
       <section class="section bg-light">
         <div class="section-inner">
@@ -2028,21 +2103,6 @@ class KygoHeartRateAccuracy extends HTMLElement {
       .bottomline em { font-style: italic; color: #fff; }
 
       /* Blog CTA */
-      .blog-cta { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; background: linear-gradient(135deg, rgba(34,197,94,0.06) 0%, rgba(34,197,94,0.02) 100%); border: 1.5px solid var(--kygo-green-light); border-radius: 18px; padding: 22px; transition: all .25s var(--ease-out); color: var(--fg-1); }
-      .blog-cta:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); transform: translateY(-2px); }
-      .blog-cta-tag { display: inline-flex; align-items: center; padding: 6px 14px; border-radius: 999px; background: #fff; border: 1.5px solid var(--kygo-green-light); color: var(--kygo-green-dark); font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; white-space: nowrap; }
-      .blog-cta-body { min-width: 0; }
-      .blog-cta-kicker { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--kygo-green-dark); margin-bottom: 4px; }
-      .blog-cta-title { font-family: var(--font-display); font-size: clamp(15px, 2vw, 18px); font-weight: 600; color: var(--fg-1); line-height: 1.3; }
-      .blog-cta-sub { font-size: 13px; color: var(--fg-2); margin-top: 4px; line-height: 1.5; }
-      .blog-cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 4px 12px rgba(34,197,94,0.30); }
-      .blog-cta-arrow .ico { width: 20px; height: 20px; }
-      @media (max-width: 600px) {
-        .blog-cta { grid-template-columns: 1fr auto; grid-template-areas: 'tag arrow' 'body body'; padding: 18px; gap: 14px; }
-        .blog-cta-tag { grid-area: tag; justify-self: start; }
-        .blog-cta-arrow { grid-area: arrow; width: 40px; height: 40px; }
-        .blog-cta-body { grid-area: body; }
-      }
 
       /* Thin app-download band (lighter than the big dark CTA card) */
       .kband { max-width: 1100px; margin: 0 auto; }

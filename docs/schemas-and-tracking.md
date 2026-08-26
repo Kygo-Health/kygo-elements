@@ -175,7 +175,7 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | Event | When | Key params |
 |---|---|---|
 | `page_view` | automatic on load (gtag config) | standard GA4 |
-| `cta_click` | any classified `<a>`/`<button>`/`[data-action]` click | `cta_category`, `cta_label`, `cta_url`, `component`, `position`, `page_path` (+ `affiliate`, `affiliate_marketplace` for Amazon; + `to_tool` for related-tools cards) |
+| `cta_click` | any classified `<a>`/`<button>`/`[data-action]` click | `cta_category`, `cta_label`, `cta_url`, `component`, `position`, `page_path` (+ `affiliate`, `affiliate_marketplace` for Amazon; + `to_tool` for related-tools cards; + `to_post` for related-reading cards) |
 | `tool_interaction` | calculate/compare/analyze buttons | `tool_name` (= component tag), `action`, `button_label` |
 | `page_exit` | `visibilitychange` → hidden | `page_path` |
 | `email_subscribe` **(key event)** | `subscribe` CustomEvent (any subscribe form) → mirrored to GA4 | `lead_type` (`newsletter`), `component`, **`source`**, `page_path` |
@@ -205,6 +205,7 @@ added — attention competition — but do not add any new GA4 event to measure 
 | `primary_cta` | `.cta-primary` / `.cta-button-primary` / `.cta-btn` |
 | `affiliate_amazon` | link hostname matches an Amazon marketplace (`amazon.<tld>`) or `amzn.to` short link. Also carries `affiliate: 'amazon'` + `affiliate_marketplace` (the host), and the click handler rewrites the href with a per-click `ascsubtag` (`<page-slug>_<component>`) for Associates-report attribution, preserving the existing `tag=` param |
 | `related_tool_click` | `data-action="related-tool"` — the standard related-tools cards on every tool page. Also carries **`to_tool`** (the destination slug from `data-tool-slug`), with `position: 'related-tools'`. Paired with `component` (the source tool's custom element) and `page_path`, this gives **source tool → destination tool**, which is how the cross-link section is measured as a retention surface |
+| `blog_post_click` | `data-action="blog-post"` — the standard related-reading cards on every tool page. Also carries **`to_post`** (the destination slug from `data-post-slug`), with `position: 'related-posts'`. The mirror of `related_tool_click`: with `component` and `page_path` it gives **source tool → destination blog post**, so the blog cross-link section is measured the same way the tool cross-link section is |
 | `other_action` | any other element with a `data-action` |
 | `affiliate_banner` | **not** from `classifyClick()` — fired directly by `kygo-oura-ring-comparison.js` for the HLTH Code banner (see below) |
 

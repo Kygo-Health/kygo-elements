@@ -100,9 +100,9 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 
 ### Related-tools cross-links (the standard module)
 
-Every tool page ends with the standard related-tools section (3 cards, directly
-above its sources). One card definition per destination, reused wherever that
-tool is linked. **The Food Scanner (`/tools/calories-in-anything`) is
+Every tool page carries the standard related-tools section (3 cards), sitting
+directly above its sources section. One card definition per destination, reused
+wherever that tool is linked. **The Food Scanner (`/tools/calories-in-anything`) is
 deliberately never linked from it.**
 
 Rule for choosing the three: a **near neighbour** (same family), a **bridge**
@@ -144,30 +144,24 @@ changes, update `kygo-tools.js`, this table, and the cards that point at it.
 - Blog index: `/blog` — `kygo-blog.js:1049` (JSON-LD `url`).
 - Individual posts live at `/post/<slug>`, routed by Wix. (The component that constructed
   `…/post/${post.slug}` was the now-removed orphan `kygo-blog-page.js`.)
-- Specific posts linked from tool pages (the "read the article" CTA):
+- **Posts linked from tool pages now go through the standard related-reading module**
+  (`_relatedPosts()` + `_renderRelatedPosts(bg)`, 3 cards per page, on their own band with a
+  tool content section above and below — never beside the app CTA, the email capture or the
+  related-tools section). The full map — which tool links which posts, inbound counts, and the card copy for
+  every post — lives in **`docs/blog-cross-links.md`**. Update that table when you add or
+  retarget a page.
+- The five older per-page designs it replaced (`blog-cta` banner, `article-card`,
+  `blog-link-card` pill, `_renderArticleCta()`, and "no blog link at all") are gone; don't
+  reintroduce them.
+- The one remaining inline pattern is `section-readmore` — a small text link inside a content
+  section pointing at that section's own matching post (hub-and-spoke). Live in
+  `kygo-recovery-scores.js` (3 spokes), `kygo-accuracy-factors.js`,
+  `kygo-supplements-by-metric.js` and `kygo-step-count-accuracy.js`.
 
-| Post URL | Linked from |
-|---|---|
-| `/post/how-accurate-is-your-wearable-calorie-burn` *(uses `/blog/` prefix)* | kygo-calorie-burn-accuracy.js:527 |
-| `/post/how-to-increase-deep-sleep-factors-ranked` | kygo-deep-sleep-factors.js:765 |
-| `/post/how-to-improve-hrv-factors-ranked-by-evidence` | kygo-hrv-factors.js:827 |
-| `/post/resting-heart-rate-factors` | kygo-rhr-factors.js:1073 |
-| `/post/how-to-fall-asleep-faster-factors-ranked-by-evidence` | kygo-sleep-latency-factors.js:714 |
-| `/post/how-to-stay-asleep-factors-ranked-by-evidence` | kygo-staying-asleep-factors.js:1162 |
-| `/post/oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based` | kygo-oura-ring-comparison.js:305 |
-| `/post/fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it` | kygo-fitbit-air-vs-whoop.js:279 |
-| `/post/wearable-hardware-vs-software-differences-2025` | kygo-sensor-comparison.js:1020 |
-| `/post/how-wearables-measure-stress-comparison` | kygo-wearable-stress.js:1173 |
-| `/post/what-lowers-recovery-score` *(spoke 1 — primary CTA + factor explorer)* | kygo-recovery-scores.js |
-| `/post/recovery-scores-compared-whoop-oura-garmin` *(spoke 2 — comparison matrix + per-brand accordion)* | kygo-recovery-scores.js |
-| `/post/can-you-trust-your-recovery-score` *(spoke 3 — validation table)* | kygo-recovery-scores.js |
-
-> **Hub-and-spoke pattern (new 2026-06, `kygo-recovery-scores.js`):** each tool section
-> deep-links its *own* matching post (matrix → comparison, validation → trust, factor
-> explorer → intake) so the tool feeds each post instead of competing with it. The one
-> primary "read the guide" article CTA leads with **spoke 1**. Reuse this pattern for future
-> multi-post tool clusters. The three slugs above were supplied by the client; they 404 until
-> the posts publish.
+> **Hub-and-spoke pattern (`kygo-recovery-scores.js`):** each tool section deep-links its *own*
+> matching post (matrix → comparison, validation → trust, factor explorer → intake) so the tool
+> feeds each post instead of competing with it. Reuse this for future multi-post tool clusters.
+> The related-reading section on that page leads with **spoke 1**.
 
 ### Company / legal / misc
 - `/contact` — `kygo-contact.js:681`, plus footers above.

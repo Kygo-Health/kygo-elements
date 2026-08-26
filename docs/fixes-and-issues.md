@@ -7,6 +7,72 @@
 > Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
 > **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
+## 🆕 Opened on branch `claude/standardize-blog-sections-1wo0ax` (2026-08)
+
+Found while standardising the blog cross-link section across every tool page. **None of these
+were introduced by that pass** — they are pre-existing and were deliberately left alone because
+each is a conversion or layout decision rather than a blog-section fix. Ranked.
+
+- **#B1 (P2) — six tool pages still carry a *second* app-download CTA.** The playbook's app-CTA
+  standard is explicit: "one app-download surface per page: the CTA card, no `kband`." These six
+  render the standard `_renderAppCta()` card **and** a legacy `blog-cta-section` — a dark card
+  with its own iOS/Android Tenjin buttons, "Free plan available" line and six "Works with"
+  badges. It is the retired `kband`'s successor under a different name, and it dilutes both the
+  standard card and the email capture.
+
+  | File | Legacy section | Note |
+  |---|---|---|
+  | `kygo-hrv-factors.js` | :1328 | sits between the email CTA and related tools |
+  | `kygo-rhr-factors.js` | :1490 | sits *above* the standard app CTA (:1524) |
+  | `kygo-sensor-comparison.js` | :1520 | |
+  | `kygo-sleep-latency-factors.js` | :1232 | sits between the email CTA and related tools |
+  | `kygo-sleep-metrics.js` | :1160 | directly under the standard app CTA (:1156) — two dark cards back to back |
+  | `kygo-staying-asleep-factors.js` | (moved) | was the last section before the footer; moved up to sit above related tools so the blog section could take the tail slot. Still a duplicate download surface |
+
+  Fix: delete the `blog-cta-section` block and its now-dead `.blog-cta*` CSS in each file, then
+  re-check the band rhythm below it (removing a section flips every band underneath). Worth
+  confirming with the client first — it removes a live download surface, so it is a conversion
+  call, not a cleanup.
+
+- **#B2 (P3) — dead legacy app-CTA CSS in `kygo-wearable-accuracy.js`.** ~200 lines of
+  `.blog-cta*` rules (`:1707`–`:1900`, plus the shared padding rules at `:1935` and `:1968`)
+  with **no matching markup anywhere in the file** — left behind when that page's `kband` was
+  retired. Harmless at runtime, pure weight over the CDN. Delete the `.blog-cta*` rules and drop
+  `.blog-cta-section` from the two multi-selector padding rules.
+
+- **#B3 (P3) — five tool→tool cross-links are dressed as blog cards.** `class="blog-cta"` anchors
+  pointing at `/tools/...`, not `/post/...`: `kygo-oura-5-vs-4.js:909`,
+  `kygo-oura-ring-comparison.js:829`, `kygo-oura-vs-ringconn.js:845`,
+  `kygo-vo2max-accuracy.js:1112`, `kygo-vo2max-factors.js:1077`. Now that the blog section has
+  one standard design and related tools has another, a tool link in a blog-card costume is the
+  only remaining ambiguous surface. Two of them also still use `target="_blank"` on an internal
+  link (vo2max ×2), against the rest of the site. Fix: fold each into that page's
+  `_relatedTools()` (its destination is already in the tool registry), or restyle as a keystone
+  card. Note the `.blog-cta` name is shared with #B1's legacy app CTA, so grep the href, not the
+  class.
+
+- **#B4 (P3) — band rhythm still breaks on four pages, away from the blog section.** The
+  related-reading pass fixed every adjacency it touched; these are in the app/email-CTA region
+  and were left as-is. "No two adjacent sections share a background" (playbook §2):
+  - `kygo-rhr-factors.js` — four grey bands in a row: app CTA (`:1524`, `'gray'`), baseline
+    (`:1529`), email CTA (`:1531`, `'gray'`), sortable factors (`:1535`); then myths (`:1538`)
+    and picks (`:1541`) are both white.
+  - `kygo-sensor-comparison.js` — stats (`:1470`) + app CTA (`:1475`); email CTA (`:1486`) +
+    compare (`:1493`); fda (`:1512`) + the #B1 legacy section (`:1520`). Note `.charts-section`
+    and `.fda-section` set their background in CSS, so fixing this needs CSS edits, not just a
+    class swap.
+  - `kygo-sleep-metrics.js` — hero (`:1112`) + matrix (`:1144`) both white; app CTA (`:1156`) +
+    the #B1 legacy section (`:1160`) both grey.
+  - `kygo-wearable-accuracy.js` — hero (`:1154`) + comparison (`:1194`); app CTA (`:1226`) +
+    deep-dives (`:1234`); email CTA (`:1283`) + recommendations (`:1287`).
+
+- **#B5 (P3) — Wix content, not code.** Two blog-side items surfaced when the card copy was
+  pulled from the live `Blog/Posts` collection (details in `docs/blog-cross-links.md`):
+  the excerpt for `how-wearables-measure-stress-comparison` starts "very wearable claims…"
+  (dropped capital E, visible on the blog index), and `how-to-stay-asleep-factors-ranked-by-evidence`
+  is titled "31 Factors" while its own excerpt and the matching tool both say 27. Both are fixed
+  in the Wix editor, not here.
+
 ## ✅ Resolved on branch `claude/vo2-max-factors-review-itgrnf` (2026-08)
 
 Source-accuracy pass over the **VO2 Max Factor Explorer** (`kygo-vo2max-factors.js`) and its

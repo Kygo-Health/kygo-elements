@@ -1166,28 +1166,14 @@ class KygoWearableStress extends HTMLElement {
     ];
   }
 
-  _renderArticleCta() {
-    return `
-      <section class="article-section section-bg-gray">
-        <div class="container">
-          <a href="https://www.kygo.app/post/how-wearables-measure-stress-comparison" class="article-card animate-on-scroll" target="_blank" rel="noopener">
-            <span class="article-badge">Deep Dive</span>
-            <div class="article-body">
-              <span class="article-kicker">Read the full article</span>
-              <h3 class="article-title">How 10 Brands Actually Measure Stress <span class="article-year">(2026)</span></h3>
-              <p class="article-desc">Every signal, algorithm, and cited study in one long-form read.</p>
-            </div>
-            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
-          </a>
-        </div>
-      </section>`;
-  }
 
 
 
   _renderTopPicks() {
     return `
-      <section class="picks-section section-bg-gray">
+      ${this._renderRelatedPosts('gray')}
+
+      <section class="picks-section section-bg-white">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1531,9 +1517,9 @@ class KygoWearableStress extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedTools()}
+      ${this._renderRelatedTools('gray')}
 
-      <section class="sources-section section-bg-gray">
+      <section class="sources-section section-bg-white">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All claims sourced from peer-reviewed research and official device documentation. Every factor in the breakdown above cites at least one of these.</p>
@@ -1707,6 +1693,93 @@ class KygoWearableStress extends HTMLElement {
   // property carries a literal fallback, so the same block drops into either
   // palette unchanged. Pass 'gray' to sit the section on the tinted band.
 
+  // The three posts this page links to. The only per-page part of the module.
+  // Card copy is defined once per post and reused wherever that post is linked,
+  // so it cannot drift between tools. Titles, excerpts and cover images come
+  // from the Wix Blog collection - see docs/blog-cross-links.md.
+  _relatedPosts() {
+    return [
+      { slug: 'how-wearables-measure-stress-comparison',
+        title: 'Wearable Stress Scores Compared: Garmin vs WHOOP vs Oura vs Samsung vs Apple Watch (2026)',
+        blurb: 'Every wearable claims to measure stress, each with different sensors, algorithms and scales. What is really happening under the hood.',
+        cat: 'HRV & Recovery', min: 10, img: '273a63_b5d93735644b40d8bf6a47f5e8e5aff5~mv2.png' },
+      { slug: 'oura-ring-stress-tracking-explained',
+        title: 'Oura Ring Stress Tracking: How 3 Layers of Stress Data Actually Work (2026)',
+        blurb: 'Oura is the only wearable that splits stress into three layers, including a 31-day cumulative scan built with university researchers.',
+        cat: 'HRV & Recovery', min: 8, img: '273a63_10d7664086de4f1d8f3991f5ce7a60c5~mv2.png' },
+      { slug: 'whoop-stress-score-recovery-explained',
+        title: 'WHOOP Stress Score and Recovery: What 5 Sensors Actually Measure (2026)',
+        blurb: 'WHOOP reads more signals for stress and recovery than any other wearable. The trade-offs only show up after you subscribe.',
+        cat: 'HRV & Recovery', min: 8, img: '273a63_4b600cc3354e4e9b8154215eb4aad3fb~mv2.png' }
+    ];
+  }
+
+  // -- Related reading (the standard module) -------------------------------
+  // One design, every tool page: three blog cards in a grid (1 col mobile ->
+  // 3 col >=720px) with the post's real cover image, category, title, a
+  // two-line blurb and read time - the same card the main blog page uses.
+  // Self-contained under `rp-*` names with a literal fallback behind every
+  // custom property, so the identical block renders the same on either
+  // palette. Copy this method verbatim; only `_relatedPosts()` is per page.
+  // Placement: its own section, directly above the related-tools section.
+  // A tool content section always separates it from the app CTA and from the
+  // email capture - it never sits directly above or below either one.
+  // Pass 'gray' to sit the section on the tinted band.
+  _renderRelatedPosts(bg) {
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+    const cards = this._relatedPosts().map(p => `
+      <a class="rp-card animate-on-scroll" href="https://www.kygo.app/post/${p.slug}" aria-label="${p.title}" data-action="blog-post" data-post-slug="${p.slug}" data-track-position="related-posts" data-track-label="${p.slug}">
+        <span class="rp-media"><img src="https://static.wixstatic.com/media/${p.img}" alt="${p.title}" loading="lazy" decoding="async" onerror="this.closest('.rp-media').classList.add('rp-noimg')"></span>
+        <span class="rp-body">
+          <span class="rp-cat">${p.cat}</span>
+          <span class="rp-title">${p.title}</span>
+          <span class="rp-blurb">${p.blurb}</span>
+          <span class="rp-foot"><span class="rp-meta">${p.min} min read</span><span class="rp-open">Read ${arrow}</span></span>
+        </span>
+      </a>`).join('');
+    return `
+      <style>
+      .rp-section{padding:56px 20px;background:#fff}
+      .rp-section.rp-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.rp-section{padding:80px 24px}}
+      .rp-inner{max-width:1200px;margin:0 auto}
+      .rp-head{margin-bottom:28px;max-width:720px}
+      .rp-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rp-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A))}
+      .rp-h2 .rp-hl{color:var(--kygo-green,var(--green,#22C55E))}
+      .rp-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,var(--gray-600,#475569));font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rp-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rp-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rp-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,var(--gray-200,#E2E8F0));border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rp-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,var(--green,#22C55E)),var(--kygo-green-dark,var(--green-dark,#16A34A)));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rp-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rp-card:hover::after{opacity:1}
+      .rp-card:focus-visible{outline:2px solid var(--kygo-green,var(--green,#22C55E));outline-offset:3px}
+      .rp-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,var(--gray-100,#F1F5F9))}
+      .rp-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+      .rp-card:hover .rp-media img{transform:scale(1.03)}
+      .rp-media.rp-noimg img{display:none}
+      .rp-body{flex:1;padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rp-cat{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:10.5px;letter-spacing:.7px;text-transform:uppercase;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A));display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,var(--gray-600,#475569));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:5px}
+      .rp-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,var(--gray-400,#94A3B8));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rp-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-open svg{width:15px;height:15px}
+      </style>
+      <section class="rp-section${bg === 'gray' ? ' rp-gray' : ''}" id="related-reading">
+        <div class="rp-inner">
+          <div class="rp-head animate-on-scroll">
+            <div class="rp-kicker">From the blog</div>
+            <h2 class="rp-h2">Keep <span class="rp-hl">reading.</span></h2>
+            <p class="rp-lede">The long-form, evidence-based articles behind this tool.</p>
+          </div>
+          <div class="rp-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
   _renderRelatedTools(bg) {
     const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
     const cards = this._relatedTools().map(t => {
@@ -1724,7 +1797,7 @@ class KygoWearableStress extends HTMLElement {
     return `
       <style>
       .rt-section{padding:56px 20px;background:#fff}
-      .rt-section.rt-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
       @media(min-width:720px){.rt-section{padding:80px 24px}}
       .rt-inner{max-width:1200px;margin:0 auto}
       .rt-head{margin-bottom:28px;max-width:720px}
@@ -1797,7 +1870,7 @@ class KygoWearableStress extends HTMLElement {
     return `
       <style>
       .kc-section{padding:56px 20px;background:#fff}
-      .kc-section.kc-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
       @media(min-width:720px){.kc-section{padding:72px 24px}}
       .kc-inner{max-width:1100px;margin:0 auto}
       .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
@@ -1858,7 +1931,7 @@ class KygoWearableStress extends HTMLElement {
     return `
       <style>
       .ke-section{padding:8px 20px 12px;background:#fff}
-      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
       @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
       .ke-inner{max-width:1100px;margin:0 auto}
       </style>
@@ -1913,7 +1986,6 @@ class KygoWearableStress extends HTMLElement {
       ${this._renderFactorsSection()}
       ${this._renderEmailCta()}
 
-      ${this._renderArticleCta()}
       ${this._renderFullBreakdown()}
       ${this._renderTopPicks()}
       ${this._renderSourcesSection()}
@@ -2136,25 +2208,6 @@ class KygoWearableStress extends HTMLElement {
       }
 
       /* ARTICLE CTA */
-      .article-card { position: relative; display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: 'badge . arrow' 'body body body'; align-items: center; gap: 14px 12px; max-width: 780px; margin: 0 auto; padding: 18px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
-      .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
-      .article-card:hover { border-color: var(--green); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(34,197,94,0.14); }
-      .article-badge { grid-area: badge; position: relative; z-index: 1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; justify-self: start; }
-      .article-body { grid-area: body; position: relative; z-index: 1; min-width: 0; }
-      .article-kicker { display: block; font-size: 11px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
-      .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.3; letter-spacing: -0.01em; overflow-wrap: anywhere; }
-      .article-year { color: var(--gray-400); font-weight: 500; }
-      .article-desc { display: none; font-size: 13px; color: var(--gray-600); margin: 6px 0 0; line-height: 1.45; }
-      .article-go { grid-area: arrow; position: relative; z-index: 2; width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; justify-self: end; }
-      .article-card:hover .article-go { background: var(--green-dark); }
-      .article-go svg { width: 16px; height: 16px; }
-      @media (min-width: 768px) {
-        .article-card { grid-template-columns: auto 1fr auto; grid-template-areas: 'badge body arrow'; padding: 24px 28px; gap: 18px; border-radius: 22px; }
-        .article-title { font-size: 19px; }
-        .article-desc { display: block; }
-        .article-go { width: 40px; height: 40px; }
-        .article-go svg { width: 18px; height: 18px; }
-      }
 
       /* MYTH FILTERS — pill row, no empty state */
       .myth-filters { display: flex; gap: 6px; padding: 4px 2px 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -2502,8 +2555,6 @@ class KygoWearableStress extends HTMLElement {
       /* APP CTA — centered card on white section, mirrors RHR */
       .app-cta-section { padding: 48px 0; background: #fff; }
       @media (min-width: 768px) { .app-cta-section { padding: 64px 0; } }
-      .article-section { padding: 48px 0; background: #fff; }
-      @media (min-width: 768px) { .article-section { padding: 64px 0; } }
       .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
       .app-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
       .app-cta-content { position: relative; z-index: 1; }
