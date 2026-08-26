@@ -388,6 +388,17 @@ class KygoWearableAccuracy extends HTMLElement {
     ];
   }
 
+  // Hero counts, derived from the metric/device/study data so they can never drift.
+  get _heroStats() {
+    const studies = Object.values(this._studies);
+    return {
+      metrics: Object.keys(this._metrics).length,
+      devices: Object.keys(this._devices).length,
+      studies: studies.length,
+      funded: studies.filter(s => !s.independent).length
+    };
+  }
+
   get _studies() {
     return {
       robbins2024: { authors: 'Robbins R, et al.', year: 2024, title: 'Accuracy of Three Commercial Wearable Devices for Sleep Tracking', journal: 'Sensors', doi: '10.3390/s24206532', n: 36, independent: false, funder: 'Oura Ring Inc.' },
@@ -924,6 +935,7 @@ class KygoWearableAccuracy extends HTMLElement {
   }
 
   render() {
+    const hs = this._heroStats;
     const devices = this._devices;
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
 
@@ -945,11 +957,42 @@ class KygoWearableAccuracy extends HTMLElement {
       </header>
 
       <!-- Hero -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">RESEARCH-BACKED COMPARISON</div>
-          <h1 class="animate-on-scroll">Which Wearable Is Actually the Most Accurate?</h1>
-          <p class="hero-sub animate-on-scroll">We analyzed 17+ peer-reviewed studies so you don't have to. Compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit, and Samsung \u2014 with full bias disclosure.</p>
+      <section class="hero-light">
+        <div class="hero-light-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill animate-on-scroll"><span class="dot"></span> ${hs.metrics} METRICS · ${hs.studies} STUDIES · BIAS DISCLOSED</div>
+              <h1 class="animate-on-scroll">Which wearable is <span class="hl">actually the most accurate?</span></h1>
+              <p class="hero-lede animate-on-scroll">No single device wins everywhere. We read ${hs.studies} validation studies on Oura, Apple Watch, Garmin, WHOOP, Fitbit and Samsung, compared them metric by metric, and <strong>flagged who funded each one</strong>.</p>
+            </div>
+            <div class="hero-vis animate-on-scroll">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Same ring, two funders</span>
+                <span class="hero-vis-tag">who paid matters</span>
+              </div>
+              <div class="hv-two">
+                <div class="hv-col">
+                  <span class="hv-label">Oura-funded</span>
+                  <span class="hv-val good">0.65</span>
+                  <div class="hv-bar"><span class="hv-fill good" style="width:87%"></span></div>
+                  <span class="hv-cap good">Ranked Oura #1</span>
+                </div>
+                <div class="hv-col">
+                  <span class="hv-label">Independent</span>
+                  <span class="hv-val">0.2–0.4</span>
+                  <div class="hv-bar"><span class="hv-fill" style="width:40%"></span></div>
+                  <span class="hv-cap">Ranked it lower</span>
+                </div>
+              </div>
+              <span class="hv-foot">Cohen's kappa · Oura sleep staging · ${hs.funded} of ${hs.studies} studies here are vendor-funded</span>
+            </div>
+          </div>
+          <div class="hero-stats animate-on-scroll">
+            <div class="hero-stat"><div class="num">${hs.metrics}</div><div class="lbl">Health metrics compared</div></div>
+            <div class="hero-stat"><div class="num">${hs.devices}</div><div class="lbl">Devices head to head</div></div>
+            <div class="hero-stat"><div class="num">${hs.studies}</div><div class="lbl">Validation studies read</div></div>
+            <div class="hero-stat"><div class="num">${hs.funded}</div><div class="lbl">Vendor-funded, flagged</div></div>
+          </div>
         </div>
       </section>
 
@@ -1272,10 +1315,46 @@ class KygoWearableAccuracy extends HTMLElement {
       .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
       /* ── Hero ── */
-      .hero { padding: 48px 0 40px; text-align: center; }
-      .hero-badge { display: inline-block; padding: 8px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 16px; }
-      .hero h1 { font-size: clamp(28px, 7vw, 36px); margin-bottom: 16px; color: var(--dark); }
-      .hero-sub { font-size: clamp(16px, 4vw, 18px); color: var(--gray-600); max-width: 640px; margin: 0 auto; line-height: 1.7; }
+      .hero-light { background: #fff; border-bottom: 1px solid var(--gray-200); }
+      .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--green-dark); padding: 6px 14px; border-radius: 999px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
+      .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex: none; }
+      .hero-light h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--dark); font-size: clamp(30px, 5.5vw, 58px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
+      .hero-light h1 .hl { color: var(--green); }
+      .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--gray-600); max-width: 60ch; margin: 0; }
+      .hero-lede strong { color: var(--dark); font-weight: 600; }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--gray-200); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--green-dark); background: var(--green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--gray-200); }
+      .hv-label { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-600); }
+      .hv-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--gray-600); }
+      .hv-val.good { color: var(--green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--gray-100); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--gray-400); }
+      .hv-fill.good { background: var(--green); }
+      .hv-cap { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hv-cap.good { color: var(--green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--gray-400); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
+      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--gray-200); padding-top: 24px; }
+      @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
+      .hero-stat .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1; color: var(--green); letter-spacing: -0.02em; }
+      .hero-stat .lbl { margin-top: 10px; color: var(--gray-400); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; line-height: 1.4; }
+      .hv-body { position: relative; display: flex; align-items: center; gap: 16px; padding: 6px 2px 2px; }
+      .hv-big { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(38px, 8vw, 54px); line-height: 1; letter-spacing: -0.02em; color: var(--green-dark); flex: none; }
+      .hv-text { font-size: 13.5px; line-height: 1.5; color: var(--gray-600); }
+      .hv-text p { margin: 0; }
+      .hv-text strong { color: var(--dark); font-weight: 600; }
+      .hv-src { display: block; margin-top: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hero-stat .unit { font-size: 0.5em; font-weight: 600; margin-left: 2px; }
 
       /* ── Section Titles ── */
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
@@ -1705,8 +1784,6 @@ class KygoWearableAccuracy extends HTMLElement {
         .header { padding: 14px 24px; }
         .logo { font-size: 16px; gap: 10px; }
         .logo-img { height: 32px; }
-        .hero h1 { font-size: clamp(36px, 5vw, 48px); }
-        .hero-sub { font-size: 18px; }
         .section-title { font-size: 32px; }
         .comparison, .recommendations, .deep-dives, .caveats, .cta-section, .blog-cta-section { padding: 64px 0; }
         .blog-cta { padding: 32px 28px; border-radius: 18px; }
@@ -1743,7 +1820,6 @@ class KygoWearableAccuracy extends HTMLElement {
 
       /* ── Desktop (1024px) ── */
       @media (min-width: 1024px) {
-        .hero { padding: 80px 0 64px; }
         .comparison, .recommendations, .deep-dives, .caveats, .cta-section, .blog-cta-section { padding: 80px 0; }
         .blog-cta { padding: 40px 36px; border-radius: 20px; }
         .blog-cta-badge { padding: 5px 12px; margin-bottom: 20px; }

@@ -1011,9 +1011,34 @@ class KygoSupplementsByMetric extends HTMLElement {
 
       <section class="hero section-bg-white">
         <div class="container hero-inner">
-          <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${metricCount} Metrics · ${supCount} Supplements</div>
-          <h1 class="hero-title animate-on-scroll">What supplements actually move <em>the numbers on your wearable</em>.</h1>
-          <p class="hero-sub animate-on-scroll">Sleep latency, deep sleep, REM, staying asleep, HRV, resting heart rate, recovery — graded by real evidence, with the <strong>funding flags</strong> and the popular stuff that <strong>doesn't work</strong>.</p>
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${metricCount} Metrics · ${supCount} Supplements</div>
+              <h1 class="hero-title animate-on-scroll">What supplements actually move <em>the numbers on your wearable</em>.</h1>
+              <p class="hero-sub animate-on-scroll">Sleep latency, deep sleep, REM, staying asleep, HRV, resting heart rate, recovery — graded by real evidence, with the <strong>funding flags</strong> and the popular stuff that <strong>doesn't work</strong>.</p>
+            </div>
+            <div class="hero-vis animate-on-scroll">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> What the evidence says</span>
+                <span class="hero-vis-tag">graded, not marketed</span>
+              </div>
+              <div class="hv-two">
+                <div class="hv-col">
+                  <span class="hv-label">Backed</span>
+                  <span class="hv-val good">${backedCount}</span>
+                  <div class="hv-bar"><span class="hv-fill good" style="width:${Math.round(backedCount / (backedCount + nullCount) * 100)}%"></span></div>
+                  <span class="hv-cap good">For at least one metric</span>
+                </div>
+                <div class="hv-col">
+                  <span class="hv-label">No effect</span>
+                  <span class="hv-val">${nullCount}</span>
+                  <div class="hv-bar"><span class="hv-fill" style="width:${Math.round(nullCount / (backedCount + nullCount) * 100)}%"></span></div>
+                  <span class="hv-cap">Tested and failed</span>
+                </div>
+              </div>
+              <span class="hv-foot">${supCount} supplements graded across ${metricCount} wearable metrics · industry funding flagged on every claim</span>
+            </div>
+          </div>
           <div class="animate-on-scroll">
             <div class="hero-meta">
               <div class="hero-cell"><span class="hero-num">${metricCount}</span><span class="hero-lbl">Wearable metrics</span></div>
@@ -1179,10 +1204,37 @@ class KygoSupplementsByMetric extends HTMLElement {
       .hero-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse 2.2s infinite; flex-shrink: 0; }
       @media (min-width: 480px) { .hero-kicker { font-size: 10.5px; white-space: nowrap; } }
       @keyframes pulse { 0%{box-shadow:0 0 0 0 rgba(34,197,94,0.6);} 70%{box-shadow:0 0 0 8px rgba(34,197,94,0);} 100%{box-shadow:0 0 0 0 rgba(34,197,94,0);} }
-      .hero-title { font-size: clamp(32px, 8.5vw, 76px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 600; margin: 0; color: var(--dark); max-width: 16ch; }
+      .hero-title { font-size: clamp(30px, 5.5vw, 54px); line-height: 1.05; letter-spacing: -0.025em; font-weight: 600; margin: 0; color: var(--dark); max-width: 18ch; }
       .hero-title em { font-style: normal; color: var(--green); font-family: inherit; }
       .hero-sub { margin: 20px 0 0; max-width: 58ch; font-size: clamp(15px, 2.2vw, 19px); line-height: 1.5; color: var(--gray-600); }
       .hero-sub strong { color: var(--dark); font-weight: 600; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--gray-200); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--green-dark); background: var(--green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--gray-200); }
+      .hv-label { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-600); }
+      .hv-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--gray-600); }
+      .hv-val.good { color: var(--green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--gray-100); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--gray-400); }
+      .hv-fill.good { background: var(--green); }
+      .hv-cap { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hv-cap.good { color: var(--green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--gray-400); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
+      .hv-body { position: relative; display: flex; align-items: center; gap: 16px; padding: 6px 2px 2px; }
+      .hv-big { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(38px, 8vw, 54px); line-height: 1; letter-spacing: -0.02em; color: var(--green-dark); flex: none; }
+      .hv-text { font-size: 13.5px; line-height: 1.5; color: var(--gray-600); }
+      .hv-text p { margin: 0; }
+      .hv-text strong { color: var(--dark); font-weight: 600; }
+      .hv-src { display: block; margin-top: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
       .hero-meta { margin-top: 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--gray-200); padding-top: 20px; max-width: 760px; }
       .hero-meta .hero-cell { padding: 8px 14px 8px 0; border-right: 1px solid var(--gray-200); min-width: 0; }
       .hero-meta .hero-cell:nth-child(2n) { border-right: 0; padding-right: 0; padding-left: 16px; }

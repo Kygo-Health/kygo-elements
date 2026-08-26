@@ -133,6 +133,16 @@ class KygoSensorComparison extends HTMLElement {
 
   // ── Sensor Hardware Data ───────────────────────────────────────────────
 
+  // Hero counts, derived from the hardware/software data so they can never drift.
+  get _heroStats() {
+    return {
+      devices: Object.keys(this._devices).length,
+      sensors: this._sensors.length,
+      algorithms: this._algorithms.length,
+      sources: this._sources.length
+    };
+  }
+
   get _sensors() {
     return [
       { key: 'ppg', name: 'Optical HR (PPG)', garmin: 'Elevate Gen 5 — green + red + IR LEDs', whoop: 'Custom PPG — 26 Hz sampling', oura: '18-path — green + red + IR, 3 photodiodes', appleS10: '3rd-gen optical', appleU3: '3rd-gen optical', fitbit: 'Optical HR' },
@@ -1202,6 +1212,7 @@ class KygoSensorComparison extends HTMLElement {
   }
 
   render() {
+    const hs = this._heroStats;
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
 
     this.shadowRoot.innerHTML = `
@@ -1222,11 +1233,42 @@ class KygoSensorComparison extends HTMLElement {
       </header>
 
       <!-- Hero -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">6 DEVICES — 16 SENSORS — 25 ALGORITHMS</div>
-          <h1 class="animate-on-scroll">What's Actually Inside Your Wearable?</h1>
-          <p class="hero-sub animate-on-scroll">We tore apart the specs of every major wearable — sensor by sensor, metric by metric. Here's exactly what hardware you're getting, what health data it produces, and which features are just software.</p>
+      <section class="hero-light">
+        <div class="hero-light-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill animate-on-scroll"><span class="dot"></span> ${hs.devices} DEVICES · ${hs.sensors} SENSORS · ${hs.algorithms} ALGORITHMS</div>
+              <h1 class="animate-on-scroll">What's actually <span class="hl">inside your wearable?</span></h1>
+              <p class="hero-lede animate-on-scroll">We took apart the specs of every major wearable, sensor by sensor and metric by metric. Exactly what hardware you are paying for, what health data it produces, and <strong>which features are only software</strong>.</p>
+            </div>
+            <div class="hero-vis animate-on-scroll">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Where the difference lives</span>
+                <span class="hero-vis-tag">software &gt; hardware</span>
+              </div>
+              <div class="hv-two">
+                <div class="hv-col">
+                  <span class="hv-label">Sensors</span>
+                  <span class="hv-val">${hs.sensors}</span>
+                  <div class="hv-bar"><span class="hv-fill" style="width:64%"></span></div>
+                  <span class="hv-cap">Physical hardware</span>
+                </div>
+                <div class="hv-col">
+                  <span class="hv-label">Algorithms</span>
+                  <span class="hv-val good">${hs.algorithms}</span>
+                  <div class="hv-bar"><span class="hv-fill good" style="width:100%"></span></div>
+                  <span class="hv-cap good">Proprietary software</span>
+                </div>
+              </div>
+              <span class="hv-foot">Across ${hs.devices} latest-generation devices · brands share sensors, not the maths on top</span>
+            </div>
+          </div>
+          <div class="hero-stats animate-on-scroll">
+            <div class="hero-stat"><div class="num">${hs.devices}</div><div class="lbl">Devices torn down</div></div>
+            <div class="hero-stat"><div class="num">${hs.sensors}</div><div class="lbl">Distinct sensors mapped</div></div>
+            <div class="hero-stat"><div class="num">${hs.algorithms}</div><div class="lbl">Proprietary algorithms</div></div>
+            <div class="hero-stat"><div class="num">${hs.sources}</div><div class="lbl">Verified sources</div></div>
+          </div>
         </div>
       </section>
 
@@ -1440,10 +1482,46 @@ class KygoSensorComparison extends HTMLElement {
       @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* Hero */
-      .hero { padding: 60px 0 32px; text-align: center; }
-      .hero-badge { display: inline-block; background: var(--green-light); color: var(--green-dark); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; padding: 6px 16px; border-radius: 50px; margin-bottom: 16px; }
-      .hero h1 { font-size: clamp(26px, 7vw, 40px); max-width: 700px; margin: 0 auto 16px; }
-      .hero-sub { color: var(--gray-600); font-size: 16px; max-width: 600px; margin: 0 auto; }
+      .hero-light { background: #fff; border-bottom: 1px solid var(--gray-200); }
+      .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--green-dark); padding: 6px 14px; border-radius: 999px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
+      .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex: none; }
+      .hero-light h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--dark); font-size: clamp(30px, 5.5vw, 58px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
+      .hero-light h1 .hl { color: var(--green); }
+      .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--gray-600); max-width: 60ch; margin: 0; }
+      .hero-lede strong { color: var(--dark); font-weight: 600; }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--gray-200); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--green-dark); background: var(--green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--gray-200); }
+      .hv-label { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-600); }
+      .hv-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--gray-600); }
+      .hv-val.good { color: var(--green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--gray-100); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--gray-400); }
+      .hv-fill.good { background: var(--green); }
+      .hv-cap { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hv-cap.good { color: var(--green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--gray-400); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
+      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--gray-200); padding-top: 24px; }
+      @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
+      .hero-stat .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1; color: var(--green); letter-spacing: -0.02em; }
+      .hero-stat .lbl { margin-top: 10px; color: var(--gray-400); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; line-height: 1.4; }
+      .hv-body { position: relative; display: flex; align-items: center; gap: 16px; padding: 6px 2px 2px; }
+      .hv-big { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(38px, 8vw, 54px); line-height: 1; letter-spacing: -0.02em; color: var(--green-dark); flex: none; }
+      .hv-text { font-size: 13.5px; line-height: 1.5; color: var(--gray-600); }
+      .hv-text p { margin: 0; }
+      .hv-text strong { color: var(--dark); font-weight: 600; }
+      .hv-src { display: block; margin-top: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hero-stat .unit { font-size: 0.5em; font-weight: 600; margin-left: 2px; }
 
       /* Stats Bar */
       .stats-section { padding: 0 0 32px; }
@@ -1649,7 +1727,6 @@ class KygoSensorComparison extends HTMLElement {
 
       /* Responsive */
       @media (min-width: 768px) {
-        .hero { padding: 80px 0 40px; }
         .charts-grid { grid-template-columns: 1fr 1fr; }
         .insights-grid { grid-template-columns: 1fr 1fr; }
         .fda-row { grid-template-columns: 200px 1fr 220px; }

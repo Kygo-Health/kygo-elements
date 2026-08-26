@@ -582,10 +582,33 @@ class KygoOura5vs4 extends HTMLElement {
       <!-- Hero -->
       <section class="hero-light">
         <div class="hero-light-inner">
-          <div class="hero-copy">
-            <div class="hero-pill"><span class="dot"></span> RING 5 vs RING 4 · 2026</div>
-            <h1>Oura Ring 5 vs Oura Ring 4 <span class="hl">(2026)</span></h1>
-            <p class="hero-lede">The two-generation comparison, decided on the numbers: what actually changed, the peer-reviewed accuracy neither reviewer site has, and the real 3-year cost with membership. Just comparing Gen 5 and Gen 4 — <a class="hero-link" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">need Gen 3 too?</a></p>
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill"><span class="dot"></span> RING 5 vs RING 4 · 2026</div>
+              <h1>Oura Ring 5 vs Oura Ring 4 <span class="hl">(2026)</span></h1>
+              <p class="hero-lede">The two-generation comparison, decided on the numbers: what actually changed, the peer-reviewed accuracy neither reviewer site has, and the real 3-year cost with membership. Just comparing Gen 5 and Gen 4 — <a class="hero-link" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">need Gen 3 too?</a></p>
+            </div>
+            <div class="hero-vis">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Three years, both rings</span>
+                <span class="hero-vis-tag">membership included</span>
+              </div>
+              <div class="hv-two">
+                <div class="hv-col">
+                  <span class="hv-label">Ring 5</span>
+                  <span class="hv-val">$609</span>
+                  <div class="hv-bar"><span class="hv-fill" style="width:100%"></span></div>
+                  <span class="hv-cap">Smaller, unvalidated</span>
+                </div>
+                <div class="hv-col">
+                  <span class="hv-label">Ring 4</span>
+                  <span class="hv-val good">$559</span>
+                  <div class="hv-bar"><span class="hv-fill good" style="width:92%"></span></div>
+                  <span class="hv-cap good">Cheaper, validated</span>
+                </div>
+              </div>
+              <span class="hv-foot">Base finish + 3 years of Oura Membership at $69.99/yr · premium finishes add $100</span>
+            </div>
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><div class="num">40<span class="unit">%</span></div><div class="lbl">Smaller than Ring 4 (Oura's claim)</div></div>
@@ -871,6 +894,27 @@ class KygoOura5vs4 extends HTMLElement {
       .hero-lede strong { color: var(--fg-1); font-weight: 600; }
       .hero-link { color: var(--kygo-green-dark); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
       .hero-link:hover { color: var(--kygo-green); }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--border-subtle); }
+      .hv-label { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-2); }
+      .hv-val { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-2); }
+      .hv-val.good { color: var(--kygo-green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--bg-raised); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--fg-3); }
+      .hv-fill.good { background: var(--kygo-green); }
+      .hv-cap { font-family: var(--font-display); font-size: 11px; font-weight: 600; color: var(--fg-3); }
+      .hv-cap.good { color: var(--kygo-green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--fg-3); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; margin-top: 32px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
       .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4vw, 42px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; display: inline-flex; align-items: baseline; gap: 2px; }

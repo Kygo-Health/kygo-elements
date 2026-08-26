@@ -108,6 +108,22 @@ class KygoSleepMetrics extends HTMLElement {
 
   // ── Categories & Metrics ───────────────────────────────────────────────
 
+  // Hero counts, derived from the metric matrix so they can never drift.
+  get _heroStats() {
+    const rows = Object.values(this._metrics).flat();
+    const covered = k => rows.filter(r => r[k] && r[k].has).length;
+    const keys = ['oura', 'fitbit', 'appleWatch', 'garmin'];
+    const best = keys.map(k => ({ k, n: covered(k) })).sort((a, b) => b.n - a.n)[0];
+    return {
+      metrics: rows.length,
+      cats: Object.keys(this._categories).length,
+      devices: keys.length,
+      sources: this._sources.length,
+      bestName: this._devices[best.k].name,
+      bestN: best.n
+    };
+  }
+
   get _categories() {
     return {
       compositeScores: { name: 'Composite Scores', icon: 'gauge' },
@@ -878,6 +894,7 @@ class KygoSleepMetrics extends HTMLElement {
   }
 
   render() {
+    const hs = this._heroStats;
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
 
     this.shadowRoot.innerHTML = `
@@ -898,11 +915,34 @@ class KygoSleepMetrics extends HTMLElement {
       </header>
 
       <!-- Hero -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">EVERY SLEEP METRIC COMPARED</div>
-          <h1 class="animate-on-scroll">What Does Your Wearable Actually Track While You Sleep?</h1>
-          <p class="hero-sub animate-on-scroll">We broke down every sleep metric across Oura, Fitbit, Apple Watch, and Garmin \u2014 what each device tracks, what\u2019s exclusive, and how they measure it. All sourced from official documentation.</p>
+      <section class="hero-light">
+        <div class="hero-light-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill animate-on-scroll"><span class="dot"></span> ${hs.metrics} METRICS · ${hs.cats} CATEGORIES · ${hs.devices} DEVICES</div>
+              <h1 class="animate-on-scroll">What does your wearable <span class="hl">track while you sleep?</span></h1>
+              <p class="hero-lede animate-on-scroll">Every sleep metric across Oura, Fitbit, Apple Watch and Garmin — <strong>what each device records, what's exclusive to one brand, and how it's measured</strong>. All of it from official documentation.</p>
+            </div>
+            <div class="hero-vis animate-on-scroll">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Best coverage</span>
+                <span class="hero-vis-tag">no device tracks all</span>
+              </div>
+              <div class="hv-body">
+                <div class="hv-big">${hs.bestN}<span class="unit">/${hs.metrics}</span></div>
+                <div class="hv-text">
+                  <p>metrics tracked by <strong>${hs.bestName}</strong>, the widest coverage of any device here — and still barely half the list.</p>
+                  <span class="hv-src">Counted from each brand's own documentation</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-stats animate-on-scroll">
+            <div class="hero-stat"><div class="num">${hs.metrics}</div><div class="lbl">Sleep metrics compared</div></div>
+            <div class="hero-stat"><div class="num">${hs.cats}</div><div class="lbl">Metric categories</div></div>
+            <div class="hero-stat"><div class="num">${hs.devices}</div><div class="lbl">Devices side by side</div></div>
+            <div class="hero-stat"><div class="num">${hs.sources}</div><div class="lbl">Verified sources</div></div>
+          </div>
         </div>
       </section>
 
@@ -1089,10 +1129,46 @@ class KygoSleepMetrics extends HTMLElement {
       @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* ── Hero ── */
-      .hero { padding: 48px 0 40px; text-align: center; }
-      .hero-badge { display: inline-block; padding: 8px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 700; letter-spacing: 1px; margin-bottom: 16px; }
-      .hero h1 { font-size: clamp(26px, 7vw, 36px); margin-bottom: 16px; color: var(--dark); }
-      .hero-sub { font-size: clamp(15px, 4vw, 18px); color: var(--gray-600); max-width: 640px; margin: 0 auto; line-height: 1.7; }
+      .hero-light { background: #fff; border-bottom: 1px solid var(--gray-200); }
+      .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--green-dark); padding: 6px 14px; border-radius: 999px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
+      .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex: none; }
+      .hero-light h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--dark); font-size: clamp(30px, 5.5vw, 58px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
+      .hero-light h1 .hl { color: var(--green); }
+      .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--gray-600); max-width: 60ch; margin: 0; }
+      .hero-lede strong { color: var(--dark); font-weight: 600; }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--gray-200); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--green-dark); background: var(--green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--gray-200); }
+      .hv-label { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-600); }
+      .hv-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--gray-600); }
+      .hv-val.good { color: var(--green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--gray-100); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--gray-400); }
+      .hv-fill.good { background: var(--green); }
+      .hv-cap { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hv-cap.good { color: var(--green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--gray-400); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
+      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--gray-200); padding-top: 24px; }
+      @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
+      .hero-stat .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1; color: var(--green); letter-spacing: -0.02em; }
+      .hero-stat .lbl { margin-top: 10px; color: var(--gray-400); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; line-height: 1.4; }
+      .hv-body { position: relative; display: flex; align-items: center; gap: 16px; padding: 6px 2px 2px; }
+      .hv-big { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(38px, 8vw, 54px); line-height: 1; letter-spacing: -0.02em; color: var(--green-dark); flex: none; }
+      .hv-text { font-size: 13.5px; line-height: 1.5; color: var(--gray-600); }
+      .hv-text p { margin: 0; }
+      .hv-text strong { color: var(--dark); font-weight: 600; }
+      .hv-src { display: block; margin-top: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hero-stat .unit { font-size: 0.5em; font-weight: 600; margin-left: 2px; }
 
       /* ── Section Titles ── */
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
@@ -1401,8 +1477,6 @@ class KygoSleepMetrics extends HTMLElement {
         .header { padding: 14px 24px; }
         .logo { font-size: 16px; gap: 10px; }
         .logo-img { height: 32px; }
-        .hero h1 { font-size: clamp(32px, 5vw, 44px); }
-        .hero-sub { font-size: 18px; }
         .section-title { font-size: 32px; }
         .matrix-section, .exclusive-section, .usecase-section, .sources-section, .cta-section, .blog-cta-section { padding: 64px 0; }
         .blog-cta { padding: 32px 28px; border-radius: 18px; }
@@ -1441,7 +1515,6 @@ class KygoSleepMetrics extends HTMLElement {
 
       /* ── Desktop ── */
       @media (min-width: 1024px) {
-        .hero { padding: 80px 0 64px; }
         .matrix-section, .exclusive-section, .usecase-section, .sources-section, .cta-section, .blog-cta-section { padding: 80px 0; }
         .blog-cta { padding: 40px 36px; border-radius: 20px; }
         .blog-cta-badge { padding: 5px 12px; margin-bottom: 20px; }
