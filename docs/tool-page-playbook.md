@@ -110,16 +110,17 @@ with **no two adjacent the same**, and **each distinct content block is its own 
 5. **Email CTA** — the **standard email-CTA module** (see §3 "Email CTA (the standard module)").
    Its own section, with **at least one page content section between it and the app CTA** —
    the two conversion touchpoints never touch.
-6. **Blog cross-link** card → the matching `kygo.app/post/...` article. For a **multi-post
-   cluster**, use the *hub-and-spoke* pattern: each content section also gets a small
-   `section-readmore` link to its *own* matching post (matrix→comparison post, validation→trust
-   post, factor explorer→intake post), and the one big CTA card leads with the primary spoke.
-7. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
+6. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
    getter (never let JSON-LD FAQs exist without a visible FAQ — the older `kygo-wearable-stress`
    shipped FAQ JSON-LD with **no** visible FAQ; don't copy that omission).
-8. **Related tools** — the **standard related-tools module** (see §3 "Related tools (the
-   standard module)"). Three cross-link cards, sitting **directly above the sources section**
-   (or low on the page when a tool has no sources). Every tool page has one.
+7. **Related tools** — the **standard related-tools module** (see §3 "Related tools (the
+   standard module)"). Three cross-link cards. Every tool page has one.
+8. **Related reading** — the **standard related-reading module** (see §3 "Related reading (the
+   standard module)"). Three blog cards with the posts' real cover images, sitting **directly
+   below related tools and above the sources section**. Every tool page has one, and this is
+   the *only* place a tool page links the blog as a section. Inside a content section, a small
+   `section-readmore` text link to that section's own matching post is still fine — that's the
+   hub-and-spoke micro-pattern, not a second blog section.
 9. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
    Every tool with sources uses it, unchanged. Copy it; don't design a new one.
 10. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
@@ -276,8 +277,8 @@ the sources module does. Copy the one matching the file you are editing; never m
 
 ### Related tools (the standard module)
 
-**One design, every tool page**, sitting directly above the sources section (or low on the
-page when a tool has no sources). Three cards in a grid (1 col mobile → 3 col ≥720px): a
+**One design, every tool page**, sitting low on the page, directly above the related-reading
+section (which in turn sits above sources). Three cards in a grid (1 col mobile → 3 col ≥720px): a
 small data motif on a tinted panel, then title, two-line blurb, a meta line and "Open →".
 
 The module is **self-contained** — renderer, the 15-motif catalog and its styles travel
@@ -316,6 +317,83 @@ about the destination, and don't give all three cards on a page the same one.
 classifies these as `related_tool_click` and adds a `to_tool` param, so with the existing
 `component` and `page_path` you get source tool → destination tool. Don't strip these
 attributes.
+
+### Related reading (the standard module)
+
+**One design, every tool page**, sitting **directly below the related-tools section and above
+sources**. Three blog cards in a grid (1 col mobile → 3 col ≥720px), each with the post's **real
+Wix cover image** on a 16/10 panel, then a green category eyebrow, the post title, a two-line
+blurb, and a footer of read time + "Read →". It is deliberately the same card geometry as the
+related-tools module directly above it, so the two read as one "keep exploring" tail rather than
+two competing designs.
+
+This replaced five different per-page designs that had accumulated: a wide `blog-cta` banner
+(10 files), a badge + kicker `article-card` (6 files), a small `blog-link-card` pill tucked
+*inside* a content section (3 files), an inline `section-readmore` text link, and — on four
+tools — no blog link at all. **Don't reintroduce any of them.** The only survivor is the inline
+`section-readmore` micro-pattern (below).
+
+The module is **self-contained** — renderer and styles travel together under `rp-*` class names,
+and every custom property carries a literal fallback, so the identical block renders the same on
+either palette. Copy `_renderRelatedPosts(bg)` verbatim from any shipped tool (it is
+byte-identical across all 23); the only part you write is the data:
+
+```js
+_relatedPosts()          // this page's 3 cards — the only part you write
+_renderRelatedPosts(bg)  // section + styles; pass 'gray' for the tinted band
+```
+
+```html
+${this._renderRelatedTools()}
+${this._renderRelatedPosts('gray')}
+```
+
+**Placement is a hard rule.** Its own `<section>`, directly under related tools. It must **never
+sit directly above or below the app CTA or the email capture** — a full section always separates
+the blog section from either conversion module. Putting it at the bottom of the tail is what
+guarantees that on every page, including the short factor explorers where the email CTA is the
+last thing before the page tail.
+
+**Choosing the three.** The page's **own companion post first** (the primary spoke), then a
+**near neighbour** in the same topic family, then a **bridge** to another family — so a page
+never shows three near-duplicates. The current map, with inbound counts, is the table in
+`docs/blog-cross-links.md`; update it when you add or retarget a page.
+
+**Card copy** is defined once per post in `docs/blog-cross-links.md` and reused wherever that
+post is linked, so it cannot drift between tools.
+
+```js
+{ slug: 'how-to-improve-hrv-factors-ranked-by-evidence',
+  title: 'How to Improve HRV: 44 Factors Ranked by Evidence (2026)',
+  blurb: 'Forty-four factors that affect heart rate variability, ranked by how strong the peer-reviewed evidence really is.',
+  cat: 'HRV & Recovery', min: 12, img: '273a63_81b206b8ae5e45b69e091fcb7e65b870~mv2.png' }
+```
+
+- **`title`, `cat`, `min`, `img` are the live Wix Blog values** — pulled from
+  `GET https://www.wixapis.com/blog/v3/posts` (`post.title`, its category `label`,
+  `post.minutesToRead`, `post.media.wixMedia.image.id`). Never paraphrase a title: several tool
+  pages used to advertise headlines no post ever carried. Re-pull before a copy pass; titles get
+  edited in Wix without anyone touching this repo.
+- **`img` is the media id only** — the module prefixes `https://static.wixstatic.com/media/`, so
+  the card shows exactly the image the blog index shows. Images are `loading="lazy"`
+  `decoding="async"`, and an `onerror` adds `.rp-noimg` so a dead asset degrades to the tinted
+  panel instead of a broken-image glyph.
+- **`blurb` is hand-written**, ~110–150 characters (it clamps to two lines). The raw Wix excerpt
+  is often 250+ characters or is just the opening paragraph.
+- **No `target`** — these are internal `kygo.app` links and open in the same tab, like the
+  related-tools cards.
+
+**Tracking** is built in: each card carries `data-action="blog-post"`,
+`data-post-slug="<slug>"` and `data-track-position="related-posts"`. `kygo-tracking.js`
+classifies these as `blog_post_click` and adds a `to_post` param, so with the existing
+`component` and `page_path` you get source tool → destination post — the mirror of
+`related_tool_click`. Don't strip these attributes.
+
+**The `section-readmore` micro-pattern** (hub-and-spoke) is separate and still allowed: a small
+inline text link *inside* a content section, pointing at that section's own matching post
+(matrix → comparison post, validation → trust post, factor explorer → intake post). It is a
+text link, never a card, never its own section, and like the cards it opens in the same tab.
+`kygo-recovery-scores.js` is the reference.
 
 ### Sources (the standard module)
 **One design, every tool.** Compact link cards in a grid (1 col mobile → 2 col ≥600px →
@@ -681,12 +759,19 @@ Pre-commit checklist:
 - [ ] Email CTA: standard module (§3), its own section, at least one content section below
       the app CTA, `source`/`variant` unchanged.
 - [ ] Band rhythm: no two adjacent sections share a background, including around the app CTA,
-      email CTA and related-tools bands.
+      email CTA, related-tools and related-reading bands.
 - [ ] No malformed section tags: `grep -n '<section c[^l]' kygo-*.js` returns nothing. A bad
       class rewrite hides inside a template literal, so `node --check` will not catch it.
-- [ ] Related tools: standard module verbatim (§3), 3 cards, above the sources section, no
+- [ ] Related tools: standard module verbatim (§3), 3 cards, above the related-reading section, no
       self-link, no Food Scanner, tracking attributes intact, and the cross-link table in
       `docs/internal-and-app-store-links.md` updated.
+- [ ] Related reading: standard module verbatim (§3), 3 cards, directly below related tools and
+      above sources, **never adjacent to the app CTA or the email capture**. Titles / categories /
+      read times / cover-image ids match the live Wix Blog values (re-pull, don't paraphrase),
+      images render, `data-action="blog-post"` + `data-post-slug` intact, and the map in
+      `docs/blog-cross-links.md` updated. No `blog-cta` / `article-card` / `blog-link-card`
+      leftovers: `grep -nE 'class="(blog-cta|article-card|blog-link-card)' file.js` returns
+      nothing that points at a `/post/` URL.
 - [ ] Sources use the standard module verbatim (§3): flat `_sources` of `{tag,title,cite,url}`,
       6 shown + "Show all N sources" toggle wired, no page-specific sources design. Unlinkable
       sources present as dashed cards, not dropped.

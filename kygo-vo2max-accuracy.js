@@ -704,6 +704,93 @@ class KygoVo2maxAccuracy extends HTMLElement {
   // property carries a literal fallback, so the same block drops into either
   // palette unchanged. Pass 'gray' to sit the section on the tinted band.
 
+  // The three posts this page links to. The only per-page part of the module.
+  // Card copy is defined once per post and reused wherever that post is linked,
+  // so it cannot drift between tools. Titles, excerpts and cover images come
+  // from the Wix Blog collection - see docs/blog-cross-links.md.
+  _relatedPosts() {
+    return [
+      { slug: 'most-accurate-vo2-max-wearable',
+        title: 'Most Accurate VO2 Max Wearable: Garmin, Apple, WHOOP & Oura Ranked',
+        blurb: 'No wearable measures VO2 max. They estimate it, and the gap between brands is large. Which device the research actually backs.',
+        cat: 'Wearables & Data', min: 8, img: '273a63_b02ace65027c415981d32f4dd06782be~mv2.png' },
+      { slug: 'whoop-vo2-max-accuracy-why-yours-looks-wrong',
+        title: 'WHOOP VO2 Max Accuracy: Why Yours Looks Wrong',
+        blurb: 'WHOOP is the only company that has tested WHOOP\'s VO2 max, and its own data says the error is worst at the extremes.',
+        cat: 'Wearables & Data', min: 11, img: '273a63_3cf17ba07c50468e8c46362eda06d2d4~mv2.png' },
+      { slug: 'fitbit-air-vo2-max-why-it-says-not-tracked',
+        title: 'Fitbit Air VO2 Max: Why It Says Not Tracked (2026)',
+        blurb: 'No GPS, and Google removed the resting heart rate path in May 2026. Why your VO2 max is blank, and how to actually get one.',
+        cat: 'HRV & Recovery', min: 11, img: '273a63_c8f2fa66cfb44083b46b53878dabad9f~mv2.png' }
+    ];
+  }
+
+  // -- Related reading (the standard module) -------------------------------
+  // One design, every tool page: three blog cards in a grid (1 col mobile ->
+  // 3 col >=720px) with the post's real cover image, category, title, a
+  // two-line blurb and read time - the same card the main blog page uses.
+  // Self-contained under `rp-*` names with a literal fallback behind every
+  // custom property, so the identical block renders the same on either
+  // palette. Copy this method verbatim; only `_relatedPosts()` is per page.
+  // Placement: its own section, directly above the related-tools section.
+  // A tool content section always separates it from the app CTA and from the
+  // email capture - it never sits directly above or below either one.
+  // Pass 'gray' to sit the section on the tinted band.
+  _renderRelatedPosts(bg) {
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+    const cards = this._relatedPosts().map(p => `
+      <a class="rp-card animate-on-scroll" href="https://www.kygo.app/post/${p.slug}" aria-label="${p.title}" data-action="blog-post" data-post-slug="${p.slug}" data-track-position="related-posts" data-track-label="${p.slug}">
+        <span class="rp-media"><img src="https://static.wixstatic.com/media/${p.img}" alt="${p.title}" loading="lazy" decoding="async" onerror="this.closest('.rp-media').classList.add('rp-noimg')"></span>
+        <span class="rp-body">
+          <span class="rp-cat">${p.cat}</span>
+          <span class="rp-title">${p.title}</span>
+          <span class="rp-blurb">${p.blurb}</span>
+          <span class="rp-foot"><span class="rp-meta">${p.min} min read</span><span class="rp-open">Read ${arrow}</span></span>
+        </span>
+      </a>`).join('');
+    return `
+      <style>
+      .rp-section{padding:56px 20px;background:#fff}
+      .rp-section.rp-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.rp-section{padding:80px 24px}}
+      .rp-inner{max-width:1200px;margin:0 auto}
+      .rp-head{margin-bottom:28px;max-width:720px}
+      .rp-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rp-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A))}
+      .rp-h2 .rp-hl{color:var(--kygo-green,var(--green,#22C55E))}
+      .rp-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,var(--gray-600,#475569));font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rp-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rp-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rp-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,var(--gray-200,#E2E8F0));border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rp-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,var(--green,#22C55E)),var(--kygo-green-dark,var(--green-dark,#16A34A)));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rp-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rp-card:hover::after{opacity:1}
+      .rp-card:focus-visible{outline:2px solid var(--kygo-green,var(--green,#22C55E));outline-offset:3px}
+      .rp-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,var(--gray-100,#F1F5F9))}
+      .rp-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+      .rp-card:hover .rp-media img{transform:scale(1.03)}
+      .rp-media.rp-noimg img{display:none}
+      .rp-body{flex:1;padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rp-cat{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:10.5px;letter-spacing:.7px;text-transform:uppercase;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A));display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,var(--gray-600,#475569));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:5px}
+      .rp-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,var(--gray-400,#94A3B8));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rp-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-open svg{width:15px;height:15px}
+      </style>
+      <section class="rp-section${bg === 'gray' ? ' rp-gray' : ''}" id="related-reading">
+        <div class="rp-inner">
+          <div class="rp-head animate-on-scroll">
+            <div class="rp-kicker">From the blog</div>
+            <h2 class="rp-h2">Keep <span class="rp-hl">reading.</span></h2>
+            <p class="rp-lede">The long-form, evidence-based articles behind this tool.</p>
+          </div>
+          <div class="rp-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
   _renderRelatedTools(bg) {
     const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
     const cards = this._relatedTools().map(t => {
@@ -721,7 +808,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
     return `
       <style>
       .rt-section{padding:56px 20px;background:#fff}
-      .rt-section.rt-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
       @media(min-width:720px){.rt-section{padding:80px 24px}}
       .rt-inner{max-width:1200px;margin:0 auto}
       .rt-head{margin-bottom:28px;max-width:720px}
@@ -797,7 +884,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
     return `
       <style>
       .kc-section{padding:56px 20px;background:#fff}
-      .kc-section.kc-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
       @media(min-width:720px){.kc-section{padding:72px 24px}}
       .kc-inner{max-width:1100px;margin:0 auto}
       .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
@@ -858,7 +945,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
     return `
       <style>
       .ke-section{padding:8px 20px 12px;background:#fff}
-      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
       @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
       .ke-inner{max-width:1100px;margin:0 auto}
       </style>
@@ -988,20 +1075,6 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
       <section class="section bg-white">
         <div class="section-inner">
-          <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/most-accurate-vo2-max-wearable" target="_blank" rel="noopener">
-            <span class="blog-cta-tag">Deep Dive</span>
-            <div class="blog-cta-body">
-              <div class="blog-cta-kicker">Read the full breakdown</div>
-              <div class="blog-cta-title">The Most Accurate VO2 Max Wearable</div>
-              <div class="blog-cta-sub">Which brands are actually validated, which overestimate, and how to read your own number — evidence-based.</div>
-            </div>
-            <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
-          </a>
-        </div>
-      </section>
-
-      <section class="section bg-light">
-        <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Under the hood</div>
             <h2>What each device <span class="hl">feeds in.</span></h2>
@@ -1014,7 +1087,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
@@ -1024,7 +1097,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -1034,7 +1107,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/vo2-max-factors" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Related Tool</span>
@@ -1048,7 +1121,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedTools()}
+      ${this._renderRelatedPosts('gray')}
 
       <section class="section bg-white">
         <div class="section-inner">
@@ -1441,7 +1515,6 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .blog-cta-title { font-family: var(--font-display); font-size: clamp(15px, 2vw, 18px); font-weight: 600; color: var(--fg-1); line-height: 1.3; }
       .blog-cta-sub { font-size: 13px; color: var(--fg-2); margin-top: 4px; line-height: 1.5; }
       .blog-cta-arrow { width: 44px; height: 44px; border-radius: 50%; background: var(--kygo-green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 4px 12px rgba(34,197,94,0.30); }
-      .blog-cta-arrow .ico { width: 20px; height: 20px; }
       @media (max-width: 600px) {
         .blog-cta { grid-template-columns: 1fr auto; grid-template-areas: 'tag arrow' 'body body'; padding: 18px; gap: 14px; }
         .blog-cta-tag { grid-area: tag; justify-self: start; }

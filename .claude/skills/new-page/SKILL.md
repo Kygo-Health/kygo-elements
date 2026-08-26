@@ -66,15 +66,27 @@ this skill assumes that house style.
    don't rename it. Spec in `docs/tool-page-playbook.md` §3 "Email CTA (the standard module)".
 10. **Every tool page gets the standard related-tools module — do not design a new one.** Copy
    `_relatedTools` / `_relatedMotif` / `_renderRelatedTools` verbatim from any shipped tool (they
-   are byte-identical across all of them) and call `${this._renderRelatedTools()}` directly above
-   the sources section, or low on the page if the tool has no sources. Write only
+   are byte-identical across all of them) and call `${this._renderRelatedTools()}` low on the
+   page, directly above the related-reading section. Write only
    `_relatedTools()`: exactly 3 cards — a near neighbour, a bridge between accuracy and
    physiology, and one from another family. Never link the page to itself, and **never link the
    Food Scanner** (`/tools/calories-in-anything`). Reuse the destination's existing card copy
    rather than rewriting it, then add the new page to the cross-link table in
    `docs/internal-and-app-store-links.md` and give it inbound links from 2+ sibling tools.
    Full spec in `docs/tool-page-playbook.md` §3 "Related tools (the standard module)".
-11. **If the page cites sources, use the standard sources module — do not design a new one.**
+11. **Every tool page gets the standard related-reading module — do not design a new one.** Copy
+   `_renderRelatedPosts(bg)` verbatim from any shipped tool (it is byte-identical across all of
+   them) and call `${this._renderRelatedPosts(bg)}` **directly after `_renderRelatedTools()`**,
+   above the sources section. Write only `_relatedPosts()`: exactly 3 cards — the page's own
+   companion post first, then a near neighbour, then a bridge to another topic family. Each card
+   is `{ slug, title, blurb, cat, min, img }`; `title`, `cat`, `min` and `img` are the **live Wix
+   Blog values** (`GET https://www.wixapis.com/blog/v3/posts` → `title`, category `label`,
+   `minutesToRead`, `media.wixMedia.image.id`) — never paraphrase a title, and reuse a post's
+   existing card copy from `docs/blog-cross-links.md` rather than rewriting it. The section must
+   **never sit directly above or below the app CTA or the email capture**. Add the page to the
+   map in `docs/blog-cross-links.md`. Full spec in `docs/tool-page-playbook.md` §3 "Related
+   reading (the standard module)".
+12. **If the page cites sources, use the standard sources module — do not design a new one.**
    Copy `_renderSourceCards` / `_renderSources` / `_toggleSources`, the `.src*` CSS block and the
    `<div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>` call site verbatim
    from `kygo-sleep-tracker-accuracy.js` (the reference; the module is byte-identical across every
@@ -90,9 +102,13 @@ this skill assumes that house style.
 - Tokens stay inline (no shared stylesheet). Don't mix the two token naming schemes in one file.
 - Wix event `detail` must be plain data only (no functions). Disconnect observers/timeouts in
   `disconnectedCallback`.
-- App CTA, related tools and sources all use their standard modules, unchanged. One app-download
-  surface per page: the CTA card, no `kband`. Keep the related-tools
-  tracking attributes (`data-action="related-tool"`, `data-tool-slug`, `data-track-position`).
+- App CTA, related tools, related reading and sources all use their standard modules, unchanged.
+  One app-download surface per page: the CTA card, no `kband`. Keep the cross-link tracking
+  attributes (`data-action="related-tool"`/`"blog-post"`, `data-tool-slug`/`data-post-slug`,
+  `data-track-position`).
+- One blog section per page, and only the standard one. No `blog-cta` banner, `article-card`, or
+  `blog-link-card` pill — those five older designs were all consolidated away. A small inline
+  `section-readmore` text link inside a content section is the one exception.
 - Sources use the standard module, unchanged. No per-page accordions, `<details>` groups, or
   separate desktop/mobile source renderings — those were all consolidated away.
 - This repo has no CI — verify visually before committing.

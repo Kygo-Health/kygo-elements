@@ -13,6 +13,10 @@ Guidance for working in this repo. Read this before editing or creating componen
   mobile/reveal gotchas, and a pre-commit verification checklist — so a new tool ships at the
   same quality without a review round per detail.
 - **`docs/internal-and-app-store-links.md`** — every internal kygo.app + app-store link, by file.
+- **`docs/blog-cross-links.md`** — the blog registry behind the standard related-reading section
+  on every tool page: which tool links which posts, and the canonical title / category / read
+  time / cover image / blurb for each post (pulled from the live Wix `Blog/Posts` collection).
+  Read it before editing any tool page's `_relatedPosts()`.
 - **`docs/affiliate-links.md`** — every Amazon/affiliate link, the product it points to, and where.
 - **`docs/schemas-and-tracking.md`** — the JSON-LD schema each page injects (per-page map +
   canonical shapes) and all tracking/analytics (GA4 via `kygo-tracking.js`, event taxonomy,

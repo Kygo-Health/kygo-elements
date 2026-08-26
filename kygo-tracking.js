@@ -160,6 +160,18 @@
       };
     }
 
+    // Related-reading card: tool-to-blog navigation. Gets its own category
+    // (rather than falling through to other_action) so the blog cross-link
+    // section can be measured as a retention surface alongside related_tool_click.
+    if (action === 'blog-post') {
+      return {
+        category: 'blog_post_click',
+        label: getLabel(el),
+        url: href,
+        to_post: el.getAttribute('data-post-slug') || ''
+      };
+    }
+
     // Any other data-action button
     if (action) {
       return { category: 'other_action', label: getLabel(el), action_type: action };
@@ -228,6 +240,7 @@
       if (info.affiliate) ctaParams.affiliate = info.affiliate;
       if (info.affiliate_marketplace) ctaParams.affiliate_marketplace = info.affiliate_marketplace;
       if (info.to_tool) ctaParams.to_tool = info.to_tool;
+      if (info.to_post) ctaParams.to_post = info.to_post;
       track('cta_click', ctaParams);
     }
   }, true); // capture phase to fire before any stopPropagation
