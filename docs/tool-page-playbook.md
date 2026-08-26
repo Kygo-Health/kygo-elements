@@ -83,9 +83,11 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    "Get Kygo Health →" link with the two buttons. Both hrefs use the **Tenjin** links (see §2.4),
    the icons are the canonical store SVGs (§4), and the text labels hide below ~360px so only the
    icons show.
-2. **Hero** (`hero-light`, white) — `hero-pill` kicker, `<h1>` with a green `.hl` span, a
-   `hero-lede`, a **`hero-vis`** (a clean supporting visual — a small chart or a dark stat
-   card), and a **`hero-stats`** strip of 4 numbers (2×2 on mobile, 4-up desktop).
+2. **Hero** — the **standard hero anatomy** (see §3 "Hero (the standard anatomy)"). Every tool
+   page has all five parts: `hero-pill` kicker, `<h1>` with a green `.hl` span, a `hero-lede`,
+   a **`hero-vis`** supporting visual, and a **`hero-stats`** strip of 4 numbers (2×2 mobile,
+   4-up desktop). A centered badge + headline + paragraph with nothing beside it is the old
+   design; don't ship it.
    **Align the hero `<h1>` + lede with the page's meta title/description** so the first screen
    matches what the SERP promised (e.g. meta "Compare … 12 wearables" → h1 "Compare recovery
    scores across 12 wearables"). Meta title/description themselves are **Wix page-SEO settings**,
@@ -170,6 +172,51 @@ If a list exceeds ~12 items, it must **not** render as a flat column of cards on
   keep 1-up on mobile.
 - Stat/value cards stay **side-by-side (2-up) on mobile** — don't let them stack into three
   tall blocks.
+
+### Hero (the standard anatomy)
+
+**Five parts, every tool page**, in a two-column grid that stacks below 880px:
+
+```html
+<section class="hero-light">
+  <div class="hero-light-inner">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-pill"><span class="dot"></span> 43 FACTORS · 5 CATEGORIES · PEER-REVIEWED</div>
+        <h1>What actually moves <span class="hl">your HRV?</span></h1>
+        <p class="hero-lede">… with <strong>one or two bolded phrases</strong> …</p>
+      </div>
+      <div class="hero-vis">…</div>
+    </div>
+    <div class="hero-stats"><div class="hero-stat"><div class="num">43</div><div class="lbl">…</div></div>…</div>
+  </div>
+</section>
+```
+
+- **Pill** — the page's scope in three facts, uppercase, with the green dot.
+- **`<h1>`** — one question or claim, **two-tone**: the second half in `<span class="hl">`.
+  Keep it to ~2 lines beside the visual; a headline that wraps to four lines is too long.
+- **`hero-lede`** — 2–3 sentences, with the page's thesis in `<strong>`.
+- **`hero-vis`** — the part most often skipped, and the one that makes the hero. It must state
+  something **true, specific and non-obvious** about *this* page, pulled from the page's own
+  data — not decoration. Two established variants: `hv-two` (two columns, `hv-label` /
+  `hv-val` / `hv-bar` / `hv-cap`, for a contrast — funded vs independent, helps vs hurts,
+  hardware vs software) and `hv-big` + `hv-text` + `hv-src` (one headline number and a
+  sentence, for a single biggest lever). Put the caveat in `hv-foot`.
+- **`hero-stats`** — exactly 4. **Compute them from the data getters**, don't type them in:
+
+```js
+get _heroStats() {
+  const all = Object.values(this._factors).flat();
+  return { total: all.length, strong: all.filter(f => f.evidence === 'strong').length, … };
+}
+```
+
+  Hand-typed hero numbers drift — hrv-factors advertised 44 factors against 43 in its data
+  until this was computed. The same rule applies to the pill.
+
+**Palette.** The CSS exists in two token-mapped variants, semantic and canonical, exactly as
+the sources module does. Copy the one matching the file you are editing; never mix schemes.
 
 ### Related tools (the standard module)
 
@@ -578,6 +625,8 @@ Pre-commit checklist:
 - [ ] `data-action` / `data-track-position` / `data-track-label` on CTA, affiliate, **and** source links (§9).
 - [ ] a11y pass (§8): `aria-pressed` on toggles, `role`/`aria-label` on pickers, `scope` on table cells,
       `aria-hidden` on decorative visuals, icon-only buttons labelled.
+- [ ] Hero has all five parts (§3): pill, two-tone `<h1>`, lede, a `hero-vis` that says
+      something true about this page, and 4 computed `hero-stats`. No centered-badge-only hero.
 - [ ] Related tools: standard module verbatim (§3), 3 cards, above the sources section, no
       self-link, no Food Scanner, tracking attributes intact, and the cross-link table in
       `docs/internal-and-app-store-links.md` updated.

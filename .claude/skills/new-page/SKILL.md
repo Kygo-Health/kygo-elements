@@ -45,7 +45,14 @@ this skill assumes that house style.
 5. Preview in a browser (use the `run` or `verify` skill) and sanity-check: renders standalone,
    no console errors, `[data-seo]` text present in light DOM, JSON-LD valid.
 6. Do **not** add a build step, imports/exports, or external CSS. Keep it a single plain script.
-7. **Every tool page gets the standard related-tools module — do not design a new one.** Copy
+7. **Every tool page gets the full hero anatomy** — pill, two-tone `<h1>` with a green `.hl`
+   span, lede, a `hero-vis` visual, and a 4-up `hero-stats` strip, in a `hero-grid` that stacks
+   below 880px. The `hero-vis` is not optional: it must state something true and specific to the
+   page, taken from the page's own data. Compute the pill and stat numbers from the data getters
+   (a `_heroStats` getter) rather than typing them in, so they cannot drift. Copy the hero CSS
+   from a page on your palette. Spec in `docs/tool-page-playbook.md` §3 "Hero (the standard
+   anatomy)".
+8. **Every tool page gets the standard related-tools module — do not design a new one.** Copy
    `_relatedTools` / `_relatedMotif` / `_renderRelatedTools` verbatim from any shipped tool (they
    are byte-identical across all of them) and call `${this._renderRelatedTools()}` directly above
    the sources section, or low on the page if the tool has no sources. Write only
@@ -55,7 +62,7 @@ this skill assumes that house style.
    rather than rewriting it, then add the new page to the cross-link table in
    `docs/internal-and-app-store-links.md` and give it inbound links from 2+ sibling tools.
    Full spec in `docs/tool-page-playbook.md` §3 "Related tools (the standard module)".
-8. **If the page cites sources, use the standard sources module — do not design a new one.**
+9. **If the page cites sources, use the standard sources module — do not design a new one.**
    Copy `_renderSourceCards` / `_renderSources` / `_toggleSources`, the `.src*` CSS block and the
    `<div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>` call site verbatim
    from `kygo-sleep-tracker-accuracy.js` (the reference; the module is byte-identical across every
