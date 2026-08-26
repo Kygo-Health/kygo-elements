@@ -1193,9 +1193,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedPosts()}
-
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
@@ -1227,6 +1225,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts()}
     `;
   }
 

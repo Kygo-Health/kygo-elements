@@ -1517,9 +1517,8 @@ class KygoWearableStress extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedPosts()}
 
-      <section class="sources-section section-bg-gray">
+      <section class="sources-section section-bg-white">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All claims sourced from peer-reviewed research and official device documentation. Every factor in the breakdown above cites at least one of these.</p>
@@ -2001,6 +2000,8 @@ class KygoWearableStress extends HTMLElement {
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts()}
     `;
   }
 

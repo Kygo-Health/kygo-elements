@@ -1146,9 +1146,8 @@ class KygoRecoveryScores extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedPosts()}
 
-      <section class="sources-section section-bg-gray">
+      <section class="sources-section section-bg-white">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">Every brand checked against vendor docs; every factor and supplement claim verified against primary research.</p>
@@ -1736,6 +1735,8 @@ class KygoRecoveryScores extends HTMLElement {
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts()}
     `;
   }
 

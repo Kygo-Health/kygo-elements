@@ -1516,9 +1516,8 @@ class KygoRhrFactors extends HTMLElement {
       </section>
 
       <!-- 9. Sources (white) -->
-      ${this._renderRelatedPosts('gray')}
 
-      <section class="sources-section section-bg-white">
+      <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
@@ -1546,6 +1545,8 @@ class KygoRhrFactors extends HTMLElement {
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts('gray')}
     `;
   }
 
@@ -2025,7 +2026,7 @@ class KygoRhrFactors extends HTMLElement {
       .cta-android svg { width: 18px; height: 18px; }
 
       /* FOOTER */
-      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
+      .tool-footer { padding: 48px 0 32px; text-align: center; background: #fff; border-top: 1px solid var(--gray-200); }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }

@@ -1324,7 +1324,6 @@ class KygoWearableAccuracy extends HTMLElement {
       </section>
 
       <!-- Sources -->
-      ${this._renderRelatedPosts()}
 
       <section class="sources-section">
         <div class="container">
@@ -1352,6 +1351,8 @@ class KygoWearableAccuracy extends HTMLElement {
           <p class="footer-copyright">\u00A9 ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts()}
     `;
   }
 
@@ -1678,7 +1679,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .caveat-body p { font-size: 12px; color: var(--gray-600); line-height: 1.6; padding-left: 34px; }
 
       /* ── Sources ── */
-      .sources-section { padding: 48px 0; }
+      .sources-section { padding: 48px 0; background: #fff; }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
