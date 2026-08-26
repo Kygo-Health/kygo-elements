@@ -637,6 +637,34 @@ class KygoOura5vs4 extends HTMLElement {
       </section>`;
   }
 
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-oura-5-vs-4', variant: 'comparison' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
+        </div>
+      </section>`;
+  }
+
   render() {
     const logoUrl = this._logoUrl;
     const ouraImg = this._ouraImg;
@@ -730,7 +758,7 @@ class KygoOura5vs4 extends HTMLElement {
 
 
       <!-- Difference table -->
-      <section csection bg-light-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Side by side</div>
@@ -740,13 +768,14 @@ class KygoOura5vs4 extends HTMLElement {
           <div class="tbl-wrap animate-on-scroll">${this._renderDiffTable()}</div>
         </div>
       </section>
+      ${this._renderEmailCta()}
+
 
       <!-- Early app CTA band -->
 
-      <kygo-inline-subscribe source="tool-oura-5-vs-4" variant="comparison"></kygo-inline-subscribe>
 
       <!-- Should you upgrade -->
-      <section csection bg-white-light">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Should you upgrade?</div>
@@ -758,7 +787,7 @@ class KygoOura5vs4 extends HTMLElement {
       </section>
 
       <!-- Accuracy deep-dive -->
-      <section csection bg-light-white">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Accuracy</div>
@@ -774,7 +803,7 @@ class KygoOura5vs4 extends HTMLElement {
       </section>
 
       <!-- 3-year cost -->
-      <section csection bg-white-light">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">3-year cost</div>
@@ -786,7 +815,7 @@ class KygoOura5vs4 extends HTMLElement {
       </section>
 
       <!-- Blog CTA (companion post) -->
-      <section csection bg-light-white">
+      <section class="section bg-white">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/is-the-oura-ring-5-worth-it" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Read next</span>
@@ -803,7 +832,7 @@ class KygoOura5vs4 extends HTMLElement {
       <!-- Kygo app CTA -->
 
       <!-- Cross-link to three-way tool -->
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">
             <span class="blog-cta-tag">All 3 gens</span>
@@ -818,7 +847,7 @@ class KygoOura5vs4 extends HTMLElement {
       </section>
 
       <!-- FAQ -->
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -829,7 +858,7 @@ class KygoOura5vs4 extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools()}
+      ${this._renderRelatedTools('gray')}
 
       <!-- Footer -->
       <footer class="tool-footer">

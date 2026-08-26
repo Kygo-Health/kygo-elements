@@ -1139,6 +1139,34 @@ class KygoStepCountAccuracy extends HTMLElement {
       </section>`;
   }
 
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-step-count-accuracy', variant: 'comparison' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
+        </div>
+      </section>`;
+  }
+
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
@@ -1218,12 +1246,14 @@ class KygoStepCountAccuracy extends HTMLElement {
       ${this._renderAppCta()}
 
 
-      <section ckearly-section bg-light-white">
+      <section class="kearly-section bg-light">
         <div class="section-inner">
         </div>
       </section>
+      ${this._renderEmailCta()}
 
-      <section csection bg-white-light">
+
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">The ranking, honestly</div>
@@ -1234,7 +1264,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section csection bg-light-white">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">What actually decides it</div>
@@ -1259,7 +1289,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section csection bg-white-light">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">The two things that decide it</div>
@@ -1272,7 +1302,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section csection bg-light-white">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">In detail</div>
@@ -1284,9 +1314,8 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <kygo-inline-subscribe source="tool-step-count-accuracy" variant="comparison"></kygo-inline-subscribe>
 
-      <section csection bg-white-light">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">True for every device</div>
@@ -1297,12 +1326,12 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section ckearly-section bg-light-white">
+      <section class="kearly-section bg-white">
         <div class="section-inner">
         </div>
       </section>
 
-      <section csection bg-white-light">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Claim vs reality</div>
@@ -1314,7 +1343,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section csection bg-light-white">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Beyond the step count</div>
@@ -1325,7 +1354,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section csection bg-white-light">
+      <section class="section bg-light">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/which-wearable-has-the-most-accurate-step-count-a-2024-2025-research-analysis" target="_self" rel="noopener" data-action="internal-link" data-track-position="late" data-track-label="step-count-blog-post">
             <span class="blog-cta-tag">Deep Dive</span>
@@ -1339,7 +1368,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section csection bg-light-white">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
@@ -1349,12 +1378,12 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section csection bg-white-light">
+      <section class="section bg-light">
         <div class="section-inner">
         </div>
       </section>
 
-      <section csection bg-light-white">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>

@@ -1337,6 +1337,34 @@ class KygoRhrFactors extends HTMLElement {
       </section>`;
   }
 
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-rhr-factors', variant: 'factors' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
+        </div>
+      </section>`;
+  }
+
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const iosUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
@@ -1427,6 +1455,8 @@ class KygoRhrFactors extends HTMLElement {
           </a>
         </div>
       </section>
+      ${this._renderEmailCta('gray')}
+
 
       <!-- 6. Every factor sortable — category picker (gray) -->
       <div class="section-bg-gray">${this._renderSortableFactorsSection()}</div>
@@ -1435,7 +1465,7 @@ class KygoRhrFactors extends HTMLElement {
       <div class="section-bg-white">${this._renderMythsSection()}</div>
 
       <!-- 8. Top picks (gray) -->
-      <section class="picks-section section-bg-gray" id="headlines">
+      <section class="picks-section section-bg-white" id="headlines">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1447,7 +1477,6 @@ class KygoRhrFactors extends HTMLElement {
           </div>
         </div>
       </section>
-      <kygo-inline-subscribe source="tool-rhr-factors" variant="factors"></kygo-inline-subscribe>
 
       <!-- 9. Sources (white) -->
       ${this._renderRelatedTools('gray')}

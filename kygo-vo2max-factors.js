@@ -852,6 +852,34 @@ class KygoVo2maxFactors extends HTMLElement {
       </section>`;
   }
 
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-vo2max-factors', variant: 'factors' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
+        </div>
+      </section>`;
+  }
+
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const ouraImg = 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png';
@@ -944,8 +972,10 @@ class KygoVo2maxFactors extends HTMLElement {
           <div class="fx-groups animate-on-scroll">${this._renderFactorGroups(all)}</div>
         </div>
       </section>
+      ${this._renderEmailCta()}
 
-      <section class="section bg-white">
+
+      <section class="section bg-light">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/post/what-affects-vo2-max" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Full Guide</span>
@@ -958,9 +988,8 @@ class KygoVo2maxFactors extends HTMLElement {
           </a>
         </div>
       </section>
-      <kygo-inline-subscribe source="tool-vo2max-factors" variant="factors"></kygo-inline-subscribe>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -970,7 +999,7 @@ class KygoVo2maxFactors extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/vo2-max-accuracy" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Related Tool</span>
@@ -984,9 +1013,9 @@ class KygoVo2maxFactors extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedTools()}
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>

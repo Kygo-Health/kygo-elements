@@ -1193,7 +1193,7 @@ class KygoAccuracyFactors extends HTMLElement {
     const mt = this._metrics.find(m => m.key === this._metricFilter) || this._metrics[0];
     const n = this._cellsFor(mt.key, true).filter(x => x.c.e === 'N').length;
     return `
-      <section class="nulls-section section-bg-white" id="nulls">
+      <section class="nulls-section section-bg-gray" id="nulls">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('ban')}</span>Step 3 · ${mt.label}</span>
@@ -1221,7 +1221,7 @@ class KygoAccuracyFactors extends HTMLElement {
     const label = k => (this._metrics.find(m => m.key === k) || {}).label || k;
 
     return `
-      <section class="comparison-section section-bg-gray" id="matrix">
+      <section class="comparison-section section-bg-white" id="matrix">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('target')}</span>Where the answer flips</span>
@@ -1249,7 +1249,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
   _renderPatternsSection() {
     return `
-      <section class="picks-section section-bg-white">
+      <section class="picks-section section-bg-gray">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1443,7 +1443,7 @@ class KygoAccuracyFactors extends HTMLElement {
     return `
       ${this._renderRelatedTools('gray')}
 
-      <section class="sources-section section-bg-gray">
+      <section class="sources-section section-bg-white">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">Every figure on this page traces to a primary source below, with funding relationships, sample sizes and sign-convention traps carried alongside the number rather than hidden. Where a study contradicts its own abstract, we cite the table.</p>
@@ -1817,6 +1817,34 @@ class KygoAccuracyFactors extends HTMLElement {
       </section>`;
   }
 
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-accuracy-factors', variant: 'factors' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
+        </div>
+      </section>`;
+  }
+
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const factorCount = this._factors.length;
@@ -1883,12 +1911,11 @@ class KygoAccuracyFactors extends HTMLElement {
       ${this._renderAppCta()}
 
       ${this._renderDegradersSection()}
+      ${this._renderEmailCta()}
+
       ${this._renderNullsSection()}
       ${this._renderFlipSection()}
       ${this._renderPatternsSection()}
-      <section csubscribe-section section-bg-whiteg-gray">
-        <kygo-inline-subscribe source="tool-accuracy-factors" variant="factors"></kygo-inline-subscribe>
-      </section>
       ${this._renderCalloutSection()}
       ${this._renderArticleCta()}
       ${this._renderFaqSection()}

@@ -497,7 +497,7 @@ class KygoSupplementsByMetric extends HTMLElement {
 
   _renderMythSection() {
     return `
-      <section class="picks-section section-bg-white">
+      <section class="picks-section section-bg-gray">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -688,7 +688,7 @@ class KygoSupplementsByMetric extends HTMLElement {
     return `
       ${this._renderRelatedTools('gray')}
 
-      <section class="sources-section section-bg-gray">
+      <section class="sources-section section-bg-white">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">Every supplement claim verified against primary research (2026-06-12 pass, REM sleep added 2026-08-19). Funding flags are part of the data — they travel with each claim.</p>
@@ -1044,6 +1044,34 @@ class KygoSupplementsByMetric extends HTMLElement {
       </section>`;
   }
 
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-supplements-by-metric', variant: 'factors' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
+        </div>
+      </section>`;
+  }
+
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const supCount = this._supplements.length;
@@ -1112,10 +1140,9 @@ class KygoSupplementsByMetric extends HTMLElement {
       ${this._renderAppCta()}
 
       ${this._renderMatrixSection()}
+      ${this._renderEmailCta()}
+
       ${this._renderMythSection()}
-      <section csubscribe-section section-bg-whiteg-gray">
-        <kygo-inline-subscribe source="tool-supplements-by-metric" variant="factors"></kygo-inline-subscribe>
-      </section>
       ${this._renderCalloutSection()}
       ${this._renderArticleCta()}
       ${this._renderFaqSection()}

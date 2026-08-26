@@ -1139,7 +1139,7 @@ class KygoWearableStress extends HTMLElement {
     }).join('');
 
     return `
-      <section class="breakdown-section section-bg-gray" id="full-breakdown">
+      <section class="breakdown-section section-bg-white" id="full-breakdown">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('sparkle')}</span>Per-device deep dive</span>
@@ -1168,7 +1168,7 @@ class KygoWearableStress extends HTMLElement {
 
   _renderArticleCta() {
     return `
-      <section class="article-section section-bg-white">
+      <section class="article-section section-bg-gray">
         <div class="container">
           <a href="https://www.kygo.app/post/how-wearables-measure-stress-comparison" class="article-card animate-on-scroll" target="_blank" rel="noopener">
             <span class="article-badge">Deep Dive</span>
@@ -1187,7 +1187,7 @@ class KygoWearableStress extends HTMLElement {
 
   _renderTopPicks() {
     return `
-      <section class="picks-section section-bg-white">
+      <section class="picks-section section-bg-gray">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1531,7 +1531,7 @@ class KygoWearableStress extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedTools()}
 
       <section class="sources-section section-bg-gray">
         <div class="container">
@@ -1841,6 +1841,34 @@ class KygoWearableStress extends HTMLElement {
       </section>`;
   }
 
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-wearable-stress', variant: 'factors' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
+        </div>
+      </section>`;
+  }
+
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
     const totalFactors = Object.values(this._metricFactors).reduce((s, arr) => s + arr.length, 0);
@@ -1883,8 +1911,9 @@ class KygoWearableStress extends HTMLElement {
       ${this._renderAppCta()}
 
       ${this._renderFactorsSection()}
+      ${this._renderEmailCta()}
+
       ${this._renderArticleCta()}
-      <kygo-inline-subscribe source="tool-wearable-stress" variant="factors"></kygo-inline-subscribe>
       ${this._renderFullBreakdown()}
       ${this._renderTopPicks()}
       ${this._renderSourcesSection()}
