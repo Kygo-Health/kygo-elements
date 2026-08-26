@@ -1139,7 +1139,7 @@ class KygoWearableStress extends HTMLElement {
     }).join('');
 
     return `
-      <section class="breakdown-section section-bg-white" id="full-breakdown">
+      <section class="breakdown-section section-bg-gray" id="full-breakdown">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('sparkle')}</span>Per-device deep dive</span>
@@ -1171,9 +1171,9 @@ class KygoWearableStress extends HTMLElement {
 
   _renderTopPicks() {
     return `
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools()}
 
-      <section class="picks-section section-bg-white">
+      <section class="picks-section section-bg-gray">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1517,9 +1517,9 @@ class KygoWearableStress extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedPosts()}
 
-      <section class="sources-section section-bg-white">
+      <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All claims sourced from peer-reviewed research and official device documentation. Every factor in the breakdown above cites at least one of these.</p>

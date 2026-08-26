@@ -1472,8 +1472,7 @@ class KygoSensorComparison extends HTMLElement {
           <div class="stats-bar animate-on-scroll">${this._renderDeviceStatsBar()}</div>
         </div>
       </section>
-      ${this._renderAppCta('gray')}
-
+      ${this._renderAppCta()}
 
       <!-- Visual Charts -->
       <section class="charts-section">
@@ -1483,11 +1482,9 @@ class KygoSensorComparison extends HTMLElement {
           ${this._renderChartsSection()}
         </div>
       </section>
-      ${this._renderEmailCta('gray')}
-
+      ${this._renderEmailCta()}
 
       <!-- Early contextual CTA -->
-
 
       <!-- Main Comparison Section -->
       <section class="compare-section" id="compare">
@@ -1509,7 +1506,7 @@ class KygoSensorComparison extends HTMLElement {
       </section>
 
       <!-- FDA Summary -->
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="fda-section">
         <div class="container">
@@ -1518,44 +1515,8 @@ class KygoSensorComparison extends HTMLElement {
         </div>
       </section>
 
-      <!-- Blog CTA -->
-      <section class="blog-cta-section">
-        <div class="container">
-          <div class="blog-cta-wrapper animate-on-scroll">
-            <div class="blog-cta">
-              <div class="blog-cta-glow"></div>
-              <div class="blog-cta-content">
-                <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-                <h2>Your Wearable Tracks Everything — Except <span class="highlight">What You Eat</span></h2>
-                <p>Kygo Health connects your nutrition to your biometrics so you can finally see the full picture.</p>
-                <div class="blog-cta-buttons">
-                  <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="blog-cta-btn cta-primary" data-track-position="footer-cta" data-track-label="sensor-comparison-footer-ios" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                    Download for iOS
-                  </a>
-                  <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="blog-cta-android-btn cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="sensor-comparison-footer-android">
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                    Download for Android
-                  </a>
-                </div>
-                <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:#94A3B8;text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-                <div class="blog-cta-devices">
-                  <span>Works with</span>
-                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" onerror="this.style.display='none'" />
-                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" onerror="this.style.display='none'" />
-                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" onerror="this.style.display='none'" />
-                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" onerror="this.style.display='none'" />
-                  <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy" onerror="this.style.display='none'" />
-                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" loading="lazy" onerror="this.style.display='none'" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- Sources -->
-      ${this._renderRelatedTools()}
+      ${this._renderRelatedPosts('gray')}
 
       <section class="sources-section">
         <div class="container">
@@ -1564,7 +1525,6 @@ class KygoSensorComparison extends HTMLElement {
           <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
-
 
       <!-- Footer -->
       <footer class="tool-footer">
@@ -1745,7 +1705,7 @@ class KygoSensorComparison extends HTMLElement {
       .spo2-note strong { color: var(--dark); }
 
       /* Charts */
-      .charts-section { padding: 48px 0; background: #fff; }
+      .charts-section { padding: 48px 0; background: var(--bg-surface); }
       .charts-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
       .chart-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 20px; }
       .chart-card h3 { font-size: 15px; margin-bottom: 12px; color: var(--dark); }
@@ -1790,26 +1750,8 @@ class KygoSensorComparison extends HTMLElement {
       .algo-what { font-size: 13px; margin-bottom: 4px; }
       .algo-diff { font-size: 12px; color: var(--green-dark); background: var(--green-light); padding: 4px 8px; border-radius: 4px; display: inline-block; }
 
-      /* Blog CTA */
-      .blog-cta-section { padding: 48px 0; overflow: hidden; }
-      .blog-cta-wrapper { max-width: 680px; margin: 0 auto; }
-      .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 40px 32px; overflow: hidden; text-align: center; color: #fff; }
-      .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.15), transparent 70%); pointer-events: none; }
-      .blog-cta-content { position: relative; z-index: 1; }
-      .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.1); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 500; margin-bottom: 16px; }
       .pulse-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
       @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-      .blog-cta h2 { font-size: clamp(20px, 5vw, 28px); margin-bottom: 12px; }
-      .highlight { color: var(--green); }
-      .blog-cta p { color: var(--gray-300); font-size: 14px; margin-bottom: 20px; }
-      .blog-cta-buttons { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; font-weight: 600; padding: 12px 24px; border-radius: var(--radius-sm); font-size: 15px; text-decoration: none; transition: background 0.2s; white-space:nowrap; }
-      .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-btn svg { width: 18px; height: 18px; }
-      .blog-cta-android-btn { display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;font-weight:600;padding:12px 24px;border-radius:var(--radius-sm, 10px);font-size:15px;transition:background 0.2s;text-decoration:none;border:none;cursor:pointer; }
-      .blog-cta-android-btn:hover { background:var(--green-dark);color:#fff; }
-      .blog-cta-android-btn svg { width: 18px; height: 18px; }
-      @media (max-width: 480px) { .blog-cta-buttons { flex-direction: column; align-items: stretch; } .blog-cta-buttons a { justify-content: center; text-align: center; } }
       .kearly-section { padding: 48px 16px; }
       .kband { max-width: 1100px; margin: 0 auto; }
       .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
@@ -1838,13 +1780,11 @@ class KygoSensorComparison extends HTMLElement {
       .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
       .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
       @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
-      .blog-cta-devices { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; font-size: 12px; color: var(--gray-400); }
-      .blog-cta-devices img { height: 20px; width: auto; opacity: 0.7; }
 
       /* Blog Cross-Link */
 
       /* Sources */
-      .sources-section { padding: 48px 0; }
+      .sources-section { padding: 48px 0; background: #fff; }
       .sources-list { display: flex; flex-direction: column; gap: 6px; }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }

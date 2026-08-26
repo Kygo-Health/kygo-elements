@@ -919,7 +919,7 @@ class KygoOura5vs4 extends HTMLElement {
       </section>
 
       <!-- FAQ -->
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="section bg-white">
         <div class="section-inner">
@@ -932,7 +932,7 @@ class KygoOura5vs4 extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedPosts('gray')}
 
       <!-- Footer -->
       <footer class="tool-footer">

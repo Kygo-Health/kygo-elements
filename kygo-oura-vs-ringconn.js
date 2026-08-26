@@ -830,7 +830,7 @@ class KygoOuraVsRingConn extends HTMLElement {
 
       <!-- Late slim CTA -->
 
-      ${this._renderRelatedPosts()}
+      ${this._renderRelatedTools()}
 
       <section class="section bg-light">
         <div class="section-inner">
@@ -856,7 +856,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedPosts('gray')}
 
       <section class="section bg-white">
         <div class="section-inner">

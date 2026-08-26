@@ -1328,7 +1328,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
   _renderFaqSection() {
     return `
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="faq-section section-bg-white" id="faq">
         <div class="container">
@@ -1421,7 +1421,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedPosts('gray')}
 
       <section class="sources-section section-bg-white">
         <div class="container">

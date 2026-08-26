@@ -10,35 +10,23 @@
 ## 🆕 Opened on branch `claude/standardize-blog-sections-1wo0ax` (2026-08)
 
 Found while standardising the blog cross-link section across every tool page. **None of these
-were introduced by that pass** — they are pre-existing and were deliberately left alone because
-each is a conversion or layout decision rather than a blog-section fix. Ranked.
+were introduced by that pass** — all were pre-existing. #B1, #B2 and #B4 have since been fixed
+on the same branch; #B3 and #B5 are still open. Ranked.
 
-- **#B1 (P2) — six tool pages still carry a *second* app-download CTA.** The playbook's app-CTA
-  standard is explicit: "one app-download surface per page: the CTA card, no `kband`." These six
-  render the standard `_renderAppCta()` card **and** a legacy `blog-cta-section` — a dark card
-  with its own iOS/Android Tenjin buttons, "Free plan available" line and six "Works with"
-  badges. It is the retired `kband`'s successor under a different name, and it dilutes both the
-  standard card and the email capture.
+- **#B1 (P2) — ✅ RESOLVED.** Six tool pages carried a *second* app-download CTA: the standard
+  `_renderAppCta()` card **and** a legacy `blog-cta-section` (a dark card with its own iOS/Android
+  Tenjin buttons, "Free plan available" line and six "Works with" badges) — the retired `kband`'s
+  successor under a different name. All six removed: `kygo-hrv-factors`, `kygo-rhr-factors`,
+  `kygo-sensor-comparison`, `kygo-sleep-latency-factors`, `kygo-sleep-metrics` (where the two dark
+  cards rendered back to back) and `kygo-staying-asleep-factors`. Every tool page is now
+  **exactly one app-download surface**. Band rhythm was re-derived from the rendered DOM
+  afterwards — removing a section flips every band below it — and every page alternates again.
 
-  | File | Legacy section | Note |
-  |---|---|---|
-  | `kygo-hrv-factors.js` | :1328 | sits between the email CTA and related tools |
-  | `kygo-rhr-factors.js` | :1490 | sits *above* the standard app CTA (:1524) |
-  | `kygo-sensor-comparison.js` | :1520 | |
-  | `kygo-sleep-latency-factors.js` | :1232 | sits between the email CTA and related tools |
-  | `kygo-sleep-metrics.js` | :1160 | directly under the standard app CTA (:1156) — two dark cards back to back |
-  | `kygo-staying-asleep-factors.js` | (moved) | was the last section before the footer; moved up to sit above related tools so the blog section could take the tail slot. Still a duplicate download surface |
-
-  Fix: delete the `blog-cta-section` block and its now-dead `.blog-cta*` CSS in each file, then
-  re-check the band rhythm below it (removing a section flips every band underneath). Worth
-  confirming with the client first — it removes a live download surface, so it is a conversion
-  call, not a cleanup.
-
-- **#B2 (P3) — dead legacy app-CTA CSS in `kygo-wearable-accuracy.js`.** ~200 lines of
-  `.blog-cta*` rules (`:1707`–`:1900`, plus the shared padding rules at `:1935` and `:1968`)
-  with **no matching markup anywhere in the file** — left behind when that page's `kband` was
-  retired. Harmless at runtime, pure weight over the CDN. Delete the `.blog-cta*` rules and drop
-  `.blog-cta-section` from the two multi-selector padding rules.
+- **#B2 (P3) — ✅ RESOLVED.** ~200 lines of dead `.blog-cta*` CSS in `kygo-wearable-accuracy.js`
+  with no matching markup, left behind when that page's `kband` was retired, are gone along with
+  the CSS from the six removals above (~150 dead rules in total, plus `.blog-cta-section` dropped
+  from the shared multi-selector padding rules and the `.highlight` rules that only the removed
+  card used).
 
 - **#B3 (P3) — five tool→tool cross-links are dressed as blog cards.** `class="blog-cta"` anchors
   pointing at `/tools/...`, not `/post/...`: `kygo-oura-5-vs-4.js:909`,
@@ -51,9 +39,16 @@ each is a conversion or layout decision rather than a blog-section fix. Ranked.
   card. Note the `.blog-cta` name is shared with #B1's legacy app CTA, so grep the href, not the
   class.
 
-- **#B4 (P3) — band rhythm still breaks on four pages, away from the blog section.** The
-  related-reading pass fixed every adjacency it touched; these are in the app/email-CTA region
-  and were left as-is. "No two adjacent sections share a background" (playbook §2):
+- **#B4 (P3) — ✅ RESOLVED.** Band rhythm broke on four pages away from the blog section
+  (`rhr-factors`, `sensor-comparison`, `sleep-metrics`, `wearable-accuracy`), mostly in the
+  app/email-CTA region. Fixed while re-deriving the bands after the #B1 removals — all 23 tool
+  pages now alternate with no two adjacent sections sharing a background. Two traps worth
+  remembering, both found by checking the *rendered* DOM rather than the source classes:
+  `.picks-section { background:#fff }` was overriding its own `section-bg-gray` utility class on
+  `rhr-factors` (later rule, equal specificity), and on that same page the bands live on wrapper
+  `<div class="section-bg-*">` elements while `.section-bg-* > section { background: transparent }`
+  blanks the section inside — so the band must be set on the wrapper, not the section. The
+  original detail, for reference:
   - `kygo-rhr-factors.js` — four grey bands in a row: app CTA (`:1524`, `'gray'`), baseline
     (`:1529`), email CTA (`:1531`, `'gray'`), sortable factors (`:1535`); then myths (`:1538`)
     and picks (`:1541`) are both white.

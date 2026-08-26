@@ -577,7 +577,7 @@ class KygoSupplementsByMetric extends HTMLElement {
   _renderFaqSection() {
     const faqs = this._faqs();
     return `
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="faq-section section-bg-white" id="faq">
         <div class="container">
@@ -666,7 +666,7 @@ class KygoSupplementsByMetric extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedPosts('gray')}
 
       <section class="sources-section section-bg-white">
         <div class="container">

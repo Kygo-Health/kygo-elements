@@ -1536,7 +1536,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedPosts()}
+      ${this._renderRelatedTools()}
 
       <section class="section bg-light">
         <div class="section-inner">
@@ -1548,7 +1548,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools()}
+      ${this._renderRelatedPosts()}
 
       <section class="section bg-light">
         <div class="section-inner">
