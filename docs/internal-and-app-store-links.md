@@ -100,9 +100,10 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 
 ### Related-tools cross-links (the standard module)
 
-Every tool page carries the standard related-tools section (3 cards), sitting
-directly above its sources section. One card definition per destination, reused
-wherever that tool is linked. **The Food Scanner (`/tools/calories-in-anything`) is
+Every tool page carries the standard related-tools section (3 cards), sitting in
+the closing content run **above the related-reading section** — tools are offered
+before the blog. One card definition per destination, reused wherever that tool
+is linked. **The Food Scanner (`/tools/calories-in-anything`) is
 deliberately never linked from it.**
 
 Rule for choosing the three: a **near neighbour** (same family), a **bridge**
@@ -145,9 +146,9 @@ changes, update `kygo-tools.js`, this table, and the cards that point at it.
 - Individual posts live at `/post/<slug>`, routed by Wix. (The component that constructed
   `…/post/${post.slug}` was the now-removed orphan `kygo-blog-page.js`.)
 - **Posts linked from tool pages now go through the standard related-reading module**
-  (`_relatedPosts()` + `_renderRelatedPosts(bg)`, 3 cards per page, on their own band with a
-  tool content section above and below — never beside the app CTA, the email capture or the
-  related-tools section). The full map — which tool links which posts, inbound counts, and the card copy for
+  (`_relatedPosts()` + `_renderRelatedPosts(bg)`, 3 cards per page, rendered *after* related
+  tools, on their own band with a tool content section above and below — never beside the app
+  CTA, the email capture or the related-tools section). The full map — which tool links which posts, inbound counts, and the card copy for
   every post — lives in **`docs/blog-cross-links.md`**. Update that table when you add or
   retarget a page.
 - The five older per-page designs it replaced (`blog-cta` banner, `article-card`,

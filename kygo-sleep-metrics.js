@@ -1153,49 +1153,9 @@ class KygoSleepMetrics extends HTMLElement {
           <div class="metric-grid animate-on-scroll">${this._renderMetricGrid()}</div>
         </div>
       </section>
-      ${this._renderAppCta('gray')}
+      ${this._renderAppCta()}
 
-
-      <!-- Blog CTA -->
-      <section class="blog-cta-section">
-        <div class="container">
-          <div class="blog-cta animate-on-scroll">
-            <div class="blog-cta-badge">
-              <div class="blog-cta-badge-dot"></div>
-              <span>Free Forever Plan</span>
-            </div>
-            <div class="blog-cta-headline">See how your food affects your <span class="highlight">sleep, energy, and recovery</span></div>
-            <p class="blog-cta-sub">Stop guessing which of these applies to you. Kygo correlates your meals, caffeine, and alcohol with YOUR sleep stages.</p>
-            <div class="blog-cta-actions">
-              <div class="blog-cta-buttons">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener noreferrer" class="blog-cta-btn cta-primary" data-track-position="early" data-track-label="sleep-metrics-early-ios">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="early" data-track-label="sleep-metrics-early-android">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <span class="blog-cta-meta">Free plan available. Save 50% on yearly. Cancel anytime.</span>
-            </div>
-            <div class="blog-cta-devices">
-              <span class="blog-cta-devices-label">Works with</span>
-              <div class="blog-cta-device-tags">
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura">Oura</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple">Apple</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit">Fitbit</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin">Garmin</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health">Google Health</span>
-                <span class="blog-cta-device-tag"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect">Health Connect</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      ${this._renderEmailCta()}
-
-
+      ${this._renderEmailCta('gray')}
 
       <!-- Exclusive Features -->
       <section class="exclusive-section">
@@ -1207,7 +1167,7 @@ class KygoSleepMetrics extends HTMLElement {
       </section>
 
       <!-- Best By Use Case -->
-      ${this._renderRelatedPosts()}
+      ${this._renderRelatedTools('gray')}
 
       <section class="usecase-section">
         <div class="container">
@@ -1218,7 +1178,7 @@ class KygoSleepMetrics extends HTMLElement {
       </section>
 
       <!-- Sources -->
-      ${this._renderRelatedTools()}
+      ${this._renderRelatedPosts('gray')}
 
       <section class="sources-section">
         <div class="container">
@@ -1356,7 +1316,7 @@ class KygoSleepMetrics extends HTMLElement {
       .stat-count { font-size: 11px; color: var(--green-dark); font-weight: 700; }
 
       /* ── Matrix Section ── */
-      .matrix-section { padding: 48px 0; background: #fff; }
+      .matrix-section { padding: 48px 0; background: var(--gray-50); }
 
       /* Category Tabs */
       .cat-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 20px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
@@ -1405,7 +1365,7 @@ class KygoSleepMetrics extends HTMLElement {
       .detail-na { font-size: 12px; color: var(--gray-400); font-style: italic; }
 
       /* ── Exclusive Features ── */
-      .exclusive-section { padding: 48px 0; background: var(--gray-50); }
+      .exclusive-section { padding: 48px 0; background: #fff; }
       .excl-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
       .excl-card { background: white; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; transition: all 0.3s ease; box-shadow: var(--shadow); }
       .excl-card:hover { border-color: var(--green); box-shadow: var(--shadow-hover); transform: translateY(-2px); }
@@ -1433,7 +1393,7 @@ class KygoSleepMetrics extends HTMLElement {
       .excl-buy-arrow svg { width: 100%; height: 100%; }
 
       /* ── Use Cases ── */
-      .usecase-section { padding: 48px 0; background: var(--gray-50); }
+      .usecase-section { padding: 48px 0; background: #fff; }
       .uc-list { display: flex; flex-direction: column; background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
       .uc-row { display: grid; grid-template-columns: 36px 1fr; align-items: start; gap: 8px 10px; padding: 14px 14px; border-bottom: 1px solid var(--gray-100); border-left: 3px solid transparent; transition: all 0.2s; }
       .uc-row:last-child { border-bottom: none; }
@@ -1447,7 +1407,7 @@ class KygoSleepMetrics extends HTMLElement {
       .uc-device-img { width: 28px; height: 28px; border-radius: 8px; object-fit: contain; border: 1px solid var(--gray-200); background: #fff; }
 
       /* ── Sources ── */
-      .sources-section { padding: 48px 0; background: var(--gray-50); }
+      .sources-section { padding: 48px 0; background: #fff; }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
@@ -1471,146 +1431,6 @@ class KygoSleepMetrics extends HTMLElement {
       .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
       .src-toggle.open svg { transform: rotate(90deg); }
 
-      /* ── Blog CTA (below comparison) ── */
-      .blog-cta-section { padding: 48px 0; }
-      .blog-cta {
-        width: 100%;
-        max-width: 680px;
-        margin: 0 auto;
-        position: relative;
-        overflow: hidden;
-        border-radius: 16px;
-        background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700, #334155) 100%);
-        padding: 24px 20px;
-        border: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 16px 40px rgba(30,41,59,0.25);
-      }
-      .blog-cta::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -30%;
-        width: 260px;
-        height: 260px;
-        background: radial-gradient(circle, rgba(34,197,94,0.3) 0%, transparent 70%);
-        pointer-events: none;
-      }
-      .blog-cta-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: rgba(34,197,94,0.1);
-        border: 1px solid rgba(34,197,94,0.2);
-        border-radius: 16px;
-        padding: 4px 10px;
-        margin-bottom: 16px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-badge-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--green);
-        animation: blogCtaPulse 2s ease-in-out infinite;
-      }
-      @keyframes blogCtaPulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-      }
-      .blog-cta-badge span {
-        font-size: 10px;
-        font-weight: 600;
-        color: var(--green);
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-      }
-      .blog-cta-headline {
-        font-family: 'Space Grotesk', -apple-system, sans-serif;
-        font-size: 20px;
-        font-weight: 600;
-        color: white;
-        line-height: 1.25;
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-headline .highlight { color: var(--green); }
-      .blog-cta-sub {
-        font-size: 14px;
-        color: #94A3B8;
-        line-height: 1.65;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-actions {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; white-space:nowrap; }
-      .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-btn svg { width: 18px; height: 18px; }
-      .blog-cta-meta {
-        font-size: 12px;
-        color: #94A3B8;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .blog-cta-devices {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255,255,255,0.08);
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-devices-label {
-        font-size: 10px;
-        font-weight: 500;
-        color: #94A3B8;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-      .blog-cta-device-tags {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 6px;
-        width: 100%;
-      }
-      .blog-cta-device-tag {
-        font-size: 11px;
-        font-weight: 500;
-        color: #94A3B8;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 8px;
-        padding: 4px 8px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        transition: all 0.2s;
-      }
-      .blog-cta-device-tag:hover {
-        background: rgba(255,255,255,0.1);
-        border-color: rgba(255,255,255,0.15);
-      }
-      .blog-cta-device-tag img {
-        width: 14px;
-        height: 14px;
-        border-radius: 3px;
-        object-fit: contain;
-      }
 
       /* ── CTA ── */
       .cta-section { padding: 38px 0; }
@@ -1626,11 +1446,10 @@ class KygoSleepMetrics extends HTMLElement {
       .cta-features { display: flex; flex-direction: column; justify-content: center; gap: 10px; margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.8); }
       .cta-feat { display: flex; align-items: center; justify-content: center; gap: 8px; }
       .cta-feat svg { color: white; flex-shrink: 0; }
-      .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
       .cta-android{background:white;color:var(--green-dark);padding:12px 24px;border-radius:var(--radius-sm, 10px);font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.2s;border:none;cursor:pointer}
       .cta-android:hover{background:var(--gray-100)}
       .cta-android svg{width:18px;height:18px}
-      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:stretch}.cta-buttons a{width:100%;justify-content:center;text-align:center}.blog-cta-buttons{flex-direction:column;align-items:stretch}.blog-cta-buttons a{width:100%;justify-content:center;text-align:center}}
+      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:stretch}.cta-buttons a{width:100%;justify-content:center;text-align:center}}
 
       /* ── Footer ── */
       .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }
@@ -1650,14 +1469,7 @@ class KygoSleepMetrics extends HTMLElement {
         .logo { font-size: 16px; gap: 10px; }
         .logo-img { height: 32px; }
         .section-title { font-size: 32px; }
-        .matrix-section, .exclusive-section, .usecase-section, .sources-section, .cta-section, .blog-cta-section { padding: 64px 0; }
-        .blog-cta { padding: 32px 28px; border-radius: 18px; }
-        .blog-cta-headline { font-size: 24px; }
-        .blog-cta-sub { font-size: 15px; }
-        .blog-cta-actions { flex-direction: row; align-items: center; gap: 16px; }
-        .blog-cta-btn { width: auto; }
-        .blog-cta-devices { flex-direction: row; align-items: center; gap: 14px; }
-        .blog-cta-device-tags { grid-template-columns: repeat(4, auto); width: auto; }
+        .matrix-section, .exclusive-section, .usecase-section, .sources-section, .cta-section { padding: 64px 0; }
         .stats-bar { grid-template-columns: repeat(4, 1fr); gap: 12px; }
         .stat-card { padding: 12px 16px; gap: 10px; }
         .stat-img { width: 32px; height: 32px; }
@@ -1687,15 +1499,7 @@ class KygoSleepMetrics extends HTMLElement {
 
       /* ── Desktop ── */
       @media (min-width: 1024px) {
-        .matrix-section, .exclusive-section, .usecase-section, .sources-section, .cta-section, .blog-cta-section { padding: 80px 0; }
-        .blog-cta { padding: 40px 36px; border-radius: 20px; }
-        .blog-cta-badge { padding: 5px 12px; margin-bottom: 20px; }
-        .blog-cta-headline { font-size: 26px; margin-bottom: 12px; }
-        .blog-cta-sub { font-size: 15px; margin-bottom: 28px; max-width: 560px; }
-        .blog-cta-meta { font-size: 13px; }
-        .blog-cta-devices { margin-top: 24px; padding-top: 24px; gap: 16px; }
-        .blog-cta-device-tag { padding: 5px 10px; font-size: 11px; gap: 6px; }
-        .blog-cta-device-tag img { width: 16px; height: 16px; }
+        .matrix-section, .exclusive-section, .usecase-section, .sources-section, .cta-section { padding: 80px 0; }
         .grid-header { grid-template-columns: 1fr repeat(4, 120px); }
         .grid-row { grid-template-columns: 1fr repeat(4, 120px); }
         .excl-grid { grid-template-columns: 1fr 1fr; }
@@ -1706,7 +1510,6 @@ class KygoSleepMetrics extends HTMLElement {
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
         .grid-detail, .excl-body, .excl-toggle, .src-toggle, .grid-expand-icon { transition: none; }
-        .blog-cta-badge-dot { animation: none; }
       }
     `;
   }

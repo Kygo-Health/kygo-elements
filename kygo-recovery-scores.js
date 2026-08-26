@@ -832,7 +832,7 @@ class KygoRecoveryScores extends HTMLElement {
     }).join('');
 
     return `
-      <section class="breakdown-section section-bg-white" id="full-breakdown">
+      <section class="breakdown-section section-bg-gray" id="full-breakdown">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('sparkle')}</span>Per-brand deep dive</span>
@@ -865,7 +865,7 @@ class KygoRecoveryScores extends HTMLElement {
 
   _renderTopPicks() {
     return `
-      <section class="picks-section section-bg-white">
+      <section class="picks-section section-bg-gray">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1146,9 +1146,9 @@ class KygoRecoveryScores extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedPosts()}
 
-      <section class="sources-section section-bg-white">
+      <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">Every brand checked against vendor docs; every factor and supplement claim verified against primary research.</p>
@@ -1195,7 +1195,7 @@ class KygoRecoveryScores extends HTMLElement {
     }).join('');
 
     return `
-      <section class="validation-section section-bg-gray" id="validation">
+      <section class="validation-section section-bg-white" id="validation">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('shield')}</span>Can you trust the number?</span>
@@ -1242,9 +1242,9 @@ class KygoRecoveryScores extends HTMLElement {
   _renderFaqSection() {
     const faqs = this._faqs();
     return `
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools()}
 
-      <section class="faq-section section-bg-white" id="faq">
+      <section class="faq-section section-bg-gray" id="faq">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('info')}</span>Common questions</span>

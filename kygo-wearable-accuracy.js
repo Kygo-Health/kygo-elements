@@ -1223,8 +1223,7 @@ class KygoWearableAccuracy extends HTMLElement {
           <div class="metric-detail animate-on-scroll">${this._renderMetricDetail()}</div>
         </div>
       </section>
-      ${this._renderAppCta('gray')}
-
+      ${this._renderAppCta()}
 
       <!-- Early contextual CTA -->
 
@@ -1282,7 +1281,6 @@ class KygoWearableAccuracy extends HTMLElement {
       </section>
       ${this._renderEmailCta()}
 
-
       <!-- Quick Recommendations -->
       <section class="recommendations">
         <div class="container">
@@ -1304,7 +1302,7 @@ class KygoWearableAccuracy extends HTMLElement {
       </section>
 
       <!-- Caveats -->
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools()}
 
       <section class="caveats">
         <div class="container">
@@ -1326,7 +1324,7 @@ class KygoWearableAccuracy extends HTMLElement {
       </section>
 
       <!-- Sources -->
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedPosts()}
 
       <section class="sources-section">
         <div class="container">
@@ -1509,7 +1507,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .section-sub { font-size: clamp(14px, 4vw, 16px); color: var(--gray-600); text-align: center; margin-bottom: 32px; max-width: 560px; margin-left: auto; margin-right: auto; }
 
       /* ── Comparison ── */
-      .comparison { padding: 48px 0; background: #fff; }
+      .comparison { padding: 48px 0; background: var(--gray-50); }
       .device-selectors { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
       .selector-group { text-align: center; }
       .selector-group label { display: block; font-size: 12px; font-weight: 600; color: var(--gray-400); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -1583,7 +1581,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .md-insight p { font-size: 13px; color: #92400E; line-height: 1.6; }
 
       /* ── Quick Recommendations ── */
-      .recommendations { padding: 48px 0; background: #fff; }
+      .recommendations { padding: 48px 0; background: var(--gray-50); }
       .rec-list { display: flex; flex-direction: column; gap: 0; background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
       .rec-row { display: grid; grid-template-columns: 36px 1fr auto; align-items: center; gap: 12px; padding: 16px 16px; border-bottom: 1px solid var(--gray-100); border-left: 3px solid transparent; transition: all 0.2s; }
       .rec-row:last-child { border-bottom: none; }
@@ -1665,7 +1663,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .dd-buy-cta svg { flex-shrink: 0; }
 
       /* ── Caveats ── */
-      .caveats { padding: 48px 0; background: #fff; }
+      .caveats { padding: 48px 0; background: var(--gray-50); }
       .caveat-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
       .caveat-card { background: #fff; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); overflow: hidden; transition: all 0.2s; }
       .caveat-card:hover { border-color: var(--gray-300); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
@@ -1680,7 +1678,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .caveat-body p { font-size: 12px; color: var(--gray-600); line-height: 1.6; padding-left: 34px; }
 
       /* ── Sources ── */
-      .sources-section { padding: 48px 0; background: #fff; }
+      .sources-section { padding: 48px 0; }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
@@ -1704,146 +1702,6 @@ class KygoWearableAccuracy extends HTMLElement {
       .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
       .src-toggle.open svg { transform: rotate(90deg); }
 
-      /* ── Blog CTA (below comparison) ── */
-      .blog-cta-section { padding: 48px 0; }
-      .blog-cta {
-        width: 100%;
-        max-width: 680px;
-        margin: 0 auto;
-        position: relative;
-        overflow: hidden;
-        border-radius: 16px;
-        background: linear-gradient(135deg, var(--dark) 0%, var(--gray-700, #334155) 100%);
-        padding: 24px 20px;
-        border: 1px solid rgba(255,255,255,0.08);
-        box-shadow: 0 16px 40px rgba(30,41,59,0.25);
-      }
-      .blog-cta::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        right: -30%;
-        width: 260px;
-        height: 260px;
-        background: radial-gradient(circle, rgba(34,197,94,0.3) 0%, transparent 70%);
-        pointer-events: none;
-      }
-      .blog-cta-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: rgba(34,197,94,0.1);
-        border: 1px solid rgba(34,197,94,0.2);
-        border-radius: 16px;
-        padding: 4px 10px;
-        margin-bottom: 16px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-badge-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--green);
-        animation: blogCtaPulse 2s ease-in-out infinite;
-      }
-      @keyframes blogCtaPulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-      }
-      .blog-cta-badge span {
-        font-size: 10px;
-        font-weight: 600;
-        color: var(--green);
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-      }
-      .blog-cta-headline {
-        font-family: 'Space Grotesk', -apple-system, sans-serif;
-        font-size: 20px;
-        font-weight: 600;
-        color: white;
-        line-height: 1.25;
-        margin-bottom: 10px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-headline .highlight { color: var(--green); }
-      .blog-cta-sub {
-        font-size: 14px;
-        color: #94A3B8;
-        line-height: 1.65;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-actions {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; white-space:nowrap; }
-      .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-btn svg { width: 18px; height: 18px; }
-      .blog-cta-meta {
-        font-size: 12px;
-        color: #94A3B8;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      .blog-cta-devices {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid rgba(255,255,255,0.08);
-        position: relative;
-        z-index: 1;
-      }
-      .blog-cta-devices-label {
-        font-size: 10px;
-        font-weight: 500;
-        color: #94A3B8;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
-      .blog-cta-device-tags {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 6px;
-        width: 100%;
-      }
-      .blog-cta-device-tag {
-        font-size: 11px;
-        font-weight: 500;
-        color: #94A3B8;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 8px;
-        padding: 4px 8px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        transition: all 0.2s;
-      }
-      .blog-cta-device-tag:hover {
-        background: rgba(255,255,255,0.1);
-        border-color: rgba(255,255,255,0.15);
-      }
-      .blog-cta-device-tag img {
-        width: 14px;
-        height: 14px;
-        border-radius: 3px;
-        object-fit: contain;
-      }
 
       /* ── CTA ── */
       .cta-section { padding: 38px 0; }
@@ -1893,11 +1751,10 @@ class KygoWearableAccuracy extends HTMLElement {
       }
       .cta-feature { display: flex; align-items: center; justify-content: center; gap: 8px; }
       .cta-feature svg { color: white; flex-shrink: 0; }
-      .blog-cta-buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
       .cta-android{background:white;color:var(--green-dark);padding:12px 24px;border-radius:var(--radius-sm, 10px);font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:background 0.2s;border:none;cursor:pointer}
       .cta-android:hover{background:var(--gray-100)}
       .cta-android svg{width:18px;height:18px}
-      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:stretch}.cta-buttons a{width:100%;justify-content:center;text-align:center}.blog-cta-buttons{flex-direction:column;align-items:stretch}.blog-cta-buttons a{width:100%;justify-content:center;text-align:center}}
+      @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:stretch}.cta-buttons a{width:100%;justify-content:center;text-align:center}}
 
       /* ── Footer ── */
       .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }
@@ -1933,12 +1790,7 @@ class KygoWearableAccuracy extends HTMLElement {
         .logo { font-size: 16px; gap: 10px; }
         .logo-img { height: 32px; }
         .section-title { font-size: 32px; }
-        .comparison, .recommendations, .deep-dives, .caveats, .cta-section, .blog-cta-section { padding: 64px 0; }
-        .blog-cta-headline { font-size: 24px; }
-        .blog-cta-actions { flex-direction: row; align-items: center; gap: 16px; }
-        .blog-cta-btn { width: auto; }
-        .blog-cta-devices { flex-direction: row; align-items: center; gap: 14px; }
-        .blog-cta-device-tags { grid-template-columns: repeat(4, auto); width: auto; }
+        .comparison, .recommendations, .deep-dives, .caveats, .cta-section { padding: 64px 0; }
         .device-summary-card { padding: 24px; }
         .device-summary-card .ds-icon { width: 52px; height: 52px; }
         .metric-detail { padding: 28px; }
@@ -1966,13 +1818,7 @@ class KygoWearableAccuracy extends HTMLElement {
 
       /* ── Desktop (1024px) ── */
       @media (min-width: 1024px) {
-        .comparison, .recommendations, .deep-dives, .caveats, .cta-section, .blog-cta-section { padding: 80px 0; }
-        .blog-cta-badge { padding: 5px 12px; margin-bottom: 20px; }
-        .blog-cta-headline { font-size: 26px; margin-bottom: 12px; }
-        .blog-cta-meta { font-size: 13px; }
-        .blog-cta-devices { margin-top: 24px; padding-top: 24px; gap: 16px; }
-        .blog-cta-device-tag { padding: 5px 10px; font-size: 11px; gap: 6px; }
-        .blog-cta-device-tag img { width: 16px; height: 16px; }
+        .comparison, .recommendations, .deep-dives, .caveats, .cta-section { padding: 80px 0; }
         .device-summary-card { padding: 28px; }
         .device-summary-card .ds-icon { width: 56px; height: 56px; }
         .metric-detail { padding: 32px; }
@@ -1992,7 +1838,6 @@ class KygoWearableAccuracy extends HTMLElement {
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
         .dd-body, .caveat-body, .dd-toggle, .caveat-toggle, .md-bar-fill { transition: none; }
-        .blog-cta-badge-dot { animation: none; }
       }
     `;
   }

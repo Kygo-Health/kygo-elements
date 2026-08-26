@@ -1456,7 +1456,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="section bg-white">
         <div class="section-inner">
@@ -1468,7 +1468,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedPosts('gray')}
 
       <section class="section bg-white">
         <div class="section-inner">
