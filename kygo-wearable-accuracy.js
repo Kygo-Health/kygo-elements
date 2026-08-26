@@ -403,6 +403,72 @@ class KygoWearableAccuracy extends HTMLElement {
     };
   }
 
+  // ── Icons ─────────────────────────────────────────────────────────────
+
+  _icon(name) {
+    return ({
+      arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
+      externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>'
+    })[name] || '';
+  }
+
+  // Flat source list for the standard sources module, built from the same
+  // study records the device deep-dives cite. Funding is the card's tag, so a
+  // vendor-funded result is labelled before it is read. A study with no DOI
+  // renders as a dashed, non-clickable card rather than being dropped.
+  get _sources() {
+    return Object.values(this._studies).map(st => ({
+      tag: st.independent ? 'Independent' : (st.funder ? st.funder.replace(/ Inc\.$/, '') + '-funded' : 'Funded'),
+      title: st.title,
+      cite: `${st.authors} ${st.year}. ${st.journal.replace(/\.$/, '')}${st.n ? ', n=' + st.n : ''}.`,
+      url: st.doi ? 'https://doi.org/' + st.doi : null
+    }));
+  }
+
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+    }).join('');
+  }
+
+  _renderSources() {
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
+  }
+
   get _caveats() {
     return [
       { title: 'No single device wins everywhere', body: 'The best wearable depends entirely on which metric matters most to you. A device that excels at HRV may be poor at step counting, and vice versa.' },
@@ -822,6 +888,15 @@ class KygoWearableAccuracy extends HTMLElement {
         </div>
       </section>
 
+      <!-- Sources -->
+      <section class="sources-section">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Sources</h2>
+          <p class="section-sub animate-on-scroll">Every accuracy figure on this page traces to one of these studies, each labelled with who funded it.</p>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
+        </div>
+      </section>
+
       <!-- CTA -->
       <section class="cta-section">
         <div class="container">
@@ -1156,6 +1231,31 @@ class KygoWearableAccuracy extends HTMLElement {
       .caveat-card.open .caveat-body { max-height: 200px; padding: 0 14px 12px; }
       .caveat-body p { font-size: 12px; color: var(--gray-600); line-height: 1.6; padding-left: 34px; }
 
+      /* ── Sources ── */
+      .sources-section { padding: 48px 0; }
+      /* Sources · Kygo standard module */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--gray-50); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--green-dark); }
+      .src--nolink .src-tag { color: var(--gray-400); }
+      .src-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--gray-400); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--green-dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
+
       /* ── Blog CTA (below comparison) ── */
       .blog-cta-section { padding: 48px 0; }
       .blog-cta {
@@ -1475,6 +1575,9 @@ class KygoWearableAccuracy extends HTMLElement {
     });
 
     shadow.addEventListener('click', (e) => {
+      // Sources · show-all toggle
+      if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
+
       // Metric tabs
       const tab = e.target.closest('.metric-tab');
       if (tab) {

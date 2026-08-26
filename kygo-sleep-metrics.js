@@ -21,7 +21,6 @@ class KygoSleepMetrics extends HTMLElement {
     this._observer = null;
     this._activeCategory = 'sleepStages';
     this._expandedMetric = null;
-    this._expandedSource = null;
     this._expandedExclusive = null;
     this._eventsBound = false;
   }
@@ -402,7 +401,7 @@ class KygoSleepMetrics extends HTMLElement {
 
   // ── Sources ────────────────────────────────────────────────────────────
 
-  get _sources() {
+  get _srcByDevice() {
     return {
       oura: [
         { label: 'Oura Support \u2014 Sleep Score', url: 'https://support.ouraring.com/hc/en-us/articles/360025445574-Sleep-Score' },
@@ -579,29 +578,60 @@ class KygoSleepMetrics extends HTMLElement {
     `).join('');
   }
 
-  _renderSources() {
+  // Flat source list for the standard sources module: the device name becomes
+  // the card's tag.
+  get _sources() {
     const devices = this._devices;
-    const sources = this._sources;
-    const keys = ['oura', 'fitbit', 'appleWatch', 'garmin'];
-    return keys.map((dk, i) => {
-      const d = devices[dk];
-      const s = sources[dk];
-      const isExpanded = this._expandedSource === dk;
-      return `
-        <div class="src-card ${isExpanded ? 'open' : ''}" data-source="${dk}">
-          <div class="src-header" role="button" aria-expanded="${isExpanded}">
-            <img src="${d.imageUrl}" alt="${d.name}" class="src-img" loading="lazy" />
-            <span class="src-name">${d.name}</span>
-            <span class="src-count">${s.length} sources</span>
-            <span class="src-toggle">${this._icon('chevDown')}</span>
-          </div>
-          <div class="src-body">
-            <ul class="src-list">
-              ${s.map(link => `<li><a href="${link.url}" target="_blank" rel="noopener">${link.label} <span class="src-ext">${this._icon('externalLink')}</span></a></li>`).join('')}
-            </ul>
-          </div>
-        </div>`;
+    const byDevice = this._srcByDevice;
+    const out = [];
+    for (const dk of ['oura', 'fitbit', 'appleWatch', 'garmin']) {
+      for (const s of byDevice[dk] || []) out.push({ tag: devices[dk].name, title: s.label, cite: '', url: s.url });
+    }
+    return out;
+  }
+
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
     }).join('');
+  }
+
+  _renderSources() {
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
   }
 
   // ── Surgical Update ────────────────────────────────────────────────────
@@ -734,7 +764,7 @@ class KygoSleepMetrics extends HTMLElement {
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All data sourced from official manufacturer documentation and peer-reviewed research.</p>
-          <div class="src-grid animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -949,24 +979,28 @@ class KygoSleepMetrics extends HTMLElement {
 
       /* ── Sources ── */
       .sources-section { padding: 48px 0; background: var(--gray-50); }
-      .src-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
-      .src-card { background: #fff; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); overflow: hidden; transition: all 0.2s; }
-      .src-card:hover { border-color: var(--gray-300); }
-      .src-header { display: flex; align-items: center; padding: 12px 14px; cursor: pointer; gap: 10px; }
-      .src-img { width: 28px; height: 28px; border-radius: 7px; object-fit: contain; flex-shrink: 0; }
-      .src-name { font-size: 14px; font-weight: 600; color: var(--dark); flex: 1; }
-      .src-count { font-size: 11px; color: var(--gray-400); font-weight: 500; }
-      .src-toggle { width: 14px; height: 14px; color: var(--gray-400); transition: transform 0.3s; flex-shrink: 0; display: flex; }
-      .src-toggle svg { width: 100%; height: 100%; }
-      .src-card.open .src-toggle { transform: rotate(180deg); }
-      .src-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.35s ease; padding: 0 14px; }
-      .src-card.open .src-body { max-height: 500px; padding: 0 14px 14px; }
-      .src-list { list-style: none; }
-      .src-list li { margin-bottom: 6px; }
-      .src-list a { font-size: 13px; color: var(--green-dark); text-decoration: none; display: flex; align-items: center; gap: 6px; line-height: 1.4; transition: color 0.2s; }
-      .src-list a:hover { color: var(--dark); text-decoration: underline; }
-      .src-ext { width: 12px; height: 12px; flex-shrink: 0; display: inline-flex; }
-      .src-ext svg { width: 100%; height: 100%; }
+      /* Sources · Kygo standard module */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--gray-50); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--green-dark); }
+      .src--nolink .src-tag { color: var(--gray-400); }
+      .src-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--gray-400); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--green-dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
       /* ── Blog CTA (below comparison) ── */
       .blog-cta-section { padding: 48px 0; }
@@ -1176,7 +1210,6 @@ class KygoSleepMetrics extends HTMLElement {
         .uc-label { font-size: 15px; }
         .uc-devices { grid-column: auto; }
         .uc-device-img { width: 36px; height: 36px; border-radius: 10px; }
-        .src-grid { grid-template-columns: 1fr 1fr; }
         .cta-box { padding: 48px 32px; }
         .cta-box h2 { font-size: 28px; }
         .cta-box p { font-size: 16px; }
@@ -1206,7 +1239,7 @@ class KygoSleepMetrics extends HTMLElement {
       /* ── Reduced Motion ── */
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-        .grid-detail, .excl-body, .src-body, .excl-toggle, .src-toggle, .grid-expand-icon { transition: none; }
+        .grid-detail, .excl-body, .excl-toggle, .src-toggle, .grid-expand-icon { transition: none; }
         .blog-cta-badge-dot { animation: none; }
       }
     `;
@@ -1254,20 +1287,8 @@ class KygoSleepMetrics extends HTMLElement {
         return;
       }
 
-      // Source accordion
-      const srcHeader = e.target.closest('.src-header');
-      if (srcHeader) {
-        const card = srcHeader.closest('.src-card');
-        const key = card.dataset.source;
-        this._expandedSource = this._expandedSource === key ? null : key;
-        shadow.querySelectorAll('.src-card').forEach(c => {
-          const isExp = c.dataset.source === this._expandedSource;
-          c.classList.toggle('open', isExp);
-          const hdr = c.querySelector('.src-header');
-          if (hdr) hdr.setAttribute('aria-expanded', isExp);
-        });
-        return;
-      }
+      // Sources · show-all toggle
+      if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
     });
 
     // Keyboard support for grid rows

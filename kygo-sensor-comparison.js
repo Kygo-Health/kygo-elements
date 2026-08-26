@@ -38,7 +38,6 @@ class KygoSensorComparison extends HTMLElement {
     this._expandedSensor = null;
     this._expandedMetric = null;
     this._expandedAlgo = null;
-    this._expandedSource = null;
     this._eventsBound = false;
     this._radarVisibleBrands = null;
     this._radarClickBound = false;
@@ -238,7 +237,7 @@ class KygoSensorComparison extends HTMLElement {
 
   // ── Sources ────────────────────────────────────────────────────────────
 
-  get _sources() {
+  get _srcByBrand() {
     return {
       garmin: [
         { label: 'Garmin Newsroom — Venu 4 Announcement', url: 'https://www.garmin.com/en-US/newsroom/press-release/sports-fitness/take-steps-towards-a-healthier-lifestyle-with-the-venu-4-from-garmin/' },
@@ -888,45 +887,61 @@ class KygoSensorComparison extends HTMLElement {
 
   // ── Render: Sources ────────────────────────────────────────────────────
 
-  _renderSources() {
-    const sources = this._sources;
+  // Flat source list for the standard sources module: the brand becomes the
+  // card's tag. (The Amazon links that used to sit in the old accordion
+  // headers are unchanged in the two comparison tables above.)
+  get _sources() {
     const devices = this._devices;
-    const affiliateMap = {
-      garmin: devices.garmin.affiliateUrl,
-      whoop: devices.whoop.affiliateUrl,
-      oura: devices.oura.affiliateUrl,
-      apple: devices.appleS10.affiliateUrl,
-      fitbit: devices.fitbit.affiliateUrl
-    };
-    const labelMap = {
-      garmin: devices.garmin.trackLabel,
-      whoop: devices.whoop.trackLabel,
-      oura: devices.oura.trackLabel,
-      apple: devices.appleS10.trackLabel,
-      fitbit: devices.fitbit.trackLabel
-    };
-    return Object.entries(sources).map(([bk, srcs], i) => {
-      const isOpen = this._expandedSource === bk;
-      const brandColor = bk === 'apple' ? '#a855f7' : (devices[bk] ? devices[bk].color : '#6b7280');
-      const brandName = bk === 'apple' ? 'Apple Watch' : (devices[bk] ? devices[bk].name : bk);
-      const affUrl = affiliateMap[bk];
-      const affLabel = labelMap[bk];
-      return `
-        <div class="src-card ${isOpen ? 'open' : ''}" data-source="${bk}">
-          <div class="src-header" role="button" tabindex="0" aria-expanded="${isOpen}">
-            <span class="src-dot" style="background:${brandColor}"></span>
-            <div class="src-brand-wrap">
-              <span class="src-brand">${brandName}</span>
-              ${affUrl ? `<a href="${affUrl}" class="src-amazon-link" target="_blank" rel="noopener sponsored" data-track-label="${affLabel}">View on Amazon ${this._icon('arrowRight')}</a>` : ''}
-            </div>
-            <span class="src-count">${srcs.length} sources</span>
-            <span class="src-toggle">${this._icon('chevDown')}</span>
-          </div>
-          <div class="src-body">
-            <ul>${srcs.map(s => `<li><a href="${s.url}" target="_blank" rel="noopener">${s.label} ${this._icon('externalLink')}</a></li>`).join('')}</ul>
-          </div>
-        </div>`;
+    const out = [];
+    for (const [bk, srcs] of Object.entries(this._srcByBrand)) {
+      const brand = bk === 'apple' ? 'Apple Watch' : (devices[bk] ? devices[bk].name : bk);
+      for (const s of srcs) out.push({ tag: brand, title: s.label, cite: '', url: s.url });
+    }
+    return out;
+  }
+
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
     }).join('');
+  }
+
+  _renderSources() {
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
   }
 
   // ── Render: FDA Summary ────────────────────────────────────────────────
@@ -1117,7 +1132,7 @@ class KygoSensorComparison extends HTMLElement {
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All data from official manufacturer specs, support docs, and independent reviews. Verified March 2026.</p>
-          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -1376,24 +1391,28 @@ class KygoSensorComparison extends HTMLElement {
       /* Sources */
       .sources-section { padding: 48px 0; background: #fff; }
       .sources-list { display: flex; flex-direction: column; gap: 6px; }
-      .src-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; }
-      .src-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: pointer; font-size: 14px; font-weight: 500; }
-      .src-brand-wrap { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-      .src-amazon-link { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 500; color: var(--gray-600); text-decoration: none; transition: color 0.2s; }
-      .src-amazon-link:hover { color: var(--dark); }
-      .src-amazon-link svg { width: 12px; height: 12px; color: var(--green-dark); }
-      .src-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-      .src-count { font-size: 12px; color: var(--gray-400); flex-shrink: 0; }
-      .src-toggle { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; }
-      .src-toggle svg { width: 100%; height: 100%; }
-      .src-card.open .src-toggle { transform: rotate(180deg); }
-      .src-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 16px; }
-      .src-card.open .src-body { max-height: 400px; padding: 0 16px 14px; }
-      .src-body ul { list-style: none; }
-      .src-body li { padding: 6px 0; border-top: 1px solid var(--gray-100); }
-      .src-body li:first-child { border-top: none; }
-      .src-body a { color: var(--green-dark); font-size: 13px; display: flex; align-items: center; gap: 6px; }
-      .src-body a svg { width: 12px; height: 12px; flex-shrink: 0; }
+      /* Sources · Kygo standard module */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--gray-50); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--green-dark); }
+      .src--nolink .src-tag { color: var(--gray-400); }
+      .src-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--gray-400); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--green-dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
       /* Footer */
       .tool-footer { padding: 24px 0 16px; text-align: center; border-top: 1px solid var(--gray-200); }
@@ -1424,7 +1443,7 @@ class KygoSensorComparison extends HTMLElement {
       }
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-        .algo-body, .src-body { transition: none; }
+        .algo-body { transition: none; }
         .pulse-dot { animation: none; }
       }
     `;
@@ -1458,17 +1477,8 @@ class KygoSensorComparison extends HTMLElement {
         return;
       }
 
-      // Source card toggle
-      const srcHeader = e.target.closest('.src-header');
-      if (srcHeader) {
-        const card = srcHeader.closest('.src-card');
-        const key = card.dataset.source;
-        this._expandedSource = this._expandedSource === key ? null : key;
-        shadow.querySelectorAll('.src-card').forEach(c => {
-          c.classList.toggle('open', c.dataset.source === this._expandedSource);
-        });
-        return;
-      }
+      // Sources · show-all toggle
+      if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
     });
 
     // Keyboard accessibility
@@ -1476,8 +1486,6 @@ class KygoSensorComparison extends HTMLElement {
       if (e.key === 'Enter' || e.key === ' ') {
         const algoHeader = e.target.closest('.algo-header');
         if (algoHeader) { e.preventDefault(); algoHeader.click(); }
-        const srcHeader = e.target.closest('.src-header');
-        if (srcHeader) { e.preventDefault(); srcHeader.click(); }
       }
     });
   }
