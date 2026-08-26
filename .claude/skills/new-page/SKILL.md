@@ -59,7 +59,12 @@ this skill assumes that house style.
    one `<span>` for the green phrase, and a sub. Don't use the retired thin `kband`. Pass
    `'gray'` when the section above is white, and re-check the whole page's band rhythm after
    inserting it. Spec in `docs/tool-page-playbook.md` §3 "App CTA (the standard module)".
-9. **Every tool page gets the standard related-tools module — do not design a new one.** Copy
+9. **Every tool page gets the standard email-CTA module** — `_renderEmailCta(bg)` wrapping
+   `<kygo-inline-subscribe>` in its own section, placed after the first content section that
+   follows the app CTA so the two conversion touchpoints are never adjacent. Write only
+   `_emailCta()` (`source`, `variant`); `source` is what GA4 and the Velo endpoint record, so
+   don't rename it. Spec in `docs/tool-page-playbook.md` §3 "Email CTA (the standard module)".
+10. **Every tool page gets the standard related-tools module — do not design a new one.** Copy
    `_relatedTools` / `_relatedMotif` / `_renderRelatedTools` verbatim from any shipped tool (they
    are byte-identical across all of them) and call `${this._renderRelatedTools()}` directly above
    the sources section, or low on the page if the tool has no sources. Write only
@@ -69,7 +74,7 @@ this skill assumes that house style.
    rather than rewriting it, then add the new page to the cross-link table in
    `docs/internal-and-app-store-links.md` and give it inbound links from 2+ sibling tools.
    Full spec in `docs/tool-page-playbook.md` §3 "Related tools (the standard module)".
-10. **If the page cites sources, use the standard sources module — do not design a new one.**
+11. **If the page cites sources, use the standard sources module — do not design a new one.**
    Copy `_renderSourceCards` / `_renderSources` / `_toggleSources`, the `.src*` CSS block and the
    `<div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>` call site verbatim
    from `kygo-sleep-tracker-accuracy.js` (the reference; the module is byte-identical across every

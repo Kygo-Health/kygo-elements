@@ -107,19 +107,22 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    > hooks `kygo-tracking.js` classifies on; don't strip them.
 
 4. **Content sections** — each: `kicker` pill + `<h2>` (with `.hl`) + `lede`, then the module.
-5. **Blog cross-link** card → the matching `kygo.app/post/...` article. For a **multi-post
+5. **Email CTA** — the **standard email-CTA module** (see §3 "Email CTA (the standard module)").
+   Its own section, with **at least one page content section between it and the app CTA** —
+   the two conversion touchpoints never touch.
+6. **Blog cross-link** card → the matching `kygo.app/post/...` article. For a **multi-post
    cluster**, use the *hub-and-spoke* pattern: each content section also gets a small
    `section-readmore` link to its *own* matching post (matrix→comparison post, validation→trust
    post, factor explorer→intake post), and the one big CTA card leads with the primary spoke.
-6. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
+7. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
    getter (never let JSON-LD FAQs exist without a visible FAQ — the older `kygo-wearable-stress`
    shipped FAQ JSON-LD with **no** visible FAQ; don't copy that omission).
-7. **Related tools** — the **standard related-tools module** (see §3 "Related tools (the
+8. **Related tools** — the **standard related-tools module** (see §3 "Related tools (the
    standard module)"). Three cross-link cards, sitting **directly above the sources section**
    (or low on the page when a tool has no sources). Every tool page has one.
-8. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
+9. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
    Every tool with sources uses it, unchanged. Copy it; don't design a new one.
-9. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
+10. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
    links, add the Amazon Associates disclosure line** (`footer-affiliate`), full two-sentence
    canonical wording: "As an Amazon Associate, Kygo Health earns from qualifying purchases.
    Product links on this page are affiliate links; we may earn a commission at no extra cost to
@@ -132,8 +135,7 @@ own unique `data-kygo-*` marker). See §9 for the canonical schema shapes.
 
 **Optional standard sections** (reach for these when the content fits — all are house patterns):
 a **TL;DR crawlable prose block** (a visible `<h3>`-headed summary of the key matchups, so crawlers
-read the verdict even though the interactive table renders in JS), an embedded
-**`<kygo-inline-subscribe source="tool-<slug>" variant="comparison">`** email capture, and a dark
+read the verdict even though the interactive table renders in JS) and a dark
 **"bottom line" verdict card** (separate from the CTA card). See §3 for the module details.
 
 ---
@@ -174,6 +176,25 @@ If a list exceeds ~12 items, it must **not** render as a flat column of cards on
   keep 1-up on mobile.
 - Stat/value cards stay **side-by-side (2-up) on mobile** — don't let them stack into three
   tall blocks.
+
+### Email CTA (the standard module)
+
+`<kygo-inline-subscribe>` has a transparent host, so dropped in bare it inherits whatever band
+it lands beside and reads as part of that section. Wrap it in the standard module instead —
+its own `<section>`, its own band, part of the page rhythm:
+
+```js
+_emailCta() { return { source: 'tool-<slug>', variant: 'comparison' }; }   // per page
+${this._renderEmailCta()}                                                  // call site
+```
+
+`source` is what GA4 and the Velo endpoint record for the subscriber — **never change it** when
+moving the section. `variant` is `comparison` on the accuracy/comparison tools and `factors` on
+the explorers.
+
+**Placement:** after the first page content section that follows the app CTA. A content section
+always separates the two conversion touchpoints; they must never be adjacent, and the email
+capture must never sit inside the app CTA's band.
 
 ### App CTA (the standard module)
 
@@ -500,12 +521,12 @@ The page carries **three** conversion touchpoints beyond the nav buttons — don
 - **CTA rhythm — spread them out.** Never place two conversion touchpoints back to back, and never
   put the email capture in or beside the CTA band. Put a content section between each. The spine
   every tool now follows: hero → first content section → **app CTA card** → content →
-  inline-subscribe → content → FAQ → blog cross-link → related tools → sources.
-- **Inline email capture** — drop the shared sibling element straight into the page:
-  `<kygo-inline-subscribe source="tool-<slug>" variant="comparison"></kygo-inline-subscribe>`.
-  It renders its own styled capture UI and handles the submit; you only set `source` (unique per
-  tool) and `variant`. Place it mid-page, between two content sections (not adjacent to the big
-  CTA card).
+  **email CTA** → content → FAQ → blog cross-link → related tools → sources.
+- **Inline email capture** — use the standard email-CTA module (§3), which wraps the shared
+  `<kygo-inline-subscribe>` sibling element in its own section. Don't drop the element in bare:
+  its host is transparent, so it takes on whatever band it lands beside and reads as part of that
+  section. The element renders its own capture UI and handles the submit; you set only `source`
+  (unique per tool, recorded by GA4 and Velo) and `variant`.
 - **Blog cross-link** (§2.5) is the fourth touchpoint — the read-more card to the matching
   `kygo.app/post/...` article, plus per-section `section-readmore` links for a multi-post cluster.
 
@@ -657,8 +678,12 @@ Pre-commit checklist:
       something true about this page, and 4 computed `hero-stats`. No centered-badge-only hero.
 - [ ] App CTA: standard module (§3), its own section right after the first content section,
       card only — no email capture in that band — and no `kband` left on the page.
-- [ ] Band rhythm: no two adjacent sections share a background, including around the CTA
-      and related-tools bands.
+- [ ] Email CTA: standard module (§3), its own section, at least one content section below
+      the app CTA, `source`/`variant` unchanged.
+- [ ] Band rhythm: no two adjacent sections share a background, including around the app CTA,
+      email CTA and related-tools bands.
+- [ ] No malformed section tags: `grep -n '<section c[^l]' kygo-*.js` returns nothing. A bad
+      class rewrite hides inside a template literal, so `node --check` will not catch it.
 - [ ] Related tools: standard module verbatim (§3), 3 cards, above the sources section, no
       self-link, no Food Scanner, tracking attributes intact, and the cross-link table in
       `docs/internal-and-app-store-links.md` updated.
