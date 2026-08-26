@@ -510,7 +510,10 @@ class KygoVo2maxFactors extends HTMLElement {
       if (!s.url) {
         return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
       }
-      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${s.cite || ''} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
     }).join('');
   }
 

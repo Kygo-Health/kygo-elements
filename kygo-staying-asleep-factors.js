@@ -994,7 +994,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
     if (bodyEl) bodyEl.innerHTML = this._renderDashboardBody();
   }
 
-  _renderSources() {
+  get _srcGroups() {
     const groups = {
       'Nutrition & Substances': [
         { label: 'St-Onge et al. 2016 — Fiber, saturated fat & sleep arousals (J Clin Sleep Med)', url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384' },
@@ -1036,21 +1036,64 @@ class KygoStayingAsleepFactors extends HTMLElement {
         { label: 'Vgontzas et al. 2001 — Chronic insomnia & HPA axis activation', url: 'https://pubmed.ncbi.nlm.nih.gov/11502812/' }
       ]
     };
-    const totalCount = Object.values(groups).reduce((sum, g) => sum + g.length, 0);
-    return `<div class="src-accordion">
-      <div class="src-count-badge">${totalCount} sources cited</div>
-      ${Object.entries(groups).map(([cat, items]) => `
-        <div class="src-group">
-          <button class="src-group-toggle" aria-expanded="false">
-            <span class="src-group-name">${cat}</span>
-            <span class="src-group-count">${items.length}</span>
-            <span class="src-group-chevron">${this._icon('chevDown')}</span>
-          </button>
-          <div class="src-group-body">
-            ${items.map(s => `<a href="${s.url}" class="src-item" target="_blank" rel="noopener"><span class="src-dot"></span><span class="src-text">${s.label}</span><span class="src-ext">${this._icon('externalLink')}</span></a>`).join('')}
-          </div>
-        </div>`).join('')}
-    </div>`;
+    return groups;
+  }
+
+  // Flat source list for the standard sources module: the topic group becomes
+  // the card's tag, and a trailing "(…)" in the label becomes the citation line.
+  get _sources() {
+    const out = [];
+    for (const [tag, items] of Object.entries(this._srcGroups)) {
+      for (const s of items) {
+        const m = s.label.match(/^(.*\S)\s*\(([^()]*)\)\s*$/);
+        out.push({ tag, title: m ? m[1] : s.label, cite: m ? m[2] : '', url: s.url });
+      }
+    }
+    return out;
+  }
+
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+    }).join('');
+  }
+
+  _renderSources() {
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
   }
 
   render() {
@@ -1188,7 +1231,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
-          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -1260,15 +1303,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
     shadow.addEventListener('click', (e) => {
       if (e.target.closest('.source-link, a[href]')) return;
 
-      const srcToggle = e.target.closest('.src-group-toggle');
-      if (srcToggle) {
-        const group = srcToggle.closest('.src-group');
-        if (group) {
-          const isOpen = group.classList.toggle('open');
-          srcToggle.setAttribute('aria-expanded', isOpen);
-        }
-        return;
-      }
+      // Sources · show-all toggle
+      if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
 
       const viewTab = e.target.closest('.view-tab');
       if (viewTab) {
@@ -1763,25 +1799,30 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .qual-body strong { color: var(--dark); font-weight: 600; }
       .qual-body a { color: var(--green-dark); font-weight: 500; }
 
+      /* ── Sources ── */
       .sources-section { padding: 48px 0; }
-      .src-accordion { max-width: 720px; margin: 0 auto; }
-      .src-count-badge { text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-400); margin-bottom: 16px; }
-      .src-group { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: #fff; }
-      .src-group-toggle { display: flex; align-items: center; width: 100%; padding: 12px 16px; background: none; border: none; cursor: pointer; font-family: inherit; gap: 8px; }
-      .src-group-name { flex: 1; text-align: left; font-size: 14px; font-weight: 600; color: var(--dark); }
-      .src-group-count { font-size: 11px; font-weight: 600; color: var(--gray-400); background: var(--gray-100); padding: 2px 8px; border-radius: 50px; }
-      .src-group-chevron { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; display: flex; }
-      .src-group-chevron svg { width: 18px; height: 18px; }
-      .src-group.open .src-group-chevron { transform: rotate(180deg); }
-      .src-group-body { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
-      .src-group.open .src-group-body { max-height: 600px; }
-      .src-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; text-decoration: none; color: var(--gray-600); font-size: 13px; transition: background 0.2s; }
-      .src-item:last-child { padding-bottom: 12px; }
-      .src-item:hover { background: var(--gray-50); }
-      .src-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-      .src-text { flex: 1; }
-      .src-ext { width: 14px; height: 14px; color: var(--gray-400); flex-shrink: 0; }
-      .src-ext svg { width: 14px; height: 14px; }
+      /* Sources · Kygo standard module */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--gray-50); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--green-dark); }
+      .src--nolink .src-tag { color: var(--gray-400); }
+      .src-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--gray-400); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--green-dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
       /* Read-the-full-article — own section */
       .article-section { padding: 40px 0; }
