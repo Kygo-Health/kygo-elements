@@ -109,10 +109,8 @@ with **no two adjacent the same**, and **each distinct content block is its own 
 6. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
    getter (never let JSON-LD FAQs exist without a visible FAQ — the older `kygo-wearable-stress`
    shipped FAQ JSON-LD with **no** visible FAQ; don't copy that omission).
-7. **Sources** — **compact link cards** (see §3 "Sources (compact)"), not big expandable cards.
-   List **every** source (each = green eyebrow tag + citation line + external link); do **not**
-   hide any behind a "show more" reveal. The source count in the hero/stat strip must equal the
-   number of source links actually shown.
+7. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
+   Every tool with sources uses it, unchanged. Copy it; don't design a new one.
 8. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
    links, add the Amazon Associates disclosure line** (`footer-affiliate`), full two-sentence
    canonical wording: "As an Amazon Associate, Kygo Health earns from qualifying purchases.
@@ -170,10 +168,57 @@ If a list exceeds ~12 items, it must **not** render as a flat column of cards on
 - Stat/value cards stay **side-by-side (2-up) on mobile** — don't let them stack into three
   tall blocks.
 
-### Sources (compact)
-A grid of small link cards (1 col mobile → 2–3 col desktop): tag (tiny green eyebrow) +
-title (link) + citation + external-link icon. **No big expandable cards** — they ate half
-the screen. Mirror the Oura tool's compact sources.
+### Sources (the standard module)
+**One design, every tool.** Compact link cards in a grid (1 col mobile → 2 col ≥600px →
+3 col ≥960px). Each card is `tag` (tiny green uppercase eyebrow) + `title` (the study) +
+`cite` (journal / sample / COI) + external-link icon. The first **6** render; the rest sit
+in a hidden twin grid behind a **"Show all N sources"** pill that toggles to "Show fewer
+sources". Nothing is buried — the count is on the button, and the full list is one tap away.
+
+This replaced a zoo of per-page designs (category accordions, per-device `<details>`, bulleted
+`<ul>` columns, separate desktop/mobile renderings). Don't reintroduce any of them.
+
+Copy the module verbatim from any shipped tool — it is byte-identical across all of them
+(`kygo-sleep-tracker-accuracy.js` is the reference). Three methods, one call site, one CSS block:
+
+```js
+_renderSourceCards(list)   // card markup; handles the no-url and no-cite cases
+_renderSources()           // first 6 + hidden extras + the toggle button
+_toggleSources()           // flips [data-src-extra] and relabels the button
+```
+
+```html
+<div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
+```
+
+Wire the toggle into the page's existing shadow-root click listener:
+
+```js
+if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
+```
+
+**The data.** `get _sources()` returns a flat array of `{ tag, title, cite, url }`:
+
+- **`tag`** — the classification you want a reader to see *before* the title: funding
+  (`Independent · meta`, `Oura-funded`), or the topic group on a grouped tool
+  (`Supplements`, `Apple Watch`). **Grouped tools keep their groups** — the group name simply
+  becomes the tag rather than a collapsed section header. Sort the array so a group's sources
+  stay contiguous.
+- **`cite`** — journal, year, sample size, COI. Optional: with no `cite`, the card falls back
+  to the source's host so every card keeps the same three-line rhythm.
+- **`url`** — optional. A source with **no URL** (a manufacturer post, a consumer test with no
+  permanent link) renders as a **dashed, non-clickable card** rather than being dropped. Say
+  in the section lede that these are listed unlinked; never delete an unlinkable source.
+
+**Palette.** The CSS block exists in two token-mapped variants — semantic (`--fg-*`,
+`--kygo-green`, `--border-subtle`, `--font-display`) and canonical (`--dark`, `--green`,
+`--gray-*`, literal `'Space Grotesk'`). Take the one matching the file you're editing (§ *Design
+tokens* in `CLAUDE.md`); never mix the two schemes in one file.
+
+**Icons.** The module calls `this._icon('externalLink')` and `this._icon('arrowRight')`. Add
+both to the page's icon map if they're missing. Size them with a bare `svg` selector
+(`.src-go svg`), **not** `.ico` — the icon helpers return an unwrapped `<svg>`, so `.src-go .ico`
+silently matches nothing.
 
 ### Filter controls
 Give filter bars a **`--bg-raised` background** so they read as distinct from the white
@@ -487,8 +532,10 @@ Pre-commit checklist:
 - [ ] `data-action` / `data-track-position` / `data-track-label` on CTA, affiliate, **and** source links (§9).
 - [ ] a11y pass (§8): `aria-pressed` on toggles, `role`/`aria-label` on pickers, `scope` on table cells,
       `aria-hidden` on decorative visuals, icon-only buttons labelled.
-- [ ] Every source link shown (no show-more truncation); footer affiliate disclosure is the full
-      two-sentence form when affiliate links exist.
+- [ ] Sources use the standard module verbatim (§3): flat `_sources` of `{tag,title,cite,url}`,
+      6 shown + "Show all N sources" toggle wired, no page-specific sources design. Unlinkable
+      sources present as dashed cards, not dropped.
+- [ ] Footer affiliate disclosure is the full two-sentence form when affiliate links exist.
 - [ ] Zero runtime errors in the headless render.
 
 ---

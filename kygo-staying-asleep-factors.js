@@ -892,7 +892,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       { title: 'Sleep Latency Factors', blurb: '33 factors that change how fast you fall asleep, ranked by evidence.', url: 'https://www.kygo.app/tools/sleep-latency-factors', meta: 'Sleep &middot; 42+ studies', icon: 'moon' },
       { title: 'Deep Sleep Factors', blurb: '28 factors that move deep sleep, with doses, mechanisms and sources.', url: 'https://www.kygo.app/tools/deep-sleep-factors', meta: 'Sleep &middot; 40+ studies', icon: 'moon' },
       { title: 'REM Sleep Factors', blurb: '23 research-backed factors that shape how much REM sleep you get.', url: 'https://www.kygo.app/tools/rem-sleep-factors', meta: 'Sleep &middot; 23 sources', icon: 'brain' },
-      { title: 'Supplements by Metric', blurb: 'Pick a wearable metric and see which of 27 supplements the research supports.', url: 'https://www.kygo.app/tools/supplements-by-metric', meta: 'Nutrition &middot; 19 sources', icon: 'pill' }
+      { title: 'Supplements by Metric', blurb: 'Pick a wearable metric and see which of 27 supplements the research supports.', url: 'https://www.kygo.app/tools/supplements-by-metric', meta: 'Nutrition &middot; 28 sources', icon: 'pill' }
     ];
   }
 

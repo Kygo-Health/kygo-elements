@@ -699,7 +699,7 @@ class KygoDeepSleepFactors extends HTMLElement {
     return [
       { title: 'Staying Asleep Factors', blurb: '27 research-backed factors that affect whether you stay asleep through the night.', url: 'https://www.kygo.app/tools/staying-asleep-factors', meta: 'Sleep · 40+ studies', motif: { motif: 'ranked', caption: 'Factors ranked by evidence' } },
       { title: 'Sleep Latency Factors', blurb: '33 factors that affect how fast you fall asleep, ranked by evidence.', url: 'https://www.kygo.app/tools/sleep-latency-factors', meta: 'Sleep · 42+ studies', motif: { motif: 'decay', caption: 'Time to fall asleep' } },
-      { title: 'Supplements by Metric', blurb: 'Pick a wearable metric and see which of 27 supplements the research actually supports.', url: 'https://www.kygo.app/tools/supplements-by-metric', meta: 'Nutrition · 19 sources', motif: { motif: 'ranked', caption: 'Graded by evidence' } }
+      { title: 'Supplements by Metric', blurb: 'Pick a wearable metric and see which of 27 supplements the research actually supports.', url: 'https://www.kygo.app/tools/supplements-by-metric', meta: 'Nutrition · 28 sources', motif: { motif: 'ranked', caption: 'Graded by evidence' } }
     ];
   }
 

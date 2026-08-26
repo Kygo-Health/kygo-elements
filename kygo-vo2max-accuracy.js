@@ -543,7 +543,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
   // ── Related tools (cross-link cards) ──
   _relatedTools() {
     return [
-      { title: 'VO2 Max Factor Explorer', blurb: '39 research-backed factors that raise or lower VO2 max, ranked by evidence strength.', url: 'https://www.kygo.app/tools/vo2-max-factors', meta: 'Recovery · 36 sources', motif: { motif: 'gauge', caption: 'VO2 max estimate', gaugePct: 78, gaugeValue: '48', gaugeUnit: 'VO2 MAX' } },
+      { title: 'VO2 Max Factor Explorer', blurb: '39 research-backed factors that raise or lower VO2 max, ranked by evidence strength.', url: 'https://www.kygo.app/tools/vo2-max-factors', meta: 'Recovery · 40 sources', motif: { motif: 'gauge', caption: 'VO2 max estimate', gaugePct: 78, gaugeValue: '48', gaugeUnit: 'VO2 MAX' } },
       { title: 'Most Accurate Wearable', blurb: 'See which wearable is most accurate across 9 health metrics, backed by peer-reviewed research.', url: 'https://www.kygo.app/tools/wearable-accuracy', meta: 'Wearables · 17+ studies', motif: { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] } },
       { title: 'Hardware & Software Differences', blurb: 'What actually makes Garmin, Whoop, Oura, Apple Watch and Fitbit different, sensor by sensor.', url: 'https://www.kygo.app/tools/sensor-comparison', meta: 'Wearables · 6 devices', motif: { motif: 'radar', caption: 'Sensor & software focus', radar: [0.92, 0.6, 0.78, 0.5, 0.85] } }
     ];
