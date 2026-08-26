@@ -1583,8 +1583,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedPosts()}
-
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
@@ -1606,6 +1604,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts('gray')}
     `;
   }
 

@@ -1332,8 +1332,6 @@ class KygoHrvFactors extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedPosts('gray')}
-
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
@@ -1356,6 +1354,8 @@ class KygoHrvFactors extends HTMLElement {
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts()}
     `;
   }
 

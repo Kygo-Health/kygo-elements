@@ -1421,9 +1421,8 @@ class KygoAccuracyFactors extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedPosts('gray')}
 
-      <section class="sources-section section-bg-white">
+      <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">Every figure on this page traces to a primary source below, with funding relationships, sample sizes and sign-convention traps carried alongside the number rather than hidden. Where a study contradicts its own abstract, we cite the table.</p>
@@ -2008,6 +2007,8 @@ class KygoAccuracyFactors extends HTMLElement {
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts('gray')}
     `;
   }
 

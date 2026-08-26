@@ -856,9 +856,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedPosts('gray')}
-
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
@@ -890,6 +888,8 @@ class KygoOuraVsRingConn extends HTMLElement {
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts('gray')}
     `;
   }
 
@@ -1656,7 +1656,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       }
 
       /* Footer */
-      .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
+      .tool-footer { padding: 56px 20px 40px; background: #fff; color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
       .tool-footer .container { max-width: 720px; margin: 0 auto; text-align: center; }
       .footer-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--fg-1); font-family: var(--font-display); font-weight: 700; font-size: 17px; }
       .footer-logo { width: 28px; height: 28px; }

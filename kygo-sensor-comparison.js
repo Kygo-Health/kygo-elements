@@ -1516,7 +1516,6 @@ class KygoSensorComparison extends HTMLElement {
       </section>
 
       <!-- Sources -->
-      ${this._renderRelatedPosts('gray')}
 
       <section class="sources-section">
         <div class="container">
@@ -1548,6 +1547,8 @@ class KygoSensorComparison extends HTMLElement {
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts('gray')}
     `;
   }
 
@@ -1784,7 +1785,7 @@ class KygoSensorComparison extends HTMLElement {
       /* Blog Cross-Link */
 
       /* Sources */
-      .sources-section { padding: 48px 0; background: #fff; }
+      .sources-section { padding: 48px 0; }
       .sources-list { display: flex; flex-direction: column; gap: 6px; }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
@@ -1810,7 +1811,7 @@ class KygoSensorComparison extends HTMLElement {
       .src-toggle.open svg { transform: rotate(90deg); }
 
       /* Footer */
-      .tool-footer { padding: 24px 0 16px; text-align: center; border-top: 1px solid var(--gray-200); }
+      .tool-footer { padding: 24px 0 16px; text-align: center; background: #fff; border-top: 1px solid var(--gray-200); }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { color: var(--gray-400); font-size: 13px; margin-bottom: 12px; }

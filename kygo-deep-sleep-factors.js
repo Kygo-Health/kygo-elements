@@ -1210,8 +1210,6 @@ class KygoDeepSleepFactors extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedPosts('gray')}
-
       <footer class="tool-footer">
         <div class="container">
           <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
@@ -1233,6 +1231,8 @@ class KygoDeepSleepFactors extends HTMLElement {
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts()}
     `;
   }
 

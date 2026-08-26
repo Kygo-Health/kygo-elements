@@ -66,9 +66,9 @@ this skill assumes that house style.
    don't rename it. Spec in `docs/tool-page-playbook.md` §3 "Email CTA (the standard module)".
 10. **Every tool page gets the standard related-tools module — do not design a new one.** Copy
    `_relatedTools` / `_relatedMotif` / `_renderRelatedTools` verbatim from any shipped tool (they
-   are byte-identical across all of them) and call `${this._renderRelatedTools()}` in the closing
-   content run, **above the related-reading section** — tools are always offered before the blog.
-   Write only
+   are byte-identical across all of them) and call `${this._renderRelatedTools()}` directly above
+   the sources section, or low on the page if the tool has no sources — well above the
+   related-reading strip, so tools are always offered before the blog. Write only
    `_relatedTools()`: exactly 3 cards — a near neighbour, a bridge between accuracy and
    physiology, and one from another family. Never link the page to itself, and **never link the
    Food Scanner** (`/tools/calories-in-anything`). Reuse the destination's existing card copy
@@ -77,11 +77,10 @@ this skill assumes that house style.
    Full spec in `docs/tool-page-playbook.md` §3 "Related tools (the standard module)".
 11. **Every tool page gets the standard related-reading module — do not design a new one.** Copy
    `_renderRelatedPosts(bg)` verbatim from any shipped tool (it is byte-identical across all of
-   them) and call `${this._renderRelatedPosts(bg)}` **after `_renderRelatedTools()`, with a tool
-   content section immediately above it and one immediately below it** — in practice the slot
-   just below the FAQ, giving `tools → FAQ → blog → sources`. It must never sit next to the app
-   CTA, the email capture, or the related-tools section. Write only `_relatedPosts()`: exactly
-   3 cards — the page's own
+   them) and call `${this._renderRelatedPosts(bg)}` **immediately after `</footer>` — it is the
+   last block on the page, below the brand, links, disclaimer and copyright** — on the band
+   *opposite the footer's computed background* (a transparent `.tool-footer` still paints grey
+   through `:host`, so read it in the browser). Write only `_relatedPosts()`: exactly 3 cards — the page's own
    companion post first, then a near neighbour, then a bridge to another topic family. Each card
    is `{ slug, title, blurb, cat, min, img }`; `title`, `cat`, `min` and `img` are the **live Wix
    Blog values** (`GET https://www.wixapis.com/blog/v3/posts` → `title`, category `label`,

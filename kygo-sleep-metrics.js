@@ -1178,7 +1178,6 @@ class KygoSleepMetrics extends HTMLElement {
       </section>
 
       <!-- Sources -->
-      ${this._renderRelatedPosts('gray')}
 
       <section class="sources-section">
         <div class="container">
@@ -1207,6 +1206,8 @@ class KygoSleepMetrics extends HTMLElement {
           <p class="footer-copyright">\u00A9 ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts('gray')}
     `;
   }
 
@@ -1407,7 +1408,7 @@ class KygoSleepMetrics extends HTMLElement {
       .uc-device-img { width: 28px; height: 28px; border-radius: 8px; object-fit: contain; border: 1px solid var(--gray-200); background: #fff; }
 
       /* ── Sources ── */
-      .sources-section { padding: 48px 0; background: #fff; }
+      .sources-section { padding: 48px 0; background: var(--gray-50); }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
@@ -1452,7 +1453,7 @@ class KygoSleepMetrics extends HTMLElement {
       @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:stretch}.cta-buttons a{width:100%;justify-content:center;text-align:center}}
 
       /* ── Footer ── */
-      .tool-footer { padding: 32px 0; text-align: center; border-top: 1px solid var(--gray-200); }
+      .tool-footer { padding: 32px 0; text-align: center; background: #fff; border-top: 1px solid var(--gray-200); }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); font-weight: 600; text-decoration: none; margin-bottom: 6px; font-size: 14px; }
       .footer-brand:hover { color: var(--green); }
       .footer-logo { height: 24px; width: auto; }
