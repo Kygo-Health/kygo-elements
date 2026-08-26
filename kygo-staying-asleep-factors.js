@@ -1576,20 +1576,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools()}
-      ${this._renderRelatedPosts('gray')}
-
-      <!-- Sources -->
-      <section class="sources-section section-bg-white">
-        <div class="container">
-          <h2 class="section-title animate-on-scroll">Sources</h2>
-          <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
-          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
-        </div>
-      </section>
-
       <!-- App CTA -->
-      <section class="blog-cta-section section-bg-gray">
+      <section class="blog-cta-section section-bg-white">
         <div class="container">
           <div class="blog-cta animate-on-scroll">
             <div class="blog-cta-glow"></div>
@@ -1623,6 +1611,19 @@ class KygoStayingAsleepFactors extends HTMLElement {
           </div>
         </div>
       </section>
+
+      ${this._renderRelatedTools('gray')}
+
+      <!-- Sources -->
+      <section class="sources-section section-bg-white">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Sources</h2>
+          <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
+        </div>
+      </section>
+
+      ${this._renderRelatedPosts('gray')}
 
       <!-- Footer -->
       <footer class="tool-footer">

@@ -830,7 +830,9 @@ class KygoOuraVsRingConn extends HTMLElement {
 
       <!-- Late slim CTA -->
 
-      <section class="section bg-white">
+      ${this._renderRelatedPosts()}
+
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -840,7 +842,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">
             <span class="blog-cta-tag">Oura only</span>
@@ -854,8 +856,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools()}
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="section bg-white">
         <div class="section-inner">

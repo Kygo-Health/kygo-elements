@@ -1536,7 +1536,9 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      ${this._renderRelatedPosts()}
+
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -1546,8 +1548,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools('gray')}
-      ${this._renderRelatedPosts()}
+      ${this._renderRelatedTools()}
 
       <section class="section bg-light">
         <div class="section-inner">

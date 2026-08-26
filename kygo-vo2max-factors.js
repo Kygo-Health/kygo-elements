@@ -1072,7 +1072,9 @@ class KygoVo2maxFactors extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      ${this._renderRelatedPosts()}
+
+      <section class="section bg-light">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/vo2-max-accuracy" target="_blank" rel="noopener">
             <span class="blog-cta-tag">Related Tool</span>
@@ -1086,8 +1088,7 @@ class KygoVo2maxFactors extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools('gray')}
-      ${this._renderRelatedPosts()}
+      ${this._renderRelatedTools()}
 
       <section class="section bg-light">
         <div class="section-inner">

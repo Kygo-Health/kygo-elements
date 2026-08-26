@@ -1538,7 +1538,9 @@ class KygoRhrFactors extends HTMLElement {
       <div class="section-bg-white">${this._renderMythsSection()}</div>
 
       <!-- 8. Top picks (gray) -->
-      <section class="picks-section section-bg-white" id="headlines">
+      ${this._renderRelatedPosts()}
+
+      <section class="picks-section section-bg-gray" id="headlines">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1552,8 +1554,7 @@ class KygoRhrFactors extends HTMLElement {
       </section>
 
       <!-- 9. Sources (white) -->
-      ${this._renderRelatedTools('gray')}
-      ${this._renderRelatedPosts()}
+      ${this._renderRelatedTools()}
 
       <section class="sources-section section-bg-gray">
         <div class="container">
@@ -2000,7 +2001,7 @@ class KygoRhrFactors extends HTMLElement {
       .myth-why { margin: 4px 0 0; font-size: 12.5px; color: var(--gray-600); line-height: 1.5; }
 
       /* TOP PICKS */
-      .picks-section { padding: 40px 0; background: #fff; }
+      .picks-section { padding: 40px 0; }   /* band comes from the section-bg-* utility class */
       .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
       /* Mobile: anchored radial in the top-right corner (was a tall narrow box centered on a circle, which read as a vertical stripe on long mobile cards). Tablet+ overrides to a wider spread. */
       .picks-glow { position: absolute; top: 0; right: 0; width: 90%; max-width: 520px; aspect-ratio: 1 / 1; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.22) 0%, rgba(34,197,94,0.08) 35%, transparent 70%); pointer-events: none; }

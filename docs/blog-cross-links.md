@@ -6,6 +6,9 @@
 >
 > Placement, styling and the module contract live in `docs/tool-page-playbook.md` §3
 > ("Related reading (the standard module)"). Tracking lives in `docs/schemas-and-tracking.md`.
+>
+> **Placement in one line:** its own band with a tool content section above *and* below it —
+> never next to the app CTA, the email capture, or the related-tools section.
 
 ## Where the data comes from
 

@@ -27,7 +27,7 @@ each is a conversion or layout decision rather than a blog-section fix. Ranked.
   | `kygo-sensor-comparison.js` | :1520 | |
   | `kygo-sleep-latency-factors.js` | :1232 | sits between the email CTA and related tools |
   | `kygo-sleep-metrics.js` | :1160 | directly under the standard app CTA (:1156) — two dark cards back to back |
-  | `kygo-staying-asleep-factors.js` | :1592 | after the sources section, last thing before the footer |
+  | `kygo-staying-asleep-factors.js` | (moved) | was the last section before the footer; moved up to sit above related tools so the blog section could take the tail slot. Still a duplicate download surface |
 
   Fix: delete the `blog-cta-section` block and its now-dead `.blog-cta*` CSS in each file, then
   re-check the band rhythm below it (removing a section flips every band underneath). Worth

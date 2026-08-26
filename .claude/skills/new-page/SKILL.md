@@ -66,8 +66,8 @@ this skill assumes that house style.
    don't rename it. Spec in `docs/tool-page-playbook.md` §3 "Email CTA (the standard module)".
 10. **Every tool page gets the standard related-tools module — do not design a new one.** Copy
    `_relatedTools` / `_relatedMotif` / `_renderRelatedTools` verbatim from any shipped tool (they
-   are byte-identical across all of them) and call `${this._renderRelatedTools()}` low on the
-   page, directly above the related-reading section. Write only
+   are byte-identical across all of them) and call `${this._renderRelatedTools()}` directly above
+   the sources section, or low on the page if the tool has no sources. Write only
    `_relatedTools()`: exactly 3 cards — a near neighbour, a bridge between accuracy and
    physiology, and one from another family. Never link the page to itself, and **never link the
    Food Scanner** (`/tools/calories-in-anything`). Reuse the destination's existing card copy
@@ -76,14 +76,15 @@ this skill assumes that house style.
    Full spec in `docs/tool-page-playbook.md` §3 "Related tools (the standard module)".
 11. **Every tool page gets the standard related-reading module — do not design a new one.** Copy
    `_renderRelatedPosts(bg)` verbatim from any shipped tool (it is byte-identical across all of
-   them) and call `${this._renderRelatedPosts(bg)}` **directly after `_renderRelatedTools()`**,
-   above the sources section. Write only `_relatedPosts()`: exactly 3 cards — the page's own
+   them) and call `${this._renderRelatedPosts(bg)}` **inside the page's closing content run, with
+   a tool content section immediately above it and one immediately below it** — in practice the
+   slot just above the FAQ. It must never sit next to the app CTA, the email capture, or the
+   related-tools section. Write only `_relatedPosts()`: exactly 3 cards — the page's own
    companion post first, then a near neighbour, then a bridge to another topic family. Each card
    is `{ slug, title, blurb, cat, min, img }`; `title`, `cat`, `min` and `img` are the **live Wix
    Blog values** (`GET https://www.wixapis.com/blog/v3/posts` → `title`, category `label`,
    `minutesToRead`, `media.wixMedia.image.id`) — never paraphrase a title, and reuse a post's
-   existing card copy from `docs/blog-cross-links.md` rather than rewriting it. The section must
-   **never sit directly above or below the app CTA or the email capture**. Add the page to the
+   existing card copy from `docs/blog-cross-links.md` rather than rewriting it. Add the page to the
    map in `docs/blog-cross-links.md`. Full spec in `docs/tool-page-playbook.md` §3 "Related
    reading (the standard module)".
 12. **If the page cites sources, use the standard sources module — do not design a new one.**

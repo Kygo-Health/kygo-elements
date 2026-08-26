@@ -1509,6 +1509,8 @@ class KygoSensorComparison extends HTMLElement {
       </section>
 
       <!-- FDA Summary -->
+      ${this._renderRelatedPosts('gray')}
+
       <section class="fda-section">
         <div class="container">
           <h2 class="section-title animate-on-scroll">FDA-Cleared Medical Features</h2>
@@ -1554,7 +1556,6 @@ class KygoSensorComparison extends HTMLElement {
 
       <!-- Sources -->
       ${this._renderRelatedTools()}
-      ${this._renderRelatedPosts('gray')}
 
       <section class="sources-section">
         <div class="container">
@@ -1760,7 +1761,7 @@ class KygoSensorComparison extends HTMLElement {
       .insight-card p { font-size: 14px; color: var(--gray-600); }
 
       /* FDA */
-      .fda-section { padding: 48px 0; }
+      .fda-section { padding: 48px 0; background: #fff; }
       .fda-grid { display: flex; flex-direction: column; gap: 10px; }
       .fda-row { display: grid; grid-template-columns: 180px 1fr 200px; align-items: center; gap: 12px; background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 12px 16px; font-size: 13px; }
       .fda-device { font-weight: 600; display: flex; align-items: center; gap: 8px; }
@@ -1843,7 +1844,7 @@ class KygoSensorComparison extends HTMLElement {
       /* Blog Cross-Link */
 
       /* Sources */
-      .sources-section { padding: 48px 0; background: #fff; }
+      .sources-section { padding: 48px 0; }
       .sources-list { display: flex; flex-direction: column; gap: 6px; }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }

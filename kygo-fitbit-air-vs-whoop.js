@@ -731,7 +731,9 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      ${this._renderRelatedPosts('gray')}
+
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -741,8 +743,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools()}
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <footer class="tool-footer">
         <div class="container">

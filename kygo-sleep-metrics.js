@@ -1207,6 +1207,8 @@ class KygoSleepMetrics extends HTMLElement {
       </section>
 
       <!-- Best By Use Case -->
+      ${this._renderRelatedPosts()}
+
       <section class="usecase-section">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Best Wearable by Sleep Priority</h2>
@@ -1216,8 +1218,7 @@ class KygoSleepMetrics extends HTMLElement {
       </section>
 
       <!-- Sources -->
-      ${this._renderRelatedTools('gray')}
-      ${this._renderRelatedPosts()}
+      ${this._renderRelatedTools()}
 
       <section class="sources-section">
         <div class="container">
@@ -1432,7 +1433,7 @@ class KygoSleepMetrics extends HTMLElement {
       .excl-buy-arrow svg { width: 100%; height: 100%; }
 
       /* ── Use Cases ── */
-      .usecase-section { padding: 48px 0; background: #fff; }
+      .usecase-section { padding: 48px 0; background: var(--gray-50); }
       .uc-list { display: flex; flex-direction: column; background: #fff; border-radius: var(--radius); border: 1px solid var(--gray-200); overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
       .uc-row { display: grid; grid-template-columns: 36px 1fr; align-items: start; gap: 8px 10px; padding: 14px 14px; border-bottom: 1px solid var(--gray-100); border-left: 3px solid transparent; transition: all 0.2s; }
       .uc-row:last-child { border-bottom: none; }

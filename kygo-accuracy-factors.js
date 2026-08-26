@@ -1328,6 +1328,8 @@ class KygoAccuracyFactors extends HTMLElement {
 
   _renderFaqSection() {
     return `
+      ${this._renderRelatedPosts('gray')}
+
       <section class="faq-section section-bg-white" id="faq">
         <div class="container">
           <div class="section-header">
@@ -1420,9 +1422,8 @@ class KygoAccuracyFactors extends HTMLElement {
   _renderSourcesSection() {
     return `
       ${this._renderRelatedTools('gray')}
-      ${this._renderRelatedPosts()}
 
-      <section class="sources-section section-bg-gray">
+      <section class="sources-section section-bg-white">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">Every figure on this page traces to a primary source below, with funding relationships, sample sizes and sign-convention traps carried alongside the number rather than hidden. Where a study contradicts its own abstract, we cite the table.</p>

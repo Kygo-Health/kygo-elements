@@ -1136,9 +1136,8 @@ class KygoRemSleep extends HTMLElement {
 
 
       ${this._renderRelatedTools('gray')}
-      ${this._renderRelatedPosts()}
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
@@ -1148,6 +1147,8 @@ class KygoRemSleep extends HTMLElement {
           <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
+
+      ${this._renderRelatedPosts('gray')}
 
       <footer class="tool-footer">
         <div class="container">

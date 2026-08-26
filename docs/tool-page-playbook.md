@@ -110,17 +110,20 @@ with **no two adjacent the same**, and **each distinct content block is its own 
 5. **Email CTA** — the **standard email-CTA module** (see §3 "Email CTA (the standard module)").
    Its own section, with **at least one page content section between it and the app CTA** —
    the two conversion touchpoints never touch.
-6. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
+6. **Related reading** — the **standard related-reading module** (see §3 "Related reading (the
+   standard module)"). Three blog cards with the posts' real cover images, on their own band
+   **inside the closing content run — a tool content section above it and a tool content
+   section below it**. It is never adjacent to the app CTA, the email capture, or related
+   tools. In practice that puts it one section above the FAQ. Every tool page has one, and
+   this is the *only* place a tool page links the blog as a section. Inside a content section,
+   a small `section-readmore` text link to that section's own matching post is still fine —
+   that's the hub-and-spoke micro-pattern, not a second blog section.
+7. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
    getter (never let JSON-LD FAQs exist without a visible FAQ — the older `kygo-wearable-stress`
    shipped FAQ JSON-LD with **no** visible FAQ; don't copy that omission).
-7. **Related tools** — the **standard related-tools module** (see §3 "Related tools (the
-   standard module)"). Three cross-link cards. Every tool page has one.
-8. **Related reading** — the **standard related-reading module** (see §3 "Related reading (the
-   standard module)"). Three blog cards with the posts' real cover images, sitting **directly
-   below related tools and above the sources section**. Every tool page has one, and this is
-   the *only* place a tool page links the blog as a section. Inside a content section, a small
-   `section-readmore` text link to that section's own matching post is still fine — that's the
-   hub-and-spoke micro-pattern, not a second blog section.
+8. **Related tools** — the **standard related-tools module** (see §3 "Related tools (the
+   standard module)"). Three cross-link cards, directly above the sources section. Every tool
+   page has one.
 9. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
    Every tool with sources uses it, unchanged. Copy it; don't design a new one.
 10. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
@@ -277,8 +280,8 @@ the sources module does. Copy the one matching the file you are editing; never m
 
 ### Related tools (the standard module)
 
-**One design, every tool page**, sitting low on the page, directly above the related-reading
-section (which in turn sits above sources). Three cards in a grid (1 col mobile → 3 col ≥720px): a
+**One design, every tool page**, sitting directly above the sources section (or low on the
+page when a tool has no sources). Three cards in a grid (1 col mobile → 3 col ≥720px): a
 small data motif on a tinted panel, then title, two-line blurb, a meta line and "Open →".
 
 The module is **self-contained** — renderer, the 15-motif catalog and its styles travel
@@ -320,12 +323,13 @@ attributes.
 
 ### Related reading (the standard module)
 
-**One design, every tool page**, sitting **directly below the related-tools section and above
-sources**. Three blog cards in a grid (1 col mobile → 3 col ≥720px), each with the post's **real
-Wix cover image** on a 16/10 panel, then a green category eyebrow, the post title, a two-line
-blurb, and a footer of read time + "Read →". It is deliberately the same card geometry as the
-related-tools module directly above it, so the two read as one "keep exploring" tail rather than
-two competing designs.
+**One design, every tool page**, sitting on its own band **between two tool content sections**
+in the page's closing run — in practice, the section just above the FAQ. Three blog cards in a
+grid (1 col mobile → 3 col ≥720px), each with the post's **real Wix cover image** on a 16/10
+panel, then a green category eyebrow, the post title, a two-line blurb, and a footer of read
+time + "Read →". It shares the card geometry of the related-tools module
+lower down, so the page has one card language rather than two — but the two sections are
+deliberately kept apart (see Placement), because the blog is content, not an exit link.
 
 This replaced five different per-page designs that had accumulated: a wide `blog-cta` banner
 (10 files), a badge + kicker `article-card` (6 files), a small `blog-link-card` pill tucked
@@ -344,15 +348,28 @@ _renderRelatedPosts(bg)  // section + styles; pass 'gray' for the tinted band
 ```
 
 ```html
-${this._renderRelatedTools()}
 ${this._renderRelatedPosts('gray')}
+
+<section class="section bg-white">   <!-- the FAQ, or whatever content follows -->
 ```
 
-**Placement is a hard rule.** Its own `<section>`, directly under related tools. It must **never
-sit directly above or below the app CTA or the email capture** — a full section always separates
-the blog section from either conversion module. Putting it at the bottom of the tail is what
-guarantees that on every page, including the short factor explorers where the email CTA is the
-last thing before the page tail.
+**Placement is a hard rule: a tool content section above it, a tool content section below it.**
+Its own `<section>`, on its own band, inside the page's closing content run. It must **never sit
+directly above or below the app CTA, the email capture, or the related-tools section** — the blog
+is editorial content in the middle of the page's own material, not part of the exit cluster at
+the bottom. On a page with a FAQ that resolves to one slot: the section before the FAQ.
+
+```
+… content → Related reading → FAQ → Related tools → Sources → Footer
+```
+
+**The thin-explorer fallback.** Five factor explorers (`deep-sleep-factors`, `rem-sleep`,
+`hrv-factors`, `sleep-latency-factors`, `staying-asleep-factors`) have no spare content section
+in the tail — the email capture is the last thing before the page's exit modules. On those, the
+blog section goes **below the sources section, last before the footer**: sources above it is
+still tool content, and the footer below is not a CTA. Prefer the standard slot whenever the page
+has the sections for it, and if you add a content section to one of those explorers, move the
+blog section up into the standard slot.
 
 **Choosing the three.** The page's **own companion post first** (the primary spoke), then a
 **near neighbour** in the same topic family, then a **bridge** to another family — so a page
@@ -762,12 +779,14 @@ Pre-commit checklist:
       email CTA, related-tools and related-reading bands.
 - [ ] No malformed section tags: `grep -n '<section c[^l]' kygo-*.js` returns nothing. A bad
       class rewrite hides inside a template literal, so `node --check` will not catch it.
-- [ ] Related tools: standard module verbatim (§3), 3 cards, above the related-reading section, no
+- [ ] Related tools: standard module verbatim (§3), 3 cards, above the sources section, no
       self-link, no Food Scanner, tracking attributes intact, and the cross-link table in
       `docs/internal-and-app-store-links.md` updated.
-- [ ] Related reading: standard module verbatim (§3), 3 cards, directly below related tools and
-      above sources, **never adjacent to the app CTA or the email capture**. Titles / categories /
-      read times / cover-image ids match the live Wix Blog values (re-pull, don't paraphrase),
+- [ ] Related reading: standard module verbatim (§3), 3 cards, with a **tool content section
+      immediately above and immediately below it** — **never adjacent to the app CTA, the email
+      capture, or the related-tools section** (thin explorers use the below-sources fallback,
+      §3). Titles / categories / read times / cover-image ids match the live Wix Blog values
+      (re-pull, don't paraphrase),
       images render, `data-action="blog-post"` + `data-post-slug` intact, and the map in
       `docs/blog-cross-links.md` updated. No `blog-cta` / `article-card` / `blog-link-card`
       leftovers: `grep -nE 'class="(blog-cta|article-card|blog-link-card)' file.js` returns

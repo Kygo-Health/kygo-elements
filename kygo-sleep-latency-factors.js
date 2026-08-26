@@ -1264,7 +1264,6 @@ class KygoSleepLatencyFactors extends HTMLElement {
 
       <!-- Sources -->
       ${this._renderRelatedTools()}
-      ${this._renderRelatedPosts('gray')}
 
       <section class="sources-section">
         <div class="container">
@@ -1273,6 +1272,8 @@ class KygoSleepLatencyFactors extends HTMLElement {
           <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
+
+      ${this._renderRelatedPosts()}
 
       <!-- Footer -->
       <footer class="tool-footer">
@@ -1480,7 +1481,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
 
 
       /* ── Sources ── */
-      .sources-section { padding: 48px 0; background: #fff; }
+      .sources-section { padding: 48px 0; }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }

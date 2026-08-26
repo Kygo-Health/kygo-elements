@@ -1304,6 +1304,8 @@ class KygoWearableAccuracy extends HTMLElement {
       </section>
 
       <!-- Caveats -->
+      ${this._renderRelatedPosts('gray')}
+
       <section class="caveats">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Important Things to Know</h2>
@@ -1324,8 +1326,7 @@ class KygoWearableAccuracy extends HTMLElement {
       </section>
 
       <!-- Sources -->
-      ${this._renderRelatedTools()}
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="sources-section">
         <div class="container">
@@ -1664,7 +1665,7 @@ class KygoWearableAccuracy extends HTMLElement {
       .dd-buy-cta svg { flex-shrink: 0; }
 
       /* ── Caveats ── */
-      .caveats { padding: 48px 0; background: var(--gray-50); }
+      .caveats { padding: 48px 0; background: #fff; }
       .caveat-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
       .caveat-card { background: #fff; border-radius: var(--radius-sm); border: 1px solid var(--gray-200); overflow: hidden; transition: all 0.2s; }
       .caveat-card:hover { border-color: var(--gray-300); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }

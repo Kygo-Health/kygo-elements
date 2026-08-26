@@ -1171,7 +1171,9 @@ class KygoWearableStress extends HTMLElement {
 
   _renderTopPicks() {
     return `
-      <section class="picks-section section-bg-gray">
+      ${this._renderRelatedPosts('gray')}
+
+      <section class="picks-section section-bg-white">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1515,8 +1517,7 @@ class KygoWearableStress extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedTools()}
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="sources-section section-bg-white">
         <div class="container">

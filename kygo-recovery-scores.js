@@ -1146,8 +1146,7 @@ class KygoRecoveryScores extends HTMLElement {
 
   _renderSourcesSection() {
     return `
-      ${this._renderRelatedTools()}
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="sources-section section-bg-white">
         <div class="container">
@@ -1243,7 +1242,9 @@ class KygoRecoveryScores extends HTMLElement {
   _renderFaqSection() {
     const faqs = this._faqs();
     return `
-      <section class="faq-section section-bg-gray" id="faq">
+      ${this._renderRelatedPosts('gray')}
+
+      <section class="faq-section section-bg-white" id="faq">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('info')}</span>Common questions</span>

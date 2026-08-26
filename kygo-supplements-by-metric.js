@@ -577,6 +577,8 @@ class KygoSupplementsByMetric extends HTMLElement {
   _renderFaqSection() {
     const faqs = this._faqs();
     return `
+      ${this._renderRelatedPosts('gray')}
+
       <section class="faq-section section-bg-white" id="faq">
         <div class="container">
           <div class="section-header">
@@ -665,9 +667,8 @@ class KygoSupplementsByMetric extends HTMLElement {
   _renderSourcesSection() {
     return `
       ${this._renderRelatedTools('gray')}
-      ${this._renderRelatedPosts()}
 
-      <section class="sources-section section-bg-gray">
+      <section class="sources-section section-bg-white">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">Every supplement claim verified against primary research (2026-06-12 pass, REM sleep added 2026-08-19). Funding flags are part of the data — they travel with each claim.</p>
