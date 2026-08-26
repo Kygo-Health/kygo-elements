@@ -497,15 +497,45 @@ class KygoVo2maxFactors extends HTMLElement {
       </div>`;
   }
 
-  // ── Section: sources accordion ──────────────────────────────────────────
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${s.cite || ''} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+    }).join('');
+  }
 
   _renderSources() {
-    return this._sources.map(s => `
-      <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">
-        <span class="src-tag">${s.tag}</span>
-        <span class="src-title">${s.title}</span>
-        <span class="src-cite">${s.cite} <span class="src-go">${this._icon('externalLink')}</span></span>
-      </a>`).join('');
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
   }
 
   _renderFAQ() {
@@ -860,9 +890,9 @@ class KygoVo2maxFactors extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
             <h2>Every factor, <span class="hl">anchored.</span></h2>
-            <p class="lede">Each factor is tied to a primary source, opened and checked against the record (PubMed / PMC / journal). Tap to expand.</p>
+            <p class="lede">Each factor is tied to a primary source, opened and checked against the record (PubMed / PMC / journal).</p>
           </div>
-          <div class="sources animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -897,6 +927,8 @@ class KygoVo2maxFactors extends HTMLElement {
     const shadow = this.shadowRoot;
 
     shadow.addEventListener('click', (e) => {
+      const tgl = e.target.closest('[data-src-toggle]');
+      if (tgl) { this._toggleSources(); return; }
       const reset = e.target.closest('[data-action="reset-filters"]');
       if (reset) {
         this._dir.clear(); this._evidence.clear(); this._query = '';
@@ -1271,19 +1303,28 @@ class KygoVo2maxFactors extends HTMLElement {
       .faq details[open] summary::after { content: '−'; }
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
-      /* Sources — compact link list */
+      /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
       @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
-      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; transition: border-color .15s, box-shadow .15s; }
-      .src:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); }
-      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); }
-      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--fg-1); line-height: 1.3; }
-      .src:hover .src-title { color: var(--kygo-green-dark); }
-      .src-cite { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--fg-3); line-height: 1.35; }
-      .src-go { display: inline-flex; color: var(--kygo-green-dark); }
-      .src-go .ico { width: 12px; height: 12px; transition: transform .15s; }
-      .src:hover .src-go .ico { transform: translate(1px,-1px); }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--kygo-green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--bg-surface); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .src--nolink .src-tag { color: var(--fg-3); }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--fg-1); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--kygo-green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--fg-3); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--kygo-green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--kygo-green-dark); font-family: var(--font-display); font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--kygo-green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
       /* Footer */
       .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
