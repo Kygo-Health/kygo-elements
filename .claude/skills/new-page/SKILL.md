@@ -52,7 +52,14 @@ this skill assumes that house style.
    (a `_heroStats` getter) rather than typing them in, so they cannot drift. Copy the hero CSS
    from a page on your palette. Spec in `docs/tool-page-playbook.md` §3 "Hero (the standard
    anatomy)".
-8. **Every tool page gets the standard related-tools module — do not design a new one.** Copy
+8. **Every tool page gets the standard app-CTA module** — the dark card, on its **own
+   section, directly after the first content section**, holding the card and nothing else
+   (the `<kygo-inline-subscribe>` capture goes further down the page, never in or beside that
+   band). Copy `_renderAppCta(bg)` verbatim and write only `_appCta()` — slug, a headline with
+   one `<span>` for the green phrase, and a sub. Don't use the retired thin `kband`. Pass
+   `'gray'` when the section above is white, and re-check the whole page's band rhythm after
+   inserting it. Spec in `docs/tool-page-playbook.md` §3 "App CTA (the standard module)".
+9. **Every tool page gets the standard related-tools module — do not design a new one.** Copy
    `_relatedTools` / `_relatedMotif` / `_renderRelatedTools` verbatim from any shipped tool (they
    are byte-identical across all of them) and call `${this._renderRelatedTools()}` directly above
    the sources section, or low on the page if the tool has no sources. Write only
@@ -62,7 +69,7 @@ this skill assumes that house style.
    rather than rewriting it, then add the new page to the cross-link table in
    `docs/internal-and-app-store-links.md` and give it inbound links from 2+ sibling tools.
    Full spec in `docs/tool-page-playbook.md` §3 "Related tools (the standard module)".
-9. **If the page cites sources, use the standard sources module — do not design a new one.**
+10. **If the page cites sources, use the standard sources module — do not design a new one.**
    Copy `_renderSourceCards` / `_renderSources` / `_toggleSources`, the `.src*` CSS block and the
    `<div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>` call site verbatim
    from `kygo-sleep-tracker-accuracy.js` (the reference; the module is byte-identical across every
@@ -78,7 +85,8 @@ this skill assumes that house style.
 - Tokens stay inline (no shared stylesheet). Don't mix the two token naming schemes in one file.
 - Wix event `detail` must be plain data only (no functions). Disconnect observers/timeouts in
   `disconnectedCallback`.
-- Related tools and sources both use their standard modules, unchanged. Keep the related-tools
+- App CTA, related tools and sources all use their standard modules, unchanged. One app-download
+  surface per page: the CTA card, no `kband`. Keep the related-tools
   tracking attributes (`data-action="related-tool"`, `data-tool-slug`, `data-track-position`).
 - Sources use the standard module, unchanged. No per-page accordions, `<details>` groups, or
   separate desktop/mobile source renderings — those were all consolidated away.

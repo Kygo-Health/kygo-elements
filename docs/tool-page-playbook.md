@@ -93,17 +93,20 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    scores across 12 wearables"). Meta title/description themselves are **Wix page-SEO settings**,
    not component-injected — hand them to the client; the component only controls the visible copy
    + JSON-LD.
-3. **Content sections** — each: `kicker` pill + `<h2>` (with `.hl`) + `lede`, then the module.
-4. **Kygo CTA card** — dark card, green radial glow, pill, headline, iOS + Android buttons,
-   "Works with" badge row. (Reuse from any tool; just swap copy.) **Clickable store buttons use
-   the Tenjin attribution links** (Website channel): iOS `cta-primary` →
-   `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`, Android `cta-android` →
-   `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`. These resolve to the App Store /
-   Play Store and let Tenjin attribute the install. **Only user-clickable anchor hrefs get the
-   Tenjin link** — JSON-LD `downloadUrl`/`installUrl` and any other structured-data store URL
-   must stay the real App Store URL `apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589`.
-   Keep the `data-track-position`/`data-track-label`/`data-action` attributes and the
-   `cta-primary`/`cta-android` classes so `kygo-tracking.js` still classifies the click.)
+3. **App CTA** — the **standard app-CTA module** (see §3 "App CTA (the standard module)").
+   The dark card, on **its own section, directly after the first content section**. Nothing
+   else goes in that band — not the email capture, not a secondary link.
+
+   > **Store links.** Clickable store buttons use the Tenjin attribution links (Website
+   > channel): iOS → `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`, Android →
+   > `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`. **Only user-clickable anchor
+   > hrefs get the Tenjin link** — JSON-LD `downloadUrl`/`installUrl` and any other
+   > structured-data store URL must stay the real App Store URL
+   > `apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589`. The module already carries
+   > the right hrefs plus the `data-action`/`data-track-*` and `cta-primary`/`cta-android`
+   > hooks `kygo-tracking.js` classifies on; don't strip them.
+
+4. **Content sections** — each: `kicker` pill + `<h2>` (with `.hl`) + `lede`, then the module.
 5. **Blog cross-link** card → the matching `kygo.app/post/...` article. For a **multi-post
    cluster**, use the *hub-and-spoke* pattern: each content section also gets a small
    `section-readmore` link to its *own* matching post (matrix→comparison post, validation→trust
@@ -129,8 +132,7 @@ own unique `data-kygo-*` marker). See §9 for the canonical schema shapes.
 
 **Optional standard sections** (reach for these when the content fits — all are house patterns):
 a **TL;DR crawlable prose block** (a visible `<h3>`-headed summary of the key matchups, so crawlers
-read the verdict even though the interactive table renders in JS), a mid-page **`.kband`
-app-download band** (lighter than the big CTA card; used once or twice), an embedded
+read the verdict even though the interactive table renders in JS), an embedded
 **`<kygo-inline-subscribe source="tool-<slug>" variant="comparison">`** email capture, and a dark
 **"bottom line" verdict card** (separate from the CTA card). See §3 for the module details.
 
@@ -172,6 +174,39 @@ If a list exceeds ~12 items, it must **not** render as a flat column of cards on
   keep 1-up on mobile.
 - Stat/value cards stay **side-by-side (2-up) on mobile** — don't let them stack into three
   tall blocks.
+
+### App CTA (the standard module)
+
+**One dark card, one section, same place on every page**: immediately after the first
+content section, before everything else. That band contains the card and nothing else —
+the email capture (`<kygo-inline-subscribe>`) is a separate band further down, never
+directly above or below it, and never inside it.
+
+Self-contained under `kc-*` names with a literal fallback behind every custom property,
+so it renders identically on both palettes. Copy `_renderAppCta(bg)` verbatim; the only
+per-page part is:
+
+```js
+_appCta() {
+  return { slug: 'sleep-tracker-accuracy',
+           headline: `See what your <span>sleep data</span> is really telling you.`,
+           sub: `…` };
+}
+```
+
+`headline` carries exactly one `<span>` for the green phrase. Everything else — pill,
+buttons, "Free plan available…" line, the six "Works with" badges, and the tracking
+attributes — is shared and should not be edited per page.
+
+**The thin `kband` is retired.** It used to be the early conversion surface on about half
+the tools; the card replaces it. One app-download surface per page.
+
+**Backgrounds alternate.** Pass `'gray'` to sit the section on the tinted band, nothing for
+white. Inserting this section flips the parity of every band below it, so when you add it,
+re-check the whole page and flip the downstream `bg-white`/`bg-light` (or
+`section-bg-white`/`section-bg-gray`) classes to keep the rhythm. The module's grey resolves
+`var(--kygo-light, var(--gray-100, #F8FAFC))` so it matches whichever grey the page already
+uses — do not hard-code a third shade.
 
 ### Hero (the standard anatomy)
 
@@ -458,21 +493,14 @@ The page carries **three** conversion touchpoints beyond the nav buttons — don
   The badge row is a single centered `flex-wrap` row on desktop; if you want it as a tidy grid
   (e.g. two rows of three), **scope that grid to a mobile `@media (max-width:560px)` block only** so
   desktop keeps the single row (regression fixed on `kygo-oura-vs-ringconn`).
-- **Mid-page app-download band** (`.kband`) — a lighter, white variant used once or twice higher up
-  (e.g. `data-track-position="early"` and `"late"`): white card, `.kband-glow` radial glow, a
-  pulsing eyebrow dot (`@keyframes kygoPulse`), iOS/Android buttons, a one-line note. Reuse the
-  canonical store icons (§4) and the standard plan microcopy ("Free plan available. Save 50% on
-  yearly. Cancel anytime."). **Desktop layout:** the copy column must be `flex:1 1 auto;
-  min-width:0` so it fills the row and pushes the buttons to the right edge; the actions column is
-  `flex:0 0 auto` with a small `max-width` (~470px) so the two store buttons sit side by side. Do
-  **not** use `justify-content:space-between` with a `max-width`-capped copy column — it leaves a
-  big dead gap in the middle (fixed on `kygo-oura-vs-ringconn`). Keep the headline short (1–2 lines);
-  a long headline turns the band into a tall, awkward block.
-- **CTA rhythm — spread them out.** Never place two conversion cards back to back (e.g. the `.kband`
-  and the blog cross-link), and don't glue a `.kband` directly under the hero where it reads as part
-  of the hero. Put a content section between each conversion touchpoint. A good spine: hero →
-  quick-answer → `.kband` (early) → content → inline-subscribe → content → big CTA card → content →
-  `.kband` (late) → FAQ → blog cross-link.
+- **Mid-page app-download band** (`.kband`) — **retired.** It was the early conversion surface
+  on about half the tools and has been replaced everywhere by the standard app-CTA card (§3).
+  One app-download surface per page. Don't add it back; the CSS still lingers in some files and
+  should be removed when you next touch them.
+- **CTA rhythm — spread them out.** Never place two conversion touchpoints back to back, and never
+  put the email capture in or beside the CTA band. Put a content section between each. The spine
+  every tool now follows: hero → first content section → **app CTA card** → content →
+  inline-subscribe → content → FAQ → blog cross-link → related tools → sources.
 - **Inline email capture** — drop the shared sibling element straight into the page:
   `<kygo-inline-subscribe source="tool-<slug>" variant="comparison"></kygo-inline-subscribe>`.
   It renders its own styled capture UI and handles the submit; you only set `source` (unique per
@@ -627,6 +655,10 @@ Pre-commit checklist:
       `aria-hidden` on decorative visuals, icon-only buttons labelled.
 - [ ] Hero has all five parts (§3): pill, two-tone `<h1>`, lede, a `hero-vis` that says
       something true about this page, and 4 computed `hero-stats`. No centered-badge-only hero.
+- [ ] App CTA: standard module (§3), its own section right after the first content section,
+      card only — no email capture in that band — and no `kband` left on the page.
+- [ ] Band rhythm: no two adjacent sections share a background, including around the CTA
+      and related-tools bands.
 - [ ] Related tools: standard module verbatim (§3), 3 cards, above the sources section, no
       self-link, no Food Scanner, tracking attributes intact, and the cross-link table in
       `docs/internal-and-app-store-links.md` updated.
