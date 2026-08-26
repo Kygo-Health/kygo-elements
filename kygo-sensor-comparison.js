@@ -38,7 +38,6 @@ class KygoSensorComparison extends HTMLElement {
     this._expandedSensor = null;
     this._expandedMetric = null;
     this._expandedAlgo = null;
-    this._expandedSource = null;
     this._eventsBound = false;
     this._radarVisibleBrands = null;
     this._radarClickBound = false;
@@ -133,6 +132,16 @@ class KygoSensorComparison extends HTMLElement {
   }
 
   // ── Sensor Hardware Data ───────────────────────────────────────────────
+
+  // Hero counts, derived from the hardware/software data so they can never drift.
+  get _heroStats() {
+    return {
+      devices: Object.keys(this._devices).length,
+      sensors: this._sensors.length,
+      algorithms: this._algorithms.length,
+      sources: this._sources.length
+    };
+  }
 
   get _sensors() {
     return [
@@ -238,7 +247,7 @@ class KygoSensorComparison extends HTMLElement {
 
   // ── Sources ────────────────────────────────────────────────────────────
 
-  get _sources() {
+  get _srcByBrand() {
     return {
       garmin: [
         { label: 'Garmin Newsroom — Venu 4 Announcement', url: 'https://www.garmin.com/en-US/newsroom/press-release/sports-fitness/take-steps-towards-a-healthier-lifestyle-with-the-venu-4-from-garmin/' },
@@ -888,45 +897,61 @@ class KygoSensorComparison extends HTMLElement {
 
   // ── Render: Sources ────────────────────────────────────────────────────
 
-  _renderSources() {
-    const sources = this._sources;
+  // Flat source list for the standard sources module: the brand becomes the
+  // card's tag. (The Amazon links that used to sit in the old accordion
+  // headers are unchanged in the two comparison tables above.)
+  get _sources() {
     const devices = this._devices;
-    const affiliateMap = {
-      garmin: devices.garmin.affiliateUrl,
-      whoop: devices.whoop.affiliateUrl,
-      oura: devices.oura.affiliateUrl,
-      apple: devices.appleS10.affiliateUrl,
-      fitbit: devices.fitbit.affiliateUrl
-    };
-    const labelMap = {
-      garmin: devices.garmin.trackLabel,
-      whoop: devices.whoop.trackLabel,
-      oura: devices.oura.trackLabel,
-      apple: devices.appleS10.trackLabel,
-      fitbit: devices.fitbit.trackLabel
-    };
-    return Object.entries(sources).map(([bk, srcs], i) => {
-      const isOpen = this._expandedSource === bk;
-      const brandColor = bk === 'apple' ? '#a855f7' : (devices[bk] ? devices[bk].color : '#6b7280');
-      const brandName = bk === 'apple' ? 'Apple Watch' : (devices[bk] ? devices[bk].name : bk);
-      const affUrl = affiliateMap[bk];
-      const affLabel = labelMap[bk];
-      return `
-        <div class="src-card ${isOpen ? 'open' : ''}" data-source="${bk}">
-          <div class="src-header" role="button" tabindex="0" aria-expanded="${isOpen}">
-            <span class="src-dot" style="background:${brandColor}"></span>
-            <div class="src-brand-wrap">
-              <span class="src-brand">${brandName}</span>
-              ${affUrl ? `<a href="${affUrl}" class="src-amazon-link" target="_blank" rel="noopener sponsored" data-track-label="${affLabel}">View on Amazon ${this._icon('arrowRight')}</a>` : ''}
-            </div>
-            <span class="src-count">${srcs.length} sources</span>
-            <span class="src-toggle">${this._icon('chevDown')}</span>
-          </div>
-          <div class="src-body">
-            <ul>${srcs.map(s => `<li><a href="${s.url}" target="_blank" rel="noopener">${s.label} ${this._icon('externalLink')}</a></li>`).join('')}</ul>
-          </div>
-        </div>`;
+    const out = [];
+    for (const [bk, srcs] of Object.entries(this._srcByBrand)) {
+      const brand = bk === 'apple' ? 'Apple Watch' : (devices[bk] ? devices[bk].name : bk);
+      for (const s of srcs) out.push({ tag: brand, title: s.label, cite: '', url: s.url });
+    }
+    return out;
+  }
+
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
     }).join('');
+  }
+
+  _renderSources() {
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
   }
 
   // ── Render: FDA Summary ────────────────────────────────────────────────
@@ -967,7 +992,334 @@ class KygoSensorComparison extends HTMLElement {
 
   // ── Main Render ────────────────────────────────────────────────────────
 
+  // Related tools · Kygo standard module ────────────────────────────────
+  // Exactly 3 cards: a near neighbour, a bridge between accuracy and
+  // physiology, and one from another family. Never links this page to
+  // itself, and never links the Food Scanner.
+
+  _relatedTools() {
+    return [
+      {
+        title: 'Most Accurate Wearable',
+        blurb: 'See which wearable is most accurate across 9 health metrics, backed by peer-reviewed research.',
+        url: 'https://www.kygo.app/tools/wearable-accuracy',
+        meta: 'Wearables · 17+ studies',
+        motif: { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] }
+      },
+      {
+        title: 'Sleep Metrics Comparison',
+        blurb: 'Compare 38 sleep metrics tracked by Oura, Fitbit, Apple Watch and Garmin across 10 categories.',
+        url: 'https://www.kygo.app/tools/sleep-metrics',
+        meta: 'Sleep · 29 sources',
+        motif: { motif: 'dots', caption: 'Metrics tracked', dots: [{ label: 'Oura', n: 9 }, { label: 'Garmin', n: 7 }, { label: 'Apple', n: 6 }, { label: 'Fitbit', n: 5 }] }
+      },
+      {
+        title: 'Oura Ring 5 vs 4 vs 3',
+        blurb: 'Every spec across three Oura generations, peer-reviewed accuracy, and the real 3-year cost.',
+        url: 'https://www.kygo.app/tools/oura-ring-comparison-tool',
+        meta: 'Wearables · 3 generations',
+        motif: { motif: 'rings', caption: 'Relative thickness', rings: [{ label: 'Gen 3' }, { label: 'Ring 4' }, { label: 'Ring 5' }] }
+      }
+    ];
+  }
+
+  _relatedMotif(c) {
+    const m = c.motif || 'compare';
+    if (m === 'compare') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.rows) ? c.rows : [];
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const w = Math.max(0, Math.min(100, r.pct));
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:48px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.label}</span><span style="flex:1;height:9px;border-radius:5px;background:#EEF1F4;overflow:hidden;"><span style="display:block;height:100%;border-radius:5px;background:${fill};width:${w}%;"></span></span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:8px;padding:2px 0;">${body}</div>`;
+    }
+    if (m === 'ring') {
+      const v = c.ringValue != null ? c.ringValue : 72;
+      const off = (238.8 * (1 - v / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 96 96" width="80" height="80"><circle cx="48" cy="48" r="38" fill="none" stroke="#E2E8F0" stroke-width="11"/><circle cx="48" cy="48" r="38" fill="none" stroke="#22C55E" stroke-width="11" stroke-linecap="round" stroke-dasharray="238.8" stroke-dashoffset="${off}" transform="rotate(-90 48 48)"/><text x="48" y="46" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="26" fill="#1E293B">${v}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" letter-spacing="0.5" fill="#94A3B8">SCORE</text></svg><div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:#16A34A;">&#8593; ${c.ringNote || 'Validated'}</div></div>`;
+    }
+    if (m === 'pulse') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><path d="M0 48 L34 48 L44 48 L52 18 L60 60 L70 30 L80 48 L118 48 L128 48 L136 14 L144 58 L154 34 L164 48 L200 48" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="136" cy="14" r="4" fill="#22C55E"/>${c.bpm ? `<text x="200" y="68" text-anchor="end" font-family="Space Grotesk" font-weight="700" font-size="13" fill="#1E293B">${c.bpm}</text>` : ''}</svg>`;
+    }
+    if (m === 'gauge') {
+      const pct = c.gaugePct != null ? c.gaugePct : 70;
+      const off = (125.7 * (1 - pct / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;padding:2px 0;"><svg viewBox="0 0 96 64" width="118" height="78"><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#E2E8F0" stroke-width="10" stroke-linecap="round"/><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#22C55E" stroke-width="10" stroke-linecap="round" stroke-dasharray="125.7" stroke-dashoffset="${off}"/><text x="48" y="50" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="22" fill="#1E293B">${c.gaugeValue || ''}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">${c.gaugeUnit || ''}</text></svg></div>`;
+    }
+    if (m === 'decay') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtDecay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(34,197,94,0.22)"/><stop offset="1" stop-color="rgba(34,197,94,0)"/></linearGradient></defs><path d="M0 10 C40 10 46 58 96 66 L200 74 L200 88 L0 88 Z" fill="url(#mtDecay)"/><path d="M0 10 C40 10 46 58 96 66 L200 74" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round"/><circle cx="96" cy="66" r="4" fill="#22C55E"/></svg>`;
+    }
+    if (m === 'hypno') {
+      const rem = c.stage === 'rem', deep = c.stage === 'deep';
+      return `<svg viewBox="0 0 200 80" width="100%" style="display:block;"><g font-family="Space Grotesk" font-weight="600" font-size="7" fill="#94A3B8"><text x="0" y="11">Awake</text><text x="0" y="33">REM</text><text x="0" y="55">Light</text><text x="0" y="77">Deep</text></g><path d="M36 8 L54 8 L54 52 L80 52 L80 74 L106 74 L106 30 L128 30 L128 52 L152 52 L152 30 L176 30 L176 52 L200 52" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${rem ? '<rect x="106" y="24" width="22" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}${deep ? '<rect x="80" y="68" width="26" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}</svg>`;
+    }
+    if (m === 'donut') {
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 84 84" width="78" height="78"><circle cx="42" cy="42" r="34" fill="none" stroke="#16A34A" stroke-width="12" stroke-dasharray="96 213.6" stroke-dashoffset="0" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#22C55E" stroke-width="12" stroke-dasharray="64 213.6" stroke-dashoffset="-96" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#86EFAC" stroke-width="12" stroke-dasharray="53 213.6" stroke-dashoffset="-160" transform="rotate(-90 42 42)"/><text x="42" y="40" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="17" fill="#1E293B">540</text><text x="42" y="53" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">KCAL</text></svg><div style="display:flex;flex-direction:column;gap:5px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#16A34A;"></span>Protein</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#22C55E;"></span>Carbs</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#86EFAC;"></span>Fat</span></div></div>`;
+    }
+    if (m === 'range') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><defs><linearGradient id="mtRange" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="6" y1="50" x2="194" y2="50" stroke="#E2E8F0" stroke-width="2"/><g stroke="#CBD5E1" stroke-width="2"><line x1="6" y1="46" x2="6" y2="54"/><line x1="100" y1="46" x2="100" y2="54"/><line x1="194" y1="46" x2="194" y2="54"/></g><rect x="78" y="22" width="76" height="16" rx="8" fill="rgba(34,197,94,0.18)"/><rect x="78" y="44" width="76" height="12" rx="6" fill="url(#mtRange)"/><circle cx="116" cy="50" r="7" fill="#16A34A" stroke="#fff" stroke-width="2.5"/><text x="116" y="16" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="12" fill="#1E293B">${c.rangeLabel || ''}</text></svg>`;
+    }
+    if (m === 'steps') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtSteps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><g><rect x="2" y="50" width="20" height="34" rx="4" fill="#CBD5E1"/><rect x="30" y="40" width="20" height="44" rx="4" fill="#86EFAC"/><rect x="58" y="58" width="20" height="26" rx="4" fill="#CBD5E1"/><rect x="86" y="20" width="20" height="64" rx="4" fill="url(#mtSteps)"/><rect x="114" y="44" width="20" height="40" rx="4" fill="#86EFAC"/><rect x="142" y="34" width="20" height="50" rx="4" fill="#22C55E" opacity="0.8"/><rect x="170" y="54" width="20" height="30" rx="4" fill="#CBD5E1"/></g></svg>`;
+    }
+    if (m === 'radar') {
+      const vals = Array.isArray(c.radar) && c.radar.length === 5 ? c.radar : [0.92, 0.6, 0.78, 0.5, 0.85];
+      const cx = 100, cy = 52, R = 38;
+      const ang = k => (-90 + 72 * k) * Math.PI / 180;
+      const pt = (k, r) => [cx + r * Math.cos(ang(k)), cy + r * Math.sin(ang(k))];
+      const ring = r => 'M ' + [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, r); return x.toFixed(1) + ' ' + y.toFixed(1); }).join(' L ') + ' Z';
+      const dataPts = [0, 1, 2, 3, 4].map(k => pt(k, R * Math.max(0.08, Math.min(1, vals[k]))));
+      const dataPath = 'M ' + dataPts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L ') + ' Z';
+      const spokes = [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, R); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#E2E8F0" stroke-width="1"/>`; }).join('');
+      const dots = dataPts.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2" fill="#22C55E"/>`).join('');
+      return `<svg viewBox="0 0 200 104" width="100%" style="display:block;"><path d="${ring(R)}" fill="none" stroke="#E2E8F0" stroke-width="1"/><path d="${ring(R * 0.5)}" fill="none" stroke="#EEF1F4" stroke-width="1"/>${spokes}<path d="${dataPath}" fill="rgba(34,197,94,0.18)" stroke="#16A34A" stroke-width="2" stroke-linejoin="round"/>${dots}</svg>`;
+    }
+    if (m === 'diverging') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.bars) ? c.bars : [];
+      const cx = 124, maxLen = 70;
+      const dmax = Math.max(20, ...rows.map(r => Math.abs(r.val || 0)));
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const v = r.val || 0;
+        const len = Math.max(5, Math.abs(v) / dmax * maxLen);
+        const x = v >= 0 ? cx : cx - len;
+        const y = 6 + i * 20;
+        return `<text x="0" y="${y + 11}" font-family="Space Grotesk" font-weight="600" font-size="9" fill="#475569">${r.label}</text><rect x="${x.toFixed(1)}" y="${y}" width="${len.toFixed(1)}" height="11" rx="3" fill="${fill}"/>`;
+      }).join('');
+      const h = 6 + rows.length * 20;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><line x1="${cx}" y1="2" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'rings') {
+      const r = Array.isArray(c.rings) ? c.rings : [];
+      const OE = 27, cy = 44;
+      const sw = [10, 12, 8];
+      const colors = ['#CBD5E1', '#94A3B8', '#16A34A'];
+      const lbl = ['#94A3B8', '#94A3B8', '#16A34A'];
+      const cxs = [34, 100, 166];
+      const body = r.map((rr, i) => {
+        const w = sw[i] != null ? sw[i] : 10;
+        const rad = OE - w / 2;
+        const cx = cxs[i] != null ? cxs[i] : (200 / r.length) * (i + 0.5);
+        return `<circle cx="${cx}" cy="${cy}" r="${rad.toFixed(1)}" fill="none" stroke="${colors[i] || '#16A34A'}" stroke-width="${w}"/><text x="${cx}" y="90" text-anchor="middle" font-family="Space Grotesk" font-weight="${i === r.length - 1 ? 700 : 600}" font-size="9" fill="${lbl[i] || '#94A3B8'}">${rr.label}</text>`;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;">${body}</svg>`;
+    }
+    if (m === 'versus') {
+      const a = c.versusA || 'A', b = c.versusB || 'B';
+      const rows = Array.isArray(c.versus) ? c.versus : [];
+      const cx = 100, maxLen = 84;
+      const body = rows.map((r, i) => {
+        const y = 24 + i * 22;
+        const la = Math.max(0, Math.min(100, r.a)) / 100 * maxLen;
+        const lb = Math.max(0, Math.min(100, r.b)) / 100 * maxLen;
+        return `<rect x="${(cx - la).toFixed(1)}" y="${y}" width="${la.toFixed(1)}" height="10" rx="5" fill="#16A34A"/><rect x="${cx}" y="${y}" width="${lb.toFixed(1)}" height="10" rx="5" fill="#86EFAC"/>`;
+      }).join('');
+      const h = 24 + rows.length * 22;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><text x="2" y="12" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#16A34A">${a}</text><text x="198" y="12" text-anchor="end" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#94A3B8">${b}</text><line x1="${cx}" y1="18" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'tiers') {
+      const t = Array.isArray(c.tiers) ? c.tiers : [];
+      const n = t.length || 3;
+      const gap = 16, colW = (200 - gap * (n + 1)) / n, base = 84;
+      const fills = ['#86EFAC', '#22C55E', '#16A34A'];
+      let x = gap;
+      const bars = t.map((tt, i) => {
+        const hh = Math.max(0.1, Math.min(1, tt.h)) * (base - 14);
+        const y = base - hh;
+        const fill = i === n - 1 ? 'url(#mtTier)' : (fills[i] || '#86EFAC');
+        const out = `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${colW.toFixed(1)}" height="${hh.toFixed(1)}" rx="6" fill="${fill}"/><text x="${(x + colW / 2).toFixed(1)}" y="96" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" fill="#94A3B8">${tt.label}</text>`;
+        x += colW + gap;
+        return out;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;"><defs><linearGradient id="mtTier" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="0" y1="84" x2="200" y2="84" stroke="#E2E8F0" stroke-width="1.5"/>${bars}</svg>`;
+    }
+    if (m === 'dots') {
+      const rows = Array.isArray(c.dots) ? c.dots : [];
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const TOT = 10;
+      const body = rows.map((r, i) => {
+        const fill = fills[i] || '#86EFAC';
+        const n = Math.max(0, Math.min(TOT, r.n || 0));
+        let dots = '';
+        for (let k = 0; k < TOT; k++) dots += `<span style="width:7px;height:7px;border-radius:50%;background:${k < n ? fill : '#E2E8F0'};display:block;"></span>`;
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:42px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;">${r.label}</span><span style="display:flex;gap:4px;">${dots}</span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:7px;padding:2px 0;">${body}</div>`;
+    }
+    return `<svg viewBox="0 0 200 96" width="100%" style="display:block;"><defs><linearGradient id="mtRank" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect x="0" y="4" width="186" height="11" rx="5.5" fill="url(#mtRank)"/><rect x="0" y="25" width="150" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.85"/><rect x="0" y="46" width="116" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.7"/><rect x="0" y="67" width="82" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.55"/><rect x="0" y="88" width="54" height="6" rx="3" fill="#CBD5E1"/></svg>`;
+  }
+
+  // Renderer + styles are self-contained under `rt-*` names, and every custom
+  // property carries a literal fallback, so the same block drops into either
+  // palette unchanged. Pass 'gray' to sit the section on the tinted band.
+
+  _renderRelatedTools(bg) {
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+    const cards = this._relatedTools().map(t => {
+      const slug = t.url.split('/').filter(Boolean).pop();
+      return `
+      <a class="rt-card animate-on-scroll" href="${t.url}" aria-label="${t.title}" data-action="related-tool" data-tool-slug="${slug}" data-track-position="related-tools" data-track-label="${slug}">
+        <span class="rt-media"><span class="rt-panel"><span class="rt-cap">${t.motif.caption || ''}</span>${this._relatedMotif(t.motif)}</span></span>
+        <span class="rt-body">
+          <span class="rt-title">${t.title}</span>
+          <span class="rt-blurb">${t.blurb}</span>
+          <span class="rt-foot"><span class="rt-meta">${t.meta || ''}</span><span class="rt-open">Open ${arrow}</span></span>
+        </span>
+      </a>`;
+    }).join('');
+    return `
+      <style>
+      .rt-section{padding:56px 20px;background:#fff}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.rt-section{padding:80px 24px}}
+      .rt-inner{max-width:1200px;margin:0 auto}
+      .rt-head{margin-bottom:28px;max-width:720px}
+      .rt-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rt-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-h2 .rt-hl{color:var(--kygo-green,#22C55E)}
+      .rt-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,#475569);font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rt-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rt-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rt-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,#E2E8F0);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rt-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,#22C55E),var(--kygo-green-dark,#16A34A));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rt-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rt-card:hover::after{opacity:1}
+      .rt-card:focus-visible{outline:2px solid var(--kygo-green,#22C55E);outline-offset:3px}
+      .rt-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,#F1F5F9);display:flex;align-items:center;justify-content:center}
+      .rt-panel{display:block;background:var(--bg-canvas,#fff);border:1px solid #EAECEF;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.08);padding:13px 15px;width:78%}
+      .rt-cap{display:block;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:9px;letter-spacing:.6px;text-transform:uppercase;color:var(--fg-3,#94A3B8);margin-bottom:8px}
+      .rt-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rt-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,#475569);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rt-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:5px}
+      .rt-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,#94A3B8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rt-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,#16A34A)}
+      .rt-open svg{width:15px;height:15px}
+      </style>
+      <section class="rt-section${bg === 'gray' ? ' rt-gray' : ''}" id="related-tools">
+        <div class="rt-inner">
+          <div class="rt-head animate-on-scroll">
+            <div class="rt-kicker">Keep exploring</div>
+            <h2 class="rt-h2">Related <span class="rt-hl">tools.</span></h2>
+            <p class="rt-lede">More free, evidence-based tools to get the most out of your wearable.</p>
+          </div>
+          <div class="rt-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
+  // Copy for the standard app CTA card. Headline carries one <span> for the
+  // green phrase; everything else about the card is shared.
+  _appCta() {
+    return {
+      slug: 'sensor-comparison',
+      headline: `The sensors are similar. <span>The context isn't.</span>`,
+      sub: `Every brand runs its own maths on much the same hardware. Kygo adds the piece none of them have: what you actually ate and did.`
+    };
+  }
+
+  // ── App CTA · Kygo standard module ──────────────────────────────────────
+  // The dark conversion card, on its own section, directly after the first
+  // content section. Self-contained under `kc-*` names with a literal fallback
+  // behind every custom property, so the same block renders identically on
+  // either palette. Nothing else belongs in this section — the email capture
+  // is a separate band further down the page.
+  // Pass 'gray' to sit the section on the tinted band.
+
+  _renderAppCta(bg) {
+    const c = this._appCta();
+    const ios = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+    const android = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
+    const badges = [
+      ['273a63_56ac2eb53faf43fab1903643b29c0bce', 'Oura Ring'],
+      ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health'],
+      ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit'],
+      ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin'],
+      ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health'],
+      ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect']
+    ].map(([id, name]) => `<img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" />`).join('');
+    const appleIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
+    const androidIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
+    return `
+      <style>
+      .kc-section{padding:56px 20px;background:#fff}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.kc-section{padding:72px 24px}}
+      .kc-inner{max-width:1100px;margin:0 auto}
+      .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
+      @media(min-width:720px){.kc-card{padding:56px 40px}}
+      .kc-card::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,.30),transparent);pointer-events:none}
+      .kc-card::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,.12),transparent);pointer-events:none}
+      .kc-pill{position:relative;display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,.25)}
+      .kc-pill .kc-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 8px #22C55E}
+      .kc-h{position:relative;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;color:#fff;font-size:clamp(26px,4.5vw,42px);line-height:1.05;letter-spacing:-.01em;margin:18px 0 14px;max-width:22ch}
+      .kc-h span{color:#22C55E}
+      .kc-p{position:relative;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.72);font-size:clamp(14px,1.6vw,16px);line-height:1.6;max-width:56ch;margin:0 auto 24px}
+      .kc-p em{font-style:italic}
+      .kc-btns{position:relative;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+      .kc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:12px;background:#22C55E;color:#fff;font-family:var(--font-body,'DM Sans',sans-serif);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(34,197,94,.25);transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+      .kc-btn:hover{background:#16A34A;transform:translateY(-1px);box-shadow:0 10px 24px rgba(34,197,94,.32)}
+      .kc-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+      .kc-btn svg{width:18px;height:18px;flex:none}
+      @media(max-width:560px){.kc-btn{width:100%}}
+      .kc-note{position:relative;margin:16px 0 0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;line-height:1.5;color:rgba(255,255,255,.72)}
+      .kc-works{position:relative;margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.6);font-size:13px}
+      .kc-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+      .kc-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:4px;object-fit:contain}
+      </style>
+      <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
+        <div class="kc-inner">
+          <div class="kc-card animate-on-scroll">
+            <div class="kc-pill"><span class="kc-dot"></span> Free Forever Plan</div>
+            <h3 class="kc-h">${c.headline}</h3>
+            <p class="kc-p">${c.sub}</p>
+            <div class="kc-btns">
+              <a class="kc-btn cta-primary" href="${ios}" target="_blank" rel="noopener" data-track-position="early" data-track-label="${c.slug}-early-ios">${appleIcon} Download for iOS</a>
+              <a class="kc-btn cta-android" href="${android}" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="${c.slug}-early-android">${androidIcon} Download for Android</a>
+            </div>
+            <p class="kc-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+            <div class="kc-works">
+              <span>Works with</span>
+              <div class="kc-badges">${badges}</div>
+            </div>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-sensor-comparison', variant: 'comparison' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
+        </div>
+      </section>`;
+  }
+
   render() {
+    const hs = this._heroStats;
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
 
     this.shadowRoot.innerHTML = `
@@ -988,11 +1340,42 @@ class KygoSensorComparison extends HTMLElement {
       </header>
 
       <!-- Hero -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">6 DEVICES — 16 SENSORS — 25 ALGORITHMS</div>
-          <h1 class="animate-on-scroll">What's Actually Inside Your Wearable?</h1>
-          <p class="hero-sub animate-on-scroll">We tore apart the specs of every major wearable — sensor by sensor, metric by metric. Here's exactly what hardware you're getting, what health data it produces, and which features are just software.</p>
+      <section class="hero-light">
+        <div class="hero-light-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill animate-on-scroll"><span class="dot"></span> ${hs.devices} DEVICES · ${hs.sensors} SENSORS · ${hs.algorithms} ALGORITHMS</div>
+              <h1 class="animate-on-scroll">What's actually <span class="hl">inside your wearable?</span></h1>
+              <p class="hero-lede animate-on-scroll">We took apart the specs of every major wearable, sensor by sensor and metric by metric. Exactly what hardware you are paying for, what health data it produces, and <strong>which features are only software</strong>.</p>
+            </div>
+            <div class="hero-vis animate-on-scroll">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Where the difference lives</span>
+                <span class="hero-vis-tag">software &gt; hardware</span>
+              </div>
+              <div class="hv-two">
+                <div class="hv-col">
+                  <span class="hv-label">Sensors</span>
+                  <span class="hv-val">${hs.sensors}</span>
+                  <div class="hv-bar"><span class="hv-fill" style="width:64%"></span></div>
+                  <span class="hv-cap">Physical hardware</span>
+                </div>
+                <div class="hv-col">
+                  <span class="hv-label">Algorithms</span>
+                  <span class="hv-val good">${hs.algorithms}</span>
+                  <div class="hv-bar"><span class="hv-fill good" style="width:100%"></span></div>
+                  <span class="hv-cap good">Proprietary software</span>
+                </div>
+              </div>
+              <span class="hv-foot">Across ${hs.devices} latest-generation devices · brands share sensors, not the maths on top</span>
+            </div>
+          </div>
+          <div class="hero-stats animate-on-scroll">
+            <div class="hero-stat"><div class="num">${hs.devices}</div><div class="lbl">Devices torn down</div></div>
+            <div class="hero-stat"><div class="num">${hs.sensors}</div><div class="lbl">Distinct sensors mapped</div></div>
+            <div class="hero-stat"><div class="num">${hs.algorithms}</div><div class="lbl">Proprietary algorithms</div></div>
+            <div class="hero-stat"><div class="num">${hs.sources}</div><div class="lbl">Verified sources</div></div>
+          </div>
         </div>
       </section>
 
@@ -1002,6 +1385,8 @@ class KygoSensorComparison extends HTMLElement {
           <div class="stats-bar animate-on-scroll">${this._renderDeviceStatsBar()}</div>
         </div>
       </section>
+      ${this._renderAppCta('gray')}
+
 
       <!-- Visual Charts -->
       <section class="charts-section">
@@ -1011,27 +1396,11 @@ class KygoSensorComparison extends HTMLElement {
           ${this._renderChartsSection()}
         </div>
       </section>
+      ${this._renderEmailCta('gray')}
+
 
       <!-- Early contextual CTA -->
-      <section class="kearly-section">
-        <div class="container">
-          <div class="kband animate-on-scroll">
-                <div class="kband-inner">
-                  <div class="kband-glow"></div>
-                  <div class="kband-copy">
-                    <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
-                    <h2 class="kband-headline">Whichever device wins for you, Kygo connects its data to your nutrition and finds your personal insights.</h2>
-                  </div>
-                  <div class="kband-actions">
-                    <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="sensor-comparison-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
-                    <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="sensor-comparison-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a><p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-                  </div>
-                </div>
-              </div>
-        </div>
-      </section>
 
-      <kygo-inline-subscribe source="tool-sensor-comparison" variant="comparison"></kygo-inline-subscribe>
 
       <!-- Main Comparison Section -->
       <section class="compare-section" id="compare">
@@ -1113,11 +1482,13 @@ class KygoSensorComparison extends HTMLElement {
       </section>
 
       <!-- Sources -->
+      ${this._renderRelatedTools('gray')}
+
       <section class="sources-section">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All data from official manufacturer specs, support docs, and independent reviews. Verified March 2026.</p>
-          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -1204,10 +1575,46 @@ class KygoSensorComparison extends HTMLElement {
       @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
       /* Hero */
-      .hero { padding: 60px 0 32px; text-align: center; }
-      .hero-badge { display: inline-block; background: var(--green-light); color: var(--green-dark); font-size: 11px; font-weight: 600; letter-spacing: 1.5px; padding: 6px 16px; border-radius: 50px; margin-bottom: 16px; }
-      .hero h1 { font-size: clamp(26px, 7vw, 40px); max-width: 700px; margin: 0 auto 16px; }
-      .hero-sub { color: var(--gray-600); font-size: 16px; max-width: 600px; margin: 0 auto; }
+      .hero-light { background: #fff; border-bottom: 1px solid var(--gray-200); }
+      .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--green-dark); padding: 6px 14px; border-radius: 999px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
+      .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex: none; }
+      .hero-light h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--dark); font-size: clamp(30px, 5.5vw, 58px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
+      .hero-light h1 .hl { color: var(--green); }
+      .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--gray-600); max-width: 60ch; margin: 0; }
+      .hero-lede strong { color: var(--dark); font-weight: 600; }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--gray-200); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--green-dark); background: var(--green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--gray-200); }
+      .hv-label { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-600); }
+      .hv-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--gray-600); }
+      .hv-val.good { color: var(--green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--gray-100); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--gray-400); }
+      .hv-fill.good { background: var(--green); }
+      .hv-cap { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hv-cap.good { color: var(--green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--gray-400); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
+      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--gray-200); padding-top: 24px; }
+      @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
+      .hero-stat .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1; color: var(--green); letter-spacing: -0.02em; }
+      .hero-stat .lbl { margin-top: 10px; color: var(--gray-400); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; line-height: 1.4; }
+      .hv-body { position: relative; display: flex; align-items: center; gap: 16px; padding: 6px 2px 2px; }
+      .hv-big { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(38px, 8vw, 54px); line-height: 1; letter-spacing: -0.02em; color: var(--green-dark); flex: none; }
+      .hv-text { font-size: 13.5px; line-height: 1.5; color: var(--gray-600); }
+      .hv-text p { margin: 0; }
+      .hv-text strong { color: var(--dark); font-weight: 600; }
+      .hv-src { display: block; margin-top: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hero-stat .unit { font-size: 0.5em; font-weight: 600; margin-left: 2px; }
 
       /* Stats Bar */
       .stats-section { padding: 0 0 32px; }
@@ -1376,24 +1783,28 @@ class KygoSensorComparison extends HTMLElement {
       /* Sources */
       .sources-section { padding: 48px 0; background: #fff; }
       .sources-list { display: flex; flex-direction: column; gap: 6px; }
-      .src-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); overflow: hidden; }
-      .src-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; cursor: pointer; font-size: 14px; font-weight: 500; }
-      .src-brand-wrap { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
-      .src-amazon-link { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 500; color: var(--gray-600); text-decoration: none; transition: color 0.2s; }
-      .src-amazon-link:hover { color: var(--dark); }
-      .src-amazon-link svg { width: 12px; height: 12px; color: var(--green-dark); }
-      .src-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-      .src-count { font-size: 12px; color: var(--gray-400); flex-shrink: 0; }
-      .src-toggle { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; }
-      .src-toggle svg { width: 100%; height: 100%; }
-      .src-card.open .src-toggle { transform: rotate(180deg); }
-      .src-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 16px; }
-      .src-card.open .src-body { max-height: 400px; padding: 0 16px 14px; }
-      .src-body ul { list-style: none; }
-      .src-body li { padding: 6px 0; border-top: 1px solid var(--gray-100); }
-      .src-body li:first-child { border-top: none; }
-      .src-body a { color: var(--green-dark); font-size: 13px; display: flex; align-items: center; gap: 6px; }
-      .src-body a svg { width: 12px; height: 12px; flex-shrink: 0; }
+      /* Sources · Kygo standard module */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--gray-50); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--green-dark); }
+      .src--nolink .src-tag { color: var(--gray-400); }
+      .src-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--gray-400); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--green-dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
       /* Footer */
       .tool-footer { padding: 24px 0 16px; text-align: center; border-top: 1px solid var(--gray-200); }
@@ -1409,7 +1820,6 @@ class KygoSensorComparison extends HTMLElement {
 
       /* Responsive */
       @media (min-width: 768px) {
-        .hero { padding: 80px 0 40px; }
         .charts-grid { grid-template-columns: 1fr 1fr; }
         .insights-grid { grid-template-columns: 1fr 1fr; }
         .fda-row { grid-template-columns: 200px 1fr 220px; }
@@ -1424,7 +1834,7 @@ class KygoSensorComparison extends HTMLElement {
       }
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
-        .algo-body, .src-body { transition: none; }
+        .algo-body { transition: none; }
         .pulse-dot { animation: none; }
       }
     `;
@@ -1458,17 +1868,8 @@ class KygoSensorComparison extends HTMLElement {
         return;
       }
 
-      // Source card toggle
-      const srcHeader = e.target.closest('.src-header');
-      if (srcHeader) {
-        const card = srcHeader.closest('.src-card');
-        const key = card.dataset.source;
-        this._expandedSource = this._expandedSource === key ? null : key;
-        shadow.querySelectorAll('.src-card').forEach(c => {
-          c.classList.toggle('open', c.dataset.source === this._expandedSource);
-        });
-        return;
-      }
+      // Sources · show-all toggle
+      if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
     });
 
     // Keyboard accessibility
@@ -1476,8 +1877,6 @@ class KygoSensorComparison extends HTMLElement {
       if (e.key === 'Enter' || e.key === ' ') {
         const algoHeader = e.target.closest('.algo-header');
         if (algoHeader) { e.preventDefault(); algoHeader.click(); }
-        const srcHeader = e.target.closest('.src-header');
-        if (srcHeader) { e.preventDefault(); srcHeader.click(); }
       }
     });
   }

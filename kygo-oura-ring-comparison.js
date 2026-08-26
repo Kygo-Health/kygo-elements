@@ -221,6 +221,7 @@ class KygoOuraRingComparison extends HTMLElement {
 
   _icon(k) {
     const map = {
+      externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
       arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
       wallet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h16v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7"/><circle cx="17" cy="13" r="1.2"/></svg>',
       athlete: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M5 21l3-7 3 2 3-3 5 8M9 13l-2-3"/></svg>',
@@ -236,12 +237,34 @@ class KygoOuraRingComparison extends HTMLElement {
 
   // ── Render ───────────────────────────────────────────────────────────
 
-  // ── Related tools (cross-link cards) ──
+  // Related tools · Kygo standard module ────────────────────────────────
+  // Exactly 3 cards: a near neighbour, a bridge between accuracy and
+  // physiology, and one from another family. Never links this page to
+  // itself, and never links the Food Scanner.
+
   _relatedTools() {
     return [
-      { title: 'Oura Ring 5 vs 4', blurb: 'Oura Ring 5 vs Ring 4, decided on the numbers: specs, accuracy and the 3-year cost.', url: 'https://www.kygo.app/tools/oura-ring-5-vs-4', meta: 'Wearables · head-to-head', motif: { motif: 'compare', caption: 'Ring 5 vs Ring 4', rows: [{ label: 'Ring 5', pct: 88 }, { label: 'Ring 4', pct: 78 }] } },
-      { title: 'Most Accurate Sleep Tracker', blurb: 'Which wearable is most accurate for sleep vs a lab PSG? Compare 7 devices head to head.', url: 'https://www.kygo.app/tools/sleep-tracker-accuracy', meta: 'Wearables · 14 sources', motif: { motif: 'compare', caption: 'Sleep staging vs PSG', rows: [{ label: 'Oura', pct: 90 }, { label: 'Apple', pct: 78 }, { label: 'Fitbit', pct: 64 }, { label: 'Garmin', pct: 36 }] } },
-      { title: 'Most Accurate Wearable', blurb: 'See which wearable is most accurate across 9 health metrics, backed by peer-reviewed research.', url: 'https://www.kygo.app/tools/wearable-accuracy', meta: 'Wearables · 17+ studies', motif: { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] } }
+      {
+        title: 'Oura Ring 5 vs 4',
+        blurb: 'Oura Ring 5 vs Ring 4, decided on the numbers: specs, accuracy and the 3-year cost.',
+        url: 'https://www.kygo.app/tools/oura-ring-5-vs-4',
+        meta: 'Wearables · head-to-head',
+        motif: { motif: 'compare', caption: 'Ring 5 vs Ring 4', rows: [{ label: 'Ring 5', pct: 88 }, { label: 'Ring 4', pct: 78 }] }
+      },
+      {
+        title: 'Oura Ring vs RingConn',
+        blurb: 'Five smart rings side by side, with the no-subscription cost math over three years.',
+        url: 'https://www.kygo.app/tools/oura-vs-ringconn',
+        meta: 'Wearables · 5 models',
+        motif: { motif: 'versus', caption: 'Oura vs RingConn', versusA: 'Oura', versusB: 'RingConn', versus: [{ a: 88, b: 72 }, { a: 70, b: 84 }, { a: 82, b: 66 }] }
+      },
+      {
+        title: 'Most Accurate Sleep Tracker',
+        blurb: 'Which wearable is most accurate for sleep vs a lab PSG? Compare 7 devices head to head.',
+        url: 'https://www.kygo.app/tools/sleep-tracker-accuracy',
+        meta: 'Wearables · 14 sources',
+        motif: { motif: 'compare', caption: 'Sleep staging vs PSG', rows: [{ label: 'Oura', pct: 90 }, { label: 'Apple', pct: 78 }, { label: 'Fitbit', pct: 64 }, { label: 'Garmin', pct: 36 }] }
+      }
     ];
   }
 
@@ -374,44 +397,171 @@ class KygoOuraRingComparison extends HTMLElement {
     return `<svg viewBox="0 0 200 96" width="100%" style="display:block;"><defs><linearGradient id="mtRank" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect x="0" y="4" width="186" height="11" rx="5.5" fill="url(#mtRank)"/><rect x="0" y="25" width="150" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.85"/><rect x="0" y="46" width="116" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.7"/><rect x="0" y="67" width="82" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.55"/><rect x="0" y="88" width="54" height="6" rx="3" fill="#CBD5E1"/></svg>`;
   }
 
+  // Renderer + styles are self-contained under `rt-*` names, and every custom
+  // property carries a literal fallback, so the same block drops into either
+  // palette unchanged. Pass 'gray' to sit the section on the tinted band.
+
   _renderRelatedTools(bg) {
     const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
-    const cards = this._relatedTools().map(t => `
-      <a class="related-card animate-on-scroll" href="${t.url}" aria-label="${t.title}">
-        <div class="rc-media"><div class="rc-panel"><div class="rc-cap">${t.motif.caption || ''}</div>${this._relatedMotif(t.motif)}</div></div>
-        <div class="rc-body">
-          <div class="rc-title">${t.title}</div>
-          <div class="rc-blurb">${t.blurb}</div>
-          <div class="rc-foot"><span class="rc-meta">${t.meta || ''}</span><span class="rc-open">Open ${arrow}</span></div>
-        </div>
-      </a>`).join('');
+    const cards = this._relatedTools().map(t => {
+      const slug = t.url.split('/').filter(Boolean).pop();
+      return `
+      <a class="rt-card animate-on-scroll" href="${t.url}" aria-label="${t.title}" data-action="related-tool" data-tool-slug="${slug}" data-track-position="related-tools" data-track-label="${slug}">
+        <span class="rt-media"><span class="rt-panel"><span class="rt-cap">${t.motif.caption || ''}</span>${this._relatedMotif(t.motif)}</span></span>
+        <span class="rt-body">
+          <span class="rt-title">${t.title}</span>
+          <span class="rt-blurb">${t.blurb}</span>
+          <span class="rt-foot"><span class="rt-meta">${t.meta || ''}</span><span class="rt-open">Open ${arrow}</span></span>
+        </span>
+      </a>`;
+    }).join('');
     return `
       <style>
-      .related-grid{display:grid;grid-template-columns:1fr;gap:18px}
-      @media(min-width:720px){.related-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
-      .related-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,#E2E8F0);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
-      .related-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,#22C55E),var(--kygo-green-dark,#16A34A));opacity:0;transition:opacity .25s ease;pointer-events:none}
-      .related-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
-      .related-card:hover::after{opacity:1}
-      .rc-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,#F1F5F9);display:flex;align-items:center;justify-content:center}
-      .rc-panel{display:block;background:var(--bg-canvas,#fff);border:1px solid #EAECEF;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.08);padding:13px 15px;width:78%}
-      .rc-cap{display:block;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:9px;letter-spacing:.6px;text-transform:uppercase;color:var(--fg-3,#94A3B8);margin-bottom:8px}
-      .rc-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
-      .rc-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
-      .rc-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,#475569);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-      .rc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:5px}
-      .rc-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,#94A3B8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-      .rc-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,#16A34A)}
-      .rc-open svg{width:15px;height:15px}
+      .rt-section{padding:56px 20px;background:#fff}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.rt-section{padding:80px 24px}}
+      .rt-inner{max-width:1200px;margin:0 auto}
+      .rt-head{margin-bottom:28px;max-width:720px}
+      .rt-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rt-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-h2 .rt-hl{color:var(--kygo-green,#22C55E)}
+      .rt-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,#475569);font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rt-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rt-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rt-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,#E2E8F0);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rt-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,#22C55E),var(--kygo-green-dark,#16A34A));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rt-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rt-card:hover::after{opacity:1}
+      .rt-card:focus-visible{outline:2px solid var(--kygo-green,#22C55E);outline-offset:3px}
+      .rt-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,#F1F5F9);display:flex;align-items:center;justify-content:center}
+      .rt-panel{display:block;background:var(--bg-canvas,#fff);border:1px solid #EAECEF;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.08);padding:13px 15px;width:78%}
+      .rt-cap{display:block;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:9px;letter-spacing:.6px;text-transform:uppercase;color:var(--fg-3,#94A3B8);margin-bottom:8px}
+      .rt-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rt-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,#475569);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rt-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:5px}
+      .rt-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,#94A3B8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rt-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,#16A34A)}
+      .rt-open svg{width:15px;height:15px}
       </style>
-      <section class="section ${bg || 'bg-white'}" id="related">
-        <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">Keep exploring</div>
-            <h2>Related <span class="hl">tools.</span></h2>
-            <p class="lede">More free, evidence-based tools to get the most out of your wearable.</p>
+      <section class="rt-section${bg === 'gray' ? ' rt-gray' : ''}" id="related-tools">
+        <div class="rt-inner">
+          <div class="rt-head animate-on-scroll">
+            <div class="rt-kicker">Keep exploring</div>
+            <h2 class="rt-h2">Related <span class="rt-hl">tools.</span></h2>
+            <p class="rt-lede">More free, evidence-based tools to get the most out of your wearable.</p>
           </div>
-          <div class="related-grid">${cards}</div>
+          <div class="rt-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
+
+
+
+  // Copy for the standard app CTA card. Headline carries one <span> for the
+  // green phrase; everything else about the card is shared.
+  _appCta() {
+    return {
+      slug: 'oura-ring-comparison-tool',
+      headline: `Your ring tracks the data. <span>Kygo tells you what moves it.</span>`,
+      sub: `Whichever Oura you wear, Kygo connects to it and cross-checks every sleep, HRV and recovery reading against what you actually eat.`
+    };
+  }
+
+  // ── App CTA · Kygo standard module ──────────────────────────────────────
+  // The dark conversion card, on its own section, directly after the first
+  // content section. Self-contained under `kc-*` names with a literal fallback
+  // behind every custom property, so the same block renders identically on
+  // either palette. Nothing else belongs in this section — the email capture
+  // is a separate band further down the page.
+  // Pass 'gray' to sit the section on the tinted band.
+
+  _renderAppCta(bg) {
+    const c = this._appCta();
+    const ios = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+    const android = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
+    const badges = [
+      ['273a63_56ac2eb53faf43fab1903643b29c0bce', 'Oura Ring'],
+      ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health'],
+      ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit'],
+      ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin'],
+      ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health'],
+      ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect']
+    ].map(([id, name]) => `<img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" />`).join('');
+    const appleIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
+    const androidIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
+    return `
+      <style>
+      .kc-section{padding:56px 20px;background:#fff}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.kc-section{padding:72px 24px}}
+      .kc-inner{max-width:1100px;margin:0 auto}
+      .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
+      @media(min-width:720px){.kc-card{padding:56px 40px}}
+      .kc-card::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,.30),transparent);pointer-events:none}
+      .kc-card::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,.12),transparent);pointer-events:none}
+      .kc-pill{position:relative;display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,.25)}
+      .kc-pill .kc-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 8px #22C55E}
+      .kc-h{position:relative;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;color:#fff;font-size:clamp(26px,4.5vw,42px);line-height:1.05;letter-spacing:-.01em;margin:18px 0 14px;max-width:22ch}
+      .kc-h span{color:#22C55E}
+      .kc-p{position:relative;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.72);font-size:clamp(14px,1.6vw,16px);line-height:1.6;max-width:56ch;margin:0 auto 24px}
+      .kc-p em{font-style:italic}
+      .kc-btns{position:relative;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+      .kc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:12px;background:#22C55E;color:#fff;font-family:var(--font-body,'DM Sans',sans-serif);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(34,197,94,.25);transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+      .kc-btn:hover{background:#16A34A;transform:translateY(-1px);box-shadow:0 10px 24px rgba(34,197,94,.32)}
+      .kc-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+      .kc-btn svg{width:18px;height:18px;flex:none}
+      @media(max-width:560px){.kc-btn{width:100%}}
+      .kc-note{position:relative;margin:16px 0 0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;line-height:1.5;color:rgba(255,255,255,.72)}
+      .kc-works{position:relative;margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.6);font-size:13px}
+      .kc-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+      .kc-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:4px;object-fit:contain}
+      </style>
+      <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
+        <div class="kc-inner">
+          <div class="kc-card animate-on-scroll">
+            <div class="kc-pill"><span class="kc-dot"></span> Free Forever Plan</div>
+            <h3 class="kc-h">${c.headline}</h3>
+            <p class="kc-p">${c.sub}</p>
+            <div class="kc-btns">
+              <a class="kc-btn cta-primary" href="${ios}" target="_blank" rel="noopener" data-track-position="early" data-track-label="${c.slug}-early-ios">${appleIcon} Download for iOS</a>
+              <a class="kc-btn cta-android" href="${android}" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="${c.slug}-early-android">${androidIcon} Download for Android</a>
+            </div>
+            <p class="kc-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+            <div class="kc-works">
+              <span>Works with</span>
+              <div class="kc-badges">${badges}</div>
+            </div>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-oura-ring-comparison', variant: 'comparison' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
         </div>
       </section>`;
   }
@@ -519,25 +669,7 @@ class KygoOuraRingComparison extends HTMLElement {
       </section>
 
       <!-- Early contextual CTA -->
-      <section class="kearly-section">
-        <div class="section-inner">
-          <div class="kband animate-on-scroll">
-            <div class="kband-inner">
-              <div class="kband-glow"></div>
-              <div class="kband-copy">
-                <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
-                <h2 class="kband-headline">Already own an Oura Ring, or about to? Kygo pairs it with food logging and shows what actually moves your readiness, recovery, and sleep.</h2>
-              </div>
-              <div class="kband-actions">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="oura-comparison-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="oura-comparison-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a><p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <kygo-inline-subscribe source="tool-oura-ring-comparison" variant="comparison"></kygo-inline-subscribe>
 
       <section class="section bg-light">
         <div class="section-inner">
@@ -549,8 +681,10 @@ class KygoOuraRingComparison extends HTMLElement {
           <div class="tldr animate-on-scroll">${this._renderTLDR()}</div>
         </div>
       </section>
+      ${this._renderAppCta()}
 
-      <section class="section bg-white">
+
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Size &amp; dimensions</div>
@@ -561,6 +695,8 @@ class KygoOuraRingComparison extends HTMLElement {
           <p class="tbl-note">Gen 3 shipped in two shapes: the flatter <strong>Heritage</strong> (2.6 mm, 3–5 g) and the fully rounded <strong>Horizon</strong> (3.2 mm, 4–6 g). Width is a uniform 7.9 mm with no taper. Measured values, thinnest point.</p>
         </div>
       </section>
+      ${this._renderEmailCta()}
+
 
       <section class="section bg-light">
         <div class="section-inner">
@@ -576,31 +712,6 @@ class KygoOuraRingComparison extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
-        <div class="section-inner">
-          <div class="kygo-cta-card animate-on-scroll">
-            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-            <h3>Your ring tracks the data. <span>Kygo tells you what moves it.</span></h3>
-            <p>Whichever Oura you wear, Kygo connects to it and cross-checks every sleep, HRV, and recovery reading against what you actually eat and train, so you see which metrics are genuinely predictive for <em>your</em> body, not just a daily score.</p>
-            <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" data-track-position="footer-cta" data-track-label="oura-comparison-footer-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" data-action="android-download" data-track-position="footer-cta" data-track-label="oura-comparison-footer-android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
-            </div>
-            <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-            <div class="cta-works">
-              <span>Works with</span>
-              <div class="cta-badges">
-                <img src="${ouraImg}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
-                <img src="${appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
-                <img src="${fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
-                <img src="${garminImg}" alt="Garmin" title="Garmin" loading="lazy" />
-                <img src="${googleHealthImg}" alt="Google Health" title="Google Health" loading="lazy" />
-                <img src="${healthConnectImg}" alt="Health Connect" title="Health Connect" loading="lazy" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section class="section bg-white">
         <div class="section-inner">
@@ -625,23 +736,6 @@ class KygoOuraRingComparison extends HTMLElement {
       </section>
 
       <!-- Late slim CTA -->
-      <section class="kearly-section kearly-section-slim">
-        <div class="section-inner">
-          <div class="kband animate-on-scroll">
-            <div class="kband-inner">
-              <div class="kband-glow"></div>
-              <div class="kband-copy">
-                <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
-                <h2 class="kband-headline">See what your food does to your Oura scores.</h2>
-              </div>
-              <div class="kband-actions">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios" data-track-position="late" data-track-label="oura-comparison-late-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="late" data-track-label="oura-comparison-late-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a><p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section class="section bg-white">
         <div class="section-inner">
@@ -699,7 +793,7 @@ class KygoOuraRingComparison extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools('bg-light')}
+      ${this._renderRelatedTools('gray')}
 
       <section class="section bg-white">
         <div class="section-inner">
@@ -708,7 +802,7 @@ class KygoOuraRingComparison extends HTMLElement {
             <h2>Every claim, <span class="hl">traceable.</span></h2>
             <p class="lede">Specs are primary-source verified against Oura's own pages and launch coverage. Accuracy figures come from peer-reviewed studies, with conflicts of interest noted where they apply.</p>
           </div>
-          <div class="sources">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -927,7 +1021,7 @@ class KygoOuraRingComparison extends HTMLElement {
     `).join('');
   }
 
-  get _sources() {
+  get _srcGroups() {
     return [
       {
         group: 'Oura primary',
@@ -980,21 +1074,68 @@ class KygoOuraRingComparison extends HTMLElement {
     ];
   }
 
+  // Flat source list for the standard sources module: the group name becomes
+  // the card's tag.
+  get _sources() {
+    const out = [];
+    for (const g of this._srcGroups) {
+      for (const l of g.links) out.push({ tag: g.group, title: l.t, cite: '', url: l.u });
+    }
+    return out;
+  }
+
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+    }).join('');
+  }
+
   _renderSources() {
-    return this._sources.map(s => `
-      <div class="source-group">
-        <h4>${s.group}</h4>
-        <ul>
-          ${s.links.map(l => `<li><a href="${l.u}" target="_blank" rel="noopener nofollow">${l.t} ${this._icon('arrowRight')}</a></li>`).join('')}
-        </ul>
-      </div>
-    `).join('');
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
   }
 
   // ── Events ───────────────────────────────────────────────────────────
 
   _bindEvents() {
     const root = this.shadowRoot;
+
+    root.addEventListener('click', (e) => {
+      if (e.target.closest('[data-src-toggle]')) this._toggleSources();
+    });
 
     root.querySelector('[data-tabs]').addEventListener('click', (e) => {
       const btn = e.target.closest('button[data-tab]');
@@ -1357,17 +1498,28 @@ class KygoOuraRingComparison extends HTMLElement {
       .kygo-cta-card .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
 
       /* Sources */
-      .sources { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      @media (min-width: 560px) { .sources { grid-template-columns: repeat(2, 1fr); } }
-      @media (min-width: 1000px) { .sources { grid-template-columns: repeat(4, 1fr); } }
-      .source-group { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; }
-      .source-group h4 { font-family: var(--font-display); font-weight: 600; font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 14px; }
-      .source-group ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
-      .source-group li { font-size: 13px; line-height: 1.45; }
-      .source-group a { display: inline-flex; align-items: flex-start; gap: 5px; color: var(--fg-2); transition: color .15s; }
-      .source-group a:hover { color: var(--kygo-green-dark); }
-      .source-group a .ico { width: 12px; height: 12px; color: var(--kygo-green-dark); flex: none; margin-top: 3px; transition: transform .15s; }
-      .source-group a:hover .ico { transform: translateX(2px); }
+      /* Sources · Kygo standard module */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--kygo-green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--bg-surface); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .src--nolink .src-tag { color: var(--fg-3); }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--fg-1); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--kygo-green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--fg-3); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--kygo-green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--kygo-green-dark); font-family: var(--font-display); font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--kygo-green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
       /* FAQ */
       .faq { display: flex; flex-direction: column; gap: 10px; }

@@ -83,37 +83,46 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    "Get Kygo Health →" link with the two buttons. Both hrefs use the **Tenjin** links (see §2.4),
    the icons are the canonical store SVGs (§4), and the text labels hide below ~360px so only the
    icons show.
-2. **Hero** (`hero-light`, white) — `hero-pill` kicker, `<h1>` with a green `.hl` span, a
-   `hero-lede`, a **`hero-vis`** (a clean supporting visual — a small chart or a dark stat
-   card), and a **`hero-stats`** strip of 4 numbers (2×2 on mobile, 4-up desktop).
+2. **Hero** — the **standard hero anatomy** (see §3 "Hero (the standard anatomy)"). Every tool
+   page has all five parts: `hero-pill` kicker, `<h1>` with a green `.hl` span, a `hero-lede`,
+   a **`hero-vis`** supporting visual, and a **`hero-stats`** strip of 4 numbers (2×2 mobile,
+   4-up desktop). A centered badge + headline + paragraph with nothing beside it is the old
+   design; don't ship it.
    **Align the hero `<h1>` + lede with the page's meta title/description** so the first screen
    matches what the SERP promised (e.g. meta "Compare … 12 wearables" → h1 "Compare recovery
    scores across 12 wearables"). Meta title/description themselves are **Wix page-SEO settings**,
    not component-injected — hand them to the client; the component only controls the visible copy
    + JSON-LD.
-3. **Content sections** — each: `kicker` pill + `<h2>` (with `.hl`) + `lede`, then the module.
-4. **Kygo CTA card** — dark card, green radial glow, pill, headline, iOS + Android buttons,
-   "Works with" badge row. (Reuse from any tool; just swap copy.) **Clickable store buttons use
-   the Tenjin attribution links** (Website channel): iOS `cta-primary` →
-   `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`, Android `cta-android` →
-   `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`. These resolve to the App Store /
-   Play Store and let Tenjin attribute the install. **Only user-clickable anchor hrefs get the
-   Tenjin link** — JSON-LD `downloadUrl`/`installUrl` and any other structured-data store URL
-   must stay the real App Store URL `apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589`.
-   Keep the `data-track-position`/`data-track-label`/`data-action` attributes and the
-   `cta-primary`/`cta-android` classes so `kygo-tracking.js` still classifies the click.)
-5. **Blog cross-link** card → the matching `kygo.app/post/...` article. For a **multi-post
+3. **App CTA** — the **standard app-CTA module** (see §3 "App CTA (the standard module)").
+   The dark card, on **its own section, directly after the first content section**. Nothing
+   else goes in that band — not the email capture, not a secondary link.
+
+   > **Store links.** Clickable store buttons use the Tenjin attribution links (Website
+   > channel): iOS → `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`, Android →
+   > `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`. **Only user-clickable anchor
+   > hrefs get the Tenjin link** — JSON-LD `downloadUrl`/`installUrl` and any other
+   > structured-data store URL must stay the real App Store URL
+   > `apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589`. The module already carries
+   > the right hrefs plus the `data-action`/`data-track-*` and `cta-primary`/`cta-android`
+   > hooks `kygo-tracking.js` classifies on; don't strip them.
+
+4. **Content sections** — each: `kicker` pill + `<h2>` (with `.hl`) + `lede`, then the module.
+5. **Email CTA** — the **standard email-CTA module** (see §3 "Email CTA (the standard module)").
+   Its own section, with **at least one page content section between it and the app CTA** —
+   the two conversion touchpoints never touch.
+6. **Blog cross-link** card → the matching `kygo.app/post/...` article. For a **multi-post
    cluster**, use the *hub-and-spoke* pattern: each content section also gets a small
    `section-readmore` link to its *own* matching post (matrix→comparison post, validation→trust
    post, factor explorer→intake post), and the one big CTA card leads with the primary spoke.
-6. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
+7. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
    getter (never let JSON-LD FAQs exist without a visible FAQ — the older `kygo-wearable-stress`
    shipped FAQ JSON-LD with **no** visible FAQ; don't copy that omission).
-7. **Sources** — **compact link cards** (see §3 "Sources (compact)"), not big expandable cards.
-   List **every** source (each = green eyebrow tag + citation line + external link); do **not**
-   hide any behind a "show more" reveal. The source count in the hero/stat strip must equal the
-   number of source links actually shown.
-8. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
+8. **Related tools** — the **standard related-tools module** (see §3 "Related tools (the
+   standard module)"). Three cross-link cards, sitting **directly above the sources section**
+   (or low on the page when a tool has no sources). Every tool page has one.
+9. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
+   Every tool with sources uses it, unchanged. Copy it; don't design a new one.
+10. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
    links, add the Amazon Associates disclosure line** (`footer-affiliate`), full two-sentence
    canonical wording: "As an Amazon Associate, Kygo Health earns from qualifying purchases.
    Product links on this page are affiliate links; we may earn a commission at no extra cost to
@@ -126,9 +135,7 @@ own unique `data-kygo-*` marker). See §9 for the canonical schema shapes.
 
 **Optional standard sections** (reach for these when the content fits — all are house patterns):
 a **TL;DR crawlable prose block** (a visible `<h3>`-headed summary of the key matchups, so crawlers
-read the verdict even though the interactive table renders in JS), a mid-page **`.kband`
-app-download band** (lighter than the big CTA card; used once or twice), an embedded
-**`<kygo-inline-subscribe source="tool-<slug>" variant="comparison">`** email capture, and a dark
+read the verdict even though the interactive table renders in JS) and a dark
 **"bottom line" verdict card** (separate from the CTA card). See §3 for the module details.
 
 ---
@@ -170,10 +177,197 @@ If a list exceeds ~12 items, it must **not** render as a flat column of cards on
 - Stat/value cards stay **side-by-side (2-up) on mobile** — don't let them stack into three
   tall blocks.
 
-### Sources (compact)
-A grid of small link cards (1 col mobile → 2–3 col desktop): tag (tiny green eyebrow) +
-title (link) + citation + external-link icon. **No big expandable cards** — they ate half
-the screen. Mirror the Oura tool's compact sources.
+### Email CTA (the standard module)
+
+`<kygo-inline-subscribe>` has a transparent host, so dropped in bare it inherits whatever band
+it lands beside and reads as part of that section. Wrap it in the standard module instead —
+its own `<section>`, its own band, part of the page rhythm:
+
+```js
+_emailCta() { return { source: 'tool-<slug>', variant: 'comparison' }; }   // per page
+${this._renderEmailCta()}                                                  // call site
+```
+
+`source` is what GA4 and the Velo endpoint record for the subscriber — **never change it** when
+moving the section. `variant` is `comparison` on the accuracy/comparison tools and `factors` on
+the explorers.
+
+**Placement:** after the first page content section that follows the app CTA. A content section
+always separates the two conversion touchpoints; they must never be adjacent, and the email
+capture must never sit inside the app CTA's band.
+
+### App CTA (the standard module)
+
+**One dark card, one section, same place on every page**: immediately after the first
+content section, before everything else. That band contains the card and nothing else —
+the email capture (`<kygo-inline-subscribe>`) is a separate band further down, never
+directly above or below it, and never inside it.
+
+Self-contained under `kc-*` names with a literal fallback behind every custom property,
+so it renders identically on both palettes. Copy `_renderAppCta(bg)` verbatim; the only
+per-page part is:
+
+```js
+_appCta() {
+  return { slug: 'sleep-tracker-accuracy',
+           headline: `See what your <span>sleep data</span> is really telling you.`,
+           sub: `…` };
+}
+```
+
+`headline` carries exactly one `<span>` for the green phrase. Everything else — pill,
+buttons, "Free plan available…" line, the six "Works with" badges, and the tracking
+attributes — is shared and should not be edited per page.
+
+**The thin `kband` is retired.** It used to be the early conversion surface on about half
+the tools; the card replaces it. One app-download surface per page.
+
+**Backgrounds alternate.** Pass `'gray'` to sit the section on the tinted band, nothing for
+white. Inserting this section flips the parity of every band below it, so when you add it,
+re-check the whole page and flip the downstream `bg-white`/`bg-light` (or
+`section-bg-white`/`section-bg-gray`) classes to keep the rhythm. The module's grey resolves
+`var(--kygo-light, var(--gray-100, #F8FAFC))` so it matches whichever grey the page already
+uses — do not hard-code a third shade.
+
+### Hero (the standard anatomy)
+
+**Five parts, every tool page**, in a two-column grid that stacks below 880px:
+
+```html
+<section class="hero-light">
+  <div class="hero-light-inner">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-pill"><span class="dot"></span> 43 FACTORS · 5 CATEGORIES · PEER-REVIEWED</div>
+        <h1>What actually moves <span class="hl">your HRV?</span></h1>
+        <p class="hero-lede">… with <strong>one or two bolded phrases</strong> …</p>
+      </div>
+      <div class="hero-vis">…</div>
+    </div>
+    <div class="hero-stats"><div class="hero-stat"><div class="num">43</div><div class="lbl">…</div></div>…</div>
+  </div>
+</section>
+```
+
+- **Pill** — the page's scope in three facts, uppercase, with the green dot.
+- **`<h1>`** — one question or claim, **two-tone**: the second half in `<span class="hl">`.
+  Keep it to ~2 lines beside the visual; a headline that wraps to four lines is too long.
+- **`hero-lede`** — 2–3 sentences, with the page's thesis in `<strong>`.
+- **`hero-vis`** — the part most often skipped, and the one that makes the hero. It must state
+  something **true, specific and non-obvious** about *this* page, pulled from the page's own
+  data — not decoration. Two established variants: `hv-two` (two columns, `hv-label` /
+  `hv-val` / `hv-bar` / `hv-cap`, for a contrast — funded vs independent, helps vs hurts,
+  hardware vs software) and `hv-big` + `hv-text` + `hv-src` (one headline number and a
+  sentence, for a single biggest lever). Put the caveat in `hv-foot`.
+- **`hero-stats`** — exactly 4. **Compute them from the data getters**, don't type them in:
+
+```js
+get _heroStats() {
+  const all = Object.values(this._factors).flat();
+  return { total: all.length, strong: all.filter(f => f.evidence === 'strong').length, … };
+}
+```
+
+  Hand-typed hero numbers drift — hrv-factors advertised 44 factors against 43 in its data
+  until this was computed. The same rule applies to the pill.
+
+**Palette.** The CSS exists in two token-mapped variants, semantic and canonical, exactly as
+the sources module does. Copy the one matching the file you are editing; never mix schemes.
+
+### Related tools (the standard module)
+
+**One design, every tool page**, sitting directly above the sources section (or low on the
+page when a tool has no sources). Three cards in a grid (1 col mobile → 3 col ≥720px): a
+small data motif on a tinted panel, then title, two-line blurb, a meta line and "Open →".
+
+The module is **self-contained** — renderer, the 15-motif catalog and its styles travel
+together under `rt-*` class names, and every custom property carries a literal fallback, so
+the identical block renders the same on either palette. Copy all three methods verbatim from
+any shipped tool (they are byte-identical across all 23):
+
+```js
+_relatedTools()        // this page's 3 cards — the only part you write
+_relatedMotif(c)       // the shared motif catalog; do not edit per page
+_renderRelatedTools(bg)  // section + styles; pass 'gray' for the tinted band
+```
+
+```html
+${this._renderRelatedTools()}
+```
+
+**Choosing the three.** A **near neighbour** (same family), a **bridge** (accuracy ↔
+physiology), and one from **another family** — so a page never shows three near-duplicates.
+Hard rules: never link a page to itself; **never link the Food Scanner**
+(`/tools/calories-in-anything`); keep every tool at 2+ inbound links across the site. The
+current map, with inbound counts, is the table in `docs/internal-and-app-store-links.md`
+("Related-tools cross-links") — update it when you add or retarget a page. Slugs come from
+`kygo-tools.js`, which is the tool registry.
+
+**Card copy** is defined once per destination and reused wherever that tool is linked, so it
+cannot drift between pages. Keep `meta` on a stable fact (factor or device count) rather than
+a source count where you can — source counts move.
+
+**Motifs** — `compare`, `ring`, `pulse`, `gauge`, `decay`, `hypno`, `donut`, `range`, `steps`,
+`radar`, `diverging`, `rings`, `versus`, `tiers`, `dots`. Pick one that says something true
+about the destination, and don't give all three cards on a page the same one.
+
+**Tracking** is built in: each card carries `data-action="related-tool"`,
+`data-tool-slug="<destination>"` and `data-track-position="related-tools"`. `kygo-tracking.js`
+classifies these as `related_tool_click` and adds a `to_tool` param, so with the existing
+`component` and `page_path` you get source tool → destination tool. Don't strip these
+attributes.
+
+### Sources (the standard module)
+**One design, every tool.** Compact link cards in a grid (1 col mobile → 2 col ≥600px →
+3 col ≥960px). Each card is `tag` (tiny green uppercase eyebrow) + `title` (the study) +
+`cite` (journal / sample / COI) + external-link icon. The first **6** render; the rest sit
+in a hidden twin grid behind a **"Show all N sources"** pill that toggles to "Show fewer
+sources". Nothing is buried — the count is on the button, and the full list is one tap away.
+
+This replaced a zoo of per-page designs (category accordions, per-device `<details>`, bulleted
+`<ul>` columns, separate desktop/mobile renderings). Don't reintroduce any of them.
+
+Copy the module verbatim from any shipped tool — it is byte-identical across all of them
+(`kygo-sleep-tracker-accuracy.js` is the reference). Three methods, one call site, one CSS block:
+
+```js
+_renderSourceCards(list)   // card markup; handles the no-url and no-cite cases
+_renderSources()           // first 6 + hidden extras + the toggle button
+_toggleSources()           // flips [data-src-extra] and relabels the button
+```
+
+```html
+<div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
+```
+
+Wire the toggle into the page's existing shadow-root click listener:
+
+```js
+if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
+```
+
+**The data.** `get _sources()` returns a flat array of `{ tag, title, cite, url }`:
+
+- **`tag`** — the classification you want a reader to see *before* the title: funding
+  (`Independent · meta`, `Oura-funded`), or the topic group on a grouped tool
+  (`Supplements`, `Apple Watch`). **Grouped tools keep their groups** — the group name simply
+  becomes the tag rather than a collapsed section header. Sort the array so a group's sources
+  stay contiguous.
+- **`cite`** — journal, year, sample size, COI. Optional: with no `cite`, the card falls back
+  to the source's host so every card keeps the same three-line rhythm.
+- **`url`** — optional. A source with **no URL** (a manufacturer post, a consumer test with no
+  permanent link) renders as a **dashed, non-clickable card** rather than being dropped. Say
+  in the section lede that these are listed unlinked; never delete an unlinkable source.
+
+**Palette.** The CSS block exists in two token-mapped variants — semantic (`--fg-*`,
+`--kygo-green`, `--border-subtle`, `--font-display`) and canonical (`--dark`, `--green`,
+`--gray-*`, literal `'Space Grotesk'`). Take the one matching the file you're editing (§ *Design
+tokens* in `CLAUDE.md`); never mix the two schemes in one file.
+
+**Icons.** The module calls `this._icon('externalLink')` and `this._icon('arrowRight')`. Add
+both to the page's icon map if they're missing. Size them with a bare `svg` selector
+(`.src-go svg`), **not** `.ico` — the icon helpers return an unwrapped `<svg>`, so `.src-go .ico`
+silently matches nothing.
 
 ### Filter controls
 Give filter bars a **`--bg-raised` background** so they read as distinct from the white
@@ -320,26 +514,19 @@ The page carries **three** conversion touchpoints beyond the nav buttons — don
   The badge row is a single centered `flex-wrap` row on desktop; if you want it as a tidy grid
   (e.g. two rows of three), **scope that grid to a mobile `@media (max-width:560px)` block only** so
   desktop keeps the single row (regression fixed on `kygo-oura-vs-ringconn`).
-- **Mid-page app-download band** (`.kband`) — a lighter, white variant used once or twice higher up
-  (e.g. `data-track-position="early"` and `"late"`): white card, `.kband-glow` radial glow, a
-  pulsing eyebrow dot (`@keyframes kygoPulse`), iOS/Android buttons, a one-line note. Reuse the
-  canonical store icons (§4) and the standard plan microcopy ("Free plan available. Save 50% on
-  yearly. Cancel anytime."). **Desktop layout:** the copy column must be `flex:1 1 auto;
-  min-width:0` so it fills the row and pushes the buttons to the right edge; the actions column is
-  `flex:0 0 auto` with a small `max-width` (~470px) so the two store buttons sit side by side. Do
-  **not** use `justify-content:space-between` with a `max-width`-capped copy column — it leaves a
-  big dead gap in the middle (fixed on `kygo-oura-vs-ringconn`). Keep the headline short (1–2 lines);
-  a long headline turns the band into a tall, awkward block.
-- **CTA rhythm — spread them out.** Never place two conversion cards back to back (e.g. the `.kband`
-  and the blog cross-link), and don't glue a `.kband` directly under the hero where it reads as part
-  of the hero. Put a content section between each conversion touchpoint. A good spine: hero →
-  quick-answer → `.kband` (early) → content → inline-subscribe → content → big CTA card → content →
-  `.kband` (late) → FAQ → blog cross-link.
-- **Inline email capture** — drop the shared sibling element straight into the page:
-  `<kygo-inline-subscribe source="tool-<slug>" variant="comparison"></kygo-inline-subscribe>`.
-  It renders its own styled capture UI and handles the submit; you only set `source` (unique per
-  tool) and `variant`. Place it mid-page, between two content sections (not adjacent to the big
-  CTA card).
+- **Mid-page app-download band** (`.kband`) — **retired.** It was the early conversion surface
+  on about half the tools and has been replaced everywhere by the standard app-CTA card (§3).
+  One app-download surface per page. Don't add it back; the CSS still lingers in some files and
+  should be removed when you next touch them.
+- **CTA rhythm — spread them out.** Never place two conversion touchpoints back to back, and never
+  put the email capture in or beside the CTA band. Put a content section between each. The spine
+  every tool now follows: hero → first content section → **app CTA card** → content →
+  **email CTA** → content → FAQ → blog cross-link → related tools → sources.
+- **Inline email capture** — use the standard email-CTA module (§3), which wraps the shared
+  `<kygo-inline-subscribe>` sibling element in its own section. Don't drop the element in bare:
+  its host is transparent, so it takes on whatever band it lands beside and reads as part of that
+  section. The element renders its own capture UI and handles the submit; you set only `source`
+  (unique per tool, recorded by GA4 and Velo) and `variant`.
 - **Blog cross-link** (§2.5) is the fourth touchpoint — the read-more card to the matching
   `kygo.app/post/...` article, plus per-section `section-readmore` links for a multi-post cluster.
 
@@ -487,8 +674,23 @@ Pre-commit checklist:
 - [ ] `data-action` / `data-track-position` / `data-track-label` on CTA, affiliate, **and** source links (§9).
 - [ ] a11y pass (§8): `aria-pressed` on toggles, `role`/`aria-label` on pickers, `scope` on table cells,
       `aria-hidden` on decorative visuals, icon-only buttons labelled.
-- [ ] Every source link shown (no show-more truncation); footer affiliate disclosure is the full
-      two-sentence form when affiliate links exist.
+- [ ] Hero has all five parts (§3): pill, two-tone `<h1>`, lede, a `hero-vis` that says
+      something true about this page, and 4 computed `hero-stats`. No centered-badge-only hero.
+- [ ] App CTA: standard module (§3), its own section right after the first content section,
+      card only — no email capture in that band — and no `kband` left on the page.
+- [ ] Email CTA: standard module (§3), its own section, at least one content section below
+      the app CTA, `source`/`variant` unchanged.
+- [ ] Band rhythm: no two adjacent sections share a background, including around the app CTA,
+      email CTA and related-tools bands.
+- [ ] No malformed section tags: `grep -n '<section c[^l]' kygo-*.js` returns nothing. A bad
+      class rewrite hides inside a template literal, so `node --check` will not catch it.
+- [ ] Related tools: standard module verbatim (§3), 3 cards, above the sources section, no
+      self-link, no Food Scanner, tracking attributes intact, and the cross-link table in
+      `docs/internal-and-app-store-links.md` updated.
+- [ ] Sources use the standard module verbatim (§3): flat `_sources` of `{tag,title,cite,url}`,
+      6 shown + "Show all N sources" toggle wired, no page-specific sources design. Unlinkable
+      sources present as dashed cards, not dropped.
+- [ ] Footer affiliate disclosure is the full two-sentence form when affiliate links exist.
 - [ ] Zero runtime errors in the headless render.
 
 ---

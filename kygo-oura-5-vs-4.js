@@ -336,12 +336,34 @@ class KygoOura5vs4 extends HTMLElement {
   }
 
   // ── Main render ────────────────────────────────────────────────────────
-  // ── Related tools (cross-link cards) ──
+  // Related tools · Kygo standard module ────────────────────────────────
+  // Exactly 3 cards: a near neighbour, a bridge between accuracy and
+  // physiology, and one from another family. Never links this page to
+  // itself, and never links the Food Scanner.
+
   _relatedTools() {
     return [
-      { title: 'Most Accurate Sleep Tracker', blurb: 'Which wearable is most accurate for sleep vs a lab PSG? Compare 7 devices head to head.', url: 'https://www.kygo.app/tools/sleep-tracker-accuracy', meta: 'Wearables · 14 sources', motif: { motif: 'compare', caption: 'Sleep staging vs PSG', rows: [{ label: 'Oura', pct: 90 }, { label: 'Apple', pct: 78 }, { label: 'Fitbit', pct: 64 }, { label: 'Garmin', pct: 36 }] } },
-      { title: 'Most Accurate Wearable', blurb: 'See which wearable is most accurate across 9 health metrics, backed by peer-reviewed research.', url: 'https://www.kygo.app/tools/wearable-accuracy', meta: 'Wearables · 17+ studies', motif: { motif: 'compare', caption: 'Accuracy vs lab', rows: [{ label: 'Oura', pct: 94 }, { label: 'Apple', pct: 88 }, { label: 'Garmin', pct: 80 }, { label: 'Fitbit', pct: 66 }] } },
-      { title: 'Calorie Burn Accuracy', blurb: 'Enter your reported calorie burn and see the likely real range, with per-activity accuracy.', url: 'https://www.kygo.app/tools/calorie-burn-accuracy', meta: 'Wearables · 22 sources', motif: { motif: 'diverging', caption: 'Reported vs actual', bars: [{ label: 'Oura', val: 9 }, { label: 'Apple', val: 22 }, { label: 'Fitbit', val: -16 }, { label: 'Garmin', val: -31 }] } }
+      {
+        title: 'Oura Ring 5 vs 4 vs 3',
+        blurb: 'Every spec across three Oura generations, peer-reviewed accuracy, and the real 3-year cost.',
+        url: 'https://www.kygo.app/tools/oura-ring-comparison-tool',
+        meta: 'Wearables · 3 generations',
+        motif: { motif: 'rings', caption: 'Relative thickness', rings: [{ label: 'Gen 3' }, { label: 'Ring 4' }, { label: 'Ring 5' }] }
+      },
+      {
+        title: 'Oura Ring vs RingConn',
+        blurb: 'Five smart rings side by side, with the no-subscription cost math over three years.',
+        url: 'https://www.kygo.app/tools/oura-vs-ringconn',
+        meta: 'Wearables · 5 models',
+        motif: { motif: 'versus', caption: 'Oura vs RingConn', versusA: 'Oura', versusB: 'RingConn', versus: [{ a: 88, b: 72 }, { a: 70, b: 84 }, { a: 82, b: 66 }] }
+      },
+      {
+        title: 'Recovery Score Explorer',
+        blurb: 'Compare readiness and recovery scores across 12 wearables, and see which are actually validated.',
+        url: 'https://www.kygo.app/tools/recovery-score-explorer',
+        meta: 'Recovery · 12 wearables',
+        motif: { motif: 'ring', caption: 'Readiness score', ringValue: 72, ringNote: 'Validated' }
+      }
     ];
   }
 
@@ -474,44 +496,171 @@ class KygoOura5vs4 extends HTMLElement {
     return `<svg viewBox="0 0 200 96" width="100%" style="display:block;"><defs><linearGradient id="mtRank" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect x="0" y="4" width="186" height="11" rx="5.5" fill="url(#mtRank)"/><rect x="0" y="25" width="150" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.85"/><rect x="0" y="46" width="116" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.7"/><rect x="0" y="67" width="82" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.55"/><rect x="0" y="88" width="54" height="6" rx="3" fill="#CBD5E1"/></svg>`;
   }
 
+  // Renderer + styles are self-contained under `rt-*` names, and every custom
+  // property carries a literal fallback, so the same block drops into either
+  // palette unchanged. Pass 'gray' to sit the section on the tinted band.
+
   _renderRelatedTools(bg) {
     const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
-    const cards = this._relatedTools().map(t => `
-      <a class="related-card animate-on-scroll" href="${t.url}" aria-label="${t.title}">
-        <div class="rc-media"><div class="rc-panel"><div class="rc-cap">${t.motif.caption || ''}</div>${this._relatedMotif(t.motif)}</div></div>
-        <div class="rc-body">
-          <div class="rc-title">${t.title}</div>
-          <div class="rc-blurb">${t.blurb}</div>
-          <div class="rc-foot"><span class="rc-meta">${t.meta || ''}</span><span class="rc-open">Open ${arrow}</span></div>
-        </div>
-      </a>`).join('');
+    const cards = this._relatedTools().map(t => {
+      const slug = t.url.split('/').filter(Boolean).pop();
+      return `
+      <a class="rt-card animate-on-scroll" href="${t.url}" aria-label="${t.title}" data-action="related-tool" data-tool-slug="${slug}" data-track-position="related-tools" data-track-label="${slug}">
+        <span class="rt-media"><span class="rt-panel"><span class="rt-cap">${t.motif.caption || ''}</span>${this._relatedMotif(t.motif)}</span></span>
+        <span class="rt-body">
+          <span class="rt-title">${t.title}</span>
+          <span class="rt-blurb">${t.blurb}</span>
+          <span class="rt-foot"><span class="rt-meta">${t.meta || ''}</span><span class="rt-open">Open ${arrow}</span></span>
+        </span>
+      </a>`;
+    }).join('');
     return `
       <style>
-      .related-grid{display:grid;grid-template-columns:1fr;gap:18px}
-      @media(min-width:720px){.related-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
-      .related-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,#E2E8F0);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
-      .related-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,#22C55E),var(--kygo-green-dark,#16A34A));opacity:0;transition:opacity .25s ease;pointer-events:none}
-      .related-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
-      .related-card:hover::after{opacity:1}
-      .rc-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,#F1F5F9);display:flex;align-items:center;justify-content:center}
-      .rc-panel{display:block;background:var(--bg-canvas,#fff);border:1px solid #EAECEF;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.08);padding:13px 15px;width:78%}
-      .rc-cap{display:block;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:9px;letter-spacing:.6px;text-transform:uppercase;color:var(--fg-3,#94A3B8);margin-bottom:8px}
-      .rc-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
-      .rc-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
-      .rc-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,#475569);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-      .rc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:5px}
-      .rc-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,#94A3B8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-      .rc-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,#16A34A)}
-      .rc-open svg{width:15px;height:15px}
+      .rt-section{padding:56px 20px;background:#fff}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.rt-section{padding:80px 24px}}
+      .rt-inner{max-width:1200px;margin:0 auto}
+      .rt-head{margin-bottom:28px;max-width:720px}
+      .rt-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rt-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-h2 .rt-hl{color:var(--kygo-green,#22C55E)}
+      .rt-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,#475569);font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rt-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rt-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rt-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,#E2E8F0);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rt-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,#22C55E),var(--kygo-green-dark,#16A34A));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rt-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rt-card:hover::after{opacity:1}
+      .rt-card:focus-visible{outline:2px solid var(--kygo-green,#22C55E);outline-offset:3px}
+      .rt-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,#F1F5F9);display:flex;align-items:center;justify-content:center}
+      .rt-panel{display:block;background:var(--bg-canvas,#fff);border:1px solid #EAECEF;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.08);padding:13px 15px;width:78%}
+      .rt-cap{display:block;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:9px;letter-spacing:.6px;text-transform:uppercase;color:var(--fg-3,#94A3B8);margin-bottom:8px}
+      .rt-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rt-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,#475569);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rt-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:5px}
+      .rt-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,#94A3B8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rt-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,#16A34A)}
+      .rt-open svg{width:15px;height:15px}
       </style>
-      <section class="section ${bg || 'bg-white'}" id="related">
-        <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">Keep exploring</div>
-            <h2>Related <span class="hl">tools.</span></h2>
-            <p class="lede">More free, evidence-based tools to get the most out of your wearable.</p>
+      <section class="rt-section${bg === 'gray' ? ' rt-gray' : ''}" id="related-tools">
+        <div class="rt-inner">
+          <div class="rt-head animate-on-scroll">
+            <div class="rt-kicker">Keep exploring</div>
+            <h2 class="rt-h2">Related <span class="rt-hl">tools.</span></h2>
+            <p class="rt-lede">More free, evidence-based tools to get the most out of your wearable.</p>
           </div>
-          <div class="related-grid">${cards}</div>
+          <div class="rt-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
+
+
+
+  // Copy for the standard app CTA card. Headline carries one <span> for the
+  // green phrase; everything else about the card is shared.
+  _appCta() {
+    return {
+      slug: 'oura-ring-5-vs-4',
+      headline: `Your ring tracks the data. <span>Kygo tells you what moves it.</span>`,
+      sub: `A better ring won't tell you <em>why</em> you slept badly. Kygo connects your Oura data to what you actually eat and train.`
+    };
+  }
+
+  // ── App CTA · Kygo standard module ──────────────────────────────────────
+  // The dark conversion card, on its own section, directly after the first
+  // content section. Self-contained under `kc-*` names with a literal fallback
+  // behind every custom property, so the same block renders identically on
+  // either palette. Nothing else belongs in this section — the email capture
+  // is a separate band further down the page.
+  // Pass 'gray' to sit the section on the tinted band.
+
+  _renderAppCta(bg) {
+    const c = this._appCta();
+    const ios = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+    const android = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
+    const badges = [
+      ['273a63_56ac2eb53faf43fab1903643b29c0bce', 'Oura Ring'],
+      ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health'],
+      ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit'],
+      ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin'],
+      ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health'],
+      ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect']
+    ].map(([id, name]) => `<img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" />`).join('');
+    const appleIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
+    const androidIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
+    return `
+      <style>
+      .kc-section{padding:56px 20px;background:#fff}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.kc-section{padding:72px 24px}}
+      .kc-inner{max-width:1100px;margin:0 auto}
+      .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
+      @media(min-width:720px){.kc-card{padding:56px 40px}}
+      .kc-card::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,.30),transparent);pointer-events:none}
+      .kc-card::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,.12),transparent);pointer-events:none}
+      .kc-pill{position:relative;display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,.25)}
+      .kc-pill .kc-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 8px #22C55E}
+      .kc-h{position:relative;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;color:#fff;font-size:clamp(26px,4.5vw,42px);line-height:1.05;letter-spacing:-.01em;margin:18px 0 14px;max-width:22ch}
+      .kc-h span{color:#22C55E}
+      .kc-p{position:relative;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.72);font-size:clamp(14px,1.6vw,16px);line-height:1.6;max-width:56ch;margin:0 auto 24px}
+      .kc-p em{font-style:italic}
+      .kc-btns{position:relative;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+      .kc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:12px;background:#22C55E;color:#fff;font-family:var(--font-body,'DM Sans',sans-serif);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(34,197,94,.25);transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+      .kc-btn:hover{background:#16A34A;transform:translateY(-1px);box-shadow:0 10px 24px rgba(34,197,94,.32)}
+      .kc-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+      .kc-btn svg{width:18px;height:18px;flex:none}
+      @media(max-width:560px){.kc-btn{width:100%}}
+      .kc-note{position:relative;margin:16px 0 0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;line-height:1.5;color:rgba(255,255,255,.72)}
+      .kc-works{position:relative;margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.6);font-size:13px}
+      .kc-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+      .kc-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:4px;object-fit:contain}
+      </style>
+      <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
+        <div class="kc-inner">
+          <div class="kc-card animate-on-scroll">
+            <div class="kc-pill"><span class="kc-dot"></span> Free Forever Plan</div>
+            <h3 class="kc-h">${c.headline}</h3>
+            <p class="kc-p">${c.sub}</p>
+            <div class="kc-btns">
+              <a class="kc-btn cta-primary" href="${ios}" target="_blank" rel="noopener" data-track-position="early" data-track-label="${c.slug}-early-ios">${appleIcon} Download for iOS</a>
+              <a class="kc-btn cta-android" href="${android}" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="${c.slug}-early-android">${androidIcon} Download for Android</a>
+            </div>
+            <p class="kc-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+            <div class="kc-works">
+              <span>Works with</span>
+              <div class="kc-badges">${badges}</div>
+            </div>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-oura-5-vs-4', variant: 'comparison' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
         </div>
       </section>`;
   }
@@ -540,10 +689,33 @@ class KygoOura5vs4 extends HTMLElement {
       <!-- Hero -->
       <section class="hero-light">
         <div class="hero-light-inner">
-          <div class="hero-copy">
-            <div class="hero-pill"><span class="dot"></span> RING 5 vs RING 4 · 2026</div>
-            <h1>Oura Ring 5 vs Oura Ring 4 <span class="hl">(2026)</span></h1>
-            <p class="hero-lede">The two-generation comparison, decided on the numbers: what actually changed, the peer-reviewed accuracy neither reviewer site has, and the real 3-year cost with membership. Just comparing Gen 5 and Gen 4 — <a class="hero-link" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">need Gen 3 too?</a></p>
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill"><span class="dot"></span> RING 5 vs RING 4 · 2026</div>
+              <h1>Oura Ring 5 vs Oura Ring 4 <span class="hl">(2026)</span></h1>
+              <p class="hero-lede">The two-generation comparison, decided on the numbers: what actually changed, the peer-reviewed accuracy neither reviewer site has, and the real 3-year cost with membership. Just comparing Gen 5 and Gen 4 — <a class="hero-link" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">need Gen 3 too?</a></p>
+            </div>
+            <div class="hero-vis">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Three years, both rings</span>
+                <span class="hero-vis-tag">membership included</span>
+              </div>
+              <div class="hv-two">
+                <div class="hv-col">
+                  <span class="hv-label">Ring 5</span>
+                  <span class="hv-val">$609</span>
+                  <div class="hv-bar"><span class="hv-fill" style="width:100%"></span></div>
+                  <span class="hv-cap">Smaller, unvalidated</span>
+                </div>
+                <div class="hv-col">
+                  <span class="hv-label">Ring 4</span>
+                  <span class="hv-val good">$559</span>
+                  <div class="hv-bar"><span class="hv-fill good" style="width:92%"></span></div>
+                  <span class="hv-cap good">Cheaper, validated</span>
+                </div>
+              </div>
+              <span class="hv-foot">Base finish + 3 years of Oura Membership at $69.99/yr · premium finishes add $100</span>
+            </div>
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><div class="num">40<span class="unit">%</span></div><div class="lbl">Smaller than Ring 4 (Oura's claim)</div></div>
@@ -582,9 +754,11 @@ class KygoOura5vs4 extends HTMLElement {
           </div>
         </div>
       </section>
+      ${this._renderAppCta()}
+
 
       <!-- Difference table -->
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Side by side</div>
@@ -594,28 +768,11 @@ class KygoOura5vs4 extends HTMLElement {
           <div class="tbl-wrap animate-on-scroll">${this._renderDiffTable()}</div>
         </div>
       </section>
+      ${this._renderEmailCta()}
+
 
       <!-- Early app CTA band -->
-      <section class="kearly-section">
-        <div class="section-inner">
-          <div class="kband animate-on-scroll">
-            <div class="kband-inner">
-              <div class="kband-glow"></div>
-              <div class="kband-copy">
-                <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
-                <h2 class="kband-headline">Whichever Oura you wear, Kygo pairs it with food logging and shows what actually moves your readiness, recovery, and sleep.</h2>
-              </div>
-              <div class="kband-actions">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="oura-5-vs-4-early-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-track-position="early" data-track-label="oura-5-vs-4-early-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a>
-                <p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <kygo-inline-subscribe source="tool-oura-5-vs-4" variant="comparison"></kygo-inline-subscribe>
 
       <!-- Should you upgrade -->
       <section class="section bg-light">
@@ -673,34 +830,9 @@ class KygoOura5vs4 extends HTMLElement {
       </section>
 
       <!-- Kygo app CTA -->
-      <section class="section bg-light">
-        <div class="section-inner">
-          <div class="kygo-cta-card animate-on-scroll">
-            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-            <h3>Your ring tracks the data. <span>Kygo tells you what moves it.</span></h3>
-            <p>A better ring won’t tell you <em>why</em> you slept badly. Kygo connects your Oura data to what you actually eat and train, so you see which foods and habits move your sleep, HRV, and recovery — no guessing.</p>
-            <div class="cta-btn-row">
-              <a class="btn btn-primary btn-lg" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" data-track-position="footer-cta" data-track-label="oura-5-vs-4-footer-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-              <a class="btn btn-primary btn-lg" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" data-track-position="footer-cta" data-track-label="oura-5-vs-4-footer-android" target="_blank" rel="noopener">${this._icon('android')} Download for Android</a>
-            </div>
-            <p class="cta-fine">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-            <div class="cta-works">
-              <span>Works with</span>
-              <div class="cta-badges">
-                <img src="${ouraImg}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
-                <img src="${this._appleImg}" alt="Apple Health" title="Apple Health" loading="lazy" />
-                <img src="${this._fitbitImg}" alt="Fitbit" title="Fitbit" loading="lazy" />
-                <img src="${this._garminImg}" alt="Garmin" title="Garmin" loading="lazy" />
-                <img src="${this._googleHealthImg}" alt="Google Health" title="Google Health" loading="lazy" />
-                <img src="${this._healthConnectImg}" alt="Health Connect" title="Health Connect" loading="lazy" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <!-- Cross-link to three-way tool -->
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <a class="blog-cta animate-on-scroll" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">
             <span class="blog-cta-tag">All 3 gens</span>
@@ -715,7 +847,7 @@ class KygoOura5vs4 extends HTMLElement {
       </section>
 
       <!-- FAQ -->
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -726,7 +858,7 @@ class KygoOura5vs4 extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools('bg-white')}
+      ${this._renderRelatedTools('gray')}
 
       <!-- Footer -->
       <footer class="tool-footer">
@@ -829,6 +961,27 @@ class KygoOura5vs4 extends HTMLElement {
       .hero-lede strong { color: var(--fg-1); font-weight: 600; }
       .hero-link { color: var(--kygo-green-dark); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
       .hero-link:hover { color: var(--kygo-green); }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--fg-3); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--kygo-green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--border-subtle); }
+      .hv-label { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-2); }
+      .hv-val { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-2); }
+      .hv-val.good { color: var(--kygo-green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--bg-raised); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--fg-3); }
+      .hv-fill.good { background: var(--kygo-green); }
+      .hv-cap { font-family: var(--font-display); font-size: 11px; font-weight: 600; color: var(--fg-3); }
+      .hv-cap.good { color: var(--kygo-green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--fg-3); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--border-subtle); padding-top: 24px; margin-top: 32px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
       .hero-stat .num { font-family: var(--font-display); font-weight: 700; font-size: clamp(30px, 4vw, 42px); line-height: 1; color: var(--kygo-green); letter-spacing: -0.02em; display: inline-flex; align-items: baseline; gap: 2px; }
