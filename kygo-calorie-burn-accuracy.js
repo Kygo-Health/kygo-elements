@@ -586,33 +586,48 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         </article>`).join('')}</div>`;
   }
 
-  _sourceCard(s) {
-    return `
-      <a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">
-        <span class="src-tag">${s.tag}</span>
-        <span class="src-title">${s.title}</span>
-        <span class="src-cite">${s.cite} <span class="src-go">${this._icon('externalLink')}</span></span>
-      </a>`;
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+    }).join('');
   }
 
   _renderSources() {
-    return this._sourceGroups.map((g, i) => {
-      const items = this._sources.filter(s => s.group === g.key);
-      if (!items.length) return '';
-      const logo = g.device
-        ? this._deviceLogo(g.device, g.label)
-        : `<span class="brand-img brand-img--icon">${this._icon('flame')}</span>`;
-      return `
-        <details class="src-group"${i === 0 ? ' open' : ''}>
-          <summary>
-            ${logo}
-            <span class="src-group-label">${g.label}</span>
-            <span class="src-group-count">${items.length}</span>
-            <span class="src-group-chev">${this._icon('arrowRight')}</span>
-          </summary>
-          <div class="sources">${items.map(s => this._sourceCard(s)).join('')}</div>
-        </details>`;
-    }).join('');
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
   }
 
   _renderFAQ() {
@@ -985,7 +1000,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <h2>Every claim, <span class="hl">traceable.</span></h2>
             <p class="lede">Each checked against the primary record (PubMed / PMC / journal / manufacturer). Verified July 2026.</p>
           </div>
-          <div class="src-groups animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -1019,6 +1034,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     const root = this.shadowRoot;
 
     root.addEventListener('click', (e) => {
+      // Sources · show-all toggle
+      if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
+
       const devBtn = e.target.closest('[data-device]');
       if (devBtn) {
         this._selectedDevice = devBtn.getAttribute('data-device');
@@ -1539,32 +1557,28 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
       /* Sources — collapsible groups by brand */
-      .src-groups { display: flex; flex-direction: column; gap: 10px; }
-      .src-group { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 14px; overflow: hidden; transition: border-color .2s, box-shadow .2s; }
-      .src-group[open] { border-color: var(--kygo-green); box-shadow: var(--shadow-md); }
-      .src-group > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
-      .src-group > summary::-webkit-details-marker { display: none; }
-      .src-group > summary:hover { background: var(--bg-surface); }
-      .src-group .brand-img { width: 34px; height: 34px; border-radius: 9px; flex: none; }
-      .src-group-label { flex: 1; min-width: 0; font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); line-height: 1.2; }
-      .src-group-count { flex: none; font-family: var(--font-display); font-weight: 700; font-size: 12px; color: var(--kygo-green-dark); background: var(--kygo-green-light); border-radius: 999px; min-width: 24px; height: 22px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center; }
-      .src-group-chev { flex: none; color: var(--fg-3); }
-      .src-group-chev .ico { width: 16px; height: 16px; transition: transform .2s; }
-      .src-group[open] .src-group-chev .ico { transform: rotate(90deg); color: var(--kygo-green-dark); }
-      .src-group .sources { padding: 0 14px 14px; }
-
+      /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
       @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
-      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; transition: border-color .15s, box-shadow .15s; }
-      .src:hover { border-color: var(--kygo-green); box-shadow: var(--shadow-md); }
-      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); }
-      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--fg-1); line-height: 1.3; }
-      .src:hover .src-title { color: var(--kygo-green-dark); }
-      .src-cite { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: var(--fg-3); line-height: 1.35; }
-      .src-go { display: inline-flex; color: var(--kygo-green-dark); }
-      .src-go .ico { width: 12px; height: 12px; transition: transform .15s; }
-      .src:hover .src-go .ico { transform: translate(1px,-1px); }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--kygo-green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--bg-surface); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .src--nolink .src-tag { color: var(--fg-3); }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--fg-1); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--kygo-green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--fg-3); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--kygo-green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--kygo-green-dark); font-family: var(--font-display); font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--kygo-green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
       /* Footer */
       .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }

@@ -535,51 +535,65 @@ class KygoRemSleep extends HTMLElement {
   }
 
   // Sources grouped by category, deduped by URL across the whole page.
-  _sourceGroups() {
+  // Flat source list for the standard sources module: the factor's category
+  // becomes the card's tag and its study label becomes the citation line.
+  get _sources() {
     const cats = this._categories;
     const seen = new Set();
-    const groups = [];
+    const out = [];
     for (const [catKey, factors] of Object.entries(this._factors)) {
-      const items = [];
       for (const f of factors) {
         if (f.source && !seen.has(f.source.url)) {
           seen.add(f.source.url);
-          items.push({ title: `${f.name} — ${f.source.label}`, url: f.source.url });
+          out.push({ tag: cats[catKey].name, title: f.name, cite: f.source.label, url: f.source.url });
         }
       }
-      if (items.length) groups.push({ key: catKey, name: cats[catKey].name, icon: cats[catKey].icon, items });
     }
-    return groups;
+    return out;
   }
 
-  _srcLink(s, tag) {
-    return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link">
-        ${tag ? `<span class="src-tag">${tag}</span>` : ''}
-        <span class="src-title">${s.title}</span>
-      </a>`;
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+    }).join('');
   }
 
-  // Desktop = compact grid (tag = category); mobile = one collapsible <details>
-  // per category (first open) so it isn't one long wall of every source at once.
   _renderSources() {
-    const groups = this._sourceGroups();
-    const total = groups.reduce((n, g) => n + g.items.length, 0);
-    const desktop = `<div class="src-desktop">${
-      groups.map(g => g.items.map(s => this._srcLink(s, g.name)).join('')).join('')
-    }</div>`;
-    const mobile = `<div class="src-mobile">${
-      groups.map((g, i) => `
-        <details class="src-group"${i === 0 ? ' open' : ''}>
-          <summary class="src-group-head">
-            <span class="src-group-ico">${this._icon(g.icon)}</span>
-            <span class="src-group-name">${g.name}</span>
-            <span class="src-group-n">${g.items.length}</span>
-            <span class="src-group-chev">${this._icon('chevDown')}</span>
-          </summary>
-          <div class="src-group-body">${g.items.map(s => this._srcLink(s, null)).join('')}</div>
-        </details>`).join('')
-    }</div>`;
-    return `<div class="src-count">${total} peer-reviewed sources across ${groups.length} categories</div>${desktop}${mobile}`;
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
   }
 
   _sourceCount() {
@@ -930,7 +944,7 @@ class KygoRemSleep extends HTMLElement {
             <h2>Every claim, <span class="hl">traceable.</span></h2>
             <p class="lede">Each factor is anchored to a primary peer-reviewed source. Last updated June 2026.</p>
           </div>
-          <div class="animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
@@ -1156,34 +1170,28 @@ class KygoRemSleep extends HTMLElement {
         .blog-cta-body { grid-area:body; }
       }
 
-      /* Sources */
-      .src-count { font-size:13px; color:var(--fg-3); margin-bottom:14px; }
-      .src { display:flex; flex-direction:column; gap:4px; background:#fff; border:1.5px solid var(--border-subtle); border-radius:12px; padding:12px 14px; transition:border-color .15s, box-shadow .15s; }
-      .src:hover { border-color:var(--kygo-green); box-shadow:var(--shadow-md); }
-      .src-tag { align-self:flex-start; font-family:var(--font-display); font-size:9.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--kygo-green-dark); }
-      .src-title { font-family:var(--font-display); font-weight:600; font-size:13px; color:var(--fg-1); line-height:1.3; }
-      .src:hover .src-title { color:var(--kygo-green-dark); }
-
-      /* Mobile = collapsible accordion by category; desktop = compact grid */
-      .src-desktop { display:none; }
-      .src-mobile { display:flex; flex-direction:column; gap:10px; }
-      .src-group { background:#fff; border:1.5px solid var(--border-subtle); border-radius:14px; overflow:hidden; transition:border-color .2s; }
-      .src-group[open] { border-color:var(--kygo-green-light); }
-      .src-group-head { display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; list-style:none; }
-      .src-group-head::-webkit-details-marker { display:none; }
-      .src-group-ico { width:30px; height:30px; border-radius:8px; background:var(--kygo-green-light); color:var(--kygo-green-dark); display:inline-flex; align-items:center; justify-content:center; flex:none; }
-      .src-group-ico svg { width:16px; height:16px; }
-      .src-group-name { font-family:var(--font-display); font-weight:600; font-size:14px; color:var(--fg-1); flex:1; min-width:0; }
-      .src-group-n { font-family:var(--font-display); font-size:11px; font-weight:600; color:var(--fg-3); background:var(--bg-raised); padding:3px 9px; border-radius:999px; flex:none; }
-      .src-group-chev { color:var(--fg-3); display:inline-flex; flex:none; }
-      .src-group-chev svg { width:16px; height:16px; transition:transform .2s; }
-      .src-group[open] .src-group-chev svg { transform:rotate(180deg); color:var(--kygo-green-dark); }
-      .src-group-body { display:flex; flex-direction:column; gap:8px; padding:0 16px 16px; }
-      @media (min-width:768px){
-        .src-mobile { display:none; }
-        .src-desktop { display:grid; gap:8px; grid-template-columns:1fr 1fr; }
-      }
-      @media (min-width:960px){ .src-desktop { grid-template-columns:repeat(3,1fr); } }
+      /* Sources · Kygo standard module */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--kygo-green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--bg-surface); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: var(--font-display); font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--kygo-green-dark); }
+      .src--nolink .src-tag { color: var(--fg-3); }
+      .src-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--fg-1); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--kygo-green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--fg-3); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--kygo-green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--kygo-green-dark); font-family: var(--font-display); font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--kygo-green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
       /* Footer */
       .tool-footer { padding:56px 20px 40px; background:var(--kygo-light); color:var(--fg-2); border-top:1px solid var(--border-subtle); }
@@ -1210,6 +1218,9 @@ class KygoRemSleep extends HTMLElement {
     const shadow = this.shadowRoot;
 
     shadow.addEventListener('click', (e) => {
+      // Sources · show-all toggle
+      if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
+
       // Category jump-nav → scroll to that category block
       const jump = e.target.closest('[data-jump]');
       if (jump) {
