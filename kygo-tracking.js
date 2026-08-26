@@ -148,6 +148,18 @@
       }
     } catch (e) { /* el has no parseable href (e.g. a <button>) — ignore */ }
 
+    // Related-tools card: internal tool-to-tool navigation. Gets its own
+    // category (rather than falling through to other_action) so the
+    // cross-link section can be measured as a retention surface.
+    if (action === 'related-tool') {
+      return {
+        category: 'related_tool_click',
+        label: getLabel(el),
+        url: href,
+        to_tool: el.getAttribute('data-tool-slug') || ''
+      };
+    }
+
     // Any other data-action button
     if (action) {
       return { category: 'other_action', label: getLabel(el), action_type: action };
@@ -215,6 +227,7 @@
       };
       if (info.affiliate) ctaParams.affiliate = info.affiliate;
       if (info.affiliate_marketplace) ctaParams.affiliate_marketplace = info.affiliate_marketplace;
+      if (info.to_tool) ctaParams.to_tool = info.to_tool;
       track('cta_click', ctaParams);
     }
   }, true); // capture phase to fire before any stopPropagation
