@@ -109,9 +109,12 @@ with **no two adjacent the same**, and **each distinct content block is its own 
 6. **FAQ** — accordion of `<details>`. Drive it AND the `FAQPage` JSON-LD from one `_faqs`
    getter (never let JSON-LD FAQs exist without a visible FAQ — the older `kygo-wearable-stress`
    shipped FAQ JSON-LD with **no** visible FAQ; don't copy that omission).
-7. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
+7. **Related tools** — the **standard related-tools module** (see §3 "Related tools (the
+   standard module)"). Three cross-link cards, sitting **directly above the sources section**
+   (or low on the page when a tool has no sources). Every tool page has one.
+8. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
    Every tool with sources uses it, unchanged. Copy it; don't design a new one.
-8. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
+9. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
    links, add the Amazon Associates disclosure line** (`footer-affiliate`), full two-sentence
    canonical wording: "As an Amazon Associate, Kygo Health earns from qualifying purchases.
    Product links on this page are affiliate links; we may earn a commission at no extra cost to
@@ -167,6 +170,49 @@ If a list exceeds ~12 items, it must **not** render as a flat column of cards on
   keep 1-up on mobile.
 - Stat/value cards stay **side-by-side (2-up) on mobile** — don't let them stack into three
   tall blocks.
+
+### Related tools (the standard module)
+
+**One design, every tool page**, sitting directly above the sources section (or low on the
+page when a tool has no sources). Three cards in a grid (1 col mobile → 3 col ≥720px): a
+small data motif on a tinted panel, then title, two-line blurb, a meta line and "Open →".
+
+The module is **self-contained** — renderer, the 15-motif catalog and its styles travel
+together under `rt-*` class names, and every custom property carries a literal fallback, so
+the identical block renders the same on either palette. Copy all three methods verbatim from
+any shipped tool (they are byte-identical across all 23):
+
+```js
+_relatedTools()        // this page's 3 cards — the only part you write
+_relatedMotif(c)       // the shared motif catalog; do not edit per page
+_renderRelatedTools(bg)  // section + styles; pass 'gray' for the tinted band
+```
+
+```html
+${this._renderRelatedTools()}
+```
+
+**Choosing the three.** A **near neighbour** (same family), a **bridge** (accuracy ↔
+physiology), and one from **another family** — so a page never shows three near-duplicates.
+Hard rules: never link a page to itself; **never link the Food Scanner**
+(`/tools/calories-in-anything`); keep every tool at 2+ inbound links across the site. The
+current map, with inbound counts, is the table in `docs/internal-and-app-store-links.md`
+("Related-tools cross-links") — update it when you add or retarget a page. Slugs come from
+`kygo-tools.js`, which is the tool registry.
+
+**Card copy** is defined once per destination and reused wherever that tool is linked, so it
+cannot drift between pages. Keep `meta` on a stable fact (factor or device count) rather than
+a source count where you can — source counts move.
+
+**Motifs** — `compare`, `ring`, `pulse`, `gauge`, `decay`, `hypno`, `donut`, `range`, `steps`,
+`radar`, `diverging`, `rings`, `versus`, `tiers`, `dots`. Pick one that says something true
+about the destination, and don't give all three cards on a page the same one.
+
+**Tracking** is built in: each card carries `data-action="related-tool"`,
+`data-tool-slug="<destination>"` and `data-track-position="related-tools"`. `kygo-tracking.js`
+classifies these as `related_tool_click` and adds a `to_tool` param, so with the existing
+`component` and `page_path` you get source tool → destination tool. Don't strip these
+attributes.
 
 ### Sources (the standard module)
 **One design, every tool.** Compact link cards in a grid (1 col mobile → 2 col ≥600px →
@@ -532,6 +578,9 @@ Pre-commit checklist:
 - [ ] `data-action` / `data-track-position` / `data-track-label` on CTA, affiliate, **and** source links (§9).
 - [ ] a11y pass (§8): `aria-pressed` on toggles, `role`/`aria-label` on pickers, `scope` on table cells,
       `aria-hidden` on decorative visuals, icon-only buttons labelled.
+- [ ] Related tools: standard module verbatim (§3), 3 cards, above the sources section, no
+      self-link, no Food Scanner, tracking attributes intact, and the cross-link table in
+      `docs/internal-and-app-store-links.md` updated.
 - [ ] Sources use the standard module verbatim (§3): flat `_sources` of `{tag,title,cite,url}`,
       6 shown + "Show all N sources" toggle wired, no page-specific sources design. Unlinkable
       sources present as dashed cards, not dropped.

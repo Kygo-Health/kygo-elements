@@ -98,6 +98,48 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/tools/oura-ring-comparison-tool` *(fixed; was root `/oura-ring-comparison-tool`)* | kygo-oura-ring-comparison.js | 643, 687 |
 | `/tools/calories-in-anything` *(fixed; was `/food-scanner` + `/tools/food-scanner`, both 404)* | calories-custom-element.js | 229, 1615 |
 
+### Related-tools cross-links (the standard module)
+
+Every tool page ends with the standard related-tools section (3 cards, directly
+above its sources). One card definition per destination, reused wherever that
+tool is linked. **The Food Scanner (`/tools/calories-in-anything`) is
+deliberately never linked from it.**
+
+Rule for choosing the three: a **near neighbour** (same family), a **bridge**
+(accuracy ↔ physiology), and one from **another family** — so no page shows
+three near-duplicates. Never link a page to itself. Keep every tool at
+2+ inbound links; the "In" column is what the current map produces.
+
+| Page | Component | Links out to | In |
+|---|---|---|---|
+| `/tools/accuracy-factors` | `kygo-accuracy-factors.js` | `wearable-accuracy`, `sensor-comparison`, `step-count-accuracy` | 5 |
+| `/tools/calorie-burn-accuracy` | `kygo-calorie-burn-accuracy.js` | `step-count-accuracy`, `accuracy-factors`, `fitbit-air-vs-whoop-comparison` | 2 |
+| `/tools/deep-sleep-factors` | `kygo-deep-sleep-factors.js` | `rem-sleep-factors`, `staying-asleep-factors`, `sleep-tracker-accuracy` | 5 |
+| `/tools/fitbit-air-vs-whoop-comparison` | `kygo-fitbit-air-vs-whoop.js` | `wearable-accuracy`, `heart-rate-accuracy`, `stress-factors` | 3 |
+| `/tools/heart-rate-accuracy` | `kygo-heart-rate-accuracy.js` | `resting-heart-rate-factors`, `accuracy-factors`, `fitbit-air-vs-whoop-comparison` | 3 |
+| `/tools/hrv-factors` | `kygo-hrv-factors.js` | `recovery-score-explorer`, `resting-heart-rate-factors`, `supplements-by-metric` | 5 |
+| `/tools/oura-ring-5-vs-4` | `kygo-oura-5-vs-4.js` | `oura-ring-comparison-tool`, `oura-vs-ringconn`, `recovery-score-explorer` | 2 |
+| `/tools/oura-ring-comparison-tool` | `kygo-oura-ring-comparison.js` | `oura-ring-5-vs-4`, `oura-vs-ringconn`, `sleep-tracker-accuracy` | 3 |
+| `/tools/oura-vs-ringconn` | `kygo-oura-vs-ringconn.js` | `oura-ring-comparison-tool`, `oura-ring-5-vs-4`, `sleep-tracker-accuracy` | 2 |
+| `/tools/recovery-score-explorer` | `kygo-recovery-scores.js` | `hrv-factors`, `vo2-max-factors`, `fitbit-air-vs-whoop-comparison` | 5 |
+| `/tools/rem-sleep-factors` | `kygo-rem-sleep.js` | `deep-sleep-factors`, `sleep-latency-factors`, `sleep-tracker-accuracy` | 2 |
+| `/tools/resting-heart-rate-factors` | `kygo-rhr-factors.js` | `hrv-factors`, `heart-rate-accuracy`, `stress-factors` | 3 |
+| `/tools/sensor-comparison` | `kygo-sensor-comparison.js` | `wearable-accuracy`, `sleep-metrics`, `oura-ring-comparison-tool` | 3 |
+| `/tools/sleep-latency-factors` | `kygo-sleep-latency-factors.js` | `staying-asleep-factors`, `supplements-by-metric`, `sleep-metrics` | 2 |
+| `/tools/sleep-metrics` | `kygo-sleep-metrics.js` | `sleep-tracker-accuracy`, `deep-sleep-factors`, `sensor-comparison` | 3 |
+| `/tools/sleep-tracker-accuracy` | `kygo-sleep-tracker-accuracy.js` | `sleep-metrics`, `accuracy-factors`, `deep-sleep-factors` | 5 |
+| `/tools/staying-asleep-factors` | `kygo-staying-asleep-factors.js` | `sleep-latency-factors`, `deep-sleep-factors`, `supplements-by-metric` | 2 |
+| `/tools/step-count-accuracy` | `kygo-step-count-accuracy.js` | `calorie-burn-accuracy`, `accuracy-factors`, `vo2-max-accuracy` | 2 |
+| `/tools/stress-factors` | `kygo-wearable-stress.js` | `hrv-factors`, `recovery-score-explorer`, `resting-heart-rate-factors` | 2 |
+| `/tools/supplements-by-metric` | `kygo-supplements-by-metric.js` | `deep-sleep-factors`, `hrv-factors`, `rem-sleep-factors` | 3 |
+| `/tools/vo2-max-accuracy` | `kygo-vo2max-accuracy.js` | `vo2-max-factors`, `calorie-burn-accuracy`, `recovery-score-explorer` | 2 |
+| `/tools/vo2-max-factors` | `kygo-vo2max-factors.js` | `vo2-max-accuracy`, `recovery-score-explorer`, `hrv-factors` | 2 |
+| `/tools/wearable-accuracy` | `kygo-wearable-accuracy.js` | `accuracy-factors`, `sensor-comparison`, `heart-rate-accuracy` | 3 |
+
+All 24 live tool slugs (the Food Scanner included, for completeness) are listed
+in `kygo-tools.js` — that file is the registry. When a tool is added or a slug
+changes, update `kygo-tools.js`, this table, and the cards that point at it.
+
 ### Blog / post links
 - Blog index: `/blog` — `kygo-blog.js:1049` (JSON-LD `url`).
 - Individual posts live at `/post/<slug>`, routed by Wix. (The component that constructed
