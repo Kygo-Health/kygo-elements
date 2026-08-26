@@ -1098,7 +1098,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
     return `
       <style>
       .rt-section{padding:56px 20px;background:#fff}
-      .rt-section.rt-gray{background:var(--kygo-light,#F8FAFC)}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
       @media(min-width:720px){.rt-section{padding:80px 24px}}
       .rt-inner{max-width:1200px;margin:0 auto}
       .rt-head{margin-bottom:28px;max-width:720px}
@@ -1142,51 +1142,89 @@ class KygoHeartRateAccuracy extends HTMLElement {
   // ── Conversion modules ──────────────────────────────────────────────────
 
   // Thin mid-page app-download band (lighter than the big dark CTA card)
-  _renderKband(pos, labelSlug) {
-    return `
-      <div class="kband animate-on-scroll">
-        <div class="kband-inner">
-          <div class="kband-glow"></div>
-          <div class="kband-copy">
-            <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
-            <h2 class="kband-headline">Your watch gives you a number. Kygo tells you what to do with it, pairing your heart rate with recovery, sleep and nutrition.</h2>
-          </div>
-          <div class="kband-actions">
-            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios cta-primary" data-track-position="${pos}" data-track-label="${labelSlug}-ios" target="_blank" rel="noopener">${this._icon('apple')} Download for iOS</a>
-            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android cta-android" data-action="android-download" data-track-position="${pos}" data-track-label="${labelSlug}-android" target="_blank" rel="noopener">${this._icon('android')} Get Android</a>
-            <p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-          </div>
-        </div>
-      </div>`;
-  }
 
   // Big dark conversion card (the primary "act now" moment, near the end)
-  _renderBigCta(imgs) {
-    return `
-      <div class="kygo-cta-card animate-on-scroll">
-        <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
-        <h3>See what your <span>heart data</span> is really telling you.</h3>
-        <p>Your watch estimates your heart rate. Kygo connects your HR, recovery, sleep and nutrition so you can act on the trend, not chase a single noisy reading.</p>
-        <div class="cta-btn-row">
-          <a class="btn btn-primary btn-lg cta-primary" href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" data-track-position="footer-cta" data-track-label="hr-accuracy-footer-ios">${this._icon('apple')} Download for iOS</a>
-          <a class="btn btn-primary btn-lg cta-android" href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" data-action="android-download" data-track-position="footer-cta" data-track-label="hr-accuracy-footer-android">${this._icon('android')} Download for Android</a>
-        </div>
-        <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-        <div class="cta-works">
-          <span>Works with</span>
-          <div class="cta-badges">
-            <img src="${imgs.oura}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
-            <img src="${imgs.apple}" alt="Apple Health" title="Apple Health" loading="lazy" />
-            <img src="${imgs.fitbit}" alt="Fitbit" title="Fitbit" loading="lazy" />
-            <img src="${imgs.garmin}" alt="Garmin" title="Garmin" loading="lazy" />
-            <img src="${imgs.google}" alt="Google Health" title="Google Health" loading="lazy" />
-            <img src="${imgs.hc}" alt="Health Connect" title="Health Connect" loading="lazy" />
-          </div>
-        </div>
-      </div>`;
-  }
 
   // ── Main render ─────────────────────────────────────────────────────────
+
+  // Copy for the standard app CTA card. Headline carries one <span> for the
+  // green phrase; everything else about the card is shared.
+  _appCta() {
+    return {
+      slug: 'heart-rate-accuracy',
+      headline: `See what your <span>heart data</span> is really telling you.`,
+      sub: `Your watch estimates your heart rate. Kygo connects your HR, recovery, sleep and nutrition so you can act on the trend, not chase a single reading.`
+    };
+  }
+
+  // ── App CTA · Kygo standard module ──────────────────────────────────────
+  // The dark conversion card, on its own section, directly after the first
+  // content section. Self-contained under `kc-*` names with a literal fallback
+  // behind every custom property, so the same block renders identically on
+  // either palette. Nothing else belongs in this section — the email capture
+  // is a separate band further down the page.
+  // Pass 'gray' to sit the section on the tinted band.
+
+  _renderAppCta(bg) {
+    const c = this._appCta();
+    const ios = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+    const android = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
+    const badges = [
+      ['273a63_56ac2eb53faf43fab1903643b29c0bce', 'Oura Ring'],
+      ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health'],
+      ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit'],
+      ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin'],
+      ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health'],
+      ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect']
+    ].map(([id, name]) => `<img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" />`).join('');
+    const appleIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
+    const androidIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
+    return `
+      <style>
+      .kc-section{padding:56px 20px;background:#fff}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.kc-section{padding:72px 24px}}
+      .kc-inner{max-width:1100px;margin:0 auto}
+      .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
+      @media(min-width:720px){.kc-card{padding:56px 40px}}
+      .kc-card::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,.30),transparent);pointer-events:none}
+      .kc-card::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,.12),transparent);pointer-events:none}
+      .kc-pill{position:relative;display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,.25)}
+      .kc-pill .kc-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 8px #22C55E}
+      .kc-h{position:relative;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;color:#fff;font-size:clamp(26px,4.5vw,42px);line-height:1.05;letter-spacing:-.01em;margin:18px 0 14px;max-width:22ch}
+      .kc-h span{color:#22C55E}
+      .kc-p{position:relative;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.72);font-size:clamp(14px,1.6vw,16px);line-height:1.6;max-width:56ch;margin:0 auto 24px}
+      .kc-p em{font-style:italic}
+      .kc-btns{position:relative;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+      .kc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:12px;background:#22C55E;color:#fff;font-family:var(--font-body,'DM Sans',sans-serif);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(34,197,94,.25);transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+      .kc-btn:hover{background:#16A34A;transform:translateY(-1px);box-shadow:0 10px 24px rgba(34,197,94,.32)}
+      .kc-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+      .kc-btn svg{width:18px;height:18px;flex:none}
+      @media(max-width:560px){.kc-btn{width:100%}}
+      .kc-note{position:relative;margin:16px 0 0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;line-height:1.5;color:rgba(255,255,255,.72)}
+      .kc-works{position:relative;margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.6);font-size:13px}
+      .kc-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+      .kc-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:4px;object-fit:contain}
+      </style>
+      <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
+        <div class="kc-inner">
+          <div class="kc-card animate-on-scroll">
+            <div class="kc-pill"><span class="kc-dot"></span> Free Forever Plan</div>
+            <h3 class="kc-h">${c.headline}</h3>
+            <p class="kc-p">${c.sub}</p>
+            <div class="kc-btns">
+              <a class="kc-btn cta-primary" href="${ios}" target="_blank" rel="noopener" data-track-position="early" data-track-label="${c.slug}-early-ios">${appleIcon} Download for iOS</a>
+              <a class="kc-btn cta-android" href="${android}" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="${c.slug}-early-android">${androidIcon} Download for Android</a>
+            </div>
+            <p class="kc-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+            <div class="kc-works">
+              <span>Works with</span>
+              <div class="kc-badges">${badges}</div>
+            </div>
+          </div>
+        </div>
+      </section>`;
+  }
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
@@ -1262,14 +1300,15 @@ class KygoHeartRateAccuracy extends HTMLElement {
           <div class="animate-on-scroll">${this._renderComparator()}</div>
         </div>
       </section>
+      ${this._renderAppCta()}
 
-      <section class="section bg-white">
+
+      <section csection bg-light-white">
         <div class="section-inner">
-          ${this._renderKband('early', 'hr-accuracy-early')}
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section csection bg-white-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Accuracy by device · day vs night</div>
@@ -1282,7 +1321,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
       <kygo-inline-subscribe source="tool-heart-rate-accuracy" variant="comparison"></kygo-inline-subscribe>
 
-      <section class="section bg-white">
+      <section csection bg-light-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">What actually decides accuracy</div>
@@ -1392,7 +1431,6 @@ class KygoHeartRateAccuracy extends HTMLElement {
 
       <section class="section bg-light">
         <div class="section-inner">
-          ${this._renderBigCta({ oura: ouraImg, apple: appleImg, fitbit: fitbitImg, garmin: garminImg, google: googleHealthImg, hc: healthConnectImg })}
         </div>
       </section>
 
@@ -1406,7 +1444,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedTools()}
+      ${this._renderRelatedTools('gray')}
 
       <section class="section bg-white">
         <div class="section-inner">

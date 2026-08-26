@@ -896,7 +896,7 @@ class KygoWearableAccuracy extends HTMLElement {
     return `
       <style>
       .rt-section{padding:56px 20px;background:#fff}
-      .rt-section.rt-gray{background:var(--kygo-light,#F8FAFC)}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
       @media(min-width:720px){.rt-section{padding:80px 24px}}
       .rt-inner{max-width:1200px;margin:0 auto}
       .rt-head{margin-bottom:28px;max-width:720px}
@@ -930,6 +930,85 @@ class KygoWearableAccuracy extends HTMLElement {
             <p class="rt-lede">More free, evidence-based tools to get the most out of your wearable.</p>
           </div>
           <div class="rt-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
+  // Copy for the standard app CTA card. Headline carries one <span> for the
+  // green phrase; everything else about the card is shared.
+  _appCta() {
+    return {
+      slug: 'wearable-accuracy',
+      headline: `No device wins everywhere. <span>Kygo reads them all.</span>`,
+      sub: `Whichever wearable you own, Kygo connects to it and cross-checks every metric against what you actually eat, train and sleep.`
+    };
+  }
+
+  // ── App CTA · Kygo standard module ──────────────────────────────────────
+  // The dark conversion card, on its own section, directly after the first
+  // content section. Self-contained under `kc-*` names with a literal fallback
+  // behind every custom property, so the same block renders identically on
+  // either palette. Nothing else belongs in this section — the email capture
+  // is a separate band further down the page.
+  // Pass 'gray' to sit the section on the tinted band.
+
+  _renderAppCta(bg) {
+    const c = this._appCta();
+    const ios = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+    const android = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
+    const badges = [
+      ['273a63_56ac2eb53faf43fab1903643b29c0bce', 'Oura Ring'],
+      ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health'],
+      ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit'],
+      ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin'],
+      ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health'],
+      ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect']
+    ].map(([id, name]) => `<img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" />`).join('');
+    const appleIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
+    const androidIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
+    return `
+      <style>
+      .kc-section{padding:56px 20px;background:#fff}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--gray-100,#F8FAFC))}
+      @media(min-width:720px){.kc-section{padding:72px 24px}}
+      .kc-inner{max-width:1100px;margin:0 auto}
+      .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
+      @media(min-width:720px){.kc-card{padding:56px 40px}}
+      .kc-card::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,.30),transparent);pointer-events:none}
+      .kc-card::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,.12),transparent);pointer-events:none}
+      .kc-pill{position:relative;display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,.25)}
+      .kc-pill .kc-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 8px #22C55E}
+      .kc-h{position:relative;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;color:#fff;font-size:clamp(26px,4.5vw,42px);line-height:1.05;letter-spacing:-.01em;margin:18px 0 14px;max-width:22ch}
+      .kc-h span{color:#22C55E}
+      .kc-p{position:relative;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.72);font-size:clamp(14px,1.6vw,16px);line-height:1.6;max-width:56ch;margin:0 auto 24px}
+      .kc-p em{font-style:italic}
+      .kc-btns{position:relative;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+      .kc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:12px;background:#22C55E;color:#fff;font-family:var(--font-body,'DM Sans',sans-serif);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(34,197,94,.25);transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+      .kc-btn:hover{background:#16A34A;transform:translateY(-1px);box-shadow:0 10px 24px rgba(34,197,94,.32)}
+      .kc-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+      .kc-btn svg{width:18px;height:18px;flex:none}
+      @media(max-width:560px){.kc-btn{width:100%}}
+      .kc-note{position:relative;margin:16px 0 0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;line-height:1.5;color:rgba(255,255,255,.72)}
+      .kc-works{position:relative;margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.6);font-size:13px}
+      .kc-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+      .kc-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:4px;object-fit:contain}
+      </style>
+      <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
+        <div class="kc-inner">
+          <div class="kc-card animate-on-scroll">
+            <div class="kc-pill"><span class="kc-dot"></span> Free Forever Plan</div>
+            <h3 class="kc-h">${c.headline}</h3>
+            <p class="kc-p">${c.sub}</p>
+            <div class="kc-btns">
+              <a class="kc-btn cta-primary" href="${ios}" target="_blank" rel="noopener" data-track-position="early" data-track-label="${c.slug}-early-ios">${appleIcon} Download for iOS</a>
+              <a class="kc-btn cta-android" href="${android}" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="${c.slug}-early-android">${androidIcon} Download for Android</a>
+            </div>
+            <p class="kc-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+            <div class="kc-works">
+              <span>Works with</span>
+              <div class="kc-badges">${badges}</div>
+            </div>
+          </div>
         </div>
       </section>`;
   }
@@ -1029,35 +1108,12 @@ class KygoWearableAccuracy extends HTMLElement {
           <div class="metric-detail animate-on-scroll">${this._renderMetricDetail()}</div>
         </div>
       </section>
+      ${this._renderAppCta('gray')}
+
 
       <!-- Early contextual CTA -->
-      <section class="kearly-section">
-        <div class="container">
-          <div class="kband animate-on-scroll">
-            <div class="kband-inner">
-              <div class="kband-glow"></div>
-              <div class="kband-copy">
-                <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
-                <h2 class="kband-headline">Your wearable is only half the picture. Kygo connects its data to what you eat and shows which foods move your sleep, HRV, and energy.</h2>
-              </div>
-              <div class="kband-actions">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="kband-btn kband-btn-ios" data-track-position="early" data-track-label="wearable-accuracy-early-ios" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="early" data-track-label="wearable-accuracy-early-android" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>
-                  Get Android
-                </a>
-                <p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <!-- Inline email capture (~50% depth, below the early app CTA) -->
-      <kygo-inline-subscribe source="tool-wearable-accuracy" variant="comparison"></kygo-inline-subscribe>
 
       <!-- Device Deep Dives -->
       <section class="deep-dives">
@@ -1129,6 +1185,7 @@ class KygoWearableAccuracy extends HTMLElement {
           </div>
         </div>
       </section>
+      <kygo-inline-subscribe source="tool-wearable-accuracy" variant="comparison"></kygo-inline-subscribe>
 
       <!-- Caveats -->
       <section class="caveats">
@@ -1162,33 +1219,6 @@ class KygoWearableAccuracy extends HTMLElement {
       </section>
 
       <!-- CTA -->
-      <section class="cta-section">
-        <div class="container">
-          <div class="cta-box animate-on-scroll">
-            <div class="cta-box-content">
-              <div class="cta-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
-              <h2>Go beyond accuracy data. See cause and effect.</h2>
-              <p>Kygo connects your wearable data with nutrition to reveal which foods help you sleep, recover, and perform best.</p>
-              <div class="cta-buttons">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="cta-btn-white cta-primary" target="_blank" rel="noopener" data-track-position="footer-cta" data-track-label="wearable-accuracy-footer-ios">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="wearable-accuracy-footer-android">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.85);text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
-              <div class="cta-features">
-                <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Free forever plan</span>
-                <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Syncs with 4+ wearables</span>
-                <span class="cta-feature"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> AI food logging</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       <footer class="tool-footer">
         <div class="container">
           <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
