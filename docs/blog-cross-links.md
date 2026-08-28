@@ -71,7 +71,7 @@ shows three near-duplicates. "In" is how many tool pages link that post under th
 | `/tools/step-count-accuracy` | `kygo-step-count-accuracy.js` | `which-wearable-has-the-most-accurate-step-count-…`, `step-count-accuracy-factors`, `what-s-the-most-accurate-wearable-data-…` |
 | `/tools/stress-factors` | `kygo-wearable-stress.js` | `how-wearables-measure-stress-comparison`, `oura-ring-stress-tracking-explained`, `whoop-stress-score-recovery-explained` |
 | `/tools/supplements-by-metric` | `kygo-supplements-by-metric.js` | `supplements-for-wearable-metrics-what-works-what-s-hype`, `how-to-improve-hrv-factors-ranked-by-evidence`, `how-to-increase-deep-sleep-factors-ranked` |
-| `/tools/vo2-max-accuracy` | `kygo-vo2max-accuracy.js` | `most-accurate-vo2-max-wearable`, `whoop-vo2-max-accuracy-why-yours-looks-wrong`, `fitbit-air-vo2-max-why-it-says-not-tracked` |
+| `/tools/vo2-max-accuracy` | `kygo-vo2max-accuracy.js` | `most-accurate-vo2-max-wearable`, `whoop-vo2-max-accuracy-why-yours-looks-wrong`, `fitbit-air-vo2-max-why-it-says-not-tracked` | *(also linked in-prose from the bottom line, anchor "WHOOP VO2 max accuracy")*
 | `/tools/vo2-max-factors` | `kygo-vo2max-factors.js` | `what-affects-vo2-max`, `most-accurate-vo2-max-wearable`, `how-to-improve-hrv-factors-ranked-by-evidence` |
 | `/tools/wearable-accuracy` | `kygo-wearable-accuracy.js` | `what-s-the-most-accurate-wearable-data-…`, `how-accurate-is-your-heart-rate-monitor`, `most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026` |
 
