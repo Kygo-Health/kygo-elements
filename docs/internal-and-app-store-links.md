@@ -157,6 +157,12 @@ changes, update `kygo-tools.js`, this table, and the cards that point at it.
   section pointing at that section's own matching post (hub-and-spoke). Live in
   `kygo-recovery-scores.js` (3 spokes), `kygo-accuracy-factors.js`,
   `kygo-supplements-by-metric.js` and `kygo-step-count-accuracy.js`.
+- One **in-prose** post link exists: `kygo-vo2max-accuracy.js` bottom-line paragraph links the
+  anchor *"WHOOP VO2 max accuracy"* to `/post/whoop-vo2-max-accuracy-why-yours-looks-wrong`,
+  on the sentence about WHOOP having no independent validation. Styled by `.bottomline p a`
+  (green on the dark band) and tracked as `data-action="blog-post"` with
+  `data-track-position="bottom-line"`, so it lands in `blog_post_click` alongside the cards.
+  Use this sparingly — only where the sentence itself is about that post's subject.
 
 > **Hub-and-spoke pattern (`kygo-recovery-scores.js`):** each tool section deep-links its *own*
 > matching post (matrix → comparison, validation → trust, factor explorer → intake) so the tool

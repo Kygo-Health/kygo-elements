@@ -1091,7 +1091,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
-            <p>A VO2 max estimate from a hard outdoor run with a chest strap — <strong>Garmin / Firstbeat, the best-validated of four brands with independent validation (Garmin, Apple, Polar, Fitbit), at ~7% error in general populations</strong> — is the most trustworthy. <strong>Apple</strong> has three independent studies and all show it <em>underestimates</em> (~13–16%; Series 10 MAPE 13.2%, −6.25 mL/kg/min). <strong>Fitbit</strong> overestimates, and <strong>Polar's</strong> resting test reads slightly low against CPET even though resting methods as a class read high. <strong>Samsung, WHOOP, Oura, and Coros</strong> rely on company claims with little or no independent peer-reviewed VO2 max validation.</p>
+            <p>A VO2 max estimate from a hard outdoor run with a chest strap — <strong>Garmin / Firstbeat, the best-validated of four brands with independent validation (Garmin, Apple, Polar, Fitbit), at ~7% error in general populations</strong> — is the most trustworthy. <strong>Apple</strong> has three independent studies and all show it <em>underestimates</em> (~13–16%; Series 10 MAPE 13.2%, −6.25 mL/kg/min). <strong>Fitbit</strong> overestimates, and <strong>Polar's</strong> resting test reads slightly low against CPET even though resting methods as a class read high. <strong>Samsung, WHOOP, Oura, and Coros</strong> rely on company claims with little or no independent peer-reviewed VO2 max validation — and on <a href="https://www.kygo.app/post/whoop-vo2-max-accuracy-why-yours-looks-wrong" target="_self" rel="noopener" data-action="blog-post" data-post-slug="whoop-vo2-max-accuracy-why-yours-looks-wrong" data-track-position="bottom-line" data-track-label="whoop-vo2-max-accuracy-why-yours-looks-wrong">WHOOP VO2 max accuracy</a>, the company's own data says the error is worst at the extremes.</p>
             <p class="verify-note">${this._icon('info')} <strong>Verification note.</strong> Independent VO2 max validation exists only for Garmin, Apple, Polar, and Fitbit. A frequently-repeated "Galaxy Watch ±4.7 mL/kg/min" figure appears only on marketing/AI-content sites and could not be traced to a real indexed study — it is deliberately excluded here.</p>
           </div>
         </div>
@@ -1503,6 +1503,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
       .bottomline p { position: relative; font-size: clamp(15px, 1.8vw, 18px); line-height: 1.65; margin: 0 0 14px; }
       .bottomline strong { color: #fff; font-weight: 600; }
       .bottomline em { font-style: italic; color: #fff; }
+      .bottomline p a { color: #6EE7A0; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: rgba(110,231,160,0.45); transition: color 0.2s ease, text-decoration-color 0.2s ease; }
+      .bottomline p a:hover { color: #fff; text-decoration-color: rgba(255,255,255,0.7); }
       .bottomline .verify-note { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.55); display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.12); }
       .bottomline .verify-note .ico { width: 16px; height: 16px; color: #6EE7A0; flex: none; margin-top: 2px; }
       .bottomline .verify-note strong { color: rgba(255,255,255,0.85); }
