@@ -67,6 +67,7 @@ shows three near-duplicates. "In" is how many tool pages link that post under th
 | `/tools/sleep-latency-factors` | `kygo-sleep-latency-factors.js` | `how-to-fall-asleep-faster-factors-ranked-by-evidence`, `caffeine-sleep-correlation-personal-cutoff-time`, `how-to-stay-asleep-factors-ranked-by-evidence` |
 | `/tools/sleep-metrics` | `kygo-sleep-metrics.js` | `every-sleep-metric-your-wearable-tracks-…`, `most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026`, `why-is-my-sleep-score-low-when-i-slept-8-hours` |
 | `/tools/sleep-tracker-accuracy` | `kygo-sleep-tracker-accuracy.js` | `most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026`, `every-sleep-metric-your-wearable-tracks-…`, `why-is-my-sleep-score-low-when-i-slept-8-hours` |
+| `/tools/smart-ring-comparison` | `kygo-smart-ring-comparison.js` | `is-the-oura-ring-5-worth-it`, `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based`, `what-s-the-most-accurate-wearable-data-…` |
 | `/tools/staying-asleep-factors` | `kygo-staying-asleep-factors.js` | `how-to-stay-asleep-factors-ranked-by-evidence`, `how-to-fall-asleep-faster-factors-ranked-by-evidence`, `which-foods-affect-your-sleep-and-hrv` |
 | `/tools/step-count-accuracy` | `kygo-step-count-accuracy.js` | `which-wearable-has-the-most-accurate-step-count-…`, `step-count-accuracy-factors`, `what-s-the-most-accurate-wearable-data-…` |
 | `/tools/stress-factors` | `kygo-wearable-stress.js` | `how-wearables-measure-stress-comparison`, `oura-ring-stress-tracking-explained`, `whoop-stress-score-recovery-explained` |
@@ -79,12 +80,12 @@ shows three near-duplicates. "In" is how many tool pages link that post under th
 
 | Post | In |
 |---|---|
-| `what-s-the-most-accurate-wearable-data-…` | 5 |
+| `what-s-the-most-accurate-wearable-data-…` | 6 |
 | `how-to-improve-hrv-factors-ranked-by-evidence` | 4 |
 | `how-to-increase-deep-sleep-factors-ranked` | 3 |
 | `why-is-my-sleep-score-low-when-i-slept-8-hours` | 3 |
-| `is-the-oura-ring-5-worth-it` | 3 |
-| `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based` | 3 |
+| `is-the-oura-ring-5-worth-it` | 4 |
+| `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based` | 4 |
 | `most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026` | 3 |
 | `heart-rate-accuracy-by-activity-type` · `step-count-accuracy-factors` · `what-influences-rem-sleep-factors-ranked` · `whoop-stress-score-recovery-explained` · `how-accurate-is-your-heart-rate-monitor` · `why-is-my-resting-heart-rate-suddenly-higher-…` · `oura-ring-stress-tracking-explained` · `which-foods-affect-your-sleep-and-hrv` · `how-to-fall-asleep-faster-factors-ranked-by-evidence` · `how-to-stay-asleep-factors-ranked-by-evidence` · `every-sleep-metric-your-wearable-tracks-…` · `most-accurate-vo2-max-wearable` | 2 |
 

@@ -60,8 +60,8 @@ canary file (`fitbit-air` / `whoop-peak-12mo`).
 | `3PWfatc` | search | — | `https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20` | `glycine-search` | ✅ converted | kygo-deep-sleep-factors.js, kygo-recovery-scores.js, kygo-sleep-latency-factors.js, kygo-staying-asleep-factors.js, kygo-supplements-by-metric.js |
 | `3PXqKEh` | product | `B007RC6J72` | `https://www.amazon.com/dp/B007RC6J72?tag=kygohealthapp-20&th=1` | `tart-cherry-juice` | ✅ converted | kygo-deep-sleep-factors.js, kygo-recovery-scores.js, kygo-staying-asleep-factors.js, kygo-supplements-by-metric.js |
 | `3PxP8fM` | product | `B0CSRF3Y2F` | `https://www.amazon.com/dp/B0CSRF3Y2F?tag=kygohealthapp-20&th=1` | `oura-ring-gen3` | ✅ converted | kygo-oura-ring-comparison.js |
-| `3Q4f42J` | product | `B0GRK1N94H` | `https://www.amazon.com/dp/B0GRK1N94H?tag=kygohealthapp-20&th=1` | `oura-ring-5` | ✅ converted | kygo-oura-ring-comparison.js, kygo-oura-vs-ringconn.js |
-| `3RD6VCL` | product | `B0D9WT1S2T` | `https://www.amazon.com/dp/B0D9WT1S2T?tag=kygohealthapp-20&th=1` | `oura-ring-4` | ✅ converted | kygo-oura-ring-comparison.js, kygo-oura-vs-ringconn.js |
+| `3Q4f42J` | product | `B0GRK1N94H` | `https://www.amazon.com/dp/B0GRK1N94H?tag=kygohealthapp-20&th=1` | `oura-ring-5` | ✅ converted | kygo-oura-ring-comparison.js, kygo-oura-vs-ringconn.js |, kygo-smart-ring-comparison.js
+| `3RD6VCL` | product | `B0D9WT1S2T` | `https://www.amazon.com/dp/B0D9WT1S2T?tag=kygohealthapp-20&th=1` | `oura-ring-4` | ✅ converted | kygo-oura-ring-comparison.js, kygo-oura-vs-ringconn.js |, kygo-smart-ring-comparison.js
 | `3S5tosv` | product | `B09QPFVLQ5` | `https://www.amazon.com/dp/B09QPFVLQ5?tag=kygohealthapp-20` | `chamomile-750mg` | ✅ converted | kygo-recovery-scores.js, kygo-supplements-by-metric.js |
 | `3ZPkHDc` | search | — | `https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20` | `fitbit-search` | ✅ converted | kygo-calorie-burn-accuracy.js, kygo-recovery-scores.js, kygo-sensor-comparison.js, kygo-sleep-metrics.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js, kygo-wearable-accuracy.js |
 | `403ZgOP` | product | `B073DN2YG9` | `https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1` | `ashwagandha-600mg` | ✅ converted | kygo-hrv-factors.js, kygo-recovery-scores.js, kygo-sleep-latency-factors.js, kygo-staying-asleep-factors.js, kygo-supplements-by-metric.js |
@@ -77,9 +77,9 @@ canary file (`fitbit-air` / `whoop-peak-12mo`).
 | `4cVnvGt` | product | `B002CQU564` | `https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1` | `omega-3-fish-oil` | ✅ converted | kygo-hrv-factors.js, kygo-recovery-scores.js, kygo-supplements-by-metric.js |
 | `4cm6d5m` | product | `B00GB85JR4` | `https://www.amazon.com/dp/B00GB85JR4?tag=kygohealthapp-20&th=1` | `vitamin-d3-5000` | ✅ converted | kygo-hrv-factors.js, kygo-supplements-by-metric.js |
 | `4cwMwI1` | product | `B07W781XWF` | `https://www.amazon.com/dp/B07W781XWF?tag=kygohealthapp-20&th=1` | `blue-light-glasses` | ✅ converted | kygo-deep-sleep-factors.js, kygo-sleep-latency-factors.js |
-| `4e5fGyj` | product | `B0GVSB66ZY` | `https://www.amazon.com/dp/B0GVSB66ZY?tag=kygohealthapp-20&th=1` | `ringconn-gen3` | ✅ converted | kygo-recovery-scores.js, kygo-oura-vs-ringconn.js |
-| `4hNHA3W` | product | `B0DG2S6GC1` | `https://www.amazon.com/dp/B0DG2S6GC1?tag=kygohealthapp-20&th=1` | `ringconn-gen2` | new | kygo-oura-vs-ringconn.js |
-| `4yVWYRV` | product | `B0DWJR7F6T` | `https://www.amazon.com/dp/B0DWJR7F6T?tag=kygohealthapp-20&th=1` | `ringconn-gen2-air` | new | kygo-oura-vs-ringconn.js |
+| `4e5fGyj` | product | `B0GVSB66ZY` | `https://www.amazon.com/dp/B0GVSB66ZY?tag=kygohealthapp-20&th=1` | `ringconn-gen3` | ✅ converted | kygo-recovery-scores.js, kygo-oura-vs-ringconn.js |, kygo-smart-ring-comparison.js
+| `4hNHA3W` | product | `B0DG2S6GC1` | `https://www.amazon.com/dp/B0DG2S6GC1?tag=kygohealthapp-20&th=1` | `ringconn-gen2` | new | kygo-oura-vs-ringconn.js |, kygo-smart-ring-comparison.js
+| `4yVWYRV` | product | `B0DWJR7F6T` | `https://www.amazon.com/dp/B0DWJR7F6T?tag=kygohealthapp-20&th=1` | `ringconn-gen2-air` | new | kygo-oura-vs-ringconn.js |, kygo-smart-ring-comparison.js
 | `4fHVnYW` | search | — | `https://www.amazon.com/s?k=amazfit&rh=p_123%3A321923&tag=kygohealthapp-20` | `amazfit-search` | ✅ converted | kygo-recovery-scores.js |
 | `4fZD5Cx` | search | — | `https://www.amazon.com/s?k=suunto%20smart%20watch&rh=p_123%3A393232&tag=kygohealthapp-20` | `suunto-search` | ✅ converted | kygo-recovery-scores.js, kygo-vo2max-accuracy.js |
 | `4lbwIg3` | product | `B002FJW3ZY` | `https://www.amazon.com/dp/B002FJW3ZY?tag=kygohealthapp-20&th=1` | `vitamin-b12` | ✅ converted | kygo-hrv-factors.js, kygo-supplements-by-metric.js |
@@ -179,6 +179,28 @@ button** — it is not sold on Amazon (no link).
 | `amzn.to/4fHVnYW` | **Amazfit** (new) |
 | `amzn.to/4e5fGyj` | **RingConn** (new) |
 | — | **Ultrahuman** — not on Amazon, no link |
+
+### Smart ring comparison and picker (`kygo-smart-ring-comparison.js`)
+Added 2026-09. Nine models across four brands. **Only five of the nine carry an affiliate
+link.** The Oura and RingConn models reuse the existing product ASINs above
+(`oura-ring-5`, `oura-ring-4`, `ringconn-gen3`, `ringconn-gen2`, `ringconn-gen2-air`),
+tagged `rel="noopener sponsored"`.
+
+**Ultrahuman and CUDIS get no Amazon link.** Ultrahuman is not sold on Amazon, and its US
+position is constrained anyway (only the Ring PRO can enter, under CBP ruling HQ H354023).
+No verified CUDIS ASIN exists in this library, and a guessed one is worse than none. Both
+brands therefore link to the manufacturer's own product page instead, with plain
+`rel="noopener"` and **no** `sponsored` token, because these are not affiliate links:
+
+| Model | Link | `data-track-label` | Affiliate? |
+|---|---|---|---|
+| Ultrahuman Ring PRO | `https://www.ultrahuman.com/us/ring-pro/buy/` | `ultrahuman-ring-pro` | No |
+| Ultrahuman Ring AIR | `https://www.ultrahuman.com/global/ring/buy/` | `ultrahuman-ring-air` | No |
+| CUDIS 002 Classic | `https://www.cudis.xyz/products/cudis-002-classic-ring` | `cudis-002-classic` | No |
+| CUDIS 002 Sporty | `https://www.cudis.xyz/products/cudis-002-sporty-ring` | `cudis-002-sporty` | No |
+
+The tool still carries the footer Amazon Associates disclosure, because five of its nine
+buy links are affiliate links.
 
 ---
 
