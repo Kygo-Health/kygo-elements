@@ -351,11 +351,11 @@ class KygoOura5vs4 extends HTMLElement {
         motif: { motif: 'rings', caption: 'Relative thickness', rings: [{ label: 'Gen 3' }, { label: 'Ring 4' }, { label: 'Ring 5' }] }
       },
       {
-        title: 'Oura Ring vs RingConn',
-        blurb: 'Five smart rings side by side, with the no-subscription cost math over three years.',
-        url: 'https://www.kygo.app/tools/oura-vs-ringconn',
-        meta: 'Wearables · 5 models',
-        motif: { motif: 'versus', caption: 'Oura vs RingConn', versusA: 'Oura', versusB: 'RingConn', versus: [{ a: 88, b: 72 }, { a: 70, b: 84 }, { a: 82, b: 66 }] }
+        title: 'Smart Ring Comparison & Picker',
+        blurb: 'All 9 current rings from 4 brands, ranked against what you care about: cost, battery, features, evidence.',
+        url: 'https://www.kygo.app/tools/smart-ring-comparison',
+        meta: 'Wearables · 9 models',
+        motif: { motif: 'compare', caption: 'Published features', rows: [{ label: 'Oura', pct: 80 }, { label: 'Ultra', pct: 62 }, { label: 'RingConn', pct: 56 }, { label: 'CUDIS', pct: 30 }] }
       },
       {
         title: 'Recovery Score Explorer',

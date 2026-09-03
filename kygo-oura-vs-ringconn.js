@@ -229,11 +229,11 @@ class KygoOuraVsRingConn extends HTMLElement {
         motif: { motif: 'compare', caption: 'Ring 5 vs Ring 4', rows: [{ label: 'Ring 5', pct: 88 }, { label: 'Ring 4', pct: 78 }] }
       },
       {
-        title: 'Most Accurate Sleep Tracker',
-        blurb: 'Which wearable is most accurate for sleep vs a lab PSG? Compare 7 devices head to head.',
-        url: 'https://www.kygo.app/tools/sleep-tracker-accuracy',
-        meta: 'Wearables · 14 sources',
-        motif: { motif: 'compare', caption: 'Sleep staging vs PSG', rows: [{ label: 'Oura', pct: 90 }, { label: 'Apple', pct: 78 }, { label: 'Fitbit', pct: 64 }, { label: 'Garmin', pct: 36 }] }
+        title: 'Smart Ring Comparison & Picker',
+        blurb: 'All 9 current rings from 4 brands, ranked against what you care about: cost, battery, features, evidence.',
+        url: 'https://www.kygo.app/tools/smart-ring-comparison',
+        meta: 'Wearables · 9 models',
+        motif: { motif: 'compare', caption: 'Published features', rows: [{ label: 'Oura', pct: 80 }, { label: 'Ultra', pct: 62 }, { label: 'RingConn', pct: 56 }, { label: 'CUDIS', pct: 30 }] }
       }
     ];
   }
