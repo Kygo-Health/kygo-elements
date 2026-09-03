@@ -31,7 +31,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     this.render();
     this._bindEvents();
     this._setupAnimations();
-    __seo(this, 'Fitbit Air vs WHOOP: Accuracy, Specs & Cost Compared (2026), updated June 2026. Accuracy: for heart rate and HRV WHOOP wins (resting HR CCC 0.91 / 3.0% MAPE vs ECG, ~99% sleep HRV agreement, 1-second storage and bicep/apparel pods near chest-strap), while Fitbit Air uses Pixel Watch-class wrist PPG (workout HR ~73.6% within range). Sleep is closely matched: Fitbit 4-stage agreement kappa 0.42-0.55, WHOOP best-of-six deep-sleep detection 69.6%, REM 62.0%; both ~85-90% sleep/wake. Calories are weak on both: Fitbit ~65.6% accurate, WHOOP no validated figure, expect plus or minus 20-30% in mixed exercise. Neither Fitbit Air (May 2026) nor WHOOP 5.0/MG (April 2025) has device-specific independent validation yet; figures come from inherited Fitbit/Pixel and WHOOP 4.0 platforms. Compare Fitbit Air, WHOOP 5.0, and WHOOP MG specs side by side. Filter by sensors, battery, price, health metrics, and 3-year cost of ownership. Fitbit Air released May 26, 2026 at $99.99 with optional $9.99/mo Premium AI coach. WHOOP 5.0 and MG released April 2025 with required subscriptions: WHOOP One $199/yr, Peak $239/yr, Life $359/yr (MG hardware required for Life). HR sampling: Fitbit Air every 2 seconds vs WHOOP every 1 second (2x more frequent). Pod weight: Fitbit Air 5.2g vs WHOOP ~10g. Water resistance: Fitbit Air 50m vs WHOOP 10m IP68. Battery: Fitbit Air 7 days vs WHOOP 14 days. WHOOP MG only device with FDA-cleared ECG and Blood Pressure Insights. WHOOP supports bicep, calf, and apparel pods. Fitbit Air wrist-only at launch. 3-year total cost of ownership: Fitbit Air $100 core, $396 with AI; WHOOP One $597, WHOOP Life with MG $1,077. Fitbit Air does not require subscription for core function. WHOOP devices are bricked without active subscription. Both work with Android and iOS. Both use phone GPS. Both have SpO2, skin temperature, sleep stages, VO2 Max, and cycle health.');
+    __seo(this, 'Google Fitbit Air vs WHOOP: Accuracy, Specs & Cost Compared (2026), updated June 2026. Accuracy: for heart rate and HRV WHOOP wins (resting HR CCC 0.91 / 3.0% MAPE vs ECG, ~99% sleep HRV agreement, 1-second storage and bicep/apparel pods near chest-strap), while Google Fitbit Air uses Pixel Watch-class wrist PPG (workout HR ~73.6% within range). Sleep is closely matched: Fitbit 4-stage agreement kappa 0.42-0.55, WHOOP best-of-six deep-sleep detection 69.6%, REM 62.0%; both ~85-90% sleep/wake. Calories are weak on both: Fitbit ~65.6% accurate, WHOOP no validated figure, expect plus or minus 20-30% in mixed exercise. Neither Google Fitbit Air (May 2026) nor WHOOP 5.0/MG (April 2025) has device-specific independent validation yet; figures come from inherited Fitbit/Pixel and WHOOP 4.0 platforms. Compare Google Fitbit Air, WHOOP 5.0, and WHOOP MG specs side by side. Filter by sensors, battery, price, health metrics, and 3-year cost of ownership. Google Fitbit Air released May 26, 2026 at $99.99 with optional $9.99/mo Premium AI coach. WHOOP 5.0 and MG released April 2025 with required subscriptions: WHOOP One $199/yr, Peak $239/yr, Life $359/yr (MG hardware required for Life). HR sampling: Google Fitbit Air every 2 seconds vs WHOOP every 1 second (2x more frequent). Pod weight: Google Fitbit Air 5.2g vs WHOOP ~10g. Water resistance: Google Fitbit Air 50m vs WHOOP 10m IP68. Battery: Google Fitbit Air 7 days vs WHOOP 14 days. WHOOP MG only device with FDA-cleared ECG and Blood Pressure Insights. WHOOP supports bicep, calf, and apparel pods. Google Fitbit Air wrist-only at launch. 3-year total cost of ownership: Google Fitbit Air $100 core, $396 with AI; WHOOP One $597, WHOOP Life with MG $1,077. Google Fitbit Air does not require subscription for core function. WHOOP devices are bricked without active subscription. Both work with Android and iOS. Both use phone GPS. Both have SpO2, skin temperature, sleep stages, VO2 Max, and cycle health.');
     this._injectStructuredData();
   }
 
@@ -106,9 +106,9 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
   get _faqs() {
     return [
-      { q: 'Is Fitbit Air or WHOOP more accurate?', a: 'For heart rate and HRV, WHOOP is more accurate — it stores HR data every second, samples at 26 Hz, and (on the bicep or an apparel pod) approaches chest-strap accuracy, with resting HR validated at CCC 0.91 / 3.0% MAPE vs ECG and ~99% HRV agreement during sleep. For sleep staging the two are closely matched: Fitbit edges overall 4-stage agreement (κ 0.42–0.55) in independent testing, while WHOOP is the best of six devices at detecting deep sleep (69.6%). For calories, neither is reliable — Fitbit lands around 65% accuracy and WHOOP has no independently validated figure. Important caveat: Fitbit Air (2026) and WHOOP 5.0/MG (2025) are too new for device-specific studies, so these numbers come from the Fitbit/Pixel and WHOOP 4.0 platforms they inherit.' },
-      { q: 'How accurate is the Fitbit Air?', a: 'Fitbit Air hasn\'t been independently validated yet, but it runs Pixel Watch 4–class algorithms on a wrist PPG sensor. Based on the recent Fitbit/Pixel lineage, expect strong resting and overnight heart-rate accuracy, solid sleep/wake detection (~85–90% 2-stage agreement) and moderate 4-stage sleep staging (κ around 0.42–0.55), workout heart rate around 73% within range (wrist PPG struggles with rapid intensity changes), and weak calorie estimation (~65%, like most wearables). It records HR every 2 seconds vs WHOOP\'s every 1 second.' },
-      { q: 'Is Fitbit Air actually a WHOOP killer?', a: 'They\'re aimed at different buyers and different budgets. Fitbit Air is $99.99 once, with no required subscription for core tracking. WHOOP is $0 hardware but $199–359/yr forever, and the device stops working if you cancel. For most people the price gap is the headline story — WHOOP MG\'s FDA-cleared ECG and bicep/apparel pods justify the cost for a smaller, more specific audience.' },
+      { q: 'Is Google Fitbit Air or WHOOP more accurate?', a: 'For heart rate and HRV, WHOOP is more accurate — it stores HR data every second, samples at 26 Hz, and (on the bicep or an apparel pod) approaches chest-strap accuracy, with resting HR validated at CCC 0.91 / 3.0% MAPE vs ECG and ~99% HRV agreement during sleep. For sleep staging the two are closely matched: Fitbit edges overall 4-stage agreement (κ 0.42–0.55) in independent testing, while WHOOP is the best of six devices at detecting deep sleep (69.6%). For calories, neither is reliable — Fitbit lands around 65% accuracy and WHOOP has no independently validated figure. Important caveat: Google Fitbit Air (2026) and WHOOP 5.0/MG (2025) are too new for device-specific studies, so these numbers come from the Fitbit/Pixel and WHOOP 4.0 platforms they inherit.' },
+      { q: 'How accurate is the Google Fitbit Air?', a: 'Google Fitbit Air hasn\'t been independently validated yet, but it runs Pixel Watch 4–class algorithms on a wrist PPG sensor. Based on the recent Fitbit/Pixel lineage, expect strong resting and overnight heart-rate accuracy, solid sleep/wake detection (~85–90% 2-stage agreement) and moderate 4-stage sleep staging (κ around 0.42–0.55), workout heart rate around 73% within range (wrist PPG struggles with rapid intensity changes), and weak calorie estimation (~65%, like most wearables). It records HR every 2 seconds vs WHOOP\'s every 1 second.' },
+      { q: 'Is Google Fitbit Air actually a WHOOP killer?', a: 'They\'re aimed at different buyers and different budgets. Google Fitbit Air is $99.99 once, with no required subscription for core tracking. WHOOP is $0 hardware but $199–359/yr forever, and the device stops working if you cancel. For most people the price gap is the headline story — WHOOP MG\'s FDA-cleared ECG and bicep/apparel pods justify the cost for a smaller, more specific audience.' },
       { q: 'Does 2-sec vs 1-sec HR storage actually matter for me?', a: 'For sleep, resting heart rate, and daily steps — basically nothing. Both devices produce solid scores. For high-intensity workouts or anyone who wants a more granular timeline of their HR, WHOOP\'s tighter 1-second storage shows more data points per minute but you are paying a lot more for this difference.' },
       { q: 'Can I use both?', a: 'Yes — WHOOP on the bicep for workouts, Fitbit Air at night for sleep + recovery. Kygo can pull data from both and treat them as a single signal, automatically picking the more reliable source per metric.' },
       { q: 'What happens to a WHOOP if I cancel my subscription?', a: 'The device stops working. WHOOP\'s entire value is in the membership; the hardware is free but disabled without an active sub. Fitbit Air is the opposite — you own the hardware outright and Premium ($9.99/mo) is purely additive (mainly the AI Coach).' },
@@ -583,7 +583,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
           <div class="hero-grid">
             <div class="hero-copy">
               <div class="hero-pill"><span class="dot"></span> UPDATED JUNE 2026</div>
-              <h1>Fitbit Air vs WHOOP: Accuracy, Specs &amp; Cost <span class="hl">Compared (2026)</span></h1>
+              <h1>Google Fitbit Air vs WHOOP: Accuracy, Specs &amp; Cost <span class="hl">Compared (2026)</span></h1>
               <p class="hero-lede">Same screenless silhouette. Two completely different bets. Compare every sensor, see the <strong>real accuracy numbers</strong> for heart rate, sleep, and calories, and calculate your true 3-year cost.</p>
               <div class="hero-devices">
                 <a class="hero-dev" href="https://www.amazon.com/dp/B0GTMTZF3V?tag=kygohealthapp-20&th=1" data-track-label="fitbit-air" target="_blank" rel="noopener sponsored">
@@ -638,7 +638,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">The quick answer</div>
-            <h2>Fitbit Air vs WHOOP, <span class="hl">in plain English.</span></h2>
+            <h2>Google Fitbit Air vs WHOOP, <span class="hl">in plain English.</span></h2>
             <p class="lede">The full interactive comparison, accuracy numbers, and cost calculator are below — but if you just want the verdict, start here. Specs are from official manufacturer pages; accuracy figures are tied to peer-reviewed studies.</p>
           </div>
           <div class="tldr animate-on-scroll">${this._renderTLDR()}</div>
@@ -670,7 +670,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Accuracy</div>
-            <h2>Fitbit Air vs WHOOP accuracy: <span class="hl">the actual numbers.</span></h2>
+            <h2>Google Fitbit Air vs WHOOP accuracy: <span class="hl">the actual numbers.</span></h2>
             <p class="lede">Heart rate, sleep, and calorie accuracy — measured against ECG, polysomnography, and lab calorimetry. Where a device hasn't been independently tested, we say so rather than imply it.</p>
           </div>
           <div class="acc-grid animate-on-scroll">${this._renderAccuracy()}</div>
@@ -1049,8 +1049,8 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       const ld = {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        'name': 'Fitbit Air vs WHOOP: Accuracy, Specs & Cost Compared (2026)',
-        'description': 'Compare Fitbit Air, WHOOP 5.0, and WHOOP MG side by side: heart-rate, sleep, and calorie accuracy with numbers, sensors, battery, price, and 3-year cost of ownership.',
+        'name': 'Google Fitbit Air vs WHOOP: Accuracy, Specs & Cost Compared (2026)',
+        'description': 'Compare Google Fitbit Air, WHOOP 5.0, and WHOOP MG side by side: heart-rate, sleep, and calorie accuracy with numbers, sensors, battery, price, and 3-year cost of ownership.',
         'url': 'https://www.kygo.app/tools/fitbit-air-vs-whoop-comparison',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
@@ -1062,7 +1062,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
         'featureList': '35-spec side-by-side comparison, dedicated heart-rate/sleep/calorie accuracy breakdown with peer-reviewed numbers, interactive 3-year cost calculator, HR sampling rate visualization, mobile-first responsive design',
-        'keywords': 'fitbit air vs whoop, fitbit air vs whoop accuracy, fitbit air accuracy, fitbit air vs whoop 5.0, fitbit air vs whoop mg, fitbit air heart rate accuracy, fitbit air sleep accuracy, whoop accuracy, screenless fitness tracker comparison 2026, whoop subscription cost, fitbit air price, fitbit air specs, whoop mg ECG'
+        'keywords': 'fitbit air vs whoop, google fitbit air vs whoop, fitbit air vs whoop accuracy, fitbit air accuracy, google fitbit air accuracy, fitbit air vs whoop 5.0, fitbit air vs whoop mg, fitbit air heart rate accuracy, fitbit air sleep accuracy, whoop accuracy, screenless fitness tracker comparison 2026, whoop subscription cost, fitbit air price, fitbit air specs, whoop mg ECG'
       };
       const s = document.createElement('script');
       s.type = 'application/ld+json';
@@ -1095,7 +1095,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
         'itemListElement': [
           { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.kygo.app' },
           { '@type': 'ListItem', 'position': 2, 'name': 'Tools', 'item': 'https://www.kygo.app/tools' },
-          { '@type': 'ListItem', 'position': 3, 'name': 'Fitbit Air vs WHOOP Comparison', 'item': 'https://www.kygo.app/tools/fitbit-air-vs-whoop-comparison' }
+          { '@type': 'ListItem', 'position': 3, 'name': 'Google Fitbit Air vs WHOOP Comparison', 'item': 'https://www.kygo.app/tools/fitbit-air-vs-whoop-comparison' }
         ]
       };
       const s = document.createElement('script');
