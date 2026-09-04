@@ -52,24 +52,21 @@ class KygoSmartRingComparison extends HTMLElement {
   }
 
   // -- Data: brands ------------------------------------------------------
-  // `img` is the Wix-hosted brand image where one exists. CUDIS has no
-  // brand asset in the library, so it falls back to a lettered tile rather
-  // than borrowing another brand's image.
+  // `img` is the Wix-hosted brand image, catalogued in docs/assets-and-urls.md.
 
   get _brands() {
     return {
       oura:       { name: 'Oura',       img: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png' },
       ringconn:   { name: 'RingConn',   img: 'https://static.wixstatic.com/media/273a63_fc0ed00ac88441138f7b4c7e398f7aa8~mv2.png' },
       ultrahuman: { name: 'Ultrahuman', img: 'https://static.wixstatic.com/media/273a63_810650aa12fe4ae59ce7e22c25c312fc~mv2.png' },
-      cudis:      { name: 'CUDIS',      img: '' },
+      cudis:      { name: 'CUDIS',      img: 'https://static.wixstatic.com/media/273a63_515c1d8a2ba44e659bd698879fa9e1d1~mv2.png' },
     };
   }
 
   _brandMark(brandKey, cls) {
     const b = this._brands[brandKey];
     if (!b) return '';
-    if (b.img) return `<img class="${cls || ''}" src="${b.img}" alt="" loading="lazy" />`;
-    return `<span class="${cls || ''} brand-fb" aria-hidden="true">${b.name.charAt(0)}</span>`;
+    return `<img class="${cls || ''}" src="${b.img}" alt="" loading="lazy" />`;
   }
 
   // -- Data: the nine current models -------------------------------------
@@ -2028,8 +2025,6 @@ class KygoSmartRingComparison extends HTMLElement {
       .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
       .footer-affiliate { font-style: italic; }
 
-      /* Brand mark fallback (CUDIS has no brand asset in the library) */
-      .brand-fb { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 5px; background: var(--bg-raised); color: var(--fg-2); font-family: var(--font-display); font-weight: 700; font-size: 12px; line-height: 1; flex: none; }
 
       /* Hero visual footnote */
       .hero-vis-foot { margin: 10px 0 0; font-size: 11px; line-height: 1.45; color: var(--fg-3); }
@@ -2059,7 +2054,6 @@ class KygoSmartRingComparison extends HTMLElement {
       .fr-head { display: flex; align-items: center; gap: 11px; }
       .fr-logo { width: 40px; height: 40px; border-radius: 10px; background: #fff; border: 1.5px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; flex: none; }
       .fr-logo img { width: 26px; height: 26px; object-fit: contain; }
-      .fr-logo .brand-fb { width: 26px; height: 26px; font-size: 14px; background: transparent; }
       .fr-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.2; margin: 0; color: var(--fg-1); }
       .fr-brand { font-size: 12px; color: var(--fg-3); }
       .fr-score { display: flex; align-items: center; gap: 10px; }
@@ -2107,7 +2101,6 @@ class KygoSmartRingComparison extends HTMLElement {
       .mp-tile.full:hover { border-color: var(--border-subtle); }
       .mp-logo { height: 24px; display: flex; align-items: center; justify-content: center; }
       .mp-logo img { width: 24px; height: 24px; object-fit: contain; display: block; }
-      .mp-logo .brand-fb { width: 24px; height: 24px; font-size: 13px; }
       .mp-name { font-family: var(--font-display); font-weight: 600; font-size: 12px; line-height: 1.25; color: var(--fg-1); }
       .mp-tile.on .mp-name { color: var(--kygo-green-dark); }
       .mp-price { font-family: var(--font-numeric); font-size: 11px; font-weight: 600; color: var(--fg-3); }
@@ -2122,11 +2115,9 @@ class KygoSmartRingComparison extends HTMLElement {
       .calc-toggle-box { flex: none; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--border-subtle); background: #fff; display: inline-flex; align-items: center; justify-content: center; color: #fff; }
       .calc-toggle.on .calc-toggle-box { background: var(--kygo-green); border-color: var(--kygo-green); }
       .calc-toggle-box .ico { width: 12px; height: 12px; }
-      .calc-row .who .brand-fb { width: 22px; height: 22px; background: rgba(255,255,255,0.12); color: #fff; }
 
       /* Validation cards go 4-up on wide screens */
       @media (min-width: 1000px) { .valid-grid { grid-template-columns: repeat(2, 1fr); } }
-      .valid-ico .brand-fb { width: 28px; height: 28px; font-size: 15px; background: transparent; }
 
       /* Before-you-buy caveats */
       .caveats { display: grid; grid-template-columns: 1fr; gap: 14px; }
@@ -2140,9 +2131,6 @@ class KygoSmartRingComparison extends HTMLElement {
       .caveat-body p { margin: 0 0 12px; font-size: 14px; line-height: 1.6; color: var(--fg-2); }
       .caveat-src { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.3px; color: var(--fg-3); padding-top: 10px; border-top: 1px solid var(--border-subtle); }
 
-      /* Table: the brand-mark fallback inside header cells and buy buttons */
-      .tbl thead th .head-prod .brand-fb { width: 22px; height: 22px; }
-      .aff-btn .brand-fb { width: 18px; height: 18px; font-size: 10px; }
 
     `;
   }
