@@ -1316,7 +1316,7 @@ class KygoAccuracyFactors extends HTMLElement {
                   <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png" alt="WHOOP" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" loading="lazy" />
                 </div>
@@ -1832,7 +1832,7 @@ class KygoAccuracyFactors extends HTMLElement {
       ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health', 'Apple'],
       ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit', 'Fitbit'],
       ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin', 'Garmin'],
-      ['273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7', 'WHOOP', 'WHOOP'],
+      ['273a63_21019d0fbe9e4afcbabdb3ca9dcad89d', 'WHOOP', 'WHOOP'],
       ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health', 'Google'],
       ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect', 'Health']
     ].map(([id, name, label]) => `<span class="kc-chip"><span class="kc-chip-tile"><img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" /></span><span class="kc-chip-label">${label}</span></span>`).join('');
