@@ -986,25 +986,14 @@ class KygoBlog extends HTMLElement {
           color: rgba(255, 255, 255, 0.6);
           font-size: 13px;
         }
-        .cta-badges {
-          display: flex;
-          gap: 10px;
-          align-items: center;
-          flex-wrap: wrap;
-          justify-content: center;
-        }
-        .cta-badges img {
-          width: 32px;
-          height: 32px;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.10);
-          padding: 4px;
-          object-fit: contain;
-        }
-        /* 7 badges: keep the "Works with" row on one line down to small phones */
-        @media (max-width: 560px) { .cta-badges { gap: 8px; } .cta-badges img { width: 28px; height: 28px; padding: 3px; } }
-        @media (max-width: 380px) { .cta-badges { gap: 6px; } .cta-badges img { width: 26px; height: 26px; } }
+        /* Logo tile + brand label, matching the homepage step-2 chips. Always one line. */
+        .cta-badges { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 6px; row-gap: 12px; }
+        .cta-chip { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 0 0 auto; }
+        .cta-chip-tile { width: 40px; height: 40px; flex-shrink: 0; border-radius: 11px; background: #fff; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .cta-chip-tile img { width: 100%; height: 100%; object-fit: cover; border-radius: 11px; display: block; }
+        .cta-chip-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); white-space: nowrap; }
+        @media (max-width: 420px) { .cta-badges { gap: 4px; } .cta-chip-tile { width: 36px; height: 36px; } .cta-chip-label { font-size: 9.5px; } }
+        @media (max-width: 360px) { .cta-badges { gap: 2px; } .cta-chip-tile { width: 28px; height: 28px; } .cta-chip-label { font-size: 7.5px; } }
 
         @media (max-width: 480px) {
           .cta-buttons { flex-direction: column; align-items: center; }
@@ -1130,13 +1119,13 @@ class KygoBlog extends HTMLElement {
             <div class="cta-works">
               <span>Works with</span>
               <div class="cta-badges">
-                <img src="${CTA_BADGES.oura}" alt="Oura Ring" title="Oura Ring" loading="lazy" />
-                <img src="${CTA_BADGES.apple}" alt="Apple Health" title="Apple Health" loading="lazy" />
-                <img src="${CTA_BADGES.fitbit}" alt="Fitbit" title="Fitbit" loading="lazy" />
-                <img src="${CTA_BADGES.garmin}" alt="Garmin" title="Garmin" loading="lazy" />
-                <img src="${CTA_BADGES.whoop}" alt="WHOOP" title="WHOOP" loading="lazy" />
-                <img src="${CTA_BADGES.googleHealth}" alt="Google Health" title="Google Health" loading="lazy" />
-                <img src="${CTA_BADGES.healthConnect}" alt="Health Connect" title="Health Connect" loading="lazy" />
+                <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.oura}" alt="Oura Ring" title="Oura Ring" loading="lazy" /></span><span class="cta-chip-label">Oura</span></span>
+                <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.apple}" alt="Apple Health" title="Apple Health" loading="lazy" /></span><span class="cta-chip-label">Apple</span></span>
+                <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.fitbit}" alt="Fitbit" title="Fitbit" loading="lazy" /></span><span class="cta-chip-label">Fitbit</span></span>
+                <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.garmin}" alt="Garmin" title="Garmin" loading="lazy" /></span><span class="cta-chip-label">Garmin</span></span>
+                <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.whoop}" alt="WHOOP" title="WHOOP" loading="lazy" /></span><span class="cta-chip-label">WHOOP</span></span>
+                <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.googleHealth}" alt="Google Health" title="Google Health" loading="lazy" /></span><span class="cta-chip-label">Google</span></span>
+                <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.healthConnect}" alt="Health Connect" title="Health Connect" loading="lazy" /></span><span class="cta-chip-label">Health</span></span>
               </div>
             </div>
           </div>

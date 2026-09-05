@@ -579,11 +579,14 @@ class KygoFaqSection extends HTMLElement {
         .cta-primary:hover, .cta-android:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(34,197,94,0.30); }
         .cta-primary svg, .cta-android svg { width: 18px; height: 18px; }
         .cta-works { margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 12px; color: rgba(255,255,255,0.6); font-size: 13px; }
-        .cta-badges { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; }
-        .cta-badges img { width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); padding: 4px; object-fit: contain; }
-        /* 7 badges: keep the "Works with" row on one line down to small phones */
-        @media (max-width: 560px) { .cta-badges { gap: 8px; } .cta-badges img { width: 28px; height: 28px; padding: 3px; } }
-        @media (max-width: 380px) { .cta-badges { gap: 6px; } .cta-badges img { width: 26px; height: 26px; } }
+        /* Logo tile + brand label, matching the homepage step-2 chips. Always one line. */
+        .cta-badges{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;gap:6px;row-gap:12px}
+        .cta-chip{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto}
+        .cta-chip-tile{width:40px;height:40px;flex-shrink:0;border-radius:11px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+        .cta-chip-tile img{width:100%;height:100%;object-fit:cover;border-radius:11px;display:block}
+        .cta-chip-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.6);white-space:nowrap}
+        @media(max-width:420px){.cta-badges{gap:4px}.cta-chip-tile{width:36px;height:36px}.cta-chip-label{font-size:9.5px}}
+        @media(max-width:360px){.cta-badges{gap:2px}.cta-chip-tile{width:28px;height:28px}.cta-chip-label{font-size:7.5px}}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
 
         /* Mid-content contextual app CTA (compact green card) */
@@ -1517,13 +1520,13 @@ class KygoFaqSection extends HTMLElement {
               <div class="cta-works">
                 <span>Works with</span>
                 <div class="cta-badges">
-                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" title="Oura Ring" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" title="Google Health" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" />
+                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" title="Oura Ring" loading="lazy" /></span><span class="cta-chip-label">Oura</span></span>
+                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" /></span><span class="cta-chip-label">Apple</span></span>
+                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" /></span><span class="cta-chip-label">Fitbit</span></span>
+                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" /></span><span class="cta-chip-label">Garmin</span></span>
+                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" /></span><span class="cta-chip-label">WHOOP</span></span>
+                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" title="Google Health" loading="lazy" /></span><span class="cta-chip-label">Google</span></span>
+                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" /></span><span class="cta-chip-label">Health</span></span>
                 </div>
               </div>
             </div>

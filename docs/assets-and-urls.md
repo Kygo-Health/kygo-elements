@@ -48,6 +48,13 @@ appears in four markup shapes; all four carry all seven logos:
 | `.works-dots` / `.dots` `.wd` tiles | `kygo-tools.js`, `kygo-blog-post.js` (`WEARABLE_BADGES`) |
 | `.device-logos` `.device-logo-item` | `kygo-bundle.js` (`kygo-social-proof-section`, desktop only) |
 
+**Chip treatment (2026-09):** the four dark-CTA-card strips above — every one except
+`.device-logos` — use the same chip as the homepage step-2 row: a 40px white tile with the logo
+full-bleed (`object-fit:cover`, 11px radius) and the short brand name beneath it (Oura, Apple,
+Fitbit, Garmin, WHOOP, Google, Health). They previously showed a 32px translucent chip with a
+`contain`-fitted logo and no label. `.device-logos` keeps the old compact inline treatment — it is
+a small "Works with:" row on the hero, not a CTA card.
+
 `assets/hiw-health-connect.png` (GitHub Pages) is **misnamed** — it is the Google Health mark, not
 Health Connect. `kygo-hiw-bundle.js` used it for its Health Connect tile until 2026-09, when adding
 a Google Health tile made the duplication visible; that tile now uses the Wix Health Connect asset
@@ -62,7 +69,9 @@ Health was added alongside WHOOP (2026-09).
 **Staying on one line:** each strip has breakpoint rules that shrink the tiles and gaps so the row
 never wraps or overflows, down to a 320px viewport.
 
-- The `.kc-badges` / `.cta-badges` / `.works-dots` strips shrink at `max-width:560px` and `380px`.
+- The `.kc-badges` / `.cta-badges` / `.works-dots` / `.dots` chips shrink at `max-width:420px`
+  (36px tile / 9.5px label) and `360px` (28px / 7.5px). They also keep `flex-wrap:wrap` as a
+  safety net, so an unexpectedly wide font wraps the row instead of clipping it.
 - The homepage step-2 chips scale at `1199px` / `899px` / `767px` / `420px` / `360px`, because the
   step cards themselves change width with the auto-fit grid. That grid's `minmax` was raised from
   `260px` to `300px` and forced to a single column below `768px` so a card is never too narrow to

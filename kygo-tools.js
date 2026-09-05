@@ -834,23 +834,19 @@ class KygoToolsPage extends HTMLElement {
       .works-label {
         font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 500;
       }
-      .works-dots { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-      .wd {
-        width: 32px; height: 32px; border-radius: 8px;
-        background: rgba(255,255,255,0.08);
+      /* Logo tile + brand label, matching the homepage step-2 chips. Always one line. */
+      .works-dots { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 6px; row-gap: 12px; }
+      .wd { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 0 0 auto; transition: transform 150ms ease; }
+      .wd:hover { transform: translateY(-2px); }
+      .wd-tile {
+        width: 40px; height: 40px; border-radius: 11px; background: #fff;
         display: flex; align-items: center; justify-content: center;
         flex-shrink: 0; overflow: hidden;
-        transition: background 150ms ease, transform 150ms ease;
       }
-      .wd:hover { background: rgba(255,255,255,0.15); transform: scale(1.08); }
-      .wd img {
-        width: 20px; height: 20px;
-        object-fit: contain; border-radius: 4px;
-        opacity: 0.85; transition: opacity 150ms ease;
-      }
-      .wd:hover img { opacity: 1; }
-      /* 7 logos: keep the "Works with" row tight on small phones */
-      @media (max-width: 560px) { .works-dots { gap: 6px; } .wd { width: 28px; height: 28px; } .wd img { width: 18px; height: 18px; } }
+      .wd-tile img { width: 100%; height: 100%; object-fit: cover; border-radius: 11px; display: block; }
+      .wd-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); white-space: nowrap; }
+      @media (max-width: 420px) { .works-dots { gap: 4px; } .wd-tile { width: 36px; height: 36px; } .wd-label { font-size: 9.5px; } }
+      @media (max-width: 360px) { .works-dots { gap: 2px; } .wd-tile { width: 28px; height: 28px; } .wd-label { font-size: 7.5px; } }
 
       /* ===== RESPONSIVE ===== */
       @media (min-width: 600px) {
@@ -1051,13 +1047,13 @@ class KygoToolsPage extends HTMLElement {
                 <div class="works-with">
                   <span class="works-label">Works with</span>
                   <div class="works-dots">
-                    <span class="wd" title="Oura Ring"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" loading="lazy"/></span>
-                    <span class="wd" title="Apple Health"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" loading="lazy"/></span>
-                    <span class="wd" title="Fitbit"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy"/></span>
-                    <span class="wd" title="Garmin"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy"/></span>
-                    <span class="wd" title="WHOOP"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" loading="lazy"/></span>
-                    <span class="wd" title="Google Health"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy"/></span>
-                    <span class="wd" title="Health Connect"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" loading="lazy"/></span>
+                    <span class="wd" title="Oura Ring"><span class="wd-tile"><img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura Ring" loading="lazy"/></span><span class="wd-label">Oura</span></span>
+                    <span class="wd" title="Apple Health"><span class="wd-tile"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" loading="lazy"/></span><span class="wd-label">Apple</span></span>
+                    <span class="wd" title="Fitbit"><span class="wd-tile"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy"/></span><span class="wd-label">Fitbit</span></span>
+                    <span class="wd" title="Garmin"><span class="wd-tile"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy"/></span><span class="wd-label">Garmin</span></span>
+                    <span class="wd" title="WHOOP"><span class="wd-tile"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" loading="lazy"/></span><span class="wd-label">WHOOP</span></span>
+                    <span class="wd" title="Google Health"><span class="wd-tile"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy"/></span><span class="wd-label">Google</span></span>
+                    <span class="wd" title="Health Connect"><span class="wd-tile"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" loading="lazy"/></span><span class="wd-label">Health</span></span>
                   </div>
                 </div>
               </div>
