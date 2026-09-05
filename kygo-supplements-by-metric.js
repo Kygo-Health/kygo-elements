@@ -564,6 +564,7 @@ class KygoSupplementsByMetric extends HTMLElement {
                   <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" loading="lazy" />
                 </div>
@@ -1058,6 +1059,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health'],
       ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit'],
       ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin'],
+      ['273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7', 'WHOOP'],
       ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health'],
       ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect']
     ].map(([id, name]) => `<img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" />`).join('');
@@ -1089,6 +1091,9 @@ class KygoSupplementsByMetric extends HTMLElement {
       .kc-works{position:relative;margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.6);font-size:13px}
       .kc-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
       .kc-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);padding:4px;object-fit:contain}
+      /* 7 badges: keep the "Works with" row on one line down to small phones */
+      @media(max-width:560px){.kc-badges{gap:8px}.kc-badges img{width:28px;height:28px;padding:3px}}
+      @media(max-width:380px){.kc-badges{gap:6px}.kc-badges img{width:26px;height:26px}}
       </style>
       <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
         <div class="kc-inner">
@@ -1649,7 +1654,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       .app-cta-btn svg, .app-cta-android svg { width: 18px; height: 18px; }
       .app-cta-tags { display: flex; align-items: center; justify-content: center; gap: 10px 12px; margin-top: 20px; flex-wrap: wrap; }
       .app-cta-tags-label { color: var(--gray-400); font-size: 11px; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
-      .app-cta-tags-logos { display: flex; align-items: center; gap: 6px; justify-content: center; min-width: 0; }
+      .app-cta-tags-logos { display: flex; align-items: center; gap: 6px; justify-content: center; min-width: 0; flex-wrap: wrap; }
       .app-cta-tags-logos img { height: 18px; width: auto; opacity: 0.75; object-fit: contain; }
       @media (min-width: 480px) { .app-cta-tags-logos img { height: 20px; } .app-cta-tags-label { font-size: 12px; } }
       @media (min-width: 768px) { .app-cta-tags-logos { gap: 8px; } .app-cta-tags-logos img { height: 22px; } }

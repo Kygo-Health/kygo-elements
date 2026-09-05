@@ -35,6 +35,7 @@
     { name: 'Apple Health',  src: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png' },
     { name: 'Fitbit',        src: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png' },
     { name: 'Garmin',        src: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png' },
+    { name: 'WHOOP',         src: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png' },
     { name: 'Google Health', src: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png' },
     { name: 'Health Connect',src: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png' }
   ];
@@ -886,6 +887,8 @@
           .wd:hover { background: rgba(255,255,255,0.15); transform: scale(1.08); }
           .wd img { width: 20px; height: 20px; object-fit: contain; border-radius: 4px; opacity: 0.85; }
           .wd:hover img { opacity: 1; }
+          /* 7 logos: keep the "Works with" row tight on small phones */
+          @media (max-width: 560px) { .dots { gap: 6px; } .wd { width: 28px; height: 28px; } .wd img { width: 18px; height: 18px; } }
         </style>
         <section class="wrap" aria-labelledby="cta-heading">
           <div class="promo">

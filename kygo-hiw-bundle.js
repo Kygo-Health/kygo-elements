@@ -92,6 +92,7 @@ class KygoHiw extends HTMLElement {
         oura: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png',
         garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
         fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
+        whoop: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
         // Brand-mark hearts on a white chip (Apple Health + Google Health Connect).
         // Served from GitHub Pages so the Health Connect mark is correct — the prior
         // Wix hash rendered as the retired WHOOP wordmark.
@@ -119,7 +120,7 @@ class KygoHiw extends HTMLElement {
         },
         { q: 'What is Kygo?', a: 'Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device.' },
         { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
-        { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
+        { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
         { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
         { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, supplements, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $59.99/year.' }
       ],
@@ -181,6 +182,7 @@ class KygoHiw extends HTMLElement {
       ['oura', 'Oura', 'cover', '0'],
       ['garmin', 'Garmin', 'cover', '0'],
       ['fitbit', 'Fitbit', 'cover', '0'],
+      ['whoop', 'WHOOP', 'cover', '0'],
       ['apple', 'Apple Health', 'contain', '7px'],
       ['healthConnect', 'Health Connect', 'contain', '7px']
     ].map(([k, alt, fit, pad]) =>
@@ -353,12 +355,12 @@ class KygoHiw extends HTMLElement {
       details.hiwfaq:hover { border-color:#94A3B8; }
       details.hiwfaq[open]:hover { border-color:#22C55E; }
 
-      /* Wearable logo chips — one line on mobile */
+      /* Wearable logo chips — one line on mobile (6 chips incl. WHOOP) */
       .hiw-logos { display:flex; flex-wrap:nowrap; gap:12px; margin-bottom:22px; }
       .hiw-logo { width:52px; height:52px; flex:0 0 auto; border-radius:12px; border:1px solid #E2E8F0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-      @media (max-width:480px){
+      @media (max-width:560px){
         .hiw-logos { gap:8px; justify-content:space-between; }
-        .hiw-logo { width:clamp(44px,15.5vw,52px); height:clamp(44px,15.5vw,52px); }
+        .hiw-logo { width:clamp(36px,12vw,52px); height:clamp(36px,12vw,52px); }
       }
 
       /* iOS + Android buttons sit side by side on mobile */
@@ -671,7 +673,7 @@ class KygoHiw extends HTMLElement {
         'totalTime': 'P7D',
         'step': [
           { '@type': 'HowToStep', 'position': 1, 'name': 'Log your food', 'text': 'Log a meal in seconds with photo AI, chat, barcode scanning, voice, search, or saved meals. Kygo does the macro and micronutrient math, and can import nutrition automatically from Apple Health and Health Connect.' },
-          { '@type': 'HowToStep', 'position': 2, 'name': 'Connect your wearable', 'text': 'Link a wearable in a tap: Oura Ring, Garmin, Fitbit, Apple Health, or Health Connect. Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity automatically, and picks the most accurate source for each metric.' },
+          { '@type': 'HowToStep', 'position': 2, 'name': 'Connect your wearable', 'text': 'Link a wearable in a tap: Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, or Health Connect. Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity automatically, and picks the most accurate source for each metric.' },
           { '@type': 'HowToStep', 'position': 3, 'name': 'Discover your patterns', 'text': 'After about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts by evidence strength, checking same-day and next-day lags. For example, "Dinner before 7pm raises deep sleep 23 minutes" or "Caffeine after 3pm lowers HRV 8 ms."' }
         ]
       };
