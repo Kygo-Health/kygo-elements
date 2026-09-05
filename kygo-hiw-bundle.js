@@ -93,6 +93,7 @@ class KygoHiw extends HTMLElement {
         garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
         fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
         whoop: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
+        googleHealth: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
         // Brand-mark hearts on a white chip (Apple Health + Google Health Connect).
         // Served from GitHub Pages so the Health Connect mark is correct — the prior
         // Wix hash rendered as the retired WHOOP wordmark.
@@ -184,6 +185,7 @@ class KygoHiw extends HTMLElement {
       ['fitbit', 'Fitbit', 'cover', '0'],
       ['whoop', 'WHOOP', 'cover', '0'],
       ['apple', 'Apple Health', 'contain', '7px'],
+      ['googleHealth', 'Google Health', 'contain', '7px'],
       ['healthConnect', 'Health Connect', 'contain', '7px']
     ].map(([k, alt, fit, pad]) =>
       `<span class="hiw-logo" style="background:#fff;padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span>`
@@ -360,7 +362,7 @@ class KygoHiw extends HTMLElement {
       .hiw-logo { width:52px; height:52px; flex:0 0 auto; border-radius:12px; border:1px solid #E2E8F0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
       @media (max-width:560px){
         .hiw-logos { gap:8px; justify-content:space-between; }
-        .hiw-logo { width:clamp(36px,12vw,52px); height:clamp(36px,12vw,52px); }
+        .hiw-logo { width:clamp(30px,10.2vw,52px); height:clamp(30px,10.2vw,52px); }
       }
 
       /* iOS + Android buttons sit side by side on mobile */
@@ -372,10 +374,18 @@ class KygoHiw extends HTMLElement {
         .hiw-btnrow .hiw-lbl-full { display:none; }
         .hiw-btnrow .hiw-lbl-short { display:inline; }
       }
-      @media (max-width:360px){
-        .hiw-btnrow > a { gap:6px; padding-left:8px; padding-right:8px; }
+      /* Small phones: the two buttons and the pill have to stay inside the card */
+      @media (max-width:400px){
+        .hiw-btnrow > a { font-size:13.5px; gap:6px; padding-left:8px; padding-right:8px; }
+        .hiw-btnrow > a svg { width:16px; height:16px; }
+        .hiw-cta-pill { font-size:11.5px !important; padding:6px 11px !important; }
       }
-      @media (max-width:400px){ .hiw-cta-pill { font-size:12px; padding:6px 12px; } }
+      @media (max-width:360px){
+        .hiw-btnrow > a { font-size:12.5px; gap:5px; padding-left:6px; padding-right:6px; }
+        .hiw-btnrow > a svg { width:15px; height:15px; }
+        /* let the pill wrap instead of pushing past the card on the narrowest phones */
+        .hiw-cta-pill { font-size:11px !important; padding:5px 9px !important; gap:6px !important; white-space:normal !important; line-height:1.35; text-align:center; }
+      }
 
       /* Step 3 — desktop: card left / copy right. Mobile: heading, card, buttons. */
       .hiw-s3 { display:flex; flex-wrap:wrap; gap:clamp(36px,5vw,80px); align-items:center; }
