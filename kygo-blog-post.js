@@ -904,7 +904,7 @@
                   ${svg('playstore', 18)} Download for Android
                 </a>
               </div>
-              <p style="margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+              <p style="margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
               <div class="works">
                 <span class="works-label">Works with</span>
                 <div class="dots">
@@ -1036,7 +1036,7 @@
             </a>
           </div>
           <div class="trust">
-            <span>Free plan available. Save 50% on yearly. Cancel anytime.</span>
+            <span>Free plan available. Save 58% on yearly. Cancel anytime.</span>
           </div>
         </aside>
       `;

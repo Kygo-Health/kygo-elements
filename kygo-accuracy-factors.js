@@ -1308,7 +1308,7 @@ class KygoAccuracyFactors extends HTMLElement {
                   ${this._icon('android')} Download for Android
                 </a>
               </div>
-              <p class="app-cta-fine">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+              <p class="app-cta-fine">Free plan available. Save 58% on yearly. Cancel anytime.</p>
               <div class="app-cta-tags">
                 <span class="app-cta-tags-label">Works with</span>
                 <div class="app-cta-tags-logos">
@@ -1881,7 +1881,7 @@ class KygoAccuracyFactors extends HTMLElement {
               <a class="kc-btn cta-primary" href="${ios}" target="_blank" rel="noopener" data-track-position="early" data-track-label="${c.slug}-early-ios">${appleIcon} Download for iOS</a>
               <a class="kc-btn cta-android" href="${android}" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="${c.slug}-early-android">${androidIcon} Download for Android</a>
             </div>
-            <p class="kc-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+            <p class="kc-note">Free plan available. Save 58% on yearly. Cancel anytime.</p>
             <div class="kc-works">
               <span>Works with</span>
               <div class="kc-badges">${badges}</div>

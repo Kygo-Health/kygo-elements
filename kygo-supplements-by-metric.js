@@ -556,7 +556,7 @@ class KygoSupplementsByMetric extends HTMLElement {
                   Download for Android
                 </a>
               </div>
-              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
               <div class="app-cta-tags">
                 <span class="app-cta-tags-label">Works with</span>
                 <div class="app-cta-tags-logos">
@@ -1108,7 +1108,7 @@ class KygoSupplementsByMetric extends HTMLElement {
               <a class="kc-btn cta-primary" href="${ios}" target="_blank" rel="noopener" data-track-position="early" data-track-label="${c.slug}-early-ios">${appleIcon} Download for iOS</a>
               <a class="kc-btn cta-android" href="${android}" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="${c.slug}-early-android">${androidIcon} Download for Android</a>
             </div>
-            <p class="kc-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+            <p class="kc-note">Free plan available. Save 58% on yearly. Cancel anytime.</p>
             <div class="kc-works">
               <span>Works with</span>
               <div class="kc-badges">${badges}</div>

@@ -1016,7 +1016,7 @@ class KygoToolsPage extends HTMLElement {
                     <a class="kband-btn kband-btn-ios" href="${appStoreUrl}" data-track-position="mid" data-track-label="tools-mid-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
                     <a class="kband-btn kband-btn-android" href="${playStoreUrl}" data-action="android-download" data-track-position="mid" data-track-label="tools-mid-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a>
                   </div>
-                  <p class="kband-note">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+                  <p class="kband-note">Free plan available. Save 58% on yearly. Cancel anytime.</p>
                 </div>
               </div>
             </div>
@@ -1043,7 +1043,7 @@ class KygoToolsPage extends HTMLElement {
                   <a class="promo-btn cta-primary" href="${appStoreUrl}" data-track-position="footer-cta" data-track-label="tools-footer-ios" target="_blank" rel="noopener">${this._getIcon('apple')} Download for iOS</a>
                   <a class="promo-btn cta-android" href="${playStoreUrl}" data-action="android-download" data-track-position="footer-cta" data-track-label="tools-footer-android" target="_blank" rel="noopener">${this._getIcon('playstore')} Download for Android</a>
                 </div>
-                <p style="position:relative;margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.82);text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+                <p style="position:relative;margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.82);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
                 <div class="works-with">
                   <span class="works-label">Works with</span>
                   <div class="works-dots">
