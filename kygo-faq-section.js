@@ -1143,7 +1143,7 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>How much does premium cost?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>$9.99/month or $59.99/year</strong> (save 50% with annual).</p>
+                  <p><strong>$9.99/month or $49.99/year</strong> (save over 50% with annual).</p>
                   <p>Pro unlocks food-body insights, unlimited photo logging, a daily spotlight on the factor moving your metrics, and nutrition write-back to Apple Health &amp; Health Connect.</p>
                 </div>
               </div>
