@@ -532,6 +532,7 @@ class KygoSocialProofSection extends HTMLElement {
               <div class="device-logo-item" title="Apple Health"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health"></div>
               <div class="device-logo-item" title="Fitbit"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit"></div>
               <div class="device-logo-item" title="Garmin"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin"></div>
+              <div class="device-logo-item" title="WHOOP"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP"></div>
               <div class="device-logo-item" title="Google Health"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health"></div>
               <div class="device-logo-item" title="Health Connect"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect"></div>
             </div>
@@ -725,6 +726,7 @@ class KygoInsightsSteps extends HTMLElement {
       garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
       fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
       apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
+      whoop: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
       health: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png'
     };
   }
@@ -761,6 +763,8 @@ class KygoInsightsSteps extends HTMLElement {
         .chip-tile.device{overflow:hidden;background:#fff;padding:0}
         .chip-tile.device img{width:100%;height:100%;object-fit:cover;border-radius:10px}
         .chip-label{font-size:11px;font-weight:600;color:var(--label);white-space:nowrap}
+        /* 6 device chips (incl. WHOOP): shrink so they stay on one line on phones */
+        @media(max-width:560px){.hfoot-devices{flex-wrap:wrap;row-gap:10px;gap:6px}.chip-tile{width:38px;height:38px}.chip-label{font-size:10px}}
         .result-pill{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;border-radius:12px;padding:8px 11px;line-height:1.25}
         .result-pill.good{background:#F0FDF4;border:1px solid #BBF7D0}
         .result-pill.bad{background:#FEF2F2;border:1px solid #FECACA}
@@ -801,8 +805,9 @@ class KygoInsightsSteps extends HTMLElement {
         }
         @media(max-width:360px){
           .step-card{padding:24px 18px}
-          .hfoot-devices{gap:6px}
-          .chip-tile{width:40px;height:40px}
+          .hfoot-devices{gap:5px}
+          .chip-tile{width:34px;height:34px}
+          .chip-label{font-size:9.5px}
           .result-line{font-size:10.5px}
         }
         @media(prefers-reduced-motion:reduce){*{animation:none !important}}
@@ -856,6 +861,10 @@ class KygoInsightsSteps extends HTMLElement {
                 <span class="chip">
                   <span class="chip-tile device"><img src="${icons.fitbit}" alt="Fitbit" loading="lazy"/></span>
                   <span class="chip-label">Fitbit</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile device"><img src="${icons.whoop}" alt="WHOOP" loading="lazy"/></span>
+                  <span class="chip-label">WHOOP</span>
                 </span>
                 <span class="chip">
                   <span class="chip-tile device"><img src="${icons.apple}" alt="Apple Health" loading="lazy"/></span>
@@ -1648,7 +1657,7 @@ class KygoFaq extends HTMLElement {
       },
       { q: 'What is Kygo?', a: 'Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device.' },
       { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
-      { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
+      { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
       { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
       { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, supplements, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $59.99/year.' }
     ];
@@ -1768,7 +1777,9 @@ class KygoFinalCta extends HTMLElement {
         .cta-works{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;color:rgba(255,255,255,0.6);font-size:13px}
         .cta-badges{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
         .cta-badges img{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.10);padding:4px;object-fit:contain}
-        @media(max-width:600px){.cta-badges{display:grid;grid-template-columns:repeat(3,auto);justify-content:center;gap:12px}}
+        /* 7 badges: keep the "Works with" row on one line down to small phones */
+        @media(max-width:560px){.cta-badges{gap:8px}.cta-badges img{width:28px;height:28px;padding:3px}}
+        @media(max-width:380px){.cta-badges{gap:6px}.cta-badges img{width:26px;height:26px}}
         @media(prefers-reduced-motion:reduce){.final-cta.reveal .final-cta-inner{animation:none}}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:320px;justify-content:center;white-space:nowrap}}
         @media(min-width:768px){.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
@@ -1797,6 +1808,7 @@ class KygoFinalCta extends HTMLElement {
                   <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" />
+                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" title="Google Health" loading="lazy" />
                   <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" />
                 </div>
