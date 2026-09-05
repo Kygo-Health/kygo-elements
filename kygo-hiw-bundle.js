@@ -180,16 +180,17 @@ class KygoHiw extends HTMLElement {
       `<span style="display:inline-flex;align-items:center;gap:8px;white-space:nowrap;font-size:14px;color:#E2E8F0;font-weight:500;">${t[0]} <span style="color:${t[2]};font-family:'Space Grotesk',sans-serif;font-weight:700;">${t[1]}</span></span><span style="color:#334155;">•</span>`
     ).join('');
 
+    // Logo tile + short brand label underneath, matching the homepage step-2 chips.
     const wearableTiles = [
-      ['oura', 'Oura', 'cover', '0'],
-      ['garmin', 'Garmin', 'cover', '0'],
-      ['fitbit', 'Fitbit', 'cover', '0'],
-      ['whoop', 'WHOOP', 'cover', '0'],
-      ['apple', 'Apple Health', 'contain', '7px'],
-      ['googleHealth', 'Google Health', 'contain', '7px'],
-      ['healthConnect', 'Health Connect', 'contain', '7px']
-    ].map(([k, alt, fit, pad]) =>
-      `<span class="hiw-logo" style="background:#fff;padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span>`
+      ['oura', 'Oura', 'Oura', 'cover', '0'],
+      ['garmin', 'Garmin', 'Garmin', 'cover', '0'],
+      ['fitbit', 'Fitbit', 'Fitbit', 'cover', '0'],
+      ['whoop', 'WHOOP', 'WHOOP', 'cover', '0'],
+      ['apple', 'Apple Health', 'Apple', 'contain', '7px'],
+      ['googleHealth', 'Google Health', 'Google', 'contain', '7px'],
+      ['healthConnect', 'Health Connect', 'Health', 'contain', '7px']
+    ].map(([k, alt, label, fit, pad]) =>
+      `<span class="hiw-chip"><span class="hiw-logo" style="background:#fff;padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span><span class="hiw-chip-label">${label}</span></span>`
     ).join('');
 
     const features = d.features.map(f =>
@@ -358,12 +359,19 @@ class KygoHiw extends HTMLElement {
       details.hiwfaq:hover { border-color:#94A3B8; }
       details.hiwfaq[open]:hover { border-color:#22C55E; }
 
-      /* Wearable logo chips — one line on mobile (6 chips incl. WHOOP) */
-      .hiw-logos { display:flex; flex-wrap:nowrap; gap:12px; margin-bottom:22px; }
+      /* Wearable chips (logo tile + brand label) — always one line, 7 brands */
+      .hiw-logos { display:flex; flex-wrap:nowrap; align-items:flex-start; gap:12px; margin-bottom:22px; }
+      .hiw-chip { display:flex; flex-direction:column; align-items:center; gap:6px; flex:0 0 auto; }
+      .hiw-chip-label { font-size:11px; font-weight:600; color:#64748B; white-space:nowrap; }
       .hiw-logo { width:52px; height:52px; flex:0 0 auto; border-radius:12px; border:1px solid #E2E8F0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
       @media (max-width:560px){
-        .hiw-logos { gap:8px; justify-content:space-between; }
+        .hiw-logos { gap:6px; justify-content:space-between; }
         .hiw-logo { width:clamp(30px,10.2vw,52px); height:clamp(30px,10.2vw,52px); }
+        .hiw-chip-label { font-size:9.5px; }
+      }
+      @media (max-width:360px){
+        .hiw-logos { gap:4px; }
+        .hiw-chip-label { font-size:8.5px; }
       }
 
       /* iOS + Android buttons sit side by side on mobile */

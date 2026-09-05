@@ -56,7 +56,7 @@ correct.
 
 Two related strips use the same seven brands in a different visual form: the homepage step-2 chips
 (`kygo-bundle.js` `kygo-insights-steps`, `.hfoot-devices` — logo tile + text label) and the
-how-it-works tiles (`kygo-hiw-bundle.js`, `.hiw-logos` — tiles only). Both carried six until Google
+how-it-works chips (`kygo-hiw-bundle.js`, `.hiw-logos` — same tile + label treatment). Both carried six until Google
 Health was added alongside WHOOP (2026-09).
 
 **Staying on one line:** each strip has breakpoint rules that shrink the tiles and gaps so the row
@@ -67,7 +67,8 @@ never wraps or overflows, down to a 320px viewport.
   step cards themselves change width with the auto-fit grid. That grid's `minmax` was raised from
   `260px` to `300px` and forced to a single column below `768px` so a card is never too narrow to
   hold seven chips.
-- The how-it-works tiles use `clamp(30px,10.2vw,52px)` below `560px`.
+- The how-it-works chips use `clamp(30px,10.2vw,52px)` tiles below `560px`, with the label
+  stepping down at `560px` and `360px`.
 
 Verified in headless Chromium at 320/360/375/390/414/480/560/600/700/767/768/820/900/1024/1100/
 1200/1280/1440 — every strip renders on a single row with no overflow.
