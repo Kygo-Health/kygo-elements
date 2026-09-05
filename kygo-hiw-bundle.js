@@ -375,6 +375,20 @@ class KygoHiw extends HTMLElement {
         .hiw-btnrow .hiw-lbl-full { display:none; }
         .hiw-btnrow .hiw-lbl-short { display:inline; }
       }
+      /* The floating "Synced" badge hangs off the card corner — pull it back in and
+         scale it down on phones so it isn't clipped by the section edge. */
+      @media (max-width:560px){
+        .hiw-synced { top:-16px !important; right:0 !important; border-radius:13px !important; padding:9px 13px 9px 11px !important; }
+        .hiw-synced-av { width:22px !important; height:22px !important; border-radius:6px !important; }
+        .hiw-synced-av2 { margin-left:-8px !important; padding:3px !important; }
+        .hiw-synced-lbl { font-size:12px !important; }
+      }
+      @media (max-width:400px){
+        .hiw-synced { top:-14px !important; right:0 !important; padding:8px 11px 8px 9px !important; }
+        .hiw-synced-av { width:20px !important; height:20px !important; }
+        .hiw-synced-lbl { font-size:11px !important; }
+      }
+
       /* Small phones: the two buttons and the pill have to stay inside the card */
       @media (max-width:400px){
         .hiw-btnrow > a { font-size:13.5px; gap:6px; padding-left:8px; padding-right:8px; }
@@ -461,7 +475,7 @@ class KygoHiw extends HTMLElement {
                     <div style="flex:1;padding:13px 20px;"><div style="font-size:10px;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:2px;">Lunch logged</div><div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;">690<span style="font-size:11px;color:#94A3B8;font-weight:600;"> kcal</span></div></div>
                   </div>
                 </div>
-                <div style="position:absolute;top:-24px;right:-24px;z-index:3;background:#1E293B;color:#fff;border-radius:16px;padding:12px 17px 12px 14px;box-shadow:0 20px 40px -16px rgba(15,23,42,.5);animation:hiwFloatB 5s ease-in-out infinite;"><div style="display:flex;align-items:center;gap:10px;"><span style="display:flex;"><span style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;"><img src="${d.logos.oura}" alt="Oura" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></span><span style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;margin-left:-9px;padding:4px;"><img src="${d.logos.apple}" alt="Apple Health" loading="lazy" style="width:100%;height:100%;object-fit:contain;"></span></span><span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:99px;background:#22C55E;animation:hiwPulse 2.2s ease-in-out infinite;"></span><span style="font-size:13px;color:#fff;font-weight:600;letter-spacing:.3px;">Synced</span></span></div></div>
+                <div class="hiw-synced" style="position:absolute;top:-24px;right:-24px;z-index:3;background:#1E293B;color:#fff;border-radius:16px;padding:12px 17px 12px 14px;box-shadow:0 20px 40px -16px rgba(15,23,42,.5);animation:hiwFloatB 5s ease-in-out infinite;"><div style="display:flex;align-items:center;gap:10px;"><span style="display:flex;"><span class="hiw-synced-av" style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;"><img src="${d.logos.oura}" alt="Oura" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></span><span class="hiw-synced-av hiw-synced-av2" style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;margin-left:-9px;padding:4px;"><img src="${d.logos.apple}" alt="Apple Health" loading="lazy" style="width:100%;height:100%;object-fit:contain;"></span></span><span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:99px;background:#22C55E;animation:hiwPulse 2.2s ease-in-out infinite;"></span><span class="hiw-synced-lbl" style="font-size:13px;color:#fff;font-weight:600;letter-spacing:.3px;">Synced</span></span></div></div>
               </div>
             </div>
           </div>
