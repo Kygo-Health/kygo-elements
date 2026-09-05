@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kygo Sleep Tracker Accuracy · Live Preview</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F8FAFC; }
+    .preview-banner {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: #0F172A; color: #fff; padding: 6px 14px;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 12px; font-weight: 500;
+    }
+    .preview-banner b { color: #22C55E; }
+    .preview-banner button {
+      margin-left: auto;
+      background: #22C55E; color: #fff; border: 0;
+      padding: 4px 12px; border-radius: 9999px;
+      font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    .preview-spacer { height: 32px; }
+  </style>
+</head>
+<body>
+  <div class="preview-banner">
+    <span>🟢 <b>LIVE PREVIEW</b> · branch <b>claude/sleep-tracker-accuracy-tool-0e2su2</b> · Sleep Tracker Accuracy Comparison Tool</span>
+    <button onclick="location.href = location.pathname + '?v=' + Date.now()">Hard refresh</button>
+  </div>
+  <div class="preview-spacer"></div>
+
+  <!-- GA tracking script (console-only fallback when data-ga-id is absent) -->
+  <script src="kygo-tracking.js"></script>
+
+  <kygo-sleep-tracker-accuracy></kygo-sleep-tracker-accuracy>
+
+  <script>
+    // Cache-bust the JS on every page load so you always see the latest commit.
+    // For GitHub Pages: it pulls the file from this same repo.
+    // For jsDelivr: replace src with
+    //   https://cdn.jsdelivr.net/gh/Kygo-Health/kygo-elements@claude/sleep-tracker-accuracy-tool-0e2su2/kygo-sleep-tracker-accuracy.js
+    const cacheBust = '?v=' + Date.now();
+    const s = document.createElement('script');
+    s.src = 'kygo-sleep-tracker-accuracy.js' + cacheBust;
+    document.body.appendChild(s);
+  </script>
+</body>
+</html>
