@@ -48,13 +48,23 @@ appears in four markup shapes; all four carry all seven logos:
 | `.works-dots` / `.dots` `.wd` tiles | `kygo-tools.js`, `kygo-blog-post.js` (`WEARABLE_BADGES`) |
 | `.device-logos` `.device-logo-item` | `kygo-bundle.js` (`kygo-social-proof-section`, desktop only) |
 
-Two related strips carry **six** entries (no separate Google Health row — Health Connect covers
-Android there): the homepage step-2 chips (`kygo-bundle.js` `kygo-insights-steps`, `.hfoot-devices`)
-and the how-it-works tiles (`kygo-hiw-bundle.js`, `.hiw-logos`).
+Two related strips use the same seven brands in a different visual form: the homepage step-2 chips
+(`kygo-bundle.js` `kygo-insights-steps`, `.hfoot-devices` — logo tile + text label) and the
+how-it-works tiles (`kygo-hiw-bundle.js`, `.hiw-logos` — tiles only). Both carried six until Google
+Health was added alongside WHOOP (2026-09).
 
-**Mobile:** each strip has a `max-width:560px` (and where needed `380px` / `360px`) rule that
-shrinks the tiles so the row stays on **one line** down to a 320px viewport rather than dropping a
-single orphan logo onto a second row. Verified in headless Chromium at 320/360/375/414/768/1280.
+**Staying on one line:** each strip has breakpoint rules that shrink the tiles and gaps so the row
+never wraps or overflows, down to a 320px viewport.
+
+- The `.kc-badges` / `.cta-badges` / `.works-dots` strips shrink at `max-width:560px` and `380px`.
+- The homepage step-2 chips scale at `1199px` / `899px` / `767px` / `420px` / `360px`, because the
+  step cards themselves change width with the auto-fit grid. That grid's `minmax` was raised from
+  `260px` to `300px` and forced to a single column below `768px` so a card is never too narrow to
+  hold seven chips.
+- The how-it-works tiles use `clamp(30px,10.2vw,52px)` below `560px`.
+
+Verified in headless Chromium at 320/360/375/390/414/480/560/600/700/767/768/820/900/1024/1100/
+1200/1280/1440 — every strip renders on a single row with no overflow.
 
 **Note:** `_renderBigCta()` in `kygo-supplements-by-metric.js` and `kygo-accuracy-factors.js` also
 contains an `.app-cta-tags-logos` strip, but that method is **never called** — those pages render

@@ -727,6 +727,7 @@ class KygoInsightsSteps extends HTMLElement {
       fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
       apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
       whoop: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
+      google: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
       health: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png'
     };
   }
@@ -744,7 +745,7 @@ class KygoInsightsSteps extends HTMLElement {
         .kicker{font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:var(--green-dark);margin-bottom:12px}
         .section-header h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;font-size:clamp(28px,3.8vw,40px);line-height:1.08;letter-spacing:-0.03em;color:var(--dark);margin-bottom:14px}
         .section-subtitle{font-size:clamp(16px,2.2vw,18px);color:var(--body)}
-        .steps-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+        .steps-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
         .step-card{position:relative;overflow:hidden;display:flex;flex-direction:column;background:#fff;border:2px solid var(--border);border-radius:18px;padding:28px 24px;box-shadow:0 4px 12px rgba(15,23,42,.04);transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
         .step-card:hover{transform:translateY(-5px);border-color:var(--green);box-shadow:0 18px 40px -22px rgba(15,23,42,.4)}
         .ghost-num{position:absolute;top:10px;right:18px;font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:700;font-size:66px;line-height:1;color:var(--slate-100);pointer-events:none;user-select:none}
@@ -754,17 +755,23 @@ class KygoInsightsSteps extends HTMLElement {
         .step-card p{font-size:15px;color:var(--body);margin-bottom:20px}
         .hfoot{margin-top:auto;padding-top:18px;border-top:1px solid var(--slate-100)}
         .hfoot-methods{display:flex;justify-content:center;gap:10px}
-        .hfoot-devices{display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:center;gap:8px}
+        .hfoot-devices{display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:center;gap:6px}
         .hfoot-results{display:flex;align-items:center;gap:8px;min-height:82px}
         .chip{display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .18s ease}
         .chip:hover{transform:translateY(-3px)}
-        .chip-tile{width:44px;height:44px;flex-shrink:0;border-radius:11px;border:1px solid var(--border);background:var(--canvas);display:flex;align-items:center;justify-content:center}
+        .chip-tile{width:40px;height:40px;flex-shrink:0;border-radius:11px;border:1px solid var(--border);background:var(--canvas);display:flex;align-items:center;justify-content:center}
         .chip-tile svg{width:19px;height:19px}
         .chip-tile.device{overflow:hidden;background:#fff;padding:0}
         .chip-tile.device img{width:100%;height:100%;object-fit:cover;border-radius:10px}
-        .chip-label{font-size:11px;font-weight:600;color:var(--label);white-space:nowrap}
-        /* 6 device chips (incl. WHOOP): shrink so they stay on one line on phones */
-        @media(max-width:560px){.hfoot-devices{flex-wrap:wrap;row-gap:10px;gap:6px}.chip-tile{width:38px;height:38px}.chip-label{font-size:10px}}
+        .chip-label{font-size:10px;font-weight:600;color:var(--label);white-space:nowrap}
+        /* 7 device chips: the step cards get narrow at some widths (3-up grid on
+           small laptops, 1-up on phones), so scale the tiles down where the card
+           can't hold the row — the strip always stays on a single line. */
+        @media(max-width:1199px){.hfoot-devices{gap:4px}.chip-tile{width:34px;height:34px}.chip-label{font-size:9px}}
+        @media(max-width:899px){.hfoot-devices{gap:4px}.chip-tile{width:38px;height:38px}.chip-label{font-size:9.5px}}
+        /* one card per row below 768 so the 7-chip strip has the full width */
+        @media(max-width:767px){.steps-container{grid-template-columns:1fr}.hfoot-devices{gap:6px}.chip-tile{width:40px;height:40px}.chip-label{font-size:10px}}
+        @media(max-width:420px){.hfoot-devices{gap:4px}.chip-tile{width:36px;height:36px}.chip-label{font-size:9.5px}}
         .result-pill{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;border-radius:12px;padding:8px 11px;line-height:1.25}
         .result-pill.good{background:#F0FDF4;border:1px solid #BBF7D0}
         .result-pill.bad{background:#FEF2F2;border:1px solid #FECACA}
@@ -805,9 +812,9 @@ class KygoInsightsSteps extends HTMLElement {
         }
         @media(max-width:360px){
           .step-card{padding:24px 18px}
-          .hfoot-devices{gap:5px}
-          .chip-tile{width:34px;height:34px}
-          .chip-label{font-size:9.5px}
+          .hfoot-devices{gap:3px}
+          .chip-tile{width:31px;height:31px}
+          .chip-label{font-size:8.5px}
           .result-line{font-size:10.5px}
         }
         @media(prefers-reduced-motion:reduce){*{animation:none !important}}
@@ -869,6 +876,10 @@ class KygoInsightsSteps extends HTMLElement {
                 <span class="chip">
                   <span class="chip-tile device"><img src="${icons.apple}" alt="Apple Health" loading="lazy"/></span>
                   <span class="chip-label">Apple</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile device"><img src="${icons.google}" alt="Google Health" loading="lazy"/></span>
+                  <span class="chip-label">Google</span>
                 </span>
                 <span class="chip">
                   <span class="chip-tile device"><img src="${icons.health}" alt="Health Connect" loading="lazy"/></span>
