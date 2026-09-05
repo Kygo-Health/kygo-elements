@@ -122,7 +122,7 @@ day 14, etc.).
 
 > Grandfathered accounts keep unlimited photo scans and write-back for free. Pricing (trial vs.
 > discounted first month/year) is A/B-tested and rendered from the RevenueCat offering, so the
-> marketing site stays arm-neutral: "Free plan available · $9.99/mo or $59.99/yr · cancel anytime."
+> marketing site stays arm-neutral: "Free plan available · $9.99/mo or $49.99/yr · cancel anytime."
 
 ## Settings & support
 

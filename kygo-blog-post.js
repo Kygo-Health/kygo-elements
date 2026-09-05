@@ -31,13 +31,13 @@
   const APP_IOS    = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
   const APP_ANDROID = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
   const WEARABLE_BADGES = [
-    { name: 'Oura Ring',     src: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png' },
-    { name: 'Apple Health',  src: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png' },
-    { name: 'Fitbit',        src: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png' },
-    { name: 'Garmin',        src: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png' },
-    { name: 'WHOOP',         src: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png' },
-    { name: 'Google Health', src: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png' },
-    { name: 'Health Connect',src: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png' }
+    { name: 'Oura Ring',     label: 'Oura',   src: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png' },
+    { name: 'Apple Health',  label: 'Apple',  src: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png' },
+    { name: 'Fitbit',        label: 'Fitbit', src: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png' },
+    { name: 'Garmin',        label: 'Garmin', src: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png' },
+    { name: 'WHOOP',         label: 'WHOOP',  src: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png' },
+    { name: 'Google Health', label: 'Google', src: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png' },
+    { name: 'Health Connect',label: 'Health', src: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png' }
   ];
 
   const CORE_TOKENS = `
@@ -876,19 +876,19 @@
           .works-label {
             font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 500;
           }
-          .dots { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-          .wd {
-            width: 32px; height: 32px; border-radius: 8px;
-            background: rgba(255,255,255,0.08);
+          /* Logo tile + brand label, matching the homepage step-2 chips. Always one line. */
+          .dots { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 6px; row-gap: 12px; }
+          .wd { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 0 0 auto; transition: transform 150ms ease; }
+          .wd:hover { transform: translateY(-2px); }
+          .wd-tile {
+            width: 40px; height: 40px; border-radius: 11px; background: #fff;
             display: flex; align-items: center; justify-content: center;
             overflow: hidden; flex-shrink: 0;
-            transition: background 150ms ease, transform 150ms ease;
           }
-          .wd:hover { background: rgba(255,255,255,0.15); transform: scale(1.08); }
-          .wd img { width: 20px; height: 20px; object-fit: contain; border-radius: 4px; opacity: 0.85; }
-          .wd:hover img { opacity: 1; }
-          /* 7 logos: keep the "Works with" row tight on small phones */
-          @media (max-width: 560px) { .dots { gap: 6px; } .wd { width: 28px; height: 28px; } .wd img { width: 18px; height: 18px; } }
+          .wd-tile img { width: 100%; height: 100%; object-fit: cover; border-radius: 11px; display: block; }
+          .wd-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); white-space: nowrap; }
+          @media (max-width: 420px) { .dots { gap: 4px; } .wd-tile { width: 36px; height: 36px; } .wd-label { font-size: 9.5px; } }
+          @media (max-width: 360px) { .dots { gap: 2px; } .wd-tile { width: 28px; height: 28px; } .wd-label { font-size: 7.5px; } }
         </style>
         <section class="wrap" aria-labelledby="cta-heading">
           <div class="promo">
@@ -904,13 +904,14 @@
                   ${svg('playstore', 18)} Download for Android
                 </a>
               </div>
-              <p style="margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 50% on yearly. Cancel anytime.</p>
+              <p style="margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
               <div class="works">
                 <span class="works-label">Works with</span>
                 <div class="dots">
                   ${WEARABLE_BADGES.map(w => `
                     <span class="wd" title="${w.name}">
-                      <img src="${w.src}" alt="${w.name}" loading="lazy" />
+                      <span class="wd-tile"><img src="${w.src}" alt="${w.name}" loading="lazy" /></span>
+                      <span class="wd-label">${w.label}</span>
                     </span>
                   `).join('')}
                 </div>
@@ -1035,7 +1036,7 @@
             </a>
           </div>
           <div class="trust">
-            <span>Free plan available. Save 50% on yearly. Cancel anytime.</span>
+            <span>Free plan available. Save 58% on yearly. Cancel anytime.</span>
           </div>
         </aside>
       `;

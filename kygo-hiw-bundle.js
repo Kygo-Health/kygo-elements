@@ -38,7 +38,7 @@ class KygoHiw extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupFeatureReveal();
-    __seo(this, 'How Kygo Health works. Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body performs — sleep, HRV, resting heart rate, energy, and recovery. Step 1: log your food in seconds with photo AI, chat, barcode, voice, search, or saved meals, or import nutrition automatically from Apple Health and Health Connect. Step 2: connect a wearable in a tap — Oura Ring, Garmin, Fitbit, Apple Health, or Health Connect — and Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity on its own, picking the most accurate source for each metric. Step 3: after about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts, with evidence strength and same-day and next-day lag checks. Setup takes about two minutes. Free forever plan with 5 AI photo scans a month; Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, at $9.99/month or $59.99/year (save 50% on the yearly plan). Your data is protected end to end: all traffic is encrypted with modern TLS, data is encrypted at rest with AES-256, accounts use bcrypt hashing and token-based authentication, every request is scoped so only you can reach your own data, and Kygo never sells your data. Wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data.');
+    __seo(this, 'How Kygo Health works. Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body performs — sleep, HRV, resting heart rate, energy, and recovery. Step 1: log your food in seconds with photo AI, chat, barcode, voice, search, or saved meals, or import nutrition automatically from Apple Health and Health Connect. Step 2: connect a wearable in a tap — Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, Google Health, or Health Connect — and Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity on its own, picking the most accurate source for each metric. Step 3: after about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts, with evidence strength and same-day and next-day lag checks. Setup takes about two minutes. Free forever plan with 5 AI photo scans a month; Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, at $9.99/month or $49.99/year (save 58% on the yearly plan). Your data is protected end to end: all traffic is encrypted with modern TLS, data is encrypted at rest with AES-256, accounts use bcrypt hashing and token-based authentication, every request is scoped so only you can reach your own data, and Kygo never sells your data. Wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data.');
     this._injectStructuredData();
   }
 
@@ -94,11 +94,12 @@ class KygoHiw extends HTMLElement {
         fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
         whoop: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
         googleHealth: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
-        // Brand-mark hearts on a white chip (Apple Health + Google Health Connect).
-        // Served from GitHub Pages so the Health Connect mark is correct — the prior
-        // Wix hash rendered as the retired WHOOP wordmark.
+        // Brand-mark hearts on a white chip. Apple Health is served from GitHub Pages;
+        // Health Connect uses the same Wix asset as every other strip on the site —
+        // assets/hiw-health-connect.png is the Google Health mark, so it duplicated
+        // the Google Health tile once that tile was added (2026-09).
         apple: 'https://kygo-health.github.io/kygo-elements/assets/hiw-apple-health.png',
-        healthConnect: 'https://kygo-health.github.io/kygo-elements/assets/hiw-health-connect.png'
+        healthConnect: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png'
       },
       testimonials: [
         { quote: '"I’ve boosted my deep sleep after making changes to stop the age-related slow-wave decline."', name: 'Oura user' },
@@ -108,10 +109,11 @@ class KygoHiw extends HTMLElement {
         { quote: '"Very interesting. I noticed not getting enough time in bed was the biggest impact for me. Once I fixed that, my stats improved."', name: 'Oura user' }
       ],
       features: [
-        'Insights on which foods move your sleep, energy, and recovery',
-        'Unlimited photo logging (the free plan includes 5 AI photo scans a month)',
+        'Insights on which foods move your sleep, energy &amp; recovery',
+        'Photo logging: snap it, we identify the ingredients and log it',
+        'Supplement tracking with reminders &amp; insights',
         'A daily spotlight on the factor moving your metrics',
-        'Nutrition write-back to Apple Health and Health Connect'
+        'Write your nutrition back to Apple Health &amp; Health Connect'
       ],
       faqs: [
         {
@@ -123,7 +125,7 @@ class KygoHiw extends HTMLElement {
         { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
         { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
         { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
-        { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, supplements, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $59.99/year.' }
+        { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, supplements, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $49.99/year.' }
       ],
       showTimeline: this._getFlag('show-timeline', true),
       showFreeVsPro: this._getFlag('show-free-vs-pro', true)
@@ -179,16 +181,17 @@ class KygoHiw extends HTMLElement {
       `<span style="display:inline-flex;align-items:center;gap:8px;white-space:nowrap;font-size:14px;color:#E2E8F0;font-weight:500;">${t[0]} <span style="color:${t[2]};font-family:'Space Grotesk',sans-serif;font-weight:700;">${t[1]}</span></span><span style="color:#334155;">•</span>`
     ).join('');
 
+    // Logo tile + short brand label underneath, matching the homepage step-2 chips.
     const wearableTiles = [
-      ['oura', 'Oura', 'cover', '0'],
-      ['garmin', 'Garmin', 'cover', '0'],
-      ['fitbit', 'Fitbit', 'cover', '0'],
-      ['whoop', 'WHOOP', 'cover', '0'],
-      ['apple', 'Apple Health', 'contain', '7px'],
-      ['googleHealth', 'Google Health', 'contain', '7px'],
-      ['healthConnect', 'Health Connect', 'contain', '7px']
-    ].map(([k, alt, fit, pad]) =>
-      `<span class="hiw-logo" style="background:#fff;padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span>`
+      ['oura', 'Oura', 'Oura', 'cover', '0'],
+      ['garmin', 'Garmin', 'Garmin', 'cover', '0'],
+      ['fitbit', 'Fitbit', 'Fitbit', 'cover', '0'],
+      ['whoop', 'WHOOP', 'WHOOP', 'cover', '0'],
+      ['apple', 'Apple Health', 'Apple', 'contain', '7px'],
+      ['googleHealth', 'Google Health', 'Google', 'contain', '7px'],
+      ['healthConnect', 'Health Connect', 'Health', 'contain', '7px']
+    ].map(([k, alt, label, fit, pad]) =>
+      `<span class="hiw-chip"><span class="hiw-logo" style="background:#fff;padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span><span class="hiw-chip-label">${label}</span></span>`
     ).join('');
 
     const features = d.features.map(f =>
@@ -266,14 +269,14 @@ class KygoHiw extends HTMLElement {
       <div style="max-width:940px;margin:0 auto;text-align:center;">
         <span style="font-weight:700;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;color:#16A34A;">One plan. Pick your billing.</span>
         <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(30px,4vw,42px);line-height:1.08;letter-spacing:-0.03em;margin:12px 0 14px;color:#0F172A;">Same Kygo. Better yearly.</h2>
-        <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:540px;margin:0 auto 48px;">Same full feature set either way. Go yearly to save 50%, or start free and upgrade when you're ready.</p>
+        <p style="font-size:clamp(16px,2.2vw,18px);color:#475569;max-width:540px;margin:0 auto 48px;">Same full feature set either way. Go yearly to save 58%, or start free and upgrade when you're ready.</p>
         <div style="display:flex;flex-wrap:wrap;gap:22px;justify-content:center;text-align:left;">
           <div style="flex:1 1 320px;max-width:400px;position:relative;background:#fff;border:2px solid #22C55E;border-radius:20px;padding:30px 26px;box-shadow:0 20px 48px -24px rgba(34,197,94,.45);">
-            <span style="position:absolute;top:-13px;left:26px;background:#22C55E;color:#fff;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:5px 12px;border-radius:999px;box-shadow:0 8px 18px -6px rgba(34,197,94,.6);">Save 50% &middot; best value</span>
+            <span style="position:absolute;top:-13px;left:26px;background:#22C55E;color:#fff;font-weight:700;font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:5px 12px;border-radius:999px;box-shadow:0 8px 18px -6px rgba(34,197,94,.6);">Save 58% &middot; best value</span>
             <div style="font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#16A34A;margin-bottom:6px;">Yearly</div>
-            <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$5.00</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
-            <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">$59.99 billed yearly&nbsp;&nbsp;•&nbsp;&nbsp;cancel anytime</p>
-            <p style="font-size:14px;color:#64748B;margin-bottom:22px;">Everything Kygo does, at half the price.</p>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$4.17</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
+            <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">$49.99 billed yearly&nbsp;&nbsp;•&nbsp;&nbsp;cancel anytime</p>
+            <p style="font-size:14px;color:#64748B;margin-bottom:22px;">Everything Kygo does, for less than half the monthly price.</p>
             <div class="hiwplan" style="display:flex;flex-direction:column;gap:12px;margin-bottom:26px;">${features}</div>
             <a href="${d.iosLink}" class="hiw-greenblock cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-yearly" target="_blank" rel="noopener">Get Kygo</a>
           </div>
@@ -357,12 +360,19 @@ class KygoHiw extends HTMLElement {
       details.hiwfaq:hover { border-color:#94A3B8; }
       details.hiwfaq[open]:hover { border-color:#22C55E; }
 
-      /* Wearable logo chips — one line on mobile (6 chips incl. WHOOP) */
-      .hiw-logos { display:flex; flex-wrap:nowrap; gap:12px; margin-bottom:22px; }
+      /* Wearable chips (logo tile + brand label) — always one line, 7 brands */
+      .hiw-logos { display:flex; flex-wrap:nowrap; align-items:flex-start; gap:12px; margin-bottom:22px; }
+      .hiw-chip { display:flex; flex-direction:column; align-items:center; gap:6px; flex:0 0 auto; }
+      .hiw-chip-label { font-size:11px; font-weight:600; color:#64748B; white-space:nowrap; }
       .hiw-logo { width:52px; height:52px; flex:0 0 auto; border-radius:12px; border:1px solid #E2E8F0; overflow:hidden; display:flex; align-items:center; justify-content:center; }
       @media (max-width:560px){
-        .hiw-logos { gap:8px; justify-content:space-between; }
+        .hiw-logos { gap:6px; justify-content:space-between; }
         .hiw-logo { width:clamp(30px,10.2vw,52px); height:clamp(30px,10.2vw,52px); }
+        .hiw-chip-label { font-size:9.5px; }
+      }
+      @media (max-width:360px){
+        .hiw-logos { gap:4px; }
+        .hiw-chip-label { font-size:8.5px; }
       }
 
       /* iOS + Android buttons sit side by side on mobile */
@@ -374,6 +384,20 @@ class KygoHiw extends HTMLElement {
         .hiw-btnrow .hiw-lbl-full { display:none; }
         .hiw-btnrow .hiw-lbl-short { display:inline; }
       }
+      /* The floating "Synced" badge hangs off the card corner — pull it back in and
+         scale it down on phones so it isn't clipped by the section edge. */
+      @media (max-width:560px){
+        .hiw-synced { top:-16px !important; right:0 !important; border-radius:13px !important; padding:9px 13px 9px 11px !important; }
+        .hiw-synced-av { width:22px !important; height:22px !important; border-radius:6px !important; }
+        .hiw-synced-av2 { margin-left:-8px !important; padding:3px !important; }
+        .hiw-synced-lbl { font-size:12px !important; }
+      }
+      @media (max-width:400px){
+        .hiw-synced { top:-14px !important; right:0 !important; padding:8px 11px 8px 9px !important; }
+        .hiw-synced-av { width:20px !important; height:20px !important; }
+        .hiw-synced-lbl { font-size:11px !important; }
+      }
+
       /* Small phones: the two buttons and the pill have to stay inside the card */
       @media (max-width:400px){
         .hiw-btnrow > a { font-size:13.5px; gap:6px; padding-left:8px; padding-right:8px; }
@@ -460,7 +484,7 @@ class KygoHiw extends HTMLElement {
                     <div style="flex:1;padding:13px 20px;"><div style="font-size:10px;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:2px;">Lunch logged</div><div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;">690<span style="font-size:11px;color:#94A3B8;font-weight:600;"> kcal</span></div></div>
                   </div>
                 </div>
-                <div style="position:absolute;top:-24px;right:-24px;z-index:3;background:#1E293B;color:#fff;border-radius:16px;padding:12px 17px 12px 14px;box-shadow:0 20px 40px -16px rgba(15,23,42,.5);animation:hiwFloatB 5s ease-in-out infinite;"><div style="display:flex;align-items:center;gap:10px;"><span style="display:flex;"><span style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;"><img src="${d.logos.oura}" alt="Oura" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></span><span style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;margin-left:-9px;padding:4px;"><img src="${d.logos.apple}" alt="Apple Health" loading="lazy" style="width:100%;height:100%;object-fit:contain;"></span></span><span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:99px;background:#22C55E;animation:hiwPulse 2.2s ease-in-out infinite;"></span><span style="font-size:13px;color:#fff;font-weight:600;letter-spacing:.3px;">Synced</span></span></div></div>
+                <div class="hiw-synced" style="position:absolute;top:-24px;right:-24px;z-index:3;background:#1E293B;color:#fff;border-radius:16px;padding:12px 17px 12px 14px;box-shadow:0 20px 40px -16px rgba(15,23,42,.5);animation:hiwFloatB 5s ease-in-out infinite;"><div style="display:flex;align-items:center;gap:10px;"><span style="display:flex;"><span class="hiw-synced-av" style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;"><img src="${d.logos.oura}" alt="Oura" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></span><span class="hiw-synced-av hiw-synced-av2" style="width:26px;height:26px;border-radius:7px;overflow:hidden;border:1.5px solid #1E293B;background:#fff;margin-left:-9px;padding:4px;"><img src="${d.logos.apple}" alt="Apple Health" loading="lazy" style="width:100%;height:100%;object-fit:contain;"></span></span><span style="display:flex;align-items:center;gap:7px;"><span style="width:8px;height:8px;border-radius:99px;background:#22C55E;animation:hiwPulse 2.2s ease-in-out infinite;"></span><span class="hiw-synced-lbl" style="font-size:13px;color:#fff;font-weight:600;letter-spacing:.3px;">Synced</span></span></div></div>
               </div>
             </div>
           </div>

@@ -48,20 +48,36 @@ appears in four markup shapes; all four carry all seven logos:
 | `.works-dots` / `.dots` `.wd` tiles | `kygo-tools.js`, `kygo-blog-post.js` (`WEARABLE_BADGES`) |
 | `.device-logos` `.device-logo-item` | `kygo-bundle.js` (`kygo-social-proof-section`, desktop only) |
 
+**Chip treatment (2026-09):** the four dark-CTA-card strips above — every one except
+`.device-logos` — use the same chip as the homepage step-2 row: a 40px white tile with the logo
+full-bleed (`object-fit:cover`, 11px radius) and the short brand name beneath it (Oura, Apple,
+Fitbit, Garmin, WHOOP, Google, Health). They previously showed a 32px translucent chip with a
+`contain`-fitted logo and no label. `.device-logos` keeps the old compact inline treatment — it is
+a small "Works with:" row on the hero, not a CTA card.
+
+`assets/hiw-health-connect.png` (GitHub Pages) is **misnamed** — it is the Google Health mark, not
+Health Connect. `kygo-hiw-bundle.js` used it for its Health Connect tile until 2026-09, when adding
+a Google Health tile made the duplication visible; that tile now uses the Wix Health Connect asset
+like every other strip. The file is unused; `assets/hiw-apple-health.png` is still in use and is
+correct.
+
 Two related strips use the same seven brands in a different visual form: the homepage step-2 chips
 (`kygo-bundle.js` `kygo-insights-steps`, `.hfoot-devices` — logo tile + text label) and the
-how-it-works tiles (`kygo-hiw-bundle.js`, `.hiw-logos` — tiles only). Both carried six until Google
+how-it-works chips (`kygo-hiw-bundle.js`, `.hiw-logos` — same tile + label treatment). Both carried six until Google
 Health was added alongside WHOOP (2026-09).
 
 **Staying on one line:** each strip has breakpoint rules that shrink the tiles and gaps so the row
 never wraps or overflows, down to a 320px viewport.
 
-- The `.kc-badges` / `.cta-badges` / `.works-dots` strips shrink at `max-width:560px` and `380px`.
+- The `.kc-badges` / `.cta-badges` / `.works-dots` / `.dots` chips shrink at `max-width:420px`
+  (36px tile / 9.5px label) and `360px` (28px / 7.5px). They also keep `flex-wrap:wrap` as a
+  safety net, so an unexpectedly wide font wraps the row instead of clipping it.
 - The homepage step-2 chips scale at `1199px` / `899px` / `767px` / `420px` / `360px`, because the
   step cards themselves change width with the auto-fit grid. That grid's `minmax` was raised from
   `260px` to `300px` and forced to a single column below `768px` so a card is never too narrow to
   hold seven chips.
-- The how-it-works tiles use `clamp(30px,10.2vw,52px)` below `560px`.
+- The how-it-works chips use `clamp(30px,10.2vw,52px)` tiles below `560px`, with the label
+  stepping down at `560px` and `360px`.
 
 Verified in headless Chromium at 320/360/375/390/414/480/560/600/700/767/768/820/900/1024/1100/
 1200/1280/1440 — every strip renders on a single row with no overflow.
