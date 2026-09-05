@@ -48,6 +48,12 @@ appears in four markup shapes; all four carry all seven logos:
 | `.works-dots` / `.dots` `.wd` tiles | `kygo-tools.js`, `kygo-blog-post.js` (`WEARABLE_BADGES`) |
 | `.device-logos` `.device-logo-item` | `kygo-bundle.js` (`kygo-social-proof-section`, desktop only) |
 
+`assets/hiw-health-connect.png` (GitHub Pages) is **misnamed** — it is the Google Health mark, not
+Health Connect. `kygo-hiw-bundle.js` used it for its Health Connect tile until 2026-09, when adding
+a Google Health tile made the duplication visible; that tile now uses the Wix Health Connect asset
+like every other strip. The file is unused; `assets/hiw-apple-health.png` is still in use and is
+correct.
+
 Two related strips use the same seven brands in a different visual form: the homepage step-2 chips
 (`kygo-bundle.js` `kygo-insights-steps`, `.hfoot-devices` — logo tile + text label) and the
 how-it-works tiles (`kygo-hiw-bundle.js`, `.hiw-logos` — tiles only). Both carried six until Google

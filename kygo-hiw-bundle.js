@@ -94,11 +94,12 @@ class KygoHiw extends HTMLElement {
         fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
         whoop: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
         googleHealth: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
-        // Brand-mark hearts on a white chip (Apple Health + Google Health Connect).
-        // Served from GitHub Pages so the Health Connect mark is correct — the prior
-        // Wix hash rendered as the retired WHOOP wordmark.
+        // Brand-mark hearts on a white chip. Apple Health is served from GitHub Pages;
+        // Health Connect uses the same Wix asset as every other strip on the site —
+        // assets/hiw-health-connect.png is the Google Health mark, so it duplicated
+        // the Google Health tile once that tile was added (2026-09).
         apple: 'https://kygo-health.github.io/kygo-elements/assets/hiw-apple-health.png',
-        healthConnect: 'https://kygo-health.github.io/kygo-elements/assets/hiw-health-connect.png'
+        healthConnect: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png'
       },
       testimonials: [
         { quote: '"I’ve boosted my deep sleep after making changes to stop the age-related slow-wave decline."', name: 'Oura user' },
