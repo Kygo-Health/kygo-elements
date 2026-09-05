@@ -532,7 +532,7 @@ class KygoSocialProofSection extends HTMLElement {
               <div class="device-logo-item" title="Apple Health"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health"></div>
               <div class="device-logo-item" title="Fitbit"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit"></div>
               <div class="device-logo-item" title="Garmin"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin"></div>
-              <div class="device-logo-item" title="WHOOP"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP"></div>
+              <div class="device-logo-item" title="WHOOP"><img src="https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png" alt="WHOOP"></div>
               <div class="device-logo-item" title="Google Health"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health"></div>
               <div class="device-logo-item" title="Health Connect"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect"></div>
             </div>
@@ -726,7 +726,7 @@ class KygoInsightsSteps extends HTMLElement {
       garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
       fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
       apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
-      whoop: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png',
+      whoop: 'https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png',
       google: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
       health: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png'
     };
@@ -1822,7 +1822,7 @@ class KygoFinalCta extends HTMLElement {
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" /></span><span class="cta-chip-label">Apple</span></span>
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" /></span><span class="cta-chip-label">Fitbit</span></span>
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" /></span><span class="cta-chip-label">Garmin</span></span>
-                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" /></span><span class="cta-chip-label">WHOOP</span></span>
+                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" /></span><span class="cta-chip-label">WHOOP</span></span>
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" title="Google Health" loading="lazy" /></span><span class="cta-chip-label">Google</span></span>
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" /></span><span class="cta-chip-label">Health</span></span>
                 </div>
