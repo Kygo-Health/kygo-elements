@@ -910,18 +910,18 @@ class KygoAccuracyFactors extends HTMLElement {
   // from the Wix Blog collection - see docs/blog-cross-links.md.
   _relatedPosts() {
     return [
-      { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
-        title: 'What\'s the Most Accurate Wearable? 17 Studies, 6 Devices, Ranked (2026)',
-        blurb: 'Seventeen independent studies on sleep, HRV, heart rate and step accuracy, with the actual numbers behind each device.',
-        cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' },
+      { slug: 'where-to-wear-your-fitness-tracker-tattoos-hairy-arms-and-placement',
+        title: 'Where to Wear Your Fitness Tracker: Tattoos, Hairy Arms and Placement',
+        blurb: 'Tattoos, hairy arms, cold hands and which wrist. Where you wear a tracker moves heart rate error more than which brand you bought.',
+        cat: 'Wearables & Data', min: 13, img: '273a63_33970522217646cda0376c230a923d81~mv2.png' },
       { slug: 'heart-rate-accuracy-by-activity-type',
         title: 'Heart Rate Accuracy by Activity Type: What Breaks Your Watch',
         blurb: '1.2% error during a run and 16.2% during badminton, on the same watch. What breaks wrist heart rate is not how hard you work.',
         cat: 'HRV & Recovery', min: 13, img: '273a63_9cf51f2ccc2b492fb52f1e15958fe3e1~mv2.png' },
-      { slug: 'step-count-accuracy-factors',
-        title: 'What Actually Affects Your Wearable\'s Step Count Accuracy, Ranked by Impact',
-        blurb: 'Walking speed, arm swing and where you wear the device matter more than the brand. Every factor ranked by how much it moves the count.',
-        cat: 'Wearables & Data', min: 7, img: '273a63_555e30a7fca44d14bf995a7e320a93dd~mv2.png' }
+      { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
+        title: 'What\'s the Most Accurate Wearable? 17 Studies, 6 Devices, Ranked (2026)',
+        blurb: 'Seventeen independent studies on sleep, HRV, heart rate and step accuracy, with the actual numbers behind each device.',
+        cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' }
     ];
   }
 

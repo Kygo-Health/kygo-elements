@@ -51,7 +51,7 @@ shows three near-duplicates. "In" is how many tool pages link that post under th
 
 | Page | Component | Links out to (in order) |
 |---|---|---|
-| `/tools/accuracy-factors` | `kygo-accuracy-factors.js` | `what-s-the-most-accurate-wearable-data-…`, `heart-rate-accuracy-by-activity-type`, `step-count-accuracy-factors` |
+| `/tools/accuracy-factors` | `kygo-accuracy-factors.js` | `where-to-wear-your-fitness-tracker-…`, `heart-rate-accuracy-by-activity-type`, `what-s-the-most-accurate-wearable-data-…` |
 | `/tools/calorie-burn-accuracy` | `kygo-calorie-burn-accuracy.js` | `how-accurate-is-your-wearable-calorie-burn`, `how-accurate-is-apple-watch-calorie-burn`, `how-accurate-is-fitbit-calorie-burn` |
 | `/tools/deep-sleep-factors` | `kygo-deep-sleep-factors.js` | `how-to-increase-deep-sleep-factors-ranked`, `what-influences-rem-sleep-factors-ranked`, `why-is-my-sleep-score-low-when-i-slept-8-hours` |
 | `/tools/fitbit-air-vs-whoop-comparison` | `kygo-fitbit-air-vs-whoop.js` | `fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it`, `does-the-fitbit-air-measure-blood-pressure`, `whoop-stress-score-recovery-explained` |
@@ -59,7 +59,7 @@ shows three near-duplicates. "In" is how many tool pages link that post under th
 | `/tools/hrv-factors` | `kygo-hrv-factors.js` | `how-to-improve-hrv-factors-ranked-by-evidence`, `why-is-my-hrv-always-low`, `why-does-alcohol-crush-your-hrv-…` |
 | `/tools/oura-ring-5-vs-4` | `kygo-oura-5-vs-4.js` | `is-the-oura-ring-5-worth-it`, `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based`, `oura-ring-stress-tracking-explained` |
 | `/tools/oura-ring-comparison-tool` | `kygo-oura-ring-comparison.js` | `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based`, `is-the-oura-ring-5-worth-it`, `oura-ring-food-tracking-complete-guide` |
-| `/tools/oura-vs-ringconn` | `kygo-oura-vs-ringconn.js` | `is-the-oura-ring-5-worth-it`, `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based`, `what-s-the-most-accurate-wearable-data-…` |
+| `/tools/oura-vs-ringconn` | `kygo-oura-vs-ringconn.js` | `oura-ring-5-vs-ringconn-gen-3`, `is-the-oura-ring-5-worth-it`, `what-s-the-most-accurate-wearable-data-…` |
 | `/tools/recovery-score-explorer` | `kygo-recovery-scores.js` | `what-lowers-recovery-score`, `recovery-scores-compared-whoop-oura-garmin`, `can-you-trust-your-recovery-score` |
 | `/tools/rem-sleep-factors` | `kygo-rem-sleep.js` | `what-influences-rem-sleep-factors-ranked`, `how-to-increase-deep-sleep-factors-ranked`, `which-foods-affect-your-sleep-and-hrv` |
 | `/tools/resting-heart-rate-factors` | `kygo-rhr-factors.js` | `resting-heart-rate-factors`, `why-is-my-resting-heart-rate-suddenly-higher-…`, `how-to-improve-hrv-factors-ranked-by-evidence` |
@@ -67,7 +67,7 @@ shows three near-duplicates. "In" is how many tool pages link that post under th
 | `/tools/sleep-latency-factors` | `kygo-sleep-latency-factors.js` | `how-to-fall-asleep-faster-factors-ranked-by-evidence`, `caffeine-sleep-correlation-personal-cutoff-time`, `how-to-stay-asleep-factors-ranked-by-evidence` |
 | `/tools/sleep-metrics` | `kygo-sleep-metrics.js` | `every-sleep-metric-your-wearable-tracks-…`, `most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026`, `why-is-my-sleep-score-low-when-i-slept-8-hours` |
 | `/tools/sleep-tracker-accuracy` | `kygo-sleep-tracker-accuracy.js` | `most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026`, `every-sleep-metric-your-wearable-tracks-…`, `why-is-my-sleep-score-low-when-i-slept-8-hours` |
-| `/tools/smart-ring-comparison` | `kygo-smart-ring-comparison.js` | `is-the-oura-ring-5-worth-it`, `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based`, `what-s-the-most-accurate-wearable-data-…` |
+| `/tools/smart-ring-comparison` | `kygo-smart-ring-comparison.js` | `best-smart-ring-oura-vs-ringconn-vs-ultrahuman-vs-cudis`, `is-the-oura-ring-5-worth-it`, `what-s-the-most-accurate-wearable-data-…` |
 | `/tools/staying-asleep-factors` | `kygo-staying-asleep-factors.js` | `how-to-stay-asleep-factors-ranked-by-evidence`, `how-to-fall-asleep-faster-factors-ranked-by-evidence`, `which-foods-affect-your-sleep-and-hrv` |
 | `/tools/step-count-accuracy` | `kygo-step-count-accuracy.js` | `which-wearable-has-the-most-accurate-step-count-…`, `step-count-accuracy-factors`, `what-s-the-most-accurate-wearable-data-…` |
 | `/tools/stress-factors` | `kygo-wearable-stress.js` | `how-wearables-measure-stress-comparison`, `oura-ring-stress-tracking-explained`, `whoop-stress-score-recovery-explained` |
@@ -85,25 +85,31 @@ shows three near-duplicates. "In" is how many tool pages link that post under th
 | `how-to-increase-deep-sleep-factors-ranked` | 3 |
 | `why-is-my-sleep-score-low-when-i-slept-8-hours` | 3 |
 | `is-the-oura-ring-5-worth-it` | 4 |
-| `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based` | 4 |
 | `most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026` | 3 |
-| `heart-rate-accuracy-by-activity-type` · `step-count-accuracy-factors` · `what-influences-rem-sleep-factors-ranked` · `whoop-stress-score-recovery-explained` · `how-accurate-is-your-heart-rate-monitor` · `why-is-my-resting-heart-rate-suddenly-higher-…` · `oura-ring-stress-tracking-explained` · `which-foods-affect-your-sleep-and-hrv` · `how-to-fall-asleep-faster-factors-ranked-by-evidence` · `how-to-stay-asleep-factors-ranked-by-evidence` · `every-sleep-metric-your-wearable-tracks-…` · `most-accurate-vo2-max-wearable` | 2 |
+| `heart-rate-accuracy-by-activity-type` · `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based` · `what-influences-rem-sleep-factors-ranked` · `whoop-stress-score-recovery-explained` · `how-accurate-is-your-heart-rate-monitor` · `why-is-my-resting-heart-rate-suddenly-higher-…` · `oura-ring-stress-tracking-explained` · `which-foods-affect-your-sleep-and-hrv` · `how-to-fall-asleep-faster-factors-ranked-by-evidence` · `how-to-stay-asleep-factors-ranked-by-evidence` · `every-sleep-metric-your-wearable-tracks-…` · `most-accurate-vo2-max-wearable` | 2 |
 
-The other 21 linked posts have 1 inbound tool link. **40 of the 56 published posts are linked
-from at least one tool page**; the remaining 16 (app updates, the founder essays, most of the
+The other 25 linked posts have 1 inbound tool link. **43 of the 63 published posts are linked
+from at least one tool page**; the remaining 20 (app updates, the founder essays, most of the
 food-logging posts) have no matching tool and are deliberately not linked.
 
 Regenerate the counts after any retarget by grepping every `_relatedPosts()` block for its
 `slug:` values and tallying them — e.g. a short Python script over `kygo-*.js` that pulls
 `slug: '<value>'` out of each `_relatedPosts()` return array into a `collections.Counter`.
 
-## Post catalog (56 published, newest first)
+## Post catalog (63 published, newest first)
 
 Cover-image ids are the `273a63_…~mv2.png` suffix of
 `https://static.wixstatic.com/media/`. `min` = `minutesToRead`.
 
 | Slug | Title | Category | min | Cover image id |
 |---|---|---|---|---|
+| `where-to-wear-your-fitness-tracker-tattoos-hairy-arms-and-placement` | Where to Wear Your Fitness Tracker: Tattoos, Hairy Arms and Placement | Wearables & Data | 13 | `273a63_33970522217646cda0376c230a923d81~mv2.png` |
+| `best-smart-ring-oura-vs-ringconn-vs-ultrahuman-vs-cudis` | Best Smart Ring: Oura vs RingConn vs Ultrahuman vs CUDIS | Wearables & Data | 14 | `273a63_0f91ff715c524a77a516eab0d1c45111~mv2.png` |
+| `oura-ring-5-vs-ringconn-gen-3` | Oura Ring 5 vs RingConn Gen 3 | Wearables & Data | 11 | `273a63_2670851f303a459b89b7575ff68f66cc~mv2.png` |
+| `fitbit-air-calories-burned-accuracy` | Fitbit Air Calories Burned Accuracy | Sleep | 13 | `273a63_eaea4393bf4045f8bcf0977ca2f433df~mv2.png` |
+| `what-is-a-good-sleep-score` | What Is a Good Sleep Score? | Sleep | 10 | `273a63_8f403e17189c4cf1945de9f283e9e0dd~mv2.png` |
+| `what-glp-1s-do-to-your-wearable-metrics` | What GLP-1s Do to Your Wearable Metrics | Sleep | 13 | `273a63_5b8d6059008d42bcacb7c4e9adc4ba30~mv2.png` |
+| `does-fitbit-measure-blood-pressure` | Does Fitbit Measure Blood Pressure? | Wearables & Data | 13 | `273a63_8fe4475beef143b4a396f1d1defc3b75~mv2.png` |
 | `can-the-oura-ring-track-food-and-calories` | Can the Oura Ring Track Food and Calories? | Nutrition | 11 | `273a63_ced164386c25467cb01de494e6ac4f8c~mv2.png` |
 | `whoop-vo2-max-accuracy-why-yours-looks-wrong` | WHOOP VO2 Max Accuracy: Why Yours Looks Wrong | Wearables & Data | 11 | `273a63_3cf17ba07c50468e8c46362eda06d2d4~mv2.png` |
 | `why-is-my-hrv-always-low` | Why Is My HRV Always Low? | HRV & Recovery | 11 | `273a63_7dd707ddec3f46dfafcd5ce04581407c~mv2.png` |
