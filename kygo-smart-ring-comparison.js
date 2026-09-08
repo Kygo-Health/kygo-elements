@@ -26,9 +26,8 @@ class KygoSmartRingComparison extends HTMLElement {
     this.attachShadow({ mode: 'open' });
     this._activeTab = 'Overview';
     this._featTab = 'Daily scores';
-    // Ring finder: the priorities the reader has switched on. Empty = all
-    // criteria weighted equally (the "all-round" ranking).
-    this._priorities = new Set();
+    // Ring finder: one priority at a time. null = nothing chosen yet.
+    this._priority = null;
     // Spec table: which models are shown as columns (min 2, max 4).
     this._cols = ['ring5', 'gen3', 'uhpro', 'cudisc'];
     // Cost calculator state.
@@ -81,38 +80,47 @@ class KygoSmartRingComparison extends HTMLElement {
       { key: 'ring5', brand: 'oura', name: 'Oura Ring 5', short: 'Ring 5', hw: 399, sub: 69.99, addon: 0, battery: 9,
         buy: { label: 'Amazon', url: 'https://www.amazon.com/dp/B0GRK1N94H?tag=kygohealthapp-20&th=1', slug: 'oura-ring-5', aff: true },
         why: 'The deepest published feature set of any ring here and the only lineup with independent peer-reviewed validation behind it. The membership is the price of entry.',
+        v: { evidence: 'Multiple peer-reviewed studies', apnea: 'Breathing disturbances only', women: 'Cycle Insights + Natural Cycles', usnow: 'Shipping now' },
         s: { nosub: 15, evidence: 100, apnea: 25, women: 100, usnow: 100 } },
       { key: 'ring4', brand: 'oura', name: 'Oura Ring 4', short: 'Ring 4', hw: 349, sub: 69.99, addon: 0, battery: 8,
         buy: { label: 'Amazon', url: 'https://www.amazon.com/dp/B0D9WT1S2T?tag=kygohealthapp-20&th=1', slug: 'oura-ring-4', aff: true },
         why: 'The cheapest way into the Oura app and the same software as the Ring 5, including the metabolic suite and Natural Cycles pairing. Membership still applies.',
+        v: { evidence: 'Multiple peer-reviewed studies', apnea: 'Breathing disturbances only', women: 'Cycle Insights + Natural Cycles', usnow: 'Shipping now' },
         s: { nosub: 15, evidence: 100, apnea: 25, women: 100, usnow: 100 } },
       { key: 'gen3', brand: 'ringconn', name: 'RingConn Gen 3', short: 'Gen 3', hw: 349, sub: 0, addon: 0, battery: 14,
         buy: { label: 'Amazon', url: 'https://www.amazon.com/dp/B0GVSB66ZY?tag=kygohealthapp-20&th=1', slug: 'ringconn-gen3', aff: true },
         why: 'Everything unlocked at purchase, 14-day rated battery, the charging case in the box, plus sleep apnea pattern monitoring and nighttime vascular trends.',
+        v: { evidence: 'One feasibility study, n=230', apnea: 'Yes, apnea pattern monitoring', women: 'Full cycle + monthly report', usnow: 'Shipping now' },
         s: { nosub: 100, evidence: 55, apnea: 100, women: 85, usnow: 100 } },
       { key: 'gen2', brand: 'ringconn', name: 'RingConn Gen 2', short: 'Gen 2', hw: 299, sub: 0, addon: 0, battery: 12,
         buy: { label: 'Amazon', url: 'https://www.amazon.com/dp/B0DG2S6GC1?tag=kygohealthapp-20&th=1', slug: 'ringconn-gen2', aff: true },
         why: 'Apnea pattern monitoring, SpO2, HRV and cycle tracking at $299 with no subscription. The thinnest wall here at 2.0 mm.',
+        v: { evidence: 'One feasibility study, n=230', apnea: 'Yes, apnea pattern monitoring', women: 'Full cycle + monthly report', usnow: 'Shipping now' },
         s: { nosub: 100, evidence: 55, apnea: 100, women: 85, usnow: 100 } },
       { key: 'gen2air', brand: 'ringconn', name: 'RingConn Gen 2 Air', short: 'Gen 2 Air', hw: 199, sub: 0, addon: 0, battery: 10,
         buy: { label: 'Amazon', url: 'https://www.amazon.com/dp/B0DWJR7F6T?tag=kygohealthapp-20&th=1', slug: 'ringconn-gen2-air', aff: true },
         why: 'The lowest-cost ring in this comparison at $199 flat. It drops apnea monitoring and swaps titanium for stainless steel, but keeps the core sensing.',
+        v: { evidence: 'One feasibility study, n=230', apnea: 'Not on this model', women: 'Full cycle + monthly report', usnow: 'Shipping now' },
         s: { nosub: 100, evidence: 55, apnea: 0, women: 85, usnow: 100 } },
       { key: 'uhpro', brand: 'ultrahuman', name: 'Ultrahuman Ring PRO', short: 'Ring PRO', hw: 479, sub: 0, addon: 133, battery: 15,
         buy: { label: 'ultrahuman.com', url: 'https://www.ultrahuman.com/us/ring-pro/buy/', slug: 'ultrahuman-ring-pro', aff: false },
         why: 'The longest rated battery here (15 days, up to 45 with the case) and the widest first-party ecosystem: CGM, blood panels, a home sleep monitor. It is still a US pre-order.',
+        v: { evidence: 'In-house only, largest n=6', apnea: 'Not claimed', women: 'Free plug + paid Pro tier', usnow: 'US pre-order, Sept 15' },
         s: { nosub: 80, evidence: 25, apnea: 0, women: 90, usnow: 40 } },
       { key: 'uhair', brand: 'ultrahuman', name: 'Ultrahuman Ring AIR', short: 'Ring AIR', hw: 349, sub: 0, addon: 133, battery: 6,
         buy: { label: 'ultrahuman.com', url: 'https://www.ultrahuman.com/global/ring/buy/', slug: 'ultrahuman-ring-air', aff: false },
         why: 'The lightest ring here at 2.4 g and the same software as the PRO, but it cannot be sold or shipped to a US address under the ITC exclusion order.',
+        v: { evidence: 'In-house only, largest n=6', apnea: 'Not claimed', women: 'Free plug + paid Pro tier', usnow: 'Cannot ship to the US' },
         s: { nosub: 80, evidence: 25, apnea: 0, women: 90, usnow: 0 } },
       { key: 'cudisc', brand: 'cudis', name: 'CUDIS 002 Classic', short: '002 Classic', hw: 349, sub: 0, addon: 0, battery: 10,
         buy: { label: 'cudis.xyz', url: 'https://www.cudis.xyz/products/cudis-002-classic-ring', slug: 'cudis-002-classic', aff: false },
         why: 'No subscription, a 10-day battery that reviewers beat, and the strongest sleep agreement of the four brands in one hands-on test. It has no temperature sensor and no published validation.',
+        v: { evidence: 'None published', apnea: 'Not claimed', women: 'No temperature sensor', usnow: 'Shipping now' },
         s: { nosub: 100, evidence: 5, apnea: 0, women: 20, usnow: 100 } },
       { key: 'cudiss', brand: 'cudis', name: 'CUDIS 002 Sporty', short: '002 Sporty', hw: 399, sub: 0, addon: 0, battery: 10,
         buy: { label: 'cudis.xyz', url: 'https://www.cudis.xyz/products/cudis-002-sporty-ring', slug: 'cudis-002-sporty', aff: false },
         why: 'The Classic plus 12 interchangeable silicone bands and a Sports Mode, at $50 more. Same sensor set as the Classic, so the same missing temperature sensor and the same lack of any published accuracy data.',
+        v: { evidence: 'None published', apnea: 'Not claimed', women: 'No temperature sensor', usnow: 'Shipping now' },
         s: { nosub: 100, evidence: 5, apnea: 0, women: 20, usnow: 100 } },
     ];
   }
@@ -310,42 +318,40 @@ class KygoSmartRingComparison extends HTMLElement {
     return out;
   }
 
-  // Every model scored 0-100 on every criterion.
-  get _scores() {
-    const models = this._models;
+  // For the chosen criterion, every model with the value a reader actually
+  // wants to see (days, dollars, a feature count, a plain answer) plus the
+  // key it sorts on. Nothing is reduced to an out-of-100 score.
+  _criterionRows(key) {
     const depth = this._featureDepth;
-    const costs = models.map(m => this._cost(m, 3, false));
-    const lo = Math.min(...costs), hi = Math.max(...costs);
-    const maxBatt = Math.max(...models.map(m => m.battery));
-    const out = {};
-    models.forEach((m, i) => {
-      out[m.key] = {
-        cost: Math.round(100 - 75 * (costs[i] - lo) / (hi - lo)),
-        battery: Math.round(100 * m.battery / maxBatt),
-        depth: depth[m.brand],
-        nosub: m.s.nosub,
-        evidence: m.s.evidence,
-        apnea: m.s.apnea,
-        women: m.s.women,
-        usnow: m.s.usnow,
-      };
+    const totals = this._featureTotals;
+    const rows = this._models.map(m => {
+      let display, sort;
+      switch (key) {
+        case 'cost': {
+          const c = this._cost(m, 3, false);
+          display = `${this._fmt(c)} over 3 years`;
+          sort = -c;
+          break;
+        }
+        case 'nosub':
+          display = m.sub ? `$${m.sub.toFixed(2)}/yr required` : (m.addon ? 'Free, paid add-ons offered' : 'No subscription, ever');
+          sort = m.s.nosub;
+          break;
+        case 'battery':
+          display = `${m.battery} days rated`;
+          sort = m.battery;
+          break;
+        case 'depth':
+          display = `${totals[m.brand]} of ${totals.total} features`;
+          sort = depth[m.brand];
+          break;
+        default:
+          display = m.v[key];
+          sort = m.s[key];
+      }
+      return { m, display, sort };
     });
-    return out;
-  }
-
-  // Rank every model against the switched-on priorities (all eight when the
-  // reader has picked none).
-  get _ranked() {
-    const scores = this._scores;
-    if (!this._priorities.size) return [];
-    const keys = [...this._priorities];
-    return this._models
-      .map(m => {
-        const per = keys.map(k => ({ key: k, val: scores[m.key][k] }));
-        const total = Math.round(per.reduce((a, b) => a + b.val, 0) / per.length);
-        return { m, total, per, leads: per.filter(p => p.val >= 80).map(p => p.key) };
-      })
-      .sort((a, b) => b.total - a.total || a.m.hw - b.m.hw);
+    return rows.sort((a, b) => b.sort - a.sort || a.m.hw - b.m.hw);
   }
 
   // -- Hero stats (computed, never typed) --------------------------------
@@ -730,8 +736,8 @@ class KygoSmartRingComparison extends HTMLElement {
   _appCta() {
     return {
       slug: 'smart-ring-comparison',
-      headline: `Your ring shows the number. <span>Kygo shows the cause.</span>`,
-      sub: `Every ring on this page can tell you your HRV dropped. None of them know what you ate, drank or trained that day. Kygo connects your ring to your food and workouts, then shows you which habits actually move your sleep and recovery.`
+      headline: `Your ring shows the number. <span>Kygo shows why.</span>`,
+      sub: `Any ring here can tell you your HRV dropped. None can tell you why. Kygo links your ring data to what you ate and how you trained, so you can see what actually moved it.`
     };
   }
   _renderAppCta(bg) {
@@ -866,9 +872,9 @@ class KygoSmartRingComparison extends HTMLElement {
                   { n: 'Oura', c: ft.oura, g: true },
                   { n: 'Ultrahuman', c: ft.ultrahuman, g: true },
                   { n: 'RingConn', c: ft.ringconn, g: true },
-                  { n: 'CUDIS', c: ft.cudis, g: false }
+                  { n: 'CUDIS', c: ft.cudis, g: true }
                 ].map(b => `
-                  <div class="hv-bar${b.g ? '' : ' hv-mut'}">
+                  <div class="hv-bar">
                     <span class="hv-lbl">${b.n}</span>
                     <span class="hv-track"><span style="width:${Math.round(100 * b.c / ft.total)}%"></span></span>
                     <span class="hv-val">${b.c}</span>
@@ -1078,45 +1084,33 @@ class KygoSmartRingComparison extends HTMLElement {
   // -- Ring finder -------------------------------------------------------
 
   _renderFinder() {
-    const crit = this._criteria;
-    const active = this._priorities;
-    const chips = crit.map(c => `
-      <button type="button" class="fchip${active.has(c.key) ? ' on' : ''}" data-crit="${c.key}" aria-pressed="${active.has(c.key)}">
+    const active = this._priority;
+    const chips = this._criteria.map(c => `
+      <button type="button" class="fchip${active === c.key ? ' on' : ''}" data-crit="${c.key}" aria-pressed="${active === c.key}">
         ${this._icon(c.icon)}<span>${c.label}</span>
       </button>
     `).join('');
-    const state = active.size
-      ? `${active.size} ${active.size === 1 ? 'priority' : 'priorities'} on`
-      : 'Nothing selected';
+    const label = active ? this._criteria.find(c => c.key === active).label : '';
     return `
       <div class="finder-controls">
         <div class="finder-head">
-          <span class="finder-label">What matters to you?</span>
-          <span class="finder-state">${state}${active.size ? ` · <button type="button" class="finder-clear" data-crit-clear>Reset</button>` : ''}</span>
+          <span class="finder-label">What matters most to you?</span>
+          <span class="finder-state">${active ? `Ranked by ${label.toLowerCase()} · <button type="button" class="finder-clear" data-crit-clear>Reset</button>` : 'Pick one'}</span>
         </div>
-        <div class="fchips" role="group" aria-label="Ring finder priorities">${chips}</div>
+        <div class="fchips" role="group" aria-label="Ring finder priority">${chips}</div>
       </div>
       <div class="finder-out">${this._renderFinderResults()}</div>
-      <p class="finder-note">Cost, battery and feature depth are computed straight from the tables below, so they can never disagree with them. Feature depth is the share of the ${this._featureTotals.total} tracked features a brand publishes, which measures how much a brand claims, not how well it works. The other five are our reading of the published record: no subscription counts Ultrahuman at 80 because ring data is free but AFib and ovulation confirmation are paid; independent validation scores only peer-reviewed work the brand did not run; buyable in the US scores the Ring PRO at 40 for pre-order and the Ring AIR at 0 because it cannot legally ship here. There is deliberately no default ranking: these eight are not the same kind of thing.</p>
+      <p class="finder-note">Cost, subscription, battery and feature count are read straight from the tables below, so they can never disagree with them. Feature count is how many of the ${this._featureTotals.total} tracked features a brand publishes, which measures how much it claims, not how well it works. Independent validation counts only peer-reviewed work the brand did not run itself. One priority at a time, on purpose: these eight are not the same kind of thing, so blending them would invent a winner rather than find one.</p>
     `;
   }
 
   _renderFinderResults() {
-    const ranked = this._ranked;
-    // Nothing chosen: show the field in a neutral order, priced low to high,
-    // and say plainly that no ranking has been applied.
-    if (!ranked.length) return this._renderFinderEmpty();
-
-    const top = ranked.slice(0, 3);
-    const rest = ranked.slice(3);
-    const critName = {};
-    this._criteria.forEach(c => { critName[c.key] = c.label.toLowerCase(); });
+    if (!this._priority) return this._renderFinderEmpty();
+    const rows = this._criterionRows(this._priority);
+    const top = rows.slice(0, 3);
+    const rest = rows.slice(3);
     const cards = top.map((r, i) => {
       const b = this._brands[r.m.brand];
-      const leads = r.leads.map(k => critName[k]);
-      const leadLine = leads.length
-        ? `<div class="fr-leads">${this._icon('check')}<span>Leads on ${leads.slice(0, 3).join(', ')}${leads.length > 3 ? ` and ${leads.length - 3} more` : ''}</span></div>`
-        : `<div class="fr-leads fr-leads-none">${this._icon('dash')}<span>No standout score against these priorities</span></div>`;
       const rel = r.m.buy.aff ? 'noopener sponsored' : 'noopener';
       return `
         <div class="fr-card${i === 0 ? ' fr-win' : ''}">
@@ -1128,12 +1122,8 @@ class KygoSmartRingComparison extends HTMLElement {
               <span class="fr-brand">${b.name}</span>
             </div>
           </div>
-          <div class="fr-score">
-            <span class="fr-score-num">${r.total}</span>
-            <span class="fr-score-bar"><span style="width:${r.total}%"></span></span>
-          </div>
+          <div class="fr-value">${r.display}</div>
           <p class="fr-why">${r.m.why}</p>
-          ${leadLine}
           <div class="fr-foot">
             <span class="fr-price">${this._fmt(r.m.hw)}${r.m.sub ? ' + sub' : ''}</span>
             <a class="fr-buy" href="${r.m.buy.url}" target="_blank" rel="${rel}" data-track-position="ranking" data-track-label="${r.m.buy.slug}-finder">View on ${r.m.buy.label} ${this._icon('arrowRight')}</a>
@@ -1145,8 +1135,7 @@ class KygoSmartRingComparison extends HTMLElement {
         <span class="fr-row-rank">#${i + 4}</span>
         <span class="fr-row-logo">${this._brandMark(r.m.brand)}</span>
         <span class="fr-row-name">${r.m.name}</span>
-        <span class="fr-row-bar"><span style="width:${r.total}%"></span></span>
-        <span class="fr-row-num">${r.total}</span>
+        <span class="fr-row-value">${r.display}</span>
       </div>`).join('');
     return `
       <div class="fr-grid">${cards}</div>
@@ -1169,7 +1158,7 @@ class KygoSmartRingComparison extends HTMLElement {
     return `
       <div class="fr-empty">
         <span class="fr-empty-ico">${this._icon('sparkles')}</span>
-        <p><strong>Choose a priority above to rank all ${this._models.length}.</strong> We do not average the eight into a default winner, because they are not the same kind of thing.</p>
+        <p><strong>Pick one priority above to rank all ${this._models.length}.</strong> One at a time, so you see the real figure rather than a blended score.</p>
       </div>
       <div class="fr-rest">
         <div class="fr-rest-head">All ${this._models.length} models, priced low to high. No ranking applied.</div>
@@ -1321,7 +1310,7 @@ class KygoSmartRingComparison extends HTMLElement {
 
     const seg = this._models.map(m => {
       const i = this._calcPick.indexOf(m.key);
-      return `<button data-seg-val="${m.key}" aria-pressed="${i > -1}" class="${i > -1 ? 'active' : ''}">${i > -1 ? `<span class="pick-n">${i + 1}</span>` : ''}${m.name} <span class="px">${fmt(m.hw)}${m.sub ? ' + sub' : ''}</span></button>`;
+      return `<button data-seg-val="${m.key}" aria-pressed="${i > -1}" class="${i > -1 ? 'active' : ''}"><span class="seg-name">${i > -1 ? `<span class="pick-n">${i + 1}</span>` : ''}${m.name}</span><span class="px">${fmt(m.hw)}${m.sub ? ' + sub' : ''}</span></button>`;
     }).join('');
 
     const gap = aTotal - bTotal;
@@ -1586,14 +1575,14 @@ class KygoSmartRingComparison extends HTMLElement {
     const finder = root.querySelector('[data-finder]');
     finder.addEventListener('click', (e) => {
       if (e.target.closest('[data-crit-clear]')) {
-        this._priorities.clear();
+        this._priority = null;
         finder.innerHTML = this._renderFinder();
         return;
       }
       const chip = e.target.closest('button[data-crit]');
       if (!chip) return;
-      const k = chip.dataset.crit;
-      if (this._priorities.has(k)) this._priorities.delete(k); else this._priorities.add(k);
+      // Clicking the active chip clears it; anything else replaces it.
+      this._priority = this._priority === chip.dataset.crit ? null : chip.dataset.crit;
       finder.innerHTML = this._renderFinder();
     });
 
@@ -2056,8 +2045,6 @@ class KygoSmartRingComparison extends HTMLElement {
       .hv-track { height: 10px; border-radius: 6px; background: var(--bg-raised); overflow: hidden; }
       .hv-track span { display: block; height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--kygo-green-dark), #4ADE80); }
       .hv-val { font-family: var(--font-numeric); font-weight: 700; font-size: 14px; color: var(--fg-1); text-align: right; }
-      .hv-mut .hv-lbl, .hv-mut .hv-val { color: var(--fg-3); }
-      .hv-mut .hv-track span { background: linear-gradient(90deg, #94A3B8, #CBD5E1); }
       /* Brand mark beside the name in the quick-answer cards */
       .cmp-block h3 { display: flex; align-items: center; gap: 9px; }
       .cmp-logo { flex: none; width: 26px; height: 26px; border-radius: 7px; background: #fff; border: 1.5px solid var(--border-subtle); display: inline-flex; align-items: center; justify-content: center; }
@@ -2071,11 +2058,13 @@ class KygoSmartRingComparison extends HTMLElement {
       .finder-label { font-family: var(--font-display); font-weight: 600; font-size: 15px; color: var(--fg-1); }
       .finder-state { font-size: 12.5px; color: var(--fg-3); font-weight: 500; }
       .finder-clear { border: 0; background: none; padding: 0; font-family: var(--font-body); font-size: 12.5px; font-weight: 600; color: var(--kygo-green-dark); cursor: pointer; text-decoration: underline; }
-      /* Eight chips: 2 x 4 on a phone, 4 x 2 on desktop, no orphan row */
-      .fchips { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-      @media (min-width: 720px) { .fchips { grid-template-columns: repeat(4, 1fr); } }
-      .fchip { display: flex; align-items: center; gap: 8px; padding: 11px 14px; text-align: left; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-2); font-family: var(--font-body); font-weight: 600; font-size: 13px; cursor: pointer; transition: all .15s ease; }
-      .fchip .ico { width: 15px; height: 15px; color: var(--fg-3); }
+      /* One column on a phone, two on a small tablet, four on desktop */
+      .fchips { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 560px) { .fchips { grid-template-columns: repeat(2, 1fr); } }
+      @media (min-width: 900px) { .fchips { grid-template-columns: repeat(4, 1fr); } }
+      .fchip { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 11px 14px; text-align: left; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-2); font-family: var(--font-body); font-weight: 600; font-size: 13px; cursor: pointer; transition: all .15s ease; }
+      .fchip .ico { flex: none; width: 15px; height: 15px; color: var(--fg-3); }
+      .fchip span { min-width: 0; }
       .fchip:hover { border-color: var(--kygo-green); }
       .fchip.on { background: var(--kygo-dark); border-color: var(--kygo-dark); color: #fff; }
       .fchip.on .ico { color: var(--kygo-green); }
@@ -2092,17 +2081,9 @@ class KygoSmartRingComparison extends HTMLElement {
       .fr-logo img { width: 26px; height: 26px; object-fit: contain; }
       .fr-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.2; margin: 0; color: var(--fg-1); }
       .fr-brand { font-size: 12px; color: var(--fg-3); }
-      .fr-score { display: flex; align-items: center; gap: 10px; }
-      .fr-score-num { font-family: var(--font-numeric); font-weight: 700; font-size: 24px; line-height: 1; color: var(--fg-1); min-width: 38px; }
-      .fr-card.fr-win .fr-score-num { color: var(--kygo-green-dark); }
-      .fr-score-bar { flex: 1; height: 8px; border-radius: 5px; background: var(--bg-raised); overflow: hidden; }
-      .fr-score-bar span { display: block; height: 100%; border-radius: 5px; background: var(--kygo-green); }
+      .fr-value { font-family: var(--font-display); font-weight: 700; font-size: clamp(17px, 2.1vw, 21px); line-height: 1.2; color: var(--kygo-green-dark); }
       .fr-why { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--fg-2); }
-      .fr-leads { display: flex; align-items: flex-start; gap: 8px; font-size: 12.5px; line-height: 1.45; color: var(--kygo-green-dark); font-weight: 600; }
-      .fr-leads .ico { flex: none; width: 16px; height: 16px; border-radius: 5px; background: var(--kygo-green-light); display: inline-flex; align-items: center; justify-content: center; margin-top: 1px; }
-      .fr-leads .ico svg { width: 11px; height: 11px; }
-      .fr-leads-none { color: var(--fg-3); }
-      .fr-leads-none .ico { background: var(--bg-raised); color: var(--fg-3); }
+
       .fr-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
       .fr-price { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--fg-1); }
       .fr-buy { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-body); font-size: 12.5px; font-weight: 600; color: var(--kygo-green-dark); }
@@ -2116,16 +2097,14 @@ class KygoSmartRingComparison extends HTMLElement {
       .fr-empty strong { color: var(--fg-1); font-weight: 600; }
       .fr-rest { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 6px 18px 14px; box-shadow: var(--shadow-md); }
       .fr-rest-head { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--fg-3); padding: 14px 0 10px; }
-      .fr-row { display: grid; grid-template-columns: 30px 26px minmax(0,1fr) 34px; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--border-subtle); }
-      @media (min-width: 560px) { .fr-row { grid-template-columns: 30px 26px minmax(0,1fr) 110px 34px; } }
+      .fr-row { display: grid; grid-template-columns: 30px 26px minmax(0,1fr); align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--border-subtle); }
+      @media (min-width: 560px) { .fr-row { grid-template-columns: 30px 26px minmax(0,1fr) auto; } }
       .fr-row-rank { font-family: var(--font-numeric); font-size: 12px; font-weight: 600; color: var(--fg-3); }
       .fr-row-logo { height: 22px; display: flex; align-items: center; justify-content: center; }
       .fr-row-logo img { width: 22px; height: 22px; object-fit: contain; display: block; }
       .fr-row-name { font-size: 13.5px; font-weight: 600; color: var(--fg-1); overflow-wrap: anywhere; }
-      .fr-row-bar { display: none; height: 7px; border-radius: 4px; background: var(--bg-raised); overflow: hidden; }
-      .fr-row-bar span { display: block; height: 100%; border-radius: 4px; background: var(--fg-3); }
-      .fr-row-num { font-family: var(--font-numeric); font-size: 13px; font-weight: 600; color: var(--fg-2); text-align: right; }
-      @media (min-width: 560px) { .fr-row-bar { display: block; } }
+      .fr-row-value { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--fg-2); text-align: right; }
+      @media (max-width: 559px) { .fr-row-value { grid-column: 2 / -1; text-align: left; padding-top: 1px; } }
       .fr-row-plain { grid-template-columns: 26px minmax(0,1fr) auto; }
       @media (min-width: 560px) { .fr-row-plain { grid-template-columns: 26px minmax(0,1fr) 110px 130px; } }
       .fr-row-price { font-family: var(--font-numeric); font-size: 13px; font-weight: 600; color: var(--fg-1); text-align: right; white-space: nowrap; }
@@ -2154,8 +2133,9 @@ class KygoSmartRingComparison extends HTMLElement {
       /* Calculator: a wrapping segmented control for nine models, plus the
          PowerPlugs toggle */
       .seg.seg-wrap { flex-wrap: wrap; }
-      .seg.seg-wrap button { flex: 1 1 30%; min-width: 96px; position: relative; }
-      .seg button .pick-n { position: absolute; top: 4px; left: 5px; width: 15px; height: 15px; border-radius: 5px; background: var(--kygo-green); color: #fff; font-family: var(--font-numeric); font-size: 9.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+      .seg.seg-wrap button { flex: 1 1 30%; min-width: 96px; }
+      .seg .seg-name { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px; }
+      .seg .pick-n { flex: none; width: 15px; height: 15px; border-radius: 5px; background: var(--kygo-green); color: #fff; font-family: var(--font-numeric); font-size: 9.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
       .calc-toggle { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-2); font-family: var(--font-body); font-size: 13px; font-weight: 500; line-height: 1.4; cursor: pointer; transition: all .15s ease; }
       .calc-toggle:hover { border-color: var(--kygo-green); }
       .calc-toggle.on { border-color: var(--kygo-green); background: rgba(34,197,94,0.06); color: var(--fg-1); }
