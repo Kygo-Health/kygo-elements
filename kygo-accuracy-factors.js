@@ -129,6 +129,9 @@ class KygoAccuracyFactors extends HTMLElement {
       mfrwhoop:  { url: 'https://support.whoop.com/hc/en-us/articles/360019624353-Where-should-I-wear-my-WHOOP-Strap-', label: 'WHOOP: about an inch above the wrist bone, snug but not tight, with hairy arms explicitly called fine (manufacturer guidance)' },
       mfrsams:   { url: 'https://www.samsung.com/us/support/answer/ANS10003311/', label: 'Samsung: body hair, dirt and other obstructions between the band and your wrist stop the light reflecting evenly (manufacturer guidance)' },
       mfroura:   { url: 'https://help.ouraring.com/sizing-the-new-oura-ring/tips-for-finding-the-right-oura-ring-size', label: 'Oura: index finger, sensor bumps on the palm side, wear the sizer a full day and night, and size down if you are between sizes (manufacturer guidance)' },
+      mfrsamr:   { url: 'https://www.samsung.com/ae/support/mobile-devices/important-precautions-for-using-the-galaxy-ring-and-charging-case/', label: 'Galaxy Ring precautions: tattoos, cold, non-dominant hand (Samsung support)' },
+      mfrultra:  { url: 'https://www.ultrahuman.com/blog/answering-faqs-on-the-ring-sizing-kit/', label: 'Ultrahuman ring finger and fit guidance (Ultrahuman)' },
+      jeong:     { url: 'https://www.e-pan.org/journal/view.php?doi=10.20463%2Fpan.2026.0032', label: 'Four devices vs chest strap, n=37; body hair, tightness and wrist circumference listed as uncontrolled (Jeong 2026, Phys Act Nutr)' },
       techn:     { url: 'https://www.mdpi.com/2227-7080/9/3/46', label: 'Best accuracy and zero data removal in the same device: retention is an engineering choice (Technologies 2021)' }
     };
   }
@@ -639,8 +642,8 @@ class KygoAccuracyFactors extends HTMLElement {
       'Sleep context and staging': [S.chinoy, S.six, S.imbal, S.insom, S.homelab, S.cosleep, S.shift],
       'Ring versus wrist head-to-heads': [S.robbins, S.miller, S.dial, S.ourastep],
       'Settings, data completeness and the pipeline': [S.ourahrv, S.missnights, S.pipeline, S.fitabase, S.applelpm, S.techn],
-      'Manufacturer guidance, labelled as such': [S.mfrapple, S.mfrgoogle, S.mfrgarmin, S.mfrpolar, S.mfrwhoop, S.mfrsams, S.mfroura],
-      'Device generations and evidence currency': [S.lambe]
+      'Manufacturer guidance, labelled as such': [S.mfrapple, S.mfrgoogle, S.mfrgarmin, S.mfrpolar, S.mfrwhoop, S.mfrsams, S.mfrsamr, S.mfroura, S.mfrultra],
+      'Device generations and evidence currency': [S.lambe, S.jeong]
     };
   }
 
