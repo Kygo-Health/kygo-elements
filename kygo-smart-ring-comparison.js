@@ -1794,7 +1794,7 @@ class KygoSmartRingComparison extends HTMLElement {
       .nav-cta-group .nav-store-ios:hover { background:var(--kygo-green-dark); color:#fff; }
       .nav-cta-group .nav-store-android { background:#fff; color:var(--kygo-green-dark); border:1.5px solid var(--border-subtle); }
       .nav-cta-group .nav-store-android:hover { border-color:var(--kygo-green); color:var(--kygo-green-dark); }
-      @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
+      @media (max-width:360px){ .nav-cta-group .nav-store-btn span:not(.ico) { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
       @media (max-width: 480px) { .nav-brand span { display: none; } }
 
       /* Buttons */
