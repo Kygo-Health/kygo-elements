@@ -4,7 +4,7 @@
  *
  * v2. Organised by the thing the reader is worried about or can do, not by
  * metric: things people ask about, things that help, things that quietly hurt.
- * One card shape, one search box, and every count on the page derived from the
+ * One card shape, one control, and every count on the page derived from the
  * card arrays at render time rather than typed. Every figure stays attached to
  * the criterion it was measured against, and manufacturer guidance is always
  * labelled as guidance rather than presented as a finding.
@@ -26,7 +26,6 @@ class KygoAccuracyFactors extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._observer = null;
-    this._query = '';
     this._devFilter = 'all';     // all | watch | ring
     this._expandedKey = null;
     this._eventsBound = false;
@@ -163,14 +162,16 @@ class KygoAccuracyFactors extends HTMLElement {
       gap:   { label: 'Untested', cls: 'b-gap', icon: 'flask' },
       mfr:   { label: 'Brand guidance', cls: 'b-mfr', icon: 'info' },
       ev:    { label: 'Evidence', cls: 'b-ev', icon: '' },
-      agree: { label: 'Brands agree', cls: 'b-agree', icon: 'check' }
+      agree: { label: 'Brands agree', cls: 'b-agree', icon: 'check' },
+      help:  { label: 'Helps', cls: 'b-help', icon: 'arrowUp' },
+      hurt:  { label: 'Hurts', cls: 'b-hurt', icon: 'arrowDown' }
     })[t] || { label: t, cls: 'b-gap', icon: '' };
   }
 
-  // Section A. What people actually type into a search box.
+  // Section A. The questions people actually ask, grouped by the verdict.
   get _asked() {
     return [
-      { key: 'hair', title: 'Hairy arms', badges: [{ t: 'no' }], dev: ['watch'], chips: ['HR'],
+      { key: 'hair', grp: 'no', title: 'Hairy arms', badges: [{ t: 'no' }], dev: ['watch'], chips: ['HR'],
         num: 'p = 0.29',
         one: 'The one study that graded arm hair found no difference in accuracy. Shaving has never been tested on its own.',
         study: 'Cardiac rehab patients, n=30, four-point photographic hair scale, Fitbit against a chest ECG. Hair density did not differ between the patients whose readings were accurate and the patients whose readings were not. Shaving was bundled with cleaning the sensor and taping the watch down, and that bundle helped 3 of 10. Vermunicht 2025.',
@@ -178,7 +179,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Nothing. If your readings are poor, fix position and tightness first, because shaving is unproven.',
         kw: 'hair hairy shave shaving fur arm hair razor', src: 'verm' },
 
-      { key: 'tattoo', title: 'Tattoos', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
+      { key: 'tattoo', grp: 'yes', title: 'Tattoos', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
         num: '36% dropped out',
         one: 'Not a small drift: over ink the sensor often returns nothing at all.',
         study: 'n=25, tattooed skin against clear skin on the same arm, optical sensor against a chest ECG. Resting error 22.9% over ink against 2.9% on clear skin, and 9 of 25 people had total dropout. Ink darkness and tattoo age did not predict failure. Navalta and Bunn 2025.',
@@ -186,7 +187,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Move the sensor to clear skin: higher up the forearm, the other wrist, or an armband.',
         kw: 'tattoo tattoos ink inked sleeve', src: 'tattoo' },
 
-      { key: 'skin', title: 'Skin tone', badges: [{ t: 'no', label: 'Does not matter on average' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
+      { key: 'skin', grp: 'no', title: 'Skin tone', badges: [{ t: 'no', label: 'Does not matter on average' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
         num: 'Bias: no difference',
         one: 'Average error is the same across skin tones. The spread is wider, and the effect shows up as missing readings rather than wrong ones.',
         study: 'Null in the best-powered studies: n=53 with a balanced Fitzpatrick sample, and n=28 measured with an objective colorimeter rather than a self-report scale. Pooled bias was null in every stratum, but the limits of agreement were 2.2 times wider in dark skin, and dark-skin participants supplied a disproportionate share of the missing data for 2 of the 3 devices tested.',
@@ -194,7 +195,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Check completeness, not just the average. Gaps in the graph are the symptom here, not a shifted number.',
         kw: 'skin tone dark melanin race pigment fitzpatrick', src: 'meta3' },
 
-      { key: 'cold', title: 'Cold hands', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'SpO2'],
+      { key: 'cold', grp: 'yes', title: 'Cold hands', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'SpO2'],
         num: 'Signal -41%',
         one: 'Cold cuts the optical signal roughly in half, and the device drops readings rather than guessing.',
         study: 'Ice over the forearm cut the raw optical signal by 41%, n=21. Warming the wrist for 15 minutes took blood-oxygen error from 4.1 points to zero, independent of skin tone, n=46. In a 10 C chamber the average looked fine while the ability to track change collapsed, with one ring going from 0.78 to 0.32 on concordance.',
@@ -202,7 +203,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Warm up before you trust a workout reading, and expect gaps on cold nights and winter runs.',
         kw: 'cold winter freezing perfusion cold hands chilly', src: 'cold' },
 
-      { key: 'lotion', title: 'Sweat, lotion and sunscreen', badges: [{ t: 'mfr' }], dev: ['watch', 'ring'], chips: ['HR'],
+      { key: 'lotion', grp: 'mfr', title: 'Sweat, lotion and sunscreen', badges: [{ t: 'mfr' }], dev: ['watch', 'ring'], chips: ['HR'],
         num: '0 studies',
         one: 'Every brand says keep the sensor clean and dry. No study has ever tested lotion or sunscreen at a wearable site.',
         study: 'Lotion, sunscreen and moisturiser have zero peer-reviewed tests at a wearable site as of 2026. Sweat has one: an n=14 prototype study found 3 to 8% changes to the shape of the signal and heart-rate error under 0.5 bpm.',
@@ -210,7 +211,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Wipe the sensor. Treat the lotion advice as a manufacturer instruction, not a research finding.',
         kw: 'sweat lotion sunscreen moisturiser moisturizer cream dirty clean wipe', src: 'sweat' },
 
-      { key: 'wrist', title: 'Which wrist', badges: [{ t: 'no', label: 'No for HR and sleep' }, { t: 'yes', label: 'Yes for steps' }], dev: ['watch'], chips: ['HR', 'Sleep', 'Steps'],
+      { key: 'wrist', grp: 'yes', title: 'Which wrist', badges: [{ t: 'no', label: 'No for HR and sleep' }, { t: 'yes', label: 'Yes for steps' }], dev: ['watch'], chips: ['HR', 'Sleep', 'Steps'],
         num: '+1,253 steps',
         one: 'Heart rate and sleep do not care which wrist. Step counts do, by about 1,250 a day.',
         study: 'Both wrists worn at once: heart rate differed by 0.37 bpm, n=16; sleep was null on group means across 65 nights, n=13; the dominant wrist logged 1,253 more steps a day, n=12. Telling the app the wrong wrist moves activity by 22 to 26%.',
@@ -218,7 +219,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Pick one wrist, stay on it, and set it correctly in the app.',
         kw: 'wrist dominant left right hand which wrist', src: 'park' },
 
-      { key: 'tight', title: 'Too tight or too loose', badges: [{ t: 'yes' }], dev: ['watch'], chips: ['HR', 'HRV'],
+      { key: 'tight', grp: 'yes', title: 'Too tight or too loose', badges: [{ t: 'yes' }], dev: ['watch'], chips: ['HR', 'HRV'],
         num: '23 to 47% better',
         one: 'Loose fails at every intensity. Too tight loses part of the pulse wave. The right pressure is personal.',
         study: 'A custom wrist rig with a load cell, n=17: tuning the pressure per person beat a universal setting by 23 to 47%, and loose (12 mmHg) failed at every intensity. A second rig, n=27, showed that excess pressure flattens the waveform. No study has tested a consumer strap at graded notches.',
@@ -226,7 +227,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'One notch tighter for workouts, back off for sleep.',
         kw: 'tight loose strap band snug pressure notch fit', src: 'scard' },
 
-      { key: 'two', title: 'Two devices at once', badges: [{ t: 'no' }], dev: ['watch', 'ring'], chips: ['HR'],
+      { key: 'two', grp: 'no', title: 'Two devices at once', badges: [{ t: 'no' }], dev: ['watch', 'ring'], chips: ['HR'],
         num: '0 missing values',
         one: 'Four optical devices worn together did not interfere with each other.',
         study: 'n=16, two armbands and two watches worn at once against a chest strap: biases ran from -0.05 to +2.93 bpm with no missing data. All Polar devices, and the paper carries no funding statement.',
@@ -234,7 +235,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Wear both if you want to compare them.',
         kw: 'two both stack multiple devices interference', src: 'jmirsite' },
 
-      { key: 'bed', title: 'Sharing a bed', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['Sleep'],
+      { key: 'bed', grp: 'gap', title: 'Sharing a bed', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['Sleep'],
         num: '+21% movement',
         one: 'A partner raises your limb movements 21% in a sleep lab. Nobody has checked what that does to a tracker.',
         study: '12 couples, lab sleep studies, 4 nights: 61.5 limb movements a night when sharing a bed against 50.9 when not. Bed-partner status is not reported in any consumer-device validation study. Predicted direction is more wake scored, and that is a prediction rather than a measurement.',
@@ -242,7 +243,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Expect more awake minutes on shared nights, and compare like with like.',
         kw: 'partner bed couple pet dog cat cosleep sharing', src: 'cosleep' },
 
-      { key: 'wristsize', title: 'Small or large wrists', badges: [{ t: 'gap' }], dev: ['watch'], chips: ['HR'],
+      { key: 'wristsize', grp: 'gap', title: 'Small or large wrists', badges: [{ t: 'gap' }], dev: ['watch'], chips: ['HR'],
         num: 'No data',
         one: 'Nobody has tested wrist size with current hardware.',
         study: 'One 2019 cardiac-rehab study found that wrist circumference did not matter. The 2026 studies list it as an uncontrolled variable rather than testing it.',
@@ -250,7 +251,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Focus on position and tightness, which are tested.',
         kw: 'small wrist size circumference thin big bony skinny', src: 'shch' },
 
-      { key: 'ringfit', title: 'Ring finger and fit', badges: [{ t: 'yes', label: 'Matters: rotation' }, { t: 'gap', label: 'Untested: which finger' }], dev: ['ring'], chips: ['HR', 'HRV'],
+      { key: 'ringfit', grp: 'yes', title: 'Ring finger and fit', badges: [{ t: 'yes', label: 'Matters: rotation' }, { t: 'gap', label: 'Untested: which finger' }], dev: ['ring'], chips: ['HR', 'HRV'],
         num: '-7.86 dB at 30°',
         one: 'A ring turned 30 degrees loses most of its signal. Which finger is best has never been tested.',
         study: 'n=10, 432 signal sets: at 30 degrees from the optimal position signal-to-noise falls to -7.86 dB, and doubling the LED power cannot recover it. Left against right hand: reliability 94.8%, n=96. Finger choice and tightness: no study.',
@@ -258,7 +259,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Sensors on the palm side, snug enough that it cannot spin overnight.',
         kw: 'ring finger rotate rotation size oura loose ring smart ring palm', src: 'rot' },
 
-      { key: 'age', title: 'An old device', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'Sleep', 'Steps'],
+      { key: 'age', grp: 'gap', title: 'An old device', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'Sleep', 'Steps'],
         num: '0 of 249',
         one: 'Device age has never been studied as a factor, across 249 validation studies.',
         study: 'The umbrella review of 249 validation studies and 430,465 participants does not analyse device age. Firmware changes do move results: one Fitbit algorithm update took sleep-staging accuracy from 71% to 77% on the same hardware.',
@@ -333,28 +334,28 @@ class KygoAccuracyFactors extends HTMLElement {
   // Section C. Conditions the sensor or the model was never built for.
   get _hurt() {
     return [
-      { key: 'rowing', title: 'Rowing, elliptical arms, swimming', badges: [{ t: 'yes' }], dev: ['watch'], chips: ['HR'],
+      { key: 'rowing', title: 'Rowing, elliptical arms, swimming', badges: [], dev: ['watch'], chips: ['HR'],
         num: '4% to 30%',
         one: 'Any sport that grips or submerges the wrist beats every wrist sensor tested.',
         study: 'Rowing gave 13.4% error at the wrist against 3.8% walking on the same device. On an elliptical with arm levers, no wrist device reached acceptable agreement, n=50. Swimming: Garmin Venu Sq 4.05% dry and 29.95% wet, n=10.',
         todo: 'Use a chest strap or an armband for these, or read the session as a rough shape rather than a number.',
         kw: 'rowing rower elliptical swim swimming pool grip handrail', src: 'swim' },
 
-      { key: 'weights', title: 'Calories from a weights session', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['Calories'],
+      { key: 'weights', title: 'Calories from a weights session', badges: [], dev: ['watch', 'ring'], chips: ['Calories'],
         num: '+116%',
         one: 'Heart rate survives lifting. The calorie model does not.',
         study: 'n=62 against indirect calorimetry: heart rate correlated 0.96 to 0.97 during resistance training while energy expenditure read 116% high. Lee 2026, from the tables rather than the abstract.',
         todo: 'Halve it.',
         kw: 'weights lifting resistance calories gym strength energy', src: 'lee' },
 
-      { key: 'stairs', title: 'Stairs and slow walking', badges: [{ t: 'yes' }], dev: ['watch'], chips: ['Steps'],
+      { key: 'stairs', title: 'Stairs and slow walking', badges: [], dev: ['watch'], chips: ['Steps'],
         num: '40% vs 7%',
         one: 'Below about 4 km/h step error jumps from 7% to 40%. Stairs fail at every pace.',
         study: 'n=258 across 21 devices: 40 plus or minus 40% error at slow speeds against 7 plus or minus 16% at normal pace. On stairs, neither Fitbit tested met the 10% threshold in any condition, n=8.',
         todo: 'If you walk slowly, read the trend rather than the total, and do not expect stairs to be counted.',
         kw: 'stairs slow walking speed elderly shuffle pace', src: 'gait' },
 
-      { key: 'firstnight', title: 'Your first nights with a new device', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['Sleep'],
+      { key: 'firstnight', title: 'Your first nights with a new device', badges: [], dev: ['watch', 'ring'], chips: ['Sleep'],
         num: '7 nights',
         one: 'Everyone sleeps worse on night one, at home as much as in a lab. Judge it after a week.',
         study: 'First-night effect: sleep onset went from 20 to 14 minutes and total sleep rose 12 minutes by night two, n=45, with no home against lab difference, n=30. It takes about seven nights for a stable personal mean.',
@@ -368,7 +369,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'If a night or a day is blank, check whether a power-saving mode was on before you blame the sensor.',
         kw: 'battery low power saver power saving mode blank', src: 'applelpm' },
 
-      { key: 'heat', title: 'Heat', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR'],
+      { key: 'heat', title: 'Heat', badges: [], dev: ['watch', 'ring'], chips: ['HR'],
         num: '9.6 to 20.8 bpm',
         one: 'Heat hurt more than cold for every device that moved.',
         study: 'Ten devices in a 36 C chamber against a chest ECG, n=45: Fitbit Inspire 3 error more than doubled, from 9.6 to 20.8 bpm, and one ring rose 72%. The top devices barely moved.',
@@ -405,6 +406,8 @@ class KygoAccuracyFactors extends HTMLElement {
       droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>',
       arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
       search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>',
+      arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>',
+      arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>',
       chevDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>',
       externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
@@ -428,15 +431,29 @@ class KygoAccuracyFactors extends HTMLElement {
 
   get _sections() {
     return [
-      { key: 'asked', cards: this._asked, icon: 'info', eyebrow: 'Does this affect it?',
-        h2: 'Things people <em>ask about</em>.',
+      { key: 'asked', cards: this._asked, icon: 'info', dir: null, grouped: true,
+        eyebrow: 'Things people ask about',
+        h2: 'Does this affect <em>accuracy?</em>',
         lede: 'Tested, and here is what came back. Where a brand says something the studies never checked, the badge says so.' },
-      { key: 'help', cards: this._help, icon: 'check', eyebrow: 'Free fixes',
+      { key: 'help', cards: this._help, icon: 'check', dir: 'help', grouped: false,
+        eyebrow: 'Free fixes',
         h2: 'Things that <em>help</em>.',
         lede: 'Ranked by how much they moved the numbers. Most cost nothing.' },
-      { key: 'hurt', cards: this._hurt, icon: 'alert', eyebrow: 'Watch out',
+      { key: 'hurt', cards: this._hurt, icon: 'alert', dir: 'hurt', grouped: false,
+        eyebrow: 'Watch out',
         h2: 'Things that <em>quietly hurt</em>.',
         lede: 'Not wrong readings so much as readings taken in conditions the sensor or the model was never built for.' }
+    ];
+  }
+
+  // The four verdict groups inside "Does this affect accuracy?", in the order a
+  // reader wants them: the ones that move your numbers first.
+  get _groups() {
+    return [
+      { k: 'yes', label: 'Yes, it matters' },
+      { k: 'no', label: 'No, it does not' },
+      { k: 'gap', label: 'Nobody has tested it' },
+      { k: 'mfr', label: 'Only the brands have an answer' }
     ];
   }
 
@@ -448,20 +465,13 @@ class KygoAccuracyFactors extends HTMLElement {
     return Object.values(this._srcGroups).reduce((s, g) => s + g.length, 0);
   }
 
-  // One control: a text box, plus an optional watch or ring narrowing.
+  // One control: a watch or ring narrowing, in the hero so it reads as page-wide
+  // rather than as something that belongs to the section it sits in.
   _matches(card) {
-    if (this._devFilter !== 'all' && !card.dev.includes(this._devFilter)) return false;
-    const q = (this._query || '').trim().toLowerCase();
-    if (!q) return true;
-    const hay = [card.title, card.one, card.kw || '', (card.chips || []).join(' ')].join(' ').toLowerCase();
-    return q.split(/\s+/).every(term => hay.indexOf(term) !== -1);
+    return this._devFilter === 'all' || card.dev.includes(this._devFilter);
   }
 
-  _shownCount() {
-    return this._allCards.filter(c => this._matches(c)).length;
-  }
-
-  _renderControls() {
+  _renderDeviceFilter() {
     const devs = [
       { k: 'all', label: 'Everything' },
       { k: 'watch', label: 'Watch' },
@@ -469,44 +479,36 @@ class KygoAccuracyFactors extends HTMLElement {
     ].map(o => `<button class="chip ${this._devFilter === o.k ? 'active' : ''}" data-dev="${o.k}" aria-pressed="${this._devFilter === o.k}">${o.label}</button>`).join('');
 
     return `
-      <section class="controls-section section-bg-gray">
-        <div class="container">
-          <div class="filter-bar">
-            <div class="filter-search">
-              <span class="filter-search-ic" aria-hidden="true">${this._icon('search')}</span>
-              <input type="search" class="filter-input" data-q value="${(this._query || '').replace(/"/g, '&quot;')}"
-                     placeholder="What are you wondering about? (tattoos, hairy arms, cold hands...)"
-                     aria-label="Search everything on this page" autocomplete="off" />
-            </div>
-            <div class="chip-row" role="group" aria-label="Narrow to a watch or a ring">${devs}</div>
-          </div>
-          <p class="filter-count" data-count>${this._countLine()}</p>
-        </div>
-      </section>`;
-  }
-
-  _countLine() {
-    const shown = this._shownCount();
-    const total = this._allCards.length;
-    if (!shown) return 'Nothing matches. Try "tattoo", "wrist" or "cold".';
-    if (shown === total) return `${total} things, all showing.`;
-    return `Showing ${shown} of ${total}.`;
+      <div class="hero-filter animate-on-scroll">
+        <span class="hero-filter-lbl">What are you wearing?</span>
+        <div class="chip-row" role="group" aria-label="Narrow the page to a watch or a ring">${devs}</div>
+      </div>`;
   }
 
   /* ---------------------------------------------------------------- CARD */
 
-  // The only card shape on the page. Collapsed: title, verdict, one sentence,
-  // one number, metric chips. Expanded: the study, what the brands say, and
-  // what to do about it.
-  _renderCard(card) {
+  // The only card shape on the page. Collapsed: the verdict on the right, the
+  // question and one sentence on the left. The number lives inside, because a
+  // figure with no study attached to it is the thing this page exists to fix.
+  _renderCard(card, sec) {
     const isExp = this._expandedKey === card.key;
     const src = card.src ? this._src[card.src] : null;
 
-    const badges = (card.badges || []).map(b => {
+    // "Ask about" cards carry their own verdict; helps and hurts carry the
+    // section's direction, so the two lower sections never read as a repeat of
+    // the top one.
+    const badges = sec.dir ? [{ t: sec.dir }] : (card.badges || []);
+    const badgeHtml = badges.map(b => {
       const meta = this._badgeMeta(b.t);
       const ic = meta.icon ? `<span class="ac-badge-ic" aria-hidden="true">${this._icon(meta.icon)}</span>` : '';
       return `<span class="ac-badge ${meta.cls}">${ic}${b.label || meta.label}</span>`;
     }).join('');
+
+    // On helps and hurts the evidence grade drops to a quiet meta line rather
+    // than competing with the direction chip.
+    const meta = sec.dir
+      ? (card.badges || []).map(b => b.label || this._badgeMeta(b.t).label).join(' · ')
+      : '';
 
     const chips = (card.chips || []).map(c => `<span class="ac-chip">${c}</span>`).join('');
 
@@ -518,6 +520,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
     const body = isExp ? `
       <div class="ac-body">
+        <div class="ac-stat"><span class="ac-stat-num">${card.num}</span><span class="ac-stat-lbl">The number</span></div>
         <dl class="ac-fields">
           ${rows.map(([dt, dd]) => `<div><dt>${dt}</dt><dd>${dd}</dd></div>`).join('')}
         </dl>
@@ -532,13 +535,13 @@ class KygoAccuracyFactors extends HTMLElement {
         <button class="ac-head" aria-expanded="${isExp}">
           <span class="ac-top">
             <span class="ac-text">
-              <span class="ac-badges">${badges}</span>
               <span class="ac-title">${card.title}</span>
               <span class="ac-one">${card.one}</span>
               <span class="ac-chips">${chips}</span>
+              ${meta ? `<span class="ac-meta">${meta}</span>` : ''}
             </span>
             <span class="ac-right">
-              <span class="ac-num">${card.num}</span>
+              <span class="ac-badges">${badgeHtml}</span>
               <span class="ac-chev" aria-hidden="true">${this._icon('chevDown')}</span>
             </span>
           </span>
@@ -550,17 +553,37 @@ class KygoAccuracyFactors extends HTMLElement {
   _renderCardList(sec) {
     const shown = sec.cards.filter(c => this._matches(c));
     if (!shown.length) {
-      // The full hint only when the whole page is empty, so a search that hits
+      // The full hint only when the whole page is empty, so a filter that hits
       // one section does not print the same apology under the other two.
-      const msg = this._shownCount() ? 'Nothing in this section matches.' : 'Nothing matches. Try "tattoo", "wrist" or "cold".';
-      return `<div class="ac-list" data-list="${sec.key}"><p class="dash-empty">${msg}</p></div>`;
+      const any = this._allCards.some(c => this._matches(c));
+      const msg = any ? 'Nothing in this section matches.' : 'Nothing matches. Switch back to Everything.';
+      return `<div data-list="${sec.key}"><p class="dash-empty">${msg}</p></div>`;
     }
-    return `<div class="ac-list" data-list="${sec.key}">${shown.map(c => this._renderCard(c)).join('')}</div>`;
+
+    if (!sec.grouped) {
+      return `<div data-list="${sec.key}"><div class="ac-grid">${shown.map(c => this._renderCard(c, sec)).join('')}</div></div>`;
+    }
+
+    const groups = this._groups
+      .map(g => ({ g, items: shown.filter(c => c.grp === g.k) }))
+      .filter(x => x.items.length);
+
+    return `
+      <div data-list="${sec.key}">
+        ${groups.map(({ g, items }) => `
+          <div class="ac-group">
+            <div class="ac-group-head">
+              <span class="ac-group-label">${g.label}</span>
+              <span class="ac-group-count">${items.length}</span>
+            </div>
+            <div class="ac-grid">${items.map(c => this._renderCard(c, sec)).join('')}</div>
+          </div>`).join('')}
+      </div>`;
   }
 
   _renderCardSection(sec) {
     return `
-      <section class="cards-section section-bg-white" id="${sec.key}" data-section="${sec.key}">
+      <section class="cards-section section-bg-gray" id="${sec.key}" data-section="${sec.key}">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon(sec.icon)}</span>${sec.eyebrow}</span>
@@ -578,9 +601,9 @@ class KygoAccuracyFactors extends HTMLElement {
 
   _renderFaqSection() {
     return `
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedTools()}
 
-      <section class="faq-section section-bg-white" id="faq">
+      <section class="faq-section section-bg-gray" id="faq">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('info')}</span>Common questions</span>
@@ -674,7 +697,7 @@ class KygoAccuracyFactors extends HTMLElement {
   _renderSourcesSection() {
     return `
 
-      <section class="sources-section section-bg-gray">
+      <section class="sources-section section-bg-white">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">Every figure on this page traces to a primary source below, with funding relationships, sample sizes and sign-convention traps carried alongside the number rather than hidden. Where a study contradicts its own abstract, we cite the table.</p>
@@ -722,7 +745,7 @@ class KygoAccuracyFactors extends HTMLElement {
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'featureList': 'Things people ask about, with a tested verdict on each: tattoos, arm hair, skin tone, cold hands, sweat and lotion, which wrist, strap tightness, two devices at once, sharing a bed, wrist size, ring fit and device age. Things that help, ranked by how much they moved the numbers, from forearm position to charging away from bedtime. Things that quietly hurt, from rowing and swimming to resistance-training calories, slow walking, first nights, battery saver mode and heat. One search box across all three, a watch or ring narrowing, and a primary source on every card.',
+      'featureList': 'Things people ask about, with a tested verdict on each: tattoos, arm hair, skin tone, cold hands, sweat and lotion, which wrist, strap tightness, two devices at once, sharing a bed, wrist size, ring fit and device age. Things that help, ranked by how much they moved the numbers, from forearm position to charging away from bedtime. Things that quietly hurt, from rowing and swimming to resistance-training calories, slow walking, first nights, battery saver mode and heat. Grouped by verdict into what matters, what does not, what nobody has tested and what only the brands answer, with a watch or ring narrowing and a primary source on every card.',
       'keywords': 'wearable accuracy factors, what affects wearable accuracy, hairy arms fitness tracker, tattoo heart rate sensor, where to wear fitbit, cold weather heart rate accuracy, wrist position heart rate accuracy, watch placement accuracy, strap tightness heart rate, does skin tone affect heart rate accuracy, which wrist should I wear my watch on, ring rotation HRV, smart ring finger fit, wearable calorie accuracy resistance training, step count accuracy slow walking, pushing a stroller step count, battery saver missing sleep data, heat and heart rate accuracy'
     };
 
@@ -1226,6 +1249,7 @@ class KygoAccuracyFactors extends HTMLElement {
             <p class="hero-sub animate-on-scroll">Tattoos, hairy arms, cold hands, strap tightness, which wrist. What the studies actually found, what each brand says, and the <strong>free fixes</strong> that move your numbers tonight.</p>
           </div>
           ${this._renderHeroChart()}
+          ${this._renderDeviceFilter()}
           <div class="hero-meta-wrap animate-on-scroll">
             <div class="hero-meta">
               <div class="hero-cell"><span class="hero-num">${askedCount}</span><span class="hero-lbl">Questions people ask</span></div>
@@ -1237,13 +1261,11 @@ class KygoAccuracyFactors extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderControls()}
-
       ${this._renderCardSection(this._sections[0])}
-      ${this._renderAppCta('gray')}
+      ${this._renderAppCta()}
 
       ${this._renderCardSection(this._sections[1])}
-      ${this._renderEmailCta('gray')}
+      ${this._renderEmailCta()}
 
       ${this._renderCardSection(this._sections[2])}
       ${this._renderFaqSection()}
@@ -1271,7 +1293,7 @@ class KygoAccuracyFactors extends HTMLElement {
         </div>
       </footer>
 
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedPosts()}
     `;
   }
 
@@ -1294,17 +1316,7 @@ class KygoAccuracyFactors extends HTMLElement {
       this._sections.forEach(sec => {
         replaceWithHTML(shadow.querySelector(`[data-list="${sec.key}"]`), this._renderCardList(sec));
       });
-      const count = shadow.querySelector('[data-count]');
-      if (count) count.textContent = this._countLine();
     };
-
-    shadow.addEventListener('input', (e) => {
-      const box = e.target.closest('[data-q]');
-      if (!box) return;
-      this._query = box.value;
-      this._expandedKey = null;
-      redrawLists();
-    });
 
     shadow.addEventListener('click', (e) => {
       if (e.target.closest('a[href]')) return;
@@ -1383,6 +1395,9 @@ class KygoAccuracyFactors extends HTMLElement {
         --gray-400: #94A3B8;
         --gray-600: #475569;
         --gray-700: #334155;
+        --red: #EF4444;
+        --red-dark: #DC2626;
+        --red-light: rgba(239,68,68,0.10);
         --radius: 20px;
         --radius-sm: 10px;
         display: block;
@@ -1499,59 +1514,67 @@ class KygoAccuracyFactors extends HTMLElement {
       .hvb-fill { display: block; height: 100%; border-radius: 9999px; background: rgba(255,255,255,0.26); }
       .hvb--good .hvb-fill { background: linear-gradient(90deg, var(--green-dark), var(--green)); }
 
-      /* CONTROLS */
-      .controls-section { padding: 20px 0; }
-      @media (min-width: 720px) { .controls-section { padding: 26px 0; } }
-      .filter-bar { background: #fff; border: 1.5px solid var(--gray-200); border-radius: 18px; padding: 14px; display: grid; gap: 10px; box-shadow: 0 8px 24px rgba(15,23,42,.06); }
-      .filter-search { position: relative; display: flex; align-items: center; min-width: 0; }
-      .filter-search-ic { position: absolute; left: 13px; width: 16px; height: 16px; color: var(--gray-400); display: inline-flex; pointer-events: none; }
-      .filter-search-ic svg { width: 16px; height: 16px; }
-      .filter-input { width: 100%; font-family: inherit; font-size: 14.5px; color: var(--dark); background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 12px; padding: 13px 14px 13px 38px; min-width: 0; }
-      .filter-input::placeholder { color: var(--gray-400); }
-      .filter-input:focus { outline: none; border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px var(--green-light); }
-      .filter-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+      /* HERO FILTER (the page's one control) */
+      .hero-filter { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; margin-top: 26px; }
+      .hero-filter-lbl { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gray-400); }
       .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
-      .chip { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12.5px; padding: 9px 15px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+      .chip { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12.5px; padding: 8px 14px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
       .chip:hover { border-color: var(--gray-300); color: var(--dark); }
       .chip.active { background: var(--dark); border-color: var(--dark); color: #fff; }
-      .filter-count { margin: 10px 2px 0; font-size: 11.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
-      @media (min-width: 720px) { .filter-bar { grid-template-columns: 1fr auto; align-items: center; gap: 12px 16px; padding: 16px; } }
 
-      /* CARD (the only card shape on the page) */
+      /* CARDS (the only card shape on the page) */
       .cards-section { padding: 56px 0; }
       @media (min-width: 720px) { .cards-section { padding: 80px 0; } }
-      .ac-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
-      .ac-card { background: #fff; border: 1.5px solid var(--gray-200); border-radius: 18px; overflow: hidden; min-width: 0; box-shadow: 0 8px 24px rgba(15,23,42,.06); transition: border-color .15s, box-shadow .15s; }
+      .ac-grid { display: grid; grid-template-columns: 1fr; gap: 10px; align-items: stretch; }
+      @media (min-width: 880px) { .ac-grid { grid-template-columns: 1fr 1fr; gap: 12px; } }
+
+      .ac-group + .ac-group { margin-top: 30px; }
+      .ac-group-head { display: flex; align-items: center; gap: 9px; padding: 0 2px 10px; margin-bottom: 12px; border-bottom: 1px dashed var(--gray-300); }
+      .ac-group-label { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.3px; text-transform: uppercase; color: var(--dark); }
+      .ac-group-count { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11px; color: var(--gray-600); background: #fff; border: 1px solid var(--gray-200); border-radius: 9999px; padding: 2px 8px; line-height: 1.4; }
+
+      .ac-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 18px; overflow: hidden; min-width: 0; box-shadow: 0 8px 24px rgba(15,23,42,.06); transition: border-color .15s, box-shadow .15s; }
       .ac-card:hover { border-color: var(--gray-300); }
       .ac-card.expanded { border-color: var(--green); box-shadow: 0 10px 28px rgba(34,197,94,.14); }
-      .ac-head { display: block; width: 100%; padding: 0; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
+      @media (min-width: 880px) { .ac-card.expanded { grid-column: 1 / -1; } }
+      .ac-head { display: block; flex: 1 1 auto; width: 100%; padding: 0; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .ac-head:hover { background: var(--gray-50); }
-      .ac-top { display: flex; align-items: flex-start; gap: 12px; padding: 18px; }
+      .ac-top { display: flex; align-items: stretch; gap: 14px; padding: 18px; height: 100%; }
       .ac-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-      .ac-badges { display: inline-flex; flex-wrap: wrap; gap: 5px; }
-      .ac-badge { display: inline-flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 9999px; line-height: 1.1; white-space: nowrap; }
+      .ac-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); line-height: 1.25; letter-spacing: -0.01em; overflow-wrap: break-word; }
+      .ac-one { font-size: 13px; color: var(--gray-600); line-height: 1.45; }
+      .ac-chips { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-top: 1px; }
+      .ac-chip { font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--gray-400); border: 1px solid var(--gray-200); border-radius: 9999px; padding: 3px 7px; line-height: 1; }
+
+      .ac-right { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; gap: 10px; text-align: right; max-width: 46%; }
+      .ac-badges { display: inline-flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+      .ac-badge { display: inline-flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.5px; text-transform: uppercase; padding: 5px 10px; border-radius: 9999px; line-height: 1.1; white-space: nowrap; }
       .ac-badge-ic { display: inline-flex; width: 11px; height: 11px; }
       .ac-badge-ic svg { width: 11px; height: 11px; }
       .ac-badge.b-yes { background: var(--green); color: #fff; }
       .ac-badge.b-no { background: var(--gray-100); color: var(--gray-600); }
       .ac-badge.b-gap { background: #fff; color: var(--gray-600); box-shadow: inset 0 0 0 1px var(--gray-300); }
       .ac-badge.b-mfr { background: var(--dark); color: #fff; }
-      .ac-badge.b-ev { background: var(--green-light); color: var(--green-dark); }
-      .ac-badge.b-agree { background: var(--dark); color: #fff; }
-      .ac-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); line-height: 1.25; letter-spacing: -0.01em; overflow-wrap: break-word; }
-      .ac-one { font-size: 13px; color: var(--gray-600); line-height: 1.45; }
-      .ac-chips { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-top: 1px; }
-      .ac-chip { font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--gray-400); border: 1px solid var(--gray-200); border-radius: 9999px; padding: 3px 7px; line-height: 1; }
-      .ac-right { flex: 0 0 auto; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; text-align: right; max-width: 40%; }
-      .ac-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; line-height: 1.15; color: var(--green-dark); letter-spacing: -0.01em; font-feature-settings: "tnum" 1; }
+      .ac-badge.b-help { background: var(--green-light); color: var(--green-dark); box-shadow: inset 0 0 0 1px rgba(34,197,94,0.35); }
+      .ac-badge.b-hurt { background: var(--red-light); color: var(--red-dark); box-shadow: inset 0 0 0 1px rgba(239,68,68,0.30); }
+      .ac-meta { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gray-400); line-height: 1.4; margin-top: 2px; }
       .ac-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .ac-chev svg { width: 16px; height: 16px; }
       .ac-card.expanded .ac-chev { transform: rotate(180deg); color: var(--green-dark); }
-      @media (min-width: 560px) { .ac-num { font-size: 19px; } .ac-title { font-size: 17px; } .ac-one { font-size: 13.5px; } .ac-top { padding: 22px; } }
-      @media (max-width: 400px) { .ac-right { max-width: 34%; } .ac-num { font-size: 15px; } }
+      @media (min-width: 560px) { .ac-title { font-size: 17px; } .ac-one { font-size: 13.5px; } .ac-top { padding: 20px; } }
+      /* On a phone the verdict rail becomes a row above the title, so a long
+         badge cannot squeeze the question into a narrow column. */
+      @media (max-width: 559px) {
+        .ac-top { flex-wrap: wrap; }
+        .ac-right { order: -1; width: 100%; max-width: none; flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; }
+        .ac-badges { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; }
+      }
 
       .ac-body { padding: 4px 18px 18px; border-top: 1px dashed var(--gray-200); background: var(--gray-50); }
-      .ac-fields { display: grid; gap: 12px; margin: 13px 0 0; min-width: 0; }
+      .ac-stat { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 14px 0 0; }
+      .ac-stat-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; line-height: 1.1; letter-spacing: -0.02em; color: var(--green-dark); font-feature-settings: "tnum" 1; }
+      .ac-stat-lbl { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
+      .ac-fields { display: grid; gap: 12px; margin: 14px 0 0; min-width: 0; }
       .ac-fields > div { display: grid; grid-template-columns: 1fr; gap: 3px; min-width: 0; }
       .ac-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
       .ac-fields dd { margin: 0; font-size: 13px; color: var(--gray-700); line-height: 1.55; overflow-wrap: anywhere; }
@@ -1561,7 +1584,7 @@ class KygoAccuracyFactors extends HTMLElement {
       .source-link { display: inline-flex; align-items: center; gap: 5px; color: var(--green-dark); font-weight: 600; font-size: 12px; white-space: nowrap; }
       .source-link svg { width: 12px; height: 12px; flex-shrink: 0; }
       .source-link:hover { color: var(--green); }
-      @media (min-width: 720px) { .ac-body { padding: 4px 22px 22px; } .ac-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } .ac-fields > div:first-child { grid-column: 1 / -1; } }
+      @media (min-width: 720px) { .ac-body { padding: 4px 20px 20px; } .ac-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } .ac-fields > div:first-child { grid-column: 1 / -1; } }
 
       /* SOURCES */
       /* Sources · Kygo standard module */
@@ -1603,7 +1626,7 @@ class KygoAccuracyFactors extends HTMLElement {
       .faq-a p { margin: 14px 0 0; font-size: 14px; color: var(--gray-700); line-height: 1.6; }
 
       /* FOOTER */
-      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); background: #fff; }
+      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); background: var(--gray-100); }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
