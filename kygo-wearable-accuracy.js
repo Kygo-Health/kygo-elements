@@ -723,10 +723,10 @@ class KygoWearableAccuracy extends HTMLElement {
   _relatedTools() {
     return [
       {
-        title: 'Wearable Accuracy Factor Explorer',
-        blurb: '51 tested factors that change how accurate your wearable is, and which ones you can fix tonight.',
+        title: 'Wearable Accuracy: What Actually Affects It',
+        blurb: 'Tattoos, hairy arms, cold hands, strap tightness, which wrist. What the studies found and the free fixes that work tonight.',
         url: 'https://www.kygo.app/tools/accuracy-factors',
-        meta: 'Wearables · 51 factors',
+        meta: 'Wearables · 26 answers',
         motif: { motif: 'tiers', caption: 'What moves accuracy', tiers: [{ label: 'Minor', h: 0.35 }, { label: 'Moderate', h: 0.62 }, { label: 'Major', h: 1 }] }
       },
       {
