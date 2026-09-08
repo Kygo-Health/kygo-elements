@@ -155,14 +155,16 @@ class KygoAccuracyFactors extends HTMLElement {
    */
 
   _badgeMeta(t) {
+    // Green, slate and dark only. Direction is carried by the icon, never by a
+    // second hue, so the page stays inside the house palette.
     return ({
-      yes:   { label: 'Matters', cls: 'b-yes' },
-      no:    { label: 'Does not matter', cls: 'b-no' },
-      gap:   { label: 'Untested', cls: 'b-gap' },
-      mfr:   { label: 'Brand guidance', cls: 'b-mfr' },
-      ev:    { label: 'Evidence', cls: 'b-ev' },
-      agree: { label: 'Brands agree', cls: 'b-agree' }
-    })[t] || { label: t, cls: 'b-gap' };
+      yes:   { label: 'Matters', cls: 'b-yes', icon: 'check' },
+      no:    { label: 'Does not matter', cls: 'b-no', icon: 'minus' },
+      gap:   { label: 'Untested', cls: 'b-gap', icon: 'flask' },
+      mfr:   { label: 'Brand guidance', cls: 'b-mfr', icon: 'info' },
+      ev:    { label: 'Evidence', cls: 'b-ev', icon: '' },
+      agree: { label: 'Brands agree', cls: 'b-agree', icon: 'check' }
+    })[t] || { label: t, cls: 'b-gap', icon: '' };
   }
 
   // Section A. What people actually type into a search box.
@@ -403,6 +405,7 @@ class KygoAccuracyFactors extends HTMLElement {
       droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>',
       arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
       search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>',
+      minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>',
       chevDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>',
       externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
       info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
@@ -466,7 +469,7 @@ class KygoAccuracyFactors extends HTMLElement {
     ].map(o => `<button class="chip ${this._devFilter === o.k ? 'active' : ''}" data-dev="${o.k}" aria-pressed="${this._devFilter === o.k}">${o.label}</button>`).join('');
 
     return `
-      <section class="controls-section section-bg-white">
+      <section class="controls-section section-bg-gray">
         <div class="container">
           <div class="filter-bar">
             <div class="filter-search">
@@ -501,7 +504,8 @@ class KygoAccuracyFactors extends HTMLElement {
 
     const badges = (card.badges || []).map(b => {
       const meta = this._badgeMeta(b.t);
-      return `<span class="ac-badge ${meta.cls}">${b.label || meta.label}</span>`;
+      const ic = meta.icon ? `<span class="ac-badge-ic" aria-hidden="true">${this._icon(meta.icon)}</span>` : '';
+      return `<span class="ac-badge ${meta.cls}">${ic}${b.label || meta.label}</span>`;
     }).join('');
 
     const chips = (card.chips || []).map(c => `<span class="ac-chip">${c}</span>`).join('');
@@ -556,7 +560,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
   _renderCardSection(sec) {
     return `
-      <section class="cards-section section-bg-gray" id="${sec.key}" data-section="${sec.key}">
+      <section class="cards-section section-bg-white" id="${sec.key}" data-section="${sec.key}">
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon(sec.icon)}</span>${sec.eyebrow}</span>
@@ -571,43 +575,6 @@ class KygoAccuracyFactors extends HTMLElement {
   /* ---------------------------------------------------------------- CTAs */
 
 
-
-  _renderBigCta() {
-    return `
-      <section class="app-cta-section section-bg-gray">
-        <div class="container">
-          <div class="app-cta animate-on-scroll">
-            <div class="app-cta-glow" aria-hidden="true"></div>
-            <div class="app-cta-content">
-              <div class="app-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-              <h2>One Number Is Noise. <span class="highlight">A Trend Is Signal.</span></h2>
-              <p>No wearable gets every reading right, and this page is the proof. Kygo pulls your sleep, HRV, heart rate and nutrition into one place so you read the trend instead of chasing a single bad night.</p>
-              <div class="app-cta-buttons">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="app-cta-btn cta-primary" data-action="ios-download" data-track-position="footer-cta" data-track-label="accuracy-factors-footer-ios" target="_blank" rel="noopener">
-                  ${this._icon('apple')} Download for iOS
-                </a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="app-cta-android cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="accuracy-factors-footer-android">
-                  ${this._icon('android')} Download for Android
-                </a>
-              </div>
-              <p class="app-cta-fine">Free plan available. Save 58% on yearly. Cancel anytime.</p>
-              <div class="app-cta-tags">
-                <span class="app-cta-tags-label">Works with</span>
-                <div class="app-cta-tags-logos">
-                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png" alt="WHOOP" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" loading="lazy" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>`;
-  }
 
   _renderFaqSection() {
     return `
@@ -1102,7 +1069,7 @@ class KygoAccuracyFactors extends HTMLElement {
   // The dark conversion card, on its own section, directly after the first
   // content section. Self-contained under `kc-*` names with a literal fallback
   // behind every custom property, so the same block renders identically on
-  // either palette. Nothing else belongs in this section — the email capture
+  // either palette. Nothing else belongs in this section: the email capture
   // is a separate band further down the page.
   // Pass 'gray' to sit the section on the tinted band.
 
@@ -1182,7 +1149,7 @@ class KygoAccuracyFactors extends HTMLElement {
 
   // ── Email CTA · Kygo standard module ────────────────────────────────────
   // The inline email capture, on its own band. It never sits directly under the
-  // app CTA — a page content section always separates the two conversion
+  // app CTA, because a page content section always separates the two conversion
   // touchpoints. Self-contained under `ke-*` names so it drops into either
   // palette. Pass 'gray' to sit on the tinted band.
 
@@ -1202,36 +1169,29 @@ class KygoAccuracyFactors extends HTMLElement {
       </section>`;
   }
 
-  // Hero chart. Two tested wrist positions scaled against the larger of the
-  // two, and the chest strap drawn as the baseline it actually is rather than
-  // as a third bar at zero: it is the criterion, not a tested position.
+  // Hero visual. The single biggest free lever on this page, as two bars: the
+  // position most people wear and the position the study tested. Deliberately
+  // spare, the criterion lives in the one foot line rather than in a third row.
   _renderHeroChart() {
     const bars = [
-      { label: 'On the wrist bone (1 finger width)', val: 20.5, note: 'Where most people wear it' },
-      { label: '3 finger widths up the forearm', val: 7.3, note: 'Free fix' }
+      { label: 'On the wrist bone', val: '20.5%', w: 100, tone: 'muted' },
+      { label: '3 finger widths up', val: '7.3%', w: 36, tone: 'good' }
     ];
-    const max = 20.5;
     return `
       <div class="hero-vis animate-on-scroll">
         <div class="hero-vis-glow" aria-hidden="true"></div>
         <div class="hero-vis-head">
-          <span class="hero-vis-title">Heart rate error during movement, same tracker</span>
-          <span class="hero-vis-tag">One study, three positions</span>
+          <span class="hero-vis-title">Heart rate error, moving</span>
+          <span class="hero-vis-tag">Same tracker</span>
         </div>
         <div class="hero-vis-bars">
           ${bars.map(b => `
-            <div class="hvb">
-              <div class="hvb-top"><span class="hvb-label">${b.label}</span><span class="hvb-val">${b.val}%</span></div>
-              <div class="hvb-track"><span class="hvb-fill" style="width:${Math.round((b.val / max) * 100)}%"></span></div>
-              <span class="hvb-note">${b.note}</span>
+            <div class="hvb hvb--${b.tone}">
+              <div class="hvb-top"><span class="hvb-label">${b.label}</span><span class="hvb-val">${b.val}</span></div>
+              <div class="hvb-track"><span class="hvb-fill" style="width:${b.w}%"></span></div>
             </div>`).join('')}
-          <div class="hvb hvb--base">
-            <div class="hvb-top"><span class="hvb-label">Chest strap</span><span class="hvb-val hvb-val--base">Reference</span></div>
-            <div class="hvb-baseline" aria-hidden="true"></div>
-            <span class="hvb-note">The yardstick the tracker was measured against</span>
-          </div>
         </div>
-        <p class="hero-vis-foot">Fitbit Inspire 2 against a Polar H10 chest strap, n=10 healthy adults, movement condition. Agreement with the strap rose from 0.59 to 0.92. Vermunicht 2025.</p>
+        <p class="hero-vis-foot">Against a Polar H10 chest strap, n=10. Vermunicht 2025.</p>
       </div>`;
   }
 
@@ -1279,10 +1239,13 @@ class KygoAccuracyFactors extends HTMLElement {
 
       ${this._renderControls()}
 
-      ${this._sections.map(sec => this._renderCardSection(sec)).join('')}
+      ${this._renderCardSection(this._sections[0])}
+      ${this._renderAppCta('gray')}
 
-      ${this._renderBigCta()}
-      ${this._renderEmailCta()}
+      ${this._renderCardSection(this._sections[1])}
+      ${this._renderEmailCta('gray')}
+
+      ${this._renderCardSection(this._sections[2])}
       ${this._renderFaqSection()}
       ${this._renderSourcesSection()}
 
@@ -1470,7 +1433,7 @@ class KygoAccuracyFactors extends HTMLElement {
       .hero-vis { position: relative; overflow: hidden; margin-top: 26px; background: var(--dark-card); border-radius: 18px; padding: 18px 18px 16px; color: #fff; }
       .hero-vis-glow { position: absolute; top: -70px; right: -50px; width: 220px; height: 220px; background: radial-gradient(closest-side, rgba(34,197,94,0.32), transparent); pointer-events: none; }
       .hero-vis-head { position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.12); }
-      .hero-vis-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15.5px; line-height: 1.25; color: #fff; min-width: 0; overflow-wrap: break-word; }
+      .hero-vis-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: #fff; white-space: nowrap; }
       .hero-vis-tag { font-size: 9.5px; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase; color: var(--green); white-space: nowrap; }
       .hero-vis-rows { position: relative; display: grid; gap: 2px; margin-top: 4px; }
       .hero-vis-row { display: grid; grid-template-columns: 1fr auto auto; align-items: baseline; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07); }
@@ -1521,112 +1484,60 @@ class KygoAccuracyFactors extends HTMLElement {
       .src-note-ic svg { width: 12px; height: 12px; }
       /* ARTICLE CTA */
 
-      /* MID-PAGE APP BAND */
-      .kband-section { padding: 40px 0; }
-      @media (min-width: 768px) { .kband-section { padding: 56px 0; } }
-      .kband { max-width: 1100px; margin: 0 auto; }
-      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 20px; padding: 26px 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 22px; box-shadow: 0 8px 24px rgba(15,23,42,0.06); }
-      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
-      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-width: 0; max-width: 640px; }
-      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 11px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--green-dark); }
-      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: kygoPulse 2s ease-out infinite; flex-shrink: 0; }
-      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: clamp(18px, 2.4vw, 23px); line-height: 1.3; color: var(--dark); }
-      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; width: 100%; }
-      .kband-btn { display: inline-flex; align-items: center; justify-content: center; gap: 9px; width: 100%; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 14px 22px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
-      .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
-      .kband-btn-ios { background: var(--green); color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
-      .kband-btn-ios:hover { background: var(--green-dark); color: #fff; transform: translateY(-2px); }
-      .kband-btn-android { background: #fff; color: var(--green-dark); border: 1.5px solid var(--gray-200); }
-      .kband-btn-android:hover { border-color: var(--green); transform: translateY(-2px); }
-      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--gray-600); text-align: center; }
-      @media (min-width: 560px) { .kband-btn { width: auto; flex: 1 1 190px; } }
-      @media (min-width: 900px) {
-        .kband-inner { flex-direction: row; align-items: center; justify-content: space-between; gap: 36px; padding: 28px 32px; }
-        .kband-actions { width: auto; flex: 0 0 auto; max-width: 470px; }
-        .kband-btn { flex: 0 0 auto; }
-      }
-      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); } 70% { box-shadow: 0 0 0 7px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
-
       /* EMAIL CAPTURE */
       .subscribe-section { padding: 16px 0; }
       @media (min-width: 768px) { .subscribe-section { padding: 24px 0; } }
 
-      /* APP CTA */
-      .app-cta-section { padding: 48px 0; }
-      @media (min-width: 768px) { .app-cta-section { padding: 64px 0; } }
-      .app-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
-      .app-cta-glow { position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; background: radial-gradient(closest-side, rgba(34,197,94,0.30), transparent); pointer-events: none; }
-      .app-cta-content { position: relative; z-index: 1; }
-      .app-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
-      .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulseDot 2s infinite; }
-      @keyframes pulseDot { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
-      .app-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin: 0 0 12px; line-height: 1.2; letter-spacing: -0.01em; }
-      .app-cta .highlight { color: var(--green); }
-      .app-cta p { color: var(--gray-400); font-size: 14px; margin: 0 auto 20px; max-width: 480px; line-height: 1.55; }
-      .app-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-      @media (max-width: 480px) { .app-cta-buttons { flex-direction: column; align-items: stretch; } .app-cta-buttons a { justify-content: center; } }
-      .app-cta-btn, .app-cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; transition: background 0.2s; white-space: nowrap; }
-      .app-cta-btn:hover, .app-cta-android:hover { background: var(--green-dark); color: #fff; }
-      .app-cta-btn svg, .app-cta-android svg { width: 18px; height: 18px; flex-shrink: 0; }
-      .app-cta-fine { margin: 14px 0 0; font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.72); text-align: center; }
-      .app-cta-tags { display: flex; align-items: center; justify-content: center; gap: 10px 12px; margin-top: 20px; flex-wrap: wrap; }
-      .app-cta-tags-label { color: var(--gray-400); font-size: 11px; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
-      .app-cta-tags-logos { display: flex; align-items: center; gap: 6px; justify-content: center; min-width: 0; flex-wrap: wrap; }
-      .app-cta-tags-logos img { height: 18px; width: auto; opacity: 0.75; object-fit: contain; }
-      @media (min-width: 480px) { .app-cta-tags-logos img { height: 20px; } .app-cta-tags-label { font-size: 12px; } }
-      @media (min-width: 768px) { .app-cta-tags-logos { gap: 8px; } .app-cta-tags-logos img { height: 22px; } }
-
-      /* HERO CHART */
-      .hero-vis-bars { position: relative; display: grid; gap: 14px; margin-top: 14px; }
-      .hvb { display: grid; gap: 6px; min-width: 0; }
-      .hvb-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-      .hvb-label { font-size: 12.5px; color: rgba(255,255,255,0.78); line-height: 1.3; }
-      .hvb-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px; color: var(--green); letter-spacing: -0.01em; font-feature-settings: "tnum" 1; white-space: nowrap; }
-      .hvb-val--base { font-size: 12.5px; letter-spacing: 0.5px; text-transform: uppercase; color: rgba(255,255,255,0.62); }
+      /* HERO VISUAL */
+      .hero-vis-bars { position: relative; display: grid; gap: 14px; margin-top: 16px; }
+      .hvb { display: grid; gap: 7px; min-width: 0; }
+      .hvb-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+      .hvb-label { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.3; }
+      .hvb-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; font-feature-settings: "tnum" 1; white-space: nowrap; color: rgba(255,255,255,0.62); }
+      .hvb--good .hvb-val { color: var(--green); }
       .hvb-track { height: 10px; border-radius: 9999px; background: rgba(255,255,255,0.09); overflow: hidden; }
-      .hvb-fill { display: block; height: 100%; border-radius: 9999px; background: linear-gradient(90deg, var(--green-dark), var(--green)); }
-      .hvb:first-child .hvb-fill { background: linear-gradient(90deg, #B45309, #F59E0B); }
-      .hvb-baseline { height: 10px; border-radius: 9999px; background: repeating-linear-gradient(90deg, rgba(255,255,255,0.34) 0 8px, transparent 8px 14px); }
-      .hvb-note { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.4; }
-      .hvb--base .hvb-label { color: rgba(255,255,255,0.62); }
+      .hvb-fill { display: block; height: 100%; border-radius: 9999px; background: rgba(255,255,255,0.26); }
+      .hvb--good .hvb-fill { background: linear-gradient(90deg, var(--green-dark), var(--green)); }
 
       /* CONTROLS */
-      .controls-section { padding: 8px 0 4px; background: #fff; }
-      @media (min-width: 768px) { .controls-section { padding: 14px 0 6px; } }
-      .filter-bar { background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 14px; padding: 12px 13px; display: grid; gap: 10px; }
+      .controls-section { padding: 20px 0; }
+      @media (min-width: 720px) { .controls-section { padding: 26px 0; } }
+      .filter-bar { background: #fff; border: 1.5px solid var(--gray-200); border-radius: 18px; padding: 14px; display: grid; gap: 10px; box-shadow: 0 8px 24px rgba(15,23,42,.06); }
       .filter-search { position: relative; display: flex; align-items: center; min-width: 0; }
       .filter-search-ic { position: absolute; left: 13px; width: 16px; height: 16px; color: var(--gray-400); display: inline-flex; pointer-events: none; }
       .filter-search-ic svg { width: 16px; height: 16px; }
-      .filter-input { width: 100%; font-family: inherit; font-size: 14.5px; color: var(--dark); background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 12px 14px 12px 38px; min-width: 0; }
+      .filter-input { width: 100%; font-family: inherit; font-size: 14.5px; color: var(--dark); background: var(--gray-100); border: 1px solid var(--gray-200); border-radius: 12px; padding: 13px 14px 13px 38px; min-width: 0; }
       .filter-input::placeholder { color: var(--gray-400); }
-      .filter-input:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px var(--green-light); }
+      .filter-input:focus { outline: none; border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px var(--green-light); }
       .filter-input::-webkit-search-cancel-button { -webkit-appearance: none; }
       .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
-      .chip { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12.5px; padding: 8px 14px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+      .chip { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12.5px; padding: 9px 15px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
       .chip:hover { border-color: var(--gray-300); color: var(--dark); }
       .chip.active { background: var(--dark); border-color: var(--dark); color: #fff; }
-      .filter-count { margin: 9px 2px 0; font-size: 12px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; color: var(--gray-400); }
-      @media (min-width: 720px) { .filter-bar { grid-template-columns: 1fr auto; align-items: center; gap: 12px 16px; padding: 13px 15px; } }
+      .filter-count { margin: 10px 2px 0; font-size: 11.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
+      @media (min-width: 720px) { .filter-bar { grid-template-columns: 1fr auto; align-items: center; gap: 12px 16px; padding: 16px; } }
 
       /* CARD (the only card shape on the page) */
-      .cards-section { padding: 38px 0 40px; }
-      @media (min-width: 768px) { .cards-section { padding: 56px 0 60px; } }
-      .ac-list { display: grid; grid-template-columns: 1fr; gap: 9px; }
-      .ac-card { background: #fff; border: 1px solid var(--gray-200); border-radius: 14px; overflow: hidden; min-width: 0; transition: border-color .15s, box-shadow .15s; }
+      .cards-section { padding: 56px 0; }
+      @media (min-width: 720px) { .cards-section { padding: 80px 0; } }
+      .ac-list { display: grid; grid-template-columns: 1fr; gap: 10px; }
+      .ac-card { background: #fff; border: 1.5px solid var(--gray-200); border-radius: 18px; overflow: hidden; min-width: 0; box-shadow: 0 8px 24px rgba(15,23,42,.06); transition: border-color .15s, box-shadow .15s; }
       .ac-card:hover { border-color: var(--gray-300); }
-      .ac-card.expanded { box-shadow: 0 6px 18px rgba(15,23,42,0.06); border-color: var(--gray-300); }
+      .ac-card.expanded { border-color: var(--green); box-shadow: 0 10px 28px rgba(34,197,94,.14); }
       .ac-head { display: block; width: 100%; padding: 0; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .ac-head:hover { background: var(--gray-50); }
-      .ac-top { display: flex; align-items: flex-start; gap: 12px; padding: 14px 15px 13px; }
-      .ac-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
+      .ac-top { display: flex; align-items: flex-start; gap: 12px; padding: 18px; }
+      .ac-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
       .ac-badges { display: inline-flex; flex-wrap: wrap; gap: 5px; }
-      .ac-badge { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.5px; text-transform: uppercase; padding: 4px 9px; border-radius: 9999px; line-height: 1.1; white-space: nowrap; }
+      .ac-badge { display: inline-flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 9.5px; letter-spacing: 0.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 9999px; line-height: 1.1; white-space: nowrap; }
+      .ac-badge-ic { display: inline-flex; width: 11px; height: 11px; }
+      .ac-badge-ic svg { width: 11px; height: 11px; }
       .ac-badge.b-yes { background: var(--green); color: #fff; }
       .ac-badge.b-no { background: var(--gray-100); color: var(--gray-600); }
-      .ac-badge.b-gap { background: #fff; color: #B45309; box-shadow: inset 0 0 0 1px #FCD34D; }
-      .ac-badge.b-mfr { background: #fff; color: #1D4ED8; box-shadow: inset 0 0 0 1px #BFDBFE; }
+      .ac-badge.b-gap { background: #fff; color: var(--gray-600); box-shadow: inset 0 0 0 1px var(--gray-300); }
+      .ac-badge.b-mfr { background: var(--dark); color: #fff; }
       .ac-badge.b-ev { background: var(--green-light); color: var(--green-dark); }
-      .ac-badge.b-agree { background: #fff; color: #1D4ED8; box-shadow: inset 0 0 0 1px #BFDBFE; }
+      .ac-badge.b-agree { background: var(--dark); color: #fff; }
       .ac-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); line-height: 1.25; letter-spacing: -0.01em; overflow-wrap: break-word; }
       .ac-one { font-size: 13px; color: var(--gray-600); line-height: 1.45; }
       .ac-chips { display: inline-flex; flex-wrap: wrap; gap: 4px; margin-top: 1px; }
@@ -1636,10 +1547,10 @@ class KygoAccuracyFactors extends HTMLElement {
       .ac-chev { width: 18px; height: 18px; color: var(--gray-400); display: inline-flex; align-items: center; justify-content: center; transition: transform .2s; flex-shrink: 0; }
       .ac-chev svg { width: 16px; height: 16px; }
       .ac-card.expanded .ac-chev { transform: rotate(180deg); color: var(--green-dark); }
-      @media (min-width: 560px) { .ac-num { font-size: 19px; } .ac-title { font-size: 17px; } .ac-one { font-size: 13.5px; } .ac-top { padding: 16px 18px 15px; } }
+      @media (min-width: 560px) { .ac-num { font-size: 19px; } .ac-title { font-size: 17px; } .ac-one { font-size: 13.5px; } .ac-top { padding: 22px; } }
       @media (max-width: 400px) { .ac-right { max-width: 34%; } .ac-num { font-size: 15px; } }
 
-      .ac-body { padding: 4px 15px 15px; border-top: 1px dashed var(--gray-200); background: var(--gray-50); }
+      .ac-body { padding: 4px 18px 18px; border-top: 1px dashed var(--gray-200); background: var(--gray-50); }
       .ac-fields { display: grid; gap: 12px; margin: 13px 0 0; min-width: 0; }
       .ac-fields > div { display: grid; grid-template-columns: 1fr; gap: 3px; min-width: 0; }
       .ac-fields dt { font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); margin: 0; }
@@ -1650,7 +1561,7 @@ class KygoAccuracyFactors extends HTMLElement {
       .source-link { display: inline-flex; align-items: center; gap: 5px; color: var(--green-dark); font-weight: 600; font-size: 12px; white-space: nowrap; }
       .source-link svg { width: 12px; height: 12px; flex-shrink: 0; }
       .source-link:hover { color: var(--green); }
-      @media (min-width: 768px) { .ac-body { padding: 4px 18px 18px; } .ac-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } .ac-fields > div:first-child { grid-column: 1 / -1; } }
+      @media (min-width: 720px) { .ac-body { padding: 4px 22px 22px; } .ac-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } .ac-fields > div:first-child { grid-column: 1 / -1; } }
 
       /* SOURCES */
       /* Sources · Kygo standard module */
