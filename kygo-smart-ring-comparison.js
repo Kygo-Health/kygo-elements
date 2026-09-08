@@ -338,7 +338,8 @@ class KygoSmartRingComparison extends HTMLElement {
   // reader has picked none).
   get _ranked() {
     const scores = this._scores;
-    const keys = this._priorities.size ? [...this._priorities] : this._criteria.map(c => c.key);
+    if (!this._priorities.size) return [];
+    const keys = [...this._priorities];
     return this._models
       .map(m => {
         const per = keys.map(k => ({ key: k, val: scores[m.key][k] }));
@@ -367,24 +368,26 @@ class KygoSmartRingComparison extends HTMLElement {
   }
 
   get _bestFor() {
+    // One profile per brand. Four brands, four slots, so the section answers
+    // who each brand is for rather than handing one brand two of the four.
     return [
-      { icon: 'shield', label: 'For the deepest feature set and the only validation record', pick: 'Oura Ring 5', reason: 'The widest published software list here, plus the only lineup in this comparison pointing at independent peer-reviewed accuracy studies and a medical advisory board. Every insight beyond the three daily scores needs the membership.', price: '$399', yrly: '· ~$603 / 3 yrs' },
-      { icon: 'battery', label: 'For no subscription and the most complete package', pick: 'RingConn Gen 3', reason: 'Everything unlocked at purchase, 14-day rated battery, the wireless case in the box, plus sleep apnea pattern monitoring and nighttime vascular trends that no other ring here lists. $349 flat, forever.', price: '$349', yrly: '· $0 subscription' },
-      { icon: 'sparkles', label: 'For the longest battery and a whole-body ecosystem', pick: 'Ultrahuman Ring PRO', reason: 'Fifteen rated days, up to 45 with the case, 250 days of on-ring storage, and a first-party CGM, blood-panel and home sleep stack feeding one AI layer. It is a US pre-order, and the full PowerPlug set is a real $133/yr on top.', price: '$479', yrly: '· pre-order in the US' },
-      { icon: 'wallet', label: 'For the lowest price of entry', pick: 'RingConn Gen 2 Air', reason: 'The cheapest ring in this comparison at $199 with no subscription and the core sensing intact, including a skin temperature sensor. It drops apnea monitoring and uses stainless steel instead of titanium.', price: '$199', yrly: '· $0 subscription' },
+      { icon: 'shield', label: 'For the deepest feature set and the only validation record', pick: 'Oura Ring 5', reason: 'The widest published software list here, plus the only lineup in this comparison pointing at independent peer-reviewed accuracy studies and a medical advisory board. Every insight beyond the three daily scores needs the membership, which is why it is also the most expensive over time.', price: '$399', yrly: '· ~$603 / 3 yrs' },
+      { icon: 'battery', label: 'For no subscription and the most complete package', pick: 'RingConn Gen 3', reason: 'Everything unlocked at purchase, 14-day rated battery, the wireless case in the box, plus sleep apnea pattern monitoring and nighttime vascular trends no other ring here lists. $349 flat, or step down to the $199 Gen 2 Air for the cheapest ring in this comparison, which drops apnea monitoring.', price: '$349', yrly: '· Gen 2 Air $199' },
+      { icon: 'sparkles', label: 'For the longest battery and a whole-body ecosystem', pick: 'Ultrahuman Ring PRO', reason: 'Fifteen rated days, up to 45 with the case, 250 days of on-ring storage, and a first-party CGM, blood-panel and home sleep stack feeding one AI layer. It is a US pre-order, the full PowerPlug set is a real $133/yr on top, and no independent study has tested it.', price: '$479', yrly: '· pre-order in the US' },
+      { icon: 'wallet', label: 'For changeable styling with no recurring fee', pick: 'CUDIS 002 Sporty', reason: 'The only ring here with interchangeable bands, 12 of them, plus a Sports Mode and a battery two testers beat the claim on. Go in knowing what is missing: no temperature sensor, so no temperature-based cycle tracking, and no published spec sheet or accuracy figure of any kind.', price: '$399', yrly: '· Classic $349' },
     ];
   }
 
   get _faqs() {
     return [
-      { q: 'Which smart ring is the best in 2026?', a: 'There is no single winner, which is why this page ranks rings against your priorities instead of handing you one answer. On published feature breadth and evidence, Oura leads: it is the only brand of the four with independent peer-reviewed accuracy studies behind it, and its app list is the longest. On value, RingConn leads: no subscription on any model, a 14-day rated battery on the Gen 3, the charging case in the box, and sleep apnea pattern monitoring that no other ring here offers. Ultrahuman leads on battery (15 rated days on the Ring PRO) and on its wider first-party stack of CGM, blood panels and a home sleep monitor, but its US position is constrained and the Ring PRO is still a pre-order. CUDIS is the cheapest way into a ring with a recovery score, and also the thinnest on published evidence and specs.' },
-      { q: 'Which smart ring has no subscription?', a: 'RingConn, Ultrahuman and CUDIS all charge nothing recurring to see your own ring data. Oura is the exception: a $5.99/mo or $69.99/yr membership is required for almost every insight beyond the three daily scores, which puts an Oura Ring 5 at roughly $603 over three years against $349 for a RingConn Gen 3. The wrinkle is Ultrahuman. Ring data is genuinely free, but AFib detection and ovulation confirmation are paid PowerPlugs, and Ultrahuman\'s own Ring Rare page values the full PowerPlug set at $133 a year. So "no subscription" is literally true for three brands and functionally partial for one.' },
-      { q: 'Which smart ring is the most accurate?', a: 'Strictly, nobody knows, because only one of these brands has been independently tested. Oura is the only ring here with peer-reviewed accuracy work behind it, so it is the only one whose accuracy is established at all, which is a different claim from it being the most accurate. The other three could be better or worse; there is no measurement either way. The gap is about evidence rather than sensors. Oura points to multiple independent peer-reviewed validation studies. RingConn lists strong per-metric numbers on its Gen 3 page (heart rate over 98%, SpO2 under 1.9% MAE, sleep time over 99%) without publishing the method, and its strongest external evidence is a hospital feasibility study with 230 volunteers. Ultrahuman has no independent validation at all: a PubMed search for "Ultrahuman ring" returns zero results, its largest in-house accuracy study is six people compared against other consumer wearables rather than an ECG, and the Frontiers cohort paper it cites was written entirely by Ultrahuman employees and states that no laboratory VO2 max comparison was performed. CUDIS publishes no accuracy figure of any kind. That absence is the finding, and it is why this page will not table those brands\' numbers next to lab-referenced ones.' },
-      { q: 'Can you buy an Ultrahuman ring in the US right now?', a: 'Only the Ring PRO, and only as a pre-order. In ITC investigation 337-TA-1398 the Commission found Ultrahuman infringed one Oura patent and issued a limited exclusion order plus a cease-and-desist order in August 2025. RingConn settled with a royalty-bearing licence; Ultrahuman did not, and its Federal Circuit appeal is still undecided. The redesigned Ring PRO enters the US under CBP Headquarters Ruling HQ H354023 of March 6, 2026, which found the unibody titanium tube falls outside the order. That ruling covers only that specific design, so the Ring AIR, the Diesel edition and the Ring Rare all remain blocked: the US Ring AIR buy page redirects to the Ring PRO, and both the others display "We are currently unable to sell or ship this product to U.S. addresses." The Ring PRO page reads "Shipping September 15th onwards," which is the fourth promised date after May 15, June 20 and August 10. Ultrahuman attributes that to manufacturing, not the case.' },
-      { q: 'Does the CUDIS ring measure temperature?', a: 'No. No CUDIS-published surface mentions a temperature sensor: not the product pages, not the how-it-works page, not the Amazon listing, and not the privacy policy, which enumerates exactly which health data types CUDIS collects (steps, sleep, heart rate, HRV, resting heart rate, SpO2, distance, cycling cadence, active calories) with temperature absent from the list. Independent hands-on reviews describe an optical sensor plus motion sensors and nothing else. This matters beyond a spec line: cycle-phase and ovulation features on every other ring here are temperature-derived, so CUDIS cannot offer them the same way. Everything else on the market at this price has the sensor.' },
-      { q: 'Is the CUDIS crypto reward worth anything?', a: 'In cash terms, currently very little. The $CUDIS token launched on Solana in June 2025 and now trades around $0.001 with a market cap near $260,000, down roughly 99.6% from its high. Redemption is geographically restricted and does not cover the US or Europe. There is also a disclosure conflict worth knowing: CUDIS press materials market a "health data marketplace," while the binding privacy policy says "We do not sell Personal Data," and the iOS App Privacy label declares health data and tracking identifiers linked to you while the Google Play Data Safety label declares no data collected at all. Both store labels cannot be right about the same product. None of that bears on how well the ring measures you, which is the separate question above.' },
-      { q: 'Which ring is best for cycle and ovulation tracking?', a: 'Oura and Ultrahuman, with RingConn close behind, and CUDIS ruled out by hardware. Oura offers cycle insights, period prediction, pregnancy insights and pairing with Natural Cycles, the FDA-cleared birth-control app, which no other brand here lists. Ultrahuman offers a free Cycle and Ovulation PowerPlug plus a paid Pro tier powered by OvuSense, though read that carefully: OvuSense\'s headline 99% figure belongs to its vaginal sensor, and the skin-temperature figure is 90%. RingConn does full-cycle prediction with temperature-dip ovulation detection and a monthly cycle report, at no subscription. CUDIS has no temperature sensor, so it cannot do temperature-derived ovulation work at all.' },
-      { q: 'Can Kygo use my smart ring data?', a: 'Yes, for most of these. Kygo connects directly to Oura, plus Apple Health, Fitbit, Garmin, WHOOP and Samsung Galaxy Watch. RingConn and Ultrahuman both sync to Apple Health and Google Health Connect, so Kygo can read their sleep, HRV and heart-rate data through Apple Health on iPhone. CUDIS describes Apple HealthKit and Health Connect support in its privacy policy but does not advertise it on any product page, and at least one App Store reviewer reports it not working, so treat that path as unverified. Whichever ring you wear, Kygo cross-checks those readings against what you actually eat and train, so you can see which metrics are genuinely predictive for you instead of staring at a daily score.' },
+      { q: 'Which smart ring is the best in 2026?', a: 'There is no single winner, which is why this page ranks rings against your priorities. Oura leads on feature breadth and evidence: it is the only one of the four with independent peer-reviewed accuracy studies behind it. RingConn leads on value: no subscription, a 14-day rated battery on the Gen 3, the case in the box, and sleep apnea monitoring no other ring here offers. Ultrahuman leads on battery, 15 rated days, and its CGM and blood-panel stack, but the Ring PRO is still a US pre-order. CUDIS is the cheapest entry and the thinnest on published evidence.' },
+      { q: 'Which smart ring has no subscription?', a: 'RingConn, Ultrahuman and CUDIS all charge nothing recurring for your own ring data. Oura is the exception: $5.99/mo or $69.99/yr is required for almost every insight beyond the three daily scores, putting a Ring 5 at roughly $603 over three years against $349 for a RingConn Gen 3. The wrinkle is Ultrahuman: ring data is free, but AFib detection and ovulation confirmation are paid PowerPlugs, and Ultrahuman\'s own page values the full set at $133 a year.' },
+      { q: 'Which smart ring is the most accurate?', a: 'Strictly, nobody knows, because only one of these brands has been independently tested. Oura is the only ring here with peer-reviewed accuracy work behind it, so it is the only one whose accuracy is established at all, which is a different claim from being the most accurate. RingConn lists strong figures (heart rate over 98%, sleep time over 99%) without publishing the method; its strongest external evidence is a 230-volunteer hospital feasibility study. Ultrahuman has no independent validation: PubMed returns zero results, and its largest in-house study is six people against other consumer wearables. CUDIS publishes no accuracy figure at all.' },
+      { q: 'Can you buy an Ultrahuman ring in the US right now?', a: 'Only the Ring PRO, and only as a pre-order. In ITC investigation 337-TA-1398 the Commission found Ultrahuman infringed an Oura patent and issued a limited exclusion order in August 2025. RingConn settled and took a licence; Ultrahuman did not, and its Federal Circuit appeal is undecided. The Ring PRO enters the US under CBP ruling HQ H354023 of March 6, 2026, because its unibody titanium tube falls outside the order. That covers only that design, so the Ring AIR, Diesel and Rare stay blocked. The Ring PRO page reads "Shipping September 15th onwards," the fourth promised date.' },
+      { q: 'Does the CUDIS ring measure temperature?', a: 'No. No CUDIS-published surface mentions a temperature sensor: not the product pages, not the how-it-works page, not the Amazon listing, and not the privacy policy, which enumerates what CUDIS collects (steps, sleep, heart rate, HRV, resting heart rate, SpO2, distance, cadence, calories) with temperature absent. Independent hands-on reviews describe an optical sensor and motion sensors only. Cycle-phase and ovulation features on every other ring here are temperature-derived, so CUDIS cannot offer them.' },
+      { q: 'Is the CUDIS crypto reward worth anything?', a: 'In cash terms, currently very little. The $CUDIS token launched on Solana in June 2025 and now trades near $0.001 at a market cap around $260,000, down roughly 99.6% from its high, and redemption excludes the US and Europe. Worth knowing too: CUDIS markets a "health data marketplace" while its binding privacy policy says "We do not sell Personal Data," and its iOS and Google Play privacy labels contradict each other. None of that bears on how well the ring measures you.' },
+      { q: 'Which ring is best for cycle and ovulation tracking?', a: 'Oura and Ultrahuman, with RingConn close behind, and CUDIS ruled out by hardware. Oura offers cycle insights, period prediction, pregnancy insights and pairing with Natural Cycles, the FDA-cleared birth-control app, which no other brand here lists. Ultrahuman has a free Cycle and Ovulation PowerPlug plus a paid Pro tier powered by OvuSense, though OvuSense\'s headline 99% figure belongs to its vaginal sensor, not skin temperature. RingConn does full-cycle prediction with temperature-dip ovulation detection at no subscription. CUDIS has no temperature sensor, so it cannot do this at all.' },
+      { q: 'Can Kygo use my smart ring data?', a: 'Yes, for most. Kygo connects directly to Oura, plus Apple Health, Fitbit, Garmin, WHOOP and Samsung Galaxy Watch. RingConn and Ultrahuman both sync to Apple Health and Google Health Connect, so Kygo reads their sleep, HRV and heart-rate data that way. CUDIS describes HealthKit and Health Connect support in its privacy policy but does not advertise it, and one App Store reviewer reports it not working, so treat that path as unverified.' },
     ];
   }
 
@@ -1096,7 +1099,7 @@ class KygoSmartRingComparison extends HTMLElement {
     `).join('');
     const state = active.size
       ? `${active.size} ${active.size === 1 ? 'priority' : 'priorities'} on`
-      : 'All-round ranking';
+      : 'Nothing selected';
     return `
       <div class="finder-controls">
         <div class="finder-head">
@@ -1106,12 +1109,16 @@ class KygoSmartRingComparison extends HTMLElement {
         <div class="fchips" role="group" aria-label="Ring finder priorities">${chips}</div>
       </div>
       <div class="finder-out">${this._renderFinderResults()}</div>
-      <p class="finder-note">Cost, battery and feature depth are computed straight from the tables below, so they can never disagree with them. Feature depth is the share of the ${this._featureTotals.total} tracked features a brand publishes, which measures how much a brand claims, not how well it works. The other five are our reading of the published record: no subscription counts Ultrahuman at 80 because ring data is free but AFib and ovulation confirmation are paid; independent validation scores only peer-reviewed work the brand did not run; buyable in the US scores the Ring PRO at 40 for pre-order and the Ring AIR at 0 because it cannot legally ship here. With nothing selected all eight are weighted equally, which favours cheaper rings, so pick your priorities and the order changes.</p>
+      <p class="finder-note">Cost, battery and feature depth are computed straight from the tables below, so they can never disagree with them. Feature depth is the share of the ${this._featureTotals.total} tracked features a brand publishes, which measures how much a brand claims, not how well it works. The other five are our reading of the published record: no subscription counts Ultrahuman at 80 because ring data is free but AFib and ovulation confirmation are paid; independent validation scores only peer-reviewed work the brand did not run; buyable in the US scores the Ring PRO at 40 for pre-order and the Ring AIR at 0 because it cannot legally ship here. There is deliberately no default ranking: these eight are not the same kind of thing, so averaging them all would invent a winner rather than find one.</p>
     `;
   }
 
   _renderFinderResults() {
     const ranked = this._ranked;
+    // Nothing chosen: show the field in a neutral order, priced low to high,
+    // and say plainly that no ranking has been applied.
+    if (!ranked.length) return this._renderFinderEmpty();
+
     const top = ranked.slice(0, 3);
     const rest = ranked.slice(3);
     const critName = {};
@@ -1156,6 +1163,33 @@ class KygoSmartRingComparison extends HTMLElement {
     return `
       <div class="fr-grid">${cards}</div>
       ${rest.length ? `<div class="fr-rest"><div class="fr-rest-head">The rest of the field</div>${restRows}</div>` : ''}
+    `;
+  }
+
+  // The no-priority state. Deliberately not a ranking.
+  _renderFinderEmpty() {
+    const rows = [...this._models].sort((a, b) => a.hw - b.hw).map(m => {
+      const rel = m.buy.aff ? 'noopener sponsored' : 'noopener';
+      return `
+        <div class="fr-row fr-row-plain">
+          <span class="fr-row-logo">${this._brandMark(m.brand)}</span>
+          <span class="fr-row-name">${m.name}</span>
+          <span class="fr-row-price">${this._fmt(m.hw)}${m.sub ? ' + sub' : ''}</span>
+          <a class="fr-buy" href="${m.buy.url}" target="_blank" rel="${rel}" data-track-position="ranking" data-track-label="${m.buy.slug}-roster">${m.buy.label} ${this._icon('arrowRight')}</a>
+        </div>`;
+    }).join('');
+    return `
+      <div class="fr-empty">
+        <div class="fr-empty-ico">${this._icon('sparkles')}</div>
+        <div>
+          <h3>Pick a priority to rank the field</h3>
+          <p>We are not going to hand you a default winner. The eight priorities above are not the same kind of thing, so scoring a ring on all of them at once would invent a ranking rather than find one. Tell the finder what you actually care about and it will rank all ${this._models.length} against that.</p>
+        </div>
+      </div>
+      <div class="fr-rest">
+        <div class="fr-rest-head">All ${this._models.length} models, priced low to high. No ranking applied.</div>
+        ${rows}
+      </div>
     `;
   }
 
@@ -1663,7 +1697,7 @@ class KygoSmartRingComparison extends HTMLElement {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         'name': 'Smart Ring Comparison and Picker (2026)',
-        'description': `Compare ${h.models} current smart rings from ${h.brands} brands side by side: Oura (Ring 5, Ring 4), RingConn (Gen 3, Gen 2, Gen 2 Air), Ultrahuman (Ring PRO, Ring AIR) and CUDIS (002 Classic, 002 Sporty). A priority-based ring finder, model-by-model specs, a feature matrix, the validation record for each brand, and the real multi-year cost with subscriptions and paid add-ons included. Official manufacturer figures only.`,
+        'description': `Compare ${h.models} current smart rings from Oura, RingConn, Ultrahuman and CUDIS: a priority-based ring finder, model-by-model specs, a feature matrix, each brand's validation record, and the real multi-year cost. Official manufacturer figures only.`,
         'url': 'https://www.kygo.app/tools/smart-ring-comparison',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
@@ -1674,8 +1708,8 @@ class KygoSmartRingComparison extends HTMLElement {
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
-        'featureList': `Priority-based ring finder ranking ${h.models} models on eight criteria, model-by-model spec comparison across six categories including validation, brand-level feature matrix across ${this._featureTotals.total} features, interactive multi-year cost calculator covering subscriptions and paid add-ons, per-brand accuracy and validation breakdown, US availability and regulatory caveats, mobile-first responsive design`,
-        'keywords': 'smart ring comparison 2026, best smart ring, smart ring without subscription, oura vs ringconn vs ultrahuman, cudis vs oura, ultrahuman ring pro vs oura ring 5, cheapest smart ring, longest battery smart ring, smart ring sleep apnea, smart ring picker, which smart ring should i buy'
+        'featureList': `Ring finder ranking ${h.models} models on eight priorities, six-category spec comparison, ${this._featureTotals.total}-feature software matrix, multi-year cost calculator`,
+        'keywords': 'smart ring comparison 2026, best smart ring, smart ring without subscription, oura vs ringconn vs ultrahuman, which smart ring should i buy'
       };
       const s = document.createElement('script');
       s.type = 'application/ld+json';
@@ -1956,14 +1990,14 @@ class KygoSmartRingComparison extends HTMLElement {
 
       /* Validation cards */
       .valid-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      @media (min-width: 720px) { .valid-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
-      .valid-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-md); }
+      @media (min-width: 720px) { .valid-grid { grid-template-columns: 1fr 1fr; } }
+      .valid-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-md); }
       .valid-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
       .valid-ico { width: 44px; height: 44px; border-radius: 11px; background: #fff; border: 1.5px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
       .valid-ico img { width: 28px; height: 28px; object-fit: contain; }
       .valid-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin: 0; color: var(--fg-1); }
       .valid-card p { font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0 0 14px; }
-      .valid-tag { display: inline-block; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 6px 12px; border-radius: 999px; }
+      .valid-tag { align-self: flex-start; margin-top: auto; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 6px 12px; border-radius: 999px; }
       .valid-note { margin: 20px 0 0; font-size: 13px; line-height: 1.6; color: var(--fg-3); max-width: 90ch; }
 
       /* Kygo CTA */
@@ -2080,6 +2114,12 @@ class KygoSmartRingComparison extends HTMLElement {
       .fr-buy .ico { width: 13px; height: 13px; transition: transform .15s; }
       .fr-buy:hover .ico { transform: translateX(2px); }
 
+      .fr-empty { display: flex; gap: 16px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; box-shadow: var(--shadow-md); }
+      @media (max-width: 600px) { .fr-empty { flex-direction: column; gap: 12px; } }
+      .fr-empty-ico { flex: none; width: 40px; height: 40px; border-radius: 10px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: flex; align-items: center; justify-content: center; }
+      .fr-empty-ico .ico { width: 21px; height: 21px; }
+      .fr-empty h3 { font-family: var(--font-display); font-weight: 600; font-size: 18px; line-height: 1.25; margin: 0 0 8px; color: var(--fg-1); }
+      .fr-empty p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--fg-2); }
       .fr-rest { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 6px 18px 14px; box-shadow: var(--shadow-md); }
       .fr-rest-head { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--fg-3); padding: 14px 0 10px; }
       .fr-row { display: grid; grid-template-columns: 30px 26px minmax(0,1fr) 34px; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--border-subtle); }
@@ -2092,6 +2132,11 @@ class KygoSmartRingComparison extends HTMLElement {
       .fr-row-bar span { display: block; height: 100%; border-radius: 4px; background: var(--fg-3); }
       .fr-row-num { font-family: var(--font-numeric); font-size: 13px; font-weight: 600; color: var(--fg-2); text-align: right; }
       @media (min-width: 560px) { .fr-row-bar { display: block; } }
+      .fr-row-plain { grid-template-columns: 26px minmax(0,1fr) auto; }
+      @media (min-width: 560px) { .fr-row-plain { grid-template-columns: 26px minmax(0,1fr) 110px 130px; } }
+      .fr-row-price { font-family: var(--font-numeric); font-size: 13px; font-weight: 600; color: var(--fg-1); text-align: right; white-space: nowrap; }
+      @media (max-width: 559px) { .fr-row-plain .fr-buy { display: none; } }
+      .fr-row-plain .fr-buy { justify-content: flex-end; }
 
       /* Spec-table model picker */
       .modelpick-wrap { background: var(--bg-raised); border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 16px; margin-bottom: 16px; }
@@ -2124,19 +2169,18 @@ class KygoSmartRingComparison extends HTMLElement {
       .calc-toggle-box .ico { width: 12px; height: 12px; }
 
       /* Validation cards go 4-up on wide screens */
-      @media (min-width: 1000px) { .valid-grid { grid-template-columns: repeat(2, 1fr); } }
 
       /* Before-you-buy caveats */
       .caveats { display: grid; grid-template-columns: 1fr; gap: 14px; }
-      @media (min-width: 880px) { .caveats { grid-template-columns: 1fr 1fr; align-items: start; } }
+      @media (min-width: 880px) { .caveats { grid-template-columns: 1fr 1fr; } }
       .caveat { display: flex; gap: 16px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; box-shadow: var(--shadow-md); }
       @media (max-width: 600px) { .caveat { flex-direction: column; gap: 12px; } }
       .caveat-ico { flex: none; width: 40px; height: 40px; border-radius: 10px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: flex; align-items: center; justify-content: center; }
       .caveat-ico .ico { width: 21px; height: 21px; }
-      .caveat-body { min-width: 0; }
+      .caveat-body { min-width: 0; flex: 1; display: flex; flex-direction: column; }
       .caveat-body h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.25; margin: 0 0 8px; color: var(--fg-1); }
       .caveat-body p { margin: 0 0 12px; font-size: 14px; line-height: 1.6; color: var(--fg-2); }
-      .caveat-src { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.3px; color: var(--fg-3); padding-top: 10px; border-top: 1px solid var(--border-subtle); }
+      .caveat-src { margin-top: auto; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.3px; color: var(--fg-3); padding-top: 10px; border-top: 1px solid var(--border-subtle); }
 
 
     `;
