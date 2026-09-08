@@ -286,16 +286,21 @@ class KygoSmartRingComparison extends HTMLElement {
   // data above so they can never disagree with the tables; the other five
   // are documented judgements, stated in `_pickerNote()` on the page.
 
+  // `by` is what the answer actually varies over: 'model' where every model
+  // differs, 'brand' where the answer is the same across a brand's lineup.
+  // `cards` is how many get a card: a number, or 'qualify' to show only the
+  // models at or above `min`, because a card for a ring that does not do the
+  // thing is noise.
   get _criteria() {
     return [
-      { key: 'cost',     icon: 'wallet',   label: 'Lowest total cost' },
-      { key: 'nosub',    icon: 'unlock',   label: 'No subscription' },
-      { key: 'battery',  icon: 'battery',  label: 'Longest battery' },
-      { key: 'depth',    icon: 'sparkles', label: 'Deepest feature set' },
-      { key: 'evidence', icon: 'flask',    label: 'Independent validation' },
-      { key: 'apnea',    icon: 'moon',     label: 'Sleep apnea monitoring' },
-      { key: 'women',    icon: 'cycle',    label: "Women's health" },
-      { key: 'usnow',    icon: 'truck',    label: 'Buyable in the US today' },
+      { key: 'cost',     icon: 'wallet',   label: 'Lowest total cost',       by: 'model', cards: 1 },
+      { key: 'nosub',    icon: 'unlock',   label: 'No subscription',         by: 'brand', cards: 'qualify', min: 60, note: n => `${n} brands charge nothing to see your own ring data.` },
+      { key: 'battery',  icon: 'battery',  label: 'Longest battery',         by: 'model', cards: 3 },
+      { key: 'depth',    icon: 'sparkles', label: 'Deepest feature set',     by: 'brand', cards: 3 },
+      { key: 'evidence', icon: 'flask',    label: 'Independent validation',  by: 'brand', cards: 3 },
+      { key: 'apnea',    icon: 'moon',     label: 'Sleep apnea monitoring',  by: 'model', cards: 'qualify', min: 100, note: n => `Only ${n} models here offer it, both from RingConn.` },
+      { key: 'women',    icon: 'cycle',    label: "Women's health",          by: 'brand', cards: 3 },
+      { key: 'usnow',    icon: 'truck',    label: 'Buyable in the US today', by: 'brand', cards: 'qualify', min: 100, note: n => `${n} brands ship to a US address today. Ultrahuman is the exception.` },
     ];
   }
 
@@ -352,6 +357,31 @@ class KygoSmartRingComparison extends HTMLElement {
       return { m, display, sort };
     });
     return rows.sort((a, b) => b.sort - a.sort || a.m.hw - b.m.hw);
+  }
+
+  // Which models earn a card for this criterion, and which fall to the list
+  // below it. A "best match" is only crowned when one entry actually beats
+  // the next; where several tie, none is singled out.
+  _finderCards(key) {
+    const c = this._criteria.find(x => x.key === key);
+    const rows = this._criterionRows(key);
+    let pool = rows;
+    if (c.by === 'brand') {
+      // One row per brand: its best model on this criterion, then the one
+      // you can actually buy, then the cheaper.
+      const seen = new Set();
+      pool = [...rows].sort((a, b) =>
+        b.sort - a.sort || b.m.s.usnow - a.m.s.usnow || a.m.hw - b.m.hw
+      ).filter(r => !seen.has(r.m.brand) && seen.add(r.m.brand));
+    }
+    const cards = c.cards === 'qualify'
+      ? pool.filter(r => r.sort >= c.min)
+      : pool.slice(0, c.cards);
+    const keys = new Set(cards.map(r => r.m.key));
+    const rest = rows.filter(r => !keys.has(r.m.key));
+    const showBest = cards.length === 1 || (cards.length > 1 && cards[0].sort > cards[1].sort);
+    const note = c.note ? c.note(cards.length) : '';
+    return { cards, rest, showBest, note };
   }
 
   // -- Hero stats (computed, never typed) --------------------------------
@@ -1099,15 +1129,13 @@ class KygoSmartRingComparison extends HTMLElement {
 
   _renderFinderResults() {
     if (!this._priority) return this._renderFinderEmpty();
-    const rows = this._criterionRows(this._priority);
-    const top = rows.slice(0, 3);
-    const rest = rows.slice(3);
+    const { cards: top, rest, showBest, note } = this._finderCards(this._priority);
     const cards = top.map((r, i) => {
       const b = this._brands[r.m.brand];
       const rel = r.m.buy.aff ? 'noopener sponsored' : 'noopener';
       return `
-        <div class="fr-card${i === 0 ? ' fr-win' : ''}">
-          <div class="fr-rank">${i === 0 ? 'Best match' : `#${i + 1}`}</div>
+        <div class="fr-card${showBest && i === 0 ? ' fr-win' : ''}">
+          ${showBest ? `<div class="fr-rank">${i === 0 ? 'Best match' : `#${i + 1}`}</div>` : ''}
           <div class="fr-head">
             <span class="fr-logo">${this._brandMark(r.m.brand)}</span>
             <div>
@@ -1125,13 +1153,14 @@ class KygoSmartRingComparison extends HTMLElement {
     }).join('');
     const restRows = rest.map((r, i) => `
       <div class="fr-row">
-        <span class="fr-row-rank">#${i + 4}</span>
+        <span class="fr-row-rank">#${top.length + i + 1}</span>
         <span class="fr-row-logo">${this._brandMark(r.m.brand)}</span>
         <span class="fr-row-name">${r.m.name}</span>
         <span class="fr-row-value">${r.display}</span>
       </div>`).join('');
     return `
-      <div class="fr-grid">${cards}</div>
+      ${note ? `<p class="fr-note">${note}</p>` : ''}
+      <div class="fr-grid fr-grid-${top.length}">${cards}</div>
       ${rest.length ? `<div class="fr-rest"><div class="fr-rest-head">The rest of the field</div>${restRows}</div>` : ''}
     `;
   }
@@ -1302,8 +1331,8 @@ class KygoSmartRingComparison extends HTMLElement {
     };
 
     const seg = this._models.map(m => {
-      const i = this._calcPick.indexOf(m.key);
-      return `<button data-seg-val="${m.key}" aria-pressed="${i > -1}" class="${i > -1 ? 'active' : ''}"><span class="seg-name">${i > -1 ? `<span class="pick-n">${i + 1}</span>` : ''}${m.name}</span><span class="px">${fmt(m.hw)}${m.sub ? ' + sub' : ''}</span></button>`;
+      const on = this._calcPick.includes(m.key);
+      return `<button data-seg-val="${m.key}" aria-pressed="${on}" class="${on ? 'active' : ''}"><span class="seg-name">${m.name}</span><span class="px">${fmt(m.hw)}${m.sub ? ' + sub' : ''}</span></button>`;
     }).join('');
 
     const gap = aTotal - bTotal;
@@ -2064,7 +2093,12 @@ class KygoSmartRingComparison extends HTMLElement {
       .finder-note { margin: 4px 0 0; font-size: 12.5px; line-height: 1.6; color: var(--fg-3); max-width: 100ch; }
 
       .fr-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-      @media (min-width: 720px) { .fr-grid { grid-template-columns: repeat(3, 1fr); align-items: stretch; } }
+      @media (min-width: 720px) {
+        .fr-grid { grid-template-columns: repeat(3, 1fr); align-items: stretch; }
+        .fr-grid-1 { grid-template-columns: minmax(0, 420px); }
+        .fr-grid-2 { grid-template-columns: repeat(2, 1fr); }
+      }
+      .fr-note { margin: 0 0 2px; font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--fg-2); }
       .fr-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow-md); }
       .fr-card.fr-win { border-color: var(--kygo-green); box-shadow: 0 8px 24px rgba(34,197,94,0.16); }
       .fr-rank { align-self: flex-start; font-family: var(--font-display); font-size: 10.5px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--fg-3); background: var(--bg-raised); padding: 5px 11px; border-radius: 999px; }
@@ -2127,8 +2161,7 @@ class KygoSmartRingComparison extends HTMLElement {
          PowerPlugs toggle */
       .seg.seg-wrap { flex-wrap: wrap; }
       .seg.seg-wrap button { flex: 1 1 30%; min-width: 96px; }
-      .seg .seg-name { display: inline-flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px; }
-      .seg .pick-n { flex: none; width: 15px; height: 15px; border-radius: 5px; background: var(--kygo-green); color: #fff; font-family: var(--font-numeric); font-size: 9.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+      .seg .seg-name { display: block; }
       .calc-toggle { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; padding: 12px 14px; border-radius: 10px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-2); font-family: var(--font-body); font-size: 13px; font-weight: 500; line-height: 1.4; cursor: pointer; transition: all .15s ease; }
       .calc-toggle:hover { border-color: var(--kygo-green); }
       .calc-toggle.on { border-color: var(--kygo-green); background: rgba(34,197,94,0.06); color: var(--fg-1); }
