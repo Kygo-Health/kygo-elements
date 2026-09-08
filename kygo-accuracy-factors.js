@@ -138,6 +138,7 @@ class KygoAccuracyFactors extends HTMLElement {
    * Three arrays, one card shape, no second layout anywhere on the page.
    *   key    stable id, used for the expand state and the tracking label
    *   title  the thing the reader is worried about, in their words
+   *   ic     key into the icon map, one line icon per card
    *   badges one or two verdict chips, from the fixed set in _badgeMeta
    *   one    the single sentence that sits under the title when collapsed
    *   num    the one big number on the collapsed card
@@ -169,7 +170,7 @@ class KygoAccuracyFactors extends HTMLElement {
   // Section A. The questions people actually ask, grouped by the verdict.
   get _asked() {
     return [
-      { key: 'hair', grp: 'no', title: 'Hairy arms', badges: [{ t: 'no' }], dev: ['watch'], chips: ['HR'],
+      { key: 'hair', ic: 'hair', grp: 'no', title: 'Hairy arms', badges: [{ t: 'no' }], dev: ['watch'], chips: ['HR'],
         num: 'p = 0.29',
         one: 'The one study that graded arm hair found no difference in accuracy. Shaving has never been tested on its own.',
         study: 'Cardiac rehab patients, n=30, four-point photographic hair scale, Fitbit against a chest ECG. Hair density did not differ between the patients whose readings were accurate and the patients whose readings were not. Shaving was bundled with cleaning the sensor and taping the watch down, and that bundle helped 3 of 10. Vermunicht 2025.',
@@ -177,7 +178,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Nothing. If your readings are poor, fix position and tightness first, because shaving is unproven.',
         src: 'verm' },
 
-      { key: 'tattoo', grp: 'yes', title: 'Tattoos', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
+      { key: 'tattoo', ic: 'pen', grp: 'yes', title: 'Tattoos', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
         num: '36% dropped out',
         one: 'Not a small drift: over ink the sensor often returns nothing at all.',
         study: 'n=25, tattooed skin against clear skin on the same arm, optical sensor against a chest ECG. Resting error 22.9% over ink against 2.9% on clear skin, and 9 of 25 people had total dropout. Ink darkness and tattoo age did not predict failure. Navalta and Bunn 2025.',
@@ -185,7 +186,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Move the sensor to clear skin: higher up the forearm, the other wrist, or an armband.',
         src: 'tattoo' },
 
-      { key: 'skin', grp: 'no', title: 'Skin tone', badges: [{ t: 'no', label: 'Does not matter on average' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
+      { key: 'skin', ic: 'contrast', grp: 'no', title: 'Skin tone', badges: [{ t: 'no', label: 'Does not matter on average' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
         num: 'Bias: no difference',
         one: 'Average error is the same across skin tones. The spread is wider, and the effect shows up as missing readings rather than wrong ones.',
         study: 'Null in the best-powered studies: n=53 with a balanced Fitzpatrick sample, and n=28 measured with an objective colorimeter rather than a self-report scale. Pooled bias was null in every stratum, but the limits of agreement were 2.2 times wider in dark skin, and dark-skin participants supplied a disproportionate share of the missing data for 2 of the 3 devices tested.',
@@ -193,7 +194,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Check completeness, not just the average. Gaps in the graph are the symptom here, not a shifted number.',
         src: 'meta3' },
 
-      { key: 'cold', grp: 'yes', title: 'Cold hands', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'SpO2'],
+      { key: 'cold', ic: 'snow', grp: 'yes', title: 'Cold hands', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'SpO2'],
         num: 'Signal -41%',
         one: 'Cold cuts the optical signal roughly in half, and the device drops readings rather than guessing.',
         study: 'Ice over the forearm cut the raw optical signal by 41%, n=21. Warming the wrist for 15 minutes took blood-oxygen error from 4.1 points to zero, independent of skin tone, n=46. In a 10 C chamber the average looked fine while the ability to track change collapsed, with one ring going from 0.78 to 0.32 on concordance.',
@@ -201,7 +202,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Warm up before you trust a workout reading, and expect gaps on cold nights and winter runs.',
         src: 'cold' },
 
-      { key: 'lotion', grp: 'mfr', title: 'Sweat, lotion and sunscreen', badges: [{ t: 'mfr' }], dev: ['watch', 'ring'], chips: ['HR'],
+      { key: 'lotion', ic: 'sun', grp: 'mfr', title: 'Sweat, lotion and sunscreen', badges: [{ t: 'mfr' }], dev: ['watch', 'ring'], chips: ['HR'],
         num: '0 studies',
         one: 'Every brand says keep the sensor clean and dry. No study has ever tested lotion or sunscreen at a wearable site.',
         study: 'Lotion, sunscreen and moisturiser have zero peer-reviewed tests at a wearable site as of 2026. Sweat has one: an n=14 prototype study found 3 to 8% changes to the shape of the signal and heart-rate error under 0.5 bpm.',
@@ -209,7 +210,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Wipe the sensor. Treat the lotion advice as a manufacturer instruction, not a research finding.',
         src: 'sweat' },
 
-      { key: 'wrist', grp: 'yes', title: 'Which wrist', badges: [{ t: 'no', label: 'No for HR and sleep' }, { t: 'yes', label: 'Yes for steps' }], dev: ['watch'], chips: ['HR', 'Sleep', 'Steps'],
+      { key: 'wrist', ic: 'hand', grp: 'yes', title: 'Which wrist', badges: [{ t: 'no', label: 'No for HR and sleep' }, { t: 'yes', label: 'Yes for steps' }], dev: ['watch'], chips: ['HR', 'Sleep', 'Steps'],
         num: '+1,253 steps',
         one: 'Heart rate and sleep do not care which wrist. Step counts do, by about 1,250 a day.',
         study: 'Both wrists worn at once: heart rate differed by 0.37 bpm, n=16; sleep was null on group means across 65 nights, n=13; the dominant wrist logged 1,253 more steps a day, n=12. Telling the app the wrong wrist moves activity by 22 to 26%.',
@@ -217,7 +218,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Pick one wrist, stay on it, and set it correctly in the app.',
         src: 'park' },
 
-      { key: 'tight', grp: 'yes', title: 'Too tight or too loose', badges: [{ t: 'yes' }], dev: ['watch'], chips: ['HR', 'HRV'],
+      { key: 'tight', ic: 'gauge', grp: 'yes', title: 'Too tight or too loose', badges: [{ t: 'yes' }], dev: ['watch'], chips: ['HR', 'HRV'],
         num: '23 to 47% better',
         one: 'Loose fails at every intensity. Too tight loses part of the pulse wave. The right pressure is personal.',
         study: 'A custom wrist rig with a load cell, n=17: tuning the pressure per person beat a universal setting by 23 to 47%, and loose (12 mmHg) failed at every intensity. A second rig, n=27, showed that excess pressure flattens the waveform. No study has tested a consumer strap at graded notches.',
@@ -225,7 +226,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'One notch tighter for workouts, back off for sleep.',
         src: 'scard' },
 
-      { key: 'two', grp: 'no', title: 'Two devices at once', badges: [{ t: 'no' }], dev: ['watch', 'ring'], chips: ['HR'],
+      { key: 'two', ic: 'layers', grp: 'no', title: 'Two devices at once', badges: [{ t: 'no' }], dev: ['watch', 'ring'], chips: ['HR'],
         num: '0 missing values',
         one: 'Four optical devices worn together did not interfere with each other.',
         study: 'n=16, two armbands and two watches worn at once against a chest strap: biases ran from -0.05 to +2.93 bpm with no missing data. All Polar devices, and the paper carries no funding statement.',
@@ -233,7 +234,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Wear both if you want to compare them.',
         src: 'jmirsite' },
 
-      { key: 'bed', grp: 'gap', title: 'Sharing a bed', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['Sleep'],
+      { key: 'bed', ic: 'bed', grp: 'gap', title: 'Sharing a bed', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['Sleep'],
         num: '+21% movement',
         one: 'A partner raises your limb movements 21% in a sleep lab. Nobody has checked what that does to a tracker.',
         study: '12 couples, lab sleep studies, 4 nights: 61.5 limb movements a night when sharing a bed against 50.9 when not. Bed-partner status is not reported in any consumer-device validation study. Predicted direction is more wake scored, and that is a prediction rather than a measurement.',
@@ -241,7 +242,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Expect more awake minutes on shared nights, and compare like with like.',
         src: 'cosleep' },
 
-      { key: 'wristsize', grp: 'gap', title: 'Small or large wrists', badges: [{ t: 'gap' }], dev: ['watch'], chips: ['HR'],
+      { key: 'wristsize', ic: 'ruler', grp: 'gap', title: 'Small or large wrists', badges: [{ t: 'gap' }], dev: ['watch'], chips: ['HR'],
         num: 'No data',
         one: 'Nobody has tested wrist size with current hardware.',
         study: 'One 2019 cardiac-rehab study found that wrist circumference did not matter. The 2026 studies list it as an uncontrolled variable rather than testing it.',
@@ -249,7 +250,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Focus on position and tightness, which are tested.',
         src: 'shch' },
 
-      { key: 'ringfit', grp: 'yes', title: 'Ring finger and fit', badges: [{ t: 'yes', label: 'Matters: rotation' }, { t: 'gap', label: 'Untested: which finger' }], dev: ['ring'], chips: ['HR', 'HRV'],
+      { key: 'ringfit', ic: 'ring', grp: 'yes', title: 'Ring finger and fit', badges: [{ t: 'yes', label: 'Matters: rotation' }, { t: 'gap', label: 'Untested: which finger' }], dev: ['ring'], chips: ['HR', 'HRV'],
         num: '-7.86 dB at 30°',
         one: 'A ring turned 30 degrees loses most of its signal. Which finger is best has never been tested.',
         study: 'n=10, 432 signal sets: at 30 degrees from the optimal position signal-to-noise falls to -7.86 dB, and doubling the LED power cannot recover it. Left against right hand: reliability 94.8%, n=96. Finger choice and tightness: no study.',
@@ -257,7 +258,7 @@ class KygoAccuracyFactors extends HTMLElement {
         todo: 'Sensors on the palm side, snug enough that it cannot spin overnight.',
         src: 'rot' },
 
-      { key: 'age', grp: 'gap', title: 'An old device', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'Sleep', 'Steps'],
+      { key: 'age', ic: 'clock', grp: 'gap', title: 'An old device', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'Sleep', 'Steps'],
         num: '0 of 249',
         one: 'Device age has never been studied as a factor, across 249 validation studies.',
         study: 'The umbrella review of 249 validation studies and 430,465 participants does not analyse device age. Firmware changes do move results: one Fitbit algorithm update took sleep-staging accuracy from 71% to 77% on the same hardware.',
@@ -270,56 +271,56 @@ class KygoAccuracyFactors extends HTMLElement {
   // Section B. Ranked by how much they moved the numbers.
   get _help() {
     return [
-      { key: 'forearm', title: 'Wear it higher up the forearm', badges: [{ t: 'ev', label: 'One study, n=10' }, { t: 'agree' }], dev: ['watch'], chips: ['HR'],
+      { key: 'forearm', ic: 'moveUp', title: 'Wear it higher up the forearm', badges: [{ t: 'ev', label: 'One study, n=10' }, { t: 'agree' }], dev: ['watch'], chips: ['HR'],
         num: '20.5% to 7.3%',
         one: 'Three finger widths above the wrist bone instead of one cut movement error from 20.5% to 7.3%.',
         study: 'Vermunicht 2025, Fitbit Inspire 2 against a Polar H10 chest strap, n=10 healthy adults. Agreement with the strap rose from 0.59 to 0.92. One study of ten people, never replicated, so treat it as a strong lead rather than a law.',
         brands: 'Google says "a finger’s width above your wrist bone," and its sleep page says 2 to 3. Apple says "above the wrist bone (towards your elbow, not your hand)." Polar says "at least a finger’s width." WHOOP says "an inch above your wrist bone."',
         src: 'verm' },
 
-      { key: 'snug', title: 'Snug for workouts, loosen after', badges: [{ t: 'ev', label: 'Custom rig' }, { t: 'agree' }], dev: ['watch'], chips: ['HR', 'HRV'],
+      { key: 'snug', ic: 'watch', title: 'Snug for workouts, loosen after', badges: [{ t: 'ev', label: 'Custom rig' }, { t: 'agree' }], dev: ['watch'], chips: ['HR', 'HRV'],
         num: 'Up to 47%',
         one: 'The right strap pressure is worth more than any spec-sheet number.',
         study: 'Tuning contact pressure per person beat a universal setting by 23 to 47% on a load-cell rig, n=17, and loose failed at every intensity. See "Too tight or too loose" above for the full study line.',
         brands: 'Apple says to tighten the band for workouts and loosen it afterwards. Google and Polar say the same thing in their own words.',
         src: 'scard' },
 
-      { key: 'armband', title: 'Armband or chest strap for arm-heavy sport', badges: [{ t: 'ev', label: 'Strong, replicated' }], dev: ['watch'], chips: ['HR'],
+      { key: 'armband', ic: 'activity', title: 'Armband or chest strap for arm-heavy sport', badges: [{ t: 'ev', label: 'Strong, replicated' }], dev: ['watch'], chips: ['HR'],
         num: '4x tighter',
         one: 'The same sensor moved from wrist to upper arm cut the error range roughly fourfold.',
         study: 'Three identical WHOOP 4.0 units worn on wrist, forearm and upper arm at once, n=28: treadmill agreement half-width 11.5 bpm at the wrist against 2.7 bpm at the upper arm (Moghaddam 2026). Replicated with Polar hardware, n=16. Rowing, elliptical with arm levers, weights and interval bursts are where the wrist fails.',
         todo: 'For anything that grips, swings or bursts, move the sensor off the wrist.',
         src: 'mogh' },
 
-      { key: 'warm', title: 'Warm up before you trust the number', badges: [{ t: 'ev', label: 'Strong for mechanism' }, { t: 'agree' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
+      { key: 'warm', ic: 'flame', title: 'Warm up before you trust the number', badges: [{ t: 'ev', label: 'Strong for mechanism' }, { t: 'agree' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
         num: '4.1 points to 0',
         one: 'Fifteen minutes of warmth took a low-perfusion blood-oxygen error to zero.',
         study: 'Local wrist warming for 15 minutes in low-perfusion patients, n=46, took bias from 4.1 points to zero, independent of skin tone. Cooling cuts the raw optical signal 41%. See "Cold hands" above.',
         brands: 'Garmin says to warm up for 5 to 10 minutes and take a reading before you start.',
         src: 'warm' },
 
-      { key: 'palm', title: 'Ring sensors on the palm side, snug', badges: [{ t: 'ev', label: 'One study' }, { t: 'agree' }], dev: ['ring'], chips: ['HR', 'HRV'],
+      { key: 'palm', ic: 'ring', title: 'Ring sensors on the palm side, snug', badges: [{ t: 'ev', label: 'One study' }, { t: 'agree' }], dev: ['ring'], chips: ['HR', 'HRV'],
         num: '30° is enough',
         one: 'A ring that spins overnight is losing signal no LED power recovers.',
         study: 'At 30 degrees from the optimal position, signal-to-noise falls to -7.86 dB and doubling the light output cannot compensate, n=10, 432 signal sets. See "Ring finger and fit" above.',
         brands: 'Oura says index finger, sensor bumps on the palm side, snug rather than tight. Samsung says the indicator goes on the palm side.',
         src: 'rot' },
 
-      { key: 'cart', title: 'Pocket it when you push a cart or stroller', badges: [{ t: 'ev', label: 'Direction replicated, size disputed' }], dev: ['watch'], chips: ['Steps'],
+      { key: 'cart', ic: 'cart', title: 'Pocket it when you push a cart or stroller', badges: [{ t: 'ev', label: 'Direction replicated, size disputed' }], dev: ['watch'], chips: ['Steps'],
         num: '1 in 5 steps',
         one: 'Wrist trackers lose a fifth of your steps when your arm is not swinging.',
         study: 'Cart and stroller pushing: the wrist undercounted by 19.8% in the peer-reviewed study and by up to 96.6% in a conference abstract, so the direction is solid and the size is not. In a pocket the same walk lost 6.4%.',
         todo: 'Pocket the phone or the tracker for the shop run, or accept the undercount.',
         src: 'cart' },
 
-      { key: 'onewrist', title: 'One wrist, and tell the app which', badges: [{ t: 'ev', label: 'Strong' }], dev: ['watch'], chips: ['Steps'],
+      { key: 'onewrist', ic: 'target', title: 'One wrist, and tell the app which', badges: [{ t: 'ev', label: 'Strong' }], dev: ['watch'], chips: ['Steps'],
         num: '±22 to 26%',
         one: 'Switching wrists or setting the wrong one moves activity by about a quarter.',
         study: 'Set for one wrist and worn on the other, activity was overestimated by 22.6% or underestimated by 25.9%, n=45. In a supervised study, 15.6% of participants wore it on the wrong wrist. The dominant wrist also logs about 1,250 more steps a day. See "Which wrist" above.',
         todo: 'Check the handedness and wrist fields in your app match reality.',
         src: 'wrista' },
 
-      { key: 'charge', title: 'Charge in the shower, not in bed', badges: [{ t: 'ev', label: 'Strong for the missingness curve' }], dev: ['watch', 'ring'], chips: ['Sleep', 'HR', 'HRV'],
+      { key: 'charge', ic: 'battery', title: 'Charge in the shower, not in bed', badges: [{ t: 'ev', label: 'Strong for the missingness curve' }], dev: ['watch', 'ring'], chips: ['Sleep', 'HR', 'HRV'],
         num: '47% by night 5',
         one: 'Nearly half of participants were missing data by night five.',
         study: 'Garmin, n=299, five nights: missing data rose from 22% of participants on night one to 47% on night five, and 30% of nights were lost overall. Battery is the authors’ inferred cause rather than a measured one.',
@@ -332,42 +333,42 @@ class KygoAccuracyFactors extends HTMLElement {
   // Section C. Conditions the sensor or the model was never built for.
   get _hurt() {
     return [
-      { key: 'rowing', title: 'Rowing, elliptical arms, swimming', badges: [], dev: ['watch'], chips: ['HR'],
+      { key: 'rowing', ic: 'waves', title: 'Rowing, elliptical arms, swimming', badges: [], dev: ['watch'], chips: ['HR'],
         num: '4% to 30%',
         one: 'Any sport that grips or submerges the wrist beats every wrist sensor tested.',
         study: 'Rowing gave 13.4% error at the wrist against 3.8% walking on the same device. On an elliptical with arm levers, no wrist device reached acceptable agreement, n=50. Swimming: Garmin Venu Sq 4.05% dry and 29.95% wet, n=10.',
         todo: 'Use a chest strap or an armband for these, or read the session as a rough shape rather than a number.',
         src: 'swim' },
 
-      { key: 'weights', title: 'Calories from a weights session', badges: [], dev: ['watch', 'ring'], chips: ['Calories'],
+      { key: 'weights', ic: 'dumbbell', title: 'Calories from a weights session', badges: [], dev: ['watch', 'ring'], chips: ['Calories'],
         num: '+116%',
         one: 'Heart rate survives lifting. The calorie model does not.',
         study: 'n=62 against indirect calorimetry: heart rate correlated 0.96 to 0.97 during resistance training while energy expenditure read 116% high. Lee 2026, from the tables rather than the abstract.',
         todo: 'Halve it.',
         src: 'lee' },
 
-      { key: 'stairs', title: 'Stairs and slow walking', badges: [], dev: ['watch'], chips: ['Steps'],
+      { key: 'stairs', ic: 'stairs', title: 'Stairs and slow walking', badges: [], dev: ['watch'], chips: ['Steps'],
         num: '40% vs 7%',
         one: 'Below about 4 km/h step error jumps from 7% to 40%. Stairs fail at every pace.',
         study: 'n=258 across 21 devices: 40 plus or minus 40% error at slow speeds against 7 plus or minus 16% at normal pace. On stairs, neither Fitbit tested met the 10% threshold in any condition, n=8.',
         todo: 'If you walk slowly, read the trend rather than the total, and do not expect stairs to be counted.',
         src: 'gait' },
 
-      { key: 'firstnight', title: 'Your first nights with a new device', badges: [], dev: ['watch', 'ring'], chips: ['Sleep'],
+      { key: 'firstnight', ic: 'moon', title: 'Your first nights with a new device', badges: [], dev: ['watch', 'ring'], chips: ['Sleep'],
         num: '7 nights',
         one: 'Everyone sleeps worse on night one, at home as much as in a lab. Judge it after a week.',
         study: 'First-night effect: sleep onset went from 20 to 14 minutes and total sleep rose 12 minutes by night two, n=45, with no home against lab difference, n=30. It takes about seven nights for a stable personal mean.',
         todo: 'Ignore week one. Compare the second week against the third.',
         src: 'homelab' },
 
-      { key: 'battery', title: 'Battery saver mode', badges: [{ t: 'mfr' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2', 'Sleep'],
+      { key: 'battery', ic: 'batLow', title: 'Battery saver mode', badges: [{ t: 'mfr' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2', 'Sleep'],
         num: 'Off, not worse',
         one: 'Low power settings switch background heart rate and blood oxygen off, and the gap looks like non-wear.',
         study: 'Apple documents that Low Power Mode turns off background heart rate, background blood oxygen and heart-rate notifications. No validation literature exists on this, so it is manufacturer documentation only.',
         todo: 'If a night or a day is blank, check whether a power-saving mode was on before you blame the sensor.',
         src: 'applelpm' },
 
-      { key: 'heat', title: 'Heat', badges: [], dev: ['watch', 'ring'], chips: ['HR'],
+      { key: 'heat', ic: 'therm', title: 'Heat', badges: [], dev: ['watch', 'ring'], chips: ['HR'],
         num: '9.6 to 20.8 bpm',
         one: 'Heat hurt more than cold for every device that moved.',
         study: 'Ten devices in a 36 C chamber against a chest ECG, n=45: Fitbit Inspire 3 error more than doubled, from 9.6 to 20.8 bpm, and one ring rose 72%. The top devices barely moved.',
@@ -403,6 +404,27 @@ class KygoAccuracyFactors extends HTMLElement {
       flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5Z"/></svg>',
       droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>',
       arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
+      hair: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c0-6 2.5-9 4-13"/><path d="M8.5 20c0-6 2-9.5 3.5-13.5"/><path d="M13 20c0-6 2-9 3.5-13"/><path d="M17.5 20c0-5.5 1.5-8.5 2.5-12"/></svg>',
+      pen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7a2.8 2.8 0 0 0-4-4l-7 7-1 5z"/><path d="M5 21h6"/></svg>',
+      contrast: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></svg>',
+      snow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="m5 7 14 10"/><path d="m19 7-14 10"/></svg>',
+      sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.9 4.9 1.5 1.5"/><path d="m17.6 17.6 1.5 1.5"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m4.9 19.1 1.5-1.5"/><path d="m17.6 6.4 1.5-1.5"/></svg>',
+      watch: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M9 6.5 8.5 2h7L15 6.5"/><path d="M9 17.5 8.5 22h7L15 17.5"/></svg>',
+      layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="12" height="12" rx="2.5"/><path d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h7A2.5 2.5 0 0 1 20 5.5v7A2.5 2.5 0 0 1 17.5 15H16"/></svg>',
+      bed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19v-9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v9"/><path d="M3 15h18"/><path d="M7 11h3"/></svg>',
+      ruler: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="20" height="8" rx="2"/><path d="M7 8v3"/><path d="M12 8v4"/><path d="M17 8v3"/></svg>',
+      ring: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="6.5"/><circle cx="12" cy="5.5" r="1.8"/></svg>',
+      clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+      moveUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V5"/><path d="m6 11 6-6 6 6"/><path d="M4 20h16"/></svg>',
+      cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h2.5l2.6 12.4a1.5 1.5 0 0 0 1.5 1.2h9.1a1.5 1.5 0 0 0 1.5-1.2L21 7H6"/></svg>',
+      hand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 4-4 4 4 4"/><path d="M4 8h16"/><path d="m16 20 4-4-4-4"/><path d="M20 16H4"/></svg>',
+      battery: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="16" height="9" rx="2.5"/><path d="M22 11v3"/><path d="M6 11.5v2"/><path d="M10 11.5v2"/><path d="M14 11.5v2"/></svg>',
+      batLow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="16" height="9" rx="2.5"/><path d="M22 11v3"/><path d="M6 11.5v2"/></svg>',
+      waves: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8c2.5-2 4.5 2 7 0s4.5-2 7 0 4.5 2 6 0"/><path d="M2 14c2.5-2 4.5 2 7 0s4.5-2 7 0 4.5 2 6 0"/><path d="M2 20c2.5-2 4.5 2 7 0s4.5-2 7 0 4.5 2 6 0"/></svg>',
+      dumbbell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5v11"/><path d="M3.5 9v6"/><path d="M17.5 6.5v11"/><path d="M20.5 9v6"/><path d="M6.5 12h11"/></svg>',
+      stairs: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h4v-4h5v-4h5V8h4"/></svg>',
+      therm: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.8V5a2.5 2.5 0 0 0-5 0v9.8a5 5 0 1 0 5 0z"/><path d="M11.5 9v6.5"/></svg>',
+      gauge: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14 8.5 9.5"/><path d="M3.5 18a9.5 9.5 0 1 1 17 0"/></svg>',
       arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>',
       arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>',
@@ -511,6 +533,7 @@ class KygoAccuracyFactors extends HTMLElement {
       <article class="ac-card ${isExp ? 'expanded' : ''}" data-ckey="${card.key}">
         <button class="ac-head" aria-expanded="${isExp}" aria-controls="acb-${card.key}">
           <span class="ac-top">
+            <span class="ac-ico" aria-hidden="true">${this._icon(card.ic)}</span>
             <span class="ac-text">
               <span class="ac-title">${card.title}</span>
               <span class="ac-one">${card.one}</span>
@@ -1479,7 +1502,15 @@ class KygoAccuracyFactors extends HTMLElement {
       .ac-grid:has(.ac-card.expanded) { align-items: start; }
       .ac-head { display: block; flex: 1 1 auto; width: 100%; padding: 0; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .ac-head:hover { background: var(--gray-50); }
-      .ac-top { display: flex; align-items: stretch; gap: 14px; padding: 18px; height: 100%; }
+      .ac-top { display: flex; align-items: stretch; gap: 13px; padding: 18px; height: 100%; }
+      /* One line icon per card, in the same tinted tile the section eyebrows
+         use. Green on the two neutral sections, red on the hurts cards so the
+         tile agrees with the chip beside it. */
+      .ac-ico { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: var(--green-light); color: var(--green-dark); }
+      .ac-ico svg { width: 17px; height: 17px; }
+      #hurt .ac-ico { background: var(--red-light); color: var(--red-dark); }
+      .ac-card:hover .ac-ico { background: rgba(34,197,94,0.16); }
+      #hurt .ac-card:hover .ac-ico { background: rgba(239,68,68,0.16); }
       .ac-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
       .ac-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); line-height: 1.25; letter-spacing: -0.01em; overflow-wrap: break-word; }
       .ac-one { font-size: 13px; color: var(--gray-600); line-height: 1.45; }
@@ -1505,9 +1536,11 @@ class KygoAccuracyFactors extends HTMLElement {
       /* On a phone the verdict rail becomes a row above the title, so a long
          badge cannot squeeze the question into a narrow column. */
       @media (max-width: 559px) {
-        .ac-top { flex-wrap: wrap; }
-        .ac-right { order: -1; width: 100%; max-width: none; flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; }
-        .ac-badges { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; }
+        .ac-top { flex-wrap: wrap; align-items: flex-start; }
+        .ac-ico { order: -2; }
+        .ac-right { order: -1; flex: 1 1 auto; width: auto; max-width: none; flex-direction: row; align-items: center; justify-content: flex-end; gap: 8px; }
+        .ac-badges { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-end; }
+        .ac-text { flex: 1 1 100%; }
       }
 
       /* The body is always in the DOM and opens by animating its grid row from
