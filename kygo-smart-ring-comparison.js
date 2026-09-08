@@ -632,14 +632,14 @@ class KygoSmartRingComparison extends HTMLElement {
 
   _relatedPosts() {
     return [
+      { slug: 'best-smart-ring-oura-vs-ringconn-vs-ultrahuman-vs-cudis',
+        title: 'Best Smart Ring: Oura vs RingConn vs Ultrahuman vs CUDIS',
+        blurb: 'Nine models across four brands, $199 to $1,799, and only one with peer-reviewed accuracy data. Specs, real three-year cost and availability.',
+        cat: 'Wearables & Data', min: 14, img: '273a63_0f91ff715c524a77a516eab0d1c45111~mv2.png' },
       { slug: 'is-the-oura-ring-5-worth-it',
         title: 'Is the Oura Ring 5 Worth It? What Changed and What Didn\'t',
         blurb: 'Forty percent smaller, starting at $399, and no independent accuracy data yet. What changed, and who should actually buy it.',
         cat: 'Wearables & Data', min: 7, img: '273a63_5b1f7436802f4db3896917ad31e36cf3~mv2.png' },
-      { slug: 'oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based',
-        title: 'Oura Ring 5 vs Ring 4: Is the Upgrade Worth It? (Evidence-Based)',
-        blurb: 'Oura\'s marketing says 99% accurate. The peer-reviewed studies say something more specific. The honest upgrade math, with 3-year cost.',
-        cat: 'Wearables & Data', min: 8, img: '273a63_4ee944408ac042769fe13efe8021eb63~mv2.png' },
       { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
         title: 'What\'s the Most Accurate Wearable? 17 Studies, 6 Devices, Ranked (2026)',
         blurb: 'Seventeen independent studies on sleep, HRV, heart rate and step accuracy, with the actual numbers behind each device.',
