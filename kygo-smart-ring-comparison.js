@@ -338,7 +338,8 @@ class KygoSmartRingComparison extends HTMLElement {
   // reader has picked none).
   get _ranked() {
     const scores = this._scores;
-    const keys = this._priorities.size ? [...this._priorities] : this._criteria.map(c => c.key);
+    if (!this._priorities.size) return [];
+    const keys = [...this._priorities];
     return this._models
       .map(m => {
         const per = keys.map(k => ({ key: k, val: scores[m.key][k] }));
@@ -1089,7 +1090,7 @@ class KygoSmartRingComparison extends HTMLElement {
     `).join('');
     const state = active.size
       ? `${active.size} ${active.size === 1 ? 'priority' : 'priorities'} on`
-      : 'All-round ranking';
+      : 'Nothing selected';
     return `
       <div class="finder-controls">
         <div class="finder-head">
@@ -1099,12 +1100,16 @@ class KygoSmartRingComparison extends HTMLElement {
         <div class="fchips" role="group" aria-label="Ring finder priorities">${chips}</div>
       </div>
       <div class="finder-out">${this._renderFinderResults()}</div>
-      <p class="finder-note">Cost, battery and feature depth are computed straight from the tables below, so they can never disagree with them. Feature depth is the share of the ${this._featureTotals.total} tracked features a brand publishes, which measures how much a brand claims, not how well it works. The other five are our reading of the published record: no subscription counts Ultrahuman at 80 because ring data is free but AFib and ovulation confirmation are paid; independent validation scores only peer-reviewed work the brand did not run; buyable in the US scores the Ring PRO at 40 for pre-order and the Ring AIR at 0 because it cannot legally ship here. With nothing selected all eight are weighted equally, which favours cheaper rings, so pick your priorities and the order changes.</p>
+      <p class="finder-note">Cost, battery and feature depth are computed straight from the tables below, so they can never disagree with them. Feature depth is the share of the ${this._featureTotals.total} tracked features a brand publishes, which measures how much a brand claims, not how well it works. The other five are our reading of the published record: no subscription counts Ultrahuman at 80 because ring data is free but AFib and ovulation confirmation are paid; independent validation scores only peer-reviewed work the brand did not run; buyable in the US scores the Ring PRO at 40 for pre-order and the Ring AIR at 0 because it cannot legally ship here. There is deliberately no default ranking: these eight are not the same kind of thing, so averaging them all would invent a winner rather than find one.</p>
     `;
   }
 
   _renderFinderResults() {
     const ranked = this._ranked;
+    // Nothing chosen: show the field in a neutral order, priced low to high,
+    // and say plainly that no ranking has been applied.
+    if (!ranked.length) return this._renderFinderEmpty();
+
     const top = ranked.slice(0, 3);
     const rest = ranked.slice(3);
     const critName = {};
@@ -1149,6 +1154,33 @@ class KygoSmartRingComparison extends HTMLElement {
     return `
       <div class="fr-grid">${cards}</div>
       ${rest.length ? `<div class="fr-rest"><div class="fr-rest-head">The rest of the field</div>${restRows}</div>` : ''}
+    `;
+  }
+
+  // The no-priority state. Deliberately not a ranking.
+  _renderFinderEmpty() {
+    const rows = [...this._models].sort((a, b) => a.hw - b.hw).map(m => {
+      const rel = m.buy.aff ? 'noopener sponsored' : 'noopener';
+      return `
+        <div class="fr-row fr-row-plain">
+          <span class="fr-row-logo">${this._brandMark(m.brand)}</span>
+          <span class="fr-row-name">${m.name}</span>
+          <span class="fr-row-price">${this._fmt(m.hw)}${m.sub ? ' + sub' : ''}</span>
+          <a class="fr-buy" href="${m.buy.url}" target="_blank" rel="${rel}" data-track-position="ranking" data-track-label="${m.buy.slug}-roster">${m.buy.label} ${this._icon('arrowRight')}</a>
+        </div>`;
+    }).join('');
+    return `
+      <div class="fr-empty">
+        <div class="fr-empty-ico">${this._icon('sparkles')}</div>
+        <div>
+          <h3>Pick a priority to rank the field</h3>
+          <p>We are not going to hand you a default winner. The eight priorities above are not the same kind of thing, so scoring a ring on all of them at once would invent a ranking rather than find one. Tell the finder what you actually care about and it will rank all ${this._models.length} against that.</p>
+        </div>
+      </div>
+      <div class="fr-rest">
+        <div class="fr-rest-head">All ${this._models.length} models, priced low to high. No ranking applied.</div>
+        ${rows}
+      </div>
     `;
   }
 
@@ -2073,6 +2105,12 @@ class KygoSmartRingComparison extends HTMLElement {
       .fr-buy .ico { width: 13px; height: 13px; transition: transform .15s; }
       .fr-buy:hover .ico { transform: translateX(2px); }
 
+      .fr-empty { display: flex; gap: 16px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; box-shadow: var(--shadow-md); }
+      @media (max-width: 600px) { .fr-empty { flex-direction: column; gap: 12px; } }
+      .fr-empty-ico { flex: none; width: 40px; height: 40px; border-radius: 10px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: flex; align-items: center; justify-content: center; }
+      .fr-empty-ico .ico { width: 21px; height: 21px; }
+      .fr-empty h3 { font-family: var(--font-display); font-weight: 600; font-size: 18px; line-height: 1.25; margin: 0 0 8px; color: var(--fg-1); }
+      .fr-empty p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--fg-2); }
       .fr-rest { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 6px 18px 14px; box-shadow: var(--shadow-md); }
       .fr-rest-head { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--fg-3); padding: 14px 0 10px; }
       .fr-row { display: grid; grid-template-columns: 30px 26px minmax(0,1fr) 34px; align-items: center; gap: 10px; padding: 9px 0; border-top: 1px solid var(--border-subtle); }
@@ -2085,6 +2123,11 @@ class KygoSmartRingComparison extends HTMLElement {
       .fr-row-bar span { display: block; height: 100%; border-radius: 4px; background: var(--fg-3); }
       .fr-row-num { font-family: var(--font-numeric); font-size: 13px; font-weight: 600; color: var(--fg-2); text-align: right; }
       @media (min-width: 560px) { .fr-row-bar { display: block; } }
+      .fr-row-plain { grid-template-columns: 26px minmax(0,1fr) auto; }
+      @media (min-width: 560px) { .fr-row-plain { grid-template-columns: 26px minmax(0,1fr) 110px 130px; } }
+      .fr-row-price { font-family: var(--font-numeric); font-size: 13px; font-weight: 600; color: var(--fg-1); text-align: right; white-space: nowrap; }
+      @media (max-width: 559px) { .fr-row-plain .fr-buy { display: none; } }
+      .fr-row-plain .fr-buy { justify-content: flex-end; }
 
       /* Spec-table model picker */
       .modelpick-wrap { background: var(--bg-raised); border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 16px; margin-bottom: 16px; }
