@@ -26,7 +26,6 @@ class KygoAccuracyFactors extends HTMLElement {
     super();
     this.attachShadow({ mode: 'open' });
     this._observer = null;
-    this._devFilter = 'all';     // all | watch | ring
     this._expandedKey = null;
     this._eventsBound = false;
   }
@@ -143,11 +142,10 @@ class KygoAccuracyFactors extends HTMLElement {
    *   one    the single sentence that sits under the title when collapsed
    *   num    the one big number on the collapsed card
    *   chips  which metrics this touches
-   *   dev    which form factors it applies to, for the Watch / Ring toggle
+   *   dev    which form factors it applies to, shown on the expanded card
    *   study  who, how many, what it was checked against
    *   brands what the manufacturers actually say, always labelled as guidance
    *   todo   what to do about it
-   *   kw     extra search terms the filter box matches on
    *   src    key into _src for the source link
    * Copy rule: every field one or two sentences, every figure attached to its
    * criterion, and manufacturer guidance never dressed up as a finding.
@@ -177,7 +175,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'Cardiac rehab patients, n=30, four-point photographic hair scale, Fitbit against a chest ECG. Hair density did not differ between the patients whose readings were accurate and the patients whose readings were not. Shaving was bundled with cleaning the sensor and taping the watch down, and that bundle helped 3 of 10. Vermunicht 2025.',
         brands: 'Samsung lists "body hair, dirt, or other objects" as obstructions. WHOOP says hairy arms are marked safe. Apple, Garmin, Google, Oura and Polar do not mention hair at all.',
         todo: 'Nothing. If your readings are poor, fix position and tightness first, because shaving is unproven.',
-        kw: 'hair hairy shave shaving fur arm hair razor', src: 'verm' },
+        src: 'verm' },
 
       { key: 'tattoo', grp: 'yes', title: 'Tattoos', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
         num: '36% dropped out',
@@ -185,7 +183,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'n=25, tattooed skin against clear skin on the same arm, optical sensor against a chest ECG. Resting error 22.9% over ink against 2.9% on clear skin, and 9 of 25 people had total dropout. Ink darkness and tattoo age did not predict failure. Navalta and Bunn 2025.',
         brands: 'Apple says "some tattoos, can also impact heart rate sensor performance." Garmin says ink "can block the light from the sensor." Polar says to avoid placing the sensor on them. Samsung says to wear its ring on a finger without tattoos. Google is silent.',
         todo: 'Move the sensor to clear skin: higher up the forearm, the other wrist, or an armband.',
-        kw: 'tattoo tattoos ink inked sleeve', src: 'tattoo' },
+        src: 'tattoo' },
 
       { key: 'skin', grp: 'no', title: 'Skin tone', badges: [{ t: 'no', label: 'Does not matter on average' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
         num: 'Bias: no difference',
@@ -193,7 +191,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'Null in the best-powered studies: n=53 with a balanced Fitzpatrick sample, and n=28 measured with an objective colorimeter rather than a self-report scale. Pooled bias was null in every stratum, but the limits of agreement were 2.2 times wider in dark skin, and dark-skin participants supplied a disproportionate share of the missing data for 2 of the 3 devices tested.',
         brands: 'No manufacturer addresses skin tone on a wear page.',
         todo: 'Check completeness, not just the average. Gaps in the graph are the symptom here, not a shifted number.',
-        kw: 'skin tone dark melanin race pigment fitzpatrick', src: 'meta3' },
+        src: 'meta3' },
 
       { key: 'cold', grp: 'yes', title: 'Cold hands', badges: [{ t: 'yes' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'SpO2'],
         num: 'Signal -41%',
@@ -201,7 +199,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'Ice over the forearm cut the raw optical signal by 41%, n=21. Warming the wrist for 15 minutes took blood-oxygen error from 4.1 points to zero, independent of skin tone, n=46. In a 10 C chamber the average looked fine while the ability to track change collapsed, with one ring going from 0.78 to 0.32 on concordance.',
         brands: 'Apple says cold exercise means "skin perfusion in your wrist might be too low." Google says "cold weather can hinder your device’s ability to accurately measure your heart rate during exercise." Samsung says "keep yourself warm." Oura says "cold fingers can cause signal problems." Garmin says to warm up for 5 to 10 minutes first.',
         todo: 'Warm up before you trust a workout reading, and expect gaps on cold nights and winter runs.',
-        kw: 'cold winter freezing perfusion cold hands chilly', src: 'cold' },
+        src: 'cold' },
 
       { key: 'lotion', grp: 'mfr', title: 'Sweat, lotion and sunscreen', badges: [{ t: 'mfr' }], dev: ['watch', 'ring'], chips: ['HR'],
         num: '0 studies',
@@ -209,7 +207,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'Lotion, sunscreen and moisturiser have zero peer-reviewed tests at a wearable site as of 2026. Sweat has one: an n=14 prototype study found 3 to 8% changes to the shape of the signal and heart-rate error under 0.5 bpm.',
         brands: 'Garmin says "avoid wearing sunscreen, lotion, and insect repellent under the watch." Polar says "even a small amount of dirt on the sensor can reduce its performance." Samsung says to wipe the sensor. Oura says dirty LEDs cause gaps.',
         todo: 'Wipe the sensor. Treat the lotion advice as a manufacturer instruction, not a research finding.',
-        kw: 'sweat lotion sunscreen moisturiser moisturizer cream dirty clean wipe', src: 'sweat' },
+        src: 'sweat' },
 
       { key: 'wrist', grp: 'yes', title: 'Which wrist', badges: [{ t: 'no', label: 'No for HR and sleep' }, { t: 'yes', label: 'Yes for steps' }], dev: ['watch'], chips: ['HR', 'Sleep', 'Steps'],
         num: '+1,253 steps',
@@ -217,7 +215,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'Both wrists worn at once: heart rate differed by 0.37 bpm, n=16; sleep was null on group means across 65 nights, n=13; the dominant wrist logged 1,253 more steps a day, n=12. Telling the app the wrong wrist moves activity by 22 to 26%.',
         brands: 'Oura and Samsung both recommend the non-dominant hand for their rings.',
         todo: 'Pick one wrist, stay on it, and set it correctly in the app.',
-        kw: 'wrist dominant left right hand which wrist', src: 'park' },
+        src: 'park' },
 
       { key: 'tight', grp: 'yes', title: 'Too tight or too loose', badges: [{ t: 'yes' }], dev: ['watch'], chips: ['HR', 'HRV'],
         num: '23 to 47% better',
@@ -225,7 +223,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'A custom wrist rig with a load cell, n=17: tuning the pressure per person beat a universal setting by 23 to 47%, and loose (12 mmHg) failed at every intensity. A second rig, n=27, showed that excess pressure flattens the waveform. No study has tested a consumer strap at graded notches.',
         brands: 'Apple says "tighten your Apple Watch band for workouts, then loosen it a bit when you’re finished." Google says "snug but not constricting, as a tight band restricts blood flow." Polar says tighten for training and loosen after. Fitbit Air says a pinky finger should slide under the band.',
         todo: 'One notch tighter for workouts, back off for sleep.',
-        kw: 'tight loose strap band snug pressure notch fit', src: 'scard' },
+        src: 'scard' },
 
       { key: 'two', grp: 'no', title: 'Two devices at once', badges: [{ t: 'no' }], dev: ['watch', 'ring'], chips: ['HR'],
         num: '0 missing values',
@@ -233,7 +231,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'n=16, two armbands and two watches worn at once against a chest strap: biases ran from -0.05 to +2.93 bpm with no missing data. All Polar devices, and the paper carries no funding statement.',
         brands: 'No manufacturer addresses it.',
         todo: 'Wear both if you want to compare them.',
-        kw: 'two both stack multiple devices interference', src: 'jmirsite' },
+        src: 'jmirsite' },
 
       { key: 'bed', grp: 'gap', title: 'Sharing a bed', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['Sleep'],
         num: '+21% movement',
@@ -241,7 +239,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: '12 couples, lab sleep studies, 4 nights: 61.5 limb movements a night when sharing a bed against 50.9 when not. Bed-partner status is not reported in any consumer-device validation study. Predicted direction is more wake scored, and that is a prediction rather than a measurement.',
         brands: 'No manufacturer addresses it.',
         todo: 'Expect more awake minutes on shared nights, and compare like with like.',
-        kw: 'partner bed couple pet dog cat cosleep sharing', src: 'cosleep' },
+        src: 'cosleep' },
 
       { key: 'wristsize', grp: 'gap', title: 'Small or large wrists', badges: [{ t: 'gap' }], dev: ['watch'], chips: ['HR'],
         num: 'No data',
@@ -249,7 +247,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'One 2019 cardiac-rehab study found that wrist circumference did not matter. The 2026 studies list it as an uncontrolled variable rather than testing it.',
         brands: 'No manufacturer addresses it.',
         todo: 'Focus on position and tightness, which are tested.',
-        kw: 'small wrist size circumference thin big bony skinny', src: 'shch' },
+        src: 'shch' },
 
       { key: 'ringfit', grp: 'yes', title: 'Ring finger and fit', badges: [{ t: 'yes', label: 'Matters: rotation' }, { t: 'gap', label: 'Untested: which finger' }], dev: ['ring'], chips: ['HR', 'HRV'],
         num: '-7.86 dB at 30°',
@@ -257,7 +255,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'n=10, 432 signal sets: at 30 degrees from the optimal position signal-to-noise falls to -7.86 dB, and doubling the LED power cannot recover it. Left against right hand: reliability 94.8%, n=96. Finger choice and tightness: no study.',
         brands: 'Oura says "we recommend your index finger," sensor bumps on the palm side, "snug, not tight," and size down if you are between sizes. Samsung says the indicator goes on the palm side and to wear the sizer for 24 hours. Ultrahuman says index, middle or ring finger.',
         todo: 'Sensors on the palm side, snug enough that it cannot spin overnight.',
-        kw: 'ring finger rotate rotation size oura loose ring smart ring palm', src: 'rot' },
+        src: 'rot' },
 
       { key: 'age', grp: 'gap', title: 'An old device', badges: [{ t: 'gap' }], dev: ['watch', 'ring'], chips: ['HR', 'HRV', 'Sleep', 'Steps'],
         num: '0 of 249',
@@ -265,7 +263,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'The umbrella review of 249 validation studies and 430,465 participants does not analyse device age. Firmware changes do move results: one Fitbit algorithm update took sleep-staging accuracy from 71% to 77% on the same hardware.',
         brands: 'No manufacturer addresses it.',
         todo: 'Keep firmware current. That is the only age-related lever with evidence behind it.',
-        kw: 'old age years firmware update outdated new model', src: 'lambe' }
+        src: 'lambe' }
     ];
   }
 
@@ -277,49 +275,49 @@ class KygoAccuracyFactors extends HTMLElement {
         one: 'Three finger widths above the wrist bone instead of one cut movement error from 20.5% to 7.3%.',
         study: 'Vermunicht 2025, Fitbit Inspire 2 against a Polar H10 chest strap, n=10 healthy adults. Agreement with the strap rose from 0.59 to 0.92. One study of ten people, never replicated, so treat it as a strong lead rather than a law.',
         brands: 'Google says "a finger’s width above your wrist bone," and its sleep page says 2 to 3. Apple says "above the wrist bone (towards your elbow, not your hand)." Polar says "at least a finger’s width." WHOOP says "an inch above your wrist bone."',
-        kw: 'position placement forearm wrist bone higher up move watch', src: 'verm' },
+        src: 'verm' },
 
       { key: 'snug', title: 'Snug for workouts, loosen after', badges: [{ t: 'ev', label: 'Custom rig' }, { t: 'agree' }], dev: ['watch'], chips: ['HR', 'HRV'],
         num: 'Up to 47%',
         one: 'The right strap pressure is worth more than any spec-sheet number.',
         study: 'Tuning contact pressure per person beat a universal setting by 23 to 47% on a load-cell rig, n=17, and loose failed at every intensity. See "Too tight or too loose" above for the full study line.',
         brands: 'Apple says to tighten the band for workouts and loosen it afterwards. Google and Polar say the same thing in their own words.',
-        kw: 'tight snug workout strap loosen band pressure', src: 'scard' },
+        src: 'scard' },
 
       { key: 'armband', title: 'Armband or chest strap for arm-heavy sport', badges: [{ t: 'ev', label: 'Strong, replicated' }], dev: ['watch'], chips: ['HR'],
         num: '4x tighter',
         one: 'The same sensor moved from wrist to upper arm cut the error range roughly fourfold.',
         study: 'Three identical WHOOP 4.0 units worn on wrist, forearm and upper arm at once, n=28: treadmill agreement half-width 11.5 bpm at the wrist against 2.7 bpm at the upper arm (Moghaddam 2026). Replicated with Polar hardware, n=16. Rowing, elliptical with arm levers, weights and interval bursts are where the wrist fails.',
         todo: 'For anything that grips, swings or bursts, move the sensor off the wrist.',
-        kw: 'armband bicep upper arm chest strap rowing elliptical polar h10', src: 'mogh' },
+        src: 'mogh' },
 
       { key: 'warm', title: 'Warm up before you trust the number', badges: [{ t: 'ev', label: 'Strong for mechanism' }, { t: 'agree' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2'],
         num: '4.1 points to 0',
         one: 'Fifteen minutes of warmth took a low-perfusion blood-oxygen error to zero.',
         study: 'Local wrist warming for 15 minutes in low-perfusion patients, n=46, took bias from 4.1 points to zero, independent of skin tone. Cooling cuts the raw optical signal 41%. See "Cold hands" above.',
         brands: 'Garmin says to warm up for 5 to 10 minutes and take a reading before you start.',
-        kw: 'warm cold warm up perfusion gloves hands', src: 'warm' },
+        src: 'warm' },
 
       { key: 'palm', title: 'Ring sensors on the palm side, snug', badges: [{ t: 'ev', label: 'One study' }, { t: 'agree' }], dev: ['ring'], chips: ['HR', 'HRV'],
         num: '30° is enough',
         one: 'A ring that spins overnight is losing signal no LED power recovers.',
         study: 'At 30 degrees from the optimal position, signal-to-noise falls to -7.86 dB and doubling the light output cannot compensate, n=10, 432 signal sets. See "Ring finger and fit" above.',
         brands: 'Oura says index finger, sensor bumps on the palm side, snug rather than tight. Samsung says the indicator goes on the palm side.',
-        kw: 'ring palm rotate rotation snug oura samsung ring size', src: 'rot' },
+        src: 'rot' },
 
       { key: 'cart', title: 'Pocket it when you push a cart or stroller', badges: [{ t: 'ev', label: 'Direction replicated, size disputed' }], dev: ['watch'], chips: ['Steps'],
         num: '1 in 5 steps',
         one: 'Wrist trackers lose a fifth of your steps when your arm is not swinging.',
         study: 'Cart and stroller pushing: the wrist undercounted by 19.8% in the peer-reviewed study and by up to 96.6% in a conference abstract, so the direction is solid and the size is not. In a pocket the same walk lost 6.4%.',
         todo: 'Pocket the phone or the tracker for the shop run, or accept the undercount.',
-        kw: 'cart stroller pram shopping trolley arm swing pushing', src: 'cart' },
+        src: 'cart' },
 
       { key: 'onewrist', title: 'One wrist, and tell the app which', badges: [{ t: 'ev', label: 'Strong' }], dev: ['watch'], chips: ['Steps'],
         num: '±22 to 26%',
         one: 'Switching wrists or setting the wrong one moves activity by about a quarter.',
         study: 'Set for one wrist and worn on the other, activity was overestimated by 22.6% or underestimated by 25.9%, n=45. In a supervised study, 15.6% of participants wore it on the wrong wrist. The dominant wrist also logs about 1,250 more steps a day. See "Which wrist" above.',
         todo: 'Check the handedness and wrist fields in your app match reality.',
-        kw: 'wrist setting dominant handedness app setting', src: 'wrista' },
+        src: 'wrista' },
 
       { key: 'charge', title: 'Charge in the shower, not in bed', badges: [{ t: 'ev', label: 'Strong for the missingness curve' }], dev: ['watch', 'ring'], chips: ['Sleep', 'HR', 'HRV'],
         num: '47% by night 5',
@@ -327,7 +325,7 @@ class KygoAccuracyFactors extends HTMLElement {
         study: 'Garmin, n=299, five nights: missing data rose from 22% of participants on night one to 47% on night five, and 30% of nights were lost overall. Battery is the authors’ inferred cause rather than a measured one.',
         brands: 'Apple documents that Low Power Mode turns background heart rate and blood oxygen off entirely.',
         todo: 'Charge it during a daily gap you already have, so the night gets recorded at all.',
-        kw: 'charge charging battery low power missing night gaps', src: 'missnights' }
+        src: 'missnights' }
     ];
   }
 
@@ -339,42 +337,42 @@ class KygoAccuracyFactors extends HTMLElement {
         one: 'Any sport that grips or submerges the wrist beats every wrist sensor tested.',
         study: 'Rowing gave 13.4% error at the wrist against 3.8% walking on the same device. On an elliptical with arm levers, no wrist device reached acceptable agreement, n=50. Swimming: Garmin Venu Sq 4.05% dry and 29.95% wet, n=10.',
         todo: 'Use a chest strap or an armband for these, or read the session as a rough shape rather than a number.',
-        kw: 'rowing rower elliptical swim swimming pool grip handrail', src: 'swim' },
+        src: 'swim' },
 
       { key: 'weights', title: 'Calories from a weights session', badges: [], dev: ['watch', 'ring'], chips: ['Calories'],
         num: '+116%',
         one: 'Heart rate survives lifting. The calorie model does not.',
         study: 'n=62 against indirect calorimetry: heart rate correlated 0.96 to 0.97 during resistance training while energy expenditure read 116% high. Lee 2026, from the tables rather than the abstract.',
         todo: 'Halve it.',
-        kw: 'weights lifting resistance calories gym strength energy', src: 'lee' },
+        src: 'lee' },
 
       { key: 'stairs', title: 'Stairs and slow walking', badges: [], dev: ['watch'], chips: ['Steps'],
         num: '40% vs 7%',
         one: 'Below about 4 km/h step error jumps from 7% to 40%. Stairs fail at every pace.',
         study: 'n=258 across 21 devices: 40 plus or minus 40% error at slow speeds against 7 plus or minus 16% at normal pace. On stairs, neither Fitbit tested met the 10% threshold in any condition, n=8.',
         todo: 'If you walk slowly, read the trend rather than the total, and do not expect stairs to be counted.',
-        kw: 'stairs slow walking speed elderly shuffle pace', src: 'gait' },
+        src: 'gait' },
 
       { key: 'firstnight', title: 'Your first nights with a new device', badges: [], dev: ['watch', 'ring'], chips: ['Sleep'],
         num: '7 nights',
         one: 'Everyone sleeps worse on night one, at home as much as in a lab. Judge it after a week.',
         study: 'First-night effect: sleep onset went from 20 to 14 minutes and total sleep rose 12 minutes by night two, n=45, with no home against lab difference, n=30. It takes about seven nights for a stable personal mean.',
         todo: 'Ignore week one. Compare the second week against the third.',
-        kw: 'first night new device week baseline settling', src: 'homelab' },
+        src: 'homelab' },
 
       { key: 'battery', title: 'Battery saver mode', badges: [{ t: 'mfr' }], dev: ['watch', 'ring'], chips: ['HR', 'SpO2', 'Sleep'],
         num: 'Off, not worse',
         one: 'Low power settings switch background heart rate and blood oxygen off, and the gap looks like non-wear.',
         study: 'Apple documents that Low Power Mode turns off background heart rate, background blood oxygen and heart-rate notifications. No validation literature exists on this, so it is manufacturer documentation only.',
         todo: 'If a night or a day is blank, check whether a power-saving mode was on before you blame the sensor.',
-        kw: 'battery low power saver power saving mode blank', src: 'applelpm' },
+        src: 'applelpm' },
 
       { key: 'heat', title: 'Heat', badges: [], dev: ['watch', 'ring'], chips: ['HR'],
         num: '9.6 to 20.8 bpm',
         one: 'Heat hurt more than cold for every device that moved.',
         study: 'Ten devices in a 36 C chamber against a chest ECG, n=45: Fitbit Inspire 3 error more than doubled, from 9.6 to 20.8 bpm, and one ring rose 72%. The top devices barely moved.',
         todo: 'Treat a hot-weather workout number as a rough shape, and do not assume heat helps the signal.',
-        kw: 'heat hot summer sauna humid chamber', src: 'climate' }
+        src: 'climate' }
     ];
   }
 
@@ -405,7 +403,6 @@ class KygoAccuracyFactors extends HTMLElement {
       flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5Z"/></svg>',
       droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>',
       arrowRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>',
-      search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>',
       arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>',
       arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg>',
@@ -465,26 +462,6 @@ class KygoAccuracyFactors extends HTMLElement {
     return Object.values(this._srcGroups).reduce((s, g) => s + g.length, 0);
   }
 
-  // One control: a watch or ring narrowing, in the hero so it reads as page-wide
-  // rather than as something that belongs to the section it sits in.
-  _matches(card) {
-    return this._devFilter === 'all' || card.dev.includes(this._devFilter);
-  }
-
-  _renderDeviceFilter() {
-    const devs = [
-      { k: 'all', label: 'Everything' },
-      { k: 'watch', label: 'Watch' },
-      { k: 'ring', label: 'Ring' }
-    ].map(o => `<button class="chip ${this._devFilter === o.k ? 'active' : ''}" data-dev="${o.k}" aria-pressed="${this._devFilter === o.k}">${o.label}</button>`).join('');
-
-    return `
-      <div class="hero-filter animate-on-scroll">
-        <span class="hero-filter-lbl">What are you wearing?</span>
-        <div class="chip-row" role="group" aria-label="Narrow the page to a watch or a ring">${devs}</div>
-      </div>`;
-  }
-
   /* ---------------------------------------------------------------- CARD */
 
   // The only card shape on the page. Collapsed: the verdict on the right, the
@@ -518,7 +495,7 @@ class KygoAccuracyFactors extends HTMLElement {
       card.todo ? ['What to do', card.todo] : null
     ].filter(Boolean);
 
-    const body = isExp ? `
+    const body = `
       <div class="ac-body">
         <div class="ac-stat"><span class="ac-stat-num">${card.num}</span><span class="ac-stat-lbl">The number</span></div>
         <dl class="ac-fields">
@@ -528,11 +505,11 @@ class KygoAccuracyFactors extends HTMLElement {
           <span class="ac-devs">${card.dev.map(d => `<span class="ac-dev">${d === 'ring' ? 'Ring' : 'Watch'}</span>`).join('')}</span>
           ${src ? `<a href="${src.url}" target="_blank" rel="noopener" class="source-link" data-action="source-click" data-track-position="card" data-track-label="accuracy-factors-${card.key}">Source ${this._icon('externalLink')}</a>` : ''}
         </div>
-      </div>` : '';
+      </div>`;
 
     return `
       <article class="ac-card ${isExp ? 'expanded' : ''}" data-ckey="${card.key}">
-        <button class="ac-head" aria-expanded="${isExp}">
+        <button class="ac-head" aria-expanded="${isExp}" aria-controls="acb-${card.key}">
           <span class="ac-top">
             <span class="ac-text">
               <span class="ac-title">${card.title}</span>
@@ -546,26 +523,17 @@ class KygoAccuracyFactors extends HTMLElement {
             </span>
           </span>
         </button>
-        ${body}
+        <div class="ac-wrap" id="acb-${card.key}">${body}</div>
       </article>`;
   }
 
   _renderCardList(sec) {
-    const shown = sec.cards.filter(c => this._matches(c));
-    if (!shown.length) {
-      // The full hint only when the whole page is empty, so a filter that hits
-      // one section does not print the same apology under the other two.
-      const any = this._allCards.some(c => this._matches(c));
-      const msg = any ? 'Nothing in this section matches.' : 'Nothing matches. Switch back to Everything.';
-      return `<div data-list="${sec.key}"><p class="dash-empty">${msg}</p></div>`;
-    }
-
     if (!sec.grouped) {
-      return `<div data-list="${sec.key}"><div class="ac-grid">${shown.map(c => this._renderCard(c, sec)).join('')}</div></div>`;
+      return `<div class="ac-grid" data-list="${sec.key}">${sec.cards.map(c => this._renderCard(c, sec)).join('')}</div>`;
     }
 
     const groups = this._groups
-      .map(g => ({ g, items: shown.filter(c => c.grp === g.k) }))
+      .map(g => ({ g, items: sec.cards.filter(c => c.grp === g.k) }))
       .filter(x => x.items.length);
 
     return `
@@ -745,7 +713,7 @@ class KygoAccuracyFactors extends HTMLElement {
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'featureList': 'Things people ask about, with a tested verdict on each: tattoos, arm hair, skin tone, cold hands, sweat and lotion, which wrist, strap tightness, two devices at once, sharing a bed, wrist size, ring fit and device age. Things that help, ranked by how much they moved the numbers, from forearm position to charging away from bedtime. Things that quietly hurt, from rowing and swimming to resistance-training calories, slow walking, first nights, battery saver mode and heat. Grouped by verdict into what matters, what does not, what nobody has tested and what only the brands answer, with a watch or ring narrowing and a primary source on every card.',
+      'featureList': 'Things people ask about, with a tested verdict on each: tattoos, arm hair, skin tone, cold hands, sweat and lotion, which wrist, strap tightness, two devices at once, sharing a bed, wrist size, ring fit and device age. Things that help, ranked by how much they moved the numbers, from forearm position to charging away from bedtime. Things that quietly hurt, from rowing and swimming to resistance-training calories, slow walking, first nights, battery saver mode and heat. Grouped by verdict into what matters, what does not, what nobody has tested and what only the brands answer, with the study, what each brand says and a primary source on every card.',
       'keywords': 'wearable accuracy factors, what affects wearable accuracy, hairy arms fitness tracker, tattoo heart rate sensor, where to wear fitbit, cold weather heart rate accuracy, wrist position heart rate accuracy, watch placement accuracy, strap tightness heart rate, does skin tone affect heart rate accuracy, which wrist should I wear my watch on, ring rotation HRV, smart ring finger fit, wearable calorie accuracy resistance training, step count accuracy slow walking, pushing a stroller step count, battery saver missing sleep data, heat and heart rate accuracy'
     };
 
@@ -1249,7 +1217,6 @@ class KygoAccuracyFactors extends HTMLElement {
             <p class="hero-sub animate-on-scroll">Tattoos, hairy arms, cold hands, strap tightness, which wrist. What the studies actually found, what each brand says, and the <strong>free fixes</strong> that move your numbers tonight.</p>
           </div>
           ${this._renderHeroChart()}
-          ${this._renderDeviceFilter()}
           <div class="hero-meta-wrap animate-on-scroll">
             <div class="hero-meta">
               <div class="hero-cell"><span class="hero-num">${askedCount}</span><span class="hero-lbl">Questions people ask</span></div>
@@ -1304,18 +1271,13 @@ class KygoAccuracyFactors extends HTMLElement {
     this._eventsBound = true;
     const shadow = this.shadowRoot;
 
-    const replaceWithHTML = (oldEl, html) => {
-      if (!oldEl) return;
-      const tmpl = document.createElement('template');
-      tmpl.innerHTML = html;
-      const newEl = tmpl.content.firstElementChild;
-      if (newEl) oldEl.replaceWith(newEl);
-    };
-
-    const redrawLists = () => {
-      this._sections.forEach(sec => {
-        replaceWithHTML(shadow.querySelector(`[data-list="${sec.key}"]`), this._renderCardList(sec));
-      });
+    // Every card body is already in the DOM, so opening one is a class toggle
+    // and a CSS transition. Nothing re-renders, so the page never jumps and the
+    // card you clicked stays exactly where it was.
+    const setOpen = (card, open) => {
+      card.classList.toggle('expanded', open);
+      const head = card.querySelector('.ac-head');
+      if (head) head.setAttribute('aria-expanded', open ? 'true' : 'false');
     };
 
     shadow.addEventListener('click', (e) => {
@@ -1324,30 +1286,16 @@ class KygoAccuracyFactors extends HTMLElement {
       // Sources · show-all toggle
       if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
 
-      const devChip = e.target.closest('[data-dev]');
-      if (devChip) {
-        const k = devChip.dataset.dev;
-        if (k !== this._devFilter) {
-          this._devFilter = k;
-          this._expandedKey = null;
-          shadow.querySelectorAll('[data-dev]').forEach(el => {
-            const on = el.dataset.dev === k;
-            el.classList.toggle('active', on);
-            el.setAttribute('aria-pressed', on);
-          });
-          redrawLists();
-        }
-        return;
-      }
-
       const head = e.target.closest('.ac-head');
-      if (head) {
-        const card = head.closest('[data-ckey]');
-        if (card) {
-          this._expandedKey = this._expandedKey === card.dataset.ckey ? null : card.dataset.ckey;
-          redrawLists();
-        }
-      }
+      if (!head) return;
+      const card = head.closest('[data-ckey]');
+      if (!card) return;
+
+      const opening = this._expandedKey !== card.dataset.ckey;
+      // One open card at a time, so the page cannot grow into a wall of prose.
+      shadow.querySelectorAll('.ac-card.expanded').forEach(el => { if (el !== card) setOpen(el, false); });
+      setOpen(card, opening);
+      this._expandedKey = opening ? card.dataset.ckey : null;
     });
   }
 
@@ -1514,14 +1462,6 @@ class KygoAccuracyFactors extends HTMLElement {
       .hvb-fill { display: block; height: 100%; border-radius: 9999px; background: rgba(255,255,255,0.26); }
       .hvb--good .hvb-fill { background: linear-gradient(90deg, var(--green-dark), var(--green)); }
 
-      /* HERO FILTER (the page's one control) */
-      .hero-filter { display: flex; align-items: center; gap: 10px 14px; flex-wrap: wrap; margin-top: 26px; }
-      .hero-filter-lbl { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gray-400); }
-      .chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
-      .chip { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12.5px; padding: 8px 14px; border-radius: 9999px; border: 1px solid var(--gray-200); background: #fff; color: var(--gray-600); cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
-      .chip:hover { border-color: var(--gray-300); color: var(--dark); }
-      .chip.active { background: var(--dark); border-color: var(--dark); color: #fff; }
-
       /* CARDS (the only card shape on the page) */
       .cards-section { padding: 56px 0; }
       @media (min-width: 720px) { .cards-section { padding: 80px 0; } }
@@ -1536,7 +1476,7 @@ class KygoAccuracyFactors extends HTMLElement {
       .ac-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 18px; overflow: hidden; min-width: 0; box-shadow: 0 8px 24px rgba(15,23,42,.06); transition: border-color .15s, box-shadow .15s; }
       .ac-card:hover { border-color: var(--gray-300); }
       .ac-card.expanded { border-color: var(--green); box-shadow: 0 10px 28px rgba(34,197,94,.14); }
-      @media (min-width: 880px) { .ac-card.expanded { grid-column: 1 / -1; } }
+      .ac-grid:has(.ac-card.expanded) { align-items: start; }
       .ac-head { display: block; flex: 1 1 auto; width: 100%; padding: 0; background: transparent; border: 0; cursor: pointer; font-family: inherit; text-align: left; }
       .ac-head:hover { background: var(--gray-50); }
       .ac-top { display: flex; align-items: stretch; gap: 14px; padding: 18px; height: 100%; }
@@ -1570,6 +1510,13 @@ class KygoAccuracyFactors extends HTMLElement {
         .ac-badges { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: flex-start; }
       }
 
+      /* The body is always in the DOM and opens by animating its grid row from
+         0fr to 1fr, so the height is the content's own and nothing is measured
+         in JS. visibility keeps a collapsed body out of the tab order. */
+      .ac-wrap { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows .32s cubic-bezier(.16,1,.3,1), visibility 0s linear .32s; }
+      .ac-card.expanded .ac-wrap { grid-template-rows: 1fr; visibility: visible; transition: grid-template-rows .32s cubic-bezier(.16,1,.3,1), visibility 0s; }
+      .ac-wrap > .ac-body { overflow: hidden; min-height: 0; }
+
       .ac-body { padding: 4px 18px 18px; border-top: 1px dashed var(--gray-200); background: var(--gray-50); }
       .ac-stat { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 14px 0 0; }
       .ac-stat-num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 24px; line-height: 1.1; letter-spacing: -0.02em; color: var(--green-dark); font-feature-settings: "tnum" 1; }
@@ -1584,7 +1531,7 @@ class KygoAccuracyFactors extends HTMLElement {
       .source-link { display: inline-flex; align-items: center; gap: 5px; color: var(--green-dark); font-weight: 600; font-size: 12px; white-space: nowrap; }
       .source-link svg { width: 12px; height: 12px; flex-shrink: 0; }
       .source-link:hover { color: var(--green); }
-      @media (min-width: 720px) { .ac-body { padding: 4px 20px 20px; } .ac-fields { grid-template-columns: 1fr 1fr; gap: 14px 24px; } .ac-fields > div:first-child { grid-column: 1 / -1; } }
+      @media (min-width: 720px) { .ac-body { padding: 4px 20px 20px; } }
 
       /* SOURCES */
       /* Sources · Kygo standard module */
@@ -1636,12 +1583,11 @@ class KygoAccuracyFactors extends HTMLElement {
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 640px; margin: 0 auto 12px; }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
 
-      .dash-empty { padding: 24px 18px; text-align: center; color: var(--gray-400); font-size: 14px; background: #fff; border: 1px dashed var(--gray-200); border-radius: 16px; }
 
       @media (prefers-reduced-motion: reduce) {
         .animate-on-scroll { opacity: 1; transform: none; transition: none; }
         .pulse-dot, .hero-dot, .kband-dot { animation: none; }
-        .ac-card, .chip { transition: none; }
+        .ac-card, .ac-wrap, .ac-card.expanded .ac-wrap { transition: none; }
       }
     `;
   }
