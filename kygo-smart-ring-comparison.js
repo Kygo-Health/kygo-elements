@@ -368,11 +368,13 @@ class KygoSmartRingComparison extends HTMLElement {
   }
 
   get _bestFor() {
+    // One profile per brand. Four brands, four slots, so the section answers
+    // who each brand is for rather than handing one brand two of the four.
     return [
-      { icon: 'shield', label: 'For the deepest feature set and the only validation record', pick: 'Oura Ring 5', reason: 'The widest published software list here, plus the only lineup in this comparison pointing at independent peer-reviewed accuracy studies and a medical advisory board. Every insight beyond the three daily scores needs the membership.', price: '$399', yrly: '· ~$603 / 3 yrs' },
-      { icon: 'battery', label: 'For no subscription and the most complete package', pick: 'RingConn Gen 3', reason: 'Everything unlocked at purchase, 14-day rated battery, the wireless case in the box, plus sleep apnea pattern monitoring and nighttime vascular trends that no other ring here lists. $349 flat, forever.', price: '$349', yrly: '· $0 subscription' },
-      { icon: 'sparkles', label: 'For the longest battery and a whole-body ecosystem', pick: 'Ultrahuman Ring PRO', reason: 'Fifteen rated days, up to 45 with the case, 250 days of on-ring storage, and a first-party CGM, blood-panel and home sleep stack feeding one AI layer. It is a US pre-order, and the full PowerPlug set is a real $133/yr on top.', price: '$479', yrly: '· pre-order in the US' },
-      { icon: 'wallet', label: 'For the lowest price of entry', pick: 'RingConn Gen 2 Air', reason: 'The cheapest ring in this comparison at $199 with no subscription and the core sensing intact, including a skin temperature sensor. It drops apnea monitoring and uses stainless steel instead of titanium.', price: '$199', yrly: '· $0 subscription' },
+      { icon: 'shield', label: 'For the deepest feature set and the only validation record', pick: 'Oura Ring 5', reason: 'The widest published software list here, plus the only lineup in this comparison pointing at independent peer-reviewed accuracy studies and a medical advisory board. Every insight beyond the three daily scores needs the membership, which is why it is also the most expensive over time.', price: '$399', yrly: '· ~$603 / 3 yrs' },
+      { icon: 'battery', label: 'For no subscription and the most complete package', pick: 'RingConn Gen 3', reason: 'Everything unlocked at purchase, 14-day rated battery, the wireless case in the box, plus sleep apnea pattern monitoring and nighttime vascular trends no other ring here lists. $349 flat, or step down to the $199 Gen 2 Air for the cheapest ring in this comparison, which drops apnea monitoring.', price: '$349', yrly: '· Gen 2 Air $199' },
+      { icon: 'sparkles', label: 'For the longest battery and a whole-body ecosystem', pick: 'Ultrahuman Ring PRO', reason: 'Fifteen rated days, up to 45 with the case, 250 days of on-ring storage, and a first-party CGM, blood-panel and home sleep stack feeding one AI layer. It is a US pre-order, the full PowerPlug set is a real $133/yr on top, and no independent study has tested it.', price: '$479', yrly: '· pre-order in the US' },
+      { icon: 'wallet', label: 'For changeable styling with no recurring fee', pick: 'CUDIS 002 Sporty', reason: 'The only ring here with interchangeable bands, 12 of them, plus a Sports Mode and a battery two testers beat the claim on. Go in knowing what is missing: no temperature sensor, so no temperature-based cycle tracking, and no published spec sheet or accuracy figure of any kind.', price: '$399', yrly: '· Classic $349' },
     ];
   }
 
@@ -1981,14 +1983,14 @@ class KygoSmartRingComparison extends HTMLElement {
 
       /* Validation cards */
       .valid-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-      @media (min-width: 720px) { .valid-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
-      .valid-card { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-md); }
+      @media (min-width: 720px) { .valid-grid { grid-template-columns: 1fr 1fr; } }
+      .valid-card { display: flex; flex-direction: column; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 24px; box-shadow: var(--shadow-md); }
       .valid-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
       .valid-ico { width: 44px; height: 44px; border-radius: 11px; background: #fff; border: 1.5px solid var(--border-subtle); display: flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
       .valid-ico img { width: 28px; height: 28px; object-fit: contain; }
       .valid-head h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin: 0; color: var(--fg-1); }
       .valid-card p { font-size: 14px; line-height: 1.6; color: var(--fg-2); margin: 0 0 14px; }
-      .valid-tag { display: inline-block; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 6px 12px; border-radius: 999px; }
+      .valid-tag { align-self: flex-start; margin-top: auto; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 6px 12px; border-radius: 999px; }
       .valid-note { margin: 20px 0 0; font-size: 13px; line-height: 1.6; color: var(--fg-3); max-width: 90ch; }
 
       /* Kygo CTA */
@@ -2160,19 +2162,18 @@ class KygoSmartRingComparison extends HTMLElement {
       .calc-toggle-box .ico { width: 12px; height: 12px; }
 
       /* Validation cards go 4-up on wide screens */
-      @media (min-width: 1000px) { .valid-grid { grid-template-columns: repeat(2, 1fr); } }
 
       /* Before-you-buy caveats */
       .caveats { display: grid; grid-template-columns: 1fr; gap: 14px; }
-      @media (min-width: 880px) { .caveats { grid-template-columns: 1fr 1fr; align-items: start; } }
+      @media (min-width: 880px) { .caveats { grid-template-columns: 1fr 1fr; } }
       .caveat { display: flex; gap: 16px; background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 22px; box-shadow: var(--shadow-md); }
       @media (max-width: 600px) { .caveat { flex-direction: column; gap: 12px; } }
       .caveat-ico { flex: none; width: 40px; height: 40px; border-radius: 10px; background: var(--kygo-green-light); color: var(--kygo-green-dark); display: flex; align-items: center; justify-content: center; }
       .caveat-ico .ico { width: 21px; height: 21px; }
-      .caveat-body { min-width: 0; }
+      .caveat-body { min-width: 0; flex: 1; display: flex; flex-direction: column; }
       .caveat-body h3 { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.25; margin: 0 0 8px; color: var(--fg-1); }
       .caveat-body p { margin: 0 0 12px; font-size: 14px; line-height: 1.6; color: var(--fg-2); }
-      .caveat-src { font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.3px; color: var(--fg-3); padding-top: 10px; border-top: 1px solid var(--border-subtle); }
+      .caveat-src { margin-top: auto; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.3px; color: var(--fg-3); padding-top: 10px; border-top: 1px solid var(--border-subtle); }
 
 
     `;
