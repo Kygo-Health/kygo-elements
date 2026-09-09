@@ -7,6 +7,57 @@
 > Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
 > **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
+## 🆕 `/tools` index regrouping on branch `claude/busy-bardeen-n6idlp` (2026-09-09)
+
+All resolved in `kygo-tools.js` on this branch. Tool slugs, tool URLs, the Featured Tool slot and
+`kygo-tracking.js` event names are unchanged.
+
+- **#T1 (P1) — ✅ RESOLVED. Tool cards were not links.** All 24 grid cards and the featured card
+  rendered as `<div role="button" tabindex="0">` with a JS click handler, so the whole shadow root
+  contained 5 `<a>` elements (1 homepage + 4 Tenjin store links). No card could be cmd-clicked,
+  middle-clicked, opened in a new tab, copied as a link or hovered for a URL preview, and `/tools`
+  passed no link equity to any tool page. Cards and the featured card are now real
+  `<a href="/tools/{slug}">` (25 anchors) with the browser owning navigation; the click handler is
+  kept as the tracking hook and as a fallback for a non-anchor element still carrying
+  `data-open-tool`. `role="button"`/`tabindex` removed (anchors are natively focusable) and a
+  `:focus-visible` ring added.
+
+- **#T2 (P1) — ✅ RESOLVED (paired with #T1). Shadow-DOM anchors are still invisible to crawlers.**
+  Same fix as `/blog` #C5: `_renderSeo()` replaces the flat `__seo()` string with a light-DOM
+  `[data-seo]` block containing a summary plus all 25 tool links as plain `<a>` under the six
+  category headings. It is re-rendered when the `tools` attribute changes. The now-unused `__seo`
+  shim was removed from the top of the file.
+
+- **#T3 (P2) — ✅ RESOLVED. There was an "Other" bucket with 4 tools in it.** Three device
+  comparisons (Oura 5 vs 4 vs 3, Oura 5 vs 4, Fitbit Air vs WHOOP) and the Stress Factor Explorer
+  had no mapping, and "Wearables" held 9 of 24 as a catch-all. Regrouped into six categories —
+  Sleep (6), Heart Rate & HRV (3), Stress & Recovery (2), Activity & Fitness (3), Calories &
+  Nutrition (3), Devices & Buying Guides (8) = 25. Five of the six names match the new `/blog`
+  categories verbatim; the blog's "Calories & Energy Burn" + "Nutrition & Food Logging" are merged
+  because splitting them here would leave a one-tool group, and "Kygo Product & Updates" has no
+  tools. `other` survives only as an unreachable safety net.
+
+- **#T4 (P3) — ✅ RESOLVED (structural).** Category assignment was split across a slug→id map, a
+  separate `_categoryMeta` map, a hardcoded `preferredOrder` array and duplicate inline `category:`
+  fields on 9 tools — four places to keep in sync, and one map entry (`accuracy-factors`) had been
+  pasted a motif object instead of a category id. All four collapse into one `_categories()` list
+  that owns section order, slug→category and the display order **inside** each section; the 9
+  redundant inline `category:` fields are gone (the `tool.category` override still works for a
+  Wix-supplied `tools` attribute). `docs/tool-page-playbook.md` §6 updated.
+
+- **#T5 (P3) — ✅ RESOLVED. Stale "17+ peer-reviewed studies" for `wearable-accuracy`,** in both
+  `_defaultTools()` and the featured card's stat strip. Now `30+`, matching the rewritten post.
+
+- **#T6 (open, P3) — no filter or search on `/tools`.** Not a defect at 25 items (stacked sections
+  only), but `/blog`'s new search box is the pattern to reuse if the count keeps growing. Not added
+  here: it would be the third thing changing on the page in one commit.
+
+- **Checked, not applicable: the `/blog` chip bug.** `/tools` has no filter chips, so nothing was
+  copied. For the record, `kygo-blog.js` `_bindEvents()` *is* re-run at the end of every `render()`
+  and the `.category-tab` selector matches the rendered markup, so a stale-binding cause looks ruled
+  out — if the chips are genuinely dead the cause is likely CSS/overlay on the sticky row. Not
+  investigated further; out of scope for this branch.
+
 ## 🆕 `/blog` index rebuild on branch `claude/kind-newton-3xzpxt` (2026-09-09)
 
 All resolved in `kygo-blog.js` on this branch.
