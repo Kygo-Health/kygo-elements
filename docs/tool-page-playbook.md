@@ -683,12 +683,28 @@ stray "robot" Android path `M6 9v7…` that still lingers in some older `.kband`
 ## 6. Register the tool on the index page (+ give it a data-motif card)
 
 Add the tool to `kygo-tools.js` → `_defaultTools()`:
-`{ slug, title, description, icon, badge:'New', url:'/tools/<slug>', category, features:[…] }`
-— `category` is one of `wearables | recovery | sleep | nutrition` (accuracy/comparison tools →
-`wearables`; factor explorers → the relevant physiological category). Tool count, grouping and
-ItemList JSON-LD update automatically. **Caveat:** if the live Wix `/tools` page passes its own
+`{ slug, title, description, icon, badge:'New', url:'/tools/<slug>', features:[…] }`
+— then add the slug to the right group in `_categories()`. That single list owns the section
+order, the slug→category mapping **and** the display order inside each section, so a tool has no
+category until it appears there. The six groups are:
+
+| id | Label | What belongs here |
+|---|---|---|
+| `sleep` | Sleep | Sleep factor explorers, sleep metrics, sleep-tracker accuracy |
+| `heart-rate` | Heart Rate & HRV | HRV / RHR factors, heart-rate accuracy |
+| `stress-recovery` | Stress & Recovery | Recovery- and stress-score tools |
+| `activity` | Activity & Fitness | Steps, VO2 max — factors and accuracy |
+| `nutrition` | Calories & Nutrition | Calorie burn, food, supplements |
+| `devices` | Devices & Buying Guides | Device accuracy rankings, head-to-head comparisons, buying guides |
+
+Five of the six names are shared verbatim with the `/blog` categories so the two pages read as one
+taxonomy; the blog's "Calories & Energy Burn" + "Nutrition & Food Logging" are merged here because
+splitting them would leave a one-tool group. A tool may still override with its own `category`
+field (that path exists for a Wix-supplied `tools` attribute). There is an `other` bucket, but it
+is a safety net only — **do not ship a tool into it**. Tool count, grouping and ItemList JSON-LD
+update automatically. **Caveat:** if the live Wix `/tools` page passes its own
 `tools` attribute, that overrides this default and must be updated in the Wix editor too.
-(The `icon` field now only drives the **category section header**, not the card.)
+(The per-tool `icon` field is now unused — the section header takes its icon from `_categories()`, and the card art comes from `_motifFor`.)
 
 ### Card style — image-led "data-motif" tiles (current standard)
 

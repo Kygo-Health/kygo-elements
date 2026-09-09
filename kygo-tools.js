@@ -5,17 +5,6 @@
  * Tools are configurable via the 'tools' attribute (JSON array).
  */
 
-if (typeof __seo === 'undefined') {
-  var __seo = function(el, text) {
-    if (el.querySelector('[data-seo]')) return;
-    const d = document.createElement('div');
-    d.setAttribute('data-seo', '');
-    d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
-    d.textContent = text;
-    el.appendChild(d);
-  };
-}
-
 class KygoToolsPage extends HTMLElement {
   constructor() {
     super();
@@ -29,7 +18,7 @@ class KygoToolsPage extends HTMLElement {
     this.render();
     this._setupEvents();
     this._setupAnimations();
-    __seo(this, 'Kygo Health Free Tools — Free research-backed tools to understand your nutrition and health. Food Scanner, Wearable Accuracy, VO2 Max Accuracy, VO2 Max Factors, HRV Factors, Sleep Factors, Step Count Accuracy, Sleep Metrics, Calorie Burn Accuracy, Sensor Comparison, and more. No signup required.');
+    this._renderSeo();
     this._injectStructuredData();
   }
 
@@ -45,6 +34,7 @@ class KygoToolsPage extends HTMLElement {
       this.render();
       this._setupEvents();
       this._setupAnimations();
+      this._renderSeo();
     }
   }
 
@@ -60,18 +50,18 @@ class KygoToolsPage extends HTMLElement {
 
   _defaultTools() {
     return [
-      { slug: 'wearable-accuracy', title: 'Most Accurate Wearable', description: 'Compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research.', icon: 'activity', badge: 'Most Popular', url: '/tools/wearable-accuracy', features: ['17+ peer-reviewed studies', 'Head-to-head comparison', 'Full bias disclosure'] },
-      { slug: 'sleep-tracker-accuracy', title: 'Most Accurate Sleep Tracker', description: 'Which wearable is most accurate for sleep vs a lab PSG? Compare Oura, Apple Watch, Fitbit, WHOOP, Garmin & Withings on 4-stage staging (healthy vs clinical), deep & REM detection, sleep/wake agreement, and total-sleep-time bias.', icon: 'moon', badge: 'New', url: '/tools/sleep-tracker-accuracy', category: 'wearables', features: ['Compare any 2–4 devices', 'Healthy vs clinical accuracy', '14 verified sources'] },
-      { slug: 'heart-rate-accuracy', title: 'Most Accurate Heart Rate Wearable', description: 'Which wearable is most accurate for heart rate vs an ECG or chest strap? Compare Fitbit, Garmin, Apple Watch, Google Pixel, Polar, Oura & Xiaomi on error (MAPE), bias, limits of agreement and CCC, and see why arm motion, not intensity, is what breaks them.', icon: 'heart', badge: 'New', url: '/tools/heart-rate-accuracy', category: 'wearables', features: ['Compare any 2–4 devices', '10 devices ranked head-to-head', '28 verified sources'] },
-      { slug: 'recovery-score-explorer', title: 'Recovery Score Explorer', description: 'Compare recovery and readiness scores across 12 wearables — WHOOP, Oura, Garmin, Fitbit, Samsung, Polar, Ultrahuman, Coros, Amazfit, Suunto, Apple & RingConn — see the 35 factors that move yours, and find which scores are actually validated.', icon: 'heart', badge: 'New', url: '/tools/recovery-score-explorer', category: 'recovery', features: ['12 wearables compared', '35 factors ranked', 'Only 2/12 scores validated'] },
-      { slug: 'supplements-by-metric', title: 'Supplements by Metric', description: 'Pick a wearable metric — sleep latency, deep sleep, staying asleep, HRV, resting heart rate, or recovery — and see which of 27 supplements the research actually supports, graded by evidence with industry-funding flags and the popular stuff that doesn\'t work.', icon: 'sparkles', badge: 'New', url: '/tools/supplements-by-metric', category: 'nutrition', features: ['6 metrics × 27 supplements', 'Evidence-graded with funding flags', '28 primary sources'] },
-      { slug: 'vo2-max-accuracy', title: 'Most Accurate VO2 Max Wearable', description: 'How accurately do Garmin, Apple, Polar, Fitbit, WHOOP, Oura, Samsung & Coros estimate VO2 max vs a lab CPET? Compare 9 devices by method and see which brands are actually independently validated.', icon: 'activity', badge: 'New', url: '/tools/vo2-max-accuracy', category: 'wearables', features: ['9 devices compared', 'Independent vs vendor validation', '13 peer-reviewed sources'] },
-      { slug: 'vo2-max-factors', title: 'VO2 Max Factor Explorer', description: 'Explore 39 research-backed factors that raise or lower VO2 max — training, nutrition, environment, lifestyle & clinical — ranked by evidence strength, with doses and sources.', icon: 'zap', badge: 'New', url: '/tools/vo2-max-factors', category: 'recovery', features: ['39 factors ranked', '6 categories', '40 peer-reviewed sources'] },
+      { slug: 'wearable-accuracy', title: 'Most Accurate Wearable', description: 'Compare real accuracy data for Oura, Apple Watch, Garmin, WHOOP, Fitbit & Samsung across 9 health metrics backed by peer-reviewed research.', icon: 'activity', badge: 'Most Popular', url: '/tools/wearable-accuracy', features: ['30+ peer-reviewed studies', 'Head-to-head comparison', 'Full bias disclosure'] },
+      { slug: 'sleep-tracker-accuracy', title: 'Most Accurate Sleep Tracker', description: 'Which wearable is most accurate for sleep vs a lab PSG? Compare Oura, Apple Watch, Fitbit, WHOOP, Garmin & Withings on 4-stage staging (healthy vs clinical), deep & REM detection, sleep/wake agreement, and total-sleep-time bias.', icon: 'moon', badge: 'New', url: '/tools/sleep-tracker-accuracy', features: ['Compare any 2–4 devices', 'Healthy vs clinical accuracy', '14 verified sources'] },
+      { slug: 'heart-rate-accuracy', title: 'Most Accurate Heart Rate Wearable', description: 'Which wearable is most accurate for heart rate vs an ECG or chest strap? Compare Fitbit, Garmin, Apple Watch, Google Pixel, Polar, Oura & Xiaomi on error (MAPE), bias, limits of agreement and CCC, and see why arm motion, not intensity, is what breaks them.', icon: 'heart', badge: 'New', url: '/tools/heart-rate-accuracy', features: ['Compare any 2–4 devices', '10 devices ranked head-to-head', '28 verified sources'] },
+      { slug: 'recovery-score-explorer', title: 'Recovery Score Explorer', description: 'Compare recovery and readiness scores across 12 wearables — WHOOP, Oura, Garmin, Fitbit, Samsung, Polar, Ultrahuman, Coros, Amazfit, Suunto, Apple & RingConn — see the 35 factors that move yours, and find which scores are actually validated.', icon: 'heart', badge: 'New', url: '/tools/recovery-score-explorer', features: ['12 wearables compared', '35 factors ranked', 'Only 2/12 scores validated'] },
+      { slug: 'supplements-by-metric', title: 'Supplements by Metric', description: 'Pick a wearable metric — sleep latency, deep sleep, staying asleep, HRV, resting heart rate, or recovery — and see which of 27 supplements the research actually supports, graded by evidence with industry-funding flags and the popular stuff that doesn\'t work.', icon: 'sparkles', badge: 'New', url: '/tools/supplements-by-metric', features: ['6 metrics × 27 supplements', 'Evidence-graded with funding flags', '28 primary sources'] },
+      { slug: 'vo2-max-accuracy', title: 'Most Accurate VO2 Max Wearable', description: 'How accurately do Garmin, Apple, Polar, Fitbit, WHOOP, Oura, Samsung & Coros estimate VO2 max vs a lab CPET? Compare 9 devices by method and see which brands are actually independently validated.', icon: 'activity', badge: 'New', url: '/tools/vo2-max-accuracy', features: ['9 devices compared', 'Independent vs vendor validation', '13 peer-reviewed sources'] },
+      { slug: 'vo2-max-factors', title: 'VO2 Max Factor Explorer', description: 'Explore 39 research-backed factors that raise or lower VO2 max — training, nutrition, environment, lifestyle & clinical — ranked by evidence strength, with doses and sources.', icon: 'zap', badge: 'New', url: '/tools/vo2-max-factors', features: ['39 factors ranked', '6 categories', '40 peer-reviewed sources'] },
       { slug: 'oura-ring-comparison-tool', title: 'Oura Ring 5 vs 4 vs 3 Comparison (2026)', description: 'Compare Oura Ring 5, Ring 4, and Gen 3 side-by-side. Size & dimensions, peer-reviewed accuracy data (Dial 2025, Khan 2025), and the real 3-year cost with subscription math included.', icon: 'scale', badge: 'New', url: '/tools/oura-ring-comparison-tool', features: ['3 generations compared', 'Peer-reviewed accuracy data', '3-year TCO calculator'] },
       { slug: 'oura-ring-5-vs-4', title: 'Oura Ring 5 vs 4: What\'s Different (2026)', description: 'Oura Ring 5 vs Ring 4, decided on the numbers: every spec difference, a direct upgrade verdict, peer-reviewed accuracy (Dial 2025, Robbins 2024), and the real 3-year cost with membership.', icon: 'gauge', badge: 'New', url: '/tools/oura-ring-5-vs-4', features: ['Two generations, head-to-head', 'Peer-reviewed accuracy', '3-year cost calculator'] },
       { slug: 'fitbit-air-vs-whoop-comparison', title: 'Fitbit Air vs WHOOP: Accuracy & Cost (2026)', description: 'Compare Fitbit Air, WHOOP 5.0, and WHOOP MG side by side: heart-rate, sleep, and calorie accuracy with numbers, sensors, battery, price, and 3-year cost of ownership.', icon: 'scale', badge: 'New', url: '/tools/fitbit-air-vs-whoop-comparison', features: ['35 specs across 5 categories', 'HR/sleep/calorie accuracy', '3-year cost calculator'] },
-      { slug: 'smart-ring-comparison', title: 'Smart Ring Comparison & Picker (2026)', description: 'Compare all 9 current smart rings from Oura, RingConn, Ultrahuman and CUDIS: a priority-based ring finder, every spec model by model, a 50-feature software matrix, the validation record for each brand, and the real multi-year cost.', icon: 'scale', badge: 'New', url: '/tools/smart-ring-comparison', category: 'wearables', features: ['9 models, 4 brands', 'Ring finder by priority', 'Validation + cost math'] },
-      { slug: 'oura-vs-ringconn', title: 'Oura Ring vs RingConn (2026)', description: 'Compare Oura (Ring 5, Ring 4) and RingConn (Gen 3, Gen 2, Gen 2 Air) side by side: every spec, a feature-by-feature software matrix, validation posture, and the real multi-year cost with Oura\'s membership included.', icon: 'scale', badge: 'New', url: '/tools/oura-vs-ringconn', category: 'wearables', features: ['5 models compared', 'Feature-by-feature matrix', 'No-subscription cost math'] },
+      { slug: 'smart-ring-comparison', title: 'Smart Ring Comparison & Picker (2026)', description: 'Compare all 9 current smart rings from Oura, RingConn, Ultrahuman and CUDIS: a priority-based ring finder, every spec model by model, a 50-feature software matrix, the validation record for each brand, and the real multi-year cost.', icon: 'scale', badge: 'New', url: '/tools/smart-ring-comparison', features: ['9 models, 4 brands', 'Ring finder by priority', 'Validation + cost math'] },
+      { slug: 'oura-vs-ringconn', title: 'Oura Ring vs RingConn (2026)', description: 'Compare Oura (Ring 5, Ring 4) and RingConn (Gen 3, Gen 2, Gen 2 Air) side by side: every spec, a feature-by-feature software matrix, validation posture, and the real multi-year cost with Oura\'s membership included.', icon: 'scale', badge: 'New', url: '/tools/oura-vs-ringconn', features: ['5 models compared', 'Feature-by-feature matrix', 'No-subscription cost math'] },
       { slug: 'stress-factors', title: 'Stress Factor Explorer', description: 'What actually moves your wearable stress score? Explore every factor by device — Garmin, WHOOP, Oura, Fitbit, Samsung, Apple Watch — broken down by signal, direction & evidence.', icon: 'brain', badge: 'New', url: '/tools/stress-factors', features: ['10 wearables compared', '5 signal types mapped', '111 peer-reviewed sources'] },
       { slug: 'staying-asleep-factors', title: 'Staying Asleep Factors', description: 'Explore 27 research-backed factors that affect whether you stay asleep through the night — nutrition, supplements, exercise, environment & demographics ranked by evidence.', icon: 'moon', badge: 'New', url: '/tools/staying-asleep-factors', features: ['27 factors ranked', '40+ peer-reviewed studies', '5 categories'] },
       { slug: 'hrv-factors', title: 'HRV Factor Explorer', description: 'Explore 38 research-backed factors that affect Heart Rate Variability across supplements, lifestyle, exercise, micronutrients & demographics — ranked by evidence strength.', icon: 'heart', badge: 'Trending', url: '/tools/hrv-factors', features: ['38 factors ranked', '5 categories explored', 'Peer-reviewed sources'] },
@@ -83,65 +73,97 @@ class KygoToolsPage extends HTMLElement {
       { slug: 'step-count-accuracy', title: 'Step Count Accuracy', description: 'See which wearable counts steps most accurately: Garmin, Apple Watch, Fitbit, Samsung, Oura and more, grouped into four evidence tiers.', icon: 'steps', badge: 'Activity', url: '/tools/step-count-accuracy', features: ['20+ peer-reviewed studies', 'Head-to-head comparison', '9 devices ranked'] },
       { slug: 'sleep-metrics', title: 'Sleep Metrics Comparison', description: 'Compare 38 sleep metrics tracked by Oura Ring, Fitbit, Apple Watch & Garmin across 10 categories — see exactly what each device measures while you sleep.', icon: 'moon', badge: 'Sleep', url: '/tools/sleep-metrics', features: ['38 metrics compared', '10 sleep categories', '29 verified sources'] },
       { slug: 'sensor-comparison', title: 'Hardware & Software Differences', description: 'See what actually makes Garmin, Whoop, Oura, Apple Watch, and Fitbit different — hardware sensors, health metrics, and proprietary software compared.', icon: 'activity', badge: 'Hardware', url: '/tools/sensor-comparison', features: ['Hardware vs software breakdown', '25 proprietary algorithms', '6 latest-gen devices'] },
-      { slug: 'accuracy-factors', title: 'Wearable Accuracy: What Actually Affects It', description: 'Does hair, a tattoo, cold hands or which wrist change your readings? 12 questions people ask, 8 things that help and 6 things that quietly hurt, with what the studies found, what each brand says, and the free fixes that cut heart rate error from 20% to 7%.', icon: 'activity', badge: 'New', url: '/tools/accuracy-factors', category: 'wearables', features: ['12 questions answered', '8 free fixes ranked', '83 primary sources'] },
+      { slug: 'accuracy-factors', title: 'Wearable Accuracy: What Actually Affects It', description: 'Does hair, a tattoo, cold hands or which wrist change your readings? 12 questions people ask, 8 things that help and 6 things that quietly hurt, with what the studies found, what each brand says, and the free fixes that cut heart rate error from 20% to 7%.', icon: 'activity', badge: 'New', url: '/tools/accuracy-factors', features: ['12 questions answered', '8 free fixes ranked', '83 primary sources'] },
       { slug: 'rem-sleep-factors', title: 'REM Sleep Factor Explorer', description: 'What influences your REM (dream) sleep? Explore 23 research-backed factors across nutrition, supplements, exercise, environment & demographics — ranked by evidence strength, with mechanisms and sources.', icon: 'moon', badge: 'Sleep', url: '/tools/rem-sleep-factors', features: ['23 factors ranked', '5 categories', '23 peer-reviewed sources'] }
     ];
   }
 
-  // Slug → category mapping (overridable via tool.category)
+  // Category taxonomy. Five of the six names are shared verbatim with the /blog
+  // categories so the two pages read as one site; the blog's "Calories & Energy
+  // Burn" + "Nutrition & Food Logging" are merged here because splitting them
+  // would leave a one-tool group, and "Kygo Product & Updates" has no tools.
+  // `slugs` also fixes the display order inside each group.
+  _categories() {
+    return [
+      { id: 'sleep', label: 'Sleep', icon: 'moon',
+        lede: 'What shapes how fast you fall asleep, how deep you go, whether you stay there — and which device measures it best.',
+        slugs: ['staying-asleep-factors', 'sleep-latency-factors', 'deep-sleep-factors', 'rem-sleep-factors', 'sleep-metrics', 'sleep-tracker-accuracy'] },
+      { id: 'heart-rate', label: 'Heart Rate & HRV', icon: 'heart',
+        lede: 'The inputs that move HRV and resting heart rate, and how accurately wearables read them.',
+        slugs: ['hrv-factors', 'resting-heart-rate-factors', 'heart-rate-accuracy'] },
+      { id: 'stress-recovery', label: 'Stress & Recovery', icon: 'brain',
+        lede: 'What recovery and stress scores are actually built from, and which ones are validated.',
+        slugs: ['recovery-score-explorer', 'stress-factors'] },
+      { id: 'activity', label: 'Activity & Fitness', icon: 'activity',
+        lede: 'Steps, VO2 max and cardio fitness — what moves them and what your device gets right.',
+        slugs: ['step-count-accuracy', 'vo2-max-factors', 'vo2-max-accuracy'] },
+      { id: 'nutrition', label: 'Calories & Nutrition', icon: 'sparkles',
+        lede: 'Calorie burn accuracy, what is actually in your food, and which supplements the research supports.',
+        slugs: ['calorie-burn-accuracy', 'food-scanner', 'supplements-by-metric'] },
+      { id: 'devices', label: 'Devices & Buying Guides', icon: 'cpu',
+        lede: 'Device accuracy, head-to-head comparisons, and what to buy.',
+        slugs: ['wearable-accuracy', 'smart-ring-comparison', 'oura-vs-ringconn', 'oura-ring-comparison-tool', 'oura-ring-5-vs-4', 'fitbit-air-vs-whoop-comparison', 'sensor-comparison', 'accuracy-factors'] }
+    ];
+  }
+
+  // Slug → category id. A tool may override with its own `category` field
+  // (e.g. a tool list supplied from Wix). Unknown slugs fall through to
+  // 'other', which is a safety net only — every shipped tool has a home.
   _categoryFor(tool) {
     if (tool.category) return tool.category;
-    const map = {
-      'wearable-accuracy': 'wearables',
-      'sensor-comparison': 'wearables',
-      'calorie-burn-accuracy': 'wearables',
-      'step-count-accuracy': 'wearables',
-      'sleep-metrics': 'sleep',
-      'sleep-latency-factors': 'sleep',
-      'staying-asleep-factors': 'sleep',
-      'deep-sleep-factors': 'sleep',
-      'accuracy-factors': { motif: 'ranked', caption: 'Fixes by effect size' },
-      'rem-sleep-factors': 'sleep',
-      'hrv-factors': 'recovery',
-      'resting-heart-rate-factors': 'recovery',
-      'food-scanner': 'nutrition'
-    };
-    return map[tool.slug] || 'other';
+    if (!this._slugCategoryMap) {
+      this._slugCategoryMap = new Map();
+      this._categories().forEach(c => c.slugs.forEach(s => this._slugCategoryMap.set(s, c.id)));
+    }
+    return this._slugCategoryMap.get(tool.slug) || 'other';
   }
 
   // Per-category presentation data — icon, label, lede. Unknown categories
   // get a humanised label and a default icon.
   _categoryMeta(id) {
-    const map = {
-      sleep:     { label: 'Sleep',     icon: 'moon',     lede: 'Tools that explore what shapes how fast you fall asleep, how deep you go, and whether you stay there.' },
-      recovery:  { label: 'Recovery',  icon: 'heart',    lede: 'Heart rate, HRV, and the lifestyle inputs that move them.' },
-      nutrition: { label: 'Nutrition', icon: 'sparkles', lede: 'Understand what\'s actually in your food.' },
-      wearables: { label: 'Wearables', icon: 'activity', lede: 'Device accuracy, head-to-head comparisons, and what each one gets right.' },
-      other:     { label: 'Other',     icon: 'sparkles', lede: 'Specialty tools.' }
-    };
-    return map[id] || {
+    const c = this._categories().find(x => x.id === id);
+    if (c) return { label: c.label, icon: c.icon, lede: c.lede };
+    if (id === 'other') return { label: 'Other', icon: 'sparkles', lede: 'Specialty tools.' };
+    return {
       label: id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' '),
       icon: 'sparkles',
       lede: ''
     };
   }
 
-  // Group tools by category, preserving insertion order within each group.
-  // Returns an array of { id, meta, tools } in the preferred display order.
+  // Group tools by category. Sections follow _categories() order; within a
+  // section, tools follow that category's `slugs` order, with anything not
+  // listed there (e.g. a Wix-supplied tool) appended in insertion order.
   _groupedByCategory() {
-    const preferredOrder = ['sleep', 'recovery', 'nutrition', 'wearables', 'other'];
+    const cats = this._categories();
+    const preferredOrder = cats.map(c => c.id);
+    const rank = new Map();
+    cats.forEach(c => c.slugs.forEach((s, i) => rank.set(s, i)));
+
     const buckets = new Map();
-    this._tools.forEach(t => {
+    this._tools.forEach((t, i) => {
       const id = this._categoryFor(t);
       if (!buckets.has(id)) buckets.set(id, []);
-      buckets.get(id).push(t);
+      buckets.get(id).push({ tool: t, i });
     });
+
     const order = preferredOrder.filter(id => buckets.has(id));
     buckets.forEach((_, id) => { if (!order.includes(id)) order.push(id); });
-    return order.map(id => ({ id, meta: this._categoryMeta(id), tools: buckets.get(id) }));
+
+    return order.map(id => ({
+      id,
+      meta: this._categoryMeta(id),
+      tools: buckets.get(id)
+        .sort((a, b) => {
+          const ra = rank.has(a.tool.slug) ? rank.get(a.tool.slug) : 1000 + a.i;
+          const rb = rank.has(b.tool.slug) ? rank.get(b.tool.slug) : 1000 + b.i;
+          return ra - rb;
+        })
+        .map(e => e.tool)
+    }));
   }
 
-  // Parse "17+ peer-reviewed studies" → { n: '17+', l: 'peer-reviewed studies' }
+  // Parse "30+ peer-reviewed studies" → { n: '30+', l: 'peer-reviewed studies' }
   _statsFor(tool) {
     const features = Array.isArray(tool.features) ? tool.features.slice(0, 3) : [];
     return features.map(f => {
@@ -377,10 +399,18 @@ class KygoToolsPage extends HTMLElement {
   _setupEvents() {
     const root = this.shadowRoot;
 
+    // Tool cards are real <a href="/tools/..."> now, so cmd/middle-click, "open
+    // in new tab", "copy link address", keyboard Enter and crawlers all work
+    // natively — the browser owns navigation. This listener is only the hook
+    // where per-card tracking lives, plus a fallback for any non-anchor element
+    // that still carries data-open-tool (e.g. a Wix-supplied variant).
     root.querySelectorAll('[data-open-tool]').forEach(el => {
       el.addEventListener('click', (e) => {
         const url = el.getAttribute('data-open-tool');
-        if (!url) return;
+        if (!url || url === '#') return;
+        if (el.tagName === 'A' && el.hasAttribute('href')) return;
+        if (e.defaultPrevented) return;
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.button && e.button !== 0)) return;
         e.preventDefault();
         window.location.href = url;
       });
@@ -677,6 +707,9 @@ class KygoToolsPage extends HTMLElement {
         border-color: #CBD5E1; cursor: pointer;
       }
       .tool-card:hover::after, .tool-card:active::after { opacity: 1; }
+      .tool-card:focus-visible, .feat-card:focus-visible {
+        outline: 2px solid var(--green); outline-offset: 3px;
+      }
       .card-media {
         position: relative; aspect-ratio: 16 / 10; overflow: hidden;
         background: var(--gray-100);
@@ -877,7 +910,7 @@ class KygoToolsPage extends HTMLElement {
     const matrixHtml = `<div class="fm-row fm-head"><span class="fm-metric"></span>${devices.map(d => `<span class="fm-dev">${d}</span>`).join('')}</div>` +
       metrics.map(m => `<div class="fm-row"><span class="fm-metric">${m.label}</span>${devices.map((d, i) => `<span class="fm-cell"><span class="fm-dot${i === m.winner ? ' on' : ''}"></span></span>`).join('')}</div>`).join('');
     const stats = [
-      { n: '17+', l: 'peer-reviewed studies' },
+      { n: '30+', l: 'peer-reviewed studies' },
       { n: '6', l: 'wearables compared' },
       { n: '9', l: 'health metrics' }
     ];
@@ -891,7 +924,7 @@ class KygoToolsPage extends HTMLElement {
           </div>
           <span class="feat-rule"></span>
         </header>
-        <div class="feat-card" data-open-tool="${tool.url || '#'}" role="button" tabindex="0" aria-label="${tool.title}">
+        <a class="feat-card" href="${tool.url || '#'}" data-open-tool="${tool.url || '#'}" aria-label="${tool.title}">
           <div class="feat-scene">
             <div class="feat-panel">
               <div class="feat-panel-cap">Accuracy leader by metric</div>
@@ -907,7 +940,7 @@ class KygoToolsPage extends HTMLElement {
             </div>
             <span class="feat-open">Open tool ${this._getIcon('arrow-right')}</span>
           </div>
-        </div>
+        </a>
       </div>
     `;
   }
@@ -915,7 +948,7 @@ class KygoToolsPage extends HTMLElement {
   _renderCard(tool) {
     const motif = this._motifFor(tool);
     return `
-      <div class="tool-card" data-open-tool="${tool.url || '#'}" role="button" tabindex="0" aria-label="${tool.title}">
+      <a class="tool-card" href="${tool.url || '#'}" data-open-tool="${tool.url || '#'}" aria-label="${tool.title}">
         <div class="card-media">
           <div class="card-panel">
             <div class="panel-cap">${motif.caption || ''}</div>
@@ -930,7 +963,7 @@ class KygoToolsPage extends HTMLElement {
             <span class="card-open">Open ${this._getIcon('arrow-right')}</span>
           </div>
         </div>
-      </div>
+      </a>
     `;
   }
 
@@ -1062,6 +1095,45 @@ class KygoToolsPage extends HTMLElement {
         </div>
       </section>
     `;
+  }
+
+  /**
+   * Light-DOM mirror for crawlers and AI tools. The tool cards are real anchors,
+   * but they live in the shadow root, which many crawlers don't traverse — so the
+   * index's outbound links are repeated here as plain <a> elements, grouped under
+   * the same six category headings the page shows.
+   */
+  _renderSeo() {
+    const existing = this.querySelector('[data-seo]');
+    if (existing) existing.remove();
+    const d = document.createElement('div');
+    d.setAttribute('data-seo', '');
+    d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+
+    const summary = document.createElement('p');
+    summary.textContent = `Kygo Health Free Tools — ${this._tools.length} free research-backed tools to understand your health, grouped by what they measure: sleep, heart rate and HRV, stress and recovery, activity and fitness, calories and nutrition, and devices and buying guides. Wearable accuracy rankings, head-to-head device comparisons, evidence-ranked factor explorers, and calculators for Oura, Apple Watch, Garmin, WHOOP, Fitbit and Samsung. No signup required.`;
+    d.appendChild(summary);
+
+    this._groupedByCategory().forEach(group => {
+      if (!group.tools.length) return;
+      const h = document.createElement('h2');
+      h.textContent = group.meta.label;
+      d.appendChild(h);
+      const ul = document.createElement('ul');
+      group.tools.forEach(tool => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = tool.url || '/tools';
+        a.textContent = tool.title || tool.slug || 'Tool';
+        li.appendChild(a);
+        const desc = document.createTextNode(tool.description ? ` — ${tool.description}` : '');
+        li.appendChild(desc);
+        ul.appendChild(li);
+      });
+      d.appendChild(ul);
+    });
+
+    this.appendChild(d);
   }
 
   _injectStructuredData() {
