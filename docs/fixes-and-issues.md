@@ -7,6 +7,50 @@
 > Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
 > **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
+## 🆕 `/blog` index rebuild on branch `claude/kind-newton-3xzpxt` (2026-09-09)
+
+All resolved in `kygo-blog.js` on this branch.
+
+- **#C1 (P1) — ✅ RESOLVED. 20 posts were missing from `/blog`.** The component built its
+  sections by iterating `CATEGORY_CONFIG`, which still held the pre-restructure five categories,
+  so any post whose `categorySlug` was not in that array was dropped with no section, no card and
+  no error — `stress-recovery` (8), `calories-energy-burn` (6) and `activity-fitness` (6),
+  including the whole calorie-accuracy cluster. `CATEGORY_CONFIG` now carries all eight
+  categories (old labels kept in `aliases`), **and the grouping now iterates the post data**:
+  `_buildCategoryIndex()` gives any unconfigured category its own chip and section headed by the
+  raw `category` string, plus a one-time `console.warn`. A category added in Wix can no longer
+  make posts disappear silently. Individual `/post/...` URLs were never affected.
+
+- **#C2 (P2) — ✅ RESOLVED. Post cards were not links.** Every card was an `<article>` with a JS
+  click handler, so the index had no open-in-new-tab, middle-click, cmd-click, copy-link-address,
+  hover URL preview or keyboard activation, and no outbound links for crawlers. Cards and the
+  featured card are now real `<a href="/post/{slug}">`. A plain left-click still
+  `preventDefault()`s and dispatches `postClick` so Wix Velo keeps owning navigation; a modified
+  or middle click is left to the browser and still reports the click. `kygo-tracking.js` event
+  names are unchanged.
+
+- **#C3 (P3) — ✅ RESOLVED. Long list was hard to navigate.** All posts still render (no
+  pagination, no "show more" — 63 cards = 63 internal links on the strongest hub page). Added:
+  a client-side search box over titles/excerpts/category, post counts on every chip, a genuinely
+  sticky chip row (`nav.category-tabs` computed to `static` before, despite a comment claiming
+  otherwise) and sticky per-category headings pinned below it via a JS-measured `--tabs-h`.
+
+- **#C4 (P3) — ✅ RESOLVED. Featured block ate the first viewport.** Hero paddings tightened, the
+  desktop featured card shrunk (image `min-height` 380→280, content padding 48→32/36), and the
+  chip row moved **above** the hero band so a returning reader can filter without scrolling. At
+  1456×900 the chips and the whole featured card now fit the first screen.
+
+- **#C5 (P3) — ✅ RESOLVED (incidental).** Post titles/excerpts were interpolated into the
+  template unescaped; added an `esc()` helper and applied it to all interpolated copy and
+  attributes. Also added `decoding="async"` to cover images and a light-DOM `<a>` mirror of every
+  post link inside the `[data-seo]` block, since shadow-DOM anchors are invisible to many
+  crawlers.
+
+- **#C6 (open, P3) — the mid-page `kband` app CTA.** It sits between the featured card and the
+  first category section and adds ~263px before the post list at desktop. Not touched (it is a
+  conversion surface, not a bug); moving it below the first category section would be the next
+  win if `/blog` still feels top-heavy.
+
 ## 🆕 Opened on branch `claude/standardize-blog-sections-1wo0ax` (2026-08)
 
 Found while standardising the blog cross-link section across every tool page. **None of these
