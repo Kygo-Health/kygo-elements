@@ -11,6 +11,44 @@
 <body>
   <kygo-blog></kygo-blog>
   <script>
+    /* Fixture mirroring the live Wix `posts` payload: the eight current
+       categories at their real counts, plus one post in a category that is
+       deliberately NOT in CATEGORY_CONFIG, to prove an unconfigured category
+       still renders (with a console warning) instead of vanishing. */
+    const DIST = [
+      ['sleep', 'Sleep', 10],
+      ['hrv-recovery', 'Heart Rate & HRV', 10],
+      ['wearables-data', 'Devices & Buying Guides', 9],
+      ['stress-recovery', 'Stress & Recovery', 8],
+      ['calories-energy-burn', 'Calories & Energy Burn', 6],
+      ['activity-fitness', 'Activity & Fitness', 6],
+      ['nutrition', 'Nutrition & Food Logging', 10],
+      ['app-updates', 'Kygo Product & Updates', 9],
+      ['future-category', 'Some Future Category', 1]
+    ];
+    const posts = [];
+    let n = 0;
+    DIST.forEach(([categorySlug, category, count]) => {
+      for (let i = 1; i <= count; i++) {
+        n++;
+        posts.push({
+          slug: categorySlug + '-post-' + i,
+          title: category + ': sample article ' + i,
+          excerpt: 'A research-backed look at ' + category.toLowerCase() + ' — what the data actually shows and how accurate your wearable is.',
+          category,
+          categorySlug,
+          coverImage: 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><rect width="640" height="360" fill="#E2E8F0"/></svg>'),
+          publishedDate: new Date(Date.UTC(2026, 8, 9) - n * 86400000).toISOString()
+        });
+      }
+    });
+    // Match the live pin so the featured slot behaves like production.
+    posts[0].slug = 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device';
+
+    const el = document.querySelector('kygo-blog');
+    el.setAttribute('posts', JSON.stringify(posts));
+    el.addEventListener('postClick', (e) => console.log('postClick →', e.detail.slug));
+
     const cacheBust = '?v=' + Date.now();
     const s = document.createElement('script');
     s.src = 'kygo-blog.js' + cacheBust;
