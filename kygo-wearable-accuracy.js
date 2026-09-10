@@ -31,7 +31,7 @@ class KygoWearableAccuracy extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Wearable Accuracy Comparison Tool by Kygo Health. Compare accuracy of Oura Ring, Apple Watch, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch across sleep staging, heart rate variability (HRV), resting heart rate, active heart rate, SpO2 blood oxygen, step counting, calorie tracking, VO2 max, and skin temperature. Data sourced from peer-reviewed studies including Robbins 2024, Dial 2025, Lee 2023, Schyvens 2025, Gielen 2026, Van Oost 2025, Kristiansson 2023 and Carrier 2025. Independent and funded study results compared side by side with bias disclosures. Best wearable for sleep staging: Apple Watch in healthy adults (kappa 0.53) and Fitbit across populations (0.42); every device drops sharply in clinical samples. Best for nocturnal HRV and resting heart rate: Oura Ring 4 (CCC 0.99 and 0.98). Best for daytime heart rate: Fitbit Charge 6 (MAPE 5.5%) and Garmin Vivoactive 5 (6.3%). Best for steps: Apple Watch and Garmin, both under 5% error in the lab; Oura is worst at 50.3% in free living. Best for VO2 max: Garmin, about 7% error across 3 independent studies. Calorie estimates are weak on every device, 27% to 93% error in the Stanford seven-device study. Best for SpO2: Apple Watch (MAE 2.2%). No single device wins every metric, and current hardware such as Oura Ring 5, WHOOP 5.0, Apple Watch Series 10 and 11 and Galaxy Watch 7 and 8 has no independent validation at all.');
+    __seo(this, 'Wearable Accuracy Comparison Tool by Kygo Health. Compare accuracy of Oura Ring, Apple Watch, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch across sleep staging, heart rate variability (HRV), resting heart rate, active heart rate, SpO2 blood oxygen, step counting, calorie tracking, VO2 max, and skin temperature. Data sourced from peer-reviewed studies including Robbins 2024, Dial 2025, Lee 2023, Schyvens 2025, Gielen 2026, Van Oost 2025, Andersson-Hall 2023 and Carrier 2025. Independent and funded study results compared side by side with bias disclosures. Best wearable for sleep staging: Apple Watch in healthy adults (kappa 0.53) and Fitbit across populations (0.42); every device drops sharply in clinical samples. Best for nocturnal HRV and resting heart rate: Oura Ring 4 (CCC 0.99 and 0.98). Best for daytime heart rate: Fitbit Charge 6 (MAPE 5.5%) and Garmin Vivoactive 5 (6.3%). Best for steps: Apple Watch and Garmin, both under 5% error in the lab; Oura is worst at 50.3% in free living. Best for VO2 max: Garmin, about 7% error across 3 independent studies. Calorie estimates are weak on every device, 27.4% to 92.6% error in the Stanford seven-device study, and no device has a daily-level calorie validation against indirect calorimetry or doubly labelled water, so the daily figures in circulation cannot be ranked against each other. Best for SpO2: Apple Watch (MAE 2.2%). No single device wins every metric, and current hardware such as Oura Ring 5, WHOOP 5.0, Apple Watch Series 10 and 11 and Galaxy Watch 7 and 8 has no independent validation at all.');
   }
 
   disconnectedCallback() {
@@ -69,7 +69,7 @@ class KygoWearableAccuracy extends HTMLElement {
         strengths: ['Best nocturnal HRV (CCC 0.99, Ring 4)', 'Best nocturnal resting HR (CCC 0.98, Ring 4)', 'Smallest total-sleep-time bias (-3 min, 6-study meta)', 'Best skin temp (r\u00B2>0.99)', 'Comfortable sleep wear'],
         weaknesses: ['Worst measured step count (50.3% free-living error, Gen 2; overcounts 1,400 to 2,100 a day in both studies)', 'Daytime HR error 15% (Gen 3, Gielen 2026), bottom tier', 'Sleep staging \u03BA=0.35 in a clinical sample; 53% accuracy in sleep-clinic patients', 'Ring 5 has zero validation', 'No GPS, no screen'],
         researchNote: 'Sleep \u03BA=0.65 is from an Oura-funded study on screened healthy sleepers. The only independent staging numbers are clinical: \u03BA=0.35 (Lee 2023) and 53% accuracy (Herberger 2025). Oura was not in the independent Antwerp wrist study.',
-        studyIds: ['robbins2024', 'dial2025', 'lee2023', 'gielen2026', 'kristiansson2023', 'herberger2025', 'khan2025'],
+        studyIds: ['robbins2024', 'dial2025', 'lee2023', 'gielen2026', 'anderssonhall2023', 'herberger2025', 'khan2025'],
         affiliateLinks: [
           { name: 'Oura Ring', url: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20' , slug: 'oura-ring-search' }
         ]
@@ -83,7 +83,7 @@ class KygoWearableAccuracy extends HTMLElement {
         bestFor: 'Steps, GPS, Outdoor Sports, VO2 Max, Battery',
         subscription: 'None required',
         strengths: ['Under 5% step error in the lab (Vivoactive 4)', 'Most independently validated VO2 max (about 7% error, 3 studies)', 'Tier-1 daytime HR (Vivoactive 5, MAPE 6.3%)', 'Best GPS & battery life', 'Multi-sport tracking'],
-        weaknesses: ['Poor sleep staging (\u03BA=0.21)', 'Poor wake detection (27.6%)', 'REM detection 33.1% and deep 47.5% (Vivosmart 4)', 'Lower HRV (CCC 0.87)', 'Resistance-training calories 57% off; walking 32%', 'Publishes no HR accuracy figure of its own', 'No flagship since the Fenix 6 has any peer-reviewed validation'],
+        weaknesses: ['Poor sleep staging (\u03BA=0.21)', 'Poor wake detection (27.6%)', 'REM detection 33.1% and deep 47.5% (Vivosmart 4)', 'Lower HRV (CCC 0.87)', 'Resistance-training calories 57% off (Vivosmart HR, n=50, Boudreaux 2018); walking 32% (Le 2022, n=20)', 'Publishes no HR accuracy figure of its own', 'No flagship since the Fenix 6 has any peer-reviewed validation'],
         researchNote: 'HRV/sleep studies used Fenix 6 / Vivosmart 4 (older models). Every Garmin figure here is Fenix 6, Vivosmart 4 or Vivoactive 4/5. Fenix 8, Forerunner 970 and Venu 4 have nothing.',
         studyIds: ['schyvens2025', 'dial2025', 'gielen2026', 'deleon2026', 'rider2025', 'carrier2025', 'carrier2023', 'engel2026'],
         affiliateLinks: [
@@ -297,7 +297,7 @@ class KygoWearableAccuracy extends HTMLElement {
             { value: 9.3, label: 'MAPE 9.3%', study: 'Rowe 2025, PLOS ONE (Series 5, slow and shuffle walking)', biased: false }
           ],
           'oura': [
-            { value: 50.3, label: 'MAPE 50.3%', study: 'Kristiansson 2023 corrected (Gen 2, free-living vs pedometer, pre-2025 algorithm)', biased: false }
+            { value: 50.3, label: 'MAPE 50.3%', study: 'Andersson-Hall 2023 corrected (Gen 2, free-living vs pedometer, pre-2025 algorithm)', biased: false }
           ],
           'garmin': [
             { value: 4.6, label: 'MAPE 4.6%', study: 'de Leon 2026, Applied Sciences (Vivoactive 4, lab)', biased: false },
@@ -320,31 +320,31 @@ class KygoWearableAccuracy extends HTMLElement {
         name: 'Calorie / Energy',
         desc: 'How accurately the device estimates energy expenditure (calories burned).',
         unit: 'MAPE %',
-        unitExplainer: 'Error in daily energy expenditure against indirect calorimetry or doubly labelled water. Only devices with a daily-level study get a bar.',
+        unitExplainer: 'Error in daily energy expenditure against indirect calorimetry or doubly labelled water. No device has a study that meets that bar, so no device gets one. Every figure below is carried as a note, with its reference method named.',
         goldStandard: 'Indirect calorimetry / doubly labelled water',
         higherBetter: false,
         scale: { min: 0, max: 40 },
         data: {
           'apple-watch': [
-            { value: 28.0, label: 'MAPE about 28%', study: 'Choe and Kang 2025 (56-study meta, daily)', biased: false }
+            { value: null, label: 'No daily-level study', study: 'Choe and Kang 2025 is a 56-study meta-analysis, but its pooled estimate is 0.30 kcal/min (limits -2.09 to 2.69), a per-minute rate across bout-level comparisons, not a daily total. The widely-quoted 27.96% is not visible in the paper and traces to the university press release.', biased: false }
           ],
           'oura': [
-            { value: 13.0, label: 'MAPE 13%', study: 'Kristiansson 2023 corrected (free-living daily; 21.1% in the lab)', biased: false }
+            { value: null, label: 'No daily-level study', study: 'Andersson-Hall 2023 corrected (Kristiansson is the second author): the 13% free-living figure was measured against Axivity AX3 wrist accelerometers, not calorimetry or doubly labelled water. The same table gives hip 42.2% and thigh 44.7%, the three placements disagreeing by about 850 kcal/day. Against actual indirect calorimetry in the lab it was 21.1%.', biased: false }
           ],
           'garmin': [
-            { value: null, label: 'No daily MAPE', study: 'Parak 2017, JMIR mHealth: steady cardio about 6.7%, light activity 16.5% (Firstbeat engine, PulseOn device). Bout-level, not comparable to the daily bars.', biased: false }
+            { value: null, label: 'No daily-level study', study: 'Parak 2017, JMIR mHealth: steady cardio about 6.7%, light activity 16.5% (Firstbeat engine). The device was a PulseOn and two of the authors were PulseOn employees; no Garmin device was tested in that study at all. Stanford separately ranked PulseOn worst of seven devices for energy expenditure, at 92.6%.', biased: false }
           ],
           'whoop': [
             { value: null, label: 'No published figure', study: 'The 18.4% TDEE figure is unverifiable, no primary publication', biased: false }
           ],
           'fitbit': [
-            { value: null, label: 'No daily MAPE', study: 'Chevance 2022: pooled bias 0.19 kcal/min, limits -5.3 to +5.7', biased: false }
+            { value: null, label: 'No daily-level study', study: 'Chevance 2022, Table 2: on all comparisons (k=49) pooled bias is 0.19 kcal/min, limits -5.3 to +5.7. With low-quality studies removed (k=29) it is -2.77 kcal/min, limits -12.75 to 7.41. The authors\' own framing: 3 kcal/min over an hour is about 180 kcal, roughly a 40% miss.', biased: false }
           ],
           'samsung': [
-            { value: null, label: 'No daily MAPE', study: '9 to 21% in one small study', biased: false }
+            { value: null, label: 'No daily-level study', study: '9 to 21% in one small study (JMIR Formative Research 2026, intermittent running)', biased: false }
           ]
         },
-        insight: 'Every wearable is weak at calories and none should be used as a counter. The cleanest multi-device figure is the Stanford study (Shcherbina 2017): across seven devices, energy expenditure error ran 27% to 93% while heart rate on the same devices was under 5%. Oura\'s 13% daily figure beats Apple\'s 28% pooled, but a ring has almost no motion signal when the hand is still, so it undercounts cycling, lifting and hard efforts. <a href="https://www.kygo.app/tools/calorie-burn-accuracy" data-action="internal-link" data-track-label="calorie-burn-accuracy" data-track-position="metric-insight">Use the calorie burn accuracy calculator for your device and activity.</a>'
+        insight: 'Every wearable is weak at calories and none should be used as a counter. Nobody has a clean daily calorie validation: the figures in circulation were each measured against a different reference, so they cannot be ranked against one another. The cleanest multi-device figure is the Stanford study (Shcherbina 2017): across seven devices, energy expenditure error ran 27.4% for the Fitbit Surge to 92.6% for the PulseOn, while heart rate on the same devices was under 5%. Pooled across those seven devices, calorie error was lowest for walking (31.8%) and running (31.0%) and highest for sitting (52.4%), so the worst calorie errors happen at rest, not during exercise. The one defensible cross-brand statement comes from Fuller 2020: no brand was within 3% of criterion more than 13% of the time. A ring also has almost no motion signal when the hand is still, so it undercounts cycling, lifting and hard efforts. <a href="https://www.kygo.app/tools/calorie-burn-accuracy" data-action="internal-link" data-track-label="calorie-burn-accuracy" data-track-position="metric-insight">Use the calorie burn accuracy calculator for your device and activity.</a>'
       },
       vo2max: {
         name: 'VO2 Max',
@@ -444,7 +444,7 @@ class KygoWearableAccuracy extends HTMLElement {
       chevance2022: { authors: 'Chevance G, et al.', year: 2022, title: 'Accuracy and precision of energy expenditure, heart rate and steps measured by Fitbit', journal: 'JMIR mHealth', doi: '10.2196/35626', n: '32 heart-rate studies', independent: true, funder: null },
       choe2025: { authors: 'Choe S, Kang D', year: 2025, title: 'Apple Watch validity for heart rate and energy expenditure: meta-analysis', journal: 'Physiological Measurement', doi: null, n: '56 studies', independent: true, funder: null },
       shcherbina2017: { authors: 'Shcherbina A, et al.', year: 2017, title: 'Accuracy in wrist-worn devices for heart rate and energy expenditure', journal: 'Journal of Personalized Medicine', doi: '10.3390/jpm7020003', n: 60, independent: true, funder: null },
-      kristiansson2023: { authors: 'Kristiansson E, et al.', year: 2023, title: 'Validation of Oura Ring energy expenditure and steps in free-living conditions', journal: 'BMC Medical Research Methodology', doi: '10.1186/s12874-023-02029-w', n: null, independent: true, funder: null, note: 'Cite the 9 September 2023 correction, not the original.' },
+      anderssonhall2023: { authors: 'Andersson-Hall U, Kristiansson E, et al.', year: 2023, title: 'Validation of Oura Ring energy expenditure and steps in free-living conditions', journal: 'BMC Medical Research Methodology', doi: '10.1186/s12874-023-02029-w', n: null, independent: true, funder: null, note: 'Cite the 9 September 2023 correction, not the original. The free-living reference was Axivity AX3 accelerometers, not calorimetry or doubly labelled water; the lab MAPE against indirect calorimetry was 21.1%.' },
       miwa2026: { authors: 'Miwa H, et al.', year: 2026, title: 'Apple Watch Series 6 and Fitbit Sense free-living steps vs ActiGraph', journal: 'PLOS ONE', doi: null, n: 22, independent: true, funder: null },
       kim2024: { authors: 'Kim Y, et al.', year: 2024, title: 'Apple Watch Series 6 free-living step counting vs activPAL', journal: 'Sensors', doi: null, n: null, independent: true, funder: null },
       deleon2026: { authors: 'de Leon A, et al.', year: 2026, title: 'Garmin Vivoactive 4 treadmill step-count validity', journal: 'Applied Sciences', doi: null, n: 18, independent: true, funder: null },

@@ -4,7 +4,7 @@
  * Enter your wearable's reported calorie burn and see the likely actual range, backed by
  * peer-reviewed per-activity accuracy data. Compares Apple Watch, Fitbit, Garmin, WHOOP,
  * Oura Ring and Samsung Galaxy Watch across 7 activity types.
- * Data: "Wearable Calorie & Activity Tracking" research (primary-source re-audit 2026-07-08).
+ * Data: "Wearable Calorie & Activity Tracking" research (primary-source re-audit 2026-09-10).
  */
 
 /** Injects accessible text into light DOM so crawlers and AI tools can read component content */
@@ -77,147 +77,157 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   }
 
   // ── Device data ─────────────────────────────────────────────────────────
-  // acc[activity] = { mape, lo, hi, dir, ev, src }
-  //   ev: 'measured'  = peer-reviewed per-activity MAPE (shown in the published matrix)
+  // acc[activity] = { mape, lo, hi, dir, ev, src, disp, unsourced, floor, note }
+  //   ev: 'measured'  = peer-reviewed per-activity figure (shown in the published matrix)
   //       'estimated' = extrapolated from the device's overall/related data (calculator only)
-  //       'untested'  = never metabolically tested & not calculable — no number is published
+  //       'untested'  = never metabolically tested and not calculable, so no number is published
   //   dir: 'over' | 'under' | 'mixed'
+  //   mape: null with lo/hi present means the source publishes a range only. We show the range
+  //         rather than inventing a midpoint, and the calculator omits a single best estimate.
+  //   disp: display string that overrides the "<mape>%" label (ranges, "near zero").
+  //   unsourced: figure circulates widely but no primary publication has been located. Marked *.
+  //   floor: value is a calculated systematic-bias floor, not a MAPE. True error is higher. Marked c.
+  //   note: for 'untested' cells, why no number exists.
 
   get _devices() {
     return {
       apple: {
         name: 'Apple Watch', short: 'Apple', key: 'apple',
         affiliate: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search',
-        headline: '~28%', headlineLabel: 'daily calorie error (MAPE)',
-        headlineSrc: 'Choe & Kang 2025 · 56-study meta-analysis',
-        bias: 'Overestimates in women, underestimates in men',
-        algorithm: 'Proprietary ML neural networks trained on metabolic-chamber studies — combines heart rate, motion, GPS speed, elevation and your profile. Active + Resting calories are summed for the total.',
+        headline: '~28%', headlineLabel: 'error, pooled across studies*',
+        headlineSrc: 'Choe & Kang 2025, Physiological Measurement, 56-study meta-analysis. The 27.96% figure is not in the abstract and traces to the university press release, not the paper.',
+        bias: 'Varies by activity type and intensity. Sex is not a tested moderator.',
+        algorithm: 'Proprietary ML neural networks trained on metabolic-chamber studies. Combines heart rate, motion, GPS speed, elevation and your profile. Active + Resting calories are summed for the total.',
         sensors: 'Optical HR (green-LED PPG), 3-axis accelerometer, gyroscope, GPS, barometric altimeter.',
         bmr: 'Resting rate likely from the Harris-Benedict equation (Apple does not disclose it).',
-        strengths: ['Most-studied device — a 56-study meta-analysis', 'Reasonable for steady-state cardio and walking', 'Heart-rate itself is excellent (~4.4% MAPE)'],
-        weaknesses: ['Systematic sex bias (over in women, under in men)', 'Overestimates strength training by ~53%', 'No body-composition input'],
+        strengths: ['Most-studied device, a 56-study meta-analysis (Choe &amp; Kang 2025)', 'Reasonable for steady-state cardio and walking', 'Heart rate itself is strong: no subgroup in that meta-analysis exceeded the 10% error threshold*'],
+        weaknesses: ['The ~28% headline is pooled bout-level, not a daily total: the paper\'s own pooled figure is 0.30 kcal/min (limits -2.09 to 2.69)*', 'Resistance training has never been metabolically validated on any Apple Watch', 'No body-composition input'],
         source: 'Choe & Kang 2025, Physiological Measurement (56-study meta-analysis)',
         sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/40199339/',
         acc: {
           'steady-cardio': { mape: 18, lo: 15, hi: 22, dir: 'mixed', ev: 'estimated' },
-          'running':       { mape: 24, lo: 18, hi: 30, dir: 'mixed', ev: 'measured', src: 'Frontiers in Physiology 2022' },
-          'walking':       { mape: 20, lo: 15, hi: 25, dir: 'over',  ev: 'measured', src: 'Frontiers in Physiology 2022 (19.8%)' },
+          'running':       { mape: 24, lo: 18, hi: 30, dir: 'mixed', ev: 'measured', src: 'Le et al. 2022, Front Physiol 13:995575 (Apple Watch Series 6, n=20, vs COSMED K5). Huawei Terminal Co. funded this study.' },
+          'walking':       { mape: 20, lo: 15, hi: 25, dir: 'over',  ev: 'measured', src: 'Le et al. 2022, Front Physiol 13:995575 (Apple Watch Series 6, n=20, 19.8%). Huawei Terminal Co. funded this study.' },
           'cycling':       { mape: 45, lo: 35, hi: 55, dir: 'mixed', ev: 'estimated' },
           'hiit':          { mape: 30, lo: 20, hi: 45, dir: 'mixed', ev: 'estimated' },
-          'strength':      { mape: 53, lo: 40, hi: 65, dir: 'over',  ev: 'measured', src: 'J Sci Med Sport 2023 (52.95%, Apple Watch 6)' },
-          'swimming':      { mape: 45, lo: 17, hi: 90, dir: 'mixed', ev: 'measured', src: 'Single 2018 study (n=78) — huge variance' }
+          'strength':      { mape: null, dir: 'mixed', ev: 'untested', note: 'No Apple Watch has ever been metabolically tested during resistance training. The 52.95% figure often attributed to Apple belongs to the <strong>Polar A360</strong> (Boudreaux et al. 2018, n=50); the J Sci Med Sport 2023 Apple Watch 6 study (n=11) contained rest and running protocols only.' },
+          'swimming':      { mape: null, lo: 17, hi: 152, disp: '17 to 152%', dir: 'mixed', ev: 'measured', src: 'A single 2018 study (n=78, abstract level). The range is enormous and accuracy improves with speed, so no point estimate exists.' }
         }
       },
       fitbit: {
         name: 'Fitbit', short: 'Fitbit', key: 'fitbit',
         affiliate: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search',
-        headline: '~16%', headlineLabel: 'daily calorie error (MAPE)',
-        headlineSrc: 'Free-living Flex / Charge HR studies',
-        bias: 'Near-zero average bias, but wide individual swing (−5 to +6 kcal/min)',
+        headline: '16 ± 8%', headlineLabel: 'over roughly one day, vs an accelerometer',
+        headlineSrc: 'Chowdhury et al. 2017, PLoS ONE 12(2):e0171720, n=30, Charge HR vs a calibrated Actiheart over ~36 hours. Daily bias -405 ± 944 kcal/day.',
+        bias: 'Near-zero average bias, but wide individual swing (-5 to +6 kcal/min). Chevance\'s own framing: 3 kcal/min over an hour is about 180 kcal, roughly a 40% miss.',
         algorithm: 'Heart rate is the primary driver: each minute in an HR zone becomes METs, then calories using your weight. Steps only matter indirectly by raising HR.',
         sensors: '3-axis accelerometer, optical HR, altimeter, gyroscope; Charge 6 adds ECG, SpO2, EDA and skin temperature.',
-        bmr: 'A standard metabolic equation (likely Mifflin-St Jeor — undisclosed).',
-        strengths: ['Best running accuracy of any brand (~4–15%)', 'Near-zero average bias across a 52-study meta-analysis', 'SmartTrack auto-detects common activities'],
-        weaknesses: ['Walking heavily overestimated (older Charge 2, ~54%)', 'Near-zero average masks huge individual variance (−5 to +6 kcal/min)', 'No independent Charge 6 / Sense 2 calorie validation yet'],
-        source: 'Chevance et al. 2022, JMIR mHealth (52-study meta-analysis)',
-        sourceUrl: 'https://mhealth.jmir.org/2022/4/e35626',
+        bmr: 'A standard metabolic equation (likely Mifflin-St Jeor, undisclosed).',
+        strengths: ['Bias near zero on all comparisons in a 52-study meta-analysis (k=49: 0.19 kcal/min, SD 2.53, limits -5.32 to 5.70)', 'The only one of four devices close on resistance training (Lee 2026: 145.95 kcal vs a 140.79 kcal criterion)', 'SmartTrack auto-detects common activities'],
+        weaknesses: ['Walking overestimated by 69% (Charge 2, O\'Driscoll 2020, n=59)', 'Remove the low-quality studies from that meta-analysis and the same table gives k=29: -2.77 kcal/min, limits -12.75 to 7.41', 'No independent Charge 6 / Sense 2 calorie validation yet'],
+        source: 'O\'Driscoll et al. 2020, Health and Technology 10(3):637-648 (n=59, Vyntus CPX metabolic cart)',
+        sourceUrl: 'https://link.springer.com/article/10.1007/s12553-019-00392-7',
         acc: {
           'steady-cardio': { mape: 20, lo: 15, hi: 28, dir: 'mixed', ev: 'estimated' },
-          'running':       { mape: 10, lo: 4,  hi: 15, dir: 'under', ev: 'measured', src: 'Aberystwyth 2019 / Health & Technology 2019' },
-          'walking':       { mape: 54, lo: 54, hi: 69, dir: 'over',  ev: 'measured', src: 'Aberystwyth 2019 (53.5%, Charge 2)' },
-          'cycling':       { mape: 40, lo: 39, hi: 40, dir: 'over',  ev: 'measured', src: 'Health & Technology 2019 (Charge 2)' },
+          'running':       { mape: null, lo: 12, hi: 15, disp: '12 to 15%', dir: 'mixed', ev: 'measured', src: 'O\'Driscoll et al. 2020, Health and Technology 10(3):637-648 (Charge 2, n=59): 15% flat, 12% incline' },
+          'walking':       { mape: 69, lo: 60, hi: 78, dir: 'over',  ev: 'measured', src: 'O\'Driscoll et al. 2020 (Charge 2, n=59), walk at 4 km/h: device 7.10 vs criterion 4.27 kcal/min = 69% MAPE' },
+          'cycling':       { mape: 40, lo: 39, hi: 40, dir: 'over',  ev: 'measured', src: 'O\'Driscoll et al. 2020 (Charge 2, n=59)' },
           'hiit':          { mape: 35, lo: 25, hi: 50, dir: 'mixed', ev: 'estimated' },
-          'strength':      { mape: 40, lo: 30, hi: 50, dir: 'mixed', ev: 'estimated' },
+          'strength':      { mape: 4,  lo: 1,  hi: 9,  disp: 'near zero', dir: 'over', ev: 'measured', src: 'Lee et al. 2026, Sensors 26(8):2526 (n=62): Fitbit 145.95 kcal vs a 140.79 kcal criterion, +5.16. SOLUM-funded with an employed co-author, and the abstract contradicts the tables, so Tables 1 and 2 only.' },
           'swimming':      { mape: 45, lo: 35, hi: 55, dir: 'mixed', ev: 'estimated' }
         }
       },
       garmin: {
         name: 'Garmin', short: 'Garmin', key: 'garmin',
         affiliate: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search',
-        headline: '6.7%', headlineLabel: 'best case — med/hard cardio',
-        headlineSrc: 'Independent JMIR mHealth 2017 (Firstbeat modeling)',
-        bias: 'Underestimates in ~69% of observations (JMIR 2020 review)',
+        headline: '19.1%', headlineLabel: 'treadmill running, best verified case',
+        headlineSrc: 'de Leon et al. 2026, Applied Sciences 16(3):1286 (Vivoactive 4, n=18, no funding, no declared conflict). Le et al. 2022 gives 21.8% for outdoor running.',
+        bias: 'Not stable. A 2020 lab review found underestimation; newer work finds the opposite.',
         algorithm: 'Firstbeat engine: beat-by-beat R-R interval analysis derives respiration rate from HRV, estimates VO2, then converts to METs → calories. Adding respiration lifts accuracy over HR-only methods.',
         sensors: 'PPG optical HR (Elevate Gen 4 red/IR; Gen 5 adds green LEDs), accelerometer, GPS, ANT+/BLE chest-strap compatible.',
         bmr: 'A standard metabolic equation (undisclosed); nudged up for light daily movement.',
-        strengths: ['Most sophisticated engine (Firstbeat HRV modeling)', 'Best measured cardio accuracy (~6.7% med/hard)', 'A paired chest strap sharply improves accuracy'],
-        weaknesses: ['Resting calories widely reported ~15–20% too high', 'Underestimates in ~69% of observations', 'Strength training ~57% off (Vivosmart HR)'],
-        source: 'Firstbeat physiological-modeling validation (2017), JMIR mHealth',
-        sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5548984/',
+        strengths: ['Most sophisticated engine (Firstbeat HRV modeling)', 'Best verified case is 19.1% on the treadmill (Vivoactive 4, n=18, de Leon 2026)', 'A paired chest strap sharply improves accuracy'],
+        weaknesses: ['Resting calories widely reported ~15 to 20% too high', 'Direction of error is not stable: Fuller 2020 (lab only, 51 non-independent comparisons on 2013 to 2019 hardware, one author employed by Garmin during publication) found underestimation in 69% of observations, while Lee 2026 found Garmin over-reading by +30.5% on endurance and +116.4% on resistance', 'Strength training ~57% off (Vivosmart HR, n=50, Boudreaux 2018)'],
+        source: 'de Leon et al. 2026, Applied Sciences 16(3):1286 (Vivoactive 4 treadmill, n=18)',
+        sourceUrl: 'https://www.mdpi.com/2076-3417/16/3/1286',
         acc: {
-          'steady-cardio': { mape: 7,  lo: 5,  hi: 10, dir: 'under', ev: 'measured', src: 'JMIR mHealth 2017 (6.7%, med/hard)' },
-          'running':       { mape: 22, lo: 15, hi: 28, dir: 'mixed', ev: 'measured', src: 'Frontiers in Physiology 2022 (21.8%)' },
-          'walking':       { mape: 32, lo: 22, hi: 43, dir: 'mixed', ev: 'measured', src: 'Frontiers in Physiology 2022 (32.0%)' },
-          'cycling':       { mape: 40, lo: 30, hi: 52, dir: 'under', ev: 'estimated' },
+          // No Garmin best-case cardio figure exists. The 6.7% previously shown here was a
+          // PulseOn (Parak 2017, two authors PulseOn employees); no Garmin was in that study.
+          'steady-cardio': { mape: 25, lo: 18, hi: 33, dir: 'mixed', ev: 'estimated' },
+          'running':       { mape: 22, lo: 15, hi: 28, dir: 'mixed', ev: 'measured', src: 'Le et al. 2022, Front Physiol 13:995575 (n=20, 21.8% outdoor running; Huawei Terminal Co. funded). de Leon et al. 2026 gives 19.1% on the treadmill (Vivoactive 4, n=18, unfunded).' },
+          'walking':       { mape: 32, lo: 22, hi: 43, dir: 'mixed', ev: 'measured', src: 'Le et al. 2022, Front Physiol 13:995575 (n=20, 32.0%). Huawei Terminal Co. funded this study.' },
+          'cycling':       { mape: 40, lo: 30, hi: 52, dir: 'mixed', ev: 'estimated' },
           'hiit':          { mape: 25, lo: 15, hi: 35, dir: 'mixed', ev: 'estimated' },
-          'strength':      { mape: 57, lo: 45, hi: 65, dir: 'mixed', ev: 'measured', src: 'IJERPH 2019 (57.02%, Vivosmart HR)' },
-          'swimming':      { mape: 25, lo: 18, hi: 33, dir: 'mixed', ev: 'measured', src: 'Single 2018 study (17.9–32.7%)' }
+          'strength':      { mape: 57, lo: 45, hi: 65, dir: 'mixed', ev: 'measured', src: 'Boudreaux et al. 2018, Med Sci Sports Exerc 50(3):624-633, PMID 29189666 (Vivosmart HR, n=50, 57.02%). Its conclusion: no device was valid for energy expenditure during cycling or resistance exercise.' },
+          'swimming':      { mape: null, lo: 18, hi: 33, disp: '18 to 33%', dir: 'mixed', ev: 'measured', src: 'A single 2018 study (17.9 to 32.7%). No point estimate is published, so we show the range.' }
         }
       },
       whoop: {
         name: 'WHOOP', short: 'WHOOP', key: 'whoop',
         affiliate: 'https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'whoop-search',
-        headline: '~12%', headlineLabel: 'best case — steady cardio',
-        headlineSrc: 'Univ. of Colorado Boulder 2022',
-        bias: 'Recovery-coupled — the same workout can read differently by day',
+        headline: '~12%*', headlineLabel: 'best case, steady cardio',
+        headlineSrc: 'Attributed to a University of Colorado Boulder 2022 study. No primary publication (authors, DOI or PubMed record) has been located.',
+        bias: 'Recovery-coupled, so the same workout can read differently by day',
         algorithm: 'ACSM metabolic equations extended by Keytel et al. 2005: Calories = BMR + f(heart rate), activating once HR rises above your resting baseline. Recovery status shifts the estimate.',
         sensors: 'Advanced PPG (MAX86171 on 4.0), accelerometer, skin temperature, SpO2; 5.0 adds ~26 Hz sampling + respiratory rate.',
         bmr: 'Age, sex, height, weight; 5.0 adds a 30-day personalized calibration window.',
-        strengths: ['Unusually transparent that absolute calories aren\'t its strength', 'Built for relative strain and recovery trends', 'HR/HRV signal itself is well-validated (Bellenger 2021)'],
-        weaknesses: ['Overestimates HIIT sessions by ~13%', 'Resistance training ~29% off', 'Widely-cited 18.4% TDEE figure has no locatable primary publication'],
-        source: 'University of Colorado Boulder 2022 (Bellenger 2021 validates HR/HRV only)',
+        strengths: ['Built for relative strain and recovery trends', 'The HR and HRV signal itself is well-validated by Bellenger et al. 2021, which validated <strong>HR and HRV only, never calories</strong>', '5.0 adds a 30-day personalized calibration window'],
+        weaknesses: ['No primary publication has been located for any WHOOP calorie figure on this page*', 'HIIT ~13% and resistance ~29% trace to that same unlocated study*', 'The widely-cited 18.4% TDEE figure has the same problem: no primary publication has been located*'],
+        source: 'Attributed to University of Colorado Boulder 2022, not located (Bellenger 2021 validates HR and HRV only)',
         sourceUrl: 'https://www.whoop.com/us/en/thelocker/calorie-tracking-science/',
         acc: {
-          'steady-cardio': { mape: 12, lo: 8,  hi: 18, dir: 'mixed', ev: 'measured', src: 'Colorado Boulder 2022 (~12%)' },
+          'steady-cardio': { mape: 12, lo: 8,  hi: 18, dir: 'mixed', ev: 'measured', unsourced: true, src: 'Attributed to a University of Colorado Boulder 2022 study. No primary publication has been located, so this is shown for completeness, not as study-backed.' },
           'running':       { mape: 18, lo: 12, hi: 25, dir: 'mixed', ev: 'estimated' },
           'walking':       { mape: 25, lo: 18, hi: 35, dir: 'mixed', ev: 'estimated' },
           'cycling':       { mape: 35, lo: 25, hi: 45, dir: 'mixed', ev: 'estimated' },
-          'hiit':          { mape: 13, lo: 6,  hi: 30, dir: 'over',  ev: 'measured', src: 'J Sci Med Sport 2023 (12.7% overest.)' },
-          'strength':      { mape: 29, lo: 20, hi: 40, dir: 'mixed', ev: 'measured', src: 'Colorado Boulder 2022 (~29%)' },
+          'hiit':          { mape: 13, lo: 6,  hi: 30, dir: 'over',  ev: 'measured', unsourced: true, src: 'From the same attributed 2022 source. No primary publication has been located, so this is shown for completeness, not as study-backed.' },
+          'strength':      { mape: 29, lo: 20, hi: 40, dir: 'mixed', ev: 'measured', unsourced: true, src: 'From the same attributed 2022 source. No primary publication has been located, so this is shown for completeness, not as study-backed.' },
           'swimming':      { mape: 40, lo: 30, hi: 50, dir: 'mixed', ev: 'estimated' }
         }
       },
       oura: {
         name: 'Oura Ring', short: 'Oura', key: 'oura',
         affiliate: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20', trackLabel: 'oura-ring-search',
-        headline: '13%', headlineLabel: 'daily error, free-living',
-        headlineSrc: 'Kristiansson et al. 2023 (BMC) — confirmed',
-        bias: 'Underestimates more as intensity rises',
+        headline: '13%', headlineLabel: 'free-living, vs a wrist accelerometer',
+        headlineSrc: 'Andersson-Hall et al. 2023, BMC Med Res Methodology (cite the 9 September 2023 correction). Lab MAPE against actual indirect calorimetry was 21.1%.',
+        bias: 'Not monotonic. What grows with intensity is error variance, not the bias itself.',
         algorithm: 'BMR + activity calories via METs across the day (resets at 4 AM). A Nov 2024 update folded in HR intensity, cutting median active-calorie error by 53%. Recognizes 40+ activity types.',
         sensors: '18-path multi-wavelength PPG (red/IR/green LEDs), 3D accelerometer, 2 precision thermistors.',
         bmr: 'A standard metabolic equation using age, sex, height and weight.',
-        strengths: ['Best daily/free-living accuracy measured (13%)', 'Strong lab correlation (r=0.93)', 'Finger PPG gives a cleaner resting signal than the wrist'],
-        weaknesses: ['No GPS; poor for cycling/elliptical (no hand motion)', 'Underestimation grows with intensity', 'Never metabolically tested for cycling, HIIT, strength or swimming'],
-        source: 'Kristiansson et al. 2023, BMC Medical Research Methodology',
+        strengths: ['13% free-living error <strong>against a wrist accelerometer</strong>, not against calorimetry', 'Strong lab correlation (r=0.93)', 'Finger PPG gives a cleaner resting signal than the wrist'],
+        weaknesses: ['No GPS; poor for cycling/elliptical (no hand motion)', 'The same table gives hip 42.2% and thigh 44.7%, and the three reference placements disagree with each other by about 850 kcal/day', 'Never metabolically tested for cycling, HIIT, strength or swimming'],
+        source: 'Andersson-Hall et al. 2023, BMC Medical Research Methodology (Kristiansson is the second author)',
         sourceUrl: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9950693/',
         acc: {
-          // Walking/running are a MET-derived floor (mean systematic underestimation, not a true MAPE).
+          // Walking/running are a calculated floor: mean MET underestimation divided by the
+          // activity reference MET, not a MAPE. The study's overall lab MAPE was 21.1% while
+          // overall mean bias was only -0.4 MET, and the per-activity SDs are large.
           'steady-cardio': { mape: 15, lo: 10, hi: 22, dir: 'under', ev: 'estimated' },
-          'running':       { mape: 24, lo: 18, hi: 32, dir: 'under', ev: 'measured', src: 'Kristiansson 2023 (MET-derived floor, ~24%)' },
-          'walking':       { mape: 19, lo: 13, hi: 28, dir: 'under', ev: 'measured', src: 'Kristiansson 2023 (MET-derived floor, ~19%)' },
-          // Never tested — no number is published (research flags any Oura figure here as unsourced).
-          'cycling':       { mape: null, dir: 'under', ev: 'untested' },
-          'hiit':          { mape: null, dir: 'under', ev: 'untested' },
-          'strength':      { mape: null, dir: 'under', ev: 'untested' },
-          'swimming':      { mape: null, dir: 'under', ev: 'untested' }
+          'running':       { mape: 24, lo: 18, hi: 32, dir: 'under', ev: 'measured', floor: true, src: 'Andersson-Hall et al. 2023: a calculated floor from mean MET underestimation, not a MAPE. The true error is higher.' },
+          'walking':       { mape: 19, lo: 13, hi: 28, dir: 'under', ev: 'measured', floor: true, src: 'Andersson-Hall et al. 2023: a calculated floor from mean MET underestimation, not a MAPE. The true error is higher.' },
+          // Never tested, so no number is published.
+          'cycling':       { mape: null, dir: 'under', ev: 'untested', note: 'Andersson-Hall et al. 2023, the only lab validation of Oura energy expenditure, excluded cycling, HIIT, strength and swimming.' },
+          'hiit':          { mape: null, dir: 'under', ev: 'untested', note: 'Andersson-Hall et al. 2023, the only lab validation of Oura energy expenditure, excluded cycling, HIIT, strength and swimming.' },
+          'strength':      { mape: null, dir: 'under', ev: 'untested', note: 'Andersson-Hall et al. 2023, the only lab validation of Oura energy expenditure, excluded cycling, HIIT, strength and swimming.' },
+          'swimming':      { mape: null, dir: 'under', ev: 'untested', note: 'Andersson-Hall et al. 2023, the only lab validation of Oura energy expenditure, excluded cycling, HIIT, strength and swimming.' }
         }
       },
       samsung: {
         name: 'Samsung Galaxy Watch', short: 'Samsung', key: 'samsung',
         affiliate: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20', trackLabel: 'samsung-watch-search',
-        headline: '~3%', headlineLabel: 'intermittent running vs gold standard',
-        headlineSrc: 'JMIR Formative Research 2026 (GW6/7)',
+        headline: '~3%', headlineLabel: 'in one small study, intermittent running only',
+        headlineSrc: 'JMIR Formative Research 2026: Galaxy Watch 6 logged 219.53 kcal vs a 213.60 kcal criterion. One small study, a single intermittent-running protocol.',
         bias: 'Too few studies to establish a pattern',
         algorithm: 'HR-VO2 relationships combined with accelerometer and GPS; MET tables applied to recognized activities. Watch 7 adds a BIA body-composition sensor whose role in the calorie model is undocumented.',
         sensors: 'Optical HR (PPG), 3-axis accelerometer, gyroscope, barometer, GPS; Watch 7 adds the BioActive sensor (ECG, BIA body composition).',
-        bmr: 'A standard metabolic equation (undisclosed — Harris-Benedict or Mifflin-St Jeor).',
-        strengths: ['Excellent for intermittent running (~3% vs gold standard)', 'BioActive sensor can read body composition (Watch 7+)', 'Tight Samsung Health integration'],
-        weaknesses: ['Far less independent research than Apple/Fitbit/Garmin', 'No published calorie white papers', 'Not enough studies to characterize other activities'],
+        bmr: 'A standard metabolic equation (undisclosed, Harris-Benedict or Mifflin-St Jeor).',
+        strengths: ['~3% in one small study of intermittent running (Galaxy Watch 6: 219.53 kcal vs a 213.60 kcal criterion)', 'BioActive sensor can read body composition (Watch 7+)', 'Tight Samsung Health integration'],
+        weaknesses: ['That ~3% is one small study on a single intermittent-running protocol, not a general accuracy claim', 'Far less independent research than Apple/Fitbit/Garmin', 'No published calorie white papers'],
         source: 'Samsung Galaxy Watch 6/7 intermittent-running validation (2026), JMIR Formative Research',
         sourceUrl: 'https://formative.jmir.org/2026/1/e83090',
         acc: {
           'steady-cardio': { mape: 15, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' },
-          'running':       { mape: 3,  lo: 2,  hi: 9,  dir: 'mixed', ev: 'measured', src: 'JMIR Formative Research 2026 (GW6/7)' },
+          'running':       { mape: 3,  lo: 2,  hi: 9,  dir: 'mixed', ev: 'measured', src: 'JMIR Formative Research 2026 (Galaxy Watch 6: 219.53 vs 213.60 kcal). One small study, intermittent running only.' },
           'walking':       { mape: 15, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' },
           'cycling':       { mape: 18, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' },
           'hiit':          { mape: 18, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' },
@@ -230,12 +240,12 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
 
   get _populationFactors() {
     return [
-      { title: 'Body composition / BMI', impact: 'high', desc: 'Algorithms are trained on average builds. Very lean, muscular or higher-BMI bodies skew the HR-to-calorie conversion — Fitbit is specifically less accurate at higher BMI.' },
+      { title: 'Body composition / BMI', impact: 'high', desc: 'Algorithms are trained on average builds. Very lean, muscular or higher-BMI bodies skew the HR-to-calorie conversion, and Fitbit is specifically less accurate at higher BMI.' },
       { title: 'Medications (beta-blockers, stimulants)', impact: 'high', desc: 'Beta-blockers cap heart rate and cause big underestimation; stimulants raise resting HR and inflate the count. Devices can\'t detect either.' },
       { title: 'Tattoos', impact: 'high', desc: 'Dense or dark ink over the sensor blocks light transmission and can make wrist PPG readings unreliable.' },
-      { title: 'Device fit & placement', impact: 'high', desc: 'Loose bands, wrist hair and low placement all add motion artifact. The band should sit snug, 1–2 finger-widths above the wrist bone.' },
+      { title: 'Device fit & placement', impact: 'high', desc: 'Loose bands, wrist hair and low placement all add motion artifact. The band should sit snug, 1 to 2 finger-widths above the wrist bone.' },
       { title: 'Skin tone', impact: 'moderate', desc: 'LED optical sensors read darker pigmentation less consistently. Garmin Elevate Gen 5 and Apple Series 9+ improved this, but a Series 9 study still found tracking inconsistent across pigmentation groups.' },
-      { title: 'Sex', impact: 'moderate', desc: 'Apple Watch shows a systematic bias — overestimating in women and underestimating in men (Choe & Kang 2025).' },
+      { title: 'Sex', impact: 'moderate', desc: 'Shcherbina et al. 2017 found sex a significant predictor of <strong>heart rate</strong> error across seven devices, with error rates for men running about 4% higher than for women. That is heart rate, not calories, and it is not specific to any one brand. No calorie meta-analysis has tested sex as a moderator.' },
       { title: 'Age', impact: 'moderate', desc: 'Optical signal quality drops with skin changes, and the 220−age max-HR assumption drifts further off with age.' },
       { title: 'Caffeine & hormonal state', impact: 'moderate', desc: 'Caffeine lifts heart rate independent of effort; menstrual cycle, thyroid and other hormonal shifts move metabolic rate in ways no wearable can see.' }
     ];
@@ -244,17 +254,17 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   get _faqs() {
     return [
       { q: 'How accurate is Apple Watch calorie burn?',
-        a: 'A 56-study meta-analysis (Choe & Kang 2025) puts Apple Watch daily calorie error near 28% (MAPE), even though its heart-rate accuracy is excellent (~4.4%). It reads most accurately for steady cardio and walking (~20%) and worst for strength training, where it overestimates by about 53%. It also carries a systematic sex bias — overestimating in women and underestimating in men.' },
+        a: 'A 56-study meta-analysis (Choe and Kang 2025) is usually quoted as putting Apple Watch calorie error around 28%, though that figure traces to a press release rather than the paper, and it is pooled across bouts, not a daily total. The paper\'s own pooled estimate is 0.30 kcal/min (limits -2.09 to 2.69). Heart rate is the part it gets right: no subgroup in that meta-analysis exceeded the 10% error threshold. It reads best for walking (~20%) and running (~24%). Resistance training has never been validated on any Apple Watch, so we publish no figure for it.' },
       { q: 'Which wearable is most accurate for calories?',
-        a: 'It depends on the activity. For everyday totals, the Oura Ring has the lowest measured free-living error (13%, Kristiansson 2023). For medium-to-hard cardio, Garmin\'s Firstbeat engine hit about 6.7% in one independent study. Samsung logged ~3% for intermittent running. No device is reliable across the board — activity type matters more than brand.' },
+        a: 'No brand wins, and the daily figures cannot be leaderboarded because each was measured against a different reference. The one defensible cross-brand statement comes from the Fuller 2020 review: no brand was within 3% of the criterion more than 13% of the time. The Stanford seven-device study (Shcherbina 2017) adds something more useful than a ranking: pooled across those devices, calorie error was lowest for walking (31.8%) and running (31.0%) and highest for sitting (52.4%). The worst calorie errors happen at rest, not during exercise. Activity type matters more than brand.' },
       { q: 'Why does my wearable overestimate or underestimate calories?',
-        a: 'Wearables don\'t measure calories directly — they infer them from heart rate, motion and your profile, so the conversion carries the error. Sex, skin tone, body composition, medications (beta-blockers, stimulants), tattoos and band fit all shift the result. Static, low-motion work like strength training is the hardest case for every brand.' },
+        a: 'Wearables do not measure calories directly. They infer them from heart rate, motion and your profile, so the conversion carries the error. Sex, skin tone, body composition, medications (beta-blockers, stimulants), tattoos and band fit all shift the result. Static, low-motion work like strength training is the hardest case for every brand.' },
       { q: 'Is the calorie number on my watch good enough for a diet?',
-        a: 'Not for precise nutrition math. Real-world calorie error runs 15–40%+, and the Stanford 2017 study found some devices off by up to 93%. Use the number for week-over-week trends and relative effort, not as an exact figure to eat back.' },
+        a: 'Not for precise nutrition math. Real-world calorie error runs 15 to 40%+, and the Stanford 2017 study found some devices off by up to 93%. Use the number for week-over-week trends and relative effort, not as an exact figure to eat back.' },
       { q: 'How accurate is Oura, WHOOP or Garmin for exercise calories?',
-        a: 'Oura is strong at daily totals but was never metabolically tested for cycling, HIIT, strength or swimming — any per-activity figure for those is unsourced, so we don\'t publish one. WHOOP is transparent that absolute calories aren\'t its focus (it overestimates HIIT ~13%, strength ~29%). Garmin is best for steady cardio but ~57% off for strength.' },
+        a: 'Oura\'s 13% free-living figure was measured against a wrist accelerometer, not calorimetry; against actual indirect calorimetry in the lab it was 21.1%. It was never metabolically tested for cycling, HIIT, strength or swimming, so we publish no figure for those. Every WHOOP calorie figure in circulation, including the widely-quoted 18.4% TDEE number and the HIIT ~13% and resistance ~29% figures, has no primary publication that anyone has been able to locate; Bellenger 2021 validated WHOOP\'s heart rate and HRV only, never its calories. Garmin\'s best verified case is 19.1% on the treadmill (Vivoactive 4, n=18), and it is about 57% off for resistance training (Vivosmart HR, n=50).' },
       { q: 'How does this calculator work?',
-        a: 'Pick your device and activity, enter the calories it reported, and the tool applies the peer-reviewed per-activity error and bias direction for that exact combination to show your likely actual range. Where no direct per-activity study exists, the result is clearly flagged as an estimate rather than presented as fact.' }
+        a: 'Pick your device and activity, enter the calories it reported, and the tool applies the published per-activity error and bias direction for that exact combination to show your likely actual range. Every figure names its device model and sample size. Where no direct per-activity study exists the result is flagged as an estimate; where a figure circulates without a locatable primary publication it is flagged too, and where a source publishes only a range we show the range instead of inventing a midpoint.' }
     ];
   }
 
@@ -272,35 +282,38 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
 
   get _sources() {
     return [
-      { group: 'cross', tag: 'Anchor · multi-device', title: 'Shcherbina et al. 2017 — Stanford 7-device study', cite: 'J Personalized Medicine · 27–93% EE error', url: 'https://pubmed.ncbi.nlm.nih.gov/28538708/' },
-      { group: 'cross', tag: 'Apple / Garmin', title: 'Frontiers in Physiology 2022 — walking & running', cite: 'Series 6 + Garmin vs COSMED K5, 20 participants', url: 'https://pubmed.ncbi.nlm.nih.gov/36225296/' },
-      { group: 'cross', tag: 'Fitbit / Apple / Garmin', title: 'JMIR mHealth 2017 — Charge HR comparison', cite: '62 participants · error rises with intensity', url: 'https://mhealth.jmir.org/2017/3/e34/' },
-      { group: 'cross', tag: 'Gold standard', title: 'Murakami et al. 2019 — 12-device DLW validation', cite: 'JMIR mHealth · only 2 of 12 acceptable free-living', url: 'https://mhealth.jmir.org/2019/8/e13938' },
-      { group: 'apple', tag: 'Anchor · Apple', title: 'Choe & Kang 2025 — Apple Watch meta-analysis', cite: 'Physiological Measurement · 56 studies · 27.96%', url: 'https://pubmed.ncbi.nlm.nih.gov/40199339/' },
-      { group: 'apple', tag: 'Apple', title: 'J Sci Med Sport 2023 — resistance training', cite: 'Apple Watch 6 · 52.95% overestimation', url: 'https://www.jsams.org/article/S1440-2440(23)00177-9/fulltext' },
-      { group: 'apple', tag: 'Apple', title: 'MDPI Sensors 2024 — Series 9 skin pigmentation', cite: 'Tracking inconsistent across pigmentation groups', url: 'https://www.mdpi.com/2411-5142/9/4/275' },
-      { group: 'apple', tag: 'Apple', title: 'Apple — Heart Rate & Calorimetry white paper (2024)', cite: 'Manufacturer method documentation', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
-      { group: 'fitbit', tag: 'Anchor · Fitbit', title: 'Chevance et al. 2022 — Fitbit meta-analysis', cite: 'JMIR mHealth · 52 studies · wide variance', url: 'https://mhealth.jmir.org/2022/4/e35626' },
-      { group: 'fitbit', tag: 'Fitbit', title: 'Health & Technology 2019 — Charge 2 breakdown', cite: 'Springer · 59 adults · walking/running/cycling', url: 'https://link.springer.com/article/10.1007/s12553-019-00392-7' },
-      { group: 'fitbit', tag: 'Fitbit', title: 'Fitbit — How calorie burn is calculated', cite: 'Manufacturer method documentation', url: 'https://support.google.com/fitbit/answer/14237111' },
-      { group: 'garmin', tag: 'Garmin', title: 'JMIR mHealth 2017 — Firstbeat modeling (PulseOn)', cite: '6.7% med/hard · 16.5% light intensity', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5548984/' },
-      { group: 'garmin', tag: 'Garmin', title: 'IJERPH 2019 — Vivosmart HR resistance', cite: '57.02% MAPE · no device < 25% for resistance', url: 'https://pubmed.ncbi.nlm.nih.gov/29189666/' },
-      { group: 'garmin', tag: 'Garmin', title: 'JMIR mHealth 2020 — wrist-wearable review', cite: 'Underestimated EE in 69% of observations', url: 'https://mhealth.jmir.org/2020/9/e18694' },
-      { group: 'garmin', tag: 'Garmin', title: 'MDPI Applied Sciences 2025 — Vivoactive 4', cite: 'Treadmill · 19.1% MAPE', url: 'https://www.mdpi.com/2076-3417/16/3/1286' },
-      { group: 'garmin', tag: 'Garmin', title: 'Firstbeat — Energy expenditure white paper', cite: 'Manufacturer method documentation', url: 'https://assets.firstbeat.com/firstbeat/uploads/2015/10/white_paper_energy_expenditure_estimation.pdf' },
-      { group: 'whoop', tag: 'WHOOP', title: 'Bellenger et al. 2021 — HR/HRV validation', cite: 'Sensors · validates HR & HRV only, not calories', url: 'https://www.mdpi.com/1424-8220/21/10/3571' },
-      { group: 'whoop', tag: 'WHOOP', title: 'Keytel et al. 2005 — HR-to-EE equation', cite: 'J Sports Sciences · basis of WHOOP\'s algorithm', url: 'https://pubmed.ncbi.nlm.nih.gov/15966347/' },
-      { group: 'whoop', tag: 'WHOOP', title: 'WHOOP — How calories are calculated', cite: 'Manufacturer method documentation', url: 'https://support.whoop.com/hc/en-us/articles/360033775513-How-does-WHOOP-calculate-calories-burned-' },
-      { group: 'oura', tag: 'Oura', title: 'Kristiansson et al. 2023 — EE validation', cite: 'BMC Med Res Methodology · 13% free-living, 21.1% lab', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9950693/' },
-      { group: 'oura', tag: 'Oura', title: 'Oura — Activity improvements (Nov 2024)', cite: 'HR integration cut median active-calorie error 53%', url: 'https://ouraring.com/blog/activity-improvements/' },
-      { group: 'samsung', tag: 'Samsung', title: 'JMIR Formative Research 2026 — Galaxy Watch 6/7', cite: 'Intermittent running · no sig. diff vs calorimetry', url: 'https://formative.jmir.org/2026/1/e83090' }
+      { group: 'cross', tag: 'Anchor · multi-device', title: 'Shcherbina et al. 2017: Stanford 7-device study', cite: 'J Personalized Medicine · n=60 · 27 to 93% energy-expenditure error. Lowest for walking (31.8%) and running (31.0%), highest for sitting (52.4%). Apple had the most favourable overall error profile, PulseOn the least.', url: 'https://pubmed.ncbi.nlm.nih.gov/28538708/' },
+      { group: 'cross', tag: 'Apple / Garmin / Huawei ⚠️ funded', title: 'Le et al. 2022, Front Physiol 13:995575: walking and running', cite: '⚠️ Apple Watch Series 6, Garmin and a Huawei Watch GT 2e vs COSMED K5, n=20. Funded by Huawei Terminal Co. LTD, whose device wins both conditions (9.9% and 11.9%), while the paper\'s conflict statement claims no commercial relationship.', url: 'https://pubmed.ncbi.nlm.nih.gov/36225296/' },
+      { group: 'cross', tag: 'Fitbit / Apple / Garmin', title: 'JMIR mHealth 2017: Charge HR comparison', cite: 'n=62 · error rises with intensity', url: 'https://mhealth.jmir.org/2017/3/e34/' },
+      { group: 'cross', tag: 'Gold standard', title: 'Murakami et al. 2019: 12-device DLW validation', cite: 'JMIR mHealth · only 2 of 12 acceptable free-living', url: 'https://mhealth.jmir.org/2019/8/e13938' },
+      { group: 'cross', tag: 'Multi-device review', title: 'Fuller et al. 2020, JMIR mHealth: wrist-wearable review', cite: '⚠️ Laboratory only · 51 non-independent comparisons on 2013 to 2019 hardware · one author was employed by Garmin during the publication process. Headline finding: no brand was within 3% of criterion more than 13% of the time. Underestimation in 69% of observations applies to the lab data only.', url: 'https://mhealth.jmir.org/2020/9/e18694' },
+      { group: 'cross', tag: '⚠️ Funded · brand attribution', title: 'Lee et al. 2026, Sensors 26(8):2526: four-device energy expenditure', cite: '⚠️ n=62 · SOLUM-funded with an employed co-author, and the abstract contradicts its own tables, so cite Tables 1 and 2 only. Fitbit 145.95 kcal vs a 140.79 kcal criterion; Garmin +30.5% on endurance and +116.4% on resistance.', url: 'https://www.mdpi.com/1424-8220/26/8/2526' },
+      { group: 'cross', tag: 'Why brand attribution matters', title: 'Parak et al. 2017, JMIR mHealth: Firstbeat modeling in a PulseOn', cite: 'Often mis-cited as a Garmin result. No Garmin device was tested; the device is a PulseOn and two authors were PulseOn employees. Stanford ranked PulseOn worst of seven devices for energy expenditure (92.6%).', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5548984/' },
+      { group: 'apple', tag: 'Anchor · Apple', title: 'Choe & Kang 2025: Apple Watch meta-analysis', cite: 'Physiological Measurement · 56 studies · pooled 0.30 kcal/min (limits -2.09 to 2.69). The 27.96% figure is not in the abstract and traces to the university press release. Moderators tested: age, health status, device series, activity intensity, activity type. Sex is not among them.', url: 'https://pubmed.ncbi.nlm.nih.gov/40199339/' },
+      { group: 'apple', tag: 'Apple', title: 'Sun et al. 2023, J Sci Med Sport: Apple Watch 6 running', cite: 'n=11 · rest and running protocols only, no resistance protocol. Treadmill 447.91 vs a 367.14 kcal criterion, bias +80.77. Sun defines MAPE as (criterion - estimate)/criterion, so a positive signed value there means underestimation.', url: 'https://www.jsams.org/article/S1440-2440(23)00177-9/fulltext' },
+      { group: 'apple', tag: 'Apple', title: 'MDPI Sensors 2024: Series 9 skin pigmentation', cite: 'Tracking inconsistent across pigmentation groups', url: 'https://www.mdpi.com/2411-5142/9/4/275' },
+      { group: 'apple', tag: 'Apple', title: 'Apple: Heart Rate & Calorimetry white paper (2024)', cite: 'Manufacturer method documentation', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
+      { group: 'fitbit', tag: 'Anchor · Fitbit', title: 'O\'Driscoll et al. 2020, Health and Technology 10(3):637-648', cite: 'n=59 · Charge 2 vs a Vyntus CPX metabolic cart. Walk at 4 km/h: 69% MAPE (7.10 vs 4.27 kcal/min). Running: 15% flat, 12% incline. No manufacturer funding.', url: 'https://link.springer.com/article/10.1007/s12553-019-00392-7' },
+      { group: 'fitbit', tag: 'Fitbit', title: 'Chevance et al. 2022, JMIR mHealth: Fitbit meta-analysis', cite: '52 studies · Table 2, all comparisons (k=49): bias 0.19 kcal/min (SD 2.53), limits -5.32 to 5.70. Low-quality studies removed (k=29): bias -2.77 (SD 4.12), limits -12.75 to 7.41. The authors note 3 kcal/min over an hour is about 180 kcal, roughly a 40% miss.', url: 'https://mhealth.jmir.org/2022/4/e35626' },
+      { group: 'fitbit', tag: 'Fitbit', title: 'Chowdhury et al. 2017, PLoS ONE 12(2):e0171720', cite: 'n=30 · Charge HR vs a calibrated Actiheart over ~36 hours. 16 ± 8%, daily bias -405 ± 944 kcal/day. The source of the daily Fitbit figure.', url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0171720' },
+      { group: 'fitbit', tag: 'Fitbit', title: 'Fitbit: how calorie burn is calculated', cite: 'Manufacturer method documentation', url: 'https://support.google.com/fitbit/answer/14237111' },
+      { group: 'garmin', tag: 'Garmin', title: 'Boudreaux et al. 2018, Med Sci Sports Exerc 50(3):624-633', cite: 'PMID 29189666 · n=50 · Vivosmart HR 57.02% MAPE for resistance. Its own conclusion: no device was valid for energy expenditure during cycling or resistance exercise. Also the true home of the 52.95% figure, which belongs to the Polar A360.', url: 'https://pubmed.ncbi.nlm.nih.gov/29189666/' },
+      { group: 'garmin', tag: 'Garmin', title: 'de Leon et al. 2026, MDPI Applied Sciences 16(3):1286', cite: 'Vivoactive 4 treadmill · n=18 · 19.1% MAPE · no funding, no declared conflict. Published 27 January 2026.', url: 'https://www.mdpi.com/2076-3417/16/3/1286' },
+      { group: 'garmin', tag: 'Garmin', title: 'Firstbeat: energy expenditure white paper', cite: 'Manufacturer method documentation', url: 'https://assets.firstbeat.com/firstbeat/uploads/2015/10/white_paper_energy_expenditure_estimation.pdf' },
+      { group: 'whoop', tag: 'WHOOP ⚠️ not located', title: 'The attributed University of Colorado Boulder 2022 study', cite: '⚠️ Every WHOOP calorie figure on this page (steady cardio ~12%, HIIT ~13%, resistance ~29%, and the widely-cited 18.4% TDEE figure) is attributed to this source. No primary publication (authors, DOI or PubMed record) has been located. Shown for completeness, not as study-backed.' },
+      { group: 'whoop', tag: 'WHOOP', title: 'Bellenger et al. 2021: HR/HRV validation', cite: 'Sensors · validates heart rate and HRV only, never calories', url: 'https://www.mdpi.com/1424-8220/21/10/3571' },
+      { group: 'whoop', tag: 'WHOOP', title: 'Keytel et al. 2005: HR-to-EE equation', cite: 'J Sports Sciences · the basis of WHOOP\'s algorithm', url: 'https://pubmed.ncbi.nlm.nih.gov/15966347/' },
+      { group: 'whoop', tag: 'WHOOP', title: 'WHOOP: how calories are calculated', cite: 'Manufacturer method documentation. The page, updated 9 May 2025, now states that WHOOP prioritizes accuracy over overestimation.', url: 'https://support.whoop.com/hc/en-us/articles/360033775513-How-does-WHOOP-calculate-calories-burned-' },
+      { group: 'oura', tag: 'Oura', title: 'Andersson-Hall et al. 2023: Oura energy expenditure validation', cite: 'BMC Med Res Methodology (cite the 9 September 2023 correction; Kristiansson is the second author). Free-living 13% was measured against Axivity AX3 wrist accelerometers, not calorimetry. Hip 42.2% and thigh 44.7% in the same table, the three placements disagreeing by about 850 kcal/day. Lab MAPE against actual indirect calorimetry: 21.1%.', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9950693/' },
+      { group: 'oura', tag: 'Oura', title: 'Oura: activity improvements (Nov 2024)', cite: 'HR integration cut median active-calorie error 53%', url: 'https://ouraring.com/blog/activity-improvements/' },
+      { group: 'samsung', tag: 'Samsung', title: 'JMIR Formative Research 2026: Galaxy Watch 6/7', cite: 'One small study, intermittent running only. Galaxy Watch 6 logged 219.53 kcal vs a 213.60 kcal criterion, no significant difference vs calorimetry.', url: 'https://formative.jmir.org/2026/1/e83090' }
     ];
   }
 
   // ── SEO light-DOM summary ───────────────────────────────────────────────
 
   _seoText() {
-    return 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\'s calorie burn? No wearable measures calories directly — they estimate energy expenditure from heart rate, motion and your profile, and that conversion carries 15–40%+ error in the real world (Stanford 2017 found 27–93% across seven devices), even though heart rate itself is measured well (~96%). Enter the calories your device reported for a given activity and see the likely actual range, the typical error, and whether that device and activity tend to over- or under-estimate. Devices compared: Apple Watch (daily error ~28% MAPE, Choe & Kang 2025 56-study meta-analysis; overestimates in women, underestimates in men; strength training overestimated ~53%; walking ~20%, running ~24%), Fitbit (near-zero average bias but −5 to +6 kcal/min individual swing, Chevance 2022 52-study meta-analysis; best running accuracy 4–15%; older Charge 2 walking overestimated ~54%; cycling ~40%; daily ~16%), Garmin (Firstbeat engine; best measured cardio ~6.7% med/hard, JMIR 2017; walking ~32%, running ~22%, strength ~57%; underestimates in ~69% of observations; resting calories run high), WHOOP (ACSM/Keytel 2005 equation; steady cardio ~12%, HIIT overestimated ~13%, strength ~29%; the widely-cited 18.4% TDEE figure has no locatable primary publication; Bellenger 2021 validates HR/HRV only, not calories), Oura Ring (best measured daily/free-living error 13%, Kristiansson 2023; walking ~19% and running ~24% are MET-derived floors, not true MAPE; underestimates more as intensity rises; never metabolically tested for cycling, HIIT, strength or swimming, so no per-activity figure is published for those), and Samsung Galaxy Watch (~3% for intermittent running, JMIR Formative Research 2026; 9–21% elsewhere; limited independent research). Accuracy by activity: steady cardio is best across brands (7–20%), running 4–24%, walking surprisingly poor (20–69% overestimation), cycling 40–52%, HIIT variable, strength training worst (29–57%), swimming poor and largely untested on rings and straps. Factors that skew every device: body composition and BMI, medications (beta-blockers, stimulants), tattoos, band fit, skin tone, sex, age, caffeine and hormonal state. Bottom line: use wearable calories for week-over-week trends and relative effort, not precise nutrition math. Apple Watch vs Fitbit vs Garmin vs WHOOP vs Oura vs Samsung calorie accuracy. Research re-audited against primary sources July 2026.';
+    return 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\'s calorie burn? No wearable measures calories directly. They estimate energy expenditure from heart rate, motion and your profile, and that conversion carries 15 to 40%+ error in the real world (Stanford 2017, Shcherbina et al., found 27 to 93% across seven devices), even though heart rate itself is measured well (~96%). Enter the calories your device reported for a given activity and see the likely actual range, the typical error, and whether that device and activity tend to over- or under-estimate. Devices compared: Apple Watch (Choe and Kang 2025, 56-study meta-analysis; the widely-quoted ~28% is pooled across bouts, not a daily total, and traces to a press release rather than the paper, whose own pooled figure is 0.30 kcal/min with limits -2.09 to 2.69; walking ~20% and running ~24% from Le et al. 2022, n=20, Huawei-funded; resistance training has never been metabolically validated on any Apple Watch, and the 52.95% figure often attributed to Apple belongs to the Polar A360 in Boudreaux et al. 2018; swimming 17 to 152% in a single 2018 study, n=78), Fitbit (16 plus or minus 8% over roughly one day vs a calibrated Actiheart, Chowdhury et al. 2017, n=30, daily bias -405 plus or minus 944 kcal/day; walking 69% and running 12 to 15% from O\'Driscoll et al. 2020, Health and Technology, n=59, vs a Vyntus CPX metabolic cart; cycling ~40%; resistance training near zero, 145.95 kcal vs a 140.79 kcal criterion in Lee et al. 2026, Sensors, n=62; Chevance et al. 2022 meta-analysis gives bias 0.19 kcal/min on all comparisons k=49 but -2.77 kcal/min once low-quality studies are removed, k=29), Garmin (Firstbeat engine; best verified case 19.1% treadmill running, de Leon et al. 2026, Vivoactive 4, n=18, unfunded, and 21.8% outdoor running in Le et al. 2022; walking ~32%; resistance 57.02%, Vivosmart HR, n=50, Boudreaux et al. 2018; swimming 18 to 33%; the direction of Garmin error is not stable, and the 6.7% best-case cardio figure once attributed to Garmin is a PulseOn, Parak et al. 2017, in which no Garmin device was tested), WHOOP (ACSM/Keytel 2005 equation; steady cardio ~12%, HIIT ~13%, resistance ~29% and the widely-cited 18.4% TDEE figure all circulate without any primary publication that has been located, so they are shown for completeness rather than as study-backed; Bellenger et al. 2021 validated WHOOP heart rate and HRV only, never calories), Oura Ring (Andersson-Hall et al. 2023, BMC Medical Research Methodology, cite the 9 September 2023 correction; the 13% free-living figure was measured against Axivity AX3 wrist accelerometers, not calorimetry, and the same table gives hip 42.2% and thigh 44.7%, with the three reference placements disagreeing by about 850 kcal/day; lab MAPE against actual indirect calorimetry was 21.1%; walking ~19% and running ~24% are calculated floors from mean MET underestimation, not MAPEs, so the true error is higher; never metabolically tested for cycling, HIIT, strength or swimming), and Samsung Galaxy Watch (~3% for intermittent running in one small study, JMIR Formative Research 2026, Galaxy Watch 6 at 219.53 kcal vs a 213.60 kcal criterion; limited independent research). The daily figures cannot be ranked against each other because each was measured against a different reference method. The one defensible cross-brand statement comes from Fuller et al. 2020: no brand was within 3% of criterion more than 13% of the time. Pooled across the seven Stanford devices, calorie error was lowest for walking (31.8%) and running (31.0%) and highest for sitting (52.4%), so the worst calorie errors happen at rest, not during exercise. Factors that skew every device: body composition and BMI, medications (beta-blockers, stimulants), tattoos, band fit, skin tone, sex, age, caffeine and hormonal state. Shcherbina 2017 found sex a significant predictor of heart-rate error, about 4% higher in men than women, but no calorie meta-analysis has tested sex as a moderator. Bottom line: use wearable calories for week-over-week trends and relative effort, not precise nutrition math. Apple Watch vs Fitbit vs Garmin vs WHOOP vs Oura vs Samsung calorie accuracy. Figures re-verified against primary sources September 2026.';
   }
 
   // ── Icons ───────────────────────────────────────────────────────────────
@@ -343,27 +356,35 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     const a = d.acc[this._selectedActivity];
     const reported = this._reportedCalories;
     if (!a) return null;
-    if (a.ev === 'untested') return { untested: true };
+    if (a.ev === 'untested') return { untested: true, note: a.note || null };
     if (!reported || reported <= 0) return null;
+    // An error range wider than 100% cannot be turned into a meaningful calorie band
+    // (the low end collapses to zero). Show the published error range instead of a
+    // number we would have to invent.
+    if (a.hi >= 100) return { tooWide: true, disp: a.disp || `${a.lo} to ${a.hi}%`, src: a.src || null };
 
-    const lo = a.lo / 100, hi = a.hi / 100, mid = a.mape / 100;
+    // A cell with mape null publishes a range only, so we never invent a midpoint.
+    const hasMid = a.mape != null;
+    const lo = a.lo / 100, hi = a.hi / 100, mid = hasMid ? a.mape / 100 : null;
     let low, high, best;
     if (a.dir === 'over') {
       low = Math.round(reported * (1 - hi));
       high = Math.round(reported * (1 - lo));
-      best = Math.round(reported * (1 - mid));
+      best = hasMid ? Math.round(reported * (1 - mid)) : null;
     } else if (a.dir === 'under') {
       low = Math.round(reported * (1 + lo));
       high = Math.round(reported * (1 + hi));
-      best = Math.round(reported * (1 + mid));
+      best = hasMid ? Math.round(reported * (1 + mid)) : null;
     } else {
       low = Math.round(reported * (1 - hi));
       high = Math.round(reported * (1 + hi));
-      best = reported;
+      best = hasMid ? reported : null;
     }
     return {
-      untested: false, low: Math.max(0, low), high: Math.max(0, high), best: Math.max(0, best),
-      mape: a.mape, lo: a.lo, hi: a.hi, dir: a.dir, ev: a.ev, src: a.src || null
+      untested: false, low: Math.max(0, low), high: Math.max(0, high),
+      best: best == null ? null : Math.max(0, best),
+      mape: a.mape, disp: a.disp || null, lo: a.lo, hi: a.hi, dir: a.dir, ev: a.ev,
+      unsourced: !!a.unsourced, floor: !!a.floor, src: a.src || null
     };
   }
 
@@ -373,38 +394,52 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     const r = this._result;
     if (!r) return '';
 
+    if (r.tooWide) {
+      return `
+        <div class="res-untested">
+          <span class="res-untested-badge">${this._icon('info')} Range too wide to convert</span>
+          <h3>${d.name} ${act.name.toLowerCase()} error runs ${r.disp}.</h3>
+          <p>${r.src || ''}</p>
+          <p class="res-untested-why">A spread that wide cannot be turned into a useful calorie band, so we show the published error instead of a number. Treat any ${act.name.toLowerCase()} calorie figure from ${d.short} as indicative only.</p>
+        </div>`;
+    }
+
     if (r.untested) {
       return `
         <div class="res-untested">
           <span class="res-untested-badge">${this._icon('info')} Not independently tested</span>
           <h3>${d.name} has never been metabolically tested for ${act.name.toLowerCase()}.</h3>
-          <p>Kristiansson 2023 — the only lab validation of Oura energy expenditure — excluded cycling, HIIT, strength and swimming, so there is <strong>no validated per-activity number</strong> to publish. Any specific ${act.name.toLowerCase()} figure you see elsewhere for Oura is unsourced.</p>
-          <p class="res-untested-why">Because the ring reads no hand motion during ${act.name.toLowerCase()} and relies on generic MET tables, its estimate here is expected to be unreliable. Pick a tested activity (running, walking or daily total) for a grounded range.</p>
+          <p>${r.note || 'No lab validation of this device covers ' + act.name.toLowerCase() + '.'} There is <strong>no validated per-activity number</strong> to publish, so any specific ${act.name.toLowerCase()} figure you see elsewhere for ${d.short} is unsourced.</p>
+          <p class="res-untested-why">Pick an activity with a named study (see the accuracy matrix below) for a grounded range.</p>
         </div>`;
     }
 
     const dm = this._dirMeta(r.dir);
     const span = Math.max(r.high - r.low, 1);
-    const bestPct = Math.min(96, Math.max(4, ((r.best - r.low) / span) * 100));
+    const bestPct = r.best == null ? null : Math.min(96, Math.max(4, ((r.best - r.low) / span) * 100));
     const reportedInSpan = this._reportedCalories >= r.low && this._reportedCalories <= r.high;
     const reportedPct = reportedInSpan ? ((this._reportedCalories - r.low) / span) * 100 : null;
-    const evChip = r.ev === 'measured'
-      ? `<span class="ev-chip ev-measured">${this._icon('check')} Peer-reviewed data</span>`
-      : `<span class="ev-chip ev-est">Estimated — no direct study for this pairing</span>`;
+    const evChip = r.unsourced
+      ? `<span class="ev-chip ev-flag">${this._icon('info')} No primary publication located for this figure</span>`
+      : r.floor
+        ? `<span class="ev-chip ev-flag">${this._icon('info')} Calculated floor, not a MAPE. True error is higher.</span>`
+        : r.ev === 'measured'
+          ? `<span class="ev-chip ev-measured">${this._icon('check')} Peer-reviewed data</span>`
+          : `<span class="ev-chip ev-est">Estimated. No direct study for this pairing.</span>`;
 
     return `
       <div class="res-head">
         <div class="res-label">Likely actual burn · ${d.short}</div>
-        <div class="res-best">${r.best.toLocaleString()}</div>
+        <div class="res-best${r.best == null ? ' res-best--range' : ''}">${r.best == null ? `${r.low.toLocaleString()} to ${r.high.toLocaleString()}` : r.best.toLocaleString()}</div>
         <div class="res-unit">kcal &nbsp;·&nbsp; your device reported ${this._reportedCalories.toLocaleString()}</div>
         ${evChip}
       </div>
 
-      <div class="res-bar" role="img" aria-label="Likely range ${r.low} to ${r.high} kcal, best estimate ${r.best}">
+      <div class="res-bar" role="img" aria-label="Likely range ${r.low} to ${r.high} kcal${r.best == null ? '' : `, best estimate ${r.best}`}">
         <div class="res-bar-track">
           <div class="res-bar-fill" style="left:0;width:100%"></div>
           ${reportedPct !== null ? `<span class="res-bar-reported" style="left:${reportedPct}%" title="Reported ${this._reportedCalories}"></span>` : ''}
-          <span class="res-bar-best" style="left:${bestPct}%"><span class="res-bar-dot"></span></span>
+          ${r.best == null ? '' : `<span class="res-bar-best" style="left:${bestPct}%"><span class="res-bar-dot"></span></span>`}
         </div>
         <div class="res-bar-labels"><span>Low ${r.low.toLocaleString()}</span><span>High ${r.high.toLocaleString()}</span></div>
       </div>
@@ -412,7 +447,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       <div class="res-grid">
         <div class="res-card">
           <div class="res-card-label">Typical error</div>
-          <div class="res-card-value">±${r.mape}%</div>
+          <div class="res-card-value">${r.disp ? r.disp : `±${r.mape}%`}</div>
         </div>
         <div class="res-card">
           <div class="res-card-label">Bias direction</div>
@@ -420,7 +455,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         </div>
       </div>
 
-      <div class="res-tendency ${dm.cls}">${this._icon(dm.icon)} <span><strong>${dm.label}</strong> for ${act.name.toLowerCase()} — ${dm.note}</span></div>
+      <div class="res-tendency ${dm.cls}">${this._icon(dm.icon)} <span><strong>${dm.label}</strong> for ${act.name.toLowerCase()}, ${dm.note}</span></div>
 
       <details class="res-detail">
         <summary>How ${d.short} calculated this ${this._icon('arrowRight')}</summary>
@@ -484,7 +519,13 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     if (!a || a.ev === 'untested') return `<td><span class="mk-na" title="Never tested on this device">${this._icon('minus')}</span></td>`;
     if (a.ev === 'estimated') return `<td><span class="mk-na" title="No peer-reviewed per-activity study">${this._icon('minus')}</span></td>`;
     const dm = this._dirMeta(a.dir);
-    return `<td><span class="mk-val ${dm.cls}">${this._icon(dm.icon)}<b>${a.mape}%</b></span></td>`;
+    const val = a.disp || `${a.mape}%`;
+    const mark = a.unsourced
+      ? '<sup class="mk-flag" title="No primary publication has been located for this figure">*</sup>'
+      : a.floor
+        ? '<sup class="mk-flag" title="Calculated floor, not a MAPE. True error is higher.">c</sup>'
+        : '';
+    return `<td><span class="mk-val ${dm.cls}">${this._icon(dm.icon)}<b>${val}</b>${mark}</span></td>`;
   }
 
   _renderMatrix() {
@@ -516,9 +557,15 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <span class="lg"><span class="mk-val over">${this._icon('arrowUp')}</span> Overestimates</span>
           <span class="lg"><span class="mk-val mixed">${this._icon('swap')}</span> Variable</span>
           <span class="lg"><span class="mk-na">${this._icon('minus')}</span> No peer-reviewed per-activity data</span>
+          <span class="lg"><sup class="mk-flag">*</sup> No primary publication located</span>
+          <span class="lg"><sup class="mk-flag">c</sup> Calculated floor, not a MAPE</span>
+        </p>
+        <p class="cmp-foot">
+          <strong>*</strong> WHOOP figures circulate widely but no primary publication (authors, DOI or PubMed record) has been located for them, including the 18.4% TDEE figure. Shown for completeness, not as study-backed.<br />
+          <strong>c</strong> Oura walking and running are calculated from mean MET underestimation divided by the activity reference MET (Andersson-Hall et al. 2023), so they are a floor, not the real spread. The study's overall lab MAPE was 21.1% while its overall mean bias was only -0.4 MET. The true error is higher.
         </p>
       </div>
-      <div class="callout animate-on-scroll">${this._icon('info')} <span>Every filled cell is a named peer-reviewed study (values are MAPE — mean absolute percentage error). Blank cells mean no per-activity study exists for that pairing — including <strong>Oura for cycling, HIIT, strength and swimming, which were never lab-tested</strong>, so no honest number can be published.</span></div>`;
+      <div class="callout animate-on-scroll">${this._icon('info')} <span>Unless marked, every filled cell is a named peer-reviewed study and the value is a MAPE (mean absolute percentage error). Where a source publishes a range only, we show the range rather than invent a midpoint. Blank cells mean no per-activity study exists for that pairing, including <strong>Oura for cycling, HIIT, strength and swimming</strong> and <strong>Apple Watch for resistance training</strong>, none of which have ever been metabolically tested.</span></div>`;
   }
 
   // ── Device detail accordion ─────────────────────────────────────────────
@@ -526,7 +573,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   _renderDevices() {
     const actNames = this._activities;
     return `<div class="dev-acc">${Object.values(this._devices).map(d => {
-      const measured = Object.entries(d.acc).filter(([, a]) => a.ev === 'measured' && a.mape != null);
+      // Unsourced and calculated-floor cells are excluded: the card must not assert them
+      // as this device's best or worst measured activity.
+      const measured = Object.entries(d.acc).filter(([, a]) => a.ev === 'measured' && a.mape != null && !a.unsourced && !a.floor);
       const sorted = measured.slice().sort((x, y) => x[1].mape - y[1].mape);
       const best = sorted[0];
       const worst = sorted[sorted.length - 1];
@@ -548,8 +597,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <ul class="dev-facts">
             <li><span class="fct-ico">${this._icon('flame')}</span><span><strong>Sensors</strong> ${d.sensors}</span></li>
             <li><span class="fct-ico">${this._icon('info')}</span><span><strong>Resting rate</strong> ${d.bmr}</span></li>
-            ${best ? `<li><span class="fct-ico ok">${this._icon('check')}</span><span><strong>Best measured</strong> ${actNames[best[0]].name} (~${best[1].mape}%)</span></li>` : ''}
-            ${worst && worst !== best ? `<li><span class="fct-ico">${this._icon('minus')}</span><span><strong>Worst measured</strong> ${actNames[worst[0]].name} (~${worst[1].mape}%)</span></li>` : ''}
+            ${best ? `<li><span class="fct-ico ok">${this._icon('check')}</span><span><strong>Best measured</strong> ${actNames[best[0]].name} (${best[1].disp || '~' + best[1].mape + '%'})</span></li>` : ''}
+            ${worst && worst !== best ? `<li><span class="fct-ico">${this._icon('minus')}</span><span><strong>Worst measured</strong> ${actNames[worst[0]].name} (${worst[1].disp || '~' + worst[1].mape + '%'})</span></li>` : ''}
             <li><span class="fct-ico">${this._icon('swap')}</span><span><strong>Tendency</strong> ${d.bias}</span></li>
           </ul>
           <div class="dev-cols">
@@ -566,7 +615,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <a href="${d.sourceUrl}" class="dev-source" target="_blank" rel="noopener nofollow">Read the study ${this._icon('externalLink')}</a>
             <a href="${d.affiliate}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>
           </div>
-          <p class="dev-affnote">Affiliate link — we may earn a commission at no extra cost to you.</p>
+          <p class="dev-affnote">Affiliate link. We may earn a commission at no extra cost to you.</p>
         </div>
       </details>`;
     }).join('')}</div>`;
@@ -1094,7 +1143,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-pill"><span class="dot"></span> 6 DEVICES · 7 ACTIVITIES · PEER-REVIEWED</div>
               <h1>How accurate is your <span class="hl">calorie burn?</span></h1>
-              <p class="hero-lede">No wearable <strong>measures</strong> calories — they <strong>estimate</strong> energy from heart rate, motion and your profile. Enter the number your device reported and see the likely <em>actual</em> range, using real per-activity research.</p>
+              <p class="hero-lede">No wearable <strong>measures</strong> calories. They <strong>estimate</strong> energy from heart rate, motion and your profile. Enter the number your device reported and see the likely <em>actual</em> range, using real per-activity research.</p>
               <a class="btn btn-primary btn-lg hero-btn" href="#calculator" data-action="scroll-calc">${this._icon('flame')} Check your number</a>
             </div>
             <div class="hero-vis" aria-hidden="true">
@@ -1111,7 +1160,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
                 </div>
                 <div class="hv-col">
                   <span class="hv-label">Calorie burn</span>
-                  <span class="hv-val">15–40%</span>
+                  <span class="hv-val">15 to 40%</span>
                   <div class="hv-bar"><span class="hv-fill" style="width:70%"></span></div>
                   <span class="hv-cap">Typical real-world error</span>
                 </div>
@@ -1121,9 +1170,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><div class="num">0</div><div class="lbl">Devices that truly measure calories</div></div>
-            <div class="hero-stat"><div class="num">27–93%</div><div class="lbl">Calorie error across 7 devices · Stanford</div></div>
+            <div class="hero-stat"><div class="num">27 to 93%</div><div class="lbl">Calorie error across 7 devices · Stanford</div></div>
             <div class="hero-stat"><div class="num">~96%</div><div class="lbl">Heart-rate accuracy (what they get right)</div></div>
-            <div class="hero-stat"><div class="num">13%</div><div class="lbl">Lowest measured daily error (Oura)</div></div>
+            <div class="hero-stat"><div class="num">52.4%</div><div class="lbl">Calorie error while sitting, the worst of any activity · Stanford</div></div>
           </div>
         </div>
       </section>
@@ -1148,7 +1197,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">By activity</div>
             <h2>Accuracy swings <span class="hl">wildly by activity.</span></h2>
-            <p class="lede">The same device is decent for steady cardio and hopeless for strength. Only cells with a named peer-reviewed study show a number — scroll sideways on mobile.</p>
+            <p class="lede">The same device is decent for steady cardio and hopeless for strength. Only cells with a named study show a number, and every figure names its device model and sample size. Scroll sideways on mobile.</p>
           </div>
           <div class="animate-on-scroll">${this._renderMatrix()}</div>
         </div>
@@ -1164,7 +1213,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <p class="lede">Tap any wearable for its method, sensors, best and worst measured activities, and where it breaks down.</p>
           </div>
           <div class="animate-on-scroll">${this._renderDevices()}</div>
-          <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The "View on Amazon" links above are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases — at no extra cost to you.</span></p>
+          <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The "View on Amazon" links above are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases, at no extra cost to you.</span></p>
         </div>
       </section>
 
@@ -1173,7 +1222,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Hidden variables</div>
             <h2>Factors that skew <span class="hl">every device.</span></h2>
-            <p class="lede">Even the best wearable can't see these — and each one shifts the calorie estimate.</p>
+            <p class="lede">Even the best wearable can't see these, and each one shifts the calorie estimate.</p>
           </div>
           <div class="animate-on-scroll">${this._renderFactors()}</div>
         </div>
@@ -1183,7 +1232,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
-            <p>Wearables get <strong>heart rate</strong> right (~96%) but the leap from heart rate to calories carries <strong>15–40%+ real-world error</strong> — up to 93% in the Stanford study. <strong>Steady cardio</strong> is the safe zone; <strong>strength training and cycling</strong> are the worst regardless of brand. Use the number for <strong>week-over-week trends and relative effort</strong>, never as an exact figure to eat back.</p>
+            <p>Wearables get <strong>heart rate</strong> right (~96%) but the leap from heart rate to calories carries <strong>15 to 40%+ real-world error</strong>, up to 93% in the Stanford study. <strong>Steady cardio</strong> is the safe zone; <strong>strength training and cycling</strong> are the worst regardless of brand, and pooled across the Stanford devices the error was actually highest at <strong>rest</strong> (52.4%), not during exercise. Use the number for <strong>week-over-week trends and relative effort</strong>, never as an exact figure to eat back.</p>
           </div>
         </div>
       </section>
@@ -1205,7 +1254,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
             <h2>Every claim, <span class="hl">traceable.</span></h2>
-            <p class="lede">Each checked against the primary record (PubMed / PMC / journal / manufacturer). Verified July 2026.</p>
+            <p class="lede">Each checked against the primary record (PubMed / PMC / journal / manufacturer), with the device model and sample size named. Re-verified September 2026.</p>
           </div>
           <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
@@ -1227,8 +1276,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This calculator is for educational purposes only and is not medical or nutrition advice. Wearable calorie estimates vary by individual, environment and algorithm updates. Always consult a qualified professional before making health decisions based on wearable data.</p>
-          <p class="footer-copyright">Data from peer-reviewed studies, meta-analyses and manufacturer documentation. Last updated July 2026.</p>
-          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links — we may earn a commission at no extra cost to you.</p>
+          <p class="footer-copyright">Data from peer-reviewed studies, meta-analyses and manufacturer documentation. Last updated September 2026.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links. We may earn a commission at no extra cost to you.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -1349,19 +1398,19 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         '@type': 'WebApplication',
         'name': 'Calorie Burn Accuracy Calculator',
         'alternateName': 'Kygo Wearable Calorie Burn Accuracy Tool',
-        'description': 'Enter your wearable\'s reported calorie burn and see the likely actual range. Compares Apple Watch, Fitbit, Garmin, WHOOP, Oura Ring and Samsung Galaxy Watch across 7 activity types using peer-reviewed per-activity accuracy data (Choe & Kang 2025, Chevance 2022, Kristiansson 2023 and others).',
+        'description': 'Enter your wearable\'s reported calorie burn and see the likely actual range. Compares Apple Watch, Fitbit, Garmin, WHOOP, Oura Ring and Samsung Galaxy Watch across 7 activity types using published per-activity accuracy data, with each figure named to its device model and sample size (Choe and Kang 2025, Chevance 2022, O\'Driscoll 2020, Boudreaux 2018, Andersson-Hall 2023, Shcherbina 2017 and others). Figures without a locatable primary publication are flagged rather than presented as study-backed.',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
         'url': 'https://www.kygo.app/tools/calorie-burn-accuracy',
         'datePublished': '2026-03-01',
-        'dateModified': '2026-07-08',
-        'softwareVersion': '2.0',
+        'dateModified': '2026-09-10',
+        'softwareVersion': '2.1',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-        'featureList': 'Compare 6 wearable brands across 7 activity types, peer-reviewed per-activity accuracy data, personalized calorie range calculator, bias-direction indicator, evidence-level flagging',
+        'featureList': 'Compare 6 wearable brands across 7 activity types, published per-activity accuracy data with device model and sample size named, personalized calorie range calculator, bias-direction indicator, evidence-level flagging, unsourced-figure and calculated-floor disclosure',
         'keywords': 'calorie burn accuracy, wearable calorie burn, Apple Watch calorie accuracy, Fitbit calorie accuracy, Garmin calorie accuracy, WHOOP calorie accuracy, Oura Ring calorie accuracy, Samsung Galaxy Watch calorie accuracy, fitness tracker energy expenditure error, how accurate is Apple Watch calories'
       };
       const s = document.createElement('script');
@@ -1750,7 +1799,13 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       .faq details[open] summary::after { content: '−'; }
       .faq .body { padding: 0 0 16px; color: var(--fg-2); font-size: 14px; line-height: 1.65; }
 
-      /* Sources — collapsible groups by brand */
+      .mk-flag { font-family: var(--font-display); font-weight: 700; font-size: 10px; color: var(--fg-3); margin-left: 2px; cursor: help; }
+      .cmp-foot { margin: 12px 0 0; font-size: 12px; line-height: 1.6; color: var(--fg-3); }
+      .cmp-foot strong { font-family: var(--font-display); color: var(--fg-2); }
+      .ev-chip.ev-flag { background: #FEF3C7; color: #92400E; }
+      .res-best--range { font-size: clamp(26px, 4.4vw, 40px); }
+
+      /* Sources, collapsible groups by brand */
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }

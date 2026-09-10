@@ -7,6 +7,77 @@
 > Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
 > **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
+## 🆕 Calorie figure correction pass, branch `claude/serene-tesla-mawip8` (2026-09-10)
+
+Closes **OPEN-ITEMS K1** for `/tools/calorie-burn-accuracy` and for the Calorie / Energy metric of
+`/tools/wearable-accuracy`. Basis: doc 05 strike table, re-verified against primary sources
+2026-09-10 (Change-Log row 63). Component structure, calculator UI, pickers, factor cards,
+affiliate blocks and the source accordion pattern are unchanged.
+
+**`kygo-calorie-burn-accuracy.js`**
+
+- **#K1a (P1) — ✅ RESOLVED. Two cells were brand substitutions.** Apple/Strength 53% is the
+  **Polar A360** (Boudreaux 2018, n=50); the JSAMS 2023 Apple Watch 6 study (n=11) has no
+  resistance protocol at all, so Apple resistance is now marked never-tested. Garmin/Steady 6.7% is
+  a **PulseOn** (Parak 2017, two authors PulseOn employees, and Stanford ranked PulseOn worst of
+  seven at 92.6%); no Garmin was in that study, so the cell is now an unmeasured estimate and the
+  Garmin headline is de Leon 2026's 19.1% treadmill (Vivoactive 4, n=18, unfunded).
+- **#K1b (P1) — ✅ RESOLVED. Three point estimates were invented midpoints.** Apple/Swim 45% and
+  Garmin/Swim 25% do not appear in the 2018 source, which publishes 17 to 152% and 17.9 to 32.7%
+  respectively. Cells now carry `mape: null` with the published range; the calculator shows the
+  range instead of a fabricated best estimate, and refuses to build a kcal band where the range
+  exceeds 100%.
+- **#K1c (P1) — ✅ RESOLVED. Fitbit walking/running came from a TV segment.** 53.5% and 4.3% trace
+  to a BBC One Wales *X-Ray* segment. Replaced with O'Driscoll 2020, Health and Technology
+  10(3):637-648 (n=59, Vyntus CPX): walking **69%**, running **12 to 15%**. The 2026-07-30 flag
+  claiming 69% might be household tasks is withdrawn. Fitbit/Strength added as near zero
+  (Lee 2026, Sensors 26(8):2526, n=62).
+- **#K1d (P2) — ✅ RESOLVED. WHOOP figures kept but labelled.** Per Ryan's 2026-09-10 call the
+  numbers stay. Steady 12%, HIIT 13% and Resistance 29% now carry the same unsourced marker the
+  18.4% figure already had, with one shared footnote. "No **locatable** primary publication" is
+  upgraded to "no primary publication has been located". The "WHOOP is transparent about not
+  measuring absolute calories" framing is removed and must not return: their support page
+  (updated 2025-05-09) now claims it "prioritizes accuracy over overestimation".
+- **#K1e (P2) — ✅ RESOLVED. Oura per-activity cells relabelled.** 24% / 19% are a calculated
+  **floor** (mean MET underestimation over activity reference MET), not MAPEs, and are marked
+  `c` with a footnote saying the true error is higher. First author corrected to
+  **Andersson-Hall**; the 13% headline now names its comparator (a wrist accelerometer) and the
+  card carries hip 42.2% / thigh 44.7% and the ~850 kcal/day disagreement between placements.
+- **#K1f (P2) — ✅ RESOLVED. The Sex factor card cited a claim its source does not contain.**
+  Choe & Kang's moderators are age, health status, device series, activity intensity and activity
+  type; sex is not among them. Replaced with Shcherbina 2017's genuine **heart-rate** sex finding.
+- **#K1g (P2) — ✅ RESOLVED. FAQ 8 leaderboarded three incomparable criteria.** Rewritten around
+  Fuller 2020 (no brand within 3% of criterion more than 13% of the time) and Shcherbina's
+  counterintuitive result that error is worst at rest (52.4%) and best walking (31.8%) and
+  running (31.0%). FAQ 7 and 5 rewritten to match. **The live FAQ JSON-LD lives in the Wix SEO
+  panel, not Custom Code — it must be updated there too or the schema keeps serving struck
+  figures to AI search.**
+- **#K1h (P3) — ✅ RESOLVED.** Source accordion corrected and expanded 22 → 25: Huawei funding
+  disclosed on Le 2022, JSAMS 2023 relabelled as a running study with its inverted MAPE
+  convention flagged, IJERPH 2019 re-cited to Boudreaux 2018 (PMID 29189666), Fuller 2020 scoped
+  to lab only with its Garmin-employed author disclosed, MDPI Applied Sciences year corrected
+  2025 → 2026, Parak 2017 moved out of the Garmin group. Added O'Driscoll 2020, Chowdhury 2017
+  and Lee 2026. Em dashes removed from user-visible strings; every figure now names its device
+  model and sample size.
+
+**`kygo-wearable-accuracy.js` (Calorie / Energy metric only)**
+
+- **#K1i (P1) — ✅ RESOLVED. The metric broke its own inclusion rule.** `unitExplainer` promised
+  "only devices with a daily-level study get a bar", but neither bar qualified: Oura's 13% is vs
+  Axivity AX3 accelerometers and Apple's 28% is press-release sourced and bout-level per-minute.
+  Both bars removed; all six devices now carry notes with the reference method named.
+- **#K1j (P1) — ✅ RESOLVED.** The insight string's "Oura's 13% daily beats Apple's 28% pooled"
+  clause was exactly the cross-criteria ranking the library forbids. Deleted, replaced with the
+  Shcherbina at-rest finding and the Fuller 2020 cross-brand sentence.
+- **#K1k (P3) — ✅ RESOLVED.** Study key `kristiansson2023` → `anderssonhall2023` and display
+  strings relabelled (steps figures untouched); the Parak note now states that no Garmin device
+  was tested at all.
+
+**Still open after this pass:** the Wix-side title tag, meta and FAQ JSON-LD; a Change-Log row; and
+OPEN-ITEMS K1 for the calorie blog post. D8's handoff
+(`06-Wearable-Accuracy/Tool change list - wearable-accuracy (2026-09-09).md`) is stale on calories
+and is superseded by this pass.
+
 ## 🆕 `/tools` index regrouping on branch `claude/busy-bardeen-n6idlp` (2026-09-09)
 
 All resolved in `kygo-tools.js` on this branch. Tool slugs, tool URLs, the Featured Tool slot and
