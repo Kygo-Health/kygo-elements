@@ -162,17 +162,24 @@ class KygoContactSection extends HTMLElement {
     submitBtn.innerHTML = 'Sending...';
     formError.classList.remove('show');
 
-    // Dispatch event for Wix page code
+    // Dispatch event for Wix page code. detail is plain data only — Wix
+    // bridges Custom Element events to Velo over postMessage / structured
+    // clone, which cannot serialize functions. The host reports the result
+    // back via setAttribute('data-form-result', …), never a callback.
     this.dispatchEvent(new CustomEvent('contactSubmit', {
       detail: formData,
       bubbles: true,
       composed: true
     }));
 
-    // Fallback: show success after 8 seconds if no response
+    // Safety timeout. If the host (Wix Velo) never sets data-form-result,
+    // show an error rather than a fake success — a silent "thank you" would
+    // hide a dropped message from the visitor and from us. The window is
+    // generous so a slow backend isn't mistaken for failure.
+    clearTimeout(this._submitTimeout);
     this._submitTimeout = setTimeout(() => {
-      this._showSuccess();
-    }, 8000);
+      this._showError(submitBtn, formError, 'Something went wrong sending your message. Please try again or email support@kygo.app.');
+    }, 10000);
   }
 
   _showSuccess() {
@@ -569,7 +576,7 @@ class KygoContactSection extends HTMLElement {
                 <div class="faq-list">
                   <div class="faq-item">
                     <div class="faq-question">Is Kygo really free?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                    <div class="faq-answer"><div class="faq-answer-content"><p>Yes—there's a free tier that's free forever. It includes full food logging, all wearable connections, health trends, and macro/micronutrient tracking.</p><p>The correlation engine is premium—upgrade anytime to unlock personalized insights.</p></div></div>
+                    <div class="faq-answer"><div class="faq-answer-content"><p>Yes—there's a free tier that's free forever. It includes voice, barcode, and text logging, all wearable connections, supplements, health trends, and macro/micronutrient tracking, plus 5 AI photo scans a month.</p><p>Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health &amp; Health Connect—upgrade anytime.</p></div></div>
                   </div>
                   <div class="faq-item">
                     <div class="faq-question">How is Kygo different from MyFitnessPal?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
