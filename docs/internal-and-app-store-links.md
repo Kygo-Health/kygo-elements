@@ -15,17 +15,17 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 
 > **Web-platform pass (2026-09-14).** Kygo now runs on the web at **app.kygo.app** as well as
 > iOS and Android, and every in-page conversion CTA goes through the shared **`<kygo-cta>`**
-> element (`kygo-cta.js`). It shows **one** primary button matched to the visitor's device and
-> folds the other platforms behind an "or get the app" disclosure, so only one path is loud.
-> That element, not the page, owns the destinations:
+> element (`kygo-cta.js`). All three platforms show at once, ordered by device: the visitor's own
+> platform takes the filled primary button, the other two are outline buttons beside it (desktop)
+> or two-up beneath it (phone). That element, not the page, owns the destinations:
 >
 > | Visitor | Primary destination |
 > |---|---|
-> | Desktop | `https://app.kygo.app/signup?utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` (stores behind "or get the app") |
+> | Desktop | `https://app.kygo.app/signup?utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` (primary; iPhone + Android beside it) |
 > | iOS device | `https://apps.apple.com/app/apple-store/id6749870589?pt=128052235&ct=<slug>&mt=8` (`ct` capped at 30 chars) |
 > | Android device | `https://play.google.com/store/apps/details?id=com.ryanobzud.foodhealthtracker&referrer=<url-encoded utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>>` |
 >
-> Phones also get a plain "or use Kygo on the web" link to the same signup URL. `surface` is one
+> On a phone the third button is "Web", pointing at the same signup URL. `surface` is one
 > of `home` / `blog` / `tool` / `faq`; the header and footer use `header` / `footer` with
 > `utm_campaign=nav`. The **Tenjin** links below are still the store destination in the mobile
 > nav menu, the footer Product column, and in the 48 existing blog posts until

@@ -1685,7 +1685,7 @@ class KygoFaq extends HTMLElement {
         :host{display:block;--dark:#1E293B;--navy:#0F172A;--green:#22C55E;--green-dark:#16A34A;--gray-200:#E2E8F0;--gray-400:#94A3B8;--gray-600:#475569;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;-webkit-font-smoothing:antialiased;line-height:1.6}
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
         @keyframes hiwUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-        .faq{padding:clamp(56px,7vw,88px) 20px;background:#f9fafb}
+        .faq{padding:clamp(56px,7vw,88px) 20px;background:#fff}
         .faq.reveal .section-header{animation:hiwUp .6s ease-out both}
         .faq.reveal .faq-item{animation:hiwUp .6s ease-out both}
         .faq.reveal .faq-item:nth-child(1){animation-delay:.08s}
@@ -1762,7 +1762,7 @@ class KygoFinalCta extends HTMLElement {
         h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-weight:600;line-height:1.2}
         @keyframes revealUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
         .container{max-width:1200px;margin:0 auto;padding:0 20px}
-        .final-cta{padding:72px 0;background:#fff}
+        .final-cta{padding:72px 0;background:#F8FAFC}
         .final-cta-inner{background:#0F172A;border-radius:24px;padding:40px 24px;text-align:center;position:relative;overflow:hidden;color:#fff}
         .final-cta.reveal .final-cta-inner{animation:revealUp .6s ease-out both}
         .final-cta-inner::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,0.30),transparent);pointer-events:none}
@@ -1870,7 +1870,7 @@ class KygoWorksEverywhere extends HTMLElement {
       <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :host{--dark:#1E293B;--light:#F8FAFC;--green:#22C55E;--green-dark:#16A34A;--gray-600:#475569;--border:#E2E8F0;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:var(--dark);line-height:1.6}
+        :host{--dark:#1E293B;--light:#F8FAFC;--green:#22C55E;--green-dark:#16A34A;--gray-600:#475569;--border:#E2E8F0;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--light);color:var(--dark);line-height:1.6}
         .we{padding:clamp(56px,7vw,88px) 20px}
         .container{max-width:1100px;margin:0 auto}
         .we-head{text-align:center;max-width:640px;margin:0 auto 40px}
@@ -1881,9 +1881,9 @@ class KygoWorksEverywhere extends HTMLElement {
         .we-sub{color:var(--gray-600);font-size:clamp(15px,1.8vw,17px)}
         .we-grid{display:grid;grid-template-columns:1fr;gap:16px}
         @media(min-width:768px){.we-grid{grid-template-columns:repeat(3,1fr);gap:20px}}
-        .we-tile{background:var(--light);border:1px solid var(--border);border-radius:18px;padding:26px 22px;opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease,border-color .2s ease,box-shadow .2s ease}
+        .we-tile{background:#fff;border:1px solid var(--border);border-radius:18px;padding:26px 22px;opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease,border-color .2s ease,box-shadow .2s ease}
         .we-tile.reveal{opacity:1;transform:none}
-        .we-tile:hover{background:#fff;border-color:rgba(34,197,94,.4);box-shadow:0 12px 28px -18px rgba(15,23,42,.4)}
+        .we-tile:hover{border-color:rgba(34,197,94,.4);box-shadow:0 12px 28px -18px rgba(15,23,42,.4)}
         .we-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:rgba(34,197,94,.1);color:var(--green-dark);margin-bottom:14px}
         .we-icon svg{width:22px;height:22px}
         .we-tile h3{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:19px;margin-bottom:8px}

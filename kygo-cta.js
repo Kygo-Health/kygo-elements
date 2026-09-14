@@ -17,15 +17,14 @@
  *   note    reassurance line under the buttons. Pass note="" to hide it.
  *
  * Destinations:
- *   Desktop  primary  -> app.kygo.app/signup with utm_source/medium/campaign,
- *                        store buttons secondary.
+ *   Desktop  primary  -> app.kygo.app/signup with utm_source/medium/campaign.
  *   iOS      primary  -> App Store with pt/ct attribution (ct capped at 30).
  *   Android  primary  -> Play Store with an encoded install referrer.
- *   Phones also get a plain "or use Kygo on the web" link to app.kygo.app.
  *
- * Layout: one primary button matched to the device, with the other platforms
- * folded behind an "or get the app" disclosure, so the primary path is the only
- * loud one and the alternatives are one click away rather than competing.
+ * Layout: all three platforms are always on screen. The visitor's own device
+ * takes the filled primary button and leads; the other two follow as outline
+ * buttons, in a row on desktop and as a two-up row under the primary on a
+ * phone.
  *
  * Analytics: fires Mixpanel `cta_clicked` with {slug, surface, destination} on
  * every button click, and mirrors the same payload as a bubbling `kygo-cta-click`
@@ -145,17 +144,6 @@ class KygoCta extends HTMLElement {
 
   _onClick(e) {
     const path = e.composedPath().filter(n => n.nodeType === 1);
-
-    // The disclosure holding the other platforms.
-    const toggle = path.filter(n => n.classList && n.classList.contains('toggle'))[0];
-    if (toggle) {
-      const panel = this.shadowRoot.getElementById(toggle.getAttribute('aria-controls'));
-      const open = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!open));
-      if (panel) panel.hidden = open;
-      return;
-    }
-
     const link = path.filter(n => n.tagName === 'A')[0];
     if (!link || !link.dataset.destination) return;
     const payload = { slug: this._slug, surface: this._surface, destination: link.dataset.destination };
@@ -192,35 +180,27 @@ class KygoCta extends HTMLElement {
     const android = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
     const globe = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>';
 
-    const web = (cls, label, icon) =>
-      `<a class="${cls}" href="${this._webUrl('/signup')}" data-destination="web" target="_blank" rel="noopener">${icon}${label}</a>`;
-    const ios = (cls) =>
-      `<a class="${cls}" href="${this._iosUrl}" data-destination="ios" target="_blank" rel="noopener">${apple}${cls.indexOf('primary') > -1 ? 'Start on iPhone' : 'iPhone'}</a>`;
-    const play = (cls) =>
-      `<a class="${cls}" href="${this._androidUrl}" data-destination="android" target="_blank" rel="noopener">${android}${cls.indexOf('primary') > -1 ? 'Start on Android' : 'Android'}</a>`;
+    const web = (cls, label) =>
+      `<a class="${cls}" href="${this._webUrl('/signup')}" data-destination="web" target="_blank" rel="noopener">${globe}${label}</a>`;
+    const ios = (cls, label) =>
+      `<a class="${cls}" href="${this._iosUrl}" data-destination="ios" target="_blank" rel="noopener">${apple}${label}</a>`;
+    const play = (cls, label) =>
+      `<a class="${cls}" href="${this._androidUrl}" data-destination="android" target="_blank" rel="noopener">${android}${label}</a>`;
 
-    // One primary button matched to the visitor's device, with the other
-    // platforms folded behind a disclosure so the primary path stays the loud
-    // one. Desktop gets web first and "or get the app" over the two stores;
-    // a phone gets its own store first, the web link in plain sight (the spec's
-    // requirement), and the other platform's store behind the same toggle.
-    let primary, toggleLabel, more, webLink = '';
+    // Every platform stays on screen; the visitor's own device just goes first
+    // and takes the filled button. The other two sit beside it as outline
+    // buttons on desktop, and as a two-up row under it on a phone.
+    let primary, alts;
     if (platform === 'ios') {
-      primary = ios('btn primary');
-      toggleLabel = 'also on Android';
-      more = play('btn secondary');
-      webLink = `<a class="weblink" href="${this._webUrl('/signup')}" data-destination="web" target="_blank" rel="noopener">or use Kygo on the web</a>`;
+      primary = ios('btn primary', 'Get the iPhone app');
+      alts = play('btn secondary', 'Android') + web('btn secondary', 'Web');
     } else if (platform === 'android') {
-      primary = play('btn primary');
-      toggleLabel = 'also on iPhone';
-      more = ios('btn secondary');
-      webLink = `<a class="weblink" href="${this._webUrl('/signup')}" data-destination="web" target="_blank" rel="noopener">or use Kygo on the web</a>`;
+      primary = play('btn primary', 'Get the Android app');
+      alts = ios('btn secondary', 'iPhone') + web('btn secondary', 'Web');
     } else {
-      primary = web('btn primary', 'Start on the web', globe);
-      toggleLabel = 'or get the app';
-      more = ios('btn secondary') + play('btn secondary');
+      primary = web('btn primary', 'Start on the web');
+      alts = ios('btn secondary', 'iPhone') + play('btn secondary', 'Android');
     }
-    const panelId = 'kygo-cta-more-' + this._slug;
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -229,7 +209,8 @@ class KygoCta extends HTMLElement {
         :host{--green:#22C55E;--green-dark:#16A34A;--dark:#1E293B;--gray-600:#475569;--gray-400:#94A3B8;display:block;max-width:720px;margin:0 auto;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6}
         .cta{display:flex;flex-direction:column;gap:14px;align-items:${align === 'left' ? 'flex-start' : 'center'};text-align:${align}}
         .hook{font-size:clamp(14px,1.7vw,16px);line-height:1.55;max-width:56ch;color:${theme === 'dark' ? 'rgba(255,255,255,.72)' : 'var(--gray-600)'}}
-        .btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:${align === 'left' ? 'flex-start' : 'center'};width:100%}
+        .btns{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:${align === 'left' ? 'flex-start' : 'center'};width:100%}
+        .alts{display:flex;gap:12px}
         .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;transition:background .2s ease,transform .2s ease,box-shadow .2s ease,border-color .2s ease}
         .btn svg{width:18px;height:18px;flex:none}
         .btn.primary{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(34,197,94,.25)}
@@ -237,22 +218,19 @@ class KygoCta extends HTMLElement {
         .btn.secondary{background:${theme === 'dark' ? 'rgba(255,255,255,.08)' : '#fff'};color:${theme === 'dark' ? '#fff' : 'var(--dark)'};border:1px solid ${theme === 'dark' ? 'rgba(255,255,255,.22)' : '#E2E8F0'}}
         .btn.secondary:hover{border-color:var(--green);color:${theme === 'dark' ? '#fff' : 'var(--green-dark)'};transform:translateY(-1px)}
         .btn:focus-visible{outline:2px solid ${theme === 'dark' ? '#fff' : 'var(--green-dark)'};outline-offset:3px}
-        .toggle{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:0;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;color:${theme === 'dark' ? '#6EE7A0' : 'var(--green-dark)'};text-decoration:underline;text-underline-offset:3px}
-        .toggle svg{width:14px;height:14px;transition:transform .2s ease}
-        .toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
-        .toggle:focus-visible{outline:2px solid ${theme === 'dark' ? '#fff' : 'var(--green-dark)'};outline-offset:3px;border-radius:4px}
-        .more{display:flex;flex-wrap:wrap;gap:12px;justify-content:${align === 'left' ? 'flex-start' : 'center'};width:100%}
-        .more[hidden]{display:none}
-        .weblink{font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;color:${theme === 'dark' ? '#6EE7A0' : 'var(--green-dark)'}}
         .note{font-size:13px;line-height:1.5;color:${theme === 'dark' ? 'rgba(255,255,255,.72)' : 'var(--gray-400)'}}
-        @media(max-width:560px){.btn{width:100%}}
+        @media(max-width:560px){
+          .btns{flex-direction:column;align-items:stretch;gap:10px}
+          .btn.primary{width:100%}
+          .alts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+        }
       </style>
       <div class="cta">
         ${hook ? `<p class="hook">${hook}</p>` : ''}
-        <div class="btns">${primary}</div>
-        <button class="toggle" type="button" aria-expanded="false" aria-controls="${panelId}">${toggleLabel}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-        <div class="more" id="${panelId}" hidden>${more}</div>
-        ${webLink}
+        <div class="btns">
+          ${primary}
+          <div class="alts">${alts}</div>
+        </div>
         ${note ? `<p class="note">${note}</p>` : ''}
       </div>`;
   }
