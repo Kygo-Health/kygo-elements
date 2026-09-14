@@ -16,7 +16,7 @@
  *   align   center (default) | left.
  *   note    reassurance line under the buttons. Pass note="" to hide it.
  *   compact thin-bar variant for narrow strips (the FAQ mid-page band, the
- *           homepage inline band): smaller buttons that stay on one row.
+ *           homepage inline band): smaller buttons and tighter spacing.
  *
  * Destinations:
  *   Desktop  primary  -> app.kygo.app/register with utm_source/medium/campaign.
@@ -25,8 +25,10 @@
  *
  * Layout: all three platforms are always on screen. The visitor's own device
  * takes the filled primary button and leads; the other two follow as outline
- * buttons, in a row on desktop and as a two-up row under the primary on a
- * phone.
+ * buttons, on one row where there is room and as a two-up row under the
+ * primary where there is not. That choice is made from this element's own
+ * measured width, not the viewport, so the same CTA fits a full-width hero
+ * and a thin band beside a headline without overflowing either.
  *
  * Analytics: fires Mixpanel `cta_clicked` with {slug, surface, destination} on
  * every button click, and mirrors the same payload as a bubbling `kygo-cta-click`
@@ -57,11 +59,13 @@ class KygoCta extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._attachEventListeners();
+    this._observeSize();
     try { __ctaSeo(this, this._seoText()); } catch (e) { /* SEO text is not worth failing over */ }
   }
 
   disconnectedCallback() {
     if (this._root) this._root.removeEventListener('click', this._onClick);
+    if (this._ro) { this._ro.disconnect(); this._ro = null; }
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -214,12 +218,12 @@ class KygoCta extends HTMLElement {
       <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :host{--green:#22C55E;--green-dark:#16A34A;--dark:#1E293B;--gray-600:#475569;--gray-400:#94A3B8;display:block;max-width:720px;margin:0 auto;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6}
-        .cta{display:flex;flex-direction:column;gap:14px;align-items:${align === 'left' ? 'flex-start' : 'center'};text-align:${align}}
+        :host{--green:#22C55E;--green-dark:#16A34A;--dark:#1E293B;--gray-600:#475569;--gray-400:#94A3B8;display:block;max-width:720px;min-width:0;margin:0 auto;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6}
+        .cta{display:flex;flex-direction:column;gap:14px;align-items:${align === 'left' ? 'flex-start' : 'center'};text-align:${align};width:100%;max-width:100%}
         .hook{font-size:clamp(14px,1.7vw,16px);line-height:1.55;max-width:56ch;color:${theme === 'dark' ? 'rgba(255,255,255,.72)' : 'var(--gray-600)'}}
-        .btns{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:${align === 'left' ? 'flex-start' : 'center'};width:100%}
-        .alts{display:flex;gap:12px}
-        .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;transition:background .2s ease,transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+        .btns{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:${align === 'left' ? 'flex-start' : 'center'};width:100%;max-width:100%;min-width:0}
+        .alts{display:flex;flex-wrap:wrap;gap:12px;max-width:100%;min-width:0}
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;min-width:0;max-width:100%;transition:background .2s ease,transform .2s ease,box-shadow .2s ease,border-color .2s ease}
         .btn svg{width:18px;height:18px;flex:none}
         .btn.primary{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(34,197,94,.25)}
         .btn.primary:hover{background:var(--green-dark);transform:translateY(-1px)}
@@ -227,18 +231,28 @@ class KygoCta extends HTMLElement {
         .btn.secondary:hover{border-color:var(--green);color:${theme === 'dark' ? '#fff' : 'var(--green-dark)'};transform:translateY(-1px)}
         .btn:focus-visible{outline:2px solid ${theme === 'dark' ? '#fff' : 'var(--green-dark)'};outline-offset:3px}
         .note{font-size:13px;line-height:1.5;color:${theme === 'dark' ? 'rgba(255,255,255,.72)' : 'var(--gray-400)'}}
-        @media(max-width:560px){
-          .btns{flex-direction:column;align-items:stretch;gap:10px}
-          .btn.primary{width:100%}
-          .alts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        }
+        /* Layout is driven by the element's own width, not the viewport: the
+           same CTA sits in a full-width hero and in a thin band beside a
+           headline, and only its own box tells it which. The stack and tight classes
+           are set by _applyLayout() from a measurement of the button row. */
+        .cta.stack .btns{flex-direction:column;align-items:stretch;gap:10px}
+        .cta.stack .btn.primary{width:100%}
+        .cta.stack .alts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;width:100%}
+        .cta.stack .alts .btn{width:100%}
+        .cta.tight .alts{grid-template-columns:minmax(0,1fr)}
+        /* Measurement pass: lay the buttons out on one unconstrained row so
+           _applyLayout() can read their natural width. */
+        .cta.measuring .btns{flex-direction:row!important;flex-wrap:nowrap!important;width:max-content!important;max-width:none!important}
+        .cta.measuring .alts{display:flex!important;flex-wrap:nowrap!important;width:auto!important}
+        .cta.measuring .btn{width:auto!important}
         ${compact ? `
         .cta{gap:10px}
         .btn{padding:10px 16px;font-size:14px}
         .btn svg{width:16px;height:16px}
         .note{font-size:12px}
         .hook{font-size:14px}
-        @media(min-width:561px){.btns{flex-wrap:nowrap;gap:10px}.alts{gap:10px}}
+        .btns{gap:10px}
+        .alts{gap:10px}
         ` : ''}
       </style>
       <div class="cta">
@@ -249,6 +263,45 @@ class KygoCta extends HTMLElement {
         </div>
         ${note ? `<p class="note">${note}</p>` : ''}
       </div>`;
+
+    this._rowWidth = 0;
+    this._altsWidth = 0;
+    this._applyLayout();
+  }
+
+  /* ── Responsive layout ────────────────────────────────────────────────── */
+
+  /** Natural widths of the one-row button cluster and of the two outline
+   *  buttons on their own, measured once per render from a throwaway layout
+   *  pass. Measuring beats a hardcoded breakpoint because the primary label
+   *  changes with the visitor's platform. */
+  _measure(root) {
+    const btns = root.querySelector('.btns');
+    const alts = root.querySelector('.alts');
+    if (!btns) return;
+    root.classList.add('measuring');
+    this._rowWidth = Math.ceil(btns.scrollWidth);
+    this._altsWidth = alts ? Math.ceil(alts.scrollWidth) : 0;
+    root.classList.remove('measuring');
+  }
+
+  /** Stack the primary above a two-up row of the other platforms as soon as
+   *  one row no longer fits the space this element was actually given, and
+   *  drop to a single column when even two buttons side by side do not fit. */
+  _applyLayout() {
+    const root = this.shadowRoot && this.shadowRoot.querySelector('.cta');
+    if (!root) return;
+    const width = this.getBoundingClientRect().width;
+    if (!width) return; // not laid out yet; the ResizeObserver will call back
+    if (!this._rowWidth) this._measure(root);
+    root.classList.toggle('stack', width < this._rowWidth);
+    root.classList.toggle('tight', width < this._altsWidth);
+  }
+
+  _observeSize() {
+    if (this._ro || typeof ResizeObserver === 'undefined') return;
+    this._ro = new ResizeObserver(() => this._applyLayout());
+    this._ro.observe(this);
   }
 }
 
