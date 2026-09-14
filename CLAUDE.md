@@ -35,7 +35,7 @@ Guidance for working in this repo. Read this before editing or creating componen
 ## The shared CTA element (`kygo-cta.js`)
 
 Every conversion CTA on the site is **`<kygo-cta slug="…" surface="home|blog|tool|faq" hook="…">`**
-(`kygo-cta.js`). It owns the destinations: desktop visitors get **app.kygo.app/signup** with
+(`kygo-cta.js`). It owns the destinations: desktop visitors get **app.kygo.app/register** with
 `utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>`; iOS and Android visitors get
 their own store with attribution (`ct` capped at 30 chars, Play install referrer). All three
 platforms stay on screen: the visitor's device takes the filled primary button, the other two

@@ -177,7 +177,7 @@ Fixed top nav rendered into `<div id="kygo-header-root">` by an IIFE. Key facts:
 - **Logo** → `https://www.kygo.app/` · asset = canonical logo. Wordmark: `KYGO HEALTH`.
 - **Nav links:** `/how-it-works`, `/faq`, `/blog`, `/tools`, **`/contact-8`**.
 - **Log in** → `https://app.kygo.app/login` (secondary text link, right-aligned).
-- **Start Kygo** → `https://app.kygo.app/signup?utm_source=kygo.app&utm_medium=header&utm_campaign=nav`.
+- **Open web app** → `https://app.kygo.app/register?utm_source=kygo.app&utm_medium=header&utm_campaign=nav`.
   This replaced the desktop iOS/Android store buttons in the web-platform pass (2026-09-14).
 - Mobile menu carries Log in, "Start on the web", and both store CTAs
   (Tenjin iOS `…/cD7zgIPLuiZMMWmWkXLsvy`, Tenjin Android `…/eMjS3ZkseCvs2lO9AVESkO`); hamburger toggles via global
@@ -193,9 +193,9 @@ Dark footer rendered into `<div id="kygo-footer-root">` by an IIFE. Key facts:
   Reddit `https://www.reddit.com/user/KygoApp/` · X `https://x.com/KygoApp`.
   *(These are the only place social URLs appear — not in any component. Recorded here as canonical.)*
 - **Contact:** `Jersey City, NJ` · email **`ryan@kygo.app`** (`mailto:`).
-- **Product col:** `/how-it-works`, `/faq`, **Web app** (`app.kygo.app/signup?…utm_medium=footer&utm_campaign=nav`), iPhone app (Tenjin link), Android app (Tenjin link).
+- **Product col:** `/how-it-works`, `/faq`, **Web app** (`app.kygo.app/register?…utm_medium=footer&utm_campaign=nav`), iPhone app (Tenjin link), Android app (Tenjin link).
 - **Resources col:** `/blog`, `/tools`, **`/contact-8`**.
-- **CTA col:** "Start on the web" (`app.kygo.app/signup`, primary) + iPhone (Tenjin) + Android (Tenjin).
+- **CTA col:** "Open web app" (`app.kygo.app/register`, primary) + iPhone (Tenjin) + Android (Tenjin).
 - **Legal:** `/privacy-policy`, `/terms-conditions`, `/accessibility-statement`. ✅ matches fixes #3.
 - **Disclaimer:** "© **2025** by KYGO Health LLC … not intended to diagnose, treat, cure, or prevent
   any disease … consult your physician."

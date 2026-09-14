@@ -19,7 +19,7 @@
  *           homepage inline band): smaller buttons that stay on one row.
  *
  * Destinations:
- *   Desktop  primary  -> app.kygo.app/signup with utm_source/medium/campaign.
+ *   Desktop  primary  -> app.kygo.app/register with utm_source/medium/campaign.
  *   iOS      primary  -> App Store with pt/ct attribution (ct capped at 30).
  *   Android  primary  -> Play Store with an encoded install referrer.
  *
@@ -105,7 +105,7 @@ class KygoCta extends HTMLElement {
   get _ct() { return this._slug.slice(0, 30); }
 
   _webUrl(path) {
-    const p = path || '/signup';
+    const p = path || '/register';
     return 'https://app.kygo.app' + p +
       '?utm_source=kygo.app&utm_medium=' + encodeURIComponent(this._surface) +
       '&utm_campaign=' + encodeURIComponent(this._slug);
@@ -171,7 +171,7 @@ class KygoCta extends HTMLElement {
   _seoText() {
     const hook = this._getSetting('hook', '');
     return (hook ? hook + ' ' : '') +
-      'Start on the web at https://app.kygo.app/signup, or get Kygo on iPhone and Android. ' +
+      'Start on the web at https://app.kygo.app/register, or get Kygo on iPhone and Android. ' +
       'One account and one plan cover iOS, Android and web.';
   }
 
@@ -189,7 +189,7 @@ class KygoCta extends HTMLElement {
     const globe = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>';
 
     const web = (cls, label) =>
-      `<a class="${cls}" href="${this._webUrl('/signup')}" data-destination="web" target="_blank" rel="noopener">${globe}${label}</a>`;
+      `<a class="${cls}" href="${this._webUrl('/register')}" data-destination="web" target="_blank" rel="noopener">${globe}${label}</a>`;
     const ios = (cls, label) =>
       `<a class="${cls}" href="${this._iosUrl}" data-destination="ios" target="_blank" rel="noopener">${apple}${label}</a>`;
     const play = (cls, label) =>
