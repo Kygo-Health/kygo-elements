@@ -94,6 +94,10 @@ class KygoFaqSection extends HTMLElement {
     this._domCache.categoryBtns = shadow.querySelectorAll('.category-btn');
     this._domCache.allCategoryBtn = shadow.querySelector('.category-btn[data-category="all"]');
     this._domCache.faqSections = shadow.querySelectorAll('.faq-section');
+    // The mid-page CTA band sits between two category sections. Filtering hides
+    // the sections around it, so it has to hide too or it lands above the
+    // questions the visitor just asked for.
+    this._domCache.ctaBand = shadow.querySelector('.kearly-section');
     this._domCache.faqItems = shadow.querySelectorAll('.faq-item');
 
     // Pre-compute search index (lowercase text for each item)
@@ -153,6 +157,11 @@ class KygoFaqSection extends HTMLElement {
           btns[i].classList.remove('active');
         }
         categoryBtn.classList.add('active');
+
+        // The band belongs to the unfiltered reading order only.
+        if (this._domCache.ctaBand) {
+          this._domCache.ctaBand.style.display = category === 'all' ? '' : 'none';
+        }
 
         // Show/hide sections using cached data
         for (let i = 0; i < this._searchIndex.length; i++) {
@@ -263,6 +272,12 @@ class KygoFaqSection extends HTMLElement {
     }
     if (this._domCache.allCategoryBtn) {
       this._domCache.allCategoryBtn.classList.add('active');
+    }
+
+    // Searching reorders what is on screen the same way filtering does, so the
+    // band only belongs in the unfiltered view.
+    if (this._domCache.ctaBand) {
+      this._domCache.ctaBand.style.display = query.length < 2 ? '' : 'none';
     }
 
     if (query.length < 2) {
@@ -602,15 +617,15 @@ class KygoFaqSection extends HTMLElement {
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:280px;justify-content:center}}
 
         /* Mid-content contextual app CTA (compact green card) */
-        .kearly-section { max-width: 800px; margin: 48px auto; padding: 0 20px; }
+        .kearly-section { max-width: 1040px; margin: 48px auto; padding: 0 20px; }
         .kband { max-width: 1100px; margin: 0 auto; }
-        .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
         .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
         .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; flex: 1 1 300px; min-width: 0; max-width: 620px; }
         .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
         .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
-        .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.3; color: #1E293B; }
-        .kband-actions { position: relative; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; flex: 0 1 400px; }
+        .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 21px; line-height: 1.3; color: #1E293B; }
+        .kband-actions { position: relative; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; flex: 0 0 auto; min-width: 440px; }
         .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #475569; text-align: center; }
         .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
         .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
@@ -621,6 +636,7 @@ class KygoFaqSection extends HTMLElement {
         @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
         @media (max-width: 720px) {
           .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+          .kband-actions { min-width: 0; }
           .kband-copy { flex: none; max-width: 100%; }
           .kband-actions { flex: none; width: 100%; flex-direction: column; justify-content: flex-start; }
           .kband-btn { width: 100%; justify-content: center; }
@@ -743,9 +759,8 @@ class KygoFaqSection extends HTMLElement {
                   <h2 class="kband-headline">See how your food affects your sleep, recovery &amp; HRV.</h2>
                 </div>
                 <div class="kband-actions">
-                  <kygo-cta slug="faq-mid" surface="faq"
-                    hook="Every answer here ends the same way: your own data settles it."
-                    note="Free plan available on web or in the app. Pro is $9.99 a month, $49.99 a year, or $99.99 for lifetime. Cancel anytime."></kygo-cta>
+                  <kygo-cta compact slug="faq-mid" surface="faq"
+                    note="Free plan available on web or in the app. Cancel anytime."></kygo-cta>
                 </div>
               </div>
             </div>

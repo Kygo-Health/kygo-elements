@@ -21,7 +21,7 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 >
 > | Visitor | Primary destination |
 > |---|---|
-> | Desktop | `https://app.kygo.app/signup?utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` (primary; iPhone + Android beside it) |
+> | Desktop | `https://app.kygo.app/register?utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` (primary; iPhone + Android beside it) |
 > | iOS device | `https://apps.apple.com/app/apple-store/id6749870589?pt=128052235&ct=<slug>&mt=8` (`ct` capped at 30 chars) |
 > | Android device | `https://play.google.com/store/apps/details?id=com.ryanobzud.foodhealthtracker&referrer=<url-encoded utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>>` |
 >
@@ -32,7 +32,7 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 > `scripts/migrate-blog-ctas.js` is run.
 >
 > **Web app links:** `https://app.kygo.app` (product), `https://app.kygo.app/login` (header
-> "Log in"), `https://app.kygo.app/signup` (every "Start on the web" / "Start Kygo" path).
+> "Log in"), `https://app.kygo.app/register` (every "Start on the web" / "Open web app" path, header and footer included).
 
 > **Store CTAs now use Tenjin attribution links (swapped 7/14 header/footer/home,
 > 7/15 everything else).** Every **user-clickable** store button/link — sub-nav "Get Kygo App",
