@@ -1670,7 +1670,7 @@ class KygoFaq extends HTMLElement {
       { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
       { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
       { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
-      { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, supplements, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $49.99/year.' }
+      { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, supplement tracking, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $49.99/year.' }
     ];
   }
   render() {

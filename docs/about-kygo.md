@@ -112,11 +112,11 @@ day 14, etc.).
 ## Free vs. Pro
 
 - **Free:** voice / barcode / text logging, nutrition import, wearable syncing, full macro +
-  micronutrient tracking, water, weight, supplements, and Quick-Add — plus **5 AI photo scans per
+  micronutrient tracking, water, weight, and Quick-Add — plus **5 AI photo scans per
   calendar month** (photo logging is metered, not locked; only the exhausted state paywalls).
   All read paths to already-logged data are always free.
 - **Pro (subscription):** the food↔body **insights / correlations** (helping-vs-hurting cards and
-  the daily factor spotlight), **unlimited photo logging**, **nutrition write-back to Apple Health
+  the daily factor spotlight), **supplement tracking**, **unlimited photo logging**, **nutrition write-back to Apple Health
   & Health Connect**, personalized recommendations from the **"Kygo Advisor,"** factor pinning, and
   experiment tracking.
 
