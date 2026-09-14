@@ -12,11 +12,20 @@
  *           Apple `ct` value. Must be unique per placement.
  *   surface home | blog | tool | faq. Used as utm_medium.
  *   hook    topic-matched line on the reader's payoff, shown above the buttons.
- *   theme   dark (on the navy conversion card) | light (default, on white).
+ *   theme   dark (on the navy conversion card) | green (on a Kygo-green
+ *           card, where the filled button goes white) | light (default, on white).
  *   align   center (default) | left.
  *   note    reassurance line under the buttons. Pass note="" to hide it.
  *   compact thin-bar variant for narrow strips (the FAQ mid-page band, the
  *           homepage inline band): smaller buttons and tighter spacing.
+ *   mini    header/sub-nav variant: one nowrap row of small pills, no hook and
+ *           no note, labels dropping away as the header narrows. Use it only in
+ *           a page header, where the element spans the page width.
+ *   single  renders the visitor's own destination alone, for a card whose whole
+ *           point is one action (a pricing plan). Never the page's main CTA —
+ *           those keep all three platforms on screen. Takes `label` for the
+ *           button wording, `block` to fill the card width and
+ *           variant="outline" for the quieter of two plan buttons.
  *
  * Destinations:
  *   Desktop  primary  -> app.kygo.app/register with utm_source/medium/campaign.
@@ -53,14 +62,18 @@ class KygoCta extends HTMLElement {
     this._onClick = this._onClick.bind(this);
   }
 
-  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note', 'compact']; }
+  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note', 'compact', 'mini', 'single', 'block', 'variant', 'label']; }
 
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
     this._attachEventListeners();
     this._observeSize();
-    try { __ctaSeo(this, this._seoText()); } catch (e) { /* SEO text is not worth failing over */ }
+    // The header pill row repeats what the page's main CTA already spells out
+    // for crawlers, so mini does not add a second copy of it.
+    if (!this.hasAttribute('mini')) {
+      try { __ctaSeo(this, this._seoText()); } catch (e) { /* SEO text is not worth failing over */ }
+    }
   }
 
   disconnectedCallback() {
@@ -183,34 +196,58 @@ class KygoCta extends HTMLElement {
     const platform = this._platform();
     const hook = this._getSetting('hook', '');
     const note = this._getSetting('note', 'Free plan available on web or in the app. No card to start. Cancel anytime.');
-    const theme = String(this._getSetting('theme', 'light')).toLowerCase() === 'dark' ? 'dark' : 'light';
+    // light = on white, dark = on the navy card, green = on a Kygo-green card
+    // (there the filled button has to go white, or it disappears into the card).
+    const themeName = String(this._getSetting('theme', 'light')).toLowerCase();
+    const theme = ['dark', 'green'].indexOf(themeName) > -1 ? themeName : 'light';
+    const palette = {
+      light: { hook: 'var(--gray-600)', note: 'var(--gray-400)', outline: 'var(--green-dark)',
+               pBg: 'var(--green)', pFg: '#fff', pShadow: '0 8px 20px rgba(34,197,94,.25)', pHover: 'var(--green-dark)',
+               sBg: '#fff', sFg: 'var(--dark)', sBorder: '#E2E8F0', sHoverFg: 'var(--green-dark)', sHoverBorder: 'var(--green)' },
+      dark:  { hook: 'rgba(255,255,255,.72)', note: 'rgba(255,255,255,.72)', outline: '#fff',
+               pBg: 'var(--green)', pFg: '#fff', pShadow: '0 8px 20px rgba(34,197,94,.25)', pHover: 'var(--green-dark)',
+               sBg: 'rgba(255,255,255,.08)', sFg: '#fff', sBorder: 'rgba(255,255,255,.22)', sHoverFg: '#fff', sHoverBorder: 'var(--green)' },
+      green: { hook: 'rgba(255,255,255,.9)', note: 'rgba(255,255,255,.9)', outline: '#fff',
+               pBg: '#fff', pFg: 'var(--green-dark)', pShadow: '0 8px 20px rgba(15,23,42,.14)', pHover: '#F0FDF4',
+               sBg: 'rgba(255,255,255,.12)', sFg: '#fff', sBorder: 'rgba(255,255,255,.55)', sHoverFg: '#fff', sHoverBorder: '#fff' }
+    }[theme];
     const align = String(this._getSetting('align', 'center')).toLowerCase() === 'left' ? 'left' : 'center';
-    // `compact` is a bare attribute, so its presence is the signal.
+    // `compact` and `mini` are bare attributes, so their presence is the signal.
     const compact = this.hasAttribute('compact') || String(this._getSetting('compact', '')) === 'true';
+    const mini = this.hasAttribute('mini') || String(this._getSetting('mini', '')) === 'true';
+    const single = this.hasAttribute('single') || String(this._getSetting('single', '')) === 'true';
+    const block = this.hasAttribute('block') || String(this._getSetting('block', '')) === 'true';
+    const outline = String(this._getSetting('variant', '')).toLowerCase() === 'outline';
+    const label = this._getSetting('label', '');
 
     const apple = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
     const android = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
     const globe = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>';
 
+    // aria-label carries the full wording even where the visible label is
+    // dropped for width, so an icon-only pill still announces itself.
     const web = (cls, label) =>
-      `<a class="${cls}" href="${this._webUrl('/register')}" data-destination="web" target="_blank" rel="noopener">${globe}${label}</a>`;
+      `<a class="${cls}" href="${this._webUrl('/register')}" data-destination="web" target="_blank" rel="noopener" aria-label="Start Kygo on the web">${globe}<span class="lbl">${label}</span></a>`;
     const ios = (cls, label) =>
-      `<a class="${cls}" href="${this._iosUrl}" data-destination="ios" target="_blank" rel="noopener">${apple}${label}</a>`;
+      `<a class="${cls}" href="${this._iosUrl}" data-destination="ios" target="_blank" rel="noopener" aria-label="Get Kygo on the App Store">${apple}<span class="lbl">${label}</span></a>`;
     const play = (cls, label) =>
-      `<a class="${cls}" href="${this._androidUrl}" data-destination="android" target="_blank" rel="noopener">${android}${label}</a>`;
+      `<a class="${cls}" href="${this._androidUrl}" data-destination="android" target="_blank" rel="noopener" aria-label="Get Kygo on Google Play">${android}<span class="lbl">${label}</span></a>`;
 
     // Every platform stays on screen; the visitor's own device just goes first
     // and takes the filled button. The other two sit beside it as outline
     // buttons on desktop, and as a two-up row under it on a phone.
+    // A header has room for a verb and not much else, so mini shortens the
+    // primary label rather than dropping a platform.
     let primary, alts;
+    const primaryCls = 'btn ' + (outline ? 'secondary' : 'primary');
     if (platform === 'ios') {
-      primary = ios('btn primary', 'Get the iPhone app');
+      primary = ios(primaryCls, label || (mini ? 'Get the app' : 'Get the iPhone app'));
       alts = play('btn secondary', 'Android') + web('btn secondary', 'Web');
     } else if (platform === 'android') {
-      primary = play('btn primary', 'Get the Android app');
+      primary = play(primaryCls, label || (mini ? 'Get the app' : 'Get the Android app'));
       alts = ios('btn secondary', 'iPhone') + web('btn secondary', 'Web');
     } else {
-      primary = web('btn primary', 'Start on the web');
+      primary = web(primaryCls, label || (mini ? 'Start free' : 'Start on the web'));
       alts = ios('btn secondary', 'iPhone') + play('btn secondary', 'Android');
     }
 
@@ -218,19 +255,19 @@ class KygoCta extends HTMLElement {
       <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :host{--green:#22C55E;--green-dark:#16A34A;--dark:#1E293B;--gray-600:#475569;--gray-400:#94A3B8;display:block;max-width:720px;min-width:0;margin:0 auto;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6}
-        .cta{display:flex;flex-direction:column;gap:14px;align-items:${align === 'left' ? 'flex-start' : 'center'};text-align:${align};width:100%;max-width:100%}
-        .hook{font-size:clamp(14px,1.7vw,16px);line-height:1.55;max-width:56ch;color:${theme === 'dark' ? 'rgba(255,255,255,.72)' : 'var(--gray-600)'}}
+        :host{--green:#22C55E;--green-dark:#16A34A;--dark:#1E293B;--gray-600:#475569;--gray-400:#94A3B8;display:block;min-width:0;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.6}
+        .cta{display:flex;flex-direction:column;gap:14px;align-items:${align === 'left' ? 'flex-start' : 'center'};text-align:${align};width:100%;max-width:720px;margin:0 auto}
+        .hook{font-size:clamp(14px,1.7vw,16px);line-height:1.55;max-width:56ch;color:${palette.hook}}
         .btns{display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:${align === 'left' ? 'flex-start' : 'center'};width:100%;max-width:100%;min-width:0}
         .alts{display:flex;flex-wrap:wrap;gap:12px;max-width:100%;min-width:0}
         .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 24px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;white-space:nowrap;min-width:0;max-width:100%;transition:background .2s ease,transform .2s ease,box-shadow .2s ease,border-color .2s ease}
         .btn svg{width:18px;height:18px;flex:none}
-        .btn.primary{background:var(--green);color:#fff;box-shadow:0 8px 20px rgba(34,197,94,.25)}
-        .btn.primary:hover{background:var(--green-dark);transform:translateY(-1px)}
-        .btn.secondary{background:${theme === 'dark' ? 'rgba(255,255,255,.08)' : '#fff'};color:${theme === 'dark' ? '#fff' : 'var(--dark)'};border:1px solid ${theme === 'dark' ? 'rgba(255,255,255,.22)' : '#E2E8F0'}}
-        .btn.secondary:hover{border-color:var(--green);color:${theme === 'dark' ? '#fff' : 'var(--green-dark)'};transform:translateY(-1px)}
-        .btn:focus-visible{outline:2px solid ${theme === 'dark' ? '#fff' : 'var(--green-dark)'};outline-offset:3px}
-        .note{font-size:13px;line-height:1.5;color:${theme === 'dark' ? 'rgba(255,255,255,.72)' : 'var(--gray-400)'}}
+        .btn.primary{background:${palette.pBg};color:${palette.pFg};box-shadow:${palette.pShadow}}
+        .btn.primary:hover{background:${palette.pHover};color:${palette.pFg};transform:translateY(-1px)}
+        .btn.secondary{background:${palette.sBg};color:${palette.sFg};border:1px solid ${palette.sBorder}}
+        .btn.secondary:hover{border-color:${palette.sHoverBorder};color:${palette.sHoverFg};transform:translateY(-1px)}
+        .btn:focus-visible{outline:2px solid ${palette.outline};outline-offset:3px}
+        .note{font-size:13px;line-height:1.5;color:${palette.note}}
         /* Layout is driven by the element's own width, not the viewport: the
            same CTA sits in a full-width hero and in a thin band beside a
            headline, and only its own box tells it which. The stack and tight classes
@@ -254,14 +291,32 @@ class KygoCta extends HTMLElement {
         .btns{gap:10px}
         .alts{gap:10px}
         ` : ''}
+        ${single ? `
+        .cta{max-width:none;margin:0}
+        ${block ? '.btn{width:100%}' : ''}
+        ` : ''}
+        ${mini ? `
+        /* Header pills. A page header spans the page, so here the viewport is
+           the right thing to measure: the labels drop away as the header runs
+           out of room, the row never wraps and never stacks. */
+        .cta{gap:0;width:auto;max-width:none;margin:0}
+        .btns{flex-wrap:nowrap;gap:8px;width:auto}
+        .alts{flex-wrap:nowrap;gap:8px}
+        .btn{padding:8px 12px;border-radius:8px;font-size:13px;gap:6px;line-height:1}
+        .btn svg{width:15px;height:15px}
+        .btn.primary{box-shadow:none}
+        .btn.primary:hover,.btn.secondary:hover{transform:none}
+        @media(max-width:520px){.btn.secondary .lbl{display:none}.btn.secondary{padding:8px 10px}}
+        @media(max-width:360px){.btn .lbl{display:none}.btn{padding:8px 10px}}
+        ` : ''}
       </style>
       <div class="cta">
-        ${hook ? `<p class="hook">${hook}</p>` : ''}
+        ${hook && !mini ? `<p class="hook">${hook}</p>` : ''}
         <div class="btns">
           ${primary}
-          <div class="alts">${alts}</div>
+          ${single ? '' : `<div class="alts">${alts}</div>`}
         </div>
-        ${note ? `<p class="note">${note}</p>` : ''}
+        ${note && !mini ? `<p class="note">${note}</p>` : ''}
       </div>`;
 
     this._rowWidth = 0;
@@ -291,7 +346,8 @@ class KygoCta extends HTMLElement {
   _applyLayout() {
     const root = this.shadowRoot && this.shadowRoot.querySelector('.cta');
     if (!root) return;
-    const width = this.getBoundingClientRect().width;
+    if (this.hasAttribute('mini') || this.hasAttribute('single')) { root.classList.remove('stack', 'tight'); return; }
+    const width = root.getBoundingClientRect().width;
     if (!width) return; // not laid out yet; the ResizeObserver will call back
     if (!this._rowWidth) this._measure(root);
     root.classList.toggle('stack', width < this._rowWidth);

@@ -27,6 +27,18 @@ function __seo(el, text) {
   el.appendChild(d);
 }
 
+/** Loads the shared kygo-cta element on demand. Wix embeds this file on its
+ *  own, so the CTA script has to come along rather than be assumed present. */
+function __ensureKygoCta() {
+  if (customElements.get('kygo-cta')) return;
+  if (document.querySelector('script[data-kygo-cta-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+  s.setAttribute('data-kygo-cta-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
 class KygoHiw extends HTMLElement {
   constructor() {
     super();
@@ -35,6 +47,7 @@ class KygoHiw extends HTMLElement {
   }
 
   connectedCallback() {
+    __ensureKygoCta();
     this._parseWixAttributes();
     this.render();
     this._setupFeatureReveal();
@@ -85,8 +98,6 @@ class KygoHiw extends HTMLElement {
 
   _data() {
     return {
-      iosLink: this._getSetting('ios-link', 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy'),
-      androidLink: this._getSetting('android-link', 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO'),
       logos: {
         // Full-bleed app-icon badges (fill the tile)
         oura: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png',
@@ -135,28 +146,10 @@ class KygoHiw extends HTMLElement {
   // ── Reusable snippets ─────────────────────────────────────────────────
 
   // Canonical Kygo store-button glyphs (identical to the site header / tool pages)
-  _appleIcon() {
-    return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg>';
-  }
 
-  _androidIcon() {
-    return '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>';
-  }
 
-  /** Full label on desktop, short label on mobile (keeps the store buttons on one line). */
-  _label(full, short) {
-    return `<span class="hiw-lbl-full">${full}</span><span class="hiw-lbl-short">${short}</span>`;
-  }
 
-  /** iOS store CTA (Tenjin iOS link + tracking hooks). */
-  _iosBtn(d, cls, position, label, text, shortText) {
-    return `<a href="${d.iosLink}" class="${cls} cta-primary" data-track-position="${position}" data-track-label="${label}" target="_blank" rel="noopener">${this._appleIcon()}${this._label(text, shortText || text)}</a>`;
-  }
 
-  /** Android store CTA (Tenjin Android link + tracking hooks). */
-  _androidBtn(d, cls, position, label, text, shortText) {
-    return `<a href="${d.androidLink}" class="${cls} cta-android" data-action="android-download" data-track-position="${position}" data-track-label="${label}" target="_blank" rel="noopener">${this._androidIcon()}${this._label(text, shortText || text)}</a>`;
-  }
 
   _stars() {
     const p = 'M12 2.5l2.6 5.7 6.2.6-4.7 4.2 1.4 6.1L12 19.9 6.5 19.1l1.4-6.1L3.2 8.8l6.2-.6z';
@@ -278,14 +271,14 @@ class KygoHiw extends HTMLElement {
             <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">$49.99 billed yearly&nbsp;&nbsp;•&nbsp;&nbsp;cancel anytime</p>
             <p style="font-size:14px;color:#64748B;margin-bottom:22px;">Everything Kygo does, for less than half the monthly price.</p>
             <div class="hiwplan" style="display:flex;flex-direction:column;gap:12px;margin-bottom:26px;">${features}</div>
-            <a href="${d.iosLink}" class="hiw-greenblock cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-yearly" target="_blank" rel="noopener">Get Kygo</a>
+            <kygo-cta single block slug="how-it-works-pricing-yearly" surface="home" label="Get Kygo" note=""></kygo-cta>
           </div>
           <div style="flex:1 1 320px;max-width:400px;background:#fff;border:2px solid #E2E8F0;border-radius:20px;padding:30px 26px;box-shadow:0 4px 12px rgba(15,23,42,.04);">
             <div style="font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#94A3B8;margin-bottom:6px;">Monthly</div>
             <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:2px;"><span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:36px;color:#0F172A;">$9.99</span><span style="font-size:14px;color:#94A3B8;font-weight:500;">/mo</span></div>
             <p style="font-size:13px;color:#94A3B8;font-weight:500;margin-bottom:14px;">Billed monthly. Cancel anytime.</p>
             <p style="font-size:14px;color:#64748B;margin-bottom:24px;">The same full Kygo feature set, month to month — no commitment.</p>
-            <a href="${d.iosLink}" class="hiw-outline cta-primary" data-track-position="pricing" data-track-label="how-it-works-pricing-monthly" target="_blank" rel="noopener">Choose monthly</a>
+            <kygo-cta single block variant="outline" slug="how-it-works-pricing-monthly" surface="home" label="Choose monthly" note=""></kygo-cta>
           </div>
         </div>
         <p style="font-size:14px;color:#94A3B8;font-weight:500;margin-top:28px;">Free plan available. Cancel anytime.</p>
@@ -310,18 +303,6 @@ class KygoHiw extends HTMLElement {
       a:hover { color:#15803d; }
 
       /* Store CTA buttons */
-      .hiw-ios,.hiw-android,.hiw-ghost { display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:16px;border-radius:12px;white-space:nowrap; }
-      .hiw-ios svg,.hiw-android svg,.hiw-ghost svg { width:20px;height:20px; }
-      .hiw-ios { background:#22C55E;color:#fff;padding:15px 26px;box-shadow:0 10px 24px -8px rgba(34,197,94,0.5);transition:transform .2s,background .2s; }
-      .hiw-ios:hover { transform:translateY(-2px);background:#16A34A;color:#fff; }
-      .hiw-android { background:#1E293B;color:#fff;padding:15px 26px;transition:transform .2s; }
-      .hiw-android:hover { transform:translateY(-2px);color:#fff; }
-      .hiw-ghost { background:rgba(255,255,255,.08);color:#fff;border:2px solid rgba(255,255,255,.16);padding:13px 24px;transition:background .2s,border-color .2s; }
-      .hiw-ghost:hover { background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.3);color:#fff; }
-      .hiw-outline { display:flex;align-items:center;justify-content:center;background:#fff;color:#16A34A;border:2px solid #E2E8F0;font-weight:600;font-size:15px;padding:13px;border-radius:12px;transition:border-color .2s,color .2s; }
-      .hiw-outline:hover { border-color:#22C55E;color:#16A34A; }
-      .hiw-greenblock { display:flex;align-items:center;justify-content:center;background:#22C55E;color:#fff;font-weight:600;font-size:15px;padding:13px;border-radius:12px;box-shadow:0 10px 24px -8px rgba(34,197,94,.5);transition:transform .2s,background .2s; }
-      .hiw-greenblock:hover { transform:translateY(-2px);background:#16A34A;color:#fff; }
 
       /* Keyframes */
       @keyframes hiwUp { from { opacity:0; transform:translateY(22px);} to { opacity:1; transform:translateY(0);} }
@@ -375,15 +356,6 @@ class KygoHiw extends HTMLElement {
         .hiw-chip-label { font-size:8.5px; }
       }
 
-      /* iOS + Android buttons sit side by side on mobile */
-      .hiw-lbl-short { display:none; }
-      @media (max-width:520px){
-        .hiw-btnrow { flex-wrap:nowrap !important; gap:10px !important; align-items:stretch; }
-        .hiw-btnrow > a { flex:1 1 0; min-width:0; justify-content:center; text-align:center; padding-left:10px; padding-right:10px; font-size:15px; white-space:nowrap; }
-        .hiw-btnrow > a svg { width:18px; height:18px; flex-shrink:0; }
-        .hiw-btnrow .hiw-lbl-full { display:none; }
-        .hiw-btnrow .hiw-lbl-short { display:inline; }
-      }
       /* The floating "Synced" badge hangs off the card corner — pull it back in and
          scale it down on phones so it isn't clipped by the section edge. */
       @media (max-width:560px){
@@ -400,13 +372,9 @@ class KygoHiw extends HTMLElement {
 
       /* Small phones: the two buttons and the pill have to stay inside the card */
       @media (max-width:400px){
-        .hiw-btnrow > a { font-size:13.5px; gap:6px; padding-left:8px; padding-right:8px; }
-        .hiw-btnrow > a svg { width:16px; height:16px; }
         .hiw-cta-pill { font-size:11.5px !important; padding:6px 11px !important; }
       }
       @media (max-width:360px){
-        .hiw-btnrow > a { font-size:12.5px; gap:5px; padding-left:6px; padding-right:6px; }
-        .hiw-btnrow > a svg { width:15px; height:15px; }
         /* let the pill wrap instead of pushing past the card on the narrowest phones */
         .hiw-cta-pill { font-size:11px !important; padding:5px 9px !important; gap:6px !important; white-space:normal !important; line-height:1.35; text-align:center; }
       }
@@ -464,9 +432,8 @@ class KygoHiw extends HTMLElement {
               <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.1);color:#16A34A;padding:8px 15px;border-radius:999px;font-weight:600;font-size:13px;margin-bottom:22px;animation:hiwUp .6s ease-out both;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Setup in minutes. Answers in days.</div>
               <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(34px,5.4vw,52px);line-height:1.05;letter-spacing:-0.03em;margin-bottom:20px;animation:hiwUp .6s ease-out .06s both;">How Kygo connects your food to your <span style="color:#22C55E;">sleep, HRV &amp; recovery</span></h1>
               <p style="font-size:clamp(16px,2.2vw,19px);color:#475569;max-width:440px;margin-bottom:30px;line-height:1.6;animation:hiwUp .6s ease-out .12s both;">Kygo pairs your wearables with effortless food logging to reveal the personal patterns a calorie counter never could.</p>
-              <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
-                ${this._iosBtn(d, 'hiw-ios', 'hero', 'how-it-works-hero-ios', 'Download for iOS', 'Get iOS')}
-                ${this._androidBtn(d, 'hiw-android', 'hero', 'how-it-works-hero-android', 'Get it on Android', 'Get Android')}
+              <div class="hiw-btnrow" style="margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
+                <kygo-cta slug="how-it-works-hero" surface="home" align="left" note=""></kygo-cta>
               </div>
               <p style="font-size:14px;color:#94A3B8;font-weight:500;animation:hiwUp .6s ease-out .24s both;">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free forever plan&nbsp;&nbsp;•&nbsp;&nbsp;No credit card</p>
             </div>
@@ -611,9 +578,8 @@ class KygoHiw extends HTMLElement {
               <p style="font-size:clamp(16px,2.2vw,18px);color:#94A3B8;max-width:440px;margin-bottom:0;animation:hiwUp .6s ease-out .12s both;">After about seven days, Kygo grades every food against your metrics and shows the ones that actually move the needle.</p>
             </div>
             <div class="hiw-s3-cta" style="margin-top:28px;">
-              <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
-                ${this._iosBtn(d, 'hiw-ios', 'step-3', 'how-it-works-step3-ios', 'Download for iOS', 'Get iOS')}
-                ${this._androidBtn(d, 'hiw-ghost', 'step-3', 'how-it-works-step3-android', 'Get it on Android', 'Get Android')}
+              <div class="hiw-btnrow" style="margin-bottom:16px;animation:hiwUp .6s ease-out .18s both;">
+                <kygo-cta theme="dark" slug="how-it-works-step3" surface="home" align="left" note=""></kygo-cta>
               </div>
               <p style="font-size:14px;color:#64748B;font-weight:500;max-width:440px;animation:hiwUp .6s ease-out .24s both;">Correlations unlock after about seven days of logging. Included with Pro.</p>
             </div>
@@ -634,9 +600,8 @@ class KygoHiw extends HTMLElement {
               <div class="hiw-cta-pill" style="display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,0.12);color:#22C55E;padding:7px 14px;border-radius:999px;font-weight:600;font-size:13px;margin-bottom:20px;white-space:nowrap;max-width:100%;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px;flex-shrink:0;"><path d="M12 3l1.9 5.2L19 10l-5.1 1.8L12 17l-1.9-5.2L5 10l5.1-1.8z"/></svg>Stop guessing. Start knowing.</div>
               <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:clamp(28px,4.2vw,46px);line-height:1.06;letter-spacing:-0.03em;color:#fff;margin-bottom:16px;">Your body is already talking.<br><span style="color:#22C55E;">Kygo helps you listen.</span></h2>
               <p style="font-size:clamp(16px,2.2vw,18px);color:#94A3B8;max-width:460px;margin:0 auto 30px;">Log your food. Connect your wearable. See what actually moves your sleep, energy, and recovery.</p>
-              <div class="hiw-btnrow" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:22px;">
-                ${this._iosBtn(d, 'hiw-ios', 'footer-cta', 'how-it-works-footer-ios', 'Download for iOS', 'Get iOS')}
-                ${this._androidBtn(d, 'hiw-ghost', 'footer-cta', 'how-it-works-footer-android', 'Get it on Android', 'Get Android')}
+              <div class="hiw-btnrow" style="margin-bottom:22px;">
+                <kygo-cta theme="dark" slug="how-it-works-footer" surface="home" note=""></kygo-cta>
               </div>
               <p style="font-size:14px;color:#64748B;font-weight:500;">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free forever plan&nbsp;&nbsp;•&nbsp;&nbsp;No credit card</p>
             </div>

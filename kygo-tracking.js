@@ -78,10 +78,34 @@
   // falling through to other_action / null (they carry no Kygo class).
   const AMAZON_HOST = /(^|\.)amazon\.(com|de|co\.uk|ca|fr|it|es|com\.au|co\.jp)$|(^|\.)amzn\.to$/;
 
+  /** The <kygo-cta> element that owns this anchor, if any. Its buttons live in
+   *  the element's own shadow root, so the host is one getRootNode() away. */
+  function ctaHost(el) {
+    try {
+      var root = el.getRootNode && el.getRootNode();
+      var host = root && root.host;
+      return host && host.tagName === 'KYGO-CTA' ? host : null;
+    } catch (e) { return null; }
+  }
+
   function classifyClick(el) {
     var action = el.getAttribute('data-action');
     var href = el.getAttribute('href') || '';
     var classList = el.className || '';
+
+    // The shared <kygo-cta> labels every button with its destination, which is
+    // more reliable than sniffing the href — and it is the only CTA on the site
+    // that offers a web destination alongside the two stores.
+    var destination = el.getAttribute('data-destination');
+    if (destination === 'ios' || destination === 'android' || destination === 'web') {
+      var host = ctaHost(el);
+      return {
+        category: destination === 'web' ? 'web_signup' : destination + '_download',
+        label: (host && host.getAttribute('slug')) || getLabel(el),
+        url: href,
+        position: host && host.getAttribute('surface')
+      };
+    }
 
     // iOS App Store download (direct App Store link, or the Tenjin
     // attribution link that resolves to the iOS store —
@@ -93,11 +117,12 @@
       return { category: 'ios_download', label: getLabel(el), url: href || 'button-redirect' };
     }
 
-    // Android download (Google Play via kygo.app/android, or the Tenjin
+    // Android download (Google Play directly, via kygo.app/android, or the Tenjin
     // attribution link that resolves to the Play store —
     // track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO)
     if (action === 'android-download' ||
         classList.indexOf('cta-android') !== -1 ||
+        href.indexOf('play.google.com') !== -1 ||
         href.indexOf('kygo.app/android') !== -1 ||
         href.indexOf('track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO') !== -1) {
       return { category: 'android_download', label: getLabel(el), url: href || 'button-redirect' };
@@ -215,7 +240,7 @@
     if (!info) return;
 
     var component = getComponentName(path);
-    var position = clickable.getAttribute('data-track-position') || 'body';
+    var position = clickable.getAttribute('data-track-position') || info.position || 'body';
 
     if (info.category === 'tool_interaction') {
       track('tool_interaction', {

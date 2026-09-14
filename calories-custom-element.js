@@ -333,13 +333,6 @@ class CaloriesInAnything extends HTMLElement {
         }
         .logo-img { height: 28px; width: auto; }
         .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
-        .nav-cta-group .nav-store-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 12px; border-radius:8px; font-weight:600; font-size:13px; text-decoration:none; white-space:nowrap; line-height:1; }
-        .nav-cta-group .nav-store-btn svg { width:15px; height:15px; flex-shrink:0; }
-        .nav-cta-group .nav-store-ios { background:var(--green); color:#fff; }
-        .nav-cta-group .nav-store-ios:hover { background:var(--green-dark); color:#fff; }
-        .nav-cta-group .nav-store-android { background:#fff; color:var(--green-dark); border:1.5px solid var(--gray-200); }
-        .nav-cta-group .nav-store-android:hover { border-color:var(--green); color:var(--green-dark); }
-        @media (max-width:360px){ .nav-cta-group .nav-store-btn span { display:none; } .nav-cta-group .nav-store-btn { padding:8px 10px; } }
 
         /* MAIN CONTAINER */
         .main {
@@ -881,26 +874,6 @@ class CaloriesInAnything extends HTMLElement {
           font-size: 14px;
           line-height: 1.6;
         }
-        .cta-btn-white {
-          background: white;
-          color: var(--green-dark);
-          padding: 14px 28px;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 15px;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          transition: all 0.2s;
-          border: none;
-          cursor: pointer;
-        }
-        .cta-btn-white:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .cta-btn-white svg { width: 18px; height: 18px; }
         .cta-features {
           display: flex;
           flex-direction: column;
@@ -912,12 +885,8 @@ class CaloriesInAnything extends HTMLElement {
         }
         .cta-feature { display: flex; align-items: center; justify-content: center; gap: 8px; }
         .cta-check { color: white; display: flex; }
-        .cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-        .cta-android{background:white;color:var(--green-dark);padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;border:none;cursor:pointer;font-family:inherit}
-        .cta-android:hover{background:white;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2)}
-        .cta-android svg{width:18px;height:18px}
-        @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons a{width:100%;max-width:280px;justify-content:center}}
-
+        .cta-buttons{display:flex;justify-content:center}
+        
         /* EARLY CONTEXTUAL CTA */
         .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 768px; margin: 24px auto 0; }
         .kearly-copy { font-size: 16px; line-height: 1.5; font-weight: 500; margin: 0 0 16px; color: var(--dark); }
@@ -1246,8 +1215,7 @@ class CaloriesInAnything extends HTMLElement {
               Food Scanner
             </a>
             <div class="nav-cta-group">
-              <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-store-btn nav-store-ios cta-primary" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 13.5c0-2.6 2.1-3.8 2.2-3.9-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9C7.2 7.7 5.5 8.7 4.6 10.3 2.8 13.5 4.1 18.2 5.9 20.8c.9 1.3 1.9 2.7 3.3 2.6 1.3 0 1.9-.8 3.4-.8s2.1.8 3.4.8c1.4 0 2.3-1.3 3.2-2.5 1-1.5 1.5-2.9 1.5-3-.1 0-2.9-1.1-3-4.4zM15.2 5.4c.7-.9 1.2-2.1 1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.2.1 2.4-.5 3.1-1.4z"/></svg><span>iOS</span></a>
-              <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg><span>Android</span></a>
+              <kygo-cta mini slug="calories-subnav" surface="tool"></kygo-cta>
             </div>
           </div>
         </header>
@@ -1300,16 +1268,9 @@ class CaloriesInAnything extends HTMLElement {
               <h2>Go beyond calories. See cause and effect.</h2>
               <p>Kygo connects your meals with sleep, HRV, and recovery data from Oura, Fitbit, Garmin & Apple Watch to reveal which foods help you perform best.</p>
               <div class="cta-buttons">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="cta-btn-white cta-primary" data-track-position="footer-cta" data-track-label="calories-in-anything-footer-ios" target="_blank">
-                  ${Icons.apple}
-                  Download Free on iOS
-                </a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="calories-in-anything-footer-android">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
+                <kygo-cta theme="green" slug="calories-footer" surface="tool"
+                  note="Free plan available on web or in the app. No card to start. Cancel anytime."></kygo-cta>
               </div>
-              <p style="margin:14px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.85);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
               <div class="cta-features">
                 <span class="cta-feature"><span class="cta-check">${Icons.check}</span> Free forever plan</span>
                 <span class="cta-feature"><span class="cta-check">${Icons.check}</span> Syncs with 4+ wearables</span>

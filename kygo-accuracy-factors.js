@@ -43,6 +43,7 @@ class KygoAccuracyFactors extends HTMLElement {
   }
 
   connectedCallback() {
+    __ensureKygoCta();
     this.render();
     this._setupEventDelegation();
     this._setupAnimations();
@@ -1233,8 +1234,7 @@ class KygoAccuracyFactors extends HTMLElement {
             Accuracy Factors
           </a>
           <div class="nav-cta-group">
-            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" class="nav-store-btn nav-store-ios cta-primary" data-action="ios-download" data-track-label="subnav-get-app-ios" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on the App Store">${this._icon('apple')}<span>iOS</span></a>
-            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="nav-store-btn nav-store-android cta-android" data-action="android-download" data-track-label="subnav-get-app-android" data-track-position="subnav" target="_blank" rel="noopener" aria-label="Download Kygo on Google Play">${this._icon('android')}<span>Android</span></a>
+            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
           </div>
         </div>
       </header>
@@ -1402,12 +1402,6 @@ class KygoAccuracyFactors extends HTMLElement {
       .logo { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); white-space: nowrap; min-width: 0; }
       .logo-img { height: 26px; width: auto; flex-shrink: 0; }
       .nav-cta-group { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; }
-      .nav-cta-group .nav-store-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 13px; white-space: nowrap; line-height: 1; }
-      .nav-cta-group .nav-store-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
-      .nav-cta-group .nav-store-ios { background: var(--green); color: #fff; }
-      .nav-cta-group .nav-store-ios:hover { background: var(--green-dark); color: #fff; }
-      .nav-cta-group .nav-store-android { background: #fff; color: var(--green-dark); border: 1.5px solid var(--gray-200); }
-      .nav-cta-group .nav-store-android:hover { border-color: var(--green); color: var(--green-dark); }
       @media (max-width: 360px) { .nav-cta-group .nav-store-btn span { display: none; } .nav-cta-group .nav-store-btn { padding: 8px 10px; } }
       .header-inner { flex-wrap: wrap; }
 

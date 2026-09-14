@@ -820,15 +820,7 @@ class KygoToolsPage extends HTMLElement {
         font-size: 14px; color: rgba(255,255,255,0.7);
         line-height: 1.55; margin: 0 auto 22px; max-width: 320px;
       }
-      .promo-buttons {
-        display: flex; flex-direction: column; gap: 10px;
-        margin: 0 auto 22px; max-width: 340px;
-      }
-      @media (min-width: 520px) {
-        .promo-buttons { flex-direction: row; justify-content: center; max-width: none; }
-        .promo-btn { min-width: 220px; }
-      }
-      .promo-btn {
+      .promo-buttons { display: flex; justify-content: center; margin: 0 auto 22px; }
         background: var(--green); color: #fff;
         border: none; border-radius: 12px;
         padding: 14px 16px;
@@ -837,8 +829,6 @@ class KygoToolsPage extends HTMLElement {
         box-shadow: 0 8px 20px rgba(34,197,94,0.25);
         text-decoration: none;
       }
-      .promo-btn svg { width: 18px; height: 18px; }
-      .promo-btn:hover { background: var(--green-dark); }
 
       /* Mid-content contextual app CTA (compact green card) */
       .kearly-section { margin: 48px auto; }
@@ -997,8 +987,6 @@ class KygoToolsPage extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const appStoreUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
-    const playStoreUrl = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
 
     const featured = this._featured();
     const grouped = this._groupedByCategory();
@@ -1073,14 +1061,13 @@ class KygoToolsPage extends HTMLElement {
           <div class="promo-wrap">
             <div class="promo">
               <div class="promo-inner">
-                <div class="promo-pill"><span class="d"></span> iOS & Android</div>
+                <div class="promo-pill"><span class="d"></span> iOS, Android &amp; web</div>
                 <h2>These tools are a snapshot.<br/><span class="hl">Kygo is the full picture.</span></h2>
                 <p>Connect your wearable. Log your meals. See how food affects your sleep, HRV, energy, and recovery.</p>
                 <div class="promo-buttons">
-                  <a class="promo-btn cta-primary" href="${appStoreUrl}" data-track-position="footer-cta" data-track-label="tools-footer-ios" target="_blank" rel="noopener">${this._getIcon('apple')} Download for iOS</a>
-                  <a class="promo-btn cta-android" href="${playStoreUrl}" data-action="android-download" data-track-position="footer-cta" data-track-label="tools-footer-android" target="_blank" rel="noopener">${this._getIcon('playstore')} Download for Android</a>
+                  <kygo-cta theme="dark" slug="tools-footer" surface="tool"
+                    note="Free plan available on web or in the app. No card to start. Cancel anytime."></kygo-cta>
                 </div>
-                <p style="position:relative;margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.82);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
                 <div class="works-with">
                   <span class="works-label">Works with</span>
                   <div class="works-dots">

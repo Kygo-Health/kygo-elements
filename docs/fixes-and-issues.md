@@ -193,12 +193,31 @@ All resolved in `kygo-blog.js` on this branch.
   three files and from `kygo-faq-section.js`; the same dead CSS still sits unused in ~13 tool
   components whose `kband` was retired earlier (harmless, not cleaned up here).
 
-- **#D3 (open, P2) — CTAs that are still store-only.** Every sub-nav "Get Kygo App" pair (25
-  components), the footer CTAs in `kygo-tools.js`, `kygo-blog.js`, `calories-custom-element.js`
-  and `kygo-supplements-by-metric.js`, and all five CTAs in `kygo-hiw-bundle.js` (hero, step 3,
-  footer, and the two pricing buttons) still offer iOS and Android only. Converting them to
-  `kygo-cta` also moves their attribution off Tenjin (see
-  `docs/internal-and-app-store-links.md`), so that trade is worth a decision before the pass.
+- **#D3 (P2) — ✅ RESOLVED. Every remaining store-only CTA now offers the web.** The 25 tool-page
+  sub-navs render `<kygo-cta mini>` (three header pills, labels dropping away as the header
+  narrows); the `kygo-tools.js`, `kygo-blog.js` and `calories-custom-element.js` footer cards
+  render the full cluster (`theme="green"` on the calorie scanner's green card, where the filled
+  button has to go white); and all five `/how-it-works` CTAs are converted — hero, step 3 and
+  footer to the cluster, the two pricing plans to the new `single` variant, which renders the
+  visitor's own destination alone because a plan card is one action. No component hand-writes a
+  store anchor any more. **This moved install attribution off Tenjin** onto Apple's `pt`/`ct` and
+  the Play install referrer — see `docs/internal-and-app-store-links.md` if Tenjin is meant to
+  stay the system of record.
+
+- **#D4 (P2) — ✅ RESOLVED. `<kygo-cta>` never centred inside a host component.** Its width cap
+  and `margin: 0 auto` lived on `:host`, and a host component's own `*{margin:0}` reset outranks
+  `:host` rules whatever their specificity, so the cluster sat left inside every centred card on
+  the site. Both moved onto the inner `.cta`.
+
+- **#D5 (P2) — ✅ RESOLVED. GA4 stopped seeing most CTA clicks.** `classifyClick()` matched the
+  Tenjin and `apps.apple.com` hrefs, so a `<kygo-cta>` Play click (`play.google.com`) and every
+  web click fell through to a generic bucket. It now reads the `data-destination` each
+  `<kygo-cta>` button carries, files them as `ios_download` / `android_download` / `web_signup`,
+  and takes `cta_label` from the CTA's slug and `position` from its surface.
+
+- **#D6 (P3) — ✅ RESOLVED. `kygo-supplements-by-metric.js` carried a dead second CTA card.**
+  `_renderBigCta()` (a full dark conversion card with its own Tenjin buttons) was never called
+  from `render()`; it and its ~14 dead `.app-cta*` rules are gone.
 
 ## 🆕 Opened on branch `claude/standardize-blog-sections-1wo0ax` (2026-08)
 
