@@ -19,6 +19,18 @@ if (typeof __seo === 'undefined') {
   };
 }
 
+/** Loads the shared <kygo-cta> element on demand. Wix embeds this file on its
+ *  own, so the CTA definition has to come along rather than be assumed present. */
+function __ensureKygoCta() {
+  if (customElements.get('kygo-cta')) return;
+  if (document.querySelector('script[data-kygo-cta-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+  s.setAttribute('data-kygo-cta-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
 class KygoCalorieBurnAccuracy extends HTMLElement {
   constructor() {
     super();
@@ -1003,6 +1015,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   _appCta() {
     return {
       slug: 'calorie-burn-accuracy',
+      hook: `See what your burn estimate is worth once your real meals sit next to it.`,
       headline: `See how <span>what you eat</span> shows up in your data.`,
       sub: `Calorie counts are estimates. Kygo helps you log what you eat in seconds and see how it affects your sleep, energy and recovery.`
     };
@@ -1017,9 +1030,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   // Pass 'gray' to sit the section on the tinted band.
 
   _renderAppCta(bg) {
+    __ensureKygoCta();
     const c = this._appCta();
-    const ios = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
-    const android = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
     const badges = [
       ['273a63_56ac2eb53faf43fab1903643b29c0bce', 'Oura Ring', 'Oura'],
       ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health', 'Apple'],
@@ -1029,8 +1041,6 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health', 'Google'],
       ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect', 'Health']
     ].map(([id, name, label]) => `<span class="kc-chip"><span class="kc-chip-tile"><img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" /></span><span class="kc-chip-label">${label}</span></span>`).join('');
-    const appleIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
-    const androidIcon = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
     return `
       <style>
       .kc-section{padding:56px 20px;background:#fff}
@@ -1070,11 +1080,8 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <div class="kc-pill"><span class="kc-dot"></span> Free Forever Plan</div>
             <h3 class="kc-h">${c.headline}</h3>
             <p class="kc-p">${c.sub}</p>
-            <div class="kc-btns">
-              <a class="kc-btn cta-primary" href="${ios}" target="_blank" rel="noopener" data-track-position="early" data-track-label="${c.slug}-early-ios">${appleIcon} Download for iOS</a>
-              <a class="kc-btn cta-android" href="${android}" target="_blank" rel="noopener" data-action="android-download" data-track-position="early" data-track-label="${c.slug}-early-android">${androidIcon} Download for Android</a>
-            </div>
-            <p class="kc-note">Free plan available. Save 58% on yearly. Cancel anytime.</p>
+            <kygo-cta theme="dark" slug="${c.slug}" surface="tool" hook="${c.hook}"
+              note="Free plan available on web or in the app. Save 58% on yearly. Cancel anytime."></kygo-cta>
             <div class="kc-works">
               <span>Works with</span>
               <div class="kc-badges">${badges}</div>

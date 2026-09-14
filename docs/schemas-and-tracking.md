@@ -55,7 +55,8 @@ Every content component implements `_injectStructuredData()`, called once from
 | `kygo-sensor-comparison.js` | `data-kygo-sensor-comparison-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
 | `kygo-oura-ring-comparison.js` | `data-kygo-oura-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
 | `kygo-fitbit-air-vs-whoop.js` | `data-kygo-fitbitair-whoop-ld` | WebApplication, FAQPage, BreadcrumbList, Offer, Organization |
-| `kygo-faq-section.js` | — | **none** (FAQPage intentionally site-level; empty `_injectStructuredData()`) |
+| `kygo-faq-section.js` | — | **none** (FAQPage intentionally site-level; empty `_injectStructuredData()`). Site-level source of truth: `FAQ-Rewrite-2026-09-11.jsonld.json`, which carries the web-version and phone-app questions added 2026-09-14. |
+| `kygo-cta.js` | — | **none** (shared CTA element; the homepage `SoftwareApplication` + `WebApplication` graph in the Wix head covers the platforms) |
 | `kygo-blog-post.js` | — | **none** (5 post-page widget sub-components; post `BlogPosting`/`FAQPage` handled site-level) |
 
 ## Canonical schema shapes
@@ -150,10 +151,19 @@ Genuine notes to keep in mind:
 
 ## The only analytics: GA4 via `kygo-tracking.js`
 
-There is **one** analytics integration — **Google Analytics 4 (gtag.js)** — loaded by the
-separate, optional script **`kygo-tracking.js`**. No PostHog/Mixpanel/Segment/Meta Pixel/etc.
-The individual components contain **no** `gtag`/`dataLayer` calls themselves; tracking is fully
-delegated to this one script, which listens globally.
+**Google Analytics 4 (gtag.js)**, loaded by the separate, optional script
+**`kygo-tracking.js`**, is the site-wide integration. No PostHog/Segment/Meta Pixel. Components
+contain **no** `gtag`/`dataLayer` calls themselves; tracking is delegated to this one script,
+which listens globally.
+
+**One exception (2026-09-14): `kygo-cta.js`.** The shared `<kygo-cta>` element fires
+**Mixpanel `cta_clicked`** itself on every button click, with
+`{ slug, surface, destination }` — `destination` being `web` / `ios` / `android`. It looks for
+`window.mixpanel`, falling back to `window.parent.mixpanel` (Wix renders custom elements inside
+an iframe) and doing nothing if neither exists, so the click is never blocked. The same payload
+also goes out as a bubbling, composed **`kygo-cta-click`** CustomEvent, which is how Velo or a
+GA4 bridge can pick it up without a second wiring pass. The element's anchors still carry the
+store hrefs that `kygo-tracking.js` classifies, so GA4 `cta_click` continues to fire alongside.
 
 **How it loads** (embedded once on the Wix page, alongside the components):
 ```html
