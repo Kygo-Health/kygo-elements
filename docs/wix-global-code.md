@@ -172,7 +172,9 @@ These are the repo-wide canonical values (see `internal-and-app-store-links.md`,
 
 ## Block 5 — Body-start: Custom Header
 
-Fixed top nav rendered into `<div id="kygo-header-root">` by an IIFE. Key facts:
+Fixed top nav rendered into `<div id="kygo-header-root">` by an IIFE. **Since 2026-09-14 that
+IIFE lives in `kygo-header.js` (GitHub Pages) rather than inline**, because the embed hit Wix's
+15,000-character cap; the embed keeps the `<style>` inline and loads the script. Key facts:
 
 - **Logo** → `https://www.kygo.app/` · asset = canonical logo. Wordmark: `KYGO HEALTH`.
 - **Nav links:** `/how-it-works`, `/faq`, `/blog`, `/tools`, **`/contact-8`**.
@@ -186,7 +188,8 @@ Fixed top nav rendered into `<div id="kygo-header-root">` by an IIFE. Key facts:
 
 ## Block 6 — Body-end: Custom Footer
 
-Dark footer rendered into `<div id="kygo-footer-root">` by an IIFE. Key facts:
+Dark footer rendered into `<div id="kygo-footer-root">` by an IIFE, which **since 2026-09-14
+lives in `kygo-footer.js` (GitHub Pages)** for the same 15,000-character reason. Key facts:
 
 - **Logo** → `https://www.kygo.app/` · wordmark `KYGO`.
 - **Socials:** Facebook `https://www.facebook.com/profile.php?id=61586603470107` ·

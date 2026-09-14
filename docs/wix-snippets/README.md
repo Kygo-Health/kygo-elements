@@ -27,6 +27,18 @@ submit shows the retry error and no GA4 event fires.
 - After pasting the two head JSON-LD changes, run the homepage URL through Google's
   **Rich Results Test** and confirm one clean Organization/SoftwareApplication/WebSite graph.
 
+## The header and footer now load their JS from GitHub Pages (2026-09-14)
+Wix caps a custom-code embed at **15,000 characters**, and the footer no longer fitted. Both
+blocks were therefore split: the `<style>` stays **inline in the embed** (so the bar paints
+before anything loads, no flash of unstyled header) and the markup + behaviour moved to
+**`kygo-header.js`** and **`kygo-footer.js`** at the repo root, served from GitHub Pages like
+every other component. The embeds are now 8.1 KB and 6.4 KB.
+
+**Deploy order matters:** GitHub Pages serves the **default branch**, so merge the branch
+carrying these two files to `main` *before* pasting the embeds. Paste first and the header and
+footer render empty until the merge lands. After that, editing a header or footer is a push, not
+a re-paste.
+
 ## Device awareness in the header and footer (2026-09-14)
 Both blocks pick which platform button leads from the user agent, and both fail safe: an
 unrecognised agent (or a `navigator` that throws) falls back to the web app, and every platform
