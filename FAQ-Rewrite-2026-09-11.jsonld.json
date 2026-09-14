@@ -81,7 +81,7 @@
       "name": "How accurate is the nutrition data?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Kygo does not trust one database. For each food it weighs the dietitian verified database from Nutritionix, Edamam, USDA FoodData Central, Open Food Facts (for barcodes) and the AI's own estimate from your photo or description, then picks the most reliable calorie and nutrient values. Where a source leaves vitamins and minerals blank, USDA data backfills them, so micronutrient tracking is not full of gaps. It also sanity-checks serving sizes against what the food actually comes in."
+        "text": "The primary source is Nutritionix, a dietitian verified nutrition database. Kygo cross-checks it against Edamam, USDA FoodData Central, Open Food Facts (for barcodes) and the AI's own estimate from your photo or description, then picks the most reliable calorie and nutrient values for each food. Where a source leaves vitamins and minerals blank, USDA data backfills them, so micronutrient tracking is not full of gaps. It also sanity-checks serving sizes against what the food actually comes in."
       }
     },
     {
@@ -185,7 +185,7 @@
       "name": "Who sees my data?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Only the services that make the app work: the nutrition databases queried when you log (Nutritionix, Edamam, USDA, Open Food Facts), the AI model that reads your photos and descriptions, your connected wearable accounts, and the cloud hosting that runs the app. No advertisers, no data brokers. Details are in the privacy policy at https://www.kygo.app/privacy-policy."
+        "text": "Only the services that make the app work: the nutrition databases queried when you log (Nutritionix, our primary source, plus Edamam, USDA and Open Food Facts), the AI model that reads your photos and descriptions, your connected wearable accounts, and the cloud hosting that runs the app. No advertisers, no data brokers. Details are in the privacy policy at https://www.kygo.app/privacy-policy."
       }
     },
     {
