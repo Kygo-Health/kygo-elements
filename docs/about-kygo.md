@@ -46,7 +46,7 @@ After logging you can adjust quantities/units (grams, cups, oz, servings), assig
 breakfast/lunch/dinner/snacks, log to past dates, copy meals from previous days, and undo recent
 adds. It auto-guesses the meal based on time of day.
 
-**Best-data-wins accuracy:** Kygo weighs evidence from multiple databases (**Edamam, USDA, and
+**Best-data-wins accuracy:** Kygo weighs evidence from multiple databases (**Nutritionix, the dietitian verified primary source, plus Edamam, USDA and
 Open Food Facts** for barcodes) plus the AI's photo/voice estimate, and picks the most accurate
 calorie/nutrient values rather than the first match. It also sanity-checks the chosen serving
 size/unit against what the food actually comes in.
@@ -112,11 +112,11 @@ day 14, etc.).
 ## Free vs. Pro
 
 - **Free:** voice / barcode / text logging, nutrition import, wearable syncing, full macro +
-  micronutrient tracking, water, weight, supplements, and Quick-Add — plus **5 AI photo scans per
+  micronutrient tracking, water, weight, and Quick-Add — plus **5 AI photo scans per
   calendar month** (photo logging is metered, not locked; only the exhausted state paywalls).
   All read paths to already-logged data are always free.
 - **Pro (subscription):** the food↔body **insights / correlations** (helping-vs-hurting cards and
-  the daily factor spotlight), **unlimited photo logging**, **nutrition write-back to Apple Health
+  the daily factor spotlight), **supplement tracking**, **unlimited photo logging**, **nutrition write-back to Apple Health
   & Health Connect**, personalized recommendations from the **"Kygo Advisor,"** factor pinning, and
   experiment tracking.
 
@@ -144,7 +144,7 @@ day 14, etc.).
 - **Category:** food + health tracking app (nutrition + wearables).
 - **Platforms:** iOS and Android.
 - **Supported wearables/sources:** Oura, Apple Health, Health Connect, Fitbit, Garmin, WHOOP.
-- **Nutrition data sources:** Edamam, USDA, Open Food Facts (barcodes), + AI photo/voice estimate.
+- **Nutrition data sources:** Nutritionix (dietitian verified, primary), Edamam, USDA, Open Food Facts (barcodes), + AI photo/voice estimate.
 - **Core differentiator:** food↔body-performance correlations (sleep, HRV, readiness, stress, energy).
 - **Monetization:** freemium — free logging/syncing/tracking (photo logging metered at 5 AI scans/mo);
   Pro unlocks insights, unlimited photo logging, daily spotlight, nutrition write-back, and the advisor.
