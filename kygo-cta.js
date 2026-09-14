@@ -15,6 +15,8 @@
  *   theme   dark (on the navy conversion card) | light (default, on white).
  *   align   center (default) | left.
  *   note    reassurance line under the buttons. Pass note="" to hide it.
+ *   compact thin-bar variant for narrow strips (the FAQ mid-page band, the
+ *           homepage inline band): smaller buttons that stay on one row.
  *
  * Destinations:
  *   Desktop  primary  -> app.kygo.app/signup with utm_source/medium/campaign.
@@ -49,13 +51,13 @@ class KygoCta extends HTMLElement {
     this._onClick = this._onClick.bind(this);
   }
 
-  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note']; }
+  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note', 'compact']; }
 
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
     this._attachEventListeners();
-    __ctaSeo(this, this._seoText());
+    try { __ctaSeo(this, this._seoText()); } catch (e) { /* SEO text is not worth failing over */ }
   }
 
   disconnectedCallback() {
@@ -120,13 +122,17 @@ class KygoCta extends HTMLElement {
       encodeURIComponent(referrer);
   }
 
-  /** ios | android | desktop. Phones and tablets get their own store first. */
+  /** ios | android | desktop. Detection only decides which button leads: all
+   *  three platforms render either way, and anything unrecognised (or a
+   *  navigator that throws) falls back to desktop, so a visitor is never left
+   *  without a way in. */
   _platform() {
-    const ua = navigator.userAgent || '';
-    const isIOS = /iPad|iPhone|iPod/.test(ua) ||
-      (/Macintosh/.test(ua) && typeof document !== 'undefined' && navigator.maxTouchPoints > 1);
-    if (isIOS) return 'ios';
-    if (/Android/i.test(ua)) return 'android';
+    try {
+      const ua = (navigator && navigator.userAgent) || '';
+      const touch = (navigator && navigator.maxTouchPoints) || 0;
+      if (/iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && touch > 1)) return 'ios';
+      if (/Android/i.test(ua)) return 'android';
+    } catch (e) { /* fall through to desktop */ }
     return 'desktop';
   }
 
@@ -175,6 +181,8 @@ class KygoCta extends HTMLElement {
     const note = this._getSetting('note', 'Free plan available on web or in the app. No card to start. Cancel anytime.');
     const theme = String(this._getSetting('theme', 'light')).toLowerCase() === 'dark' ? 'dark' : 'light';
     const align = String(this._getSetting('align', 'center')).toLowerCase() === 'left' ? 'left' : 'center';
+    // `compact` is a bare attribute, so its presence is the signal.
+    const compact = this.hasAttribute('compact') || String(this._getSetting('compact', '')) === 'true';
 
     const apple = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
     const android = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
@@ -224,6 +232,14 @@ class KygoCta extends HTMLElement {
           .btn.primary{width:100%}
           .alts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
         }
+        ${compact ? `
+        .cta{gap:10px}
+        .btn{padding:10px 16px;font-size:14px}
+        .btn svg{width:16px;height:16px}
+        .note{font-size:12px}
+        .hook{font-size:14px}
+        @media(min-width:561px){.btns{flex-wrap:nowrap;gap:10px}.alts{gap:10px}}
+        ` : ''}
       </style>
       <div class="cta">
         ${hook ? `<p class="hook">${hook}</p>` : ''}

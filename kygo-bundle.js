@@ -1625,7 +1625,7 @@ class KygoInlineCta extends HTMLElement {
             </div>
           </div>
           <div class="band-btns">
-            <kygo-cta slug="home-band" surface="home" note=""></kygo-cta>
+            <kygo-cta compact slug="home-band" surface="home" note=""></kygo-cta>
           </div>
         </div>
       </section>
