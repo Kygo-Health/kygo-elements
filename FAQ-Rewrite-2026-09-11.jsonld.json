@@ -1,0 +1,224 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://www.kygo.app/faq#faq",
+  "url": "https://www.kygo.app/faq",
+  "name": "Kygo Health FAQ",
+  "description": "Answers on what Kygo costs, which wearables it syncs, how food logging works and how long until you see your first food-to-sleep and HRV patterns.",
+  "inLanguage": "en-US",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Kygo Health LLC",
+    "url": "https://www.kygo.app"
+  },
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Kygo Health?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kygo is a food logging app that connects what you eat to what your wearable measures. You log meals by photo, voice, barcode or text, Kygo pulls sleep, HRV, resting heart rate and recovery from your Oura, Apple Watch, Fitbit, Garmin, WHOOP or Android Health Connect device, and after about a week it starts showing you which foods and nutrients are helping or hurting each metric. It runs on iOS and Android. See how it works at https://www.kygo.app/how-it-works."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How is Kygo different from MyFitnessPal, Cronometer, or my wearable's own app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Calorie counters stop at what went in. Wearable apps stop at what your body did. Neither connects the two. Kygo logs food the way a calorie counter does, then correlates it against your wearable data to find patterns that are specific to you, like your sleep latency rising after afternoon caffeine or your HRV dropping for two nights after alcohol. The calorie tracking is the input. The correlations are the product."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does a Kygo insight actually look like?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each health metric (sleep, HRV, resting heart rate, readiness, stress) has its own screen showing the foods and nutrients that are helping it and hurting it, ranked by how strong and how confident the pattern is. Tap one and you get a plain-English summary, the time lag it shows up in (same day, next day, two days later), a ranked list of the specific foods driving it, and a suggested action to try."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need a wearable to use Kygo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Food logging, calorie and macro targets, micronutrient tracking, water and weight all work with nothing connected. The correlations need a wearable, because they need something to correlate against. If you are wearable-shopping, the free wearable accuracy tool at https://www.kygo.app/tools/wearable-accuracy compares the major devices against clinical studies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which wearables and apps work with Kygo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Six integrations: Oura Ring, Apple Health (iOS), Health Connect (Android), Fitbit, Garmin and WHOOP. Oura, Fitbit, Garmin and WHOOP connect directly to their cloud accounts, so you get everything the device records. Health Connect covers Samsung Health, Google Fit, Pixel Watch and any other Android app that writes to it. You can connect several at once; Kygo uses the most reliable source for each metric rather than double counting."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does Kygo work on Android and iPhone?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both. Food logging, every direct wearable integration and the correlation engine work identically on iOS and Android. Two things are iPhone only because of Apple's rules: Apple Health sync and Sign in with Apple. Android users get Health Connect instead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "I've tried food logging before and quit. Why would this be different?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most people quit because logging is slow and the payoff is a number they already knew. Kygo attacks both. Logging takes seconds (say it, snap it, scan it, or tap a saved meal), and the payoff is not a calorie total but a pattern you did not know about your own body. People stay for the second thing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I log food, and how long does it take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Six ways: describe it in plain language, say it out loud, photograph the plate or the nutrition label, scan a barcode, tap a saved meal or recent food, or let it import automatically from other apps through Apple Health or Health Connect. A typical entry takes around 20 seconds. You can fix a portion or swap a food match before saving, and log to past days."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How accurate is the nutrition data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kygo does not trust one database. For each food it weighs the dietitian verified database from Nutritionix, Edamam, USDA FoodData Central, Open Food Facts (for barcodes) and the AI's own estimate from your photo or description, then picks the most reliable calorie and nutrient values. Where a source leaves vitamins and minerals blank, USDA data backfills them, so micronutrient tracking is not full of gaps. It also sanity-checks serving sizes against what the food actually comes in."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if I miss days or log imperfectly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The correlation engine works on the days you have, not on a perfect streak. Gaps slow it down rather than break it. Imperfect entries still count, and the outlier filtering means one odd night does not skew a pattern. Log most days and the patterns come."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long until I see something useful?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Day one: unified trends from every connected device, full calorie, macro and micronutrient tracking, weight and water. Around day 7: the first correlations, once Kygo has a week of food and wearable data side by side. Around day 14: higher-confidence patterns and Experiments. Day 30 and beyond: slower patterns that need to repeat several times before they show, like a nutrient that only affects deep sleep."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What kinds of patterns can Kygo find?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Relationships between anything you log (foods, nutrients, caffeine, alcohol, meal timing, supplements) and anything your wearable measures (sleep duration and stages, sleep latency, HRV, resting heart rate, readiness, recovery, stress). Kygo checks same-day, next-day and two-day lags, because dinner carbs show up in tomorrow morning's readiness and heavy alcohol drags HRV for two nights. The free HRV factors tool at https://www.kygo.app/tools/hrv-factors and deep sleep factors tool at https://www.kygo.app/tools/deep-sleep-factors rank what the research says."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I know a pattern is real and not noise?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Every correlation carries two scores: confidence (how likely the pattern is real rather than chance) and strength (how much the food actually moves the metric). Outliers are filtered so one bad night does not create a pattern. Weak or noisy correlations are hidden, so what you see is what survived the filter."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are Experiments?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A way to test one change on your own body. Pick something, like no caffeine after 2 pm or magnesium at dinner, and Kygo tracks whether you did it each day alongside the metrics it should affect. After enough days you see whether the change moved the needle, in your data rather than in a study of other people."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do my insights change over time?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Kygo recalculates as new data comes in, so a new training block, a stressful month, travel or a season change all shift what matters. The pattern that dominated three months ago may not be the one now, and Kygo keeps up instead of handing you a fixed list."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use more than one wearable at once?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, and it is worth doing. Many people wear a ring for sleep and a watch for workouts. Kygo combines them and, for each metric, pulls from the device that is most trustworthy for that measurement, so you get a complete picture without duplicate or conflicting numbers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What exactly is free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Voice, text and barcode logging with no limit, plus your first 5 AI photo logs. All six wearable connections and sync. Calorie, macro and micronutrient tracking, water and weight, and every trend screen. No card, no time limit. The free plan is a real food tracker, not a demo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does Pro cost and what does it add?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Pro is $9.99 a month, $49.99 a year (about 58% less than paying monthly), or $99.99 once for lifetime access. Pro unlocks the correlation engine and every metric's helping and hurting foods, Experiments, the daily factor spotlight, supplement tracking, unlimited AI photo logging, and nutrition write-back to Apple Health and Health Connect. Introductory offers on the yearly plan vary; the app shows you the current one before you commit. Full breakdown at https://www.kygo.app/post/what-is-kygo-health-app-features-pricing."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a free trial, and do I need a card to start?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No card is needed to download and use the free plan. Pro offers on the yearly plan rotate (a free trial period or a reduced first payment), and whatever is running is shown in the app before you subscribe. Nothing is charged until you confirm through the App Store or Google Play."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I cancel anytime?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Billing runs through the App Store or Google Play, so you cancel from your store subscriptions page in either one. You keep Pro until the end of the period you paid for."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is my health data secure, and do you sell it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kygo does not sell your data and does not use it for advertising. Data is encrypted in transit and at rest. Wearable access goes through each platform's own permission system (Apple HealthKit, Android Health Connect, or the device maker's OAuth), so you choose exactly what Kygo can read and can revoke it at any time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who sees my data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only the services that make the app work: the nutrition databases queried when you log (Nutritionix, Edamam, USDA, Open Food Facts), the AI model that reads your photos and descriptions, your connected wearable accounts, and the cloud hosting that runs the app. No advertisers, no data brokers. Details are in the privacy policy at https://www.kygo.app/privacy-policy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I export or delete my data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Both, from inside the app. Export everything at any time. Delete your account from Settings and all associated data is permanently removed from Kygo's servers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Kygo a medical device?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Kygo is a general wellness product for educational and informational purposes. It does not diagnose, treat, cure or prevent any disease, and it is not a substitute for advice from your physician."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who makes Kygo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kygo Health LLC, a one-person company based in the New York area, built by a founder who wanted to know why his own sleep and HRV moved and could not get the answer from any existing app. Questions go straight to him at support@kygo.app. The story is in why I built Kygo at https://www.kygo.app/post/why-i-built-kygo-health-app."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where do I download Kygo, and what are the free tools?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Kygo Health is on the App Store at https://kygo.app/iOS and Google Play at https://kygo.app/android. Separately, kygo.app hosts 25 free research tools, no signup required, covering wearable accuracy, sleep, HRV and more at https://www.kygo.app/tools."
+      }
+    }
+  ]
+}

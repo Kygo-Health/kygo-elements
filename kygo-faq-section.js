@@ -30,7 +30,7 @@ class KygoFaqSection extends HTMLElement {
     this._buildSearchIndex();
     this._setupEventDelegation();
     this._setupScrollAnimations();
-    __seo(this, 'Kygo Health Help Center — Frequently asked questions about nutrition tracking, wearable sync, AI food logging, health scores, correlations, experiments, and data privacy. Learn how Kygo differs from MyFitnessPal (Kygo shows food-body correlations, not just calories), how photo logging works (AI identifies every ingredient including garnishes), which wearables are supported (Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, Samsung Galaxy Watch), how correlations appear after 7 days of logging with deeper insights at 15+ days, and how Pro Experiments let you test a dietary change and measure the impact on your sleep and HRV. Practical help: creating an account, resetting your password, scanning barcodes and nutrition labels, saving meal templates, copying meals between days, adding custom foods, setting custom calorie and macro targets, tracking 23+ micronutrients including magnesium, potassium, caffeine and alcohol, connecting and syncing Oura, Apple Health, Fitbit, Garmin, and WHOOP, turning on dark mode, managing notifications, exporting or deleting your data, canceling your subscription, and troubleshooting microphone permissions and missing sleep or heart rate data. Setup takes about 2 minutes. Over 5 million foods in the database. Free forever plan available.');
+    __seo(this, 'Kygo Health FAQ. What is Kygo Health? Kygo is a food logging app that connects what you eat to what your wearable measures. You log meals by photo, voice, barcode or text, Kygo pulls sleep, HRV, resting heart rate and recovery from your Oura, Apple Watch, Fitbit, Garmin, WHOOP or Android Health Connect device, and after about a week it starts showing you which foods and nutrients are helping or hurting each metric. It runs on iOS and Android. See how it works at https://www.kygo.app/how-it-works. How is Kygo different from MyFitnessPal, Cronometer, or my wearable\'s own app? Calorie counters stop at what went in. Wearable apps stop at what your body did. Neither connects the two. Kygo logs food the way a calorie counter does, then correlates it against your wearable data to find patterns that are specific to you, like your sleep latency rising after afternoon caffeine or your HRV dropping for two nights after alcohol. The calorie tracking is the input. The correlations are the product. What does a Kygo insight actually look like? Each health metric (sleep, HRV, resting heart rate, readiness, stress) has its own screen showing the foods and nutrients that are helping it and hurting it, ranked by how strong and how confident the pattern is. Tap one and you get a plain-English summary, the time lag it shows up in (same day, next day, two days later), a ranked list of the specific foods driving it, and a suggested action to try. Do I need a wearable to use Kygo? No. Food logging, calorie and macro targets, micronutrient tracking, water and weight all work with nothing connected. The correlations need a wearable, because they need something to correlate against. If you are wearable-shopping, the free wearable accuracy tool at https://www.kygo.app/tools/wearable-accuracy compares the major devices against clinical studies. Which wearables and apps work with Kygo? Six integrations: Oura Ring, Apple Health (iOS), Health Connect (Android), Fitbit, Garmin and WHOOP. Oura, Fitbit, Garmin and WHOOP connect directly to their cloud accounts, so you get everything the device records. Health Connect covers Samsung Health, Google Fit, Pixel Watch and any other Android app that writes to it. You can connect several at once; Kygo uses the most reliable source for each metric rather than double counting. Does Kygo work on Android and iPhone? Both. Food logging, every direct wearable integration and the correlation engine work identically on iOS and Android. Two things are iPhone only because of Apple\'s rules: Apple Health sync and Sign in with Apple. Android users get Health Connect instead. I\'ve tried food logging before and quit. Why would this be different? Most people quit because logging is slow and the payoff is a number they already knew. Kygo attacks both. Logging takes seconds (say it, snap it, scan it, or tap a saved meal), and the payoff is not a calorie total but a pattern you did not know about your own body. People stay for the second thing. How do I log food, and how long does it take? Six ways: describe it in plain language, say it out loud, photograph the plate or the nutrition label, scan a barcode, tap a saved meal or recent food, or let it import automatically from other apps through Apple Health or Health Connect. A typical entry takes around 20 seconds. You can fix a portion or swap a food match before saving, and log to past days. How accurate is the nutrition data? Kygo does not trust one database. For each food it weighs the dietitian verified database from Nutritionix, Edamam, USDA FoodData Central, Open Food Facts (for barcodes) and the AI\'s own estimate from your photo or description, then picks the most reliable calorie and nutrient values. Where a source leaves vitamins and minerals blank, USDA data backfills them, so micronutrient tracking is not full of gaps. It also sanity-checks serving sizes against what the food actually comes in. What if I miss days or log imperfectly? The correlation engine works on the days you have, not on a perfect streak. Gaps slow it down rather than break it. Imperfect entries still count, and the outlier filtering means one odd night does not skew a pattern. Log most days and the patterns come. How long until I see something useful? Day one: unified trends from every connected device, full calorie, macro and micronutrient tracking, weight and water. Around day 7: the first correlations, once Kygo has a week of food and wearable data side by side. Around day 14: higher-confidence patterns and Experiments. Day 30 and beyond: slower patterns that need to repeat several times before they show, like a nutrient that only affects deep sleep. What kinds of patterns can Kygo find? Relationships between anything you log (foods, nutrients, caffeine, alcohol, meal timing, supplements) and anything your wearable measures (sleep duration and stages, sleep latency, HRV, resting heart rate, readiness, recovery, stress). Kygo checks same-day, next-day and two-day lags, because dinner carbs show up in tomorrow morning\'s readiness and heavy alcohol drags HRV for two nights. The free HRV factors tool at https://www.kygo.app/tools/hrv-factors and deep sleep factors tool at https://www.kygo.app/tools/deep-sleep-factors rank what the research says. How do I know a pattern is real and not noise? Every correlation carries two scores: confidence (how likely the pattern is real rather than chance) and strength (how much the food actually moves the metric). Outliers are filtered so one bad night does not create a pattern. Weak or noisy correlations are hidden, so what you see is what survived the filter. What are Experiments? A way to test one change on your own body. Pick something, like no caffeine after 2 pm or magnesium at dinner, and Kygo tracks whether you did it each day alongside the metrics it should affect. After enough days you see whether the change moved the needle, in your data rather than in a study of other people. Do my insights change over time? Yes. Kygo recalculates as new data comes in, so a new training block, a stressful month, travel or a season change all shift what matters. The pattern that dominated three months ago may not be the one now, and Kygo keeps up instead of handing you a fixed list. Can I use more than one wearable at once? Yes, and it is worth doing. Many people wear a ring for sleep and a watch for workouts. Kygo combines them and, for each metric, pulls from the device that is most trustworthy for that measurement, so you get a complete picture without duplicate or conflicting numbers. What exactly is free? Voice, text and barcode logging with no limit, plus your first 5 AI photo logs. All six wearable connections and sync. Calorie, macro and micronutrient tracking, water and weight, and every trend screen. No card, no time limit. The free plan is a real food tracker, not a demo. What does Pro cost and what does it add? Pro is $9.99 a month, $49.99 a year (about 58% less than paying monthly), or $99.99 once for lifetime access. Pro unlocks the correlation engine and every metric\'s helping and hurting foods, Experiments, the daily factor spotlight, supplement tracking, unlimited AI photo logging, and nutrition write-back to Apple Health and Health Connect. Introductory offers on the yearly plan vary; the app shows you the current one before you commit. Full breakdown at https://www.kygo.app/post/what-is-kygo-health-app-features-pricing. Is there a free trial, and do I need a card to start? No card is needed to download and use the free plan. Pro offers on the yearly plan rotate (a free trial period or a reduced first payment), and whatever is running is shown in the app before you subscribe. Nothing is charged until you confirm through the App Store or Google Play. Can I cancel anytime? Yes. Billing runs through the App Store or Google Play, so you cancel from your store subscriptions page in either one. You keep Pro until the end of the period you paid for. Is my health data secure, and do you sell it? Kygo does not sell your data and does not use it for advertising. Data is encrypted in transit and at rest. Wearable access goes through each platform\'s own permission system (Apple HealthKit, Android Health Connect, or the device maker\'s OAuth), so you choose exactly what Kygo can read and can revoke it at any time. Who sees my data? Only the services that make the app work: the nutrition databases queried when you log (Nutritionix, Edamam, USDA, Open Food Facts), the AI model that reads your photos and descriptions, your connected wearable accounts, and the cloud hosting that runs the app. No advertisers, no data brokers. Details are in the privacy policy at https://www.kygo.app/privacy-policy. Can I export or delete my data? Both, from inside the app. Export everything at any time. Delete your account from Settings and all associated data is permanently removed from Kygo\'s servers. Is Kygo a medical device? No. Kygo is a general wellness product for educational and informational purposes. It does not diagnose, treat, cure or prevent any disease, and it is not a substitute for advice from your physician. Who makes Kygo? Kygo Health LLC, a one-person company based in the New York area, built by a founder who wanted to know why his own sleep and HRV moved and could not get the answer from any existing app. Questions go straight to him at support@kygo.app. The story is in why I built Kygo at https://www.kygo.app/post/why-i-built-kygo-health-app. Where do I download Kygo, and what are the free tools? Kygo Health is on the App Store at https://kygo.app/iOS and Google Play at https://kygo.app/android. Separately, kygo.app hosts 25 free research tools, no signup required, covering wearable accuracy, sleep, HRV and more at https://www.kygo.app/tools.');
     this._injectStructuredData();
   }
 
@@ -650,14 +650,11 @@ class KygoFaqSection extends HTMLElement {
         <div class="container">
           <div class="category-nav-inner">
             <button class="category-btn active" data-category="all">All Questions</button>
-            <button class="category-btn" data-category="getting-started">Getting Started</button>
-            <button class="category-btn" data-category="logging">Food Logging</button>
-            <button class="category-btn" data-category="correlations">Correlations</button>
-            <button class="category-btn" data-category="devices">Devices</button>
+            <button class="category-btn" data-category="what-kygo-is">What Kygo Is</button>
+            <button class="category-btn" data-category="will-it-stick">Will It Stick</button>
+            <button class="category-btn" data-category="the-payoff">The Payoff</button>
             <button class="category-btn" data-category="pricing">Pricing</button>
-            <button class="category-btn" data-category="privacy">Privacy & Data</button>
-            <button class="category-btn" data-category="app">Using the App</button>
-            <button class="category-btn" data-category="troubleshooting">Troubleshooting</button>
+            <button class="category-btn" data-category="trust">Trust</button>
           </div>
         </div>
       </div>
@@ -665,88 +662,49 @@ class KygoFaqSection extends HTMLElement {
       <div class="faq-sections">
         <div class="container">
 
-          <section class="faq-section animate-on-scroll" data-category="getting-started">
+          <section class="faq-section animate-on-scroll" data-category="what-kygo-is">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg>
               </div>
-              <h2>Getting Started</h2>
+              <h2>What Kygo Is</h2>
             </div>
             <div class="faq-list">
               <div class="faq-item open">
-                <div class="faq-question"><span>I've tried food logging before and quit. Why would this be different?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>What is Kygo Health?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Because logging takes seconds, not minutes.</strong> We give you four ways to log—photo, voice, barcode, or natural text—so you can use whatever's fastest in the moment.</p>
-                  <p>Plus, our template system learns your eating habits. Your frequent meals become one-tap entries. <strong>Logging gets easier over time, not harder.</strong></p>
-                  <div class="answer-highlight">Most people quit tracking because it's tedious. We built Kygo specifically to solve that.</div>
+                  <p><strong>Kygo is a food logging app that connects what you eat to what your wearable measures.</strong> You log meals by photo, voice, barcode or text, Kygo pulls sleep, HRV, resting heart rate and recovery from your Oura, Apple Watch, Fitbit, Garmin, WHOOP or Android Health Connect device, and after about a week it starts showing you which foods and nutrients are helping or hurting each metric.</p><p>It runs on iOS and Android. See <a href="https://www.kygo.app/how-it-works">how it works</a>.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>How is Kygo different from MyFitnessPal?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>How is Kygo different from MyFitnessPal, Cronometer, or my wearable's own app?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery.</strong></p>
-                  <p>We automatically correlate your nutrition data with your wearable data to find patterns unique to YOUR body. So instead of generic advice, you get correlations like "Your sleep latency increases 8 minutes when you consume caffeine after 3pm."</p>
-                  <div class="answer-highlight"><strong>The key difference:</strong> MFP = calories as the goal. Kygo = correlations as the insight.</div>
+                  <p><strong>Calorie counters stop at what went in. Wearable apps stop at what your body did. Neither connects the two.</strong></p><p>Kygo logs food the way a calorie counter does, then correlates it against your wearable data to find patterns that are specific to you, like your sleep latency rising after afternoon caffeine or your HRV dropping for two nights after alcohol.</p><div class="answer-highlight">The calorie tracking is the input. The correlations are the product.</div>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>How long does setup take?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>What does a Kygo insight actually look like?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>About 2 minutes.</strong> Download the app, connect your wearables (click, sign in, approve), and you're ready to log your first meal.</p>
-                  <p>Your historical wearable data syncs automatically in the background—no manual entry needed.</p>
+                  <p>Each health metric (sleep, HRV, resting heart rate, readiness, stress) has its own screen showing the foods and nutrients that are <strong>helping</strong> it and <strong>hurting</strong> it, ranked by how strong and how confident the pattern is.</p><p>Tap one and you get a plain-English summary, the time lag it shows up in (same day, next day, two days later), a ranked list of the specific foods driving it, and a suggested action to try.</p>
+                  <!-- TODO: screenshot of one correlation card goes here -->
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>What do I see before correlations appear?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Do I need a wearable to use Kygo?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>You get value from day one.</strong> Before correlations appear (at day 7), you'll have access to:</p>
-                  <ul>
-                    <li>Unified health trends from all your connected devices</li>
-                    <li>Detailed calorie and macro tracking for every meal</li>
-                    <li>Full micronutrient breakdown (23+ nutrients)</li>
-                    <li>Weight logging and trends</li>
-                  </ul>
-                  <p>Correlations are the bonus—not the only value.</p>
+                  <p><strong>No.</strong> Food logging, calorie and macro targets, micronutrient tracking, water and weight all work with nothing connected.</p><p>The correlations need a wearable, because they need something to correlate against. If you are wearable-shopping, our free <a href="https://www.kygo.app/tools/wearable-accuracy">wearable accuracy tool</a> compares the major devices against clinical studies.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>How do I create an account?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Which wearables and apps work with Kygo?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Tap <strong>Create Account</strong> on the welcome screen, enter your first name, email, and password, then agree to the terms. You can also use <strong>Sign in with Google</strong> or <strong>Sign in with Apple</strong> to skip the email step.</p>
-                  <p>From there we'll walk you through a short setup so your targets and insights are dialed in to you.</p>
+                  <p><strong>Six integrations:</strong> Oura Ring, Apple Health (iOS), Health Connect (Android), Fitbit, Garmin and WHOOP.</p><p>Oura, Fitbit, Garmin and WHOOP connect directly to their cloud accounts, so you get everything the device records. Health Connect covers Samsung Health, Google Fit, Pixel Watch and any other Android app that writes to it.</p><p>You can connect several at once; Kygo uses the most reliable source for each metric rather than double counting.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>What do you ask during setup?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Does Kygo work on Android and iPhone?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Just enough to make the app actually useful on day one:</p>
-                  <ul>
-                    <li><strong>Health profile</strong> — age, weight, height, biological sex, activity level, and your main goal (lose / maintain / gain)</li>
-                    <li><strong>Nutrition targets</strong> — we auto-calculate calories and macros from your profile, but you can tweak them</li>
-                    <li><strong>Meal times</strong> — so we know roughly when breakfast/lunch/dinner happen for you</li>
-                    <li><strong>Connect a wearable (optional)</strong> — if you have an Oura, you can link it right away</li>
-                  </ul>
-                  <div class="answer-highlight"><strong>The whole thing takes about 2 minutes.</strong> Your historical wearable data syncs automatically in the background.</div>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Do I need a wearable to use the app?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Nope.</strong> You can log food, track weight, and hit your calorie and macro targets without connecting anything.</p>
-                  <p>That said, the magic really kicks in when you connect a wearable — that's where correlations between what you eat and how you sleep, recover, and feel start showing up. We support Oura, Apple Health, Fitbit, Garmin, and WHOOP.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What phones does Kygo work on?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Both <strong>iOS and Android</strong>. Download on the App Store or <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener">Google Play</a>.</p>
-                  <p>A few things are iOS-only because of Apple's platform rules: Apple Health integration and Sign in with Apple. Everything else — food logging, Oura, Fitbit, Garmin, WHOOP, correlations — works identically on both.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I reset my password?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Tap <strong>Forgot password?</strong> on the sign-in screen and enter your email. If an account exists, we'll send you a reset code — check your inbox (and spam folder), then plug the code into the next screen to set a new password.</p>
+                  <p><strong>Both.</strong> Food logging, every direct wearable integration and the correlation engine work identically on iOS and Android.</p><p>Two things are iPhone only because of Apple's rules: Apple Health sync and Sign in with Apple. Android users get Health Connect instead.</p>
                 </div>
               </div>
             </div>
@@ -758,362 +716,93 @@ class KygoFaqSection extends HTMLElement {
                 <div class="kband-glow"></div>
                 <div class="kband-copy">
                   <span class="kband-eyebrow"><span class="kband-dot"></span>From guessing to knowing</span>
-                  <h2 class="kband-headline">See how your food affects your sleep, energy &amp; recovery.</h2>
+                  <h2 class="kband-headline">See how your food affects your sleep, recovery &amp; HRV.</h2>
                 </div>
                 <div class="kband-actions">
                   <a href="${appStoreUrl}" class="kband-btn kband-btn-ios" data-track-position="mid" data-track-label="faq-mid-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
-                  <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="mid" data-track-label="faq-mid-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a><p class="kband-note">Free plan available. Save 58% on yearly. Cancel anytime.</p>
+                  <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="mid" data-track-label="faq-mid-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a><p class="kband-note">Free plan available. Pro is $9.99 a month, $49.99 a year, or $99.99 for lifetime. Cancel anytime.</p>
                 </div>
               </div>
             </div>
           </section>
 
-          <section class="faq-section animate-on-scroll" data-category="logging">
+          <section class="faq-section animate-on-scroll" data-category="will-it-stick">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
               </div>
-              <h2>Food Logging</h2>
+              <h2>Will It Stick</h2>
             </div>
             <div class="faq-list">
               <div class="faq-item">
-                <div class="faq-question"><span>How do I log food?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>I've tried food logging before and quit. Why would this be different?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Tap the big green <strong>+</strong> in the bottom bar to open <strong>Food Chat</strong>. From there you have six ways to log:</p>
-                  <ul>
-                    <li><strong>Type</strong> what you ate in the input at the bottom ("two eggs and toast with butter")</li>
-                    <li><strong>Voice</strong> — tap the mic and just say it out loud</li>
-                    <li><strong>Camera</strong> — snap a photo of your meal or a nutrition label</li>
-                    <li><strong>Gallery</strong> — pick an existing photo from your phone</li>
-                    <li><strong>Barcode</strong> — scan a package</li>
-                    <li><strong>Saved</strong> — pick from your saved meals, favorites, or recently logged foods</li>
-                  </ul>
-                  <p>Pick whichever is easiest for what you're eating.</p>
+                  <p>Most people quit because logging is slow and the payoff is a number they already knew. <strong>Kygo attacks both.</strong></p><p>Logging takes seconds (say it, snap it, scan it, or tap a saved meal), and the payoff is not a calorie total but a pattern you did not know about your own body.</p><div class="answer-highlight">People stay for the second thing.</div>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>How does photo logging work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>How do I log food, and how long does it take?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Point, shoot, done.</strong> Take a photo of your meal and we identify every ingredient—including garnishes and toppings like cracked pepper or a drizzle of olive oil.</p>
-                  <p>The recognition is detailed enough to catch the small stuff that actually matters for accurate nutrition tracking. You can review and adjust the results if needed, but it's rarely necessary.</p>
+                  <p><strong>Six ways:</strong></p><ul><li>Describe it in plain language</li><li>Say it out loud</li><li>Photograph the plate or the nutrition label</li><li>Scan a barcode</li><li>Tap a saved meal or recent food</li><li>Let it import automatically from other apps through Apple Health or Health Connect</li></ul><p>A typical entry takes around 20 seconds. You can fix a portion or swap a food match before saving, and log to past days.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>Can I use voice to log meals?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>How accurate is the nutrition data?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes.</strong> Just speak naturally: "Two eggs with avocado and whole grain toast" or "chicken salad with ranch dressing for lunch."</p>
-                  <p>You can also type the same way—no need to search through databases. We understand natural language and convert it to accurate nutrition data.</p>
+                  <p><strong>Kygo does not trust one database.</strong> For each food it weighs the dietitian verified database from Nutritionix, Edamam, USDA FoodData Central, Open Food Facts (for barcodes) and the AI's own estimate from your photo or description, then picks the most reliable calorie and nutrient values.</p><p>Where a source leaves vitamins and minerals blank, USDA data backfills them, so micronutrient tracking is not full of gaps. It also sanity-checks serving sizes against what the food actually comes in.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>How big is your food database?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>What if I miss days or log imperfectly?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Over 5 million foods.</strong> This includes branded products (for barcode scanning), restaurant items, and generic foods. We use the USDA FoodData Central database as our foundation.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What are meal templates?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Your frequent meals, saved for one-tap logging.</strong> Most people eat similar breakfasts, lunches, or snacks throughout the week.</p>
-                  <p>When we notice you logging the same meal repeatedly, we save it as a template. Next time, you can log it with a single tap instead of re-entering everything.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Can I scan a barcode?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Yes</strong> — tap the barcode icon in Food Chat, point at the barcode on the package, and we'll pick it up. We check <strong>Open Food Facts</strong> and the <strong>USDA Branded</strong> database for the best match, so packaged foods come back with accurate calories, macros, and ingredients.</p>
-                  <p>If the barcode won't scan, the camera icon can read the nutrition label panel directly — same result, just from the printed numbers.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What if I can't find my exact food?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>You're never stuck. In Food Chat, tap <strong>Custom Food</strong> and enter the name plus whatever nutrition info you have — calories, macros, and any micronutrients you want to include.</p>
-                  <p>Once saved, it's logged for that meal and available to reuse anytime from your Recent and Favorites tabs.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Can I log food from yesterday or earlier?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Yes. After we identify your food, tap the <strong>time chip</strong> to set any date and time. Or from the Food tab, swipe the date selector to a past day and log directly into it.</p>
-                  <p>The AI also understands natural phrases like "I had yogurt this morning" or "ate a sandwich for lunch yesterday."</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I copy a meal to another day?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Three quick paths:</p>
-                  <ul>
-                    <li><strong>Empty meal slot?</strong> Tap <strong>Copy from yesterday</strong> on the empty section — we'll pull forward whatever you ate in that slot the most recent day you logged it.</li>
-                    <li><strong>Single food</strong> — swipe left on the row and tap <strong>Copy</strong>. Pick the target date(s) and meal slot.</li>
-                    <li><strong>Several foods at once</strong> — long-press a row to enter selection mode, tap to add more rows (or tap a meal header to select the whole meal), then tap <strong>Copy</strong> in the bulk action bar.</li>
-                  </ul>
-                  <p>All three give you a date and meal-slot picker, so you can copy one item to a single day or a full meal across an entire week in one move.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I edit or delete a food entry?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <ul>
-                    <li><strong>Edit:</strong> tap any food row to open it — change portions, units, meal slot, or nutrition details</li>
-                    <li><strong>Swipe left</strong> on a row to reveal <strong>Copy</strong>, <strong>Move</strong>, and <strong>Delete</strong> for that single item</li>
-                    <li><strong>Long-press</strong> a row to enter selection mode for bulk <strong>Copy / Move / Delete</strong> across many foods at once</li>
-                  </ul>
-                  <p>Every action shows an <strong>Undo</strong> toast for a few seconds — accidental swipes are easy to recover.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What's Quick Add and how do I use it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Quick Add is the fastest way to repeat-log foods you eat often — no typing, no AI.</strong> Tap the <strong>+</strong> next to any meal section on the Today or Food tab to open a bottom sheet with three tabs:</p>
-                  <ul>
-                    <li><strong>Meals</strong> — your saved meal templates</li>
-                    <li><strong>Recent</strong> — your most-logged foods, ranked by frequency</li>
-                    <li><strong>Favorites</strong> — anything you've starred</li>
-                  </ul>
-                  <p>Tap a row to add it in one tap, or use the +/− stepper to bump the quantity in 0.5-serving increments before logging. Best for foods you eat the same way every time.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I select multiple foods at once?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Long-press any food row</strong> on the Today or Food tab. The card switches to selection mode — checkmarks appear on every row, and a bulk action bar slides in at the bottom. Tap additional rows to add them to the selection, or tap the header of a whole meal (e.g. "Lunch") to select every food in that meal at once.</p>
-                  <p>To exit selection mode, tap the × on the action bar or switch days.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What can I do with selected foods?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>The bulk action bar gives you three options:</p>
-                  <ul>
-                    <li><strong>Copy</strong> — duplicate the selected foods to one or more dates and any meal slot (breakfast / lunch / dinner / snack). Perfect for "I ate the same thing for lunch all week."</li>
-                    <li><strong>Move</strong> — change which meal or which day the selected foods belong to, without duplicating them</li>
-                    <li><strong>Delete</strong> — remove the selected foods at once</li>
-                  </ul>
-                  <p>All three actions show a confirmation and an <strong>Undo</strong> toast for a few seconds afterward, so accidental bulk actions are easy to recover.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Can I copy, move, or delete just one food without selection mode?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Yes — <strong>swipe left</strong> on any food row to reveal three actions for that single item:</p>
-                  <ul>
-                    <li><strong>Copy</strong> — opens the same date/meal picker as bulk copy, just for that one row</li>
-                    <li><strong>Move</strong> — re-assign it to a different meal slot or day</li>
-                    <li><strong>Delete</strong> — removes it immediately (with an Undo toast)</li>
-                  </ul>
-                  <p>Use swipe for one-off fixes; use long-press + bulk actions when you're cleaning up or duplicating several foods at once.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What's the food-logging streak at the top of the Today screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Every day you log at least one meal counts as a streak day.</strong> Your current streak shows in the greeting at the top of the Today screen.</p>
-                  <p>We give a small grace window for the current day so logging late at night still counts, and <strong>Smart meal reminders</strong> (Settings → Profile → Notifications) will nudge you when you have a streak going and haven't logged yet — the reminder copy switches to "🔥 N-day streak — log [meal] to keep it going."</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>The AI got my food wrong. What do I do?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Before saving, tap the food name or portion to fix it. If the whole match is off, delete it and re-log with more detail — adding the brand name ("Starbucks grande latte") or prep style ("grilled chicken breast, no skin") almost always fixes it.</p>
-                  <p>For packaged foods, snap the nutrition label with the camera — that's the most accurate option.</p>
+                  <p>The correlation engine works on the days you have, not on a perfect streak. <strong>Gaps slow it down rather than break it.</strong></p><p>Imperfect entries still count, and the outlier filtering means one odd night does not skew a pattern. Log most days and the patterns come.</p>
                 </div>
               </div>
             </div>
           </section>
 
-          <section class="faq-section animate-on-scroll" data-category="correlations">
+          <section class="faq-section animate-on-scroll" data-category="the-payoff">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 5-6"/></svg>
               </div>
-              <h2>Correlations</h2>
+              <h2>The Payoff</h2>
             </div>
             <div class="faq-list">
               <div class="faq-item">
-                <div class="faq-question"><span>How long until I see correlations?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>How long until I see something useful?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>First correlations typically appear after 7 days</strong> of consistent logging (both nutrition and wearable data). Higher-confidence correlations emerge around day 14 and beyond.</p>
-                  <p>The more data you provide, the more correlations we can find and the more confident we can be about them.</p>
+                  <ul><li><strong>Day one:</strong> unified trends from every connected device, full calorie, macro and micronutrient tracking, weight and water.</li><li><strong>Around day 7:</strong> the first correlations, once Kygo has a week of food and wearable data side by side.</li><li><strong>Around day 14:</strong> higher-confidence patterns and Experiments.</li><li><strong>Day 30 and beyond:</strong> slower patterns that need to repeat several times before they show, like a nutrient that only affects deep sleep.</li></ul>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>How do you calculate correlation confidence?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>What kinds of patterns can Kygo find?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>We use statistical analysis to find patterns, not guesses. Each correlation has two key measures:</p>
-                  <ul>
-                    <li><strong>Confidence:</strong> How sure we are the pattern is real (not random noise)</li>
-                    <li><strong>Strength:</strong> How much impact the food/behavior has on the outcome</li>
-                  </ul>
-                  <p>We also filter out outliers—one bad night's sleep doesn't skew your data. You only see correlations we're confident about.</p>
+                  <p>Relationships between anything you log (foods, nutrients, caffeine, alcohol, meal timing, supplements) and anything your wearable measures (sleep duration and stages, sleep latency, HRV, resting heart rate, readiness, recovery, stress).</p><p>Kygo checks same-day, next-day and two-day lags, because dinner carbs show up in tomorrow morning's readiness and heavy alcohol drags HRV for two nights.</p><p>Curious what the research says affects a metric? Our free <a href="https://www.kygo.app/tools/hrv-factors">HRV factors</a> and <a href="https://www.kygo.app/tools/deep-sleep-factors">deep sleep factors</a> tools rank the evidence.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>What kinds of correlations can Kygo find?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>How do I know a pattern is real and not noise?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>We analyze relationships between your nutrition and biometrics including:</p>
-                  <ul>
-                    <li>Sleep quality, duration, and latency (time to fall asleep)</li>
-                    <li>HRV (heart rate variability)</li>
-                    <li>Resting heart rate</li>
-                    <li>Recovery scores</li>
-                    <li>Energy levels</li>
-                  </ul>
-                  <p>Example correlations: "Sleep latency +8 min with late caffeine," "HRV +12% on days with no sugar after 6pm," "Deep sleep +23 min with high-protein dinners."</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Do more days of data unlock more correlations?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Yes.</strong> The more you put in, the more you get out. Initial correlations appear at 7 days, but as your dataset grows, we can find more patterns and be more confident about them.</p>
-                  <p>Some correlations only become visible with 30+ days of data because they require seeing the pattern repeat multiple times.</p>
+                  <p>Every correlation carries two scores: <strong>confidence</strong> (how likely the pattern is real rather than chance) and <strong>strength</strong> (how much the food actually moves the metric).</p><p>Outliers are filtered so one bad night does not create a pattern. Weak or noisy correlations are hidden, so what you see is what survived the filter.</p>
                 </div>
               </div>
               <div class="faq-item">
                 <div class="faq-question"><span>What are Experiments?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Run your own A/B tests on your body.</strong> Pick a change you want to try — cutting caffeine after 2pm, hitting a protein target every day, adding magnesium at dinner — and we track your compliance alongside the metrics that matter (sleep, HRV, recovery).</p>
-                  <p>After enough days, you'll see whether the change actually moved the needle, so you can make the call based on your data instead of guessing.</p>
-                  <div class="answer-highlight"><strong>Experiments live on the Correlation tab and are part of Pro.</strong> It's the feature that turns insights into action.</div>
+                  <p><strong>A way to test one change on your own body.</strong> Pick something, like no caffeine after 2 pm or magnesium at dinner, and Kygo tracks whether you did it each day alongside the metrics it should affect.</p><p>After enough days you see whether the change moved the needle, in your data rather than in a study of other people.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>Can what I eat today affect tomorrow's metrics?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Do my insights change over time?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes — we look at same-day, next-day, and two-day lag effects.</strong> Classic examples:</p>
-                  <ul>
-                    <li>Dinner carbs showing up in the next morning's readiness score</li>
-                    <li>Afternoon magnesium predicting that night's deep sleep</li>
-                    <li>Heavy alcohol pulling down HRV for two nights after</li>
-                  </ul>
-                  <p>When you tap into a correlation, we'll tell you which lag window the pattern shows up in.</p>
+                  <p><strong>Yes.</strong> Kygo recalculates as new data comes in, so a new training block, a stressful month, travel or a season change all shift what matters.</p><p>The pattern that dominated three months ago may not be the one now, and Kygo keeps up instead of handing you a fixed list.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>How do I actually use my insights?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Can I use more than one wearable at once?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Tap any correlation to open the detail view. You'll see:</p>
-                  <ul>
-                    <li>A plain-English summary of what we found</li>
-                    <li>An interpretation — why we think this might matter for you specifically</li>
-                    <li>Suggested actions — concrete things to try</li>
-                  </ul>
-                  <p>Pick one, experiment with it for a week or two, keep logging, and watch whether your metrics shift.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What are the Featured Question and Daily Pulse cards?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Two cards live at the top of the Correlation tab:</p>
-                  <ul>
-                    <li><strong>Featured Question</strong> — your daily pattern highlight, framed as a question ("Does your late coffee affect your sleep score?"). Tap it to see the full breakdown and suggested action.</li>
-                    <li><strong>Daily Pulse</strong> — a quick read on where your key metrics are sitting today versus your baseline, so you can spot a rough night or a good recovery at a glance.</li>
-                  </ul>
-                  <p>Both refresh each day as new data comes in.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What does the "Top contributors" breakdown show on a factor card?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>When you tap into a food or nutrient on a metric detail screen, you'll see the <strong>top contributing foods</strong> as a ranked list. Each row shows:</p>
-                  <ul>
-                    <li>The <strong>food</strong> that contributed</li>
-                    <li><strong>How many times</strong> you logged it in the sample window</li>
-                    <li><strong>Per-serving amount</strong> of that nutrient</li>
-                    <li><strong>Share %</strong> — how much of the total impact came from that food</li>
-                  </ul>
-                  <p>Use it to spot which foods are actually driving a pattern — for example, is your magnesium coming mostly from almonds, or from a daily spinach habit?</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Do correlations change over time?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Yes.</strong> We recalculate as new data comes in, so patterns shift as your routine changes — new training block, a stressful work stretch, seasonal shifts, travel. What mattered three months ago may not be the dominant factor now.</p>
-                  <p>That's the whole point: Kygo keeps up with your body instead of handing you one-size-fits-all advice.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="faq-section animate-on-scroll" data-category="devices">
-            <div class="faq-section-header">
-              <div class="faq-section-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-              </div>
-              <h2>Devices & Integrations</h2>
-            </div>
-            <div class="faq-list">
-              <div class="faq-item">
-                <div class="faq-question"><span>Which wearables do you support?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Six integrations:</p>
-                  <ul>
-                    <li><strong>Oura Ring</strong> — sleep, readiness, activity, HRV, temperature</li>
-                    <li><strong>Apple Health (iOS)</strong> — steps, heart rate, sleep, workouts, weight, and anything else apps write to it</li>
-                    <li><strong>Health Connect (Android)</strong> — the same idea for Android: pulls steps, sleep, resting heart rate, HRV, active calories, basal metabolic rate, hydration, and nutrition from Samsung Health, Google Fit, Fitbit, Oura, WHOOP Android, and any other app that writes to it</li>
-                    <li><strong>Fitbit</strong> — sleep, heart rate, activity, workouts</li>
-                    <li><strong>Garmin</strong> — activity, sleep, heart rate, body metrics</li>
-                    <li><strong>WHOOP</strong> — strain, recovery, HRV, resting heart rate, sleep</li>
-                  </ul>
-                  <p>You can connect one device or multiple — we combine the data to give you the most complete picture.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>My Android wearable writes to Health Connect but some fields aren't showing (HRV, body temperature, etc.)</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Two things can cause this:</p>
-                  <h4>1. The source app isn't writing it</h4>
-                  <p>A lot of wearable apps are selective:</p>
-                  <ul>
-                    <li><strong>WHOOP Android</strong> currently does not write HRV or body temperature to Health Connect even though it tracks them — limitation on WHOOP's side.</li>
-                    <li><strong>Samsung Health</strong> writes most metrics but may not include every field depending on your watch model.</li>
-                    <li><strong>Fitbit Android</strong> writes sleep, heart rate, and steps, but not HRV in many cases.</li>
-                  </ul>
-                  <p>If a metric is missing, open the <strong>Health Connect app → Data</strong> → pick the metric. If WHOOP / Samsung / Fitbit isn't listed as a data source there, they're not writing it — and Kygo can't read what isn't there.</p>
-                  <h4>2. Kygo no longer requests certain Health Connect permissions</h4>
-                  <p>To meet Google Play's minimum-scope policy, we removed raw heart rate, SpO2, and VO2 Max from our Health Connect requests in <strong>1.2.5</strong> — we weren't surfacing them in the app yet. Resting heart rate and HRV are still requested.</p>
-                  <div class="answer-highlight"><strong>Workaround:</strong> if you have a direct Oura / Fitbit / Garmin / WHOOP OAuth connection in Kygo, that pulls everything the device tracks (we go straight to the cloud, not through Health Connect). Use Health Connect for devices where you don't have a direct integration.</div>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Can I connect multiple wearables?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Yes, and we recommend it.</strong> Many people use Oura for sleep and Apple Watch or Garmin for workouts. We combine data from all your devices to fill gaps and create a complete health picture.</p>
-                  <p>No other app makes it this easy to see all your wearable data in one place.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I connect my wearable?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Three taps:</strong></p>
-                  <ul>
-                    <li>Go to <strong>Settings → Device Connections</strong> in the app</li>
-                    <li>Tap your device (Oura, Apple Health, Fitbit, Garmin, or WHOOP)</li>
-                    <li>Sign in to your account and tap "Approve"</li>
-                  </ul>
-                  <p>That's it. Your historical data syncs automatically in the background.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Is Kygo available on Android?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Yes!</strong> Kygo is available on both iOS and Android. You can <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" style="color:var(--green);text-decoration:underline">download it on Google Play</a> or the App Store.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How often does my health data sync?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <ul>
-                    <li><strong>Garmin and WHOOP</strong> — real-time via webhooks. Data shows up within minutes of your device recording it.</li>
-                    <li><strong>Oura and Fitbit</strong> — once a day automatically (around 6am). Pull fresh data anytime from <strong>Settings → Device Connections → Sync Now</strong>.</li>
-                    <li><strong>Apple Health</strong> — every time you open the app.</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What happens to my data if I disconnect a device?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Everything stays.</strong> Your sleep, HRV, activity history, and any insights we've built from them are preserved — we just stop pulling new data. If you reconnect later, new data flows back in alongside what's already there.</p>
+                  <p><strong>Yes, and it is worth doing.</strong> Many people wear a ring for sleep and a watch for workouts.</p><p>Kygo combines them and, for each metric, pulls from the device that is most trustworthy for that measurement, so you get a complete picture without duplicate or conflicting numbers.</p>
                 </div>
               </div>
             </div>
@@ -1128,349 +817,74 @@ class KygoFaqSection extends HTMLElement {
             </div>
             <div class="faq-list">
               <div class="faq-item">
-                <div class="faq-question"><span>Is Kygo really free?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>What exactly is free?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes—there's a free tier that's free forever.</strong> It includes:</p>
-                  <ul>
-                    <li>Voice, barcode, and text logging, plus 5 AI photo scans a month</li>
-                    <li>All wearable connections and sync</li>
-                    <li>Water, weight, supplements, and Quick-Add</li>
-                    <li>Health and nutrition trends, with detailed macro and micronutrient tracking</li>
-                  </ul>
-                  <p>Pro adds food-body insights, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health &amp; Health Connect—upgrade anytime.</p>
+                  <ul><li>Voice, text and barcode logging with no limit, plus your first 5 AI photo logs</li><li>All six wearable connections and sync</li><li>Calorie, macro and micronutrient tracking, water and weight, and every trend screen</li></ul><p>No card, no time limit.</p><div class="answer-highlight">The free plan is a real food tracker, not a demo.</div>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>How much does premium cost?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>What does Pro cost and what does it add?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>$9.99/month or $49.99/year</strong> (save 58% with annual).</p>
-                  <p>Pro unlocks food-body insights, unlimited photo logging, a daily spotlight on the factor moving your metrics, and nutrition write-back to Apple Health &amp; Health Connect.</p>
+                  <p><strong>Pro is $9.99 a month, $49.99 a year (about 58% less than paying monthly), or $99.99 once for lifetime access.</strong></p><p>Pro unlocks the correlation engine and every metric's helping and hurting foods, Experiments, the daily factor spotlight, supplement tracking, unlimited AI photo logging, and nutrition write-back to Apple Health and Health Connect.</p><p>Introductory offers on the yearly plan vary; the app shows you the current one before you commit. Full breakdown in <a href="https://www.kygo.app/post/what-is-kygo-health-app-features-pricing">what Kygo costs</a>.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>Do I need a credit card to start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Is there a free trial, and do I need a card to start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>No.</strong> Download the app, start using it immediately. No credit card required. The free tier is yours to keep—you only pay if you decide to upgrade to premium.</p>
+                  <p><strong>No card is needed to download and use the free plan.</strong></p><p>Pro offers on the yearly plan rotate (a free trial period or a reduced first payment), and whatever is running is shown in the app before you subscribe. Nothing is charged until you confirm through the App Store or Google Play.</p>
                 </div>
               </div>
               <div class="faq-item">
                 <div class="faq-question"><span>Can I cancel anytime?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes.</strong> Cancel anytime through your App Store subscription settings. You'll retain premium access until the end of your billing period.</p>
+                  <p><strong>Yes.</strong> Billing runs through the App Store or Google Play, so you cancel from your store subscriptions page in either one.</p><p>You keep Pro until the end of the period you paid for.</p>
                 </div>
               </div>
             </div>
           </section>
 
-          <section class="faq-section animate-on-scroll" data-category="privacy">
+          <section class="faq-section animate-on-scroll" data-category="trust">
             <div class="faq-section-header">
               <div class="faq-section-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
               </div>
-              <h2>Privacy & Data</h2>
+              <h2>Trust</h2>
             </div>
             <div class="faq-list">
               <div class="faq-item">
-                <div class="faq-question"><span>Is my health data secure?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Is my health data secure, and do you sell it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes. Your data is encrypted and never sold.</strong></p>
-                  <p>We exist to help you understand your health, not to monetize your information. We don't sell your data to third parties, and we don't use it for advertising.</p>
+                  <p><strong>Kygo does not sell your data and does not use it for advertising.</strong> Data is encrypted in transit and at rest.</p><p>Wearable access goes through each platform's own permission system (Apple HealthKit, Android Health Connect, or the device maker's OAuth), so you choose exactly what Kygo can read and can revoke it at any time.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>Can I export my data?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Who sees my data?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes.</strong> You can export all your data anytime. It's your data—you should be able to take it with you.</p>
+                  <p>Only the services that make the app work:</p><ul><li>The nutrition databases queried when you log (Nutritionix, Edamam, USDA, Open Food Facts)</li><li>The AI model that reads your photos and descriptions</li><li>Your connected wearable accounts</li><li>The cloud hosting that runs the app</li></ul><p>No advertisers, no data brokers. Details are in the <a href="https://www.kygo.app/privacy-policy">privacy policy</a>.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>Can I delete my data?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Can I export or delete my data?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes.</strong> You can delete your account and all associated data at any time from within the app. Once deleted, your data is permanently removed from our servers.</p>
+                  <p><strong>Both, from inside the app.</strong> Export everything at any time.</p><p>Delete your account from Settings and all associated data is permanently removed from Kygo's servers.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>What data do you collect from my wearables?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Is Kygo a medical device?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>We collect health and fitness data that you explicitly authorize when connecting your device. This typically includes:</p>
-                  <ul>
-                    <li>Sleep data (duration, stages, quality)</li>
-                    <li>Heart rate and HRV</li>
-                    <li>Activity and steps</li>
-                    <li>Recovery and readiness scores (where available)</li>
-                  </ul>
-                  <p>You can see exactly what data we're accessing and revoke access anytime.</p>
+                  <p><strong>No.</strong> Kygo is a general wellness product for educational and informational purposes.</p><p>It does not diagnose, treat, cure or prevent any disease, and it is not a substitute for advice from your physician.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>Do you share my data with anyone?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Who makes Kygo?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Only with the services that make the app work:</p>
-                  <ul>
-                    <li><strong>Edamam and USDA</strong> — the food and nutrition databases we query when you log</li>
-                    <li><strong>Your connected wearables</strong> — we pull from them; we don't push anything back</li>
-                    <li><strong>Cloud hosting</strong> — the servers that run the app</li>
-                  </ul>
-                  <div class="answer-highlight"><strong>We don't sell your data. We don't share it with advertisers.</strong></div>
+                  <p><strong>Kygo Health LLC</strong>, a one-person company based in the New York area, built by a founder who wanted to know why his own sleep and HRV moved and could not get the answer from any existing app.</p><p>Questions go straight to him at <a href="mailto:support@kygo.app">support@kygo.app</a>. The story is in <a href="https://www.kygo.app/post/why-i-built-kygo-health-app">why I built Kygo</a>.</p>
                 </div>
               </div>
               <div class="faq-item">
-                <div class="faq-question"><span>How do I manage or cancel my subscription?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
+                <div class="faq-question"><span>Where do I download Kygo, and what are the free tools?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Go to <strong>Settings → Subscription</strong> to see your current plan. Billing is handled by the App Store (iOS) or Google Play (Android), so cancellation happens in your store account:</p>
-                  <ul>
-                    <li><strong>iOS:</strong> Settings → [your name] → Subscriptions</li>
-                    <li><strong>Android:</strong> Play Store → Menu → Subscriptions</li>
-                  </ul>
-                  <p>You'll keep Pro access until the end of your billing period.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I manage notifications?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Go to <strong>Settings → Profile → Notifications</strong>. You'll see these toggles:</p>
-                  <ul>
-                    <li><strong>Meal reminders</strong> — fixed daily reminder + per-meal reminders (breakfast, lunch, dinner, snack) with custom times</li>
-                    <li><strong>Smart meal reminders</strong> — server-side reminders that skip the ping if you already logged that meal. When you have a 3+ day streak and haven't logged today, the reminder copy switches to "🔥 N-day streak — log [meal] to keep it going."</li>
-                    <li><strong>New insight alerts</strong> — a push when one of your health metrics has enough data to unlock its first correlations</li>
-                    <li><strong>Wearable reconnect alerts</strong> — heads-up if an Oura, Fitbit, Garmin, or WHOOP connection stops syncing and needs to be re-linked</li>
-                  </ul>
-                  <p>Each toggle is independent. Your phone's OS also has a master notification switch if you want to mute everything at that level.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Will I get a push when a new insight unlocks?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Yes, if <strong>New insight alerts</strong> is on (default). When one of your metrics — sleep, HRV, resting HR, readiness, etc. — reaches enough data to show its first correlations, you'll get a tap-to-open push that drops you straight into that metric's detail screen.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What if my wearable disconnects without me noticing?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>If <strong>Wearable reconnect alerts</strong> is on (default), we'll send a push when Oura, Fitbit, Garmin, or WHOOP stops syncing — usually because the OAuth token expired or you revoked access on the device's side. Tap the notification to go straight to <strong>Device Connections</strong> and reconnect in one step.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I delete my account?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Go to <strong>Settings → Privacy &amp; Data → Delete Account</strong>. We'll ask you to confirm, since this is permanent.</p>
-                  <p>Once confirmed, we remove all your data within 30 days. If you're on the fence, consider just disconnecting your wearables instead — your data stays intact and you can reconnect later.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="faq-section animate-on-scroll" data-category="app">
-            <div class="faq-section-header">
-              <div class="faq-section-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-              </div>
-              <h2>Using the App</h2>
-            </div>
-            <div class="faq-list">
-              <div class="faq-item">
-                <div class="faq-question"><span>What do the bottom tabs do?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <ul>
-                    <li><strong>Today</strong> — your home base: recommended actions, meals for the day, weight, and daily nutrition</li>
-                    <li><strong>Food</strong> — your meal log organized by breakfast, lunch, dinner, and snacks. Swipe between days here.</li>
-                    <li><strong>+</strong> (the green button) — <strong>Food Chat</strong>, where you log anything you ate</li>
-                    <li><strong>Trends</strong> — rolling averages for your nutrition, sleep, heart rate, and activity</li>
-                    <li><strong>Correlation</strong> — patterns between your food and how your body responded (Pro)</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What's on the Today screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Your daily dashboard. From top to bottom:</p>
-                  <ul>
-                    <li><strong>Greeting + streak</strong> — a hello at the top with your current food-logging streak (consecutive days you've logged at least one meal)</li>
-                    <li><strong>Daily nutrition</strong> — a calorie ring plus protein / carbs / fat against your targets</li>
-                    <li><strong>Today's meals</strong> — breakfast / lunch / dinner / snacks, with quick edit, copy, and bulk-select</li>
-                    <li><strong>Hydration</strong> — water intake with quick-add buttons</li>
-                    <li><strong>Experiments progress</strong> — your pinned dietary experiments and how they're tracking</li>
-                    <li><strong>Weight tracking</strong> — log today's weight and see your trend</li>
-                    <li><strong>Wearables</strong> — connection status for your linked devices, with a tap-to-reconnect if anything stopped syncing</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What's on the Correlation screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Everything about how your food and health metrics connect. You'll see:</p>
-                  <ul>
-                    <li><strong>Featured Question + Daily Pulse</strong> at the top — today's pattern highlight and a quick read on where your metrics sit versus baseline</li>
-                    <li>A grid of your <strong>health metrics</strong> (sleep, HRV, resting HR, readiness, etc.) showing how many food factors are helping or hurting each</li>
-                    <li><strong>Experiments</strong> — your pinned dietary tests and their progress</li>
-                    <li>Tap any metric to open the <strong>detail screen</strong> — factor cards with scatter plots, lag effects (same-day / next-day), and a ranked <strong>Top contributors</strong> list of the foods driving the pattern</li>
-                  </ul>
-                  <div class="answer-highlight">Correlations and Experiments are <strong>Pro features</strong>. Free users can see the tab and the unlock progress, but tapping into a metric will take you to the upgrade screen.</div>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How does hydration tracking work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Use the <strong>quick-add buttons</strong> on the Hydration card (Today screen) to log water as you drink it. Tap a preset (8 oz, 16 oz, etc.) or enter a custom amount — the card updates against your daily water target immediately.</p>
-                  <p><strong>We only count water you log directly on the hydration card.</strong> Beverages logged through Food Chat (coffee, juice, soda, etc.) count toward your calories and macros but don't add to your hydration total. This keeps your water number meaningful instead of inflating it from every drink you log.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What's on the Trends screen?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Rolling averages for everything we track. Toggle between 7D / 30D / 90D / All, and you'll see:</p>
-                  <ul>
-                    <li><strong>Nutrition</strong> — calories, macros, micronutrients</li>
-                    <li><strong>Sleep</strong> — score, duration, deep sleep, REM, efficiency, HRV</li>
-                    <li><strong>Heart</strong> — resting heart rate, HRV trends</li>
-                    <li><strong>Activity</strong> — steps, active calories, strain, workouts</li>
-                  </ul>
-                  <p>Each metric shows which wearable it came from in the corner of the card.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Which nutrients does the app track?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p><strong>Macros:</strong> calories, protein, carbs, fat, fiber, sugar, saturated fat, trans fat, net carbs, cholesterol</p>
-                  <p><strong>Minerals:</strong> sodium, potassium, magnesium, calcium, iron, zinc, phosphorus, copper, manganese, selenium</p>
-                  <p><strong>Vitamins:</strong> A, B1, B2, B3, B5, B6, B12, C, D, E, K, folate</p>
-                  <p><strong>Other:</strong> caffeine, alcohol</p>
-                  <div class="answer-highlight">Micronutrients are pulled from the food database automatically — you don't have to enter anything extra.</div>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>Can I set custom calorie and macro targets?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Yes. Go to <strong>Settings → Nutrition &amp; Health → Macros</strong> and switch from <strong>Auto-Calculate</strong> to <strong>Custom Targets</strong>. Set calories, protein, carbs, and fat directly — we'll stop recalculating from your profile until you flip it back.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I log my weight?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>On the <strong>Today</strong> screen, find the weight tracking card and tap <strong>Log Weight</strong>. Your entry plots alongside your history in 7D / 30D / 90D / All views. If your wearable or Apple Health logs weight, we'll pull it in automatically.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I turn on dark mode?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Go to <strong>Settings → Profile → Dark Mode</strong>. Tapping it cycles through three options:</p>
-                  <ul>
-                    <li><strong>System</strong> — follows your phone's setting (default)</li>
-                    <li><strong>Light</strong> — always light</li>
-                    <li><strong>Dark</strong> — always dark</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>What do the colors mean?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <ul>
-                    <li><strong>Green</strong> — on track or positive (you hit your target, your metric improved)</li>
-                    <li><strong>Yellow</strong> — approaching or slightly off (close to target, watch this)</li>
-                    <li><strong>Red</strong> — significantly off target or negative impact</li>
-                  </ul>
-                  <p>The same colors show up everywhere in the app so you can glance and know.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section class="faq-section animate-on-scroll" data-category="troubleshooting">
-            <div class="faq-section-header">
-              <div class="faq-section-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-              </div>
-              <h2>Troubleshooting</h2>
-            </div>
-            <div class="faq-list">
-              <div class="faq-item">
-                <div class="faq-question"><span>The app is slow or keeps crashing</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Quick fixes, in order:</p>
-                  <ul>
-                    <li>Force-close the app and reopen it</li>
-                    <li>Make sure you're on the latest version (App Store / Google Play)</li>
-                    <li>Check your internet connection — the app needs to reach our servers to log food and sync health data</li>
-                    <li>Restart your phone if it's been running for a while</li>
-                  </ul>
-                  <p>Still happening? Reach out via <strong>Settings → Support → Contact Support</strong> and tell us what screen you were on.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>The microphone isn't working</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Almost always a permissions issue. On your phone:</p>
-                  <ul>
-                    <li><strong>iOS:</strong> Settings → Kygo → Microphone → turn on</li>
-                    <li><strong>Android:</strong> Settings → Apps → Kygo → Permissions → Microphone → Allow</li>
-                  </ul>
-                  <p>Close and reopen the app, then try the mic icon in Food Chat again.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>My wearable data isn't showing up</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Work through these in order:</p>
-                  <ul>
-                    <li>Open the device's own app first (Oura app, Fitbit app, etc.) and confirm it's synced with the device. If the data isn't there, we can't see it either.</li>
-                    <li>In Kygo, go to <strong>Settings → Device Connections → [your device] → Sync Now</strong> to force a fresh pull</li>
-                    <li>For <strong>Apple Health</strong>, confirm permissions: iPhone Settings → Privacy &amp; Security → Health → Kygo</li>
-                    <li>If you just connected, give it a few minutes — the first backfill can take a moment</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>My wearable won't connect</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Common culprits:</p>
-                  <ul>
-                    <li><strong>Wrong account</strong> — make sure you're signing in with the same email as your device's account</li>
-                    <li><strong>Device not synced</strong> — open the device's own app first and confirm recent data is there</li>
-                    <li><strong>Stale connection</strong> — go to <strong>Settings → Device Connections → [your device] → Disconnect</strong>, then reconnect from scratch</li>
-                    <li><strong>Subscription required</strong> — Fitbit and Garmin premium data sometimes requires an active subscription with the manufacturer</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>I don't see any correlations yet</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Three things correlations need:</p>
-                  <ul>
-                    <li><strong>7+ days of consistent food logging</strong> — even imperfect logging counts</li>
-                    <li><strong>Health data from a connected wearable</strong> — Oura, Apple Health, Fitbit, Garmin, or WHOOP</li>
-                    <li><strong>A Pro subscription</strong> — correlations and experiments are part of Pro</li>
-                  </ul>
-                  <p>If you're on Pro, logging daily, and your wearable is syncing, your first correlations unlock on day 7.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>My nutrition numbers look off</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>A few things to check:</p>
-                  <ul>
-                    <li><strong>Portion size</strong> — this is the #1 source of bad numbers. Verify the quantity and unit before saving.</li>
-                    <li><strong>Food match</strong> — tap the food and pick a more specific match. Branded items ("Starbucks grande latte") beat generic ones ("latte").</li>
-                    <li><strong>Nutrition label</strong> — for packaged food, snap the label with the camera. That reads the actual panel and is usually the most accurate.</li>
-                  </ul>
-                  <p>You can always tap a saved entry and edit any field directly.</p>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>I didn't get my password reset email</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <ul>
-                    <li>Check your spam / junk folder — it sometimes ends up there</li>
-                    <li>Make sure you typed the email address you signed up with</li>
-                    <li>Wait a minute or two — email can be delayed</li>
-                    <li>Still nothing? Reach out via Contact Support and we'll sort it out</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="faq-item">
-                <div class="faq-question"><span>How do I contact support?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
-                <div class="faq-answer">
-                  <p>Go to <strong>Settings → Support → Contact Support</strong>. Fill out the form with as much detail as you can — what you were doing, what happened, what you expected, screenshots if you have them.</p>
-                  <p>We typically respond within 24–48 hours.</p>
+                  <p>Kygo Health is on the <a href="https://kygo.app/iOS" target="_blank" rel="noopener">App Store</a> and <a href="https://kygo.app/android" target="_blank" rel="noopener">Google Play</a>.</p><p>Separately, kygo.app hosts <strong>25 free research tools</strong>, no signup required, covering wearable accuracy, sleep, HRV and more at <a href="https://www.kygo.app/tools">kygo.app/tools</a>.</p>
                 </div>
               </div>
             </div>
@@ -1516,7 +930,7 @@ class KygoFaqSection extends HTMLElement {
                   Download for Android
                 </a>
               </div>
-              <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
+              <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Pro is $9.99 a month, $49.99 a year, or $99.99 for lifetime. Cancel anytime.</p>
               <div class="cta-works">
                 <span>Works with</span>
                 <div class="cta-badges">
