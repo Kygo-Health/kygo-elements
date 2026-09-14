@@ -49,6 +49,14 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 | `https://www.kygo.app/android` | **Android / Google Play** download (redirect) | Superseded for CTA clicks by the Tenjin Android link above. The `/android` redirect page itself still lives Wix-side. No direct `play.google.com` link exists. |
 | `https://kygo.app/iOS` | **iOS** download (redirect) | Legacy capital-S `iOS` path; no longer in the component source after the Tenjin swap. |
 
+> **The thin `kband` bands no longer carry store anchors of their own (2026-09).** All four
+> (`kygo-faq-section.js`, `kygo-tools.js`, `kygo-blog.js`, `calories-custom-element.js`) render
+> `<kygo-cta compact>`, so their destinations come from `kygo-cta.js`: `app.kygo.app/register`
+> with UTMs on desktop, and the **direct** App Store (`pt`/`ct`) and Play (install referrer)
+> URLs on phones rather than the Tenjin redirects. Anything still hand-writing a Tenjin anchor
+> (every sub-nav "Get Kygo App" pair, the tools/blog/calories/supplements footer CTAs and all of
+> `kygo-hiw-bundle.js`) is listed below and still attributes through Tenjin.
+
 **Tenjin iOS CTA (`…/cD7zgIPLuiZMMWmWkXLsvy`) — file locations:** all 19 tool components
 (sub-nav + early/mid/late + footer-cta iOS anchors), `kygo-blog.js`, `kygo-blog-post.js`,
 `kygo-tools.js`, `kygo-faq-section.js`, `kygo-hiw-bundle.js`, `calories-custom-element.js`.

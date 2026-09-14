@@ -173,6 +173,33 @@ All resolved in `kygo-blog.js` on this branch.
   conversion surface, not a bug); moving it below the first category section would be the next
   win if `/blog` still feels top-heavy.
 
+## 🆕 Fixed on branch `claude/busy-noether-kkvuxg` (2026-09)
+
+- **#D1 (P1) — ✅ RESOLVED. The thin `kband` band overflowed its card.** Its stack breakpoint
+  was a viewport media query, so wherever the band was laid out narrow inside a wide document
+  (Wix does this), the buttons kept their one-row layout and hung off the right edge of the
+  card. `kygo-cta.js` made the same assumption and forced `flex-wrap: nowrap` above 561px.
+  Both now respond to their own width: the band stacks on a `@container (max-width: 720px)`
+  query (media query kept as the fallback) and `.kband-actions` may shrink below 440px, while
+  `kygo-cta` measures its own button row once per render and stacks the primary above a two-up
+  row of the other platforms as soon as one row no longer fits, watching for changes with a
+  `ResizeObserver`.
+
+- **#D2 (P2) — ✅ RESOLVED. Three of the four thin bands were still iOS + Android only.**
+  `kygo-tools.js`, `kygo-blog.js` and `calories-custom-element.js` hand-wrote a Tenjin store
+  pair, so a desktop reader got two store buttons and no way to start on the web. All three now
+  render `<kygo-cta compact>` inside the same `.kband` shell as `/faq`, with slugs `tools-mid`,
+  `blog-mid` and `calories-early`. Dead `.kband-btn*` / `.kband-note` rules dropped from those
+  three files and from `kygo-faq-section.js`; the same dead CSS still sits unused in ~13 tool
+  components whose `kband` was retired earlier (harmless, not cleaned up here).
+
+- **#D3 (open, P2) — CTAs that are still store-only.** Every sub-nav "Get Kygo App" pair (25
+  components), the footer CTAs in `kygo-tools.js`, `kygo-blog.js`, `calories-custom-element.js`
+  and `kygo-supplements-by-metric.js`, and all five CTAs in `kygo-hiw-bundle.js` (hero, step 3,
+  footer, and the two pricing buttons) still offer iOS and Android only. Converting them to
+  `kygo-cta` also moves their attribution off Tenjin (see
+  `docs/internal-and-app-store-links.md`), so that trade is worth a decision before the pass.
+
 ## 🆕 Opened on branch `claude/standardize-blog-sections-1wo0ax` (2026-08)
 
 Found while standardising the blog cross-link section across every tool page. **None of these
