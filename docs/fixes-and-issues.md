@@ -200,9 +200,7 @@ All resolved in `kygo-blog.js` on this branch.
   button has to go white); and all five `/how-it-works` CTAs are converted — hero, step 3 and
   footer to the cluster, the two pricing plans to the new `single` variant, which renders the
   visitor's own destination alone because a plan card is one action. No component hand-writes a
-  store anchor any more. **This moved install attribution off Tenjin** onto Apple's `pt`/`ct` and
-  the Play install referrer — see `docs/internal-and-app-store-links.md` if Tenjin is meant to
-  stay the system of record.
+  store anchor any more; the two **Tenjin** click URLs live in `kygo-cta.js` and nowhere else.
 
 - **#D4 (P2) — ✅ RESOLVED. `<kygo-cta>` never centred inside a host component.** Its width cap
   and `margin: 0 auto` lived on `:host`, and a host component's own `*{margin:0}` reset outranks
@@ -215,7 +213,14 @@ All resolved in `kygo-blog.js` on this branch.
   `<kygo-cta>` button carries, files them as `ios_download` / `android_download` / `web_signup`,
   and takes `cta_label` from the CTA's slug and `position` from its surface.
 
-- **#D6 (P3) — ✅ RESOLVED. `kygo-supplements-by-metric.js` carried a dead second CTA card.**
+- **#D6 (P2) — ✅ RESOLVED. `kygo-cta.js` was bypassing Tenjin.** It had always pointed its store
+  buttons at direct App Store (`pt`/`ct`) and Play (install referrer) URLs, so every CTA already
+  on the element was attributing outside Tenjin, and converting the rest of the site to it spread
+  that. Both getters now return the Tenjin click URLs (`TENJIN_IOS` / `TENJIN_ANDROID`, with
+  `ios-link` / `android-link` overrides), which restores Tenjin as the single system of record
+  for installs.
+
+- **#D7 (P3) — ✅ RESOLVED. `kygo-supplements-by-metric.js` carried a dead second CTA card.**
   `_renderBigCta()` (a full dark conversion card with its own Tenjin buttons) was never called
   from `render()`; it and its ~14 dead `.app-cta*` rules are gone.
 

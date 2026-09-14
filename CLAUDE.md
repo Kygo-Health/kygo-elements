@@ -35,9 +35,11 @@ Guidance for working in this repo. Read this before editing or creating componen
 ## The shared CTA element (`kygo-cta.js`)
 
 Every conversion CTA on the site is **`<kygo-cta slug="…" surface="home|blog|tool|faq" hook="…">`**
-(`kygo-cta.js`). It owns the destinations: desktop visitors get **app.kygo.app/register** with
-`utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>`; iOS and Android visitors get
-their own store with attribution (`ct` capped at 30 chars, Play install referrer). All three
+(`kygo-cta.js`). It owns the destinations: the web button goes to **app.kygo.app/register** with
+`utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>`; both store buttons go through the
+**Tenjin** click URLs, which redirect to the App Store / Play and attribute the install. Tenjin
+is the system of record for installs, so those two URLs live in `kygo-cta.js` and nowhere else —
+direct `apps.apple.com` / `play.google.com` URLs belong in JSON-LD only. All three
 platforms stay on screen: the visitor's device takes the filled primary button, the other two
 follow as outline buttons, on one row where there is room and two-up under the primary where
 there is not — measured from the element's own width, not the viewport. It fires Mixpanel

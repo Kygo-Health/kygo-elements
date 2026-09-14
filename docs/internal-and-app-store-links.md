@@ -19,15 +19,17 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 > platform takes the filled primary button, the other two are outline buttons beside it (desktop)
 > or two-up beneath it (phone). That element, not the page, owns the destinations:
 >
-> | Visitor | Primary destination |
+> | Button | Destination |
 > |---|---|
-> | Desktop | `https://app.kygo.app/register?utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` (primary; iPhone + Android beside it) |
-> | iOS device | `https://apps.apple.com/app/apple-store/id6749870589?pt=128052235&ct=<slug>&mt=8` (`ct` capped at 30 chars) |
-> | Android device | `https://play.google.com/store/apps/details?id=com.ryanobzud.foodhealthtracker&referrer=<url-encoded utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>>` |
+> | Web | `https://app.kygo.app/register?utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` |
+> | iOS | `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy` (Tenjin → App Store) |
+> | Android | `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO` (Tenjin → Play) |
 >
-> On a phone the third button is "Web", pointing at the same signup URL. `surface` is one
-> of `home` / `blog` / `tool` / `faq`; the header and footer use `header` / `footer` with
-> `utm_campaign=nav`. The **Tenjin** links below are still the store destination in the mobile
+> Whichever platform the visitor is on takes the filled button; the other two follow. `surface`
+> is one of `home` / `blog` / `tool` / `faq`; the header and footer use `header` / `footer` with
+> `utm_campaign=nav`. The store buttons deliberately go through **Tenjin** rather than the store
+> directly — it is the system of record for install attribution, and `kygo-cta.js` is the only
+> file that holds those URLs. The same Tenjin links are still the store destination in the mobile
 > nav menu, the footer Product column, and in the 48 existing blog posts until
 > `scripts/migrate-blog-ctas.js` is run.
 >
@@ -49,23 +51,29 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 | `https://www.kygo.app/android` | **Android / Google Play** download (redirect) | Superseded for CTA clicks by the Tenjin Android link above. The `/android` redirect page itself still lives Wix-side. No direct `play.google.com` link exists. |
 | `https://kygo.app/iOS` | **iOS** download (redirect) | Legacy capital-S `iOS` path; no longer in the component source after the Tenjin swap. |
 
-> ### ⚠️ The Tenjin links are gone from the components (2026-09).
-> **Every CTA on the site now renders `<kygo-cta>`**, so destinations come from `kygo-cta.js`
-> and nowhere else: `app.kygo.app/register` with UTMs for the web button, and the **direct**
-> App Store (`pt=128052235` + `ct=<slug>`) and Play (encoded install referrer) URLs for the two
-> store buttons. **No component hand-writes a Tenjin click URL any more** — the last of them
-> (25 sub-nav pairs, the tools/blog/calories footer CTAs, all five `/how-it-works` CTAs) were
-> converted in the same pass, and `kygo-supplements-by-metric.js`'s `_renderBigCta()` turned out
-> to be dead code and was deleted.
+> ### The Tenjin links now live in exactly one file (2026-09).
+> **Every CTA on the site renders `<kygo-cta>`**, and `kygo-cta.js` holds the two Tenjin click
+> URLs as `TENJIN_IOS` / `TENJIN_ANDROID`. No other component hand-writes a store link — the last
+> of them (25 sub-nav pairs, the tools/blog/calories footer CTAs, all five `/how-it-works` CTAs)
+> were converted in the same pass, and `kygo-supplements-by-metric.js`'s `_renderBigCta()` turned
+> out to be dead code and was deleted.
 >
-> **This moved install attribution off Tenjin and onto Apple's and Google's own parameters.**
-> Tenjin will stop seeing Website-channel clicks; App Store Connect (campaign = the CTA slug)
-> and the Play install referrer carry it instead. If Tenjin is still the system of record,
-> the fix belongs in `kygo-cta.js`'s `_iosUrl` / `_androidUrl` getters — one place, not 30.
+> **Tenjin stays the system of record for install attribution.** `kygo-cta.js` briefly pointed
+> the store buttons at direct App Store (`pt`/`ct`) and Play (install referrer) URLs; that is
+> reverted. A placement that needs its own Tenjin campaign link can pass `ios-link` /
+> `android-link`; the per-CTA campaign is otherwise carried by GA4 (`cta_label` = the slug) and
+> Mixpanel `cta_clicked`, and by `utm_campaign` on the web button.
 >
-> `kygo-tracking.js` still keeps the Tenjin substrings in its classifier so any legacy link
-> (a Wix-side button, an old blog post) is still classified. The two FAQ-answer "Google Play"
-> prose links in `kygo-faq-section.js` are prose, not CTAs, and point at the store directly.
+> `kygo-tracking.js` classifies the Tenjin hrefs as before, and now also reads the
+> `data-destination` each `<kygo-cta>` button carries, which is what files the web button as
+> `web_signup`. The two FAQ-answer "Google Play" prose links in `kygo-faq-section.js` are prose,
+> not CTAs, and point at the store directly.
+
+**Tenjin iOS CTA (`…/cD7zgIPLuiZMMWmWkXLsvy`) — file location:** `kygo-cta.js` (`TENJIN_IOS`),
+used by every CTA on the site through `<kygo-cta>`.
+
+**Tenjin Android CTA (`…/eMjS3ZkseCvs2lO9AVESkO`) — file location:** `kygo-cta.js`
+(`TENJIN_ANDROID`), plus the two FAQ-answer "Google Play" prose links in `kygo-faq-section.js`.
 
 **Direct App Store URL — remaining (JSON-LD only):** homepage `SoftwareApplication.downloadUrl`
 and `Organization.sameAs` (see `docs/wix-snippets/3-homepage-jsonld-head.html` and

@@ -8,14 +8,17 @@
  * straight into an existing card or hero without bringing its own chrome.
  *
  * Attributes:
- *   slug    (required) campaign id, used verbatim as utm_campaign and as the
- *           Apple `ct` value. Must be unique per placement.
+ *   slug    (required) campaign id, used verbatim as utm_campaign on the web
+ *           link and as the GA4 / Mixpanel label. Must be unique per placement.
  *   surface home | blog | tool | faq. Used as utm_medium.
  *   hook    topic-matched line on the reader's payoff, shown above the buttons.
  *   theme   dark (on the navy conversion card) | green (on a Kygo-green
  *           card, where the filled button goes white) | light (default, on white).
  *   align   center (default) | left.
  *   note    reassurance line under the buttons. Pass note="" to hide it.
+ *   ios-link / android-link
+ *           override the Tenjin click URL for a placement with its own campaign
+ *           link. Defaults are the site-wide Website-channel links.
  *   compact thin-bar variant for narrow strips (the FAQ mid-page band, the
  *           homepage inline band): smaller buttons and tighter spacing.
  *   mini    header/sub-nav variant: one nowrap row of small pills, no hook and
@@ -28,9 +31,11 @@
  *           variant="outline" for the quieter of two plan buttons.
  *
  * Destinations:
- *   Desktop  primary  -> app.kygo.app/register with utm_source/medium/campaign.
- *   iOS      primary  -> App Store with pt/ct attribution (ct capped at 30).
- *   Android  primary  -> Play Store with an encoded install referrer.
+ *   Web      -> app.kygo.app/register with utm_source/medium/campaign.
+ *   iOS      -> the Tenjin iOS click URL, which redirects to the App Store.
+ *   Android  -> the Tenjin Android click URL, which redirects to Play.
+ * Tenjin is the system of record for install attribution, so the store buttons
+ * always go through it. Per-campaign overrides: ios-link / android-link.
  *
  * Layout: all three platforms are always on screen. The visitor's own device
  * takes the filled primary button and leads; the other two follow as outline
@@ -43,6 +48,12 @@
  * every button click, and mirrors the same payload as a bubbling `kygo-cta-click`
  * CustomEvent so Wix Velo and GA4 can listen without a second wiring pass.
  */
+
+/** Tenjin attribution click URLs (Website channel). They redirect to the App
+ *  Store / Play Store, and every store CTA on the site goes through them so
+ *  Tenjin sees the click and attributes the install. */
+const TENJIN_IOS = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
+const TENJIN_ANDROID = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
 
 /** Injects accessible text into light DOM so crawlers and AI tools can read component content */
 function __ctaSeo(el, text) {
@@ -62,7 +73,7 @@ class KygoCta extends HTMLElement {
     this._onClick = this._onClick.bind(this);
   }
 
-  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note', 'compact', 'mini', 'single', 'block', 'variant', 'label']; }
+  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note', 'compact', 'mini', 'single', 'block', 'variant', 'label', 'ios-link', 'android-link']; }
 
   connectedCallback() {
     this._parseWixAttributes();
@@ -118,9 +129,6 @@ class KygoCta extends HTMLElement {
     return ['home', 'blog', 'tool', 'faq'].indexOf(s) > -1 ? s : 'home';
   }
 
-  /** Apple's `ct` field is capped at 30 characters. */
-  get _ct() { return this._slug.slice(0, 30); }
-
   _webUrl(path) {
     const p = path || '/register';
     return 'https://app.kygo.app' + p +
@@ -128,16 +136,15 @@ class KygoCta extends HTMLElement {
       '&utm_campaign=' + encodeURIComponent(this._slug);
   }
 
-  get _iosUrl() {
-    return 'https://apps.apple.com/app/apple-store/id6749870589?pt=128052235&ct=' +
-      encodeURIComponent(this._ct) + '&mt=8';
-  }
+  /** Both store buttons go through Tenjin (Website channel), which redirects to
+   *  the store and attributes the install. Tenjin is the system of record for
+   *  installs across the whole site, so these are the only store URLs any
+   *  component should ever point at — direct App Store / Play URLs belong in
+   *  JSON-LD and nowhere else. Overridable per placement via the ios-link /
+   *  android-link attributes, for a campaign with its own Tenjin link. */
+  get _iosUrl() { return this._getSetting('ios-link', TENJIN_IOS); }
 
-  get _androidUrl() {
-    const referrer = 'utm_source=kygo.app&utm_medium=' + this._surface + '&utm_campaign=' + this._slug;
-    return 'https://play.google.com/store/apps/details?id=com.ryanobzud.foodhealthtracker&referrer=' +
-      encodeURIComponent(referrer);
-  }
+  get _androidUrl() { return this._getSetting('android-link', TENJIN_ANDROID); }
 
   /** ios | android | desktop. Detection only decides which button leads: all
    *  three platforms render either way, and anything unrecognised (or a
