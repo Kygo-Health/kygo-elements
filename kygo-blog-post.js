@@ -28,8 +28,31 @@
   // Shared constants
   // ──────────────────────────────────────────────────────────────────────
   const BRAND_LOGO = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-  const APP_IOS    = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
-  const APP_ANDROID = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
+
+  /** Loads the shared <kygo-cta> element on demand. Wix embeds this file on its
+   *  own, so the CTA definition has to come along rather than be assumed. */
+  function ensureCta() {
+    if (customElements.get('kygo-cta')) return;
+    if (document.querySelector('script[data-kygo-cta-loader]')) return;
+    const s = document.createElement('script');
+    s.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+    s.setAttribute('data-kygo-cta-loader', '');
+    s.async = true;
+    document.head.appendChild(s);
+  }
+
+  /** Campaign id for a CTA on this post. Wix passes `slug`; otherwise the post
+   *  slug in the URL is used, so no two posts share a campaign. Kept to 30
+   *  characters because Apple's `ct` field is capped there. */
+  function postSlug(el, suffix) {
+    const explicit = el.getAttribute('slug');
+    const path = (window.location.pathname || '').toLowerCase();
+    const fromPath = (path.split('/').filter(Boolean).pop() || 'blog');
+    const base = (explicit || fromPath).replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+    // Keep the suffix whole: a half-truncated one would read as part of the slug.
+    const full = base + '-' + suffix;
+    return (full.length <= 30 ? full : base.slice(0, 30)).replace(/-+$/, '');
+  }
   const WEARABLE_BADGES = [
     { name: 'Oura Ring',     label: 'Oura',   src: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png' },
     { name: 'Apple Health',  label: 'Apple',  src: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png' },
@@ -742,8 +765,9 @@
     constructor() { super(); this.attachShadow({ mode: 'open' }); }
 
     connectedCallback() {
+      ensureCta();
       this.render();
-      seoText(this, 'Download Kygo Health — evidence-first nutrition tracking connected to every wearable. Available free on iOS and Android. Works with Oura, Apple Health, Fitbit, Garmin, Whoop, and Health Connect.');
+      seoText(this, 'Kygo Health. Evidence-first nutrition tracking connected to every wearable. Start free on the web at app.kygo.app, on iPhone, or on Android, with one account and one plan across all three. Works with Oura, Apple Health, Fitbit, Garmin, Whoop, and Health Connect.');
     }
 
     // Contextual default copy keyed to the post's category slug / tags / URL
@@ -758,30 +782,35 @@
       if (has(/hrv|recovery|readiness|resting-heart|\bstress\b|whoop/)) {
         return {
           heading: 'Read the research.<br/><span class="hl">Track what moves YOUR HRV.</span>',
-          sub: 'Articles show you what the science says about HRV and recovery. Kygo shows you what your own body says — connect your wearable, log your meals, and see which habits actually move your numbers.'
+          sub: 'Articles show you what the science says about HRV and recovery. Kygo shows you what your own body says — connect your wearable, log your meals, and see which habits actually move your numbers.',
+          hook: 'Find out which of your own habits moves your HRV, and by how many milliseconds.'
         };
       }
       if (has(/sleep|\brem\b|deep-sleep|latency|insomnia|melatonin|circadian/)) {
         return {
           heading: 'Read the research.<br/><span class="hl">Find YOUR sleep disruptors.</span>',
-          sub: "Articles show you what the science says about sleep. Kygo shows you what your own body says — correlate your meals, caffeine, and alcohol with your sleep stages to find what's really keeping you up."
+          sub: "Articles show you what the science says about sleep. Kygo shows you what your own body says — correlate your meals, caffeine, and alcohol with your sleep stages to find what's really keeping you up.",
+          hook: 'See which of your evenings cost you deep sleep, and what to change tonight.'
         };
       }
       if (has(/calorie|accuracy|vo2|step-count|\bsensor\b|estimate|metabolism|tdee/)) {
         return {
           heading: 'Your wearable estimates.<br/><span class="hl">Kygo shows what the numbers mean.</span>',
-          sub: 'The numbers on your watch are estimates. Kygo connects them to what you actually eat, so you can see what those readings really mean for your energy, sleep, and recovery.'
+          sub: 'The numbers on your watch are estimates. Kygo connects them to what you actually eat, so you can see what those readings really mean for your energy, sleep, and recovery.',
+          hook: 'Turn the estimates on your wrist into changes you can act on this week.'
         };
       }
       if (has(/nutrition|food|meal|diet|protein|supplement|caffeine|alcohol|sugar|carb/)) {
         return {
           heading: 'Read the research.<br/><span class="hl">Log meals in seconds, see the effect.</span>',
-          sub: 'Articles show you what the science says about nutrition. Kygo makes it personal — log what you eat in seconds and watch how it moves your sleep, energy, HRV, and recovery.'
+          sub: 'Articles show you what the science says about nutrition. Kygo makes it personal — log what you eat in seconds and watch how it moves your sleep, energy, HRV, and recovery.',
+          hook: 'Log a week of meals and find the foods that are quietly costing you sleep and energy.'
         };
       }
       return {
         heading: 'Read the research.<br/><span class="hl">Live the results.</span>',
-        sub: 'Articles show you what the science says. Kygo shows you what your body says. Connect your wearable, log your meals, and see the personal correlations hiding in your own data.'
+        sub: 'Articles show you what the science says. Kygo shows you what your body says. Connect your wearable, log your meals, and see the personal correlations hiding in your own data.',
+        hook: 'Your own data already holds the answer. Kygo is what reads it back to you.'
       };
     }
 
@@ -789,9 +818,9 @@
       const ctx = this._contextCopy();
       const heading = this.getAttribute('heading')    || ctx.heading;
       const sub = this.getAttribute('subheading') || ctx.sub;
-      const iosUrl     = this.getAttribute('ios-url')     || APP_IOS;
-      const androidUrl = this.getAttribute('android-url') || APP_ANDROID;
-      const pill       = this.getAttribute('pill-text')   || 'iOS & Android';
+      const hook = (this.getAttribute('hook') || ctx.hook).replace(/"/g, '&quot;');
+      const slug = postSlug(this, 'end');
+      const pill = this.getAttribute('pill-text') || 'iPhone, Android, and web';
 
       this.shadowRoot.innerHTML = `
         <style>
@@ -896,15 +925,8 @@
               <div class="platform-pill"><span class="d"></span> ${pill}</div>
               <h2 id="cta-heading">${heading}</h2>
               <p>${sub}</p>
-              <div class="btns">
-                <a class="btn cta-primary" href="${iosUrl}" data-track-position="post-end" data-track-label="post-cta-ios" target="_blank" rel="noopener">
-                  ${svg('apple', 18)} Download for iOS
-                </a>
-                <a class="btn cta-android" href="${androidUrl}" data-action="android-download" data-track-position="post-end" data-track-label="post-cta-android" target="_blank" rel="noopener">
-                  ${svg('playstore', 18)} Download for Android
-                </a>
-              </div>
-              <p style="margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
+              <kygo-cta theme="dark" slug="${slug}" surface="blog" hook="${hook}"
+                note="Free plan available on web or in the app. Save 58% on yearly. Cancel anytime."></kygo-cta>
               <div class="works">
                 <span class="works-label">Works with</span>
                 <div class="dots">
@@ -938,16 +960,17 @@
   class KygoBlogPostInlineCta extends HTMLElement {
     constructor() { super(); this.attachShadow({ mode: 'open' }); }
 
-    connectedCallback() { this.render(); }
+    connectedCallback() { ensureCta(); this.render(); }
 
     render() {
       const heading = this.getAttribute('heading') ||
         'See how your food affects your <span class="hl">sleep, energy, and recovery</span>';
       const sub = this.getAttribute('subheading') ||
         'Kygo connects your wearable data with AI-powered nutrition tracking—then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.';
-      const pill       = this.getAttribute('pill-text')   || 'Free Forever Plan';
-      const iosUrl     = this.getAttribute('ios-url')     || APP_IOS;
-      const androidUrl = this.getAttribute('android-url') || APP_ANDROID;
+      const pill = this.getAttribute('pill-text') || 'Free Forever Plan';
+      const hook = (this.getAttribute('hook') ||
+        'Keep reading, then let your own data answer the same question for you.').replace(/"/g, '&quot;');
+      const slug = postSlug(this, 'mid');
 
       this.shadowRoot.innerHTML = `
         <style>
@@ -1023,21 +1046,12 @@
           .trust span { display: inline-flex; align-items: center; gap: 4px; }
           .trust svg { width: 11px; height: 11px; color: var(--green); }
         </style>
-        <aside class="card" role="complementary" aria-label="Download the Kygo app">
+        <aside class="card" role="complementary" aria-label="Start using Kygo">
           <span class="pill">${pill}</span>
           <h3>${heading}</h3>
           <p>${sub}</p>
-          <div class="btns">
-            <a class="btn ios cta-primary" href="${iosUrl}" data-track-position="mid" data-track-label="post-inline-ios" target="_blank" rel="noopener">
-              ${svg('apple', 16)} Download for iOS
-            </a>
-            <a class="btn android cta-android" href="${androidUrl}" data-action="android-download" data-track-position="mid" data-track-label="post-inline-android" target="_blank" rel="noopener">
-              ${svg('playstore', 16)} Download for Android
-            </a>
-          </div>
-          <div class="trust">
-            <span>Free plan available. Save 58% on yearly. Cancel anytime.</span>
-          </div>
+          <kygo-cta theme="dark" slug="${slug}" surface="blog" hook="${hook}"
+            note="Free plan available on web or in the app. Save 58% on yearly. Cancel anytime."></kygo-cta>
         </aside>
       `;
     }

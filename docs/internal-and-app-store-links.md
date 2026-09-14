@@ -13,6 +13,25 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 
 ## 1. App-store / app-download links
 
+> **Web-platform pass (2026-09-14).** Kygo now runs on the web at **app.kygo.app** as well as
+> iOS and Android, and every in-page conversion CTA goes through the shared **`<kygo-cta>`**
+> element (`kygo-cta.js`). That element, not the page, owns the destinations:
+>
+> | Visitor | Primary destination |
+> |---|---|
+> | Desktop | `https://app.kygo.app/signup?utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` (store buttons secondary) |
+> | iOS device | `https://apps.apple.com/app/apple-store/id6749870589?pt=128052235&ct=<slug>&mt=8` (`ct` capped at 30 chars) |
+> | Android device | `https://play.google.com/store/apps/details?id=com.ryanobzud.foodhealthtracker&referrer=<url-encoded utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>>` |
+>
+> Phones also get a plain "or use Kygo on the web" link to the same signup URL. `surface` is one
+> of `home` / `blog` / `tool` / `faq`; the header and footer use `header` / `footer` with
+> `utm_campaign=nav`. The **Tenjin** links below are still the store destination in the mobile
+> nav menu, the footer Product column, and in the 48 existing blog posts until
+> `scripts/migrate-blog-ctas.js` is run.
+>
+> **Web app links:** `https://app.kygo.app` (product), `https://app.kygo.app/login` (header
+> "Log in"), `https://app.kygo.app/signup` (every "Start free" path).
+
 > **Store CTAs now use Tenjin attribution links (swapped 7/14 header/footer/home,
 > 7/15 everything else).** Every **user-clickable** store button/link — sub-nav "Get Kygo App",
 > early/mid/late CTA blocks, footer CTA blocks, blog-post CTA, how-it-works CTAs, FAQ answer

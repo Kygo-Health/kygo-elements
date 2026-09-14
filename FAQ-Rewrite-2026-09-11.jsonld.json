@@ -17,7 +17,7 @@
       "name": "What is Kygo Health?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Kygo is a food logging app that connects what you eat to what your wearable measures. You log meals by photo, voice, barcode or text, Kygo pulls sleep, HRV, resting heart rate and recovery from your Oura, Apple Watch, Fitbit, Garmin, WHOOP or Android Health Connect device, and after about a week it starts showing you which foods and nutrients are helping or hurting each metric. It runs on iOS and Android. See how it works at https://www.kygo.app/how-it-works."
+        "text": "Kygo is a food logging app that connects what you eat to what your wearable measures. You log meals by photo, voice, barcode or text, Kygo pulls sleep, HRV, resting heart rate and recovery from your Oura, Apple Watch, Fitbit, Garmin, WHOOP or Android Health Connect device, and after about a week it starts showing you which foods and nutrients are helping or hurting each metric. It runs on iPhone, Android and the web at https://app.kygo.app, with one account across all three. See how it works at https://www.kygo.app/how-it-works."
       }
     },
     {
@@ -57,7 +57,23 @@
       "name": "Does Kygo work on Android and iPhone?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Both. Food logging, every direct wearable integration and the correlation engine work identically on iOS and Android. Two things are iPhone only because of Apple's rules: Apple Health sync and Sign in with Apple. Android users get Health Connect instead."
+        "text": "Both, plus the web. Food logging, every direct wearable integration and the correlation engine work identically on iOS, Android and app.kygo.app. Two things are iPhone only because of Apple's rules: Apple Health sync and Sign in with Apple. Android users get Health Connect instead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is there a web version of Kygo?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Kygo runs in your browser at https://app.kygo.app with the same account you use on your phone. Log meals, connect wearables and read your correlations on a full-size screen. Anything you log in one place shows up in the others, because iOS, Android and web are one product rather than three."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need the phone app?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only for Apple Health. That connection lives inside the iOS app, because Apple allows HealthKit access there and nowhere else. Everything else works in the browser: Oura, Garmin, Fitbit and WHOOP connect on the web at https://app.kygo.app, and so do food logging, every trend screen and the correlation engine."
       }
     },
     {
@@ -153,7 +169,7 @@
       "name": "What does Pro cost and what does it add?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Pro is $9.99 a month, $49.99 a year (about 58% less than paying monthly), or $99.99 once for lifetime access. Pro unlocks the correlation engine and every metric's helping and hurting foods, Experiments, the daily factor spotlight, supplement tracking, unlimited AI photo logging, and nutrition write-back to Apple Health and Health Connect. Introductory offers on the yearly plan vary; the app shows you the current one before you commit. Full breakdown at https://www.kygo.app/post/what-is-kygo-health-app-features-pricing."
+        "text": "Pro is $9.99 a month, $49.99 a year (about 58% less than paying monthly), or $99.99 once for lifetime access. You can start a plan on the web or in the app; the price is the same either way. Pro unlocks the correlation engine and every metric's helping and hurting foods, Experiments, the daily factor spotlight, supplement tracking, unlimited AI photo logging, and nutrition write-back to Apple Health and Health Connect. Introductory offers on the yearly plan vary; the app shows you the current one before you commit. Full breakdown at https://www.kygo.app/post/what-is-kygo-health-app-features-pricing."
       }
     },
     {
@@ -161,7 +177,7 @@
       "name": "Is there a free trial, and do I need a card to start?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No card is needed to download and use the free plan. Pro offers on the yearly plan rotate (a free trial period or a reduced first payment), and whatever is running is shown in the app before you subscribe. Nothing is charged until you confirm through the App Store or Google Play."
+        "text": "No card is needed to start on the free plan, on the web or in the app. Pro offers on the yearly plan rotate (a free trial period or a reduced first payment), and whatever is running is shown in the app before you subscribe. Nothing is charged until you confirm through the App Store or Google Play."
       }
     },
     {
@@ -214,10 +230,10 @@
     },
     {
       "@type": "Question",
-      "name": "Where do I download Kygo, and what are the free tools?",
+      "name": "Where do I get Kygo, and what are the free tools?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Kygo Health is on the App Store at https://kygo.app/iOS and Google Play at https://kygo.app/android. Separately, kygo.app hosts 25 free research tools, no signup required, covering wearable accuracy, sleep, HRV and more at https://www.kygo.app/tools."
+        "text": "Kygo runs in the browser at https://app.kygo.app, and the app is on the App Store at https://kygo.app/iOS and Google Play at https://kygo.app/android. Separately, kygo.app hosts 25 free research tools, no signup required, covering wearable accuracy, sleep, HRV and more at https://www.kygo.app/tools."
       }
     }
   ]

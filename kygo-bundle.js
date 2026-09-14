@@ -37,6 +37,19 @@ function __revealOnScroll(els) {
   return io;
 }
 
+/** Loads the shared <kygo-cta> element on demand. The homepage sections render
+ *  it inside their shadow roots, and Wix embeds this bundle on its own, so the
+ *  element definition has to come along rather than be assumed present. */
+function __ensureKygoCta() {
+  if (customElements.get('kygo-cta')) return;
+  if (document.querySelector('script[data-kygo-cta-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+  s.setAttribute('data-kygo-cta-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
 /* ========================================
    1. KYGO HERO SECTION
    Tag: kygo-hero-section
@@ -47,9 +60,10 @@ class KygoHeroSection extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
   connectedCallback() {
+    __ensureKygoCta();
     this.render();
     this.setupEvents();
-    __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. The free iOS app connects nutrition data with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch to reveal food-body correlations. AI photo logging identifies meals in seconds from over 5 million foods. Unlike MyFitnessPal or Lose It, Kygo shows how what you eat impacts deep sleep, HRV, resting heart rate, and recovery \u2014 not just calorie totals. Correlations appear after 7 days of logging. Free forever plan available.');
+    __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. Kygo runs on iOS, Android, and the web at app.kygo.app, with one account and one plan across all three. The free app connects nutrition data with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch to reveal food-body correlations. AI photo logging identifies meals in seconds from over 5 million foods. Unlike MyFitnessPal or Lose It, Kygo shows how what you eat impacts deep sleep, HRV, resting heart rate, and recovery \u2014 not just calorie totals. Correlations appear after 7 days of logging. Free forever plan available.');
     // No structured-data injection here: the homepage Organization + SoftwareApplication
     // JSON-LD is the single source of truth in the Wix head (see docs/wix-global-code.md,
     // Blocks 2 & 3). This component previously injected duplicate, stale copies.
@@ -270,18 +284,11 @@ class KygoHeroSection extends HTMLElement {
             <!-- Left column: copy + CTAs -->
             <div class="hero-copy">
               <h1>See how your food affects your <span class="highlight">sleep, energy, and recovery</span></h1>
-              <p class="hero-subheadline">Kygo connects your wearables with nutrition tracking to reveal personalized correlations, so you can stop guessing and start understanding your body.</p>
+              <p class="hero-subheadline">Kygo connects your wearables with nutrition tracking to reveal personalized correlations, so you can stop guessing and start understanding your body. On iOS, Android, and web.</p>
               <div class="cta-group-top">
-                <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" class="cta-primary" data-track-position="early" data-track-label="home-hero-ios">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="early" data-track-label="home-hero-android">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Get it on Android
-                </a>
+                <kygo-cta slug="home-hero" surface="home" align="left" note=""></kygo-cta>
               </div>
-              <p class="risk-reversal">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free plan available&nbsp;&nbsp;•&nbsp;&nbsp;Cancel anytime</p>
+              <p class="risk-reversal">Two minute setup&nbsp;&nbsp;•&nbsp;&nbsp;Free plan available on web or in the app&nbsp;&nbsp;•&nbsp;&nbsp;Cancel anytime</p>
             </div>
 
             <!-- Right column: animated phone -->
@@ -711,6 +718,7 @@ class KygoInsightsSteps extends HTMLElement {
     this.animationObserver = null;
   }
   connectedCallback() {
+    __ensureKygoCta();
     this.render();
     this.setupAnimations();
     __seo(this, 'How Kygo works: Step 1 \u2014 Log your food with AI photo scanning. Step 2 \u2014 Sync your wearable data automatically. Step 3 \u2014 Discover how food affects your sleep, HRV, energy, and recovery.');
@@ -905,14 +913,7 @@ class KygoInsightsSteps extends HTMLElement {
             </div>
           </div>
           <div class="steps-cta">
-            <a href="https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy" target="_blank" rel="noopener" class="cta-primary" aria-label="Download Kygo on the App Store" data-track-position="bottom" data-track-label="home-insights-ios">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-              <span>Download for iOS</span>
-            </a>
-            <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" aria-label="Download Kygo on Google Play" data-track-position="bottom" data-track-label="home-insights-android">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-              <span>Download for Android</span>
-            </a>
+            <kygo-cta slug="home-how-it-works" surface="home" note=""></kygo-cta>
           </div>
         </div>
       </section>
@@ -1538,10 +1539,11 @@ class KygoInlineCta extends HTMLElement {
     this._observer = null;
   }
   connectedCallback() {
+    __ensureKygoCta();
     this._parseWixAttributes();
     this.render();
     this._setupReveal();
-    __seo(this, 'Your patterns are already in your data. Go find them. Download Kygo Health free — 2-minute setup, every wearable connected (Oura, WHOOP, Apple Watch, Garmin, Fitbit), and first correlations in about 7 days. Available for iOS and Android.');
+    __seo(this, 'Your patterns are already in your data. Go find them. Start Kygo free on the web at app.kygo.app, or on iPhone and Android. 2-minute setup, every wearable connected (Oura, WHOOP, Apple Watch, Garmin, Fitbit), and first correlations in about 7 days. One account and one plan cover iOS, Android, and web.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
@@ -1583,8 +1585,6 @@ class KygoInlineCta extends HTMLElement {
     });
   }
   render() {
-    const appStoreUrl = this._getSetting('app-store-url', 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy');
-    const androidUrl = this._getSetting('android-url', 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO');
     this.shadowRoot.innerHTML = `
       <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -1625,14 +1625,7 @@ class KygoInlineCta extends HTMLElement {
             </div>
           </div>
           <div class="band-btns">
-            <a class="cta-primary" href="${appStoreUrl}" target="_blank" rel="noopener noreferrer" data-action="ios-download" data-track-position="testimonials-inline" data-track-label="home-inline-ios">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.9c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.7-.8-2.9-.8-1.5 0-2.9.9-3.7 2.2-1.6 2.7-.4 6.8 1.1 9 .7 1.1 1.6 2.3 2.8 2.2 1.1 0 1.5-.7 2.9-.7 1.3 0 1.7.7 2.9.7 1.2 0 2-1.1 2.7-2.2.8-1.2 1.2-2.4 1.2-2.5-.1 0-2.2-.9-2.2-3.4zM14.2 5.6c.6-.7 1-1.7.9-2.7-.9 0-2 .6-2.6 1.3-.6.6-1.1 1.7-.9 2.6 1 .1 2-.5 2.6-1.2z"/></svg>
-              Download for iOS
-            </a>
-            <a class="cta-android" href="${androidUrl}" target="_blank" rel="noopener" data-action="android-download" data-track-position="testimonials-inline" data-track-label="home-inline-android">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-              Get it on Android
-            </a>
+            <kygo-cta slug="home-band" surface="home" note=""></kygo-cta>
           </div>
         </div>
       </section>
@@ -1753,6 +1746,7 @@ class KygoFinalCta extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
   connectedCallback() {
+    __ensureKygoCta();
     this.render();
     this._observer = __revealOnScroll(this.shadowRoot.querySelector('.final-cta'));
     __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
@@ -1761,7 +1755,6 @@ class KygoFinalCta extends HTMLElement {
     if (this._observer) this._observer.disconnect();
   }
   render() {
-    const appStoreUrl = this.getAttribute('app-store-url') || 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
     this.shadowRoot.innerHTML = `
       <style>
         :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;--green:#22C55E;--green-dark:#16A34A;line-height:1.6;-webkit-font-smoothing:antialiased}
@@ -1806,14 +1799,7 @@ class KygoFinalCta extends HTMLElement {
               <h2>Your wearable tracks it. <span>Kygo explains it.</span></h2>
               <p>Log meals in seconds and Kygo connects them to your sleep, HRV, and energy, so you finally see what works for you.</p>
               <div class="cta-buttons">
-                <a href="${appStoreUrl}" class="cta-primary" data-track-position="footer-cta" data-track-label="home-footer-ios" target="_blank" rel="noopener noreferrer">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Get Kygo
-                </a>
-                <a href="https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="home-footer-android">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
+                <kygo-cta theme="dark" slug="home-final" surface="home" note="Free plan available on web or in the app. No card to start. Cancel anytime."></kygo-cta>
               </div>
               <div class="cta-works">
                 <span>Works with</span>
@@ -1837,6 +1823,96 @@ class KygoFinalCta extends HTMLElement {
 customElements.define('kygo-final-cta', KygoFinalCta);
 
 /* ========================================
+   KYGO WORKS EVERYWHERE
+   Tag: kygo-works-everywhere
+   Three platform tiles (iPhone, Android, Web) plus the one-account,
+   one-plan line. Sits between the feature sections and the final CTA.
+======================================== */
+class KygoWorksEverywhere extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    __ensureKygoCta();
+    this.render();
+    this._io = __revealOnScroll(Array.from(this.shadowRoot.querySelectorAll('.we-reveal')));
+    __seo(this, 'Kygo works everywhere. iPhone: log by photo, voice, or barcode and connect Apple Health for Apple Watch sleep, HRV, and recovery. Android: the same logging and correlations, with Health Connect for Samsung, Google Fit, and Pixel Watch. Web at app.kygo.app: log and read your correlations on a full-size screen, and connect Oura, Garmin, Fitbit, and WHOOP straight from the browser with nothing to install. One account and one plan cover all three, so what you log on one shows up on the others.');
+  }
+  disconnectedCallback() {
+    if (this._io) this._io.disconnect();
+  }
+  render() {
+    const tiles = [
+      {
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10.5 18.5h3"/></svg>',
+        name: 'iPhone',
+        line: 'Log by photo, voice, or barcode, and pull Apple Watch sleep, HRV, and recovery in through Apple Health.'
+      },
+      {
+        icon: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>',
+        name: 'Android',
+        line: 'The same logging and the same correlations, with Health Connect covering Samsung, Google Fit, and Pixel Watch.'
+      },
+      {
+        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>',
+        name: 'Web',
+        line: 'Read your correlations on a full-size screen at app.kygo.app, and connect Oura, Garmin, Fitbit, and WHOOP right in the browser.'
+      }
+    ].map(t => `
+      <article class="we-tile we-reveal">
+        <span class="we-icon">${t.icon}</span>
+        <h3>${t.name}</h3>
+        <p>${t.line}</p>
+      </article>`).join('');
+
+    this.shadowRoot.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :host{--dark:#1E293B;--light:#F8FAFC;--green:#22C55E;--green-dark:#16A34A;--gray-600:#475569;--border:#E2E8F0;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--light);color:var(--dark);line-height:1.6}
+        .we{padding:clamp(56px,7vw,88px) 20px}
+        .container{max-width:1100px;margin:0 auto}
+        .we-head{text-align:center;max-width:640px;margin:0 auto 40px}
+        .we-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.1);color:var(--green-dark);border:1px solid rgba(34,197,94,.25);padding:6px 14px;border-radius:999px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;margin-bottom:16px}
+        .we-pill .dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+        h2{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:clamp(26px,4vw,40px);line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+        h2 span{color:var(--green)}
+        .we-sub{color:var(--gray-600);font-size:clamp(15px,1.8vw,17px)}
+        .we-grid{display:grid;grid-template-columns:1fr;gap:16px}
+        @media(min-width:768px){.we-grid{grid-template-columns:repeat(3,1fr);gap:20px}}
+        .we-tile{background:#fff;border:1px solid var(--border);border-radius:18px;padding:26px 22px;opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease,border-color .2s ease,box-shadow .2s ease}
+        .we-tile.reveal{opacity:1;transform:none}
+        .we-tile:hover{border-color:rgba(34,197,94,.4);box-shadow:0 12px 28px -18px rgba(15,23,42,.4)}
+        .we-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:rgba(34,197,94,.1);color:var(--green-dark);margin-bottom:14px}
+        .we-icon svg{width:22px;height:22px}
+        .we-tile h3{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:19px;margin-bottom:8px}
+        .we-tile p{color:var(--gray-600);font-size:15px;line-height:1.6}
+        .we-note{margin-top:28px;text-align:center;color:var(--gray-600);font-size:15px;line-height:1.6}
+        .we-note b{color:var(--dark);font-weight:600}
+        .we-cta{margin-top:24px;display:flex;justify-content:center}
+        @media(prefers-reduced-motion:reduce){.we-tile{opacity:1;transform:none;transition:none}}
+      </style>
+      <section class="we">
+        <div class="container">
+          <div class="we-head we-reveal">
+            <div class="we-pill"><span class="dot"></span> Works everywhere</div>
+            <h2>Your data follows you, <span>phone to browser</span></h2>
+            <p class="we-sub">Start on whichever screen is in front of you. Kygo keeps the same food log, the same wearable connections, and the same correlations on all of them.</p>
+          </div>
+          <div class="we-grid">${tiles}</div>
+          <p class="we-note we-reveal"><b>One account and one plan cover all three.</b> Sign up once and iPhone, Android, and the web app are included, so nothing is bought twice and nothing has to be re-entered.</p>
+          <div class="we-cta">
+            <kygo-cta slug="home-platforms" surface="home" note="Free plan available on web or in the app. No card to start."></kygo-cta>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+}
+customElements.define('kygo-works-everywhere', KygoWorksEverywhere);
+
+/* ========================================
    KYGO HOME (single-embed wrapper)
    Tag: kygo-home
    Renders all homepage sections in order so the page needs only ONE Wix
@@ -1847,7 +1923,8 @@ customElements.define('kygo-final-cta', KygoFinalCta);
    Each child also gets id=tag so in-page anchors (e.g. the hero's
    "See how it works" → #kygo-insights-steps) resolve within the light DOM.
    Page order: Hero → Stats → Why Kygo → How it works → Correlations →
-   Features Users Love → Testimonials → Inline CTA → FAQ → Final CTA → Founder.
+   Features Users Love → Testimonials → Inline CTA → Works Everywhere → FAQ →
+   Final CTA → Founder.
 ======================================== */
 class KygoHome extends HTMLElement {
   connectedCallback() {
@@ -1863,6 +1940,7 @@ class KygoHome extends HTMLElement {
       'kygo-founder',
       'kygo-testimonials',
       'kygo-inline-cta',
+      'kygo-works-everywhere',
       'kygo-faq',
       'kygo-final-cta'
     ].forEach(tag => {

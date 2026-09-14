@@ -32,6 +32,25 @@ Guidance for working in this repo. Read this before editing or creating componen
   custom header/footer. Lives in the Wix editor (Settings → Custom Code), mirrored here with a
   link/tracking/schema audit.
 
+## The shared CTA element (`kygo-cta.js`)
+
+Every conversion CTA on the site is **`<kygo-cta slug="…" surface="home|blog|tool|faq" hook="…">`**
+(`kygo-cta.js`). It owns the destinations: desktop visitors get **app.kygo.app/signup** with
+`utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` and store buttons secondary; iOS
+and Android visitors get their own store with attribution (`ct` capped at 30 chars, Play install
+referrer) plus a small "or use Kygo on the web" link. It fires Mixpanel `cta_clicked`
+`{slug, surface, destination}` and mirrors it as a `kygo-cta-click` CustomEvent.
+
+- **Do** use it for any new CTA and give each placement its own `slug` and its own `hook` (the
+  topic-matched line on the reader's payoff). **Never** reuse a hook across posts or pages.
+- It renders the button cluster only, no card chrome, so it drops into an existing dark card
+  (`theme="dark"`) or a hero (`align="left"`) as-is.
+- Components that render it inside their own shadow root call a local `__ensureKygoCta()` helper
+  that script-loads `kygo-cta.js` from GitHub Pages — copy that helper into any new file that
+  embeds the element, since Wix loads each component file on its own.
+- **Don't** hand-write store anchors in new components, and don't say "download our app". Kygo
+  runs on iOS, Android, and web.
+
 ## What this repo is
 
 A flat collection of **standalone vanilla-JS Web Components** (custom elements) that power

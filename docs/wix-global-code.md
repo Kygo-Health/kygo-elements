@@ -93,7 +93,7 @@ These are the repo-wide canonical values (see `internal-and-app-store-links.md`,
       "alternateName": "Kygo Health App",
       "description": "Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body responds—including sleep quality, HRV, energy, and recovery.",
       "applicationCategory": "HealthApplication",
-      "operatingSystem": "iOS",
+      "operatingSystem": "iOS, Android, Web",
       "url": "https://kygo.app",
       "downloadUrl": "https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589",
       "screenshot": "https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png",
@@ -117,6 +117,19 @@ These are the repo-wide canonical values (see `internal-and-app-store-links.md`,
         "Patent-pending correlation technology"
       ],
       "keywords": "nutrition tracking, wearable integration, health correlations, sleep tracking, HRV, Oura Ring app, Apple Health, food logging, personalized nutrition, health insights"
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://app.kygo.app/#webapp",
+      "name": "Kygo",
+      "url": "https://app.kygo.app",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Any modern web browser",
+      "browserRequirements": "Requires JavaScript",
+      "description": "The Kygo web app. Log meals, connect Oura, Garmin, Fitbit and WHOOP, and read your food-to-sleep, HRV and recovery correlations in the browser, on the same account as the iPhone and Android apps.",
+      "isPartOf": { "@id": "https://www.kygo.app/#software" },
+      "author": { "@id": "https://www.kygo.app/#organization" },
+      "offers": "(same Offer list as the SoftwareApplication entity)"
     },
     {
       "@type": "WebSite",
@@ -163,9 +176,11 @@ Fixed top nav rendered into `<div id="kygo-header-root">` by an IIFE. Key facts:
 
 - **Logo** → `https://www.kygo.app/` · asset = canonical logo. Wordmark: `KYGO HEALTH`.
 - **Nav links:** `/how-it-works`, `/faq`, `/blog`, `/tools`, **`/contact-8`**.
-- **iOS CTA** → `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy` (Tenjin → App Store, `target=_blank`).
-- **Android CTA** → `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO` (Tenjin → Play Store).
-- Mobile menu mirrors the same links + both download CTAs; hamburger toggles via global
+- **Log in** → `https://app.kygo.app/login` (secondary text link, right-aligned).
+- **Start free** → `https://app.kygo.app/signup?utm_source=kygo.app&utm_medium=header&utm_campaign=nav`.
+  This replaced the desktop iOS/Android store buttons in the web-platform pass (2026-09-14).
+- Mobile menu carries Log in, "Start free on the web", and both store CTAs
+  (Tenjin iOS `…/cD7zgIPLuiZMMWmWkXLsvy`, Tenjin Android `…/eMjS3ZkseCvs2lO9AVESkO`); hamburger toggles via global
   `toggleKygoMobile()` / `closeKygoMobile()`; scroll adds `.scrolled` shadow to `#kygo-nav`.
 - `z-index: 99999`; `.kygo-nav-spacer` (70px) offsets the fixed bar.
 
@@ -178,9 +193,9 @@ Dark footer rendered into `<div id="kygo-footer-root">` by an IIFE. Key facts:
   Reddit `https://www.reddit.com/user/KygoApp/` · X `https://x.com/KygoApp`.
   *(These are the only place social URLs appear — not in any component. Recorded here as canonical.)*
 - **Contact:** `Jersey City, NJ` · email **`ryan@kygo.app`** (`mailto:`).
-- **Product col:** `/how-it-works`, `/faq`, iOS (Tenjin link), Android (Tenjin link).
+- **Product col:** `/how-it-works`, `/faq`, **Web app** (`app.kygo.app/signup?…utm_medium=footer&utm_campaign=nav`), iPhone app (Tenjin link), Android app (Tenjin link).
 - **Resources col:** `/blog`, `/tools`, **`/contact-8`**.
-- **CTA col:** iOS (Tenjin link) + Android (Tenjin link) buttons.
+- **CTA col:** "Start free on the web" (`app.kygo.app/signup`, primary) + iPhone (Tenjin) + Android (Tenjin).
 - **Legal:** `/privacy-policy`, `/terms-conditions`, `/accessibility-statement`. ✅ matches fixes #3.
 - **Disclaimer:** "© **2025** by KYGO Health LLC … not intended to diagnose, treat, cure, or prevent
   any disease … consult your physician."
