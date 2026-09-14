@@ -767,7 +767,7 @@
     connectedCallback() {
       ensureCta();
       this.render();
-      seoText(this, 'Kygo Health. Evidence-first nutrition tracking connected to every wearable. Start free on the web at app.kygo.app, on iPhone, or on Android, with one account and one plan across all three. Works with Oura, Apple Health, Fitbit, Garmin, Whoop, and Health Connect.');
+      seoText(this, 'Kygo Health. Evidence-first nutrition tracking connected to every wearable. Start on the web at app.kygo.app, on iPhone, or on Android, with one account and one plan across all three. Works with Oura, Apple Health, Fitbit, Garmin, Whoop, and Health Connect.');
     }
 
     // Contextual default copy keyed to the post's category slug / tags / URL

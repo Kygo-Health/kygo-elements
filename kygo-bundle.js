@@ -1543,7 +1543,7 @@ class KygoInlineCta extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupReveal();
-    __seo(this, 'Your patterns are already in your data. Go find them. Start Kygo free on the web at app.kygo.app, or on iPhone and Android. 2-minute setup, every wearable connected (Oura, WHOOP, Apple Watch, Garmin, Fitbit), and first correlations in about 7 days. One account and one plan cover iOS, Android, and web.');
+    __seo(this, 'Your patterns are already in your data. Go find them. Start Kygo on the web at app.kygo.app, or on iPhone and Android. 2-minute setup, every wearable connected (Oura, WHOOP, Apple Watch, Garmin, Fitbit), and first correlations in about 7 days. One account and one plan cover iOS, Android, and web.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
@@ -1870,7 +1870,7 @@ class KygoWorksEverywhere extends HTMLElement {
       <style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :host{--dark:#1E293B;--light:#F8FAFC;--green:#22C55E;--green-dark:#16A34A;--gray-600:#475569;--border:#E2E8F0;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--light);color:var(--dark);line-height:1.6}
+        :host{--dark:#1E293B;--light:#F8FAFC;--green:#22C55E;--green-dark:#16A34A;--gray-600:#475569;--border:#E2E8F0;display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:var(--dark);line-height:1.6}
         .we{padding:clamp(56px,7vw,88px) 20px}
         .container{max-width:1100px;margin:0 auto}
         .we-head{text-align:center;max-width:640px;margin:0 auto 40px}
@@ -1881,9 +1881,9 @@ class KygoWorksEverywhere extends HTMLElement {
         .we-sub{color:var(--gray-600);font-size:clamp(15px,1.8vw,17px)}
         .we-grid{display:grid;grid-template-columns:1fr;gap:16px}
         @media(min-width:768px){.we-grid{grid-template-columns:repeat(3,1fr);gap:20px}}
-        .we-tile{background:#fff;border:1px solid var(--border);border-radius:18px;padding:26px 22px;opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease,border-color .2s ease,box-shadow .2s ease}
+        .we-tile{background:var(--light);border:1px solid var(--border);border-radius:18px;padding:26px 22px;opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease,border-color .2s ease,box-shadow .2s ease}
         .we-tile.reveal{opacity:1;transform:none}
-        .we-tile:hover{border-color:rgba(34,197,94,.4);box-shadow:0 12px 28px -18px rgba(15,23,42,.4)}
+        .we-tile:hover{background:#fff;border-color:rgba(34,197,94,.4);box-shadow:0 12px 28px -18px rgba(15,23,42,.4)}
         .we-icon{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:rgba(34,197,94,.1);color:var(--green-dark);margin-bottom:14px}
         .we-icon svg{width:22px;height:22px}
         .we-tile h3{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:19px;margin-bottom:8px}

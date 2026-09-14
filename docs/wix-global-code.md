@@ -177,9 +177,9 @@ Fixed top nav rendered into `<div id="kygo-header-root">` by an IIFE. Key facts:
 - **Logo** → `https://www.kygo.app/` · asset = canonical logo. Wordmark: `KYGO HEALTH`.
 - **Nav links:** `/how-it-works`, `/faq`, `/blog`, `/tools`, **`/contact-8`**.
 - **Log in** → `https://app.kygo.app/login` (secondary text link, right-aligned).
-- **Start free** → `https://app.kygo.app/signup?utm_source=kygo.app&utm_medium=header&utm_campaign=nav`.
+- **Start Kygo** → `https://app.kygo.app/signup?utm_source=kygo.app&utm_medium=header&utm_campaign=nav`.
   This replaced the desktop iOS/Android store buttons in the web-platform pass (2026-09-14).
-- Mobile menu carries Log in, "Start free on the web", and both store CTAs
+- Mobile menu carries Log in, "Start on the web", and both store CTAs
   (Tenjin iOS `…/cD7zgIPLuiZMMWmWkXLsvy`, Tenjin Android `…/eMjS3ZkseCvs2lO9AVESkO`); hamburger toggles via global
   `toggleKygoMobile()` / `closeKygoMobile()`; scroll adds `.scrolled` shadow to `#kygo-nav`.
 - `z-index: 99999`; `.kygo-nav-spacer` (70px) offsets the fixed bar.
@@ -195,7 +195,7 @@ Dark footer rendered into `<div id="kygo-footer-root">` by an IIFE. Key facts:
 - **Contact:** `Jersey City, NJ` · email **`ryan@kygo.app`** (`mailto:`).
 - **Product col:** `/how-it-works`, `/faq`, **Web app** (`app.kygo.app/signup?…utm_medium=footer&utm_campaign=nav`), iPhone app (Tenjin link), Android app (Tenjin link).
 - **Resources col:** `/blog`, `/tools`, **`/contact-8`**.
-- **CTA col:** "Start free on the web" (`app.kygo.app/signup`, primary) + iPhone (Tenjin) + Android (Tenjin).
+- **CTA col:** "Start on the web" (`app.kygo.app/signup`, primary) + iPhone (Tenjin) + Android (Tenjin).
 - **Legal:** `/privacy-policy`, `/terms-conditions`, `/accessibility-statement`. ✅ matches fixes #3.
 - **Disclaimer:** "© **2025** by KYGO Health LLC … not intended to diagnose, treat, cure, or prevent
   any disease … consult your physician."
