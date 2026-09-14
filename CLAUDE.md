@@ -36,9 +36,10 @@ Guidance for working in this repo. Read this before editing or creating componen
 
 Every conversion CTA on the site is **`<kygo-cta slug="…" surface="home|blog|tool|faq" hook="…">`**
 (`kygo-cta.js`). It owns the destinations: desktop visitors get **app.kygo.app/signup** with
-`utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` and store buttons secondary; iOS
-and Android visitors get their own store with attribution (`ct` capped at 30 chars, Play install
-referrer) plus a small "or use Kygo on the web" link. It fires Mixpanel `cta_clicked`
+`utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>`; iOS and Android visitors get
+their own store with attribution (`ct` capped at 30 chars, Play install referrer) plus a small
+"or use Kygo on the web" link. Only one primary button ever shows: the other platforms sit
+behind an "or get the app" disclosure. It fires Mixpanel `cta_clicked`
 `{slug, surface, destination}` and mirrors it as a `kygo-cta-click` CustomEvent.
 
 - **Do** use it for any new CTA and give each placement its own `slug` and its own `hook` (the

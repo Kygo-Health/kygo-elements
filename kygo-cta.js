@@ -23,6 +23,10 @@
  *   Android  primary  -> Play Store with an encoded install referrer.
  *   Phones also get a plain "or use Kygo on the web" link to app.kygo.app.
  *
+ * Layout: one primary button matched to the device, with the other platforms
+ * folded behind an "or get the app" disclosure, so the primary path is the only
+ * loud one and the alternatives are one click away rather than competing.
+ *
  * Analytics: fires Mixpanel `cta_clicked` with {slug, surface, destination} on
  * every button click, and mirrors the same payload as a bubbling `kygo-cta-click`
  * CustomEvent so Wix Velo and GA4 can listen without a second wiring pass.
@@ -140,7 +144,19 @@ class KygoCta extends HTMLElement {
   }
 
   _onClick(e) {
-    const link = e.composedPath().filter(n => n.nodeType === 1 && n.tagName === 'A')[0];
+    const path = e.composedPath().filter(n => n.nodeType === 1);
+
+    // The disclosure holding the other platforms.
+    const toggle = path.filter(n => n.classList && n.classList.contains('toggle'))[0];
+    if (toggle) {
+      const panel = this.shadowRoot.getElementById(toggle.getAttribute('aria-controls'));
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      if (panel) panel.hidden = open;
+      return;
+    }
+
+    const link = path.filter(n => n.tagName === 'A')[0];
     if (!link || !link.dataset.destination) return;
     const payload = { slug: this._slug, surface: this._surface, destination: link.dataset.destination };
     const mp = this._mixpanel();
@@ -161,7 +177,7 @@ class KygoCta extends HTMLElement {
   _seoText() {
     const hook = this._getSetting('hook', '');
     return (hook ? hook + ' ' : '') +
-      'Start free on the web at https://app.kygo.app/signup, or get Kygo on iPhone and Android. ' +
+      'Start on the web at https://app.kygo.app/signup, or get Kygo on iPhone and Android. ' +
       'One account and one plan cover iOS, Android and web.';
   }
 
@@ -179,20 +195,32 @@ class KygoCta extends HTMLElement {
     const web = (cls, label, icon) =>
       `<a class="${cls}" href="${this._webUrl('/signup')}" data-destination="web" target="_blank" rel="noopener">${icon}${label}</a>`;
     const ios = (cls) =>
-      `<a class="${cls}" href="${this._iosUrl}" data-destination="ios" target="_blank" rel="noopener">${apple}${cls.indexOf('primary') > -1 ? 'Start free on iPhone' : 'iPhone'}</a>`;
+      `<a class="${cls}" href="${this._iosUrl}" data-destination="ios" target="_blank" rel="noopener">${apple}${cls.indexOf('primary') > -1 ? 'Start on iPhone' : 'iPhone'}</a>`;
     const play = (cls) =>
-      `<a class="${cls}" href="${this._androidUrl}" data-destination="android" target="_blank" rel="noopener">${android}${cls.indexOf('primary') > -1 ? 'Start free on Android' : 'Android'}</a>`;
+      `<a class="${cls}" href="${this._androidUrl}" data-destination="android" target="_blank" rel="noopener">${android}${cls.indexOf('primary') > -1 ? 'Start on Android' : 'Android'}</a>`;
 
-    let buttons, webLink = '';
+    // One primary button matched to the visitor's device, with the other
+    // platforms folded behind a disclosure so the primary path stays the loud
+    // one. Desktop gets web first and "or get the app" over the two stores;
+    // a phone gets its own store first, the web link in plain sight (the spec's
+    // requirement), and the other platform's store behind the same toggle.
+    let primary, toggleLabel, more, webLink = '';
     if (platform === 'ios') {
-      buttons = ios('btn primary') + play('btn secondary');
+      primary = ios('btn primary');
+      toggleLabel = 'also on Android';
+      more = play('btn secondary');
       webLink = `<a class="weblink" href="${this._webUrl('/signup')}" data-destination="web" target="_blank" rel="noopener">or use Kygo on the web</a>`;
     } else if (platform === 'android') {
-      buttons = play('btn primary') + ios('btn secondary');
+      primary = play('btn primary');
+      toggleLabel = 'also on iPhone';
+      more = ios('btn secondary');
       webLink = `<a class="weblink" href="${this._webUrl('/signup')}" data-destination="web" target="_blank" rel="noopener">or use Kygo on the web</a>`;
     } else {
-      buttons = web('btn primary', 'Start free on the web', globe) + ios('btn secondary') + play('btn secondary');
+      primary = web('btn primary', 'Start on the web', globe);
+      toggleLabel = 'or get the app';
+      more = ios('btn secondary') + play('btn secondary');
     }
+    const panelId = 'kygo-cta-more-' + this._slug;
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -209,13 +237,21 @@ class KygoCta extends HTMLElement {
         .btn.secondary{background:${theme === 'dark' ? 'rgba(255,255,255,.08)' : '#fff'};color:${theme === 'dark' ? '#fff' : 'var(--dark)'};border:1px solid ${theme === 'dark' ? 'rgba(255,255,255,.22)' : '#E2E8F0'}}
         .btn.secondary:hover{border-color:var(--green);color:${theme === 'dark' ? '#fff' : 'var(--green-dark)'};transform:translateY(-1px)}
         .btn:focus-visible{outline:2px solid ${theme === 'dark' ? '#fff' : 'var(--green-dark)'};outline-offset:3px}
+        .toggle{display:inline-flex;align-items:center;gap:6px;background:none;border:0;padding:0;cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;color:${theme === 'dark' ? '#6EE7A0' : 'var(--green-dark)'};text-decoration:underline;text-underline-offset:3px}
+        .toggle svg{width:14px;height:14px;transition:transform .2s ease}
+        .toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+        .toggle:focus-visible{outline:2px solid ${theme === 'dark' ? '#fff' : 'var(--green-dark)'};outline-offset:3px;border-radius:4px}
+        .more{display:flex;flex-wrap:wrap;gap:12px;justify-content:${align === 'left' ? 'flex-start' : 'center'};width:100%}
+        .more[hidden]{display:none}
         .weblink{font-size:14px;font-weight:600;text-decoration:underline;text-underline-offset:3px;color:${theme === 'dark' ? '#6EE7A0' : 'var(--green-dark)'}}
         .note{font-size:13px;line-height:1.5;color:${theme === 'dark' ? 'rgba(255,255,255,.72)' : 'var(--gray-400)'}}
         @media(max-width:560px){.btn{width:100%}}
       </style>
       <div class="cta">
         ${hook ? `<p class="hook">${hook}</p>` : ''}
-        <div class="btns">${buttons}</div>
+        <div class="btns">${primary}</div>
+        <button class="toggle" type="button" aria-expanded="false" aria-controls="${panelId}">${toggleLabel}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="more" id="${panelId}" hidden>${more}</div>
         ${webLink}
         ${note ? `<p class="note">${note}</p>` : ''}
       </div>`;
