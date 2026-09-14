@@ -118,7 +118,6 @@ class KygoBlog extends HTMLElement {
 
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
-    if (this._resizeObserver) this._resizeObserver.disconnect();
   }
 
   _parseWixAttributes() {
@@ -287,9 +286,9 @@ class KygoBlog extends HTMLElement {
   _handleCategoryClick(slug) {
     if (slug === this._activeSlug) return;
     this._activeSlug = slug;
-    // The chip row is genuinely sticky now, so a mid-page filter would leave the
-    // reader stranded in the middle of a list that just changed under them.
-    // Only pull back to the top of the results if they had scrolled past it.
+    // Filtering from further down the page would strand the reader in the middle
+    // of a list that just changed under them, so pull back to the chip row — but
+    // only if they had already scrolled past it.
     const nav = this.shadowRoot.querySelector('.category-tabs');
     const past = nav ? nav.getBoundingClientRect().top <= 0 : false;
     this.render();
@@ -486,8 +485,7 @@ class KygoBlog extends HTMLElement {
               <input class="search-input" type="search" autocomplete="off"
                      placeholder="Search articles" aria-label="Search articles" />
             </div>
-          </div>
-          <div class="category-tabs-scroller">
+            <div class="category-tabs-scroller">
             <div class="category-tabs-inner" role="tablist">
               ${tabs.map(t => `
                 <button
@@ -498,6 +496,7 @@ class KygoBlog extends HTMLElement {
                   ${esc(t.label)}<span class="tab-count">${t.count}</span>
                 </button>
               `).join('')}
+            </div>
             </div>
           </div>
         </div>
@@ -583,19 +582,24 @@ class KygoBlog extends HTMLElement {
         .category-tabs {
           background: #fff;
           border-bottom: 1px solid var(--gray-200);
-          position: sticky;
-          top: 0;
-          z-index: 30;
         }
+        /* One grid owns the label, the search box and the chip row, so each
+           breakpoint can place them without any of them tucking under another. */
         .category-tabs-top {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-areas:
+            'search'
+            'chips';
+          row-gap: 10px;
           padding-top: 14px;
         }
+        .category-tabs-label { grid-area: label; }
+        .search-box { grid-area: search; }
+        .category-tabs-scroller { grid-area: chips; }
         .search-box {
           position: relative;
-          flex: 0 0 auto;
+          min-width: 0;
         }
         .search-icon {
           position: absolute;
@@ -636,6 +640,7 @@ class KygoBlog extends HTMLElement {
         .category-tabs-scroller {
           position: relative;
           margin: 0 -20px;
+          min-width: 0;
         }
         .category-tabs-inner { padding-left: 20px; padding-right: 20px; }
         .category-tabs-scroller::after {
@@ -859,7 +864,7 @@ class KygoBlog extends HTMLElement {
           gap: 12px;
           margin-bottom: 20px;
           position: sticky;
-          top: var(--tabs-h, 104px);
+          top: 0;
           z-index: 10;
           background: var(--light);
           padding: 10px 0;
@@ -1017,14 +1022,15 @@ class KygoBlog extends HTMLElement {
           .blog-header { padding: 36px 0 22px; }
           .blog-header h1 { font-size: 36px; }
           .blog-header .subtitle { font-size: 16px; }
-          .category-tabs-label { display: block; }
+          .category-tabs-label { display: block; align-self: center; }
           .category-tabs-top {
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
+            grid-template-columns: minmax(0, 1fr) 260px;
+            grid-template-areas:
+              'label search'
+              'chips chips';
+            column-gap: 20px;
+            row-gap: 12px;
           }
-          .search-box { width: 260px; }
           .category-tabs-scroller { margin: 0 -28px; }
           .category-tabs-inner { gap: 10px; padding: 0 28px 16px; }
           .category-tab { padding: 9px 18px; font-size: 14px; }
@@ -1077,10 +1083,23 @@ class KygoBlog extends HTMLElement {
           .blog-header { padding: 44px 0 26px; }
           .blog-header h1 { font-size: 44px; }
           .hero-band { padding: 28px 0 52px; }
-          /* Enough room for every chip: wrap instead of scroll, drop the bleed and fade. */
+          /* Enough room for every chip: wrap instead of scroll, drop the bleed and fade.
+             Search takes its own column so no chip ever runs underneath it. */
+          .category-tabs-top {
+            grid-template-columns: minmax(0, 1fr) 280px;
+            grid-template-areas:
+              'label search'
+              'chips search';
+            column-gap: 28px;
+            row-gap: 10px;
+            align-items: start;
+            padding-top: 18px;
+          }
+          .search-box { align-self: center; }
           .category-tabs-scroller { margin: 0; }
-          .category-tabs-inner { flex-wrap: wrap; overflow-x: visible; padding: 0 0 16px; }
+          .category-tabs-inner { flex-wrap: wrap; gap: 8px; overflow-x: visible; padding: 0 0 18px; }
           .category-tabs-scroller::after { display: none; }
+          .category-tab { padding: 8px 14px; font-size: 13.5px; }
           .sections-band { padding: 48px 0 120px; }
 
           .featured-header-row { margin-bottom: 24px; }
@@ -1445,23 +1464,6 @@ class KygoBlog extends HTMLElement {
       });
     });
 
-    this._measureStickyOffset();
-  }
-
-  /**
-   * Category headings pin below the chip row, so the offset has to track the
-   * chip row's real height (one line vs. wrapped, mobile vs. desktop).
-   */
-  _measureStickyOffset() {
-    const nav = this.shadowRoot.querySelector('.category-tabs');
-    if (!nav) return;
-    const apply = () => this.style.setProperty('--tabs-h', `${Math.round(nav.offsetHeight)}px`);
-    apply();
-    if (this._resizeObserver) this._resizeObserver.disconnect();
-    if (typeof ResizeObserver === 'function') {
-      this._resizeObserver = new ResizeObserver(apply);
-      this._resizeObserver.observe(nav);
-    }
   }
 
   _setupScrollAnimations() {
