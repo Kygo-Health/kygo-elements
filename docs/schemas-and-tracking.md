@@ -162,8 +162,10 @@ which listens globally.
 `window.mixpanel`, falling back to `window.parent.mixpanel` (Wix renders custom elements inside
 an iframe) and doing nothing if neither exists, so the click is never blocked. The same payload
 also goes out as a bubbling, composed **`kygo-cta-click`** CustomEvent, which is how Velo or a
-GA4 bridge can pick it up without a second wiring pass. The element's anchors still carry the
-store hrefs that `kygo-tracking.js` classifies, so GA4 `cta_click` continues to fire alongside.
+GA4 bridge can pick it up without a second wiring pass. Each anchor also carries
+**`data-destination`**, which `classifyClick()` reads first, so GA4 `cta_click` fires alongside
+on every one of the three buttons — `web_signup` for the web, `ios_download` / `android_download`
+for the stores — labelled with the CTA's `slug` and positioned by its `surface`.
 
 **How it loads** (embedded once on the Wix page, alongside the components):
 ```html
@@ -202,12 +204,15 @@ subscribers only. (Watch that `cta_click` doesn't regress on pages where a subsc
 added — attention competition — but do not add any new GA4 event to measure it.)
 
 `cta_click` is bucketed by **`cta_category`**, derived in `classifyClick()` from the element's
-`data-action`, `href`, and CSS classes:
+`data-destination` (checked first, and set by every `<kygo-cta>` button), then its `data-action`,
+`href`, and CSS classes. A `<kygo-cta>` click takes its `cta_label` from the element's `slug` and
+its `position` from the element's `surface`:
 
 | `cta_category` | Trigger |
 |---|---|
-| `ios_download` | `data-action="ios-download"`, or `href` contains `apps.apple.com` **or the Tenjin iOS link `track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`**, or `.cta-primary` + apple href |
-| `android_download` | `data-action="android-download"`, `.cta-android`, or `href` contains `kygo.app/android` **or the Tenjin Android link `track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`** |
+| `ios_download` | **`data-destination="ios"` (any `<kygo-cta>` button)**, `data-action="ios-download"`, or `href` contains `apps.apple.com` **or the Tenjin iOS link `track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`**, or `.cta-primary` + apple href |
+| `android_download` | **`data-destination="android"`**, `data-action="android-download"`, `.cta-android`, or `href` contains **the Tenjin Android link `track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`** (what every `<kygo-cta>` Android button points at), `play.google.com` or `kygo.app/android` |
+| `web_signup` | **`data-destination="web"`** — the "Start on the web" button on every `<kygo-cta>`, pointing at `app.kygo.app/register` with UTMs |
 | `see_how_it_works` | `.cta-secondary` or label contains "how it works" |
 | `tool_interaction` | `data-action` = `calculate`/`compare`/`analyze`, or `.calculate-button` |
 | `header_cta` | `.header-cta` (nav "Get Kygo App") |

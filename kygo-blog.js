@@ -81,8 +81,6 @@ const FALLBACK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor
 const ALL_TAB = { slug: 'all', label: 'All Posts' };
 
 const PINNED_FEATURED_SLUG = 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device';
-const IOS_URL = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
-const ANDROID_URL = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
 
 // "Works with" brand-logo badges for the final CTA card (Wix media)
 const CTA_BADGES = {
@@ -94,6 +92,18 @@ const CTA_BADGES = {
   googleHealth: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
   healthConnect: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png',
 };
+
+/** Loads the shared kygo-cta element on demand. Wix embeds this file on its
+ *  own, so the CTA script has to come along rather than be assumed present. */
+function __ensureKygoCta() {
+  if (customElements.get('kygo-cta')) return;
+  if (document.querySelector('script[data-kygo-cta-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+  s.setAttribute('data-kygo-cta-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
 
 class KygoBlog extends HTMLElement {
   constructor() {
@@ -110,6 +120,7 @@ class KygoBlog extends HTMLElement {
   }
 
   connectedCallback() {
+    __ensureKygoCta();
     this._parseWixAttributes();
     this.render();
     this._renderSeo();
@@ -1216,67 +1227,32 @@ class KygoBlog extends HTMLElement {
           flex-wrap: wrap;
           width: 100%;
         }
-        .cta-primary,
-        .cta-android {
-          background: var(--green);
-          color: #fff;
-          padding: 14px 24px;
-          border-radius: 12px;
-          font-weight: 600;
-          font-size: 15px;
-          text-decoration: none;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-          border: none;
-          cursor: pointer;
-          font-family: inherit;
-          -webkit-tap-highlight-color: transparent;
-        }
-        .cta-primary:hover,
-        .cta-android:hover {
-          background: var(--green-dark);
-          transform: translateY(-2px);
-          box-shadow: 0 10px 30px rgba(34, 197, 94, 0.30);
-        }
-        .cta-primary:active,
-        .cta-primary:focus,
-        .cta-android:active,
-        .cta-android:focus {
-          outline: none;
-          transform: translateY(0);
-          box-shadow: 0 4px 15px rgba(34, 197, 94, 0.20);
-        }
-        .cta-primary svg,
-        .cta-android svg {
-          width: 18px;
-          height: 18px;
-        }
 
         /* Mid-content contextual app CTA (compact green card) */
         .kearly-section { padding: 48px 0; }
-        .kband { max-width: 1100px; margin: 0 auto; }
-        .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid var(--border-subtle, #E2E8F0); border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        .kband { max-width: 1100px; margin: 0 auto; container-type: inline-size; }
+        .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
         .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
-        .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 560px; }
-        .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--green-dark, #16A34A); }
-        .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green, #22C55E); animation: kygoPulse 2s ease-out infinite; }
-        .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 28px; line-height: 1.25; color: var(--dark, #1E293B); }
-        .kband-actions { position: relative; display: flex; gap: 12px; flex-shrink: 0; }
-        .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
-        .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
-        .kband-btn-ios { background: var(--green, #22C55E); color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
-        .kband-btn-ios:hover { background: var(--green-dark, #16A34A); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
-        .kband-btn-android { background: #fff; color: var(--green-dark, #16A34A); border: 2px solid var(--border-subtle, #E2E8F0); }
-        .kband-btn-android:hover { border-color: var(--green, #22C55E); transform: translateY(-2px); }
+        .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; flex: 1 1 300px; min-width: 0; max-width: 620px; }
+        .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
+        .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; flex-shrink: 0; }
+        .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px; line-height: 1.3; color: #1E293B; }
+        .kband-actions { position: relative; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; flex: 0 1 auto; min-width: min(440px, 100%); }
         @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
-        @media (max-width: 640px) {
+        /* The band stacks on its own width, not the viewport's: on Wix this
+           strip is sometimes laid out narrow inside a wide document, and a
+           viewport-only breakpoint leaves the buttons hanging off the card.
+           The media query stays as the fallback for browsers without
+           container queries. */
+        @media (max-width: 720px) {
           .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
-          .kband-actions { width: 100%; flex-direction: column; }
-          .kband-btn { width: 100%; justify-content: center; }
-          .kband-headline { font-size: 24px; }
+          .kband-copy { flex: none; max-width: 100%; }
+          .kband-actions { flex: none; width: 100%; min-width: 0; flex-direction: column; justify-content: flex-start; }
+        }
+        @container (max-width: 720px) {
+          .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+          .kband-copy { flex: none; max-width: 100%; }
+          .kband-actions { flex: none; width: 100%; min-width: 0; flex-direction: column; justify-content: flex-start; }
         }
         @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
         .cta-works {
@@ -1297,15 +1273,6 @@ class KygoBlog extends HTMLElement {
         .cta-chip-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); white-space: nowrap; }
         @media (max-width: 420px) { .cta-badges { gap: 4px; } .cta-chip-tile { width: 36px; height: 36px; } .cta-chip-label { font-size: 9.5px; } }
         @media (max-width: 360px) { .cta-badges { gap: 2px; } .cta-chip-tile { width: 28px; height: 28px; } .cta-chip-label { font-size: 7.5px; } }
-
-        @media (max-width: 480px) {
-          .cta-buttons { flex-direction: column; align-items: center; }
-          .cta-buttons .cta-primary,
-          .cta-buttons .cta-android {
-            width: 100%;
-            max-width: 280px;
-          }
-        }
 
         @media (min-width: 768px) {
           .final-cta { padding: 96px 0; }
@@ -1366,14 +1333,8 @@ class KygoBlog extends HTMLElement {
                   <h2 class="kband-headline">See how your food affects your sleep, energy &amp; recovery.</h2>
                 </div>
                 <div class="kband-actions">
-                  <a href="${IOS_URL}" class="kband-btn kband-btn-ios" data-track-position="mid" data-track-label="blog-mid-ios" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>
-                    Download for iOS
-                  </a>
-                  <a href="${ANDROID_URL}" class="kband-btn kband-btn-android" data-action="android-download" data-track-position="mid" data-track-label="blog-mid-android" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>
-                    Get Android
-                  </a>
+                  <kygo-cta compact slug="blog-mid" surface="blog"
+                    note="Free plan available on web or in the app. Cancel anytime."></kygo-cta>
                 </div>
               </div>
             </div>
@@ -1394,16 +1355,9 @@ class KygoBlog extends HTMLElement {
             <h2>Research talks averages. <span>Your body doesn't.</span></h2>
             <p>Kygo cross-checks your own wearable data against what you eat, train, and sleep, so you see what's actually true for you.</p>
             <div class="cta-buttons">
-              <a href="${IOS_URL}" class="cta-primary" data-track-position="footer-cta" data-track-label="blog-footer-ios" target="_blank" rel="noopener noreferrer">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                Download for iOS
-              </a>
-              <a href="${ANDROID_URL}" target="_blank" rel="noopener" class="cta-android" data-action="android-download" data-track-position="footer-cta" data-track-label="blog-footer-android">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                Download for Android
-              </a>
+              <kygo-cta theme="dark" slug="blog-footer" surface="blog"
+                note="Free plan available on web or in the app. No card to start. Cancel anytime."></kygo-cta>
             </div>
-            <p style="position:relative;margin:16px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.72);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
             <div class="cta-works">
               <span>Works with</span>
               <div class="cta-badges">

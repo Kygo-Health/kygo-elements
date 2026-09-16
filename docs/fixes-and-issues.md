@@ -173,6 +173,57 @@ All resolved in `kygo-blog.js` on this branch.
   conversion surface, not a bug); moving it below the first category section would be the next
   win if `/blog` still feels top-heavy.
 
+## 🆕 Fixed on branch `claude/busy-noether-kkvuxg` (2026-09)
+
+- **#D1 (P1) — ✅ RESOLVED. The thin `kband` band overflowed its card.** Its stack breakpoint
+  was a viewport media query, so wherever the band was laid out narrow inside a wide document
+  (Wix does this), the buttons kept their one-row layout and hung off the right edge of the
+  card. `kygo-cta.js` made the same assumption and forced `flex-wrap: nowrap` above 561px.
+  Both now respond to their own width: the band stacks on a `@container (max-width: 720px)`
+  query (media query kept as the fallback) and `.kband-actions` may shrink below 440px, while
+  `kygo-cta` measures its own button row once per render and stacks the primary above a two-up
+  row of the other platforms as soon as one row no longer fits, watching for changes with a
+  `ResizeObserver`.
+
+- **#D2 (P2) — ✅ RESOLVED. Three of the four thin bands were still iOS + Android only.**
+  `kygo-tools.js`, `kygo-blog.js` and `calories-custom-element.js` hand-wrote a Tenjin store
+  pair, so a desktop reader got two store buttons and no way to start on the web. All three now
+  render `<kygo-cta compact>` inside the same `.kband` shell as `/faq`, with slugs `tools-mid`,
+  `blog-mid` and `calories-early`. Dead `.kband-btn*` / `.kband-note` rules dropped from those
+  three files and from `kygo-faq-section.js`; the same dead CSS still sits unused in ~13 tool
+  components whose `kband` was retired earlier (harmless, not cleaned up here).
+
+- **#D3 (P2) — ✅ RESOLVED. Every remaining store-only CTA now offers the web.** The 25 tool-page
+  sub-navs render `<kygo-cta mini>` (three header pills, labels dropping away as the header
+  narrows); the `kygo-tools.js`, `kygo-blog.js` and `calories-custom-element.js` footer cards
+  render the full cluster (`theme="green"` on the calorie scanner's green card, where the filled
+  button has to go white); and all five `/how-it-works` CTAs are converted — hero, step 3 and
+  footer to the cluster, the two pricing plans to the new `single` variant, which renders the
+  visitor's own destination alone because a plan card is one action. No component hand-writes a
+  store anchor any more; the two **Tenjin** click URLs live in `kygo-cta.js` and nowhere else.
+
+- **#D4 (P2) — ✅ RESOLVED. `<kygo-cta>` never centred inside a host component.** Its width cap
+  and `margin: 0 auto` lived on `:host`, and a host component's own `*{margin:0}` reset outranks
+  `:host` rules whatever their specificity, so the cluster sat left inside every centred card on
+  the site. Both moved onto the inner `.cta`.
+
+- **#D5 (P2) — ✅ RESOLVED. GA4 stopped seeing most CTA clicks.** `classifyClick()` matched the
+  Tenjin and `apps.apple.com` hrefs, so a `<kygo-cta>` Play click (`play.google.com`) and every
+  web click fell through to a generic bucket. It now reads the `data-destination` each
+  `<kygo-cta>` button carries, files them as `ios_download` / `android_download` / `web_signup`,
+  and takes `cta_label` from the CTA's slug and `position` from its surface.
+
+- **#D6 (P2) — ✅ RESOLVED. `kygo-cta.js` was bypassing Tenjin.** It had always pointed its store
+  buttons at direct App Store (`pt`/`ct`) and Play (install referrer) URLs, so every CTA already
+  on the element was attributing outside Tenjin, and converting the rest of the site to it spread
+  that. Both getters now return the Tenjin click URLs (`TENJIN_IOS` / `TENJIN_ANDROID`, with
+  `ios-link` / `android-link` overrides), which restores Tenjin as the single system of record
+  for installs.
+
+- **#D7 (P3) — ✅ RESOLVED. `kygo-supplements-by-metric.js` carried a dead second CTA card.**
+  `_renderBigCta()` (a full dark conversion card with its own Tenjin buttons) was never called
+  from `render()`; it and its ~14 dead `.app-cta*` rules are gone.
+
 ## 🆕 Opened on branch `claude/standardize-blog-sections-1wo0ax` (2026-08)
 
 Found while standardising the blog cross-link section across every tool page. **None of these

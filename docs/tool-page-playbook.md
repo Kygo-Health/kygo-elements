@@ -77,12 +77,12 @@ Every tool page is the same spine. Sections **alternate backgrounds** `bg-light`
 with **no two adjacent the same**, and **each distinct content block is its own `<section>`**
 (don't stack two modules in one section — that was a fix on the VO2 accuracy tool).
 
-1. **Sticky nav** — brand (logo + short tool name) left; **two store buttons right** — a green
-   filled iOS button (`.nav-store-ios`) and a white-outline Android button (`.nav-store-android`),
-   wrapped in `.nav-cta-group`. This is the current standard; newer tools replaced the single
-   "Get Kygo Health →" link with the two buttons. Both hrefs use the **Tenjin** links (see §2.4),
-   the icons are the canonical store SVGs (§4), and the text labels hide below ~360px so only the
-   icons show.
+1. **Sticky nav** — brand (logo + short tool name) left; the CTA right:
+   **`<kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool">`** wrapped in
+   `.nav-cta-group`. It renders three header pills (the visitor's own platform filled, the other
+   two outlined), drops the secondary labels below 520px and every label below 360px. The old
+   hand-written `.nav-store-ios` / `.nav-store-android` Tenjin pair is **retired** — don't
+   reintroduce store anchors here.
 2. **Hero** — the **standard hero anatomy** (see §3 "Hero (the standard anatomy)"). Every tool
    page has all five parts: `hero-pill` kicker, `<h1>` with a green `.hl` span, a `hero-lede`,
    a **`hero-vis`** supporting visual, and a **`hero-stats`** strip of 4 numbers (2×2 mobile,

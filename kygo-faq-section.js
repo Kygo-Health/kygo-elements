@@ -618,28 +618,29 @@ class KygoFaqSection extends HTMLElement {
 
         /* Mid-content contextual app CTA (compact green card) */
         .kearly-section { max-width: 1040px; margin: 48px auto; padding: 0 20px; }
-        .kband { max-width: 1100px; margin: 0 auto; }
+        .kband { max-width: 1100px; margin: 0 auto; container-type: inline-size; }
         .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
         .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
         .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; flex: 1 1 300px; min-width: 0; max-width: 620px; }
         .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
-        .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
+        .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; flex-shrink: 0; }
         .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 21px; line-height: 1.3; color: #1E293B; }
-        .kband-actions { position: relative; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; flex: 0 0 auto; min-width: 440px; }
-        .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #475569; text-align: center; }
-        .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
-        .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
-        .kband-btn-ios { background: #22C55E; color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
-        .kband-btn-ios:hover { background: #16A34A; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
-        .kband-btn-android { background: #fff; color: #16A34A; border: 2px solid #E2E8F0; }
-        .kband-btn-android:hover { border-color: #22C55E; transform: translateY(-2px); }
+        .kband-actions { position: relative; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; flex: 0 1 auto; min-width: min(440px, 100%); }
         @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+        /* The band stacks on its own width, not the viewport's: on Wix this
+           strip is sometimes laid out narrow inside a wide document, and a
+           viewport-only breakpoint leaves the buttons hanging off the card.
+           The media query stays as the fallback for browsers without
+           container queries. */
         @media (max-width: 720px) {
           .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
-          .kband-actions { min-width: 0; }
           .kband-copy { flex: none; max-width: 100%; }
-          .kband-actions { flex: none; width: 100%; flex-direction: column; justify-content: flex-start; }
-          .kband-btn { width: 100%; justify-content: center; }
+          .kband-actions { flex: none; width: 100%; min-width: 0; flex-direction: column; justify-content: flex-start; }
+        }
+        @container (max-width: 720px) {
+          .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+          .kband-copy { flex: none; max-width: 100%; }
+          .kband-actions { flex: none; width: 100%; min-width: 0; flex-direction: column; justify-content: flex-start; }
         }
         @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
         .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; }

@@ -35,17 +35,36 @@ Guidance for working in this repo. Read this before editing or creating componen
 ## The shared CTA element (`kygo-cta.js`)
 
 Every conversion CTA on the site is **`<kygo-cta slug="…" surface="home|blog|tool|faq" hook="…">`**
-(`kygo-cta.js`). It owns the destinations: desktop visitors get **app.kygo.app/register** with
-`utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>`; iOS and Android visitors get
-their own store with attribution (`ct` capped at 30 chars, Play install referrer). All three
+(`kygo-cta.js`). It owns the destinations: the web button goes to **app.kygo.app/register** with
+`utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>`; both store buttons go through the
+**Tenjin** click URLs, which redirect to the App Store / Play and attribute the install. Tenjin
+is the system of record for installs, so those two URLs live in `kygo-cta.js` and nowhere else —
+direct `apps.apple.com` / `play.google.com` URLs belong in JSON-LD only. All three
 platforms stay on screen: the visitor's device takes the filled primary button, the other two
-follow as outline buttons, in a row on desktop and two-up under the primary on a phone. It fires Mixpanel `cta_clicked`
-`{slug, surface, destination}` and mirrors it as a `kygo-cta-click` CustomEvent.
+follow as outline buttons, on one row where there is room and two-up under the primary where
+there is not — measured from the element's own width, not the viewport. It fires Mixpanel
+`cta_clicked` `{slug, surface, destination}`, mirrors it as a `kygo-cta-click` CustomEvent, and
+each anchor carries `data-destination` so `kygo-tracking.js` files the click in GA4 as
+`ios_download` / `android_download` / `web_signup`.
+
+Variants, for placements the default cluster does not fit:
+
+| Attribute | Where | What it renders |
+|---|---|---|
+| `compact` | thin `kband` bands (`/faq`, `/tools`, `/blog`, the calorie scanner), the homepage inline band | the same three buttons, smaller |
+| `mini` | the tool-page sticky sub-nav | one nowrap row of header pills, no hook or note, labels dropping away as the header narrows |
+| `single` | a card whose whole point is one action (the `/how-it-works` pricing plans) | the visitor's own destination alone; takes `label`, `block` and `variant="outline"` |
+
+`single` is the one exception to "all three platforms on screen" — never use it for a page's
+main CTA. `theme="green"` is the palette for a Kygo-green card, where the filled button goes
+white.
 
 - **Do** use it for any new CTA and give each placement its own `slug` and its own `hook` (the
   topic-matched line on the reader's payoff). **Never** reuse a hook across posts or pages.
 - It renders the button cluster only, no card chrome, so it drops into an existing dark card
-  (`theme="dark"`) or a hero (`align="left"`) as-is.
+  (`theme="dark"`), a green card (`theme="green"`) or a hero (`align="left"`) as-is. Its width
+  cap lives on the inner `.cta`, not `:host`, because a host component's own `*{margin:0}` reset
+  outranks anything `:host` says.
 - Components that render it inside their own shadow root call a local `__ensureKygoCta()` helper
   that script-loads `kygo-cta.js` from GitHub Pages — copy that helper into any new file that
   embeds the element, since Wix loads each component file on its own.

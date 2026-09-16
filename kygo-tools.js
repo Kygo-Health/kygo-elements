@@ -5,6 +5,18 @@
  * Tools are configurable via the 'tools' attribute (JSON array).
  */
 
+/** Loads the shared kygo-cta element on demand. Wix embeds this file on its
+ *  own, so the CTA script has to come along rather than be assumed present. */
+function __ensureKygoCta() {
+  if (customElements.get('kygo-cta')) return;
+  if (document.querySelector('script[data-kygo-cta-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+  s.setAttribute('data-kygo-cta-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
 class KygoToolsPage extends HTMLElement {
   constructor() {
     super();
@@ -14,6 +26,7 @@ class KygoToolsPage extends HTMLElement {
   }
 
   connectedCallback() {
+    __ensureKygoCta();
     this._parseTools();
     this.render();
     this._setupEvents();
@@ -807,15 +820,7 @@ class KygoToolsPage extends HTMLElement {
         font-size: 14px; color: rgba(255,255,255,0.7);
         line-height: 1.55; margin: 0 auto 22px; max-width: 320px;
       }
-      .promo-buttons {
-        display: flex; flex-direction: column; gap: 10px;
-        margin: 0 auto 22px; max-width: 340px;
-      }
-      @media (min-width: 520px) {
-        .promo-buttons { flex-direction: row; justify-content: center; max-width: none; }
-        .promo-btn { min-width: 220px; }
-      }
-      .promo-btn {
+      .promo-buttons { display: flex; justify-content: center; margin: 0 auto 22px; }
         background: var(--green); color: #fff;
         border: none; border-radius: 12px;
         padding: 14px 16px;
@@ -824,40 +829,32 @@ class KygoToolsPage extends HTMLElement {
         box-shadow: 0 8px 20px rgba(34,197,94,0.25);
         text-decoration: none;
       }
-      .promo-btn svg { width: 18px; height: 18px; }
-      .promo-btn:hover { background: var(--green-dark); }
 
       /* Mid-content contextual app CTA (compact green card) */
       .kearly-section { margin: 48px auto; }
-      .kband { max-width: 1100px; margin: 0 auto; }
-      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid var(--border-subtle, #E2E8F0); border-radius: 20px; padding: 28px 36px; display: flex; align-items: center; justify-content: space-between; gap: 36px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+      .kband { max-width: 1100px; margin: 0 auto; container-type: inline-size; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
       .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
-      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-width: 0; }
-      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: var(--green-dark, #16A34A); }
-      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green, #22C55E); animation: kygoPulse 2s ease-out infinite; flex-shrink: 0; }
-      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 26px; line-height: 1.25; color: var(--dark, #1E293B); }
-      .kband-actions { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; flex: 0 0 auto; }
-      .kband-btns { display: flex; gap: 12px; }
-      .kband-note { margin: 0; max-width: 340px; font-size: 13px; line-height: 1.5; color: #475569; }
-      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 14px 22px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
-      .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
-      .kband-btn-ios { background: var(--green, #22C55E); color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
-      .kband-btn-ios:hover { background: var(--green-dark, #16A34A); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
-      .kband-btn-android { background: #fff; color: var(--green-dark, #16A34A); border: 2px solid var(--border-subtle, #E2E8F0); }
-      .kband-btn-android:hover { border-color: var(--green, #22C55E); transform: translateY(-2px); }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; flex: 1 1 300px; min-width: 0; max-width: 620px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; flex-shrink: 0; }
+      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 22px; line-height: 1.3; color: #1E293B; }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; flex: 0 1 auto; min-width: min(440px, 100%); }
       @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
-      @media (max-width: 820px) {
-        .kband-inner { flex-direction: column; align-items: flex-start; gap: 20px; }
-        .kband-actions { width: 100%; }
-        .kband-btns { flex-wrap: wrap; }
-        .kband-btn { flex: 1 1 auto; justify-content: center; }
-        .kband-note { max-width: none; }
+      /* The band stacks on its own width, not the viewport's: on Wix this
+         strip is sometimes laid out narrow inside a wide document, and a
+         viewport-only breakpoint leaves the buttons hanging off the card.
+         The media query stays as the fallback for browsers without
+         container queries. */
+      @media (max-width: 720px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+        .kband-copy { flex: none; max-width: 100%; }
+        .kband-actions { flex: none; width: 100%; min-width: 0; flex-direction: column; justify-content: flex-start; }
       }
-      @media (max-width: 640px) {
-        .kband-inner { padding: 26px 22px; gap: 18px; }
-        .kband-btns { flex-direction: column; }
-        .kband-note { text-align: center; }
-        .kband-headline { font-size: 22px; }
+      @container (max-width: 720px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+        .kband-copy { flex: none; max-width: 100%; }
+        .kband-actions { flex: none; width: 100%; min-width: 0; flex-direction: column; justify-content: flex-start; }
       }
       @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
       .works-with {
@@ -990,8 +987,6 @@ class KygoToolsPage extends HTMLElement {
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const appStoreUrl = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
-    const playStoreUrl = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
 
     const featured = this._featured();
     const grouped = this._groupedByCategory();
@@ -1045,11 +1040,8 @@ class KygoToolsPage extends HTMLElement {
                   <h2 class="kband-headline">See how your food affects your sleep, energy &amp; recovery.</h2>
                 </div>
                 <div class="kband-actions">
-                  <div class="kband-btns">
-                    <a class="kband-btn kband-btn-ios" href="${appStoreUrl}" data-track-position="mid" data-track-label="tools-mid-ios" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg> Download for iOS</a>
-                    <a class="kband-btn kband-btn-android" href="${playStoreUrl}" data-action="android-download" data-track-position="mid" data-track-label="tools-mid-android" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#22C55E" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg> Get Android</a>
-                  </div>
-                  <p class="kband-note">Free plan available. Save 58% on yearly. Cancel anytime.</p>
+                  <kygo-cta compact slug="tools-mid" surface="tool"
+                    note="Free plan available on web or in the app. Cancel anytime."></kygo-cta>
                 </div>
               </div>
             </div>
@@ -1069,14 +1061,13 @@ class KygoToolsPage extends HTMLElement {
           <div class="promo-wrap">
             <div class="promo">
               <div class="promo-inner">
-                <div class="promo-pill"><span class="d"></span> iOS & Android</div>
+                <div class="promo-pill"><span class="d"></span> iOS, Android &amp; web</div>
                 <h2>These tools are a snapshot.<br/><span class="hl">Kygo is the full picture.</span></h2>
                 <p>Connect your wearable. Log your meals. See how food affects your sleep, HRV, energy, and recovery.</p>
                 <div class="promo-buttons">
-                  <a class="promo-btn cta-primary" href="${appStoreUrl}" data-track-position="footer-cta" data-track-label="tools-footer-ios" target="_blank" rel="noopener">${this._getIcon('apple')} Download for iOS</a>
-                  <a class="promo-btn cta-android" href="${playStoreUrl}" data-action="android-download" data-track-position="footer-cta" data-track-label="tools-footer-android" target="_blank" rel="noopener">${this._getIcon('playstore')} Download for Android</a>
+                  <kygo-cta theme="dark" slug="tools-footer" surface="tool"
+                    note="Free plan available on web or in the app. No card to start. Cancel anytime."></kygo-cta>
                 </div>
-                <p style="position:relative;margin:14px auto 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,0.82);text-align:center;">Free plan available. Save 58% on yearly. Cancel anytime.</p>
                 <div class="works-with">
                   <span class="works-label">Works with</span>
                   <div class="works-dots">
