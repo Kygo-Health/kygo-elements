@@ -1610,10 +1610,12 @@ class KygoHrvFactors extends HTMLElement {
       /* ── Action board ── */
       .board-section { padding: 48px 0; background: var(--light); }
       .ab-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
-      .ab-col { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
-      .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); }
+      .ab-col { background: #fff; border: 1px solid #D4D4D8; border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
+      .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--gray-200); }
       .ab-head-ico { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex: none; color: #fff; }
       .ab-head-ico svg { width: 18px; height: 18px; }
+      .ab-col-more .ab-head { background: #F0FDF4; border-bottom-color: #DCFCE7; }
+      .ab-col-less .ab-head { background: #FEF2F2; border-bottom-color: #FEE2E2; }
       .ab-col-more .ab-head-ico { background: var(--green); }
       .ab-col-less .ab-head-ico { background: var(--red); }
       .ab-title { font-size: 19px; color: var(--dark); line-height: 1.2; }
