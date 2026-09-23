@@ -1610,44 +1610,42 @@ class KygoHrvFactors extends HTMLElement {
       /* ── Action board ── */
       .board-section { padding: 48px 0; background: #fff; }
       .ab-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
-      .ab-col { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: 0 8px 24px rgba(15,23,42,0.06); overflow: hidden; }
-      .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 18px 16px; border-bottom: 1px solid var(--gray-200); }
-      .ab-col-more .ab-head { background: linear-gradient(135deg, rgba(34,197,94,0.12), rgba(34,197,94,0.03)); }
-      .ab-col-less .ab-head { background: linear-gradient(135deg, rgba(239,68,68,0.10), rgba(239,68,68,0.02)); }
-      .ab-head-ico { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex: none; color: #fff; }
-      .ab-head-ico svg { width: 20px; height: 20px; }
+      .ab-col { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
+      .ab-head { display: flex; align-items: center; gap: 12px; padding: 20px 20px 16px; }
+      .ab-head-ico { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex: none; color: #fff; }
+      .ab-head-ico svg { width: 18px; height: 18px; }
       .ab-col-more .ab-head-ico { background: var(--green); }
       .ab-col-less .ab-head-ico { background: var(--red); }
-      .ab-title { font-size: 20px; color: var(--dark); }
-      .ab-sub { font-size: 13px; color: var(--gray-600); margin-top: 2px; }
-      .ab-list { list-style: none; padding: 6px 8px; }
+      .ab-title { font-size: 19px; color: var(--dark); line-height: 1.2; }
+      .ab-sub { font-size: 13px; color: var(--gray-400); margin-top: 2px; }
+      .ab-list { list-style: none; padding: 0 12px 4px; border-top: 1px solid var(--gray-100); }
       .ab-item + .ab-item { border-top: 1px solid var(--gray-100); }
       .ab-extra { display: none; }
       .ab-col.open .ab-extra { display: block; }
-      .ab-row { width: 100%; display: grid; grid-template-columns: 40px 1fr; column-gap: 12px; row-gap: 6px; align-items: center; padding: 12px 10px; background: none; border: 0; border-radius: 12px; text-align: left; font-family: inherit; color: inherit; cursor: pointer; transition: background .15s; }
+      .ab-row { width: 100%; display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; align-items: start; padding: 14px 8px; background: none; border: 0; border-radius: 12px; text-align: left; font-family: inherit; color: inherit; cursor: pointer; transition: background .15s; }
       .ab-row:hover { background: var(--gray-50); }
       .ab-row:focus-visible, .ab-toggle:focus-visible, .factor-header:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
-      .ab-ico { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; grid-row: span 2; align-self: start; }
-      .ab-ico svg { width: 20px; height: 20px; }
-      .ab-col-more .ab-ico { background: var(--green-light); color: var(--green-dark); }
-      .ab-col-less .ab-ico { background: rgba(239,68,68,0.1); color: #DC2626; }
+      .ab-ico { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--gray-50); border: 1px solid var(--gray-200); grid-row: span 2; }
+      .ab-ico svg { width: 19px; height: 19px; }
+      .ab-col-more .ab-ico { color: var(--green-dark); }
+      .ab-col-less .ab-ico { color: var(--red); }
       .ab-main { display: flex; flex-direction: column; min-width: 0; }
       .ab-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.3; }
-      .ab-dose { font-size: 13px; color: var(--gray-600); line-height: 1.4; }
-      .ab-side { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
-      .ab-result { display: inline-block; font-size: 12.5px; font-weight: 700; line-height: 1.3; padding: 3px 9px; border-radius: 8px; }
-      .ab-col-more .ab-result { color: var(--green-dark); background: var(--green-light); }
-      .ab-col-less .ab-result { color: #DC2626; background: rgba(239,68,68,0.08); }
-      .ab-ev { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; color: var(--gray-400); white-space: nowrap; }
-      .ab-ev-dot { width: 7px; height: 7px; border-radius: 50%; }
-      .ab-toggle { width: calc(100% - 16px); margin: 0 8px 10px; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 42px; border: 1px dashed var(--gray-300); border-radius: 12px; background: var(--gray-50); font: inherit; font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: border-color .2s, color .2s; }
-      .ab-toggle:hover { border-color: var(--green); color: var(--green-dark); }
+      .ab-dose { font-size: 13px; color: var(--gray-600); line-height: 1.45; }
+      .ab-side { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 6px; }
+      .ab-result { font-size: 12.5px; font-weight: 600; color: var(--dark); line-height: 1.35; }
+      .ab-ev { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 500; color: var(--gray-400); white-space: nowrap; }
+      .ab-ev-dot { width: 6px; height: 6px; border-radius: 50%; }
+      .ab-toggle { width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; border: 0; border-top: 1px solid var(--gray-100); background: #fff; font: inherit; font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: color .2s, background .2s; }
+      .ab-toggle:hover { color: var(--dark); background: var(--gray-50); }
       .ab-toggle svg { width: 16px; height: 16px; transition: transform .2s; }
       .ab-col.open .ab-toggle svg { transform: rotate(180deg); }
       .ab-foot { margin-top: 14px; font-size: 12.5px; color: var(--gray-400); text-align: center; max-width: 640px; margin-left: auto; margin-right: auto; }
       @media (min-width: 900px) {
         .board-section { padding: 64px 0; }
-        .ab-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+        .ab-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+        .ab-head { padding: 22px 24px 18px; }
+        .ab-list { padding: 0 16px 4px; }
       }
       @media (min-width: 1024px) { .board-section { padding: 80px 0; } }
 
