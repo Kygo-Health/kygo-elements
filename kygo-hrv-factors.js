@@ -1448,10 +1448,10 @@ class KygoHrvFactors extends HTMLElement {
           <div class="factor-cards">${this._renderFactorCards()}</div>
         </div>
       </section>
-      ${this._renderEmailCta()}
+      ${this._renderEmailCta('gray')}
 
       <!-- Sources -->
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedTools()}
 
       <section class="sources-section">
         <div class="container">
@@ -1484,7 +1484,7 @@ class KygoHrvFactors extends HTMLElement {
         </div>
       </footer>
 
-      ${this._renderRelatedPosts()}
+      ${this._renderRelatedPosts('gray')}
     `;
   }
 
@@ -1608,7 +1608,7 @@ class KygoHrvFactors extends HTMLElement {
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
       /* ── Action board ── */
-      .board-section { padding: 48px 0; background: #fff; }
+      .board-section { padding: 48px 0; background: var(--light); }
       .ab-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
       .ab-col { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
       .ab-head { display: flex; align-items: center; gap: 12px; padding: 20px 20px 16px; }
@@ -1650,7 +1650,7 @@ class KygoHrvFactors extends HTMLElement {
       @media (min-width: 1024px) { .board-section { padding: 80px 0; } }
 
       /* ── Explore Section ── */
-      .explore-section { padding: 48px 0 64px; }
+      .explore-section { padding: 48px 0 64px; background: #fff; }
 
       /* Sort bar */
       .sort-bar { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; }
@@ -1708,7 +1708,7 @@ class KygoHrvFactors extends HTMLElement {
       .factor-affiliate-arrow svg { width: 100%; height: 100%; }
 
       /* ── Sources ── */
-      .sources-section { padding: 48px 0; background: #fff; }
+      .sources-section { padding: 48px 0; background: var(--light); }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
@@ -1770,7 +1770,7 @@ class KygoHrvFactors extends HTMLElement {
       @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
 
       /* ── Footer ── */
-      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
+      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); background: #fff; }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
