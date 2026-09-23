@@ -1261,9 +1261,9 @@ class KygoHrvFactors extends HTMLElement {
   _appCta() {
     return {
       slug: 'hrv-factors',
-      hook: `Find out which of these factors moves your HRV, in milliseconds you can check.`,
-      headline: `These are averages. <span>Kygo finds yours.</span>`,
-      sub: `Every factor here moves HRV for someone. Kygo shows which ones move it for you, from your own wearable and food data.`
+      hook: '',
+      headline: `These are averages. <span>Your HRV has its own story.</span>`,
+      sub: `Kygo connects your wearable to what you eat and drink, then shows how your nutrition is moving your HRV and other metrics, ranked by how strong the link is.`
     };
   }
 
@@ -1323,10 +1323,10 @@ class KygoHrvFactors extends HTMLElement {
       <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
         <div class="kc-inner">
           <div class="kc-card animate-on-scroll">
-            <div class="kc-pill"><span class="kc-dot"></span> Free Forever Plan</div>
+            <div class="kc-pill"><span class="kc-dot"></span> 7-Day Free Trial</div>
             <h3 class="kc-h">${c.headline}</h3>
             <p class="kc-p">${c.sub}</p>
-            <kygo-cta theme="dark" slug="${c.slug}" surface="tool" hook="${c.hook}"
+            <kygo-cta theme="dark" slug="${c.slug}" surface="tool"${c.hook ? ` hook="${c.hook}"` : ''}
               note="Free plan available on web or in the app. Save 58% on yearly. Cancel anytime."></kygo-cta>
             <div class="kc-works">
               <span>Works with</span>
