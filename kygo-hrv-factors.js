@@ -889,7 +889,7 @@ class KygoHrvFactors extends HTMLElement {
             </span>
             <span class="ab-side">
               <span class="ab-result">${r.result}</span>
-              <span class="ab-ev"><span class="ab-ev-dot" style="background:${ev.color}"></span>${ev.label}</span>
+              <span class="ab-ev" title="${ev.label} evidence"><span class="ab-bars" data-lvl="${{ strong: 3, moderate: 2, emerging: 1 }[f.evidence] || 1}" aria-hidden="true"><i></i><i></i><i></i></span>${ev.label} evidence</span>
             </span>
           </button>
         </li>`;
@@ -1610,10 +1610,12 @@ class KygoHrvFactors extends HTMLElement {
       /* ── Action board ── */
       .board-section { padding: 48px 0; background: var(--light); }
       .ab-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
-      .ab-col { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
-      .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); }
+      .ab-col { background: #fff; border: 1px solid #D4D4D8; border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
+      .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--gray-200); }
       .ab-head-ico { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex: none; color: #fff; }
       .ab-head-ico svg { width: 18px; height: 18px; }
+      .ab-col-more .ab-head { background: #F0FDF4; border-bottom-color: #DCFCE7; }
+      .ab-col-less .ab-head { background: #FEF2F2; border-bottom-color: #FEE2E2; }
       .ab-col-more .ab-head-ico { background: var(--green); }
       .ab-col-less .ab-head-ico { background: var(--red); }
       .ab-title { font-size: 19px; color: var(--dark); line-height: 1.2; }
@@ -1634,8 +1636,14 @@ class KygoHrvFactors extends HTMLElement {
       .ab-dose { font-size: 13px; color: var(--gray-600); line-height: 1.45; }
       .ab-side { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 6px; }
       .ab-result { font-size: 12.5px; font-weight: 600; color: var(--dark); line-height: 1.35; }
-      .ab-ev { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 500; color: var(--gray-400); white-space: nowrap; }
-      .ab-ev-dot { width: 6px; height: 6px; border-radius: 50%; }
+      .ab-ev { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; color: var(--gray-400); white-space: nowrap; }
+      .ab-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 11px; }
+      .ab-bars i { width: 3px; border-radius: 1px; background: var(--gray-200); }
+      .ab-bars i:nth-child(1) { height: 5px; }
+      .ab-bars i:nth-child(2) { height: 8px; }
+      .ab-bars i:nth-child(3) { height: 11px; }
+      .ab-bars[data-lvl="1"] i:nth-child(-n+1), .ab-bars[data-lvl="2"] i:nth-child(-n+2), .ab-bars[data-lvl="3"] i { background: var(--gray-600); }
+      @media (max-width: 599px) { .ab-side { flex-direction: column; align-items: flex-start; gap: 3px; } }
       .ab-toggle { width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; border: 0; border-top: 1px solid var(--gray-100); background: #fff; font: inherit; font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: color .2s, background .2s; }
       .ab-toggle:hover { color: var(--dark); background: var(--gray-50); }
       .ab-toggle svg { width: 16px; height: 16px; transition: transform .2s; }
