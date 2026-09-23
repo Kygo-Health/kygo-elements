@@ -1,7 +1,7 @@
 /**
  * Kygo Health — HRV Factor Explorer
  * Tag: kygo-hrv-factors
- * Interactive tool exploring 44 research-backed factors that affect Heart Rate Variability across 5 categories
+ * Interactive tool exploring 43 research-backed factors that affect Heart Rate Variability across 5 categories
  */
 
 /** SEO helper — injects visible text outside Shadow DOM for crawlers */
@@ -36,7 +36,7 @@ class KygoHrvFactors extends HTMLElement {
     this._activeCategory = 'lifestyle';
     this._expandedFactor = null;
     this._expandedTopPick = null;
-    this._sortMode = 'default';
+    this._sortMode = 'evidence';
     this._eventsBound = false;
   }
 
@@ -46,7 +46,7 @@ class KygoHrvFactors extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'HRV Factor Explorer by Kygo Health. Explore 44 research-backed factors that affect Heart Rate Variability across 5 categories: Supplements, Lifestyle, Exercise, Micronutrients, and Demographics. Supplements include Ashwagandha Witholytin (RCT n=111), Ashwagandha Zenroot (RCT n=90), Probiotics, Polyphenols, Multivitamin, GABA (RCT n=30), L-Theanine, and Beetroot Juice (meta-analysis n=54). Lifestyle factors include Sleep Quality, Slow Breathing at 6 breaths per minute, Cold Exposure with 54-85% RMSSD increase, Meditation, HRV Biofeedback, Forest Bathing, Intermittent Fasting 16:8, Mediterranean Diet, Alcohol dose-dependent decrease, Smoking, THC Cannabis nocturnal decrease, Caffeine recovery delay, Chronic Stress, Sauna, Sexual Activity correlational, Altitude acute negative above 2500m, Caloric Restriction HRV 20 years younger, and Dehydration. Exercise modalities ranked by Yang et al 2024 Network Meta-Analysis of 29 RCTs: HIIT is number 1 for SDNN RMSSD and LF/HF ratio, Aerobic Endurance training, Resistance Training number 1 for HF power, Combined training, Yoga Mind-Body, and Overtraining risk. Micronutrients include Vitamin B12, Vitamin D, Magnesium, Omega-3 EPA DHA most studied dietary HRV factor, and Zinc. Demographics include Age strongest predictor, Sex and Gender, Genetics inconclusive, Circadian Rhythm, BMI Obesity, and Menstrual Cycle luteal phase HRV dip. Each factor shows evidence strength (Strong Moderate Emerging), direction of effect (Positive Negative Mixed), mechanism of action, dosage when applicable, and peer-reviewed citations. How to improve HRV naturally. What affects HRV. Best supplements for HRV. Data sourced from peer-reviewed studies and meta-analyses.');
+    __seo(this, 'HRV Factor Explorer by Kygo Health. Explore 43 research-backed factors that affect Heart Rate Variability across 5 categories: Supplements, Lifestyle, Exercise, Micronutrients, and Demographics. A Do More / Cut Back action board lists the changeable factors with strong or moderate evidence, each with the tested dose and measured result, such as sleep 7 to 9 hours, slow breathing 20 minutes a day at 6 breaths per minute, HIIT 2 to 3 sessions a week, omega-3 1 to 2 g daily, and cutting alcohol, which lowers RMSSD by 2 to 13 ms per dose level. Supplements include Ashwagandha Witholytin (RCT n=111), Ashwagandha Zenroot (RCT n=90), Probiotics, Polyphenols, Multivitamin, GABA (RCT n=30), L-Theanine, and Beetroot Juice (meta-analysis n=54). Lifestyle factors include Sleep Quality, Slow Breathing at 6 breaths per minute, Cold Exposure with 54-85% RMSSD increase, Meditation, HRV Biofeedback, Forest Bathing, Intermittent Fasting 16:8, Mediterranean Diet, Alcohol dose-dependent decrease, Smoking, THC Cannabis nocturnal decrease, Caffeine recovery delay, Chronic Stress, Sauna, Sexual Activity correlational, Altitude acute negative above 2500m, Caloric Restriction HRV 20 years younger, and Dehydration. Exercise modalities ranked by Yang et al 2024 Network Meta-Analysis of 29 RCTs: HIIT is number 1 for SDNN RMSSD and LF/HF ratio, Aerobic Endurance training, Resistance Training number 1 for HF power, Combined training, Yoga Mind-Body, and Overtraining risk. Micronutrients include Vitamin B12, Vitamin D, Magnesium, Omega-3 EPA DHA most studied dietary HRV factor, and Zinc. Demographics include Age strongest predictor, Sex and Gender, Genetics inconclusive, Circadian Rhythm, BMI Obesity, and Menstrual Cycle (cyclical, with a luteal phase HRV dip). Each factor shows evidence strength (Strong Moderate Emerging), direction of effect (Positive Negative Mixed), mechanism of action, dosage when applicable, and peer-reviewed citations. How to improve HRV naturally. What affects HRV. Best supplements for HRV. Data sourced from peer-reviewed studies and meta-analyses.');
   }
 
   disconnectedCallback() {
@@ -84,9 +84,9 @@ class KygoHrvFactors extends HTMLElement {
       supplements: [
         {
           key: 'ashwa-witholytin', name: 'Ashwagandha (Witholytin)',
-          direction: 'positive', evidence: 'strong',
+          direction: 'positive', evidence: 'moderate',
           effect: 'Positive (RMSSD)',
-          keyFinding: 'Strong — RCT, n=111, 12 weeks',
+          keyFinding: 'Held RMSSD steady under stress (RCT, n=111)',
           whatThisMeans: "Didn't boost HRV itself but stopped it from dropping like placebo did. Also cut fatigue nearly in half.",
           mechanism: 'Adaptogenic withanolides modulate cortisol and reduce sympathetic overdrive, preserving vagal tone under stress.',
           dosage: '200 mg twice daily (Witholytin extract)',
@@ -97,7 +97,7 @@ class KygoHrvFactors extends HTMLElement {
           key: 'ashwa-zenroot', name: 'Ashwagandha (Zenroot)',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (transient)',
-          keyFinding: 'Moderate — RCT, n=90, 84 days',
+          keyFinding: 'Early HRV bump that faded (RCT, n=90)',
           whatThisMeans: 'Quick early bump in HRV that faded. Stress and anxiety kept improving though, so still useful for mood.',
           mechanism: 'Initial vagal stimulation via cortisol reduction; tolerance may develop for HRV-specific effects.',
           dosage: '500 mg daily (Zenroot KSM-66 extract)',
@@ -108,7 +108,7 @@ class KygoHrvFactors extends HTMLElement {
           key: 'probiotics', name: 'Probiotics',
           direction: 'positive', evidence: 'emerging',
           effect: 'Positive (emerging)',
-          keyFinding: 'Moderate — emerging data',
+          keyFinding: 'Better HRV markers in hypertensive women',
           whatThisMeans: 'Your gut talks to your brain via the vagus nerve. Specific strains (L. paracasei LPC-37, L. rhamnosus HN001, L. acidophilus NCFM, B. lactis HN019) reduced inflammation markers that correlated with better HRV in hypertensive women. Higher gut microbial diversity is also associated with higher SDNN.',
           mechanism: 'Probiotic-driven colonization produces SCFAs (butyrate, acetate, propionate) that reduce inflammation and engage the vagus nerve. Higher gut microbial diversity associated with higher SDNN.',
           dosage: 'Multi-strain, CFU counts vary by product',
@@ -119,7 +119,7 @@ class KygoHrvFactors extends HTMLElement {
           key: 'polyphenols', name: 'Polyphenols',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (HF power)',
-          keyFinding: 'Moderate — mechanistic + limited',
+          keyFinding: 'Anti-inflammatory; limited human HRV data',
           whatThisMeans: 'Colorful plant compounds (berries, dark chocolate, green tea) fight inflammation, which helps your nervous system relax.',
           mechanism: 'Antioxidant and anti-inflammatory effects reduce oxidative stress on cardiac autonomic neurons.',
           dosage: 'Dietary sources preferred; supplements vary widely',
@@ -129,7 +129,7 @@ class KygoHrvFactors extends HTMLElement {
           key: 'multivitamin', name: 'Multivitamin',
           direction: 'positive', evidence: 'moderate',
           effect: 'Protective (prevents decline)',
-          keyFinding: 'Moderate/Weak — 1 RCT',
+          keyFinding: 'Slowed HRV decline (1 RCT, dialysis patients)',
           whatThisMeans: 'Like Ashwagandha Witholytin, it protected HRV from declining rather than actively raising it. Evidence is from a single RCT on hemodialysis patients, not healthy adults, so take it with a grain of salt.',
           mechanism: 'Corrects subclinical micronutrient deficiencies that impair autonomic nerve function.',
           dosage: 'Standard daily multivitamin',
@@ -140,7 +140,7 @@ class KygoHrvFactors extends HTMLElement {
           key: 'gaba', name: 'GABA',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (parasympathetic)',
-          keyFinding: 'Moderate — RCT, n=30, 90 days',
+          keyFinding: 'Shifted toward rest mode (RCT, n=30)',
           whatThisMeans: "The brain's main 'calm down' chemical. Supplementing shifted the nervous system toward rest-and-recover mode.",
           mechanism: 'GABAergic inhibition of central sympathetic outflow shifts autonomic balance toward parasympathetic dominance.',
           dosage: '100–200 mg daily',
@@ -151,7 +151,7 @@ class KygoHrvFactors extends HTMLElement {
           key: 'l-theanine', name: 'L-Theanine',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (attenuates sympathetic)',
-          keyFinding: 'Moderate — multiple studies',
+          keyFinding: 'Blunts the acute stress response',
           whatThisMeans: 'The calming amino acid in green tea. Lowers cortisol and takes the edge off your fight-or-flight response.',
           mechanism: 'Crosses blood-brain barrier, increases alpha waves and GABA, reduces cortisol and sympathetic activation.',
           dosage: '200 mg daily',
@@ -162,7 +162,7 @@ class KygoHrvFactors extends HTMLElement {
           key: 'beetroot', name: 'Beetroot Juice',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (post-exercise)',
-          keyFinding: 'Moderate — meta-analysis, n=54',
+          keyFinding: 'Faster post-exercise HRV recovery',
           whatThisMeans: 'Nitrates boost nitric oxide, helping your body recover faster after workouts. Main benefit is quicker HRV bounce-back.',
           mechanism: 'Dietary nitrate → nitric oxide pathway enhances vascular function and parasympathetic reactivation post-exercise.',
           dosage: '~400 mg nitrate (70 mL concentrated juice)',
@@ -527,9 +527,9 @@ class KygoHrvFactors extends HTMLElement {
         },
         {
           key: 'menstrual-cycle', name: 'Menstrual Cycle',
-          direction: 'negative', evidence: 'moderate',
-          effect: 'Negative (luteal phase)',
-          keyFinding: 'HRV lowest ~1 week before period; progesterone suppresses vagal activity',
+          direction: 'variable', evidence: 'moderate',
+          effect: 'Cyclical (dips in luteal phase)',
+          keyFinding: 'Lowest ~1 week before your period, then rebounds',
           whatThisMeans: "Progesterone rises after ovulation and directly lowers HRV. Expect lowest readings about a week before your period — it's hormonal, not something you're doing wrong. Rebounds about a week after menses.",
           mechanism: 'Progesterone suppresses vagal tone during the luteal phase. Estrogen in the follicular phase supports parasympathetic activity. Creates a predictable ~28-day HRV cycle.',
           dosage: 'Non-modifiable; track cycle to contextualize HRV',
@@ -545,9 +545,9 @@ class KygoHrvFactors extends HTMLElement {
     return [
       { icon: 'trophy', label: 'Best Single Habit', answer: 'Sleep Quality', note: 'Top predictor of nocturnal HRV — nothing else comes close', stat: '#1 predictor', category: 'Lifestyle' },
       { icon: 'dumbbell', label: 'Best Exercise', answer: 'HIIT', note: '#1 across SDNN, RMSSD, and LF/HF in network meta-analysis of 29 RCTs', stat: 'NMA, 29 RCTs', category: 'Exercise' },
-      { icon: 'pill', label: 'Best Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Strongest evidence — RCT, n=111, 12 weeks, preserved RMSSD', stat: 'RCT, n=111', category: 'Supplements' },
+      { icon: 'pill', label: 'Best Stress Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Kept RMSSD from falling over 12 weeks while the placebo group dropped. It protects HRV under stress rather than raising it.', stat: 'RCT, n=111', category: 'Supplements' },
       { icon: 'droplet', label: 'Best Nutrient', answer: 'Omega-3 (EPA/DHA)', note: 'Most studied dietary HRV factor — consistent HF power improvements', stat: 'HF power ↑', category: 'Micronutrients' },
-      { icon: 'wind', label: 'Quickest Impact', answer: 'Slow Breathing (6/min)', note: 'Resonance frequency breathing maximizes HRV within minutes', stat: 'SDNN improved in 4 wks', category: 'Lifestyle' },
+      { icon: 'wind', label: 'Quickest Impact', answer: 'Slow Breathing (6/min)', note: 'Breathing at about 6 breaths a minute lifts HRV during the session itself, and 20 minutes a day improved resting SDNN within 4 weeks.', stat: 'In-session; SDNN up by week 4', category: 'Lifestyle' },
       { icon: 'alert', label: 'Biggest HRV Killer', answer: 'Alcohol', note: 'RMSSD drops −2 to −13ms per dose — fitness doesn\'t protect you', stat: 'RMSSD −2 to −13ms', category: 'Lifestyle', warning: true }
     ];
   }
@@ -557,7 +557,7 @@ class KygoHrvFactors extends HTMLElement {
   _icon(name) {
     const icons = {
       sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
-      pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 1.5 3 3L5.3 12.7a4.24 4.24 0 0 1-6-6L7.5 4.5l3-3z"/><path d="m9 9 6.4-6.4a4.24 4.24 0 0 1 6 6L15 15"/><line x1="14.5" y1="13.5" x2="10.5" y2="9.5"/></svg>',
+      pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>',
       dumbbell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>',
       droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>',
       users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
@@ -571,6 +571,23 @@ class KygoHrvFactors extends HTMLElement {
       arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       arrowLeftRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>',
       heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+      moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>',
+      zap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+      fish: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z"/><path d="M18 12v.5"/><path d="M16 17.93a9.77 9.77 0 0 1 0-11.86"/><path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33"/></svg>',
+      layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7l10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>',
+      clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      snowflake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg>',
+      sparkle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>',
+      tree: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-6"/><path d="M12 2 5 12h4l-3 4h12l-3-4h4L12 2z"/></svg>',
+      utensils: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>',
+      leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
+      juice: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.5 14a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1L6 7z"/><path d="M6.5 12h11"/><path d="m14 7 2-5"/></svg>',
+      wine: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 15v7"/><path d="M7 10h10"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg>',
+      cigarette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12H3a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h14"/><path d="M18 8c0-2.5-2-2.5-2-5"/><path d="M21 16a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M22 8c0-2.5-2-2.5-2-5"/><path d="M7 12v4"/></svg>',
+      trendDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>',
+      coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>',
+      mountain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>',
       book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>'
     };
     return icons[name] || icons.heart;
@@ -619,12 +636,15 @@ class KygoHrvFactors extends HTMLElement {
       const rank = { positive: 0, mixed: 1, variable: 2, negative: 3 };
       factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
     }
-    return factors.map((f, i) => {
+    const note = this._activeCategory === 'demographics'
+      ? `<p class="cat-note">${this._icon('users')}<span><strong>You can't change these, but they explain your baseline.</strong> Two people can be equally healthy with very different HRV, so compare yourself to your own trend, not to someone else's number.</span></p>`
+      : '';
+    return note + factors.map((f, i) => {
       const dir = this._directionConfig(f.direction);
       const ev = this._evidenceConfig(f.evidence);
       const isExpanded = this._expandedFactor === f.key;
       return `
-        <div class="factor-card ${isExpanded ? 'expanded' : ''}" data-factor="${f.key}" style="--delay:${i * 60}ms">
+        <div class="factor-card ${isExpanded ? 'expanded' : ''}" data-factor="${f.key}" id="factor-${f.key}" style="--delay:${i * 60}ms">
           <div class="factor-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
             <div class="factor-top">
               <div class="factor-badges">
@@ -635,7 +655,7 @@ class KygoHrvFactors extends HTMLElement {
               <div class="factor-toggle">${this._icon('chevDown')}</div>
             </div>
             <h3 class="factor-name">${f.name}</h3>
-            <p class="factor-effect">${f.effect}</p>
+            <p class="factor-effect">${f.keyFinding}</p>
             <p class="factor-evidence-text"><span class="evidence-label">Evidence:</span> ${ev.label}</p>
           </div>
           <div class="factor-body">
@@ -801,14 +821,109 @@ class KygoHrvFactors extends HTMLElement {
     this._expandedFactor = null;
     if (tabs) tabs.innerHTML = this._renderCategoryTabs();
     if (cards) cards.innerHTML = this._renderFactorCards();
-    if (sortBar) sortBar.innerHTML = `
-      <label class="sort-label" for="sort-select">Sort by:</label>
-      <select class="sort-select" id="sort-select">
-        <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
-        <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
-        <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
-      </select>
-    `;
+    if (sortBar) sortBar.innerHTML = this._renderSortBar();
+  }
+
+  _renderSortBar() {
+    const opt = (v, l) => `<option value="${v}"${this._sortMode === v ? ' selected' : ''}>${l}</option>`;
+    return `<label class="sort-label" for="sort-select">Sort by:</label>
+      <select class="sort-select" id="sort-select">${opt('evidence', 'Evidence Strength')}${opt('direction', 'Effect Direction')}</select>`;
+  }
+
+  // ── Action Board ────────────────────────────────────────────────────
+  // "Do more / Cut back": the factors a reader can change, with strong or
+  // moderate evidence, each with its dose and measured result. Doses and
+  // results are condensed from the matching _factors entry; evidence comes
+  // from _factors directly so the two can't disagree.
+
+  get _board() {
+    return {
+      more: [
+        { key: 'sleep', icon: 'moon', label: 'Sleep 7–9 hours', dose: 'Same schedule every night', result: '#1 predictor of overnight HRV' },
+        { key: 'slow-breathing', icon: 'wind', label: 'Slow breathing', dose: '20 min/day at 6 breaths/min', result: 'SDNN up after 4 weeks' },
+        { key: 'hiit', icon: 'zap', label: 'HIIT', dose: '2–3 sessions/week, with recovery', result: '#1 for RMSSD and SDNN' },
+        { key: 'aerobic', icon: 'activity', label: 'Aerobic training', dose: '150+ min/week for 8+ weeks', result: 'RMSSD effect size 0.84' },
+        { key: 'omega3', icon: 'fish', label: 'Omega-3 (EPA/DHA)', dose: '1–2 g daily', result: 'Most studied dietary factor' },
+        { key: 'combined', icon: 'layers', label: 'Cardio + strength', dose: '3–5 days/week', result: '#1 for LF power' },
+        { key: 'intermittent-fasting', icon: 'clock', label: 'Intermittent fasting', dose: '16:8 eating window', result: 'RMSSD 35 → 45 ms in 8 wks' },
+        { key: 'cold-exposure', icon: 'snowflake', label: 'Cold exposure', dose: '1–5 min cold shower or ice bath', result: 'RMSSD +54–85% post-session' },
+        { key: 'resistance', icon: 'dumbbell', label: 'Resistance training', dose: '2–3 sessions/week', result: '#1 for HF power' },
+        { key: 'meditation', icon: 'sparkle', label: 'Meditation', dose: '20+ min daily', result: 'LF and HF both increased' },
+        { key: 'hrv-biofeedback', icon: 'heart', label: 'HRV biofeedback', dose: '10–20 min, several times/week', result: 'Positive across RCTs' },
+        { key: 'forest-bathing', icon: 'tree', label: 'Time in nature', dose: '2+ hours in a forest', result: 'Higher HF than city (n=280+)' },
+        { key: 'mediterranean-diet', icon: 'utensils', label: 'Mediterranean diet', dose: 'Daily eating pattern', result: 'Higher HRV (observational)' },
+        { key: 'ashwa-witholytin', icon: 'pill', label: 'Ashwagandha', dose: '200 mg twice daily (Witholytin)', result: 'Held RMSSD steady under stress' },
+        { key: 'l-theanine', icon: 'leaf', label: 'L-Theanine', dose: '200 mg daily', result: 'Blunts acute stress response' },
+        { key: 'beetroot', icon: 'juice', label: 'Beetroot juice', dose: '~400 mg nitrate', result: 'Faster post-workout recovery' },
+        { key: 'vitamin-d', icon: 'sun', label: 'Vitamin D', dose: 'Fix a deficiency (30–50 ng/mL)', result: 'Low levels, lower HRV' }
+      ],
+      less: [
+        { key: 'alcohol', icon: 'wine', label: 'Alcohol', dose: 'Any amount; 3+ drinks is severe', result: 'RMSSD −2 to −13 ms per dose' },
+        { key: 'smoking', icon: 'cigarette', label: 'Smoking', dose: 'Including secondhand smoke', result: 'Active and passive both lower HRV' },
+        { key: 'chronic-stress', icon: 'alert', label: 'Chronic stress', dose: 'Cumulative load, not one bad day', result: 'Locks in fight-or-flight' },
+        { key: 'overtraining', icon: 'trendDown', label: 'Overtraining', dose: 'Watch your 7-day HRV average', result: 'Falling HRV flags overreaching' },
+        { key: 'thc', icon: 'leaf', label: 'THC / cannabis', dose: 'Especially evening use', result: 'Overnight RMSSD −15–22%' },
+        { key: 'dehydration', icon: 'droplet', label: 'Dehydration', dose: 'Replace at least 60% of fluid lost', result: 'HR +5–6 bpm, less vagal tone' },
+        { key: 'caffeine', icon: 'coffee', label: 'Late caffeine', dose: '~200 mg; timing matters most', result: 'Delays post-workout recovery' },
+        { key: 'altitude', icon: 'mountain', label: 'High altitude', dose: 'Above ~2,500 m; reverses on descent', result: 'HF drops (meta-analysis)' }
+      ]
+    };
+  }
+
+  _renderBoardCol(kind) {
+    const up = kind === 'more';
+    const byKey = {};
+    Object.entries(this._factors).forEach(([cat, list]) => list.forEach(f => { byKey[f.key] = { ...f, cat }; }));
+    const rows = this._board[kind].filter(r => byKey[r.key]);
+    const visible = 6;
+    const items = rows.map((r, i) => {
+      const f = byKey[r.key];
+      const ev = this._evidenceConfig(f.evidence);
+      return `
+        <li class="ab-item${i >= visible ? ' ab-extra' : ''}">
+          <button type="button" class="ab-row" data-jump="${f.key}" data-cat="${f.cat}" aria-label="${f.name}: ${r.result}. Open details">
+            <span class="ab-ico">${this._icon(r.icon)}</span>
+            <span class="ab-main">
+              <span class="ab-name">${r.label}</span>
+              <span class="ab-dose">${r.dose}</span>
+            </span>
+            <span class="ab-side">
+              <span class="ab-result">${r.result}</span>
+              <span class="ab-ev"><span class="ab-ev-dot" style="background:${ev.color}"></span>${ev.label}</span>
+            </span>
+          </button>
+        </li>`;
+    }).join('');
+    const more = rows.length > visible
+      ? `<button type="button" class="ab-toggle" data-ab-more aria-expanded="false"><span class="ab-toggle-lbl">Show all ${rows.length}</span>${this._icon('chevDown')}</button>`
+      : '';
+    return `
+      <div class="ab-col ab-col-${kind}">
+        <div class="ab-head">
+          <span class="ab-head-ico">${this._icon(up ? 'arrowUp' : 'arrowDown')}</span>
+          <div>
+            <h3 class="ab-title">${up ? 'Do more' : 'Cut back'}</h3>
+            <p class="ab-sub">${rows.length} ${up ? 'habits and supplements that raise HRV' : 'things that pull HRV down'}</p>
+          </div>
+        </div>
+        <ul class="ab-list">${items}</ul>
+        ${more}
+      </div>`;
+  }
+
+  _jumpToFactor(key, cat) {
+    if (!this._factors[cat]) return;
+    this._activeCategory = cat;
+    this._updateCategory();
+    this._toggleFactor(key);
+    const card = this.shadowRoot.getElementById(`factor-${key}`);
+    if (!card) return;
+    card.classList.add('visible', 'flash');
+    setTimeout(() => card.classList.remove('flash'), 1600);
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    const hdr = card.querySelector('.factor-header');
+    if (hdr) hdr.focus({ preventScroll: true });
   }
 
   _toggleFactor(key) {
@@ -1312,7 +1427,15 @@ class KygoHrvFactors extends HTMLElement {
       </section>
       ${this._renderAppCta()}
 
-      <!-- Early contextual CTA -->
+      <!-- Action board: Do more / Cut back -->
+      <section class="board-section" id="action-board">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Do More / Cut Back</h2>
+          <p class="section-sub animate-on-scroll">The changes with real evidence behind them, with the dose that was tested and what it did. Tap any row for the full study details.</p>
+          <div class="ab-grid">${this._renderBoardCol('more')}${this._renderBoardCol('less')}</div>
+          <p class="ab-foot">Only factors you can change, with strong or moderate evidence. Supplements with faded or patient-only results are left out; they stay in the full list below.</p>
+        </div>
+      </section>
 
       <!-- Primary Interactive: Category tabs + Factor cards -->
       <section class="explore-section" id="explore">
@@ -1321,21 +1444,14 @@ class KygoHrvFactors extends HTMLElement {
           <p class="section-sub animate-on-scroll">Tap any factor to see mechanism, dosage, and source.</p>
 
           <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
-          <div class="sort-bar animate-on-scroll">
-            <label class="sort-label" for="sort-select">Sort by:</label>
-            <select class="sort-select" id="sort-select">
-              <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
-              <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
-              <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
-            </select>
-          </div>
+          <div class="sort-bar animate-on-scroll">${this._renderSortBar()}</div>
           <div class="factor-cards">${this._renderFactorCards()}</div>
         </div>
       </section>
-      ${this._renderEmailCta()}
+      ${this._renderEmailCta('gray')}
 
       <!-- Sources -->
-      ${this._renderRelatedTools('gray')}
+      ${this._renderRelatedTools()}
 
       <section class="sources-section">
         <div class="container">
@@ -1368,7 +1484,7 @@ class KygoHrvFactors extends HTMLElement {
         </div>
       </footer>
 
-      ${this._renderRelatedPosts()}
+      ${this._renderRelatedPosts('gray')}
     `;
   }
 
@@ -1491,18 +1607,59 @@ class KygoHrvFactors extends HTMLElement {
       .pick-note { font-size: 14px; color: var(--gray-600); margin-bottom: 6px; }
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
+      /* ── Action board ── */
+      .board-section { padding: 48px 0; background: var(--light); }
+      .ab-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
+      .ab-col { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
+      .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); }
+      .ab-head-ico { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex: none; color: #fff; }
+      .ab-head-ico svg { width: 18px; height: 18px; }
+      .ab-col-more .ab-head-ico { background: var(--green); }
+      .ab-col-less .ab-head-ico { background: var(--red); }
+      .ab-title { font-size: 19px; color: var(--dark); line-height: 1.2; }
+      .ab-sub { font-size: 13px; color: var(--gray-600); margin-top: 2px; }
+      .ab-list { list-style: none; padding: 4px 12px; }
+      .ab-item + .ab-item { border-top: 1px solid var(--gray-100); }
+      .ab-extra { display: none; }
+      .ab-col.open .ab-extra { display: block; }
+      .ab-row { width: 100%; display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; align-items: start; padding: 14px 8px; background: none; border: 0; border-radius: 12px; text-align: left; font-family: inherit; color: inherit; cursor: pointer; transition: background .15s; }
+      .ab-row:hover { background: var(--gray-50); }
+      .ab-row:focus-visible, .ab-toggle:focus-visible, .factor-header:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+      .ab-ico { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--gray-50); border: 1px solid var(--gray-200); grid-row: span 2; }
+      .ab-ico svg { width: 19px; height: 19px; }
+      .ab-col-more .ab-ico { color: var(--green-dark); }
+      .ab-col-less .ab-ico { color: var(--red); }
+      .ab-main { display: flex; flex-direction: column; min-width: 0; }
+      .ab-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.3; }
+      .ab-dose { font-size: 13px; color: var(--gray-600); line-height: 1.45; }
+      .ab-side { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 6px; }
+      .ab-result { font-size: 12.5px; font-weight: 600; color: var(--dark); line-height: 1.35; }
+      .ab-ev { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 500; color: var(--gray-400); white-space: nowrap; }
+      .ab-ev-dot { width: 6px; height: 6px; border-radius: 50%; }
+      .ab-toggle { width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; border: 0; border-top: 1px solid var(--gray-100); background: #fff; font: inherit; font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: color .2s, background .2s; }
+      .ab-toggle:hover { color: var(--dark); background: var(--gray-50); }
+      .ab-toggle svg { width: 16px; height: 16px; transition: transform .2s; }
+      .ab-col.open .ab-toggle svg { transform: rotate(180deg); }
+      .ab-foot { margin-top: 14px; font-size: 12.5px; color: var(--gray-400); text-align: center; max-width: 640px; margin-left: auto; margin-right: auto; }
+      @media (min-width: 900px) {
+        .board-section { padding: 64px 0; }
+        .ab-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+        .ab-head { padding: 20px 24px; }
+        .ab-list { padding: 0 16px 4px; }
+      }
+      @media (min-width: 1024px) { .board-section { padding: 80px 0; } }
+
       /* ── Explore Section ── */
-      .explore-section { padding: 48px 0 64px; }
+      .explore-section { padding: 48px 0 64px; background: #fff; }
 
       /* Sort bar */
-      .sort-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+      .sort-bar { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; }
       .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; }
       .sort-select { padding: 6px 28px 6px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance: none; appearance: none; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; transition: border-color 0.2s; }
       .sort-select:hover, .sort-select:focus { border-color: var(--green); outline: none; }
 
       /* Category tabs */
-      .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
-      .cat-tabs::-webkit-scrollbar { display: none; }
+      .cat-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px; }
       .cat-tab { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 50px; border: 2px solid var(--gray-200); background: #fff; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
       .cat-tab.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
       .cat-tab:hover { border-color: var(--green); }
@@ -1513,6 +1670,11 @@ class KygoHrvFactors extends HTMLElement {
 
       /* Factor cards */
       .factor-cards { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      .cat-note { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: var(--green-light); border: 1px solid rgba(34,197,94,0.3); font-size: 14px; line-height: 1.5; color: var(--gray-600); }
+      .cat-note svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--green-dark); }
+      .cat-note strong { color: var(--dark); }
+      .factor-card { scroll-margin-top: 84px; }
+      .factor-card.flash { border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.25), var(--shadow-hover); }
       .factor-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s, border-color 0.3s; }
       .factor-card:hover { box-shadow: var(--shadow-hover); border-color: var(--gray-300); }
       .factor-header { padding: 20px; cursor: pointer; }
@@ -1546,7 +1708,7 @@ class KygoHrvFactors extends HTMLElement {
       .factor-affiliate-arrow svg { width: 100%; height: 100%; }
 
       /* ── Sources ── */
-      .sources-section { padding: 48px 0; background: #fff; }
+      .sources-section { padding: 48px 0; background: var(--light); }
       /* Sources · Kygo standard module */
       .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
       @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
@@ -1608,7 +1770,7 @@ class KygoHrvFactors extends HTMLElement {
       @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
 
       /* ── Footer ── */
-      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
+      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); background: #fff; }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
@@ -1623,7 +1785,7 @@ class KygoHrvFactors extends HTMLElement {
       @media (min-width: 768px) {
         .header-inner { padding: 14px 24px; }
         .picks-grid { grid-template-columns: 1fr 1fr; }
-        .factor-cards { grid-template-columns: 1fr 1fr; }
+        .factor-cards { grid-template-columns: 1fr 1fr; align-items: start; }
         .picks-section, .explore-section { padding: 64px 0; }
       }
       @media (min-width: 1024px) {
@@ -1650,6 +1812,20 @@ class KygoHrvFactors extends HTMLElement {
       if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
 
       // Sort dropdown (handled via change event below)
+
+      // Action board: jump to a factor card, or expand a column
+      const jump = e.target.closest('[data-jump]');
+      if (jump) { this._jumpToFactor(jump.dataset.jump, jump.dataset.cat); return; }
+      const abMore = e.target.closest('[data-ab-more]');
+      if (abMore) {
+        const col = abMore.closest('.ab-col');
+        const open = !col.classList.contains('open');
+        col.classList.toggle('open', open);
+        abMore.setAttribute('aria-expanded', open ? 'true' : 'false');
+        const lbl = abMore.querySelector('.ab-toggle-lbl');
+        if (lbl) lbl.textContent = open ? 'Show fewer' : `Show all ${col.querySelectorAll('.ab-item').length}`;
+        return;
+      }
 
       // Category tabs
       const tab = e.target.closest('.cat-tab');
@@ -1720,7 +1896,7 @@ class KygoHrvFactors extends HTMLElement {
             this._observer.unobserve(entry.target);
           }
         });
-      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.2 });
+      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.01 });
       els.forEach(el => this._observer.observe(el));
     });
   }
@@ -1734,7 +1910,7 @@ class KygoHrvFactors extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'HRV Factor Explorer',
       'alternateName': 'Kygo HRV Improvement Factors Tool',
-      'description': 'Explore 44 research-backed factors that affect Heart Rate Variability — supplements, lifestyle habits, exercise, micronutrients, and demographics ranked by evidence strength.',
+      'description': 'Explore 43 research-backed factors that affect Heart Rate Variability: supplements, lifestyle habits, exercise, micronutrients, and demographics ranked by evidence strength.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/hrv-factors',
@@ -1746,7 +1922,7 @@ class KygoHrvFactors extends HTMLElement {
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'featureList': 'Explore 44 HRV factors, 5 evidence categories, supplement and lifestyle comparison, peer-reviewed research citations, demographic impact analysis',
+      'featureList': 'Explore 43 HRV factors, Do More / Cut Back action board with doses and measured results, 5 evidence categories, supplement and lifestyle comparison, peer-reviewed research citations, demographic impact analysis',
       'keywords': 'HRV factors, how to improve HRV, heart rate variability supplements, HRV lifestyle, best exercise for HRV, what affects HRV, increase HRV naturally, RMSSD, SDNN, vagal tone, autonomic nervous system, Ashwagandha HRV, Omega-3 HRV, HIIT HRV, sleep HRV, cold exposure HRV'
     };
 
