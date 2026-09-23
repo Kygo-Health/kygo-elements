@@ -63,7 +63,7 @@
     connectedCallback() {
       this._state = this.getAttribute('state') || 'idle';
       this.render();
-      __seo(this, 'Subscribe to Kygo Health — research-backed insights on sleep, HRV, and the wearables that track them, straight to your inbox.');
+      __seo(this, 'Subscribe to Kygo Health for research-backed insights on sleep, HRV, and the wearables that track them, straight to your inbox.');
     }
 
     disconnectedCallback() {
@@ -94,7 +94,7 @@
     render() {
       const heading = this.getAttribute('heading') || '';
       const pitch = this._pitch();
-      const successMsg = this.getAttribute('success-message') || "You're in — new insights are on the way.";
+      const successMsg = this.getAttribute('success-message') || "You're in. New insights are on the way.";
 
       this.shadowRoot.innerHTML = `
         <style>
@@ -278,7 +278,7 @@
       this._submitTimeout = setTimeout(() => {
         if (this._state === 'loading') {
           this._state = 'idle';
-          this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+          this._error = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
           this.render();
         }
       }, 10000);
@@ -303,14 +303,14 @@
             }));
           } else {
             this._state = 'idle';
-            this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+            this._error = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
             this.render();
           }
         })
         .catch(() => {
           clearTimeout(this._submitTimeout);
           this._state = 'idle';
-          this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+          this._error = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
           this.render();
         });
     }

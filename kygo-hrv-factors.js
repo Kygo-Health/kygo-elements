@@ -1,10 +1,10 @@
 /**
- * Kygo Health — HRV Factor Explorer
+ * Kygo Health: HRV Factor Explorer
  * Tag: kygo-hrv-factors
  * Interactive tool exploring 43 research-backed factors that affect Heart Rate Variability across 5 categories
  */
 
-/** SEO helper — injects visible text outside Shadow DOM for crawlers */
+/** SEO helper: injects visible text outside Shadow DOM for crawlers */
 if (typeof __seo === 'undefined') {
   var __seo = function(el, text) {
     if (el.querySelector('[data-seo]')) return;
@@ -198,7 +198,7 @@ class KygoHrvFactors extends HTMLElement {
           effect: 'Positive (acute)',
           keyFinding: 'RMSSD +54–85% post-session',
           whatThisMeans: "Cold shocks your vagus nerve awake. The +54-85% RMSSD spike is real but fades in 15-20 minutes and doesn't shift baseline HRV with chronic use alone. Best used as a recovery tool between training days, not a standalone HRV builder.",
-          mechanism: 'Cold-water face immersion triggers the diving reflex — strong vagal activation via trigeminal nerve afferents.',
+          mechanism: 'Cold-water face immersion triggers the diving reflex, a strong vagal activation via trigeminal nerve afferents.',
           dosage: 'Cold shower or ice bath, 1–5 minutes; best as recovery tool',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' },
           affiliate: { url: 'https://www.amazon.com/dp/B0FX2MPK9P?tag=kygohealthapp-20&th=1', label: 'Cold Plunge Tub' , slug: 'ice-bath-tub' }
@@ -229,7 +229,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive',
           keyFinding: 'HF higher in forest vs city (n=280+)',
-          whatThisMeans: "Being in nature measurably calms your nervous system. Not just 'feeling relaxed' — it shows up in the data.",
+          whatThisMeans: "Being in nature measurably calms your nervous system. Not just 'feeling relaxed'; it shows up in the data.",
           mechanism: 'Phytoncides (tree terpenes) and reduced sensory stressors lower cortisol and sympathetic activation.',
           dosage: '2+ hours in forested environment',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/19568835/', label: 'PubMed 19568835' }
@@ -239,7 +239,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (moderate)',
           keyFinding: 'RMSSD 35 to 45ms in 8 weeks',
-          whatThisMeans: "16:8 fasting improved HRV over 8 weeks. But don't overdo it — fasts over 48 hours actually hurt HRV.",
+          whatThisMeans: "16:8 fasting improved HRV over 8 weeks. But don't overdo it: fasts over 48 hours actually hurt HRV.",
           mechanism: 'Fasting-induced autophagy and reduced inflammatory load improve vagal tone. Extended fasting reverses effect via stress.',
           dosage: '16:8 protocol (16 hours fasting, 8 hours eating)',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/', label: 'PMC10045415' }
@@ -321,7 +321,7 @@ class KygoHrvFactors extends HTMLElement {
           keyFinding: 'Associated with higher resting HRV (n=120)',
           whatThisMeans: "Associated with higher resting HRV but causation is unclear. Healthier people may simply have more sex. Interesting signal but don't read too much into it yet.",
           mechanism: 'Possible oxytocin-mediated vagal activation and stress reduction. Confounded by overall health status.',
-          dosage: 'Observational — no dosage established',
+          dosage: 'Observational; no dosage established',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/12659241/', label: 'Brody & Preut 2003' }
         },
         {
@@ -329,7 +329,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (acute)',
           keyFinding: 'Sympathetic spike, HF drops above ~2,500m (meta-analysis)',
-          whatThisMeans: "Thinner air forces your body into fight-or-flight mode to keep oxygen flowing. HRV recovers when you come back to lower elevation. Don't panic about low readings at altitude — it's expected.",
+          whatThisMeans: "Thinner air forces your body into fight-or-flight mode to keep oxygen flowing. HRV recovers when you come back to lower elevation. Don't panic about low readings at altitude. It's expected.",
           mechanism: 'Hypoxia-driven sympathetic activation and reduced parasympathetic (HF) power. Chemoreceptor-mediated response to lower O₂ partial pressure.',
           dosage: 'Effect begins above ~2,500m; reversible on descent',
           source: { url: 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1502562/full', label: 'Frontiers Physiol 2025' }
@@ -339,7 +339,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive',
           keyFinding: 'CR practitioners had HRV 20 years younger than age-matched controls (n=42)',
-          whatThisMeans: "Eating ~30% below caloric needs while staying nutritionally complete helps your autonomic nervous system stay younger. Mechanism is reduced inflammation and improved insulin sensitivity (hormesis). Not the same as starvation — a meta-analysis found moderate CR doesn't raise cortisol, only fasting/starvation does. Combined with exercise the effect is even stronger.",
+          whatThisMeans: "Eating ~30% below caloric needs while staying nutritionally complete helps your autonomic nervous system stay younger. Mechanism is reduced inflammation and improved insulin sensitivity (hormesis). Not the same as starvation: a meta-analysis found moderate CR doesn't raise cortisol, only fasting/starvation does. Combined with exercise the effect is even stronger.",
           mechanism: 'Reduced inflammation and improved insulin sensitivity via hormesis. Caloric restriction without malnutrition preserves vagal tone and autonomic flexibility.',
           dosage: '~25-30% caloric reduction while maintaining full nutrition',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3598611/', label: 'PMC3598611' }
@@ -467,7 +467,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'emerging',
           effect: 'Positive (prenatal)',
           keyFinding: 'Improved offspring HRV',
-          whatThisMeans: "Interesting but niche — zinc during pregnancy improved the baby's HRV for years. Limited adult data so far.",
+          whatThisMeans: "Interesting but niche: zinc during pregnancy improved the baby's HRV for years. Limited adult data so far.",
           mechanism: 'Zinc-dependent enzymes in autonomic neurodevelopment; prenatal supplementation affects fetal ANS maturation.',
           dosage: 'RDA 8–11 mg; prenatal context',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
@@ -500,7 +500,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'variable', evidence: 'emerging',
           effect: 'Inconclusive',
           keyFinding: 'Twin studies yes; gene studies no (n=6,740)',
-          whatThisMeans: "Your genes probably matter, but researchers haven't pinpointed which ones. Don't blame genetics — lifestyle still dominates.",
+          whatThisMeans: "Your genes probably matter, but researchers haven't pinpointed which ones. Don't blame genetics; lifestyle still dominates.",
           mechanism: 'Twin studies show heritability ~40–50%, but GWAS (n=6,740) found no significant loci. Polygenic effects likely.',
           dosage: 'Non-modifiable; lifestyle dominates',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'PMC11333334' }
@@ -530,7 +530,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'variable', evidence: 'moderate',
           effect: 'Cyclical (dips in luteal phase)',
           keyFinding: 'Lowest ~1 week before your period, then rebounds',
-          whatThisMeans: "Progesterone rises after ovulation and directly lowers HRV. Expect lowest readings about a week before your period — it's hormonal, not something you're doing wrong. Rebounds about a week after menses.",
+          whatThisMeans: "Progesterone rises after ovulation and directly lowers HRV. Expect lowest readings about a week before your period. It's hormonal, not something you're doing wrong. Rebounds about a week after menses.",
           mechanism: 'Progesterone suppresses vagal tone during the luteal phase. Estrogen in the follicular phase supports parasympathetic activity. Creates a predictable ~28-day HRV cycle.',
           dosage: 'Non-modifiable; track cycle to contextualize HRV',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/', label: 'PMC7141121' }
@@ -543,12 +543,12 @@ class KygoHrvFactors extends HTMLElement {
 
   get _topPicks() {
     return [
-      { icon: 'trophy', label: 'Best Single Habit', answer: 'Sleep Quality', note: 'Top predictor of nocturnal HRV — nothing else comes close', stat: '#1 predictor', category: 'Lifestyle' },
+      { icon: 'trophy', label: 'Best Single Habit', answer: 'Sleep Quality', note: 'Top predictor of nocturnal HRV. Nothing else comes close.', stat: '#1 predictor', category: 'Lifestyle' },
       { icon: 'dumbbell', label: 'Best Exercise', answer: 'HIIT', note: '#1 across SDNN, RMSSD, and LF/HF in network meta-analysis of 29 RCTs', stat: 'NMA, 29 RCTs', category: 'Exercise' },
       { icon: 'pill', label: 'Best Stress Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Kept RMSSD from falling over 12 weeks while the placebo group dropped. It protects HRV under stress rather than raising it.', stat: 'RCT, n=111', category: 'Supplements' },
-      { icon: 'droplet', label: 'Best Nutrient', answer: 'Omega-3 (EPA/DHA)', note: 'Most studied dietary HRV factor — consistent HF power improvements', stat: 'HF power ↑', category: 'Micronutrients' },
+      { icon: 'droplet', label: 'Best Nutrient', answer: 'Omega-3 (EPA/DHA)', note: 'Most studied dietary HRV factor, with consistent HF power improvements', stat: 'HF power ↑', category: 'Micronutrients' },
       { icon: 'wind', label: 'Quickest Impact', answer: 'Slow Breathing (6/min)', note: 'Breathing at about 6 breaths a minute lifts HRV during the session itself, and 20 minutes a day improved resting SDNN within 4 weeks.', stat: 'In-session; SDNN up by week 4', category: 'Lifestyle' },
-      { icon: 'alert', label: 'Biggest HRV Killer', answer: 'Alcohol', note: 'RMSSD drops −2 to −13ms per dose — fitness doesn\'t protect you', stat: 'RMSSD −2 to −13ms', category: 'Lifestyle', warning: true }
+      { icon: 'alert', label: 'Biggest HRV Killer', answer: 'Alcohol', note: 'RMSSD drops 2 to 13 ms per dose, and fitness doesn\'t protect you', stat: 'RMSSD −2 to −13ms', category: 'Lifestyle', warning: true }
     ];
   }
 
@@ -712,43 +712,43 @@ class KygoHrvFactors extends HTMLElement {
   get _srcGroups() {
     const groups = {
       'Supplements': [
-        { label: 'Lopresti et al. 2024 — Ashwagandha Witholytin RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/' },
-        { label: 'Thakkar et al. 2025 — Ashwagandha Zenroot RCT', url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z' },
-        { label: 'Maia et al. 2025 — Probiotics & HRV in hypertensive women', url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full' },
-        { label: 'Badawy et al. 2024 — GABA supplementation RCT', url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262' },
-        { label: 'Kimura et al. 2007 — L-Theanine & stress', url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/' },
-        { label: 'Amiri et al. 2025 — Beetroot juice meta-analysis', url: 'https://www.mdpi.com/2227-9032/13/19/2496' }
+        { label: 'Lopresti et al. 2024: Ashwagandha Witholytin RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/' },
+        { label: 'Thakkar et al. 2025: Ashwagandha Zenroot RCT', url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z' },
+        { label: 'Maia et al. 2025: Probiotics & HRV in hypertensive women', url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full' },
+        { label: 'Badawy et al. 2024: GABA supplementation RCT', url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262' },
+        { label: 'Kimura et al. 2007: L-Theanine & stress', url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/' },
+        { label: 'Amiri et al. 2025: Beetroot juice meta-analysis', url: 'https://www.mdpi.com/2227-9032/13/19/2496' }
       ],
       'Lifestyle': [
-        { label: 'Nunan et al. 2024 — Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'Laborde et al. 2022 — Slow breathing & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/' },
-        { label: 'Mäkinen et al. 2008 — Cold exposure & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/' },
-        { label: 'Nesvold et al. 2012 — Meditation & HRV', url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142' },
-        { label: 'Lehrer & Gevirtz 2014 — HRV biofeedback review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10412682/' },
-        { label: 'Park et al. 2010 — Forest bathing & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/19568835/' },
-        { label: 'Moro et al. 2023 — Intermittent fasting & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/' },
-        { label: 'Pietilä et al. 2018 — Alcohol & HRV', url: 'https://mental.jmir.org/2018/1/e23' },
-        { label: 'Conner et al. 2023 — THC & nocturnal HRV', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
-        { label: 'Gonzalez et al. 2024 — Caffeine & HRV recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
-        { label: 'Brunt et al. 2025 — Sauna & HRV', url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449' },
-        { label: 'Brody & Preut 2003 — Sexual activity & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/12659241/' },
-        { label: 'Frontiers Physiol 2025 — Altitude & HRV meta-analysis', url: 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1502562/full' },
-        { label: 'Stein et al. 2012 — Caloric restriction & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3598611/' },
-        { label: 'Watso et al. 2019 — Dehydration & HRV', url: 'https://www.nature.com/articles/s41598-019-51255-2' }
+        { label: 'Nunan et al. 2024: Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
+        { label: 'Laborde et al. 2022: Slow breathing & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/' },
+        { label: 'Mäkinen et al. 2008: Cold exposure & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/' },
+        { label: 'Nesvold et al. 2012: Meditation & HRV', url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142' },
+        { label: 'Lehrer & Gevirtz 2014: HRV biofeedback review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10412682/' },
+        { label: 'Park et al. 2010: Forest bathing & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/19568835/' },
+        { label: 'Moro et al. 2023: Intermittent fasting & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/' },
+        { label: 'Pietilä et al. 2018: Alcohol & HRV', url: 'https://mental.jmir.org/2018/1/e23' },
+        { label: 'Conner et al. 2023: THC & nocturnal HRV', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
+        { label: 'Gonzalez et al. 2024: Caffeine & HRV recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
+        { label: 'Brunt et al. 2025: Sauna & HRV', url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449' },
+        { label: 'Brody & Preut 2003: Sexual activity & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/12659241/' },
+        { label: 'Frontiers Physiol 2025: Altitude & HRV meta-analysis', url: 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1502562/full' },
+        { label: 'Stein et al. 2012: Caloric restriction & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3598611/' },
+        { label: 'Watso et al. 2019: Dehydration & HRV', url: 'https://www.nature.com/articles/s41598-019-51255-2' }
       ],
       'Exercise': [
-        { label: 'Yang et al. 2024 — Exercise NMA (29 RCTs)', url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009' },
-        { label: 'Amekran et al. 2024 — Aerobic exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11250637/' },
-        { label: 'Fronczyk et al. 2025 — Yoga & HRV review', url: 'https://www.frontiersin.org/journals/cardiovascular-medicine/articles/10.3389/fcvm.2025.1364905/full' },
-        { label: 'Bellenger et al. 2024 — Overtraining & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11204851/' }
+        { label: 'Yang et al. 2024: Exercise NMA (29 RCTs)', url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009' },
+        { label: 'Amekran et al. 2024: Aerobic exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11250637/' },
+        { label: 'Fronczyk et al. 2025: Yoga & HRV review', url: 'https://www.frontiersin.org/journals/cardiovascular-medicine/articles/10.3389/fcvm.2025.1364905/full' },
+        { label: 'Bellenger et al. 2024: Overtraining & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11204851/' }
       ],
       'Nutrition & Micronutrients': [
-        { label: 'Young & Benton 2018 — Gut-brain axis & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/' },
-        { label: 'Lopresti 2020 — Micronutrients & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/' }
+        { label: 'Young & Benton 2018: Gut-brain axis & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/' },
+        { label: 'Lopresti 2020: Micronutrients & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/' }
       ],
       'Demographics': [
-        { label: 'Nunan et al. 2024 — Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'Schmalenberger et al. 2019 — Menstrual cycle & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/' }
+        { label: 'Nunan et al. 2024: Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
+        { label: 'Schmalenberger et al. 2019: Menstrual cycle & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/' }
       ]
     };
     return groups;
@@ -1271,7 +1271,7 @@ class KygoHrvFactors extends HTMLElement {
   // The dark conversion card, on its own section, directly after the first
   // content section. Self-contained under `kc-*` names with a literal fallback
   // behind every custom property, so the same block renders identically on
-  // either palette. Nothing else belongs in this section — the email capture
+  // either palette. Nothing else belongs in this section; the email capture
   // is a separate band further down the page.
   // Pass 'gray' to sit the section on the tinted band.
 
@@ -1345,7 +1345,7 @@ class KygoHrvFactors extends HTMLElement {
 
   // ── Email CTA · Kygo standard module ────────────────────────────────────
   // The inline email capture, on its own band. It never sits directly under the
-  // app CTA — a page content section always separates the two conversion
+  // app CTA: a page content section always separates the two conversion
   // touchpoints. Self-contained under `ke-*` names so it drops into either
   // palette. Pass 'gray' to sit on the tinted band.
 
@@ -1392,7 +1392,7 @@ class KygoHrvFactors extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-pill animate-on-scroll"><span class="dot"></span> ${hs.total} FACTORS · ${hs.cats} CATEGORIES · PEER-REVIEWED</div>
               <h1 class="animate-on-scroll">What actually moves <span class="hl">your HRV?</span></h1>
-              <p class="hero-lede animate-on-scroll">Every supplement, habit, exercise and nutrient with a measured effect on heart-rate variability — <strong>ranked by evidence strength</strong>, with the direction of effect and the dose that produced it. No guessing, just data.</p>
+              <p class="hero-lede animate-on-scroll">Every supplement, habit, exercise and nutrient with a measured effect on heart-rate variability, <strong>ranked by evidence strength</strong>, with the direction of effect and the dose that produced it. No guessing, just data.</p>
             </div>
             <div class="hero-vis animate-on-scroll">
               <div class="hero-vis-head">
@@ -1402,7 +1402,7 @@ class KygoHrvFactors extends HTMLElement {
               <div class="hv-body">
                 <div class="hv-big">−13<span class="unit">ms</span></div>
                 <div class="hv-text">
-                  <p>RMSSD lost at the highest drinking level. <strong>Even one drink lowers HRV</strong> — being young and fit does not protect you.</p>
+                  <p>RMSSD lost at the highest drinking level. <strong>Even one drink lowers HRV</strong>, and being young and fit does not protect you.</p>
                   <span class="hv-src">Pietilä et al. 2018 · JMIR Mental Health</span>
                 </div>
               </div>
@@ -1567,6 +1567,13 @@ class KygoHrvFactors extends HTMLElement {
       .hv-cap.good { color: var(--green-dark); }
       .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--gray-400); }
       @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
+      .hero-grid > * { min-width: 0; }
+      @media (max-width: 559px) {
+        .hero-vis { padding: 16px 16px 18px; }
+        .hero-vis-head { flex-wrap: wrap; }
+        .hero-vis .hv-body { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .hero-vis .hv-big { font-size: 48px; }
+      }
       .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--gray-200); padding-top: 24px; }
       @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
       .hero-stat .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1; color: var(--green); letter-spacing: -0.02em; }
@@ -1941,7 +1948,7 @@ class KygoHrvFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What is the fastest way to improve HRV?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise is the single most evidence-backed way to improve HRV. Studies show regular moderate-intensity cardio (3-5x/week) can increase RMSSD by 10-20% within 8-12 weeks. Sleep quality and consistency are the second most impactful factor — poor sleep can reduce HRV by 30-50%.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise is the single most evidence-backed way to improve HRV. Studies show regular moderate-intensity cardio (3-5x/week) can increase RMSSD by 10-20% within 8-12 weeks. Sleep quality and consistency are the second most impactful factor; poor sleep can reduce HRV by 30-50%.' }
         },
         {
           '@type': 'Question',
@@ -1956,12 +1963,12 @@ class KygoHrvFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What lowers HRV the most?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Alcohol is the single biggest HRV suppressor — even 1-2 drinks can reduce HRV by 20-40% for 24-48 hours. Chronic stress, poor sleep (<6 hours), overtraining, and dehydration are the next most impactful factors. Age is the strongest non-modifiable factor, with HRV declining roughly 1-2 ms/year after age 25.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Alcohol is the single biggest HRV suppressor: even 1-2 drinks can reduce HRV by 20-40% for 24-48 hours. Chronic stress, poor sleep (<6 hours), overtraining, and dehydration are the next most impactful factors. Age is the strongest non-modifiable factor, with HRV declining roughly 1-2 ms/year after age 25.' }
         },
         {
           '@type': 'Question',
           'name': 'What is a good HRV score?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'HRV is highly individual — a "good" score depends on age, fitness, and genetics. General RMSSD benchmarks: ages 20-30 average 40-80ms, ages 30-40 average 30-60ms, ages 40-50 average 20-45ms, ages 50+ average 15-35ms. Athletes often have RMSSD above 80ms. The trend over weeks matters more than any single reading.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'HRV is highly individual. A "good" score depends on age, fitness, and genetics. General RMSSD benchmarks: ages 20-30 average 40-80ms, ages 30-40 average 30-60ms, ages 40-50 average 20-45ms, ages 50+ average 15-35ms. Athletes often have RMSSD above 80ms. The trend over weeks matters more than any single reading.' }
         }
       ]
     };
