@@ -545,7 +545,7 @@ class KygoHrvFactors extends HTMLElement {
     return [
       { icon: 'trophy', label: 'Best Single Habit', answer: 'Sleep Quality', note: 'Top predictor of nocturnal HRV. Nothing else comes close.', stat: '#1 predictor', category: 'Lifestyle' },
       { icon: 'dumbbell', label: 'Best Exercise', answer: 'HIIT', note: '#1 across SDNN, RMSSD, and LF/HF in network meta-analysis of 29 RCTs', stat: 'NMA, 29 RCTs', category: 'Exercise' },
-      { icon: 'pill', label: 'Best Stress Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Kept RMSSD from falling over 12 weeks while the placebo group dropped. It protects HRV under stress rather than raising it.', stat: 'RCT, n=111', category: 'Supplements' },
+      { icon: 'pill', label: 'Best Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Kept RMSSD from falling over 12 weeks while the placebo group dropped. It protects HRV under stress rather than raising it.', stat: 'RCT, n=111', category: 'Supplements' },
       { icon: 'droplet', label: 'Best Nutrient', answer: 'Omega-3 (EPA/DHA)', note: 'Most studied dietary HRV factor, with consistent HF power improvements', stat: 'HF power ↑', category: 'Micronutrients' },
       { icon: 'wind', label: 'Quickest Impact', answer: 'Slow Breathing (6/min)', note: 'Breathing at about 6 breaths a minute lifts HRV during the session itself, and 20 minutes a day improved resting SDNN within 4 weeks.', stat: 'In-session; SDNN up by week 4', category: 'Lifestyle' },
       { icon: 'alert', label: 'Biggest HRV Killer', answer: 'Alcohol', note: 'RMSSD drops 2 to 13 ms per dose, and fitness doesn\'t protect you', stat: 'RMSSD −2 to −13ms', category: 'Lifestyle', warning: true }
