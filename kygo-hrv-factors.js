@@ -1611,14 +1611,14 @@ class KygoHrvFactors extends HTMLElement {
       .board-section { padding: 48px 0; background: var(--light); }
       .ab-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
       .ab-col { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
-      .ab-head { display: flex; align-items: center; gap: 12px; padding: 20px 20px 16px; }
+      .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); }
       .ab-head-ico { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex: none; color: #fff; }
       .ab-head-ico svg { width: 18px; height: 18px; }
       .ab-col-more .ab-head-ico { background: var(--green); }
       .ab-col-less .ab-head-ico { background: var(--red); }
       .ab-title { font-size: 19px; color: var(--dark); line-height: 1.2; }
-      .ab-sub { font-size: 13px; color: var(--gray-400); margin-top: 2px; }
-      .ab-list { list-style: none; padding: 0 12px 4px; border-top: 1px solid var(--gray-100); }
+      .ab-sub { font-size: 13px; color: var(--gray-600); margin-top: 2px; }
+      .ab-list { list-style: none; padding: 4px 12px; }
       .ab-item + .ab-item { border-top: 1px solid var(--gray-100); }
       .ab-extra { display: none; }
       .ab-col.open .ab-extra { display: block; }
@@ -1644,7 +1644,7 @@ class KygoHrvFactors extends HTMLElement {
       @media (min-width: 900px) {
         .board-section { padding: 64px 0; }
         .ab-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
-        .ab-head { padding: 22px 24px 18px; }
+        .ab-head { padding: 20px 24px; }
         .ab-list { padding: 0 16px 4px; }
       }
       @media (min-width: 1024px) { .board-section { padding: 80px 0; } }
