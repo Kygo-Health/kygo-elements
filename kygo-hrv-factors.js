@@ -1263,7 +1263,7 @@ class KygoHrvFactors extends HTMLElement {
       slug: 'hrv-factors',
       hook: '',
       headline: `These are averages. <span>Your HRV has its own story.</span>`,
-      sub: `Kygo connects your wearable to what you eat and drink, then shows how your nutrition is moving your HRV and other metrics, ranked by how strong the link is.`
+      sub: `Kygo links your wearable data to what you eat, drink and take, then shows which foods and nutrients are raising or lowering your HRV and other metrics, ranked by how strong the link is.`
     };
   }
 
@@ -1327,7 +1327,7 @@ class KygoHrvFactors extends HTMLElement {
             <h3 class="kc-h">${c.headline}</h3>
             <p class="kc-p">${c.sub}</p>
             <kygo-cta theme="dark" slug="${c.slug}" surface="tool"${c.hook ? ` hook="${c.hook}"` : ''}
-              note="Free plan available on web or in the app. Save 58% on yearly. Cancel anytime."></kygo-cta>
+              note="7 days free on yearly, then $49.99/yr (58% less than monthly). Cancel anytime."></kygo-cta>
             <div class="kc-works">
               <span>Works with</span>
               <div class="kc-badges">${badges}</div>
