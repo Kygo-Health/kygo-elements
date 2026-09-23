@@ -120,9 +120,10 @@ day 14, etc.).
   & Health Connect**, personalized recommendations from the **"Kygo Advisor,"** factor pinning, and
   experiment tracking.
 
-> Grandfathered accounts keep unlimited photo scans and write-back for free. Pricing (trial vs.
-> discounted first month/year) is A/B-tested and rendered from the RevenueCat offering, so the
-> marketing site stays arm-neutral: "Free plan available · $9.99/mo or $49.99/yr · cancel anytime."
+> Grandfathered accounts keep unlimited photo scans and write-back for free. Pricing is $9.99/mo
+> or $49.99/yr (58% less than monthly). The trial-vs-discount A/B test has ended: **every new user
+> now gets a 7-day free trial of the yearly plan**, so marketing copy can say so, e.g. "7-day free
+> trial. Save 58% on yearly. Cancel anytime." (don't state the dollar price in CTA notes) (live on `kygo-hrv-factors`).
 
 ## Settings & support
 
