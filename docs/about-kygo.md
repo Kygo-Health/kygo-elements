@@ -123,7 +123,7 @@ day 14, etc.).
 > Grandfathered accounts keep unlimited photo scans and write-back for free. Pricing is $9.99/mo
 > or $49.99/yr (58% less than monthly). The trial-vs-discount A/B test has ended: **every new user
 > now gets a 7-day free trial of the yearly plan**, so marketing copy can say so, e.g. "7 days free
-> on yearly, then $49.99/yr (58% less than monthly). Cancel anytime." (live on `kygo-hrv-factors`).
+> on yearly. Save 58% on yearly. Cancel anytime." (don't state the dollar price in CTA notes) (live on `kygo-hrv-factors`).
 
 ## Settings & support
 
