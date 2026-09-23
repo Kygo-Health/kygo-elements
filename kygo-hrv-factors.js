@@ -1327,7 +1327,7 @@ class KygoHrvFactors extends HTMLElement {
             <h3 class="kc-h">${c.headline}</h3>
             <p class="kc-p">${c.sub}</p>
             <kygo-cta theme="dark" slug="${c.slug}" surface="tool"${c.hook ? ` hook="${c.hook}"` : ''}
-              note="7 days free on yearly. Save 58% on yearly. Cancel anytime."></kygo-cta>
+              note="7-day free trial. Save 58% on yearly. Cancel anytime."></kygo-cta>
             <div class="kc-works">
               <span>Works with</span>
               <div class="kc-badges">${badges}</div>
