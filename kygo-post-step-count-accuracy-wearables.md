@@ -260,7 +260,7 @@ In controlled walking conditions, Oura's accuracy is surprisingly good. The prob
 **Oura's own recommendation:** Use Oura for health trends, not step-count parity with wrist devices.
 
 
-**Sources:** Kristiansson et al. (2023), BMC Medical Research Methodology; Niela-Vilén et al. (2022), Sensors
+**Sources:** Kristiansson et al. (2023), BMC Medical Research Methodology; Niela-Vilén et al. (2022), Computers, Informatics, Nursing 40(12):856-862
 
 
 ---

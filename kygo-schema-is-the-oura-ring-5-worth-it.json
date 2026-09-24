@@ -1,0 +1,62 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is the Oura Ring 5 worth it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For most people, the Oura Ring 5 is worth it only if all-day comfort matters more than proven accuracy. It is the smallest, lightest smart ring ever made — about 40% smaller than the Ring 4, and lighter at 2–2.6 g versus 3.3–5.2 g — with a longer 6–9 day battery and an optional charging case. But it launches at $399–499, requires a $5.99/month membership for full features, ships in a narrower 6–13 size range, and has no independent accuracy validation. If you want the most invisible ring on the market and are comfortable being an early adopter, it is worth it. If you want the best evidence-backed data for your money, the Ring 4 is the smarter buy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the Oura Ring 5 need a subscription?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The Ring 5 requires an Oura Membership ($5.99/month or $69.99/year) for full features. Without it, the app shows only your Sleep, Readiness, and Activity scores. Trends, detailed HRV, temperature deviations, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools are all gated behind membership, which is why the real 3-year cost of a Ring 5 is roughly $609 for a base finish — or about $709 for the $499 premium finishes — not $399."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does the Oura Ring 5 cost over 3 years?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on the finish. A base Ring 5 (Silver or Black, $399) is about $609 with the yearly membership: $399 hardware plus roughly $210 for three years of Oura Membership at $69.99/year. The four premium finishes (Gold, Stealth, Brushed Silver, Deep Rose) start at $499, bringing the total to about $709. Paying monthly at $5.99 instead adds about $6, and the optional $99 charging case adds more. The Ring 4 works out to about $559 over the same period because its hardware is $50 cheaper."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the Oura Ring 5 more accurate than the Ring 4?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "There is no peer-reviewed evidence that it is. The Ring 4 is the only Oura ring with an independent head-to-head validation study (Dial 2025), which measured a concordance correlation of 0.98 for resting heart rate and 0.99 for HRV against an ECG chest strap. The Ring 5 has zero independent studies; Oura's own internal testing claims roughly 12% better HRV and 24% better workout heart rate, but those figures are not peer-reviewed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What sizes does the Oura Ring 5 come in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "At launch the Oura Ring 5 covers US ring sizes 6 to 13, narrower than the Ring 4's range of 4 to 15. If you have very small or very large fingers, the Ring 4 is currently the only Oura ring that fits, so confirm your size before choosing the Ring 5."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between the Oura Ring 5 and Ring 4?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Ring 5 is about 40% smaller than the Ring 4 — thinner (2.28 mm vs 2.88 mm) and narrower (6.09 mm vs 7.90 mm) — and lighter (2–2.6 g vs 3.3–5.2 g), with a slightly longer battery and an optional charging case. The Ring 4 is $50 cheaper, has a wider 4–15 size range, uses up to 18 signal pathways versus the Ring 5's 12, and is the only Oura ring with independent accuracy validation. Both share the same sensing platform and both require the Oura Membership."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are there good alternatives to the Oura Ring 5 without a subscription?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349) are subscription-free smart rings that track sleep and HRV without a monthly membership. Over three years they can cost less than half of an Oura, since Oura's ~$210 membership is required for most of its insights. They are worth considering if you mainly want sleep and recovery basics rather than Oura's full app ecosystem."
+      }
+    }
+  ]
+}

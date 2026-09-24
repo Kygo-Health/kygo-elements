@@ -73,22 +73,58 @@
 
   /* ── Classification Logic ─────────────────────────── */
 
+  // Amazon marketplaces + amzn.to short links. Matched against the link
+  // hostname so affiliate clicks get their own cta_category instead of
+  // falling through to other_action / null (they carry no Kygo class).
+  const AMAZON_HOST = /(^|\.)amazon\.(com|de|co\.uk|ca|fr|it|es|com\.au|co\.jp)$|(^|\.)amzn\.to$/;
+
+  /** The <kygo-cta> element that owns this anchor, if any. Its buttons live in
+   *  the element's own shadow root, so the host is one getRootNode() away. */
+  function ctaHost(el) {
+    try {
+      var root = el.getRootNode && el.getRootNode();
+      var host = root && root.host;
+      return host && host.tagName === 'KYGO-CTA' ? host : null;
+    } catch (e) { return null; }
+  }
+
   function classifyClick(el) {
     var action = el.getAttribute('data-action');
     var href = el.getAttribute('href') || '';
     var classList = el.className || '';
 
-    // iOS App Store download
+    // The shared <kygo-cta> labels every button with its destination, which is
+    // more reliable than sniffing the href — and it is the only CTA on the site
+    // that offers a web destination alongside the two stores.
+    var destination = el.getAttribute('data-destination');
+    if (destination === 'ios' || destination === 'android' || destination === 'web') {
+      var host = ctaHost(el);
+      return {
+        category: destination === 'web' ? 'web_signup' : destination + '_download',
+        label: (host && host.getAttribute('slug')) || getLabel(el),
+        url: href,
+        position: host && host.getAttribute('surface')
+      };
+    }
+
+    // iOS App Store download (direct App Store link, or the Tenjin
+    // attribution link that resolves to the iOS store —
+    // track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy)
     if (action === 'ios-download' ||
         href.indexOf('apps.apple.com') !== -1 ||
+        href.indexOf('track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy') !== -1 ||
         (classList.indexOf('cta-primary') !== -1 && href.indexOf('apple') !== -1)) {
       return { category: 'ios_download', label: getLabel(el), url: href || 'button-redirect' };
     }
 
-    // Android download (Google Play via kygo.app/android)
+    // Android download (Google Play directly, via kygo.app/android, or the Tenjin
+    // attribution link that resolves to the Play store —
+    // track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO)
     if (action === 'android-download' ||
         classList.indexOf('cta-android') !== -1 ||
-        href.indexOf('kygo.app/android') !== -1) {
+        href.indexOf('play.google.com') !== -1 ||
+        href.indexOf('kygo.app/android') !== -1 ||
+        href.indexOf('track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO') !== -1) {
       return { category: 'android_download', label: getLabel(el), url: href || 'button-redirect' };
     }
 
@@ -121,12 +157,69 @@
       return { category: 'primary_cta', label: getLabel(el), url: href };
     }
 
+    // Amazon affiliate link (amzn.to short link or full amazon.<tld> URL).
+    // No Kygo class/data-action, so classify by hostname before the fallback.
+    try {
+      var amazonUrl = new URL(el.href);
+      if (AMAZON_HOST.test(amazonUrl.hostname)) {
+        return {
+          category: 'affiliate_amazon',
+          label: el.getAttribute('data-track-label') ||
+                 (amazonUrl.pathname.split('/').filter(Boolean)[0] || 'unknown'),
+          url: el.href,
+          affiliate: 'amazon',
+          affiliate_marketplace: amazonUrl.hostname.replace(/^www\./, '')
+        };
+      }
+    } catch (e) { /* el has no parseable href (e.g. a <button>) — ignore */ }
+
+    // Related-tools card: internal tool-to-tool navigation. Gets its own
+    // category (rather than falling through to other_action) so the
+    // cross-link section can be measured as a retention surface.
+    if (action === 'related-tool') {
+      return {
+        category: 'related_tool_click',
+        label: getLabel(el),
+        url: href,
+        to_tool: el.getAttribute('data-tool-slug') || ''
+      };
+    }
+
+    // Related-reading card: tool-to-blog navigation. Gets its own category
+    // (rather than falling through to other_action) so the blog cross-link
+    // section can be measured as a retention surface alongside related_tool_click.
+    if (action === 'blog-post') {
+      return {
+        category: 'blog_post_click',
+        label: getLabel(el),
+        url: href,
+        to_post: el.getAttribute('data-post-slug') || ''
+      };
+    }
+
     // Any other data-action button
     if (action) {
       return { category: 'other_action', label: getLabel(el), action_type: action };
     }
 
     return null;
+  }
+
+  /** Rewrite an Amazon link's href with a per-click `ascsubtag` so Associates
+   *  order/earnings reports can attribute revenue to the page + component.
+   *  Keeps the existing `tag=` param; runs in the capture-phase click handler
+   *  before navigation. Returns the (possibly rewritten) href. */
+  function addAmazonSubtag(el, component) {
+    try {
+      var u = new URL(el.href);
+      var sub = (window.location.pathname.replace(/\//g, '-').replace(/^-|-$/g, '') || 'home') +
+                '_' + (component || 'page');
+      u.searchParams.set('ascsubtag', sub.replace(/[^A-Za-z0-9_-]/g, '').slice(0, 90));
+      el.href = u.toString();
+      return el.href;
+    } catch (e) {
+      return el.href;
+    }
   }
 
   /* ── Event Listeners ──────────────────────────────── */
@@ -147,7 +240,7 @@
     if (!info) return;
 
     var component = getComponentName(path);
-    var position = clickable.getAttribute('data-track-position') || 'body';
+    var position = clickable.getAttribute('data-track-position') || info.position || 'body';
 
     if (info.category === 'tool_interaction') {
       track('tool_interaction', {
@@ -156,14 +249,24 @@
         button_label: info.label
       });
     } else {
-      track('cta_click', {
+      // Per-click Amazon attribution: rewrite the href (adds ascsubtag) before
+      // the browser navigates, so cta_url reflects the tagged link we report.
+      if (info.category === 'affiliate_amazon') {
+        info.url = addAmazonSubtag(clickable, component);
+      }
+      var ctaParams = {
         cta_category: info.category,
         cta_label: info.label,
         cta_url: info.url || '',
         component: component,
         position: position,
         page_path: window.location.pathname
-      });
+      };
+      if (info.affiliate) ctaParams.affiliate = info.affiliate;
+      if (info.affiliate_marketplace) ctaParams.affiliate_marketplace = info.affiliate_marketplace;
+      if (info.to_tool) ctaParams.to_tool = info.to_tool;
+      if (info.to_post) ctaParams.to_post = info.to_post;
+      track('cta_click', ctaParams);
     }
   }, true); // capture phase to fire before any stopPropagation
 
@@ -175,5 +278,42 @@
       });
     }
   });
+
+  /* ── Conversion CustomEvents → GA4 ────────────────── */
+
+  // Components dispatch these for the Wix Velo host (bubbles + composed, so
+  // they reach document). Mirror them into GA4 as key events. NEVER read the
+  // email or any other PII out of e.detail — only non-identifying context.
+  const CONVERSION_EVENTS = {
+    subscribe:     { ga: 'email_subscribe', lead: 'newsletter' },
+    contactSubmit: { ga: 'contact_submit',  lead: 'contact_form' }
+  };
+
+  Object.keys(CONVERSION_EVENTS).forEach(function (domEvent) {
+    var cfg = CONVERSION_EVENTS[domEvent];
+    document.addEventListener(domEvent, function (e) {
+      var detail = e.detail || {};
+      var params = {
+        lead_type: cfg.lead,
+        // e.target is retargeted to the shadow host (e.g. <kygo-contact>).
+        component: detail.component ||
+                   (e.target && e.target.tagName ? e.target.tagName.toLowerCase() : 'unknown'),
+        page_path: window.location.pathname
+      };
+      // Only the subscribe form ever carries a `source`; contact detail is PII
+      // (firstName/lastName/email/subject/message) and is deliberately ignored.
+      if (detail.source) params.source = detail.source;
+      track(cfg.ga, params);
+    }, true);
+  });
+
+  // Optional (non-key): calculator completion on the calorie-burn tool.
+  // The component dispatches 'kygo-calorie-calculation' (not 'kygo-calculation').
+  document.addEventListener('kygo-calorie-calculation', function (e) {
+    track('tool_result', {
+      tool_name: (e.target && e.target.tagName ? e.target.tagName.toLowerCase() : 'unknown'),
+      page_path: window.location.pathname
+    });
+  }, true);
 
 })();
