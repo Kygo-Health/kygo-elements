@@ -176,12 +176,13 @@ Fixed top nav rendered into `<div id="kygo-header-root">` by an IIFE. Key facts:
 
 - **Logo** → `https://www.kygo.app/` · asset = canonical logo. Wordmark: `KYGO HEALTH`.
 - **Nav links:** `/how-it-works`, `/faq`, `/blog`, `/tools`, **`/contact-8`**.
-- **Log in** → `https://app.kygo.app/login` (secondary text link, right-aligned).
+- **No Log in link.** Returning users sign in from `/start`, which shows "Already have an account?
+  Sign in", so the header carries only the signup path.
 - **Open web app** → `https://app.kygo.app/start?utm_source=kygo.app&utm_medium=header` (no
   `utm_campaign`: the snippet runs on every page). The snippet also loads `kygo-cta.js`, whose
   document listener swaps in inbound `utm_*` and forwards `fbclid` / `gclid` on press.
   This replaced the desktop iOS/Android store buttons in the web-platform pass (2026-09-14).
-- Mobile menu carries Log in, "Start on the web", and both store CTAs
+- Mobile menu carries "Open web app" and both store CTAs
   (Tenjin iOS `…/cD7zgIPLuiZMMWmWkXLsvy`, Tenjin Android `…/eMjS3ZkseCvs2lO9AVESkO`); hamburger toggles via global
   `toggleKygoMobile()` / `closeKygoMobile()`; scroll adds `.scrolled` shadow to `#kygo-nav`.
 - `z-index: 99999`; `.kygo-nav-spacer` (70px) offsets the fixed bar.

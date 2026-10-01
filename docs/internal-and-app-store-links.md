@@ -35,7 +35,7 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 >
 > **Web app links:** `https://app.kygo.app/start` is the only signup target (onboarding v2:
 > Welcome, then the quiz at `/start/quiz`, then account creation). `https://app.kygo.app/login`
-> is for existing accounts ("Sign in"). Never link `/register` (skips the quiz, kept only so old
+> is for existing accounts, but the site does not link it: `/start` has its own "Sign in". Never link `/register` (skips the quiz, kept only so old
 > links resolve) or the bare root `https://app.kygo.app/` (the signed-in dashboard). The four
 > inline FAQ answer links use `utm_medium=faq&utm_campaign=faq-answer`.
 >
