@@ -11,6 +11,8 @@
  *   slug    (required) campaign id, used verbatim as utm_campaign on the web
  *           link and as the GA4 / Mixpanel label. Must be unique per placement.
  *   surface home | blog | tool | faq. Used as utm_medium.
+ *   content optional utm_content: the button position, when one page has
+ *           more than one CTA under the same campaign.
  *   hook    topic-matched line on the reader's payoff, shown above the buttons.
  *   theme   dark (on the navy conversion card) | green (on a Kygo-green
  *           card, where the filled button goes white) | light (default, on white).
@@ -31,7 +33,10 @@
  *           variant="outline" for the quieter of two plan buttons.
  *
  * Destinations:
- *   Web      -> app.kygo.app/register with utm_source/medium/campaign.
+ *   Web      -> app.kygo.app/start (onboarding: Welcome, quiz, then account)
+ *               with utm_source/medium/campaign[/content]. A visitor who
+ *               arrived with their own utm_* keeps those instead, and
+ *               fbclid / gclid ride along (see __kygoAttr below).
  *   iOS      -> the Tenjin iOS click URL, which redirects to the App Store.
  *   Android  -> the Tenjin Android click URL, which redirects to Play.
  * Tenjin is the system of record for install attribution, so the store buttons
@@ -55,6 +60,106 @@
 const TENJIN_IOS = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
 const TENJIN_ANDROID = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
 
+/** Attribution for every link into the web app (app.kygo.app), not only the
+ *  ones this element renders: the header, the footer and inline links in other
+ *  components get it too, through one document-level listener.
+ *
+ *  - A visitor who arrived with their own utm_* (an ad, a newsletter) keeps
+ *    THOSE on the app link; the site's own kygo.app tags are dropped. Only when
+ *    the session has no inbound utm_* does the link keep its kygo.app tags.
+ *  - fbclid and gclid are always forwarded.
+ *  - Both are kept in sessionStorage, so a visitor who lands on a blog post
+ *    from an ad and clicks a CTA two pages later still carries the ad campaign.
+ *    Storage that throws or is blocked falls back to memory for this page.
+ *
+ *  Exposed as window.KygoAttribution { capture, decorate, webUrl } for the Wix
+ *  header and footer snippets, which load this file for exactly that. */
+const __kygoAttr = window.KygoAttribution || (function () {
+  const KEY = 'kygo_attr';
+  const CLICK_IDS = ['fbclid', 'gclid'];
+  const APP_ORIGIN = 'https://app.kygo.app';
+  let mem = null;
+
+  // A Wix custom element sits in the page document, but read the top window
+  // when it is reachable so an iframe embed still sees the landing URL.
+  const page = () => {
+    try { if (window.top && window.top.location.href) return window.top; } catch (e) { /* cross-origin */ }
+    return window;
+  };
+  const load = () => {
+    try { return JSON.parse(page().sessionStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  };
+  const save = (v) => {
+    try { page().sessionStorage.setItem(KEY, JSON.stringify(v)); } catch (e) { /* memory only */ }
+  };
+
+  /** Folds the current page's utm_* and click ids into the session and returns
+   *  {utm, click}. A page with any utm_* replaces the stored set as a whole. */
+  function capture() {
+    const stored = mem || load();
+    let params;
+    try { params = new URLSearchParams(page().location.search); } catch (e) { params = new URLSearchParams(); }
+    const utm = {};
+    params.forEach((v, k) => { if (/^utm_/.test(k) && v) utm[k] = v; });
+    const next = { utm: Object.keys(utm).length ? utm : (stored.utm || null), click: Object.assign({}, stored.click) };
+    CLICK_IDS.forEach((k) => { const v = params.get(k); if (v) next.click[k] = v; });
+    mem = next;
+    save(next);
+    return next;
+  }
+
+  /** Applies the session's attribution to an app.kygo.app href. Anything else
+   *  comes back untouched. Idempotent, so it is safe on every click. */
+  function decorate(href) {
+    let u;
+    try { u = new URL(href); } catch (e) { return href; }
+    if (u.origin !== APP_ORIGIN) return href;
+    const a = capture();
+    const q = new URLSearchParams();
+    // utm_* first, then anything else the link carried, then click ids, so a
+    // second pass yields the same string.
+    const own = Array.from(u.searchParams.entries());
+    const utm = a.utm ? Object.keys(a.utm).map((k) => [k, a.utm[k]]) : own.filter((e) => /^utm_/.test(e[0]));
+    utm.forEach((e) => q.append(e[0], e[1]));
+    own.filter((e) => !/^utm_/.test(e[0]) && CLICK_IDS.indexOf(e[0]) < 0).forEach((e) => q.append(e[0], e[1]));
+    CLICK_IDS.forEach((k) => {
+      const v = (a.click && a.click[k]) || u.searchParams.get(k);
+      if (v) q.set(k, v);
+    });
+    u.search = q.toString();
+    return u.toString();
+  }
+
+  /** The signup link: /start (Welcome, then the quiz, then account creation)
+   *  with the site's tags, then the session's attribution on top. */
+  function webUrl(o) {
+    o = o || {};
+    const u = new URL(APP_ORIGIN + (o.path || '/start'));
+    u.searchParams.set('utm_source', 'kygo.app');
+    if (o.medium) u.searchParams.set('utm_medium', o.medium);
+    if (o.campaign) u.searchParams.set('utm_campaign', o.campaign);
+    if (o.content) u.searchParams.set('utm_content', o.content);
+    return decorate(u.toString());
+  }
+
+  // Rewrite an app link the moment it is pressed, wherever it lives (light DOM
+  // or an open shadow root), so a link rendered before this file loaded, or on
+  // a page the visitor reached after landing, still leaves with the right tags.
+  // pointerdown also covers a copied link and a middle click.
+  const onPress = (e) => {
+    const path = e.composedPath ? e.composedPath() : [e.target];
+    const link = path.filter((n) => n && n.tagName === 'A' && n.href && n.href.indexOf(APP_ORIGIN) === 0)[0];
+    if (link) {
+      const next = decorate(link.href);
+      if (next !== link.href) link.href = next;
+    }
+  };
+  ['pointerdown', 'click', 'auxclick'].forEach((t) => document.addEventListener(t, onPress, true));
+
+  capture();
+  return (window.KygoAttribution = { capture, decorate, webUrl });
+})();
+
 /** Injects accessible text into light DOM so crawlers and AI tools can read component content */
 function __ctaSeo(el, text) {
   if (el.querySelector('[data-seo]')) return;
@@ -73,7 +178,7 @@ class KygoCta extends HTMLElement {
     this._onClick = this._onClick.bind(this);
   }
 
-  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note', 'compact', 'mini', 'single', 'block', 'variant', 'label', 'ios-link', 'android-link']; }
+  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note', 'compact', 'mini', 'single', 'block', 'variant', 'label', 'content', 'ios-link', 'android-link']; }
 
   connectedCallback() {
     this._parseWixAttributes();
@@ -129,11 +234,15 @@ class KygoCta extends HTMLElement {
     return ['home', 'blog', 'tool', 'faq'].indexOf(s) > -1 ? s : 'home';
   }
 
-  _webUrl(path) {
-    const p = path || '/register';
-    return 'https://app.kygo.app' + p +
-      '?utm_source=kygo.app&utm_medium=' + encodeURIComponent(this._surface) +
-      '&utm_campaign=' + encodeURIComponent(this._slug);
+  /** Optional utm_content, for the button position on a page that carries
+   *  more than one CTA under the same campaign. */
+  get _content() {
+    return String(this._getSetting('content', '') || '')
+      .toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+  }
+
+  _webUrl() {
+    return __kygoAttr.webUrl({ medium: this._surface, campaign: this._slug, content: this._content });
   }
 
   /** Both store buttons go through Tenjin (Website channel), which redirects to
@@ -195,7 +304,7 @@ class KygoCta extends HTMLElement {
   _seoText() {
     const hook = this._getSetting('hook', '');
     return (hook ? hook + ' ' : '') +
-      'Start on the web at https://app.kygo.app/register, or get Kygo on iPhone and Android. ' +
+      'Start on the web at https://app.kygo.app/start, or get Kygo on iPhone and Android. ' +
       'One account and one plan cover iOS, Android and web.';
   }
 
@@ -234,7 +343,7 @@ class KygoCta extends HTMLElement {
     // aria-label carries the full wording even where the visible label is
     // dropped for width, so an icon-only pill still announces itself.
     const web = (cls, label) =>
-      `<a class="${cls}" href="${this._webUrl('/register')}" data-destination="web" target="_blank" rel="noopener" aria-label="Start Kygo on the web">${globe}<span class="lbl">${label}</span></a>`;
+      `<a class="${cls}" href="${this._webUrl()}" data-destination="web" target="_blank" rel="noopener" aria-label="Start Kygo on the web">${globe}<span class="lbl">${label}</span></a>`;
     const ios = (cls, label) =>
       `<a class="${cls}" href="${this._iosUrl}" data-destination="ios" target="_blank" rel="noopener" aria-label="Get Kygo on the App Store">${apple}<span class="lbl">${label}</span></a>`;
     const play = (cls, label) =>

@@ -212,7 +212,7 @@ its `position` from the element's `surface`:
 |---|---|
 | `ios_download` | **`data-destination="ios"` (any `<kygo-cta>` button)**, `data-action="ios-download"`, or `href` contains `apps.apple.com` **or the Tenjin iOS link `track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`**, or `.cta-primary` + apple href |
 | `android_download` | **`data-destination="android"`**, `data-action="android-download"`, `.cta-android`, or `href` contains **the Tenjin Android link `track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`** (what every `<kygo-cta>` Android button points at), `play.google.com` or `kygo.app/android` |
-| `web_signup` | **`data-destination="web"`** — the "Start on the web" button on every `<kygo-cta>`, pointing at `app.kygo.app/register` with UTMs |
+| `web_signup` | **`data-destination="web"`** — the "Start on the web" button on every `<kygo-cta>`, pointing at `app.kygo.app/start` with UTMs (or the visitor's inbound UTMs, plus `fbclid` / `gclid`) |
 | `see_how_it_works` | `.cta-secondary` or label contains "how it works" |
 | `tool_interaction` | `data-action` = `calculate`/`compare`/`analyze`, or `.calculate-button` |
 | `header_cta` | `.header-cta` (nav "Get Kygo App") |

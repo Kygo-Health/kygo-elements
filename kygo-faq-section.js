@@ -733,19 +733,19 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>Does Kygo work on Android and iPhone?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Both, plus the web.</strong> Food logging, every direct wearable integration and the correlation engine work identically on iOS, Android and <a href="https://app.kygo.app">app.kygo.app</a>.</p><p>Two things are iPhone only because of Apple's rules: Apple Health sync and Sign in with Apple. Android users get Health Connect instead.</p>
+                  <p><strong>Both, plus the web.</strong> Food logging, every direct wearable integration and the correlation engine work identically on iOS, Android and <a href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=faq&amp;utm_campaign=faq-answer">app.kygo.app</a>.</p><p>Two things are iPhone only because of Apple's rules: Apple Health sync and Sign in with Apple. Android users get Health Connect instead.</p>
                 </div>
               </div>
               <div class="faq-item">
                 <div class="faq-question"><span>Is there a web version of Kygo?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Yes.</strong> Kygo runs in your browser at <a href="https://app.kygo.app">app.kygo.app</a> with the same account you use on your phone.</p><p>Log meals, connect wearables and read your correlations on a full-size screen. Anything you log in one place shows up in the others, because iOS, Android and web are one product rather than three.</p>
+                  <p><strong>Yes.</strong> Kygo runs in your browser at <a href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=faq&amp;utm_campaign=faq-answer">app.kygo.app</a> with the same account you use on your phone.</p><p>Log meals, connect wearables and read your correlations on a full-size screen. Anything you log in one place shows up in the others, because iOS, Android and web are one product rather than three.</p>
                 </div>
               </div>
               <div class="faq-item">
                 <div class="faq-question"><span>Do I need the phone app?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p><strong>Only for Apple Health.</strong> That connection lives inside the iOS app, because Apple allows HealthKit access there and nowhere else.</p><p>Everything else works in the browser: Oura, Garmin, Fitbit and WHOOP connect on the web at <a href="https://app.kygo.app">app.kygo.app</a>, and so do food logging, every trend screen and the correlation engine.</p>
+                  <p><strong>Only for Apple Health.</strong> That connection lives inside the iOS app, because Apple allows HealthKit access there and nowhere else.</p><p>Everything else works in the browser: Oura, Garmin, Fitbit and WHOOP connect on the web at <a href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=faq&amp;utm_campaign=faq-answer">app.kygo.app</a>, and so do food logging, every trend screen and the correlation engine.</p>
                 </div>
               </div>
             </div>
@@ -925,7 +925,7 @@ class KygoFaqSection extends HTMLElement {
               <div class="faq-item">
                 <div class="faq-question"><span>Where do I get Kygo, and what are the free tools?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></div>
                 <div class="faq-answer">
-                  <p>Kygo runs in your browser at <a href="https://app.kygo.app">app.kygo.app</a>, and the app is on the <a href="https://kygo.app/iOS" target="_blank" rel="noopener">App Store</a> and <a href="https://kygo.app/android" target="_blank" rel="noopener">Google Play</a>.</p><p>Separately, kygo.app hosts <strong>25 free research tools</strong>, no signup required, covering wearable accuracy, sleep, HRV and more at <a href="https://www.kygo.app/tools">kygo.app/tools</a>.</p>
+                  <p>Kygo runs in your browser at <a href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=faq&amp;utm_campaign=faq-answer">app.kygo.app</a>, and the app is on the <a href="https://kygo.app/iOS" target="_blank" rel="noopener">App Store</a> and <a href="https://kygo.app/android" target="_blank" rel="noopener">Google Play</a>.</p><p>Separately, kygo.app hosts <strong>25 free research tools</strong>, no signup required, covering wearable accuracy, sleep, HRV and more at <a href="https://www.kygo.app/tools">kygo.app/tools</a>.</p>
                 </div>
               </div>
             </div>

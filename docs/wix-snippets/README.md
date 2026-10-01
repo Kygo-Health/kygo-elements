@@ -31,8 +31,9 @@ submit shows the retry error and no GA4 event fires.
 Both blocks pick which platform button leads from the user agent, and both fail safe: an
 unrecognised agent (or a `navigator` that throws) falls back to the web app, and every platform
 stays reachable on every device, so no visitor is left without a way in. The store buttons keep
-their **Tenjin** attribution links; the web app carries
-`utm_source=kygo.app&utm_medium=header|footer&utm_campaign=nav`. Both fire the same Mixpanel
+their **Tenjin** attribution links; the web app goes to `app.kygo.app/start` with
+`utm_source=kygo.app&utm_medium=header|footer` (no `utm_campaign`). Both blocks load `kygo-cta.js`,
+whose listener swaps in a visitor's inbound `utm_*` and forwards `fbclid` / `gclid` on press. Both fire the same Mixpanel
 `cta_clicked` `{slug:"nav", surface, destination}` that the in-page `<kygo-cta>` element sends.
 
 ## If the live site ever drifts from these files
