@@ -1,10 +1,10 @@
 /**
- * Kygo Health — HRV Factor Explorer
+ * Kygo Health: HRV Factor Explorer
  * Tag: kygo-hrv-factors
- * Interactive tool exploring 44 research-backed factors that affect Heart Rate Variability across 5 categories
+ * Interactive tool exploring 43 research-backed factors that affect Heart Rate Variability across 5 categories
  */
 
-/** SEO helper — injects visible text outside Shadow DOM for crawlers */
+/** SEO helper: injects visible text outside Shadow DOM for crawlers */
 if (typeof __seo === 'undefined') {
   var __seo = function(el, text) {
     if (el.querySelector('[data-seo]')) return;
@@ -16,6 +16,18 @@ if (typeof __seo === 'undefined') {
   };
 }
 
+/** Loads the shared <kygo-cta> element on demand. Wix embeds this file on its
+ *  own, so the CTA definition has to come along rather than be assumed present. */
+function __ensureKygoCta() {
+  if (customElements.get('kygo-cta')) return;
+  if (document.querySelector('script[data-kygo-cta-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+  s.setAttribute('data-kygo-cta-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
 class KygoHrvFactors extends HTMLElement {
   constructor() {
     super();
@@ -24,16 +36,17 @@ class KygoHrvFactors extends HTMLElement {
     this._activeCategory = 'lifestyle';
     this._expandedFactor = null;
     this._expandedTopPick = null;
-    this._sortMode = 'default';
+    this._sortMode = 'evidence';
     this._eventsBound = false;
   }
 
   connectedCallback() {
+    __ensureKygoCta();
     this.render();
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'HRV Factor Explorer by Kygo Health. Explore 44 research-backed factors that affect Heart Rate Variability across 5 categories: Supplements, Lifestyle, Exercise, Micronutrients, and Demographics. Supplements include Ashwagandha Witholytin (RCT n=111), Ashwagandha Zenroot (RCT n=90), Probiotics, Polyphenols, Multivitamin, GABA (RCT n=30), L-Theanine, and Beetroot Juice (meta-analysis n=54). Lifestyle factors include Sleep Quality, Slow Breathing at 6 breaths per minute, Cold Exposure with 54-85% RMSSD increase, Meditation, HRV Biofeedback, Forest Bathing, Intermittent Fasting 16:8, Mediterranean Diet, Alcohol dose-dependent decrease, Smoking, THC Cannabis nocturnal decrease, Caffeine recovery delay, Chronic Stress, Sauna, Sexual Activity correlational, Altitude acute negative above 2500m, Caloric Restriction HRV 20 years younger, and Dehydration. Exercise modalities ranked by Yang et al 2024 Network Meta-Analysis of 29 RCTs: HIIT is number 1 for SDNN RMSSD and LF/HF ratio, Aerobic Endurance training, Resistance Training number 1 for HF power, Combined training, Yoga Mind-Body, and Overtraining risk. Micronutrients include Vitamin B12, Vitamin D, Magnesium, Omega-3 EPA DHA most studied dietary HRV factor, and Zinc. Demographics include Age strongest predictor, Sex and Gender, Genetics inconclusive, Circadian Rhythm, BMI Obesity, and Menstrual Cycle luteal phase HRV dip. Each factor shows evidence strength (Strong Moderate Emerging), direction of effect (Positive Negative Mixed), mechanism of action, dosage when applicable, and peer-reviewed citations. How to improve HRV naturally. What affects HRV. Best supplements for HRV. Data sourced from peer-reviewed studies and meta-analyses.');
+    __seo(this, 'HRV Factor Explorer by Kygo Health. Explore 43 research-backed factors that affect Heart Rate Variability across 5 categories: Supplements, Lifestyle, Exercise, Micronutrients, and Demographics. A Do More / Cut Back action board lists the changeable factors with strong or moderate evidence, each with the tested dose and measured result, such as sleep 7 to 9 hours, slow breathing 20 minutes a day at 6 breaths per minute, HIIT 2 to 3 sessions a week, omega-3 1 to 2 g daily, and cutting alcohol, which lowers RMSSD by 2 to 13 ms per dose level. Supplements include Ashwagandha Witholytin (RCT n=111), Ashwagandha Zenroot (RCT n=90), Probiotics, Polyphenols, Multivitamin, GABA (RCT n=30), L-Theanine, and Beetroot Juice (meta-analysis n=54). Lifestyle factors include Sleep Quality, Slow Breathing at 6 breaths per minute, Cold Exposure with 54-85% RMSSD increase, Meditation, HRV Biofeedback, Forest Bathing, Intermittent Fasting 16:8, Mediterranean Diet, Alcohol dose-dependent decrease, Smoking, THC Cannabis nocturnal decrease, Caffeine recovery delay, Chronic Stress, Sauna, Sexual Activity correlational, Altitude acute negative above 2500m, Caloric Restriction HRV 20 years younger, and Dehydration. Exercise modalities ranked by Yang et al 2024 Network Meta-Analysis of 29 RCTs: HIIT is number 1 for SDNN RMSSD and LF/HF ratio, Aerobic Endurance training, Resistance Training number 1 for HF power, Combined training, Yoga Mind-Body, and Overtraining risk. Micronutrients include Vitamin B12, Vitamin D, Magnesium, Omega-3 EPA DHA most studied dietary HRV factor, and Zinc. Demographics include Age strongest predictor, Sex and Gender, Genetics inconclusive, Circadian Rhythm, BMI Obesity, and Menstrual Cycle (cyclical, with a luteal phase HRV dip). Each factor shows evidence strength (Strong Moderate Emerging), direction of effect (Positive Negative Mixed), mechanism of action, dosage when applicable, and peer-reviewed citations. How to improve HRV naturally. What affects HRV. Best supplements for HRV. Data sourced from peer-reviewed studies and meta-analyses.');
   }
 
   disconnectedCallback() {
@@ -54,47 +67,59 @@ class KygoHrvFactors extends HTMLElement {
 
   // ── Factor Data ─────────────────────────────────────────────────────
 
+  // Hero counts, derived from the factor data so they can never drift.
+  get _heroStats() {
+    const all = Object.values(this._factors).flat();
+    return {
+      total: all.length,
+      cats: Object.keys(this._categories).length,
+      raise: all.filter(f => f.direction === 'positive').length,
+      strong: all.filter(f => f.evidence === 'strong').length,
+      sources: this._sources.length
+    };
+  }
+
   get _factors() {
     return {
       supplements: [
         {
           key: 'ashwa-witholytin', name: 'Ashwagandha (Witholytin)',
-          direction: 'positive', evidence: 'strong',
+          direction: 'positive', evidence: 'moderate',
           effect: 'Positive (RMSSD)',
-          keyFinding: 'Strong — RCT, n=111, 12 weeks',
+          keyFinding: 'Held RMSSD steady under stress (RCT, n=111)',
           whatThisMeans: "Didn't boost HRV itself but stopped it from dropping like placebo did. Also cut fatigue nearly in half.",
           mechanism: 'Adaptogenic withanolides modulate cortisol and reduce sympathetic overdrive, preserving vagal tone under stress.',
           dosage: '200 mg twice daily (Witholytin extract)',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/', label: 'PMC10647917' },
-          affiliate: { url: 'https://amzn.to/403ZgOP', label: 'Ashwagandha Extract' }
+          affiliate: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }
         },
         {
           key: 'ashwa-zenroot', name: 'Ashwagandha (Zenroot)',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (transient)',
-          keyFinding: 'Moderate — RCT, n=90, 84 days',
+          keyFinding: 'Early HRV bump that faded (RCT, n=90)',
           whatThisMeans: 'Quick early bump in HRV that faded. Stress and anxiety kept improving though, so still useful for mood.',
           mechanism: 'Initial vagal stimulation via cortisol reduction; tolerance may develop for HRV-specific effects.',
           dosage: '500 mg daily (Zenroot KSM-66 extract)',
           source: { url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z', label: 'Springer 2025' },
-          affiliate: { url: 'https://amzn.to/4qYXjOD', label: 'KSM-66 Ashwagandha' }
+          affiliate: { url: 'https://www.amazon.com/dp/B079K32QB6?tag=kygohealthapp-20&th=1', label: 'KSM-66 Ashwagandha' , slug: 'ksm66-ashwagandha' }
         },
         {
           key: 'probiotics', name: 'Probiotics',
           direction: 'positive', evidence: 'emerging',
           effect: 'Positive (emerging)',
-          keyFinding: 'Moderate — emerging data',
+          keyFinding: 'Better HRV markers in hypertensive women',
           whatThisMeans: 'Your gut talks to your brain via the vagus nerve. Specific strains (L. paracasei LPC-37, L. rhamnosus HN001, L. acidophilus NCFM, B. lactis HN019) reduced inflammation markers that correlated with better HRV in hypertensive women. Higher gut microbial diversity is also associated with higher SDNN.',
           mechanism: 'Probiotic-driven colonization produces SCFAs (butyrate, acetate, propionate) that reduce inflammation and engage the vagus nerve. Higher gut microbial diversity associated with higher SDNN.',
           dosage: 'Multi-strain, CFU counts vary by product',
           source: { url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full', label: 'Frontiers Neurosci 2025' },
-          affiliate: { url: 'https://amzn.to/40AsqFp', label: 'Multi-Strain Probiotic' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00Y8MP4G6?tag=kygohealthapp-20&th=1', label: 'Multi-Strain Probiotic' , slug: 'probiotic-womens' }
         },
         {
           key: 'polyphenols', name: 'Polyphenols',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (HF power)',
-          keyFinding: 'Moderate — mechanistic + limited',
+          keyFinding: 'Anti-inflammatory; limited human HRV data',
           whatThisMeans: 'Colorful plant compounds (berries, dark chocolate, green tea) fight inflammation, which helps your nervous system relax.',
           mechanism: 'Antioxidant and anti-inflammatory effects reduce oxidative stress on cardiac autonomic neurons.',
           dosage: 'Dietary sources preferred; supplements vary widely',
@@ -104,45 +129,45 @@ class KygoHrvFactors extends HTMLElement {
           key: 'multivitamin', name: 'Multivitamin',
           direction: 'positive', evidence: 'moderate',
           effect: 'Protective (prevents decline)',
-          keyFinding: 'Moderate/Weak — 1 RCT',
+          keyFinding: 'Slowed HRV decline (1 RCT, dialysis patients)',
           whatThisMeans: 'Like Ashwagandha Witholytin, it protected HRV from declining rather than actively raising it. Evidence is from a single RCT on hemodialysis patients, not healthy adults, so take it with a grain of salt.',
           mechanism: 'Corrects subclinical micronutrient deficiencies that impair autonomic nerve function.',
           dosage: 'Standard daily multivitamin',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4rM2eDY', label: 'Daily Multivitamin' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FR5QMD5Y?tag=kygohealthapp-20&th=1', label: 'Daily Multivitamin' , slug: 'thorne-multivitamin' }
         },
         {
           key: 'gaba', name: 'GABA',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (parasympathetic)',
-          keyFinding: 'Moderate — RCT, n=30, 90 days',
+          keyFinding: 'Shifted toward rest mode (RCT, n=30)',
           whatThisMeans: "The brain's main 'calm down' chemical. Supplementing shifted the nervous system toward rest-and-recover mode.",
           mechanism: 'GABAergic inhibition of central sympathetic outflow shifts autonomic balance toward parasympathetic dominance.',
           dosage: '100–200 mg daily',
           source: { url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262', label: 'Taylor & Francis 2024' },
-          affiliate: { url: 'https://amzn.to/3OyDz7c', label: 'GABA Supplement' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FT6GB5MB?tag=kygohealthapp-20&th=1', label: 'GABA Supplement' , slug: 'gaba-500mg' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (attenuates sympathetic)',
-          keyFinding: 'Moderate — multiple studies',
+          keyFinding: 'Blunts the acute stress response',
           whatThisMeans: 'The calming amino acid in green tea. Lowers cortisol and takes the edge off your fight-or-flight response.',
           mechanism: 'Crosses blood-brain barrier, increases alpha waves and GABA, reduces cortisol and sympathetic activation.',
           dosage: '200 mg daily',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/', label: 'PubMed 16930802' },
-          affiliate: { url: 'https://amzn.to/3OEoHEh', label: 'L-Theanine 200mg' }
+          affiliate: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' }
         },
         {
           key: 'beetroot', name: 'Beetroot Juice',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (post-exercise)',
-          keyFinding: 'Moderate — meta-analysis, n=54',
+          keyFinding: 'Faster post-exercise HRV recovery',
           whatThisMeans: 'Nitrates boost nitric oxide, helping your body recover faster after workouts. Main benefit is quicker HRV bounce-back.',
           mechanism: 'Dietary nitrate → nitric oxide pathway enhances vascular function and parasympathetic reactivation post-exercise.',
           dosage: '~400 mg nitrate (70 mL concentrated juice)',
           source: { url: 'https://www.mdpi.com/2227-9032/13/19/2496', label: 'Healthcare 2025' },
-          affiliate: { url: 'https://amzn.to/406okEX', label: 'Beetroot Juice Shots' }
+          affiliate: { url: 'https://www.amazon.com/dp/B01GJS8VX4?tag=kygohealthapp-20&th=1', label: 'Beetroot Juice Shots' , slug: 'beet-nitrate-shots' }
         }
       ],
       lifestyle: [
@@ -165,7 +190,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Respiratory sinus arrhythmia at ~0.1 Hz resonance frequency maximizes baroreflex sensitivity and vagal output.',
           dosage: '20 minutes daily at 6 breaths/min',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/', label: 'PMC8924557' },
-          affiliate: { url: 'https://amzn.to/46scAQQ', label: 'Breathing Trainer' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00FE8N7Y4?tag=kygohealthapp-20', label: 'Breathing Trainer' , slug: 'breathing-trainer' }
         },
         {
           key: 'cold-exposure', name: 'Cold Exposure',
@@ -173,10 +198,10 @@ class KygoHrvFactors extends HTMLElement {
           effect: 'Positive (acute)',
           keyFinding: 'RMSSD +54–85% post-session',
           whatThisMeans: "Cold shocks your vagus nerve awake. The +54-85% RMSSD spike is real but fades in 15-20 minutes and doesn't shift baseline HRV with chronic use alone. Best used as a recovery tool between training days, not a standalone HRV builder.",
-          mechanism: 'Cold-water face immersion triggers the diving reflex — strong vagal activation via trigeminal nerve afferents.',
+          mechanism: 'Cold-water face immersion triggers the diving reflex, a strong vagal activation via trigeminal nerve afferents.',
           dosage: 'Cold shower or ice bath, 1–5 minutes; best as recovery tool',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' },
-          affiliate: { url: 'https://amzn.to/4aYRATe', label: 'Cold Plunge Tub' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0FX2MPK9P?tag=kygohealthapp-20&th=1', label: 'Cold Plunge Tub' , slug: 'ice-bath-tub' }
         },
         {
           key: 'meditation', name: 'Meditation',
@@ -187,7 +212,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Reduces cortisol, shifts autonomic balance toward parasympathetic via prefrontal-amygdala regulation.',
           dosage: '20+ minutes daily',
           source: { url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142', label: 'Nesvold 2012' },
-          affiliate: { url: 'https://amzn.to/4tZ5Zr2', label: 'Meditation Cushion' }
+          affiliate: { url: 'https://www.amazon.com/dp/B092DXFGVH?tag=kygohealthapp-20&th=1', label: 'Meditation Cushion' , slug: 'meditation-cushion' }
         },
         {
           key: 'hrv-biofeedback', name: 'HRV Biofeedback',
@@ -204,7 +229,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive',
           keyFinding: 'HF higher in forest vs city (n=280+)',
-          whatThisMeans: "Being in nature measurably calms your nervous system. Not just 'feeling relaxed' — it shows up in the data.",
+          whatThisMeans: "Being in nature measurably calms your nervous system. Not just 'feeling relaxed'; it shows up in the data.",
           mechanism: 'Phytoncides (tree terpenes) and reduced sensory stressors lower cortisol and sympathetic activation.',
           dosage: '2+ hours in forested environment',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/19568835/', label: 'PubMed 19568835' }
@@ -214,7 +239,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (moderate)',
           keyFinding: 'RMSSD 35 to 45ms in 8 weeks',
-          whatThisMeans: "16:8 fasting improved HRV over 8 weeks. But don't overdo it — fasts over 48 hours actually hurt HRV.",
+          whatThisMeans: "16:8 fasting improved HRV over 8 weeks. But don't overdo it: fasts over 48 hours actually hurt HRV.",
           mechanism: 'Fasting-induced autophagy and reduced inflammatory load improve vagal tone. Extended fasting reverses effect via stress.',
           dosage: '16:8 protocol (16 hours fasting, 8 hours eating)',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/', label: 'PMC10045415' }
@@ -296,7 +321,7 @@ class KygoHrvFactors extends HTMLElement {
           keyFinding: 'Associated with higher resting HRV (n=120)',
           whatThisMeans: "Associated with higher resting HRV but causation is unclear. Healthier people may simply have more sex. Interesting signal but don't read too much into it yet.",
           mechanism: 'Possible oxytocin-mediated vagal activation and stress reduction. Confounded by overall health status.',
-          dosage: 'Observational — no dosage established',
+          dosage: 'Observational; no dosage established',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/12659241/', label: 'Brody & Preut 2003' }
         },
         {
@@ -304,7 +329,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (acute)',
           keyFinding: 'Sympathetic spike, HF drops above ~2,500m (meta-analysis)',
-          whatThisMeans: "Thinner air forces your body into fight-or-flight mode to keep oxygen flowing. HRV recovers when you come back to lower elevation. Don't panic about low readings at altitude — it's expected.",
+          whatThisMeans: "Thinner air forces your body into fight-or-flight mode to keep oxygen flowing. HRV recovers when you come back to lower elevation. Don't panic about low readings at altitude. It's expected.",
           mechanism: 'Hypoxia-driven sympathetic activation and reduced parasympathetic (HF) power. Chemoreceptor-mediated response to lower O₂ partial pressure.',
           dosage: 'Effect begins above ~2,500m; reversible on descent',
           source: { url: 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1502562/full', label: 'Frontiers Physiol 2025' }
@@ -314,7 +339,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive',
           keyFinding: 'CR practitioners had HRV 20 years younger than age-matched controls (n=42)',
-          whatThisMeans: "Eating ~30% below caloric needs while staying nutritionally complete helps your autonomic nervous system stay younger. Mechanism is reduced inflammation and improved insulin sensitivity (hormesis). Not the same as starvation — a meta-analysis found moderate CR doesn't raise cortisol, only fasting/starvation does. Combined with exercise the effect is even stronger.",
+          whatThisMeans: "Eating ~30% below caloric needs while staying nutritionally complete helps your autonomic nervous system stay younger. Mechanism is reduced inflammation and improved insulin sensitivity (hormesis). Not the same as starvation: a meta-analysis found moderate CR doesn't raise cortisol, only fasting/starvation does. Combined with exercise the effect is even stronger.",
           mechanism: 'Reduced inflammation and improved insulin sensitivity via hormesis. Caloric restriction without malnutrition preserves vagal tone and autonomic flexibility.',
           dosage: '~25-30% caloric reduction while maintaining full nutrition',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3598611/', label: 'PMC3598611' }
@@ -402,7 +427,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Essential cofactor for myelin synthesis and nerve conduction. Deficiency causes demyelination of autonomic fibers.',
           dosage: 'Correct deficiency; RDA 2.4 mcg',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4lbwIg3', label: 'Vitamin B12' }
+          affiliate: { url: 'https://www.amazon.com/dp/B002FJW3ZY?tag=kygohealthapp-20&th=1', label: 'Vitamin B12' , slug: 'vitamin-b12' }
         },
         {
           key: 'vitamin-d', name: 'Vitamin D',
@@ -413,7 +438,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'VDR expression on cardiomyocytes and autonomic neurons; deficiency increases inflammatory cytokines.',
           dosage: 'Correct deficiency; target 30–50 ng/mL',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4cm6d5m', label: 'Vitamin D3' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00GB85JR4?tag=kygohealthapp-20&th=1', label: 'Vitamin D3' , slug: 'vitamin-d3-5000' }
         },
         {
           key: 'magnesium', name: 'Magnesium',
@@ -424,7 +449,7 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Natural calcium channel blocker; stabilizes cardiac membrane potential and modulates NMDA receptors.',
           dosage: '200–400 mg elemental Mg daily',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/3Nbjq6C', label: 'Magnesium Glycinate' }
+          affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }
         },
         {
           key: 'omega3', name: 'Omega-3 (EPA/DHA)',
@@ -435,18 +460,18 @@ class KygoHrvFactors extends HTMLElement {
           mechanism: 'Membrane incorporation alters ion channel kinetics; anti-inflammatory effects via resolvin/protectin pathways.',
           dosage: '1–2 g EPA+DHA daily',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' },
-          affiliate: { url: 'https://amzn.to/4cVnvGt', label: 'Omega-3 Fish Oil' }
+          affiliate: { url: 'https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1', label: 'Omega-3 Fish Oil' , slug: 'omega-3-fish-oil' }
         },
         {
           key: 'zinc', name: 'Zinc',
           direction: 'positive', evidence: 'emerging',
           effect: 'Positive (prenatal)',
           keyFinding: 'Improved offspring HRV',
-          whatThisMeans: "Interesting but niche — zinc during pregnancy improved the baby's HRV for years. Limited adult data so far.",
+          whatThisMeans: "Interesting but niche: zinc during pregnancy improved the baby's HRV for years. Limited adult data so far.",
           mechanism: 'Zinc-dependent enzymes in autonomic neurodevelopment; prenatal supplementation affects fetal ANS maturation.',
           dosage: 'RDA 8–11 mg; prenatal context',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
-          affiliate: { url: 'https://amzn.to/4760BIN', label: 'Zinc Picolinate' }
+          affiliate: { url: 'https://www.amazon.com/dp/B0012ZQPKG?tag=kygohealthapp-20&th=1', label: 'Zinc Picolinate' , slug: 'zinc-picolinate' }
         }
       ],
       demographics: [
@@ -475,7 +500,7 @@ class KygoHrvFactors extends HTMLElement {
           direction: 'variable', evidence: 'emerging',
           effect: 'Inconclusive',
           keyFinding: 'Twin studies yes; gene studies no (n=6,740)',
-          whatThisMeans: "Your genes probably matter, but researchers haven't pinpointed which ones. Don't blame genetics — lifestyle still dominates.",
+          whatThisMeans: "Your genes probably matter, but researchers haven't pinpointed which ones. Don't blame genetics; lifestyle still dominates.",
           mechanism: 'Twin studies show heritability ~40–50%, but GWAS (n=6,740) found no significant loci. Polygenic effects likely.',
           dosage: 'Non-modifiable; lifestyle dominates',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'PMC11333334' }
@@ -502,10 +527,10 @@ class KygoHrvFactors extends HTMLElement {
         },
         {
           key: 'menstrual-cycle', name: 'Menstrual Cycle',
-          direction: 'negative', evidence: 'moderate',
-          effect: 'Negative (luteal phase)',
-          keyFinding: 'HRV lowest ~1 week before period; progesterone suppresses vagal activity',
-          whatThisMeans: "Progesterone rises after ovulation and directly lowers HRV. Expect lowest readings about a week before your period — it's hormonal, not something you're doing wrong. Rebounds about a week after menses.",
+          direction: 'variable', evidence: 'moderate',
+          effect: 'Cyclical (dips in luteal phase)',
+          keyFinding: 'Lowest ~1 week before your period, then rebounds',
+          whatThisMeans: "Progesterone rises after ovulation and directly lowers HRV. Expect lowest readings about a week before your period. It's hormonal, not something you're doing wrong. Rebounds about a week after menses.",
           mechanism: 'Progesterone suppresses vagal tone during the luteal phase. Estrogen in the follicular phase supports parasympathetic activity. Creates a predictable ~28-day HRV cycle.',
           dosage: 'Non-modifiable; track cycle to contextualize HRV',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/', label: 'PMC7141121' }
@@ -518,12 +543,12 @@ class KygoHrvFactors extends HTMLElement {
 
   get _topPicks() {
     return [
-      { icon: 'trophy', label: 'Best Single Habit', answer: 'Sleep Quality', note: 'Top predictor of nocturnal HRV — nothing else comes close', stat: '#1 predictor', category: 'Lifestyle' },
+      { icon: 'trophy', label: 'Best Single Habit', answer: 'Sleep Quality', note: 'Top predictor of nocturnal HRV. Nothing else comes close.', stat: '#1 predictor', category: 'Lifestyle' },
       { icon: 'dumbbell', label: 'Best Exercise', answer: 'HIIT', note: '#1 across SDNN, RMSSD, and LF/HF in network meta-analysis of 29 RCTs', stat: 'NMA, 29 RCTs', category: 'Exercise' },
-      { icon: 'pill', label: 'Best Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Strongest evidence — RCT, n=111, 12 weeks, preserved RMSSD', stat: 'RCT, n=111', category: 'Supplements' },
-      { icon: 'droplet', label: 'Best Nutrient', answer: 'Omega-3 (EPA/DHA)', note: 'Most studied dietary HRV factor — consistent HF power improvements', stat: 'HF power ↑', category: 'Micronutrients' },
-      { icon: 'wind', label: 'Quickest Impact', answer: 'Slow Breathing (6/min)', note: 'Resonance frequency breathing maximizes HRV within minutes', stat: 'SDNN improved in 4 wks', category: 'Lifestyle' },
-      { icon: 'alert', label: 'Biggest HRV Killer', answer: 'Alcohol', note: 'RMSSD drops −2 to −13ms per dose — fitness doesn\'t protect you', stat: 'RMSSD −2 to −13ms', category: 'Lifestyle', warning: true }
+      { icon: 'pill', label: 'Best Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Kept RMSSD from falling over 12 weeks while the placebo group dropped. It protects HRV under stress rather than raising it.', stat: 'RCT, n=111', category: 'Supplements' },
+      { icon: 'droplet', label: 'Best Nutrient', answer: 'Omega-3 (EPA/DHA)', note: 'Most studied dietary HRV factor, with consistent HF power improvements', stat: 'HF power ↑', category: 'Micronutrients' },
+      { icon: 'wind', label: 'Quickest Impact', answer: 'Slow Breathing (6/min)', note: 'Breathing at about 6 breaths a minute lifts HRV during the session itself, and 20 minutes a day improved resting SDNN within 4 weeks.', stat: 'In-session; SDNN up by week 4', category: 'Lifestyle' },
+      { icon: 'alert', label: 'Biggest HRV Killer', answer: 'Alcohol', note: 'RMSSD drops 2 to 13 ms per dose, and fitness doesn\'t protect you', stat: 'RMSSD −2 to −13ms', category: 'Lifestyle', warning: true }
     ];
   }
 
@@ -532,7 +557,7 @@ class KygoHrvFactors extends HTMLElement {
   _icon(name) {
     const icons = {
       sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
-      pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 1.5 3 3L5.3 12.7a4.24 4.24 0 0 1-6-6L7.5 4.5l3-3z"/><path d="m9 9 6.4-6.4a4.24 4.24 0 0 1 6 6L15 15"/><line x1="14.5" y1="13.5" x2="10.5" y2="9.5"/></svg>',
+      pill: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>',
       dumbbell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>',
       droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>',
       users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
@@ -546,6 +571,23 @@ class KygoHrvFactors extends HTMLElement {
       arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       arrowLeftRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>',
       heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+      moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>',
+      zap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
+      fish: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z"/><path d="M18 12v.5"/><path d="M16 17.93a9.77 9.77 0 0 1 0-11.86"/><path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33"/></svg>',
+      layers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 10 5-10 5L2 7l10-5Z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg>',
+      clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      snowflake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/></svg>',
+      sparkle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"/></svg>',
+      tree: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22v-6"/><path d="M12 2 5 12h4l-3 4h12l-3-4h4L12 2z"/></svg>',
+      utensils: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>',
+      leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
+      juice: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.5 14a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1L6 7z"/><path d="M6.5 12h11"/><path d="m14 7 2-5"/></svg>',
+      wine: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 15v7"/><path d="M7 10h10"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg>',
+      cigarette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12H3a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h14"/><path d="M18 8c0-2.5-2-2.5-2-5"/><path d="M21 16a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M22 8c0-2.5-2-2.5-2-5"/><path d="M7 12v4"/></svg>',
+      trendDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>',
+      coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>',
+      mountain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>',
       book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>'
     };
     return icons[name] || icons.heart;
@@ -594,12 +636,15 @@ class KygoHrvFactors extends HTMLElement {
       const rank = { positive: 0, mixed: 1, variable: 2, negative: 3 };
       factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
     }
-    return factors.map((f, i) => {
+    const note = this._activeCategory === 'demographics'
+      ? `<p class="cat-note">${this._icon('users')}<span><strong>You can't change these, but they explain your baseline.</strong> Two people can be equally healthy with very different HRV, so compare yourself to your own trend, not to someone else's number.</span></p>`
+      : '';
+    return note + factors.map((f, i) => {
       const dir = this._directionConfig(f.direction);
       const ev = this._evidenceConfig(f.evidence);
       const isExpanded = this._expandedFactor === f.key;
       return `
-        <div class="factor-card ${isExpanded ? 'expanded' : ''}" data-factor="${f.key}" style="--delay:${i * 60}ms">
+        <div class="factor-card ${isExpanded ? 'expanded' : ''}" data-factor="${f.key}" id="factor-${f.key}" style="--delay:${i * 60}ms">
           <div class="factor-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
             <div class="factor-top">
               <div class="factor-badges">
@@ -610,7 +655,7 @@ class KygoHrvFactors extends HTMLElement {
               <div class="factor-toggle">${this._icon('chevDown')}</div>
             </div>
             <h3 class="factor-name">${f.name}</h3>
-            <p class="factor-effect">${f.effect}</p>
+            <p class="factor-effect">${f.keyFinding}</p>
             <p class="factor-evidence-text"><span class="evidence-label">Evidence:</span> ${ev.label}</p>
           </div>
           <div class="factor-body">
@@ -631,7 +676,7 @@ class KygoHrvFactors extends HTMLElement {
                 <span class="detail-label">Source</span>
                 <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
               </div>
-              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored">
+              ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-track-label="${f.affiliate.slug}">
                 <span>Check it out on Amazon</span>
                 <span class="factor-affiliate-arrow">${this._icon('externalLink')}</span>
               </a>` : ''}
@@ -664,63 +709,106 @@ class KygoHrvFactors extends HTMLElement {
     }).join('');
   }
 
-  _renderSources() {
+  get _srcGroups() {
     const groups = {
       'Supplements': [
-        { label: 'Lopresti et al. 2024 — Ashwagandha Witholytin RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/' },
-        { label: 'Thakkar et al. 2025 — Ashwagandha Zenroot RCT', url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z' },
-        { label: 'Maia et al. 2025 — Probiotics & HRV in hypertensive women', url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full' },
-        { label: 'Badawy et al. 2024 — GABA supplementation RCT', url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262' },
-        { label: 'Kimura et al. 2007 — L-Theanine & stress', url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/' },
-        { label: 'Amiri et al. 2025 — Beetroot juice meta-analysis', url: 'https://www.mdpi.com/2227-9032/13/19/2496' }
+        { label: 'Lopresti et al. 2024: Ashwagandha Witholytin RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/' },
+        { label: 'Thakkar et al. 2025: Ashwagandha Zenroot RCT', url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z' },
+        { label: 'Maia et al. 2025: Probiotics & HRV in hypertensive women', url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full' },
+        { label: 'Badawy et al. 2024: GABA supplementation RCT', url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262' },
+        { label: 'Kimura et al. 2007: L-Theanine & stress', url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/' },
+        { label: 'Amiri et al. 2025: Beetroot juice meta-analysis', url: 'https://www.mdpi.com/2227-9032/13/19/2496' }
       ],
       'Lifestyle': [
-        { label: 'Nunan et al. 2024 — Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'Laborde et al. 2022 — Slow breathing & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/' },
-        { label: 'Mäkinen et al. 2008 — Cold exposure & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/' },
-        { label: 'Nesvold et al. 2012 — Meditation & HRV', url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142' },
-        { label: 'Lehrer & Gevirtz 2014 — HRV biofeedback review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10412682/' },
-        { label: 'Park et al. 2010 — Forest bathing & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/19568835/' },
-        { label: 'Moro et al. 2023 — Intermittent fasting & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/' },
-        { label: 'Pietilä et al. 2018 — Alcohol & HRV', url: 'https://mental.jmir.org/2018/1/e23' },
-        { label: 'Conner et al. 2023 — THC & nocturnal HRV', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
-        { label: 'Gonzalez et al. 2024 — Caffeine & HRV recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
-        { label: 'Brunt et al. 2025 — Sauna & HRV', url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449' },
-        { label: 'Brody & Preut 2003 — Sexual activity & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/12659241/' },
-        { label: 'Frontiers Physiol 2025 — Altitude & HRV meta-analysis', url: 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1502562/full' },
-        { label: 'Stein et al. 2012 — Caloric restriction & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3598611/' },
-        { label: 'Watso et al. 2019 — Dehydration & HRV', url: 'https://www.nature.com/articles/s41598-019-51255-2' }
+        { label: 'Nunan et al. 2024: Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
+        { label: 'Laborde et al. 2022: Slow breathing & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/' },
+        { label: 'Mäkinen et al. 2008: Cold exposure & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/' },
+        { label: 'Nesvold et al. 2012: Meditation & HRV', url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142' },
+        { label: 'Lehrer & Gevirtz 2014: HRV biofeedback review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10412682/' },
+        { label: 'Park et al. 2010: Forest bathing & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/19568835/' },
+        { label: 'Moro et al. 2023: Intermittent fasting & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/' },
+        { label: 'Pietilä et al. 2018: Alcohol & HRV', url: 'https://mental.jmir.org/2018/1/e23' },
+        { label: 'Conner et al. 2023: THC & nocturnal HRV', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
+        { label: 'Gonzalez et al. 2024: Caffeine & HRV recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
+        { label: 'Brunt et al. 2025: Sauna & HRV', url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449' },
+        { label: 'Brody & Preut 2003: Sexual activity & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/12659241/' },
+        { label: 'Frontiers Physiol 2025: Altitude & HRV meta-analysis', url: 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1502562/full' },
+        { label: 'Stein et al. 2012: Caloric restriction & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3598611/' },
+        { label: 'Watso et al. 2019: Dehydration & HRV', url: 'https://www.nature.com/articles/s41598-019-51255-2' }
       ],
       'Exercise': [
-        { label: 'Yang et al. 2024 — Exercise NMA (29 RCTs)', url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009' },
-        { label: 'Amekran et al. 2024 — Aerobic exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11250637/' },
-        { label: 'Fronczyk et al. 2025 — Yoga & HRV review', url: 'https://www.frontiersin.org/journals/cardiovascular-medicine/articles/10.3389/fcvm.2025.1364905/full' },
-        { label: 'Bellenger et al. 2024 — Overtraining & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11204851/' }
+        { label: 'Yang et al. 2024: Exercise NMA (29 RCTs)', url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009' },
+        { label: 'Amekran et al. 2024: Aerobic exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11250637/' },
+        { label: 'Fronczyk et al. 2025: Yoga & HRV review', url: 'https://www.frontiersin.org/journals/cardiovascular-medicine/articles/10.3389/fcvm.2025.1364905/full' },
+        { label: 'Bellenger et al. 2024: Overtraining & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11204851/' }
       ],
       'Nutrition & Micronutrients': [
-        { label: 'Young & Benton 2018 — Gut-brain axis & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/' },
-        { label: 'Lopresti 2020 — Micronutrients & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/' }
+        { label: 'Young & Benton 2018: Gut-brain axis & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/' },
+        { label: 'Lopresti 2020: Micronutrients & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/' }
       ],
       'Demographics': [
-        { label: 'Nunan et al. 2024 — Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'Schmalenberger et al. 2019 — Menstrual cycle & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/' }
+        { label: 'Nunan et al. 2024: Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
+        { label: 'Schmalenberger et al. 2019: Menstrual cycle & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/' }
       ]
     };
-    const totalCount = Object.values(groups).reduce((sum, g) => sum + g.length, 0);
-    return `<div class="src-accordion">
-      <div class="src-count-badge">${totalCount} sources cited</div>
-      ${Object.entries(groups).map(([cat, items]) => `
-        <div class="src-group">
-          <button class="src-group-toggle" aria-expanded="false">
-            <span class="src-group-name">${cat}</span>
-            <span class="src-group-count">${items.length}</span>
-            <span class="src-group-chevron">${this._icon('chevDown')}</span>
-          </button>
-          <div class="src-group-body">
-            ${items.map(s => `<a href="${s.url}" class="src-item" target="_blank" rel="noopener"><span class="src-dot"></span><span class="src-text">${s.label}</span><span class="src-ext">${this._icon('externalLink')}</span></a>`).join('')}
-          </div>
-        </div>`).join('')}
-    </div>`;
+    return groups;
+  }
+
+  // Flat source list for the standard sources module: the topic group becomes
+  // the card's tag, and a trailing "(…)" in the label becomes the citation line.
+  get _sources() {
+    const out = [];
+    for (const [tag, items] of Object.entries(this._srcGroups)) {
+      for (const s of items) {
+        const m = s.label.match(/^(.*\S)\s*\(([^()]*)\)\s*$/);
+        out.push({ tag, title: m ? m[1] : s.label, cite: m ? m[2] : '', url: s.url });
+      }
+    }
+    return out;
+  }
+
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+    }).join('');
+  }
+
+  _renderSources() {
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
   }
 
   // ── Surgical Update ─────────────────────────────────────────────────
@@ -733,14 +821,109 @@ class KygoHrvFactors extends HTMLElement {
     this._expandedFactor = null;
     if (tabs) tabs.innerHTML = this._renderCategoryTabs();
     if (cards) cards.innerHTML = this._renderFactorCards();
-    if (sortBar) sortBar.innerHTML = `
-      <label class="sort-label" for="sort-select">Sort by:</label>
-      <select class="sort-select" id="sort-select">
-        <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
-        <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
-        <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
-      </select>
-    `;
+    if (sortBar) sortBar.innerHTML = this._renderSortBar();
+  }
+
+  _renderSortBar() {
+    const opt = (v, l) => `<option value="${v}"${this._sortMode === v ? ' selected' : ''}>${l}</option>`;
+    return `<label class="sort-label" for="sort-select">Sort by:</label>
+      <select class="sort-select" id="sort-select">${opt('evidence', 'Evidence Strength')}${opt('direction', 'Effect Direction')}</select>`;
+  }
+
+  // ── Action Board ────────────────────────────────────────────────────
+  // "Do more / Cut back": the factors a reader can change, with strong or
+  // moderate evidence, each with its dose and measured result. Doses and
+  // results are condensed from the matching _factors entry; evidence comes
+  // from _factors directly so the two can't disagree.
+
+  get _board() {
+    return {
+      more: [
+        { key: 'sleep', icon: 'moon', label: 'Sleep 7–9 hours', dose: 'Same schedule every night', result: '#1 predictor of overnight HRV' },
+        { key: 'slow-breathing', icon: 'wind', label: 'Slow breathing', dose: '20 min/day at 6 breaths/min', result: 'SDNN up after 4 weeks' },
+        { key: 'hiit', icon: 'zap', label: 'HIIT', dose: '2–3 sessions/week, with recovery', result: '#1 for RMSSD and SDNN' },
+        { key: 'aerobic', icon: 'activity', label: 'Aerobic training', dose: '150+ min/week for 8+ weeks', result: 'RMSSD effect size 0.84' },
+        { key: 'omega3', icon: 'fish', label: 'Omega-3 (EPA/DHA)', dose: '1–2 g daily', result: 'Most studied dietary factor' },
+        { key: 'combined', icon: 'layers', label: 'Cardio + strength', dose: '3–5 days/week', result: '#1 for LF power' },
+        { key: 'intermittent-fasting', icon: 'clock', label: 'Intermittent fasting', dose: '16:8 eating window', result: 'RMSSD 35 → 45 ms in 8 wks' },
+        { key: 'cold-exposure', icon: 'snowflake', label: 'Cold exposure', dose: '1–5 min cold shower or ice bath', result: 'RMSSD +54–85% post-session' },
+        { key: 'resistance', icon: 'dumbbell', label: 'Resistance training', dose: '2–3 sessions/week', result: '#1 for HF power' },
+        { key: 'meditation', icon: 'sparkle', label: 'Meditation', dose: '20+ min daily', result: 'LF and HF both increased' },
+        { key: 'hrv-biofeedback', icon: 'heart', label: 'HRV biofeedback', dose: '10–20 min, several times/week', result: 'Positive across RCTs' },
+        { key: 'forest-bathing', icon: 'tree', label: 'Time in nature', dose: '2+ hours in a forest', result: 'Higher HF than city (n=280+)' },
+        { key: 'mediterranean-diet', icon: 'utensils', label: 'Mediterranean diet', dose: 'Daily eating pattern', result: 'Higher HRV (observational)' },
+        { key: 'ashwa-witholytin', icon: 'pill', label: 'Ashwagandha', dose: '200 mg twice daily (Witholytin)', result: 'Held RMSSD steady under stress' },
+        { key: 'l-theanine', icon: 'leaf', label: 'L-Theanine', dose: '200 mg daily', result: 'Blunts acute stress response' },
+        { key: 'beetroot', icon: 'juice', label: 'Beetroot juice', dose: '~400 mg nitrate', result: 'Faster post-workout recovery' },
+        { key: 'vitamin-d', icon: 'sun', label: 'Vitamin D', dose: 'Fix a deficiency (30–50 ng/mL)', result: 'Low levels, lower HRV' }
+      ],
+      less: [
+        { key: 'alcohol', icon: 'wine', label: 'Alcohol', dose: 'Any amount; 3+ drinks is severe', result: 'RMSSD −2 to −13 ms per dose' },
+        { key: 'smoking', icon: 'cigarette', label: 'Smoking', dose: 'Including secondhand smoke', result: 'Active and passive both lower HRV' },
+        { key: 'chronic-stress', icon: 'alert', label: 'Chronic stress', dose: 'Cumulative load, not one bad day', result: 'Locks in fight-or-flight' },
+        { key: 'overtraining', icon: 'trendDown', label: 'Overtraining', dose: 'Watch your 7-day HRV average', result: 'Falling HRV flags overreaching' },
+        { key: 'thc', icon: 'leaf', label: 'THC / cannabis', dose: 'Especially evening use', result: 'Overnight RMSSD −15–22%' },
+        { key: 'dehydration', icon: 'droplet', label: 'Dehydration', dose: 'Replace at least 60% of fluid lost', result: 'HR +5–6 bpm, less vagal tone' },
+        { key: 'caffeine', icon: 'coffee', label: 'Late caffeine', dose: '~200 mg; timing matters most', result: 'Delays post-workout recovery' },
+        { key: 'altitude', icon: 'mountain', label: 'High altitude', dose: 'Above ~2,500 m; reverses on descent', result: 'HF drops (meta-analysis)' }
+      ]
+    };
+  }
+
+  _renderBoardCol(kind) {
+    const up = kind === 'more';
+    const byKey = {};
+    Object.entries(this._factors).forEach(([cat, list]) => list.forEach(f => { byKey[f.key] = { ...f, cat }; }));
+    const rows = this._board[kind].filter(r => byKey[r.key]);
+    const visible = 6;
+    const items = rows.map((r, i) => {
+      const f = byKey[r.key];
+      const ev = this._evidenceConfig(f.evidence);
+      return `
+        <li class="ab-item${i >= visible ? ' ab-extra' : ''}">
+          <button type="button" class="ab-row" data-jump="${f.key}" data-cat="${f.cat}" aria-label="${f.name}: ${r.result}. Open details">
+            <span class="ab-ico">${this._icon(r.icon)}</span>
+            <span class="ab-main">
+              <span class="ab-name">${r.label}</span>
+              <span class="ab-dose">${r.dose}</span>
+            </span>
+            <span class="ab-side">
+              <span class="ab-result">${r.result}</span>
+              <span class="ab-ev" title="${ev.label} evidence"><span class="ab-bars" data-lvl="${{ strong: 3, moderate: 2, emerging: 1 }[f.evidence] || 1}" aria-hidden="true"><i></i><i></i><i></i></span>${ev.label} evidence</span>
+            </span>
+          </button>
+        </li>`;
+    }).join('');
+    const more = rows.length > visible
+      ? `<button type="button" class="ab-toggle" data-ab-more aria-expanded="false"><span class="ab-toggle-lbl">Show all ${rows.length}</span>${this._icon('chevDown')}</button>`
+      : '';
+    return `
+      <div class="ab-col ab-col-${kind}">
+        <div class="ab-head">
+          <span class="ab-head-ico">${this._icon(up ? 'arrowUp' : 'arrowDown')}</span>
+          <div>
+            <h3 class="ab-title">${up ? 'Do more' : 'Cut back'}</h3>
+            <p class="ab-sub">${rows.length} ${up ? 'habits and supplements that raise HRV' : 'things that pull HRV down'}</p>
+          </div>
+        </div>
+        <ul class="ab-list">${items}</ul>
+        ${more}
+      </div>`;
+  }
+
+  _jumpToFactor(key, cat) {
+    if (!this._factors[cat]) return;
+    this._activeCategory = cat;
+    this._updateCategory();
+    this._toggleFactor(key);
+    const card = this.shadowRoot.getElementById(`factor-${key}`);
+    if (!card) return;
+    card.classList.add('visible', 'flash');
+    setTimeout(() => card.classList.remove('flash'), 1600);
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    const hdr = card.querySelector('.factor-header');
+    if (hdr) hdr.focus({ preventScroll: true });
   }
 
   _toggleFactor(key) {
@@ -767,9 +950,424 @@ class KygoHrvFactors extends HTMLElement {
 
   // ── Main Render ─────────────────────────────────────────────────────
 
+  // Related tools · Kygo standard module ────────────────────────────────
+  // Exactly 3 cards: a near neighbour, a bridge between accuracy and
+  // physiology, and one from another family. Never links this page to
+  // itself, and never links the Food Scanner.
+
+  _relatedTools() {
+    return [
+      {
+        title: 'Recovery Score Explorer',
+        blurb: 'Compare readiness and recovery scores across 12 wearables, and see which are actually validated.',
+        url: 'https://www.kygo.app/tools/recovery-score-explorer',
+        meta: 'Recovery · 12 wearables',
+        motif: { motif: 'ring', caption: 'Readiness score', ringValue: 72, ringNote: 'Validated' }
+      },
+      {
+        title: 'Resting Heart Rate Factors',
+        blurb: '37 factors that move your resting heart rate, sorted by their exact impact in bpm.',
+        url: 'https://www.kygo.app/tools/resting-heart-rate-factors',
+        meta: 'Recovery · 37 factors',
+        motif: { motif: 'range', caption: 'Impact in bpm', rangeLabel: 'Typical shift' }
+      },
+      {
+        title: 'Supplements by Metric',
+        blurb: 'Pick a wearable metric and see which of 27 supplements the research actually supports.',
+        url: 'https://www.kygo.app/tools/supplements-by-metric',
+        meta: 'Nutrition · 28 sources',
+        motif: { motif: 'ranked', caption: 'Graded by evidence' }
+      }
+    ];
+  }
+
+  _relatedMotif(c) {
+    const m = c.motif || 'compare';
+    if (m === 'compare') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.rows) ? c.rows : [];
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const w = Math.max(0, Math.min(100, r.pct));
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:48px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.label}</span><span style="flex:1;height:9px;border-radius:5px;background:#EEF1F4;overflow:hidden;"><span style="display:block;height:100%;border-radius:5px;background:${fill};width:${w}%;"></span></span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:8px;padding:2px 0;">${body}</div>`;
+    }
+    if (m === 'ring') {
+      const v = c.ringValue != null ? c.ringValue : 72;
+      const off = (238.8 * (1 - v / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 96 96" width="80" height="80"><circle cx="48" cy="48" r="38" fill="none" stroke="#E2E8F0" stroke-width="11"/><circle cx="48" cy="48" r="38" fill="none" stroke="#22C55E" stroke-width="11" stroke-linecap="round" stroke-dasharray="238.8" stroke-dashoffset="${off}" transform="rotate(-90 48 48)"/><text x="48" y="46" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="26" fill="#1E293B">${v}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" letter-spacing="0.5" fill="#94A3B8">SCORE</text></svg><div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:#16A34A;">&#8593; ${c.ringNote || 'Validated'}</div></div>`;
+    }
+    if (m === 'pulse') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><path d="M0 48 L34 48 L44 48 L52 18 L60 60 L70 30 L80 48 L118 48 L128 48 L136 14 L144 58 L154 34 L164 48 L200 48" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="136" cy="14" r="4" fill="#22C55E"/>${c.bpm ? `<text x="200" y="68" text-anchor="end" font-family="Space Grotesk" font-weight="700" font-size="13" fill="#1E293B">${c.bpm}</text>` : ''}</svg>`;
+    }
+    if (m === 'gauge') {
+      const pct = c.gaugePct != null ? c.gaugePct : 70;
+      const off = (125.7 * (1 - pct / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;padding:2px 0;"><svg viewBox="0 0 96 64" width="118" height="78"><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#E2E8F0" stroke-width="10" stroke-linecap="round"/><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#22C55E" stroke-width="10" stroke-linecap="round" stroke-dasharray="125.7" stroke-dashoffset="${off}"/><text x="48" y="50" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="22" fill="#1E293B">${c.gaugeValue || ''}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">${c.gaugeUnit || ''}</text></svg></div>`;
+    }
+    if (m === 'decay') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtDecay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(34,197,94,0.22)"/><stop offset="1" stop-color="rgba(34,197,94,0)"/></linearGradient></defs><path d="M0 10 C40 10 46 58 96 66 L200 74 L200 88 L0 88 Z" fill="url(#mtDecay)"/><path d="M0 10 C40 10 46 58 96 66 L200 74" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round"/><circle cx="96" cy="66" r="4" fill="#22C55E"/></svg>`;
+    }
+    if (m === 'hypno') {
+      const rem = c.stage === 'rem', deep = c.stage === 'deep';
+      return `<svg viewBox="0 0 200 80" width="100%" style="display:block;"><g font-family="Space Grotesk" font-weight="600" font-size="7" fill="#94A3B8"><text x="0" y="11">Awake</text><text x="0" y="33">REM</text><text x="0" y="55">Light</text><text x="0" y="77">Deep</text></g><path d="M36 8 L54 8 L54 52 L80 52 L80 74 L106 74 L106 30 L128 30 L128 52 L152 52 L152 30 L176 30 L176 52 L200 52" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${rem ? '<rect x="106" y="24" width="22" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}${deep ? '<rect x="80" y="68" width="26" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}</svg>`;
+    }
+    if (m === 'donut') {
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 84 84" width="78" height="78"><circle cx="42" cy="42" r="34" fill="none" stroke="#16A34A" stroke-width="12" stroke-dasharray="96 213.6" stroke-dashoffset="0" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#22C55E" stroke-width="12" stroke-dasharray="64 213.6" stroke-dashoffset="-96" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#86EFAC" stroke-width="12" stroke-dasharray="53 213.6" stroke-dashoffset="-160" transform="rotate(-90 42 42)"/><text x="42" y="40" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="17" fill="#1E293B">540</text><text x="42" y="53" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">KCAL</text></svg><div style="display:flex;flex-direction:column;gap:5px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#16A34A;"></span>Protein</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#22C55E;"></span>Carbs</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#86EFAC;"></span>Fat</span></div></div>`;
+    }
+    if (m === 'range') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><defs><linearGradient id="mtRange" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="6" y1="50" x2="194" y2="50" stroke="#E2E8F0" stroke-width="2"/><g stroke="#CBD5E1" stroke-width="2"><line x1="6" y1="46" x2="6" y2="54"/><line x1="100" y1="46" x2="100" y2="54"/><line x1="194" y1="46" x2="194" y2="54"/></g><rect x="78" y="22" width="76" height="16" rx="8" fill="rgba(34,197,94,0.18)"/><rect x="78" y="44" width="76" height="12" rx="6" fill="url(#mtRange)"/><circle cx="116" cy="50" r="7" fill="#16A34A" stroke="#fff" stroke-width="2.5"/><text x="116" y="16" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="12" fill="#1E293B">${c.rangeLabel || ''}</text></svg>`;
+    }
+    if (m === 'steps') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtSteps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><g><rect x="2" y="50" width="20" height="34" rx="4" fill="#CBD5E1"/><rect x="30" y="40" width="20" height="44" rx="4" fill="#86EFAC"/><rect x="58" y="58" width="20" height="26" rx="4" fill="#CBD5E1"/><rect x="86" y="20" width="20" height="64" rx="4" fill="url(#mtSteps)"/><rect x="114" y="44" width="20" height="40" rx="4" fill="#86EFAC"/><rect x="142" y="34" width="20" height="50" rx="4" fill="#22C55E" opacity="0.8"/><rect x="170" y="54" width="20" height="30" rx="4" fill="#CBD5E1"/></g></svg>`;
+    }
+    if (m === 'radar') {
+      const vals = Array.isArray(c.radar) && c.radar.length === 5 ? c.radar : [0.92, 0.6, 0.78, 0.5, 0.85];
+      const cx = 100, cy = 52, R = 38;
+      const ang = k => (-90 + 72 * k) * Math.PI / 180;
+      const pt = (k, r) => [cx + r * Math.cos(ang(k)), cy + r * Math.sin(ang(k))];
+      const ring = r => 'M ' + [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, r); return x.toFixed(1) + ' ' + y.toFixed(1); }).join(' L ') + ' Z';
+      const dataPts = [0, 1, 2, 3, 4].map(k => pt(k, R * Math.max(0.08, Math.min(1, vals[k]))));
+      const dataPath = 'M ' + dataPts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L ') + ' Z';
+      const spokes = [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, R); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#E2E8F0" stroke-width="1"/>`; }).join('');
+      const dots = dataPts.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2" fill="#22C55E"/>`).join('');
+      return `<svg viewBox="0 0 200 104" width="100%" style="display:block;"><path d="${ring(R)}" fill="none" stroke="#E2E8F0" stroke-width="1"/><path d="${ring(R * 0.5)}" fill="none" stroke="#EEF1F4" stroke-width="1"/>${spokes}<path d="${dataPath}" fill="rgba(34,197,94,0.18)" stroke="#16A34A" stroke-width="2" stroke-linejoin="round"/>${dots}</svg>`;
+    }
+    if (m === 'diverging') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.bars) ? c.bars : [];
+      const cx = 124, maxLen = 70;
+      const dmax = Math.max(20, ...rows.map(r => Math.abs(r.val || 0)));
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const v = r.val || 0;
+        const len = Math.max(5, Math.abs(v) / dmax * maxLen);
+        const x = v >= 0 ? cx : cx - len;
+        const y = 6 + i * 20;
+        return `<text x="0" y="${y + 11}" font-family="Space Grotesk" font-weight="600" font-size="9" fill="#475569">${r.label}</text><rect x="${x.toFixed(1)}" y="${y}" width="${len.toFixed(1)}" height="11" rx="3" fill="${fill}"/>`;
+      }).join('');
+      const h = 6 + rows.length * 20;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><line x1="${cx}" y1="2" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'rings') {
+      const r = Array.isArray(c.rings) ? c.rings : [];
+      const OE = 27, cy = 44;
+      const sw = [10, 12, 8];
+      const colors = ['#CBD5E1', '#94A3B8', '#16A34A'];
+      const lbl = ['#94A3B8', '#94A3B8', '#16A34A'];
+      const cxs = [34, 100, 166];
+      const body = r.map((rr, i) => {
+        const w = sw[i] != null ? sw[i] : 10;
+        const rad = OE - w / 2;
+        const cx = cxs[i] != null ? cxs[i] : (200 / r.length) * (i + 0.5);
+        return `<circle cx="${cx}" cy="${cy}" r="${rad.toFixed(1)}" fill="none" stroke="${colors[i] || '#16A34A'}" stroke-width="${w}"/><text x="${cx}" y="90" text-anchor="middle" font-family="Space Grotesk" font-weight="${i === r.length - 1 ? 700 : 600}" font-size="9" fill="${lbl[i] || '#94A3B8'}">${rr.label}</text>`;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;">${body}</svg>`;
+    }
+    if (m === 'versus') {
+      const a = c.versusA || 'A', b = c.versusB || 'B';
+      const rows = Array.isArray(c.versus) ? c.versus : [];
+      const cx = 100, maxLen = 84;
+      const body = rows.map((r, i) => {
+        const y = 24 + i * 22;
+        const la = Math.max(0, Math.min(100, r.a)) / 100 * maxLen;
+        const lb = Math.max(0, Math.min(100, r.b)) / 100 * maxLen;
+        return `<rect x="${(cx - la).toFixed(1)}" y="${y}" width="${la.toFixed(1)}" height="10" rx="5" fill="#16A34A"/><rect x="${cx}" y="${y}" width="${lb.toFixed(1)}" height="10" rx="5" fill="#86EFAC"/>`;
+      }).join('');
+      const h = 24 + rows.length * 22;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><text x="2" y="12" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#16A34A">${a}</text><text x="198" y="12" text-anchor="end" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#94A3B8">${b}</text><line x1="${cx}" y1="18" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'tiers') {
+      const t = Array.isArray(c.tiers) ? c.tiers : [];
+      const n = t.length || 3;
+      const gap = 16, colW = (200 - gap * (n + 1)) / n, base = 84;
+      const fills = ['#86EFAC', '#22C55E', '#16A34A'];
+      let x = gap;
+      const bars = t.map((tt, i) => {
+        const hh = Math.max(0.1, Math.min(1, tt.h)) * (base - 14);
+        const y = base - hh;
+        const fill = i === n - 1 ? 'url(#mtTier)' : (fills[i] || '#86EFAC');
+        const out = `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${colW.toFixed(1)}" height="${hh.toFixed(1)}" rx="6" fill="${fill}"/><text x="${(x + colW / 2).toFixed(1)}" y="96" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" fill="#94A3B8">${tt.label}</text>`;
+        x += colW + gap;
+        return out;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;"><defs><linearGradient id="mtTier" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="0" y1="84" x2="200" y2="84" stroke="#E2E8F0" stroke-width="1.5"/>${bars}</svg>`;
+    }
+    if (m === 'dots') {
+      const rows = Array.isArray(c.dots) ? c.dots : [];
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const TOT = 10;
+      const body = rows.map((r, i) => {
+        const fill = fills[i] || '#86EFAC';
+        const n = Math.max(0, Math.min(TOT, r.n || 0));
+        let dots = '';
+        for (let k = 0; k < TOT; k++) dots += `<span style="width:7px;height:7px;border-radius:50%;background:${k < n ? fill : '#E2E8F0'};display:block;"></span>`;
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:42px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;">${r.label}</span><span style="display:flex;gap:4px;">${dots}</span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:7px;padding:2px 0;">${body}</div>`;
+    }
+    return `<svg viewBox="0 0 200 96" width="100%" style="display:block;"><defs><linearGradient id="mtRank" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect x="0" y="4" width="186" height="11" rx="5.5" fill="url(#mtRank)"/><rect x="0" y="25" width="150" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.85"/><rect x="0" y="46" width="116" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.7"/><rect x="0" y="67" width="82" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.55"/><rect x="0" y="88" width="54" height="6" rx="3" fill="#CBD5E1"/></svg>`;
+  }
+
+  // Renderer + styles are self-contained under `rt-*` names, and every custom
+  // property carries a literal fallback, so the same block drops into either
+  // palette unchanged. Pass 'gray' to sit the section on the tinted band.
+
+  // The three posts this page links to. The only per-page part of the module.
+  // Card copy is defined once per post and reused wherever that post is linked,
+  // so it cannot drift between tools. Titles, excerpts and cover images come
+  // from the Wix Blog collection - see docs/blog-cross-links.md.
+  _relatedPosts() {
+    return [
+      { slug: 'how-to-improve-hrv-factors-ranked-by-evidence',
+        title: 'How to Improve HRV: 44 Factors Ranked by Evidence (2026)',
+        blurb: 'Forty-four factors that affect heart rate variability, ranked by how strong the peer-reviewed evidence really is.',
+        cat: 'HRV & Recovery', min: 12, img: '273a63_81b206b8ae5e45b69e091fcb7e65b870~mv2.png' },
+      { slug: 'why-is-my-hrv-always-low',
+        title: 'Why Is My HRV Always Low?',
+        blurb: 'There is no agreed normal to be below, the age charts online measure something else, and your wearable reports PRV, not HRV.',
+        cat: 'HRV & Recovery', min: 11, img: '273a63_7dd707ddec3f46dfafcd5ce04581407c~mv2.png' },
+      { slug: 'why-does-alcohol-crush-your-hrv-and-how-long-until-it-recovers',
+        title: 'Why Does Alcohol Crush Your HRV (and How Long Until It Recovers)',
+        blurb: 'Even moderate drinking suppresses HRV for two to four days. How alcohol does it, and why recovery takes longer than you think.',
+        cat: 'HRV & Recovery', min: 7, img: '273a63_75bbbcbb2f82425abf95dfec3ba7fa19~mv2.png' }
+    ];
+  }
+
+  // -- Related reading (the standard module) -------------------------------
+  // One design, every tool page: three blog cards in a grid (1 col mobile ->
+  // 3 col >=720px) with the post's real cover image, category, title, a
+  // two-line blurb and read time - the same card the main blog page uses.
+  // Self-contained under `rp-*` names with a literal fallback behind every
+  // custom property, so the identical block renders the same on either
+  // palette. Copy this method verbatim; only `_relatedPosts()` is per page.
+  // Placement: its own section, directly above the related-tools section.
+  // A tool content section always separates it from the app CTA and from the
+  // email capture - it never sits directly above or below either one.
+  // Pass 'gray' to sit the section on the tinted band.
+  _renderRelatedPosts(bg) {
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+    const cards = this._relatedPosts().map(p => `
+      <a class="rp-card animate-on-scroll" href="https://www.kygo.app/post/${p.slug}" aria-label="${p.title}" data-action="blog-post" data-post-slug="${p.slug}" data-track-position="related-posts" data-track-label="${p.slug}">
+        <span class="rp-media"><img src="https://static.wixstatic.com/media/${p.img}" alt="${p.title}" loading="lazy" decoding="async" onerror="this.closest('.rp-media').classList.add('rp-noimg')"></span>
+        <span class="rp-body">
+          <span class="rp-cat">${p.cat}</span>
+          <span class="rp-title">${p.title}</span>
+          <span class="rp-blurb">${p.blurb}</span>
+          <span class="rp-foot"><span class="rp-meta">${p.min} min read</span><span class="rp-open">Read ${arrow}</span></span>
+        </span>
+      </a>`).join('');
+    return `
+      <style>
+      .rp-section{padding:56px 20px;background:#fff}
+      .rp-section.rp-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.rp-section{padding:80px 24px}}
+      .rp-inner{max-width:1200px;margin:0 auto}
+      .rp-head{margin-bottom:28px;max-width:720px}
+      .rp-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rp-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A))}
+      .rp-h2 .rp-hl{color:var(--kygo-green,var(--green,#22C55E))}
+      .rp-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,var(--gray-600,#475569));font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rp-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rp-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rp-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,var(--gray-200,#E2E8F0));border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rp-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,var(--green,#22C55E)),var(--kygo-green-dark,var(--green-dark,#16A34A)));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rp-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rp-card:hover::after{opacity:1}
+      .rp-card:focus-visible{outline:2px solid var(--kygo-green,var(--green,#22C55E));outline-offset:3px}
+      .rp-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,var(--gray-100,#F1F5F9))}
+      .rp-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+      .rp-card:hover .rp-media img{transform:scale(1.03)}
+      .rp-media.rp-noimg img{display:none}
+      .rp-body{flex:1;padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rp-cat{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:10.5px;letter-spacing:.7px;text-transform:uppercase;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A));display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,var(--gray-600,#475569));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:5px}
+      .rp-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,var(--gray-400,#94A3B8));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rp-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-open svg{width:15px;height:15px}
+      </style>
+      <section class="rp-section${bg === 'gray' ? ' rp-gray' : ''}" id="related-reading">
+        <div class="rp-inner">
+          <div class="rp-head animate-on-scroll">
+            <div class="rp-kicker">From the blog</div>
+            <h2 class="rp-h2">Keep <span class="rp-hl">reading.</span></h2>
+            <p class="rp-lede">The long-form, evidence-based articles behind this tool.</p>
+          </div>
+          <div class="rp-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
+  _renderRelatedTools(bg) {
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+    const cards = this._relatedTools().map(t => {
+      const slug = t.url.split('/').filter(Boolean).pop();
+      return `
+      <a class="rt-card animate-on-scroll" href="${t.url}" aria-label="${t.title}" data-action="related-tool" data-tool-slug="${slug}" data-track-position="related-tools" data-track-label="${slug}">
+        <span class="rt-media"><span class="rt-panel"><span class="rt-cap">${t.motif.caption || ''}</span>${this._relatedMotif(t.motif)}</span></span>
+        <span class="rt-body">
+          <span class="rt-title">${t.title}</span>
+          <span class="rt-blurb">${t.blurb}</span>
+          <span class="rt-foot"><span class="rt-meta">${t.meta || ''}</span><span class="rt-open">Open ${arrow}</span></span>
+        </span>
+      </a>`;
+    }).join('');
+    return `
+      <style>
+      .rt-section{padding:56px 20px;background:#fff}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.rt-section{padding:80px 24px}}
+      .rt-inner{max-width:1200px;margin:0 auto}
+      .rt-head{margin-bottom:28px;max-width:720px}
+      .rt-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rt-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-h2 .rt-hl{color:var(--kygo-green,#22C55E)}
+      .rt-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,#475569);font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rt-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rt-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rt-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,#E2E8F0);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rt-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,#22C55E),var(--kygo-green-dark,#16A34A));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rt-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rt-card:hover::after{opacity:1}
+      .rt-card:focus-visible{outline:2px solid var(--kygo-green,#22C55E);outline-offset:3px}
+      .rt-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,#F1F5F9);display:flex;align-items:center;justify-content:center}
+      .rt-panel{display:block;background:var(--bg-canvas,#fff);border:1px solid #EAECEF;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.08);padding:13px 15px;width:78%}
+      .rt-cap{display:block;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:9px;letter-spacing:.6px;text-transform:uppercase;color:var(--fg-3,#94A3B8);margin-bottom:8px}
+      .rt-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rt-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,#475569);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rt-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:5px}
+      .rt-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,#94A3B8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rt-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,#16A34A)}
+      .rt-open svg{width:15px;height:15px}
+      </style>
+      <section class="rt-section${bg === 'gray' ? ' rt-gray' : ''}" id="related-tools">
+        <div class="rt-inner">
+          <div class="rt-head animate-on-scroll">
+            <div class="rt-kicker">Keep exploring</div>
+            <h2 class="rt-h2">Related <span class="rt-hl">tools.</span></h2>
+            <p class="rt-lede">More free, evidence-based tools to get the most out of your wearable.</p>
+          </div>
+          <div class="rt-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
+  // Copy for the standard app CTA card. Headline carries one <span> for the
+  // green phrase; everything else about the card is shared.
+  _appCta() {
+    return {
+      slug: 'hrv-factors',
+      hook: '',
+      headline: `These are averages. <span>Your HRV has its own story.</span>`,
+      sub: `Kygo links your wearable data to what you eat, drink and take, then shows which foods and nutrients are raising or lowering your HRV and other metrics, ranked by how strong the link is.`
+    };
+  }
+
+  // ── App CTA · Kygo standard module ──────────────────────────────────────
+  // The dark conversion card, on its own section, directly after the first
+  // content section. Self-contained under `kc-*` names with a literal fallback
+  // behind every custom property, so the same block renders identically on
+  // either palette. Nothing else belongs in this section; the email capture
+  // is a separate band further down the page.
+  // Pass 'gray' to sit the section on the tinted band.
+
+  _renderAppCta(bg) {
+    __ensureKygoCta();
+    const c = this._appCta();
+    const badges = [
+      ['273a63_56ac2eb53faf43fab1903643b29c0bce', 'Oura Ring', 'Oura'],
+      ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health', 'Apple'],
+      ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit', 'Fitbit'],
+      ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin', 'Garmin'],
+      ['273a63_21019d0fbe9e4afcbabdb3ca9dcad89d', 'WHOOP', 'WHOOP'],
+      ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health', 'Google'],
+      ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect', 'Health']
+    ].map(([id, name, label]) => `<span class="kc-chip"><span class="kc-chip-tile"><img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" /></span><span class="kc-chip-label">${label}</span></span>`).join('');
+    return `
+      <style>
+      .kc-section{padding:56px 20px;background:#fff}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.kc-section{padding:72px 24px}}
+      .kc-inner{max-width:1100px;margin:0 auto}
+      .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
+      @media(min-width:720px){.kc-card{padding:56px 40px}}
+      .kc-card::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,.30),transparent);pointer-events:none}
+      .kc-card::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,.12),transparent);pointer-events:none}
+      .kc-pill{position:relative;display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,.25)}
+      .kc-pill .kc-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 8px #22C55E}
+      .kc-h{position:relative;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;color:#fff;font-size:clamp(26px,4.5vw,42px);line-height:1.05;letter-spacing:-.01em;margin:18px 0 14px;max-width:22ch}
+      .kc-h span{color:#22C55E}
+      .kc-p{position:relative;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.72);font-size:clamp(14px,1.6vw,16px);line-height:1.6;max-width:56ch;margin:0 auto 24px}
+      .kc-p em{font-style:italic}
+      .kc-btns{position:relative;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
+      .kc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:12px;background:#22C55E;color:#fff;font-family:var(--font-body,'DM Sans',sans-serif);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(34,197,94,.25);transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
+      .kc-btn:hover{background:#16A34A;transform:translateY(-1px);box-shadow:0 10px 24px rgba(34,197,94,.32)}
+      .kc-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+      .kc-btn svg{width:18px;height:18px;flex:none}
+      @media(max-width:560px){.kc-btn{width:100%}}
+      .kc-note{position:relative;margin:16px 0 0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;line-height:1.5;color:rgba(255,255,255,.72)}
+      .kc-works{position:relative;margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.6);font-size:13px}
+      /* Logo tile + brand label, matching the homepage step-2 chips. Always one line. */
+      .kc-badges{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;gap:6px;row-gap:12px}
+      .kc-chip{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto}
+      .kc-chip-tile{width:40px;height:40px;flex-shrink:0;border-radius:11px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center}
+      .kc-chip-tile img{width:100%;height:100%;object-fit:cover;border-radius:11px;display:block}
+      .kc-chip-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.6);white-space:nowrap}
+      @media(max-width:420px){.kc-badges{gap:4px}.kc-chip-tile{width:36px;height:36px}.kc-chip-label{font-size:9.5px}}
+      @media(max-width:360px){.kc-badges{gap:2px}.kc-chip-tile{width:28px;height:28px}.kc-chip-label{font-size:7.5px}}
+      </style>
+      <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
+        <div class="kc-inner">
+          <div class="kc-card animate-on-scroll">
+            <div class="kc-pill"><span class="kc-dot"></span> 7-Day Free Trial</div>
+            <h3 class="kc-h">${c.headline}</h3>
+            <p class="kc-p">${c.sub}</p>
+            <kygo-cta theme="dark" slug="${c.slug}" surface="tool"${c.hook ? ` hook="${c.hook}"` : ''}
+              note="7-day free trial. Save 58% on yearly. Cancel anytime."></kygo-cta>
+            <div class="kc-works">
+              <span>Works with</span>
+              <div class="kc-badges">${badges}</div>
+            </div>
+          </div>
+        </div>
+      </section>`;
+  }
+
+  // Identifiers for the email capture. `source` is what GA4 and the Velo
+  // endpoint record, so it must not change.
+  _emailCta() {
+    return { source: 'tool-hrv-factors', variant: 'factors' };
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA: a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
+
+  _renderEmailCta(bg) {
+    const c = this._emailCta();
+    return `
+      <style>
+      .ke-section{padding:8px 20px 12px;background:#fff}
+      .ke-section.ke-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
+      .ke-inner{max-width:1100px;margin:0 auto}
+      </style>
+      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
+        <div class="ke-inner">
+          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
+        </div>
+      </section>`;
+  }
+
   render() {
+    const hs = this._heroStats;
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
@@ -777,22 +1375,45 @@ class KygoHrvFactors extends HTMLElement {
       <!-- Header -->
       <header class="header">
         <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo" class="logo-img" />
             HRV Factors
           </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
-            Get Kygo App ${this._icon('arrowRight')}
-          </a>
+          <div class="nav-cta-group">
+            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
+          </div>
         </div>
       </header>
 
       <!-- Hero -->
-      <section class="hero">
-        <div class="container">
-          <div class="hero-badge animate-on-scroll">44 FACTORS • 5 CATEGORIES • ALL PEER-REVIEWED</div>
-          <h1 class="animate-on-scroll">What Actually Moves Your HRV?</h1>
-          <p class="hero-sub animate-on-scroll">Every supplement, habit, exercise, and nutrient with proven HRV impact — ranked by evidence strength and direction of effect. No guessing, just data.</p>
+      <section class="hero-light">
+        <div class="hero-light-inner">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <div class="hero-pill animate-on-scroll"><span class="dot"></span> ${hs.total} FACTORS · ${hs.cats} CATEGORIES · PEER-REVIEWED</div>
+              <h1 class="animate-on-scroll">What actually moves <span class="hl">your HRV?</span></h1>
+              <p class="hero-lede animate-on-scroll">Every supplement, habit, exercise and nutrient with a measured effect on heart-rate variability, <strong>ranked by evidence strength</strong>, with the direction of effect and the dose that produced it. No guessing, just data.</p>
+            </div>
+            <div class="hero-vis animate-on-scroll">
+              <div class="hero-vis-head">
+                <span class="hero-vis-title"><span class="hero-vis-dot"></span> Biggest controllable hit</span>
+                <span class="hero-vis-tag">dose-dependent</span>
+              </div>
+              <div class="hv-body">
+                <div class="hv-big">−13<span class="unit">ms</span></div>
+                <div class="hv-text">
+                  <p>RMSSD lost at the highest drinking level. <strong>Even one drink lowers HRV</strong>, and being young and fit does not protect you.</p>
+                  <span class="hv-src">Pietilä et al. 2018 · JMIR Mental Health</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-stats animate-on-scroll">
+            <div class="hero-stat"><div class="num">${hs.total}</div><div class="lbl">Factors analysed</div></div>
+            <div class="hero-stat"><div class="num">${hs.raise}</div><div class="lbl">That raise HRV</div></div>
+            <div class="hero-stat"><div class="num">${hs.strong}</div><div class="lbl">Strong-evidence factors</div></div>
+            <div class="hero-stat"><div class="num">${hs.sources}</div><div class="lbl">Peer-reviewed sources</div></div>
+          </div>
         </div>
       </section>
 
@@ -804,6 +1425,17 @@ class KygoHrvFactors extends HTMLElement {
           <div class="picks-grid">${this._renderTopPicks()}</div>
         </div>
       </section>
+      ${this._renderAppCta()}
+
+      <!-- Action board: Do more / Cut back -->
+      <section class="board-section" id="action-board">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Do More / Cut Back</h2>
+          <p class="section-sub animate-on-scroll">The changes with real evidence behind them, with the dose that was tested and what it did. Tap any row for the full study details.</p>
+          <div class="ab-grid">${this._renderBoardCol('more')}${this._renderBoardCol('less')}</div>
+          <p class="ab-foot">Only factors you can change, with strong or moderate evidence. Supplements with faded or patient-only results are left out; they stay in the full list below.</p>
+        </div>
+      </section>
 
       <!-- Primary Interactive: Category tabs + Factor cards -->
       <section class="explore-section" id="explore">
@@ -812,87 +1444,38 @@ class KygoHrvFactors extends HTMLElement {
           <p class="section-sub animate-on-scroll">Tap any factor to see mechanism, dosage, and source.</p>
 
           <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
-          <div class="sort-bar animate-on-scroll">
-            <label class="sort-label" for="sort-select">Sort by:</label>
-            <select class="sort-select" id="sort-select">
-              <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
-              <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
-              <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
-            </select>
-          </div>
+          <div class="sort-bar animate-on-scroll">${this._renderSortBar()}</div>
           <div class="factor-cards">${this._renderFactorCards()}</div>
-
-          <!-- Read Full Article (cross-link) -->
-          <div class="blog-link-wrap animate-on-scroll">
-            <a href="https://www.kygo.app/post/how-to-improve-hrv-factors-ranked-by-evidence" class="blog-link-card" target="_blank" rel="noopener">
-              <span class="blog-link-icon"><img src="${logoUrl}" alt="Kygo" style="width:24px;height:24px;" /></span>
-              <div class="blog-link-text">
-                <span class="blog-link-title">Read the Full Article</span>
-                <span class="blog-link-desc">How to Improve HRV: 44 Factors Ranked by Evidence (2026)</span>
-              </div>
-              <span class="blog-link-arrow">${this._icon('arrowRight')}</span>
-            </a>
-          </div>
         </div>
       </section>
-
-      <!-- Blog CTA -->
-      <section class="blog-cta-section">
-        <div class="container">
-          <div class="blog-cta animate-on-scroll">
-            <div class="blog-cta-glow"></div>
-            <div class="blog-cta-content">
-              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-              <h2>Track Your <span class="highlight">HRV Trends</span> Automatically</h2>
-              <p>Kygo syncs with your wearable and food log to show which habits actually move your HRV — correlations personalized to your data.</p>
-              <div class="blog-cta-buttons">
-                <a href="${iosUrl}" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <div class="blog-cta-tags">
-                <span>Works with</span>
-                <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy" />
-                <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      ${this._renderEmailCta('gray')}
 
       <!-- Sources -->
+      ${this._renderRelatedTools()}
+
       <section class="sources-section">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
-          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
+          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
             <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
             Kygo Health
           </a>
           <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <div class="footer-links">
-            <a href="https://kygo.app">Home</a>
-            <a href="https://kygo.app/how-it-works">How It Works</a>
-            <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy">Privacy</a>
-            <a href="https://kygo.app/terms">Terms</a>
+            <a href="https://www.kygo.app">Home</a>
+            <a href="https://www.kygo.app/how-it-works">How It Works</a>
+            <a href="https://www.kygo.app/blog">Blog</a>
+            <a href="https://www.kygo.app/contact">Contact</a>
+            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
+            <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated February 2026.</p>
@@ -900,6 +1483,8 @@ class KygoHrvFactors extends HTMLElement {
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
+
+      ${this._renderRelatedPosts('gray')}
     `;
   }
 
@@ -907,7 +1492,7 @@ class KygoHrvFactors extends HTMLElement {
 
   _styles() {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
         --dark: #1E293B;
@@ -950,15 +1535,56 @@ class KygoHrvFactors extends HTMLElement {
       .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; max-width: 1200px; margin: 0 auto; }
       .logo { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; }
       .logo-img { height: 28px; width: auto; }
-      .header-link { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: #fff; background: var(--green); padding: 8px 16px; border-radius: 50px; text-decoration: none; transition: background 0.2s; }
-      .header-link:hover { background: var(--green-dark); }
-      .header-link svg { width: 14px; height: 14px; }
+      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
 
       /* ── Hero ── */
-      .hero { padding: 48px 0 32px; text-align: center; }
-      .hero-badge { display: inline-block; padding: 6px 16px; border-radius: 50px; background: var(--green-light); color: var(--green-dark); font-size: 12px; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 16px; }
-      h1 { font-size: clamp(26px, 7vw, 42px); margin-bottom: 16px; color: var(--dark); }
-      .hero-sub { font-size: 16px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
+      .hero-light { background: #fff; border-bottom: 1px solid var(--gray-200); }
+      .hero-light-inner { max-width: 1200px; margin: 0 auto; padding: 48px 20px 36px; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: 1.15fr 1fr; gap: 48px; } .hero-light-inner { padding: 64px 24px 48px; } }
+      .hero-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(34,197,94,0.10); color: var(--green-dark); padding: 6px 14px; border-radius: 999px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap; }
+      .hero-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex: none; }
+      .hero-light h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--dark); font-size: clamp(30px, 5.5vw, 58px); line-height: 1.05; letter-spacing: -0.02em; margin: 18px 0 18px; }
+      .hero-light h1 .hl { color: var(--green); }
+      .hero-lede { font-size: clamp(15px, 1.6vw, 18px); line-height: 1.55; color: var(--gray-600); max-width: 60ch; margin: 0; }
+      .hero-lede strong { color: var(--dark); font-weight: 600; }
+      .hero-vis { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; background: linear-gradient(158deg, #ffffff 0%, #EEF2F7 100%); border: 1px solid var(--gray-200); border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 16px 40px rgba(15,23,42,0.08); }
+      .hero-vis::before { content: ''; position: absolute; top: -90px; right: -70px; width: 240px; height: 240px; background: radial-gradient(closest-side, rgba(34,197,94,0.16), transparent); pointer-events: none; }
+      .hero-vis-head { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+      .hero-vis-title { display: inline-flex; align-items: center; gap: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--gray-400); }
+      .hero-vis-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.18); flex: none; }
+      .hero-vis-tag { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; color: var(--green-dark); background: var(--green-light); padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; padding: 12px 6px; }
+      .hv-col + .hv-col { border-left: 1px solid var(--gray-200); }
+      .hv-label { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-600); }
+      .hv-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--gray-600); }
+      .hv-val.good { color: var(--green-dark); }
+      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--gray-100); overflow: hidden; }
+      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--gray-400); }
+      .hv-fill.good { background: var(--green); }
+      .hv-cap { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hv-cap.good { color: var(--green-dark); }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--gray-400); }
+      @media (max-width: 880px) { .hero-vis { width: 100%; max-width: 440px; margin: 4px auto 0; } }
+      .hero-grid > * { min-width: 0; }
+      @media (max-width: 559px) {
+        .hero-vis { padding: 16px 16px 18px; }
+        .hero-vis-head { flex-wrap: wrap; }
+        .hero-vis .hv-body { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .hero-vis .hv-big { font-size: 48px; }
+      }
+      .hero-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; border-top: 1px solid var(--gray-200); padding-top: 24px; }
+      @media (min-width: 720px) { .hero-stats { grid-template-columns: repeat(4, 1fr); gap: 24px; padding-top: 28px; } }
+      .hero-stat .num { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(28px, 4vw, 40px); line-height: 1; color: var(--green); letter-spacing: -0.02em; }
+      .hero-stat .lbl { margin-top: 10px; color: var(--gray-400); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; line-height: 1.4; }
+      .hv-body { position: relative; display: flex; align-items: center; gap: 16px; padding: 6px 2px 2px; }
+      .hv-big { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(38px, 8vw, 54px); line-height: 1; letter-spacing: -0.02em; color: var(--green-dark); flex: none; }
+      .hv-text { font-size: 13.5px; line-height: 1.5; color: var(--gray-600); }
+      .hv-text p { margin: 0; }
+      .hv-text strong { color: var(--dark); font-weight: 600; }
+      .hv-src { display: block; margin-top: 7px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; color: var(--gray-400); }
+      .hero-stat .unit { font-size: 0.5em; font-weight: 600; margin-left: 2px; }
 
       /* ── Section titles ── */
       .section-title { font-size: clamp(24px, 6vw, 36px); text-align: center; margin-bottom: 8px; }
@@ -988,18 +1614,67 @@ class KygoHrvFactors extends HTMLElement {
       .pick-note { font-size: 14px; color: var(--gray-600); margin-bottom: 6px; }
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
+      /* ── Action board ── */
+      .board-section { padding: 48px 0; background: var(--light); }
+      .ab-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
+      .ab-col { background: #fff; border: 1px solid #D4D4D8; border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
+      .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--gray-200); }
+      .ab-head-ico { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex: none; color: #fff; }
+      .ab-head-ico svg { width: 18px; height: 18px; }
+      .ab-col-more .ab-head { background: #F0FDF4; border-bottom-color: #DCFCE7; }
+      .ab-col-less .ab-head { background: #FEF2F2; border-bottom-color: #FEE2E2; }
+      .ab-col-more .ab-head-ico { background: var(--green); }
+      .ab-col-less .ab-head-ico { background: var(--red); }
+      .ab-title { font-size: 19px; color: var(--dark); line-height: 1.2; }
+      .ab-sub { font-size: 13px; color: var(--gray-600); margin-top: 2px; }
+      .ab-list { list-style: none; padding: 4px 12px; }
+      .ab-item + .ab-item { border-top: 1px solid var(--gray-100); }
+      .ab-extra { display: none; }
+      .ab-col.open .ab-extra { display: block; }
+      .ab-row { width: 100%; display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; align-items: start; padding: 14px 8px; background: none; border: 0; border-radius: 12px; text-align: left; font-family: inherit; color: inherit; cursor: pointer; transition: background .15s; }
+      .ab-row:hover { background: var(--gray-50); }
+      .ab-row:focus-visible, .ab-toggle:focus-visible, .factor-header:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+      .ab-ico { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--gray-50); border: 1px solid var(--gray-200); grid-row: span 2; }
+      .ab-ico svg { width: 19px; height: 19px; }
+      .ab-col-more .ab-ico { color: var(--green-dark); }
+      .ab-col-less .ab-ico { color: var(--red); }
+      .ab-main { display: flex; flex-direction: column; min-width: 0; }
+      .ab-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.3; }
+      .ab-dose { font-size: 13px; color: var(--gray-600); line-height: 1.45; }
+      .ab-side { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 6px; }
+      .ab-result { font-size: 12.5px; font-weight: 600; color: var(--dark); line-height: 1.35; }
+      .ab-ev { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; color: var(--gray-400); white-space: nowrap; }
+      .ab-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 11px; }
+      .ab-bars i { width: 3px; border-radius: 1px; background: var(--gray-200); }
+      .ab-bars i:nth-child(1) { height: 5px; }
+      .ab-bars i:nth-child(2) { height: 8px; }
+      .ab-bars i:nth-child(3) { height: 11px; }
+      .ab-bars[data-lvl="1"] i:nth-child(-n+1), .ab-bars[data-lvl="2"] i:nth-child(-n+2), .ab-bars[data-lvl="3"] i { background: var(--gray-600); }
+      @media (max-width: 599px) { .ab-side { flex-direction: column; align-items: flex-start; gap: 3px; } }
+      .ab-toggle { width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; border: 0; border-top: 1px solid var(--gray-100); background: #fff; font: inherit; font-size: 13px; font-weight: 600; color: var(--gray-600); cursor: pointer; transition: color .2s, background .2s; }
+      .ab-toggle:hover { color: var(--dark); background: var(--gray-50); }
+      .ab-toggle svg { width: 16px; height: 16px; transition: transform .2s; }
+      .ab-col.open .ab-toggle svg { transform: rotate(180deg); }
+      .ab-foot { margin-top: 14px; font-size: 12.5px; color: var(--gray-400); text-align: center; max-width: 640px; margin-left: auto; margin-right: auto; }
+      @media (min-width: 900px) {
+        .board-section { padding: 64px 0; }
+        .ab-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+        .ab-head { padding: 20px 24px; }
+        .ab-list { padding: 0 16px 4px; }
+      }
+      @media (min-width: 1024px) { .board-section { padding: 80px 0; } }
+
       /* ── Explore Section ── */
-      .explore-section { padding: 48px 0 64px; }
+      .explore-section { padding: 48px 0 64px; background: #fff; }
 
       /* Sort bar */
-      .sort-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+      .sort-bar { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; }
       .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; }
       .sort-select { padding: 6px 28px 6px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance: none; appearance: none; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; transition: border-color 0.2s; }
       .sort-select:hover, .sort-select:focus { border-color: var(--green); outline: none; }
 
       /* Category tabs */
-      .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
-      .cat-tabs::-webkit-scrollbar { display: none; }
+      .cat-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px; }
       .cat-tab { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 50px; border: 2px solid var(--gray-200); background: #fff; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
       .cat-tab.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
       .cat-tab:hover { border-color: var(--green); }
@@ -1010,6 +1685,11 @@ class KygoHrvFactors extends HTMLElement {
 
       /* Factor cards */
       .factor-cards { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      .cat-note { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: var(--green-light); border: 1px solid rgba(34,197,94,0.3); font-size: 14px; line-height: 1.5; color: var(--gray-600); }
+      .cat-note svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--green-dark); }
+      .cat-note strong { color: var(--dark); }
+      .factor-card { scroll-margin-top: 84px; }
+      .factor-card.flash { border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.25), var(--shadow-hover); }
       .factor-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: box-shadow 0.3s, border-color 0.3s; }
       .factor-card:hover { box-shadow: var(--shadow-hover); border-color: var(--gray-300); }
       .factor-header { padding: 20px; cursor: pointer; }
@@ -1042,65 +1722,70 @@ class KygoHrvFactors extends HTMLElement {
       .factor-affiliate-arrow { width: 14px; height: 14px; display: flex; }
       .factor-affiliate-arrow svg { width: 100%; height: 100%; }
 
+      /* ── Sources ── */
+      .sources-section { padding: 48px 0; background: var(--light); }
+      /* Sources · Kygo standard module */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--gray-50); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--green-dark); }
+      .src--nolink .src-tag { color: var(--gray-400); }
+      .src-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--gray-400); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--green-dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
-      /* ── Sources (accordion) ── */
-      .sources-section { padding: 48px 0; }
-      .src-accordion { max-width: 720px; margin: 0 auto; }
-      .src-count-badge { text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-400); margin-bottom: 16px; }
-      .src-group { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: #fff; }
-      .src-group-toggle { display: flex; align-items: center; width: 100%; padding: 12px 16px; background: none; border: none; cursor: pointer; font-family: inherit; gap: 8px; }
-      .src-group-name { flex: 1; text-align: left; font-size: 14px; font-weight: 600; color: var(--dark); }
-      .src-group-count { font-size: 11px; font-weight: 600; color: var(--gray-400); background: var(--gray-100); padding: 2px 8px; border-radius: 50px; }
-      .src-group-chevron { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; display: flex; }
-      .src-group-chevron svg { width: 18px; height: 18px; }
-      .src-group.open .src-group-chevron { transform: rotate(180deg); }
-      .src-group-body { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
-      .src-group.open .src-group-body { max-height: 600px; }
-      .src-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; text-decoration: none; color: var(--gray-600); font-size: 13px; transition: background 0.2s; }
-      .src-item:last-child { padding-bottom: 12px; }
-      .src-item:hover { background: var(--gray-50); }
-      .src-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-      .src-text { flex: 1; }
-      .src-ext { width: 14px; height: 14px; color: var(--gray-400); flex-shrink: 0; }
-      .src-ext svg { width: 14px; height: 14px; }
-      .blog-link-wrap { max-width: 720px; margin: 32px auto 0; }
-      .blog-link-card { display: flex; align-items: center; gap: 14px; padding: 16px 20px; background: var(--green-light); border: 2px solid var(--green); border-radius: var(--radius); text-decoration: none; transition: box-shadow 0.3s; }
-      .blog-link-card:hover { box-shadow: var(--shadow-hover); }
-      .blog-link-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--green-dark); flex-shrink: 0; }
-      .blog-link-icon svg { width: 24px; height: 24px; }
-      .blog-link-text { flex: 1; }
-      .blog-link-title { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--green-dark); letter-spacing: 0.3px; }
-      .blog-link-desc { display: block; font-size: 14px; font-weight: 500; color: var(--dark); margin-top: 2px; }
-      .blog-link-arrow { width: 20px; height: 20px; color: var(--green-dark); flex-shrink: 0; }
-      .blog-link-arrow svg { width: 20px; height: 20px; }
-
-      /* ── Blog CTA ── */
-      .blog-cta-section { padding: 48px 0; }
-      .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
-      .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
-      .blog-cta-content { position: relative; z-index: 1; }
-      .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
       .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
       @keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
-      .blog-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
-      .blog-cta .highlight { color: var(--green); }
-      .blog-cta p { color: var(--gray-400); font-size: 14px; margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
-      .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-btn svg { width: 18px; height: 18px; }
-      .blog-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-      @media (max-width: 480px) { .blog-cta-buttons { flex-direction: column; align-items: stretch; } .blog-cta-buttons a, .blog-cta-buttons button { justify-content: center; text-align: center; } }
-      .blog-cta-tags { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; flex-wrap: wrap; }
-      .blog-cta-tags span { color: var(--gray-400); font-size: 12px; }
-      .blog-cta-tags img { height: 22px; width: auto; opacity: 0.7; }
 
-      /* ── Android button (in Blog CTA) ── */
       .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
       .cta-android:hover { background: var(--green-dark); color: #fff; }
       .cta-android svg { width: 18px; height: 18px; }
 
+      /* Early contextual CTA card */
+      .kearly-section { padding: 48px 16px; }
+      .kband { max-width: 1100px; margin: 0 auto; }
+      .kband-inner { position: relative; overflow: hidden; background: #fff; border: 2px solid #E2E8F0; border-radius: 20px; padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+      .kband-glow { position: absolute; top: -120px; right: -80px; width: 360px; height: 360px; background: radial-gradient(circle, rgba(34,197,94,0.14), transparent 65%); pointer-events: none; }
+      .kband-copy { position: relative; display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+      .kband-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 12px; letter-spacing: 0.7px; text-transform: uppercase; color: #16A34A; }
+      .kband-dot { width: 7px; height: 7px; border-radius: 50%; background: #22C55E; animation: kygoPulse 2s ease-out infinite; }
+      .kband-headline { margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 24px; line-height: 1.3; color: #1E293B; }
+      .kband-actions { position: relative; display: flex; flex-wrap: wrap; gap: 12px; flex-shrink: 0; }
+      .kband-note { flex-basis: 100%; width: 100%; margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: #475569; text-align: center; }
+      .kband-btn { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 15px 24px; border-radius: 12px; white-space: nowrap; transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease; }
+      .kband-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+      .kband-btn-ios { background: #22C55E; color: #fff; box-shadow: 0 6px 16px rgba(34,197,94,0.28); }
+      .kband-btn-ios:hover { background: #16A34A; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(34,197,94,0.3); }
+      .kband-btn-android { background: #fff; color: #16A34A; border: 2px solid #E2E8F0; }
+      .kband-btn-android:hover { border-color: #22C55E; transform: translateY(-2px); }
+      @keyframes kygoPulse { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+      @media (max-width: 720px) {
+        .kband-inner { flex-direction: column; align-items: flex-start; gap: 22px; padding: 28px 24px; }
+        .kband-actions { width: 100%; flex-direction: column; }
+        .kband-btn { width: 100%; justify-content: center; }
+      }
+      @media (prefers-reduced-motion: reduce) { .kband-dot { animation: none; } }
+      .kearly { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.3); border-radius: 16px; padding: 24px 20px; text-align: center; max-width: 780px; margin: 0 auto; }
+      .kearly-copy { font-size: 16px; line-height: 1.5; color: var(--dark); font-weight: 500; margin: 0 0 16px; }
+      .kearly-btns { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+      .kearly-btns > a { width: 100%; max-width: 320px; justify-content: center; min-height: 48px; }
+      @media (min-width: 520px) { .kearly-btns { flex-direction: row; justify-content: center; } .kearly-btns > a { width: auto; } }
+
       /* ── Footer ── */
-      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
+      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); background: #fff; }
       .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
       .footer-logo { height: 24px; width: auto; }
       .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
@@ -1114,12 +1799,9 @@ class KygoHrvFactors extends HTMLElement {
       /* ── Responsive ── */
       @media (min-width: 768px) {
         .header-inner { padding: 14px 24px; }
-        .hero { padding: 64px 0 40px; }
-        .hero-sub { font-size: 17px; }
         .picks-grid { grid-template-columns: 1fr 1fr; }
-        .factor-cards { grid-template-columns: 1fr 1fr; }
+        .factor-cards { grid-template-columns: 1fr 1fr; align-items: start; }
         .picks-section, .explore-section { padding: 64px 0; }
-        .blog-cta { padding: 48px 40px; }
       }
       @media (min-width: 1024px) {
         .picks-grid { grid-template-columns: 1fr 1fr 1fr; }
@@ -1141,19 +1823,24 @@ class KygoHrvFactors extends HTMLElement {
     const shadow = this.shadowRoot;
 
     shadow.addEventListener('click', (e) => {
-      // Source group accordion
-      const srcToggle = e.target.closest('.src-group-toggle');
-      if (srcToggle) {
-        const group = srcToggle.closest('.src-group');
-        if (group) {
-          const isOpen = group.classList.toggle('open');
-          srcToggle.setAttribute('aria-expanded', isOpen);
-        }
-        return;
-      }
+      // Sources · show-all toggle
+      if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
 
       // Sort dropdown (handled via change event below)
 
+      // Action board: jump to a factor card, or expand a column
+      const jump = e.target.closest('[data-jump]');
+      if (jump) { this._jumpToFactor(jump.dataset.jump, jump.dataset.cat); return; }
+      const abMore = e.target.closest('[data-ab-more]');
+      if (abMore) {
+        const col = abMore.closest('.ab-col');
+        const open = !col.classList.contains('open');
+        col.classList.toggle('open', open);
+        abMore.setAttribute('aria-expanded', open ? 'true' : 'false');
+        const lbl = abMore.querySelector('.ab-toggle-lbl');
+        if (lbl) lbl.textContent = open ? 'Show fewer' : `Show all ${col.querySelectorAll('.ab-item').length}`;
+        return;
+      }
 
       // Category tabs
       const tab = e.target.closest('.cat-tab');
@@ -1224,7 +1911,7 @@ class KygoHrvFactors extends HTMLElement {
             this._observer.unobserve(entry.target);
           }
         });
-      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.2 });
+      }, { rootMargin: '0px 0px -50px 0px', threshold: 0.01 });
       els.forEach(el => this._observer.observe(el));
     });
   }
@@ -1238,7 +1925,7 @@ class KygoHrvFactors extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'HRV Factor Explorer',
       'alternateName': 'Kygo HRV Improvement Factors Tool',
-      'description': 'Explore 44 research-backed factors that affect Heart Rate Variability — supplements, lifestyle habits, exercise, micronutrients, and demographics ranked by evidence strength.',
+      'description': 'Explore 43 research-backed factors that affect Heart Rate Variability: supplements, lifestyle habits, exercise, micronutrients, and demographics ranked by evidence strength.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/hrv-factors',
@@ -1250,7 +1937,7 @@ class KygoHrvFactors extends HTMLElement {
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'featureList': 'Explore 44 HRV factors, 5 evidence categories, supplement and lifestyle comparison, peer-reviewed research citations, demographic impact analysis',
+      'featureList': 'Explore 43 HRV factors, Do More / Cut Back action board with doses and measured results, 5 evidence categories, supplement and lifestyle comparison, peer-reviewed research citations, demographic impact analysis',
       'keywords': 'HRV factors, how to improve HRV, heart rate variability supplements, HRV lifestyle, best exercise for HRV, what affects HRV, increase HRV naturally, RMSSD, SDNN, vagal tone, autonomic nervous system, Ashwagandha HRV, Omega-3 HRV, HIIT HRV, sleep HRV, cold exposure HRV'
     };
 
@@ -1261,7 +1948,7 @@ class KygoHrvFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What is the fastest way to improve HRV?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise is the single most evidence-backed way to improve HRV. Studies show regular moderate-intensity cardio (3-5x/week) can increase RMSSD by 10-20% within 8-12 weeks. Sleep quality and consistency are the second most impactful factor — poor sleep can reduce HRV by 30-50%.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise is the single most evidence-backed way to improve HRV. Studies show regular moderate-intensity cardio (3-5x/week) can increase RMSSD by 10-20% within 8-12 weeks. Sleep quality and consistency are the second most impactful factor; poor sleep can reduce HRV by 30-50%.' }
         },
         {
           '@type': 'Question',
@@ -1276,12 +1963,12 @@ class KygoHrvFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What lowers HRV the most?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Alcohol is the single biggest HRV suppressor — even 1-2 drinks can reduce HRV by 20-40% for 24-48 hours. Chronic stress, poor sleep (<6 hours), overtraining, and dehydration are the next most impactful factors. Age is the strongest non-modifiable factor, with HRV declining roughly 1-2 ms/year after age 25.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Alcohol is the single biggest HRV suppressor: even 1-2 drinks can reduce HRV by 20-40% for 24-48 hours. Chronic stress, poor sleep (<6 hours), overtraining, and dehydration are the next most impactful factors. Age is the strongest non-modifiable factor, with HRV declining roughly 1-2 ms/year after age 25.' }
         },
         {
           '@type': 'Question',
           'name': 'What is a good HRV score?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'HRV is highly individual — a "good" score depends on age, fitness, and genetics. General RMSSD benchmarks: ages 20-30 average 40-80ms, ages 30-40 average 30-60ms, ages 40-50 average 20-45ms, ages 50+ average 15-35ms. Athletes often have RMSSD above 80ms. The trend over weeks matters more than any single reading.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'HRV is highly individual. A "good" score depends on age, fitness, and genetics. General RMSSD benchmarks: ages 20-30 average 40-80ms, ages 30-40 average 30-60ms, ages 40-50 average 20-45ms, ages 50+ average 15-35ms. Athletes often have RMSSD above 80ms. The trend over weeks matters more than any single reading.' }
         }
       ]
     };
