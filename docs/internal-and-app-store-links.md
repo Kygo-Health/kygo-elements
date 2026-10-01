@@ -21,20 +21,32 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 >
 > | Button | Destination |
 > |---|---|
-> | Web | `https://app.kygo.app/register?utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` |
+> | Web | `https://app.kygo.app/start?utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>[&utm_content=<position>]` |
 > | iOS | `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy` (Tenjin → App Store) |
 > | Android | `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO` (Tenjin → Play) |
 >
 > Whichever platform the visitor is on takes the filled button; the other two follow. `surface`
 > is one of `home` / `blog` / `tool` / `faq`; the header and footer use `header` / `footer` with
-> `utm_campaign=nav`. The store buttons deliberately go through **Tenjin** rather than the store
+> no `utm_campaign` (a site-wide snippet cannot know the page). The store buttons deliberately go through **Tenjin** rather than the store
 > directly — it is the system of record for install attribution, and `kygo-cta.js` is the only
 > file that holds those URLs. The same Tenjin links are still the store destination in the mobile
 > nav menu, the footer Product column, and in the 48 existing blog posts until
 > `scripts/migrate-blog-ctas.js` is run.
 >
-> **Web app links:** `https://app.kygo.app` (product), `https://app.kygo.app/login` (header
-> "Log in"), `https://app.kygo.app/register` (every "Start on the web" / "Open web app" path, header and footer included).
+> **Web app links:** `https://app.kygo.app/start` is the only signup target (onboarding v2:
+> Welcome, then the quiz at `/start/quiz`, then account creation). `https://app.kygo.app/login`
+> is for existing accounts, but the site does not link it: `/start` has its own "Sign in". Never link `/register` (skips the quiz, kept only so old
+> links resolve) or the bare root `https://app.kygo.app/` (the signed-in dashboard). The four
+> inline FAQ answer links use `utm_medium=faq&utm_campaign=faq-answer`.
+>
+> **Attribution (2026-10-01).** Every app.kygo.app link leaves with the visitor's own inbound
+> `utm_*` when they arrived with any (an ad, a newsletter); the site's `kygo.app` tags are used only
+> when the session has none. `fbclid` / `gclid` are always forwarded. Both are held in
+> `sessionStorage` (`kygo_attr`) for the tab's session. One listener in `kygo-cta.js`
+> (`window.KygoAttribution`) rewrites any app.kygo.app link as it is pressed, light DOM or shadow
+> DOM, so the header and footer snippets load `kygo-cta.js` to get it. Links must stay plain
+> https URLs: no Wix link redirect, shortener or "link to page" hop, which strip the query string.
+
 
 > **Store CTAs now use Tenjin attribution links (swapped 7/14 header/footer/home,
 > 7/15 everything else).** Every **user-clickable** store button/link — sub-nav "Get Kygo App",

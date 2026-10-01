@@ -35,8 +35,12 @@ Guidance for working in this repo. Read this before editing or creating componen
 ## The shared CTA element (`kygo-cta.js`)
 
 Every conversion CTA on the site is **`<kygo-cta slug="…" surface="home|blog|tool|faq" hook="…">`**
-(`kygo-cta.js`). It owns the destinations: the web button goes to **app.kygo.app/register** with
-`utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>`; both store buttons go through the
+(`kygo-cta.js`). It owns the destinations: the web button goes to **app.kygo.app/start** (onboarding v2;
+never `/register` or the bare root) with
+`utm_source=kygo.app&utm_medium=<surface>&utm_campaign=<slug>` (plus `utm_content` from the
+`content` attribute) — unless the visitor arrived with their own `utm_*`, which then replace the
+site's, and `fbclid`/`gclid` always ride along (`window.KygoAttribution`, which rewrites every
+app.kygo.app link on the page as it is pressed); both store buttons go through the
 **Tenjin** click URLs, which redirect to the App Store / Play and attribute the install. Tenjin
 is the system of record for installs, so those two URLs live in `kygo-cta.js` and nowhere else —
 direct `apps.apple.com` / `play.google.com` URLs belong in JSON-LD only. All three

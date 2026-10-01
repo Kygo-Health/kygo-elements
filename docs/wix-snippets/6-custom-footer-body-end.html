@@ -3,10 +3,25 @@
 <script>
 (function(){
 // Destinations. The stores keep their Tenjin attribution links; the web app
-// carries its own utm set so footer traffic stays separable.
+// carries its own utm set so footer traffic stays separable. No utm_campaign:
+// this snippet runs on every page and cannot know which one.
 var IOS_URL = 'https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy';
 var ANDROID_URL = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO';
-var WEB_URL = 'https://app.kygo.app/register?utm_source=kygo.app&utm_medium=footer&utm_campaign=nav';
+var WEB_URL = 'https://app.kygo.app/start?utm_source=kygo.app&utm_medium=footer';
+// kygo-cta.js owns attribution for every app.kygo.app link on the page: it
+// swaps in a visitor's inbound utm_* (an ad, a newsletter) and forwards
+// fbclid / gclid when the link is pressed. Loading it here is what makes
+// that work on pages with no in-page CTA. If it never loads, WEB_URL
+// above still works as is.
+if (!window.customElements || !customElements.get('kygo-cta')) {
+  if (!document.querySelector('script[data-kygo-cta-loader]')) {
+    var ctaJs = document.createElement('script');
+    ctaJs.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+    ctaJs.setAttribute('data-kygo-cta-loader', '');
+    ctaJs.async = true;
+    document.head.appendChild(ctaJs);
+  }
+}
 
 // Detection only decides which option leads. All three always render, and
 // anything unrecognised (or a navigator that throws) falls back to the web
