@@ -1260,15 +1260,15 @@ class KygoHrvFactors extends HTMLElement {
   _appCta() {
     return {
       slug: 'hrv-factors',
-      hook: '',
-      headline: `These are averages. <span>Your HRV has its own story.</span>`,
-      sub: `Kygo links your wearable data to what you eat, drink and take, then shows which foods and nutrients are raising or lowering your HRV and other metrics, ranked by how strong the link is.`
+      hook: 'Find the two or three things that raise or drag your own HRV.',
+      headline: `Track what moves <span>your HRV.</span>`,
+      sub: `Stop guessing which of these apply to you. Kygo correlates your meals, alcohol and supplements with YOUR overnight HRV.`
     };
   }
 
   // ── App CTA · Kygo standard module ──────────────────────────────────────
-  // The dark conversion card, on its own section, directly after the first
-  // content section. Self-contained under `kc-*` names with a literal fallback
+  // The dark conversion card, on its own section, directly after the Do More /
+  // Cut Back board. Self-contained under `kc-*` names with a literal fallback
   // behind every custom property, so the same block renders identically on
   // either palette. Nothing else belongs in this section; the email capture
   // is a separate band further down the page.
@@ -1424,7 +1424,6 @@ class KygoHrvFactors extends HTMLElement {
           <div class="picks-grid">${this._renderTopPicks()}</div>
         </div>
       </section>
-      ${this._renderAppCta()}
 
       <!-- Action board: Do more / Cut back -->
       <section class="board-section" id="action-board">
@@ -1435,6 +1434,7 @@ class KygoHrvFactors extends HTMLElement {
           <p class="ab-foot">Only factors you can change, with strong or moderate evidence. Supplements with faded or patient-only results are left out; they stay in the full list below.</p>
         </div>
       </section>
+      ${this._renderAppCta('gray')}
 
       <!-- Primary Interactive: Category tabs + Factor cards -->
       <section class="explore-section" id="explore">
@@ -1477,7 +1477,7 @@ class KygoHrvFactors extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
-          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated February 2026.</p>
+          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated October 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
@@ -1614,7 +1614,7 @@ class KygoHrvFactors extends HTMLElement {
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
       /* ── Action board ── */
-      .board-section { padding: 48px 0; background: var(--light); }
+      .board-section { padding: 48px 0; background: #fff; }
       .ab-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
       .ab-col { background: #fff; border: 1px solid #D4D4D8; border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
       .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--gray-200); }
