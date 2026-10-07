@@ -291,7 +291,12 @@ Oura Ring's step counting is fundamentally limited by its wear location:
 
 **Sources:**
 - Kristiansson E, et al. (2023). "Validation of Oura ring energy expenditure and steps in laboratory and free-living." *BMC Medical Research Methodology*, 23, 50. DOI: 10.1186/s12874-023-01868-x
-- Niela-Vilén H, et al. (2022). "Comparison of Oura Smart Ring Against ActiGraph Accelerometer." *ResearchGate.* DOI: 10.3390/s22072585
+- Niela-Vilén H, et al. (2022). "Comparison of Oura Smart Ring Against ActiGraph Accelerometer."
+  *Computers, Informatics, Nursing*, 40(12), 856-862. DOI: 10.1097/CIN.0000000000000885
+  **Finding:** n=42, one week, Oura and ActiGraph both on the non-dominant hand. Oura overestimated
+  steps by **1,416/day** (95% CI 739-2,093) and sedentary time by 17 min.
+  *(Corrected 2026-08-18: previously recorded as Sensors 22(7):2585, DOI 10.3390/s22072585. That DOI
+  resolves to an unrelated structural-engineering paper.)*
 
 ---
 
@@ -586,7 +591,11 @@ At 0.4 m/s: ankle-worn Fitbit achieved **5.9% error** vs. **48–75% error** for
 
 21. **Analog Devices AN-2554.** "Step Counting Using the ADXL367." — Technical reference for peak detection algorithms
 
-22. **Niela-Vilén H, et al. (2022).** "Comparison of Oura Smart Ring Against ActiGraph Accelerometer." *Sensors*, 22(7), 2585. DOI: 10.3390/s22072585
+22. **Niela-Vilén H, et al. (2022).** "Comparison of Oura Smart Ring Against ActiGraph Accelerometer."
+    *Computers, Informatics, Nursing*, 40(12), 856-862. DOI: 10.1097/CIN.0000000000000885
+    Oura +1,416 steps/day (95% CI 739-2,093) vs ActiGraph, n=42, one week.
+    *(Corrected 2026-08-18: the previously recorded Sensors 22(7):2585 / DOI 10.3390/s22072585 is a
+    different paper entirely.)*
 
 23. **Comparison of Step Count Assessed Using Wrist- and Hip-Worn Actigraph GT3X (2019).** *Frontiers in Medicine*, 6, 252.
 
