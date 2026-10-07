@@ -1261,8 +1261,8 @@ class KygoHrvFactors extends HTMLElement {
     return {
       slug: 'hrv-factors',
       hook: 'Find the two or three things that raise or drag your own HRV.',
-      headline: `These are averages. <span>Your HRV has its own story.</span>`,
-      sub: `Kygo links your wearable data to what you eat, drink and take, then shows which foods and nutrients are raising or lowering your HRV and other metrics, ranked by how strong the link is.`
+      headline: `Track what moves <span>your HRV.</span>`,
+      sub: `Stop guessing which of these apply to you. Kygo correlates your meals, alcohol and supplements with YOUR overnight HRV.`
     };
   }
 
