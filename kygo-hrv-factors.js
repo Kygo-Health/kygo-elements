@@ -46,7 +46,7 @@ class KygoHrvFactors extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'HRV Factor Explorer by Kygo Health. Explore 43 research-backed factors that affect Heart Rate Variability across 5 categories: Supplements, Lifestyle, Exercise, Micronutrients, and Demographics. A Do More / Cut Back action board lists the changeable factors with strong or moderate evidence, each with the tested dose and measured result, such as sleep 7 to 9 hours, slow breathing 20 minutes a day at 6 breaths per minute, HIIT 2 to 3 sessions a week, omega-3 1 to 2 g daily, and cutting alcohol, which lowers RMSSD by 2 to 13 ms per dose level. Supplements include Ashwagandha Witholytin (RCT n=111), Ashwagandha Zenroot (RCT n=90), Probiotics, Polyphenols, Multivitamin, GABA (RCT n=30), L-Theanine, and Beetroot Juice (meta-analysis n=54). Lifestyle factors include Sleep Quality, Slow Breathing at 6 breaths per minute, Cold Exposure with 54-85% RMSSD increase, Meditation, HRV Biofeedback, Forest Bathing, Intermittent Fasting 16:8, Mediterranean Diet, Alcohol dose-dependent decrease, Smoking, THC Cannabis nocturnal decrease, Caffeine recovery delay, Chronic Stress, Sauna, Sexual Activity correlational, Altitude acute negative above 2500m, Caloric Restriction HRV 20 years younger, and Dehydration. Exercise modalities ranked by Yang et al 2024 Network Meta-Analysis of 29 RCTs: HIIT is number 1 for SDNN RMSSD and LF/HF ratio, Aerobic Endurance training, Resistance Training number 1 for HF power, Combined training, Yoga Mind-Body, and Overtraining risk. Micronutrients include Vitamin B12, Vitamin D, Magnesium, Omega-3 EPA DHA most studied dietary HRV factor, and Zinc. Demographics include Age strongest predictor, Sex and Gender, Genetics inconclusive, Circadian Rhythm, BMI Obesity, and Menstrual Cycle (cyclical, with a luteal phase HRV dip). Each factor shows evidence strength (Strong Moderate Emerging), direction of effect (Positive Negative Mixed), mechanism of action, dosage when applicable, and peer-reviewed citations. How to improve HRV naturally. What affects HRV. Best supplements for HRV. Data sourced from peer-reviewed studies and meta-analyses.');
+    __seo(this, 'HRV Factor Explorer by Kygo Health. Explore 43 research-backed factors that affect Heart Rate Variability across 5 categories: Supplements, Lifestyle, Exercise, Micronutrients, and Demographics. A Do More / Cut Back action board lists the changeable factors with strong or moderate evidence, each with the tested dose and measured result, such as HIIT 2 to 3 sessions a week, slow breathing 20 minutes a day at 6 breaths per minute, protecting sleep, and cutting alcohol, which lowers RMSSD by 2 to 13 ms depending on dose. Supplements include Ashwagandha Witholytin, which protected HRV under stress (RMSSD up 9 percent vs down 19 percent on placebo, RCT n=111), Ashwagandha Zenroot (RCT n=90), Probiotics, Polyphenols, Multivitamin, GABA (RCT n=30), L-Theanine, and Beetroot Juice (RMSSD up 6.7 ms after exercise, n=54, postmenopausal women). Lifestyle factors include Sleep Loss (RMSSD down after sleep deprivation, 11 RCTs), Slow Breathing at 6 breaths per minute (SDNN up, RMSSD unchanged), Cold Exposure (RMSSD up 54-85 percent after cryotherapy, short term), Meditation, HRV Biofeedback, Forest Bathing, Intermittent Fasting (no clear effect), Mediterranean Diet, Alcohol dose-dependent decrease, Smoking including secondhand smoke, THC Cannabis overnight RMSSD down 11-19 ms, Caffeine (no clear effect on post-exercise recovery), Chronic Stress, Sauna (no clear effect beyond exercise), Sexual Activity correlational, Altitude acute negative above 2500m, Caloric Restriction, and Dehydration (RMSSD and SDNN down with mild dehydration). Exercise: Regular exercise of any type raises RMSSD (meta-analysis n=623). Yang et al 2024 network meta-analysis of 29 RCTs ranks HIIT number 1 for RMSSD and SDNN and Resistance Training number 1 for HF power, plus Combined training, Yoga, and Overtraining risk. Micronutrients include Vitamin B12 and Vitamin D (lower HRV when deficient), Magnesium (mixed), Omega-3 EPA DHA (HF up, RMSSD unchanged), and Zinc. Demographics include Age, Sex, Genetics inconclusive, Time of Day, BMI and Body Fat, and Menstrual Cycle (HRV lowest before your period). Each factor shows evidence strength (Strong, Moderate, Emerging, Weak), impact (Raises HRV, Lowers HRV, Protects HRV, Mixed, Varies, No clear effect), mechanism of action, dosage when applicable, and a linked peer-reviewed source. Fitbit and Pixel Watch report HRV as RMSSD measured during sleep. How to improve HRV naturally. What affects HRV. Best supplements for HRV. Data sourced from peer-reviewed studies and meta-analyses.');
   }
 
   disconnectedCallback() {
@@ -84,13 +84,13 @@ class KygoHrvFactors extends HTMLElement {
       supplements: [
         {
           key: 'ashwa-witholytin', name: 'Ashwagandha (Witholytin)',
-          direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (RMSSD)',
-          keyFinding: 'Held RMSSD steady under stress (RCT, n=111)',
-          whatThisMeans: "Didn't boost HRV itself but stopped it from dropping like placebo did. Also cut fatigue nearly in half.",
+          direction: 'protects', evidence: 'moderate',
+          effect: 'Protects (RMSSD)',
+          keyFinding: 'RMSSD up 9% vs down 19% on placebo (n=111)',
+          whatThisMeans: 'This one didn\'t boost HRV much but stopped it from dropping over 12 weeks, unlike the placebo. Also cut fatigue nearly in half (-46% vs -31% on placebo).',
           mechanism: 'Adaptogenic withanolides modulate cortisol and reduce sympathetic overdrive, preserving vagal tone under stress.',
           dosage: '200 mg twice daily (Witholytin extract)',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/', label: 'PMC10647917' },
+          source: { url: 'https://doi.org/10.1177/02698811231200023', label: 'Smith 2023' },
           affiliate: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }
         },
         {
@@ -162,56 +162,56 @@ class KygoHrvFactors extends HTMLElement {
           key: 'beetroot', name: 'Beetroot Juice',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (post-exercise)',
-          keyFinding: 'Faster post-exercise HRV recovery',
-          whatThisMeans: 'Nitrates boost nitric oxide, helping your body recover faster after workouts. Main benefit is quicker HRV bounce-back.',
+          keyFinding: 'RMSSD up 6.7 ms post-exercise (n=54)',
+          whatThisMeans: 'Nitrates boost nitric oxide, helping HRV bounce back quicker after workouts. Only studied in postmenopausal women so far.',
           mechanism: 'Dietary nitrate → nitric oxide pathway enhances vascular function and parasympathetic reactivation post-exercise.',
           dosage: '~400 mg nitrate (70 mL concentrated juice)',
-          source: { url: 'https://www.mdpi.com/2227-9032/13/19/2496', label: 'Healthcare 2025' },
+          source: { url: 'https://doi.org/10.3390/healthcare13192496', label: 'Raimundo 2025' },
           affiliate: { url: 'https://www.amazon.com/dp/B01GJS8VX4?tag=kygohealthapp-20&th=1', label: 'Beetroot Juice Shots' , slug: 'beet-nitrate-shots' }
         }
       ],
       lifestyle: [
         {
-          key: 'sleep', name: 'Sleep Quality',
-          direction: 'positive', evidence: 'strong',
-          effect: 'Positive (strong)',
-          keyFinding: 'Top predictor of nocturnal HRV',
-          whatThisMeans: 'Nothing moves the needle more than consistent, quality sleep. Bad sleep = bad HRV, almost guaranteed.',
+          key: 'sleep', name: 'Sleep Loss',
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (strong)',
+          keyFinding: 'RMSSD down after sleep deprivation (11 RCTs, n=549)',
+          whatThisMeans: 'Nothing surprising here. Bad sleep = bad HRV, and RMSSD (the number Fitbit shows) takes the hit.',
           mechanism: 'Nocturnal parasympathetic dominance requires uninterrupted sleep architecture. Fragmented sleep elevates sympathetic tone.',
-          dosage: '7–9 hours, consistent schedule',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'PMC11333334' }
+          dosage: 'Seen after sleep deprivation; protect 7–9 hours on a consistent schedule',
+          source: { url: 'https://doi.org/10.3389/fneur.2025.1556784', label: 'Zhang 2025' }
         },
         {
           key: 'slow-breathing', name: 'Slow Breathing (6/min)',
-          direction: 'positive', evidence: 'strong',
-          effect: 'Positive (strong)',
-          keyFinding: 'SDNN improved after 4 weeks (RCT)',
-          whatThisMeans: "Breathing at 6 breaths per minute hits your body's 'resonance frequency' and maximizes HRV. 20 min/day works.",
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (SDNN)',
+          keyFinding: 'SDNN up after 4 weeks (n=50); RMSSD unchanged',
+          whatThisMeans: 'Breathing at 6 breaths per minute hits your body\'s "resonance frequency." 20 min/day raised overall HRV, though RMSSD didn\'t change significantly.',
           mechanism: 'Respiratory sinus arrhythmia at ~0.1 Hz resonance frequency maximizes baroreflex sensitivity and vagal output.',
           dosage: '20 minutes daily at 6 breaths/min',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/', label: 'PMC8924557' },
+          source: { url: 'https://doi.org/10.7759/cureus.22187', label: 'Chaitanya 2022' },
           affiliate: { url: 'https://www.amazon.com/dp/B00FE8N7Y4?tag=kygohealthapp-20', label: 'Breathing Trainer' , slug: 'breathing-trainer' }
         },
         {
           key: 'cold-exposure', name: 'Cold Exposure',
           direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (acute)',
-          keyFinding: 'RMSSD +54–85% post-session',
-          whatThisMeans: "Cold shocks your vagus nerve awake. The +54-85% RMSSD spike is real but fades in 15-20 minutes and doesn't shift baseline HRV with chronic use alone. Best used as a recovery tool between training days, not a standalone HRV builder.",
-          mechanism: 'Cold-water face immersion triggers the diving reflex, a strong vagal activation via trigeminal nerve afferents.',
-          dosage: 'Cold shower or ice bath, 1–5 minutes; best as recovery tool',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/', label: 'PMC3749989' },
+          effect: 'Positive (short term)',
+          keyFinding: 'RMSSD up 54–85% after one session (n=40)',
+          whatThisMeans: 'Cold shocks your vagus nerve awake. A 3 min cryotherapy session (-110°C) gave a big short-term HRV jump. Ice baths and cold showers weren\'t tested here.',
+          mechanism: 'Sudden whole-body cold triggers a reflex rise in vagal (parasympathetic) activity. HRV was measured once, 5 minutes after the session.',
+          dosage: '3 min whole-body cryotherapy at -110°C; short-term effect only',
+          source: { url: 'https://doi.org/10.1371/journal.pone.0072658', label: 'Hausswirth 2013' },
           affiliate: { url: 'https://www.amazon.com/dp/B0FX2MPK9P?tag=kygohealthapp-20&th=1', label: 'Cold Plunge Tub' , slug: 'ice-bath-tub' }
         },
         {
           key: 'meditation', name: 'Meditation',
-          direction: 'positive', evidence: 'moderate',
+          direction: 'positive', evidence: 'weak',
           effect: 'Positive',
-          keyFinding: 'LF & HF both increased (p<0.05)',
-          whatThisMeans: 'Even 20 minutes of non-focused meditation shifts your nervous system toward calm. No special technique needed.',
+          keyFinding: 'HF power up during a 20 min session (n=27)',
+          whatThisMeans: '20 minutes of nondirective meditation raised HRV while people were doing it. No special technique needed.',
           mechanism: 'Reduces cortisol, shifts autonomic balance toward parasympathetic via prefrontal-amygdala regulation.',
-          dosage: '20+ minutes daily',
-          source: { url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142', label: 'Nesvold 2012' },
+          dosage: '20 min session; HRV measured during meditation only',
+          source: { url: 'https://doi.org/10.1177/1741826711414625', label: 'Nesvold 2012' },
           affiliate: { url: 'https://www.amazon.com/dp/B092DXFGVH?tag=kygohealthapp-20&th=1', label: 'Meditation Cushion' , slug: 'meditation-cushion' }
         },
         {
@@ -236,80 +236,80 @@ class KygoHrvFactors extends HTMLElement {
         },
         {
           key: 'intermittent-fasting', name: 'Intermittent Fasting',
-          direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (moderate)',
-          keyFinding: 'RMSSD 35 to 45ms in 8 weeks',
-          whatThisMeans: "16:8 fasting improved HRV over 8 weeks. But don't overdo it: fasts over 48 hours actually hurt HRV.",
-          mechanism: 'Fasting-induced autophagy and reduced inflammatory load improve vagal tone. Extended fasting reverses effect via stress.',
-          dosage: '16:8 protocol (16 hours fasting, 8 hours eating)',
+          direction: 'none', evidence: 'weak',
+          effect: 'No clear effect',
+          keyFinding: 'No RMSSD change (p=0.84)',
+          whatThisMeans: 'The study behind the popular 16:8 claim found no significant change in RMSSD. There\'s no good evidence yet that a fasting window moves HRV either way.',
+          mechanism: 'Proposed: lower inflammatory load could support vagal tone, but this has not shown up in HRV data.',
+          dosage: '16:8 protocol tested; no HRV effect found',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/', label: 'PMC10045415' }
         },
         {
           key: 'mediterranean-diet', name: 'Mediterranean Diet',
-          direction: 'positive', evidence: 'moderate',
+          direction: 'positive', evidence: 'weak',
           effect: 'Positive',
-          keyFinding: 'Higher HRV in observational studies',
-          whatThisMeans: 'Anti-inflammatory foods (fish, olive oil, veggies) support a calmer nervous system. High-sugar diets do the opposite.',
+          keyFinding: 'HRV up with diet (1 study)',
+          whatThisMeans: 'Anti-inflammatory foods (fish, olive oil, veggies) support a calmer nervous system. Diets heavy in saturated fat, trans fat and high glycemic carbs do the opposite.',
           mechanism: 'Anti-inflammatory dietary pattern reduces systemic inflammation and oxidative stress on autonomic neurons.',
           dosage: 'Daily dietary pattern',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' }
+          source: { url: 'https://doi.org/10.1097/FBP.0000000000000383', label: 'Young & Benton 2018' }
         },
         {
           key: 'alcohol', name: 'Alcohol',
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (dose-dependent)',
-          keyFinding: 'RMSSD: −2 to −13ms per dose level',
-          whatThisMeans: 'Even 1 drink hurts HRV. 3+ drinks tanks your recovery score. Being young and fit does NOT protect you.',
+          keyFinding: 'RMSSD down 2.0 / 5.7 / 12.9 ms by dose (n=4,098)',
+          whatThisMeans: 'Even 1 drink lowers HRV. More drinks, bigger hit. Being young and fit does NOT protect you.',
           mechanism: 'Ethanol suppresses vagal tone and activates sympathetic nervous system in dose-dependent fashion.',
-          dosage: 'Any amount reduces HRV; 3+ drinks severe',
-          source: { url: 'https://mental.jmir.org/2018/1/e23', label: 'JMIR 2018' }
+          dosage: 'Any amount lowers HRV; more drinks, bigger hit',
+          source: { url: 'https://doi.org/10.2196/mental.9519', label: 'Pietilä 2018' }
         },
         {
           key: 'smoking', name: 'Smoking',
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (dose-dependent)',
-          keyFinding: 'Active & passive both reduce HRV',
-          whatThisMeans: 'Damages vagal tone directly. Even secondhand smoke measurably lowers HRV. Quitting helps it recover.',
+          keyFinding: 'HRV down by dose, including secondhand',
+          whatThisMeans: 'Damages vagal tone directly. Even secondhand smoke at home or work lowers HRV.',
           mechanism: 'Nicotine activates sympathetic ganglia; smoke particulates cause systemic inflammation damaging vagal nerve fibers.',
-          dosage: 'Any exposure, including secondhand',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'PMC11333334' }
+          dosage: 'Any exposure, including secondhand smoke at home or work',
+          source: { url: 'https://doi.org/10.3389/fphys.2024.1430458', label: 'Sammito 2024' }
         },
         {
           key: 'thc', name: 'THC / Cannabis',
-          direction: 'negative', evidence: 'moderate',
-          effect: 'Negative (nocturnal)',
-          keyFinding: 'Nocturnal RMSSD down 15–22%',
-          whatThisMeans: 'Suppresses your rest-and-digest system overnight. Your sleep HRV takes a clear hit the night you use it.',
+          direction: 'negative', evidence: 'weak',
+          effect: 'Negative (overnight)',
+          keyFinding: 'Overnight RMSSD down 11–19 ms (pilot, n=18)',
+          whatThisMeans: 'Suppresses your rest & digest system overnight. Sleep HRV took a clear hit the night of use, even in regular users.',
           mechanism: 'CB1 receptor activation suppresses parasympathetic outflow during sleep, reducing nocturnal vagal tone.',
-          dosage: 'Effect observed with evening use',
-          source: { url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640', label: 'SLEEP 2023' }
+          dosage: 'Seen the night of use, even in regular users',
+          source: { url: 'https://doi.org/10.1111/jsr.70298', label: 'Gonzalez 2026' }
         },
         {
           key: 'caffeine', name: 'Caffeine',
-          direction: 'negative', evidence: 'moderate',
-          effect: 'Negative (recovery)',
-          keyFinding: 'Delays post-exercise HRV recovery',
-          whatThisMeans: 'No real effect at rest, but slows down how fast your HRV bounces back after a workout.',
-          mechanism: 'Adenosine receptor antagonism prolongs sympathetic activation during post-exercise recovery window.',
-          dosage: 'Moderate intake (~200 mg); timing matters most',
+          direction: 'none', evidence: 'moderate',
+          effect: 'No clear effect',
+          keyFinding: 'No effect on post-exercise RMSSD (meta-analysis, p=0.77)',
+          whatThisMeans: 'A meta-analysis found caffeine didn\'t change how fast RMSSD recovers after exercise.',
+          mechanism: 'Adenosine receptor antagonism raises alertness, but pooled data show no measurable effect on post-exercise vagal recovery.',
+          dosage: '~200 mg doses tested',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/', label: 'PMC11284693' }
         },
         {
           key: 'chronic-stress', name: 'Chronic Stress',
           direction: 'negative', evidence: 'strong',
           effect: 'Negative',
-          keyFinding: 'Sympathetic dominance',
-          whatThisMeans: "Keeps your fight-or-flight system stuck 'on.' One of the most common reasons people have persistently low HRV.",
+          keyFinding: 'HRV down with stress',
+          whatThisMeans: 'Keeps your fight or flight system turned on. A common reason people have persistently low HRV.',
           mechanism: 'HPA axis dysregulation with sustained cortisol elevation suppresses vagal tone and shifts autonomic balance.',
           dosage: 'Cumulative exposure; management is key',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'PMC11333334' }
+          source: { url: 'https://doi.org/10.3389/fphys.2024.1430458', label: 'Sammito 2024' }
         },
         {
           key: 'sauna', name: 'Sauna',
-          direction: 'mixed', evidence: 'moderate',
-          effect: 'Mixed',
-          keyFinding: 'Acute decrease; chronic no benefit',
-          whatThisMeans: "HRV dips during the heat, spikes during cooldown. But regular sauna doesn't improve HRV beyond what exercise alone does.",
+          direction: 'none', evidence: 'moderate',
+          effect: 'No clear effect',
+          keyFinding: 'No HRV benefit beyond exercise alone',
+          whatThisMeans: 'HRV dips in the heat and rebounds during cooldown, but regular sauna use didn\'t add any HRV benefit beyond what exercise alone did.',
           mechanism: 'Acute heat stress activates sympathetic response. Post-cooling parasympathetic rebound. Chronic adaptation unclear.',
           dosage: '15–20 min sessions, 80–100°C',
           source: { url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449', label: 'Physiol Reports 2025' }
@@ -348,11 +348,11 @@ class KygoHrvFactors extends HTMLElement {
           key: 'dehydration', name: 'Dehydration',
           direction: 'negative', evidence: 'moderate',
           effect: 'Negative',
-          keyFinding: 'HR +5-6 bpm, reduced parasympathetic activity; restores with rehydration',
-          whatThisMeans: "Being dehydrated shifts your nervous system toward stress mode. Replacing ≥60% of fluid lost restores HRV within 24 hours. Simple but easy to overlook.",
+          keyFinding: 'RMSSD and SDNN down, HR ~6 bpm up (n=68)',
+          whatThisMeans: 'Even mild dehydration (skipping 2 glasses of water over 4 hours in the heat) lowered HRV, raised heart rate ~6 bpm and raised anxiety.',
           mechanism: 'Hypovolemia reduces venous return, triggering compensatory sympathetic activation and reduced parasympathetic outflow.',
-          dosage: 'Maintain hydration; replace ≥60% of fluid lost',
-          source: { url: 'https://www.nature.com/articles/s41598-019-51255-2', label: 'Nature Sci Rep 2019' }
+          dosage: 'Even mild (~0.6% body weight lost); stay hydrated in the heat',
+          source: { url: 'https://doi.org/10.1038/s41598-019-52775-5', label: 'Young 2019' }
         }
       ],
       exercise: [
@@ -360,31 +360,31 @@ class KygoHrvFactors extends HTMLElement {
           key: 'hiit', name: 'HIIT',
           direction: 'positive', evidence: 'strong',
           effect: 'Strongest overall',
-          keyFinding: '#1 for SDNN, RMSSD, LF/HF (NMA)',
-          whatThisMeans: "The single best exercise type for improving HRV across every metric. Even better than steady-state cardio. Effects are chronic adaptation over weeks. Expect a 24-48hr HRV dip after each session where RMSSD can drop significantly before rebounding above baseline. Don't misread the next-morning dip as negative adaptation.",
+          keyFinding: '#1 for RMSSD and SDNN (29 RCTs, n=1,317)',
+          whatThisMeans: 'The single best exercise type for improving HRV across the main metrics.',
           mechanism: 'High-intensity intervals drive large cardiac output demands, stimulating vagal remodeling during recovery.',
           dosage: '2–3 sessions per week, with adequate recovery',
-          source: { url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009', label: 'Yang et al. 2024' }
+          source: { url: 'https://doi.org/10.31083/j.rcm2501009', label: 'Yang 2024' }
         },
         {
-          key: 'aerobic', name: 'Aerobic / Endurance',
+          key: 'aerobic', name: 'Regular Exercise (any type)',
           direction: 'positive', evidence: 'strong',
           effect: 'Strong positive',
-          keyFinding: 'RMSSD SMD=0.84 (16 RCTs)',
-          whatThisMeans: 'Classic cardio works great too. 150+ min/week of moderate effort for 8+ weeks shows clear improvements.',
-          mechanism: 'Sustained aerobic demand upregulates cardiac vagal tone and improves baroreflex sensitivity.',
-          dosage: '150+ min/week moderate intensity, 8+ weeks',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11250637/', label: 'PMC11250637' }
+          keyFinding: 'RMSSD up vs no training (n=623)',
+          whatThisMeans: 'Any structured training (cardio, weights, HIIT) raised RMSSD vs people who didn\'t train.',
+          mechanism: 'Regular training upregulates cardiac vagal tone and improves baroreflex sensitivity.',
+          dosage: 'Any structured training program (cardio, weights or HIIT)',
+          source: { url: 'https://doi.org/10.7759/cureus.62465', label: 'Amekran 2024' }
         },
         {
           key: 'resistance', name: 'Resistance Training',
           direction: 'positive', evidence: 'moderate',
           effect: 'Moderate positive',
-          keyFinding: '#1 for HF power (NMA)',
-          whatThisMeans: 'Lifting weights helps HRV, especially the parasympathetic side. Not as strong as cardio overall but still beneficial.',
+          keyFinding: '#1 for HF power (29 RCTs, n=1,317)',
+          whatThisMeans: 'Lifting weights helps HRV, especially the rest & digest side. HIIT still ranked higher for RMSSD.',
           mechanism: 'Post-exercise parasympathetic reactivation and chronic reductions in resting sympathetic tone.',
           dosage: '2–3 sessions per week, progressive overload',
-          source: { url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009', label: 'Yang et al. 2024' }
+          source: { url: 'https://doi.org/10.31083/j.rcm2501009', label: 'Yang 2024' }
         },
         {
           key: 'combined', name: 'Combined (Aero + RT)',
@@ -397,24 +397,24 @@ class KygoHrvFactors extends HTMLElement {
           source: { url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009', label: 'Yang et al. 2024' }
         },
         {
-          key: 'yoga', name: 'Yoga / Mind-Body',
-          direction: 'mixed', evidence: 'emerging',
-          effect: 'Mixed',
-          keyFinding: 'Inconsistent results',
-          whatThisMeans: 'Results are all over the place. The breathing component probably drives whatever benefit there is, not the poses.',
+          key: 'yoga', name: 'Yoga',
+          direction: 'positive', evidence: 'weak',
+          effect: 'Positive',
+          keyFinding: 'RMSSD up (n=90, students only)',
+          whatThisMeans: 'Yoga improved HRV and lowered anxiety, but the studies are few, small and only in students.',
           mechanism: 'Pranayama (breathing) component may drive effects via respiratory sinus arrhythmia; asana effects less clear.',
-          dosage: 'Regular practice; breathing-focused styles preferred',
-          source: { url: 'https://www.frontiersin.org/journals/cardiovascular-medicine/articles/10.3389/fcvm.2025.1364905/full', label: 'Frontiers CV 2025' }
+          dosage: 'Regular practice; studied in students only',
+          source: { url: 'https://doi.org/10.1177/09727531251394924', label: 'Sharma 2025' }
         },
         {
           key: 'overtraining', name: 'Overtraining',
-          direction: 'negative', evidence: 'strong',
+          direction: 'negative', evidence: 'moderate',
           effect: 'Negative',
-          keyFinding: 'HRV declines signal overreaching',
-          whatThisMeans: "If your HRV is trending down despite training, you're doing too much. Use a 7-day rolling average, not single-day readings. A single low day is noise. 3+ consecutive days below your personal baseline by 8-10% is the real signal. Based on Plews et al. coefficient of variation approach.",
+          keyFinding: 'HRV down with overreaching',
+          whatThisMeans: 'If your HRV keeps trending down during hard training, you may be doing too much. Less reliable in endurance athletes. Watch your 7 day average, not single nights.',
           mechanism: 'Excessive training load without recovery causes chronic sympathetic activation and vagal withdrawal.',
           dosage: 'Monitor 7-day rolling HRV average to avoid',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11204851/', label: 'PMC11204851' }
+          source: { url: 'https://doi.org/10.3390/jfmk9020093', label: 'Addleman 2024' }
         }
       ],
       micronutrients: [
@@ -422,44 +422,44 @@ class KygoHrvFactors extends HTMLElement {
           key: 'b12', name: 'Vitamin B12',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (when deficient)',
-          keyFinding: 'Deficiency reduces LF power',
-          whatThisMeans: 'Your nerves need B12 to work properly. Low B12 can quietly wreck your autonomic function before you notice anything else.',
+          keyFinding: 'Lower HRV when deficient',
+          whatThisMeans: 'Being deficient is linked to lower HRV. No evidence topping up helps if your levels are already fine.',
           mechanism: 'Essential cofactor for myelin synthesis and nerve conduction. Deficiency causes demyelination of autonomic fibers.',
-          dosage: 'Correct deficiency; RDA 2.4 mcg',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          dosage: 'Only if deficient; RDA 2.4 mcg',
+          source: { url: 'https://doi.org/10.1093/advances/nmz136', label: 'Lopresti 2020' },
           affiliate: { url: 'https://www.amazon.com/dp/B002FJW3ZY?tag=kygohealthapp-20&th=1', label: 'Vitamin B12' , slug: 'vitamin-b12' }
         },
         {
           key: 'vitamin-d', name: 'Vitamin D',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (when deficient)',
-          keyFinding: '8 studies link to reduced HRV',
-          whatThisMeans: 'Your heart literally has vitamin D receptors. Being deficient is linked to worse HRV and cardiovascular outcomes.',
+          keyFinding: 'Lower HRV when deficient',
+          whatThisMeans: 'Being deficient is linked to lower HRV. No evidence topping up helps if your levels are already fine.',
           mechanism: 'VDR expression on cardiomyocytes and autonomic neurons; deficiency increases inflammatory cytokines.',
-          dosage: 'Correct deficiency; target 30–50 ng/mL',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          dosage: 'Only if deficient; get levels tested first',
+          source: { url: 'https://doi.org/10.1093/advances/nmz136', label: 'Lopresti 2020' },
           affiliate: { url: 'https://www.amazon.com/dp/B00GB85JR4?tag=kygohealthapp-20&th=1', label: 'Vitamin D3' , slug: 'vitamin-d3-5000' }
         },
         {
           key: 'magnesium', name: 'Magnesium',
-          direction: 'mixed', evidence: 'emerging',
-          effect: 'Mixed / Positive',
-          keyFinding: '1 RCT showed increase (n=36)',
-          whatThisMeans: "Helps stabilize your heart's electrical activity. Results are inconsistent, likely because dose, form, and duration vary so much.",
+          direction: 'mixed', evidence: 'weak',
+          effect: 'Mixed',
+          keyFinding: 'HRV results inconsistent across studies',
+          whatThisMeans: 'Results are inconsistent, likely because dose, form and duration vary so much between studies.',
           mechanism: 'Natural calcium channel blocker; stabilizes cardiac membrane potential and modulates NMDA receptors.',
           dosage: '200–400 mg elemental Mg daily',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/', label: 'PMC7231600' },
+          source: { url: 'https://doi.org/10.1093/advances/nmz136', label: 'Lopresti 2020' },
           affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }
         },
         {
           key: 'omega3', name: 'Omega-3 (EPA/DHA)',
-          direction: 'positive', evidence: 'strong',
-          effect: 'Positive (HF power)',
-          keyFinding: 'Most studied dietary HRV factor',
-          whatThisMeans: 'The best-researched nutrient for HRV. Fish oil consistently boosts parasympathetic power in meta-analyses.',
+          direction: 'mixed', evidence: 'moderate',
+          effect: 'Mixed',
+          keyFinding: 'HF up, RMSSD unchanged (15 studies)',
+          whatThisMeans: 'Fish oil boosted one rest & digest measure (HF), but RMSSD, the number Fitbit shows, didn\'t change.',
           mechanism: 'Membrane incorporation alters ion channel kinetics; anti-inflammatory effects via resolvin/protectin pathways.',
           dosage: '1–2 g EPA+DHA daily',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' },
+          source: { url: 'https://doi.org/10.1097/FBP.0000000000000383', label: 'Young & Benton 2018' },
           affiliate: { url: 'https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1', label: 'Omega-3 Fish Oil' , slug: 'omega-3-fish-oil' }
         },
         {
@@ -479,21 +479,21 @@ class KygoHrvFactors extends HTMLElement {
           key: 'age', name: 'Age',
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (decline)',
-          keyFinding: 'Strongest predictor overall',
-          whatThisMeans: 'Nothing affects HRV more than age. But fit older people can have higher HRV than sedentary younger ones.',
+          keyFinding: 'HRV down with age',
+          whatThisMeans: 'HRV naturally drops as you age, so compare yourself to your own baseline, not someone else\'s number.',
           mechanism: 'Progressive loss of sinoatrial node pacemaker cells and reduced vagal nerve fiber density with aging.',
-          dosage: 'Non-modifiable; lifestyle can offset',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'PMC11333334' }
+          dosage: 'Non-modifiable; compare to your own baseline',
+          source: { url: 'https://doi.org/10.3389/fphys.2024.1430458', label: 'Sammito 2024' }
         },
         {
-          key: 'sex', name: 'Sex / Gender',
+          key: 'sex', name: 'Sex',
           direction: 'variable', evidence: 'strong',
           effect: 'Variable',
-          keyFinding: 'Women generally higher HF',
-          whatThisMeans: 'Women tend to have stronger parasympathetic tone, at least until menopause. Differences narrow with age.',
+          keyFinding: 'HRV higher in women',
+          whatThisMeans: 'Women typically have a stronger rest & digest tone. Differences narrow after 50.',
           mechanism: 'Estrogen enhances vagal tone; testosterone promotes sympathetic activity. Menopause reduces HF power.',
           dosage: 'Non-modifiable',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'PMC11333334' }
+          source: { url: 'https://doi.org/10.3389/fphys.2024.1430458', label: 'Sammito 2024' }
         },
         {
           key: 'genetics', name: 'Genetics',
@@ -506,34 +506,34 @@ class KygoHrvFactors extends HTMLElement {
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'PMC11333334' }
         },
         {
-          key: 'circadian', name: 'Circadian Rhythm',
+          key: 'circadian', name: 'Time of Day',
           direction: 'variable', evidence: 'strong',
           effect: 'Variable',
-          keyFinding: 'HRV rises at night, drops AM',
-          whatThisMeans: 'Your HRV naturally peaks overnight and dips in the morning. This is why sleep-time measurement is the gold standard.',
+          keyFinding: 'HRV higher at night, lower in the morning',
+          whatThisMeans: 'Your HRV naturally peaks overnight and dips in the morning, so only compare overnight readings to other overnight readings.',
           mechanism: 'Suprachiasmatic nucleus drives 24h autonomic oscillation: parasympathetic peak during sleep, sympathetic peak at waking.',
-          dosage: 'Measure HRV during sleep for consistency',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'PMC11333334' }
+          dosage: 'Compare overnight readings to overnight readings',
+          source: { url: 'https://doi.org/10.3389/fphys.2024.1430458', label: 'Sammito 2024' }
         },
         {
-          key: 'bmi', name: 'BMI / Obesity',
+          key: 'bmi', name: 'BMI / Body Fat',
           direction: 'negative', evidence: 'strong',
           effect: 'Negative',
-          keyFinding: 'Higher BMI = lower HRV',
-          whatThisMeans: 'Excess body fat suppresses HRV. One study showed weight loss restored HRV by the equivalent of 20 years of aging.',
+          keyFinding: 'HRV down with higher BMI',
+          whatThisMeans: 'Excess body fat suppresses HRV. Losing weight helps restore it.',
           mechanism: 'Adipose-derived inflammatory cytokines impair vagal function; visceral fat particularly harmful via mechanical and hormonal effects.',
           dosage: 'Maintain healthy BMI; weight loss improves HRV',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/', label: 'PMC5882295' }
+          source: { url: 'https://doi.org/10.1097/FBP.0000000000000383', label: 'Young & Benton 2018' }
         },
         {
           key: 'menstrual-cycle', name: 'Menstrual Cycle',
-          direction: 'variable', evidence: 'moderate',
-          effect: 'Cyclical (dips in luteal phase)',
-          keyFinding: 'Lowest ~1 week before your period, then rebounds',
-          whatThisMeans: "Progesterone rises after ovulation and directly lowers HRV. Expect lowest readings about a week before your period. It's hormonal, not something you're doing wrong. Rebounds about a week after menses.",
-          mechanism: 'Progesterone suppresses vagal tone during the luteal phase. Estrogen in the follicular phase supports parasympathetic activity. Creates a predictable ~28-day HRV cycle.',
-          dosage: 'Non-modifiable; track cycle to contextualize HRV',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/', label: 'PMC7141121' }
+          direction: 'negative', evidence: 'strong',
+          effect: 'Negative (before your period)',
+          keyFinding: 'HRV lowest before your period (n=1,004)',
+          whatThisMeans: 'HRV drops after ovulation and is lowest in the days right before your period.',
+          mechanism: 'Vagal activity shifts across the cycle: higher in the follicular phase, lower in the luteal phase after ovulation.',
+          dosage: 'Non-modifiable; track your cycle to put HRV in context',
+          source: { url: 'https://doi.org/10.3390/jcm8111946', label: 'Schmalenberger 2019' }
         }
       ]
     };
@@ -543,11 +543,11 @@ class KygoHrvFactors extends HTMLElement {
 
   get _topPicks() {
     return [
-      { icon: 'trophy', label: 'Best Single Habit', answer: 'Sleep Quality', note: 'Top predictor of nocturnal HRV. Nothing else comes close.', stat: '#1 predictor', category: 'Lifestyle' },
-      { icon: 'dumbbell', label: 'Best Exercise', answer: 'HIIT', note: '#1 across SDNN, RMSSD, and LF/HF in network meta-analysis of 29 RCTs', stat: 'NMA, 29 RCTs', category: 'Exercise' },
-      { icon: 'pill', label: 'Best Supplement', answer: 'Ashwagandha (Witholytin)', note: 'Kept RMSSD from falling over 12 weeks while the placebo group dropped. It protects HRV under stress rather than raising it.', stat: 'RCT, n=111', category: 'Supplements' },
-      { icon: 'droplet', label: 'Best Nutrient', answer: 'Omega-3 (EPA/DHA)', note: 'Most studied dietary HRV factor, with consistent HF power improvements', stat: 'HF power ↑', category: 'Micronutrients' },
-      { icon: 'wind', label: 'Quickest Impact', answer: 'Slow Breathing (6/min)', note: 'Breathing at about 6 breaths a minute lifts HRV during the session itself, and 20 minutes a day improved resting SDNN within 4 weeks.', stat: 'In-session; SDNN up by week 4', category: 'Lifestyle' },
+      { icon: 'moon', label: 'Protect First', answer: 'Sleep', note: 'Sleep loss lowered RMSSD, the number Fitbit and most wearables show, in a meta-analysis of 11 RCTs.', stat: 'Meta-analysis, n=549', category: 'Lifestyle' },
+      { icon: 'dumbbell', label: 'Best Exercise', answer: 'HIIT', note: '#1 for RMSSD and SDNN in a network meta-analysis of 29 RCTs', stat: 'NMA, 29 RCTs, n=1,317', category: 'Exercise' },
+      { icon: 'pill', label: 'Best Supplement', answer: 'Ashwagandha (Witholytin)', note: 'RMSSD rose 9% over 12 weeks while the placebo group fell 19%. It protects HRV under stress rather than raising it.', stat: 'RCT, n=111', category: 'Supplements' },
+      { icon: 'droplet', label: 'Best Nutrient', answer: 'Vitamin D & B12', note: "Being deficient in either is linked to lower HRV. No evidence topping up helps if your levels are already fine, so test first.", stat: 'Only if deficient', category: 'Micronutrients' },
+      { icon: 'wind', label: 'Quickest Impact', answer: 'Slow Breathing (6/min)', note: "20 minutes a day at about 6 breaths a minute raised SDNN within 4 weeks, though RMSSD didn't change significantly.", stat: 'SDNN up by week 4', category: 'Lifestyle' },
       { icon: 'alert', label: 'Biggest HRV Killer', answer: 'Alcohol', note: 'RMSSD drops 2 to 13 ms per dose, and fitness doesn\'t protect you', stat: 'RMSSD −2 to −13ms', category: 'Lifestyle', warning: true }
     ];
   }
@@ -571,6 +571,8 @@ class KygoHrvFactors extends HTMLElement {
       arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       arrowLeftRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>',
       heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+      shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+      minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
       moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>',
       zap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
       activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>',
@@ -597,10 +599,12 @@ class KygoHrvFactors extends HTMLElement {
 
   _directionConfig(dir) {
     const map = {
-      positive: { icon: 'arrowUp', label: 'Positive', color: '#22C55E', bg: 'rgba(34,197,94,0.1)' },
-      negative: { icon: 'arrowDown', label: 'Negative', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' },
+      positive: { icon: 'arrowUp', label: 'Raises HRV', color: '#22C55E', bg: 'rgba(34,197,94,0.1)' },
+      protects: { icon: 'shield', label: 'Protects HRV', color: '#16A34A', bg: 'rgba(34,197,94,0.1)' },
+      negative: { icon: 'arrowDown', label: 'Lowers HRV', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' },
       mixed: { icon: 'arrowLeftRight', label: 'Mixed', color: '#FBBF24', bg: 'rgba(251,191,36,0.1)' },
-      variable: { icon: 'arrowLeftRight', label: 'Variable', color: '#94A3B8', bg: 'rgba(148,163,184,0.1)' }
+      variable: { icon: 'arrowLeftRight', label: 'Varies', color: '#94A3B8', bg: 'rgba(148,163,184,0.1)' },
+      none: { icon: 'minus', label: 'No clear effect', color: '#94A3B8', bg: 'rgba(148,163,184,0.1)' }
     };
     return map[dir] || map.mixed;
   }
@@ -609,7 +613,8 @@ class KygoHrvFactors extends HTMLElement {
     const map = {
       strong: { label: 'Strong', color: '#16A34A', bg: 'rgba(34,197,94,0.15)' },
       moderate: { label: 'Moderate', color: '#D97706', bg: 'rgba(251,191,36,0.15)' },
-      emerging: { label: 'Emerging', color: '#6366F1', bg: 'rgba(99,102,241,0.15)' }
+      emerging: { label: 'Emerging', color: '#6366F1', bg: 'rgba(99,102,241,0.15)' },
+      weak: { label: 'Weak', color: '#94A3B8', bg: 'rgba(148,163,184,0.15)' }
     };
     return map[ev] || map.moderate;
   }
@@ -630,10 +635,10 @@ class KygoHrvFactors extends HTMLElement {
     let factors = this._factors[this._activeCategory];
     if (!factors) return '<p class="no-data">No factors in this category.</p>';
     if (this._sortMode === 'evidence') {
-      const rank = { strong: 0, moderate: 1, emerging: 2 };
+      const rank = { strong: 0, moderate: 1, emerging: 2, weak: 3 };
       factors = [...factors].sort((a, b) => (rank[a.evidence] ?? 9) - (rank[b.evidence] ?? 9));
     } else if (this._sortMode === 'direction') {
-      const rank = { positive: 0, mixed: 1, variable: 2, negative: 3 };
+      const rank = { positive: 0, protects: 1, mixed: 2, variable: 3, none: 4, negative: 5 };
       factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
     }
     const note = this._activeCategory === 'demographics'
@@ -712,43 +717,43 @@ class KygoHrvFactors extends HTMLElement {
   get _srcGroups() {
     const groups = {
       'Supplements': [
-        { label: 'Lopresti et al. 2024: Ashwagandha Witholytin RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10647917/' },
+        { label: 'Smith et al. 2023: Ashwagandha (Witholytin) RCT', url: 'https://doi.org/10.1177/02698811231200023' },
         { label: 'Thakkar et al. 2025: Ashwagandha Zenroot RCT', url: 'https://link.springer.com/article/10.1007/s12325-025-03327-z' },
         { label: 'Maia et al. 2025: Probiotics & HRV in hypertensive women', url: 'https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2025.1502562/full' },
         { label: 'Badawy et al. 2024: GABA supplementation RCT', url: 'https://www.tandfonline.com/doi/full/10.1080/19390211.2024.2308262' },
         { label: 'Kimura et al. 2007: L-Theanine & stress', url: 'https://pubmed.ncbi.nlm.nih.gov/16930802/' },
-        { label: 'Amiri et al. 2025: Beetroot juice meta-analysis', url: 'https://www.mdpi.com/2227-9032/13/19/2496' }
+        { label: 'Raimundo et al. 2025: Beetroot juice in postmenopausal women', url: 'https://doi.org/10.3390/healthcare13192496' }
       ],
       'Lifestyle': [
-        { label: 'Nunan et al. 2024: Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'Laborde et al. 2022: Slow breathing & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8924557/' },
-        { label: 'Mäkinen et al. 2008: Cold exposure & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3749989/' },
-        { label: 'Nesvold et al. 2012: Meditation & HRV', url: 'https://academic.oup.com/eurjpc/article/19/4/773/5928142' },
+        { label: 'Sammito et al. 2024: Factors influencing HRV', url: 'https://doi.org/10.3389/fphys.2024.1430458' },
+        { label: 'Zhang et al. 2025: Sleep deprivation & HRV meta-analysis', url: 'https://doi.org/10.3389/fneur.2025.1556784' },
+        { label: 'Chaitanya et al. 2022: Slow breathing & HRV', url: 'https://doi.org/10.7759/cureus.22187' },
+        { label: 'Hausswirth et al. 2013: Cryotherapy & HRV', url: 'https://doi.org/10.1371/journal.pone.0072658' },
+        { label: 'Nesvold et al. 2012: Meditation & HRV', url: 'https://doi.org/10.1177/1741826711414625' },
         { label: 'Lehrer & Gevirtz 2014: HRV biofeedback review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10412682/' },
         { label: 'Park et al. 2010: Forest bathing & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/19568835/' },
         { label: 'Moro et al. 2023: Intermittent fasting & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10045415/' },
-        { label: 'Pietilä et al. 2018: Alcohol & HRV', url: 'https://mental.jmir.org/2018/1/e23' },
-        { label: 'Conner et al. 2023: THC & nocturnal HRV', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
+        { label: 'Pietilä et al. 2018: Alcohol & HRV', url: 'https://doi.org/10.2196/mental.9519' },
+        { label: 'Gonzalez et al. 2026: THC & overnight HRV', url: 'https://doi.org/10.1111/jsr.70298' },
         { label: 'Gonzalez et al. 2024: Caffeine & HRV recovery', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
         { label: 'Brunt et al. 2025: Sauna & HRV', url: 'https://physoc.onlinelibrary.wiley.com/doi/full/10.14814/phy2.70449' },
         { label: 'Brody & Preut 2003: Sexual activity & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/12659241/' },
         { label: 'Frontiers Physiol 2025: Altitude & HRV meta-analysis', url: 'https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2025.1502562/full' },
         { label: 'Stein et al. 2012: Caloric restriction & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3598611/' },
-        { label: 'Watso et al. 2019: Dehydration & HRV', url: 'https://www.nature.com/articles/s41598-019-51255-2' }
+        { label: 'Young et al. 2019: Mild dehydration & HRV', url: 'https://doi.org/10.1038/s41598-019-52775-5' }
       ],
       'Exercise': [
-        { label: 'Yang et al. 2024: Exercise NMA (29 RCTs)', url: 'https://www.imrpress.com/journal/RCM/25/1/10.31083/j.rcm2501009' },
-        { label: 'Amekran et al. 2024: Aerobic exercise meta-analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11250637/' },
-        { label: 'Fronczyk et al. 2025: Yoga & HRV review', url: 'https://www.frontiersin.org/journals/cardiovascular-medicine/articles/10.3389/fcvm.2025.1364905/full' },
-        { label: 'Bellenger et al. 2024: Overtraining & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11204851/' }
+        { label: 'Yang et al. 2024: Exercise NMA (29 RCTs)', url: 'https://doi.org/10.31083/j.rcm2501009' },
+        { label: 'Amekran et al. 2024: Exercise training & HRV meta-analysis', url: 'https://doi.org/10.7759/cureus.62465' },
+        { label: 'Sharma et al. 2025: Yoga & HRV in students', url: 'https://doi.org/10.1177/09727531251394924' },
+        { label: 'Addleman et al. 2024: Overtraining & HRV', url: 'https://doi.org/10.3390/jfmk9020093' }
       ],
       'Nutrition & Micronutrients': [
-        { label: 'Young & Benton 2018: Gut-brain axis & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5882295/' },
-        { label: 'Lopresti 2020: Micronutrients & HRV review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7231600/' }
+        { label: 'Young & Benton 2018: Diet, nutrition & HRV review', url: 'https://doi.org/10.1097/FBP.0000000000000383' },
+        { label: 'Lopresti 2020: Micronutrients & HRV review', url: 'https://doi.org/10.1093/advances/nmz136' }
       ],
       'Demographics': [
-        { label: 'Nunan et al. 2024: Lifestyle determinants of HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'Schmalenberger et al. 2019: Menstrual cycle & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7141121/' }
+        { label: 'Schmalenberger et al. 2019: Menstrual cycle & HRV meta-analysis', url: 'https://doi.org/10.3390/jcm8111946' }
       ]
     };
     return groups;
@@ -839,32 +844,26 @@ class KygoHrvFactors extends HTMLElement {
   get _board() {
     return {
       more: [
-        { key: 'sleep', icon: 'moon', label: 'Sleep 7–9 hours', dose: 'Same schedule every night', result: '#1 predictor of overnight HRV' },
-        { key: 'slow-breathing', icon: 'wind', label: 'Slow breathing', dose: '20 min/day at 6 breaths/min', result: 'SDNN up after 4 weeks' },
         { key: 'hiit', icon: 'zap', label: 'HIIT', dose: '2–3 sessions/week, with recovery', result: '#1 for RMSSD and SDNN' },
-        { key: 'aerobic', icon: 'activity', label: 'Aerobic training', dose: '150+ min/week for 8+ weeks', result: 'RMSSD effect size 0.84' },
-        { key: 'omega3', icon: 'fish', label: 'Omega-3 (EPA/DHA)', dose: '1–2 g daily', result: 'Most studied dietary factor' },
-        { key: 'combined', icon: 'layers', label: 'Cardio + strength', dose: '3–5 days/week', result: '#1 for LF power' },
-        { key: 'intermittent-fasting', icon: 'clock', label: 'Intermittent fasting', dose: '16:8 eating window', result: 'RMSSD 35 → 45 ms in 8 wks' },
-        { key: 'cold-exposure', icon: 'snowflake', label: 'Cold exposure', dose: '1–5 min cold shower or ice bath', result: 'RMSSD +54–85% post-session' },
+        { key: 'aerobic', icon: 'activity', label: 'Regular exercise', dose: 'Any structured training', result: 'RMSSD up vs no training' },
+        { key: 'slow-breathing', icon: 'wind', label: 'Slow breathing', dose: '20 min/day at 6 breaths/min', result: 'SDNN up after 4 weeks' },
         { key: 'resistance', icon: 'dumbbell', label: 'Resistance training', dose: '2–3 sessions/week', result: '#1 for HF power' },
-        { key: 'meditation', icon: 'sparkle', label: 'Meditation', dose: '20+ min daily', result: 'LF and HF both increased' },
+        { key: 'combined', icon: 'layers', label: 'Cardio + strength', dose: '3–5 days/week', result: '#1 for LF power' },
+        { key: 'cold-exposure', icon: 'snowflake', label: 'Cold exposure', dose: '3 min cryotherapy (-110°C)', result: 'RMSSD +54–85% short term' },
         { key: 'hrv-biofeedback', icon: 'heart', label: 'HRV biofeedback', dose: '10–20 min, several times/week', result: 'Positive across RCTs' },
         { key: 'forest-bathing', icon: 'tree', label: 'Time in nature', dose: '2+ hours in a forest', result: 'Higher HF than city (n=280+)' },
-        { key: 'mediterranean-diet', icon: 'utensils', label: 'Mediterranean diet', dose: 'Daily eating pattern', result: 'Higher HRV (observational)' },
-        { key: 'ashwa-witholytin', icon: 'pill', label: 'Ashwagandha', dose: '200 mg twice daily (Witholytin)', result: 'Held RMSSD steady under stress' },
+        { key: 'ashwa-witholytin', icon: 'pill', label: 'Ashwagandha', dose: '200 mg twice daily (Witholytin)', result: 'Kept RMSSD from dropping' },
         { key: 'l-theanine', icon: 'leaf', label: 'L-Theanine', dose: '200 mg daily', result: 'Blunts acute stress response' },
-        { key: 'beetroot', icon: 'juice', label: 'Beetroot juice', dose: '~400 mg nitrate', result: 'Faster post-workout recovery' },
-        { key: 'vitamin-d', icon: 'sun', label: 'Vitamin D', dose: 'Fix a deficiency (30–50 ng/mL)', result: 'Low levels, lower HRV' }
+        { key: 'beetroot', icon: 'juice', label: 'Beetroot juice', dose: '~400 mg nitrate', result: 'RMSSD +6.7 ms post-workout' },
+        { key: 'vitamin-d', icon: 'sun', label: 'Vitamin D & B12', dose: 'Only if you are deficient', result: 'Low levels, lower HRV' }
       ],
       less: [
-        { key: 'alcohol', icon: 'wine', label: 'Alcohol', dose: 'Any amount; 3+ drinks is severe', result: 'RMSSD −2 to −13 ms per dose' },
-        { key: 'smoking', icon: 'cigarette', label: 'Smoking', dose: 'Including secondhand smoke', result: 'Active and passive both lower HRV' },
-        { key: 'chronic-stress', icon: 'alert', label: 'Chronic stress', dose: 'Cumulative load, not one bad day', result: 'Locks in fight-or-flight' },
-        { key: 'overtraining', icon: 'trendDown', label: 'Overtraining', dose: 'Watch your 7-day HRV average', result: 'Falling HRV flags overreaching' },
-        { key: 'thc', icon: 'leaf', label: 'THC / cannabis', dose: 'Especially evening use', result: 'Overnight RMSSD −15–22%' },
-        { key: 'dehydration', icon: 'droplet', label: 'Dehydration', dose: 'Replace at least 60% of fluid lost', result: 'HR +5–6 bpm, less vagal tone' },
-        { key: 'caffeine', icon: 'coffee', label: 'Late caffeine', dose: '~200 mg; timing matters most', result: 'Delays post-workout recovery' },
+        { key: 'sleep', icon: 'moon', label: 'Sleep loss', dose: 'Short or missed nights', result: 'RMSSD down (11 RCTs)' },
+        { key: 'alcohol', icon: 'wine', label: 'Alcohol', dose: 'Any amount; more drinks, bigger hit', result: 'RMSSD −2 to −13 ms by dose' },
+        { key: 'smoking', icon: 'cigarette', label: 'Smoking', dose: 'Including secondhand smoke', result: 'HRV down by dose' },
+        { key: 'chronic-stress', icon: 'alert', label: 'Chronic stress', dose: 'Cumulative load, not one bad day', result: 'Keeps fight or flight on' },
+        { key: 'dehydration', icon: 'droplet', label: 'Dehydration', dose: 'Even mild, in the heat', result: 'RMSSD and SDNN down' },
+        { key: 'overtraining', icon: 'trendDown', label: 'Overtraining', dose: 'Watch your 7-day HRV average', result: 'Falling HRV may flag overreaching' },
         { key: 'altitude', icon: 'mountain', label: 'High altitude', dose: 'Above ~2,500 m; reverses on descent', result: 'HF drops (meta-analysis)' }
       ]
     };
@@ -889,7 +888,7 @@ class KygoHrvFactors extends HTMLElement {
             </span>
             <span class="ab-side">
               <span class="ab-result">${r.result}</span>
-              <span class="ab-ev" title="${ev.label} evidence"><span class="ab-bars" data-lvl="${{ strong: 3, moderate: 2, emerging: 1 }[f.evidence] || 1}" aria-hidden="true"><i></i><i></i><i></i></span>${ev.label} evidence</span>
+              <span class="ab-ev" title="${ev.label} evidence"><span class="ab-bars" data-lvl="${{ strong: 3, moderate: 2, emerging: 1, weak: 1 }[f.evidence] || 1}" aria-hidden="true"><i></i><i></i><i></i></span>${ev.label} evidence</span>
             </span>
           </button>
         </li>`;
@@ -1930,7 +1929,7 @@ class KygoHrvFactors extends HTMLElement {
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/hrv-factors',
       'datePublished': '2026-02-15',
-      'dateModified': '2026-03-18',
+      'dateModified': '2026-10-07',
       'softwareVersion': '1.0',
       'inLanguage': 'en',
       'isAccessibleForFree': true,
@@ -1948,22 +1947,22 @@ class KygoHrvFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What is the fastest way to improve HRV?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise is the single most evidence-backed way to improve HRV. Studies show regular moderate-intensity cardio (3-5x/week) can increase RMSSD by 10-20% within 8-12 weeks. Sleep quality and consistency are the second most impactful factor; poor sleep can reduce HRV by 30-50%.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Regular structured exercise of any type raises RMSSD compared with no training, and a network meta-analysis of 29 RCTs (n=1,317) ranked HIIT first for RMSSD and SDNN. Slow breathing at 6 breaths per minute for 20 minutes a day raised SDNN within 4 weeks. Protecting sleep matters too: sleep deprivation lowers RMSSD in a meta-analysis of 11 RCTs.' }
         },
         {
           '@type': 'Question',
           'name': 'Which supplements improve HRV?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Omega-3 fatty acids (EPA/DHA) have the strongest evidence for HRV improvement, with multiple RCTs showing 10-15% RMSSD increases at 2g/day. Ashwagandha (300-600mg/day) shows moderate evidence for stress-related HRV improvement. Magnesium glycinate and probiotics have emerging but limited evidence.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Ashwagandha (Witholytin, 200 mg twice daily) kept RMSSD from falling over 12 weeks in an RCT (n=111) while placebo dropped 19%. Beetroot juice sped post-exercise HRV recovery in postmenopausal women. Fixing a vitamin D or B12 deficiency is linked to better HRV, but topping up normal levels has no evidence. Omega-3 raised HF power but did not change RMSSD, and magnesium results are inconsistent.' }
         },
         {
           '@type': 'Question',
           'name': 'Does cold exposure improve HRV?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Cold water immersion (10-15°C for 2-5 minutes) acutely increases vagal tone and HRV. Regular cold exposure over 4+ weeks shows moderate evidence for sustained HRV improvements. However, cold exposure immediately after strength training may blunt adaptation. Best used on rest days or before bed.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Short term, yes. A 3 minute whole-body cryotherapy session at -110°C raised RMSSD 54-85% when measured 5 minutes later (n=40). Ice baths and cold showers were not tested in that study, and it does not show a lasting change in baseline HRV.' }
         },
         {
           '@type': 'Question',
           'name': 'What lowers HRV the most?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Alcohol is the single biggest HRV suppressor: even 1-2 drinks can reduce HRV by 20-40% for 24-48 hours. Chronic stress, poor sleep (<6 hours), overtraining, and dehydration are the next most impactful factors. Age is the strongest non-modifiable factor, with HRV declining roughly 1-2 ms/year after age 25.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Alcohol lowers RMSSD in a dose-dependent way, by about 2, 6 and 13 ms at low, moderate and high intake (n=4,098), and being young and fit does not protect you. Sleep loss, smoking (including secondhand smoke), chronic stress, overtraining and even mild dehydration also lower HRV. Among things you cannot change, HRV falls with age.' }
         },
         {
           '@type': 'Question',
