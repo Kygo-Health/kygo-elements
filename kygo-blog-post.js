@@ -58,7 +58,8 @@
     { name: 'Apple Health',  label: 'Apple',  src: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png' },
     { name: 'Fitbit',        label: 'Fitbit', src: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png' },
     { name: 'Garmin',        label: 'Garmin', src: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png' },
-    { name: 'WHOOP',         label: 'WHOOP',  src: 'https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png' },
+    { name: 'WHOOP',         label: 'WHOOP',  src: 'https://static.wixstatic.com/media/273a63_874a026381ad469698b84e11a2736609~mv2.png', bg: '#000' },
+    { name: 'Polar',         label: 'Polar',  src: 'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png' },
     { name: 'Google Health', label: 'Google', src: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png' },
     { name: 'Health Connect',label: 'Health', src: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png' }
   ];
@@ -767,7 +768,7 @@
     connectedCallback() {
       ensureCta();
       this.render();
-      seoText(this, 'Kygo Health. Evidence-first nutrition tracking connected to every wearable. Start on the web at app.kygo.app, on iPhone, or on Android, with one account and one plan across all three. Works with Oura, Apple Health, Fitbit, Garmin, Whoop, and Health Connect.');
+      seoText(this, 'Kygo Health. Evidence-first nutrition tracking connected to every wearable. Start on the web at app.kygo.app, on iPhone, or on Android, with one account and one plan across all three. Works with Oura, Apple Health, Fitbit, Garmin, WHOOP, Polar, Google Health, and Health Connect.');
     }
 
     // Contextual default copy keyed to the post's category slug / tags / URL
@@ -916,8 +917,10 @@
           }
           .wd-tile img { width: 100%; height: 100%; object-fit: cover; border-radius: 11px; display: block; }
           .wd-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); white-space: nowrap; }
-          @media (max-width: 420px) { .dots { gap: 4px; } .wd-tile { width: 36px; height: 36px; } .wd-label { font-size: 9.5px; } }
+          @media (max-width: 449px) { .dots { gap: 4px; } .wd-tile { width: 36px; height: 36px; } .wd-label { font-size: 9.5px; } }
+          @media (max-width: 403px) { .dots { gap: 3px; } .wd-tile { width: 30px; height: 30px; } .wd-label { font-size: 8px; } }
           @media (max-width: 360px) { .dots { gap: 2px; } .wd-tile { width: 28px; height: 28px; } .wd-label { font-size: 7.5px; } }
+          @media (max-width: 340px) { .dots { gap: 2px; } .wd-tile { width: 26px; height: 26px; } .wd-label { font-size: 7px; } }
         </style>
         <section class="wrap" aria-labelledby="cta-heading">
           <div class="promo">
@@ -932,7 +935,7 @@
                 <div class="dots">
                   ${WEARABLE_BADGES.map(w => `
                     <span class="wd" title="${w.name}">
-                      <span class="wd-tile"><img src="${w.src}" alt="${w.name}" loading="lazy" /></span>
+                      <span class="wd-tile"${w.bg ? ` style="background:${w.bg}"` : ''}><img src="${w.src}" alt="${w.name}" loading="lazy" /></span>
                       <span class="wd-label">${w.label}</span>
                     </span>
                   `).join('')}
@@ -967,7 +970,7 @@
         'See how your food affects your <span class="hl">sleep, energy, and recovery</span>';
       const sub = this.getAttribute('subheading') ||
         'Kygo connects your wearable data with AI-powered nutrition tracking—then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.';
-      const pill = this.getAttribute('pill-text') || 'Free Forever Plan';
+      const pill = this.getAttribute('pill-text') || 'Free 7-Day Trial';
       const hook = (this.getAttribute('hook') ||
         'Keep reading, then let your own data answer the same question for you.').replace(/"/g, '&quot;');
       const slug = postSlug(this, 'mid');

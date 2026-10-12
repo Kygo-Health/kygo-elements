@@ -145,6 +145,9 @@ day 14, etc.).
 - **Category:** food + health tracking app (nutrition + wearables).
 - **Platforms:** iOS and Android.
 - **Supported wearables/sources:** Oura, Apple Health, Health Connect, Fitbit, Garmin, WHOOP.
+  (The site's "Works with" logo strips also show **Polar** since 2026-10, per owner request; the
+  FAQ / homepage body copy still lists the six above — reconcile when the Polar integration copy
+  is confirmed.)
 - **Nutrition data sources:** Nutritionix (dietitian verified, primary), Edamam, USDA, Open Food Facts (barcodes), + AI photo/voice estimate.
 - **Core differentiator:** food↔body-performance correlations (sleep, HRV, readiness, stress, energy).
 - **Monetization:** freemium — free logging/syncing/tracking (photo logging metered at 5 AI scans/mo);

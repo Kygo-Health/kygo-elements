@@ -524,6 +524,12 @@ class KygoSocialProofSection extends HTMLElement {
           .device-logo-item{width:36px;height:36px}
           .device-logo-item img{width:22px;height:22px;border-radius:5px}
         }
+        /* 8 logos: tighten the row on tablets / small laptops so it never splits */
+        @media(min-width:768px) and (max-width:1023px){
+          .stats-bar{gap:28px}
+          .device-logos{gap:10px;flex-wrap:nowrap;flex-shrink:0}
+          .device-logo-item{width:32px;height:32px}
+        }
       </style>
       <section class="social-proof">
         <div class="container">
@@ -539,7 +545,8 @@ class KygoSocialProofSection extends HTMLElement {
               <div class="device-logo-item" title="Apple Health"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health"></div>
               <div class="device-logo-item" title="Fitbit"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit"></div>
               <div class="device-logo-item" title="Garmin"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin"></div>
-              <div class="device-logo-item" title="WHOOP"><img src="https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png" alt="WHOOP"></div>
+              <div class="device-logo-item" title="WHOOP"><img src="https://static.wixstatic.com/media/273a63_874a026381ad469698b84e11a2736609~mv2.png" alt="WHOOP"></div>
+              <div class="device-logo-item" title="Polar"><img src="https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png" alt="Polar"></div>
               <div class="device-logo-item" title="Google Health"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health"></div>
               <div class="device-logo-item" title="Health Connect"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect"></div>
             </div>
@@ -734,7 +741,8 @@ class KygoInsightsSteps extends HTMLElement {
       garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
       fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
       apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
-      whoop: 'https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png',
+      whoop: 'https://static.wixstatic.com/media/273a63_874a026381ad469698b84e11a2736609~mv2.png',
+      polar: 'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png',
       google: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
       health: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png'
     };
@@ -763,23 +771,24 @@ class KygoInsightsSteps extends HTMLElement {
         .step-card p{font-size:15px;color:var(--body);margin-bottom:20px}
         .hfoot{margin-top:auto;padding-top:18px;border-top:1px solid var(--slate-100)}
         .hfoot-methods{display:flex;justify-content:center;gap:10px}
-        .hfoot-devices{display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:center;gap:6px}
+        .hfoot-devices{display:flex;flex-wrap:nowrap;align-items:flex-start;justify-content:center;gap:5px}
         .hfoot-results{display:flex;align-items:center;gap:8px;min-height:82px}
         .chip{display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .18s ease}
         .chip:hover{transform:translateY(-3px)}
-        .chip-tile{width:40px;height:40px;flex-shrink:0;border-radius:11px;border:1px solid var(--border);background:var(--canvas);display:flex;align-items:center;justify-content:center}
+        .chip-tile{width:34px;height:34px;flex-shrink:0;border-radius:11px;border:1px solid var(--border);background:var(--canvas);display:flex;align-items:center;justify-content:center}
         .chip-tile svg{width:19px;height:19px}
         .chip-tile.device{overflow:hidden;background:#fff;padding:0}
         .chip-tile.device img{width:100%;height:100%;object-fit:cover;border-radius:10px}
-        .chip-label{font-size:10px;font-weight:600;color:var(--label);white-space:nowrap}
-        /* 7 device chips: the step cards get narrow at some widths (3-up grid on
-           small laptops, 1-up on phones), so scale the tiles down where the card
-           can't hold the row — the strip always stays on a single line. */
-        @media(max-width:1199px){.hfoot-devices{gap:4px}.chip-tile{width:34px;height:34px}.chip-label{font-size:9px}}
-        @media(max-width:899px){.hfoot-devices{gap:4px}.chip-tile{width:38px;height:38px}.chip-label{font-size:9.5px}}
-        /* one card per row below 768 so the 7-chip strip has the full width */
+        .chip-label{font-size:9px;font-weight:600;color:var(--label);white-space:nowrap}
+        /* 8 device chips: the step cards get narrow at some widths (3-up grid on
+           small laptops, 2-up on tablets, 1-up on phones), so scale the tiles down
+           where the card can't hold the row — the strip always stays on a single line. */
+        @media(max-width:1199px){.hfoot-devices{gap:4px}.chip-tile{width:29px;height:29px}.chip-label{font-size:8px}}
+        @media(max-width:979px){.hfoot-devices{gap:4px}.chip-tile{width:34px;height:34px}.chip-label{font-size:9px}}
+        /* one card per row below 768 so the 8-chip strip has the full width */
         @media(max-width:767px){.steps-container{grid-template-columns:1fr}.hfoot-devices{gap:6px}.chip-tile{width:40px;height:40px}.chip-label{font-size:10px}}
-        @media(max-width:420px){.hfoot-devices{gap:4px}.chip-tile{width:36px;height:36px}.chip-label{font-size:9.5px}}
+        @media(max-width:449px){.hfoot-devices{gap:4px}.chip-tile{width:36px;height:36px}.chip-label{font-size:9.5px}}
+        @media(max-width:403px){.hfoot-devices{gap:3px}.chip-tile{width:30px;height:30px}.chip-label{font-size:8px}}
         .result-pill{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;border-radius:12px;padding:8px 11px;line-height:1.25}
         .result-pill.good{background:#F0FDF4;border:1px solid #BBF7D0}
         .result-pill.bad{background:#FEF2F2;border:1px solid #FECACA}
@@ -820,9 +829,9 @@ class KygoInsightsSteps extends HTMLElement {
         }
         @media(max-width:360px){
           .step-card{padding:24px 18px}
-          .hfoot-devices{gap:3px}
-          .chip-tile{width:31px;height:31px}
-          .chip-label{font-size:8.5px}
+          .hfoot-devices{gap:2px}
+          .chip-tile{width:28px;height:28px}
+          .chip-label{font-size:7.5px}
           .result-line{font-size:10.5px}
         }
         @media(prefers-reduced-motion:reduce){*{animation:none !important}}
@@ -878,8 +887,12 @@ class KygoInsightsSteps extends HTMLElement {
                   <span class="chip-label">Fitbit</span>
                 </span>
                 <span class="chip">
-                  <span class="chip-tile device"><img src="${icons.whoop}" alt="WHOOP" loading="lazy"/></span>
+                  <span class="chip-tile device" style="background:#000"><img src="${icons.whoop}" alt="WHOOP" loading="lazy"/></span>
                   <span class="chip-label">WHOOP</span>
+                </span>
+                <span class="chip">
+                  <span class="chip-tile device"><img src="${icons.polar}" alt="Polar" loading="lazy"/></span>
+                  <span class="chip-label">Polar</span>
                 </span>
                 <span class="chip">
                   <span class="chip-tile device"><img src="${icons.apple}" alt="Apple Health" loading="lazy"/></span>
@@ -1785,8 +1798,10 @@ class KygoFinalCta extends HTMLElement {
         .cta-chip-tile{width:40px;height:40px;flex-shrink:0;border-radius:11px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center}
         .cta-chip-tile img{width:100%;height:100%;object-fit:cover;border-radius:11px;display:block}
         .cta-chip-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.6);white-space:nowrap}
-        @media(max-width:420px){.cta-badges{gap:4px}.cta-chip-tile{width:36px;height:36px}.cta-chip-label{font-size:9.5px}}
+        @media(max-width:449px){.cta-badges{gap:4px}.cta-chip-tile{width:36px;height:36px}.cta-chip-label{font-size:9.5px}}
+        @media(max-width:403px){.cta-badges{gap:3px}.cta-chip-tile{width:30px;height:30px}.cta-chip-label{font-size:8px}}
         @media(max-width:360px){.cta-badges{gap:2px}.cta-chip-tile{width:28px;height:28px}.cta-chip-label{font-size:7.5px}}
+        @media(max-width:340px){.cta-badges{gap:2px}.cta-chip-tile{width:26px;height:26px}.cta-chip-label{font-size:7px}}
         @media(prefers-reduced-motion:reduce){.final-cta.reveal .final-cta-inner{animation:none}}
         @media(max-width:480px){.cta-buttons{flex-direction:column;align-items:center}.cta-buttons .cta-primary,.cta-buttons .cta-android{width:100%;max-width:320px;justify-content:center;white-space:nowrap}}
         @media(min-width:768px){.final-cta{padding:96px 0}.final-cta-inner{padding:56px 40px}}
@@ -1795,7 +1810,7 @@ class KygoFinalCta extends HTMLElement {
         <div class="container">
           <div class="final-cta-inner">
             <div class="final-cta-content">
-              <div class="cta-pill"><span class="dot"></span> Free Plan Available</div>
+              <div class="cta-pill"><span class="dot"></span> Free 7-Day Trial</div>
               <h2>Your wearable tracks it. <span>Kygo explains it.</span></h2>
               <p>Log meals in seconds and Kygo connects them to your sleep, HRV, and energy, so you finally see what works for you.</p>
               <div class="cta-buttons">
@@ -1808,7 +1823,8 @@ class KygoFinalCta extends HTMLElement {
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple Health" title="Apple Health" loading="lazy" /></span><span class="cta-chip-label">Apple</span></span>
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" title="Fitbit" loading="lazy" /></span><span class="cta-chip-label">Fitbit</span></span>
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" title="Garmin" loading="lazy" /></span><span class="cta-chip-label">Garmin</span></span>
-                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" /></span><span class="cta-chip-label">WHOOP</span></span>
+                  <span class="cta-chip"><span class="cta-chip-tile" style="background:#000"><img src="https://static.wixstatic.com/media/273a63_874a026381ad469698b84e11a2736609~mv2.png" alt="WHOOP" title="WHOOP" loading="lazy" /></span><span class="cta-chip-label">WHOOP</span></span>
+                  <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png" alt="Polar" title="Polar" loading="lazy" /></span><span class="cta-chip-label">Polar</span></span>
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png" alt="Google Health" title="Google Health" loading="lazy" /></span><span class="cta-chip-label">Google</span></span>
                   <span class="cta-chip"><span class="cta-chip-tile"><img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Health Connect" title="Health Connect" loading="lazy" /></span><span class="cta-chip-label">Health</span></span>
                 </div>

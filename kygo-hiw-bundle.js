@@ -103,7 +103,8 @@ class KygoHiw extends HTMLElement {
         oura: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png',
         garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
         fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
-        whoop: 'https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png',
+        whoop: 'https://static.wixstatic.com/media/273a63_874a026381ad469698b84e11a2736609~mv2.png',
+        polar: 'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png',
         googleHealth: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
         // Brand-mark hearts on a white chip. Apple Health is served from GitHub Pages;
         // Health Connect uses the same Wix asset as every other strip on the site —
@@ -179,12 +180,13 @@ class KygoHiw extends HTMLElement {
       ['oura', 'Oura', 'Oura', 'cover', '0'],
       ['garmin', 'Garmin', 'Garmin', 'cover', '0'],
       ['fitbit', 'Fitbit', 'Fitbit', 'cover', '0'],
-      ['whoop', 'WHOOP', 'WHOOP', 'cover', '0'],
+      ['whoop', 'WHOOP', 'WHOOP', 'cover', '0', '#000'],
+      ['polar', 'Polar', 'Polar', 'cover', '0'],
       ['apple', 'Apple Health', 'Apple', 'contain', '7px'],
       ['googleHealth', 'Google Health', 'Google', 'contain', '7px'],
       ['healthConnect', 'Health Connect', 'Health', 'contain', '7px']
-    ].map(([k, alt, label, fit, pad]) =>
-      `<span class="hiw-chip"><span class="hiw-logo" style="background:#fff;padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span><span class="hiw-chip-label">${label}</span></span>`
+    ].map(([k, alt, label, fit, pad, bg]) =>
+      `<span class="hiw-chip"><span class="hiw-logo" style="background:${bg || '#fff'};padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span><span class="hiw-chip-label">${label}</span></span>`
     ).join('');
 
     const features = d.features.map(f =>
