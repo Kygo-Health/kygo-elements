@@ -88,7 +88,8 @@ const CTA_BADGES = {
   apple: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png',
   fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
   garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
-  whoop: 'https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png',
+  whoop: 'https://static.wixstatic.com/media/273a63_874a026381ad469698b84e11a2736609~mv2.png',
+  polar: 'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png',
   googleHealth: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
   healthConnect: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png',
 };
@@ -1271,8 +1272,10 @@ class KygoBlog extends HTMLElement {
         .cta-chip-tile { width: 40px; height: 40px; flex-shrink: 0; border-radius: 11px; background: #fff; overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .cta-chip-tile img { width: 100%; height: 100%; object-fit: cover; border-radius: 11px; display: block; }
         .cta-chip-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); white-space: nowrap; }
-        @media (max-width: 420px) { .cta-badges { gap: 4px; } .cta-chip-tile { width: 36px; height: 36px; } .cta-chip-label { font-size: 9.5px; } }
+        @media (max-width: 449px) { .cta-badges { gap: 4px; } .cta-chip-tile { width: 36px; height: 36px; } .cta-chip-label { font-size: 9.5px; } }
+        @media (max-width: 403px) { .cta-badges { gap: 3px; } .cta-chip-tile { width: 30px; height: 30px; } .cta-chip-label { font-size: 8px; } }
         @media (max-width: 360px) { .cta-badges { gap: 2px; } .cta-chip-tile { width: 28px; height: 28px; } .cta-chip-label { font-size: 7.5px; } }
+        @media (max-width: 340px) { .cta-badges { gap: 2px; } .cta-chip-tile { width: 26px; height: 26px; } .cta-chip-label { font-size: 7px; } }
 
         @media (min-width: 768px) {
           .final-cta { padding: 96px 0; }
@@ -1351,7 +1354,7 @@ class KygoBlog extends HTMLElement {
       <section class="final-cta">
         <div class="container">
           <div class="kygo-cta-card animate-on-scroll">
-            <div class="cta-pill"><span class="dot"></span> Free Forever Plan</div>
+            <div class="cta-pill"><span class="dot"></span> Free 7-Day Trial</div>
             <h2>Research talks averages. <span>Your body doesn't.</span></h2>
             <p>Kygo cross-checks your own wearable data against what you eat, train, and sleep, so you see what's actually true for you.</p>
             <div class="cta-buttons">
@@ -1365,7 +1368,8 @@ class KygoBlog extends HTMLElement {
                 <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.apple}" alt="Apple Health" title="Apple Health" loading="lazy" /></span><span class="cta-chip-label">Apple</span></span>
                 <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.fitbit}" alt="Fitbit" title="Fitbit" loading="lazy" /></span><span class="cta-chip-label">Fitbit</span></span>
                 <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.garmin}" alt="Garmin" title="Garmin" loading="lazy" /></span><span class="cta-chip-label">Garmin</span></span>
-                <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.whoop}" alt="WHOOP" title="WHOOP" loading="lazy" /></span><span class="cta-chip-label">WHOOP</span></span>
+                <span class="cta-chip"><span class="cta-chip-tile" style="background:#000"><img src="${CTA_BADGES.whoop}" alt="WHOOP" title="WHOOP" loading="lazy" /></span><span class="cta-chip-label">WHOOP</span></span>
+                <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.polar}" alt="Polar" title="Polar" loading="lazy" /></span><span class="cta-chip-label">Polar</span></span>
                 <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.googleHealth}" alt="Google Health" title="Google Health" loading="lazy" /></span><span class="cta-chip-label">Google</span></span>
                 <span class="cta-chip"><span class="cta-chip-tile"><img src="${CTA_BADGES.healthConnect}" alt="Health Connect" title="Health Connect" loading="lazy" /></span><span class="cta-chip-label">Health</span></span>
               </div>

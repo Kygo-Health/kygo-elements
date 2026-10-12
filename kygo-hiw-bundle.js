@@ -51,7 +51,7 @@ class KygoHiw extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupFeatureReveal();
-    __seo(this, 'How Kygo Health works. Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body performs — sleep, HRV, resting heart rate, energy, and recovery. Step 1: log your food in seconds with photo AI, chat, barcode, voice, search, or saved meals, or import nutrition automatically from Apple Health and Health Connect. Step 2: connect a wearable in a tap — Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, Google Health, or Health Connect — and Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity on its own, picking the most accurate source for each metric. Step 3: after about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts, with evidence strength and same-day and next-day lag checks. Setup takes about two minutes. Free forever plan with 5 AI photo scans a month; Pro adds food-body insights, supplement tracking, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, at $9.99/month or $49.99/year (save 58% on the yearly plan). Your data is protected end to end: all traffic is encrypted with modern TLS, data is encrypted at rest with AES-256, accounts use bcrypt hashing and token-based authentication, every request is scoped so only you can reach your own data, and Kygo never sells your data. Wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data.');
+    __seo(this, 'How Kygo Health works. Kygo connects your wearables with nutrition tracking to reveal personalized correlations between what you eat and how your body performs — sleep, HRV, resting heart rate, energy, and recovery. Step 1: log your food in seconds with photo AI, chat, barcode, voice, search, or saved meals, or import nutrition automatically from Apple Health and Health Connect. Step 2: connect a wearable in a tap — Oura Ring, Garmin, Fitbit, WHOOP, Polar, Apple Health, Google Health, or Health Connect — and Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity on its own, picking the most accurate source for each metric. Step 3: after about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts, with evidence strength and same-day and next-day lag checks. Setup takes about two minutes. Free forever plan with 5 AI photo scans a month; Pro adds food-body insights, supplement tracking, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, at $9.99/month or $49.99/year (save 58% on the yearly plan). Your data is protected end to end: all traffic is encrypted with modern TLS, data is encrypted at rest with AES-256, accounts use bcrypt hashing and token-based authentication, every request is scoped so only you can reach your own data, and Kygo never sells your data. Wearable connections use official OAuth you can revoke anytime, and deleting your account permanently purges your data.');
     this._injectStructuredData();
   }
 
@@ -103,7 +103,8 @@ class KygoHiw extends HTMLElement {
         oura: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png',
         garmin: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png',
         fitbit: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png',
-        whoop: 'https://static.wixstatic.com/media/273a63_21019d0fbe9e4afcbabdb3ca9dcad89d~mv2.png',
+        whoop: 'https://static.wixstatic.com/media/273a63_874a026381ad469698b84e11a2736609~mv2.png',
+        polar: 'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png',
         googleHealth: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png',
         // Brand-mark hearts on a white chip. Apple Health is served from GitHub Pages;
         // Health Connect uses the same Wix asset as every other strip on the site —
@@ -134,7 +135,7 @@ class KygoHiw extends HTMLElement {
         },
         { q: 'What is Kygo?', a: 'Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device.' },
         { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
-        { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
+        { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, WHOOP, Polar, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
         { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
         { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, supplement tracking, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $49.99/year.' }
       ],
@@ -179,12 +180,13 @@ class KygoHiw extends HTMLElement {
       ['oura', 'Oura', 'Oura', 'cover', '0'],
       ['garmin', 'Garmin', 'Garmin', 'cover', '0'],
       ['fitbit', 'Fitbit', 'Fitbit', 'cover', '0'],
-      ['whoop', 'WHOOP', 'WHOOP', 'cover', '0'],
+      ['whoop', 'WHOOP', 'WHOOP', 'cover', '0', '#000'],
+      ['polar', 'Polar', 'Polar', 'cover', '0'],
       ['apple', 'Apple Health', 'Apple', 'contain', '7px'],
       ['googleHealth', 'Google Health', 'Google', 'contain', '7px'],
       ['healthConnect', 'Health Connect', 'Health', 'contain', '7px']
-    ].map(([k, alt, label, fit, pad]) =>
-      `<span class="hiw-chip"><span class="hiw-logo" style="background:#fff;padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span><span class="hiw-chip-label">${label}</span></span>`
+    ].map(([k, alt, label, fit, pad, bg]) =>
+      `<span class="hiw-chip"><span class="hiw-logo" style="background:${bg || '#fff'};padding:${pad};"><img src="${d.logos[k]}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:${fit};display:block;"></span><span class="hiw-chip-label">${label}</span></span>`
     ).join('');
 
     const features = d.features.map(f =>
@@ -672,7 +674,7 @@ class KygoHiw extends HTMLElement {
         'totalTime': 'P7D',
         'step': [
           { '@type': 'HowToStep', 'position': 1, 'name': 'Log your food', 'text': 'Log a meal in seconds with photo AI, chat, barcode scanning, voice, search, or saved meals. Kygo does the macro and micronutrient math, and can import nutrition automatically from Apple Health and Health Connect.' },
-          { '@type': 'HowToStep', 'position': 2, 'name': 'Connect your wearable', 'text': 'Link a wearable in a tap: Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, or Health Connect. Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity automatically, and picks the most accurate source for each metric.' },
+          { '@type': 'HowToStep', 'position': 2, 'name': 'Connect your wearable', 'text': 'Link a wearable in a tap: Oura Ring, Garmin, Fitbit, WHOOP, Polar, Apple Health, or Health Connect. Kygo pulls in sleep, HRV, resting heart rate, recovery, and activity automatically, and picks the most accurate source for each metric.' },
           { '@type': 'HowToStep', 'position': 3, 'name': 'Discover your patterns', 'text': 'After about seven days, Kygo grades every food and supplement against your metrics and shows what helps and what hurts by evidence strength, checking same-day and next-day lags. For example, "Dinner before 7pm raises deep sleep 23 minutes" or "Caffeine after 3pm lowers HRV 8 ms."' }
         ]
       };

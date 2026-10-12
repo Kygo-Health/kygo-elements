@@ -1874,10 +1874,11 @@ class KygoWearableStress extends HTMLElement {
       ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health', 'Apple'],
       ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit', 'Fitbit'],
       ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin', 'Garmin'],
-      ['273a63_21019d0fbe9e4afcbabdb3ca9dcad89d', 'WHOOP', 'WHOOP'],
+      ['273a63_874a026381ad469698b84e11a2736609', 'WHOOP', 'WHOOP', '#000'],
+      ['273a63_e7e3c05ed0bc4cec8f456cd7f995e70b', 'Polar', 'Polar'],
       ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health', 'Google'],
       ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect', 'Health']
-    ].map(([id, name, label]) => `<span class="kc-chip"><span class="kc-chip-tile"><img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" /></span><span class="kc-chip-label">${label}</span></span>`).join('');
+    ].map(([id, name, label, bg]) => `<span class="kc-chip"><span class="kc-chip-tile"${bg ? ` style="background:${bg}"` : ''}><img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" /></span><span class="kc-chip-label">${label}</span></span>`).join('');
     return `
       <style>
       .kc-section{padding:56px 20px;background:#fff}
@@ -1908,13 +1909,15 @@ class KygoWearableStress extends HTMLElement {
       .kc-chip-tile{width:40px;height:40px;flex-shrink:0;border-radius:11px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center}
       .kc-chip-tile img{width:100%;height:100%;object-fit:cover;border-radius:11px;display:block}
       .kc-chip-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.6);white-space:nowrap}
-      @media(max-width:420px){.kc-badges{gap:4px}.kc-chip-tile{width:36px;height:36px}.kc-chip-label{font-size:9.5px}}
+      @media(max-width:449px){.kc-badges{gap:4px}.kc-chip-tile{width:36px;height:36px}.kc-chip-label{font-size:9.5px}}
+      @media(max-width:403px){.kc-badges{gap:3px}.kc-chip-tile{width:30px;height:30px}.kc-chip-label{font-size:8px}}
       @media(max-width:360px){.kc-badges{gap:2px}.kc-chip-tile{width:28px;height:28px}.kc-chip-label{font-size:7.5px}}
+      @media(max-width:340px){.kc-badges{gap:2px}.kc-chip-tile{width:26px;height:26px}.kc-chip-label{font-size:7px}}
       </style>
       <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
         <div class="kc-inner">
           <div class="kc-card animate-on-scroll">
-            <div class="kc-pill"><span class="kc-dot"></span> Free Forever Plan</div>
+            <div class="kc-pill"><span class="kc-dot"></span> Free 7-Day Trial</div>
             <h3 class="kc-h">${c.headline}</h3>
             <p class="kc-p">${c.sub}</p>
             <kygo-cta theme="dark" slug="${c.slug}" surface="tool" hook="${c.hook}"

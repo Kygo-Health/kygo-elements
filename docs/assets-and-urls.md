@@ -25,7 +25,8 @@ Small brand logos, used in headers, footers, and "connect your wearable" section
 | `273a63_7ac49e91323749f49cadfe795ff3680f` | **Kygo Health logo** (primary) | 37 refs — site header/footer **and** the `logo` in every JSON-LD Organization block |
 | `273a63_d0b94a6b9cb54aff93a61cb4f2229b21` | **Kygo logo** (glossy 3D render of the same mark) | only `kygo-sensor-comparison.js` (alt="Kygo") — QA-confirmed same logo, not wrong |
 | `273a63_56ac2eb53faf43fab1903643b29c0bce` | **Oura Ring** logo | 22 refs (connect-wearable rows, Oura comparison table head) |
-| `273a63_21019d0fbe9e4afcbabdb3ca9dcad89d` | **WHOOP** logo used in the "Works with" chips (owner-picked 2026-09) | Every connect-wearable / CTA strip on the site. Swapped in because `46b3b6ce` is a wide badge on a square canvas with transparent bands above and below it — harmless on the light cards, but the chip's white tile turned those bands into white bars on the dark CTA cards. Also still used as a WHOOP device image in `kygo-heart-rate-accuracy.js` |
+| `273a63_874a026381ad469698b84e11a2736609` | **WHOOP** logo used in the "Works with" chips (owner-picked 2026-10) | Every connect-wearable / CTA strip on the site. Replaced `21019d0f`, whose baked-in rounded corners let the chip's white tile show through as white corners on the dark CTA cards. The WHOOP chip tile is also set to `background:#000` (inline style) in every strip so the tile can never show white behind the mark |
+| `273a63_21019d0fbe9e4afcbabdb3ca9dcad89d` | **WHOOP** (4.0, night board) — former "Works with" chip logo (2026-09 → 2026-10) | Now only a WHOOP device image in `kygo-heart-rate-accuracy.js`. Was swapped into the chips because `46b3b6ce` is a wide badge on a square canvas with transparent bands above and below it; swapped out again (2026-10) because its own rounded corners clipped white on the dark CTA cards |
 | `273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7` | **WHOOP** logo (owner-confirmed 2026-07) | The real WHOOP badge. Used as the WHOOP `imageUrl`/`whoopImg` in the comparison pages (`kygo-fitbit-air-vs-whoop.js` hero + tables, `kygo-sensor-comparison.js`). It was briefly used in the "Works with" strips too when the WHOOP integration was restored (2026-09), but those now use `21019d0f` — see the row above. Was previously **mislabeled "Health Connect"**; those rows were corrected to the real Health Connect asset (`273a63_0c0e48cc065d4ee3bf506f6d47440518`) in 2026-07 |
 | `273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e` | **Google Health** logo | 21 refs — added to every "Works with" / "Connect your wearable" integration strip (2026-07) |
 | `273a63_c451e954ff8740338204915f904d8798` | **Fitbit** logo | 20 refs |
@@ -37,10 +38,11 @@ Small brand logos, used in headers, footers, and "connect your wearable" section
 
 Every connect-wearable / "Works with" strip renders the same brands, in this order:
 
-**Oura Ring · Apple Health · Fitbit · Garmin · WHOOP · Google Health · Health Connect** (7 logos)
+**Oura Ring · Apple Health · Fitbit · Garmin · WHOOP · Polar · Google Health · Health Connect** (8 logos)
 
-WHOOP was removed in 2026-07 when the integration lapsed and **restored in 2026-09**. The strip
-appears in four markup shapes; all four carry all seven logos:
+WHOOP was removed in 2026-07 when the integration lapsed and **restored in 2026-09**. Polar was
+added in 2026-10 (owner request). The strip appears in four markup shapes; all four carry all
+eight logos:
 
 | Shape | Where |
 |---|---|
@@ -52,7 +54,8 @@ appears in four markup shapes; all four carry all seven logos:
 **Chip treatment (2026-09):** the four dark-CTA-card strips above — every one except
 `.device-logos` — use the same chip as the homepage step-2 row: a 40px white tile with the logo
 full-bleed (`object-fit:cover`, 11px radius) and the short brand name beneath it (Oura, Apple,
-Fitbit, Garmin, WHOOP, Google, Health). They previously showed a 32px translucent chip with a
+Fitbit, Garmin, WHOOP, Polar, Google, Health). The WHOOP tile alone is black (`background:#000`)
+so a WHOOP mark with transparent corners never shows white. They previously showed a 32px translucent chip with a
 `contain`-fitted logo and no label. `.device-logos` keeps the old compact inline treatment — it is
 a small "Works with:" row on the hero, not a CTA card.
 
@@ -62,26 +65,31 @@ a Google Health tile made the duplication visible; that tile now uses the Wix He
 like every other strip. The file is unused; `assets/hiw-apple-health.png` is still in use and is
 correct.
 
-Two related strips use the same seven brands in a different visual form: the homepage step-2 chips
+Two related strips use the same eight brands in a different visual form: the homepage step-2 chips
 (`kygo-bundle.js` `kygo-insights-steps`, `.hfoot-devices` — logo tile + text label) and the
 how-it-works chips (`kygo-hiw-bundle.js`, `.hiw-logos` — same tile + label treatment). Both carried six until Google
-Health was added alongside WHOOP (2026-09).
+Health was added alongside WHOOP (2026-09), and seven until Polar (2026-10).
 
 **Staying on one line:** each strip has breakpoint rules that shrink the tiles and gaps so the row
 never wraps or overflows, down to a 320px viewport.
 
-- The `.kc-badges` / `.cta-badges` / `.works-dots` / `.dots` chips shrink at `max-width:420px`
-  (36px tile / 9.5px label) and `360px` (28px / 7.5px). They also keep `flex-wrap:wrap` as a
-  safety net, so an unexpectedly wide font wraps the row instead of clipping it.
-- The homepage step-2 chips scale at `1199px` / `899px` / `767px` / `420px` / `360px`, because the
-  step cards themselves change width with the auto-fit grid. That grid's `minmax` was raised from
-  `260px` to `300px` and forced to a single column below `768px` so a card is never too narrow to
-  hold seven chips.
+- The `.kc-badges` / `.cta-badges` / `.works-dots` / `.dots` chips shrink at `max-width:449px`
+  (36px tile / 9.5px label), `403px` (30px / 8px), `360px` (28px / 7.5px) and `340px` (26px / 7px).
+  Eight chips need those extra steps: the card's inner width is the viewport minus 88px, and a
+  40px/6px-gap row is 362px wide. They also keep `flex-wrap:wrap` as a safety net, so an
+  unexpectedly wide font wraps the row instead of clipping it.
+- The homepage step-2 chips start at 34px (desktop 3-up cards are only ~325px inside) and scale at
+  `1199px` / `979px` / `767px` / `449px` / `403px` / `360px`, because the step cards themselves
+  change width with the auto-fit grid. That grid's `minmax` was raised from `260px` to `300px` and
+  forced to a single column below `768px` so a card is never too narrow to hold eight chips.
+- The hero `.device-logos` row (`kygo-social-proof-section`) is `nowrap` with 32px tiles / 10px
+  gap between `768px` and `1023px` so the eighth logo does not drop to a second line there.
 - The how-it-works chips use `clamp(30px,10.2vw,52px)` tiles below `560px`, with the label
   stepping down at `560px` and `360px`.
 
 Verified in headless Chromium at 320/360/375/390/414/480/560/600/700/767/768/820/900/1024/1100/
-1200/1280/1440 — every strip renders on a single row with no overflow.
+1200/1280/1440 — every strip renders on a single row with no overflow (re-verified with eight
+chips, 2026-10).
 
 **Note:** `_renderBigCta()` in `kygo-supplements-by-metric.js` and `kygo-accuracy-factors.js` also
 contains an `.app-cta-tags-logos` strip, but that method is **never called** — those pages render
@@ -100,7 +108,7 @@ Larger device photos, used in comparison tables and device cards.
 | `273a63_722e50e1a554453eb4c71a2e7a58925d` | **Oura Ring** (Ring 4) | |
 | `273a63_21fd42e4a5d1459bb6db751a0ea5e161` | **Samsung Galaxy Watch** | |
 | `273a63_c52aaaca1f7243f3818cf51d9374dbd4` | **WHOOP** (product) | distinct from the Whoop *logo* above |
-| `273a63_e7e3c05ed0bc4cec8f456cd7f995e70b` | **Polar** | `kygo-wearable-stress.js` only |
+| `273a63_e7e3c05ed0bc4cec8f456cd7f995e70b` | **Polar** | `kygo-wearable-stress.js` device image, and since 2026-10 the Polar logo in every "Works with" / connect-wearable strip |
 | `273a63_b86aaa1f1b5b43a4a8ccc8294293e193` | **COROS** | `kygo-wearable-stress.js` only |
 | `273a63_0bf2273473c849a98d9fc92b6ccea514` | **Suunto** | `kygo-vo2max-accuracy.js`, `kygo-recovery-scores.js` |
 | `273a63_7b9a43c26540413586d185a889fa853c` | **Google Pixel Watch** | `kygo-wearable-stress.js` only |
@@ -109,7 +117,7 @@ Larger device photos, used in comparison tables and device cards.
 | `273a63_fc0ed00ac88441138f7b4c7e398f7aa8` | **RingConn** | `kygo-recovery-scores.js`, `kygo-oura-ring-comparison.js` (cost calculator rival), `kygo-oura-vs-ringconn.js`, `kygo-smart-ring-comparison.js` |
 | `273a63_515c1d8a2ba44e659bd698879fa9e1d1` | **CUDIS** | `kygo-smart-ring-comparison.js` (added 2026-09) |
 | `273a63_cff7a128923a403fb37676d14ca8e623` | **Xiaomi** (Watch 2) | `kygo-heart-rate-accuracy.js` (added 2026-08) |
-| `273a63_21019d0fbe9e4afcbabdb3ca9dcad89d` | **WHOOP** (4.0, night board) | `kygo-heart-rate-accuracy.js` (added 2026-08). Also the WHOOP logo in every "Works with" chip since 2026-09 — it crops to a square tile cleanly, which `46b3b6ce` does not |
+| `273a63_21019d0fbe9e4afcbabdb3ca9dcad89d` | **WHOOP** (4.0, night board) | `kygo-heart-rate-accuracy.js` (added 2026-08). Was also the WHOOP logo in every "Works with" chip 2026-09 → 2026-10; the chips now use `874a0263` (see §1) |
 | `273a63_83875b85add04ebd818a01ee8fc8c088` | **Samsung** (Gear Sport, day/night split card) | `kygo-heart-rate-accuracy.js` (added 2026-08) — a distinct asset from the Samsung Galaxy Watch (`21fd42e4`) above |
 
 The Oura comparison table (`kygo-oura-ring-comparison.js`) uses the **Oura logo**
