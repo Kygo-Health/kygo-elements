@@ -70,7 +70,7 @@ class KygoRecoveryScores extends HTMLElement {
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
       'featureList': '12-brand recovery-score comparison ranked by input coverage, per-brand deep dive (score name, scale, inputs, window, free vs paid), 35-factor explorer grouped into what raises / lowers / shifts your score with evidence grades, score-vs-signal validation table, peer-reviewed and vendor citations.',
-      'keywords': 'wearable recovery score, readiness score comparison, WHOOP Recovery, Oura Readiness, Garmin Training Readiness, Body Battery, Fitbit Daily Readiness Score, Pixel Daily Readiness, Samsung Energy Score, Polar Nightly Recharge ANS Charge, Ultrahuman Dynamic Recovery, Coros Recovery Timer Fatigue EvoLab, Amazfit HybridCharge Zepp LifeLoad, Suunto Body Resources, Apple Watch recovery score, RingConn Wellness Balance, HRV RHR sleep recovery, recovery score validation, Dial 2025, De Gruyter composite scores Altini, what lowers recovery score alcohol, magnesium glycine tart cherry recovery supplements, recovery score baseline'
+      'keywords': 'wearable recovery score, readiness score comparison, WHOOP Recovery, Oura Readiness, Garmin Training Readiness, Body Battery, Fitbit Daily Readiness Score, Pixel Daily Readiness, Samsung Energy Score, Polar Nightly Recharge ANS Charge, Ultrahuman Dynamic Recovery, Coros Recovery Timer Fatigue EvoLab, Amazfit HybridCharge Zepp LifeLoad, Suunto Body Resources, Apple Watch recovery score, Apple Watch Readiness score, RingConn Wellness Balance, HRV RHR sleep recovery, recovery score validation, Dial 2025, De Gruyter composite scores Altini, what lowers recovery score alcohol, magnesium glycine tart cherry recovery supplements, recovery score baseline'
     };
 
     const faq = { '@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': this._faqs().map(f => ({ '@type': 'Question', 'name': f.q, 'acceptedAnswer': { '@type': 'Answer', 'text': f.a } })) };
@@ -113,9 +113,9 @@ class KygoRecoveryScores extends HTMLElement {
     return [
       { q: 'Can I compare a recovery score across different brands?', a: 'No. Every brand uses different inputs, baselines, and scales, so a "75" on one device does not mean a "75" on another. Polar is not even on a 0–100 scale (ANS Charge runs −10 to +10). Two devices on the same wrist will routinely disagree. Only the trend versus your own personal baseline is meaningful — never the cross-brand number.' },
       { q: 'Are wearable recovery scores actually validated?', a: 'Mostly no. Of 12 brands, only WHOOP and Oura have ever been tested against an external reference, and WHOOP\'s came out weak — the raw HRV carried the signal while the composite Recovery score added no consistent association. Oura has moderate support. Everyone else has at most component validation or vendor white papers, not an independent test of the score itself. There is no clinical gold standard for "recovery" the way polysomnography is for sleep, so brands validate their inputs, not the output. A recovery score is a modeled opinion, not a measurement.' },
-      { q: 'Which brands have a free recovery score?', a: 'Free: Garmin Training Readiness, Fitbit/Pixel Daily Readiness (free since app v4.27 — most articles still wrongly say "Premium required"), Samsung Energy Score, Polar Nightly Recharge, Ultrahuman Dynamic Recovery, Coros, Amazfit HybridCharge, Suunto Body Resources, and RingConn. Paid: WHOOP (band requires a membership) and Oura (membership ~$5.99/mo). Apple has no native recovery score at all — third-party apps fill the gap.' },
+      { q: 'Which brands have a free recovery score?', a: 'Free: Garmin Training Readiness, Fitbit/Pixel Daily Readiness (free since app v4.27 — most articles still wrongly say "Premium required"), Samsung Energy Score, Polar Nightly Recharge, Ultrahuman Dynamic Recovery, Coros, Amazfit HybridCharge, Suunto Body Resources, and RingConn. Paid: WHOOP (band requires a membership) and Oura (membership ~$5.99/mo). Apple Watch Readiness is free with no subscription stated, but only on Series 12 and Ultra 4; older Apple Watches still need a third-party app.' },
       { q: 'What lowers your recovery score the most?', a: 'Alcohol is the biggest single controllable hit — Oura\'s 600,000-member data shows HRV down about 15% (~10.8 ms) and heart rate up about 9.6%, and WHOOP found a single drink cuts next-day recovery roughly 8%. Sleep loss, hard training or overreaching, and the onset of illness are the other strong-evidence drops. Late or high-glycemic meals near bed, evening caffeine, dehydration, altitude, and nicotine are moderate hits.' },
-      { q: 'Does the Apple Watch have a recovery score?', a: 'No native one. Apple tracks every input a recovery score needs — HRV, resting heart rate, sleep stages, the watchOS 26 Sleep Score and Training Load, and the Vitals app — but does not output a recovery score. Third-party apps like Athlytic, Bevel, Gentler Streak, and Training Today compute their own scores on top. It is the biggest install base with no first-party score.' },
+      { q: 'Does the Apple Watch have a recovery score?', a: 'Yes, since September 2026, but only on Apple Watch Series 12 and Ultra 4. Apple\'s Readiness score runs from 0 to 10 (Recover, Pace Yourself, Ready, Go For It) and combines your recent activity and Training Load, your overnight and daytime vitals, and your Sleep Score, all against your own baseline. It updates through the day and needs at least 7 nights of sleep data before it appears. Apple has published no validation of the score. Older Apple Watches still rely on third-party apps like Athlytic, Bevel, Gentler Streak and Training Today.' },
       { q: 'Which supplements actually help recovery?', a: 'The defensible ones, by evidence: magnesium (bisglycinate), glycine, tart cherry, L-theanine, ashwagandha, and saffron. Omega-3 (DHA) modestly lowers resting heart rate. Melatonin is a circadian timing aid, not a recovery booster. Do not rely on the trendy isolated apigenin (it has no human sleep RCT — the evidence is for whole chamomile extract), or on valerian, GABA, CBD, or creatine as recovery aids. Trial quality across this whole category is often low; doses are study doses, not recommendations, and this is not medical advice.' },
       { q: 'Why do my two wearables show different recovery numbers?', a: 'Because they are not measuring the same thing the same way. The common spine is HRV + resting heart rate + sleep differenced against a personal baseline, but each brand weights those differently, uses a different window (Polar reads only the first ~4 hours of sleep; Garmin and Coros lean on training load), and anchors to a different baseline length. The scores are inferences, not measurements, so disagreement is expected.' },
       { q: 'How does what I eat and drink affect my recovery score?', a: 'Alcohol, late or heavy meals within ~3 hours of bed, high-glycemic spikes near bedtime, evening caffeine, and dehydration all move the HRV + RHR + sleep signals your score is built on. These are the levers a food-logging user can actually see and change, and the brands\' own blogs tend to underplay them — which is exactly why connecting nutrition to your recovery trend is the highest-value angle.' }
@@ -291,17 +291,19 @@ class KygoRecoveryScores extends HTMLElement {
       apple: {
         name: 'Apple Watch',
         amazon: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search',
-        scoreName: 'No native score',
-        modelLine: 'No native recovery score · third-party apps fill the gap',
-        sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: false, load: true, subj: false },
+        scoreName: 'Readiness',
+        modelLine: 'Readiness · 0–10 · Series 12 and Ultra 4 only · free',
+        sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: true, load: true, subj: false },
         free: true,
-        algorithm: 'Apple tracks every input a recovery score needs — HRV, resting heart rate, sleep stages, wrist temperature (Series 8+ / Ultra, surfaced in the Vitals app), and the watchOS 26 Sleep Score and Training Load — but does NOT output a recovery score. Third-party apps fill the gap: Athlytic, Bevel, Gentler Streak, Training Today. It is the biggest install base with no first-party score — a content and SEO opportunity.',
-        scale: 'n/a (no native score)',
-        inputs: 'Tracks HRV, RHR, sleep, wrist temperature, Sleep Score, Training Load — but outputs no score',
-        window: 'n/a',
-        strength: 'Its signals (especially HRV/RHR) are well validated, and the third-party ecosystem is the largest anywhere.',
-        limitation: 'No first-party recovery score exists — every "Apple recovery score" you see is a third-party computation.',
-        validation: { score: 'na', signal: 'yes', evidence: 'No native score to validate. Signals well validated at the signal level.' },
+        algorithm: 'A 0–10 score launched in September 2026, built from three groups of inputs compared with your own recent baseline: Activity (active calories, workout effort ratings and Training Load), Vitals (overnight heart rate, respiratory rate, wrist temperature, HRV and blood oxygen, plus daytime vitals) and last night\'s Sleep Score. Labels: Recover 0–1, Pace Yourself 2–4, Ready 5–7, Go For It 8–10. Unlike WHOOP and Oura it updates through the day, after workouts, naps and changes in daytime heart rate. It needs at least 7 nights of sleeping with the watch, against a baseline of 7 of the past 49 nights. Series 12 and Ultra 4 only: older watches on watchOS 27 do not get it and still rely on third-party apps such as Athlytic, Bevel, Gentler Streak and Training Today.',
+        scale: '0–10 · Recover 0–1 / Pace Yourself 2–4 / Ready 5–7 / Go For It 8–10',
+        inputs: 'Activity (active calories, workout effort, Training Load), overnight and daytime vitals (heart rate, HRV, respiratory rate, wrist temperature, blood oxygen), Sleep Score',
+        window: 'Overnight baseline, updates through the day',
+        strength: 'The only mainstream score on a 0–10 scale, it updates through the day, and no subscription is stated. Older watches still have the largest third-party app ecosystem.',
+        limitation: 'Series 12 and Ultra 4 only. No score until 7 nights of sleep data, and a night without the watch can leave you without one. US watches with part numbers ending LW/A or LS/A have no blood oxygen in Vitals, so their score uses one fewer input. No validation published.',
+        validation: { score: 'none', signal: 'yes', evidence: 'No published validation of the score. Signals well validated at the signal level; the Series 12 heart rate study is Apple-sponsored and not peer reviewed.' },
+        cardValidation: 'No published validation of the score, from Apple or anyone else. Built on Apple Heart and Movement Study data. Earlier Apple Watch HR and HRV are well validated independently; the Series 12 heart rate study is Apple-sponsored and did not test overnight HRV.',
+        post: { url: 'https://www.kygo.app/post/apple-watch-readiness-score', label: 'How the Apple Watch Readiness score works' },
         color: ACC
       },
       ringconn: {
@@ -832,12 +834,13 @@ class KygoRecoveryScores extends HTMLElement {
                 <div><dt>Scale</dt><dd>${d.scale}</dd></div>
                 <div><dt>Core inputs</dt><dd>${d.inputs}</dd></div>
                 <div><dt>Measurement window</dt><dd>${d.window}</dd></div>
-                ${d.validation ? `<div><dt>Validation</dt><dd>${d.validation.evidence}</dd></div>` : ''}
+                ${d.validation ? `<div><dt>Validation</dt><dd>${d.cardValidation || d.validation.evidence}</dd></div>` : ''}
               </dl>
               <div class="dd-callouts">
                 <div class="dd-callout strong"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('sparkle')}</span>Unique strength</span><p>${d.strength}</p></div>
                 <div class="dd-callout watch"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('alert')}</span>Watch out for</span><p>${d.limitation}</p></div>
               </div>
+              ${d.post ? this._readMore(d.post.url, d.post.label) : ''}
               ${d.amazon ? `<div class="dd-buy-row"><a class="dd-buy" href="${d.amazon}" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>View ${d.name} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission.</span></div>` : ''}
             </div>
           </div>
@@ -1050,6 +1053,8 @@ class KygoRecoveryScores extends HTMLElement {
         { label: 'COROS — EvoLab Metrics (COROS Help)', url: 'https://support.coros.com/hc/en-us/articles/360061452651-EvoLab-Metrics' },
         { label: 'Amazfit HybridCharge / Zepp 10 update (the5krunner)', url: 'https://the5krunner.com/2026/05/25/amazfit-hybridcharge-zepp-10-update/' },
         { label: 'Apple — Track Your Training Load on Apple Watch (Apple Support)', url: 'https://support.apple.com/guide/watch/track-your-training-load-apde4c07a6cf/watchos' },
+        { label: 'Apple — Understand your readiness score on Apple Watch (Apple Support)', url: 'https://support.apple.com/en-us/128112' },
+        { label: 'Apple — Use the Readiness app on Apple Watch (watchOS User Guide)', url: 'https://support.apple.com/guide/watch/flx4gnzby346/watchos' },
         { label: 'RingConn — Health Scores Explained (RingConn)', url: 'https://ringconn.com/blogs/news/guide-ringconn-health-scores' }
       ],
       'What moves your score — lifestyle factors': [
