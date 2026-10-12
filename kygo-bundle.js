@@ -63,7 +63,7 @@ class KygoHeroSection extends HTMLElement {
     __ensureKygoCta();
     this.render();
     this.setupEvents();
-    __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. Kygo runs on iOS, Android, and the web at app.kygo.app, with one account and one plan across all three. The free app connects nutrition data with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, and Samsung Galaxy Watch to reveal food-body correlations. AI photo logging identifies meals in seconds from over 5 million foods. Unlike MyFitnessPal or Lose It, Kygo shows how what you eat impacts deep sleep, HRV, resting heart rate, and recovery \u2014 not just calorie totals. Correlations appear after 7 days of logging. Free forever plan available.');
+    __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. Kygo runs on iOS, Android, and the web at app.kygo.app, with one account and one plan across all three. The free app connects nutrition data with Apple Watch, Oura Ring, Garmin, WHOOP, Polar, Fitbit, and Samsung Galaxy Watch to reveal food-body correlations. AI photo logging identifies meals in seconds from over 5 million foods. Unlike MyFitnessPal or Lose It, Kygo shows how what you eat impacts deep sleep, HRV, resting heart rate, and recovery \u2014 not just calorie totals. Correlations appear after 7 days of logging. Free forever plan available.');
     // No structured-data injection here: the homepage Organization + SoftwareApplication
     // JSON-LD is the single source of truth in the Wix head (see docs/wix-global-code.md,
     // Blocks 2 & 3). This component previously injected duplicate, stale copies.
@@ -872,7 +872,7 @@ class KygoInsightsSteps extends HTMLElement {
               <span class="ghost-num" aria-hidden="true">02</span>
               <span class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="5.5"/><path d="M12 9.5V12l1.6 1.2"/><path d="M8.6 6.6 8 3.4A1 1 0 0 1 9 2.2h6a1 1 0 0 1 1 1.2l-.6 3.2"/><path d="m8.6 17.4-.6 3.2a1 1 0 0 0 1 1.2h6a1 1 0 0 0 1-1.2l-.6-3.2"/></svg></span>
               <h3>Connect your wearable</h3>
-              <p>One device or five, we sync them all, then prioritize the most accurate source for each metric automatically.</p>
+              <p>One device or several, we sync them all, then prioritize the most accurate source for each metric automatically.</p>
               <div class="hfoot hfoot-devices">
                 <span class="chip">
                   <span class="chip-tile device"><img src="${icons.oura}" alt="Oura" loading="lazy"/></span>
@@ -1556,7 +1556,7 @@ class KygoInlineCta extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupReveal();
-    __seo(this, 'Your patterns are already in your data. Go find them. Start Kygo on the web at app.kygo.app, or on iPhone and Android. 2-minute setup, every wearable connected (Oura, WHOOP, Apple Watch, Garmin, Fitbit), and first correlations in about 7 days. One account and one plan cover iOS, Android, and web.');
+    __seo(this, 'Your patterns are already in your data. Go find them. Start Kygo on the web at app.kygo.app, or on iPhone and Android. 2-minute setup, every wearable connected (Oura, WHOOP, Polar, Apple Watch, Garmin, Fitbit), and first correlations in about 7 days. One account and one plan cover iOS, Android, and web.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
@@ -1663,7 +1663,7 @@ class KygoFaq extends HTMLElement {
   connectedCallback() {
     this.render();
     this._observer = __revealOnScroll(this.shadowRoot.querySelector('.faq'));
-    __seo(this, 'Frequently asked questions about Kygo Health — nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, and Health Connect), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (about seven days of consistent logging).');
+    __seo(this, 'Frequently asked questions about Kygo Health — nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Oura Ring, Garmin, Fitbit, WHOOP, Polar, Apple Health, and Health Connect), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (about seven days of consistent logging).');
   }
   _faqData() {
     return [
@@ -1674,7 +1674,7 @@ class KygoFaq extends HTMLElement {
       },
       { q: 'What is Kygo?', a: 'Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device.' },
       { q: 'How is Kygo different from MyFitnessPal?', a: 'MyFitnessPal tracks calories for weight loss. Kygo shows you how food affects your sleep, HRV, energy, and recovery by correlating your nutrition with your wearable data. It’s not about dieting, it’s about understanding your body’s unique responses.' },
-      { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, WHOOP, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
+      { q: 'Which devices do you support?', a: 'We integrate with Oura Ring, Garmin, Fitbit, WHOOP, Polar, Apple Health, and Health Connect. You can connect one device or multiple, we’ll combine the data to fill gaps and give you the most complete picture.' },
       { q: 'How long until I see correlations?', a: 'Basic trends show immediately. Meaningful correlations typically appear after about seven days of consistent logging. The more data you provide, the better and more accurate your insights become.' },
       { q: 'Is it really free?', a: 'Yes! Voice, barcode, and text logging, wearable sync, and trend tracking are free forever, plus 5 AI photo scans a month. Pro adds food-body insights, supplement tracking, unlimited photo logging, a daily factor spotlight, and nutrition write-back to Apple Health and Health Connect, for $9.99/month or $49.99/year.' }
     ];
@@ -1762,7 +1762,7 @@ class KygoFinalCta extends HTMLElement {
     __ensureKygoCta();
     this.render();
     this._observer = __revealOnScroll(this.shadowRoot.querySelector('.final-cta'));
-    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
+    __seo(this, 'Download Kygo Health free on iOS and Android. Connect nutrition with Apple Watch, Oura Ring, Garmin, WHOOP, Polar, Fitbit, or Samsung Galaxy Watch data for personalized health insights. Free forever plan includes AI food logging, wearable sync, and food-body correlation tracking. Setup takes about 2 minutes.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
@@ -1853,7 +1853,7 @@ class KygoWorksEverywhere extends HTMLElement {
     __ensureKygoCta();
     this.render();
     this._io = __revealOnScroll(Array.from(this.shadowRoot.querySelectorAll('.we-reveal')));
-    __seo(this, 'Kygo works everywhere. iPhone: log by photo, voice, or barcode and connect Apple Health for Apple Watch sleep, HRV, and recovery. Android: the same logging and correlations, with Health Connect for Samsung, Google Fit, and Pixel Watch. Web at app.kygo.app: log and read your correlations on a full-size screen, and connect Oura, Garmin, Fitbit, and WHOOP straight from the browser with nothing to install. One account and one plan cover all three, so what you log on one shows up on the others.');
+    __seo(this, 'Kygo works everywhere. iPhone: log by photo, voice, or barcode and connect Apple Health for Apple Watch sleep, HRV, and recovery. Android: the same logging and correlations, with Health Connect for Samsung, Google Fit, and Pixel Watch. Web at app.kygo.app: log and read your correlations on a full-size screen, and connect Oura, Garmin, Fitbit, WHOOP, and Polar straight from the browser with nothing to install. One account and one plan cover all three, so what you log on one shows up on the others.');
   }
   disconnectedCallback() {
     if (this._io) this._io.disconnect();
@@ -1873,7 +1873,7 @@ class KygoWorksEverywhere extends HTMLElement {
       {
         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9S14.5 18.3 12 21c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>',
         name: 'Web',
-        line: 'Read your correlations on a full-size screen at app.kygo.app, and connect Oura, Garmin, Fitbit, and WHOOP right in the browser.'
+        line: 'Read your correlations on a full-size screen at app.kygo.app, and connect Oura, Garmin, Fitbit, WHOOP, and Polar right in the browser.'
       }
     ].map(t => `
       <article class="we-tile we-reveal">
