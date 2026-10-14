@@ -101,9 +101,33 @@ Full snapshot served (no size cut at 33 KB). TTFB is within the pre-change basel
 Wix picks crawlers by user agent, so the markup must keep matching the component — hence the
 generator, never hand edits.
 
-## Rollout (only if the test passes)
+## Rollout (site-wide)
 
-1. Add each tool to `TOOLS` (and `STATES` for tabbed tools) in `scripts/build-seo-markup.js`.
-2. A GitHub Action regenerates `seo/*.html` on every push to `main`, so the markup can't drift.
-3. Per tool page: 4 lines of page code. Then retire the hand-written "Text summary of this page"
-   embeds, which become redundant.
+**What's in the repo**
+- `scripts/build-seo-markup.js` — renders all 30 component pages, clicks every control (tabs,
+  pickers, "show sources", accordions) and merges the states, so the markup holds everything the
+  component can show. Fidelity check on 2026-10-14: 100% of rendered text nodes present on every
+  page; builds are deterministic. `--map` prints the path -> tag map.
+- `.github/workflows/build-seo-markup.yml` — regenerates `seo/*.html` on every push to `main` that
+  touches a component, and commits the result. Never edit `seo/*.html` by hand.
+- `velo/seoMarkup.web.js` — the backend file (path -> tag map, 2 s timeout).
+- `velo/page-seo-snippet.js` — the page code, identical on every page (selects the element by
+  type and looks the page up by path, so no element IDs).
+
+**Not covered:** `/blog` (its post list comes from Velo at runtime, so a standalone render has no
+posts). Legal pages and blog posts are native Wix and already server-rendered.
+
+**Steps**
+1. Replace the backend file `backend/seoMarkup.web.js` with `velo/seoMarkup.web.js`.
+2. Replace the HRV page code with `velo/page-seo-snippet.js`, publish, and run
+   `scripts/check-seo-markup.sh` on HRV. This proves the type selector and path lookup.
+   If it fails, fall back to `$w('#<elementId>')` per page.
+3. Paste the snippet on every other page in `PAGES`. Contact and calories-in-anything already
+   have page code: merge into their existing `onReady`.
+4. Publish, then check each page with `scripts/check-seo-markup.sh`.
+5. Watch the largest pages: wearable-accuracy (106 KB) and smart-ring-comparison (65 KB) are
+   2–3x the 33 KB proven on HRV. If the check shows them cut short, trim them in the generator.
+6. Remove the hand-written "Text summary of this page" custom-code embeds once each page passes.
+
+**Size per page** (words): wearable-accuracy 14.7k, smart-ring 7.7k, wearable-stress 6.7k,
+recovery 6.2k, heart-rate 6.0k, accuracy-factors 5.7k; the rest 0.2k–5.3k.

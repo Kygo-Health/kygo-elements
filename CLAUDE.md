@@ -104,6 +104,16 @@ model depends on these being plain, directly-servable scripts.
 Because there's no test/CI gate, correctness is verified by **previewing in a browser**
 (see "Previewing" below). Be conservative: a broken file ships to production as-is.
 
+## Crawler markup (`seo/*.html`) — generated, never hand-edited
+
+AI crawlers (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot) don't run JavaScript, so a
+component's shadow DOM is invisible to them. Each component page serves crawler-readable HTML via
+Wix's custom-element `seoMarkup`, and that HTML is **rendered from the component itself** by
+`scripts/build-seo-markup.js` into `seo/<tag>.html`. The `Build SEO markup` GitHub Action re-runs it
+on every push to `main` that touches a component, so editing a component is all you do. A **new**
+component page needs an entry in `TOOLS` in that script and the Velo snippet on its Wix page (see
+`docs/seo-markup-poc.md`).
+
 ## Component anatomy (the house style)
 
 Every component follows the same shape. Match it exactly when editing or adding one.
