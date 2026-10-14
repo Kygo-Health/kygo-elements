@@ -598,9 +598,9 @@ class KygoVo2maxFactors extends HTMLElement {
       },
       {
         title: 'HRV Factor Explorer',
-        blurb: '38 research-backed factors that affect Heart Rate Variability, ranked by evidence.',
+        blurb: '43 research-backed factors that affect Heart Rate Variability, ranked by evidence.',
         url: 'https://www.kygo.app/tools/hrv-factors',
-        meta: 'Recovery · 38 factors',
+        meta: 'Recovery · 43 factors',
         motif: { motif: 'pulse', caption: 'HRV, beat-to-beat' }
       }
     ];

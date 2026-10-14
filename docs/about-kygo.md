@@ -120,8 +120,11 @@ day 14, etc.).
   & Health Connect**, personalized recommendations from the **"Kygo Advisor,"** factor pinning, and
   experiment tracking.
 
-> Grandfathered accounts keep unlimited photo scans and write-back for free. Pricing is $9.99/mo
-> or $49.99/yr (58% less than monthly). The trial-vs-discount A/B test has ended: **every new user
+> Grandfathered accounts keep unlimited photo scans and write-back for free. Pricing: **$9.99/mo**;
+> yearly **$49.99 in the iOS/Android apps** (App Store / Google Play billing, 58% less than monthly)
+> or **$39.99 on the web** at app.kygo.app (Stripe; Pro bought on the web also unlocks the apps on
+> the same account); **$99.99 once for lifetime**. The price is *not* the same on web and app —
+> never write that it is. The trial-vs-discount A/B test has ended: **every new user
 > now gets a 7-day free trial of the yearly plan**, so marketing copy can say so, e.g. "7-day free
 > trial. Save 58% on yearly. Cancel anytime." (don't state the dollar price in CTA notes) (live on `kygo-hrv-factors`).
 
@@ -143,10 +146,10 @@ day 14, etc.).
 ## Quick facts for copy / SEO / JSON-LD
 
 - **Category:** food + health tracking app (nutrition + wearables).
-- **Platforms:** iOS and Android.
+- **Platforms:** iOS, Android, and web (app.kygo.app), one account across all three.
 - **Supported wearables/sources:** Oura, Apple Health, Health Connect, Fitbit, Garmin, WHOOP, Polar.
 - **Nutrition data sources:** Nutritionix (dietitian verified, primary), Edamam, USDA, Open Food Facts (barcodes), + AI photo/voice estimate.
 - **Core differentiator:** food↔body-performance correlations (sleep, HRV, readiness, stress, energy).
 - **Monetization:** freemium — free logging/syncing/tracking (photo logging metered at 5 AI scans/mo);
-  Pro unlocks insights, unlimited photo logging, daily spotlight, nutrition write-back, and the advisor.
+  Pro ($9.99/mo; $49.99/yr in the apps or $39.99/yr on the web, 7-day trial on yearly; $99.99 lifetime) unlocks insights, unlimited photo logging, daily spotlight, nutrition write-back, and the advisor.
 - **"Kygo Advisor":** the Pro personalized-recommendation feature name.

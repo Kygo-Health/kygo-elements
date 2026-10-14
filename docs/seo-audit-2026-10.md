@@ -7,6 +7,18 @@
 > and stress-factors does get WebApplication (from its component). Still open: H1, H2 (sleep-metrics
 > FAQPage, deep-sleep/REM WebApplication), H4, M2, L1–L5 — these need the Wix editor or a decision.
 
+> **Re-verified 2026-10-14 (fresh fetches, cache MISS; GitHub Pages = HEAD):** C1 resolved. No
+> rendered page serves an @type twice (`/faq`'s split excepted), and the Wix SEO panel draft = live
+> = component JSON-LD on every page (only diff: SpO2 vs SpO₂ in the oura-vs-ringconn FAQ). H3 fixed.
+> Still open: H1 (tool pages ~215–330 server-side words), H2 (see `schemas-and-tracking.md`), H4
+> (pages now cross-link; titles still overlap), M1 (stress-factors title 72 / desc 181;
+> calories-in-anything title 63; supplements-by-metric title 62), M2, L1, L3 (footer on all 35
+> pages). Fixed in code the same day: stale HRV "38 factors" (live: 43) on `/tools` + 3 related
+> cards; pricing copy on `/faq`, `/how-it-works`, home (web $39.99 + lifetime added; `/faq` said the
+> price was the same on web and app). Not yet fixed: the `/faq` Wix FAQPage answers still carry the
+> old pricing text; several comparison FAQs list Samsung Galaxy Watch (not Polar) as a Kygo
+> integration — needs a product decision.
+
 Scope: the 35 URLs in `pages-sitemap.xml` (home, `/tools` + 25 tool pages, how-it-works, FAQ,
 blog index, contact, legal). The 70 blog posts were not audited.
 
