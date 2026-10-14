@@ -1942,6 +1942,17 @@ customElements.define('kygo-works-everywhere', KygoWorksEverywhere);
    Features Users Love → Testimonials → Inline CTA → Works Everywhere → FAQ →
    Final CTA → Founder.
 ======================================== */
+// Wix also hands the page's seoMarkup (the crawler copy of this page, seo/kygo-home.html) to the
+// browser as plain children of <kygo-home>. The shadow-DOM components hide such children for free;
+// kygo-home renders in light DOM, so hide everything except its own sections (id="kygo-...").
+// Added at script load, not in connectedCallback, so it is in place before Wix hydrates the page.
+if (!document.querySelector('style[data-kygo-home-seo]')) {
+  const s = document.createElement('style');
+  s.setAttribute('data-kygo-home-seo', '');
+  s.textContent = 'kygo-home > :not([id^="kygo-"]) { display: none !important; }';
+  document.head.appendChild(s);
+}
+
 class KygoHome extends HTMLElement {
   connectedCallback() {
     if (this._mounted) return;

@@ -114,6 +114,17 @@ generator, never hand edits.
 - `velo/page-seo-snippet.js` — the page code, identical on every page (selects the element by
   type and looks the page up by path, so no element IDs).
 
+**Generic snippet verified (2026-10-14):** HRV running `velo/page-seo-snippet.js` (type selector +
+path lookup, no element ID) serves the snapshot from GitHub Pages to every crawler agent; TTFB
+matches a page without the snippet. After the site-wide publish, all 31 pages (30 + `/blog`, whose
+markup the page code builds from the post list) served the full snapshot to GPTBot and Googlebot.
+
+**Gotcha: Wix also gives `seoMarkup` to browsers**, as plain children of the element's tag. Shadow-DOM
+components hide them automatically (unslotted light DOM never renders). A component that renders in
+**light DOM** shows them as raw text: that broke the homepage (`kygo-home`) until `kygo-bundle.js`
+added a rule hiding every `<kygo-home>` child except its own `kygo-*` sections. Any future
+light-DOM component needs the same before its page gets the snippet.
+
 **Not covered:** `/blog` (its post list comes from Velo at runtime, so a standalone render has no
 posts). Legal pages and blog posts are native Wix and already server-rendered.
 
