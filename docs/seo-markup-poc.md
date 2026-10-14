@@ -87,6 +87,20 @@ What each outcome means:
 | Nobody gets it | SSR didn't wait or property ignored | Check Wix site logs for `getSeoMarkup` errors |
 | TTFB clearly worse | Fetch slows first load | Add web method caching or trim size |
 
+## Result — PASSED (2026-10-14, after publish)
+
+| Agent | Words in tag | Probe phrase | TTFB |
+|---|---|---|---|
+| Normal browser | 0 (Wix serves seoMarkup to crawlers only; page unchanged for visitors) | no | 1.4–1.7 s |
+| Googlebot, bingbot, Applebot | 3,700 | yes | ~1.3 s |
+| GPTBot, OAI-SearchBot, ChatGPT-User | 3,700 | yes | 1.1–1.8 s |
+| ClaudeBot, Claude-User | 3,700 | yes | ~1.2 s |
+| PerplexityBot, Perplexity-User | 3,700 | yes | ~1.1 s |
+
+Full snapshot served (no size cut at 33 KB). TTFB is within the pre-change baseline (1.0–1.8 s).
+Wix picks crawlers by user agent, so the markup must keep matching the component — hence the
+generator, never hand edits.
+
 ## Rollout (only if the test passes)
 
 1. Add each tool to `TOOLS` (and `STATES` for tabbed tools) in `scripts/build-seo-markup.js`.
