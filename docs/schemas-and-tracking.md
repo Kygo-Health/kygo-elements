@@ -131,8 +131,10 @@ serves from Wix**. So:
   WebApplication or BreadcrumbList, update the Wix panel too (Wix API: Item SEO Tags,
   `STATIC_PAGE/<pageId>`, write the draft and then `publish: true`), or the old Wix text keeps serving.
 - **Wix caps each script tag at 4,096 bytes.** FAQs over that live only in the component (the
-  guard lets them through because Wix has no FAQPage there): recovery-score-explorer,
-  smart-ring-comparison, step-count-accuracy, supplements-by-metric, wearable-accuracy.
+  guard lets them through because Wix has no FAQPage there): recovery-score-explorer (4.9 KB),
+  smart-ring-comparison (5.1 KB), supplements-by-metric (6.5 KB). step-count-accuracy and
+  wearable-accuracy are also component-only, but their FAQs minify to ~3.95 KB, so they may fit
+  in Wix — untested (re-verified 2026-10-14).
   stress-factors and oura-vs-ringconn keep an older, oversized Wix FAQ that predates the cap and
   can't be rewritten via the API without dropping it (content matches the component).
 - `/faq` deliberately splits its 14 questions across two Wix FAQPage blocks for the same reason.
@@ -145,10 +147,13 @@ components render on the same Wix page. These are **not bugs** — each carries 
 
 1. **`kygo-faq-section.js`** — empty `_injectStructuredData() {}`; FAQPage is handled at the Wix
    site level.
-2. **`kygo-deep-sleep-factors.js`** — injects FAQPage + BreadcrumbList only; WebApplication is
-   site-level managed.
-3. **`kygo-sleep-metrics.js`** — injects WebApplication + BreadcrumbList only; FAQPage is
-   site-level managed.
+2. **`kygo-deep-sleep-factors.js`** (and `kygo-rem-sleep.js`) — inject FAQPage + BreadcrumbList
+   only. **Gap:** Wix does *not* serve WebApplication on either page (re-verified live
+   2026-10-14), so neither page has one.
+3. **`kygo-sleep-metrics.js`** — injects WebApplication + BreadcrumbList only. **Gap:** Wix does
+   *not* serve a FAQPage on `/tools/sleep-metrics`, so the page has none.
+   Also with no BreadcrumbList anywhere: `/tools/vo2-max-factors`, `/tools/vo2-max-accuracy`,
+   `/tools/calories-in-anything`.
 
 Genuine notes to keep in mind:
 
