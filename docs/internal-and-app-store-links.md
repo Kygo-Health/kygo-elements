@@ -121,8 +121,8 @@ Footer set appears in: `kygo-calorie-burn-accuracy.js:622-627`,
 `kygo-hrv-factors.js:890-895`, `kygo-oura-ring-comparison.js:373-378`,
 `kygo-rhr-factors.js:1122-1127`, `kygo-sensor-comparison.js:1103-1108`,
 `kygo-sleep-latency-factors.js:777-782`, `kygo-staying-asleep-factors.js:1240-1245`.
-Shorter footers (privacy + terms only) in `kygo-sleep-metrics.js:775-776`,
-`kygo-wearable-accuracy.js:869-870`. `kygo-step-count-accuracy.js:1186-1193` was rebuilt on the
+Shorter footers (privacy + terms only) in `kygo-sleep-metrics.js:775-776`.
+`kygo-wearable-accuracy.js:2250-2254` (v2 rebuild) carries the full footer link set. `kygo-step-count-accuracy.js:1186-1193` was rebuilt on the
 Family-A skeleton and now carries the full footer link set.
 `calories-custom-element.js:1309-1310` also links `/privacy` + `/terms`.
 
@@ -141,7 +141,7 @@ Each tool component references its own page URL (in JSON-LD `url`, breadcrumbs, 
 | `/tools/staying-asleep-factors` | kygo-staying-asleep-factors.js | 1353, 1404. Also cross-links out to `/tools/sleep-latency-factors`, `/tools/deep-sleep-factors`, `/tools/rem-sleep-factors`, `/tools/supplements-by-metric` from the "The other tools" section (`_relatedTools()`) |
 | `/tools/step-count-accuracy` | kygo-step-count-accuracy.js | 1236, 1279 |
 | `/tools/accuracy-factors` | kygo-accuracy-factors.js | JSON-LD `url` + breadcrumb. Also links out to `/tools/wearable-accuracy`, `/tools/sensor-comparison` and `/tools/step-count-accuracy` from `_relatedTools()`. The old per-metric deep links went with the v2 rebuild. |
-| `/tools/wearable-accuracy` | kygo-wearable-accuracy.js | 1533, 1605 |
+| `/tools/wearable-accuracy` | kygo-wearable-accuracy.js | JSON-LD `url` (3593) + breadcrumb (3628) |
 | `/tools/stress-factors` | kygo-wearable-stress.js | 53, 134 |
 | `/tools/recovery-score-explorer` | kygo-recovery-scores.js | JSON-LD `url` + breadcrumb |
 | `/tools/fitbit-air-vs-whoop-comparison` | kygo-fitbit-air-vs-whoop.js | 549, 593 |

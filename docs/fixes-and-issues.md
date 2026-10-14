@@ -7,6 +7,23 @@
 > Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
 > **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
+## 🆕 `/tools/wearable-accuracy` v2 rebuild on branch `claude/fervent-maxwell-ar96ov` (2026-10-14)
+
+`kygo-wearable-accuracy.js` replaced with the v2 hub (one section per metric: sleep, HRV, RHR,
+active HR, SpO2, steps, calories, VO2 max, skin temp, respiratory rate, plus FDA features).
+Integration fixes applied to the supplied build before shipping:
+
+- **#W2a — ✅ RESOLVED.** Preview-only inlined images (`window.__KY_IMG` lookups and two base64
+  data-URI logos, one inside the WebApplication JSON-LD) replaced with the Wix static URLs.
+- **#W2b — ✅ RESOLVED.** `_renderAppCta` had drifted from the shared module (missing the Polar
+  chip, black WHOOP tile and "Free 7-Day Trial" pill from `a435561`; own 2-column layout and
+  note copy). Restored verbatim.
+- **#W2c — ✅ RESOLVED.** `_renderSourceCards` / `_renderSources` restored to the shared module
+  (host fallback for cite-less sources).
+- **#W2d — ✅ RESOLVED.** `publisher.logo` added to the WebApplication JSON-LD (playbook §9).
+- **#W2e (P3) — open, decision.** v2 dropped the per-study `MedicalScholarlyArticle` `citation`
+  list from the JSON-LD. Not required by the playbook; re-add if rich-result citations matter.
+
 ## 🆕 Calorie figure correction pass, branch `claude/serene-tesla-mawip8` (2026-09-10)
 
 Closes **OPEN-ITEMS K1** for `/tools/calorie-burn-accuracy` and for the Calorie / Energy metric of
