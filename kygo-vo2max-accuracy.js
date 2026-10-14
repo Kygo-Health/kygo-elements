@@ -133,14 +133,14 @@ class KygoVo2maxAccuracy extends HTMLElement {
       {
         key: 'polar', name: 'Polar', short: 'Polar',
         type: 'watch', typeLabel: 'Watch',
-        method: 'resting', methodLabel: 'Resting Fitness Test (HR + HRV); exercise on run models',
-        needs: 'Nothing for the resting test; a run for exercise mode', needsRun: false,
-        vendorClaim: 'Marketed as a validated non-exercise estimate (developer-reported high correlation)',
+        method: 'hybrid', methodLabel: 'Resting Fitness Test (HR + HRV), Running Index after every run, or a guided Running Performance Test',
+        needs: 'Nothing for the resting test; a run for Running Index or the Running Performance Test', needsRun: false,
+        vendorClaim: 'Polar white paper: r 0.97 and 6.5% mean error in development; current version 8.2% (3.7 mL/kg/min) mean error',
         validation: 'validated',
-        independent: 'Neudorfer 2025 found a slight underestimate vs CPET (bias −1.0 mL/kg/min, MAPE 13.7%, ICC 0.74, LoA ±11.4).',
+        independent: 'Neudorfer 2025 found a slight underestimate vs CPET (bias −1.0 mL/kg/min, MAPE 13.7%, ICC 0.74, LoA ±11.4) in 24 adults in medically supervised exercise training (mean age 57, some on heart rate limiting meds). It tested the resting Fitness Test only; Running Index and the Running Performance Test have no independent study.',
         classNote: 'Resting-based algorithms as a group overestimate by ~+2.2 mL/kg/min, with wide limits of agreement (−13.1 to +17.4) — INTERLIVE 2022 meta-analysis.',
         bestFor: 'A quick estimate with no run',
-        weakestFor: 'Wide individual error',
+        weakestFor: 'Wide individual error; run-based modes unvalidated',
         subscription: false, subLabel: 'Free',
         affiliateUrl: 'https://www.amazon.com/s?k=Polar%20fitness%20tracker&rh=p_123%3A255287&tag=kygohealthapp-20', trackLabel: 'polar-search',
         hrSource: 'Wrist optical / chest, at rest', gps: false, hrv: true, restingHr: true, profile: true, maxHr: 'Run-test mode only'
@@ -288,6 +288,9 @@ class KygoVo2maxAccuracy extends HTMLElement {
       { id: 40, tag: 'Polar (independent)', title: 'Neudorfer et al. 2025 — Polar Fitness Test vs CPET',
         detail: 'n=24, resting Polar Fitness Test vs CPET and 6MWT. MAPE 13.7%, ICC 0.743, bias −1.0 mL/min/kg, LoA ±11.4. The Porcari 6MWT equation performed similarly.',
         cite: 'Sensors. 2025;25(18):5649.', url: 'https://doi.org/10.3390/s25185649' },
+      { id: 55, tag: 'Polar (vendor)', title: 'Polar: Fitness Test white paper',
+        detail: 'Vendor white paper, Nov 2019. Development r 0.97, mean error 6.5%; OwnIndexS r 0.96, mean error 8.2% (3.7 mL/kg/min), 95% of errors under 9.4.',
+        cite: 'Polar Electro white paper, 2019.', url: 'https://polar.com/img/static/whitepapers/pdf/polar-fitness-test-white-paper.pdf' },
       { id: 38, tag: 'Fitbit (independent)', title: 'Freeberg et al. 2019 — Fitbit Charge 2 cardio fitness score',
         detail: 'n=30, 7 days wear then treadmill VO2 max with verification. Consistent/unbiased estimate but significantly overestimates absolute VO2 max (52.5 vs 49.9 mL/kg/min, p=0.03).',
         cite: 'mHealth. 2019;5:39. PMID 31620466.', url: 'https://pubmed.ncbi.nlm.nih.gov/31620466/' },
@@ -320,7 +323,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
       { q: 'Does the Apple Watch overestimate or underestimate VO2 max?',
         a: 'Three independent studies show the Apple Watch underestimates VO2 max: by 6.07 mL/kg/min (MAPE 13.3%, Lambe 2025), predicting about 41 versus a measured 46 mL/kg/min on the Series 7 (MAPE 15.8%, Caserman 2024), and by 6.25 mL/kg/min on the Series 10 (MAPE 13.2%, Lambe 2026).' },
       { q: 'Why are resting VO2 max estimates less accurate?',
-        a: 'Resting-based estimates, such as the Polar Fitness Test, use resting heart rate plus age, sex and weight with no workout. The INTERLIVE meta-analysis found they overestimate by about +2.17 mL/kg/min on average, versus near-zero bias for exercise-based estimates from an actual run.' },
+        a: 'Resting-based estimates, such as the Polar Fitness Test, use resting heart rate plus age, sex and weight with no workout. The INTERLIVE meta-analysis found resting methods as a group overestimate by about +2.17 mL/kg/min on average, versus near-zero bias for exercise-based estimates from an actual run. That is a class average: Polar’s own lab study found its Fitness Test read slightly low (−1.0 mL/kg/min), though with wide error for any one person.' },
       { q: 'Do you need a subscription to see your VO2 max?',
         a: 'Most watches show VO2 max for free (Garmin, Apple, Polar, Samsung, Coros, Suunto; Fitbit shows the metric free with Premium adding coaching only). WHOOP requires a paid membership, and Oura requires its membership to see Cardio Capacity.' }
     ];
