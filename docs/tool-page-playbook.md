@@ -813,6 +813,11 @@ Pre-commit checklist:
       sources present as dashed cards, not dropped.
 - [ ] Footer affiliate disclosure is the full two-sentence form when affiliate links exist.
 - [ ] Zero runtime errors in the headless render.
+- [ ] Crawler markup: tag added to `TOOLS` in `scripts/build-seo-markup.js`, script run,
+      `seo/<tag>.html` + regenerated `velo/seoMarkup.web.js` committed; light-DOM components hide
+      non-own children. Final reply carries the **"Do this in Wix"** hand-off from `CLAUDE.md`
+      (full backend file + full page code + publish), and after the user publishes,
+      `scripts/check-seo-markup.sh` shows the full markup for crawlers and 0 for a browser.
 
 ---
 
