@@ -28,6 +28,17 @@ function __ensureKygoCta() {
   document.head.appendChild(s);
 }
 
+/** Appends a JSON-LD script unless the page already serves that @type from the Wix SEO panel */
+function __kygoAppendLdOnce(script) {
+  let type;
+  try { type = JSON.parse(script.textContent)['@type']; } catch (e) { /* malformed: append as-is */ }
+  const served = type && [...document.querySelectorAll('script[type="application/ld+json"]')].some(s => {
+    if ([...s.attributes].some(a => a.name.startsWith('data-kygo'))) return false;
+    try { return JSON.parse(s.textContent)['@type'] === type; } catch (e) { return false; }
+  });
+  if (!served) document.head.appendChild(script);
+}
+
 class KygoFitbitAirVsWhoop extends HTMLElement {
   constructor() {
     super();
@@ -1085,7 +1096,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       s.type = 'application/ld+json';
       s.setAttribute('data-kygo-fitbitair-whoop-ld', '');
       s.textContent = JSON.stringify(ld);
-      document.head.appendChild(s);
+      __kygoAppendLdOnce(s);
     }
 
     if (!document.querySelector('script[data-kygo-fitbitair-whoop-faq]')) {
@@ -1102,7 +1113,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       s.type = 'application/ld+json';
       s.setAttribute('data-kygo-fitbitair-whoop-faq', '');
       s.textContent = JSON.stringify(faq);
-      document.head.appendChild(s);
+      __kygoAppendLdOnce(s);
     }
 
     if (!document.querySelector('script[data-kygo-fitbitair-whoop-bc]')) {
@@ -1119,7 +1130,7 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       s.type = 'application/ld+json';
       s.setAttribute('data-kygo-fitbitair-whoop-bc', '');
       s.textContent = JSON.stringify(bc);
-      document.head.appendChild(s);
+      __kygoAppendLdOnce(s);
     }
   }
 

@@ -28,6 +28,17 @@ function __ensureKygoCta() {
   document.head.appendChild(s);
 }
 
+/** Appends a JSON-LD script unless the page already serves that @type from the Wix SEO panel */
+function __kygoAppendLdOnce(script) {
+  let type;
+  try { type = JSON.parse(script.textContent)['@type']; } catch (e) { /* malformed: append as-is */ }
+  const served = type && [...document.querySelectorAll('script[type="application/ld+json"]')].some(s => {
+    if ([...s.attributes].some(a => a.name.startsWith('data-kygo'))) return false;
+    try { return JSON.parse(s.textContent)['@type'] === type; } catch (e) { return false; }
+  });
+  if (!served) document.head.appendChild(script);
+}
+
 class KygoDeepSleepFactors extends HTMLElement {
   constructor() {
     super();
@@ -1579,7 +1590,7 @@ class KygoDeepSleepFactors extends HTMLElement {
       script.type = 'application/ld+json';
       script.setAttribute(guardAttr, '');
       script.textContent = JSON.stringify(data);
-      document.head.appendChild(script);
+      __kygoAppendLdOnce(script);
     });
   }
 }

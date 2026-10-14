@@ -120,6 +120,23 @@ wearable-accuracy) cite the studies referenced on the page via `citation`. **Con
 (contact) wraps an Organization with a `ContactPoint`. **Blog** uses `CollectionPage` (index)
 and `BlogPosting`/`WebPage` (single post) with `ImageObject`.
 
+## Single-source rule for tool-page JSON-LD (2026-10-14)
+
+Tool pages get JSON-LD from two places: the **Wix SEO panel** (in the server HTML, readable by
+non-JS crawlers) and the component's `_injectStructuredData()`. To stop duplicates, every tool
+component now appends through `__kygoAppendLdOnce()`, which **skips any `@type` the page already
+serves from Wix**. So:
+
+- **The Wix SEO panel is the live copy** for any type it holds. When you edit a component's FAQ,
+  WebApplication or BreadcrumbList, update the Wix panel too (Wix API: Item SEO Tags,
+  `STATIC_PAGE/<pageId>`, write the draft and then `publish: true`), or the old Wix text keeps serving.
+- **Wix caps each script tag at 4,096 bytes.** FAQs over that live only in the component (the
+  guard lets them through because Wix has no FAQPage there): recovery-score-explorer,
+  smart-ring-comparison, step-count-accuracy, supplements-by-metric, wearable-accuracy.
+  stress-factors and oura-vs-ringconn keep an older, oversized Wix FAQ that predates the cap and
+  can't be rewritten via the API without dropping it (content matches the component).
+- `/faq` deliberately splits its 14 questions across two Wix FAQPage blocks for the same reason.
+
 ## Schema notes & intentional omissions
 
 Some pages **deliberately** skip a schema type to avoid injecting duplicate schema when multiple

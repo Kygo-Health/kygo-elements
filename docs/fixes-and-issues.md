@@ -7,6 +7,16 @@
 > Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
 > **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
+## 🆕 SEO audit 2026-10-14 — see `docs/seo-audit-2026-10.md`
+
+- **✅ RESOLVED (2026-10-14) P1 — duplicate + conflicting FAQ JSON-LD.** Wix panel synced + published;
+  components now skip types Wix already serves (`__kygoAppendLdOnce`). See schemas-and-tracking.md.
+  Original note: 23 tool pages serve FAQPage/WebApplication/
+  BreadcrumbList twice (Wix SEO panel + component). On 10 pages the Wix FAQ answers are stale
+  vs the component's. Sync Wix to the component, then drop the component copy. Details: C1.
+- **P2 — `docs/schemas-and-tracking.md` "intentional omissions" are wrong live:** no FAQPage on
+  `/tools/sleep-metrics`, no WebApplication on deep-sleep / REM / stress pages. Details: H2.
+
 ## 🆕 `/tools/wearable-accuracy` v2 rebuild on branch `claude/fervent-maxwell-ar96ov` (2026-10-14)
 
 `kygo-wearable-accuracy.js` replaced with the v2 hub (one section per metric: sleep, HRV, RHR,
