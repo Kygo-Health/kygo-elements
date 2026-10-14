@@ -323,7 +323,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
       { q: 'Does the Apple Watch overestimate or underestimate VO2 max?',
         a: 'Three independent studies show the Apple Watch underestimates VO2 max: by 6.07 mL/kg/min (MAPE 13.3%, Lambe 2025), predicting about 41 versus a measured 46 mL/kg/min on the Series 7 (MAPE 15.8%, Caserman 2024), and by 6.25 mL/kg/min on the Series 10 (MAPE 13.2%, Lambe 2026).' },
       { q: 'Why are resting VO2 max estimates less accurate?',
-        a: 'Resting-based estimates, such as the Polar Fitness Test, use resting heart rate plus age, sex and weight with no workout. The INTERLIVE meta-analysis found resting methods as a group overestimate by about +2.17 mL/kg/min on average, versus near-zero bias for exercise-based estimates from an actual run. That is a class average: Polar’s own lab study found its Fitness Test read slightly low (−1.0 mL/kg/min), though with wide error for any one person.' },
+        a: 'Resting-based estimates, such as the Polar Fitness Test, use resting heart rate plus age, sex and weight with no workout. The INTERLIVE meta-analysis found resting methods as a group overestimate by about +2.17 mL/kg/min on average, versus near-zero bias for exercise-based estimates from an actual run. That is a class average: an independent lab study found Polar’s Fitness Test read slightly low (−1.0 mL/kg/min), though with wide error for any one person.' },
       { q: 'Do you need a subscription to see your VO2 max?',
         a: 'Most watches show VO2 max for free (Garmin, Apple, Polar, Samsung, Coros, Suunto; Fitbit shows the metric free with Premium adding coaching only). WHOOP requires a paid membership, and Oura requires its membership to see Cardio Capacity.' }
     ];
