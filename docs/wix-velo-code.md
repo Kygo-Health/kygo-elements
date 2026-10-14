@@ -8,6 +8,24 @@
 > **This is documentation only** — editing it does not change the live site. Update the Wix editor,
 > then mirror the change here. Keep it in sync.
 
+## Live state (2026-10-14): crawler markup on every component page
+
+Every component page now runs the `seoMarkup` code (see `docs/seo-markup-poc.md`):
+
+- **Backend** `backend/seoMarkup.web.js` = the whole of `velo/seoMarkup.web.js` (generated from
+  `TOOLS` in `scripts/build-seo-markup.js`; re-paste it whenever a page is added).
+- **Page code = `velo/page-seo-snippet.js`, verbatim** on: Home, How it works, FAQ, Tools and every
+  `/tools/*` page except calories-in-anything. These pages have no other page code.
+- **Merged** (own handler + seoMarkup in one `$w.onReady`): Contact (`#contactSection`,
+  `contactSubmit`), Calories-in-anything (`#caloriesElement`, `imageUploaded`). Both call
+  `getSeoMarkup('<path>')` and set `.seoMarkup` on their element ID.
+- **Blog** (`#kygoBlog`): builds its own markup from the post list (`<h1>` + one `<li>` per post
+  with a link, category, date and excerpt) during the server render; not in `TOOLS`.
+- **Blog Post**: unchanged (native Wix content is already server-rendered).
+
+The per-page sections below that predate this still describe each page's own handlers; where
+they show an empty `$w.onReady`, the page now carries the snippet instead.
+
 ## How the bridge works
 
 Components are isolated in Shadow DOM and communicate with the Wix host two ways (see `CLAUDE.md`):

@@ -109,10 +109,44 @@ Because there's no test/CI gate, correctness is verified by **previewing in a br
 AI crawlers (GPTBot, ClaudeBot, PerplexityBot, OAI-SearchBot) don't run JavaScript, so a
 component's shadow DOM is invisible to them. Each component page serves crawler-readable HTML via
 Wix's custom-element `seoMarkup`, and that HTML is **rendered from the component itself** by
-`scripts/build-seo-markup.js` into `seo/<tag>.html`. The `Build SEO markup` GitHub Action re-runs it
-on every push to `main` that touches a component, so editing a component is all you do. A **new**
-component page needs an entry in `TOOLS` in that script and the Velo snippet on its Wix page (see
-`docs/seo-markup-poc.md`).
+`scripts/build-seo-markup.js` into `seo/<tag>.html` (it clicks every tab/picker/toggle and merges
+the states). The `Build SEO markup` GitHub Action re-runs it on every push to `main` that touches a
+component, so **editing an existing component needs nothing else**. Full detail:
+`docs/seo-markup-poc.md`.
+
+- **New component page** → add `'<tag>': { file, path }` to `TOOLS` in
+  `scripts/build-seo-markup.js`, run it (`NODE_PATH=$(npm root -g) node scripts/build-seo-markup.js`;
+  it also regenerates `velo/seoMarkup.web.js`), commit `seo/` + `velo/`, then give the user the
+  Wix hand-off below.
+- **Light-DOM components** (no `attachShadow`, like `kygo-home`) show `seoMarkup` to visitors as raw
+  text, because Wix also hands it to the browser. They must hide non-own children first (see the
+  rule at the top of `KygoHome` in `kygo-bundle.js`). Check before giving the user the snippet.
+- `/blog` builds its markup in its own page code from the post list (not in `TOOLS`).
+
+## Wix hand-off — always end with paste-ready steps
+
+Page code, backend files, SEO-panel tags and custom code live **in the Wix editor**, which no
+tool here can write. Whenever a change needs anything on the Wix side — a new tool/page, a
+renamed tag or URL, new events, new JSON-LD for the SEO panel — the **final reply must include a
+"Do this in Wix" section** with, in order:
+
+1. Merge/deploy prerequisites (e.g. "merge the PR first: the backend reads GitHub Pages").
+2. **Every file to paste, in full** (never a diff or "add this line"): which file/page, "select
+   all, delete, paste", and the complete code. For a new component page that is:
+   - **Backend** `backend/seoMarkup.web.js` → the whole of `velo/seoMarkup.web.js`.
+   - **Page code** on the new page → `velo/page-seo-snippet.js`. If the page also needs its own
+     Velo code (events, data, `setAttribute`), give **one merged `$w.onReady`** containing both;
+     one `onReady` per page. If the user's page already has code, ask them to paste it and merge.
+   - Selector rule: `$w('CustomElement')` (type, no `#`) works when the page has exactly one custom
+     element; otherwise use its ID (`$w('#id')`) and tell the user where to find it.
+3. Where things are in the editor (Dev Mode / `{ }` Code sidebar → Backend; page code panel at the
+   bottom of the page), and **publish** (Preview never server-renders).
+4. What they'll see and how to roll back (restore the previous code + publish).
+5. Then **verify after they publish**: `scripts/check-seo-markup.sh <url> <tag> "<phrase from deep
+   in the page>"` (crawler agents get the full markup, browser gets 0), plus a real-browser render
+   at desktop and an emulated iPhone (`isMobile: true`), checking nothing new is visible.
+
+Keep `docs/wix-velo-code.md` in sync with any page code you hand over.
 
 ## Component anatomy (the house style)
 
@@ -291,6 +325,9 @@ Prefer the **`new-page` skill** (`.claude/skills/new-page/`) to scaffold, then f
 6. Add a `test-<name>.html` harness and preview it in a browser.
 7. Disconnect observers/timeouts in `disconnectedCallback`.
 8. Keep `class` and tag names consistent: `KygoName` ↔ `kygo-name`.
+9. Add it to `TOOLS` in `scripts/build-seo-markup.js`, run the script, commit `seo/` + `velo/`.
+10. End with the **Wix hand-off** (section above): full backend file, full page code, publish,
+    then verify with `scripts/check-seo-markup.sh` and a browser render.
 
 ## Conventions recap (do / don't)
 

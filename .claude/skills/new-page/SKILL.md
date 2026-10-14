@@ -98,6 +98,16 @@ this skill assumes that house style.
    `if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }`.
    Full spec in `docs/tool-page-playbook.md` §3 "Sources (the standard module)".
 
+13. **Crawler markup + Wix hand-off (required, every page).** Add the tag to `TOOLS` in
+    `scripts/build-seo-markup.js` (`'<tag>': { file: '<file>.js', path: '/tools/<slug>' }`), run
+    `NODE_PATH=$(npm root -g) node scripts/build-seo-markup.js` (writes `seo/<tag>.html` and
+    regenerates `velo/seoMarkup.web.js`), and commit both folders. If the component renders in
+    light DOM (no `attachShadow`), it must hide non-own children first (see `KygoHome` in
+    `kygo-bundle.js`). Then finish with the **"Do this in Wix"** section from `CLAUDE.md`: the
+    full `velo/seoMarkup.web.js` to paste as `backend/seoMarkup.web.js`, the full page code
+    (`velo/page-seo-snippet.js`, merged with any page-specific Velo into one `$w.onReady`),
+    publish, and verify with `scripts/check-seo-markup.sh` once the user has published.
+
 ## Guardrails
 
 - Match `class` ↔ tag name exactly; register with `customElements.define('kygo-<name>', Class)`.
@@ -115,3 +125,5 @@ this skill assumes that house style.
 - Sources use the standard module, unchanged. No per-page accordions, `<details>` groups, or
   separate desktop/mobile source renderings — those were all consolidated away.
 - This repo has no CI — verify visually before committing.
+- Never finish a page without the Wix hand-off: the user can't act on "add the snippet"; give
+  every Wix file in full, paste-ready.
