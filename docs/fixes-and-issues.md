@@ -9,7 +9,9 @@
 
 ## 🆕 SEO audit 2026-10-14 — see `docs/seo-audit-2026-10.md`
 
-- **P1 — duplicate + conflicting FAQ JSON-LD.** 23 tool pages serve FAQPage/WebApplication/
+- **✅ RESOLVED (2026-10-14) P1 — duplicate + conflicting FAQ JSON-LD.** Wix panel synced + published;
+  components now skip types Wix already serves (`__kygoAppendLdOnce`). See schemas-and-tracking.md.
+  Original note: 23 tool pages serve FAQPage/WebApplication/
   BreadcrumbList twice (Wix SEO panel + component). On 10 pages the Wix FAQ answers are stale
   vs the component's. Sync Wix to the component, then drop the component copy. Details: C1.
 - **P2 — `docs/schemas-and-tracking.md` "intentional omissions" are wrong live:** no FAQPage on

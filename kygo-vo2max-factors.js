@@ -31,6 +31,17 @@ function __ensureKygoCta() {
   document.head.appendChild(s);
 }
 
+/** Appends a JSON-LD script unless the page already serves that @type from the Wix SEO panel */
+function __kygoAppendLdOnce(script) {
+  let type;
+  try { type = JSON.parse(script.textContent)['@type']; } catch (e) { /* malformed: append as-is */ }
+  const served = type && [...document.querySelectorAll('script[type="application/ld+json"]')].some(s => {
+    if ([...s.attributes].some(a => a.name.startsWith('data-kygo'))) return false;
+    try { return JSON.parse(s.textContent)['@type'] === type; } catch (e) { return false; }
+  });
+  if (!served) document.head.appendChild(script);
+}
+
 class KygoVo2maxFactors extends HTMLElement {
   constructor() {
     super();
@@ -1246,7 +1257,7 @@ class KygoVo2maxFactors extends HTMLElement {
       s1.type = 'application/ld+json';
       s1.setAttribute('data-kygo-vo2max-factors-ld', '');
       s1.textContent = JSON.stringify(ld);
-      document.head.appendChild(s1);
+      __kygoAppendLdOnce(s1);
     }
 
     if (!document.querySelector('script[data-kygo-vo2max-factors-faq]')) {
@@ -1262,7 +1273,7 @@ class KygoVo2maxFactors extends HTMLElement {
       s2.type = 'application/ld+json';
       s2.setAttribute('data-kygo-vo2max-factors-faq', '');
       s2.textContent = JSON.stringify(faq);
-      document.head.appendChild(s2);
+      __kygoAppendLdOnce(s2);
     }
   }
 

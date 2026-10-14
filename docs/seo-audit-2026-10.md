@@ -1,5 +1,12 @@
 # SEO Audit — www.kygo.app (2026-10-14)
 
+> **Status (same day):** fixed — C1 (Wix schema synced to components on 12 pages, published;
+> component guard against duplicates), H3, M1 (except stress-factors: its Wix FAQ exceeds the 4 KB
+> API limit, so any write would drop it), stale counts in HRV / VO2-factors / wearable-accuracy
+> titles. Correction: `/faq`'s two FAQPage blocks are a deliberate split (4 KB cap), not duplicates,
+> and stress-factors does get WebApplication (from its component). Still open: H1, H2 (sleep-metrics
+> FAQPage, deep-sleep/REM WebApplication), H4, M2, L1–L5 — these need the Wix editor or a decision.
+
 Scope: the 35 URLs in `pages-sitemap.xml` (home, `/tools` + 25 tool pages, how-it-works, FAQ,
 blog index, contact, legal). The 70 blog posts were not audited.
 

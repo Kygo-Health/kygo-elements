@@ -45,6 +45,17 @@ function __ensureKygoCta() {
   document.head.appendChild(s);
 }
 
+/** Appends a JSON-LD script unless the page already serves that @type from the Wix SEO panel */
+function __kygoAppendLdOnce(script) {
+  let type;
+  try { type = JSON.parse(script.textContent)['@type']; } catch (e) { /* malformed: append as-is */ }
+  const served = type && [...document.querySelectorAll('script[type="application/ld+json"]')].some(s => {
+    if ([...s.attributes].some(a => a.name.startsWith('data-kygo'))) return false;
+    try { return JSON.parse(s.textContent)['@type'] === type; } catch (e) { return false; }
+  });
+  if (!served) document.head.appendChild(script);
+}
+
 class CaloriesInAnything extends HTMLElement {
   constructor() {
     super();
@@ -1651,7 +1662,7 @@ class CaloriesInAnything extends HTMLElement {
       script.type = 'application/ld+json';
       script.setAttribute('data-kygo-food-scanner-ld', '');
       script.textContent = JSON.stringify(ld);
-      document.head.appendChild(script);
+      __kygoAppendLdOnce(script);
     }
 
     if (!document.querySelector('script[data-kygo-food-scanner-faq]')) {
@@ -1680,7 +1691,7 @@ class CaloriesInAnything extends HTMLElement {
       faqScript.type = 'application/ld+json';
       faqScript.setAttribute('data-kygo-food-scanner-faq', '');
       faqScript.textContent = JSON.stringify(faqLd);
-      document.head.appendChild(faqScript);
+      __kygoAppendLdOnce(faqScript);
     }
   }
 }
