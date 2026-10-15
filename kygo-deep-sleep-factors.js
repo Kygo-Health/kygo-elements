@@ -727,9 +727,9 @@ class KygoDeepSleepFactors extends HTMLElement {
     return [
       {
         title: 'REM Sleep Factor Explorer',
-        blurb: '23 research-backed factors that raise or lower REM sleep, with mechanisms and doses.',
+        blurb: '37 research-backed factors that raise, lower or don\'t change REM sleep, with mechanisms.',
         url: 'https://www.kygo.app/tools/rem-sleep-factors',
-        meta: 'Sleep · 23 factors',
+        meta: 'Sleep · 37 factors',
         motif: { motif: 'hypno', stage: 'rem', caption: 'Sleep stages overnight' }
       },
       {

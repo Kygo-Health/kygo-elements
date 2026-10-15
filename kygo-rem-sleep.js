@@ -1,7 +1,7 @@
 /**
  * Kygo Health — What Influences REM Sleep? Factor Explorer
  * Tag: kygo-rem-sleep
- * Interactive tool exploring 23 research-backed factors that affect REM (dream) sleep across 5 categories
+ * Interactive tool exploring 37 research-backed factors that affect REM (dream) sleep across 5 categories
  */
 
 /** SEO helper — injects visible text outside Shadow DOM for crawlers */
@@ -55,7 +55,7 @@ class KygoRemSleep extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'What Influences REM Sleep? A research-based factor explorer by Kygo Health covering 23 factors that affect REM (rapid eye movement / dream) sleep across 5 categories: Nutrition and Substances, Supplements, Exercise and Physical Activity, Environment and Sleep Hygiene, and Demographics and Physiology. REM sleep is the dreaming stage tied to emotional processing and memory, normally 20 to 25 percent of total sleep, concentrated in the second half of the night. Nutrition factors: Alcohol is one of the most reliable REM suppressors, pushing REM latency 18 minutes later and cutting REM duration 11.3 minutes on average, worse per drink (Gardiner meta-analysis 2024). Caffeine delays REM timing but may not cut total REM. Cannabis and THC suppress REM and cause vivid-dream REM rebound on quitting. Nicotine and smoking reduce REM dose-dependently, with the patch worse than cigarettes. Diet: more carbohydrate tracks with more REM, high protein low carb with later REM, weak evidence. Supplements: Melatonin increases REM duration in people whose REM started low via MT1 receptors. 5-HTP raised REM percent in a small Parkinson trial. Vitamin B6 boosts dream recall and vividness but not proven REM duration. Glycine speeds sleep onset and deep sleep without changing REM. Exercise: hard late intense evening workouts slightly cut REM percent by about 2.5 percent and push it later; regular aerobic training mostly adds deep sleep not REM; morning exercise spares REM. Environment: ambient heat strongly shortens REM because thermoregulation is suspended during REM so keep the room cool; circadian timing gates REM which peaks near the core body temperature minimum about 2 hours before wake; sleep curtailment cuts REM first because REM is back-loaded into the early morning; REM rebound surges to 140 percent of baseline on recovery nights after REM loss; daytime napping reduces nighttime REM; pre-sleep learning and cognitive load increase REM; pre-sleep stress fragments REM and raises density but can trigger rebound; altitude reduces REM on first nights then recovers. Demographics: REM percent declines gradually about 0.6 percent per decade with age; sex differences are small and hormones matter more; the luteal phase before a period lowers REM as core body temperature rises. How to increase REM sleep naturally. What affects REM sleep. What reduces dream sleep. Best supplements for REM sleep. Why alcohol kills dream sleep. Data sourced from peer-reviewed studies and meta-analyses published through 2026.');
+    __seo(this, 'What Influences REM Sleep? A research-based factor explorer by Kygo Health covering 37 factors that change REM (rapid eye movement / dream) sleep, or were tested and do not, across 5 categories: Substances and Nutrition, Supplements, Exercise, Environment and Habits, and Demographics and Body. Each factor was re-checked against its primary source in October 2026. REM is the dreaming stage tied to emotional processing and memory, concentrated in the last hours of the night. Substances: alcohol is the clearest REM suppressor, delaying REM 18 minutes and cutting it 11.3 minutes, with delay starting around 2 drinks (Gardiner 2024 meta-analysis of 27 studies). Nicotine cuts REM dose-dependently. Ramadan-style daytime fasting is linked to less REM (25.6 to 18.6 percent). Heavy THC can suppress REM and quitting cannabis causes REM rebound; typical doses are unclear. High-carb diets nudge REM up. Caffeine does not change REM, it cuts deep sleep 11.4 minutes. A late dinner did not change REM. Supplements: melatonin 3 mg raised REM only in patients with abnormally low REM; ketone ester protected REM after very hard late training in cyclists; glycine, valerian and CBD 300 mg did not change REM. Exercise: hard evening exercise ending 0.5 to 4 hours before bed cut REM about 2 points and delayed it 7.7 minutes, moderate and morning exercise did not; cold water immersion after exercise did not change REM. Environment and habits: short sleep with an early alarm cuts REM first; a 32 C hot bedroom lowers REM and cooling restores it; the first night in an unfamiliar room costs REM; continuous 50 dB background noise cut REM 18.6 minutes; 4 hours of bright iPad reading cut REM but 90 minutes of phone use did not; presleep stress fragments REM; altitude cuts REM; sleeping sitting upright cut REM 79 percent; a hot bath right before bed delays REM; sleeping next to a partner was linked to slightly more REM; presleep learning tracks REM; REM deprivation causes a rebound to 140 percent; circadian timing sets when REM happens; daytime naps, mattress type and phone radio signals did not change REM. Demographics and body: REM changes little with age, sex and genetics; REM dips slightly in the luteal phase of the menstrual cycle and in late pregnancy; obesity costs a few minutes of REM once sleep apnea is excluded; acute illness can trim REM in lab models. How to increase REM sleep naturally. What affects REM sleep. What reduces dream sleep. Does caffeine affect REM sleep. Best supplements for REM sleep. Why alcohol kills dream sleep. Data sourced from peer-reviewed studies and meta-analyses.');
   }
 
   disconnectedCallback() {
@@ -66,15 +66,17 @@ class KygoRemSleep extends HTMLElement {
 
   get _categories() {
     return {
-      nutrition: { name: 'Nutrition & Substances', icon: 'droplet', count: 5, intro: 'REM sleep is unusually sensitive to chemistry. Alcohol, cannabis, and nicotine have the clearest effects of any substances here — and all three reduce dream sleep.' },
-      supplements: { name: 'Supplements', icon: 'pill', count: 4, intro: 'The supplement literature for REM specifically is thin. Most sleep supplements are studied against sleep latency or deep sleep, not isolated REM — treat any "boosts REM" claim as unproven unless it cites REM% on a sleep study (PSG).' },
-      exercise: { name: 'Exercise & Physical Activity', icon: 'dumbbell', count: 3 },
-      environment: { name: 'Environment & Sleep Hygiene', icon: 'moon', count: 8 },
-      demographics: { name: 'Demographics & Physiology', icon: 'users', count: 3 }
+      nutrition: { name: 'Substances & Nutrition', icon: 'droplet', count: 7, intro: 'Alcohol is the clearest REM suppressor on this page, and nicotine is close behind. Caffeine, the usual suspect, does not cut REM at all: its cost lands on deep sleep.' },
+      supplements: { name: 'Supplements', icon: 'pill', count: 5, intro: 'The supplement literature for REM is thin. Only melatonin (in people whose REM is abnormally low) and ketone esters (after very hard training) moved REM in sleep-lab studies. Treat any "boosts REM" claim as unproven unless it cites REM on a sleep study (PSG).' },
+      exercise: { name: 'Exercise', icon: 'dumbbell', count: 2 },
+      environment: { name: 'Environment & Habits', icon: 'moon', count: 16, intro: 'Most of the levers you control live here. REM is back-loaded into the last hours of the night and is sensitive to heat, noise and timing, so protecting the end of your night matters most.' },
+      demographics: { name: 'Demographics & Body', icon: 'users', count: 7, intro: 'REM is surprisingly stable across age, sex and genes. The clear sex and age differences are in deep sleep, not REM.' }
     };
   }
 
   // ── Factors ───────────────────────────────────────────────────────────
+  // Re-verified against each primary source on 15 Oct 2026. "No change"
+  // (neutral) rows are well-measured nulls, kept on purpose.
 
   get _factors() {
     return {
@@ -85,59 +87,83 @@ class KygoRemSleep extends HTMLElement {
           direction: 'negative',
           evidence: 'strong',
           effect: 'Negative (dose-dependent)',
-          keyFinding: '−11.3 min REM duration, +18 min REM latency (27-study meta)',
-          whatThisMeans: 'Alcohol is one of the most reliable REM suppressors. Even two drinks delay and shorten your dream sleep, and it gets worse with every additional drink. This is why a nightcap leaves you under-recovered, and why using a drink to fall asleep backfires.',
-          mechanism: 'Ethanol\'s acute sedative (GABAergic) effect suppresses the cholinergic activity that generates REM early in the night. As it metabolizes, the resulting sympathetic rebound and fragmentation wreck the second half of the night — exactly where REM concentrates.',
-          dosage: 'Disruption begins at ~2 standard drinks; per 1 g/kg, REM latency rose 30.1 min and REM duration fell 40.4 min; REM% dropped 2.8%.',
-          source: { url: 'https://www.sciencedirect.com/science/article/pii/S1087079224001345', label: 'Gardiner et al., Sleep Medicine Reviews 2024' }
+          keyFinding: 'REM 18 min later, 11.3 min shorter (27-study meta)',
+          whatThisMeans: 'Even a couple of drinks delay REM, and each extra drink cuts more. This is why a nightcap leaves you under-recovered, and why using a drink to fall asleep backfires.',
+          mechanism: 'Alcohol\'s sedative (GABAergic) effect suppresses the cholinergic activity that generates REM early in the night. As it wears off, the rebound arousal and fragmentation hit the second half of the night, where REM concentrates.',
+          dosage: 'REM started 18.0 min later and ran 11.3 min shorter (REM share −2.8 points). Each 1 g/kg added 30.1 min to REM onset and cut 40.4 min of REM. REM delay began around 0.35 g/kg (about 2 drinks), REM loss around 0.5 g/kg (about 3). Meta-analysis of 27 studies in healthy adults.',
+          source: { url: 'https://doi.org/10.1016/j.smrv.2024.102030', label: 'Gardiner et al., Sleep Med Rev 2024' }
         },
         {
-          key: 'caffeine',
-          name: 'Caffeine',
-          direction: 'mixed',
+          key: 'nicotine',
+          name: 'Nicotine',
+          direction: 'negative',
           evidence: 'moderate',
-          effect: 'Mixed (delays, may not cut total)',
-          keyFinding: 'Delays REM timing; meta-analysis found no significant change in REM%',
-          whatThisMeans: 'Caffeine clearly delays when REM shows up, but the evidence that it cuts how much REM you get is weaker and mixed. The bigger, clearer hits from caffeine are to deep sleep and how fast you fall asleep.',
-          mechanism: 'Adenosine receptor antagonism delays sleep onset and pushes the nightly timing of REM later. Its clearest effects are on deep sleep and sleep onset rather than total REM amount.',
-          dosage: 'Ten days of regular caffeine delayed nightly REM timing in healthy men; avoid late-day doses to protect REM timing.',
-          source: { url: 'https://journals.sagepub.com/doi/full/10.1177/07487304211013995', label: 'Weibel et al., J Biol Rhythms 2021' }
+          effect: 'Negative (dose-dependent)',
+          keyFinding: '7 or 14 mg patch cut REM, dose-dependently',
+          whatThisMeans: 'Nicotine cuts REM, and more nicotine cuts more. That held for a patch in non-smokers and for a 24-hour patch in smokers.',
+          mechanism: 'Nicotine activates acetylcholine receptors that promote arousal and fragment sleep. A patch keeps nicotine in the blood all night, so the effect covers the REM-heavy early morning.',
+          dosage: 'A 7 or 14 mg patch cut REM time and REM% dose-dependently in non-smokers (n=12); a 24 h patch lowered REM% in smokers (n=15).',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/7962682/', label: 'Gillin et al., 1994' }
+        },
+        {
+          key: 'ramadan-fasting',
+          name: 'Ramadan-Style Daytime Fasting',
+          direction: 'negative',
+          evidence: 'emerging',
+          effect: 'Negative',
+          keyFinding: 'REM 25.6% → 18.6% during Ramadan (n=8)',
+          whatThisMeans: 'Daytime fasting with a pre-dawn meal is linked to less REM, but the 3:30 am wake-up to eat may be the real cause. Both studies were small.',
+          mechanism: 'The pattern moves meals into the night and adds a pre-dawn wake-up, which breaks into the REM-rich early morning and shifts circadian cues. The studies cannot separate fasting itself from the schedule change.',
+          dosage: 'REM share 25.6% at baseline vs 18.6% during Ramadan, with sleep times and calories fixed (p<0.05); a separate lab also found less REM. BaHammam 2013 (n=8); Roky 2001 (n=8).',
+          source: { url: 'https://doi.org/10.1186/1744-9081-9-32', label: 'BaHammam et al., Behav Brain Funct 2013' }
         },
         {
           key: 'cannabis',
           name: 'Cannabis / THC',
-          direction: 'negative',
-          evidence: 'moderate',
-          effect: 'Negative (suppression + rebound)',
-          keyFinding: 'Suppresses REM; quitting triggers vivid-dream REM rebound',
-          whatThisMeans: 'Cannabis suppresses dream sleep, which is why heavy users often report not dreaming. Quit and the dreams come roaring back (REM rebound), which makes stopping hard. Lower medical doses are less clear-cut.',
-          mechanism: 'THC reduces eye-movement activity and, to a lesser degree, REM duration via CB1 signaling. Frequent use near bedtime raises REM latency and lowers sleep efficiency; stopping after heavy use unmasks a strong REM rebound.',
-          dosage: 'Frequent bedtime use is worst; newer low therapeutic doses show mixed or null REM effects.',
-          source: { url: 'https://www.sciencedirect.com/science/article/pii/S1087079225001170', label: 'Cannabis Meta-Analysis, Sleep Med Reviews 2025' }
-        },
-        {
-          key: 'nicotine',
-          name: 'Nicotine / Smoking',
-          direction: 'negative',
-          evidence: 'strong',
-          effect: 'Negative (dose-dependent)',
-          keyFinding: 'Dose-dependent REM reduction; patch can be worse than cigarettes',
-          whatThisMeans: 'Nicotine cuts dream sleep, whether from cigarettes or the patch. The patch can be worse for REM specifically because it keeps nicotine in your system all night rather than tapering off as a cigarette would.',
-          mechanism: 'Nicotinic acetylcholine receptor activation promotes cortical arousal and fragments sleep. Transdermal delivery sustains nicotine across the whole night, suppressing REM more than a cigarette that tapers off.',
-          dosage: 'Any nicotine exposure reduces REM; the all-night patch is worst. In the Sleep Heart Health Study (n=6,400) smokers had longer latency and lighter, more disrupted sleep.',
-          source: { url: 'https://academic.oup.com/aje/article/164/6/529/129824', label: 'Zhang et al., Am J Epidemiology 2006 (SHHS)' }
-        },
-        {
-          key: 'diet-macros',
-          name: 'Diet / Macronutrient Mix',
           direction: 'mixed',
-          evidence: 'emerging',
-          effect: 'Shifts REM (weak evidence)',
-          keyFinding: 'More carbs ~ more REM; high-protein/low-carb → later REM',
-          whatThisMeans: 'More carbs tends to track with more REM, and very low-carb/high-protein with later REM — but this is among the weakest factors here: the data are observational and the mechanism may not apply to normal diets.',
-          mechanism: 'A proposed tryptophan-availability pathway shifts serotonin/melatonin signaling toward more REM, but it may only hold at unusually low protein intakes, so real-world relevance is debated.',
-          dosage: 'Observational only; among the weakest factors on this page.',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5612383/', label: 'Dietary Macronutrients & Sleep review, 2017' }
+          evidence: 'moderate',
+          effect: 'Mixed; rebound on quitting',
+          keyFinding: 'High-dose THC suppresses REM; quitting rebounds it',
+          whatThisMeans: 'Heavy THC can suppress dream sleep, and quitting brings vivid dreams back. At typical doses, the effect on REM is unclear.',
+          mechanism: 'THC acts on CB1 receptors and reduced REM eye movements and, less so, REM time in early high-dose studies. Stopping after regular use unmasks a consistent REM rebound.',
+          dosage: 'High-dose THC reduced REM eye movements and, less so, REM time in small early studies; newer lower-dose studies show mixed or no change; REM rebound on withdrawal is consistent. Velzeboer 2025 (meta, 18 PSG studies); Feinberg 1975 (n=7).',
+          source: { url: 'https://doi.org/10.1016/j.smrv.2025.102164', label: 'Velzeboer et al., Sleep Med Rev 2025' }
+        },
+        {
+          key: 'diet-carbs',
+          name: 'Diet (Carbs)',
+          direction: 'positive',
+          evidence: 'moderate',
+          effect: 'Positive (small)',
+          keyFinding: 'High-carb raised REM vs low-carb (11 trials)',
+          whatThisMeans: 'More carbs nudges REM up a little. Low carb shifts sleep toward deep sleep instead.',
+          mechanism: 'Carbohydrate raises insulin, which helps tryptophan reach the brain for serotonin and melatonin synthesis, one proposed route to more REM. Low-carb diets shift the balance toward slow-wave sleep.',
+          dosage: 'High-carb meals or diets raised REM time and share vs low-carb; low-carb raised deep sleep; REM latency unchanged. Meta-analysis of 11 short-term trials (n=179).',
+          source: { url: 'https://doi.org/10.3390/nu13041283', label: 'Vlahoyiannis et al., Nutrients 2021' }
+        },
+        {
+          key: 'caffeine',
+          name: 'Caffeine',
+          direction: 'neutral',
+          evidence: 'strong',
+          effect: 'No change in REM',
+          keyFinding: 'No change in REM% (k=19); deep sleep −11.4 min',
+          whatThisMeans: 'Caffeine doesn\'t cut REM. It cuts deep sleep.',
+          mechanism: 'Caffeine blocks adenosine receptors. Adenosine mainly drives deep-sleep pressure, so caffeine\'s clearest cost lands on slow-wave sleep, not REM.',
+          dosage: 'No significant change in REM% (k=19), REM minutes (k=17) or REM latency (k=14); deep sleep fell 11.4 min. Meta-analysis.',
+          source: { url: 'https://doi.org/10.1016/j.smrv.2023.101764', label: 'Gardiner et al., Sleep Med Rev 2023' }
+        },
+        {
+          key: 'late-dinner',
+          name: 'Late Dinner',
+          direction: 'neutral',
+          evidence: 'moderate',
+          effect: 'No change in REM',
+          keyFinding: 'REM 20.8% vs 20.6% (P=.87), crossover',
+          whatThisMeans: 'Eating dinner an hour before bed didn\'t reduce REM.',
+          mechanism: 'A late dinner changed overnight glucose and fat metabolism in this study, but sleep stages, including REM, held steady.',
+          dosage: 'REM 20.8% vs 20.6% (P=.87) with dinner at 22:00 vs 18:00 (the 18:00 arm had a 22:00 snack). Crossover, n=20.',
+          source: { url: 'https://doi.org/10.1210/clinem/dgaa354', label: 'Gu et al., J Clin Endocrinol Metab 2020' }
         }
       ],
 
@@ -147,187 +173,283 @@ class KygoRemSleep extends HTMLElement {
           name: 'Melatonin',
           direction: 'positive',
           evidence: 'moderate',
-          effect: 'Positive (in low-REM individuals)',
-          keyFinding: '↑ REM duration in people whose REM started ≥25% below age norm (2 RCTs)',
-          whatThisMeans: 'Melatonin can nudge REM up, but the evidence is in people who started low, and the trials were small. Its core job is still circadian timing, not REM boosting. The effect in normal sleepers is unclear.',
-          mechanism: 'In animals the MT1 receptor selectively enhances REM without changing non-REM. In humans the REM benefit showed up mainly in patients who began with reduced REM.',
-          dosage: 'Two double-blind RCTs (n=14, mean age 50) in patients with REM ≥25% below age norm; effect in normal sleepers unclear.',
-          source: { url: 'https://academic.oup.com/jcem/article/89/1/128/2840303', label: 'Kunz et al., JCEM 2004' },
+          effect: 'Positive (low-REM patients only)',
+          keyFinding: 'REM% ~14.7% → 17.8% in low-REM patients',
+          whatThisMeans: 'Helps REM only if yours is abnormally low. Otherwise it\'s a timing aid.',
+          mechanism: 'Melatonin acts on the circadian clock, and REM follows the clock. In animals the MT1 receptor selectively enhances REM; in humans the REM gain showed up only in patients who started with reduced REM.',
+          dosage: '3 mg for 4 weeks raised REM% from about 14.7% to 17.8% (placebo fell to 12.0%) in sleep-disorder patients with low REM; in healthy men REM% did not change. Kunz 2004 (2 RCTs, n=14 total); Rajaratnam 2004 (n=8).',
+          source: { url: 'https://doi.org/10.1210/jc.2002-021057', label: 'Kunz et al., JCEM 2004' },
           affiliate: { url: 'https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1', label: 'Melatonin Supplement' , slug: 'melatonin-gummies' }
         },
         {
-          key: '5-htp',
-          name: '5-HTP',
+          key: 'ketone-ester',
+          name: 'Ketone Ester After Hard Exercise',
           direction: 'positive',
           evidence: 'emerging',
-          effect: 'Positive (small, clinical sample)',
-          keyFinding: '↑ REM% in a small RCT (n=18, Parkinson\'s, 50 mg/day)',
-          whatThisMeans: '5-HTP nudged REM% up in a small trial, but that trial was in Parkinson\'s patients. The mechanism is plausible (it feeds serotonin and melatonin), yet it has not been confirmed in healthy sleepers.',
-          mechanism: 'As a direct serotonin and melatonin precursor, 5-HTP may raise REM more reliably than L-tryptophan — but this rests on one small clinical sample.',
-          dosage: '50 mg/day for 4 weeks in a clinical (Parkinson\'s) sample; unconfirmed in healthy adults.',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9418091/', label: '5-HTP RCT, Sleep and Breathing 2021' }
-        },
-        {
-          key: 'vitamin-b6',
-          name: 'Vitamin B6',
-          direction: 'variable',
-          evidence: 'emerging',
-          effect: 'Dream recall, not REM duration',
-          keyFinding: '↑ dream vividness & recall; no measured change in REM time',
-          whatThisMeans: 'B6 makes dreams more vivid and easier to recall, which feels like "more REM" — but the studies did not actually show more REM time. It is a dream-recall effect, not a proven REM-duration effect.',
-          mechanism: 'Proposed to raise cortical arousal during REM, increasing recall and vividness, without lengthening REM itself.',
-          dosage: 'Increased vividness in a 250 mg pilot and recall in a larger study; no significant change in measured sleep variables.',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/11883552/', label: 'Ebben et al., 2002' }
+          effect: 'Protects REM (athletes)',
+          keyFinding: 'Kept REM at 117 vs 93 min after hard training',
+          whatThisMeans: 'In trained cyclists, ketone drinks offset the REM loss from a very hard late training day. Untested in everyday life.',
+          mechanism: 'A very hard training day ending close to bed raises nighttime stress and metabolic load, which cut REM. Extra ketones appear to blunt that response; the exact pathway to REM is not yet clear.',
+          dosage: 'A hard training day ending 1 h before bed cut REM from 125 to 93 min; 25 g ketone ester after each session and 30 min before bed (75 g total) kept REM at 117 min (p=0.011 vs placebo). Robberechts 2023 (n=10, crossover); Poffé 2026 (n=24, 7 weeks).',
+          source: { url: 'https://doi.org/10.1249/MSS.0000000000003231', label: 'Robberechts et al., Med Sci Sports Exerc 2023' }
         },
         {
           key: 'glycine',
-          name: 'Glycine',
+          name: 'Glycine (3 g)',
+          direction: 'neutral',
+          evidence: 'emerging',
+          effect: 'No change in REM',
+          keyFinding: 'Faster sleep onset; REM unchanged (n=11)',
+          whatThisMeans: 'Glycine may help you fall asleep faster but doesn\'t change REM.',
+          mechanism: 'Glycine lowers core body temperature and speeds entry into deep sleep, without changing REM latency or stage proportions.',
+          dosage: 'Shortened time to fall asleep and to reach deep sleep; REM latency and stage proportions unchanged. n=11 poor sleepers, crossover; authors from Ajinomoto, a glycine maker.',
+          source: { url: 'https://doi.org/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al., Sleep Biol Rhythms 2007' }
+        },
+        {
+          key: 'valerian',
+          name: 'Valerian',
           direction: 'neutral',
           evidence: 'moderate',
-          effect: 'No effect on REM',
-          keyFinding: 'Speeds sleep onset & deep sleep; REM architecture unchanged',
-          whatThisMeans: 'Glycine helps you fall asleep and reach deep sleep faster without disturbing REM, unlike sedatives. Useful for sleep onset, neutral for dream sleep.',
-          mechanism: 'Glycine lowers core body temperature and speeds entry into NREM/slow-wave sleep, but does not change REM latency or overall sleep architecture.',
-          dosage: '3 g before bed shortened latency to sleep and to slow-wave sleep without altering REM.',
-          source: { url: 'https://onlinelibrary.wiley.com/doi/full/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al., Sleep & Biol Rhythms 2007' }
+          effect: 'No change in REM',
+          keyFinding: 'REM unchanged after 28 days (n=184)',
+          whatThisMeans: 'Valerian doesn\'t shift REM either way.',
+          mechanism: 'Valerian is thought to act on GABA and adenosine signalling. In sleep-lab studies that has not shown up as any change in REM.',
+          dosage: 'REM unchanged after 28 days of valerian-hops in mild insomnia, and in two small PSG studies. Morin 2005 (n=184, industry funded); Schulz 1994; Balderer 1985.',
+          source: { url: 'https://doi.org/10.1093/sleep/28.11.1465', label: 'Morin et al., Sleep 2005' }
+        },
+        {
+          key: 'cbd',
+          name: 'CBD (300 mg)',
+          direction: 'neutral',
+          evidence: 'emerging',
+          effect: 'No change in REM',
+          keyFinding: 'REM 17.6% placebo vs 16.6% CBD',
+          whatThisMeans: 'One dose of CBD didn\'t change REM.',
+          mechanism: 'Unlike THC, CBD does not strongly activate CB1 receptors. A single 300 mg dose in healthy sleepers left sleep architecture, including REM, intact.',
+          dosage: 'REM 17.6% placebo vs 16.6% CBD; REM latency also unchanged. n=26, crossover; authors hold CBD patents.',
+          source: { url: 'https://doi.org/10.3389/fphar.2018.00315', label: 'Linares et al., Front Pharmacol 2018' }
         }
       ],
 
       exercise: [
         {
-          key: 'exercise-acute',
-          name: 'Exercise (Acute, Evening, Intense)',
+          key: 'evening-intense-exercise',
+          name: 'Evening Intense Exercise',
           direction: 'negative',
-          evidence: 'moderate',
-          effect: 'Slightly negative',
-          keyFinding: 'Long, high-intensity evening exercise cut REM% by ~2.5%',
-          whatThisMeans: 'Hard, late, long workouts shave a little REM and push it later. Regular daytime exercise is still net positive for sleep overall; the small REM cost is mostly an evening-intensity issue.',
-          mechanism: 'Acute exercise slightly raises REM latency and decreases REM duration. Long, intense evening sessions elevate nocturnal core temperature, and REM is temperature-sensitive.',
-          dosage: 'Mostly an evening-intensity issue; daytime exercise is net positive for sleep.',
-          source: { url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S388863', label: 'Evening exercise meta-analysis, Nat Sci Sleep 2022' }
+          evidence: 'strong',
+          effect: 'Small negative (that night only)',
+          keyFinding: 'Hard late session: REM −1.95 points (28 trials)',
+          whatThisMeans: 'Hard late workouts trim REM a little and push it later. Morning or moderate sessions don\'t.',
+          mechanism: 'A hard session close to bed keeps core temperature, heart rate and sympathetic drive raised into the first part of the night, which delays and trims REM. The effect is gone by the next night.',
+          dosage: 'One hard session (77%+ HRmax, ending 0.5 to 4 h before bed) cut REM by 1.95 points of total sleep vs no exercise; 2.5 points when it ran over 30 to 60 min. Moderate and light sessions: no significant change. Evening exercise also delayed REM onset by 7.7 min. Morning exercise showed no REM change in timing studies. Yue 2022 (network meta, 28 trials, n=325); Frimpong 2021 (−2.34 points); Stutz 2019 (23 studies).',
+          source: { url: 'https://doi.org/10.2147/NSS.S388863', label: 'Yue et al., Nat Sci Sleep 2022' }
         },
         {
-          key: 'aerobic-training',
-          name: 'Regular Aerobic Training (Chronic)',
-          direction: 'mixed',
-          evidence: 'moderate',
-          effect: 'Mixed (mostly neutral / slight reduction)',
-          keyFinding: 'Adds deep sleep & shortens REM latency; REM duration flat-to-slightly-down',
-          whatThisMeans: 'Building a regular exercise habit is good for sleep overall, but it mostly adds deep sleep, not REM. Do not expect training to raise dream sleep; if anything REM dips slightly.',
-          mechanism: 'Chronic aerobic training raises total and deep sleep and tends to shorten REM latency, but effects on REM duration are mixed — most data show a small decrease or no change rather than an increase.',
-          dosage: 'Build the habit for overall sleep; don\'t expect a REM increase.',
-          source: { url: 'https://link.springer.com/article/10.1007/s10865-015-9617-6', label: 'Kredlow et al., J Behav Med 2015' }
-        },
-        {
-          key: 'exercise-timing',
-          name: 'Exercise Timing (Morning vs Evening)',
-          direction: 'variable',
-          evidence: 'moderate',
-          effect: 'Timing-dependent',
-          keyFinding: 'Evening sessions (~17:00–19:00) delay melatonin & cut REM; morning spares it',
-          whatThisMeans: 'When you exercise matters for REM: late, intense sessions warm you up and push melatonin later, trimming REM, while morning workouts leave dream sleep alone. Finishing a couple hours before bed mostly fixes it.',
-          mechanism: 'Evening exercise raises nocturnal core temperature and delays the melatonin rhythm, reducing REM. Morning exercise is less likely to disturb it.',
-          dosage: 'Prefer morning sessions, or finish more than ~2 hours before bed to blunt the effect.',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10636512/', label: 'Exercise timing & sleep systematic review, 2023' }
+          key: 'cold-water-immersion',
+          name: 'Cold Water Immersion After Exercise',
+          direction: 'neutral',
+          evidence: 'emerging',
+          effect: 'No change in REM',
+          keyFinding: 'No change in REM vs exercise alone (n=11)',
+          whatThisMeans: 'An ice bath after an evening workout didn\'t change REM.',
+          mechanism: 'Cold water lowers core temperature after exercise, but REM timing and amount did not respond in this study.',
+          dosage: 'No difference in stage proportions or REM onset vs exercise alone. n=11.',
+          source: { url: 'https://doi.org/10.1249/MSS.0b013e318287f321', label: 'Robey et al., Med Sci Sports Exerc 2013' }
         }
       ],
 
       environment: [
         {
-          key: 'ambient-heat',
-          name: 'Ambient Heat',
+          key: 'short-sleep',
+          name: 'Short Sleep / Early Alarm',
           direction: 'negative',
           evidence: 'strong',
-          effect: 'Negative (strong)',
-          keyFinding: 'Hot rooms reliably shorten REM — thermoregulation is offline during REM',
-          whatThisMeans: 'REM is the stage where your body\'s thermostat goes offline, so a hot room hits REM hardest. Heat is one of the most direct environmental levers on dream sleep. Keep the room cool.',
-          mechanism: 'During REM the body suspends thermoregulation (no effective sweating or shivering), so the sleeper is exposed to room temperature. The melanin-concentrating hormone (MCH) system links REM amount to ambient temperature.',
-          dosage: 'Keep the bedroom cool; elevated ambient heat reliably shortens REM.',
-          source: { url: 'https://www.cell.com/current-biology/fulltext/S0960-9822(19)30542-1', label: 'Komagata et al., Current Biology 2019' }
+          effect: 'Negative (REM hit first)',
+          keyFinding: '4 h vs 9 h: REM minutes cut first (n=27)',
+          whatThisMeans: 'REM is back-loaded, so a short night with a fixed alarm cuts it first.',
+          mechanism: 'REM is concentrated in the early morning, so cutting sleep short trims REM more than any other stage, while deep sleep\'s share actually rises.',
+          dosage: '4 h vs 9 h for 5 nights cut REM and stage 2 minutes, while deep sleep\'s share rose. n=27, crossover, PSG.',
+          source: { url: 'https://doi.org/10.1152/ajpregu.00222.2012', label: 'Shechter et al., Am J Physiol 2012' }
+        },
+        {
+          key: 'bedroom-heat',
+          name: 'Bedroom Heat',
+          direction: 'negative',
+          evidence: 'strong',
+          effect: 'Negative',
+          keyFinding: '32°C room lowered REM vs 22°C; cooling restored it',
+          whatThisMeans: 'A hot, especially humid, bedroom costs you REM. Staying cool protects it, but going colder won\'t add more.',
+          mechanism: 'During REM the body largely suspends temperature control (little effective sweating or shivering), so the sleeper is exposed to the room. In heat, the brain shortens REM to protect body temperature.',
+          dosage: 'A 32°C bedroom cut total sleep by 24.8 min and lowered REM vs 22°C; a cooling mattress topper restored 21.4 min of sleep and the lost REM. At normal room temperature, cooling added deep sleep, not REM. Pasquier 2025 (n=15, crossover, PSG); Kräuchi 2024 (n=72).',
+          source: { url: 'https://doi.org/10.1111/jsr.70137', label: 'Pasquier et al., J Sleep Res 2025' }
+        },
+        {
+          key: 'first-night',
+          name: 'Unfamiliar Room (First Night)',
+          direction: 'negative',
+          evidence: 'strong',
+          effect: 'Negative (first night only)',
+          keyFinding: 'Less, later REM on night 1 (53-study meta)',
+          whatThisMeans: 'Your first night in a hotel or new bedroom costs some REM. It recovers by night two.',
+          mechanism: 'In a new place the brain stays partly on guard, so sleep is lighter and more broken, and REM starts later and runs shorter until the setting feels familiar.',
+          dosage: 'Across 53 studies, the first night in a new sleep setting had less REM and a later REM onset than the second night (p ≤ 0.001); smallest at ages 20 to 29. Meta-analysis, n=1,422.',
+          source: { url: 'https://doi.org/10.1016/j.sleep.2021.12.007', label: 'Ding et al., Sleep Med 2021' }
+        },
+        {
+          key: 'background-noise',
+          name: 'Continuous Background Noise',
+          direction: 'negative',
+          evidence: 'moderate',
+          effect: 'Negative',
+          keyFinding: '50 dB pink noise cut REM 18.6 min (n=25)',
+          whatThisMeans: 'A constant noise machine or hum can trim REM. Earplugs mostly protect deep sleep, not REM.',
+          mechanism: 'Steady sound all night adds brief arousals that chip away at REM, most of which falls late in the night. On-and-off noise peaks mainly break up deep sleep instead.',
+          dosage: '50 dB pink noise all night cut REM by 18.6 min (118.1 to 99.5 min); 32 dB wind turbine noise cut REM 11.1 min and delayed it 16.8 min. On-and-off traffic noise mainly cut deep sleep instead. Basner 2026 (n=25, randomized crossover); Smith 2020 (n=48); same research group.',
+          source: { url: 'https://doi.org/10.1093/sleep/zsag001', label: 'Basner et al., Sleep 2026' }
+        },
+        {
+          key: 'evening-screens',
+          name: 'Evening Screens',
+          direction: 'negative',
+          evidence: 'moderate',
+          effect: 'Negative at 4 h; none at 90 min',
+          keyFinding: '4 h iPad: REM 109 vs 121 min; 90 min phone: no change',
+          whatThisMeans: 'Hours of bright screen time before bed can trim REM. A normal evening on your phone did not.',
+          mechanism: 'Hours of bright, blue-rich light in the evening suppress and delay melatonin, pushing the body clock later. REM follows the clock, so a fixed alarm cuts into it.',
+          dosage: '4 h of iPad reading at full brightness for 5 evenings: REM 109 vs 121 min with a printed book (p=0.03). 90 min of phone reading ending 50 min before bed: REM unchanged (about 19 to 20%). Chang 2015 (n=12, crossover); Höhn 2024 (n=62).',
+          source: { url: 'https://doi.org/10.1073/pnas.1418490112', label: 'Chang et al., PNAS 2015' }
+        },
+        {
+          key: 'presleep-stress',
+          name: 'Presleep Stress',
+          direction: 'negative',
+          evidence: 'moderate',
+          effect: 'Negative',
+          keyFinding: 'Lab stressor lowered REM% and raised REM density',
+          whatThisMeans: 'Stress before bed chops REM up. People whose sleep reacts to stress lose the most.',
+          mechanism: 'Stress raises cortisol and arousal into the night. In people with high sleep reactivity, that fragments REM, lowers REM time and loads it with more eye movements.',
+          dosage: 'A lab stressor before bed lowered REM% and raised REM density; REM minutes fell only in people with stress-reactive sleep. n=62, PSG.',
+          source: { url: 'https://doi.org/10.2147/NSS.S415464', label: 'Feng et al., Nat Sci Sleep 2023' }
+        },
+        {
+          key: 'altitude',
+          name: 'Altitude',
+          direction: 'negative',
+          evidence: 'moderate',
+          effect: 'Negative',
+          keyFinding: 'Higher altitude, less REM (4,559 m vs 490 m)',
+          whatThisMeans: 'Sleeping high cuts REM, and higher cuts more.',
+          mechanism: 'Low oxygen triggers periodic breathing and frequent arousals, which break up REM and deep sleep. The thinner the air, the bigger the effect.',
+          dosage: 'At 4,559 m, REM and deep sleep share fell across nights 1 to 4 vs 490 m; simulated 2,000 and 4,000 m cut REM share step by step. Nussbaumer-Ochsner 2011 (n=14); Li 2021 (n=25).',
+          source: { url: 'https://doi.org/10.1089/ham.2010.1073', label: 'Nussbaumer-Ochsner et al., High Alt Med Biol 2011' }
+        },
+        {
+          key: 'sitting-up',
+          name: 'Sleeping Sitting Up',
+          direction: 'negative',
+          evidence: 'emerging',
+          effect: 'Negative',
+          keyFinding: 'Upright seat: 79% less REM than flat (n=6)',
+          whatThisMeans: 'Sleeping upright on a plane or in a car cuts REM most. Recline as far as you can.',
+          mechanism: 'Muscle tone drops away during REM. Sitting upright, the head and trunk lose support as REM begins, which wakes you and cuts REM short.',
+          dosage: 'In a 4 h daytime nap, an upright seat gave 79% less REM than a flat seat; a 40° recline gave 37% less. n=6, within-subject.',
+          source: { url: 'https://doi.org/10.1080/07420528.2018.1466801', label: 'Roach et al., Chronobiol Int 2018' }
+        },
+        {
+          key: 'hot-bath',
+          name: 'Hot Bath Right Before Bed',
+          direction: 'negative',
+          evidence: 'emerging',
+          effect: 'Negative (first REM period)',
+          keyFinding: 'Bath at 21:00 cut REM; at 17:00 it didn\'t',
+          whatThisMeans: 'Heating your body hard right before bed pushes REM back. An earlier bath didn\'t.',
+          mechanism: 'Raising core temperature just before sleep leaves the body still shedding heat as the night starts, and REM is held back until it cools. An earlier bath gives that time.',
+          dosage: 'A bath at 21:00 raising core temperature about 2°C cut REM; the same bath at 17:00 changed nothing. 1 h at 41°C ending just before sleep shortened the first REM period. Horne & Shackell 1987 (n=6); Bunnell 1988.',
+          source: { url: 'https://doi.org/10.1093/sleep/10.4.383', label: 'Horne & Shackell, Sleep 1987' }
+        },
+        {
+          key: 'partner',
+          name: 'Sleeping Next to a Partner',
+          direction: 'positive',
+          evidence: 'emerging',
+          effect: 'Positive (small)',
+          keyFinding: 'REM 23.0% with partner vs 21.0% alone (n=24)',
+          whatThisMeans: 'Sharing a room with your partner was linked to slightly more, less broken REM.',
+          mechanism: 'Couples\' sleep stages synchronised when they shared a bed. The authors suggest the feeling of safety lowers stress at night, which steadies REM.',
+          dosage: 'REM share 23.0% beside a partner vs 21.0% alone, with fewer REM interruptions (8.5 to 5.4); no other stage changed. n=24 (12 couples), within-subject.',
+          source: { url: 'https://doi.org/10.3389/fpsyt.2020.00583', label: 'Drews et al., Front Psychiatry 2020' }
+        },
+        {
+          key: 'presleep-learning',
+          name: 'Presleep Learning',
+          direction: 'positive',
+          evidence: 'emerging',
+          effect: 'Positive (small study)',
+          keyFinding: 'Fastest learners had the biggest REM% rise (n=10)',
+          whatThisMeans: 'REM tracks how much you learn. Small study.',
+          mechanism: 'REM supports consolidation of procedural and emotional memory. In an immersion course, the rise in REM% tracked how fast students learned the language.',
+          dosage: 'Students who learned French fastest in a 6-week immersion course showed the biggest rises in REM%. n=10.',
+          source: { url: 'https://doi.org/10.1016/0167-8760(89)90018-4', label: 'De Koninck et al., Int J Psychophysiol 1989' }
+        },
+        {
+          key: 'rem-rebound',
+          name: 'REM Deprivation',
+          direction: 'positive',
+          evidence: 'strong',
+          effect: 'Rebound',
+          keyFinding: 'REM rose to 140% of baseline on recovery night',
+          whatThisMeans: 'Lose REM and your brain pays it back the next night.',
+          mechanism: 'REM is homeostatically regulated: a REM debt builds pressure that is repaid with extra REM on recovery nights, scaled to the size of the debt.',
+          dosage: '3 nights of selective REM deprivation cut REM to 9.2% of baseline; it rose to 140.1% on the first recovery night. n=8 men.',
+          source: { url: 'https://doi.org/10.1152/ajpregu.1998.274.4.R1186', label: 'Endo et al., Am J Physiol 1998' }
         },
         {
           key: 'circadian-timing',
           name: 'Circadian Timing',
           direction: 'variable',
           evidence: 'strong',
-          effect: 'Strong driver of distribution',
-          keyFinding: 'REM peaks near the core-temperature minimum, ~2 h before wake',
-          whatThisMeans: 'Most of your REM is in the last few hours before you wake. Cut your night short and you disproportionately cut REM. Sleeping in odd circadian windows (jet lag, shift work) misaligns it.',
-          mechanism: 'REM is gated by the circadian clock and peaks near the core body temperature minimum, which falls roughly 2 hours before normal wake time — concentrating REM in the late night and early morning.',
-          dosage: 'Protect the back end of the night; avoid off-phase sleep where possible.',
-          source: { url: 'https://academic.oup.com/sleep/article-pdf/2/3/329/13660651/020307.pdf', label: 'Czeisler et al., Sleep 1980' }
-        },
-        {
-          key: 'sleep-curtailment',
-          name: 'Sleep Duration / Curtailment',
-          direction: 'negative',
-          evidence: 'strong',
-          effect: 'Negative (REM hit first)',
-          keyFinding: 'At 4 h vs 9 h/night, REM duration & % dropped (n=27)',
-          whatThisMeans: 'The simplest REM lever is to sleep longer. Trimming the back end of your night cuts dream sleep first, which is why a 5-hour night can feel emotionally rough even when you got your deep sleep.',
-          mechanism: 'Because REM is back-loaded into the early morning, cutting sleep short trims REM more than any other stage, while slow-wave sleep percentage actually rises.',
-          dosage: 'Sleep longer; the back end of the night is where REM lives.',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3517705/', label: 'Shechter et al., Am J Physiol 2012' }
-        },
-        {
-          key: 'rem-rebound',
-          name: 'Sleep Deprivation / REM Rebound',
-          direction: 'positive',
-          evidence: 'strong',
-          effect: 'Rebound (compensatory)',
-          keyFinding: 'After REM deprivation, REM surged to 140% of baseline on recovery night (n=8)',
-          whatThisMeans: 'REM is defended. Lose it and your brain pays itself back, front-loading extra REM on recovery nights. The bigger the debt, the longer the payback.',
-          mechanism: 'Selective REM deprivation cut REM to 9.2% of baseline; on the first recovery night it surged to 140.1%. The longer the prior deprivation, the longer the rebound.',
-          dosage: 'Compensatory and automatic; scaled to the size of the REM debt.',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/9575987/', label: 'Endo et al., Am J Physiol 1998' }
+          effect: 'Sets when REM happens',
+          keyFinding: 'REM peaks just after the body-temperature low',
+          whatThisMeans: 'Most REM lands in the last hours of the night. Jet lag and shift work misalign it.',
+          mechanism: 'REM is gated by the circadian clock. Its propensity peaks just after the core body temperature minimum, on the rising part of the curve, which normally falls in the early morning.',
+          dosage: 'REM propensity peaks just after the body temperature low point, on the rising part of the curve. n=10, 306 subject-days.',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/7403736/', label: 'Czeisler et al., Science 1980' }
         },
         {
           key: 'napping',
           name: 'Daytime Napping',
-          direction: 'negative',
+          direction: 'neutral',
           evidence: 'moderate',
-          effect: 'Negative (on nighttime REM)',
-          keyFinding: 'Naps discharge sleep pressure, reducing nighttime REM & N2',
-          whatThisMeans: 'As with deep sleep, a daytime nap spends some of the drive your body would otherwise put into nighttime REM. Long, late naps shift dream sleep into the nap and away from the night.',
-          mechanism: 'Naps discharge homeostatic sleep pressure; split-sleep studies show daytime naps reduce subsequent nighttime REM and N2 duration.',
-          dosage: 'Avoid long, late naps if nighttime REM is a priority.',
-          source: { url: 'https://www.nature.com/articles/s41598-021-84625-8', label: 'Split sleep, Scientific Reports 2021' }
+          effect: 'No change in amount',
+          keyFinding: 'Naps didn\'t reduce the next night\'s REM (n=38)',
+          whatThisMeans: 'Naps don\'t eat into your nighttime REM. A late nap may shift when it starts.',
+          mechanism: 'Naps spend some sleep pressure, which mostly drives deep sleep. REM follows the circadian clock more than sleep pressure, so nighttime REM amount holds.',
+          dosage: 'Naps from 09:00 to 18:00 did not reduce the next night\'s REM in young or older adults; an early-evening nap made REM start sooner. Campbell 2005 (n=38); Werth 1996.',
+          source: { url: 'https://doi.org/10.1016/j.neurobiolaging.2004.02.021', label: 'Campbell et al., Neurobiol Aging 2005' }
         },
         {
-          key: 'pre-sleep-learning',
-          name: 'Pre-Sleep Learning / Cognitive Load',
-          direction: 'positive',
+          key: 'mattress',
+          name: 'Mattress Type',
+          direction: 'neutral',
           evidence: 'emerging',
-          effect: 'Positive',
-          keyFinding: 'REM% rose with intensive language learning; tracked learning efficiency (n=10)',
-          whatThisMeans: 'Heavy mental learning during the day nudges REM up that night as the brain uses dream sleep to lock in skills, and the people who learned most gained the most REM. Sample sizes here are small.',
-          mechanism: 'REM preferentially supports procedural and emotional memory. In an immersion course, the rise in REM% correlated with language-learning efficiency (slow-wave sleep shares the load).',
-          dosage: 'Demanding daytime learning; effect is modest and based on small samples.',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/2584082/', label: 'De Koninck et al., 1989' }
+          effect: 'No change in REM',
+          keyFinding: 'REM unchanged across 4 mattresses (P>0.05)',
+          whatThisMeans: 'Mattress choice didn\'t move REM.',
+          mechanism: 'Surface firmness changed comfort and deep sleep in this study, but REM did not track mattress type.',
+          dosage: 'REM unchanged across 4 mattresses (all P>0.05); deep sleep did change. n=16; run by the mattress maker.',
+          source: { url: 'https://doi.org/10.1371/journal.pone.0099969', label: 'Chen et al., PLoS One 2014' }
         },
         {
-          key: 'pre-sleep-stress',
-          name: 'Pre-Sleep Stress / Arousal',
-          direction: 'mixed',
+          key: 'phone-signals',
+          name: 'Phone Radio Signals',
+          direction: 'neutral',
           evidence: 'moderate',
-          effect: 'Mixed (fragmentation, density, rebound)',
-          keyFinding: 'Acute stress fragments REM & raises density; can also trigger REM rebound',
-          whatThisMeans: 'Stress chops REM up and loads it with eye movements in the moment, but can also trigger a rebound of extra REM afterward as the brain processes the load. Winding down before bed protects it.',
-          mechanism: 'After acute stress, high-sleep-reactivity people show fragmented REM, lower REM duration, and higher REM density with a stronger cortisol response; separately, some stressors are followed by increased REM (rebound) as emotional-processing recovery.',
-          dosage: 'Wind down before bed to protect REM continuity.',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10332417/', label: 'Sleep reactivity & cortisol, PMC 2023' }
-        },
-        {
-          key: 'altitude',
-          name: 'Altitude (High / Extreme)',
-          direction: 'negative',
-          evidence: 'moderate',
-          effect: 'Negative (mixed strength)',
-          keyFinding: 'REM reduced on first nights at altitude; recovers with acclimatization',
-          whatThisMeans: 'Sleeping high (mountains, travel) tends to cut REM at first, especially if you feel altitude sick, but the body adapts over a few nights. The evidence here is less consistent than it is for deep sleep.',
-          mechanism: 'On first nights at high altitude — and in acute mountain sickness — REM is reduced (near-absent at extreme altitude) via hypoxia and periodic breathing; slow-wave sleep is hit more consistently and REM recovers with acclimatization.',
-          dosage: 'Worst on the first nights; adapts over ~2–3 nights.',
-          source: { url: 'https://journals.physiology.org/doi/pdf/10.1152/japplphysiol.00448.2015', label: 'Sleep at high altitude review, J Appl Physiol 2015' }
+          effect: 'No change in REM',
+          keyFinding: 'Sleep architecture unchanged (double-blind)',
+          whatThisMeans: 'Phone signals haven\'t been shown to change REM.',
+          mechanism: 'Phone-type radio exposure has nudged some EEG power bands in lab studies, but not the amount or timing of sleep stages.',
+          dosage: 'GSM-type exposure before or during sleep left sleep architecture unchanged (double-blind). Regel 2007 (n=15); Fritzer 2007 (n=10).',
+          source: { url: 'https://doi.org/10.1111/j.1365-2869.2007.00603.x', label: 'Regel et al., J Sleep Res 2007' }
         }
       ],
 
@@ -335,38 +457,86 @@ class KygoRemSleep extends HTMLElement {
         {
           key: 'age',
           name: 'Age',
-          direction: 'negative',
+          direction: 'neutral',
           evidence: 'strong',
-          effect: 'Negative (gradual)',
-          keyFinding: 'REM% declined ~0.6%/decade from age 19–75 (65-study meta, n=3,577)',
-          whatThisMeans: 'REM erodes slowly with age, not off a cliff like deep sleep does. The decline is gradual and modest — around half a percent of your sleep per decade.',
-          mechanism: 'Across 65 studies, REM% declined roughly linearly with age, then ticked up slightly between 75 and 85. REM latency also shortened with age.',
-          dosage: 'Non-modifiable; the decline is gradual and modest.',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/', label: 'Ohayon et al., SLEEP 2004 meta-analysis' }
+          effect: 'Small or no decline',
+          keyFinding: '~0.6 pts/decade, or none with modern scoring',
+          whatThisMeans: 'REM changes little with age. Total sleep and sleep efficiency carry most of the age decline.',
+          mechanism: 'Ageing mostly erodes deep sleep and sleep efficiency. REM, driven by brainstem circuits and the circadian clock, is comparatively well preserved.',
+          dosage: 'REM% fell about 0.6 points per decade through most of adulthood, levelling off in the mid-70s; a 2019 meta with modern scoring found no significant change (0.0 points per decade). Floyd 2007 (382 studies, n=4,171); Boulos 2019 (169 studies, n=5,273).',
+          source: { url: 'https://doi.org/10.1093/sleep/30.7.829', label: 'Floyd et al., Sleep 2007' }
         },
         {
-          key: 'sex-hormonal',
-          name: 'Sex / Hormonal Status',
-          direction: 'variable',
-          evidence: 'moderate',
-          effect: 'Small differences',
-          keyFinding: 'Modest, inconsistent sex differences; hormones matter more than sex',
-          whatThisMeans: 'Unlike deep sleep, REM does not differ dramatically between men and women. Hormonal changes matter more than sex itself.',
-          mechanism: 'REM differences between sexes are modest and inconsistent in healthy adults relative to the large deep-sleep gap; hormonal states (menstrual phase, menopause) shift REM more than baseline sex does.',
-          dosage: 'Non-modifiable; hormonal state matters more than sex.',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1978369/', label: 'REM% over the adult lifespan, PMC' }
+          key: 'sex-hormones',
+          name: 'Sex / Hormones',
+          direction: 'neutral',
+          evidence: 'strong',
+          effect: 'Little difference',
+          keyFinding: 'REM% didn\'t vary with sex across 169 PSG studies',
+          whatThisMeans: 'REM is about the same in men and women. Deep sleep is where the sexes differ.',
+          mechanism: 'Sex differences show up in deep sleep, which is higher in women. Hormonal shifts within a person (menstrual phase, pregnancy) move REM more than sex itself.',
+          dosage: 'REM% did not vary with the share of men across 169 PSG studies; the clear sex gap is deep sleep, which is higher in women. Boulos 2019 (n=5,273); Redline 2004 (SHHS, n=2,685).',
+          source: { url: 'https://doi.org/10.1016/S2213-2600(19)30057-8', label: 'Boulos et al., Lancet Respir Med 2019' }
         },
         {
           key: 'menstrual-cycle',
-          name: 'Menstrual Cycle (Luteal Phase)',
+          name: 'Menstrual Cycle (Luteal)',
           direction: 'negative',
           evidence: 'moderate',
-          effect: 'Negative (luteal dip)',
-          keyFinding: 'REM lower in the luteal phase; tracks the luteal rise in body temperature',
-          whatThisMeans: 'In the roughly two weeks before a period, REM tends to dip and sleep gets lighter, partly because body temperature runs higher then and REM is temperature-sensitive. This is a normal hormonal pattern, not a disorder.',
-          mechanism: 'REM duration is lower in the luteal phase than the follicular phase, with more arousals and lighter sleep; the drop tracks the luteal rise in core body temperature and progesterone.',
-          dosage: 'Cyclical and normal; not a disorder.',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2864880/', label: 'Shechter & Boivin, Sleep 2010' }
+          effect: 'Slightly lower in luteal',
+          keyFinding: 'Minor REM dip in the mid-luteal phase',
+          whatThisMeans: 'REM dips a little in the two weeks before a period, likely because body temperature runs higher.',
+          mechanism: 'Progesterone raises core body temperature in the luteal phase, and REM is temperature-sensitive. The dip appears at specific circadian phases.',
+          dosage: 'REM was reduced in the mid-luteal phase at specific circadian phases; reviews call it a minor luteal decrease, linked to higher body temperature. Shechter 2010 (n=8); Baker 1999.',
+          source: { url: 'https://doi.org/10.1093/sleep/33.5.647', label: 'Shechter et al., Sleep 2010' }
+        },
+        {
+          key: 'late-pregnancy',
+          name: 'Late Pregnancy',
+          direction: 'negative',
+          evidence: 'moderate',
+          effect: 'Negative',
+          keyFinding: 'Fewer REM minutes in third trimester (lab PSG)',
+          whatThisMeans: 'REM tends to be lower late in pregnancy, along with lighter sleep.',
+          mechanism: 'Late pregnancy brings physical discomfort, more awakenings, breathing changes and high progesterone, which together lighten sleep and trim REM.',
+          dosage: '27 women in the third trimester had fewer REM minutes than 24 non-pregnant women on lab PSG; small longitudinal studies are mixed.',
+          source: { url: 'https://doi.org/10.1111/j.1479-828X.2010.01252.x', label: 'Wilson et al., Aust N Z J Obstet Gynaecol 2011' }
+        },
+        {
+          key: 'obesity',
+          name: 'Obesity (BMI 30+)',
+          direction: 'negative',
+          evidence: 'moderate',
+          effect: 'Slightly negative',
+          keyFinding: '7.8 min less REM with apnea excluded (n=1,014)',
+          whatThisMeans: 'Extra weight is linked to at most a few minutes less REM once sleep apnea is ruled out.',
+          mechanism: 'Much of the link between weight and poor sleep runs through sleep apnea, which fragments REM. With moderate or severe apnea excluded, the remaining REM gap is small.',
+          dosage: 'With moderate or severe sleep apnea excluded, BMI 30+ had 7.8 min less REM (p=0.003); in 2,745 older men, REM was not linked to body composition. Pessoa 2025 (Baependi, n=1,014); Rao 2009 (MrOS).',
+          source: { url: 'https://doi.org/10.1002/oby.24359', label: 'Pessoa et al., Obesity 2025' }
+        },
+        {
+          key: 'acute-illness',
+          name: 'Acute Illness',
+          direction: 'negative',
+          evidence: 'emerging',
+          effect: 'Negative (lab model)',
+          keyFinding: 'Evening endotoxin cut REM share (n=15)',
+          whatThisMeans: 'Fighting an infection can trim REM for a night, but real colds haven\'t shown a clear REM drop.',
+          mechanism: 'Immune signalling molecules (cytokines) released during infection promote non-REM sleep and suppress REM, especially when the immune challenge lands before sleep.',
+          dosage: 'Endotoxin given in the evening cut REM share in healthy men (P<0.05); the same dose mid-sleep did not; a real cold cut sleep about 23 min with no REM change reported. Pollmächer 1993 (n=15); Haack 2001 (n=10); Drake 2000 (n=21).',
+          source: { url: 'https://doi.org/10.1152/ajpregu.1993.264.6.R1077', label: 'Pollmächer et al., Am J Physiol 1993' }
+        },
+        {
+          key: 'genetics',
+          name: 'Genetics',
+          direction: 'neutral',
+          evidence: 'emerging',
+          effect: 'Little to none',
+          keyFinding: 'REM heritability h2 0.07 (n.s.) vs deep sleep 0.35',
+          whatThisMeans: 'How much REM you get looks driven more by circumstances than genes.',
+          mechanism: 'In family data, deep sleep was clearly heritable while REM time was not, so REM seems shaped more by timing, substances and environment. Some twin studies disagree.',
+          dosage: 'REM time showed no significant heritability (h2 0.07, p=0.19) while deep sleep did (0.35); some twin studies disagree. n=684 family members.',
+          source: { url: 'https://doi.org/10.1111/jsr.14448', label: 'Leocadio-Miguel et al., J Sleep Res 2025' }
         }
       ]
     };
@@ -380,50 +550,50 @@ class KygoRemSleep extends HTMLElement {
         icon: 'moon',
         label: 'Best Lever You Control',
         answer: 'Sleep Longer',
-        note: 'REM is back-loaded into the early morning, so trimming the end of your night cuts dream sleep before any other stage. Protect the back half of the night.',
-        stat: '4 h vs 9 h: REM duration & % drop',
-        category: 'Environment & Sleep Hygiene'
+        note: 'REM is back-loaded into the early morning, so a short night with a fixed alarm cuts dream sleep before any other stage. Protect the back half of the night.',
+        stat: '4 h vs 9 h: REM cut first',
+        category: 'Environment & Habits'
       },
       {
         icon: 'thermometer',
         label: 'Quickest Environmental Win',
         answer: 'Keep the Room Cool',
-        note: 'During REM your body\'s thermostat goes offline, so a hot room hits REM hardest. Heat is one of the most direct environmental levers on dream sleep.',
-        stat: 'Thermoregulation suspended during REM',
-        category: 'Environment & Sleep Hygiene'
+        note: 'A 32°C bedroom lowered REM vs 22°C, and a cooling topper restored it. Cool protects REM, but going colder won\'t add more.',
+        stat: '32°C vs 22°C: less REM',
+        category: 'Environment & Habits'
       },
       {
         icon: 'alert',
         label: 'Biggest REM Killer',
         answer: 'Alcohol',
-        note: 'Even two drinks delay and shorten dream sleep, and it gets worse with every additional drink. A nightcap leaves you under-recovered.',
-        stat: '−11.3 min REM, +18 min latency',
-        category: 'Nutrition & Substances',
+        note: 'Even a couple of drinks delay REM, and each extra drink cuts more. A nightcap leaves you under-recovered.',
+        stat: '−11.3 min REM, +18 min delay',
+        category: 'Substances & Nutrition',
         warning: true
       },
       {
         icon: 'trophy',
         label: 'Most Defended',
         answer: 'REM Rebound',
-        note: 'Lose REM and your brain pays itself back, front-loading extra dream sleep on recovery nights. The bigger the debt, the longer the payback.',
+        note: 'Lose REM and your brain pays it back the next night, with extra dream sleep on the first recovery night.',
         stat: '140% of baseline on recovery night',
-        category: 'Environment & Sleep Hygiene'
+        category: 'Environment & Habits'
       },
       {
         icon: 'pill',
         label: 'Best Supplement',
         answer: 'Melatonin (if your REM is low)',
-        note: 'Raised REM duration in people who started below their age norm via MT1 receptors — but the trials were small and it\'s really a circadian-timing tool, not a REM booster for normal sleepers.',
-        stat: '2 RCTs, low-REM patients',
+        note: 'Raised REM% in patients whose REM started abnormally low, but not in healthy men. For most people it\'s a timing aid, not a REM booster.',
+        stat: 'REM% 14.7% → 17.8% (low-REM patients)',
         category: 'Supplements'
       },
       {
-        icon: 'dumbbell',
-        label: 'Most Overrated for REM',
-        answer: 'Exercise to Boost REM',
-        note: 'Training is great for sleep — but it mostly adds deep sleep, not REM. Hard, late, intense sessions actually trim REM slightly and push it later.',
-        stat: 'Evening exercise: −2.5% REM%',
-        category: 'Exercise & Physical Activity'
+        icon: 'droplet',
+        label: 'Most Overblown Worry',
+        answer: 'Caffeine',
+        note: 'A meta-analysis found no change in REM%, REM minutes or REM latency. Caffeine\'s real cost is deep sleep, not REM.',
+        stat: 'REM unchanged; deep sleep −11.4 min',
+        category: 'Substances & Nutrition'
       }
     ];
   }
@@ -1169,7 +1339,7 @@ class KygoRemSleep extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
             <h2>Every claim, <span class="hl">traceable.</span></h2>
-            <p class="lede">Each factor is anchored to a primary peer-reviewed source. Last updated June 2026.</p>
+            <p class="lede">Each factor is anchored to a primary peer-reviewed source. Last updated October 2026.</p>
           </div>
           <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
@@ -1191,7 +1361,7 @@ class KygoRemSleep extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
-          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated June 2026.</p>
+          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated October 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links — we may earn a commission at no extra cost to you.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
