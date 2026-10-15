@@ -161,7 +161,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'No change in REM',
           keyFinding: 'REM 20.8% vs 20.6% (P=.87), crossover',
           whatThisMeans: 'Eating dinner an hour before bed didn\'t reduce REM.',
-          mechanism: 'A late dinner changed overnight glucose and fat metabolism in this study, but sleep stages, including REM, held steady.',
+          mechanism: 'A late dinner raised overnight glucose and cortisol and lowered fat burning in this study, but sleep architecture, including REM, held steady.',
           dosage: 'REM 20.8% vs 20.6% (P=.87) with dinner at 22:00 vs 18:00 (the 18:00 arm had a 22:00 snack). Crossover, n=20.',
           source: { url: 'https://doi.org/10.1210/clinem/dgaa354', label: 'Gu et al., J Clin Endocrinol Metab 2020' }
         }
@@ -189,7 +189,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Protects REM (athletes)',
           keyFinding: 'Kept REM at 117 vs 93 min after hard training',
           whatThisMeans: 'In trained cyclists, ketone drinks offset the REM loss from a very hard late training day. Untested in everyday life.',
-          mechanism: 'A very hard training day ending close to bed raises nighttime stress and metabolic load, which cut REM. Extra ketones appear to blunt that response; the exact pathway to REM is not yet clear.',
+          mechanism: 'Hard training ending an hour before bed cut REM by 26% and nearly doubled time awake overnight. The ketone drink raised dopamine excretion, which the authors offer as a preliminary explanation; the pathway is not confirmed.',
           dosage: 'A hard training day ending 1 h before bed cut REM from 125 to 93 min; 25 g ketone ester after each session and 30 min before bed (75 g total) kept REM at 117 min (p=0.011 vs placebo). Robberechts 2023 (n=10, crossover); Poffé 2026 (n=24, 7 weeks).',
           source: { url: 'https://doi.org/10.1249/MSS.0000000000003231', label: 'Robberechts et al., Med Sci Sports Exerc 2023' }
         },
@@ -240,7 +240,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Small negative (that night only)',
           keyFinding: 'Hard late session: REM −1.95 points (28 trials)',
           whatThisMeans: 'Hard late workouts trim REM a little and push it later. Morning or moderate sessions don\'t.',
-          mechanism: 'A hard session close to bed keeps core temperature, heart rate and sympathetic drive raised into the first part of the night, which delays and trims REM. The effect is gone by the next night.',
+          mechanism: 'A hard session close to bed likely keeps core temperature, heart rate and sympathetic drive raised into the first part of the night, which delays and trims REM. The studies measured single nights after one session.',
           dosage: 'One hard session (77%+ HRmax, ending 0.5 to 4 h before bed) cut REM by 1.95 points of total sleep vs no exercise; 2.5 points when it ran over 30 to 60 min. Moderate and light sessions: no significant change. Evening exercise also delayed REM onset by 7.7 min. Morning exercise showed no REM change in timing studies. Yue 2022 (network meta, 28 trials, n=325); Frimpong 2021 (−2.34 points); Stutz 2019 (23 studies).',
           source: { url: 'https://doi.org/10.2147/NSS.S388863', label: 'Yue et al., Nat Sci Sleep 2022' }
         },
@@ -279,7 +279,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Negative',
           keyFinding: '32°C room lowered REM vs 22°C; cooling restored it',
           whatThisMeans: 'A hot, especially humid, bedroom costs you REM. Staying cool protects it, but going colder won\'t add more.',
-          mechanism: 'During REM the body largely suspends temperature control (little effective sweating or shivering), so the sleeper is exposed to the room. In heat, the brain shortens REM to protect body temperature.',
+          mechanism: 'During REM the body largely suspends temperature control (little effective sweating or shivering), so the sleeper is exposed to the room. Animal studies suggest the brain shortens REM in heat to protect body temperature.',
           dosage: 'A 32°C bedroom cut total sleep by 24.8 min and lowered REM vs 22°C; a cooling mattress topper restored 21.4 min of sleep and the lost REM. At normal room temperature, cooling added deep sleep, not REM. Pasquier 2025 (n=15, crossover, PSG); Kräuchi 2024 (n=72).',
           source: { url: 'https://doi.org/10.1111/jsr.70137', label: 'Pasquier et al., J Sleep Res 2025' }
         },
@@ -291,7 +291,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Negative (first night only)',
           keyFinding: 'Less, later REM on night 1 (53-study meta)',
           whatThisMeans: 'Your first night in a hotel or new bedroom costs some REM. It recovers by night two.',
-          mechanism: 'In a new place the brain stays partly on guard, so sleep is lighter and more broken, and REM starts later and runs shorter until the setting feels familiar.',
+          mechanism: 'In a new place the brain likely stays partly on guard, so sleep is lighter and more broken, and REM starts later and runs shorter until the setting feels familiar.',
           dosage: 'Across 53 studies, the first night in a new sleep setting had less REM and a later REM onset than the second night (p ≤ 0.001); smallest at ages 20 to 29. Meta-analysis, n=1,422.',
           source: { url: 'https://doi.org/10.1016/j.sleep.2021.12.007', label: 'Ding et al., Sleep Med 2021' }
         },
@@ -303,7 +303,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Negative',
           keyFinding: '50 dB pink noise cut REM 18.6 min (n=25)',
           whatThisMeans: 'A constant noise machine or hum can trim REM. Earplugs mostly protect deep sleep, not REM.',
-          mechanism: 'Steady sound all night adds brief arousals that chip away at REM, most of which falls late in the night. On-and-off noise peaks mainly break up deep sleep instead.',
+          mechanism: 'Why steady broadband sound cuts REM is not established. The effect is specific: steady pink noise reduced REM, while on-and-off noise peaks mainly cut deep sleep, which earplugs protected.',
           dosage: '50 dB pink noise all night cut REM by 18.6 min (118.1 to 99.5 min); 32 dB wind turbine noise cut REM 11.1 min and delayed it 16.8 min. On-and-off traffic noise mainly cut deep sleep instead. Basner 2026 (n=25, randomized crossover); Smith 2020 (n=48); same research group.',
           source: { url: 'https://doi.org/10.1093/sleep/zsag001', label: 'Basner et al., Sleep 2026' }
         },
@@ -351,7 +351,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Negative',
           keyFinding: 'Upright seat: 79% less REM than flat (n=6)',
           whatThisMeans: 'Sleeping upright on a plane or in a car cuts REM most. Recline as far as you can.',
-          mechanism: 'Muscle tone drops away during REM. Sitting upright, the head and trunk lose support as REM begins, which wakes you and cuts REM short.',
+          mechanism: 'The authors give two likely reasons: the head is hard to keep comfortable upright, worse in REM when muscle tone is very low, and an upright posture raises sympathetic (fight-or-flight) activity, keeping the body more aroused.',
           dosage: 'In a 4 h daytime nap, an upright seat gave 79% less REM than a flat seat; a 40° recline gave 37% less. n=6, within-subject.',
           source: { url: 'https://doi.org/10.1080/07420528.2018.1466801', label: 'Roach et al., Chronobiol Int 2018' }
         },
@@ -363,7 +363,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Negative (first REM period)',
           keyFinding: 'Bath at 21:00 cut REM; at 17:00 it didn\'t',
           whatThisMeans: 'Heating your body hard right before bed pushes REM back. An earlier bath didn\'t.',
-          mechanism: 'Raising core temperature just before sleep leaves the body still shedding heat as the night starts, and REM is held back until it cools. An earlier bath gives that time.',
+          mechanism: 'Heating the body close to bedtime raised deep sleep and lowered REM. Aspirin, which blunts the temperature response, mostly cancelled the effect, pointing to the late rise in body heat as the driver.',
           dosage: 'A bath at 21:00 raising core temperature about 2°C cut REM; the same bath at 17:00 changed nothing. 1 h at 41°C ending just before sleep shortened the first REM period. Horne & Shackell 1987 (n=6); Bunnell 1988.',
           source: { url: 'https://doi.org/10.1093/sleep/10.4.383', label: 'Horne & Shackell, Sleep 1987' }
         },
@@ -375,7 +375,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Positive (small)',
           keyFinding: 'REM 23.0% with partner vs 21.0% alone (n=24)',
           whatThisMeans: 'Sharing a room with your partner was linked to slightly more, less broken REM.',
-          mechanism: 'Couples\' sleep stages synchronised when they shared a bed. The authors suggest the feeling of safety lowers stress at night, which steadies REM.',
+          mechanism: 'Not established. Couples\' sleep stages synchronised when they shared a bed, and people with less social support gained the most REM. The authors propose a feedback loop between REM sleep and social bonds.',
           dosage: 'REM share 23.0% beside a partner vs 21.0% alone, with fewer REM interruptions (8.5 to 5.4); no other stage changed. n=24 (12 couples), within-subject.',
           source: { url: 'https://doi.org/10.3389/fpsyt.2020.00583', label: 'Drews et al., Front Psychiatry 2020' }
         },
@@ -435,7 +435,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'No change in REM',
           keyFinding: 'REM unchanged across 4 mattresses (P>0.05)',
           whatThisMeans: 'Mattress choice didn\'t move REM.',
-          mechanism: 'Surface firmness changed comfort and deep sleep in this study, but REM did not track mattress type.',
+          mechanism: 'How evenly the mattress spread body pressure changed deep sleep and micro-arousals in this study, but not REM. The authors say the underlying mechanism is unknown.',
           dosage: 'REM unchanged across 4 mattresses (all P>0.05); deep sleep did change. n=16; run by the mattress maker.',
           source: { url: 'https://doi.org/10.1371/journal.pone.0099969', label: 'Chen et al., PLoS One 2014' }
         },
@@ -522,7 +522,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Negative (lab model)',
           keyFinding: 'Evening endotoxin cut REM share (n=15)',
           whatThisMeans: 'Fighting an infection can trim REM for a night, but real colds haven\'t shown a clear REM drop.',
-          mechanism: 'Immune signalling molecules (cytokines) released during infection promote non-REM sleep and suppress REM, especially when the immune challenge lands before sleep.',
+          mechanism: 'Endotoxin raised body temperature and released immune signalling molecules (cytokines) and stress hormones; non-REM sleep rose and REM fell in step with them.',
           dosage: 'Endotoxin given in the evening cut REM share in healthy men (P<0.05); the same dose mid-sleep did not; a real cold cut sleep about 23 min with no REM change reported. Pollmächer 1993 (n=15); Haack 2001 (n=10); Drake 2000 (n=21).',
           source: { url: 'https://doi.org/10.1152/ajpregu.1993.264.6.R1077', label: 'Pollmächer et al., Am J Physiol 1993' }
         },
@@ -534,7 +534,7 @@ class KygoRemSleep extends HTMLElement {
           effect: 'Little to none',
           keyFinding: 'REM heritability h2 0.07 (n.s.) vs deep sleep 0.35',
           whatThisMeans: 'How much REM you get looks driven more by circumstances than genes.',
-          mechanism: 'In family data, deep sleep was clearly heritable while REM time was not, so REM seems shaped more by timing, substances and environment. Some twin studies disagree.',
+          mechanism: 'In family data, deep sleep was clearly heritable while REM time was not, suggesting REM depends more on circumstances than genes. Some twin studies disagree.',
           dosage: 'REM time showed no significant heritability (h2 0.07, p=0.19) while deep sleep did (0.35); some twin studies disagree. n=684 family members.',
           source: { url: 'https://doi.org/10.1111/jsr.14448', label: 'Leocadio-Miguel et al., J Sleep Res 2025' }
         }
