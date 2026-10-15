@@ -46,6 +46,8 @@ class KygoRemSleep extends HTMLElement {
     this._observer = null;
     this._expandedFactor = null;
     this._expandedTopPick = null;
+    this._activeCategory = 'environment';
+    this._sortMode = 'evidence';
     this._eventsBound = false;
   }
 
@@ -55,7 +57,7 @@ class KygoRemSleep extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'What Influences REM Sleep? A research-based factor explorer by Kygo Health covering 37 factors that change REM (rapid eye movement / dream) sleep, or were tested and do not, across 5 categories: Substances and Nutrition, Supplements, Exercise, Environment and Habits, and Demographics and Body. Each factor was re-checked against its primary source in October 2026. REM is the dreaming stage tied to emotional processing and memory, concentrated in the last hours of the night. Substances: alcohol is the clearest REM suppressor, delaying REM 18 minutes and cutting it 11.3 minutes, with delay starting around 2 drinks (Gardiner 2024 meta-analysis of 27 studies). Nicotine cuts REM dose-dependently. Ramadan-style daytime fasting is linked to less REM (25.6 to 18.6 percent). Heavy THC can suppress REM and quitting cannabis causes REM rebound; typical doses are unclear. High-carb diets nudge REM up. Caffeine does not change REM, it cuts deep sleep 11.4 minutes. A late dinner did not change REM. Supplements: melatonin 3 mg raised REM only in patients with abnormally low REM; ketone ester protected REM after very hard late training in cyclists; glycine, valerian and CBD 300 mg did not change REM. Exercise: hard evening exercise ending 0.5 to 4 hours before bed cut REM about 2 points and delayed it 7.7 minutes, moderate and morning exercise did not; cold water immersion after exercise did not change REM. Environment and habits: short sleep with an early alarm cuts REM first; a 32 C hot bedroom lowers REM and cooling restores it; the first night in an unfamiliar room costs REM; continuous 50 dB background noise cut REM 18.6 minutes; 4 hours of bright iPad reading cut REM but 90 minutes of phone use did not; presleep stress fragments REM; altitude cuts REM; sleeping sitting upright cut REM 79 percent; a hot bath right before bed delays REM; sleeping next to a partner was linked to slightly more REM; presleep learning tracks REM; REM deprivation causes a rebound to 140 percent; circadian timing sets when REM happens; daytime naps, mattress type and phone radio signals did not change REM. Demographics and body: REM changes little with age, sex and genetics; REM dips slightly in the luteal phase of the menstrual cycle and in late pregnancy; obesity costs a few minutes of REM once sleep apnea is excluded; acute illness can trim REM in lab models. How to increase REM sleep naturally. What affects REM sleep. What reduces dream sleep. Does caffeine affect REM sleep. Best supplements for REM sleep. Why alcohol kills dream sleep. Data sourced from peer-reviewed studies and meta-analyses.');
+    __seo(this, 'What Influences REM Sleep? A research-based factor explorer by Kygo Health covering 37 factors that change REM (rapid eye movement / dream) sleep, or were tested and do not, across 5 categories: Substances and Nutrition, Supplements, Exercise, Environment and Habits, and Demographics and Body. Each factor was re-checked against its primary source in October 2026. A Do More / Cut Back board lists the changeable factors with strong or moderate evidence, each with the tested dose and measured result: do more of sleeping longer, keeping the bedroom cool, sleeping on your body clock and not cutting carbs to zero; cut back on alcohol, hard late workouts, nicotine, all-night noise, hours of bright screens, stress before bed, sleeping at altitude and the first night somewhere new. REM is the dreaming stage tied to emotional processing and memory, concentrated in the last hours of the night. Substances: alcohol is the clearest REM suppressor, delaying REM 18 minutes and cutting it 11.3 minutes, with delay starting around 2 drinks (Gardiner 2024 meta-analysis of 27 studies). Nicotine cuts REM dose-dependently. Ramadan-style daytime fasting is linked to less REM (25.6 to 18.6 percent). Heavy THC can suppress REM and quitting cannabis causes REM rebound; typical doses are unclear. High-carb diets nudge REM up. Caffeine does not change REM, it cuts deep sleep 11.4 minutes. A late dinner did not change REM. Supplements: melatonin 3 mg raised REM only in patients with abnormally low REM; ketone ester protected REM after very hard late training in cyclists; glycine, valerian and CBD 300 mg did not change REM. Exercise: hard evening exercise ending 0.5 to 4 hours before bed cut REM about 2 points and delayed it 7.7 minutes, moderate and morning exercise did not; cold water immersion after exercise did not change REM. Environment and habits: short sleep with an early alarm cuts REM first; a 32 C hot bedroom lowers REM and cooling restores it; the first night in an unfamiliar room costs REM; continuous 50 dB background noise cut REM 18.6 minutes; 4 hours of bright iPad reading cut REM but 90 minutes of phone use did not; presleep stress fragments REM; altitude cuts REM; sleeping sitting upright cut REM 79 percent; a hot bath right before bed delays REM; sleeping next to a partner was linked to slightly more REM; presleep learning tracks REM; REM deprivation causes a rebound to 140 percent; circadian timing sets when REM happens; daytime naps, mattress type and phone radio signals did not change REM. Demographics and body: REM changes little with age, sex and genetics; REM dips slightly in the luteal phase of the menstrual cycle and in late pregnancy; obesity costs a few minutes of REM once sleep apnea is excluded; acute illness can trim REM in lab models. How to increase REM sleep naturally. What affects REM sleep. What reduces dream sleep. Does caffeine affect REM sleep. Best supplements for REM sleep. Why alcohol kills dream sleep. Data sourced from peer-reviewed studies and meta-analyses.');
   }
 
   disconnectedCallback() {
@@ -66,10 +68,10 @@ class KygoRemSleep extends HTMLElement {
 
   get _categories() {
     return {
+      environment: { name: 'Environment & Habits', icon: 'moon', count: 16, intro: 'Most of the levers you control live here. REM is back-loaded into the last hours of the night and is sensitive to heat, noise and timing, so protecting the end of your night matters most.' },
       nutrition: { name: 'Substances & Nutrition', icon: 'droplet', count: 7, intro: 'Alcohol is the clearest REM suppressor on this page, and nicotine is close behind. Caffeine, the usual suspect, does not cut REM at all: its cost lands on deep sleep.' },
       supplements: { name: 'Supplements', icon: 'pill', count: 5, intro: 'The supplement literature for REM is thin. Only melatonin (in people whose REM is abnormally low) and ketone esters (after very hard training) moved REM in sleep-lab studies. Treat any "boosts REM" claim as unproven unless it cites REM on a sleep study (PSG).' },
       exercise: { name: 'Exercise', icon: 'dumbbell', count: 2 },
-      environment: { name: 'Environment & Habits', icon: 'moon', count: 16, intro: 'Most of the levers you control live here. REM is back-loaded into the last hours of the night and is sensitive to heat, noise and timing, so protecting the end of your night matters most.' },
       demographics: { name: 'Demographics & Body', icon: 'users', count: 7, intro: 'REM is surprisingly stable across age, sex and genes. The clear sex and age differences are in deep sleep, not REM.' }
     };
   }
@@ -184,7 +186,7 @@ class KygoRemSleep extends HTMLElement {
         {
           key: 'ketone-ester',
           name: 'Ketone Ester After Hard Exercise',
-          direction: 'positive',
+          direction: 'protects',
           evidence: 'emerging',
           effect: 'Protects REM (athletes)',
           keyFinding: 'Kept REM at 117 vs 93 min after hard training',
@@ -614,6 +616,15 @@ class KygoRemSleep extends HTMLElement {
       dumbbell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>',
       wind: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2"/><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M12.6 19.4A2 2 0 1 0 14 16H2"/></svg>',
       droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>',
+      shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+      clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      wheat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22 16 8"/><path d="M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4Z"/></svg>',
+      wine: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg>',
+      cigarette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12H3a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h14"/><path d="M18 8c0-2.5-2-2.5-2-5"/><path d="M21 16a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M22 8c0-2.5-2-2.5-2-5"/><path d="M7 12v4"/></svg>',
+      volume: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+      phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
+      mountain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>',
+      home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
       minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
       chevDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>',
       externalLink: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>',
@@ -630,80 +641,181 @@ class KygoRemSleep extends HTMLElement {
 
   // ── Direction & Evidence Config ────────────────────────────────────────
 
-  // Direction → on-brand class + icon (green for positive; neutral slate for the rest,
-  // differentiated by the up/down/shuffle/minus icon — no off-brand red/amber).
-  _directionConfig(d) {
+  _directionConfig(dir) {
     const map = {
-      positive: { cls: 'dir-pos', icon: 'arrowUp', label: 'Positive' },
-      negative: { cls: 'dir-neg', icon: 'arrowDown', label: 'Negative' },
-      mixed: { cls: 'dir-mix', icon: 'arrowLeftRight', label: 'Mixed' },
-      variable: { cls: 'dir-var', icon: 'arrowLeftRight', label: 'Variable' },
-      neutral: { cls: 'dir-var', icon: 'minus', label: 'Neutral' }
+      positive: { icon: 'arrowUp', label: 'Raises REM', color: '#16A34A', bg: 'rgba(34,197,94,0.1)' },
+      protects: { icon: 'shield', label: 'Protects REM', color: '#16A34A', bg: 'rgba(34,197,94,0.1)' },
+      negative: { icon: 'arrowDown', label: 'Lowers REM', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' },
+      mixed: { icon: 'arrowLeftRight', label: 'Mixed', color: '#D97706', bg: 'rgba(251,191,36,0.12)' },
+      variable: { icon: 'arrowLeftRight', label: 'Sets timing', color: '#64748B', bg: 'rgba(148,163,184,0.12)' },
+      neutral: { icon: 'minus', label: 'No clear effect', color: '#64748B', bg: 'rgba(148,163,184,0.12)' }
     };
-    return map[d] || map.variable;
+    return map[dir] || map.mixed;
   }
 
-  _evidenceConfig(e) {
+  _evidenceConfig(ev) {
     const map = {
-      strong: { cls: 'ev-strong', label: 'Strong' },
-      moderate: { cls: 'ev-moderate', label: 'Moderate' },
-      emerging: { cls: 'ev-moderate', label: 'Emerging' }
+      strong: { label: 'Strong' },
+      moderate: { label: 'Moderate' },
+      emerging: { label: 'Emerging' }
     };
-    return map[e] || map.moderate;
+    return map[ev] || map.moderate;
   }
 
   // ── Render Helpers ────────────────────────────────────────────────────
 
-  // Category jump-nav chips — clicking scrolls to that category block.
-  _renderCategoryNav() {
+  // Centered category tabs; one category's cards show at a time.
+  _renderCategoryTabs() {
     return Object.entries(this._categories).map(([k, c]) =>
-      `<button class="cat-chip" data-jump="cat-${k}">
-        <span class="cat-chip-ico">${this._icon(c.icon)}</span>${c.name}<span class="cat-chip-n">${c.count}</span>
+      `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab" aria-selected="${k === this._activeCategory}">
+        <span class="cat-tab-icon">${this._icon(c.icon)}</span>
+        <span>${c.name}</span>
+        <span class="cat-tab-count">${(this._factors[k] || []).length}</span>
       </button>`
     ).join('');
   }
 
-  // Each category is its own block (header + a 2-up grid of factor cards on desktop).
-  _renderCategoryBlocks() {
-    return Object.entries(this._categories).map(([k, c]) => {
-      const factors = this._factors[k] || [];
-      const intro = c.intro ? `<p class="cat-block-intro">${c.intro}</p>` : '';
-      return `
-        <div class="cat-block animate-on-scroll" id="cat-${k}">
-          <div class="cat-block-head">
-            <span class="cat-block-ico">${this._icon(c.icon)}</span>
-            <h3 class="cat-block-name">${c.name}</h3>
-            <span class="cat-block-count">${factors.length} factors</span>
-          </div>
-          ${intro}
-          <div class="factor-grid">${factors.map(f => this._renderFactorCard(f)).join('')}</div>
-        </div>`;
-    }).join('');
+  _renderSortBar() {
+    const opt = (v, l) => `<option value="${v}"${this._sortMode === v ? ' selected' : ''}>${l}</option>`;
+    return `<label class="sort-label" for="sort-select">Sort by:</label>
+      <select class="sort-select" id="sort-select">${opt('evidence', 'Evidence Strength')}${opt('direction', 'Effect Direction')}</select>`;
+  }
+
+  _renderFactorCards() {
+    let factors = this._factors[this._activeCategory];
+    if (!factors) return '';
+    if (this._sortMode === 'evidence') {
+      const rank = { strong: 0, moderate: 1, emerging: 2 };
+      factors = [...factors].sort((a, b) => (rank[a.evidence] ?? 9) - (rank[b.evidence] ?? 9));
+    } else if (this._sortMode === 'direction') {
+      const rank = { positive: 0, protects: 1, mixed: 2, variable: 3, neutral: 4, negative: 5 };
+      factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
+    }
+    const cat = this._categories[this._activeCategory];
+    const note = cat.intro ? `<p class="cat-note">${this._icon(cat.icon)}<span>${cat.intro}</span></p>` : '';
+    return note + factors.map(f => this._renderFactorCard(f)).join('');
   }
 
   _renderFactorCard(f) {
-    const dc = this._directionConfig(f.direction);
+    const dir = this._directionConfig(f.direction);
     const ev = this._evidenceConfig(f.evidence);
     const isExp = this._expandedFactor === f.key;
     return `
-      <div class="factor-card ${isExp ? 'expanded' : ''}" data-factor="${f.key}">
+      <div class="factor-card ${isExp ? 'expanded' : ''}" data-factor="${f.key}" id="factor-${f.key}">
         <div class="factor-header" role="button" aria-expanded="${isExp}" tabindex="0">
           <div class="factor-top">
-            <span class="badge-direction ${dc.cls}"><span class="badge-icon">${this._icon(dc.icon)}</span>${dc.label}</span>
-            <span class="ev-badge ${ev.cls}">${ev.label}</span>
+            <span class="badge-direction" style="color:${dir.color};background:${dir.bg}"><span class="badge-icon">${this._icon(dir.icon)}</span>${dir.label}</span>
             <span class="factor-toggle">${this._icon('chevDown')}</span>
           </div>
           <h3 class="factor-name">${f.name}</h3>
-          <p class="factor-key"><span class="factor-key-label">Key</span> ${f.keyFinding}</p>
+          <p class="factor-effect">${f.keyFinding}</p>
+          <p class="factor-evidence-text"><span class="evidence-label">Evidence:</span> ${ev.label}</p>
         </div>
         <div class="factor-body">
-          <div class="detail-row"><span class="detail-label">What this means</span><span class="detail-value">${f.whatThisMeans}</span></div>
-          <div class="detail-row"><span class="detail-label">Mechanism</span><span class="detail-value">${f.mechanism}</span></div>
-          <div class="detail-row"><span class="detail-label">Dose / context</span><span class="detail-value">${f.dosage}</span></div>
-          <a href="${f.source.url}" class="factor-src" target="_blank" rel="noopener nofollow" data-action="source-link">${f.source.label} ${this._icon('externalLink')}</a>
-          ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate" data-track-label="${f.affiliate.slug}">Check it out on Amazon ${this._icon('externalLink')}</a><span class="factor-affiliate-note">Affiliate link — we may earn a commission at no extra cost to you.</span>` : ''}
+          <div class="factor-detail">
+            <div class="detail-row"><span class="detail-label">What this means</span><span class="detail-value">${f.whatThisMeans}</span></div>
+            <div class="detail-row"><span class="detail-label">Mechanism</span><span class="detail-value">${f.mechanism}</span></div>
+            <div class="detail-row"><span class="detail-label">Dose / context</span><span class="detail-value">${f.dosage}</span></div>
+            <div class="detail-row"><span class="detail-label">Source</span><a href="${f.source.url}" class="factor-src" target="_blank" rel="noopener nofollow" data-action="source-link">${f.source.label} ${this._icon('externalLink')}</a></div>
+            ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate" data-track-label="${f.affiliate.slug}">Check it out on Amazon ${this._icon('externalLink')}</a><span class="factor-affiliate-note">Affiliate link — we may earn a commission at no extra cost to you.</span>` : ''}
+          </div>
         </div>
       </div>`;
+  }
+
+  _updateCategory() {
+    const shadow = this.shadowRoot;
+    this._expandedFactor = null;
+    const tabs = shadow.querySelector('.cat-tabs');
+    const cards = shadow.querySelector('.factor-cards');
+    const sortBar = shadow.querySelector('.sort-bar');
+    if (tabs) tabs.innerHTML = this._renderCategoryTabs();
+    if (cards) cards.innerHTML = this._renderFactorCards();
+    if (sortBar) sortBar.innerHTML = this._renderSortBar();
+  }
+
+  // ── Action Board ──────────────────────────────────────────────────────
+  // "Do more / Cut back": factors a reader can change, with strong or
+  // moderate evidence, each with its dose and measured result. Rows are
+  // condensed from the matching _factors entry; evidence is read from
+  // _factors directly so the two can't disagree. Melatonin is left out
+  // (it only helped patients with abnormally low REM).
+
+  get _board() {
+    return {
+      more: [
+        { key: 'short-sleep', icon: 'moon', label: 'Sleep longer', dose: 'Protect the last hours of the night', result: 'Short nights cut REM first' },
+        { key: 'bedroom-heat', icon: 'thermometer', label: 'Keep the bedroom cool', dose: 'Around 22°C; cool the bed in a heatwave', result: '32°C room lowered REM' },
+        { key: 'circadian-timing', icon: 'clock', label: 'Sleep on your body clock', dose: 'Regular hours; limit jet lag and shift swings', result: 'REM peaks just after the body-temperature low' },
+        { key: 'diet-carbs', icon: 'wheat', label: 'Don\'t cut carbs to zero', dose: 'Higher-carb meals vs low-carb', result: 'REM time and share up (11 trials)' }
+      ],
+      less: [
+        { key: 'alcohol', icon: 'wine', label: 'Alcohol', dose: 'From about 2 drinks; more, bigger hit', result: 'REM 18 min later, 11.3 min shorter' },
+        { key: 'evening-intense-exercise', icon: 'dumbbell', label: 'Hard late workouts', dose: 'Ending 0.5–4 h before bed', result: 'REM −2 points; moderate is fine' },
+        { key: 'nicotine', icon: 'cigarette', label: 'Nicotine', dose: 'Patch or smoking; more, bigger hit', result: 'REM down by dose' },
+        { key: 'background-noise', icon: 'volume', label: 'All-night noise', dose: 'Steady noise machine or hum', result: 'REM −18.6 min at 50 dB' },
+        { key: 'evening-screens', icon: 'phone', label: 'Hours of bright screens', dose: '4 h before bed; 90 min was fine', result: 'REM 109 vs 121 min' },
+        { key: 'presleep-stress', icon: 'alert', label: 'Stress before bed', dose: 'Wind down before lights out', result: 'REM% down, more broken' },
+        { key: 'altitude', icon: 'mountain', label: 'Sleeping at altitude', dose: 'The higher, the bigger the cut', result: 'REM share falls step by step' },
+        { key: 'first-night', icon: 'home', label: 'First night somewhere new', dose: 'Hotels, new bedrooms; gone by night 2', result: 'Less, later REM on night 1' }
+      ]
+    };
+  }
+
+  _renderBoardCol(kind) {
+    const up = kind === 'more';
+    const byKey = {};
+    Object.entries(this._factors).forEach(([cat, list]) => list.forEach(f => { byKey[f.key] = { ...f, cat }; }));
+    const rows = this._board[kind].filter(r => byKey[r.key]);
+    const visible = 6;
+    const items = rows.map((r, i) => {
+      const f = byKey[r.key];
+      const ev = this._evidenceConfig(f.evidence);
+      return `
+        <li class="ab-item${i >= visible ? ' ab-extra' : ''}">
+          <button type="button" class="ab-row" data-jump="${f.key}" data-cat="${f.cat}" aria-label="${f.name}: ${r.result}. Open details">
+            <span class="ab-ico">${this._icon(r.icon)}</span>
+            <span class="ab-main">
+              <span class="ab-name">${r.label}</span>
+              <span class="ab-dose">${r.dose}</span>
+            </span>
+            <span class="ab-side">
+              <span class="ab-result">${r.result}</span>
+              <span class="ab-ev" title="${ev.label} evidence"><span class="ab-bars" data-lvl="${{ strong: 3, moderate: 2, emerging: 1 }[f.evidence] || 1}" aria-hidden="true"><i></i><i></i><i></i></span>${ev.label} evidence</span>
+            </span>
+          </button>
+        </li>`;
+    }).join('');
+    const more = rows.length > visible
+      ? `<button type="button" class="ab-toggle" data-ab-more aria-expanded="false"><span class="ab-toggle-lbl">Show all ${rows.length}</span>${this._icon('chevDown')}</button>`
+      : '';
+    return `
+      <div class="ab-col ab-col-${kind}">
+        <div class="ab-head">
+          <span class="ab-head-ico">${this._icon(up ? 'arrowUp' : 'arrowDown')}</span>
+          <div>
+            <h3 class="ab-title">${up ? 'Do more' : 'Cut back'}</h3>
+            <p class="ab-sub">${rows.length} ${up ? 'habits that protect REM' : 'things that cut or delay REM'}</p>
+          </div>
+        </div>
+        <ul class="ab-list">${items}</ul>
+        ${more}
+      </div>`;
+  }
+
+  _jumpToFactor(key, cat) {
+    if (!this._factors[cat]) return;
+    this._activeCategory = cat;
+    this._updateCategory();
+    this._toggleFactor(key);
+    const card = this.shadowRoot.getElementById(`factor-${key}`);
+    if (!card) return;
+    card.classList.add('flash');
+    setTimeout(() => card.classList.remove('flash'), 1600);
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    const hdr = card.querySelector('.factor-header');
+    if (hdr) hdr.focus({ preventScroll: true });
   }
 
   _renderTopPicks() {
@@ -1313,20 +1425,30 @@ class KygoRemSleep extends HTMLElement {
           <div class="picks-grid animate-on-scroll">${this._renderTopPicks()}</div>
         </div>
       </section>
-      ${this._renderAppCta()}
 
-
-
-
-      <section class="section bg-light" id="explore">
+      <section class="section bg-white" id="action-board">
         <div class="section-inner">
-          <div class="section-head animate-on-scroll">
+          <div class="section-head center animate-on-scroll">
+            <div class="kicker">What to change</div>
+            <h2>Do more / <span class="hl">cut back.</span></h2>
+            <p class="lede">The changes with real evidence behind them, with the dose that was tested and what it did. Tap any row for the full study details.</p>
+          </div>
+          <div class="ab-grid animate-on-scroll">${this._renderBoardCol('more')}${this._renderBoardCol('less')}</div>
+          <p class="ab-foot">Only factors you can change, with strong or moderate evidence. Supplements that helped only in patients are left out; they stay in the full list below.</p>
+        </div>
+      </section>
+      ${this._renderAppCta('gray')}
+
+      <section class="section bg-white" id="explore">
+        <div class="section-inner">
+          <div class="section-head center animate-on-scroll">
             <div class="kicker">The library</div>
             <h2>Explore all <span class="hl">${factorCount} factors.</span></h2>
-            <p class="lede">Jump to a category, then tap any factor to expand its plain-English takeaway, mechanism, dose, and source.</p>
+            <p class="lede">Pick a category, then tap any factor for its plain-English takeaway, mechanism, dose, and source.</p>
           </div>
-          <div class="cat-nav animate-on-scroll">${this._renderCategoryNav()}</div>
-          ${this._renderCategoryBlocks()}
+          <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
+          <div class="sort-bar animate-on-scroll">${this._renderSortBar()}</div>
+          <div class="factor-cards">${this._renderFactorCards()}</div>
         </div>
       </section>
       ${this._renderEmailCta()}
@@ -1381,7 +1503,7 @@ class KygoRemSleep extends HTMLElement {
         --kygo-green:#22C55E; --kygo-green-dark:#16A34A; --kygo-green-light:#DCFCE7;
         --kygo-dark:#0F172A; --kygo-light:#F8FAFC;
         --bg-canvas:#FFFFFF; --bg-surface:#F8FAFC; --bg-raised:#F1F5F9;
-        --fg-1:#0F172A; --fg-2:#475569; --fg-3:#94A3B8; --border-subtle:#E2E8F0;
+        --fg-1:#0F172A; --fg-2:#475569; --fg-3:#94A3B8; --border-subtle:#E2E8F0; --red:#EF4444;
         --shadow-md:0 8px 24px rgba(15,23,42,.06); --shadow-cta:0 8px 24px rgba(34,197,94,.30);
         --font-display:'Space Grotesk',sans-serif; --font-body:'DM Sans',sans-serif;
         --ease-out:cubic-bezier(.16,1,.3,1);
@@ -1495,55 +1617,102 @@ class KygoRemSleep extends HTMLElement {
       .kygo-cta-card .cta-badges { display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:center; }
       .kygo-cta-card .cta-badges img { width:32px; height:32px; border-radius:8px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10); padding:4px; object-fit:contain; }
 
-      /* Category nav + blocks */
-      .cat-nav { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
-      .cat-chip { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-body); font-size:13px; font-weight:600; padding:9px 14px; border-radius:999px; border:1.5px solid var(--border-subtle); background:#fff; color:var(--fg-2); cursor:pointer; transition:all .15s ease; }
-      .cat-chip:hover { border-color:var(--kygo-green); color:var(--kygo-green-dark); }
-      .cat-chip-ico { display:inline-flex; }
-      .cat-chip-ico svg { width:15px; height:15px; }
-      .cat-chip-n { font-size:11px; padding:2px 7px; border-radius:999px; background:var(--bg-raised); color:var(--fg-3); }
-      .cat-block { padding-top:32px; scroll-margin-top:80px; }
-      .cat-block-head { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
-      .cat-block-ico { width:40px; height:40px; border-radius:11px; background:var(--kygo-green-light); color:var(--kygo-green-dark); display:inline-flex; align-items:center; justify-content:center; flex:none; }
-      .cat-block-ico svg { width:20px; height:20px; }
-      .cat-block-name { font-family:var(--font-display); font-weight:600; font-size:clamp(19px,2.6vw,24px); margin:0; flex:1; min-width:0; }
-      .cat-block-count { font-family:var(--font-display); font-size:12px; font-weight:600; color:var(--fg-3); background:var(--bg-raised); padding:4px 11px; border-radius:999px; white-space:nowrap; }
-      .cat-block-intro { font-size:14px; line-height:1.6; color:var(--fg-2); background:#fff; border:1px solid var(--border-subtle); border-radius:14px; padding:14px 16px; margin:0 0 14px; }
+      .section-head.center { margin-left:auto; margin-right:auto; text-align:center; }
+      .section-head.center .lede { margin-left:auto; margin-right:auto; }
+
+      /* Action board · Do more / Cut back */
+      .ab-grid { display:grid; grid-template-columns:1fr; gap:16px; align-items:start; }
+      @media (min-width:900px){ .ab-grid { grid-template-columns:1fr 1fr; gap:24px; } }
+      .ab-col { background:#fff; border:1px solid #D4D4D8; border-radius:20px; box-shadow:0 1px 2px rgba(15,23,42,.04), 0 8px 24px rgba(15,23,42,.05); overflow:hidden; }
+      .ab-head { display:flex; align-items:center; gap:12px; padding:18px 20px; border-bottom:1px solid var(--border-subtle); }
+      @media (min-width:900px){ .ab-head { padding:20px 24px; } }
+      .ab-head-ico { width:36px; height:36px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex:none; color:#fff; }
+      .ab-head-ico svg { width:18px; height:18px; }
+      .ab-col-more .ab-head { background:#F0FDF4; border-bottom-color:#DCFCE7; }
+      .ab-col-less .ab-head { background:#FEF2F2; border-bottom-color:#FEE2E2; }
+      .ab-col-more .ab-head-ico { background:var(--kygo-green); }
+      .ab-col-less .ab-head-ico { background:var(--red); }
+      .ab-title { font-family:var(--font-display); font-weight:600; font-size:19px; color:var(--fg-1); line-height:1.2; margin:0; }
+      .ab-sub { font-size:13px; color:var(--fg-2); margin:2px 0 0; }
+      .ab-list { list-style:none; margin:0; padding:4px 12px; }
+      @media (min-width:900px){ .ab-list { padding:0 16px 4px; } }
+      .ab-item + .ab-item { border-top:1px solid var(--bg-raised); }
+      .ab-extra { display:none; }
+      .ab-col.open .ab-extra { display:block; }
+      .ab-row { width:100%; display:grid; grid-template-columns:40px 1fr; column-gap:14px; align-items:start; padding:14px 8px; background:none; border:0; border-radius:12px; text-align:left; font-family:inherit; color:inherit; cursor:pointer; transition:background .15s; }
+      .ab-row:hover { background:var(--bg-surface); }
+      .ab-row:focus-visible, .ab-toggle:focus-visible, .factor-header:focus-visible, .cat-tab:focus-visible { outline:2px solid var(--kygo-green); outline-offset:2px; }
+      .ab-ico { width:40px; height:40px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:var(--bg-surface); border:1px solid var(--border-subtle); grid-row:span 2; }
+      .ab-ico svg { width:19px; height:19px; }
+      .ab-col-more .ab-ico { color:var(--kygo-green-dark); }
+      .ab-col-less .ab-ico { color:var(--red); }
+      .ab-main { display:flex; flex-direction:column; min-width:0; }
+      .ab-name { font-family:var(--font-display); font-weight:600; font-size:15px; color:var(--fg-1); line-height:1.3; }
+      .ab-dose { font-size:13px; color:var(--fg-2); line-height:1.45; }
+      .ab-side { grid-column:2; display:flex; flex-wrap:wrap; align-items:center; gap:4px 12px; margin-top:6px; }
+      .ab-result { font-size:12.5px; font-weight:600; color:var(--fg-1); line-height:1.35; }
+      .ab-ev { display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:500; color:var(--fg-3); white-space:nowrap; }
+      .ab-bars { display:inline-flex; align-items:flex-end; gap:2px; height:11px; }
+      .ab-bars i { width:3px; border-radius:1px; background:var(--border-subtle); }
+      .ab-bars i:nth-child(1) { height:5px; }
+      .ab-bars i:nth-child(2) { height:8px; }
+      .ab-bars i:nth-child(3) { height:11px; }
+      .ab-bars[data-lvl="1"] i:nth-child(-n+1), .ab-bars[data-lvl="2"] i:nth-child(-n+2), .ab-bars[data-lvl="3"] i { background:var(--fg-2); }
+      @media (max-width:599px){ .ab-side { flex-direction:column; align-items:flex-start; gap:3px; } }
+      .ab-toggle { width:100%; display:flex; align-items:center; justify-content:center; gap:6px; min-height:48px; border:0; border-top:1px solid var(--bg-raised); background:#fff; font:inherit; font-size:14px; font-weight:600; color:var(--fg-2); cursor:pointer; }
+      .ab-toggle:hover { color:var(--fg-1); background:var(--bg-surface); }
+      .ab-toggle svg { width:16px; height:16px; transition:transform .2s; }
+      .ab-col.open .ab-toggle svg { transform:rotate(180deg); }
+      .ab-foot { margin:14px auto 0; font-size:12.5px; color:var(--fg-3); text-align:center; max-width:640px; }
+
+      /* Category tabs + sort */
+      .cat-tabs { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:16px; }
+      .cat-tab { display:flex; align-items:center; gap:6px; padding:8px 14px; border-radius:50px; border:2px solid var(--border-subtle); background:#fff; font-family:inherit; font-size:13px; font-weight:500; color:var(--fg-2); cursor:pointer; white-space:nowrap; transition:all .2s; }
+      .cat-tab.active { background:rgba(34,197,94,.1); color:var(--kygo-green-dark); border-color:var(--kygo-green); }
+      .cat-tab:hover { border-color:var(--kygo-green); }
+      .cat-tab-icon { width:16px; height:16px; display:flex; }
+      .cat-tab-icon svg { width:16px; height:16px; }
+      .cat-tab-count { background:var(--bg-raised); color:var(--fg-3); font-size:11px; padding:1px 7px; border-radius:50px; }
+      .cat-tab.active .cat-tab-count { background:rgba(34,197,94,.2); color:var(--kygo-green-dark); }
+      .sort-bar { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:20px; }
+      .sort-label { font-size:12px; font-weight:600; color:var(--fg-3); text-transform:uppercase; letter-spacing:.3px; }
+      .sort-select { padding:6px 28px 6px 12px; border-radius:50px; border:1px solid var(--border-subtle); background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance:none; appearance:none; font-family:inherit; font-size:13px; font-weight:500; color:var(--fg-2); cursor:pointer; }
+      .sort-select:hover, .sort-select:focus { border-color:var(--kygo-green); outline:none; }
 
       /* Factor cards */
-      .factor-grid { display:grid; grid-template-columns:1fr; gap:12px; align-items:start; }
-      @media (min-width:768px){ .factor-grid { grid-template-columns:1fr 1fr; } }
-      .factor-card { background:#fff; border:1.5px solid var(--border-subtle); border-radius:16px; overflow:hidden; transition:border-color .2s, box-shadow .2s; }
-      .factor-card.expanded { border-color:var(--kygo-green); box-shadow:var(--shadow-md); }
-      .factor-header { padding:18px; cursor:pointer; }
-      .factor-top { display:flex; align-items:center; gap:8px; margin-bottom:12px; }
-      .badge-direction { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-display); font-size:11px; font-weight:600; padding:4px 10px; border-radius:999px; }
-      .badge-direction .badge-icon { display:inline-flex; }
-      .badge-direction .badge-icon svg { width:12px; height:12px; }
-      .badge-direction.dir-pos { background:var(--kygo-green-light); color:var(--kygo-green-dark); }
-      .badge-direction.dir-neg { background:var(--bg-raised); color:var(--fg-2); }
-      .badge-direction.dir-mix { background:var(--bg-raised); color:var(--fg-2); }
-      .badge-direction.dir-var { background:var(--bg-raised); color:var(--fg-3); }
-      .ev-badge { font-family:var(--font-display); font-size:10px; font-weight:600; letter-spacing:.3px; text-transform:uppercase; padding:3px 9px; border-radius:999px; }
-      .ev-badge.ev-strong { background:var(--kygo-green-light); color:var(--kygo-green-dark); }
-      .ev-badge.ev-moderate { background:var(--bg-raised); color:var(--fg-2); }
-      .factor-toggle { margin-left:auto; color:var(--fg-3); flex:none; }
-      .factor-toggle svg { width:18px; height:18px; transition:transform .2s; }
-      .factor-card.expanded .factor-toggle svg { transform:rotate(180deg); color:var(--kygo-green-dark); }
-      .factor-name { font-family:var(--font-display); font-weight:600; font-size:17px; line-height:1.25; margin:0 0 6px; }
-      .factor-key { margin:0; font-size:13px; line-height:1.5; color:var(--fg-2); }
-      .factor-key-label { font-family:var(--font-display); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.3px; color:var(--fg-3); margin-right:4px; }
-      .factor-body { display:none; padding:0 18px 18px; flex-direction:column; gap:12px; }
-      .factor-card.expanded .factor-body { display:flex; }
-      .detail-row { display:flex; flex-direction:column; gap:3px; border-top:1px solid var(--border-subtle); padding-top:12px; }
-      .detail-label { font-family:var(--font-display); font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.4px; color:var(--fg-3); }
-      .detail-value { font-size:13px; line-height:1.6; color:var(--fg-2); }
-      .factor-src { display:inline-flex; align-items:center; gap:6px; font-family:var(--font-body); font-size:12.5px; font-weight:600; color:var(--kygo-green-dark); }
-      .factor-src svg { width:13px; height:13px; }
-      .factor-affiliate { display:inline-flex; align-items:center; gap:6px; align-self:flex-start; padding:10px 14px; border-radius:10px; border:1.5px solid var(--kygo-green-light); background:rgba(34,197,94,.06); color:var(--kygo-green-dark); font-family:var(--font-body); font-weight:600; font-size:13px; }
+      .factor-cards { display:grid; grid-template-columns:1fr; gap:12px; }
+      @media (min-width:768px){ .factor-cards { grid-template-columns:1fr 1fr; align-items:start; } }
+      .cat-note { grid-column:1 / -1; display:flex; gap:10px; align-items:flex-start; margin:0 0 4px; padding:14px 16px; border-radius:14px; background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.3); font-size:14px; line-height:1.55; color:var(--fg-2); }
+      .cat-note svg { width:18px; height:18px; flex:none; margin-top:2px; color:var(--kygo-green-dark); }
+      .factor-card { background:#fff; border:1px solid var(--border-subtle); border-radius:20px; overflow:hidden; box-shadow:0 4px 12px rgba(0,0,0,.04); transition:box-shadow .3s, border-color .3s; scroll-margin-top:84px; }
+      .factor-card:hover { box-shadow:0 12px 32px rgba(0,0,0,.08); border-color:#CBD5E1; }
+      .factor-card.flash { border-color:var(--kygo-green); box-shadow:0 0 0 3px rgba(34,197,94,.25), 0 12px 32px rgba(0,0,0,.08); }
+      .factor-header { padding:20px; cursor:pointer; }
+      .factor-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+      .badge-direction { display:inline-flex; align-items:center; gap:4px; padding:3px 10px; border-radius:50px; font-size:12px; font-weight:600; }
+      .badge-icon { width:14px; height:14px; display:flex; }
+      .badge-icon svg { width:14px; height:14px; }
+      .factor-toggle { width:24px; height:24px; color:var(--fg-3); transition:transform .3s; flex-shrink:0; }
+      .factor-toggle svg { width:24px; height:24px; }
+      .factor-card.expanded .factor-toggle { transform:rotate(180deg); }
+      .factor-name { font-family:var(--font-display); font-weight:600; font-size:18px; line-height:1.25; margin:0 0 4px; color:var(--fg-1); }
+      .factor-effect { font-size:14px; font-weight:600; color:var(--fg-2); margin:0 0 2px; line-height:1.45; }
+      .factor-evidence-text { font-size:13px; color:var(--fg-1); margin:0; }
+      .evidence-label { color:var(--fg-3); font-weight:500; }
+      .factor-body { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.4,0,.2,1), padding .4s; padding:0 20px; }
+      .factor-card.expanded .factor-body { max-height:1400px; padding:0 20px 20px; }
+      .factor-detail { border-top:1px solid var(--bg-raised); padding-top:16px; display:flex; flex-direction:column; gap:12px; }
+      .detail-row { display:flex; flex-direction:column; gap:2px; }
+      .detail-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; color:var(--fg-3); }
+      .detail-value { font-size:14px; line-height:1.5; color:var(--fg-2); }
+      .factor-src { display:inline-flex; align-items:center; gap:4px; align-self:flex-start; font-size:13px; font-weight:500; color:var(--kygo-green); }
+      .factor-src:hover { color:var(--kygo-green-dark); }
+      .factor-src svg { width:12px; height:12px; }
+      .factor-affiliate { display:inline-flex; align-items:center; gap:6px; align-self:flex-start; padding:10px 14px; border-radius:10px; border:1.5px solid var(--kygo-green-light); background:rgba(34,197,94,.06); color:var(--kygo-green-dark); font-size:13px; font-weight:600; }
       .factor-affiliate:hover { border-color:var(--kygo-green); background:rgba(34,197,94,.12); }
       .factor-affiliate svg { width:13px; height:13px; }
       .factor-affiliate-note { font-size:11px; color:var(--fg-3); line-height:1.4; margin-top:-6px; }
+      @media (prefers-reduced-motion:reduce){ .factor-body { transition:none; } }
 
       /* Blog CTA */
 
@@ -1598,11 +1767,25 @@ class KygoRemSleep extends HTMLElement {
       // Sources · show-all toggle
       if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
 
-      // Category jump-nav → scroll to that category block
+      // Action board: jump to a factor card, or expand a column
       const jump = e.target.closest('[data-jump]');
-      if (jump) {
-        const target = shadow.getElementById(jump.dataset.jump);
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (jump) { this._jumpToFactor(jump.dataset.jump, jump.dataset.cat); return; }
+      const abMore = e.target.closest('[data-ab-more]');
+      if (abMore) {
+        const col = abMore.closest('.ab-col');
+        const open = !col.classList.contains('open');
+        col.classList.toggle('open', open);
+        abMore.setAttribute('aria-expanded', open ? 'true' : 'false');
+        const lbl = abMore.querySelector('.ab-toggle-lbl');
+        if (lbl) lbl.textContent = open ? 'Show fewer' : `Show all ${col.querySelectorAll('.ab-item').length}`;
+        return;
+      }
+
+      // Category tabs
+      const tab = e.target.closest('.cat-tab');
+      if (tab) {
+        this._activeCategory = tab.dataset.category;
+        this._updateCategory();
         return;
       }
 
@@ -1621,6 +1804,14 @@ class KygoRemSleep extends HTMLElement {
         const card = pickHeader.closest('.pick-card');
         if (card) this._toggleTopPick(parseInt(card.dataset.pick));
         return;
+      }
+    });
+
+    // Sort dropdown
+    shadow.addEventListener('change', (e) => {
+      if (e.target.classList.contains('sort-select')) {
+        this._sortMode = e.target.value;
+        this._updateCategory();
       }
     });
 
