@@ -73,7 +73,7 @@ canary file (`fitbit-air` / `whoop-peak-12mo`).
 | `4aF8l5D` | search | — | `https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20` | `garmin-search` | ✅ converted | kygo-calorie-burn-accuracy.js, kygo-recovery-scores.js, kygo-sensor-comparison.js, kygo-sleep-metrics.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js, kygo-wearable-accuracy.js |
 | `4aF93jj` | search | — | `https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20` | `oura-ring-search` | ✅ converted | kygo-calorie-burn-accuracy.js, kygo-recovery-scores.js, kygo-sensor-comparison.js, kygo-sleep-metrics.js, kygo-step-count-accuracy.js, kygo-vo2max-accuracy.js, kygo-wearable-accuracy.js |
 | `4aYRATe` | product | `B0FX2MPK9P` | `https://www.amazon.com/dp/B0FX2MPK9P?tag=kygohealthapp-20&th=1` | `ice-bath-tub` | ✅ converted | kygo-hrv-factors.js |
-| `4bfT8bC` | product | `B07RWRJ4XW` | `https://www.amazon.com/dp/B07RWRJ4XW?tag=kygohealthapp-20` | `white-noise-machine` | ✅ converted | kygo-deep-sleep-factors.js, kygo-sleep-latency-factors.js |
+| `4bfT8bC` | product | `B07RWRJ4XW` | `https://www.amazon.com/dp/B07RWRJ4XW?tag=kygohealthapp-20` | `white-noise-machine` | ✅ converted | kygo-deep-sleep-factors.js |
 | `4cVnvGt` | product | `B002CQU564` | `https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1` | `omega-3-fish-oil` | ✅ converted | kygo-hrv-factors.js, kygo-recovery-scores.js, kygo-supplements-by-metric.js |
 | `4cm6d5m` | product | `B00GB85JR4` | `https://www.amazon.com/dp/B00GB85JR4?tag=kygohealthapp-20&th=1` | `vitamin-d3-5000` | ✅ converted | kygo-hrv-factors.js, kygo-supplements-by-metric.js |
 | `4cwMwI1` | product | `B07W781XWF` | `https://www.amazon.com/dp/B07W781XWF?tag=kygohealthapp-20&th=1` | `blue-light-glasses` | ✅ converted | kygo-deep-sleep-factors.js, kygo-sleep-latency-factors.js |
@@ -93,7 +93,7 @@ canary file (`fitbit-air` / `whoop-peak-12mo`).
 | `4suRaen` | search | — | `https://www.amazon.com/s?k=whoop&rh=p_72%3A1248957011%2Cp_6%3AA95DP87XYU2J1&tag=kygohealthapp-20` | `whoop-search` | ✅ converted | kygo-sensor-comparison.js |
 | `4szGon9` | product | `B08666GMWG` | `https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1` | `melatonin-gummies` | ✅ converted | kygo-deep-sleep-factors.js, kygo-recovery-scores.js, kygo-rem-sleep.js, kygo-sleep-latency-factors.js, kygo-supplements-by-metric.js |
 | `4tZ5Zr2` | product | `B092DXFGVH` | `https://www.amazon.com/dp/B092DXFGVH?tag=kygohealthapp-20&th=1` | `meditation-cushion` | ✅ converted | kygo-hrv-factors.js |
-| `4uL7b1p` | product | `B0BDP24LP4` | `https://www.amazon.com/dp/B0BDP24LP4?tag=kygohealthapp-20&th=1` | `fiber-gummies` | ✅ converted | kygo-sleep-latency-factors.js, kygo-staying-asleep-factors.js |
+| `4uL7b1p` | product | `B0BDP24LP4` | `https://www.amazon.com/dp/B0BDP24LP4?tag=kygohealthapp-20&th=1` | `fiber-gummies` | ✅ converted | kygo-staying-asleep-factors.js |
 | `4urzyRc` | product | `B0DKTCWC8X` | `https://www.amazon.com/dp/B0DKTCWC8X?tag=kygohealthapp-20&th=1` | `memory-foam-mattress` | ✅ converted | kygo-staying-asleep-factors.js |
 | `4vGyQk9` | product | `B0FSHYJHHV` | `https://www.amazon.com/dp/B0FSHYJHHV?tag=kygohealthapp-20&th=1` | `silicone-earplugs` | ✅ converted | kygo-staying-asleep-factors.js |
 
@@ -241,21 +241,21 @@ Rendered inline on the "factors" pages as `affiliate:{url,label}` chips under ea
 | `amzn.to/4760BIN` | Zinc Picolinate | 449 |
 
 ### `kygo-sleep-latency-factors.js`
-Wired up 2026-06. Supplement links **reuse** the same products as the Deep Sleep / HRV pages
-(same physical item = same link, which is correct); Dietary Fiber is a new link.
+Wired up 2026-06; reworked 2026-10 with the re-verified 57-factor dataset. Supplement links **reuse**
+the same products as the Deep Sleep / HRV pages (same physical item = same link). The Dietary Fiber
+and White Noise Machine links were removed: fiber is no longer a factor, and the research shows
+steady background noise costs REM, so the page no longer sells a noise machine.
 | Short link | Product label | Line |
 |---|---|---|
-| `amzn.to/4uL7b1p` | Dietary Fiber Supplement (new) | 99 |
-| `amzn.to/4szGon9` | Melatonin Supplement | 162 |
-| `amzn.to/403ZgOP` | Ashwagandha Extract | 173 |
-| `amzn.to/3Nbjq6C` | Magnesium Glycinate | 184 |
-| `amzn.to/3PWfatc` | Glycine Powder | 195 |
-| `amzn.to/3OyDz7c` | GABA Supplement | 206 |
-| `amzn.to/3OEoHEh` | L-Theanine 200mg | 217 |
-| `amzn.to/4cwMwI1` | Blue Light Blocking Glasses | 312 |
-| `amzn.to/4bfT8bC` | White Noise Machine | 323 |
+| `amzn.to/4szGon9` | Melatonin Supplement | 214 |
+| `amzn.to/403ZgOP` | Ashwagandha Extract | 225 |
+| `amzn.to/3Nbjq6C` | Magnesium Glycinate | 236 |
+| `amzn.to/3PWfatc` | Glycine Powder | 247 |
+| `amzn.to/3OyDz7c` | GABA Supplement | 258 |
+| `amzn.to/3OEoHEh` | L-Theanine 200mg | 269 |
+| `amzn.to/4cwMwI1` | Blue Light Blocking Glasses | 513 |
 
-*(CBD Isolate and Kiwifruit factors intentionally have no affiliate link.)*
+*(Tested-null and mixed supplements such as CBD, valerian, omega-3 and probiotics intentionally have no affiliate link.)*
 
 ### `kygo-staying-asleep-factors.js`
 Wired up 2026-06. Supplement/food links **reuse** the same products as the other factor pages

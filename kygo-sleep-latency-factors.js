@@ -1,7 +1,7 @@
 /**
  * Kygo Health — Sleep Latency Factor Explorer
  * Tag: kygo-sleep-latency-factors
- * Interactive tool exploring 33 research-backed factors that affect sleep onset latency across 5 categories
+ * Interactive tool exploring 57 research-backed factors that affect sleep onset latency across 6 categories
  */
 
 /** SEO helper — injects visible text outside Shadow DOM for crawlers */
@@ -47,7 +47,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
     this._activeCategory = 'environment';
     this._expandedFactor = null;
     this._expandedTopPick = null;
-    this._sortMode = 'default';
+    this._sortMode = 'evidence';
     this._eventsBound = false;
   }
 
@@ -57,7 +57,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Sleep Latency Factor Explorer by Kygo Health. Explore 33 research-backed factors that affect how fast you fall asleep (sleep onset latency, SOL) across 5 categories: Nutrition & Substances, Supplements, Exercise & Movement, Environment & Sleep Hygiene, and Demographics & Physiology. Nutrition factors include caffeine (+9.1 min SOL per Gardiner 2023 meta-analysis), alcohol dose-dependent, nicotine, cannabis THC/CBD, high-GI carb meal, Mediterranean diet, kiwifruit, dietary fiber, and saturated fat. Supplements include melatonin, ashwagandha (SMD −0.53 for SOL), magnesium, glycine, GABA, L-theanine, and CBD isolate. Exercise factors include regular moderate exercise, yoga (Cohen d ≈ −1.16 Khalsa 2021), Tai Chi, resistance training, and vigorous exercise less than 1 hour before bed. Environment and sleep hygiene factors include warm bath 1–2 hours pre-bed (−10 min SOL via Haghayegh 2019 meta-analysis of 13 RCTs), hot bedroom above 25°C, bright light in the hour before bed, environmental noise at night, stimulus control therapy (Hedges g ≈ 0.85), and consistent sleep/wake schedule. Demographic and physiological factors include older age, evening chronotype, menopausal hot flashes, pre-sleep cognitive arousal, generalized anxiety disorder, and depression. Each factor shows evidence strength (Strong or Moderate), direction of effect (positive shortens SOL, negative lengthens SOL), mechanism of action, dosage or context, and peer-reviewed citation. How to fall asleep faster. What affects sleep latency. Best supplements for sleep onset. Data sourced from peer-reviewed studies and meta-analyses.');
+    __seo(this, 'Sleep Latency Factor Explorer by Kygo Health. Explore 57 research-backed factors that affect how fast you fall asleep (sleep onset latency, SOL) across 6 categories: Environment and Sleep Hygiene, Therapies and Routines, Nutrition and Substances, Supplements, Exercise and Movement, and Demographics and Physiology. Each factor was re-checked against its primary source in October 2026. A Do More / Cut Back board lists the changeable factors with strong or moderate evidence: do more of a warm bath or shower 1 to 2 hours before bed (about 10 minutes faster), stimulus control (bed is for sleep only), CBT-I (19 minutes faster across 20 RCTs), writing a to-do list at bedtime (15.8 vs 25.1 minutes), regular exercise, yoga and Tai Chi, earplugs and an eye mask, bed socks in a cool room, a high-GI carb dinner about 4 hours before bed, low-melanopic screen light, melatonin around 4 mg about 3 hours before bed (7 minutes faster across 19 RCTs) and ashwagandha; cut back on caffeine (adds 9.1 minutes across 24 studies), energy drinks, smoking, bright evening light, hours of tablet reading, a hot bedroom, bedroom noise, stuffy air and high CO2, hard workouts ending within an hour of bed, and racing thoughts at bedtime. Alcohol only speeds sleep onset at about 5 or more drinks and disrupts REM. Tested nulls: cannabis, intermittent fasting, higher protein, CBD isolate, valerian, omega-3 fish oil, probiotics, acupuncture vs sham, sleep restriction therapy for falling asleep, weighted blankets, cooling bedding, and daily screen time in youth. Mixed results: L-theanine and music feel faster but are not faster on trackers, hypnosis and guided imagery do no better than sham, alpha-lactalbumin, casein hydrolysate (Lactium), saffron, phone use before bed and morning light therapy. Other factors: magnesium in older adults, glycine 3 g, GABA 300 mg, cannabinol CBN 300 mg, brief behavioral therapy BBTI, digital CBT-I apps, mindfulness, gentle bed rocking, sleep-tech wearables, cocaine, older age, evening chronotype, pre-sleep cognitive arousal and race. Each factor shows its effect on sleep onset (faster, slower, mixed, no clear effect), evidence strength, mechanism, dose and a linked peer-reviewed source. How to fall asleep faster. What affects sleep latency. Best supplements to fall asleep. Does caffeine keep you awake. Data sourced from peer-reviewed studies and meta-analyses.');
   }
 
   disconnectedCallback() {
@@ -68,15 +68,18 @@ class KygoSleepLatencyFactors extends HTMLElement {
 
   get _categories() {
     return {
-      nutrition:    { name: 'Nutrition & Substances',     icon: 'salad',    count: 9 },
-      supplements:  { name: 'Supplements',                icon: 'pill',     count: 7 },
-      exercise:     { name: 'Exercise & Movement',        icon: 'dumbbell', count: 5 },
-      environment:  { name: 'Environment & Sleep Hygiene',icon: 'moon',     count: 6 },
-      physiology:   { name: 'Demographics & Physiology',  icon: 'users',    count: 6 }
+      environment:  { name: 'Environment & Sleep Hygiene', icon: 'moon',     intro: 'Most of the levers you control live here: temperature, light, noise and what the bed means to your brain. Warm-then-cool and dark-and-quiet are the themes.' },
+      therapies:    { name: 'Therapies & Routines',        icon: 'brain',    intro: 'If falling asleep is a regular struggle, structured behavioral therapy (CBT-I) has the biggest, best-tested effect on this page. Several popular add-ons do no better than a fake version.' },
+      nutrition:    { name: 'Nutrition & Substances',      icon: 'salad',    intro: 'Caffeine is the clearest thing to cut. Alcohol only speeds sleep onset at heavy doses, and it damages the rest of the night.' },
+      supplements:  { name: 'Supplements',                 icon: 'pill',     intro: 'Melatonin has the strongest evidence, and its effect is modest: about 7 minutes. Many popular supplements (valerian, omega-3, probiotics, CBD) showed no effect on how fast you fall asleep.' },
+      exercise:     { name: 'Exercise & Movement',         icon: 'dumbbell', intro: 'Regular exercise helps you fall asleep faster, and evening workouts are fine for most people. Only very hard sessions ending within an hour of bed may delay sleep.' },
+      physiology:   { name: 'Demographics & Physiology',   icon: 'users',    intro: 'You can\'t change most of these, but they explain why your baseline differs from someone else\'s. Compare yourself to your own trend.' }
     };
   }
 
   // ── Factor Data ─────────────────────────────────────────────────────
+  // Re-verified against each primary source on 15 Oct 2026. "No clear
+  // effect" (neutral) rows are tested nulls, kept on purpose.
 
   // Hero counts, derived from the factor data so they can never drift.
   get _heroStats() {
@@ -96,349 +99,604 @@ class KygoSleepLatencyFactors extends HTMLElement {
         {
           key: 'high-gi-meal', name: 'High-GI Carb Meal',
           direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (−8.5 min SOL)',
-          keyFinding: 'RCT (Afaghi 2007), n=12: SOL 9.0 vs 17.5 min (p=0.009)',
-          whatThisMeans: 'A high-glycemic carb meal ~4 hours before bed nearly halved sleep latency in the original RCT (9 min vs 17.5 min). Timing matters — eaten too close to bed it backfires via reflux and glucose spikes.',
-          mechanism: 'Post-prandial tryptophan availability and insulin-mediated LNAA competition increase brain tryptophan → serotonin → melatonin synthesis.',
-          dosage: 'High-GI carb meal ~4 hours pre-bed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/17284739/', label: 'Afaghi et al. 2007 RCT' }
-        },
-        {
-          key: 'mediterranean-diet', name: 'Mediterranean Diet',
-          direction: 'positive', evidence: 'moderate',
           effect: 'Positive (shorter SOL)',
-          keyFinding: 'Systematic review: 17/24 studies show positive link',
-          whatThisMeans: 'Higher adherence to a Mediterranean-style diet (fish, olive oil, vegetables, legumes) is consistently linked to falling asleep faster across observational studies.',
-          mechanism: 'Anti-inflammatory polyphenols, omega-3s, and stable glucose response support melatonin synthesis and reduce nocturnal arousal.',
-          dosage: 'Daily dietary pattern',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/38257175/', label: 'Godos et al. 2024 systematic review' }
-        },
-        {
-          key: 'kiwifruit', name: 'Kiwifruit',
-          direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (−35.4% SOL)',
-          keyFinding: 'RCT (Lin 2011), n=24, 4-week intervention',
-          whatThisMeans: 'Eating 2 kiwifruit an hour before bed for 4 weeks shortened sleep onset by 35.4% in adults with sleep disturbances. Small study but the signal is clean.',
-          mechanism: 'High serotonin content plus folate, antioxidants, and vitamin C support the serotonin-melatonin synthesis pathway.',
-          dosage: '2 kiwifruit, 1 hour before bed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/21669584/', label: 'Lin et al. 2011 RCT' }
-        },
-        {
-          key: 'dietary-fiber', name: 'Dietary Fiber',
-          direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (−12 min SOL)',
-          keyFinding: 'RCT (St-Onge 2016): 17 min vs 29 min (high-fiber controlled vs self-selected)',
-          whatThisMeans: 'Higher-fiber days predicted falling asleep ~12 minutes faster in a tightly controlled RCT. Fiber, deep sleep, and short sleep latency travel together.',
-          mechanism: 'Fiber-driven gut microbiome diversity modulates vagal signaling and systemic inflammation; stable glucose reduces nocturnal cortisol spikes.',
-          dosage: '25–35 g/day from whole foods',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26156950/', label: 'St-Onge et al. 2016 RCT' },
-          affiliate: { url: 'https://www.amazon.com/dp/B0BDP24LP4?tag=kygohealthapp-20&th=1', label: 'Dietary Fiber Supplement' , slug: 'fiber-gummies' }
-        },
-        {
-          key: 'saturated-fat', name: 'Saturated Fat',
-          direction: 'negative', evidence: 'moderate',
-          effect: 'Negative (longer SOL)',
-          keyFinding: 'Same RCT (St-Onge 2016): high-sat-fat meals → 29 min SOL',
-          whatThisMeans: 'Days with higher saturated fat intake were linked to longer sleep onset (29 min vs 17 min on the high-fiber controlled arm). Processed, fatty foods near bedtime are the worst offender.',
-          mechanism: 'Increased systemic inflammation and disrupted gut microbiota; late-day high-fat meals delay gastric emptying and elevate core temperature.',
-          dosage: 'Reduce especially within 3 hours of bed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26156950/', label: 'St-Onge et al. 2016 RCT' }
+          keyFinding: 'SOL 9.0 vs 17.5 min, high vs low GI (n=12)',
+          whatThisMeans: 'High-GI carbs about 4 hours before bed help you fall asleep faster.',
+          mechanism: 'Carbohydrate raises blood tryptophan, the building block of serotonin and melatonin. The authors proposed this route; the study did not measure it.',
+          dosage: 'Randomized crossover, n=12 healthy men, PSG: SOL 9.0 vs 17.5 min, high vs low GI rice meal 4 h before bed (p=0.009); the same meal 1 h before bed gave 14.6 min. Afaghi 2007.',
+          source: { url: 'https://doi.org/10.1093/ajcn/85.2.426', label: 'Afaghi et al., Am J Clin Nutr 2007' }
         },
         {
           key: 'caffeine', name: 'Caffeine',
           direction: 'negative', evidence: 'strong',
-          effect: 'Negative (+9.1 min SOL)',
-          keyFinding: 'Meta-analysis of 24 studies (Gardiner 2023)',
-          whatThisMeans: 'The biggest sleep-onset killer backed by high-quality data. Meta-analysis of 24 studies found caffeine adds ~9.1 minutes to sleep latency on average, with peak effect ~3 hours after intake. Interestingly, the effect was not moderated by dose or timing in the pooled analysis — any caffeine pushes SOL later.',
-          mechanism: 'Adenosine receptor antagonism blocks the homeostatic sleep drive that normally builds across the waking day, delaying sleep onset.',
-          dosage: 'Stop ≥8 hours before bed; slow metabolizers may need 10+ hours',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/36870101/', label: 'Gardiner et al. 2023 meta-analysis' }
+          effect: 'Negative (longer SOL)',
+          keyFinding: '+9.1 min to fall asleep (24-study meta)',
+          whatThisMeans: 'Caffeine delays sleep onset by about 9 minutes on average.',
+          mechanism: 'Caffeine blocks adenosine receptors, masking the sleep pressure that builds through the day.',
+          dosage: 'Meta-analysis, 24 studies (19 on SOL, mostly PSG): +9.1 min SOL (95% CI 3.8 to 14.4); not moderated by final dose or timing. Gardiner 2023.',
+          source: { url: 'https://doi.org/10.1016/j.smrv.2023.101764', label: 'Gardiner et al., Sleep Med Rev 2023' }
         },
         {
           key: 'alcohol', name: 'Alcohol',
           direction: 'mixed', evidence: 'strong',
-          effect: 'Mixed (dose-dependent)',
-          keyFinding: 'Meta-analysis of 27 studies: −6.4 min SOL per 1 g/kg; only at ≥0.85 g/kg (~5 drinks)',
-          whatThisMeans: "A 2024 meta-analysis of 27 studies found alcohol only shortens sleep onset at very high doses (roughly 5+ drinks), cutting SOL by ~6.4 min per g/kg. Low and moderate doses don't change sleep onset at all. And even when it does shorten onset, it wrecks the second half of the night.",
-          mechanism: 'GABA-A agonism produces rapid sedation at high doses but rebound glutamate and disrupted REM cause mid-night awakenings and lighter sleep.',
-          dosage: 'Low/moderate doses null on SOL; heavy use shortens onset but harms later sleep',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/39631226/', label: 'Gardiner et al. 2024 meta-analysis' }
+          effect: 'Dose-dependent',
+          keyFinding: 'Faster onset only at about 5+ drinks; REM hit from low doses',
+          whatThisMeans: 'Heavy drinking knocks you out faster but wrecks later sleep.',
+          mechanism: 'Alcohol boosts GABA-A signalling, which is sedating at high doses. As it wears off later in the night, sleep fragments and REM is disrupted.',
+          dosage: 'Meta-analysis, 27 studies, PSG, healthy adults: SOL shortens 6.4 min per 1 g/kg (95% CI 3.5 to 9.3); significant only at about 0.85 g/kg (~5 drinks) or more; REM disrupted from low doses. Gardiner 2025.',
+          source: { url: 'https://doi.org/10.1016/j.smrv.2024.102030', label: 'Gardiner et al., Sleep Med Rev 2025' }
         },
         {
-          key: 'nicotine', name: 'Nicotine / Tobacco Smoking',
+          key: 'nicotine', name: 'Nicotine / Smoking',
           direction: 'negative', evidence: 'moderate',
           effect: 'Negative (longer SOL)',
-          keyFinding: 'Review (Jaehne 2009); confirmed in 2024 narrative review',
-          whatThisMeans: 'Smokers consistently take longer to fall asleep than non-smokers. Nicotine is a stimulant that also causes nightly withdrawal — a double hit to sleep onset.',
-          mechanism: 'Nicotinic acetylcholine receptor activation produces sympathetic arousal and cortical stimulation; overnight withdrawal adds further disruption.',
-          dosage: 'Any evening exposure delays onset; vaping and gum count',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/19345124/', label: 'Jaehne et al. 2009 review' }
+          keyFinding: 'Smokers +5.4 min to fall asleep (n=6,400)',
+          whatThisMeans: 'Smokers take longer to fall asleep. Former smokers were no different from never smokers.',
+          mechanism: 'Nicotine is a stimulant acting on nicotinic acetylcholine receptors, and smokers may go into mild withdrawal overnight. Former smokers matching never smokers suggests the effect reverses after quitting.',
+          dosage: 'PSG cohort, n=6,400 (Sleep Heart Health Study): current smokers +5.4 min SOL vs never smokers (95% CI 2.9 to 7.9); former smokers no different (Zhang 2006). PSG case-control, 44 smokers vs 44 matched never smokers: longer sleep latency in smokers (Jaehne 2012).',
+          source: { url: 'https://doi.org/10.1093/aje/kwj231', label: 'Zhang et al., Am J Epidemiol 2006' },
+          source2: { url: 'https://doi.org/10.1016/j.sleep.2012.06.026', label: 'Jaehne et al., Sleep Med 2012' }
         },
         {
-          key: 'cannabis', name: 'Cannabis (THC/CBD)',
-          direction: 'variable', evidence: 'moderate',
+          key: 'cannabis', name: 'Cannabis',
+          direction: 'neutral', evidence: 'moderate',
           effect: 'Null / inconsistent',
-          keyFinding: 'Meta-analysis of 9 studies (Suraev 2025): no consistent SOL effect',
-          whatThisMeans: 'Despite how often cannabis is marketed as a sleep aid, a 2025 meta-analysis of 9 controlled studies found no consistent effect on sleep onset. Subjective reports and objective data diverge, and tolerance develops quickly.',
-          mechanism: 'CB1 receptor activation is sedative acutely but disrupts sleep architecture and produces tolerance and withdrawal-based insomnia.',
-          dosage: 'No reliable sleep-onset effect; avoid chronic use',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/40967124/', label: 'Suraev et al. 2025 meta-analysis' }
+          keyFinding: 'No consistent effect; quitting lengthens SOL',
+          whatThisMeans: 'Cannabis doesn\'t reliably help you fall asleep, and quitting makes it harder for a while.',
+          mechanism: 'THC acts on CB1 receptors and can be sedating, but tolerance builds with regular use. Stopping after regular use brings withdrawal insomnia.',
+          dosage: 'Meta-analysis, 18 PSG studies (9 pooled): no consistent effect on SOL; withdrawal from regular use consistently prolongs SOL. Velzeboer 2025.',
+          source: { url: 'https://doi.org/10.1016/j.smrv.2025.102164', label: 'Velzeboer et al., Sleep Med Rev 2025' }
+        },
+        {
+          key: 'energy-drinks', name: 'Energy Drinks',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (longer SOL)',
+          keyFinding: 'Daily users ~1.8x more likely to take 2 h+ (n=53,226)',
+          whatThisMeans: 'Students who drink energy drinks more often take longer to fall asleep.',
+          mechanism: 'Energy drinks are a concentrated caffeine source, and caffeine blocks the adenosine signal that builds sleep pressure. The study was a survey, so it shows a link, not cause.',
+          dosage: 'Cross-sectional, n=53,226 Norwegian students, self-report: daily vs never/seldom use, risk of SOL over 2 h RR 1.89 in men (1.62 to 2.21) and 1.77 in women (1.60 to 1.97); risk rises from 1 to 3 times a month upward; age-adjusted only. Kaldenbach 2024.',
+          source: { url: 'https://doi.org/10.1136/bmjopen-2023-072951', label: 'Kaldenbach et al., BMJ Open 2024' }
+        },
+        {
+          key: 'cocaine', name: 'Cocaine Use',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (longer SOL)',
+          keyFinding: 'Longer SOL a top finding across 19 studies',
+          whatThisMeans: 'Cocaine use makes it take longer to fall asleep.',
+          mechanism: 'Cocaine blocks the reuptake of dopamine and noradrenaline, a strongly wake-promoting effect, and sleep is also disrupted during withdrawal.',
+          dosage: 'Systematic review, 19 studies (12 human), objective sleep only: longer SOL was one of the four most consistent findings, with lower total sleep, sleep efficiency and REM. Medigue 2025.',
+          source: { url: 'https://doi.org/10.1016/j.neubiorev.2025.106278', label: 'Medigue et al., Neurosci Biobehav Rev 2025' }
+        },
+        {
+          key: 'alpha-lactalbumin', name: 'Alpha-Lactalbumin Drink',
+          direction: 'mixed', evidence: 'moderate',
+          effect: 'Positive (mixed)',
+          keyFinding: '5 of 8 studies positive; 2 RCTs null',
+          whatThisMeans: 'A tryptophan-rich milk protein drink may help you fall asleep faster, but trials disagree.',
+          mechanism: 'Alpha-lactalbumin is a whey protein rich in tryptophan, the building block of serotonin and melatonin. Whether one drink raises brain tryptophan enough to matter is not established.',
+          dosage: 'Systematic review, 8 studies, 5 positive, SOL the most improved metric (not pooled). RCT, n=18 female rugby players, actigraphy: SOL 11.6 and 17.0 min vs 21.2 and 22.5 min on a whey control (interaction p=0.01). Nulls: Ferguson 2021 (n=15), Barnard 2025 (n=24, 7 nights).',
+          source: { url: 'https://doi.org/10.1111/jsr.14141', label: 'Barnard et al., J Sleep Res 2024' },
+          source2: { url: 'https://doi.org/10.5114/biolsport.2023.116002', label: 'Gratwicke et al., Biol Sport 2022' }
+        },
+        {
+          key: 'intermittent-fasting', name: 'Intermittent Fasting',
+          direction: 'neutral', evidence: 'moderate',
+          effect: 'Null to slightly negative',
+          keyFinding: 'Mostly null across 16 RCTs',
+          whatThisMeans: 'Fasting diets mostly don\'t change how fast you fall asleep.',
+          mechanism: 'No consistent pathway shown. In single comparisons, alternate-day fasting and time-restricted eating did slightly worse than plain calorie restriction.',
+          dosage: 'Bayesian network meta-analysis, 16 RCTs, adults with overweight/obesity: most comparisons null; alternate-day fasting worse PSQI latency score vs calorie restriction (MD 1.04, 0.15 to 1.93); time-restricted eating 9.54 min longer SOL than calorie restriction (3.43 to 15.68). Zhang 2025.',
+          source: { url: 'https://doi.org/10.1016/j.numecd.2025.104365', label: 'Zhang et al., Nutr Metab Cardiovasc Dis 2025' }
+        },
+        {
+          key: 'protein', name: 'Higher Protein Intake',
+          direction: 'neutral', evidence: 'moderate',
+          effect: 'No clear effect',
+          keyFinding: 'No effect on latency (7 RCTs pooled)',
+          whatThisMeans: 'Eating more protein overall doesn\'t change time to fall asleep.',
+          mechanism: 'Not established; pooled trials found no effect, at very low certainty.',
+          dosage: 'Meta-analysis of RCTs: sleep latency pooled across 7 studies, no significant effect; very low certainty. Wirth 2023.',
+          source: { url: 'https://doi.org/10.1093/nutrit/nuac061', label: 'Wirth et al., Nutr Rev 2023' }
         }
       ],
+
       supplements: [
         {
           key: 'melatonin', name: 'Melatonin',
           direction: 'positive', evidence: 'strong',
-          effect: 'Positive (−7.06 min SOL)',
-          keyFinding: 'Meta-analysis of 19 studies, n=1683 (Ferracioli-Oda 2013)',
-          whatThisMeans: 'The best-studied sleep-onset supplement. Pooled across 19 RCTs with 1,683 subjects, melatonin cuts sleep latency by an average of 7.06 minutes (95% CI 4.37–9.75, p<0.001), with peak effect around 4 mg. Best for circadian misalignment (jet lag, shift work, DSPS); less impressive for ordinary insomnia.',
-          mechanism: 'Exogenous melatonin binds MT1/MT2 receptors in the SCN, signaling "biological night" and promoting sleep onset.',
-          dosage: '0.3–1 mg, 30–60 min before bed (low dose); up to 4 mg if needed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/23691095/', label: 'Ferracioli-Oda et al. 2013 meta-analysis' },
-          affiliate: { url: 'https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1', label: 'Melatonin Supplement' , slug: 'melatonin-gummies' }
+          effect: 'Positive (shorter SOL)',
+          keyFinding: '−7 min to fall asleep (19 RCTs); peaks near 4 mg',
+          whatThisMeans: 'Melatonin cuts time to fall asleep by about 7 minutes. More isn\'t better past about 4 mg, and timing matters.',
+          mechanism: 'Melatonin acts on MT1 and MT2 receptors, signalling biological night to the body clock and promoting sleep onset.',
+          dosage: 'Meta-analysis, 19 RCTs, n=1,683, primary sleep disorders: SOL −7.06 min (95% CI 4.37 to 9.75, p<0.001); objective −5.5 min, subjective −10.7 min; longer trials gave larger effects (Ferracioli-Oda 2013). Dose-response meta-analysis, 26 RCTs: SOL and total sleep effects peak around 4 mg/day, taken about 3 h before bed (Cruz-Sanabria 2024).',
+          source: { url: 'https://doi.org/10.1371/journal.pone.0063773', label: 'Ferracioli-Oda et al., PLoS One 2013' },
+          source2: { url: 'https://doi.org/10.1111/jpi.12985', label: 'Cruz-Sanabria et al., J Pineal Res 2024' },
+          affiliate: { url: 'https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1', label: 'Melatonin Supplement', slug: 'melatonin-gummies' }
         },
         {
           key: 'ashwagandha', name: 'Ashwagandha',
-          direction: 'positive', evidence: 'strong',
-          effect: 'Positive (SMD −0.53)',
-          keyFinding: 'Meta-analysis of 5 RCTs, n=400 (Cheah 2021)',
-          whatThisMeans: 'Pooled analysis of 5 RCTs with 400 participants found a standardized mean difference of −0.53 (95% CI −0.77 to −0.29, p<0.001) for sleep onset, with 600 mg/day showing the largest effect. Also reduces anxiety scores, likely part of the mechanism.',
-          mechanism: 'Withanolides reduce cortisol and pre-sleep arousal; GABAergic activity may directly promote sleep onset.',
-          dosage: '600 mg/day standardized extract (most effective dose)',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/34559859/', label: 'Cheah et al. 2021 meta-analysis' },
-          affiliate: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (shorter SOL)',
+          keyFinding: 'SMD −0.53 for SOL (3 RCTs, actigraphy)',
+          whatThisMeans: 'Ashwagandha shortens sleep onset, most clearly in people with insomnia.',
+          mechanism: 'Proposed to lower stress hormones and pre-sleep arousal and to act on GABA signalling; the mechanism in humans is not established.',
+          dosage: 'Meta-analysis, 5 RCTs (n=400); actigraphy SOL pooled from 3 RCTs (n=281): SMD −0.53 (95% CI −0.77 to −0.29), GRADE moderate. Overall sleep benefit larger at 600 mg/day or more, 8+ weeks, and in insomnia. Cheah 2021.',
+          source: { url: 'https://doi.org/10.1371/journal.pone.0257843', label: 'Cheah et al., PLoS One 2021' },
+          affiliate: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract', slug: 'ashwagandha-600mg' }
         },
         {
           key: 'magnesium', name: 'Magnesium',
           direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (−17.36 min SOL)',
-          keyFinding: 'Meta-analysis of 3 RCTs, n=151 older adults (Mah & Pitre 2021)',
-          whatThisMeans: 'Pooled across 3 RCTs in 151 older adults, magnesium supplementation cut sleep onset by 17.36 minutes (p=0.0006). Best evidence is in older adults and people with low dietary magnesium. Less clear in already-replete younger people. Glycinate form is better tolerated than oxide.',
-          mechanism: 'NMDA receptor antagonism and GABA-A potentiation reduce cortical arousal; regulates melatonin synthesis.',
-          dosage: '200–400 mg elemental magnesium (glycinate preferred)',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/33865376/', label: 'Mah & Pitre 2021 meta-analysis' },
-          affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }
+          effect: 'Positive (shorter SOL)',
+          keyFinding: '−17 min SOL in older adults (3 RCTs, low certainty)',
+          whatThisMeans: 'Magnesium may cut sleep onset about 17 minutes in older adults.',
+          mechanism: 'Magnesium dampens nerve excitability by blocking NMDA receptors and supporting GABA signalling. The trials were small and in older adults only.',
+          dosage: 'Meta-analysis, 3 RCTs, n=151 older adults: SOL −17.36 min (95% CI −27.27 to −7.44, p=0.0006); low to very low certainty. Mah & Pitre 2021.',
+          source: { url: 'https://doi.org/10.1186/s12906-021-03297-z', label: 'Mah & Pitre, BMC Complement Med Ther 2021' },
+          affiliate: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate', slug: 'magnesium-glycinate' }
         },
         {
-          key: 'glycine', name: 'Glycine',
+          key: 'glycine', name: 'Glycine (3 g)',
           direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (shorter SOL on PSG)',
-          keyFinding: 'Yamadera 2007: 3 g glycine improved PSG sleep onset',
-          whatThisMeans: 'Polysomnography-verified: 3 g glycine taken before bed shortens objective sleep onset and improves subjective sleep quality. Japanese RCTs are small but consistent, and the mechanism is well-characterized.',
-          mechanism: 'Peripheral vasodilation lowers core body temperature (a key sleep-onset signal); NMDA modulation in the SCN.',
-          dosage: '3 g, 30–60 min before bed',
-          source: { url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al. 2007 PSG study' },
-          affiliate: { url: 'https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20', label: 'Glycine Powder' , slug: 'glycine-search' }
+          effect: 'Positive (shorter SOL)',
+          keyFinding: 'Faster sleep onset on PSG (n=11, p=0.01)',
+          whatThisMeans: '3 grams of glycine before bed helps you fall asleep faster.',
+          mechanism: 'In animal work, glycine widens skin blood vessels so core temperature falls, part of the body\'s sleep-onset signal. Not confirmed as the human mechanism.',
+          dosage: 'Randomized single-blind crossover, n=11 poor sleepers, PSG: 3 g before bed shortened latency to sleep onset (p=0.01) and to slow-wave sleep (p=0.019). Corresponding author works for Ajinomoto, a glycine maker. Yamadera 2007.',
+          source: { url: 'https://doi.org/10.1111/j.1479-8425.2007.00262.x', label: 'Yamadera et al., Sleep Biol Rhythms 2007' },
+          affiliate: { url: 'https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20', label: 'Glycine Powder', slug: 'glycine-search' }
         },
         {
-          key: 'gaba', name: 'GABA',
+          key: 'gaba', name: 'GABA (300 mg)',
           direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (13.4 → 5.7 min SOL)',
-          keyFinding: 'RCT (Byun 2018): 300 mg cut SOL from 13.4 to 5.7 min (p=0.001)',
-          whatThisMeans: 'In a controlled trial, 300 mg of oral GABA dropped sleep onset from 13.4 min to 5.7 min (p=0.001). 75 mg was also effective. The blood-brain barrier debate continues, but the clinical signal is clean.',
-          mechanism: 'Likely peripheral vagal afferent signaling; direct CNS effect is debated but enteric GABA receptors appear involved.',
-          dosage: '75–300 mg, 30–60 min before bed',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6031986/', label: 'Byun et al. 2018 RCT' },
-          affiliate: { url: 'https://www.amazon.com/dp/B0FT6GB5MB?tag=kygohealthapp-20&th=1', label: 'GABA Supplement' , slug: 'gaba-500mg' }
+          effect: 'Positive (shorter SOL)',
+          keyFinding: 'SOL 13.4 → 5.7 min at 300 mg (n=40, PSG)',
+          whatThisMeans: '300 mg GABA shortened sleep onset in one small trial; low doses haven\'t beaten placebo.',
+          mechanism: 'Oral GABA barely crosses into the brain, so any effect may run through the gut and vagus nerve; this is not established.',
+          dosage: 'RCT, n=40 (30 GABA, 10 placebo), insomnia symptoms, PSG, 4 weeks: SOL 13.4 to 5.7 min in the GABA arm, group x time p=0.009 (Byun 2018). A 75 mg RCT (Yoon 2022, n=50) cut SOL within-group but not vs placebo.',
+          source: { url: 'https://doi.org/10.3988/jcn.2018.14.3.291', label: 'Byun et al., J Clin Neurol 2018' },
+          affiliate: { url: 'https://www.amazon.com/dp/B0FT6GB5MB?tag=kygohealthapp-20&th=1', label: 'GABA Supplement', slug: 'gaba-500mg' }
         },
         {
           key: 'l-theanine', name: 'L-Theanine',
-          direction: 'variable', evidence: 'moderate',
-          effect: 'Subjective only (SMD 0.15)',
-          keyFinding: 'Meta-analysis of 10 RCTs, n=897 (Bulman 2025)',
-          whatThisMeans: "Meta-analysis of 10 RCTs in 897 people found a small subjective benefit (SMD 0.15, p=0.04) but no objective sleep-onset effect on polysomnography. People report feeling more relaxed, but the SOL reduction doesn't show up on instruments.",
-          mechanism: 'Increases alpha brain waves and GABA/glutamate ratio; reduces cortisol and sympathetic tone without sedation.',
-          dosage: '200–400 mg, 30–60 min before bed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/40056718/', label: 'Bulman et al. 2025 meta-analysis' },
-          affiliate: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' }
+          direction: 'mixed', evidence: 'moderate',
+          effect: 'Positive (subjective only)',
+          keyFinding: 'Feels faster; measured SOL unchanged (19 RCTs)',
+          whatThisMeans: 'People report falling asleep slightly faster, but devices don\'t confirm it.',
+          mechanism: 'L-theanine is linked to relaxation without sedation, which may change how falling asleep feels more than how fast it happens.',
+          dosage: 'Meta-analysis, 19 RCTs (18 pooled), N=897; subjective SOL SMD 0.15 favoring L-theanine (95% CI 0.01 to 0.29, p=0.04; 10 studies). Objective SOL (7 studies): no difference, MD 0.13 min (95% CI −7.96 to 8.22, p=0.98). Bulman 2025.',
+          source: { url: 'https://doi.org/10.1016/j.smrv.2025.102076', label: 'Bulman et al., Sleep Med Rev 2025' },
+          affiliate: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg', slug: 'l-theanine-200mg' }
         },
         {
-          key: 'cbd-isolate', name: 'CBD Isolate',
-          direction: 'variable', evidence: 'moderate',
-          effect: 'Null',
-          keyFinding: 'RCT (Narayan 2024): 150 mg CBD, n=30 insomnia — null',
-          whatThisMeans: "A 2024 controlled trial of 150 mg CBD isolate in 30 people with insomnia found no effect on sleep onset. Despite heavy marketing, isolated CBD doesn't reliably shorten SOL. Anxious subgroups may see indirect benefits but don't expect a direct sleep-onset effect.",
-          mechanism: 'CB1 modulation and serotonin 5-HT1A agonism; dose-response is biphasic and largely anxiolytic rather than sedative.',
-          dosage: 'No established dose for sleep onset',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/38174873/', label: 'Narayan et al. 2024 RCT' }
+          key: 'cbd-isolate', name: 'CBD Isolate (150 mg)',
+          direction: 'neutral', evidence: 'moderate',
+          effect: 'Null on SOL',
+          keyFinding: 'No change in diary SOL vs placebo (n=30)',
+          whatThisMeans: 'CBD alone doesn\'t appear to change how fast you fall asleep.',
+          mechanism: 'CBD has little direct action on CB1 receptors and is not strongly sedating; any sleep benefit is thought to come through lower anxiety.',
+          dosage: 'Pilot RCT, n=30 (15/15), primary insomnia, 2 weeks: no difference in diary SOL vs placebo; actigraphy sleep efficiency improved at week 2. Narayan 2024.',
+          source: { url: 'https://doi.org/10.5664/jcsm.10998', label: 'Narayan et al., J Clin Sleep Med 2024' }
+        },
+        {
+          key: 'valerian', name: 'Valerian',
+          direction: 'neutral', evidence: 'strong',
+          effect: 'No clear effect',
+          keyFinding: 'SOL +0.7 min vs placebo (18 RCTs)',
+          whatThisMeans: 'Pooled trials show valerian doesn\'t shorten time to fall asleep.',
+          mechanism: 'Valerian is thought to act on GABA and adenosine signalling, but pooled trials show no measurable effect on sleep onset.',
+          dosage: 'Meta-analysis, 18 placebo RCTs: SOL MD 0.70 min (95% CI −3.44 to 4.83). Fernández-San-Martín 2010.',
+          source: { url: 'https://doi.org/10.1016/j.sleep.2009.12.009', label: 'Fernández-San-Martín et al., Sleep Med 2010' }
+        },
+        {
+          key: 'omega-3', name: 'Omega-3 (Fish Oil)',
+          direction: 'neutral', evidence: 'strong',
+          effect: 'Null in adults',
+          keyFinding: 'No effect on adult sleep latency',
+          whatThisMeans: 'Fish oil doesn\'t help adults fall asleep faster.',
+          mechanism: 'No pathway to faster sleep onset has been shown in adults.',
+          dosage: 'Meta-analysis, 12 trials + 8 longitudinal studies: no effect on adult sleep latency. Dai 2021.',
+          source: { url: 'https://doi.org/10.1093/nutrit/nuaa103', label: 'Dai et al., Nutr Rev 2021' }
+        },
+        {
+          key: 'probiotics', name: 'Probiotics',
+          direction: 'neutral', evidence: 'strong',
+          effect: 'No clear effect',
+          keyFinding: 'No effect on measured latency (14 studies)',
+          whatThisMeans: 'Probiotics haven\'t been shown to help you fall asleep faster.',
+          mechanism: 'The gut-brain axis is a plausible route, but trials have not shown a measurable effect on sleep onset.',
+          dosage: 'Meta-analysis, 14 studies: no effect on PSG/actigraphy latency (Irwin 2020). Meta-analysis, 3 RCTs, n=226 insomnia: SOL −4.74 min (−9.42 to −0.05), p=0.05, judged non-significant by the authors (Liu 2025).',
+          source: { url: 'https://doi.org/10.1038/s41430-020-0656-x', label: 'Irwin et al., Eur J Clin Nutr 2020' },
+          source2: { url: 'https://doi.org/10.3389/fmicb.2025.1596990', label: 'Liu et al., Front Microbiol 2025' }
+        },
+        {
+          key: 'casein-hydrolysate', name: 'Casein Hydrolysate (Lactium)',
+          direction: 'mixed', evidence: 'moderate',
+          effect: 'Positive (mixed)',
+          keyFinding: 'SOL −7.7 vs +6.1 min on placebo (n=36, PSG)',
+          whatThisMeans: 'A milk peptide shortened sleep onset in one sleep-lab trial but not another.',
+          mechanism: 'Lactium contains a milk peptide (alpha-casozepine) that binds GABA-A receptors in animal studies, a proposed calming route.',
+          dosage: 'RCT, n=36 chronic insomnia, PSG, 4 weeks: SOL −7.7 vs +6.1 min on placebo (p=0.012) (Chang 2024). Crossover RCT (Kim 2019, n=48, maker co-author): PSG null, diary SOL better.',
+          source: { url: 'https://doi.org/10.1016/j.clnu.2024.10.039', label: 'Chang et al., Clin Nutr 2024' }
+        },
+        {
+          key: 'saffron', name: 'Saffron',
+          direction: 'mixed', evidence: 'moderate',
+          effect: 'Positive (mixed)',
+          keyFinding: 'SOL 14.3 → 11.3 vs 14.7 → 17.5 min (n=42)',
+          whatThisMeans: 'Saffron may trim a few minutes in older adults, but results are inconsistent.',
+          mechanism: 'Saffron compounds (crocin, safranal) are thought to act on serotonin and GABA signalling; the human mechanism is not established.',
+          dosage: 'Pilot RCT, n=42 older adults, 30 mg, 4 weeks, EEG headband: SOL 14.3 to 11.3 vs 14.7 to 17.5 min on placebo (p=0.03); the maker\'s employees co-authored (Lang 2025). RCT (Pachikian 2021, n=66, maker-funded): actigraphy SOL not reported as changed.',
+          source: { url: 'https://doi.org/10.1039/d5fo00917k', label: 'Lang et al., Food Funct 2025' }
+        },
+        {
+          key: 'cbn', name: 'Cannabinol (CBN, 300 mg)',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (shorter SOL)',
+          keyFinding: '300 mg cut SOL in one night (n=20, PSG)',
+          whatThisMeans: 'A high single dose of CBN shortened sleep onset in one lab study.',
+          mechanism: 'CBN is a weak CB1 receptor agonist; a high dose may be mildly sedating. The 30 mg dose did nothing.',
+          dosage: 'Single-night 3-arm crossover RCT, n=20 insomnia, PSG: 300 mg shortened SOL (p=0.004, dz=−0.74); 30 mg not significant; primary outcome (WASO) null. Lavender 2026.',
+          source: { url: 'https://doi.org/10.1111/jsr.70284', label: 'Lavender et al., J Sleep Res 2026' }
         }
       ],
+
       exercise: [
         {
           key: 'regular-exercise', name: 'Regular Exercise',
           direction: 'positive', evidence: 'strong',
-          effect: 'Positive (moderate SOL reduction)',
-          keyFinding: 'Meta-analysis (Kredlow 2015): consistent SOL improvement',
-          whatThisMeans: 'Regular moderate exercise (cardio or mixed) is one of the most reliably effective behavioral interventions for sleep onset. Works even better for people with insomnia than for good sleepers.',
-          mechanism: 'Raises daytime energy expenditure and afternoon core temperature; reduces anxiety; supports circadian amplitude.',
-          dosage: '150+ min/week moderate intensity, consistent',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/25596964/', label: 'Kredlow et al. 2015 meta-analysis' }
+          effect: 'Positive (shorter SOL)',
+          keyFinding: 'd=0.35 shorter SOL (66-study meta)',
+          whatThisMeans: 'Exercising regularly helps you fall asleep faster.',
+          mechanism: 'Regular activity builds sleep pressure and lowers anxiety, both of which help sleep onset. The benefit shrinks in older samples.',
+          dosage: 'Meta-analysis, 66 studies: regular exercise d=0.35 for shorter SOL (95% CI 0.00 to 0.70, 9 comparisons); a single bout d=0.17 (p=.03, 35 comparisons); the SOL benefit of regular exercise shrinks in older samples. Kredlow 2015.',
+          source: { url: 'https://doi.org/10.1007/s10865-015-9617-6', label: 'Kredlow et al., J Behav Med 2015' }
         },
         {
           key: 'yoga', name: 'Yoga',
-          direction: 'positive', evidence: 'strong',
-          effect: "Positive (Cohen's d ≈ −1.16)",
-          keyFinding: 'Large effect on SOL in chronic insomnia (Khalsa 2021)',
-          whatThisMeans: "One of the largest single-intervention effect sizes for sleep onset in the entire dataset. Cohen's d ≈ −1.16 in chronic sleep-onset insomnia. The breathing component likely drives most of the benefit.",
-          mechanism: 'Pranayama breathing reduces sympathetic tone and cortical arousal; physical practice raises daytime energy expenditure.',
-          dosage: 'Regular practice; daily short sessions or 3+ longer sessions/week',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/33983112/', label: 'Khalsa et al. 2021 RCT' }
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (shorter SOL)',
+          keyFinding: '−29 min diary SOL in insomnia (22 RCTs)',
+          whatThisMeans: 'A regular yoga practice can meaningfully shorten sleep onset in people with insomnia.',
+          mechanism: 'Slow breathing and relaxation lower pre-sleep arousal. The evidence is low certainty and mostly from sleep diaries.',
+          dosage: 'Network meta-analysis, 22 RCTs, n=1,348 adults with insomnia: yoga cut diary SOL by 29 min vs active control (95% CI 8 to 50), low certainty (Bu 2026). RCT (Khalsa 2021, n=40): Kundalini yoga beat sleep hygiene on diary SOL, d=−1.16.',
+          source: { url: 'https://doi.org/10.1136/bmjebm-2024-113512', label: 'Bu et al., BMJ Evid Based Med 2026' },
+          source2: { url: 'https://doi.org/10.5664/jcsm.9320', label: 'Khalsa et al., J Clin Sleep Med 2021' }
         },
         {
           key: 'tai-chi', name: 'Tai Chi',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (shorter SOL)',
-          keyFinding: 'Meta-analysis (Yang 2023): SOL improved in older adults',
-          whatThisMeans: 'Especially well-studied in older adults. Pooled analyses show meaningful sleep-onset improvements from regular tai chi practice. Low-impact and easy to adopt for people who can\'t do vigorous exercise.',
-          mechanism: 'Combines mindful movement, slow breathing, and gentle physical load — reduces arousal and supports circadian entrainment.',
-          dosage: '2–3 sessions per week, 45–60 min',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/36767655/', label: 'Yang et al. 2023 meta-analysis' }
+          keyFinding: '−25 min diary SOL in insomnia (NMA)',
+          whatThisMeans: 'Tai Chi improves sleep onset in people with insomnia.',
+          mechanism: 'Gentle movement with slow breathing and focused attention lowers arousal before bed.',
+          dosage: 'Network meta-analysis (Bu 2026): diary SOL −25 min vs control (95% CI 8 to 41), low certainty. Meta-analysis (Yang 2023, 16 RCTs, n=1,547): PSQI sleep-latency subscore −0.57 points (7 RCTs).',
+          source: { url: 'https://doi.org/10.1136/bmjebm-2024-113512', label: 'Bu et al., BMJ Evid Based Med 2026' },
+          source2: { url: 'https://doi.org/10.3390/ijerph20043074', label: 'Yang et al., Int J Environ Res Public Health 2023' }
         },
         {
-          key: 'resistance-training', name: 'Resistance Training',
+          key: 'vigorous-late', name: 'Vigorous Exercise <1 h Before Bed',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (longer SOL)',
+          keyFinding: 'Possible only when a hard session ends ≤1 h before bed',
+          whatThisMeans: 'Evening workouts are fine; only very hard sessions right before bed may delay sleep.',
+          mechanism: 'Hard exercise raises heart rate, core temperature and stress hormones, which take time to settle. Evening exercise overall did not impair sleep.',
+          dosage: 'Meta-analysis, 23 studies, healthy adults: evening exercise overall did not impair sleep. The authors suggest SOL may suffer only after vigorous exercise ending 1 h or less before bed (not a pooled estimate). Stutz 2019.',
+          source: { url: 'https://doi.org/10.1007/s40279-018-1015-0', label: 'Stutz et al., Sports Med 2019' }
+        }
+      ],
+
+      therapies: [
+        {
+          key: 'cbt-i', name: 'CBT-I (Therapist-Led)',
+          direction: 'positive', evidence: 'strong',
+          effect: 'Positive (shorter SOL)',
+          keyFinding: '−19 min to fall asleep (20 RCTs)',
+          whatThisMeans: 'Structured insomnia therapy cuts time to fall asleep by about 19 minutes.',
+          mechanism: 'Combines stimulus control, sleep restriction, work on unhelpful sleep worries and sleep education, retraining the bed as a cue for sleep and lowering bedtime arousal.',
+          dosage: 'Meta-analysis, 20 RCTs, n=1,162 chronic insomnia: diary SOL −19.03 min (95% CI 14.12 to 23.93) vs inactive controls. Trauer 2015.',
+          source: { url: 'https://doi.org/10.7326/M14-2841', label: 'Trauer et al., Ann Intern Med 2015' }
+        },
+        {
+          key: 'bbti', name: 'Brief Behavioral Therapy (BBTI)',
+          direction: 'positive', evidence: 'strong',
+          effect: 'Positive (shorter SOL)',
+          keyFinding: '−19.8 min SOL vs usual care (18 RCTs)',
+          whatThisMeans: 'A 2 to 4 session behavioral program works about as well as full CBT-I.',
+          mechanism: 'A short behavioral version of CBT-I built mainly on stimulus control and sleep restriction.',
+          dosage: 'Network meta-analysis, 18 RCTs, n=1,104: SOL −19.81 min (−30.64 to −8.98) vs usual care; face-to-face BBTI similar to CBT-I. Hasan 2025.',
+          source: { url: 'https://doi.org/10.1111/wvn.70075', label: 'Hasan et al., Worldviews Evid Based Nurs 2025' }
+        },
+        {
+          key: 'digital-cbt-i', name: 'Digital CBT-I (App or Online)',
+          direction: 'positive', evidence: 'strong',
+          effect: 'Positive (mostly self-report)',
+          keyFinding: '−12.6 min diary SOL (96 RCTs); smaller on trackers',
+          whatThisMeans: 'Insomnia apps help you feel you fall asleep faster; trackers show a smaller effect.',
+          mechanism: 'The same components as CBT-I, delivered by app or website. Self-reported gains are larger than tracker-measured ones.',
+          dosage: 'Network meta-analysis, 96 RCTs, n=18,419: diary SOL −12.57 min (−15.14 to −10.00), low certainty. Objective SOL (8 RCTs, n=604): not significant overall; −4.28 min only vs active controls. Tong 2026.',
+          source: { url: 'https://doi.org/10.1186/s12916-026-05129-8', label: 'Tong et al., BMC Med 2026' }
+        },
+        {
+          key: 'mindfulness', name: 'Mindfulness Programs',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (small)',
+          keyFinding: '−8 min measured SOL (digital mindfulness)',
+          whatThisMeans: 'Regular mindfulness practice trims a few minutes off falling asleep.',
+          mechanism: 'Trains attention away from worry, lowering the mental arousal that delays sleep.',
+          dosage: 'Network meta-analysis: digital mindfulness objective SOL −7.96 min (−15.50 to −0.42), moderate certainty (Tong 2026). Cancer-patient meta-analysis (Han 2023): mindfulness shortened objective SOL vs usual care/waitlist, not vs active controls.',
+          source: { url: 'https://doi.org/10.1186/s12916-026-05129-8', label: 'Tong et al., BMC Med 2026' },
+          source2: { url: 'https://doi.org/10.1016/j.ctim.2023.102954', label: 'Han et al., Complement Ther Med 2023' }
+        },
+        {
+          key: 'todo-list', name: 'Writing a To-Do List at Bedtime',
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (shorter SOL)',
-          keyFinding: 'Review (Kovacevic 2018): modest SOL reduction',
-          whatThisMeans: 'Lifting weights helps sleep onset, though the effect is smaller than cardio or yoga. Older adults and insomniacs benefit most. Works on its own or stacked with cardio.',
-          mechanism: 'Raises daytime energy expenditure and growth hormone release; mechanical fatigue increases homeostatic sleep pressure.',
-          dosage: '2–3 sessions per week, progressive overload',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/28919335/', label: 'Kovacevic et al. 2018 review' }
+          keyFinding: 'SOL 15.8 vs 25.1 min (n=57, PSG)',
+          whatThisMeans: 'Writing tomorrow\'s to-do list before bed helped people fall asleep about 9 minutes faster.',
+          mechanism: 'Writing down unfinished tasks may offload the worry about them that keeps the mind busy at lights out. The more specific the list, the faster people fell asleep.',
+          dosage: 'Randomized experiment, n=57 healthy adults aged 18 to 30, PSG: a 5 min to-do list 15.8 vs 25.1 min after writing about completed tasks (p=0.02, d=0.63). Scullin 2017.',
+          source: { url: 'https://doi.org/10.1037/xge0000374', label: 'Scullin et al., J Exp Psychol Gen 2017' }
         },
         {
-          key: 'vigorous-late', name: 'Vigorous Exercise <1h Pre-Bed',
-          direction: 'negative', evidence: 'moderate',
-          effect: 'Negative (longer SOL)',
-          keyFinding: 'Meta-analysis (Stutz 2019): high-intensity <1h delays onset',
-          whatThisMeans: "Moderate exercise any time of day is fine, but truly vigorous effort in the last hour before bed measurably delays sleep onset. Most people can train in the evening — it's only the high-intensity, close-to-bed combo that's a problem.",
-          mechanism: 'Sympathetic activation, elevated core temperature, and catecholamine surge oppose the physiological drop needed for sleep onset.',
-          dosage: 'Avoid high-intensity exercise in the hour before bed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/30374942/', label: 'Stutz et al. 2019 meta-analysis' }
+          key: 'music', name: 'Music at Bedtime',
+          direction: 'mixed', evidence: 'moderate',
+          effect: 'Positive (subjective only)',
+          keyFinding: 'Feels easier; measured SOL may not change (13 RCTs)',
+          whatThisMeans: 'Music makes falling asleep feel easier, but trackers don\'t show a change.',
+          mechanism: 'Music may relax and distract from worry; objective measures have not confirmed a faster sleep onset.',
+          dosage: 'Cochrane review, 13 RCTs, n=1,007 insomnia: self-rated SOL problems score −0.60 (−0.83 to −0.37; 3 studies, low certainty); objective SOL (3 studies, n=136) may not improve. Jespersen 2022.',
+          source: { url: 'https://doi.org/10.1002/14651858.CD010459.pub3', label: 'Jespersen et al., Cochrane 2022' }
+        },
+        {
+          key: 'hypnosis', name: 'Hypnosis, Autogenic Training, Imagery',
+          direction: 'mixed', evidence: 'moderate',
+          effect: 'Positive vs waitlist; null vs sham',
+          keyFinding: 'Beat waitlist, not sham (13 RCTs)',
+          whatThisMeans: 'Relaxation scripts may help, but no more than a fake version.',
+          mechanism: 'Relaxation scripts aim to lower arousal, but sham versions worked as well, pointing to expectation or general relaxation rather than the technique.',
+          dosage: 'Meta-analysis, 13 RCTs, n=502, diary SOL: hypnotherapy vs waitlist SMD −0.88 (−1.56 to −0.19); autogenic/imagery −1.16 (−1.92 to −0.40); neither beat sham; 11 of 13 trials low quality. Lam 2015.',
+          source: { url: 'https://doi.org/10.1016/j.ctim.2015.07.011', label: 'Lam et al., Complement Ther Med 2015' }
+        },
+        {
+          key: 'acupuncture', name: 'Acupuncture',
+          direction: 'neutral', evidence: 'moderate',
+          effect: 'Null vs sham',
+          keyFinding: '+1.5 min vs sham needling (12 RCTs)',
+          whatThisMeans: 'Acupuncture doesn\'t beat fake needling for falling asleep.',
+          mechanism: 'No specific effect beyond sham needling; the apparent benefit came from acupuncture added to medication.',
+          dosage: 'Meta-analysis, 12 RCTs, PSG SOL −7.25 min (−11.29 to −3.20), driven by acupuncture plus medication vs medication alone; vs sham +1.54 min (−4.98 to 8.06). Hu 2026.',
+          source: { url: 'https://doi.org/10.3389/fmed.2026.1807826', label: 'Hu et al., Front Med 2026' }
+        },
+        {
+          key: 'sleep-restriction', name: 'Sleep Restriction Therapy',
+          direction: 'neutral', evidence: 'strong',
+          effect: 'Null for SOL',
+          keyFinding: 'Helps staying asleep, not falling asleep (241 trials)',
+          whatThisMeans: 'Restricting time in bed helps you stay asleep, not fall asleep.',
+          mechanism: 'Limiting time in bed builds sleep pressure and consolidates sleep, improving efficiency and night waking. Only stimulus control was linked to shorter self-reported latency.',
+          dosage: 'Component network meta-analysis, 241 trials, n=31,452: sleep restriction improved sleep efficiency and WASO; only stimulus control was linked to shorter self-reported latency. Furukawa 2024.',
+          source: { url: 'https://doi.org/10.1001/jamapsychiatry.2023.5060', label: 'Furukawa et al., JAMA Psychiatry 2024' }
         }
       ],
+
       environment: [
         {
-          key: 'warm-bath', name: 'Warm Bath/Shower 1–2h Pre-Bed',
+          key: 'warm-bath', name: 'Warm Bath/Shower 1–2 h Before Bed',
           direction: 'positive', evidence: 'strong',
-          effect: 'Positive (−10 min SOL)',
-          keyFinding: 'Meta-analysis of 13 RCTs (Haghayegh 2019)',
-          whatThisMeans: 'The single strongest environmental intervention. A 10-minute warm bath or shower 1–2 hours before bed cuts sleep onset by about 10 minutes on average. The counterintuitive mechanism: warming your skin causes heat loss later, dropping core temperature right at bedtime.',
-          mechanism: 'Distal skin warming triggers peripheral vasodilation and heat dissipation, accelerating the core-to-distal temperature drop that initiates sleep.',
-          dosage: '10+ min bath/shower at ~40–43°C, 1–2 hours before bed',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/31102877/', label: 'Haghayegh et al. 2019 meta-analysis' }
+          effect: 'Positive (shorter SOL)',
+          keyFinding: 'About 10 min faster (13 pooled studies)',
+          whatThisMeans: 'A warm bath before bed helps you fall asleep faster.',
+          mechanism: 'Warming the skin opens blood vessels in the hands and feet, so heat leaves the body faster afterward, helping the core-temperature drop that comes with sleep onset.',
+          dosage: 'Meta-analysis, 17 studies reviewed (13 pooled): bathing at 40 to 42.5°C, 1 to 2 h before bed, for as little as 10 min significantly shortened SOL, by about 10 min on average (authors\' university release; pooled minutes not in the abstract). Haghayegh 2019.',
+          source: { url: 'https://doi.org/10.1016/j.smrv.2019.04.008', label: 'Haghayegh et al., Sleep Med Rev 2019' }
         },
         {
-          key: 'hot-bedroom', name: 'Hot Bedroom (>25°C)',
+          key: 'stimulus-control', name: 'Stimulus Control (Bed = Sleep Only)',
+          direction: 'positive', evidence: 'strong',
+          effect: 'Positive (shorter SOL)',
+          keyFinding: 'g=−0.85 vs passive controls (11 trials)',
+          whatThisMeans: 'Only using bed for sleep trains you to fall asleep faster.',
+          mechanism: 'Reconditions the bed as a cue for sleep instead of for lying awake and worrying, lowering arousal at bedtime.',
+          dosage: 'Meta-analysis, 11 trials, insomnia, diary SOL: g=−0.85 vs passive controls (95% CI −1.64 to −0.06, 5 studies; −0.87 at follow-up); vs active treatments −0.22, not significant. Jansson-Fröjmark 2023.',
+          source: { url: 'https://doi.org/10.1111/jsr.14002', label: 'Jansson-Fröjmark et al., J Sleep Res 2023' }
+        },
+        {
+          key: 'bright-evening-light', name: 'Bright Evening Light',
           direction: 'negative', evidence: 'moderate',
           effect: 'Negative (longer SOL)',
-          keyFinding: 'Thermoregulation review: elevated ambient heat delays sleep onset',
-          whatThisMeans: 'A hot bedroom prevents the core-body-temperature drop that triggers sleep onset. Most sleep research points to ~18–20°C (65–68°F) as the sweet spot for fast onset; above ~25°C, latency consistently lengthens.',
-          mechanism: 'Elevated ambient temperature blocks heat loss from the skin, preventing the core temperature drop required for sleep initiation.',
-          dosage: 'Keep bedroom at 18–20°C (65–68°F)',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/22738673/', label: 'Okamoto-Mizuno & Mizuno 2012 thermoregulation review' }
+          keyFinding: 'Longer SOL as melanopic light rises (12 lab studies)',
+          whatThisMeans: 'The more melatonin-suppressing light before bed, the longer it takes to fall asleep.',
+          mechanism: 'Light-sensitive (melanopsin) cells in the eye signal the body clock, which suppresses evening melatonin.',
+          dosage: 'Meta-analysis, 12 lab PSG studies: pooled SOL effect 0.69 not significant (95% CI −0.50 to 1.88), but melanopic light from 100 to 1,000 lux showed a dose-response with longer SOL (r=0.59, p=.027). Cajochen 2022.',
+          source: { url: 'https://doi.org/10.1177/14771535221078765', label: 'Cajochen et al., Light Res Technol 2022' },
+          affiliate: { url: 'https://www.amazon.com/dp/B07W781XWF?tag=kygohealthapp-20&th=1', label: 'Blue Light Glasses', slug: 'blue-light-glasses' }
         },
         {
-          key: 'bright-light-evening', name: 'Bright Light in Hour Before Bed',
-          direction: 'negative', evidence: 'strong',
-          effect: 'Negative (delays melatonin)',
-          keyFinding: 'Cajochen 2022: room-level light suppresses and delays melatonin',
-          whatThisMeans: "Just normal indoor room lighting in the hour before bed is enough to suppress and delay melatonin, pushing sleep onset later. You don't need to be scrolling your phone — the ceiling lights alone are doing it.",
-          mechanism: 'Melanopsin-containing retinal ganglion cells detect evening light and suppress SCN-driven melatonin release.',
-          dosage: 'Dim lights below ~30 lux in the hour before bed; use warm-tone lighting',
-          source: { url: 'https://journals.sagepub.com/doi/10.1177/07487304221100826', label: 'Cajochen et al. 2022' },
-          affiliate: { url: 'https://www.amazon.com/dp/B07W781XWF?tag=kygohealthapp-20&th=1', label: 'Blue Light Blocking Glasses' , slug: 'blue-light-glasses' }
-        },
-        {
-          key: 'noise', name: 'Environmental Noise',
+          key: 'bedroom-noise', name: 'Bedroom Noise',
           direction: 'negative', evidence: 'moderate',
           effect: 'Negative (longer SOL)',
-          keyFinding: 'Basner & McGuire 2018: nighttime noise delays sleep onset',
-          whatThisMeans: 'Ambient noise above ~30 dB measurably delays sleep onset and fragments sleep. Traffic, aircraft, and neighborhood noise all show dose-response effects. White/pink noise or earplugs help mask it when the source is unavoidable.',
-          mechanism: 'Auditory cortex activation keeps the brain partially alert; autonomic arousal prevents transition to NREM sleep.',
-          dosage: 'Keep bedroom <30 dB; use earplugs or masking if needed',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5877064/', label: 'Basner & McGuire 2018' },
-          affiliate: { url: 'https://www.amazon.com/dp/B07RWRJ4XW?tag=kygohealthapp-20', label: 'White Noise Machine' , slug: 'white-noise-machine' }
+          keyFinding: 'Louder bedroom, longer SOL (n=1,076, sound meter)',
+          whatThisMeans: 'Noisier bedrooms are linked to taking longer to fall asleep.',
+          mechanism: 'Sound can cause brief arousals and keep the brain more alert, delaying the transition into sleep. The study was observational.',
+          dosage: 'Cross-sectional, n=1,076 adults 60+, bedside sound meter + actigraphy: each 1 dB of indoor noise linked to longer SOL (β 0.02 log-min, p<0.001) and +0.66 min WASO. Yamagami 2023.',
+          source: { url: 'https://academic.oup.com/sleep/article/46/5/zsac197/7008540', label: 'Yamagami et al., Sleep 2023' }
         },
         {
-          key: 'stimulus-control', name: 'Stimulus Control Therapy',
-          direction: 'positive', evidence: 'strong',
-          effect: 'Positive (large effect)',
-          keyFinding: 'Meta-analysis (Jansson-Fröjmark 2023): large SOL effect vs controls',
-          whatThisMeans: "The 'bed is for sleep only' rule. If you're awake more than ~20 minutes, get up and return only when sleepy. Among the best-studied behavioral treatments for sleep onset, with large effect sizes vs passive controls.",
-          mechanism: 'Reconditions the bed as a sleep cue rather than a wakefulness/worry cue; reduces anticipatory arousal at bedtime.',
-          dosage: 'Core CBT-I component; practiced nightly',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/37496454/', label: 'Jansson-Fröjmark et al. 2023 meta-analysis' }
+          key: 'hot-bedroom', name: 'Hot Bedroom',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (longer SOL, small)',
+          keyFinding: '+11.3 min on heat-event nights (409 nights)',
+          whatThisMeans: 'A hot bedroom adds a few minutes to falling asleep, and about 10 on a heatwave night; it hurts staying asleep more.',
+          mechanism: 'A warm room makes it harder to shed heat through the skin, slowing the core-temperature drop that comes with sleep onset.',
+          dosage: 'Cohort, n=19 adults, 409 nights, bedroom sensors + actigraphy: +1.85 min SOL per +5°C indoors; heat-event nights +11.3 min (95% CI 2.6 to 20.8) (Caballero-Gomez 2025). Li 2021 (n=68,604, accelerometer): +0.11 min SOL per °C outdoors, vs +0.48 min WASO.',
+          source: { url: 'https://doi.org/10.3390/ijerph22091391', label: 'Caballero-Gomez et al., Int J Environ Res Public Health 2025' },
+          source2: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8521927/', label: 'Li et al., 2021, n=68,604' }
         },
         {
-          key: 'consistent-schedule', name: 'Consistent Sleep/Wake Schedule',
+          key: 'phone-before-bed', name: 'Phone Use Before Bed',
+          direction: 'mixed', evidence: 'moderate',
+          effect: 'Negative (mixed)',
+          keyFinding: 'No devices 2 h before bed: SOL −6 min (n=24)',
+          whatThisMeans: 'Phone use right before bed is linked to taking longer to fall asleep, though not every study agrees.',
+          mechanism: 'Likely a mix of mental stimulation and screen light; studies disagree on how much it matters.',
+          dosage: 'PSG crossover, n=24: banning devices 2 h before bed cut SOL 6.08 min. Wearable EEG, n=21: +0.2 min SOL per minute of pre-bed phone use. Diary crossover, 16 athletes: 36.6 vs 16.8 min. Against: RCT n=167, 1 h phone, actigraphy null. Lu 2025; Montanari 2026.',
+          source: { url: 'https://doi.org/10.1080/15402002.2025.2586789', label: 'Lu et al., Behav Sleep Med 2025' },
+          source2: { url: 'https://doi.org/10.2196/75898', label: 'Montanari et al., JMIR 2026' }
+        },
+        {
+          key: 'ereader', name: 'Light-Emitting eReader vs Book',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (longer SOL)',
+          keyFinding: 'SOL 25.7 vs 15.8 min after ~4 h tablet reading',
+          whatThisMeans: 'Reading on a glowing tablet for hours before bed added about 10 minutes.',
+          mechanism: 'Hours of tablet light suppressed and delayed evening melatonin, shifting the body clock later.',
+          dosage: 'Inpatient randomized crossover, n=12, PSG, ~4 h reading for 5 evenings: SOL 25.7 vs 15.8 min (p=0.009). Two shorter tablet studies (1 to 2 h) were null. Chang 2015.',
+          source: { url: 'https://doi.org/10.1073/pnas.1418490112', label: 'Chang et al., PNAS 2015' }
+        },
+        {
+          key: 'low-melanopic-screen', name: 'Low-Melanopic Screen Light',
           direction: 'positive', evidence: 'moderate',
-          effect: 'Positive (immediate)',
-          keyFinding: 'Chaput 2020: regularity predicts shorter SOL',
-          whatThisMeans: 'A consistent wake time (even more than bedtime) trains your circadian system to release melatonin and drop body temperature at the right time. One of the few sleep-onset fixes that can help the very first night.',
-          mechanism: 'Stable morning light exposure and wake time entrain the SCN, anchoring evening melatonin onset and core temperature rhythm.',
-          dosage: 'Fix your wake time within a 30-min window daily',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/33054339/', label: 'Chaput et al. 2020 review' }
+          effect: 'Positive vs standard screen',
+          keyFinding: 'Shorter latency than a standard screen (72 men)',
+          whatThisMeans: 'Screens that emit less body-clock-stimulating light let people fall asleep faster.',
+          mechanism: 'Melanopsin cells in the eye drive evening melatonin suppression; light with less melanopic content stimulates them less.',
+          dosage: 'Lab crossover, 72 men, 4 h evening screen use, PSG: lower melanopic light shortened latency in the brightest group (p=0.024); latency about 50% longer from ~5 to ~150 lux melanopic. Schöllhorn 2023.',
+          source: { url: 'https://doi.org/10.1038/s42003-023-04598-4', label: 'Schöllhorn et al., Commun Biol 2023' }
+        },
+        {
+          key: 'youth-screen-time', name: 'Daily Screen Time (Youth)',
+          direction: 'neutral', evidence: 'strong',
+          effect: 'Null',
+          keyFinding: 'Later bedtime, not longer SOL (25 studies)',
+          whatThisMeans: 'On heavier screen days kids go to bed later but don\'t take longer to fall asleep.',
+          mechanism: 'Screen-heavy days push the time of sleep later rather than lengthening the time it takes to fall asleep once in bed.',
+          dosage: 'Meta-analysis, 25 within-person studies, n=4,562 aged 3 to 25: more screen time linked to later sleep onset time (r=0.079), not to longer SOL. Bourke 2026.',
+          source: { url: 'https://doi.org/10.1001/jamapediatrics.2025.6490', label: 'Bourke et al., JAMA Pediatr 2026' }
+        },
+        {
+          key: 'morning-light', name: 'Morning Bright Light Therapy',
+          direction: 'mixed', evidence: 'moderate',
+          effect: 'Positive (conflicting)',
+          keyFinding: 'g=−0.55 measured SOL; another meta found none',
+          whatThisMeans: 'Morning light boxes may help some poor sleepers fall asleep faster.',
+          mechanism: 'Bright morning light shifts the body clock earlier, so melatonin rises earlier in the evening.',
+          dosage: 'Meta-analysis, 14 studies, n=444 insomnia (primary or comorbid): objective SOL g=−0.545 (Wasilah 2026). Conflicting meta-analysis (Chambe 2023, 13 studies, light at any time of day): no SOL effect.',
+          source: { url: 'https://doi.org/10.1016/j.ijnurstu.2026.105588', label: 'Wasilah et al., Int J Nurs Stud 2026' }
+        },
+        {
+          key: 'earplugs-mask', name: 'Earplugs + Eye Mask',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (shorter SOL)',
+          keyFinding: 'SOL 46.6 vs 71.4 min in a noisy, bright room',
+          whatThisMeans: 'Earplugs and an eye mask helped people fall asleep faster in a noisy, bright room.',
+          mechanism: 'Blocking noise and light removes the arousals they cause.',
+          dosage: 'RCT, healthy adults in simulated ICU noise and light (n=10 per arm), PSG: SOL 46.6 vs 71.4 min with no aid (p=0.010). Huang 2015.',
+          source: { url: 'https://doi.org/10.1186/s13054-015-0842-8', label: 'Huang et al., Crit Care 2015' }
+        },
+        {
+          key: 'skin-warming', name: 'Skin Warming / Bed Socks',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (shorter SOL)',
+          keyFinding: 'Gentle trunk-skin warming: SOL −3.1 min (26%)',
+          whatThisMeans: 'Gently warming the skin, like bed socks in a cool room, helps you fall asleep a few minutes sooner.',
+          mechanism: 'Slightly warmer skin on the trunk, within the normal nightly range, sped sleep onset; the authors suggest skin temperature feeds into the brain\'s sleep centres. In that study, changing core or hand-and-foot temperature alone did not.',
+          dosage: 'Lab, n=8, 144 trials: +0.78°C proximal skin warming shortened SOL 3.09 min (1.91 to 4.28), 26% (Raymann 2005). Crossover, n=6 men, 23°C room, actigraphy: bed socks 7.5 min shorter (Ko 2018). Warm footbath studies null.',
+          source: { url: 'https://doi.org/10.1152/ajpregu.00492.2004', label: 'Raymann et al., Am J Physiol 2005' },
+          source2: { url: 'https://doi.org/10.1186/s40101-018-0172-z', label: 'Ko & Lee, J Physiol Anthropol 2018' }
+        },
+        {
+          key: 'bed-rocking', name: 'Gentle Bed Rocking',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (shorter SOL)',
+          keyFinding: 'Faster sleep onset on a rocking bed (n=18)',
+          whatThisMeans: 'Sleeping on a slowly rocking bed helped people fall asleep faster.',
+          mechanism: 'Slow rhythmic rocking stimulates the inner-ear balance system and synchronized sleep brain rhythms (slow oscillations and spindles) in this study.',
+          dosage: 'Crossover, n=18, full-night rocking, PSG: shorter latency to NREM sleep, more deep sleep, fewer arousals. Perrault 2019.',
+          source: { url: 'https://doi.org/10.1016/j.cub.2018.12.028', label: 'Perrault et al., Curr Biol 2019' }
+        },
+        {
+          key: 'bedroom-co2', name: 'Bedroom CO2',
+          direction: 'negative', evidence: 'moderate',
+          effect: 'Negative (longer SOL)',
+          keyFinding: 'SOL rose linearly from 800 to 3,000 ppm (n=12)',
+          whatThisMeans: 'Stuffier bedroom air was linked to taking longer to fall asleep.',
+          mechanism: 'Not established. Higher CO2 is also a marker of poor ventilation, so the effect may come from the air quality overall.',
+          dosage: 'Chamber study, n=12, 800 / 1,900 / 3,000 ppm over 54 days: SOL rose linearly with CO2. Xu 2020.',
+          source: { url: 'https://doi.org/10.1111/ina.12748', label: 'Xu et al., Indoor Air 2020' }
+        },
+        {
+          key: 'sleep-tech', name: 'Sleep-Tech Wearables',
+          direction: 'positive', evidence: 'moderate',
+          effect: 'Positive (small)',
+          keyFinding: '−4.5 min measured SOL (5 studies)',
+          whatThisMeans: 'Some sleep-tech wearables trim a few minutes off falling asleep.',
+          mechanism: 'The devices differ (neurostimulation, neurofeedback, light glasses), so there is no single pathway.',
+          dosage: 'Meta-analysis, 16 RCTs, n=910 insomnia (neurostimulation, neurofeedback, light glasses): objective SOL −4.52 min (−8.38 to −0.67), 5 studies; subjective null. Zhu 2026.',
+          source: { url: 'https://doi.org/10.2196/93496', label: 'Zhu et al., JMIR 2026' }
+        },
+        {
+          key: 'weighted-blanket', name: 'Weighted Blankets',
+          direction: 'neutral', evidence: 'moderate',
+          effect: 'Null',
+          keyFinding: 'No significant change in 3 crossover RCTs',
+          whatThisMeans: 'Weighted blankets haven\'t been shown to help people fall asleep faster.',
+          mechanism: 'Deep pressure is proposed to be calming, but trials have not shown faster sleep onset.',
+          dosage: '3 crossover RCTs: ADHD children n=94 (actigraphy, p=0.43), adopted children n=30, adults with depression n=40 (−4.2 min, p=0.06, maker co-funded). Lönn 2023.',
+          source: { url: 'https://doi.org/10.1111/jsr.13990', label: 'Lönn et al., J Sleep Res 2023' }
+        },
+        {
+          key: 'cooling-bedding', name: 'Cooling Bedding',
+          direction: 'neutral', evidence: 'moderate',
+          effect: 'Null',
+          keyFinding: 'No SOL difference (9 RCTs)',
+          whatThisMeans: 'Cooling mattresses and pillows haven\'t been shown to speed sleep onset.',
+          mechanism: 'Cooling surfaces target body temperature, but trials in healthy adults found no effect on sleep onset.',
+          dosage: 'Meta-analysis, 9 RCTs, healthy adults: no SOL difference; very low to low certainty. Pasquier 2025.',
+          source: { url: 'https://doi.org/10.1016/j.jtherbio.2024.104030', label: 'Pasquier et al., J Therm Biol 2025' }
         }
       ],
+
       physiology: [
         {
           key: 'older-age', name: 'Older Age',
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (longer SOL)',
-          keyFinding: 'Ohayon 2004 meta-analysis: SOL rises progressively with age',
-          whatThisMeans: 'Sleep onset latency gets longer with age even in healthy older adults. Expected, not pathological — but it compounds with other age-related sleep changes like more awakenings and lighter sleep.',
-          mechanism: 'Age-related decline in SCN amplitude, reduced nocturnal melatonin, and lighter sleep architecture all extend time to sleep onset.',
-          dosage: 'Non-modifiable; sleep hygiene, morning light, and exercise offset',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/', label: 'Ohayon et al. 2004 meta-analysis' }
+          keyFinding: 'SOL lengthens with age, mostly before 60',
+          whatThisMeans: 'Falling asleep takes longer as you get older, mostly before 60.',
+          mechanism: 'Sleep gets lighter with age (more stage 1 and 2 sleep), and the body clock signal weakens. After 60, only sleep efficiency keeps declining.',
+          dosage: 'Meta-analysis, 65 studies, n=3,577, PSG/actigraphy: SOL, WASO, %N1 and %N2 increase with age in adults; after 60 only sleep efficiency keeps declining. Ohayon 2004.',
+          source: { url: 'https://doi.org/10.1093/sleep/27.7.1255', label: 'Ohayon et al., Sleep 2004' }
         },
         {
           key: 'evening-chronotype', name: 'Evening Chronotype',
           direction: 'negative', evidence: 'moderate',
-          effect: 'Negative (later onset)',
-          keyFinding: 'Duffy 1999: phase-delayed circadian markers in night owls',
-          whatThisMeans: "Night owls genuinely fall asleep later — it's not laziness, it's a shifted circadian rhythm. Forcing an early bedtime just means lying awake. Morning bright light exposure plus low-dose evening melatonin can phase-advance the clock earlier.",
-          mechanism: 'Shifted SCN phase produces later melatonin onset, later core temperature nadir, and later optimal sleep window.',
-          dosage: 'Non-modifiable base; morning light + evening dim can phase-advance',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3630920/', label: 'Duffy et al. 1999' }
-        },
-        {
-          key: 'menopausal-hot-flashes', name: 'Menopausal Hot Flashes',
-          direction: 'negative', evidence: 'strong',
           effect: 'Negative (longer SOL)',
-          keyFinding: 'Baker 2024 AJOG; Pan 2025: vasomotor symptoms delay sleep onset',
-          whatThisMeans: "Hot flashes and night sweats during the menopausal transition make it measurably harder to fall asleep. It's a thermoregulatory disruption of the exact core-temp-drop mechanism sleep onset depends on. HRT and cooling strategies both help.",
-          mechanism: 'Vasomotor episodes disrupt the core temperature decline required for sleep onset; wakefulness is directly triggered by heat surge.',
-          dosage: 'Address via HRT, cooling, and CBT-I where appropriate',
-          source: { url: 'https://www.ajog.org/article/S0002-9378(24)00404-5/fulltext', label: 'Baker et al. 2024 AJOG' }
+          keyFinding: 'SOL 21.1 vs 14.1 min, night owls vs larks',
+          whatThisMeans: 'Night owls take longer to fall asleep at a normal bedtime.',
+          mechanism: 'Evening types\' melatonin rises 2 to 3 hours later, so a conventional bedtime arrives before their body is ready for sleep.',
+          dosage: '53 evening vs 35 morning types, 7 nights: actigraphy SOL 21.1 vs 14.1 min (p=.02); in-lab PSG (Colelli 2023, n=2,612) also links evening type to longer SOL. Evening types\' melatonin onset runs 2 to 3 h later (Lack 2009). Lamprou 2024.',
+          source: { url: 'https://doi.org/10.1111/ejn.16551', label: 'Lamprou et al., Eur J Neurosci 2024' }
         },
         {
           key: 'cognitive-arousal', name: 'Pre-Sleep Cognitive Arousal',
-          direction: 'negative', evidence: 'strong',
-          effect: 'Negative (longer SOL)',
-          keyFinding: 'Wuyts 2011; Kalmbach 2021: cognitive arousal is the strongest modifiable predictor',
-          whatThisMeans: "Racing thoughts, rumination, and worry about not sleeping are the #1 modifiable cause of prolonged sleep onset in insomnia. Fix the mind-racing and everything else gets easier. It's why CBT-I outperforms sleeping pills long-term.",
-          mechanism: 'Cortical arousal and sympathetic activation from worry directly oppose the decline in EEG activity required for sleep onset.',
-          dosage: 'Addressed via CBT-I, cognitive restructuring, paradoxical intention',
-          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/21963535/', label: 'Wuyts et al. 2011' }
-        },
-        {
-          key: 'anxiety', name: 'Generalized Anxiety Disorder',
           direction: 'negative', evidence: 'moderate',
           effect: 'Negative (longer SOL)',
-          keyFinding: 'PSG studies in GAD consistently show delayed sleep onset',
-          whatThisMeans: 'Clinical anxiety consistently delays sleep onset. Treating the underlying anxiety (CBT, SSRIs) typically resolves the sleep-onset problem without needing separate sleep-focused treatment.',
-          mechanism: 'Elevated baseline sympathetic tone and HPA-axis activity increase pre-sleep arousal and shift sleep onset later.',
-          dosage: 'Treat underlying disorder',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8212183/', label: 'Kalmbach et al. 2021 review' }
+          keyFinding: 'High arousal: 37 min longer to fall asleep (n=52)',
+          whatThisMeans: 'Racing thoughts at bedtime make it harder to fall asleep.',
+          mechanism: 'Worry and racing thoughts keep the brain alert, working against the wind-down needed to fall asleep. Adding mental load in the lab also lengthened sleep onset.',
+          dosage: 'Observational, n=52, 2 PSG nights: high vs low pre-sleep cognitive arousal took 37 min longer to fall asleep (Kalmbach 2020). Lab experiment (Wuyts 2011, n=15): induced cognitive load prolonged PSG SOL.',
+          source: { url: 'https://pubmed.ncbi.nlm.nih.gov/32247571/', label: 'Kalmbach et al., 2020' }
         },
         {
-          key: 'depression', name: 'Depression',
+          key: 'race', name: 'Race (Black vs White US Adults)',
           direction: 'negative', evidence: 'moderate',
           effect: 'Negative (longer SOL)',
-          keyFinding: 'Nutt 2008; Thase 2006: ~75% of depressed patients report delayed onset',
-          whatThisMeans: 'Depression and insomnia are bidirectional — each worsens the other. About 3 in 4 people with depression struggle with sleep onset. Treating depression improves sleep, but addressing sleep directly with CBT-I also improves depression outcomes.',
-          mechanism: 'HPA dysregulation, altered serotonin/melatonin pathways, and rumination all delay sleep initiation.',
-          dosage: 'Treat underlying disorder; CBT-I often helpful alongside',
-          source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3181883/', label: 'Nutt et al. 2008 review' }
+          keyFinding: '+16.3 min adjusted SOL on wrist trackers',
+          whatThisMeans: 'Black American adults took about 16 minutes longer to fall asleep on wrist trackers.',
+          mechanism: 'The cause was not identified in this study; neighborhood disadvantage did not explain it.',
+          dosage: '7-night actigraphy, MIDUS, 133 vs 293: adjusted SOL +16.3 min (10.3 to 22.4); not explained by neighborhood disadvantage. Fuller-Rowell 2016.',
+          source: { url: 'https://doi.org/10.1016/j.sleep.2016.10.008', label: 'Fuller-Rowell et al., Sleep Med 2016' }
         }
       ]
     };
@@ -448,12 +706,12 @@ class KygoSleepLatencyFactors extends HTMLElement {
 
   get _topPicks() {
     return [
-      { icon: 'moon',     label: 'Best Single Habit',         answer: 'Warm bath 1–2h pre-bed',  note: '13 RCTs; cuts sleep onset ~10 min via distal vasodilation and core-temp drop',          stat: '−10 min SOL',     category: 'Environment' },
-      { icon: 'dumbbell', label: 'Best Exercise',             answer: 'Yoga',                    note: "Cohen's d ≈ −1.16 for SOL in chronic sleep-onset insomnia (Khalsa 2021)",               stat: 'd ≈ −1.16',       category: 'Exercise' },
-      { icon: 'pill',     label: 'Best Supplement',           answer: 'Ashwagandha',             note: 'Meta-analysis of 5 RCTs, SMD −0.53 for SOL; 600 mg/day most effective (Cheah 2021)',   stat: 'SMD −0.53',       category: 'Supplements' },
-      { icon: 'brain',    label: 'Best Behavioral Tool',      answer: 'Stimulus control',       note: "Large effect vs passive controls (Hedges' g ≈ 0.85) — bed = sleep only",               stat: 'g ≈ 0.85',        category: 'Environment' },
-      { icon: 'wind',     label: 'Quickest Impact',           answer: 'Consistent bedtime',     note: 'Single-night effect — a stable wake time trains circadian sleep onset',                 stat: 'Immediate',       category: 'Environment' },
-      { icon: 'alert',    label: 'Biggest Sleep-Onset Killer', answer: 'Caffeine',              note: 'Meta-analysis of 24 studies: +9.1 min SOL; peak effect ~3h post-intake (Gardiner 2023)', stat: '+9.1 min SOL',    category: 'Nutrition', warning: true }
+      { icon: 'moon',     label: 'Best Single Habit',          answer: 'Warm bath 1–2 h before bed', note: 'Bathing at 40 to 42.5°C for as little as 10 minutes, 1 to 2 hours before bed, cut time to fall asleep by about 10 minutes across pooled studies.', stat: 'About −10 min', category: 'Environment & Sleep Hygiene' },
+      { icon: 'brain',    label: 'Best for Insomnia',          answer: 'CBT-I',                      note: 'Structured insomnia therapy cut time to fall asleep by about 19 minutes across 20 RCTs. A 2 to 4 session behavioral version (BBTI) works about as well.', stat: '−19 min, 20 RCTs', category: 'Therapies & Routines' },
+      { icon: 'pill',     label: 'Best Supplement',            answer: 'Melatonin',                  note: 'About 7 minutes faster across 19 RCTs. The effect peaks around 4 mg, taken about 3 hours before bed; more isn\'t better.', stat: '−7 min, 19 RCTs', category: 'Supplements' },
+      { icon: 'dumbbell', label: 'Best Exercise',              answer: 'Regular exercise',           note: 'A 66-study meta-analysis found regular exercise shortens sleep onset. In people with insomnia, yoga and Tai Chi cut diary sleep onset by about 25 to 29 minutes (low certainty).', stat: 'd=0.35, 66 studies', category: 'Exercise & Movement' },
+      { icon: 'wind',     label: 'Quickest Impact',            answer: 'Write tomorrow\'s to-do list', note: 'Five minutes writing a specific to-do list at bedtime: people fell asleep in 15.8 vs 25.1 minutes on a lab sleep study.', stat: 'About −9 min, one night', category: 'Therapies & Routines' },
+      { icon: 'alert',    label: 'Biggest Sleep-Onset Killer', answer: 'Caffeine',                   note: 'Adds about 9 minutes to falling asleep on average across 24 studies, and the effect wasn\'t explained by dose or timing.', stat: '+9.1 min SOL', category: 'Nutrition & Substances', warning: true }
     ];
   }
 
@@ -475,6 +733,21 @@ class KygoSleepLatencyFactors extends HTMLElement {
       arrowUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>',
       arrowDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       arrowLeftRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>',
+      minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+      droplet: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>',
+      bed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>',
+      list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
+      activity: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+      leaf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg>',
+      volume: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>',
+      volumeX: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" y1="9" x2="16" y2="15"/><line x1="16" y1="9" x2="22" y2="15"/></svg>',
+      thermometer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
+      wheat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22 16 8"/><path d="M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/><path d="M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z"/></svg>',
+      phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
+      sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
+      coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>',
+      cigarette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 12H3a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h14"/><path d="M18 8c0-2.5-2-2.5-2-5"/><path d="M21 16a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M22 8c0-2.5-2-2.5-2-5"/><path d="M7 12v4"/></svg>',
+      zap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
       heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>'
     };
     return icons[name] || icons.moon;
@@ -484,10 +757,10 @@ class KygoSleepLatencyFactors extends HTMLElement {
 
   _directionConfig(dir) {
     const map = {
-      positive: { icon: 'arrowUp', label: 'Positive', color: '#22C55E', bg: 'rgba(34,197,94,0.1)' },
-      negative: { icon: 'arrowDown', label: 'Negative', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' },
-      mixed: { icon: 'arrowLeftRight', label: 'Mixed', color: '#FBBF24', bg: 'rgba(251,191,36,0.1)' },
-      variable: { icon: 'arrowLeftRight', label: 'Variable', color: '#94A3B8', bg: 'rgba(148,163,184,0.1)' }
+      positive: { icon: 'arrowDown', label: 'Faster sleep onset', color: '#16A34A', bg: 'rgba(34,197,94,0.1)' },
+      negative: { icon: 'arrowUp', label: 'Slower sleep onset', color: '#EF4444', bg: 'rgba(239,68,68,0.1)' },
+      mixed: { icon: 'arrowLeftRight', label: 'Mixed', color: '#D97706', bg: 'rgba(251,191,36,0.12)' },
+      neutral: { icon: 'minus', label: 'No clear effect', color: '#64748B', bg: 'rgba(148,163,184,0.12)' }
     };
     return map[dir] || map.mixed;
   }
@@ -508,7 +781,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
       `<button class="cat-tab ${k === this._activeCategory ? 'active' : ''}" data-category="${k}" role="tab" aria-selected="${k === this._activeCategory}">
         <span class="cat-tab-icon">${this._icon(c.icon)}</span>
         <span>${c.name}</span>
-        <span class="cat-tab-count">${c.count}</span>
+        <span class="cat-tab-count">${(this._factors[k] || []).length}</span>
       </button>`
     ).join('');
   }
@@ -520,15 +793,17 @@ class KygoSleepLatencyFactors extends HTMLElement {
       const rank = { strong: 0, moderate: 1, emerging: 2 };
       factors = [...factors].sort((a, b) => (rank[a.evidence] ?? 9) - (rank[b.evidence] ?? 9));
     } else if (this._sortMode === 'direction') {
-      const rank = { positive: 0, mixed: 1, variable: 2, negative: 3 };
+      const rank = { positive: 0, mixed: 1, neutral: 2, negative: 3 };
       factors = [...factors].sort((a, b) => (rank[a.direction] ?? 9) - (rank[b.direction] ?? 9));
     }
-    return factors.map((f, i) => {
+    const cat = this._categories[this._activeCategory];
+    const note = cat.intro ? `<p class="cat-note">${this._icon(cat.icon)}<span>${cat.intro}</span></p>` : '';
+    return note + factors.map((f, i) => {
       const dir = this._directionConfig(f.direction);
       const ev = this._evidenceConfig(f.evidence);
       const isExpanded = this._expandedFactor === f.key;
       return `
-        <div class="factor-card ${isExpanded ? 'expanded' : ''}" data-factor="${f.key}" style="--delay:${i * 60}ms">
+        <div class="factor-card ${isExpanded ? 'expanded' : ''}" data-factor="${f.key}" id="factor-${f.key}" style="--delay:${i * 60}ms">
           <div class="factor-header" role="button" tabindex="0" aria-expanded="${isExpanded}">
             <div class="factor-top">
               <div class="factor-badges">
@@ -539,7 +814,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
               <div class="factor-toggle">${this._icon('chevDown')}</div>
             </div>
             <h3 class="factor-name">${f.name}</h3>
-            <p class="factor-effect">${f.effect}</p>
+            <p class="factor-effect">${f.keyFinding}</p>
             <p class="factor-evidence-text"><span class="evidence-label">Evidence:</span> ${ev.label}</p>
           </div>
           <div class="factor-body">
@@ -558,7 +833,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
               </div>
               <div class="detail-row">
                 <span class="detail-label">Source</span>
-                <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a></p>
+                <p class="detail-value"><a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>${f.source2 ? `<br><a href="${f.source2.url}" target="_blank" rel="noopener" class="source-link">${f.source2.label} ${this._icon('externalLink')}</a>` : ''}</p>
               </div>
               ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener sponsored" data-track-label="${f.affiliate.slug}">
                 <span>Check it out on Amazon</span>
@@ -593,56 +868,24 @@ class KygoSleepLatencyFactors extends HTMLElement {
     }).join('');
   }
 
+  // Sources grouped by category, built from the factor data and deduped by
+  // URL, so the list can never drift from the cards.
   get _srcGroups() {
-    const groups = {
-      'Nutrition & Substances': [
-        { label: 'Afaghi et al. 2007 — High-GI carb meal & SOL RCT (n=12; 9.0 vs 17.5 min)', url: 'https://pubmed.ncbi.nlm.nih.gov/17284739/' },
-        { label: 'Godos et al. 2024 — Mediterranean diet & sleep systematic review (17/24 studies positive)', url: 'https://pubmed.ncbi.nlm.nih.gov/38257175/' },
-        { label: 'Lin et al. 2011 — Kiwifruit & sleep RCT (n=24, −35.4% SOL)', url: 'https://pubmed.ncbi.nlm.nih.gov/21669584/' },
-        { label: 'St-Onge et al. 2016 — Fiber, saturated fat & SOL RCT (17 vs 29 min)', url: 'https://pubmed.ncbi.nlm.nih.gov/26156950/' },
-        { label: 'Gardiner et al. 2023 — Caffeine & sleep meta-analysis (24 studies, +9.1 min SOL)', url: 'https://pubmed.ncbi.nlm.nih.gov/36870101/' },
-        { label: 'Gardiner et al. 2024 — Alcohol & sleep meta-analysis (27 studies)', url: 'https://pubmed.ncbi.nlm.nih.gov/39631226/' },
-        { label: 'Jaehne et al. 2009 — Nicotine & sleep review', url: 'https://pubmed.ncbi.nlm.nih.gov/19345124/' },
-        { label: 'Suraev et al. 2025 — Cannabis & sleep meta-analysis (9 studies, null SOL)', url: 'https://pubmed.ncbi.nlm.nih.gov/40967124/' }
-      ],
-      'Supplements': [
-        { label: 'Ferracioli-Oda et al. 2013 — Melatonin meta-analysis (19 studies, n=1683, −7.06 min)', url: 'https://pubmed.ncbi.nlm.nih.gov/23691095/' },
-        { label: 'Cheah et al. 2021 — Ashwagandha & sleep meta-analysis (5 RCTs, SMD −0.53)', url: 'https://pubmed.ncbi.nlm.nih.gov/34559859/' },
-        { label: 'Mah & Pitre 2021 — Magnesium & sleep meta-analysis (3 RCTs, −17.36 min)', url: 'https://pubmed.ncbi.nlm.nih.gov/33865376/' },
-        { label: 'Yamadera et al. 2007 — Glycine 3 g & PSG sleep-onset study', url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x' },
-        { label: 'Byun et al. 2018 — GABA supplementation RCT (300 mg, 13.4→5.7 min)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6031986/' },
-        { label: 'Bulman et al. 2025 — L-Theanine meta-analysis (10 RCTs, subjective only)', url: 'https://pubmed.ncbi.nlm.nih.gov/40056718/' },
-        { label: 'Narayan et al. 2024 — CBD isolate & insomnia RCT (null SOL)', url: 'https://pubmed.ncbi.nlm.nih.gov/38174873/' }
-      ],
-      'Exercise & Movement': [
-        { label: 'Kredlow et al. 2015 — Exercise & sleep meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/25596964/' },
-        { label: 'Khalsa et al. 2021 — Yoga for chronic insomnia RCT (d ≈ −1.16)', url: 'https://pubmed.ncbi.nlm.nih.gov/33983112/' },
-        { label: 'Yang et al. 2023 — Tai Chi & sleep meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/36767655/' },
-        { label: 'Kovacevic et al. 2018 — Resistance training & sleep review', url: 'https://pubmed.ncbi.nlm.nih.gov/28919335/' },
-        { label: 'Stutz et al. 2019 — Evening exercise & sleep meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/30374942/' }
-      ],
-      'Environment & Sleep Hygiene': [
-        { label: 'Haghayegh et al. 2019 — Warm bath & sleep meta-analysis (13 RCTs, −10 min SOL)', url: 'https://pubmed.ncbi.nlm.nih.gov/31102877/' },
-        { label: 'Okamoto-Mizuno & Mizuno 2012 — Thermoregulation & sleep review', url: 'https://pubmed.ncbi.nlm.nih.gov/22738673/' },
-        { label: 'Cajochen et al. 2022 — Evening light & melatonin suppression', url: 'https://journals.sagepub.com/doi/10.1177/07487304221100826' },
-        { label: 'Basner & McGuire 2018 — WHO review of nighttime noise & sleep', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5877064/' },
-        { label: 'Jansson-Fröjmark et al. 2023 — Stimulus control meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/37496454/' },
-        { label: 'Chaput et al. 2020 — Sleep regularity & health review', url: 'https://pubmed.ncbi.nlm.nih.gov/33054339/' }
-      ],
-      'Demographics & Physiology': [
-        { label: 'Ohayon et al. 2004 — Normative sleep parameters meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/' },
-        { label: 'Duffy et al. 1999 — Chronotype & phase-delayed circadian markers', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3630920/' },
-        { label: 'Baker et al. 2024 — Menopause, vasomotor symptoms & sleep (AJOG)', url: 'https://www.ajog.org/article/S0002-9378(24)00404-5/fulltext' },
-        { label: 'Wuyts et al. 2011 — Pre-sleep cognitive arousal & SOL', url: 'https://pubmed.ncbi.nlm.nih.gov/21963535/' },
-        { label: 'Kalmbach et al. 2021 — Cognitive arousal & insomnia review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8212183/' },
-        { label: 'Nutt et al. 2008 — Depression & sleep review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3181883/' }
-      ]
-    };
+    const groups = {};
+    const seen = new Set();
+    for (const [k, list] of Object.entries(this._factors)) {
+      const name = this._categories[k].name;
+      for (const f of list) {
+        for (const src of [f.source, f.source2]) {
+          if (!src || seen.has(src.url)) continue;
+          seen.add(src.url);
+          (groups[name] = groups[name] || []).push({ label: `${f.name} (${src.label})`, url: src.url });
+        }
+      }
+    }
     return groups;
   }
 
-  // Flat source list for the standard sources module: the topic group becomes
-  // the card's tag, and a trailing "(…)" in the label becomes the citation line.
   get _sources() {
     const out = [];
     for (const [tag, items] of Object.entries(this._srcGroups)) {
@@ -708,14 +951,107 @@ class KygoSleepLatencyFactors extends HTMLElement {
     this._expandedFactor = null;
     if (tabs) tabs.innerHTML = this._renderCategoryTabs();
     if (cards) cards.innerHTML = this._renderFactorCards();
-    if (sortBar) sortBar.innerHTML = `
-      <label class="sort-label" for="sort-select">Sort by:</label>
-      <select class="sort-select" id="sort-select">
-        <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
-        <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
-        <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
-      </select>
-    `;
+    if (sortBar) sortBar.innerHTML = this._renderSortBar();
+  }
+
+  _renderSortBar() {
+    const opt = (v, l) => `<option value="${v}"${this._sortMode === v ? ' selected' : ''}>${l}</option>`;
+    return `<label class="sort-label" for="sort-select">Sort by:</label>
+      <select class="sort-select" id="sort-select">${opt('evidence', 'Evidence Strength')}${opt('direction', 'Effect Direction')}</select>`;
+  }
+
+  // ── Action Board ────────────────────────────────────────────────────
+  // "Do more / Cut back": factors a reader can change, with strong or
+  // moderate evidence and a clear direction, each with its dose and
+  // measured result. Rows are condensed from the matching _factors entry;
+  // evidence is read from _factors so the two can't disagree. Supplements
+  // tested only in patients or in one small trial are left out.
+
+  get _board() {
+    return {
+      more: [
+        { key: 'warm-bath', icon: 'droplet', label: 'Warm bath or shower', dose: '40–42.5°C, 1–2 h before bed, 10+ min', result: 'About 10 min faster' },
+        { key: 'stimulus-control', icon: 'bed', label: 'Bed = sleep only', dose: 'Get up if you can\'t sleep; no screens or work in bed', result: 'Large effect vs no treatment' },
+        { key: 'cbt-i', icon: 'brain', label: 'CBT-I', dose: 'Therapist, 2–4 session BBTI, or an app', result: '−19 min (20 RCTs)' },
+        { key: 'todo-list', icon: 'list', label: 'Write a to-do list', dose: '5 min at bedtime; be specific', result: '15.8 vs 25.1 min' },
+        { key: 'regular-exercise', icon: 'activity', label: 'Regular exercise', dose: 'Any regular training', result: 'Shorter sleep onset (66 studies)' },
+        { key: 'yoga', icon: 'leaf', label: 'Yoga or Tai Chi', dose: 'A regular practice', result: '−25 to −29 min in insomnia' },
+        { key: 'earplugs-mask', icon: 'volumeX', label: 'Earplugs + eye mask', dose: 'In a noisy or bright room', result: '46.6 vs 71.4 min' },
+        { key: 'skin-warming', icon: 'thermometer', label: 'Bed socks in a cool room', dose: 'Gently warm skin, not a hot room', result: '3–7.5 min faster' },
+        { key: 'high-gi-meal', icon: 'wheat', label: 'High-GI carbs at dinner', dose: 'About 4 h before bed', result: '9.0 vs 17.5 min' },
+        { key: 'low-melanopic-screen', icon: 'phone', label: 'Low-melanopic screen light', dose: 'Night mode or dimmer, warmer light', result: 'Shorter latency than standard' },
+        { key: 'melatonin', icon: 'pill', label: 'Melatonin', dose: 'Around 4 mg, about 3 h before bed', result: '−7 min (19 RCTs)' },
+        { key: 'ashwagandha', icon: 'pill', label: 'Ashwagandha', dose: '600 mg/day or more, 8+ weeks', result: 'SMD −0.53 (3 RCTs)' }
+      ],
+      less: [
+        { key: 'caffeine', icon: 'coffee', label: 'Caffeine', dose: 'Dose and timing didn\'t explain it', result: '+9.1 min (24 studies)' },
+        { key: 'energy-drinks', icon: 'zap', label: 'Energy drinks', dose: 'Risk rises from a few a month', result: '~1.8x risk of 2 h+ to sleep' },
+        { key: 'nicotine', icon: 'cigarette', label: 'Smoking', dose: 'Former smokers were no different', result: '+5.4 min' },
+        { key: 'bright-evening-light', icon: 'sun', label: 'Bright evening light', dose: 'More melanopic light, longer delay', result: 'Dose-response with longer SOL' },
+        { key: 'ereader', icon: 'phone', label: 'Hours of tablet reading', dose: '~4 h before bed; 1–2 h was fine', result: '25.7 vs 15.8 min' },
+        { key: 'hot-bedroom', icon: 'thermometer', label: 'A hot bedroom', dose: 'Worst on heatwave nights', result: '+11.3 min on heat nights' },
+        { key: 'bedroom-noise', icon: 'volume', label: 'Bedroom noise', dose: 'Every extra decibel counts', result: 'Louder room, longer SOL' },
+        { key: 'bedroom-co2', icon: 'wind', label: 'Stuffy air (CO2)', dose: 'Ventilate; 800 vs 3,000 ppm', result: 'SOL rose with CO2' },
+        { key: 'vigorous-late', icon: 'dumbbell', label: 'Hard workouts right before bed', dose: 'Ending ≤1 h before bed only', result: 'Evening exercise overall is fine' },
+        { key: 'cognitive-arousal', icon: 'alert', label: 'Racing thoughts at bedtime', dose: 'Wind down; try a to-do list', result: '37 min longer when high' }
+      ]
+    };
+  }
+
+  _renderBoardCol(kind) {
+    const up = kind === 'more';
+    const byKey = {};
+    Object.entries(this._factors).forEach(([cat, list]) => list.forEach(f => { byKey[f.key] = { ...f, cat }; }));
+    const rows = this._board[kind].filter(r => byKey[r.key]);
+    const visible = 6;
+    const items = rows.map((r, i) => {
+      const f = byKey[r.key];
+      const ev = this._evidenceConfig(f.evidence);
+      return `
+        <li class="ab-item${i >= visible ? ' ab-extra' : ''}">
+          <button type="button" class="ab-row" data-jump="${f.key}" data-cat="${f.cat}" aria-label="${f.name}: ${r.result}. Open details">
+            <span class="ab-ico">${this._icon(r.icon)}</span>
+            <span class="ab-main">
+              <span class="ab-name">${r.label}</span>
+              <span class="ab-dose">${r.dose}</span>
+            </span>
+            <span class="ab-side">
+              <span class="ab-result">${r.result}</span>
+              <span class="ab-ev" title="${ev.label} evidence"><span class="ab-bars" data-lvl="${{ strong: 3, moderate: 2, emerging: 1 }[f.evidence] || 1}" aria-hidden="true"><i></i><i></i><i></i></span>${ev.label} evidence</span>
+            </span>
+          </button>
+        </li>`;
+    }).join('');
+    const more = rows.length > visible
+      ? `<button type="button" class="ab-toggle" data-ab-more aria-expanded="false"><span class="ab-toggle-lbl">Show all ${rows.length}</span>${this._icon('chevDown')}</button>`
+      : '';
+    return `
+      <div class="ab-col ab-col-${kind}">
+        <div class="ab-head">
+          <span class="ab-head-ico">${this._icon(up ? 'arrowUp' : 'arrowDown')}</span>
+          <div>
+            <h3 class="ab-title">${up ? 'Do more' : 'Cut back'}</h3>
+            <p class="ab-sub">${rows.length} ${up ? 'habits and aids that speed sleep onset' : 'things that keep you lying awake'}</p>
+          </div>
+        </div>
+        <ul class="ab-list">${items}</ul>
+        ${more}
+      </div>`;
+  }
+
+  _jumpToFactor(key, cat) {
+    if (!this._factors[cat]) return;
+    this._activeCategory = cat;
+    this._updateCategory();
+    this._toggleFactor(key);
+    const card = this.shadowRoot.getElementById(`factor-${key}`);
+    if (!card) return;
+    card.classList.add('visible', 'flash');
+    setTimeout(() => card.classList.remove('flash'), 1600);
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    card.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    const hdr = card.querySelector('.factor-header');
+    if (hdr) hdr.focus({ preventScroll: true });
   }
 
   _toggleFactor(key) {
@@ -1205,7 +1541,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
                   <span class="hv-label">Late caffeine</span>
                   <span class="hv-val">+9.1<span class="unit">min</span></span>
                   <div class="hv-bar"><span class="hv-fill" style="width:91%"></span></div>
-                  <span class="hv-cap">Within 6 h of bed</span>
+                  <span class="hv-cap">Average of 24 studies</span>
                 </div>
               </div>
               <span class="hv-foot">Change in sleep onset latency · both strong-evidence, both under your control</span>
@@ -1228,9 +1564,17 @@ class KygoSleepLatencyFactors extends HTMLElement {
           <div class="picks-grid">${this._renderTopPicks()}</div>
         </div>
       </section>
-      ${this._renderAppCta()}
 
-      <!-- Early contextual CTA -->
+      <!-- Action board: Do more / Cut back -->
+      <section class="board-section" id="action-board">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Do More / Cut Back</h2>
+          <p class="section-sub animate-on-scroll">The changes with real evidence behind them, with the dose that was tested and what it did. Tap any row for the full study details.</p>
+          <div class="ab-grid">${this._renderBoardCol('more')}${this._renderBoardCol('less')}</div>
+          <p class="ab-foot">Only factors you can change, with strong or moderate evidence and a clear direction. Supplements tested only in patients or in one small trial are left out; they stay in the full list below.</p>
+        </div>
+      </section>
+      ${this._renderAppCta('gray')}
 
       <!-- Primary Interactive: Category tabs + Factor cards -->
       <section class="explore-section" id="explore">
@@ -1239,14 +1583,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
           <p class="section-sub animate-on-scroll">Tap any factor to see mechanism, dosage, and source.</p>
 
           <div class="cat-tabs animate-on-scroll" role="tablist">${this._renderCategoryTabs()}</div>
-          <div class="sort-bar animate-on-scroll">
-            <label class="sort-label" for="sort-select">Sort by:</label>
-            <select class="sort-select" id="sort-select">
-              <option value="default"${this._sortMode === 'default' ? ' selected' : ''}>Default</option>
-              <option value="evidence"${this._sortMode === 'evidence' ? ' selected' : ''}>Evidence Strength</option>
-              <option value="direction"${this._sortMode === 'direction' ? ' selected' : ''}>Effect Direction</option>
-            </select>
-          </div>
+          <div class="sort-bar animate-on-scroll">${this._renderSortBar()}</div>
           <div class="factor-cards">${this._renderFactorCards()}</div>
         </div>
       </section>
@@ -1280,7 +1617,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
-          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated April 2026.</p>
+          <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated October 2026.</p>
           <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
@@ -1409,17 +1746,70 @@ class KygoSleepLatencyFactors extends HTMLElement {
       .pick-cat { font-size: 12px; color: var(--gray-400); }
 
       /* ── Explore Section ── */
+
+      /* Action board · Do more / Cut back */
+      .board-section { padding: 48px 0; background: #fff; }
+      .ab-grid { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
+      .ab-col { background: #fff; border: 1px solid #D4D4D8; border-radius: var(--radius); box-shadow: 0 1px 2px rgba(15,23,42,0.04), 0 8px 24px rgba(15,23,42,0.05); overflow: hidden; }
+      .ab-head { display: flex; align-items: center; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--gray-200); }
+      .ab-head-ico { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; flex: none; color: #fff; }
+      .ab-head-ico svg { width: 18px; height: 18px; }
+      .ab-col-more .ab-head { background: #F0FDF4; border-bottom-color: #DCFCE7; }
+      .ab-col-less .ab-head { background: #FEF2F2; border-bottom-color: #FEE2E2; }
+      .ab-col-more .ab-head-ico { background: var(--green); }
+      .ab-col-less .ab-head-ico { background: var(--red); }
+      .ab-title { font-size: 19px; color: var(--dark); line-height: 1.2; }
+      .ab-sub { font-size: 13px; color: var(--gray-600); margin-top: 2px; }
+      .ab-list { list-style: none; padding: 4px 12px; }
+      .ab-item + .ab-item { border-top: 1px solid var(--gray-100); }
+      .ab-extra { display: none; }
+      .ab-col.open .ab-extra { display: block; }
+      .ab-row { width: 100%; display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; align-items: start; padding: 14px 8px; background: none; border: 0; border-radius: 12px; text-align: left; font-family: inherit; color: inherit; cursor: pointer; transition: background 0.15s; }
+      .ab-row:hover { background: var(--gray-50); }
+      .ab-row:focus-visible, .ab-toggle:focus-visible, .factor-header:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+      .ab-ico { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: var(--gray-50); border: 1px solid var(--gray-200); grid-row: span 2; }
+      .ab-ico svg { width: 19px; height: 19px; }
+      .ab-col-more .ab-ico { color: var(--green-dark); }
+      .ab-col-less .ab-ico { color: var(--red); }
+      .ab-main { display: flex; flex-direction: column; min-width: 0; }
+      .ab-name { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); line-height: 1.3; }
+      .ab-dose { font-size: 13px; color: var(--gray-600); line-height: 1.45; }
+      .ab-side { grid-column: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; margin-top: 6px; }
+      .ab-result { font-size: 12.5px; font-weight: 600; color: var(--dark); line-height: 1.35; }
+      .ab-ev { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 500; color: var(--gray-400); white-space: nowrap; }
+      .ab-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 11px; }
+      .ab-bars i { width: 3px; border-radius: 1px; background: var(--gray-200); }
+      .ab-bars i:nth-child(1) { height: 5px; }
+      .ab-bars i:nth-child(2) { height: 8px; }
+      .ab-bars i:nth-child(3) { height: 11px; }
+      .ab-bars[data-lvl="1"] i:nth-child(-n+1), .ab-bars[data-lvl="2"] i:nth-child(-n+2), .ab-bars[data-lvl="3"] i { background: var(--gray-600); }
+      @media (max-width: 599px) { .ab-side { flex-direction: column; align-items: flex-start; gap: 3px; } }
+      .ab-toggle { width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; border: 0; border-top: 1px solid var(--gray-100); background: #fff; font: inherit; font-size: 14px; font-weight: 600; color: var(--gray-600); cursor: pointer; }
+      .ab-toggle:hover { color: var(--dark); background: var(--gray-50); }
+      .ab-toggle svg { width: 16px; height: 16px; transition: transform .2s; }
+      .ab-col.open .ab-toggle svg { transform: rotate(180deg); }
+      .ab-foot { margin-top: 14px; font-size: 12.5px; color: var(--gray-400); text-align: center; max-width: 640px; margin-left: auto; margin-right: auto; }
+      @media (min-width: 900px) {
+        .board-section { padding: 64px 0; }
+        .ab-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+        .ab-head { padding: 20px 24px; }
+        .ab-list { padding: 0 16px 4px; }
+      }
+      @media (min-width: 1024px) { .board-section { padding: 80px 0; } }
+      .cat-note { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border-radius: 14px; background: var(--green-light); border: 1px solid rgba(34,197,94,0.3); font-size: 14px; line-height: 1.55; color: var(--gray-600); }
+      .cat-note svg { width: 18px; height: 18px; flex: none; margin-top: 2px; color: var(--green-dark); }
+      .factor-card { scroll-margin-top: 84px; }
+      .factor-card.flash { border-color: var(--green); box-shadow: 0 0 0 3px rgba(34,197,94,0.25), var(--shadow-hover); }
       .explore-section { padding: 48px 0 64px; }
 
       /* Sort bar */
-      .sort-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+      .sort-bar { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 20px; }
       .sort-label { font-size: 12px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.3px; }
       .sort-select { padding: 6px 28px 6px 12px; border-radius: 50px; border: 1px solid var(--gray-200); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center; -webkit-appearance: none; appearance: none; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; font-family: inherit; transition: border-color 0.2s; }
       .sort-select:hover, .sort-select:focus { border-color: var(--green); outline: none; }
 
       /* Category tabs */
-      .cat-tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 4px; margin-bottom: 16px; }
-      .cat-tabs::-webkit-scrollbar { display: none; }
+      .cat-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 16px; }
       .cat-tab { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 50px; border: 2px solid var(--gray-200); background: #fff; font-size: 13px; font-weight: 500; color: var(--gray-600); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
       .cat-tab.active { background: var(--green-light); color: var(--green-dark); border-color: var(--green); }
       .cat-tab:hover { border-color: var(--green); }
@@ -1448,7 +1838,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
 
       /* Factor body (expandable) */
       .factor-body { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), padding 0.4s; padding: 0 20px; }
-      .factor-card.expanded .factor-body { max-height: 600px; padding: 0 20px 20px; }
+      .factor-card.expanded .factor-body { max-height: 1400px; padding: 0 20px 20px; }
       .factor-detail { border-top: 1px solid var(--gray-100); padding-top: 16px; }
       .detail-row { margin-bottom: 12px; }
       .detail-row:last-child { margin-bottom: 0; }
@@ -1563,6 +1953,20 @@ class KygoSleepLatencyFactors extends HTMLElement {
       // Sources · show-all toggle
       if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
 
+      // Action board: jump to a factor card, or expand a column
+      const jump = e.target.closest('[data-jump]');
+      if (jump) { this._jumpToFactor(jump.dataset.jump, jump.dataset.cat); return; }
+      const abMore = e.target.closest('[data-ab-more]');
+      if (abMore) {
+        const col = abMore.closest('.ab-col');
+        const open = !col.classList.contains('open');
+        col.classList.toggle('open', open);
+        abMore.setAttribute('aria-expanded', open ? 'true' : 'false');
+        const lbl = abMore.querySelector('.ab-toggle-lbl');
+        if (lbl) lbl.textContent = open ? 'Show fewer' : `Show all ${col.querySelectorAll('.ab-item').length}`;
+        return;
+      }
+
       // Category tabs
       const tab = e.target.closest('.cat-tab');
       if (tab) {
@@ -1645,20 +2049,20 @@ class KygoSleepLatencyFactors extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'Sleep Latency Factor Explorer',
       'alternateName': 'Kygo Sleep Onset Factors Tool',
-      'description': 'Explore 33 research-backed factors that affect sleep onset latency — nutrition, supplements, exercise, environment, and physiology ranked by evidence strength.',
+      'description': 'Explore 57 research-backed factors that affect sleep onset latency, across environment, therapies, nutrition, supplements, exercise and physiology, ranked by evidence strength, with a Do More / Cut Back action board.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/sleep-latency-factors',
       'datePublished': '2026-04-09',
-      'dateModified': '2026-04-09',
+      'dateModified': '2026-10-15',
       'softwareVersion': '1.0',
       'inLanguage': 'en',
       'isAccessibleForFree': true,
       'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
       'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
       'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-      'featureList': 'Explore 33 sleep latency factors, 5 evidence categories, nutrition and supplement comparison, peer-reviewed research citations, sleep hygiene interventions',
-      'keywords': 'sleep latency factors, how to fall asleep faster, sleep onset latency, sleep onset insomnia, best supplements for sleep, melatonin vs ashwagandha, warm bath before bed, caffeine and sleep, CBT-I, stimulus control, sleep hygiene, circadian rhythm, chronotype, sleep environment, bedroom temperature for sleep'
+      'featureList': '57 sleep latency factors in 6 categories, Do More / Cut Back action board, evidence-strength sorting, tested doses and measured minutes, peer-reviewed citations',
+      'keywords': 'sleep latency factors, how to fall asleep faster, sleep onset latency, sleep onset insomnia, best supplements for sleep, melatonin dose, warm bath before bed, caffeine and sleep, CBT-I, stimulus control, to-do list before bed, sleep hygiene, chronotype, bedroom temperature for sleep, valerian, magnesium for sleep'
     };
 
     const faq = {
@@ -1668,27 +2072,27 @@ class KygoSleepLatencyFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': "What's the fastest way to fall asleep?",
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'A warm bath or shower 1–2 hours before bed has the strongest evidence — a 2019 meta-analysis of 13 RCTs (Haghayegh) showed it cuts sleep onset by ~10 minutes on average via distal vasodilation that drops core body temperature right at bedtime. Combining it with stimulus control (only using the bed for sleep) and a consistent wake time produces the largest total effect.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'A warm bath or shower at 40 to 42.5°C for as little as 10 minutes, 1 to 2 hours before bed, cut time to fall asleep by about 10 minutes across pooled studies (Haghayegh 2019). Writing a specific to-do list for 5 minutes at bedtime helped people fall asleep in 15.8 vs 25.1 minutes on a lab sleep study (Scullin 2017). For regular trouble falling asleep, CBT-I cut it by about 19 minutes across 20 RCTs (Trauer 2015).' }
         },
         {
           '@type': 'Question',
           'name': 'Do supplements actually help you fall asleep faster?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Some do. Melatonin shortens sleep latency by roughly 7 minutes on average (Ferracioli-Oda 2013 meta-analysis) and works best for circadian misalignment. Ashwagandha has the largest effect size among supplements — SMD −0.53 across 5 RCTs (Cheah 2021), with 600 mg/day most effective. Magnesium and glycine have moderate evidence. CBD isolate and L-theanine do not show consistent objective sleep-onset effects despite subjective reports.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'A few do, modestly. Melatonin shortens sleep onset by about 7 minutes across 19 RCTs (Ferracioli-Oda 2013), with the effect peaking around 4 mg taken about 3 hours before bed (Cruz-Sanabria 2024). Ashwagandha shortened sleep onset in 3 RCTs, most clearly in insomnia (Cheah 2021). Valerian, omega-3, probiotics and CBD isolate showed no effect, and L-theanine felt faster but was not faster on trackers.' }
         },
         {
           '@type': 'Question',
-          'name': 'How long before bed should I stop drinking caffeine?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'At least 8 hours, and slow metabolizers may need 10+. A 2023 meta-analysis of 24 studies (Gardiner) found caffeine adds ~9.1 minutes to sleep onset on average, with peak disruption about 3 hours after intake. Effects scale with dose and are stronger in people who don\'t drink caffeine regularly.' }
+          'name': 'How much does caffeine delay sleep?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'About 9 minutes on average. A 2023 meta-analysis of 24 studies (Gardiner) found caffeine added 9.1 minutes to sleep onset, and the effect was not explained by the final dose or how close to bed it was taken.' }
         },
         {
           '@type': 'Question',
           'name': 'Does exercise help you fall asleep faster?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes — regular moderate exercise consistently shortens sleep onset in meta-analyses. Yoga has the single largest effect size in the dataset (Cohen\'s d ≈ −1.16 for chronic sleep-onset insomnia per Khalsa 2021). Tai Chi, resistance training, and moderate cardio all help. The one exception: vigorous exercise within ~1 hour of bedtime delays onset due to sympathetic arousal and elevated core temperature.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes. A 66-study meta-analysis found regular exercise shortens sleep onset (Kredlow 2015), and in people with insomnia yoga and Tai Chi cut diary sleep onset by about 25 to 29 minutes (low certainty, Bu 2026). Evening exercise is fine for most people; only very hard sessions ending within an hour of bed may delay sleep (Stutz 2019).' }
         },
         {
           '@type': 'Question',
-          'name': 'What is a normal sleep onset latency?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Healthy adults typically fall asleep within 10–20 minutes. Falling asleep in under 5 minutes often indicates significant sleep deprivation, while taking more than 30 minutes consistently is one of the diagnostic criteria for sleep-onset insomnia. Sleep latency naturally lengthens with age, and evening chronotypes have a genuinely later optimal sleep window.' }
+          'name': 'Does alcohol help you fall asleep?',
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Only at heavy doses. In a 27-study meta-analysis, alcohol shortened sleep onset significantly only at about 0.85 g/kg (about 5 drinks) or more, while REM sleep was disrupted from low doses (Gardiner 2025).' }
         }
       ]
     };

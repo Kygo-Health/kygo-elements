@@ -952,9 +952,9 @@ class KygoRemSleep extends HTMLElement {
       },
       {
         title: 'Sleep Latency Factors',
-        blurb: '33 factors that affect how fast you fall asleep, ranked by evidence.',
+        blurb: '57 factors that affect how fast you fall asleep, ranked by evidence.',
         url: 'https://www.kygo.app/tools/sleep-latency-factors',
-        meta: 'Sleep · 33 factors',
+        meta: 'Sleep · 57 factors',
         motif: { motif: 'decay', caption: 'Time to fall asleep' }
       },
       {
