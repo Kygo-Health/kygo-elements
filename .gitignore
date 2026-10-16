@@ -1,0 +1,19 @@
+# local preview/screenshot helpers (not shipped)
+.shot.js
+.shot-el.js
+.smoke.js
+.state.js
+.exp.js
+.chk.js
+.*.html
+node_modules/
+package.json
+package-lock.json
+
+# screenshot artifacts — most shipped components reference remote (Wix) images,
+# so stray PNGs (previews/screenshots) don't belong in the repo
+*.png
+# ...except intentionally-shipped component assets served via GitHub Pages
+# (e.g. the How It Works wearable logos, referenced by absolute github.io URL)
+!assets/
+!assets/*.png
