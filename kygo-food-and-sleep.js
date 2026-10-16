@@ -82,7 +82,7 @@ class KygoFoodAndSleep extends HTMLElement {
   // that stage (more deep sleep, more REM, faster sleep onset, less waking).
   _dir(d) {
     return ({
-      good:  { icon: 'check',     cls: 'dir-good',  word: 'Helps' },
+      good:  { icon: 'up',        cls: 'dir-good',  word: 'Helps' },
       bad:   { icon: 'down',      cls: 'dir-bad',   word: 'Hurts' },
       none:  { icon: 'dash',      cls: 'dir-none',  word: 'No change' },
       mixed: { icon: 'swap',      cls: 'dir-mixed', word: 'Mixed' }
@@ -139,31 +139,31 @@ class KygoFoodAndSleep extends HTMLElement {
       {
         key: 'deep', kicker: 'Deep sleep (N3)', short: 'Deep sleep',
         h2: 'Foods that affect <span class="hl">deep sleep.</span>',
-        lede: 'Caffeine is the one food lever here with strong evidence, and it works against you: about 11 minutes less deep sleep on average, and a big dose still cuts it 12 hours later. Lower carb eating nudges deep sleep up a little. Alcohol moves deep sleep around the night without adding any.',
+        lede: 'Caffeine is the only strong-evidence lever, and it costs you deep sleep. Lower carb eating adds a little.',
         tool: { url: T + 'deep-sleep-factors', label: 'Every deep sleep factor, not just food' },
         rows: [
           { key: 'caffeine', food: 'Caffeine', effect: 'Less deep sleep', dir: 'bad', grade: 'strong', stat: 'About 11 min less deep sleep', src: ['gardinerCaf', 'gardinerDose'], design: 'Meta-analysis of 24 studies; dose detail from a double-blind crossover in 23 men on a home forehead EEG device.', plain: 'About 11 min less deep sleep on average across studies. In the trial, 400mg (about 4 standard cups of coffee) 4h before bed cut deep sleep by 29.7 min, and still cut it by 20.6 min at 12h. 100mg had no measurable effect at any timing.' },
           { key: 'low-carb', food: 'Lower carb diet', effect: 'More deep sleep', dir: 'good', grade: 'moderate', stat: 'About 8 min more deep sleep', src: ['vlah'], design: 'Meta-analysis of 11 small studies (27 trial arms).', plain: 'Lower carb gave about 8 min more deep sleep. It is the same meta-analysis that found more REM on higher carb, so carbs look like a trade between the two stages rather than a win or a loss.' },
-          { key: 'junk-food', food: 'A week of junk food (high fat, high sugar)', effect: 'Shallower deep sleep', dir: 'bad', grade: 'moderate', stat: 'Same minutes, shallower on EEG', src: ['brandao'], design: 'Randomized crossover, 15 healthy men, lab PSG, same calories in both weeks.', plain: 'Compared with a low fat, low sugar week, time in deep sleep did not change but the deep sleep was shallower on EEG. Our read: a wearable would probably show the same deep sleep minutes.' },
+          { key: 'junk-food', food: 'A week of junk food (high fat, high sugar)', b: 'A week of junk food', effect: 'Shallower deep sleep', dir: 'bad', grade: 'moderate', stat: 'Same minutes, shallower on EEG', src: ['brandao'], design: 'Randomized crossover, 15 healthy men, lab PSG, same calories in both weeks.', plain: 'Compared with a low fat, low sugar week, time in deep sleep did not change but the deep sleep was shallower on EEG. Our read: a wearable would probably show the same deep sleep minutes.' },
           { key: 'alcohol', food: 'Alcohol (high dose, about 5 drinks)', effect: 'No net gain', dir: 'none', grade: 'moderate', stat: 'More early, less late, same total', src: ['chan', 'mccullar'], design: 'Lab PSG in 22 people aged 18 to 21; the same pattern in a randomized crossover of 30 adults over 3 nights.', plain: 'Breath alcohol was about 0.08% at lights out. More deep sleep in the first half of the night, less in the second half, more time awake. Total deep sleep did not go up and REM went down. McCullar saw the same over 3 nights in a row.' },
-          { key: 'fiber-fat', food: 'Fiber and saturated fat', effect: 'Fiber more, saturated fat less', dir: 'mixed', grade: 'obs', stat: 'More fiber, more deep sleep', src: ['stonge', 'spaeth'], design: 'Observational, 26 people in a sleep lab; the fiber link repeated in 46 people, lab PSG.', plain: 'What people chose to eat on one free day predicted that night\'s deep sleep: more fiber, more deep sleep; more saturated fat, less. A second lab study found the same fiber link.' },
-          { key: 'under-fueling', food: 'Not eating enough for your training', effect: 'Less deep sleep', dir: 'bad', grade: 'obs', stat: 'More fuel, more hours of deep sleep', src: ['lundstrom'], design: 'Observational, 26 college swimmers, WHOOP plus MyFitnessPal logs over 3 matched days.', plain: 'Swimmers who ate more relative to their training got more hours of deep sleep. 69% were under-eating. Deep sleep as a share of the night did not change.' },
+          { key: 'fiber', food: 'Fiber', effect: 'More deep sleep', dir: 'good', grade: 'obs', stat: 'More fiber, more deep sleep', src: ['stonge', 'spaeth'], design: 'Observational, 26 people in a sleep lab; repeated in 46 people, lab PSG.', plain: 'More fiber on a free eating day predicted more deep sleep that night. A second lab study found the same link.' },
+          { key: 'sat-fat', food: 'Saturated fat', effect: 'Less deep sleep', dir: 'bad', grade: 'obs', stat: 'More saturated fat, less deep sleep', src: ['stonge'], design: 'Observational, 26 people, sleep lab PSG.', plain: 'A higher share of calories from saturated fat on a free eating day predicted less deep sleep that night.' },
+          { key: 'under-fueling', food: 'Not eating enough for your training', b: 'Under-eating for training', effect: 'Less deep sleep', dir: 'bad', grade: 'obs', stat: 'Fewer hours of deep sleep when under-fueled', src: ['lundstrom'], design: 'Observational, 26 college swimmers, WHOOP plus MyFitnessPal logs over 3 matched days.', plain: 'Swimmers who ate more relative to their training got more hours of deep sleep. 69% were under-eating. Deep sleep as a share of the night did not change.' },
           { key: 'keto', food: 'Very low carb (keto)', effect: 'More deep sleep', dir: 'good', grade: 'weak', stat: '18% of the night vs 14%', src: ['afaghi08'], design: '14 healthy men, PSG, not randomized (the normal diet night always came first).', plain: 'Deep sleep was about 18% of the night vs 14% on a high carb, low fat diet.' },
-          { key: 'spicy', food: 'Spicy dinner (Tabasco and mustard)', effect: 'Less deep sleep', dir: 'bad', grade: 'weak', stat: 'Less deep sleep, more time awake', src: ['edwards'], design: '6 men, PSG.', plain: 'Less deep sleep and more time awake, possibly from higher body temperature early in the night. Tiny study.' }
+          { key: 'spicy', food: 'Spicy dinner (Tabasco and mustard)', b: 'Spicy dinner', effect: 'Less deep sleep', dir: 'bad', grade: 'weak', stat: 'Less deep sleep, more time awake', src: ['edwards'], design: '6 men, PSG.', plain: 'Less deep sleep and more time awake, possibly from higher body temperature early in the night. Tiny study.' }
         ]
       },
       {
         key: 'rem', kicker: 'REM sleep', short: 'REM',
         h2: 'Foods that affect <span class="hl">REM sleep.</span>',
-        lede: 'Alcohol is the clearest REM effect in the food literature: REM starts later and runs shorter, and it gets worse with every drink past about two. Carbohydrate tilts the night toward REM, protein and daytime fasting tilt it away. Caffeine, a late dinner and almonds left REM alone.',
-        note: 'Not every study agrees on carbs. One small older trial in cyclists and one observational study found protein or fat, not carbs, tracking with more REM, and the cyclist trial also found more deep sleep on high carb. A newer controlled trial points the other way on protein: a high protein diet cut REM by about 9 min (Saidi 2022, below).',
+        lede: 'Alcohol is the clearest REM effect. Carbs tilt the night toward REM; protein and daytime fasting tilt it away.',
         tool: { url: T + 'rem-sleep-factors', label: 'Every REM sleep factor, not just food' },
         rows: [
           { key: 'alcohol', food: 'Alcohol', effect: 'Less REM, starts later', dir: 'bad', grade: 'strong', stat: 'Starts 18 min later, runs 11 min shorter', src: ['gardinerAlc'], design: 'Meta-analysis of 27 studies in healthy adults.', plain: 'REM started about 18 min later and ran about 11 min shorter. REM delay began around 2 drinks and REM loss around 3, and each extra drink cut more.' },
           { key: 'caffeine', food: 'Caffeine', effect: 'No change', dir: 'none', grade: 'strong', stat: 'REM unchanged', src: ['gardinerCaf'], design: 'Meta-analysis, 17 to 19 studies for REM outcomes.', plain: 'No change in REM minutes, REM share or time to first REM. Caffeine cuts deep sleep instead (see deep sleep above).' },
-          { key: 'carbs', food: 'Higher carb diet', effect: 'Slightly more REM', dir: 'good', grade: 'moderate', stat: 'About 9 min more REM', src: ['vlah'], design: 'Meta-analysis of 11 small studies (single meals to 4 day diets), 179 people.', plain: 'High carb meals or diets gave about 9 min more REM vs low carb. Low carb shifted sleep toward deep sleep instead. Time to first REM did not change.' },
-          { key: 'protein', food: 'High protein, lower carb diet', effect: 'Less REM, starts later', dir: 'bad', grade: 'moderate', stat: 'About 9 min less REM, 15 min later', src: ['saidi'], design: 'Randomized crossover, 24 healthy young men, home PSG, 3 days per diet.', plain: 'About 9 min less REM than a higher carb diet with the same calories. Time to first REM also came about 15 min later on the high protein diet.' },
-          { key: 'fasting', food: 'Daytime fasting (Ramadan style)', effect: 'Less REM', dir: 'bad', grade: 'moderate', stat: '18.6% of sleep vs 25.6%', src: ['bahammam', 'roky'], design: 'Two small PSG studies of 8 healthy men each.', plain: 'REM was 18.6% of sleep while fasting vs 25.6% before, with sleep times and calories held fixed. Fasting outside Ramadan cut REM by a similar amount. The 3:30am wake up to eat may play a part.' },
+          { key: 'carbs', food: 'Higher carb diet', effect: 'Slightly more REM', dir: 'good', grade: 'moderate', stat: 'About 9 min more REM', src: ['vlah'], design: 'Meta-analysis of 11 small studies (single meals to 4 day diets), 179 people.', plain: 'High carb meals or diets gave about 9 min more REM vs low carb. Low carb shifted sleep toward deep sleep instead. Not every study agrees: one small cyclist trial and one observational study tied protein or fat, not carbs, to more REM.' },
+          { key: 'protein', food: 'High protein, lower carb diet', b: 'High protein, lower carb', effect: 'Less REM, starts later', dir: 'bad', grade: 'moderate', stat: 'About 9 min less REM, 15 min later', src: ['saidi'], design: 'Randomized crossover, 24 healthy young men, home PSG, 3 days per diet.', plain: 'About 9 min less REM than a higher carb diet with the same calories. Time to first REM also came about 15 min later on the high protein diet.' },
+          { key: 'fasting', food: 'Daytime fasting (Ramadan style)', b: 'Daytime fasting', effect: 'Less REM', dir: 'bad', grade: 'moderate', stat: '18.6% of sleep vs 25.6%', src: ['bahammam', 'roky'], design: 'Two small PSG studies of 8 healthy men each.', plain: 'REM was 18.6% of sleep while fasting vs 25.6% before, with sleep times and calories held fixed. Fasting outside Ramadan cut REM by a similar amount. The 3:30am wake up to eat may play a part.' },
           { key: 'late-dinner', food: 'Late dinner (10pm vs 6pm)', effect: 'No change', dir: 'none', grade: 'moderate', stat: '20.8% of sleep vs 20.6%', src: ['gu'], design: 'Randomized crossover, 20 healthy adults, lab PSG.', plain: 'REM was 20.8% vs 20.6% of sleep. Eating dinner an hour before bed did not reduce REM.' },
           { key: 'almonds', food: 'Almonds (60g a day, 5 months)', effect: 'No change', dir: 'none', grade: 'moderate', funded: 'the Almond Board of California', stat: 'No REM difference', src: ['desai'], design: 'RCT, 175 adults with poor sleep, home PSG.', plain: 'No difference in REM minutes or time to first REM vs an equal calorie snack. People eating almonds did report sleeping better.' }
         ]
@@ -171,13 +171,13 @@ class KygoFoodAndSleep extends HTMLElement {
       {
         key: 'latency', kicker: 'Falling asleep (sleep latency)', short: 'Falling asleep',
         h2: 'Foods that affect <span class="hl">how fast you fall asleep.</span>',
-        lede: 'Caffeine adds about 9 minutes to falling asleep, and in the pooled data neither dose nor timing changed that. A high glycemic carb dinner about 4 hours before bed is the best-tested way food speeds things up. Alcohol only helps here at a dose that wrecks REM.',
+        lede: 'Caffeine slows you down by about 9 minutes. A high GI carb dinner about 4 hours before bed speeds you up.',
         tool: { url: T + 'sleep-latency-factors', label: 'Every sleep latency factor, not just food' },
         rows: [
           { key: 'caffeine', food: 'Caffeine', effect: 'Slower', dir: 'bad', grade: 'strong', stat: 'About 9 min slower', src: ['gardinerCaf'], design: 'Meta-analysis, 19 studies for this outcome, mostly PSG.', plain: 'Adds about 9 min to falling asleep on average, and dose or timing did not change that.' },
           { key: 'alcohol', food: 'Alcohol', effect: 'Faster only at high dose', dir: 'mixed', grade: 'strong', stat: 'Only at about 5+ drinks', src: ['gardinerAlc'], design: 'Meta-analysis of 27 studies in healthy adults.', plain: 'Only about 5+ drinks shortened time to fall asleep, while REM was disrupted from about 2 drinks.' },
-          { key: 'high-gi', food: 'High GI carb meal (4h before bed)', effect: 'Faster', dir: 'good', grade: 'moderate', stat: '9.0 min vs 17.5 min', src: ['afaghi07'], design: 'Randomized order crossover, 12 healthy men.', plain: 'A jasmine rice dinner 4h before bed: 9.0 min to fall asleep vs 17.5 min on low GI rice. The same meal 1h before bed gave 14.6 min.' },
-          { key: 'protein', food: 'High protein, lower carb diet', effect: 'Slower', dir: 'bad', grade: 'moderate', stat: 'About 4 min slower', src: ['saidi'], design: 'Randomized crossover, 24 healthy young men, home PSG, 3 days per diet.', plain: 'Took about 4 min longer to fall asleep than a higher carb diet with the same calories. On the higher carb diet it dropped from 15.8 to 11.4 min.' },
+          { key: 'high-gi', food: 'High GI carb meal (4h before bed)', b: 'High GI carbs, 4h before bed', effect: 'Faster', dir: 'good', grade: 'moderate', stat: '9.0 min vs 17.5 min', src: ['afaghi07'], design: 'Randomized order crossover, 12 healthy men.', plain: 'A jasmine rice dinner 4h before bed: 9.0 min to fall asleep vs 17.5 min on low GI rice. The same meal 1h before bed gave 14.6 min.' },
+          { key: 'protein', food: 'High protein, lower carb diet', b: 'High protein, lower carb', effect: 'Slower', dir: 'bad', grade: 'moderate', stat: 'About 4 min slower', src: ['saidi'], design: 'Randomized crossover, 24 healthy young men, home PSG, 3 days per diet.', plain: 'Took about 4 min longer to fall asleep than a higher carb diet with the same calories. On the higher carb diet it dropped from 15.8 to 11.4 min.' },
           { key: 'alpha-lac', food: 'Alpha-lactalbumin drink (milk protein) before bed', effect: 'Faster, mixed', dir: 'mixed', grade: 'moderate', stat: '5 of 8 studies positive', src: ['barnard', 'gratwicke'], design: 'Review of 8 studies, 5 positive; RCT in female rugby players on wrist actigraphy, 12 with usable data.', plain: 'In the rugby trial, 11.6 and 17.0 min to fall asleep vs about 21 to 22 min on a whey control. Two other trials (6 + 6 cyclists, and 24 adults over 7 nights) found no effect.' },
           { key: 'energy-drinks', food: 'Energy drinks', effect: 'Slower', dir: 'bad', grade: 'obs', stat: 'About 1.8x the risk of 2h+ to fall asleep', src: ['kaldenbach'], design: 'Observational, 53,226 Norwegian students, self-report.', plain: 'Daily drinkers had about 1.8 to 1.9x the risk of taking over 2 hours to fall asleep vs never or seldom. Risk rose from just 1 to 3 times a month. Adjusted for age only.' },
           { key: 'mediterranean', food: 'Mediterranean diet', effect: 'Faster (self-reported only)', dir: 'mixed', grade: 'obs', stat: 'Questionnaires yes, trackers no', src: ['fallah', 'verkaar', 'oconnor'], design: 'Review of 20 studies, plus a wrist tracker cohort and a feeding RCT.', plain: 'All 3 questionnaire studies linked it to falling asleep faster. A 533 person wrist tracker study and a 41 person 5 week feeding trial found no measured change.' }
@@ -186,14 +186,14 @@ class KygoFoodAndSleep extends HTMLElement {
       {
         key: 'waso', kicker: 'Staying asleep (WASO)', short: 'Night waking',
         h2: 'Foods that affect <span class="hl">night waking.</span>',
-        lede: 'Caffeine adds about 12 minutes awake in the night, the best-evidenced food effect on staying asleep. Pooled lab studies found no clear effect of alcohol on time awake. The late-dinner evidence splits: a single controlled night found nothing, four nights in a row found more waking.',
+        lede: 'Caffeine adds about 12 minutes awake. Late dinners split: one night did nothing, four nights added waking.',
         tool: { url: T + 'staying-asleep-factors', label: 'Every staying asleep factor, not just food' },
         rows: [
           { key: 'caffeine', food: 'Caffeine', effect: 'More waking', dir: 'bad', grade: 'strong', stat: 'About 12 min more awake', src: ['gardinerCaf'], design: 'Meta-analysis, 13 studies for this outcome, +11.8 min.', plain: 'About 12 extra minutes awake during the night.' },
           { key: 'alcohol', food: 'Alcohol', effect: 'No clear effect', dir: 'none', grade: 'strong', stat: 'No clear change in time awake', src: ['gardinerAlc', 'spadola'], design: 'Meta-analysis of lab sleep studies in healthy adults, plus a tracker study of 785 people.', plain: 'Pooled lab studies found no clear change in time awake (+4 min, 12 studies) or sleep efficiency (-0.7%, 24 studies), at any dose. One large tracker study saw about 1 point lower efficiency.' },
           { key: 'tart-cherry', food: 'Tart cherry juice', effect: 'Less waking', dir: 'good', grade: 'moderate', funded: 'the juice maker (funded entirely)', stat: 'About 17 min less awake', src: ['pigeon'], design: 'RCT crossover, 15 older adults with insomnia, sleep diary.', plain: '62 min awake on cherry vs 79 min on placebo, about 17 min less. Later trials were mixed: a 2024 capsule trial (n=34, EEG headband and Fitbit) and a 2022 diary trial in 44 healthy adults found nothing, while an 8 person juice trial in older adults with insomnia found 84 min more sleep in the lab and a 2012 trial in 20 healthy adults found more sleep on actigraphy.' },
           { key: 'late-dinner-1', food: 'Late dinner (1h vs 5h before bed), single night', effect: 'No effect', dir: 'none', grade: 'moderate', stat: 'No change in time awake', src: ['gu'], design: 'Randomized crossover, 20 healthy adults, lab PSG.', plain: 'In a controlled test, eating late did not change time awake, sleep efficiency or sleep stages. The survey link below may be about who eats late, not the food.' },
-          { key: 'late-dinner-4', food: 'Late dinner (1h vs 5h before bed), 4 days', effect: 'More waking', dir: 'bad', grade: 'moderate', funded: 'Yazuya, a food company', stat: '29 min awake vs 16 min', src: ['enomoto'], design: 'Randomized crossover, 13 young women, home EEG.', plain: 'Time awake was 29 vs 16 min, with more arousals and about 26 min less sleep. Time to fall asleep did not change. Disagrees with the single night lab study above.' },
+          { key: 'late-dinner-4', food: 'Late dinner (1h vs 5h before bed), 4 days', b: 'Late dinners, 4 nights', effect: 'More waking', dir: 'bad', grade: 'moderate', funded: 'Yazuya, a food company', stat: '29 min awake vs 16 min', src: ['enomoto'], design: 'Randomized crossover, 13 young women, home EEG.', plain: 'Time awake was 29 vs 16 min, with more arousals and about 26 min less sleep. Time to fall asleep did not change. Disagrees with the single night lab study above.' },
           { key: 'almonds', food: 'Almonds (60g a day, 5 months)', effect: 'No measured change', dir: 'none', grade: 'moderate', funded: 'the Almond Board of California', stat: 'Only self-reported sleep improved', src: ['desai'], design: 'RCT, 175 adults with poor sleep, home PSG.', plain: 'No difference in time awake or sleep efficiency vs an equal calorie snack. Only self-reported sleep efficiency improved.' },
           { key: 'sugar', food: 'Sugar', effect: 'More wake ups', dir: 'bad', grade: 'obs', stat: 'More arousals that night', src: ['stonge'], design: 'Observational, 26 people, sleep lab PSG.', plain: 'A higher share of calories from sugar on a free eating day predicted more arousals that night.' },
           { key: 'fruit-veg', food: 'Fruit and vegetables', effect: 'Less fragmented sleep', dir: 'good', grade: 'obs', stat: '16% less fragmented at 5 cups a day', src: ['boege'], design: 'Observational, 34 mostly young men, 201 nights, wrist actigraphy.', plain: '5 cups a day vs none lined up with 16% less fragmented sleep. The link weakened and was no longer significant after accounting for total calories.' },
@@ -203,61 +203,23 @@ class KygoFoodAndSleep extends HTMLElement {
     ];
   }
 
-  // Rows sorted strongest evidence first. Ties keep data order.
+  // Rows sorted helps, hurts, mixed, no change; strongest evidence first
+  // within each. Ties keep data order.
   _sortedRows(stage) {
     const g = this._grades;
+    const d = { good: 0, bad: 1, mixed: 2, none: 3 };
     return stage.rows.map((r, i) => ({ r, i }))
-      .sort((a, b) => (g[a.r.grade].rank - g[b.r.grade].rank) || (a.i - b.i))
+      .sort((a, b) => (d[a.r.dir] - d[b.r.dir]) || (g[a.r.grade].rank - g[b.r.grade].rank) || (a.i - b.i))
       .map(x => x.r);
-  }
-
-  // -- Data: the cross-stage map --------------------------------------------
-  // The handful of foods tested against more than one stage. Each cell points
-  // at the stage row it summarises (`jump`), so the map and the cards cannot
-  // tell different stories. null = not tested for that stage.
-
-  get _matrix() {
-    return [
-      { food: 'Caffeine', cells: {
-        deep: { t: 'About 11 min less', dir: 'bad', jump: 'caffeine' },
-        rem: { t: 'No change', dir: 'none', jump: 'caffeine' },
-        latency: { t: 'About 9 min slower', dir: 'bad', jump: 'caffeine' },
-        waso: { t: 'About 12 min more awake', dir: 'bad', jump: 'caffeine' } } },
-      { food: 'Alcohol', cells: {
-        deep: { t: 'No net gain', dir: 'none', jump: 'alcohol' },
-        rem: { t: 'About 11 min less, 18 min later', dir: 'bad', jump: 'alcohol' },
-        latency: { t: 'Faster only at 5+ drinks', dir: 'mixed', jump: 'alcohol' },
-        waso: { t: 'No clear change', dir: 'none', jump: 'alcohol' } } },
-      { food: 'Higher carb', cells: {
-        deep: { t: 'About 8 min less than low carb', dir: 'bad', jump: 'low-carb' },
-        rem: { t: 'About 9 min more', dir: 'good', jump: 'carbs' },
-        latency: { t: 'Faster (high GI, 4h before bed)', dir: 'good', jump: 'high-gi' },
-        waso: null } },
-      { food: 'High protein, lower carb', cells: {
-        deep: null,
-        rem: { t: 'About 9 min less', dir: 'bad', jump: 'protein' },
-        latency: { t: 'About 4 min slower', dir: 'bad', jump: 'protein' },
-        waso: null } },
-      { food: 'Late dinner', cells: {
-        deep: null,
-        rem: { t: 'No change', dir: 'none', jump: 'late-dinner' },
-        latency: null,
-        waso: { t: 'None in 1 night, more over 4', dir: 'mixed', jump: 'late-dinner-4' } } },
-      { food: 'Almonds', cells: {
-        deep: null,
-        rem: { t: 'No change', dir: 'none', jump: 'almonds' },
-        latency: null,
-        waso: { t: 'No measured change', dir: 'none', jump: 'almonds' } } }
-    ];
   }
 
   // -- Data: what a tracker can and cannot see ----------------------------
 
   get _trackerNotes() {
     return [
-      { icon: 'layers', title: 'Minutes are not depth', body: 'A week of high fat, high sugar food left deep sleep minutes unchanged but made that deep sleep shallower on the EEG (Brandão 2023). A ring or watch reports minutes in each stage, so it would most likely miss this kind of change entirely.', src: 'Brandão 2023, randomized crossover, n=15' },
-      { icon: 'calendar', title: 'One night can mislead', body: 'A single late dinner in the lab changed nothing (Gu 2020). Four late dinners in a row added about 13 minutes awake (Enomoto 2026). If you test a food on yourself, compare several nights with it against several without it, not one night against the next.', src: 'Gu 2020, n=20 · Enomoto 2026, n=13' },
-      { icon: 'message', title: 'Feeling better is not measuring better', body: 'People eating almonds for 5 months reported better sleep, yet their PSG showed no change in REM or time awake (Desai 2026). Three questionnaire studies tied a Mediterranean diet to falling asleep faster, while a wrist tracker study and a feeding trial measured no change.', src: 'Desai 2026, n=175 · Fallah 2024 · Verkaar 2024 · O\'Connor 2018' }
+      { icon: 'layers', title: 'Minutes are not depth', body: 'A week of junk food left deep sleep minutes unchanged but made it shallower on EEG. A ring or watch counts minutes, so it would likely miss this.', src: 'Brandão 2023, randomized crossover, n=15' },
+      { icon: 'calendar', title: 'One night can mislead', body: 'One late dinner changed nothing; four in a row added about 13 minutes awake. Test a food over several nights, not one.', src: 'Gu 2020, n=20 · Enomoto 2026, n=13' },
+      { icon: 'message', title: 'Feeling better is not measuring better', body: 'Almond eaters said they slept better, but their measured sleep did not change. The Mediterranean diet showed the same gap.', src: 'Desai 2026, n=175 · Fallah 2024 · Verkaar 2024 · O\'Connor 2018' }
     ];
   }
 
@@ -310,6 +272,9 @@ class KygoFoodAndSleep extends HTMLElement {
       dash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>',
       down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>',
       swap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>',
+      up: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>',
+      coffee: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>',
+      wine: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M12 15v7"/><path d="M7 2h10l1 6a6 6 0 0 1-12 0l1-6Z"/><path d="M6.3 8h11.4"/></svg>',
       chevDown: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
       alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5l8.5 15h-17z"/><path d="M12 10v4"/><circle cx="12" cy="17" r="0.8" fill="currentColor" stroke="none"/></svg>',
       info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
@@ -788,30 +753,27 @@ class KygoFoodAndSleep extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-pill"><span class="dot"></span> ${h.stages} PARTS OF SLEEP · ${h.findings} FINDINGS · ${h.sources} STUDIES</div>
               <h1>Foods and drinks for <span class="hl">each part of your sleep.</span></h1>
-              <p class="hero-lede">How food affects your sleep depends on which part of the night you mean. Here is what each food, drink and eating pattern did to <strong>deep sleep, REM, falling asleep and night waking</strong> in controlled studies, every finding graded by how strong the evidence is, with industry funding flagged.</p>
+              <p class="hero-lede">How food affects your sleep depends on the part of the night. Here is what each food and drink did to <strong>deep sleep, REM, falling asleep and night waking</strong>, graded by evidence.</p>
             </div>
             <div class="hero-vis" aria-hidden="true">
               <div class="hero-vis-head">
                 <span class="hero-vis-title"><span class="hero-vis-dot"></span> Two drinks, two stages</span>
-                <span class="hero-vis-tag">meta-analyses</span>
               </div>
               <div class="hv-two">
                 <div class="hv-col">
-                  <span class="hv-label">Caffeine</span>
+                  <span class="hv-label"><span class="hv-ic">${this._icon('coffee')}</span>Caffeine</span>
                   <span class="hv-val">−11<span class="unit">min</span></span>
-                  <div class="hv-bar"><span class="hv-fill" style="width:100%"></span></div>
-                  <span class="hv-cap">of deep sleep</span>
-                  <span class="hv-sub">REM: no change</span>
+                  <span class="hv-cap">deep sleep</span>
+                  <span class="hv-sub">REM unchanged</span>
                 </div>
                 <div class="hv-col">
-                  <span class="hv-label">Alcohol</span>
+                  <span class="hv-label"><span class="hv-ic">${this._icon('wine')}</span>Alcohol</span>
                   <span class="hv-val">−11<span class="unit">min</span></span>
-                  <div class="hv-bar"><span class="hv-fill" style="width:100%"></span></div>
-                  <span class="hv-cap">of REM sleep</span>
-                  <span class="hv-sub">Deep sleep: no net gain</span>
+                  <span class="hv-cap">REM sleep</span>
+                  <span class="hv-sub">Deep sleep unchanged</span>
                 </div>
               </div>
-              <span class="hv-foot">Each one hits a different stage and leaves the other roughly alone.</span>
+              <span class="hv-foot">Meta-analyses of 24 and 27 studies.</span>
             </div>
           </div>
           <div class="hero-stats">
@@ -828,13 +790,12 @@ class KygoFoodAndSleep extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">The quick answer</div>
             <h2>Food moves <span class="hl">one stage at a time.</span></h2>
-            <p class="lede">Caffeine costs deep sleep and adds time awake but leaves REM alone. Alcohol costs REM and gives nothing back in deep sleep. Carbs tilt the night toward REM, low carb toward deep sleep. Here are the foods tested against more than one stage; tap any cell for the study.</p>
+            <p class="lede">What helps and what hurts each part of sleep. Tap any food for the study.</p>
           </div>
-          ${this._renderMatrix()}
+          ${this._renderBoard()}
           <div class="grade-key animate-on-scroll">
             <span class="grade-key-title">How the grades work</span>
             <ul>${Object.values(this._grades).map(g => `<li>${this._gradeChip(g)}<span>${g.def}</span></li>`).join('')}</ul>
-            <p>Industry funding is flagged on the finding itself. ${h.funded} of the ${h.findings} findings come from an industry-funded study.</p>
           </div>
         </div>
       </section>
@@ -856,7 +817,7 @@ class KygoFoodAndSleep extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Before you test it on yourself</div>
             <h2>What your tracker <span class="hl">can and can't see.</span></h2>
-            <p class="lede">Most of the effects on this page are 5 to 15 minutes. That is real in a study of dozens of people and easy to lose in one person's night-to-night variation. Three things from the research above are worth knowing before you read your own data.</p>
+            <p class="lede">Most effects here are 5 to 15 minutes, easy to lose in night-to-night noise.</p>
           </div>
           <div class="notes">${this._trackerNotes.map(n => `
             <div class="note-card animate-on-scroll">
@@ -925,34 +886,35 @@ class KygoFoodAndSleep extends HTMLElement {
     return `<span class="grade" data-lvl="${g.lvl}"><span class="grade-bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>${g.label}</span>`;
   }
 
-  _effectPill(dir, text) {
+  _dirTile(dir) {
     const d = this._dir(dir);
-    return `<span class="eff ${d.cls}">${this._icon(d.icon)}<span>${text}</span></span>`;
+    return `<span class="dt ${d.cls}" aria-label="${d.word}">${this._icon(d.icon)}</span>`;
   }
 
-  // Cross-stage map. A table (it is tabular data) that scrolls sideways on a
-  // phone with the food column pinned, and fits without scrolling on desktop.
-  _renderMatrix() {
+  // Quick-answer board: one column per stage, helps then hurts. Items with a
+  // mixed or no clear effect stay in the stage sections only. On a phone the
+  // columns become tabs so it is obvious there are four.
+  _renderBoard() {
     const st = this._stages;
-    const head = st.map(s => `<th scope="col">${s.short}</th>`).join('');
-    const rows = this._matrix.map(m => `
-      <tr>
-        <th scope="row" class="mx-food">${m.food}</th>
-        ${st.map(s => {
-          const c = m.cells[s.key];
-          if (!c) return `<td class="mx-na">Not tested</td>`;
-          return `<td><button type="button" class="mx-cell" data-jump="${s.key}:${c.jump}" aria-label="${m.food}, ${s.short}: ${c.t}. Show the study">${this._effectPill(c.dir, c.t)}</button></td>`;
-        }).join('')}
-      </tr>`).join('');
+    const tabs = st.map((s, i) => `<button type="button" class="bd-tab${i === 0 ? ' on' : ''}" role="tab" aria-selected="${i === 0}" data-bd-tab="${s.key}">${s.short}</button>`).join('');
+    const cols = st.map((s, i) => {
+      const rows = this._sortedRows(s).filter(r => r.dir === 'good' || r.dir === 'bad');
+      const items = rows.map(r => `
+        <li><button type="button" class="bd-row" data-jump="${s.key}:${r.key}" aria-label="${r.food}: ${r.stat}. Show the study">
+          ${this._dirTile(r.dir)}
+          <span class="bd-txt"><span class="bd-name">${r.b || r.food}</span><span class="bd-stat">${r.stat}</span></span>
+        </button></li>`).join('');
+      return `
+        <div class="bd-col${i === 0 ? ' on' : ''}" data-bd-col="${s.key}" role="tabpanel">
+          <h3 class="bd-head">${s.short}</h3>
+          <ul class="bd-list">${items}</ul>
+        </div>`;
+    }).join('');
     return `
-      <div class="mx-wrap animate-on-scroll">
-        <div class="mx-scroll">
-          <table class="mx">
-            <thead><tr><th scope="col">Food or drink</th>${head}</tr></thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>
-        <p class="mx-note">${this._icon('info')} Direction is judged per stage: a green check means better sleep in that stage. "Not tested" means no study in this set measured it.</p>
+      <div class="bd animate-on-scroll">
+        <div class="bd-tabs" role="tablist" aria-label="Part of sleep">${tabs}</div>
+        <div class="bd-cols">${cols}</div>
+        <p class="bd-note">Foods with no clear or a mixed effect are listed in each section below.</p>
       </div>`;
   }
 
@@ -966,11 +928,11 @@ class KygoFoodAndSleep extends HTMLElement {
       return `
         <details class="fd" id="${s.key}-${r.key}">
           <summary class="fd-sum">
-            <span class="fd-ic ${d.cls}" aria-hidden="true">${this._icon(d.icon)}</span>
+            ${this._dirTile(r.dir)}
             <span class="fd-main">
               <span class="fd-name">${r.food}</span>
               <span class="fd-stat">${r.stat}</span>
-              <span class="fd-tags">${this._effectPill(r.dir, r.effect)}${this._gradeChip(gr)}${r.funded ? `<span class="fd-flag">${this._icon('alert')} Industry-funded</span>` : ''}</span>
+              <span class="fd-tags">${this._gradeChip(gr)}${r.funded ? `<span class="fd-flag">Industry-funded</span>` : ''}</span>
             </span>
             <span class="fd-chev" aria-hidden="true">${this._icon('chevDown')}</span>
           </summary>
@@ -997,13 +959,13 @@ class KygoFoodAndSleep extends HTMLElement {
           </div>
           <div class="stage-tally animate-on-scroll" aria-label="${s.rows.length} findings">
             <span><b>${s.rows.length}</b> findings</span>
-            ${counts.good ? `<span class="t-good">${this._icon('check')} ${counts.good} help</span>` : ''}
+            ${counts.good ? `<span class="t-good">${this._icon('up')} ${counts.good} help</span>` : ''}
             ${counts.bad ? `<span class="t-bad">${this._icon('down')} ${counts.bad} hurt</span>` : ''}
             ${counts.none ? `<span>${this._icon('dash')} ${counts.none} no change</span>` : ''}
             ${counts.mixed ? `<span>${this._icon('swap')} ${counts.mixed} mixed</span>` : ''}
-            <span class="t-sort">Strongest evidence first</span>
+            <span class="t-sort">Helps first, then hurts</span>
+
           </div>
-          ${s.note ? `<p class="stage-note animate-on-scroll">${this._icon('info')}<span>${s.note}</span></p>` : ''}
           <div class="fd-grid">${rows}</div>
           <a class="section-readmore" href="${s.tool.url}" data-action="related-tool" data-tool-slug="${s.tool.url.split('/').pop()}" data-track-position="${s.key}-readmore" data-track-label="${s.tool.url.split('/').pop()}">${s.tool.label} ${this._icon('arrowRight')}</a>
         </div>
@@ -1035,12 +997,20 @@ class KygoFoodAndSleep extends HTMLElement {
     const root = this.shadowRoot;
     root.addEventListener('click', (e) => {
       if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
+      const tab = e.target.closest('[data-bd-tab]');
+      if (tab) { this._showBoardCol(tab.dataset.bdTab); return; }
       const cell = e.target.closest('[data-jump]');
       if (cell) { this._jumpTo(cell.dataset.jump.replace(':', '-')); }
     });
   }
 
-  // Open a stage finding from the cross-stage map and bring it into view.
+  _showBoardCol(key) {
+    const root = this.shadowRoot;
+    root.querySelectorAll('[data-bd-tab]').forEach(b => { const on = b.dataset.bdTab === key; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+    root.querySelectorAll('[data-bd-col]').forEach(c => c.classList.toggle('on', c.dataset.bdCol === key));
+  }
+
+  // Open a stage finding from the quick-answer board and bring it into view.
   _jumpTo(id) {
     const el = this.shadowRoot.getElementById(id);
     if (!el) return;
@@ -1087,7 +1057,7 @@ class KygoFoodAndSleep extends HTMLElement {
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
-        'featureList': `Cross-stage map of caffeine, alcohol, carbs, protein, late dinners and almonds; ${h.findings} graded findings across deep sleep, REM, sleep latency and night waking; industry funding flags; ${h.sources} linked studies`,
+        'featureList': `What helps and hurts each part of sleep at a glance; ${h.findings} graded findings across deep sleep, REM, sleep latency and night waking; industry funding flags; ${h.sources} linked studies`,
         'keywords': 'how food affects sleep, foods for deep sleep, foods that increase REM sleep, foods that affect sleep, caffeine and deep sleep, alcohol and REM sleep, eating before bed and sleep, foods to help you fall asleep, night waking and diet'
       };
       const s = document.createElement('script');
@@ -1274,29 +1244,28 @@ class KygoFoodAndSleep extends HTMLElement {
 
       .hero-light h1 { font-size: clamp(30px, 4.6vw, 52px); }
 
-      /* Hero visual: two contrasting columns */
-      .hv-two { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding: 10px 6px; }
-      .hv-col + .hv-col { border-left: 1px solid var(--border-subtle); }
-      .hv-label { font-family: var(--font-display); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-1); }
-      .hv-val { font-family: var(--font-numeric); font-weight: 700; font-size: clamp(36px, 7vw, 48px); line-height: 1; letter-spacing: -0.02em; color: var(--kygo-dark); }
-      .hv-val .unit { font-size: 0.4em; font-weight: 600; color: var(--fg-3); margin-left: 3px; letter-spacing: 0; }
-      .hv-bar { width: 100%; max-width: 150px; height: 8px; border-radius: 999px; background: var(--bg-raised); overflow: hidden; }
-      .hv-fill { display: block; height: 100%; border-radius: 999px; background: var(--kygo-dark); }
-      .hv-cap { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--fg-1); }
-      .hv-sub { font-family: var(--font-display); font-size: 11px; font-weight: 600; color: var(--kygo-green-dark); background: var(--kygo-green-light); padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
-      .hv-foot { position: relative; display: block; text-align: center; margin-top: 10px; font-size: 12px; color: var(--fg-3); }
+      /* Help / hurt colours: green for helps, red for hurts */
+      :host { --help-bg: #DCFCE7; --help-fg: #16A34A; --hurt-bg: #FEE2E2; --hurt-fg: #DC2626; }
+      .dt { flex: none; width: 34px; height: 34px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; }
+      .dt .ico svg { width: 17px; height: 17px; }
+      .dt.dir-good { background: var(--help-bg); color: var(--help-fg); }
+      .dt.dir-bad { background: var(--hurt-bg); color: var(--hurt-fg); }
+      .dt.dir-none, .dt.dir-mixed { background: var(--bg-raised); color: var(--fg-3); }
 
-      /* Effect pill + grade chip (shared by the map and the stage cards) */
-      .eff { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 6px; border-radius: 999px; font-family: var(--font-body); font-size: 12.5px; font-weight: 600; line-height: 1.3; text-align: left; }
-      .eff .ico { flex: none; width: 18px; height: 18px; border-radius: 50%; }
-      .eff .ico svg { width: 11px; height: 11px; }
-      .eff.dir-good { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
-      .eff.dir-good .ico { background: var(--kygo-green); color: #fff; }
-      .eff.dir-bad { background: var(--kygo-dark); color: #fff; }
-      .eff.dir-bad .ico { background: rgba(255,255,255,0.16); color: #fff; }
-      .eff.dir-none, .eff.dir-mixed { background: var(--bg-raised); color: var(--fg-2); }
-      .eff.dir-none .ico, .eff.dir-mixed .ico { background: #fff; color: var(--fg-3); }
+      /* Hero visual: two drinks, two stages */
+      .hv-two { position: relative; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); margin-top: 12px; }
+      .hv-col { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; padding: 6px 8px; min-width: 0; }
+      .hv-col + .hv-col { border-left: 1px solid var(--border-subtle); }
+      .hv-label { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-2); margin-bottom: 4px; }
+      .hv-ic { width: 28px; height: 28px; border-radius: 8px; background: #fff; border: 1.5px solid var(--border-subtle); color: var(--fg-1); display: inline-flex; align-items: center; justify-content: center; }
+      .hv-ic .ico svg { width: 15px; height: 15px; }
+      .hv-val { display: inline-flex; align-items: baseline; gap: 4px; font-family: var(--font-numeric); font-weight: 700; font-size: clamp(36px, 7vw, 48px); line-height: 1; letter-spacing: -0.02em; color: #F87171; }
+      .hv-val .unit { font-size: 0.38em; font-weight: 600; color: var(--fg-3); letter-spacing: 0; }
+      .hv-cap { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--fg-1); }
+      .hv-sub { font-size: 12px; color: var(--fg-3); line-height: 1.35; }
+      .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--fg-3); }
+
+      /* Grade bars */
       .grade { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; color: var(--fg-2); white-space: nowrap; }
       .grade-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 12px; }
       .grade-bars i { display: block; width: 3px; border-radius: 1px; background: var(--border-subtle); }
@@ -1307,27 +1276,37 @@ class KygoFoodAndSleep extends HTMLElement {
       .grade[data-lvl="4"] .grade-bars i:nth-child(-n+4) { background: var(--kygo-green); }
       .grade[data-lvl="4"] { color: var(--kygo-green-dark); }
 
-      /* Cross-stage map */
-      .mx-wrap { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-md); }
-      .mx-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      @media (min-width: 880px) { .mx-scroll { overflow-x: visible; } }
-      .mx { width: 100%; min-width: 720px; border-collapse: separate; border-spacing: 0; font-family: var(--font-body); }
-      .mx thead th { background: var(--bg-raised); text-align: left; padding: 14px 14px; font-family: var(--font-display); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-2); }
-      .mx tbody th, .mx tbody td { padding: 10px 10px; border-top: 1px solid var(--border-subtle); vertical-align: middle; }
-      .mx th:first-child { position: sticky; left: 0; z-index: 2; width: 124px; min-width: 124px; max-width: 124px; box-shadow: 1px 0 0 var(--border-subtle); }
-      .mx thead th:first-child { z-index: 3; }
-      .mx tbody th { background: #fff; text-align: left; font-family: var(--font-display); font-weight: 600; font-size: 14px; color: var(--fg-1); overflow-wrap: anywhere; line-height: 1.3; }
-      .mx-na { font-size: 12px; color: var(--fg-3); padding-left: 16px !important; }
-      .mx-cell { border: 0; background: none; padding: 2px; margin: 0; cursor: pointer; border-radius: 999px; text-align: left; }
-      .mx-cell:hover .eff { box-shadow: 0 0 0 2px var(--kygo-green); }
-      .mx-cell:focus-visible { outline: 2px solid var(--kygo-green); outline-offset: 2px; }
-      @media (min-width: 880px) {
-        .mx { min-width: 0; }
-        .mx th:first-child { position: static; box-shadow: none; width: 18%; min-width: 0; max-width: none; }
-        .mx tbody th, .mx tbody td { padding: 12px 14px; }
+      /* Quick-answer board */
+      .bd { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 20px; box-shadow: var(--shadow-md); overflow: hidden; }
+      .bd-tabs { display: flex; gap: 4px; padding: 8px; background: var(--bg-raised); border-bottom: 1px solid var(--border-subtle); }
+      .bd-tab { flex: 1; font-family: var(--font-body); font-size: 13px; font-weight: 600; padding: 10px 6px; border: 0; border-radius: 10px; background: transparent; color: var(--fg-2); cursor: pointer; line-height: 1.2; }
+      .bd-tab.on { background: var(--kygo-dark); color: #fff; }
+      .bd-cols { display: grid; grid-template-columns: 1fr; }
+      .bd-col { display: none; padding: 6px 16px 10px; }
+      .bd-col.on { display: block; }
+      .bd-head { display: none; margin: 0; padding: 12px 0 8px; font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--fg-1); }
+      .bd-list { list-style: none; margin: 0; padding: 0; }
+      .bd-list li + li { border-top: 1px solid var(--border-subtle); }
+      .bd-row { width: 100%; display: flex; align-items: center; gap: 12px; padding: 10px 0; border: 0; background: none; text-align: left; cursor: pointer; font: inherit; color: inherit; }
+      .bd-row:hover .bd-name { color: var(--kygo-green-dark); }
+      .bd-row:focus-visible { outline: 2px solid var(--kygo-green); outline-offset: 2px; border-radius: 8px; }
+      .bd-txt { display: flex; flex-direction: column; min-width: 0; }
+      .bd-name { font-family: var(--font-display); font-weight: 600; font-size: 14.5px; line-height: 1.3; color: var(--fg-1); }
+      .bd-stat { font-size: 12.5px; line-height: 1.35; color: var(--fg-2); }
+      .bd-note { margin: 0; padding: 12px 16px 14px; border-top: 1px solid var(--border-subtle); background: var(--bg-surface); font-size: 12.5px; line-height: 1.5; color: var(--fg-3); }
+      @media (min-width: 720px) {
+        .bd-tabs { display: none; }
+        .bd-cols { grid-template-columns: repeat(2, minmax(0,1fr)); }
+        .bd-col, .bd-col.on { display: block; padding: 8px 18px 14px; }
+        .bd-col:nth-child(even) { border-left: 1px solid var(--border-subtle); }
+        .bd-col:nth-child(n+3) { border-top: 1px solid var(--border-subtle); }
+        .bd-head { display: block; margin: -8px -18px 8px; padding: 14px 18px; background: var(--bg-raised); border-bottom: 1px solid var(--border-subtle); font-size: 13px; text-transform: uppercase; letter-spacing: 0.4px; color: var(--fg-2); }
       }
-      .mx-note { display: flex; gap: 8px; align-items: flex-start; margin: 0; padding: 12px 16px 14px; border-top: 1px solid var(--border-subtle); background: var(--bg-surface); font-size: 12.5px; line-height: 1.5; color: var(--fg-3); }
-      .mx-note .ico { flex: none; margin-top: 2px; }
+      @media (min-width: 1100px) {
+        .bd-cols { grid-template-columns: repeat(4, minmax(0,1fr)); }
+        .bd-col + .bd-col { border-left: 1px solid var(--border-subtle); }
+        .bd-col:nth-child(n+3) { border-top: 0; }
+      }
 
       /* Grade key */
       .grade-key { margin-top: 18px; background: var(--bg-raised); border: 1.5px solid var(--border-subtle); border-radius: 18px; padding: 18px 20px; }
@@ -1343,11 +1322,9 @@ class KygoFoodAndSleep extends HTMLElement {
       .stage-tally b { font-family: var(--font-numeric); font-size: 15px; color: var(--fg-1); }
       .stage-tally .ico { width: 14px; height: 14px; }
       .stage-tally .t-good { color: var(--kygo-green-dark); }
-      .stage-tally .t-bad { color: var(--fg-1); }
+      .stage-tally .t-bad { color: var(--hurt-fg); }
       .stage-tally .t-sort { color: var(--fg-3); font-weight: 500; font-family: var(--font-body); }
-      .stage-note { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 18px; max-width: 90ch; background: #fff; border: 1.5px solid var(--border-subtle); border-left: 4px solid var(--kygo-green); border-radius: 12px; padding: 14px 16px; font-size: 14px; line-height: 1.6; color: var(--fg-2); }
-      .stage-note .ico { flex: none; color: var(--kygo-green-dark); margin-top: 3px; }
-
+      
       .fd-grid { display: grid; grid-template-columns: 1fr; gap: 12px; align-items: start; }
       @media (min-width: 880px) { .fd-grid { grid-template-columns: 1fr 1fr; gap: 14px; } }
       .fd { background: #fff; border: 1.5px solid var(--border-subtle); border-radius: 18px; box-shadow: var(--shadow-md); transition: border-color .2s, box-shadow .2s; scroll-margin-top: 90px; }
@@ -1356,17 +1333,11 @@ class KygoFoodAndSleep extends HTMLElement {
       .fd-sum { list-style: none; display: grid; grid-template-columns: 34px minmax(0,1fr) 22px; gap: 12px; align-items: start; padding: 16px 16px; cursor: pointer; }
       .fd-sum::-webkit-details-marker { display: none; }
       .fd-sum:focus-visible { outline: 2px solid var(--kygo-green); outline-offset: -2px; border-radius: 18px; }
-      .fd-ic { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-      .fd-ic .ico svg { width: 16px; height: 16px; }
-      .fd-ic.dir-good { background: var(--kygo-green-light); color: var(--kygo-green-dark); }
-      .fd-ic.dir-bad { background: var(--kygo-dark); color: #fff; }
-      .fd-ic.dir-none, .fd-ic.dir-mixed { background: var(--bg-raised); color: var(--fg-3); }
       .fd-main { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
       .fd-name { font-family: var(--font-display); font-weight: 600; font-size: 16px; line-height: 1.3; color: var(--fg-1); }
       .fd-stat { font-family: var(--font-numeric); font-weight: 600; font-size: 14px; line-height: 1.35; color: var(--fg-2); }
       .fd-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 6px; }
-      .fd-flag { display: inline-flex; align-items: center; gap: 4px; font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; color: var(--fg-1); background: var(--bg-raised); padding: 3px 8px; border-radius: 999px; }
-      .fd-flag .ico svg { width: 12px; height: 12px; }
+      .fd-flag { font-family: var(--font-display); font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; color: var(--fg-3); }
       .fd-chev { color: var(--fg-3); margin-top: 6px; transition: transform .2s; }
       .fd-chev .ico svg { width: 18px; height: 18px; }
       .fd[open] .fd-chev { transform: rotate(180deg); color: var(--kygo-green-dark); }
