@@ -321,9 +321,9 @@ class KygoFoodAndSleep extends HTMLElement {
   _relatedPosts() {
     return [
       { slug: 'how-food-affects-your-sleep',
-        title: 'How Food Affects Your Sleep: Deep Sleep, REM and Night Waking, Ranked by Evidence',
+        title: 'How Food Affects Your Sleep',
         blurb: 'Foods, drinks and eating patterns tested against each part of sleep, one table per stage, with every finding graded.',
-        cat: 'Sleep', min: 9, img: '273a63_817afd636ca34cd6bfae13650a742362~mv2.png' },
+        cat: 'Sleep', min: 15, img: '273a63_b9ab03e5e03747329debcd66d2687e50~mv2.png' },
       { slug: 'caffeine-sleep-correlation-personal-cutoff-time',
         title: 'Caffeine and Sleep: Finding Your Personal Cutoff Time',
         blurb: 'The standard advice is to stop by 2 PM. The research says your personal cutoff can sit hours either side of that rule.',

@@ -57,7 +57,7 @@ shows three near-duplicates. "In" is how many tool pages link that post under th
 | `/tools/fitbit-air-vs-whoop-comparison` | `kygo-fitbit-air-vs-whoop.js` | `fitbit-air-vs-whoop-which-screenless-tracker-is-worth-it`, `does-the-fitbit-air-measure-blood-pressure`, `whoop-stress-score-recovery-explained` |
 | `/tools/heart-rate-accuracy` | `kygo-heart-rate-accuracy.js` | `how-accurate-is-your-heart-rate-monitor`, `heart-rate-accuracy-by-activity-type`, `why-is-my-resting-heart-rate-suddenly-higher-…` |
 | `/tools/hrv-factors` | `kygo-hrv-factors.js` | `how-to-improve-hrv-factors-ranked-by-evidence`, `why-is-my-hrv-always-low`, `why-does-alcohol-crush-your-hrv-…` |
-| `/tools/how-food-affects-sleep` | `kygo-food-and-sleep.js` | `how-food-affects-your-sleep` (companion, **not yet published**: cover image + read time are placeholders), `caffeine-sleep-correlation-personal-cutoff-time`, `why-does-alcohol-crush-your-hrv-and-how-long-until-it-recovers` |
+| `/tools/how-food-affects-sleep` | `kygo-food-and-sleep.js` | `how-food-affects-your-sleep`, `caffeine-sleep-correlation-personal-cutoff-time`, `why-does-alcohol-crush-your-hrv-and-how-long-until-it-recovers` |
 | `/tools/oura-ring-5-vs-4` | `kygo-oura-5-vs-4.js` | `is-the-oura-ring-5-worth-it`, `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based`, `oura-ring-stress-tracking-explained` |
 | `/tools/oura-ring-comparison-tool` | `kygo-oura-ring-comparison.js` | `oura-ring-5-vs-ring-4-is-the-upgrade-worth-it-evidence-based`, `is-the-oura-ring-5-worth-it`, `oura-ring-food-tracking-complete-guide` |
 | `/tools/oura-vs-ringconn` | `kygo-oura-vs-ringconn.js` | `oura-ring-5-vs-ringconn-gen-3`, `is-the-oura-ring-5-worth-it`, `what-s-the-most-accurate-wearable-data-…` |
@@ -104,6 +104,7 @@ Cover-image ids are the `273a63_…~mv2.png` suffix of
 
 | Slug | Title | Category | min | Cover image id |
 |---|---|---|---|---|
+| `how-food-affects-your-sleep` | How Food Affects Your Sleep | Sleep | 15 | `273a63_b9ab03e5e03747329debcd66d2687e50~mv2.png` |
 | `where-to-wear-your-fitness-tracker-tattoos-hairy-arms-and-placement` | Where to Wear Your Fitness Tracker: Tattoos, Hairy Arms and Placement | Wearables & Data | 13 | `273a63_33970522217646cda0376c230a923d81~mv2.png` |
 | `best-smart-ring-oura-vs-ringconn-vs-ultrahuman-vs-cudis` | Best Smart Ring: Oura vs RingConn vs Ultrahuman vs CUDIS | Wearables & Data | 14 | `273a63_0f91ff715c524a77a516eab0d1c45111~mv2.png` |
 | `oura-ring-5-vs-ringconn-gen-3` | Oura Ring 5 vs RingConn Gen 3 | Wearables & Data | 11 | `273a63_2670851f303a459b89b7575ff68f66cc~mv2.png` |
