@@ -68,6 +68,7 @@ class KygoToolsPage extends HTMLElement {
       { slug: 'heart-rate-accuracy', title: 'Most Accurate Heart Rate Wearable', description: 'Which wearable is most accurate for heart rate vs an ECG or chest strap? Compare Fitbit, Garmin, Apple Watch, Google Pixel, Polar, Oura & Xiaomi on error (MAPE), bias, limits of agreement and CCC, and see why arm motion, not intensity, is what breaks them.', icon: 'heart', badge: 'New', url: '/tools/heart-rate-accuracy', features: ['Compare any 2–4 devices', '10 devices ranked head-to-head', '28 verified sources'] },
       { slug: 'recovery-score-explorer', title: 'Recovery Score Explorer', description: 'Compare recovery and readiness scores across 12 wearables — WHOOP, Oura, Garmin, Fitbit, Samsung, Polar, Ultrahuman, Coros, Amazfit, Suunto, Apple & RingConn — see the 35 factors that move yours, and find which scores are actually validated.', icon: 'heart', badge: 'New', url: '/tools/recovery-score-explorer', features: ['12 wearables compared', '35 factors ranked', 'Only 2/12 scores validated'] },
       { slug: 'supplements-by-metric', title: 'Supplements by Metric', description: 'Pick a wearable metric — sleep latency, deep sleep, staying asleep, HRV, resting heart rate, or recovery — and see which of 27 supplements the research actually supports, graded by evidence with industry-funding flags and the popular stuff that doesn\'t work.', icon: 'sparkles', badge: 'New', url: '/tools/supplements-by-metric', features: ['6 metrics × 27 supplements', 'Evidence-graded with funding flags', '28 primary sources'] },
+      { slug: 'how-food-affects-sleep', title: 'How Food Affects Sleep', description: 'Foods and drinks for each part of sleep: what caffeine, alcohol, carbs, protein, late dinners and more did to deep sleep, REM, falling asleep and night waking, every finding graded by evidence with industry funding flagged.', icon: 'moon', badge: 'New', url: '/tools/how-food-affects-sleep', features: ['31 findings, 4 sleep stages', 'Graded by evidence', '29 peer-reviewed studies'] },
       { slug: 'vo2-max-accuracy', title: 'Most Accurate VO2 Max Wearable', description: 'How accurately do Garmin, Apple, Polar, Fitbit, WHOOP, Oura, Samsung & Coros estimate VO2 max vs a lab CPET? Compare 9 devices by method and see which brands are actually independently validated.', icon: 'activity', badge: 'New', url: '/tools/vo2-max-accuracy', features: ['9 devices compared', 'Independent vs vendor validation', '13 peer-reviewed sources'] },
       { slug: 'vo2-max-factors', title: 'VO2 Max Factor Explorer', description: 'Explore 39 research-backed factors that raise or lower VO2 max — training, nutrition, environment, lifestyle & clinical — ranked by evidence strength, with doses and sources.', icon: 'zap', badge: 'New', url: '/tools/vo2-max-factors', features: ['39 factors ranked', '6 categories', '40 peer-reviewed sources'] },
       { slug: 'oura-ring-comparison-tool', title: 'Oura Ring 5 vs 4 vs 3 Comparison (2026)', description: 'Compare Oura Ring 5, Ring 4, and Gen 3 side-by-side. Size & dimensions, peer-reviewed accuracy data (Dial 2025, Khan 2025), and the real 3-year cost with subscription math included.', icon: 'scale', badge: 'New', url: '/tools/oura-ring-comparison-tool', features: ['3 generations compared', 'Peer-reviewed accuracy data', '3-year TCO calculator'] },
@@ -111,8 +112,8 @@ class KygoToolsPage extends HTMLElement {
         lede: 'Steps, VO2 max and cardio fitness — what moves them and what your device gets right.',
         slugs: ['step-count-accuracy', 'vo2-max-factors', 'vo2-max-accuracy'] },
       { id: 'nutrition', label: 'Calories & Nutrition', icon: 'sparkles',
-        lede: 'Calorie burn accuracy, what is actually in your food, and which supplements the research supports.',
-        slugs: ['calorie-burn-accuracy', 'food-scanner', 'supplements-by-metric'] },
+        lede: 'How food affects your sleep, calorie burn accuracy, what is actually in your food, and which supplements the research supports.',
+        slugs: ['how-food-affects-sleep', 'calorie-burn-accuracy', 'food-scanner', 'supplements-by-metric'] },
       { id: 'devices', label: 'Devices & Buying Guides', icon: 'cpu',
         lede: 'Device accuracy, head-to-head comparisons, and what to buy.',
         slugs: ['wearable-accuracy', 'smart-ring-comparison', 'oura-vs-ringconn', 'oura-ring-comparison-tool', 'oura-ring-5-vs-4', 'fitbit-air-vs-whoop-comparison', 'sensor-comparison', 'accuracy-factors'] }
@@ -234,7 +235,8 @@ class KygoToolsPage extends HTMLElement {
       'step-count-accuracy': { motif: 'steps', caption: 'Daily step counts' },
       'sleep-metrics': { motif: 'dots', caption: 'Metrics tracked', dots: [{ label: 'Oura', n: 9 }, { label: 'Garmin', n: 7 }, { label: 'Apple', n: 6 }, { label: 'Fitbit', n: 5 }] },
       'sensor-comparison': { motif: 'radar', caption: 'Sensor & software focus', radar: [0.92, 0.6, 0.78, 0.5, 0.85] },
-      'rem-sleep-factors': { motif: 'hypno', stage: 'rem', caption: 'Sleep stages overnight' }
+      'rem-sleep-factors': { motif: 'hypno', stage: 'rem', caption: 'Sleep stages overnight' },
+      'how-food-affects-sleep': { motif: 'diverging', caption: 'REM minutes vs control', bars: [{ label: 'Carbs', val: 9 }, { label: 'Protein', val: -9 }, { label: 'Alcohol', val: -11 }, { label: 'Caffeine', val: 0 }] }
     };
     return map[tool.slug] || { motif: 'ranked', caption: 'Ranked by evidence' };
   }
