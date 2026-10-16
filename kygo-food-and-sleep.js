@@ -761,16 +761,14 @@ class KygoFoodAndSleep extends HTMLElement {
               </div>
               <div class="hv-two">
                 <div class="hv-col">
-                  <span class="hv-ic">${this._icon('coffee')}</span>
-                  <span class="hv-label">Caffeine</span>
-                  <span class="hv-val"><span class="hv-arrow">${this._icon('down')}</span>11<span class="unit">min</span></span>
+                  <span class="hv-label"><span class="hv-ic">${this._icon('coffee')}</span>Caffeine</span>
+                  <span class="hv-val">−11<span class="unit">min</span></span>
                   <span class="hv-cap">deep sleep</span>
                   <span class="hv-sub">REM unchanged</span>
                 </div>
                 <div class="hv-col">
-                  <span class="hv-ic">${this._icon('wine')}</span>
-                  <span class="hv-label">Alcohol</span>
-                  <span class="hv-val"><span class="hv-arrow">${this._icon('down')}</span>11<span class="unit">min</span></span>
+                  <span class="hv-label"><span class="hv-ic">${this._icon('wine')}</span>Alcohol</span>
+                  <span class="hv-val">−11<span class="unit">min</span></span>
                   <span class="hv-cap">REM sleep</span>
                   <span class="hv-sub">Deep sleep unchanged</span>
                 </div>
@@ -1258,13 +1256,11 @@ class KygoFoodAndSleep extends HTMLElement {
       .hv-two { position: relative; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); margin-top: 12px; }
       .hv-col { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; padding: 6px 8px; min-width: 0; }
       .hv-col + .hv-col { border-left: 1px solid var(--border-subtle); }
-      .hv-ic { width: 44px; height: 44px; border-radius: 12px; background: #fff; border: 1.5px solid var(--border-subtle); color: var(--fg-1); display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
-      .hv-ic .ico svg { width: 22px; height: 22px; }
-      .hv-label { font-family: var(--font-display); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-2); }
-      .hv-val { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-numeric); font-weight: 700; font-size: clamp(34px, 7vw, 46px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-1); }
-      .hv-arrow { width: 30px; height: 30px; border-radius: 9px; background: var(--hurt-bg); color: var(--hurt-fg); display: inline-flex; align-items: center; justify-content: center; }
-      .hv-arrow .ico svg { width: 17px; height: 17px; }
-      .hv-val .unit { font-size: 0.4em; font-weight: 600; color: var(--fg-3); letter-spacing: 0; align-self: flex-end; margin-bottom: 4px; }
+      .hv-label { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-2); margin-bottom: 4px; }
+      .hv-ic { width: 28px; height: 28px; border-radius: 8px; background: #fff; border: 1.5px solid var(--border-subtle); color: var(--fg-1); display: inline-flex; align-items: center; justify-content: center; }
+      .hv-ic .ico svg { width: 15px; height: 15px; }
+      .hv-val { display: inline-flex; align-items: baseline; gap: 4px; font-family: var(--font-numeric); font-weight: 700; font-size: clamp(36px, 7vw, 48px); line-height: 1; letter-spacing: -0.02em; color: var(--fg-1); }
+      .hv-val .unit { font-size: 0.38em; font-weight: 600; color: var(--fg-3); letter-spacing: 0; }
       .hv-cap { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--fg-1); }
       .hv-sub { font-size: 12px; color: var(--fg-3); line-height: 1.35; }
       .hv-foot { position: relative; display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--fg-3); }
