@@ -1259,7 +1259,7 @@ class KygoFoodAndSleep extends HTMLElement {
       .hv-label { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--fg-2); margin-bottom: 4px; }
       .hv-ic { width: 28px; height: 28px; border-radius: 8px; background: #fff; border: 1.5px solid var(--border-subtle); color: var(--fg-1); display: inline-flex; align-items: center; justify-content: center; }
       .hv-ic .ico svg { width: 15px; height: 15px; }
-      .hv-val { display: inline-flex; align-items: baseline; gap: 4px; font-family: var(--font-numeric); font-weight: 700; font-size: clamp(36px, 7vw, 48px); line-height: 1; letter-spacing: -0.02em; color: var(--hurt-fg); }
+      .hv-val { display: inline-flex; align-items: baseline; gap: 4px; font-family: var(--font-numeric); font-weight: 700; font-size: clamp(36px, 7vw, 48px); line-height: 1; letter-spacing: -0.02em; color: #F87171; }
       .hv-val .unit { font-size: 0.38em; font-weight: 600; color: var(--fg-3); letter-spacing: 0; }
       .hv-cap { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--fg-1); }
       .hv-sub { font-size: 12px; color: var(--fg-3); line-height: 1.35; }
