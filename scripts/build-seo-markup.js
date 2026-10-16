@@ -42,6 +42,7 @@ const TOOLS = {
   'kygo-calorie-burn-accuracy':   { file: 'kygo-calorie-burn-accuracy.js',     path: '/tools/calorie-burn-accuracy' },
   'calories-in-anything':         { file: 'calories-custom-element.js',        path: '/tools/calories-in-anything' },
   'kygo-deep-sleep-factors':      { file: 'kygo-deep-sleep-factors.js',        path: '/tools/deep-sleep-factors' },
+  'kygo-food-and-sleep':          { file: 'kygo-food-and-sleep.js',            path: '/tools/how-food-affects-sleep' },
   'kygo-fitbit-air-vs-whoop':     { file: 'kygo-fitbit-air-vs-whoop.js',       path: '/tools/fitbit-air-vs-whoop-comparison' },
   'kygo-heart-rate-accuracy':     { file: 'kygo-heart-rate-accuracy.js',       path: '/tools/heart-rate-accuracy' },
   'kygo-hrv-factors':             { file: 'kygo-hrv-factors.js',               path: '/tools/hrv-factors' },

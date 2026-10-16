@@ -19,6 +19,7 @@ const PAGES = {
   "/tools/calorie-burn-accuracy": "kygo-calorie-burn-accuracy",
   "/tools/calories-in-anything": "calories-in-anything",
   "/tools/deep-sleep-factors": "kygo-deep-sleep-factors",
+  "/tools/how-food-affects-sleep": "kygo-food-and-sleep",
   "/tools/fitbit-air-vs-whoop-comparison": "kygo-fitbit-air-vs-whoop",
   "/tools/heart-rate-accuracy": "kygo-heart-rate-accuracy",
   "/tools/hrv-factors": "kygo-hrv-factors",

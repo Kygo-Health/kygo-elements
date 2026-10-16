@@ -714,11 +714,11 @@ class KygoSupplementsByMetric extends HTMLElement {
   _relatedTools() {
     return [
       {
-        title: 'Deep Sleep Factor Explorer',
-        blurb: '28 factors that affect deep sleep, ranked by research with doses and mechanisms.',
-        url: 'https://www.kygo.app/tools/deep-sleep-factors',
-        meta: 'Sleep · 28 factors',
-        motif: { motif: 'hypno', stage: 'deep', caption: 'Sleep stages overnight' }
+        title: 'How Food Affects Sleep',
+        blurb: '31 food and drink findings across deep sleep, REM, falling asleep and night waking, graded by evidence.',
+        url: 'https://www.kygo.app/tools/how-food-affects-sleep',
+        meta: 'Nutrition · 4 sleep stages',
+        motif: { motif: 'diverging', caption: 'REM minutes vs control', bars: [{ label: 'More carbs', val: 9 }, { label: 'Protein', val: -9 }, { label: 'Alcohol', val: -11 }, { label: 'Caffeine', val: 0 }] }
       },
       {
         title: 'HRV Factor Explorer',
