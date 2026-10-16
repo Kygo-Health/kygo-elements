@@ -32,16 +32,18 @@ Use the **semantic palette only**. Copy this `:host` block verbatim:
 ```
 
 **Colour rules (this is what caused the most rework):**
-- **Green + neutral slate + dark only.** NO amber, red, blue, orange, purple, teal, or
+- **Green + red + neutral slate + dark only.** Red is allowed for one job: marking what
+  *hurts* (see "Help / hurt indicators" in §3). NO amber, blue, orange, purple, teal, or
   per-brand device colours anywhere. Verify before committing:
-  `grep -nEi "amber|#f59e0b|#ef4444|#3b82f6|#f97316|--red|--blue|--amber|purple|orange" file.js`
-  → must be empty.
+  `grep -nEi "amber|#f59e0b|#3b82f6|#f97316|--blue|--amber|purple|orange" file.js`
+  → must be empty, and every red hit must be a help/hurt indicator.
   ⚠️ If you copy `kygo-wearable-stress.js` as a base, it ships with `--red`/`--amber`/`--yellow`
   tokens and red/amber `pick-card.warn`/`.myth` accents — **strip those** (recovery did) so the
   rendered page stays green+slate+dark.
-- Convey **good vs bad / direction** with **green vs muted-grey + an icon** (check / dash /
-  up-arrow / down-arrow), never with extra hues. "Win/validated/raises" = green;
-  everything else = `--bg-raised`/`--fg-2`; strongest emphasis = `--kygo-dark` (dark chip).
+- Convey **helps vs hurts** with a **green up-arrow tile vs a red down-arrow tile**; "no clear
+  effect" and "mixed" are a grey tile (dash / swap). Never a dark/navy chip for "hurts": it
+  reads as emphasis, not as bad. "Win/validated" (non-directional) = green; neutral =
+  `--bg-raised`/`--fg-2`.
 - Fonts: headings & numbers `--font-display` (Space Grotesk 600/700), body `--font-body`
   (DM Sans). Inline the `@import` at the top of the `<style>` block.
 
@@ -258,9 +260,14 @@ uses — do not hard-code a third shade.
 - **`hero-vis`** — the part most often skipped, and the one that makes the hero. It must state
   something **true, specific and non-obvious** about *this* page, pulled from the page's own
   data — not decoration. Two established variants: `hv-two` (two columns, `hv-label` /
-  `hv-val` / `hv-bar` / `hv-cap`, for a contrast — funded vs independent, helps vs hurts,
+  `hv-val` / `hv-cap`, for a contrast — funded vs independent, helps vs hurts,
   hardware vs software) and `hv-big` + `hv-text` + `hv-src` (one headline number and a
   sentence, for a single biggest lever). Put the caveat in `hv-foot`.
+  `hv-two` rules (reworked on `kygo-food-and-sleep`): columns are `minmax(0,1fr)` so they
+  stay centred on a phone; no `nowrap` pills inside a column (they push it off-centre); no
+  decorative progress bars under the numbers; an icon, if used, sits **inline beside the
+  label**, small (28px tile), never stacked above it; a negative value is written `−11`
+  (no arrow tile beside it) in the lighter red `#F87171`.
 - **`hero-stats`** — exactly 4. **Compute them from the data getters**, don't type them in:
 
 ```js
@@ -463,6 +470,46 @@ tokens* in `CLAUDE.md`); never mix the two schemes in one file.
 both to the page's icon map if they're missing. Size them with a bare `svg` selector
 (`.src-go svg`), **not** `.ico` — the icon helpers return an unwrapped `<svg>`, so `.src-go .ico`
 silently matches nothing.
+
+### Help / hurt indicators (the standard)
+
+The one way a tool marks direction, used on summary boards, cards and hero values alike
+(reference: `kygo-food-and-sleep.js`, `.dt` tiles):
+
+```css
+:host { --help-bg:#DCFCE7; --help-fg:#16A34A; --hurt-bg:#FEE2E2; --hurt-fg:#DC2626; }
+.dt { width:34px; height:34px; border-radius:10px; }          /* icon tile */
+.dt.dir-good { background:var(--help-bg); color:var(--help-fg); }   /* up arrow */
+.dt.dir-bad  { background:var(--hurt-bg); color:var(--hurt-fg); }   /* down arrow */
+.dt.dir-none, .dt.dir-mixed { background:var(--bg-raised); color:var(--fg-3); } /* dash / swap */
+```
+
+- **One signal per item.** The tile carries the direction. Don't add a second chip that
+  repeats it ("Less deep sleep" inside the deep sleep section says nothing the tile and the
+  section heading don't). Keep the evidence grade (bars + label) and a plain-text
+  "Industry-funded" flag; those are new information.
+- **Sort helps first, then hurts, then mixed, then no change**; strongest evidence first
+  inside each group. The same order on the summary and in the sections.
+- Large negative numbers (hero values) use the lighter red `#F87171`; tiles use `--hurt-fg`.
+
+### Summary board (what helps / hurts each X)
+
+When a page covers several targets (sleep stages, metrics), the quick-answer module is a
+**board, not a matrix**: one column per target, each listing that target's items, helps then
+hurts, as `tile + name + one short stat`, each row a button that opens the matching card below.
+- **Only items that help or hurt.** Leave "no change" and "mixed" items off the board (they stay
+  in their sections); a cell that says "No change" or "Not tested" is noise.
+- **Header band:** the column headings sit in a grey `--bg-raised` band across the top, flush to
+  the card edges, uppercase, like the comparison matrix header.
+- **Mobile:** do not hide extra columns behind a horizontal scroll (readers can't tell they
+  exist). Show the columns as a row of **tabs** (`role="tablist"`, active = dark chip) with one
+  column visible; 2×2 from 720px; all columns side by side from 1100px.
+
+### Copy density and callouts
+
+- Section ledes are **one or two sentences**. The cards carry the detail.
+- **No green left-border "note" boxes** (`border-left:4px solid green`) above a list; it isn't
+  part of the house design. Put a caveat inside the card it qualifies, in one sentence.
 
 ### Filter controls
 Give filter bars a **`--bg-raised` background** so they read as distinct from the white
@@ -760,7 +807,8 @@ load in the sandbox (cert proxy) — they show as placeholders but render live; 
 `ERR_CERT_AUTHORITY_INVALID` console noise.
 
 Pre-commit checklist:
-- [ ] `node -c file.js` passes; no off-brand colours (grep above is empty).
+- [ ] `node -c file.js` passes; no off-brand colours (grep above is empty; red only on help/hurt indicators).
+- [ ] Direction uses the help/hurt tiles (§3): green up / red down, one signal per item, helps sorted first; summary board omits no-change items and uses tabs on mobile; ledes 1–2 sentences, no accent note boxes.
 - [ ] Every `_icon('x')` has a matching key in the icon map.
 - [ ] Desktop + mobile reviewed per section; long lists are collapsible; stat cards 2-up on
       mobile; chart headers flush; sources compact.
