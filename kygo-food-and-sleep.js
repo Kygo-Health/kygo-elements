@@ -751,7 +751,7 @@ class KygoFoodAndSleep extends HTMLElement {
         <div class="hero-light-inner">
           <div class="hero-grid">
             <div class="hero-copy">
-              <div class="hero-pill"><span class="dot"></span> ${h.stages} PARTS OF SLEEP · ${h.findings} FINDINGS · ${h.sources} STUDIES</div>
+              <div class="hero-pill"><span class="dot"></span> ${h.stages} STAGES · ${h.findings} FINDINGS · ${h.sources} STUDIES</div>
               <h1>Foods and drinks for <span class="hl">each part of your sleep.</span></h1>
               <p class="hero-lede">How food affects your sleep depends on the part of the night. Here is what each food and drink did to <strong>deep sleep, REM, falling asleep and night waking</strong>, graded by evidence.</p>
             </div>
@@ -1243,6 +1243,12 @@ class KygoFoodAndSleep extends HTMLElement {
       .footer-affiliate { font-style: italic; }
 
       .hero-light h1 { font-size: clamp(30px, 4.6vw, 52px); }
+      /* Wix's mobile site renders at 320px: let the hero column shrink below its
+         content and let the pill wrap, so the hero card stays inside the gutters. */
+      .hero-grid { grid-template-columns: minmax(0,1fr); }
+      .hero-copy, .hero-vis { min-width: 0; }
+      @media (min-width: 880px) { .hero-grid { grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); } }
+      @media (max-width: 400px) { .hero-pill { white-space: normal; line-height: 1.4; font-size: 10px; letter-spacing: 0.3px; } .hv-col { padding: 6px 4px; } .hv-val { font-size: 34px; } }
 
       /* Help / hurt colours: green for helps, red for hurts */
       :host { --help-bg: #DCFCE7; --help-fg: #16A34A; --hurt-bg: #FEE2E2; --hurt-fg: #DC2626; }
