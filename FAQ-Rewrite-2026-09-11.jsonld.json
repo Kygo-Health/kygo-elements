@@ -233,7 +233,7 @@
       "name": "Where do I get Kygo, and what are the free tools?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Kygo runs in the browser at https://app.kygo.app, and the app is on the App Store at https://kygo.app/iOS and Google Play at https://kygo.app/android. Separately, kygo.app hosts 25 free research tools, no signup required, covering wearable accuracy, sleep, HRV and more at https://www.kygo.app/tools."
+        "text": "Kygo runs in the browser at https://app.kygo.app, and the app is on the App Store at https://kygo.app/iOS and Google Play at https://kygo.app/android. Separately, kygo.app hosts 26 free research tools, no signup required, covering wearable accuracy, sleep, HRV and more at https://www.kygo.app/tools."
       }
     }
   ]
