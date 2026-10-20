@@ -61,7 +61,7 @@ class KygoWearableAccuracy extends HTMLElement {
     this._wire();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Most accurate wearable 2026, by Kygo Health. Metric-by-metric accuracy guide for Oura Ring, Apple Watch, Garmin, WHOOP, Fitbit and Samsung Galaxy Watch covering sleep stages, overnight HRV, resting heart rate, heart rate during exercise, blood oxygen SpO2, step counting, calories burned, VO2 max, skin temperature, respiratory rate and FDA-cleared features. Every figure comes from a peer-reviewed study, preprint or FDA record, with manufacturer funding flagged. Sleep staging: Oura Ring scored highest in healthy sleepers (kappa 0.65, against 0.60 for Apple Watch and 0.55 for Fitbit in the same study) and Fitbit is most consistent across populations (0.42); every device drops sharply in people with sleep problems. Overnight HRV and resting heart rate: Oura Ring 4 (CCC 0.99 and 0.98, Dial 2025). Heart rate during activity: model matters more than brand; Fitbit Charge 6 (5.5% error) and Garmin Vivoactive 5 (6.3%) led a ten-device test while the Fitbit Inspire 3 was worst (16.5%). Blood oxygen: Apple Watch has the smallest errors at normal levels, but watches read high when oxygen is truly low. Steps: Apple Watch stays within a few percent in daily life; Oura overcounted by 50%. Calories: Apple, Samsung and Garmin read high in cycling, and weight-training errors reached 115%; Fitbit was close on average but single workouts missed by 32% to 42%. VO2 max: Garmin is most validated at about 7% error; Apple underestimates by 13% to 16%. Skin temperature and respiratory rate have almost no independent validation. FDA: Apple has five cleared features, Samsung three, Fitbit two, Garmin and WHOOP MG one (ECG), Oura none. Current hardware such as Oura Ring 5, WHOOP 5.0, Apple Watch Series 10, 11 and 12 and Galaxy Watch 8 has no independent validation.');
+    __seo(this, 'Most accurate wearable 2026, by Kygo Health. Metric-by-metric accuracy guide for Oura Ring, Apple Watch, Garmin, WHOOP, Fitbit and Samsung Galaxy Watch covering sleep stages, overnight HRV, resting heart rate, heart rate during exercise, blood oxygen SpO2, step counting, calories burned, VO2 max, skin temperature, respiratory rate and FDA-cleared features. Every figure comes from a peer-reviewed study, preprint or FDA record, with manufacturer funding flagged. One podium per metric, ranked on the numbers. Sleep stages: Oura Ring first (kappa 0.65 in healthy sleepers), Apple Watch second (0.60, best REM detection), Fitbit third (0.55); every device drops sharply in people with sleep problems. Sleep timing: Oura first (total sleep within 2 minutes, catches 73% of wake), Fitbit second, Apple third (misses half of wake). Overnight HRV: Oura Ring 4 first (6% error, agreement 0.99), WHOOP second (8%), Garmin third (10.5%), all from one independent 536-night study (Dial 2025). Resting heart rate: Oura first (1.1 bpm), WHOOP second (1.8 bpm), Apple third. Heart rate during activity: Apple Watch first (lowest error of four watches cycling, 2.5 bpm), Garmin second, Fitbit third; the top four brands are within 2 to 7% of each other. Blood oxygen: Apple first (Arms 2.2), Samsung second (3.8), Garmin third; every watch drifts when oxygen is truly low. Steps: Garmin first (3% over in daily life, pooled across 59 studies), Apple second (7%), Samsung third; Fitbit overcounts by 15% and Oura was 50 to 69% off before its 2025 update. Calories: Fitbit first, Samsung second, Apple third, but every brand is more than 10% off and weight-training errors reach 115%. VO2 max: Garmin first (6.7% with a chest strap), Fitbit second (8.7%), Apple third (13%, reads low). Breathing rate: Fitbit first (independent test), WHOOP second; no third qualifies. Skin temperature: not ranked, no brand has an independent sensor test. Rankings are for the models tested, mostly one to three generations old. FDA: Apple has five cleared features, Samsung three, Fitbit two, Garmin and WHOOP MG one (ECG), Oura none. Current hardware such as Oura Ring 5, WHOOP 5.0, Apple Watch Series 10, 11 and 12 and Galaxy Watch 8 has no independent validation.');
   }
 
   disconnectedCallback() {
@@ -76,18 +76,18 @@ class KygoWearableAccuracy extends HTMLElement {
       'apple-watch': {
         name: 'Apple Watch', short: 'Apple', color: '#8E959A',
         imageUrl: img('273a63_68b4900c356b4d0c8982e5ecd10f04fe'),
-        bestFor: 'Steps, heart rate, SpO2, sleep (healthy adults), FDA features',
+        bestFor: 'Workout heart rate, SpO2, FDA features; second for steps and sleep stages',
         subscription: 'None required',
         strengths: [
-          'Near-zero pooled heart rate bias across 22 studies (Lambe 2026)',
-          'Best sleep staging in independent testing (κ 0.53, healthy adults)',
-          'Best wake detection in independent testing (52.2%) and second for REM (68.6%, behind Oura), healthy adults',
-          'Stays within a few percent on steps over three weeks of daily life',
-          'Smallest blood oxygen error at normal levels (2.2% in a hypoxia test)',
+          'Most accurate workout heart rate: lowest error of four watches cycling (2.5 bpm, Series 8) and near-zero pooled bias across 22 studies (Lambe 2026)',
+          'Most accurate blood oxygen: Arms 2.2 in a low-oxygen test (Series 8) and 2.4 against arterial blood in 112 patients',
+          'Second for sleep stages (κ 0.60) with the best REM detection of any brand (83%), healthy adults',
+          'Second for steps: +7% in daily life pooled across 59 studies, 6.4% in a 36-adult study',
           '5 FDA-cleared features: ECG, irregular rhythm alerts, AFib History, sleep apnea and hypertension notifications (most of any brand)'
         ],
         weaknesses: [
-          'VO2 max underestimated in all 3 independent studies (MAPE 13 to 16%)',
+          'Third for sleep timing: misses about half of the time you lie awake (52%) and reads total sleep 8 min high',
+          'VO2 max underestimated in all 3 independent studies (MAPE 13 to 16%), third behind Garmin and Fitbit',
           'Weight-training calories off by 112% on average (Series 8, Yun 2026)',
           'Clinical-sample sleep staging drops to κ=0.30 (Lee 2023)',
           'Over-read 85% of blood oxygen readings when true oxygen was below 88% (Series 7)',
@@ -102,18 +102,18 @@ class KygoWearableAccuracy extends HTMLElement {
       'oura': {
         name: 'Oura Ring', short: 'Oura', color: '#B8975E',
         imageUrl: img('273a63_722e50e1a554453eb4c71a2e7a58925d'),
-        bestFor: 'Overnight HRV, resting heart rate, total sleep time',
+        bestFor: 'Sleep stages, sleep timing, overnight HRV, resting heart rate',
         subscription: '$5.99/mo required',
         strengths: [
-          'Best overnight HRV (CCC 0.99, Ring 4)',
-          'Top overnight resting heart rate, tied with WHOOP (1.1 bpm off, Ring 4)',
-          'Highest sleep staging score in healthy sleepers (κ 0.65 vs Apple 0.60, Fitbit 0.55 in Oura\'s own study)',
-          'Smallest total-sleep-time bias (-3 min, 6-study meta)',
+          'Most accurate overnight HRV: 6% error, agreement 0.99 (Ring 4, 139 nights, independent)',
+          'Most accurate resting heart rate overnight: 1.1 bpm, 1.9% (Ring 4; WHOOP 1.8 bpm in the same study)',
+          'Most accurate sleep stages in healthy sleepers (κ 0.65 vs Apple 0.60, Fitbit 0.55 in Oura\'s own study; independent preprint agrees on the order)',
+          'Most accurate sleep timing: total sleep within 2 min, catches 73% of wake (96 adults, multi-night)',
           'Only brand with a published temperature sensor test (its own)',
           'Lightest Oura yet: Ring 5 weighs 2 to 2.6 g (Oura spec)'
         ],
         weaknesses: [
-          'Overcounted daily steps by about a fifth, with single days off by about half (Gen 2)',
+          'Steps 50 to 69% off before its May 2025 algorithm change; nothing published since',
           'Daytime heart rate error 15% (Gen 3, Gielen 2026), bottom tier',
           'Sleep staging κ=0.35 in a clinical sample; 53% accuracy in sleep-clinic patients',
           'Calorie algorithm changed May 2025 and has not been independently tested',
@@ -128,17 +128,19 @@ class KygoWearableAccuracy extends HTMLElement {
       'garmin': {
         name: 'Garmin', short: 'Garmin', color: '#007CC3',
         imageUrl: img('273a63_c545c093c04d4ca4ade77e5ca43fd433'),
-        bestFor: 'VO2 max, steps, outdoor sports, battery',
+        bestFor: 'Steps, VO2 max (chest strap), workout heart rate',
         subscription: 'None required',
         strengths: [
-          'Most independently validated VO2 max (about 7% error, 3 studies)',
-          'Under 5% step error in the lab (Vivoactive 4)',
-          'Tier-1 daytime heart rate (Vivoactive 5, MAPE 6.3%)',
+          'Most accurate steps: +3% in daily life pooled across 59 studies, 1 to 2% on a treadmill in 258 adults',
+          'Most accurate VO2 max with a chest strap: 6.7% error in 35 runners, about 7% in two more lab tests',
+          'Second for workout heart rate: 2.9 bpm cycling, 6.3% in a ten-device test (Vivoactive 5)',
+          'Third for overnight HRV (10.5% error, CCC 0.87, Fenix 6)',
           'FDA-cleared ECG app on select watches (2023)',
           'Up to 11 days of battery (Vivoactive 5, Garmin spec)'
         ],
         weaknesses: [
-          'Weakest sleep staging (κ=0.21) and wake detection (27.6%, Vivosmart 4)',
+          'Weakest sleep: stages κ 0.21 to 0.25, catches 27% of wake, reads total sleep 44 min high',
+          'Wrist-only VO2 max read 13 mL/kg/min high in 207 mostly older women (56% error)',
           'Largest workout calorie error in a four-brand test (77.6% cycling) and 115% in weight training',
           'Blood oxygen read low at rest (Venu 2s) and high at altitude (Fenix 5X)',
           'Respiratory rate barely tracked real breathing in hospital patients (r 0.28)',
@@ -152,11 +154,13 @@ class KygoWearableAccuracy extends HTMLElement {
       'whoop': {
         name: 'WHOOP', short: 'WHOOP', color: '#2FA37A',
         imageUrl: img('273a63_c52aaaca1f7243f3818cf51d9374dbd4'),
-        bestFor: 'Overnight HRV, deep sleep detection, recovery',
+        bestFor: 'Overnight HRV, resting heart rate, breathing rate (all second place)',
         subscription: 'From $199/yr',
         strengths: [
-          'Second for deep sleep detection (69.6%, behind Oura), healthy adults',
-          'Overnight HRV CCC 0.94 and resting HR CCC 0.91 (Dial 2025)',
+          'Second for overnight HRV: 8% error, agreement 0.94 (4.0, 289 nights, independent)',
+          'Second for resting heart rate overnight: 1.8 bpm, 3.0% (same study)',
+          'Second for breathing rate: +0.1 breaths/min vs sleep-lab belts (Strap 2.0, WHOOP-funded, peer reviewed)',
+          'Caught 70% of deep sleep in a mixed sample (Schyvens 2025)',
           'FDA-cleared ECG, WHOOP MG only',
           'Continuous 24/7 wear, no screen'
         ],
@@ -174,37 +178,43 @@ class KygoWearableAccuracy extends HTMLElement {
       'fitbit': {
         name: 'Fitbit', short: 'Fitbit', color: '#00A3AD',
         imageUrl: img('273a63_c12bab319dc34737a386c7449f5f92c7'),
-        bestFor: 'Sleep across populations, daytime heart rate, value',
+        bestFor: 'Calories (least bad), breathing rate, sleep timing, VO2 max',
         subscription: 'Google Health Premium optional ($9.99/mo)',
         strengths: [
-          'Most population-robust sleep staging: κ=0.42 healthy and clinical',
-          'Best daytime heart rate in a ten-device test (Charge 6, MAPE 5.5%)',
-          'Under 4% step error on a treadmill (Inspire 2)',
+          'Least bad calories: wins three of five head-to-head comparisons, weight-training reads only 4% high',
+          'Only brand with an independent breathing rate test: 0.3 to 1 breath/min high (Charge 4)',
+          'Second for sleep timing (total sleep -3 min, catches 68% of wake) and third for stages (κ 0.55)',
+          'Second for VO2 max: 8.7% (Pixel Watch 3, Google-funded), 9.1% in 60 adults (Charge 2)',
+          'Third for workout heart rate; the Charge 6 was best of ten devices (5.5%) but the Sense 2 last of four cycling',
           'Daily calories 9 to 13% off doubly labelled water, the gold standard (Alta HR, Shook 2022)',
           'FDA-cleared ECG (Sense, Sense 2, Charge 5 and 6) and irregular rhythm alerts on most models'
         ],
         weaknesses: [
           'Worst device in the same ten-device heart rate test was also a Fitbit (Inspire 3, 16.5%)',
-          'Overcounts steps by 18% in free living (Sense)',
+          'Overcounts steps by 15% in free living pooled across 59 studies, up to 26% in single studies',
           'Smallest average calorie bias, but large misses on single workouts and implausible readings in one study',
           'Pooled heart rate under-reads by 3.4 bpm with wide limits (Chevance 2022)',
           'Blood oxygen over-reads by about 2 points in COPD (Charge 4, ICC 0.32)',
           'No sleep or step validation for any model newer than the Sense / Inspire 2'
         ],
         researchNote: 'Since 19 May 2026 Google derives Fitbit VO2 max only from outdoor GPS runs. That method has no published validation.',
-        studyIds: ['schyvens2025', 'lee2023', 'robbins2024', 'gielen2026', 'chevance2022', 'cheung2025', 'miwa2026', 'kostrna2026', 'yun2026', 'lee2026', 'perez2025', 'shook2022', 'freeberg2019', 'hermans2024', 'natarajan2021', 'nasr2025', 'doheny2024'],
+        studyIds: ['schyvens2025', 'lee2023', 'robbins2024', 'gielen2026', 'chevance2022', 'cheung2025', 'miwa2026', 'kostrna2026', 'yun2026', 'lee2026', 'perez2025', 'shook2022', 'lambe2026pixel', 'freeberg2019', 'hermans2024', 'natarajan2021', 'nasr2025', 'doheny2024'],
         affiliateLinks: [{ name: 'Fitbit', slug: 'fitbit-search', url: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20' }]
       },
       'samsung': {
         name: 'Samsung Galaxy Watch', short: 'Samsung', color: '#E08A00',
         imageUrl: img('273a63_21fd42e4a5d1459bb6db751a0ea5e161'),
-        bestFor: 'Android users, sleep apnea screening, heart rate',
+        bestFor: 'Blood oxygen and calories (second), steps (third), sleep apnea screening',
         subscription: 'None required',
         strengths: [
-          'Near-ECG heart rate on a hospital treadmill test in heart patients (Galaxy Watch 4, ICC 0.997, Kim 2023); not in the ten-device daytime test',
+          'Second for blood oxygen: Arms 3.8 in a low-oxygen test (Galaxy Watch 5), 1.8 vs arterial blood under the FDA protocol (Samsung-funded)',
+          'Second for calories: most accurate on steady running and walking (9% max treadmill, 0.5% walking)',
+          'Third for steps: 10.5% in daily life (Galaxy Watch 4)',
+          'Near-ECG heart rate in heart patients on a stress test (Galaxy Watch 4, ICC 0.997), but 3rd of 4 cycling and worst of 4 on a treadmill (Galaxy Watch 6)',
           'FDA-cleared ECG, irregular rhythm alerts and sleep apnea risk check (first sleep apnea feature of its kind, De Novo 2024; v2.0 cleared July 2026 for Galaxy Ring too)'
         ],
         weaknesses: [
+          'Calories roughly double true burn on weights (85%) and miss by 67% cycling',
           'Heart rate agreement drops above 160 bpm',
           'Blood oxygen read low in an independent hypoxia test (Galaxy Watch 5, bias -2.6)',
           'Respiratory rate validation was Samsung-funded and tested a research algorithm, not the consumer feature',
@@ -236,44 +246,48 @@ class KygoWearableAccuracy extends HTMLElement {
   get _scorecard() {
     return {
       sleep: {
-        'apple-watch': ['good', 'κ 0.53 healthy, 0.30 clinical'], 'oura': ['good', 'κ 0.65 healthy, 0.35 clinical'], 'garmin': ['weak', 'κ 0.21'],
-        'whoop': ['mixed', 'κ 0.37'], 'fitbit': ['good', 'κ 0.42 healthy and clinical'], 'samsung': ['mixed', 'κ 0.42 clinical only']
+        'apple-watch': ['good', 'κ 0.60 healthy, best REM (83%); 0.53 clinical'], 'oura': ['strong', 'κ 0.65 healthy; 0.35 clinical'], 'garmin': ['weak', 'κ 0.25 healthy, 0.21 clinical'],
+        'whoop': ['mixed', 'κ 0.44 healthy, 0.37 clinical'], 'fitbit': ['good', 'κ 0.55 healthy, 0.41 clinical'], 'samsung': ['mixed', 'κ 0.42 clinical only']
+      },
+      sleepTiming: {
+        'apple-watch': ['good', 'Total sleep +8 min; catches 52% of wake'], 'oura': ['strong', 'Total sleep -2 min; catches 73% of wake'], 'garmin': ['weak', 'Total sleep +44 min; catches 27% of wake'],
+        'whoop': ['mixed', 'Total sleep -12 min; catches 56% of wake (3.0)'], 'fitbit': ['good', 'Total sleep -3 min; catches 68% of wake'], 'samsung': ['none', 'No healthy-adult test']
       },
       hrv: {
-        'apple-watch': ['none', 'Not in main test (about 20 ms off in others)'], 'oura': ['strong', 'CCC 0.99'], 'garmin': ['mixed', 'CCC 0.87'],
-        'whoop': ['good', 'CCC 0.94'], 'fitbit': ['none', 'Not in main test (3 to 7 ms low, Charge 4)'], 'samsung': ['none', 'Not in main test (research software only)']
+        'apple-watch': ['weak', '29% error, different statistic (SDNN, mornings)'], 'oura': ['strong', '6% error, CCC 0.99 (Ring 4)'], 'garmin': ['mixed', '10.5% error, CCC 0.87 (Fenix 6)'],
+        'whoop': ['good', '8% error, CCC 0.94'], 'fitbit': ['none', 'No current-model error figure (Charge 4 reads 7 ms low)'], 'samsung': ['none', 'No test of the watch feature']
       },
       rhr: {
-        'apple-watch': ['none', 'Not in main test (1.5 bpm in another)'], 'oura': ['strong', '1.1 bpm off overnight (Ring 4)'], 'garmin': ['none', 'Left out of main test (5.4 bpm in another)'],
-        'whoop': ['strong', '1.8 bpm off overnight'], 'fitbit': ['none', 'Not in main test (1.2 bpm off asleep, Charge 4)'], 'samsung': ['none', 'Not in main test (1.1 bpm off asleep, older model)']
+        'apple-watch': ['mixed', '5.9%, 3.7 bpm off, mornings lying down (Series 9)'], 'oura': ['strong', '1.9%, 1.1 bpm off overnight (Ring 4)'], 'garmin': ['weak', '5.4 bpm off, one lab night'],
+        'whoop': ['good', '3.0%, 1.8 bpm off overnight'], 'fitbit': ['mixed', '+4 bpm in healthy adults (counts relaxed awake time)'], 'samsung': ['none', 'No test of the watch feature']
       },
       activeHr: {
-        'apple-watch': ['good', 'Tier 2, 7.3% (Watch SE)'], 'oura': ['weak', 'Tier 4, 15% (Gen 3)'], 'garmin': ['strong', 'Tier 1, 6.3% (Vivoactive 5)'],
-        'whoop': ['none', 'Not in main test (8.5% in another)'], 'fitbit': ['strong', 'Tier 1, 5.5% (Charge 6); Inspire 3 Tier 4'], 'samsung': ['none', 'Not in main test']
+        'apple-watch': ['strong', '2.5 bpm cycling (best of 4); 7.3% ten-device test'], 'oura': ['weak', '15% ten-device test (Gen 3)'], 'garmin': ['strong', '2.9 bpm cycling; 6.3% ten-device test'],
+        'whoop': ['mixed', '8.5% treadmill vs 12-lead ECG'], 'fitbit': ['good', '3.9 bpm cycling (Sense 2); 5.5% ten-device test (Charge 6)'], 'samsung': ['mixed', '3.4 bpm cycling; under 2% in heart patients']
       },
       spo2: {
-        'apple-watch': ['good', '2.2%, Series 8'], 'oura': ['vendor', 'Own claim only'], 'garmin': ['none', 'Not in main test (5.8% at rest in another)'],
-        'whoop': ['none', 'No study found'], 'fitbit': ['none', 'Not in main test (2 points high, COPD; 1.7 high, inpatients)'], 'samsung': ['mixed', '3.8%, Galaxy Watch 5, reads low']
+        'apple-watch': ['good', 'Arms 2.2, bias -0.1 (Series 8)'], 'oura': ['vendor', 'Own claim only'], 'garmin': ['weak', '3.5 vs arterial blood, reads 2.7 low (Fenix 6 Pro)'],
+        'whoop': ['none', 'No study found'], 'fitbit': ['weak', '2 points high, ICC 0.32 (COPD, Charge 4)'], 'samsung': ['mixed', 'Arms 3.8, reads 2.6 low (Galaxy Watch 5)']
       },
       steps: {
-        'apple-watch': ['strong', '2 to 6% daily life'], 'oura': ['weak', '+19% avg, ±50% a day'], 'garmin': ['strong', '4.6% lab'],
-        'whoop': ['none', 'No study'], 'fitbit': ['mixed', '+18% daily life'], 'samsung': ['mixed', '10.5% daily life (Galaxy Watch 4)']
+        'apple-watch': ['strong', '+7% daily life pooled; 6.4% in 36 adults'], 'oura': ['weak', '50 to 69% off, pre-2025 algorithm'], 'garmin': ['strong', '+3% daily life pooled; 1 to 2% lab'],
+        'whoop': ['none', 'No study'], 'fitbit': ['mixed', '+15% daily life pooled; 3.6% lab'], 'samsung': ['mixed', '10.5% daily life (Galaxy Watch 4)']
       },
       calories: {
-        'apple-watch': ['weak', '36% cycling, 112% weights'], 'oura': ['none', 'Current algorithm untested'], 'garmin': ['weak', '78% cycling, 115% weights'],
-        'whoop': ['none', 'No study'], 'fitbit': ['weak', '32% cycling, 42% weights'], 'samsung': ['weak', '67% cycling, 85% weights']
+        'apple-watch': ['weak', '26% treadmill, 36% cycling, 112% weights'], 'oura': ['none', 'No calorimetry test'], 'garmin': ['weak', '15% treadmill, 78% cycling, 115% weights'],
+        'whoop': ['none', 'No study'], 'fitbit': ['weak', '14% treadmill, 32% cycling, 42% weights'], 'samsung': ['weak', '9% treadmill, 67% cycling, 85% weights']
       },
       vo2max: {
-        'apple-watch': ['mixed', '13.2%, reads low'], 'oura': ['vendor', 'No independent test'], 'garmin': ['good', 'About 7%, 3 studies'],
-        'whoop': ['vendor', 'No independent test'], 'fitbit': ['mixed', 'Under 10%, retired method'], 'samsung': ['vendor', 'No independent test']
+        'apple-watch': ['mixed', '13.2%, reads low (Series 10)'], 'oura': ['vendor', 'No independent test'], 'garmin': ['good', '6.7% with a chest strap (Forerunner 245)'],
+        'whoop': ['vendor', 'Unpublished company test'], 'fitbit': ['mixed', '8.7% (Pixel Watch 3, Google-funded); 9.1% (Charge 2)'], 'samsung': ['vendor', 'Press release only']
       },
       temp: {
         'apple-watch': ['none', 'No sensor test'], 'oura': ['vendor', 'Own 2020 test'], 'garmin': ['none', 'No sensor test'],
-        'whoop': ['none', 'No sensor test'], 'fitbit': ['none', 'No sensor test'], 'samsung': ['none', 'No sensor test']
+        'whoop': ['none', 'No sensor test'], 'fitbit': ['none', 'No sensor test'], 'samsung': ['vendor', 'Wrist vs oral r 0.42, Samsung-funded']
       },
       resp: {
-        'apple-watch': ['none', 'No readings (2 hospital studies)'], 'oura': ['vendor', 'Own 2020 blog'], 'garmin': ['weak', 'r 0.28, hospital'],
-        'whoop': ['vendor', 'WHOOP-funded, Strap 2.0'], 'fitbit': ['mixed', 'About 1 /min high'], 'samsung': ['vendor', 'Samsung-funded research algorithm']
+        'apple-watch': ['none', 'No readings (2 hospital studies)'], 'oura': ['vendor', 'Own 2020 blog'], 'garmin': ['weak', 'r 0.28, hospital patients'],
+        'whoop': ['mixed', '+0.1 /min, WHOOP-funded, peer reviewed (Strap 2.0)'], 'fitbit': ['good', '0.3 to 1 /min high, independent'], 'samsung': ['vendor', 'Samsung-funded research algorithm']
       },
       fda: {
         'apple-watch': ['fda', '5 cleared'], 'oura': ['fda0', 'None'], 'garmin': ['fda', '1 (ECG)'],
@@ -288,45 +302,49 @@ class KygoWearableAccuracy extends HTMLElement {
 
   get _sections() {
     return [
-      { id: 'sleep', nav: 'Sleep', name: 'Sleep stages', icon: 'moon', gold: 'Polysomnography (lab sleep study)',
-        short: 'No tracker stages sleep like a lab, and every one gets worse in people with sleep problems.',
-        verdict: 'No tracker stages sleep like a lab. Oura scored highest in its own study of healthy sleepers, Apple led independent testing, Fitbit and Samsung held up best in people with sleep problems, and every device drops sharply in clinical samples. All of them tell asleep from awake well (81 to 91%) but miss much of the time you lie awake.',
-        studies: ['schyvens2025', 'lee2023', 'robbins2024', 'herberger2025', 'khan2025', 'miller2022', 'haghayegh2019'] },
+      { id: 'sleep', nav: 'Sleep stages', name: 'Sleep stages', icon: 'moon', gold: 'Polysomnography (lab sleep study)',
+        short: 'Oura stages sleep most accurately in healthy sleepers, Apple is second and Fitbit third. No tracker matches a lab, and every one gets worse in people with sleep problems.',
+        verdict: 'No tracker stages sleep like a lab. In the one study that put Oura, Apple and Fitbit on the same sleepers, Oura scored highest (κ 0.65), Apple second (0.60, with the best REM detection) and Fitbit third (0.55); WHOOP, Garmin and Polar are well behind. Every device drops sharply in people with sleep problems, where Apple holds up best.',
+        studies: ['robbins2024', 'svensson2024', 'schyvens2025', 'lee2023', 'herberger2025', 'miller2022', 'topalidis2026'] },
+      { id: 'sleepTiming', nav: 'Sleep timing', name: 'Sleep timing', icon: 'clock', gold: 'Polysomnography (lab sleep study)',
+        short: 'Oura knows when you were asleep best: total sleep within 2 minutes of a lab study. Fitbit is second, Apple third because it misses half of the time you lie awake.',
+        verdict: 'Telling asleep from awake is the part of sleep tracking that drives your sleep score. Oura leads (total sleep within 2 minutes, 73% of wake caught), Fitbit is second and Apple third: Apple reads total sleep 8 minutes high and misses about half of wake. WHOOP and Garmin overestimate sleep by 12 and 44 minutes. In people with sleep problems every brand reads sleep high and catches half of wake at best.',
+        studies: ['svensson2024', 'robbins2024', 'miller2022', 'chinoy2021', 'miller2021', 'stone2020', 'schyvens2025', 'herberger2025', 'lee2023', 'byun2023', 'budig2022', 'khan2025'] },
       { id: 'hrv', nav: 'HRV', name: 'Overnight HRV', icon: 'heartPulse', gold: 'Polar H10 chest-strap ECG',
-        short: 'Oura Ring 4 matched a chest-strap ECG almost perfectly over 536 nights. WHOOP and Garmin follow; Apple, Fitbit and Samsung have only smaller or one-night tests.',
-        verdict: 'Oura Ring 4 matched a chest-strap ECG almost perfectly overnight. WHOOP was close behind and Garmin clearly weaker. Apple, Fitbit and Samsung were not in that test; their own smaller tests show Apple missing by about 20 ms, Fitbit reading a few ms low and Samsung research software missing by about 22 ms.',
+        short: 'Oura Ring 4 matched a chest-strap ECG almost perfectly over 139 nights (6% error). WHOOP is second (8%) and Garmin third (10.5%) in the same independent test; Apple, Fitbit and Samsung have no comparable figure.',
+        verdict: 'Oura Ring 4 matched a chest-strap ECG almost perfectly overnight (6% error, agreement 0.99). WHOOP was second (8%, 0.94) and Garmin third (10.5%, 0.87) in the same 536-night independent study; Polar was fourth. Apple reports a different statistic (SDNN, mornings) and was 29% off, Fitbit has no current-model error figure and Samsung has no test of the watch feature.',
         studies: ['dial2025', 'miller2022', 'ogrady2024', 'hermans2024', 'nasr2025', 'sarhaddi2022', 'xu2026'] },
       { id: 'rhr', nav: 'Resting HR', name: 'Resting heart rate', icon: 'heart', gold: 'Chest-strap or lead II ECG',
-        short: 'Every brand tested landed within about 2 bpm of an ECG overnight, except Garmin (5.4).',
-        verdict: 'The easiest number a wearable produces. Oura and WHOOP track it closely overnight and Apple lands within about 1.5 bpm. Garmin was furthest off in the one test that included it.',
+        short: 'Oura is the most accurate overnight (1.1 bpm, 1.9% error), WHOOP second (1.8 bpm) and Apple third; Garmin was 5.4 bpm off in its one lab night.',
+        verdict: 'The easiest number a wearable produces. Oura leads (1.1 bpm, 1.9%) and WHOOP is second (1.8 bpm, 3.0%) in the same independent overnight study; Polar sat between them on the first four hours of sleep. Apple is third (3.7 bpm lying down in the morning). Fitbit reads about 4 bpm high in healthy adults because it counts relaxed awake time, Garmin was 5.4 bpm off in one lab night and Samsung has no test of the watch feature.',
         studies: ['dial2025', 'miller2022', 'sarhaddi2022', 'ziaurrehman2024', 'haghayegh2019hr', 'stucky2021', 'hermans2024', 'doheny2024'] },
       { id: 'activeHr', nav: 'Active HR', name: 'Heart rate during activity', icon: 'activity', gold: 'Chest strap or 12-lead ECG',
-        short: 'The best and worst wrist devices in a ten-device workout test were both Fitbits.',
-        verdict: 'Model matters more than brand. The best and the worst wrist device in a ten-device test were both Fitbits, and arm movement, not intensity, is what breaks the reading.',
+        short: 'Apple edges Garmin and Fitbit across three head-to-head tests, and the top four brands sit within 2 to 7% of each other. Model matters: the best and worst devices in a ten-device test were both Fitbits.',
+        verdict: 'Apple is first: lowest error of four watches cycling (2.5 bpm), bias zero in a second cycling test and near-zero pooled bias across 22 studies. Garmin is second (2.9 bpm cycling, 6.3% in the ten-device test) and Fitbit third (best of ten with the Charge 6 at 5.5%, but last of four cycling with the Sense 2). Samsung is fourth; its sub-2% result was heart patients on a stress test. The order is not firm: the top four are within 2 to 7%. Arm movement, not intensity, is what breaks the reading.',
         studies: ['gielen2026', 'vanoost2025', 'kim2023', 'ceugniez2025', 'lambe2026', 'chevance2022'] },
       { id: 'spo2', nav: 'SpO2', name: 'SpO2', icon: 'droplet', gold: 'Arterial blood or hospital oximeter',
-        short: 'Blood oxygen readings are close enough at normal levels and least reliable when oxygen is truly low.',
-        verdict: 'Close enough at normal oxygen levels, least reliable when it matters. When oxygen is truly low, no watch has proven reliable: an Apple Watch over-read most readings, and many readings simply fail.',
+        short: 'Apple is the most accurate (2.2 points off in a low-oxygen test), Samsung second (3.8, reads low) and Garmin a distant third. Every watch is least reliable when oxygen is truly low.',
+        verdict: 'Apple leads: Arms 2.2 in a low-oxygen lab test, 2.4 against arterial blood in 112 patients, pooled bias near zero across nine studies. Samsung is second (Arms 3.8, reads 2.6 low) and Garmin third by default (3.5 against arterial blood, fails the ISO limit against a finger oximeter). Fitbit has two small, poor tests; Oura and WHOOP have none. When oxygen is truly low no watch has proven reliable, and 10 to 45% of readings simply fail.',
         studies: ['walzel2023', 'jiang2023', 'jiang2026', 'browne2025', 'browne2024', 'schiefer2021', 'knevels2026', 'hermans2024', 'lee2026fitbit', 'hearn2023', 'lambe2026', 'apple2022spo2'] },
       { id: 'steps', nav: 'Steps', name: 'Step counting', icon: 'steps', gold: 'Hand count (lab) or research pedometer (daily life)',
-        short: 'Fitbit and Garmin land under 5% on a normal lab walk. Daily life is where Fitbit and especially Oura overcount.',
-        verdict: 'Fitbit and Garmin land under 5% on a normal lab walk, and Apple\'s recent lab tests used harder slow walks. Daily life separates them: Apple stays within a few percent, Samsung misses by about 10%, Fitbit overcounts by 18% and Oura by about a fifth, with single days off by about half.',
+        short: 'Garmin counts steps most accurately: 3% over in daily life across 59 studies and 1 to 2% in the lab. Apple is second (7%), Samsung third. Fitbit and especially Oura overcount in daily life.',
+        verdict: 'Garmin is first: 3% over in daily life pooled across 59 studies, and 1 to 2% on a treadmill in 258 adults. Apple is second (7% pooled, 6.4% in a 36-adult study, within 3.4% at every treadmill speed) and Samsung third (10.5% in daily life). Fitbit is 3.6% on a normal lab walk but overcounts by 15% in daily life, which is how people use it. Oura was 50 to 69% off before its May 2025 algorithm change, with nothing published since.',
         studies: ['hong2024', 'miwa2026', 'rowe2025', 'deleon2026', 'rider2025', 'cheung2025', 'ozel2026', 'giurgiu2023', 'kristiansson2023', 'svarre2020', 'nielavilen2022', 'an2017', 'montes2020'] },
       { id: 'calories', nav: 'Calories', name: 'Calories burned', icon: 'flame', gold: 'Indirect calorimetry (lab gas analysis)',
-        short: 'The least accurate number on any wearable: Apple, Samsung and Garmin read high in lab workouts, and no watch was reliably close.',
-        verdict: 'The least accurate number on any wearable. In head-to-head lab tests Apple, Samsung and Garmin read high, and weight training errors ran from 85% to 115% for those three. Fitbit was close on average, but single workouts missed by 32% to 42%.',
+        short: 'The least accurate number on any wearable. Fitbit is least bad, Samsung second, Apple third, and every brand is more than 10% off in every head-to-head test.',
+        verdict: 'The least accurate number on any wearable. Across four head-to-head lab tests on the same people, Fitbit wins three of five comparisons and has the smallest worst case (42% on weights, where it reads only 4% high); Samsung is the most accurate on steady running and walking but roughly doubles true burn on weights; Apple and Garmin are off by 112% and 115% on weights. Every brand is more than 10% off in every test. Oura has never been tested against lab calorimetry and WHOOP has no calorie study.',
         studies: ['kostrna2026', 'yun2026', 'lee2026', 'perez2025', 'shook2022', 'henriksen2022', 'miwa2026', 'ferreira2026', 'apple2024wp', 'shcherbina2017'] },
       { id: 'vo2max', nav: 'VO2 max', name: 'VO2 max', icon: 'lungs', gold: 'Lab metabolic cart (CPET)',
-        short: 'Garmin has the most validation at about 7% error. Apple reads low in all three independent studies, and Fitbit\'s studies tested a method Google has retired.',
-        verdict: 'Garmin has the most independent validation at about 7% error. Apple has three independent studies and underestimates in all of them. The two Fitbit studies tested a method Google has retired, and Oura, WHOOP and Samsung have vendor claims only.',
-        studies: ['engel2026', 'carrier2025', 'carrier2023', 'caserman2024', 'lambe2025', 'mayo2026', 'klepin2019', 'freeberg2019', 'molina2022'] },
+        short: 'Garmin has the most validation at about 7% error. Apple reads low in all three independent studies, and Fitbit\'s Pixel Watch 3 came in at 8.7% in a Google-funded test.',
+        verdict: 'Garmin has the most independent validation at about 7% error. Apple has three independent studies and underestimates in all of them. Fitbit\'s Pixel Watch 3 came in at 8.7% in a Google-funded test; its older Charge 2 studies tested a method Google has retired. Oura, WHOOP and Samsung have vendor claims only.',
+        studies: ['engel2026', 'carrier2025', 'carrier2023', 'caserman2024', 'lambe2025', 'mayo2026', 'lambe2026pixel', 'klepin2019', 'freeberg2019', 'molina2022'] },
       { id: 'temp', nav: 'Skin temp', name: 'Skin temperature', icon: 'thermo', gold: 'Research-grade iButton sensors',
         short: 'No independent study has tested any brand\'s temperature sensor.',
         verdict: 'No independent study has tested any brand\'s temperature sensor. Oura is the only brand that has published a sensor test, and it ran that test itself.',
         studies: ['oura2020temp', 'thigpen2025', 'wang2025', 'kim2026temp'] },
       { id: 'resp', nav: 'Breathing', name: 'Breathing rate', icon: 'wind', gold: 'Nasal airflow, chest bands or impedance',
-        short: 'Respiratory rate tracking looks good in company tests, and independent tests are mixed.',
-        verdict: 'Too thin to rank. Company-run tests in sleeping adults report errors under 1 to 2 breaths a minute. Independently, an older Fitbit was close in a COPD study, while a Garmin barely followed real breathing in hospital patients and an Apple Watch gave no readings.',
+        short: 'Fitbit is the only brand with an independent test of the shipped feature (0.3 to 1 breath a minute high); WHOOP is second on a peer-reviewed company-funded test. No third qualifies.',
+        verdict: 'Only two brands qualify. Fitbit is first: an independent overnight test put the Charge 4 0.3 to 1 breath a minute high, and Fitbit\'s own test agrees (RMSE 0.65). WHOOP is second on a WHOOP-funded but peer-reviewed sleep-lab test of the Strap 2.0 (+0.1 a minute). Garmin\'s shipped feature failed its hospital test (r 0.28), Apple gave no readings in two hospital studies, Oura\'s 0.71 is a blog post and Samsung\'s 1.13 is a research algorithm.',
         studies: ['jung2023resp', 'natarajan2021', 'berryhill2020', 'oura2020rr', 'helmer2024', 'knevels2026', 'hermans2024', 'abimansour2024'] },
       { id: 'fda', nav: 'FDA-cleared', name: 'FDA-cleared features', icon: 'shieldPlus', gold: 'FDA 510(k) and De Novo decisions',
         short: 'Apple has the most cleared features (5) and Oura has none, but cleared does not mean every case is caught.',
@@ -348,6 +366,13 @@ class KygoWearableAccuracy extends HTMLElement {
     return {
       // Sleep
       robbins2024: S('Robbins R, et al.', 2024, 'Accuracy of three commercial wearable devices for sleep tracking in healthy adults', 'Sensors', '10.3390/s24206532', 35, 'Oura', 'peer', { note: 'Lead author is a paid Oura advisor. Healthy, screened sample.' }),
+      svensson2024: S('Svensson T, et al.', 2024, 'Validity of the Oura Ring Gen 3 against polysomnography over multiple nights in healthy adults', 'Sleep Medicine', '10.1016/j.sleep.2024.01.020', 96, 'Oura', 'peer', { note: 'Oura-funded authors; home polysomnography over several nights.' }),
+      topalidis2026: S('Topalidis P, et al.', 2026, 'Head-to-head comparison of eight consumer sleep trackers against polysomnography', 'Preprint', null, 18, null, 'preprint', { note: 'Not peer reviewed; the authors also develop a rival algorithm.' }),
+      chinoy2021: S('Chinoy ED, et al.', 2021, 'Performance of seven consumer sleep-tracking devices compared with polysomnography', 'Sleep', '10.1093/sleep/zsaa291', 34),
+      miller2021: S('Miller DJ, et al.', 2021, 'A validation of six wearable devices for estimating sleep, heart rate and heart rate variability in healthy adults', 'Biosensors', '10.3390/bios11060185', 6, null, 'peer', { note: 'Lead author later WHOOP-sponsored.' }),
+      stone2020: S('Stone JD, et al.', 2020, 'Evaluations of commercial sleep technologies for objective monitoring during routine sleeping conditions', 'Nature and Science of Sleep', '10.2147/NSS.S270705', 5, null, 'peer', { note: 'Reference was an EEG headband, not polysomnography.' }),
+      byun2023: S('Byun JH, et al.', 2023, 'Validity of the Galaxy Watch 2 for sleep in patients with obstructive sleep apnea', 'Chronobiology International', null, 127, null, 'abstract'),
+      budig2022: S('Budig M, et al.', 2022, 'Validity of two consumer multisport activity tracker and one accelerometer against polysomnography', 'Sensors', '10.3390/s22239540', 49),
       schyvens2025: S('Schyvens AM, et al.', 2025, 'Performance of six consumer sleep trackers vs polysomnography', 'Sleep Advances', '10.1093/sleepadvances/zpaf021', 62, null, 'peer', { note: 'Per-stage deep and REM values come from supplementary error matrices.' }),
       lee2023: S('Lee T, et al.', 2023, 'Accuracy of 11 wearable, nearable and airable consumer sleep trackers', 'JMIR mHealth and uHealth', '10.2196/50983', '75 (clinical, mean AHI 18)', null, 'peer', { note: 'Several authors are affiliated with Asleep Co., maker of a competing tracker; the conflict cuts against Oura, Fitbit and Apple, not for them.' }),
       haghayegh2019: S('Haghayegh S, et al.', 2019, 'Accuracy of wristband Fitbit models in assessing sleep: systematic review and meta-analysis', 'Journal of Medical Internet Research', '10.2196/16273', 'Meta-analysis'),
@@ -368,6 +393,7 @@ class KygoWearableAccuracy extends HTMLElement {
       sarhaddi2022: S('Sarhaddi F, et al.', 2022, 'A comprehensive accuracy assessment of Samsung smartwatch heart rate and heart rate variability', 'PLOS ONE', '10.1371/journal.pone.0268361', 28, null, 'peer', { note: '24 hours free-living; sleep and wake split from self-report logs.' }),
       ziaurrehman2024: S('Zia Ur Rehman R, et al.', 2024, 'Assessment of physiological signals from photoplethysmography sensors compared to an electrocardiogram sensor in daily life', 'Sensors', '10.3390/s24216826', 25, null, 'peer', { note: 'Authors employed by Janssen R&D; no device-maker funding.' }),
       kim2023: S('Kim J, et al.', 2023, 'Apple Watch 7 and Galaxy Watch 4 vs 12-lead ECG during cardiopulmonary exercise testing', 'Annals of Rehabilitation Medicine', '10.5535/arm.23090', '44 cardiac patients'),
+      lambe2026pixel: S('Lambe R, et al.', 2026, 'Validity of the Google Pixel Watch 3 for estimating VO2 max and heart rate against a maximal treadmill test', 'PLOS ONE', '10.1371/journal.pone.0356808', 26, 'Google', 'peer', { note: 'Google-funded; authors state Google had no role. Outdoor GPS runs, the method Google now ships.' }),
       lambe2026: S('Lambe R, et al.', 2026, 'The accuracy of Apple Watch measurements: a living systematic review and meta-analysis', 'npj Digital Medicine', '10.1038/s41746-025-02238-1', '82 studies'),
       chevance2022: S('Chevance G, et al.', 2022, 'Accuracy and precision of energy expenditure, heart rate and steps measured by Fitbit', 'JMIR mHealth and uHealth', '10.2196/35626', '32 heart rate studies'),
       // SpO2
@@ -716,60 +742,111 @@ class KygoWearableAccuracy extends HTMLElement {
     </div>`;
   }
 
-  _sleepChart(only) {
+  _sleepStagesChart(only) {
     const V = (v, src, txt) => ({ v, src, txt });
-    const K2 = ['Healthy sleepers', 'Sleep problems'], K1 = ['Healthy sleepers'];
+    const K2 = ['Healthy adults', 'Sleep problems'];
     return this._dualChart({
       pos: 'sleep', brandOnly: true,
-      legend: 'Staging, deep and REM: healthy sleepers from Schyvens 2025 (independent) and Robbins 2024 (Oura-funded); a range means both tested it. Sleep problems: Lee 2023. Asleep vs awake: Miller 2022 (lab receives WHOOP support) and a Fitbit meta-analysis (Haghayegh 2019). Total sleep time: Schyvens 2025; Oura from a 6-study meta (Khan 2025).',
+      legend: 'Healthy adults: Robbins 2024 (Oura-funded, one lab test of Oura, Apple and Fitbit), Svensson 2024 (Oura-funded; Oura deep and REM) and Miller 2022 (WHOOP, Garmin; lab receives WHOOP support). Sleep problems: Schyvens 2025 (Apple, Fitbit, WHOOP, Garmin; about half with sleep apnea), Lee 2023 (Oura kappa, Samsung) and Herberger 2025 (Oura deep and REM, sleep-clinic patients). The independent Topalidis 2026 preprint orders Oura 0.59, WHOOP 0.54, Garmin 0.41, consistent with the healthy column.',
       views: [
         { id: 'overall', tab: 'Overall staging', tabS: 'Overall', icon: 'layers', unit: 'k', max: 1, ref: [0.75, 'Two human scorers'], keys: K2,
           q: 'Match with a lab sleep study (kappa, 1 is perfect)',
           rows: [
-            ['oura', 'Gen 3', V([0.65], 'Robbins (Oura-funded)'), V([0.35], 'Lee')],
-            ['apple-watch', 'Series 8', V([0.53, 0.60], 'Schyvens 0.53, Robbins 0.60'), V([0.30], 'Lee')],
-            ['fitbit', 'Sense / Sense 2', V([0.42, 0.55], 'Schyvens 0.42, Robbins 0.55'), V([0.42], 'Lee')],
-            ['samsung', 'Galaxy Watch 5', null, V([0.42], 'Lee')],
-            ['whoop', '4.0', V([0.37], 'Schyvens'), null],
-            ['garmin', 'Vivosmart 4', V([0.21], 'Schyvens'), null]
+            ['oura', 'Ring 3', V([0.65], 'Robbins 2024 (Oura-funded)'), V([0.35], 'Lee 2023')],
+            ['apple-watch', 'Series 8', V([0.60], 'Robbins 2024 (Oura-funded)'), V([0.53], 'Schyvens 2025')],
+            ['fitbit', 'Sense 2 / Charge 5', V([0.55], 'Robbins 2024 (Oura-funded)'), V([0.41], 'Schyvens 2025, Charge 5')],
+            ['whoop', '3.0 / 4.0', V([0.44], 'Miller 2022, WHOOP 3.0'), V([0.37], 'Schyvens 2025, WHOOP 4.0')],
+            ['samsung', 'Galaxy Watch 5', null, V([0.42], 'Lee 2023')],
+            ['garmin', 'Forerunner 245 / Vivosmart 4', V([0.25], 'Miller 2022, Forerunner 245'), V([0.21], 'Schyvens 2025, Vivosmart 4')]
           ] },
         { id: 'deep', tab: 'Deep sleep', tabS: 'Deep', icon: 'moon', unit: '%', max: 100, keys: K2,
           q: 'Deep sleep correctly caught',
           rows: [
-            ['oura', 'Gen 3', V([79.5], 'Robbins (Oura-funded)'), V([77.8], 'Lee')],
-            ['whoop', '4.0', V([69.6], 'Schyvens'), null],
-            ['fitbit', 'Sense / Sense 2', V([50.9], 'Schyvens'), V([67.1], 'Lee')],
-            ['apple-watch', 'Series 8', V([50.7], 'Schyvens'), V([41.3], 'Lee')],
-            ['garmin', 'Vivosmart 4', V([47.5], 'Schyvens'), null],
-            ['samsung', 'Galaxy Watch 5', null, V([47.5], 'Lee')]
+            ['oura', 'Ring 3', V([64.0], 'Svensson 2024 (Oura-funded)'), V([50], 'Herberger 2025')],
+            ['apple-watch', 'Series 8', V([50.5], 'Robbins 2024 (Oura-funded)'), V([50.7], 'Schyvens 2025')],
+            ['fitbit', 'Sense 2 / Charge 5', V([61.7], 'Robbins 2024 (Oura-funded)'), V([51.5], 'Schyvens 2025')],
+            ['whoop', '3.0 / 4.0', V([62], 'Miller 2022'), V([69.6], 'Schyvens 2025')],
+            ['samsung', 'Galaxy Watch 5', null, V([47.5], 'Lee 2023')],
+            ['garmin', 'Forerunner 245 / Vivosmart 4', V([28], 'Miller 2022'), V([47.5], 'Schyvens 2025')]
           ] },
         { id: 'rem', tab: 'REM sleep', tabS: 'REM', icon: 'activity', unit: '%', max: 100, keys: K2,
           q: 'REM sleep correctly caught',
           rows: [
-            ['oura', 'Gen 3', V([76.0], 'Robbins (Oura-funded)'), V([71.2], 'Lee')],
-            ['apple-watch', 'Series 8', V([68.6], 'Schyvens'), V([42.8], 'Lee')],
-            ['whoop', '4.0', V([62.0], 'Schyvens'), null],
-            ['fitbit', 'Sense / Sense 2', V([61.3], 'Schyvens'), V([68.1], 'Lee')],
-            ['garmin', 'Vivosmart 4', V([33.1], 'Schyvens'), null],
-            ['samsung', 'Galaxy Watch 5', null, V([62.7], 'Lee')]
-          ] },
-        { id: 'wake', tab: 'Asleep vs awake', tabS: 'Awake', icon: 'check', unit: '%', max: 100, keys: K1, keepKey: true,
-          q: 'Asleep or awake, called right (agreement with a lab study)',
+            ['oura', 'Ring 3', V([72.6], 'Svensson 2024 (Oura-funded)'), V([55], 'Herberger 2025')],
+            ['apple-watch', 'Series 8', V([82.6], 'Robbins 2024 (Oura-funded)'), V([68.6], 'Schyvens 2025')],
+            ['fitbit', 'Sense 2 / Charge 5', V([67.6], 'Robbins 2024 (Oura-funded)'), V([60.0], 'Schyvens 2025')],
+            ['whoop', '3.0 / 4.0', V([66], 'Miller 2022'), V([62.0], 'Schyvens 2025')],
+            ['samsung', 'Galaxy Watch 5', null, V([62.7], 'Lee 2023')],
+            ['garmin', 'Forerunner 245 / Vivosmart 4', V([50], 'Miller 2022'), V([33.1], 'Schyvens 2025')]
+          ] }
+      ]
+    }, only);
+  }
+
+  _sleepTimingChart(only) {
+    const V = (v, src, txt) => ({ v, src, txt });
+    const K2 = ['Healthy adults', 'Sleep problems'];
+    const D = { div: true, axis: ['Reads low', 'Reads high'], keys: K2 };
+    return this._dualChart({
+      pos: 'sleepTiming', brandOnly: true,
+      legend: 'Device minus the lab study. Healthy adults: Svensson 2024 (Oura, Oura-funded, 96 adults over several nights), Robbins 2024 (Apple, Fitbit; Oura-funded), Miller 2022 (WHOOP 3.0, Garmin Forerunner 245, Apple asleep vs awake; lab receives WHOOP support), Chinoy 2021 (Garmin Vivosmart 3 efficiency, fall asleep, awake at night), Miller 2021 (WHOOP 2.0 fall asleep) and Stone 2020 (WHOOP 2.0 efficiency, vs an EEG headband rather than a lab study). Sleep problems: Schyvens 2025 (Apple, Fitbit Charge 5, WHOOP 4.0), Herberger 2025 (Oura), Lee 2023 (Samsung efficiency), Byun 2023 (Samsung total sleep) and Budig 2022 (Garmin Forerunner 945). Asleep vs awake runs high for every device because most of the night is sleep.',
+      views: [
+        { id: 'awake', tab: 'Awake time caught', tabS: 'Awake', icon: 'check', unit: '%', max: 100, keys: K2,
+          q: 'Time awake in bed correctly caught (higher is better)',
           rows: [
-            ['oura', 'Gen 2', V([89], 'Miller 2022', '89%'), null],
-            ['garmin', 'Forerunner 245', V([89], 'Miller 2022', '89%'), null],
-            ['apple-watch', 'Series 6', V([88], 'Miller 2022', '88%'), null],
-            ['whoop', '3.0', V([86], 'Miller 2022', '86%'), null],
-            ['fitbit', 'Sense, Charge', V([81, 91], 'Haghayegh 2019 meta-analysis', '81 to 91%'), null]
+            ['oura', 'Ring 3', V([73.0], 'Svensson 2024 (Oura-funded)'), V([46.2], 'Herberger 2025')],
+            ['fitbit', 'Sense 2 / Charge 5', V([67.7], 'Robbins 2024 (Oura-funded)'), V([47.5], 'Schyvens 2025')],
+            ['apple-watch', 'Series 8', V([52.4], 'Robbins 2024 (Oura-funded)'), V([52.2], 'Schyvens 2025')],
+            ['whoop', '3.0 / 4.0', V([56], 'Miller 2022'), V([40.1], 'Schyvens 2025')],
+            ['samsung', 'Galaxy Watch 5', null, V([48.1], 'Lee 2023')],
+            ['garmin', 'Forerunner 245 / Vivosmart 4', V([27], 'Miller 2022'), V([29.4], 'Schyvens 2025')]
           ] },
-        { id: 'tst', tab: 'Total sleep time', tabS: 'Total', icon: 'clock', unit: 'min', max: 45, div: true, axis: ['Reads low', 'Reads high'], keys: ['Healthy sleepers'], keepKey: true,
+        Object.assign({ id: 'tst', tab: 'Total sleep time', tabS: 'Total', icon: 'clock', unit: 'min', max: 85,
           q: 'Total sleep time vs a lab study, in minutes (closer to 0 is better)',
           rows: [
-            ['oura', 'Gen 3', V([-3], 'Khan 2025 meta-analysis: 3 min under', '-3 min'), null],
-            ['fitbit', 'Sense, Charge 5', V([6.3, 11.1], 'Schyvens: Sense +6.3, Charge 5 +11.1', '+6 to 11 min'), null],
-            ['apple-watch', 'Series 8', V([19.6], 'Schyvens', '+20 min'), null],
-            ['whoop', '4.0', V([24.5], 'Schyvens', '+25 min'), null],
-            ['garmin', 'Vivosmart 4', V([38.4], 'Schyvens', '+38 min'), null]
+            ['oura', 'Ring 3', V([-2.1], 'Svensson 2024 (Oura-funded)', '-2 min'), V([11.7], 'Herberger 2025', '+12 min')],
+            ['fitbit', 'Sense 2 / Charge 5', V([-3], 'Robbins 2024 (Oura-funded)', '-3 min'), V([11.1], 'Schyvens 2025', '+11 min')],
+            ['apple-watch', 'Series 8', V([8], 'Robbins 2024 (Oura-funded)', '+8 min'), V([19.6], 'Schyvens 2025', '+20 min')],
+            ['whoop', '3.0 / 4.0', V([-12.2], 'Miller 2022', '-12 min'), V([24.5], 'Schyvens 2025', '+25 min')],
+            ['samsung', 'Galaxy Watch 2', null, V([-24.9], 'Byun 2023, sleep apnea patients', '-25 min')],
+            ['garmin', 'Forerunner 245 / 945', V([43.8], 'Miller 2022', '+44 min'), V([83.0], 'Budig 2022, Forerunner 945', '+83 min')]
+          ] }, D),
+        Object.assign({ id: 'eff', tab: 'Sleep efficiency', tabS: 'Efficiency', icon: 'barChart', unit: 'pts', max: 15,
+          q: 'Sleep efficiency vs a lab study, in percentage points (closer to 0 is better)',
+          rows: [
+            ['oura', 'Ring 3', V([-1.1], 'Svensson 2024 (Oura-funded)', '-1.1 pts'), V([3.0], 'Herberger 2025', '+3.0 pts')],
+            ['fitbit', 'Sense 2 / Charge 5', V([-1], 'Robbins 2024 (Oura-funded)', '-1 pt'), V([3.4], 'Schyvens 2025', '+3.4 pts')],
+            ['apple-watch', 'Series 8', V([2], 'Robbins 2024 (Oura-funded)', '+2 pts'), V([4.4], 'Schyvens 2025', '+4.4 pts')],
+            ['whoop', '2.0 / 4.0', V([7.4], 'Stone 2020, WHOOP 2.0, vs an EEG headband', '+7.4 pts'), V([4.1], 'Schyvens 2025', '+4.1 pts')],
+            ['samsung', 'Galaxy Watch 5', null, V([-0.4], 'Lee 2023', '-0.4 pts')],
+            ['garmin', 'Vivosmart 3 / Forerunner 945', V([10.1], 'Chinoy 2021, Vivosmart 3', '+10.1 pts'), V([14.9], 'Budig 2022', '+14.9 pts')]
+          ] }, D),
+        Object.assign({ id: 'sol', tab: 'Time to fall asleep', tabS: 'Fall asleep', icon: 'moon', unit: 'min', max: 12,
+          q: 'Time to fall asleep vs a lab study, in minutes (closer to 0 is better)',
+          rows: [
+            ['oura', 'Ring 3', V([0], 'Svensson 2024 (Oura-funded)', '0 min'), V([-3.2], 'Herberger 2025', '-3 min')],
+            ['fitbit', 'Sense 2 / Charge 5', V([0], 'Robbins 2024 (Oura-funded)', '0 min'), V([6.6], 'Schyvens 2025', '+7 min')],
+            ['apple-watch', 'Series 8', V([2], 'Robbins 2024 (Oura-funded)', '+2 min'), V([1.9], 'Schyvens 2025', '+2 min')],
+            ['whoop', '2.0 / 4.0', V([-0.2], 'Miller 2021, WHOOP 2.0', '0 min'), V([-11.0], 'Schyvens 2025', '-11 min')],
+            ['garmin', 'Vivosmart 3 / Forerunner 945', V([-1.1], 'Chinoy 2021', '-1 min'), V([-10.4], 'Budig 2022', '-10 min')]
+          ] }, D),
+        Object.assign({ id: 'waso', tab: 'Awake at night', tabS: 'Awake min', icon: 'clock', unit: 'min', max: 50,
+          q: 'Time awake during the night vs a lab study, in minutes (closer to 0 is better)',
+          rows: [
+            ['oura', 'Ring 3', V([-1.8], 'Svensson 2024 (Oura-funded)', '-2 min'), V([-8.6], 'Herberger 2025', '-9 min')],
+            ['fitbit', 'Sense 2 / Charge 5', V([4], 'Robbins 2024 (Oura-funded)', '+4 min'), V([-16.9], 'Schyvens 2025', '-17 min')],
+            ['apple-watch', 'Series 8', V([-10], 'Robbins 2024 (Oura-funded)', '-10 min'), V([-21.2], 'Schyvens 2025', '-21 min')],
+            ['whoop', '4.0', null, V([-19.2], 'Schyvens 2025', '-19 min')],
+            ['garmin', 'Vivosmart 3 / Forerunner 945', V([-47.6], 'Chinoy 2021', '-48 min'), V([-49.9], 'Budig 2022', '-50 min')]
+          ] }, D),
+        { id: 'sw', tab: 'Asleep vs awake', tabS: 'Asleep', icon: 'check', unit: '%', max: 100, keys: ['Healthy adults'], keepKey: true,
+          q: 'Asleep or awake, called right (agreement with a lab study)',
+          rows: [
+            ['apple-watch', 'Series 8', V([93], 'Robbins 2024 (Oura-funded)', '93%'), null],
+            ['fitbit', 'Sense 2', V([91], 'Robbins 2024 (Oura-funded)', '91%'), null],
+            ['oura', 'Gen 2', V([89], 'Miller 2022, Gen 2', '89%'), null],
+            ['garmin', 'Forerunner 245', V([89], 'Miller 2022', '89%'), null],
+            ['whoop', '3.0', V([86], 'Miller 2022', '86%'), null]
           ] }
       ]
     }, only);
@@ -839,7 +916,7 @@ class KygoWearableAccuracy extends HTMLElement {
     const V = (v, src, txt, alt) => ({ v, src, txt, alt });
     return this._dualChart({
       pos: 'activeHr', brandOnly: true,
-      legend: 'Typical error, shorter is better. Fitbit, Garmin, Apple and Oura: one ten-device test against a chest strap (Gielen 2026), read as tiers: Fitbit and Garmin Tier 1, Apple Tier 2, Oura Tier 4; medals follow these tiers. WHOOP, marked as a different study: a treadmill test against a 12-lead ECG (Van Oost 2025). Samsung is not charted: its test was heart patients in a hospital stress test (Kim 2023, under 2%). By sport: one Fitbit in real training (Ceugniez 2025).',
+      legend: 'Typical error, shorter is better. Fitbit, Garmin, Apple and Oura: one ten-device test against a chest strap (Gielen 2026), read as tiers: Fitbit and Garmin Tier 1, Apple Tier 2, Oura Tier 4. Medals combine this test with two other head-to-heads on the same people: cycling against a chest strap (Kostrna 2026: Apple 2.5 bpm, Garmin 2.9, Samsung 3.4, Fitbit 3.9) and a treadmill against a 12-lead ECG (Van Oost 2025), which puts Apple first, Garmin second, Fitbit third; the four are within 2 to 7% of each other. WHOOP, marked as a different study: Van Oost 2025. Samsung is not charted: its own test was heart patients in a hospital stress test (Kim 2023, under 2%), and it was 3rd of 4 cycling and worst of 4 on a treadmill (Jeong 2026). By sport: one Fitbit in real training (Ceugniez 2025).',
       views: [
         { id: 'day', tab: 'Daytime', tabS: 'Daytime', icon: 'activity', unit: '%', max: 18, keys: ['Typical error'],
           q: 'Heart rate during daytime activity',
@@ -868,7 +945,7 @@ class KygoWearableAccuracy extends HTMLElement {
     const M = (v, src) => ({ v, src }), B = (v, src, hi) => ({ v, src, hi });
     return this._divChart({
       pos: 'steps', brandOnly: true,
-      legend: 'Separate studies, so read each brand on its own; medals follow our step count tool tiers (Apple and Garmin Tier 1, Fitbit Tier 2). Daily life: Miwa 2026, Hong 2024 (Apple and Samsung in the same 24-hour study: 6.4% vs 10.5%), Kristiansson 2023; Oura figures predate its 2025 step update. Garmin: Vivofit, a 2014 model, at home (An 2017). Lab: Fitbit and Garmin on normal treadmill walks (Cheung 2025, de Leon 2026); Apple on slow and shuffle walks (Rowe 2025), which is harder.',
+      legend: 'Separate studies, so read each brand on its own. Medals follow the pooled free-living result across 59 studies (Paluch 2026: Garmin +3%, Apple +7%, Fitbit +15%), with Samsung third on its single 24-hour study. Daily life: Miwa 2026, Hong 2024 (Apple and Samsung in the same 24-hour study: 6.4% vs 10.5%), Kristiansson 2023; Oura figures predate its 2025 step update. Garmin: Vivofit, a 2014 model, at home (An 2017). Lab: Fitbit and Garmin on normal treadmill walks (Cheung 2025, de Leon 2026); Apple on slow and shuffle walks (Rowe 2025), which is harder.',
       views: [
         { id: 'life', tab: 'Daily life', tabS: 'Daily life', icon: 'steps', max: 55, keys: ['Daily count'], axis: ['Reads low', 'Reads high'],
           q: 'Steps over whole days of normal life',
@@ -927,14 +1004,14 @@ class KygoWearableAccuracy extends HTMLElement {
     const M = (v, src, hi) => ({ v, src, hi });
     return this._divChart({
       pos: 'vo2max', brandOnly: true,
-      legend: 'Typical error against a lab treadmill test with gas analysis, shorter is better. Rows follow the medal order. Fitbit\'s outline is an upper limit: its study reported only "under 10%". Separate studies, so read each brand on its own. Medals: Garmin first on error; Apple second, from three studies of current watches; Fitbit third, because its studies tested an algorithm Google retired in May 2026. Garmin: Engel 2026 (35 runners). Apple: Lambe 2026, Series 10 (40 adults), reading low like two earlier Apple studies. Fitbit: Klepin 2019 (60 people), on an algorithm Google retired in May 2026. Oura, WHOOP and Samsung have no independent VO2 max study.',
+      legend: 'Typical error against a lab treadmill test with gas analysis, shorter is better. Rows follow the medal order. Separate studies, so read each brand on its own. Medals: Garmin first on error (6.7% with a chest strap); Fitbit second on the Pixel Watch 3 (8.7%, Google-funded), which uses the outdoor-run method Google now ships, with the Charge 2 at 9.1% on the retired method; Apple third (13.2%, reads low in all three independent studies). Garmin: Engel 2026 (35 runners). Apple: Lambe 2026, Series 10 (40 adults), reading low like two earlier Apple studies. Fitbit: Klepin 2019 (60 people), on an algorithm Google retired in May 2026. Oura, WHOOP and Samsung have no independent VO2 max study.',
       views: [
         { id: 'err', tab: 'Typical error', tabS: 'Error', icon: 'barChart', plain: true, max: 18, keys: ['Typical error'],
           q: 'How far off a lab VO2 max test',
           rows: [
             { dev: 'garmin', model: '', lines: [{ m: M(6.7, 'Forerunner 245, Engel 2026, 35 endurance runners'), txt: '6.7%' }] },
-            { dev: 'apple-watch', model: '', lines: [{ m: M(13.2, 'Series 10, Lambe 2026, 40 adults: reads 6.3 low'), txt: '13.2%' }] },
-            { dev: 'fitbit', model: '', lines: [{ m: Object.assign(M(10, 'Charge 2, Klepin 2019: under 10%, reads slightly high; retired algorithm'), { ub: true }), txt: 'Under 10%' }] }
+            { dev: 'fitbit', model: '', lines: [{ m: M(8.7, 'Pixel Watch 3, Lambe 2026 (Google-funded), 26 adults: reads 0.5 low; Charge 2 9.1% on the retired method (Klepin 2019)'), txt: '8.7%' }] },
+            { dev: 'apple-watch', model: '', lines: [{ m: M(13.2, 'Series 10, Lambe 2026, 40 adults: reads 6.3 low'), txt: '13.2%' }] }
           ] }
       ]
     }, only);
@@ -999,21 +1076,38 @@ class KygoWearableAccuracy extends HTMLElement {
     return {
       sleep: {
         table: {
-          cols: [{ key: 'r', label: 'Healthy adults, Robbins 2024 (κ)', short: 'Healthy (Robbins)', bar: { min: 0, max: 0.8 } }, { key: 'h', label: 'Healthy adults, Schyvens 2025 (κ)', short: 'Healthy (Schyvens)' }, { key: 'c', label: 'Sleep complaints, Lee 2023 (κ)', short: 'Sleep complaints (Lee)' }],
+          cols: [{ key: 'r', label: 'Healthy adults (κ)', short: 'Healthy', bar: { min: 0, max: 0.8 } }, { key: 'c', label: 'Sleep problems (κ)', short: 'Sleep problems' }],
           rows: [
-            { dev: 'oura', model: 'Gen 3', grade: 'good', cells: { r: P('0.65', 'good', null, 0.65), c: P('0.35', 'mid') } },
-            { dev: 'apple-watch', model: 'Series 8', grade: 'good', cells: { r: P('0.60', 'mid', null, 0.60), h: P('0.53', 'good'), c: P('0.30', 'mid') } },
-            { dev: 'fitbit', model: 'Sense / Sense 2', grade: 'good', cells: { r: P('0.55', 'mid', null, 0.55), h: P('0.42', 'mid'), c: P('0.42', 'good') } },
-            { dev: 'whoop', model: '4.0', grade: 'mixed', cells: { h: P('0.37', 'mid') } },
+            { dev: 'oura', model: 'Ring 3', grade: 'strong', cells: { r: P('0.65', 'good', F('Oura'), 0.65), c: P('0.35', 'mid') } },
+            { dev: 'apple-watch', model: 'Series 8', grade: 'good', cells: { r: P('0.60', 'good', F('Oura'), 0.60), c: P('0.53', 'good') } },
+            { dev: 'fitbit', model: 'Sense 2 / Charge 5', grade: 'good', cells: { r: P('0.55', 'mid', F('Oura'), 0.55), c: P('0.41', 'mid') } },
+            { dev: 'whoop', model: '3.0 / 4.0', grade: 'mixed', cells: { r: P('0.44', 'mid', null, 0.44), c: P('0.37', 'mid') } },
             { dev: 'samsung', model: 'Galaxy Watch 5', grade: 'mixed', cells: { c: P('0.42', 'good') } },
-            { dev: 'garmin', model: 'Vivosmart 4', grade: 'weak', cells: { h: P('0.21', 'mid') } }
+            { dev: 'garmin', model: 'Forerunner 245 / Vivosmart 4', grade: 'weak', cells: { r: P('0.25', 'dark', null, 0.25), c: P('0.21', 'dark') } }
           ],
-          legend: 'Cohen\'s kappa against an in-lab sleep study; compare within a column, since each is a separate test. Robbins 2024 was funded by Oura and used the same method as the independent studies, on screened healthy sleepers. 0.4 to 0.6 is "moderate"; two human scorers agree at about 0.75.'
+          legend: 'Cohen\'s kappa against an in-lab sleep study. Healthy adults: Robbins 2024 (Oura-funded, same method as the independent studies) and Miller 2022. Sleep problems: Schyvens 2025 and Lee 2023. 0.4 to 0.6 is "moderate"; two human scorers agree at about 0.75.'
         },
-        chart: only => this._sleepChart(only),
-        tip: 'Treat the stage breakdown as a rough guide, especially if you sleep poorly. Total sleep time is more dependable.',
-        insight: 'Who is wearing it matters more than the brand. In independent testing of healthy sleepers Apple led at 0.53, ahead of Fitbit 0.42, WHOOP 0.37 and Garmin 0.21. In Oura\'s own study Oura scored 0.65, Apple 0.60 and Fitbit 0.55. In people with sleep complaints Fitbit and Samsung held 0.42 while Oura fell to 0.35 and Apple to 0.30 (Oura also reached only 53% accuracy in sleep-clinic patients, Herberger 2025). Every device is weakest at spotting when you are awake.',
+        chart: only => this._sleepStagesChart(only),
+        tip: 'Treat the stage breakdown as a rough guide, especially if you sleep poorly. Oura is the most accurate stager in healthy sleepers; Apple catches REM best but scores half of deep sleep as light.',
+        insight: 'One podium: Oura first (κ 0.65), Apple second (0.60, best REM detection at 83%, but half of deep sleep scored as light), Fitbit third (0.55), all from one Oura-funded lab study of healthy sleepers that used the same method as the independent studies; the independent Topalidis 2026 preprint orders Oura, WHOOP and Garmin the same way. WHOOP (0.44), Garmin (0.25) and Polar (0.28) are well behind. Every device drops in people with sleep problems: Apple holds up best there (0.53), Oura falls to 0.35.',
         link: { url: 'https://www.kygo.app/tools/sleep-tracker-accuracy', label: 'Full sleep breakdown: 7 trackers vs the lab', slug: 'sleep-tracker-accuracy' }
+      },
+      sleepTiming: {
+        chart: only => this._sleepTimingChart(only),
+        table: {
+          cols: [{ key: 'w', label: 'Awake time caught (healthy)', short: 'Awake caught', bar: { min: 0, max: 100 } }, { key: 't', label: 'Total sleep time (healthy)', short: 'Total sleep' }],
+          rows: [
+            { dev: 'oura', model: 'Ring 3', grade: 'strong', cells: { w: P('73%', 'good', F('Oura'), 73), t: P('-2 min', 'good') } },
+            { dev: 'fitbit', model: 'Sense 2', grade: 'good', cells: { w: P('68%', 'good', F('Oura'), 67.7), t: P('-3 min', 'good') } },
+            { dev: 'apple-watch', model: 'Series 8', grade: 'good', cells: { w: P('52%', 'mid', F('Oura'), 52.4), t: P('+8 min', 'good') } },
+            { dev: 'whoop', model: '3.0', grade: 'mixed', cells: { w: P('56%', 'mid', null, 56), t: P('-12 min', 'mid') } },
+            { dev: 'garmin', model: 'Forerunner 245', grade: 'weak', cells: { w: P('27%', 'dark', null, 27), t: P('+44 min', 'dark') } },
+            { dev: 'samsung', grade: 'none', cells: {} }
+          ],
+          legend: 'Healthy adults vs an in-lab sleep study: Svensson 2024 (Oura-funded), Robbins 2024 (Oura-funded), Miller 2022.'
+        },
+        tip: 'Total sleep time and sleep efficiency are the dependable numbers on Oura, Fitbit and Apple. On any brand, the minutes awake figure is the one to doubt: every device misses a third to two thirds of the time you lie awake.',
+        insight: 'One podium: Oura first (total sleep within 2 minutes, catches 73% of wake), Fitbit second (-3 minutes, 68% of wake), Apple third (+8 minutes; misses about half of wake, so it reads time awake at night 10 minutes low). Fitbit beats Apple on five of six timing measures; Apple\'s one win, asleep vs awake agreement, runs high for every device because most of the night is sleep. WHOOP (-12 minutes, 56% of wake) and Garmin (+44 minutes, 27% of wake) are well behind. In people with sleep problems every brand reads total sleep 11 to 25 minutes high (Garmin 83), and no brand catches more than 52% of wake.'
       },
       hrv: {
         chart: only => this._hrvChart(only),
@@ -1067,7 +1161,7 @@ class KygoWearableAccuracy extends HTMLElement {
             ['apple-watch', 'Series 6: 1.5 bpm in one night (Miller 2022).'],
             ['garmin', 'Forerunner 245: 5.4 bpm in one night (Miller 2022). The Fenix 6 was left out of Dial 2025 because Garmin does not say which 30 minutes it uses.']
           ]),
-        tip: 'Resting heart rate is the most trustworthy wearable number: in the largest overnight test Oura and WHOOP both stayed within 2 bpm of an ECG, and older Fitbit and Samsung watches were within about 1 bpm asleep in smaller studies.',
+        tip: 'Resting heart rate is the most trustworthy wearable number: Oura (1.1 bpm) and WHOOP (1.8 bpm) both stayed within 2 bpm of an ECG overnight in the largest test. If you use a Fitbit, know that its resting figure includes relaxed awake time, so it runs a few bpm high.',
         insight: 'Resting heart rate is where wearables are most trustworthy. Oura Ring 4 was validated on 138 nights and Gen 3 on 470. Fitbit and Samsung were not in those two studies, but older models were within about 1 bpm asleep in smaller ones (Fitbit Charge 2, Samsung Gear Sport). Oura Ring 5 has no validation of any kind.'
       },
       activeHr: {
@@ -1096,7 +1190,7 @@ class KygoWearableAccuracy extends HTMLElement {
             ['whoop', '4.0: 8.5% on a treadmill against a 12-lead ECG, with 13% of readings missing (Van Oost 2025).'],
             ['samsung', 'Galaxy Watch 4: under 2% in heart patients on a hospital treadmill, falling to ICC 0.867 above 160 bpm (Kim 2023).']
           ]),
-        tip: 'Steady running reads well; racquet and field sports read worst. Two free fixes: wear the watch three finger-widths above the wrist bone and tighten the strap.',
+        tip: 'Apple, Garmin and Fitbit are all within a few bpm on steady cardio; the brand matters less than the sport. Steady running reads well, racquet and field sports read worst. Two free fixes: wear the watch three finger-widths above the wrist bone and tighten the strap.',
         insight: 'The failure mode is irregular arm movement, not intensity: steady running is easy, racquet and field sports are worst. The WHOOP 99.7% and Oura 99% accuracy claims come from sleep data. Two free fixes: wear the watch three finger-widths above the wrist bone and tighten the strap.',
         link: { url: 'https://www.kygo.app/tools/heart-rate-accuracy', label: 'Full heart rate breakdown: 10 devices vs ECG', slug: 'heart-rate-accuracy' }
       },
@@ -1152,8 +1246,8 @@ class KygoWearableAccuracy extends HTMLElement {
             ['samsung', 'Galaxy Watch 4: 10.5% typical miss over 24 hours of daily life, r 0.82, against a thigh-worn ActivPAL; Apple Watch 6 in the same study: 6.4%, r 0.99 (Hong 2024). No lab study.'],
             ['whoop', 'No published step study.']
           ]),
-        tip: 'Apple is the most consistent day to day, within a few percent. Oura overcounted by 1,400 to 2,100 steps a day in both Gen 2 studies, so use its count as a trend.',
-        insight: 'On a normal treadmill walk Fitbit and Garmin land under 5%; Apple\'s recent lab tests used slow or assisted walking, where every wrist device struggles. Daily life separates them, and Apple beat Samsung in the same 24-hour study (6.4% vs 10.5%). Both Gen 2 studies of Oura found it overcounting by 1,400 to 2,100 steps a day; its 2025 "Real Steps" algorithm has no published validation. No Fitbit newer than the Sense or Inspire 2, no Pixel Watch and no WHOOP has peer-reviewed step data.',
+        tip: 'Garmin and Apple are the counts to trust day to day (3% and 7% over, pooled). Fitbit runs about 15% high in daily life. Oura overcounted by 2,000 to 3,800 steps a day before its 2025 update, so use its count as a trend.',
+        insight: 'One podium: Garmin first, Apple second, Samsung third, set by the pooled free-living result across 59 studies (Garmin +3%, Apple +7%, Fitbit +15%) and the lab tests. On a normal treadmill walk Fitbit and Garmin land under 5%; Apple\'s recent lab tests used slow or assisted walking, where every wrist device struggles. Apple beat Samsung in the same 24-hour study (6.4% vs 10.5%). Both Gen 2 studies of Oura found it overcounting by 1,400 to 2,100 steps a day; its 2025 "Real Steps" algorithm has no published validation. No Fitbit newer than the Sense or Inspire 2, no Pixel Watch and no WHOOP has peer-reviewed step data.',
         link: { url: 'https://www.kygo.app/tools/step-count-accuracy', label: 'Full step count breakdown', slug: 'step-count-accuracy' }
       },
       calories: {
@@ -1179,8 +1273,8 @@ class KygoWearableAccuracy extends HTMLElement {
             ['oura', 'Gen 2 in the lab: 21.1% (Kristiansson 2023). Oura changed its active-calorie algorithm in May 2025; nobody has tested the new one.'],
             ['whoop', 'No published calorie validation of any kind.']
           ]) + `<p class="mini-foot">Max treadmill test, a conference abstract with about 20 different people per watch, so not a ranking (Perez 2025): Galaxy Watch7 9.4%, Fitbit Charge 6 14%, Garmin Forerunner 265S 15%, Apple Ultra 2 26%.</p>`,
-        tip: 'In the 2026 tests Apple, Samsung and Garmin read high in cycling, weight-training errors reached 115%, and Fitbit was close only on average. Error grows with body fat. Treat the number as a trend, not a target.',
-        insight: 'Calories are the least accurate number on any wearable. Error also grows with body fat. Treat the number as a trend, not a target.',
+        tip: 'Fitbit is the least bad, Samsung is the most accurate on steady running and walking, and nobody is within 10%. Weight-training errors run from 42% (Fitbit) to 115% (Garmin). Error grows with body fat. Treat the number as a trend, not a target.',
+        insight: 'Calories are the least accurate number on any wearable, so the podium separates bad from worse: Fitbit wins three of five head-to-head comparisons (max treadmill 14%, cycling 32%, weights 42%, reads only 4% high on weights), Samsung is second (9% on a max treadmill and 0.5% walking, but 67% cycling and 85% weights), Apple third (26%, 36%, 112%). Garmin is 78% off cycling and 115% on weights. Error also grows with body fat. Treat the number as a trend, not a target.',
         link: { url: 'https://www.kygo.app/tools/calorie-burn-accuracy', label: 'Check your device in the calorie burn calculator', slug: 'calorie-burn-accuracy' }
       },
       vo2max: {
@@ -1200,12 +1294,12 @@ class KygoWearableAccuracy extends HTMLElement {
         more: () => this._notes([
             ['apple-watch', 'Reads low in every study: Series 10 −6.3 (13.2% typical error, Lambe 2026), Series 9 and Ultra 2 −6.1 (13.3%, Lambe 2025), Series 7 −4.5 (15.8%, Caserman 2024).'],
             ['garmin', 'Forerunner 245: 6.7% overall in 35 endurance runners, 2.8 to 4.1% in moderately trained but 9.4 to 10.4% in highly trained (Engel 2026). Fenix 6: 7.1% (Carrier 2025); 6.9% with a chest strap in elite athletes (Carrier 2023). No newer Garmin has been studied.'],
-            ['fitbit', 'Charge 2: under 10%, reading 0.3 to 1.6 high (Klepin 2019, 60 people); +2.6 high (Freeberg 2019). Both tested an algorithm Google retired in May 2026.'],
+            ['fitbit', 'Pixel Watch 3: 8.7%, reading 0.5 low (Lambe 2026, Google-funded, 26 adults), on the outdoor-run method Google now ships. Charge 2: 9.1%, reading 0.3 high (Klepin 2019, 60 people); +2.6 high (Freeberg 2019). Both Charge 2 studies tested an algorithm Google retired in May 2026.'],
             ['whoop', 'Company figures only: about 8% typical error, off by 3.3 to 3.7 mL/kg/min on average (r 0.90) in WHOOP\'s own test of 248 people against a lab gas analyser. No independent check. VO2 max is on WHOOP 5.0 and MG only.'],
             ['oura', 'No independent study and no published accuracy figure. Oura states its 6-minute walk test estimate is less accurate than a lab test and weaker for athletes and at altitude.'],
             ['samsung', 'Company-funded testing only: r 0.82 against lab equipment (Samsung-funded University of Michigan testing). The only independent Galaxy Watch study checked heart rate during a max test, not VO2 max.']
           ]) + `<p class="mini-foot">Fitbit now derives VO2 max from outdoor GPS runs, a method with no published validation.</p>`,
-        tip: 'Estimates from a real outdoor run are more accurate than ones from resting heart rate. Accuracy degrades in highly trained users, and the one elite study that avoided this used a chest strap. Use it as a trend.',
+        tip: 'Garmin with a chest strap is the estimate to trust (about 7% off); wrist-only Garmin in older adults was 56% off. Estimates from a real outdoor run beat ones from resting heart rate. Apple reads low, most in fit women. Use it as a trend.',
         insight: 'Method beats brand: estimates from a real outdoor run show about zero group bias, estimates from resting heart rate overestimate by about 2 mL/kg/min (INTERLIVE 2022). Accuracy degrades in highly trained users, and the one elite study that avoided this used a chest strap. Use it as a trend, not a number.'
       },
       temp: {
@@ -1246,8 +1340,8 @@ class KygoWearableAccuracy extends HTMLElement {
             ['apple-watch', 'No readings in two hospital studies (Helmer 2024, AbiMansour 2024). A 2026 living review lists respiratory rate as yet to be validated.'],
             ['whoop', 'Strap 2.0: 1.8% bias only (Berryhill 2020, WHOOP-funded). Nothing for WHOOP 4.0 or 5.0.']
           ]),
-        tip: 'Overnight averages are the best-supported use. Treat single readings with caution.',
-        insight: 'Company-run tests in sleeping, mostly healthy adults report errors under 1 to 2 breaths a minute. Independent tests are mixed: an older Fitbit was close in a COPD study, while a Garmin barely followed real breathing in hospital patients. Samsung\'s often-quoted figure came from a research algorithm the watch did not offer to users. Overnight averages are the best-supported use.'
+        tip: 'Overnight averages on a Fitbit or WHOOP are the best-supported use. Garmin\'s breathing rate failed its hospital test and Apple only measures during sleep. Treat single readings with caution.',
+        insight: 'Fitbit first, WHOOP second, no third. Company-run tests in sleeping, mostly healthy adults report errors under 1 to 2 breaths a minute, and Fitbit\'s independent COPD-and-healthy test agrees (0.3 to 1 high). A Garmin barely followed real breathing in hospital patients and an Apple Watch gave no readings. Samsung\'s often-quoted figure came from a research algorithm the watch did not offer to users. Overnight averages are the best-supported use.'
       },
       fda: {
         custom: () => this._fdaTable(),
@@ -1666,20 +1760,32 @@ class KygoWearableAccuracy extends HTMLElement {
       .kc-chip-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.6);white-space:nowrap}
       @media(max-width:449px){.kc-badges{gap:4px}.kc-chip-tile{width:36px;height:36px}.kc-chip-label{font-size:9.5px}}
       @media(max-width:403px){.kc-badges{gap:3px}.kc-chip-tile{width:30px;height:30px}.kc-chip-label{font-size:8px}}
+      .kc-left,.kc-right{position:relative;display:flex;flex-direction:column;align-items:center;width:100%}
+      @media(min-width:880px){
+        .kc-card{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:40px;align-items:center;text-align:left;padding:48px 48px}
+        .kc-left{align-items:flex-start}
+        .kc-left .kc-h{margin:16px 0 12px}
+        .kc-left .kc-p{margin:0}
+        .kc-works{margin-top:20px}
+      }
       @media(max-width:360px){.kc-badges{gap:2px}.kc-chip-tile{width:28px;height:28px}.kc-chip-label{font-size:7.5px}}
       @media(max-width:340px){.kc-badges{gap:2px}.kc-chip-tile{width:26px;height:26px}.kc-chip-label{font-size:7px}}
       </style>
       <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
         <div class="kc-inner">
           <div class="kc-card animate-on-scroll">
-            <div class="kc-pill"><span class="kc-dot"></span> Free 7-Day Trial</div>
+            <div class="kc-left">
+            <div class="kc-pill"><span class="kc-dot"></span> Free 7-day trial</div>
             <h3 class="kc-h">${c.headline}</h3>
             <p class="kc-p">${c.sub}</p>
+            </div>
+            <div class="kc-right">
             <kygo-cta theme="dark" slug="${c.slug}" surface="tool" hook="${c.hook}"
-              note="Free plan available on web or in the app. Save 58% on yearly. Cancel anytime."></kygo-cta>
+              note="Start with a free 7-day trial. Save 58% on yearly. Cancel anytime."></kygo-cta>
             <div class="kc-works">
               <span>Works with</span>
               <div class="kc-badges">${badges}</div>
+            </div>
             </div>
           </div>
         </div>
@@ -1736,9 +1842,9 @@ class KygoWearableAccuracy extends HTMLElement {
 
   get _faqs() {
     return [
-      { q: 'Which wearable is the most accurate overall?', a: 'No single wearable is most accurate across all metrics. Oura Ring 4 leads for overnight HRV and shares the lead with WHOOP on resting heart rate (Dial 2025). Oura Ring had the highest sleep staging score in healthy sleepers (kappa 0.65 in an Oura-funded study, against 0.60 for Apple Watch in the same study), Apple Watch led independent testing (0.53), Fitbit and Samsung held up best in people with sleep complaints (0.42), Apple Watch has the most consistent step counts in daily life the smallest blood oxygen error and the most FDA-cleared features (five). Fitbit Charge 6 and Garmin Vivoactive 5 were the top tier for daytime heart rate in a ten-device test (5.5% and 6.3% error, Gielen 2026), and Garmin has the most independently validated VO2 max at about 7% error.' },
+      { q: 'Which wearable is the most accurate overall?', a: 'No single wearable is most accurate across all metrics. Oura Ring is the most accurate for everything measured overnight: sleep stages (kappa 0.65, Ring 3), sleep timing (total sleep within 2 minutes of a lab study), overnight HRV (6% error, agreement 0.99, Ring 4) and resting heart rate (1.1 bpm). Apple Watch is the most accurate for heart rate during exercise (lowest error of four watches cycling, 2.5 bpm) and blood oxygen (2.2 points off in a low-oxygen test), and has the most FDA-cleared features (five). Garmin is the most accurate for steps (3% over in daily life, pooled across 59 studies) and VO2 max (6.7% error with a chest strap). Fitbit is the least bad for calories and the only brand with an independent breathing rate test. WHOOP is second for HRV and resting heart rate. Samsung is second for blood oxygen and calories. These rankings are for the models tested, mostly one to three generations old; the newest models have little or no published validation.' },
       { q: 'How accurate is Oura Ring for sleep tracking?', a: 'It depends on who is wearing it. In an Oura-funded study of screened healthy sleepers (Robbins 2024, n=35) the Gen 3 ring reached a kappa of 0.65 against a lab sleep study. In independent clinical samples it falls to 0.35 (Lee 2023) and 53% stage accuracy in sleep-clinic patients (Herberger 2025). Oura is strongest at total sleep time, with a bias of about -3 minutes. Oura Ring 5 has no published validation.' },
-      { q: 'Is Apple Watch or Garmin more accurate for heart rate?', a: 'Model matters more than brand. In a ten-device test against a chest strap (Gielen 2026), the Garmin Vivoactive 5 came in at 6.3% error and the Apple Watch SE at 7.3%, with the Fitbit Charge 6 best at 5.5% and the Fitbit Inspire 3 worst at 16.5%. Across 22 studies, Apple Watch pooled bias is close to zero (-0.27 bpm, Lambe 2026). Irregular arm movement, not intensity, is what breaks wrist readings.' },
+      { q: 'Is Apple Watch or Garmin more accurate for heart rate?', a: 'Apple, by a small margin. In the one cycling test that put both on the same people (Kostrna 2026) the Apple Watch Series 8 had the lowest error of four watches (2.5 bpm) and the Garmin Forerunner 955 was second (2.9 bpm); across 22 studies Apple\'s pooled bias is close to zero (-0.27 bpm, Lambe 2026). In a ten-device test against a chest strap (Gielen 2026) the Garmin Vivoactive 5 came in at 6.3% and the budget Apple Watch SE at 7.3%, with the Fitbit Charge 6 best at 5.5% and the Fitbit Inspire 3 worst at 16.5%. Model matters as much as brand, and irregular arm movement, not intensity, is what breaks wrist readings.' },
       { q: 'Which smartwatch has the most accurate blood oxygen (SpO2)?', a: 'Apple Watch has the most evidence and the smallest errors at normal levels: 2.2% in a low-oxygen lab test (Series 8, Walzel 2023) and 2.2% at rest (Series 7, Jiang 2023). Galaxy Watch 5 measured 3.8% and read low; Garmin Venu 2s measured 5.8% and read low. When oxygen is truly low, watches tend to read high: an Apple Watch Series 7 over-read 85% of readings below 88% against arterial blood (Jiang 2026). Oura and WHOOP have no independent SpO2 validation, and no wearable SpO2 feature is FDA-cleared.' },
       { q: 'How accurate are wearable calorie counts?', a: 'Calories are the least accurate wearable metric. In a 2026 study that tested Apple, Fitbit, Garmin and Samsung on the same 58 people against lab gas analysis, cycling errors ran from 31.7% to 77.6% (Kostrna 2026). Apple, Garmin and Samsung read high on average; Fitbit averaged close to zero, but only after implausible readings were removed. In weight training, Apple, Garmin and Samsung errors ran from 84.5% to 115% (Yun 2026), and a second 2026 study of 62 men found all four brands reading high in both endurance and weight sessions (Lee 2026). No study has tested WHOOP calories or Oura\'s current calorie algorithm.' },
       { q: 'Which wearables have FDA-cleared features?', a: 'Apple Watch has five FDA-cleared features (ECG, irregular rhythm alerts, AFib History, sleep apnea and hypertension notifications). Samsung has three (ECG, irregular rhythm alerts, sleep apnea). Fitbit has two (ECG, irregular rhythm alerts), Garmin and WHOOP MG one each (ECG). Oura has none. Blood pressure on Samsung, WHOOP, Oura and Pixel Watch is a wellness feature, not FDA-cleared, and no wearable blood oxygen feature is cleared.' }
@@ -1796,13 +1902,8 @@ class KygoWearableAccuracy extends HTMLElement {
     return list.map(s => {
       const tag = `<span class="src-tag">${s.tag}</span>`;
       const title = `<span class="src-title">${s.title}</span>`;
-      if (!s.url) {
-        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
-      }
-      // With no citation line, fall back to the host so every card keeps the
-      // same three-line rhythm and the link icon never sits on its own row.
-      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
-      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+      if (!s.url) return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${s.cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
     }).join('');
   }
 
@@ -1813,9 +1914,7 @@ class KygoWearableAccuracy extends HTMLElement {
       <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
       ${rest.length ? `
       <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
-      <div class="src-toggle-wrap">
-        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
-      </div>` : ''}`;
+      <div class="src-toggle-wrap"><button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button></div>` : ''}`;
   }
 
   _toggleSources() {
@@ -1863,7 +1962,7 @@ class KygoWearableAccuracy extends HTMLElement {
       const rank = k => sec.id === 'fda' ? this._fdaCounts[k] : L[sc[sec.id][k][0]].rank;
       const ranks = sel.map(rank), top = Math.max(...ranks);
       let win = top >= (sec.id === 'fda' ? 1 : 3) && ranks.some(r => r < top);
-      if (sec.id === 'resp' || sec.id === 'temp') win = false;
+      if (sec.id === 'temp') win = false;
       let isWin = k => win && rank(k) === top;
       // Sleep: compare study by study (higher kappa is better). A brand wins only if it matches or
       // beats every other pick in each study they share, and beats at least one; pairs with no shared
@@ -1930,21 +2029,22 @@ class KygoWearableAccuracy extends HTMLElement {
   // Spokes = the dedicated tool that goes deeper on that metric.
   get _hubMeta() {
     return {
-      sleep: { checked: 'Oct 2026', hl: 'who you are matters more.',
+      sleepTiming: { checked: 'Oct 2026', hl: 'Oura, then Fitbit, then Apple.' },
+      sleep: { checked: 'Oct 2026', hl: 'Oura leads; who you are matters more.',
         spoke: { url: 'https://www.kygo.app/tools/sleep-tracker-accuracy', slug: 'sleep-tracker-accuracy', title: 'Sleep Tracker Accuracy', blurb: '7 trackers vs a lab sleep study: staging in healthy and clinical sleepers, deep and REM detection, sleep/wake and total sleep time.', meta: '7 devices · head-to-head builder' } },
       hrv: { checked: 'Oct 2026', hl: 'Oura leads.' },
-      rhr: { checked: 'Oct 2026', hl: 'the easiest one to get right.' },
-      activeHr: { checked: 'Oct 2026', hl: 'model beats brand.',
+      rhr: { checked: 'Oct 2026', hl: 'Oura, then WHOOP.' },
+      activeHr: { checked: 'Oct 2026', hl: 'Apple edges Garmin and Fitbit.',
         spoke: { url: 'https://www.kygo.app/tools/heart-rate-accuracy', slug: 'heart-rate-accuracy', title: 'Most Accurate Heart Rate Wearable', blurb: '10 wearables against an ECG or chest strap, tier by tier, and why arm movement is what breaks the reading.', meta: '10 devices · tiers, not rankings' } },
       spo2: { checked: 'Oct 2026', hl: 'least reliable when it counts.' },
-      steps: { checked: 'Oct 2026', hl: 'daily life separates them.',
+      steps: { checked: 'Oct 2026', hl: 'Garmin leads in daily life.',
         spoke: { url: 'https://www.kygo.app/tools/step-count-accuracy', slug: 'step-count-accuracy', title: 'Step Count Accuracy', blurb: 'Every device ranked with a lab vs daily-life split, plus why rings and wrists miscount.', meta: 'Lab vs daily life' } },
-      calories: { checked: 'Oct 2026', hl: 'none is reliable.',
+      calories: { checked: 'Oct 2026', hl: 'Fitbit is least bad; none is reliable.',
         spoke: { url: 'https://www.kygo.app/tools/calorie-burn-accuracy', slug: 'calorie-burn-accuracy', title: 'Calorie Burn Accuracy Calculator', blurb: 'Enter your device, activity and the calories it reported, and see the likely real range.', meta: 'Calculator · by device and activity' } },
-      vo2max: { checked: 'Oct 2026', hl: 'method beats brand.',
+      vo2max: { checked: 'Oct 2026', hl: 'Garmin leads, with a chest strap.',
         spoke: { url: 'https://www.kygo.app/tools/vo2-max-accuracy', slug: 'vo2-max-accuracy', title: 'VO2 Max Accuracy', blurb: '9 wearables vs a lab treadmill test, split by how each one estimates VO2 max.', meta: '9 devices · by method' } },
       temp: { checked: 'Oct 2026', hl: 'no independent sensor test.' },
-      resp: { checked: 'Oct 2026', hl: 'too thin to rank.' },
+      resp: { checked: 'Oct 2026', hl: 'only two brands qualify.' },
       fda: { checked: 'Oct 2026', hl: 'cleared is not caught.' }
     };
   }
@@ -2068,12 +2168,12 @@ class KygoWearableAccuracy extends HTMLElement {
 
   get _brandVerdicts() {
     return {
-      'apple-watch': 'Counts steps most consistently in daily life, with the most FDA-cleared features (5).',
-      'oura': 'The most accurate for overnight HRV, tied with WHOOP for resting heart rate, and the top sleep staging score in healthy sleepers.',
-      'garmin': 'The best-validated VO2 max, and top tier for workout heart rate.',
-      'whoop': 'Strong overnight, but no independent calorie, step or SpO2 data.',
-      'fitbit': 'The Charge 6 topped a ten-device workout heart rate test.',
-      'samsung': 'Near-ECG heart rate in a heart-patient treadmill test, and little else independent.'
+      'apple-watch': 'The most accurate for workout heart rate and blood oxygen, second for steps and sleep stages, with the most FDA-cleared features (5).',
+      'oura': 'The most accurate for everything measured overnight: sleep stages, sleep timing, HRV and resting heart rate. Nothing to show in the daytime.',
+      'garmin': 'The most accurate for steps and VO2 max (with a chest strap), second for workout heart rate.',
+      'whoop': 'Second for HRV, resting heart rate and breathing rate. No peer-reviewed test for anything in the daytime.',
+      'fitbit': 'The least bad for calories and the only brand with an independent breathing rate test. Second for sleep timing and VO2 max.',
+      'samsung': 'Second for blood oxygen and calories, third for steps. No test of the shipped feature for HRV, resting heart rate, VO2 max or breathing rate.'
     };
   }
 
@@ -2088,30 +2188,27 @@ class KygoWearableAccuracy extends HTMLElement {
     const V = this._brandVerdicts;
     const devs = Object.entries(this._devices);
     const tone = lv => lv === 'strong' || lv === 'good' ? 'good' : lv === 'mixed' ? 'fair' : lv === 'weak' ? 'weak' : 'none';
-    const word = { good: 'Good', fair: 'Fair', weak: 'Weak', none: 'Not in the ranked test' };
+    const word = { good: 'Good', fair: 'Fair', weak: 'Weak', none: 'No qualifying test' };
+    // Scoreboard rows: the metric sections, with sleep split into two podiums (stages, timing), per the
+    // "Most accurate by metric" tab of the Wearable Accuracy by Metric doc (20 Oct 2026).
     const metrics = this._sections.filter(s => s.id !== 'fda');
     const head = `<div class="sb-h sb-corner"><span>Metric</span></div>` + devs.map(([k, d]) => `<div class="sb-h">${this._logo(k)}<span class="sb-hn">${d.short}</span></div>`).join('');
-    // Medals: top three on each section's main chart; near ties share a medal; only Good or Fair results can medal.
+    // Medals: one podium per metric, ranked on the numbers across every sub-measure of that metric.
+    // Brand-funded studies count (footnoted in each section); research algorithms, preprints and
+    // unpublished company tests do not. Breathing rate has only two qualifying brands; skin temperature none.
     const medals = {
       sleep: { oura: 1, 'apple-watch': 2, fitbit: 3 },
-      hrv: { oura: 1, whoop: 2 },
-      rhr: { oura: 1, whoop: 1 },
-      activeHr: { fitbit: 1, garmin: 1, 'apple-watch': 2 },
-      spo2: { 'apple-watch': 1, samsung: 2 },
-      steps: { 'apple-watch': 1, garmin: 1, fitbit: 2 },
-      vo2max: { garmin: 1, 'apple-watch': 2, fitbit: 3 }
+      sleepTiming: { oura: 1, fitbit: 2, 'apple-watch': 3 },
+      hrv: { oura: 1, whoop: 2, garmin: 3 },
+      rhr: { oura: 1, whoop: 2, 'apple-watch': 3 },
+      activeHr: { 'apple-watch': 1, garmin: 2, fitbit: 3 },
+      spo2: { 'apple-watch': 1, samsung: 2, garmin: 3 },
+      steps: { garmin: 1, 'apple-watch': 2, samsung: 3 },
+      calories: { fitbit: 1, samsung: 2, 'apple-watch': 3 },
+      vo2max: { garmin: 1, fitbit: 2, 'apple-watch': 3 },
+      resp: { fitbit: 1, whoop: 2 }
     };
-    // Sub-metrics from the section charts: things a user reads off the device, not test conditions.
-    // m = medals, g = grade for the rest (default: not tested).
-    const subs = {
-      sleep: [
-        ['deep', 'Deep sleep', { oura: 1, whoop: 2, fitbit: 3, 'apple-watch': 3 }, { garmin: 'mixed', samsung: 'mixed' }],
-        ['rem', 'REM sleep', { oura: 1, 'apple-watch': 2, whoop: 3, fitbit: 3 }, { garmin: 'weak', samsung: 'mixed' }],
-        ['tst', 'Total sleep time', { oura: 1, fitbit: 2, 'apple-watch': 3 }, { whoop: 'mixed', garmin: 'weak' }]
-      ],
-      activeHr: [['hrgaps', 'Readings that come through', { fitbit: 1, whoop: 2 }, { garmin: 'weak' }]],
-      calories: []
-    };
+    const subs = {};
     const place = ['', 'Gold', 'Silver', 'Bronze'];
     const cell = (m, lv, name, d, x, tip) => {
       if (m) return `<div class="sb-c${x}"><span class="sb-medal m${m}" role="img" aria-label="${d.short}, ${name}: ${place[m]}" title="${place[m]}">${this._medalSvg(m)}</span></div>`;
@@ -2136,8 +2233,8 @@ class KygoWearableAccuracy extends HTMLElement {
     return `
       <div class="sb-card" data-sb-card><div class="sb">${head}${rows}${fda}${buy}</div>
       <div class="sb-under">
-        <div class="sb-legend"><span><span class="sb-medals"><i class="sb-medal m1">${this._medalSvg(1)}</i><i class="sb-medal m2">${this._medalSvg(2)}</i><i class="sb-medal m3">${this._medalSvg(3)}</i></span>Top three</span><span><i class="sb-g sb-good"></i>Good</span><span><i class="sb-g sb-fair"></i>Fair</span><span><i class="sb-g sb-weak"></i>Weak</span><span><i class="sb-g sb-none"></i>Not tested, or not in the ranked test</span></div>
-        <p class="sb-rule">Medals rank the top three on each section's main chart, and the indented rows rank one part of that metric. Near ties share a medal, and only Good or Fair results can win one.</p>
+        <div class="sb-legend"><span><span class="sb-medals"><i class="sb-medal m1">${this._medalSvg(1)}</i><i class="sb-medal m2">${this._medalSvg(2)}</i><i class="sb-medal m3">${this._medalSvg(3)}</i></span>Top three</span><span><i class="sb-g sb-good"></i>Good</span><span><i class="sb-g sb-fair"></i>Fair</span><span><i class="sb-g sb-weak"></i>Weak</span><span><i class="sb-g sb-none"></i>Not tested, or no qualifying test</span></div>
+        <p class="sb-rule">One podium per metric, ranked on the numbers across every measure of that metric (sleep is two: telling stages apart, and knowing when you were asleep). Brand-funded studies count and are flagged in each section; research algorithms and unpublished company tests do not. Calories medals mean least bad: every brand is more than 10% off. Breathing rate has only two qualifying brands, and no brand has an independent skin temperature test.</p>
       </div></div>
       <details class="deep-item sb-more"><summary><span class="dk-lab"><span class="dk-ico">${this._icon('fileText')}</span>Each brand in detail</span><span class="deep-hint">Strengths, gaps, subscription and studies</span>${this._icon('plus')}</summary><div class="deep-body"><div class="sbd-grid">${detail}</div></div></details>`;
   }
@@ -3457,7 +3554,7 @@ class KygoWearableAccuracy extends HTMLElement {
       /* 2 compare: picker cards span the full width, metric tabs wrap instead of clipping */
       .cx-cards { max-width: none; }
       @media (min-width: 768px) { .cx-tabs { flex-wrap: wrap; overflow: visible; } }
-      @media (min-width: 1100px) { .cx-tabs { flex-wrap: nowrap; gap: 6px; } .cx-tabs > .cx-tab { flex: 1 1 auto; justify-content: center; padding: 7px 8px; } }
+      @media (min-width: 1100px) { .cx-tabs { gap: 6px; justify-content: center; } .cx-tabs > .cx-tab { flex: 0 1 auto; justify-content: center; padding: 7px 10px; margin: 0; } }
       /* 3 no dead gap between the metric jump nav and the first metric card */
       .jn-sec.section { padding-bottom: 28px; }
       @media (min-width: 1100px) { .jn { flex-wrap: nowrap; gap: 8px; } .jn > .jn-chip { flex: 1 1 auto; justify-content: center; padding-left: 8px; padding-right: 8px; } }
