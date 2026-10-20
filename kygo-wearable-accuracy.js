@@ -1781,7 +1781,7 @@ class KygoWearableAccuracy extends HTMLElement {
             </div>
             <div class="kc-right">
             <kygo-cta theme="dark" slug="${c.slug}" surface="tool" hook="${c.hook}"
-              note="Start with a free 7-day trial. Save 58% on yearly. Cancel anytime."></kygo-cta>
+              note="7-day free trial. Save 58% on yearly. Cancel anytime."></kygo-cta>
             <div class="kc-works">
               <span>Works with</span>
               <div class="kc-badges">${badges}</div>
