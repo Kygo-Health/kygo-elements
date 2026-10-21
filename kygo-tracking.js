@@ -9,6 +9,7 @@
  *   - cta_click        (category, label, url, component, position)
  *   - android_download  (component via cta_click)
  *   - tool_interaction  (tool_name, action)
+ *   - cta_view         (blog HTML-embed cards only: one per card seen)
  */
 (function () {
   'use strict';
@@ -305,6 +306,81 @@
       if (detail.source) params.source = detail.source;
       track(cfg.ga, params);
     }, true);
+  });
+
+  /* ── Blog HTML-embed CTA cards → GA4 ──────────────── */
+
+  // A Wix Blog "HTML code" block is a sandboxed iframe on a Wix domain, so the
+  // click listener above never sees it. The card snippet
+  // (docs/wix-snippets/blog-cta-card.html) posts {kygo:'embed', type, ...}
+  // up instead. Only plain strings from a fixed set are read out of it.
+  var EMBED_DEST = { ios: 'ios_download', android: 'android_download', web: 'web_signup' };
+
+  function embedStr(v, max) {
+    return typeof v === 'string' ? v.replace(/[^\w\-:\/.?=&%+~#@]/g, '').slice(0, max) : '';
+  }
+
+  function embedFrame(source) {
+    var frames = document.getElementsByTagName('iframe');
+    for (var i = 0; i < frames.length; i++) {
+      if (frames[i].contentWindow === source) return frames[i];
+    }
+    return null;
+  }
+
+  /** The visitor's inbound utm_* and click ids: kygo-cta.js's session record
+   *  when it is on the page, else this URL's own. */
+  function embedAttribution() {
+    try {
+      if (window.KygoAttribution) return window.KygoAttribution.capture();
+    } catch (e) { /* fall back to the URL */ }
+    var out = { utm: null, click: {} };
+    try {
+      var params = new URLSearchParams(window.location.search);
+      params.forEach(function (v, k) {
+        if (/^utm_/.test(k) && v) (out.utm = out.utm || {})[k] = v;
+      });
+      ['fbclid', 'gclid'].forEach(function (k) { if (params.get(k)) out.click[k] = params.get(k); });
+    } catch (e) { /* no attribution to pass on */ }
+    return out;
+  }
+
+  window.addEventListener('message', function (e) {
+    var d = e.data;
+    if (!d || typeof d !== 'object' || d.kygo !== 'embed' || !e.source) return;
+
+    if (d.type === 'hello') {
+      var a = embedAttribution();
+      try {
+        e.source.postMessage({ kygo: 'embed', type: 'attr', utm: a.utm || null, click: a.click || {} }, '*');
+      } catch (err) { /* frame went away */ }
+      return;
+    }
+
+    if (d.type === 'height') {
+      var frame = embedFrame(e.source);
+      var h = Number(d.height);
+      if (frame && h > 0 && h < 3000) frame.style.height = h + 'px';
+      return;
+    }
+
+    var slug = embedStr(d.slug, 60) || 'unknown';
+    var base = {
+      cta_label: slug,
+      component: 'kygo-blog-embed',
+      position: 'blog-embed',
+      page_path: window.location.pathname
+    };
+    var content = embedStr(d.content, 60);
+    if (content) base.cta_content = content;
+
+    if (d.type === 'click' && EMBED_DEST[d.destination]) {
+      base.cta_category = EMBED_DEST[d.destination];
+      base.cta_url = embedStr(d.url, 300);
+      track('cta_click', base);
+    } else if (d.type === 'view') {
+      track('cta_view', base);
+    }
   });
 
   // Optional (non-key): calculator completion on the calorie-burn tool.

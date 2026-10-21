@@ -246,6 +246,22 @@ its `position` from the element's `surface`:
 | `other_action` | any other element with a `data-action` |
 | `affiliate_banner` | **not** from `classifyClick()` — fired directly by `kygo-oura-ring-comparison.js` for the HLTH Code banner (see below) |
 
+## Blog HTML-embed cards (`docs/wix-snippets/blog-cta-card.html`)
+
+A Wix Blog **HTML code** block is a sandboxed iframe on a Wix domain, so the click listener
+above never sees it. The card snippet loads `<kygo-cta>` inside the iframe and `postMessage`s
+`{kygo:'embed', type, ...}` to the page, where `kygo-tracking.js` handles it:
+
+| Message | GA4 / effect |
+|---|---|
+| `click` | `cta_click` with `cta_category` `ios_download` / `android_download` / `web_signup`, `cta_label` = the card's `slug`, `component: 'kygo-blog-embed'`, `position: 'blog-embed'`, `page_path`, `cta_url`, `cta_content` if set |
+| `view` | `cta_view`, same params minus category/url: once per card when half of it is on screen (CTR = clicks ÷ views per slug) |
+| `hello` | page replies `attr` with the visitor's inbound `utm_*` / `fbclid` / `gclid` (`window.KygoAttribution` when loaded, else the URL), which the card puts on its web link |
+| `height` | page sets the iframe's height to the card's, when it can find the iframe |
+
+Only fixed-set or sanitised strings are read from the message. Installs are still attributed by
+Tenjin, since the store buttons are the standard Tenjin links.
+
 ## How components opt into tracking
 
 Tracking is **convention-based** — components don't call the tracker, they just use the right
