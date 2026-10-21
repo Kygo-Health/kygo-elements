@@ -12,6 +12,7 @@ Wix slot. See `../wix-global-code.md` for the audit and rationale behind each va
 | `4-ga4-tracking-head.html` | Head → "Kygo GA4 Tracking" | Replace block — **adds the site-wide `kygo-inline-subscribe.js` loader** (email-capture pass) |
 | `5-custom-header-body-start.html` | Body – start → "Kygo Custom Header" | Replace block — **re-synced from the live embed 2026-09-14**, then given the platform CTAs (segmented iOS/Android + "Open web app" on desktop, one device-matched button on a phone) |
 | `6-custom-footer-body-end.html` | Body – end → "Kygo Custom Footer" | Replace block — **re-synced from the live embed 2026-09-14** (subscribe strip, `info@kygo.app`, consumer-health-data link), then given the Web app link and the device-ordered CTA trio |
+| `blog-cta-card.html` | **Not global.** Blog post editor → Add → HTML code, mid-article | Template, one per card: edit copy/design, a unique `slug` and `hook`. Clicks reach GA4 through `kygo-tracking.js` (see `../schemas-and-tracking.md`, "Blog HTML-embed cards") |
 
 ## Email-capture pass (spec 24) — deploy order
 The two snippet changes above (footer strip + inline-subscribe loader) and the `kygo-*-subscribe`
