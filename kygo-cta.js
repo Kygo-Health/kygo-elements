@@ -31,6 +31,9 @@
  *           those keep all three platforms on screen. Takes `label` for the
  *           button wording, `block` to fill the card width and
  *           variant="outline" for the quieter of two plan buttons.
+ *   apps    app stores only, no web button (blog HTML-embed cards). Phones show
+ *           their own store alone; desktop shows iPhone filled plus Android.
+ *           Primary label defaults to "Start your free trial" (`label` overrides).
  *
  * Destinations:
  *   Web      -> app.kygo.app/start (onboarding: Welcome, quiz, then account)
@@ -178,7 +181,7 @@ class KygoCta extends HTMLElement {
     this._onClick = this._onClick.bind(this);
   }
 
-  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note', 'compact', 'mini', 'single', 'block', 'variant', 'label', 'content', 'ios-link', 'android-link']; }
+  static get observedAttributes() { return ['wixsettings', 'slug', 'surface', 'hook', 'theme', 'align', 'note', 'compact', 'mini', 'single', 'block', 'variant', 'label', 'content', 'ios-link', 'android-link', 'apps']; }
 
   connectedCallback() {
     this._parseWixAttributes();
@@ -355,6 +358,7 @@ class KygoCta extends HTMLElement {
     // A header has room for a verb and not much else, so mini shortens the
     // primary label rather than dropping a platform.
     let primary, alts;
+    const apps = this.hasAttribute('apps') || String(this._getSetting('apps', '')) === 'true';
     const primaryCls = 'btn ' + (outline ? 'secondary' : 'primary');
     if (platform === 'ios') {
       primary = ios(primaryCls, label || (mini ? 'Get the app' : 'Get the iPhone app'));
@@ -365,6 +369,17 @@ class KygoCta extends HTMLElement {
     } else {
       primary = web(primaryCls, label || (mini ? 'Start free' : 'Start on the web'));
       alts = ios('btn secondary', 'iPhone') + play('btn secondary', 'Android');
+    }
+    // apps: app stores only, no web button (blog cards). Phones get their own
+    // store alone, full width; desktop gets both stores filled.
+    if (apps) {
+      const trial = label || 'Start your free trial';
+      if (platform === 'ios') { primary = ios(primaryCls, trial); alts = ''; }
+      else if (platform === 'android') { primary = play(primaryCls, trial); alts = ''; }
+      else {
+        primary = ios(primaryCls, trial);
+        alts = play('btn secondary', 'Android');
+      }
     }
 
     this.shadowRoot.innerHTML = `

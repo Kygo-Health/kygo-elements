@@ -58,6 +58,7 @@ Variants, for placements the default cluster does not fit:
 | `compact` | thin `kband` bands (`/faq`, `/tools`, `/blog`, the calorie scanner), the homepage inline band | the same three buttons, smaller |
 | `mini` | the tool-page sticky sub-nav | one nowrap row of header pills, no hook or note, labels dropping away as the header narrows |
 | `single` | a card whose whole point is one action (the `/how-it-works` pricing plans) | the visitor's own destination alone; takes `label`, `block` and `variant="outline"` |
+| `apps` | blog HTML-embed CTA cards | app stores only, no web button: phones get their own store alone, desktop gets iPhone filled plus Android; primary reads "Start your free trial" unless `label` is set |
 
 `single` is the one exception to "all three platforms on screen" — never use it for a page's
 main CTA. `theme="green"` is the palette for a Kygo-green card, where the filled button goes
