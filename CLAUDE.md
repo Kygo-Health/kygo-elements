@@ -43,7 +43,12 @@ site's, and `fbclid`/`gclid` always ride along (`window.KygoAttribution`, which 
 app.kygo.app link on the page as it is pressed); both store buttons go through the
 **Tenjin** click URLs, which redirect to the App Store / Play and attribute the install. Tenjin
 is the system of record for installs, so those two URLs live in `kygo-cta.js` and nowhere else —
-direct `apps.apple.com` / `play.google.com` URLs belong in JSON-LD only. All three
+direct `apps.apple.com` / `play.google.com` URLs belong in JSON-LD only. **Paid campaigns:** an ad
+that lands on a shared page (the homepage) gets its own Tenjin campaign links through
+`CAMPAIGN_STORE_LINKS` in `kygo-cta.js`, keyed by `utm_campaign`; a session carrying a listed
+campaign has every default store link on the site (header, footer, every `<kygo-cta>`) swapped
+for that campaign's links as it is pressed. New paid campaign = create an iOS and an Android
+campaign in Tenjin under the **Website** account and add one row. All three
 platforms stay on screen: the visitor's device takes the filled primary button, the other two
 follow as outline buttons, on one row where there is room and two-up under the primary where
 there is not — measured from the element's own width, not the viewport. It fires Mixpanel

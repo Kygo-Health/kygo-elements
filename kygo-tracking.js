@@ -114,7 +114,10 @@
     if (action === 'ios-download' ||
         href.indexOf('apps.apple.com') !== -1 ||
         href.indexOf('track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy') !== -1 ||
-        (classList.indexOf('cta-primary') !== -1 && href.indexOf('apple') !== -1)) {
+        (classList.indexOf('cta-primary') !== -1 && href.indexOf('apple') !== -1) ||
+        // A paid session's per-campaign Tenjin iOS link (kygo-cta.js
+        // CAMPAIGN_STORE_LINKS) on a header/footer iOS button.
+        (classList.indexOf('cta-primary') !== -1 && href.indexOf('track.tenjin.com/') !== -1)) {
       return { category: 'ios_download', label: getLabel(el), url: href || 'button-redirect' };
     }
 

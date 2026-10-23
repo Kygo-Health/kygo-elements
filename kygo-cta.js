@@ -43,7 +43,10 @@
  *   iOS      -> the Tenjin iOS click URL, which redirects to the App Store.
  *   Android  -> the Tenjin Android click URL, which redirects to Play.
  * Tenjin is the system of record for install attribution, so the store buttons
- * always go through it. Per-campaign overrides: ios-link / android-link.
+ * always go through it. Per-campaign overrides: ios-link / android-link for a
+ * placement with its own campaign, and CAMPAIGN_STORE_LINKS (see __kygoAttr)
+ * for a paid campaign that lands on a shared page: a session whose utm_campaign
+ * is listed there gets that campaign's Tenjin links on every store button.
  *
  * Layout: all three platforms are always on screen. The visitor's own device
  * takes the filled primary button and leads; the other two follow as outline
@@ -145,22 +148,49 @@ const __kygoAttr = window.KygoAttribution || (function () {
     return decorate(u.toString());
   }
 
-  // Rewrite an app link the moment it is pressed, wherever it lives (light DOM
-  // or an open shadow root), so a link rendered before this file loaded, or on
-  // a page the visitor reached after landing, still leaves with the right tags.
-  // pointerdown also covers a copied link and a middle click.
+  /** Per-campaign Tenjin links for paid traffic. An ad usually lands on a
+   *  page every visitor sees (the homepage), so a fixed per-placement
+   *  ios-link / android-link cannot carry its campaign. Instead, when the
+   *  session's utm_campaign is listed here, every default Website-channel store
+   *  link on the site is swapped for that campaign's own Tenjin link as it is
+   *  pressed. Tenjin then attributes the install (and, through RevenueCat ->
+   *  Tenjin, the revenue) to the campaign. Unlisted or untagged sessions keep
+   *  the Website links. Key: utm_campaign, lowercase. Add a row per paid
+   *  campaign, using the links Tenjin generates for it. */
+  const CAMPAIGN_STORE_LINKS = {
+    'deep-sleep-post': {
+      ios: 'https://track.tenjin.com/v0/click/gFqSqqW0D7o69kO5yaV7k1',
+      android: 'https://track.tenjin.com/v0/click/eQRLQj5018oTQjwGo72WqW',
+    },
+  };
+
+  /** Maps a default Tenjin store link to the session campaign's own link.
+   *  Anything else, including a placement that already set its own campaign
+   *  link, comes back untouched. */
+  function storeUrl(href) {
+    const plat = href === TENJIN_IOS ? 'ios' : href === TENJIN_ANDROID ? 'android' : null;
+    if (!plat) return href;
+    const a = capture();
+    const camp = a.utm && a.utm.utm_campaign ? String(a.utm.utm_campaign).toLowerCase() : '';
+    const row = camp && Object.prototype.hasOwnProperty.call(CAMPAIGN_STORE_LINKS, camp) ? CAMPAIGN_STORE_LINKS[camp] : null;
+    return (row && row[plat]) || href;
+  }
+
+  // Rewrite an app or store link the moment it is pressed, wherever it lives
+  // (light DOM or an open shadow root), so a link rendered before this file
+  // loaded, or on a page the visitor reached after landing, still leaves with
+  // the right tags. pointerdown also covers a copied link and a middle click.
   const onPress = (e) => {
     const path = e.composedPath ? e.composedPath() : [e.target];
-    const link = path.filter((n) => n && n.tagName === 'A' && n.href && n.href.indexOf(APP_ORIGIN) === 0)[0];
-    if (link) {
-      const next = decorate(link.href);
-      if (next !== link.href) link.href = next;
-    }
+    const link = path.filter((n) => n && n.tagName === 'A' && n.href)[0];
+    if (!link) return;
+    const next = link.href.indexOf(APP_ORIGIN) === 0 ? decorate(link.href) : storeUrl(link.href);
+    if (next !== link.href) link.href = next;
   };
   ['pointerdown', 'click', 'auxclick'].forEach((t) => document.addEventListener(t, onPress, true));
 
   capture();
-  return (window.KygoAttribution = { capture, decorate, webUrl });
+  return (window.KygoAttribution = { capture, decorate, webUrl, storeUrl });
 })();
 
 /** Injects accessible text into light DOM so crawlers and AI tools can read component content */
@@ -253,7 +283,9 @@ class KygoCta extends HTMLElement {
    *  installs across the whole site, so these are the only store URLs any
    *  component should ever point at — direct App Store / Play URLs belong in
    *  JSON-LD and nowhere else. Overridable per placement via the ios-link /
-   *  android-link attributes, for a campaign with its own Tenjin link. */
+   *  android-link attributes, for a campaign with its own Tenjin link. A
+   *  default link is swapped at press time for a paid session's campaign link
+   *  (KygoAttribution.storeUrl / CAMPAIGN_STORE_LINKS). */
   get _iosUrl() { return this._getSetting('ios-link', TENJIN_IOS); }
 
   get _androidUrl() { return this._getSetting('android-link', TENJIN_ANDROID); }

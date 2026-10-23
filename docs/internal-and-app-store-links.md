@@ -76,6 +76,20 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 > `android-link`; the per-CTA campaign is otherwise carried by GA4 (`cta_label` = the slug) and
 > Mixpanel `cta_clicked`, and by `utm_campaign` on the web button.
 >
+> **Paid campaigns (2026-10-23).** An ad that lands on the homepage cannot use a per-placement
+> `ios-link`, so `kygo-cta.js` keeps `CAMPAIGN_STORE_LINKS` (inside `__kygoAttr`), keyed by
+> `utm_campaign`. When the session's campaign is listed, the document-level press listener swaps
+> every default Tenjin store link on the page (header, footer, any `<kygo-cta>`) for that
+> campaign's own Tenjin links. Unlisted or untagged sessions keep the Website links. Tenjin then
+> attributes install and revenue (RevenueCat -> Tenjin) to the campaign.
+>
+> | utm_campaign | Tenjin campaign (Website account) | iOS click URL | Android click URL |
+> |---|---|---|---|
+> | `deep-sleep-post` | Reddit Ad deep-sleep-post - iOS / - Android | `https://track.tenjin.com/v0/click/gFqSqqW0D7o69kO5yaV7k1` | `https://track.tenjin.com/v0/click/eQRLQj5018oTQjwGo72WqW` |
+>
+> A short-lived Wix embed ("Kygo Store Link Attribution", `69519f9b-…`) that sent tagged
+> sessions straight to the stores, bypassing Tenjin, was disabled the same day in favour of this.
+>
 > `kygo-tracking.js` classifies the Tenjin hrefs as before, and now also reads the
 > `data-destination` each `<kygo-cta>` button carries, which is what files the web button as
 > `web_signup`. The two FAQ-answer "Google Play" prose links in `kygo-faq-section.js` are prose,
