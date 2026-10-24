@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test — Oura Ring 5 vs 4</title>
+  <style>body { margin: 0; }</style>
+</head>
+<body>
+  <!-- Stub so <kygo-inline-subscribe> doesn't error the harness -->
+  <script>
+    if (!customElements.get('kygo-inline-subscribe')) {
+      customElements.define('kygo-inline-subscribe', class extends HTMLElement {});
+    }
+  </script>
+  <kygo-oura-5-vs-4></kygo-oura-5-vs-4>
+  <!-- Local file with cache-bust. Swap for the jsDelivr branch URL for a live CDN preview. -->
+  <script src="./kygo-oura-5-vs-4.js?v=1"></script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!--
+  Kygo mid-article CTA card, for the Wix Blog "Add > HTML code" block.
+
+  Wix renders this block as a sandboxed iframe on its own domain, so the site's
+  GA4 tracker (kygo-tracking.js) cannot see clicks inside it. The script at the
+  bottom posts each click (and the first time the card is seen) up to the page,
+  where kygo-tracking.js files it in GA4, and asks the page for the visitor's
+  inbound utm_* / fbclid / gclid so the web-signup link keeps them.
+
+  PER CARD, EDIT ONLY THE MARKED PARTS:
+    1. The card copy and design (everything inside <div class="card">, and
+       the <style> block). Free to restyle.
+    2. On <kygo-cta>:
+         slug  unique per card, lowercase-dashes, max 30 characters
+               (it is the utm_campaign and the GA4 label). Two cards in one
+               post = two different slugs, e.g. caffeine-hrv-mid and
+               caffeine-hrv-end.
+         hook  one line on the reader's payoff. Never reused across cards.
+         theme dark | green | light (match the card background).
+         note  reassurance line under the buttons; note="" hides it.
+  DO NOT: hand-write App Store / Play / app.kygo.app links, remove the
+  <kygo-cta> element, or change the <script> block at the bottom.
+-->
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: transparent; }
+  body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; color: #1E293B; line-height: 1.6; }
+
+  /* ── EDIT: card design ─────────────────────────────── */
+  .card {
+    background: #1E293B;
+    border-radius: 18px;
+    padding: 28px 22px;
+    text-align: center;
+    color: #fff;
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    color: #22C55E; background: rgba(34, 197, 94, .12);
+    padding: 4px 10px; border-radius: 999px; margin-bottom: 12px;
+  }
+  .title {
+    font-family: 'Space Grotesk', sans-serif; font-weight: 600;
+    font-size: clamp(20px, 4.6vw, 26px); line-height: 1.25; margin-bottom: 8px;
+  }
+  .body { font-size: 15px; color: rgba(255, 255, 255, .78); max-width: 520px; margin: 0 auto 18px; }
+  @media (min-width: 600px) { .card { padding: 36px 32px; } }
+  /* ── end EDIT ──────────────────────────────────────── */
+</style>
+
+<div class="card">
+  <!-- EDIT: card copy -->
+  <span class="eyebrow">Track it with Kygo</span>
+  <h3 class="title">See what your dinner does to your deep sleep</h3>
+  <p class="body">Log meals in seconds and Kygo lines them up against the sleep data your wearable already collects.</p>
+
+  <!-- EDIT: slug (unique per card), hook, theme, note -->
+  <kygo-cta
+    surface="blog"
+    slug="example-post-mid"
+    hook="Your own food-to-sleep pattern is one week of logging away."
+    theme="dark"></kygo-cta>
+</div>
+
+<!-- DO NOT EDIT BELOW: loads the shared CTA buttons and reports clicks to the page's GA4. -->
+<script>
+(function () {
+  var CTA_SRC = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+  // The page's tracker lives in the top window; Wix may nest this block
+  // inside a frame of its own, so post to the top rather than the parent.
+  var parentWin = window.top && window.top !== window ? window.top : null;
+  var attr = null;   // the page's {utm, click}, once it answers
+  var seen = false;
+
+  function send(msg) {
+    if (!parentWin) return;
+    msg.kygo = 'embed';
+    try { parentWin.postMessage(msg, '*'); } catch (e) { /* no page to report to */ }
+  }
+
+  function card() { return document.querySelector('kygo-cta'); }
+  function info(host) {
+    return {
+      slug: (host && host.getAttribute('slug')) || '',
+      content: (host && host.getAttribute('content')) || ''
+    };
+  }
+
+  // The page answers 'hello' with its attribution; the web link then leaves
+  // with the visitor's own campaign instead of only this card's.
+  window.addEventListener('message', function (e) {
+    var d = e.data;
+    if (e.source !== parentWin || !d || d.kygo !== 'embed' || d.type !== 'attr') return;
+    attr = { utm: d.utm || null, click: d.click || {} };
+  });
+
+  function decorate(link) {
+    if (!attr) return;
+    try {
+      var u = new URL(link.href);
+      if (u.origin !== 'https://app.kygo.app') return;
+      if (attr.utm) {
+        Array.from(u.searchParams.keys()).filter(function (k) { return /^utm_/.test(k); })
+          .forEach(function (k) { u.searchParams.delete(k); });
+        Object.keys(attr.utm).forEach(function (k) {
+          if (/^utm_/.test(k)) u.searchParams.set(k, String(attr.utm[k]));
+        });
+      }
+      ['fbclid', 'gclid'].forEach(function (k) {
+        if (attr.click && attr.click[k]) u.searchParams.set(k, String(attr.click[k]));
+      });
+      link.href = u.toString();
+    } catch (e) { /* leave the link as it is */ }
+  }
+
+  function linkFrom(e) {
+    var path = e.composedPath ? e.composedPath() : [e.target];
+    for (var i = 0; i < path.length; i++) {
+      if (path[i].tagName === 'A' && path[i].getAttribute('data-destination')) return path[i];
+    }
+    return null;
+  }
+
+  // Capture phase, registered before kygo-cta.js loads, so the link is
+  // rewritten before kygo-cta's own handler (which keeps it as is) runs.
+  ['pointerdown', 'auxclick'].forEach(function (t) {
+    document.addEventListener(t, function (e) { var a = linkFrom(e); if (a) decorate(a); }, true);
+  });
+  document.addEventListener('click', function (e) {
+    var a = linkFrom(e);
+    if (!a) return;
+    decorate(a);
+    var root = a.getRootNode && a.getRootNode();
+    var c = info(root && root.host);
+    send({ type: 'click', destination: a.getAttribute('data-destination'), slug: c.slug, content: c.content, url: a.href });
+  }, true);
+
+  // Report the card's height so the page can size the iframe to fit.
+  function reportHeight() {
+    send({ type: 'height', height: Math.ceil(document.documentElement.getBoundingClientRect().height) });
+  }
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(reportHeight).observe(document.documentElement);
+  window.addEventListener('load', reportHeight);
+
+  // One impression per card, when half of it is on screen.
+  function watchView() {
+    var el = document.querySelector('.card') || document.body;
+    if (typeof IntersectionObserver === 'undefined' || !el) return;
+    var io = new IntersectionObserver(function (entries) {
+      if (seen || !entries.some(function (x) { return x.isIntersecting; })) return;
+      seen = true;
+      io.disconnect();
+      send({ type: 'view', slug: info(card()).slug, content: info(card()).content });
+    }, { threshold: 0.5 });
+    io.observe(el);
+  }
+
+  send({ type: 'hello' });
+  setTimeout(function () { if (!attr) send({ type: 'hello' }); }, 1500);
+  watchView();
+
+  if (!window.customElements || !customElements.get('kygo-cta')) {
+    var s = document.createElement('script');
+    s.src = CTA_SRC;
+    s.async = true;
+    document.head.appendChild(s);
+  }
+})();
+</script>
