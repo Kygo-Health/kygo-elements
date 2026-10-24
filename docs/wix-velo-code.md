@@ -230,8 +230,10 @@ falling back to Cognito v2.1), calls `POST https://creatorsapi.amazon/catalog/v1
 `{ updated, items: { <ASIN>: { title, image, url } }, errors }`. Cached in memory for 1 hour
 (Amazon allows 24 h) and served with `Cache-Control: public, max-age=3600`; on failure it serves the
 last good copy, else `500 {error:'amazon_unavailable'}`. Read by `kygo-picks.js` (same origin).
-Verified live 2026-10-24: 8/8 items with image + title, no errors. Full code: the
-`handoffs/best-wearables/http-functions.js` copy in the Kygo Research Library.
+Verified live 2026-10-24: 8/8 items with image + title, no errors. Full live file mirrored at
+`velo/http-functions.js` (paste the whole file). Since 2026-10-24 it also requests
+`offersV2.listings.price` and returns `price` per item; the page shows it on the buy buttons with an
+"Amazon prices as of <time>" note (Associates rule: API prices only, refreshed within 24 h).
 
 ### `backend/contactForm.web.js` — ✅ KEEP (live, required)
 Validates the contact form and inserts into the **`ContactSubmissions`** collection

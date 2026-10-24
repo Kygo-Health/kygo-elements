@@ -108,6 +108,7 @@ class KygoPicks extends HTMLElement {
       const data = await res.json();
       if (data && data.items && Object.keys(data.items).length) {
         this._amzData = data.items;
+        this._amzUpdated = data.updated || '';
         this.render();
         this._setupAnimations();
         this._setupScrollSpy();
@@ -161,35 +162,35 @@ class KygoPicks extends HTMLElement {
       { id: 'best-for', page: 'wearables', label: 'Best for you', kicker: 'Best for', pickLabel: 'Our pick', heading: 'Best for you',
         lede: 'Our pick for each kind of buyer, rolled up from the 10 metric rankings below.',
         sections: [
-          { id: 'best-sleep', nav: 'Sleep', icon: 'moon', title: 'Sleep and recovery', lede: 'Sleep stages, sleep timing, HRV and resting heart rate.', tool: accTool, picks: [
-              { product: 'oura', rank: 1, stat: '4 of 4', statLabel: 'sleep and recovery metrics won', reason: 'First for sleep stages, sleep timing, HRV and resting heart rate.', catch: 'Needs a membership, and has no screen for workouts.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'whoop', rank: 2, stat: '2nd', statLabel: 'for HRV, 3rd for resting HR', reason: 'Close behind Oura on overnight recovery numbers.', catch: 'Membership only, no screen.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'fitbit', rank: 3, stat: '2nd', statLabel: 'for sleep timing, 3rd for sleep stages', reason: 'The best watch for sleep in our rankings.', catch: 'Needs charging about every day or two.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'apple-watch', rank: 4, stat: '2nd', statLabel: 'for sleep stages', reason: 'Strong sleep staging for an all-day watch.', catch: 'Daily charging makes overnight wear harder.', source: 'Kygo roll-up of the rankings below' }
+          { id: 'best-sleep', nav: 'Sleep', icon: 'moon', title: 'Sleep and recovery', lede: 'Sleep stages, sleep timing, HRV and resting heart rate.', tool: accTool, metrics: ['sleep-stages', 'sleep-timing', 'hrv', 'rhr'], picks: [
+              { product: 'oura', rank: 1, stat: '4 of 4', statLabel: 'sleep and recovery metrics won', reason: 'Matched a chest-strap ECG for overnight HRV almost perfectly (0.99), and caught 73% of time awake.', catch: 'Needs a membership, and has no screen for workouts.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'whoop', rank: 2, stat: '2nd', statLabel: 'for HRV, 3rd for resting HR', reason: 'Second for overnight HRV against a chest-strap ECG, about 8% error.', catch: 'Membership only, no screen.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'fitbit', rank: 3, stat: '2nd', statLabel: 'for sleep timing, 3rd for sleep stages', reason: 'Total sleep within 3 minutes of a sleep lab, and caught 68% of time awake.', catch: 'Needs charging about every day or two.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'apple-watch', rank: 4, stat: '2nd', statLabel: 'for sleep stages', reason: 'Caught 83% of REM sleep in a sleep-lab test, the most of any device.', catch: 'Daily charging makes overnight wear harder.', source: 'Kygo roll-up of the rankings below' }
             ] },
-          { id: 'best-training', nav: 'Training', icon: 'activity', title: 'Running and training', lede: 'Workout heart rate, VO2 max and steps.', tool: hrTool, picks: [
-              { product: 'garmin', rank: 1, stat: '1st', statLabel: 'for VO2 max and steps, 2nd for workout HR', reason: 'Top or near the top on every training metric we rank.', catch: 'Sleep tracking trails Oura and Apple.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'apple-ultra', rank: 2, stat: '1st', statLabel: 'for workout heart rate', reason: 'Most accurate heart rate during exercise.', catch: 'iPhone only.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'fitbit', rank: 3, stat: '2nd', statLabel: 'for VO2 max', reason: 'Solid fitness estimates on a smartwatch.', catch: 'Fewer training tools than Garmin.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'polar', rank: 4, stat: '2nd', statLabel: 'for resting heart rate', reason: 'Training-focused brand with accurate resting HR.', catch: 'Fewer independent tests than the others.', source: 'Kygo roll-up of the rankings below' }
+          { id: 'best-training', nav: 'Training', icon: 'activity', title: 'Running and training', lede: 'Workout heart rate, VO2 max and steps.', tool: hrTool, metrics: ['exercise-hr', 'vo2max', 'steps', 'rhr'], picks: [
+              { product: 'garmin', rank: 1, stat: '1st', statLabel: 'for VO2 max and steps, 2nd for workout HR', reason: 'Closest step count across 59 studies, and the most accurate VO2 max with a chest strap.', catch: 'Sleep tracking trails Oura and Apple.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'apple-ultra', rank: 2, stat: '1st', statLabel: 'for workout heart rate', reason: 'Most accurate in a head-to-head cycling test, with near-zero bias across 22 studies.', catch: 'iPhone only.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'fitbit', rank: 3, stat: '2nd', statLabel: 'for VO2 max', reason: 'VO2 max within about 9% of a lab test, second to Garmin.', catch: 'Fewer training tools than Garmin.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'polar', rank: 4, stat: '2nd', statLabel: 'for resting heart rate', reason: 'Resting heart rate within 2.7% of a chest-strap ECG overnight.', catch: 'Fewer independent tests than the others.', source: 'Kygo roll-up of the rankings below' }
             ] },
-          { id: 'best-iphone', nav: 'iPhone', icon: 'heart', title: 'iPhone users', lede: 'The most accurate all-round watch for iPhone.', tool: accTool, picks: [
-              { product: 'apple-watch', rank: 1, stat: '7 of 10', statLabel: 'metrics on the podium, the most of any brand', reason: 'First for workout heart rate and blood oxygen, top three on most others.', catch: 'Only works with iPhone. Daily charging.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'oura', rank: 2, stat: '4 of 10', statLabel: 'metrics won, the most 1st places', reason: 'Pair with any phone for the best sleep data.', catch: 'Needs a membership.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'garmin', rank: 3, stat: '5 of 10', statLabel: 'metrics on the podium', reason: 'Best for training, works with iPhone.', catch: 'Fewer smart features than Apple.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'whoop', rank: 4, stat: '3 of 10', statLabel: 'metrics on the podium', reason: 'Screenless recovery strap.', catch: 'Membership only.', source: 'Kygo roll-up of the rankings below' }
+          { id: 'best-iphone', nav: 'iPhone', icon: 'heart', title: 'iPhone users', lede: 'The most accurate all-round watch for iPhone.', tool: accTool, metrics: 'all', picks: [
+              { product: 'apple-watch', rank: 1, stat: '7 of 10', statLabel: 'metrics on the podium, the most of any brand', reason: 'Most accurate workout heart rate and blood oxygen, with near-zero bias across 22 and 9 studies.', catch: 'Only works with iPhone. Daily charging.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'oura', rank: 2, stat: '4 of 10', statLabel: 'metrics won, the most 1st places', reason: 'Best sleep data in our rankings, first on sleep stages, sleep timing, HRV and resting HR.', catch: 'Needs a membership.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'garmin', rank: 3, stat: '5 of 10', statLabel: 'metrics on the podium', reason: 'Closest step count across 59 studies, and the most accurate VO2 max with a chest strap.', catch: 'Fewer smart features than Apple.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'whoop', rank: 4, stat: '3 of 10', statLabel: 'metrics on the podium', reason: 'Second for overnight HRV against a chest-strap ECG, about 8% error.', catch: 'Membership only.', source: 'Kygo roll-up of the rankings below' }
             ] },
-          { id: 'best-android', nav: 'Android', icon: 'heart', title: 'Android users', lede: 'The most accurate all-round watch for Android.', tool: accTool, picks: [
-              { product: 'fitbit', rank: 1, stat: '6 of 10', statLabel: 'metrics on the podium, most of any Android watch', reason: 'First for calories and breathing rate, top three on sleep and VO2 max.', catch: 'Needs charging about every day or two.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'garmin', rank: 2, stat: '5 of 10', statLabel: 'metrics on the podium', reason: 'Best for training, works with any phone.', catch: 'Sleep tracking trails the leaders.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'oura', rank: 3, stat: '4 of 10', statLabel: 'metrics won, the most 1st places', reason: 'Best sleep data, works with Android.', catch: 'A ring, not a watch. Needs a membership.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'samsung', rank: 4, stat: '3 of 10', statLabel: 'metrics on the podium', reason: 'Second for blood oxygen and calories.', catch: 'Some health features need a Samsung phone.', source: 'Kygo roll-up of the rankings below' }
+          { id: 'best-android', nav: 'Android', icon: 'heart', title: 'Android users', lede: 'The most accurate all-round watch for Android.', tool: accTool, metrics: 'all', picks: [
+              { product: 'fitbit', rank: 1, stat: '6 of 10', statLabel: 'metrics on the podium, most of any Android watch', reason: 'Closest calorie estimate across three lab tests, and total sleep within 3 minutes of a sleep lab.', catch: 'Needs charging about every day or two.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'garmin', rank: 2, stat: '5 of 10', statLabel: 'metrics on the podium', reason: 'Closest step count across 59 studies, and close behind Apple on workout heart rate.', catch: 'Sleep tracking trails the leaders.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'oura', rank: 3, stat: '4 of 10', statLabel: 'metrics won, the most 1st places', reason: 'Best sleep data in our rankings, first on sleep stages, sleep timing, HRV and resting HR.', catch: 'A ring, not a watch. Needs a membership.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'samsung', rank: 4, stat: '3 of 10', statLabel: 'metrics on the podium', reason: 'Passed the blood oxygen standard in a low-oxygen lab test.', catch: 'Some health features need a Samsung phone.', source: 'Kygo roll-up of the rankings below' }
             ] },
-          { id: 'best-no-sub', nav: 'No subscription', icon: 'pulse', title: 'No subscription, any phone', lede: 'Full data without a monthly fee.', tool: accTool, picks: [
-              { product: 'garmin', rank: 1, stat: '5 of 10', statLabel: 'metrics on the podium, no membership', reason: 'Works with iPhone and Android, and every metric is free.', catch: 'Sleep tracking trails Oura and Apple.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'apple-watch', rank: 2, stat: '7 of 10', statLabel: 'metrics on the podium', reason: 'The most accurate overall, with no fee.', catch: 'iPhone only.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'fitbit', rank: 3, stat: '6 of 10', statLabel: 'metrics on the podium', reason: 'Strong all-round accuracy on Android.', catch: 'Check which insights need a paid plan.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'samsung', rank: 4, stat: '3 of 10', statLabel: 'metrics on the podium', reason: 'No fee for core health tracking.', catch: 'Some features need a Samsung phone.', source: 'Kygo roll-up of the rankings below' }
+          { id: 'best-no-sub', nav: 'No subscription', icon: 'pulse', title: 'No subscription, any phone', lede: 'Full data without a monthly fee.', tool: accTool, metrics: 'all', picks: [
+              { product: 'garmin', rank: 1, stat: '5 of 10', statLabel: 'metrics on the podium, no membership', reason: 'Closest step count across 59 studies, with every metric free to see.', catch: 'Sleep tracking trails Oura and Apple.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'apple-watch', rank: 2, stat: '7 of 10', statLabel: 'metrics on the podium', reason: 'Most accurate workout heart rate and blood oxygen, with no fee.', catch: 'iPhone only.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'fitbit', rank: 3, stat: '6 of 10', statLabel: 'metrics on the podium', reason: 'Closest calorie estimate across three lab tests.', catch: 'Check which insights need a paid plan.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'samsung', rank: 4, stat: '3 of 10', statLabel: 'metrics on the podium', reason: 'Passed the blood oxygen standard in a low-oxygen lab test, with no fee.', catch: 'Some features need a Samsung phone.', source: 'Kygo roll-up of the rankings below' }
             ], note: 'Oura and WHOOP need a paid membership.' }
         ] },
       { id: 'wearables', label: 'By metric', kicker: 'Most accurate for', heading: 'Wearables, by metric',
@@ -624,14 +625,53 @@ class KygoPicks extends HTMLElement {
     return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
   }
 
-  _renderCard(pick, sectionId) {
-    const place = ['', '1st', '2nd', '3rd', '4th'][pick.rank] || '';
-    return this._card(Object.assign(this._pickData(pick, sectionId), { pill: place, pillCls: 'place-' + pick.rank, compact: true }));
+  _renderCard(pick, sectionId, extra) {
+    const place = '#' + pick.rank;
+    return this._card(Object.assign(this._pickData(pick, sectionId), { pill: place, pillCls: 'place-' + pick.rank }, extra || {}));
+  }
+
+  // Where a product placed in the metric rankings ("#1 Sleep stages"), for the Best-for roll-ups.
+  _placements(productKey, metrics) {
+    const g = this._groups.find(x => x.id === 'wearables');
+    if (!g) return [];
+    const key = productKey === 'apple-ultra' ? 'apple-watch' : productKey;
+    const out = [];
+    g.sections.forEach(sec => {
+      if (metrics !== 'all' && !metrics.includes(sec.id)) return;
+      const p = (sec.picks || []).find(x => x.product === key);
+      if (p && p.rank <= 3) out.push({ rank: p.rank, nav: sec.nav });
+    });
+    return out.sort((a, b) => a.rank - b.rank).slice(0, 3);
+  }
+
+  _ranksHtml(list) {
+    if (!list || !list.length) return '';
+    const e = v => this._esc(v);
+    return `<ul class="ranks">${list.map(r => `<li><span class="rk rk-${r.rank}">#${r.rank}</span>${e(r.nav)}</li>`).join('')}</ul>`;
+  }
+
+  // Amazon requires the time of the price and a change notice wherever API prices are shown.
+  _priceNote() {
+    if (!this._amzData || !Object.values(this._amzData).some(x => x && x.price)) return '';
+    let when = '';
+    try { when = new Date(this._amzUpdated).toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }); } catch (e) { /* no date */ }
+    return `<p class="price-note">Amazon prices as of ${this._esc(when || 'today')}. Prices and availability can change; the price on Amazon when you buy applies.</p>`;
+  }
+
+  _buyLabel(c) { return c.price ? c.price + ' on Amazon' : (c.cta || 'View on Amazon'); }
+
+  _buyBtn(c, cls) {
+    const e = v => this._esc(v);
+    return `<a class="btn ${cls}" href="${e(c.link)}" target="_blank" rel="sponsored nofollow noopener"
+      data-pick="${e(c.pickId)}" data-section="${e(c.sectionId)}" data-track-label="${e(c.name)}" data-track-position="${e(c.sectionId)}"
+      aria-label="${e(c.name)}: ${e(this._buyLabel(c))}">${e(this._buyLabel(c))}${this._icon('ext')}</a>`;
   }
 
   // The winner: one wide card with everything visible.
   _feature(c) {
     const e = v => this._esc(v);
+    const facts = c.ranks && c.ranks.length ? this._ranksHtml(c.ranks)
+      : `<p class="f-stat"><strong>${e(c.stat)}</strong> ${e(c.statLabel)}</p>`;
     return `
       <article class="feature">
         <div class="f-main">
@@ -639,18 +679,14 @@ class KygoPicks extends HTMLElement {
           <div class="f-id">
             <span class="f-kicker">${e(c.kicker)}</span>
             <h4 class="f-name">${e(c.name)}</h4>
-            <p class="f-stat"><strong>${e(c.stat)}</strong> ${e(c.statLabel)}</p>
-            ${c.tested ? `<p class="f-tested">${e(c.tested)}</p>` : ''}
+            ${facts}
           </div>
         </div>
         <div class="f-side">
           <p class="f-reason">${e(c.reason)}</p>
-          <details class="why f-why"><summary>Why we picked it</summary>
-            <p class="catch"><strong>Catch:</strong> ${e(c.catch)}</p>
-            <p class="f-src">${e(c.source)}</p>
-          </details>
-          <a class="buy buy-primary" href="${e(c.link)}" target="_blank" rel="sponsored nofollow noopener"
-             data-pick="${e(c.pickId)}" data-section="${e(c.sectionId)}" data-track-label="${e(c.name)}" data-track-position="${e(c.sectionId)}">${e(c.cta)}${this._icon('ext')}</a>
+          ${c.catch ? `<p class="f-note">${e(c.catch)}</p>` : ''}
+          ${c.tested ? `<p class="f-tested">${e(c.tested)}</p>` : ''}
+          ${this._buyBtn(c, 'btn-primary')}
         </div>
       </article>`;
   }
@@ -670,12 +706,15 @@ class KygoPicks extends HTMLElement {
       ? `<img class="card-logo" src="${this._img(pr.img)}" alt="" loading="lazy" decoding="async" />`
       : `<span class="card-logo card-logo-txt" aria-hidden="true">${e((pr.name || '?').charAt(0))}</span>`;
     return { logo, name: title, tested, stat: pick.stat, statLabel: pick.statLabel, reason: pick.reason, catch: pick.catch,
-      source: pick.source, link, cta: 'See ' + title + ' on Amazon', pickId: pr.asin || pick.product, sectionId };
+      price: live && live.price ? live.price : '',
+      source: pick.source, link, cta: 'View on Amazon', pickId: pr.asin || pick.product, sectionId };
   }
 
-  // Shared card: the same five visible parts everywhere, details behind a toggle.
+  // Secondary card: name, one fact, one short line, one button. Same size everywhere.
   _card(c) {
     const e = v => this._esc(v);
+    const facts = c.ranks && c.ranks.length ? this._ranksHtml(c.ranks)
+      : `<p class="c-stat"><strong>${e(c.stat)}</strong> ${e(c.statLabel)}</p>`;
     return `
       <article class="card">
         <div class="card-top">
@@ -683,18 +722,10 @@ class KygoPicks extends HTMLElement {
           <h4 class="card-title">${e(c.name)}</h4>
           ${c.pill ? `<span class="place ${c.pillCls || ''}">${e(c.pill)}</span>` : ''}
         </div>
-        <div class="stat"><span class="stat-num">${e(c.stat)}</span><span class="stat-label">${e(c.statLabel)}</span></div>
+        ${facts}
+        <p class="c-reason">${e(c.reason)}</p>
         ${c.tested ? `<p class="tested">${e(c.tested)}</p>` : ''}
-        <details class="why${c.compact ? ' why-compact' : ''}">
-          <summary>Why we picked it</summary>
-          <p class="reason">${e(c.reason)}</p>
-          <p class="catch"><strong>Catch:</strong> ${e(c.catch)}</p>
-          <p class="src">${e(c.source)}</p>
-        </details>
-        ${c.compact ? `<a class="buy-link" href="${e(c.link)}" target="_blank" rel="sponsored nofollow noopener"
-           data-pick="${e(c.pickId)}" data-section="${e(c.sectionId)}" data-track-label="${e(c.name)}" data-track-position="${e(c.sectionId)}" aria-label="${e(c.name)} on Amazon">Amazon${this._icon('ext')}</a>`
-        : `<a class="buy" href="${e(c.link)}" target="_blank" rel="sponsored nofollow noopener"
-           data-pick="${e(c.pickId)}" data-section="${e(c.sectionId)}" data-track-label="${e(c.name)}" data-track-position="${e(c.sectionId)}">${e(c.cta)}${this._icon('ext')}</a>`}
+        ${this._buyBtn(c, 'btn-secondary')}
       </article>`;
   }
 
@@ -761,7 +792,7 @@ class KygoPicks extends HTMLElement {
     const body = s.levers ? this._renderImprove(s, a)
       : isGear ? this._renderGear(s, a)
       : s.picks && s.picks.length
-      ? `${this._feature(Object.assign(this._pickData(s.picks[0], a), { kicker: g.pickLabel || '1st place' }))}${s.picks.length > 1 ? `<h4 class="next-h">Next closest</h4><div class="cards cards-next">${s.picks.slice(1).map(p => this._renderCard(p, a)).join('')}</div>` : ''}`
+      ? `${this._feature(Object.assign(this._pickData(s.picks[0], a), { kicker: g.pickLabel || '#1 most accurate' }, s.metrics ? { ranks: this._placements(s.picks[0].product, s.metrics), catch: s.picks[0].catch } : { catch: s.picks[0].catch }))}${s.picks.length > 1 ? `<h4 class="next-h">${s.metrics ? 'Also good' : 'Next closest'}</h4><div class="cards cards-next">${s.picks.slice(1).map(p => this._renderCard(p, a, s.metrics ? { ranks: this._placements(p.product, s.metrics), pill: '' } : null)).join('')}</div>` : ''}`
       : `<div class="nopick">${this._icon('minus')}<p>${e(s.noPick || '')}</p></div>`;
     return `
       <section class="pick-section animate-on-scroll${isGear ? ' is-gear' : ''}" id="${a}" data-anchor="${a}" aria-labelledby="h-${a}">
@@ -877,6 +908,7 @@ class KygoPicks extends HTMLElement {
           <h1>${this._pages[this._page].h1}</h1>
           <p class="hero-lede">${e(this._pages[this._page].lede)}</p>
           <p class="hero-fine">Updated ${e(this._updated.page)}. Rankings are never paid. As an Amazon Associate, Kygo earns from qualifying purchases.</p>
+          ${this._priceNote()}
         </div>
       </section>
 
@@ -1441,34 +1473,59 @@ class KygoPicks extends HTMLElement {
       @media (min-width: 1000px) { .side { top: calc(var(--host-top, 0px) + 20px); max-height: calc(100vh - var(--host-top, 0px) - 40px); overflow-y: auto; } }
       .pick-section, .group { scroll-margin-top: calc(var(--host-top, 0px) + 72px); }
       .hero { padding: 36px 0 28px; }
-      /* Runner-up cards: compact, aligned, one quiet Amazon link */
-      .cards-next .card { gap: 8px; box-shadow: none; }
-      .cards-next .card-top { min-height: 48px; align-items: flex-start; }
-      .cards-next .card-title { line-height: 1.2; padding-top: 4px; }
-      .cards-next .card-top .place { margin-left: auto; flex: none; }
-      .cards-next .stat { margin-top: auto; }
-      .cards-next .card { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "top top" "stat stat" "tested tested" "why link"; align-items: center; row-gap: 8px; }
-      .cards-next .card-top { grid-area: top; }
-      .cards-next .stat { grid-area: stat; }
-      .cards-next .tested { grid-area: tested; margin: 0; }
-      .cards-next .why { grid-area: why; }
-      .cards-next .why[open] { grid-column: 1 / -1; grid-row: 5; }
-      .buy-link { grid-area: link; justify-self: end; display: inline-flex; align-items: center; gap: 5px; min-height: 32px; padding: 0 12px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-1); font-size: 13px; font-weight: 600; text-decoration: none; }
-      .buy-link svg { width: 13px; height: 13px; }
-      .buy-link:hover { border-color: var(--fg-1); }
       /* Winner card: names up to ~22 chars stay on two lines */
       .f-name { font-size: clamp(26px, 2.8vw, 34px); }
       @media (min-width: 720px) { .feature { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); } }
-      /* Phones: runner-ups stack as rows instead of a sideways scroller */
-      @media (max-width: 999px) {
-        .cards-next { display: flex; flex-direction: column; gap: 10px; overflow: visible; margin: 0; padding: 0; }
-        .cards-next .card { flex: none; width: auto; padding: 12px 14px; row-gap: 6px; }
-        .cards-next .card-top { min-height: 0; align-items: center; }
-        .cards-next .card-title { padding-top: 0; font-size: 16px; }
-        .cards-next .stat { flex-direction: row; align-items: baseline; gap: 8px; padding: 0; margin: 0; }
-        .cards-next .stat-num { font-size: 22px; }
-        .cards-next .tested { font-size: 11.5px; }
-      }
+
+      /* ── Card system v2 (2026-10-24): one padding, one radius, one button shape ── */
+      .pick-section { padding: 28px; }
+      @media (max-width: 719px) { .pick-section { padding: 20px 16px; } }
+      .feature { padding: 24px; border-radius: 16px; gap: 20px; }
+      @media (max-width: 719px) { .feature { padding: 20px; } }
+      .f-id { min-width: 0; }
+      .f-side { gap: 10px; }
+      .f-reason { margin: 0; font-size: 16px; line-height: 1.45; color: #fff; }
+      .f-note { margin: 0; font-size: 13px; line-height: 1.45; color: rgba(255,255,255,0.7); }
+      .f-tested { margin: 0; font-size: 12.5px; color: rgba(255,255,255,0.5); }
+      .feature .f-stat { margin-top: 6px; }
+
+      /* Buttons: rounded rectangles, never pills */
+      .btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 700; text-decoration: none; transition: background 0.2s var(--ease-out), transform 0.2s var(--ease-out); }
+      .btn svg { width: 15px; height: 15px; flex: none; }
+      .btn-primary { min-height: 48px; margin-top: 6px; font-size: 15px; background: var(--kygo-green); color: #0F172A; }
+      .btn-primary:hover { background: #4ade80; }
+      .btn-secondary { min-height: 42px; margin-top: auto; font-size: 14px; background: #0F172A; color: #fff; }
+      .btn-secondary:hover { background: #1E293B; }
+
+      /* Secondary cards: identical size, padding and order */
+      .cards-next { display: grid; grid-template-columns: 1fr; gap: 14px; overflow: visible; margin: 0; padding: 0; }
+      @media (min-width: 720px) { .cards-next { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+      .cards-next .card { display: flex; flex-direction: column; gap: 10px; height: 100%; width: auto; flex: none; padding: 18px; border-radius: 16px; border: 1px solid var(--border-subtle); background: #fff; box-shadow: 0 1px 3px rgba(15,23,42,0.06); }
+      .cards-next .card-top { display: flex; align-items: center; gap: 12px; min-height: 0; }
+      .cards-next .card-title { flex: 1; min-width: 0; margin: 0; padding: 0; font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; line-height: 1.2; color: var(--fg-1); }
+      .cards-next .card-logo { width: 44px; height: 44px; flex: 0 0 44px; border-radius: 10px; }
+      .c-stat { margin: 0; font-size: 13.5px; color: var(--fg-2); line-height: 1.35; }
+      .c-stat strong { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 24px; line-height: 1.1; color: var(--fg-1); }
+      .c-reason { margin: 0; font-size: 14px; line-height: 1.45; color: var(--fg-1); }
+      .cards-next .tested { margin: -4px 0 0; font-size: 12px; color: var(--fg-3); }
+      @media (min-width: 720px) { .cards-next .card-top { min-height: 44px; } .c-reason { min-height: 2.9em; } }
+
+      /* Rank badges: solid, readable, square-cornered */
+      .place { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 34px; height: 26px; padding: 0 8px; border-radius: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; background: #0F172A; color: #fff; }
+      .place.place-1 { background: var(--kygo-green); color: #0F172A; }
+      .place.grade-strong { background: var(--kygo-green); color: #0F172A; }
+      .place.grade-moderate { background: #0F172A; color: #fff; }
+
+      /* "#1 Sleep stages" placements for the Best-for roll-ups */
+      .ranks { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+      .ranks li { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 8px; background: var(--bg-raised); font-size: 13px; font-weight: 600; color: var(--fg-1); }
+      .rk { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 20px; padding: 0 5px; border-radius: 5px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; background: #0F172A; color: #fff; }
+      .rk.rk-1 { background: var(--kygo-green); color: #0F172A; }
+      .feature .ranks { margin-top: 8px; }
+      .feature .ranks li { background: rgba(255,255,255,0.1); color: #fff; }
+      .feature .rk { background: #fff; color: #0F172A; }
+      .feature .rk.rk-1 { background: var(--kygo-green); }
+      .price-note { margin: 0; font-size: 12px; color: var(--fg-3); }
     `;
   }
 }

@@ -210,6 +210,7 @@ Direct `amazon.com/dp/<ASIN>?tag=kygohealthapp-20` links built from the `asin` f
 `_products` (one per brand, the **current** model). When the Wix feed `GET /_functions/amazonPicks`
 loads, each href is replaced with the feed's `detailPageURL` (same ASIN and tag, plus Amazon's
 `linkCode`). `data-track-label` = the model name, `data-track-position` = the section id.
+Buttons show the live Amazon price from the feed ("$399 on Amazon"), else "View on Amazon".
 The same ASIN list lives in `backend/http-functions.js` (`ASINS`); keep both in sync.
 
 | Product key | Model | ASIN |
