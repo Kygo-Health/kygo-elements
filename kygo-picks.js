@@ -75,6 +75,7 @@ class KygoPicks extends HTMLElement {
   }
 
   disconnectedCallback() {
+    if (this._onScrollMeasure) { window.removeEventListener('scroll', this._onScrollMeasure); window.removeEventListener('resize', this._onScrollMeasure); this._onScrollMeasure = null; }
     if (this._observer) this._observer.disconnect();
     if (this._spy) this._spy.disconnect();
   }
@@ -338,12 +339,7 @@ class KygoPicks extends HTMLElement {
                 reason: 'Close against sleep-lab belts.',
                 catch: 'WHOOP-funded study on the older 2.0 strap.', source: 'Berryhill 2020 (WHOOP-funded)', model: 'Strap 2.0' }
             ],
-            note: 'No third place: Garmin failed in hospital patients and Apple gave no readings.' },
-          { id: 'skin-temp', nav: 'Skin temp', icon: 'temp', title: 'Skin temperature',
-            lede: 'No independent tests yet.',
-            tool: accTool,
-            picks: [],
-            noPick: 'Not ranked. No brand has an independent test of its temperature sensor against a thermometer.' }
+            note: 'No third place: Garmin failed in hospital patients and Apple gave no readings. Skin temperature is not ranked: no brand has an independent test of its sensor yet.' }
         ] },
       { id: 'improve', label: 'Improve your numbers', heading: 'Improve your numbers',
         lede: 'What moves each number, from our factor research. The biggest levers are usually free, so they come first. Then the few things worth buying, and what to skip.',
@@ -630,7 +626,7 @@ class KygoPicks extends HTMLElement {
 
   _renderCard(pick, sectionId) {
     const place = ['', '1st', '2nd', '3rd', '4th'][pick.rank] || '';
-    return this._card(Object.assign(this._pickData(pick, sectionId), { pill: place, pillCls: 'place-' + pick.rank }));
+    return this._card(Object.assign(this._pickData(pick, sectionId), { pill: place, pillCls: 'place-' + pick.rank, compact: true }));
   }
 
   // The winner: one wide card with everything visible.
@@ -674,7 +670,7 @@ class KygoPicks extends HTMLElement {
       ? `<img class="card-logo" src="${this._img(pr.img)}" alt="" loading="lazy" decoding="async" />`
       : `<span class="card-logo card-logo-txt" aria-hidden="true">${e((pr.name || '?').charAt(0))}</span>`;
     return { logo, name: title, tested, stat: pick.stat, statLabel: pick.statLabel, reason: pick.reason, catch: pick.catch,
-      source: pick.source, link, cta: 'Check price on Amazon', pickId: pr.asin || pick.product, sectionId };
+      source: pick.source, link, cta: 'See ' + title + ' on Amazon', pickId: pr.asin || pick.product, sectionId };
   }
 
   // Shared card: the same five visible parts everywhere, details behind a toggle.
@@ -689,14 +685,16 @@ class KygoPicks extends HTMLElement {
         </div>
         <div class="stat"><span class="stat-num">${e(c.stat)}</span><span class="stat-label">${e(c.statLabel)}</span></div>
         ${c.tested ? `<p class="tested">${e(c.tested)}</p>` : ''}
-        <details class="why">
+        <details class="why${c.compact ? ' why-compact' : ''}">
           <summary>Why we picked it</summary>
           <p class="reason">${e(c.reason)}</p>
           <p class="catch"><strong>Catch:</strong> ${e(c.catch)}</p>
           <p class="src">${e(c.source)}</p>
         </details>
-        <a class="buy" href="${e(c.link)}" target="_blank" rel="sponsored nofollow noopener"
-           data-pick="${e(c.pickId)}" data-section="${e(c.sectionId)}" data-track-label="${e(c.name)}" data-track-position="${e(c.sectionId)}">${e(c.cta)}${this._icon('ext')}</a>
+        ${c.compact ? `<a class="buy-link" href="${e(c.link)}" target="_blank" rel="sponsored nofollow noopener"
+           data-pick="${e(c.pickId)}" data-section="${e(c.sectionId)}" data-track-label="${e(c.name)}" data-track-position="${e(c.sectionId)}" aria-label="${e(c.name)} on Amazon">Amazon${this._icon('ext')}</a>`
+        : `<a class="buy" href="${e(c.link)}" target="_blank" rel="sponsored nofollow noopener"
+           data-pick="${e(c.pickId)}" data-section="${e(c.sectionId)}" data-track-label="${e(c.name)}" data-track-position="${e(c.sectionId)}">${e(c.cta)}${this._icon('ext')}</a>`}
       </article>`;
   }
 
@@ -934,7 +932,7 @@ class KygoPicks extends HTMLElement {
           ev.preventDefault();
           const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           const bar = this.shadowRoot.querySelector('.chips');
-          const offset = bar && getComputedStyle(bar).display !== 'none' ? bar.offsetHeight + 12 : 16;
+          const offset = (this._hostTop || 0) + (bar && getComputedStyle(bar).display !== 'none' ? bar.offsetHeight + 12 : 16);
           const y = el.getBoundingClientRect().top + window.scrollY - offset;
           window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
           if (history.replaceState && id !== 'top') history.replaceState(null, '', '#' + id);
@@ -947,7 +945,32 @@ class KygoPicks extends HTMLElement {
   }
 
   // Highlights the nav entry for the section nearest the top of the screen.
+  // Wix pins its site header; measure it so the sidebar and chip bar stick below it.
+  _measureHostHeader() {
+    let h = 0;
+    try {
+      const probe = document.elementsFromPoint(Math.round(window.innerWidth / 2), 2);
+      for (const el of probe) {
+        if (el === this || this.contains(el)) break;
+        let n = el;
+        while (n && n !== document.body) {
+          const pos = getComputedStyle(n).position;
+          if (pos === 'fixed' || pos === 'sticky') { const r = n.getBoundingClientRect(); if (r.top <= 1 && r.height < 200) h = Math.max(h, Math.round(r.bottom)); break; }
+          n = n.parentElement;
+        }
+      }
+    } catch (e) { /* standalone: no host header */ }
+    this.style.setProperty('--host-top', h + 'px');
+    this._hostTop = h;
+  }
+
   _setupScrollSpy() {
+    this._measureHostHeader();
+    if (!this._onScrollMeasure) {
+      this._onScrollMeasure = () => { if (!this._measureQueued) { this._measureQueued = true; setTimeout(() => { this._measureQueued = false; this._measureHostHeader(); }, 250); } };
+      window.addEventListener('scroll', this._onScrollMeasure, { passive: true });
+      window.addEventListener('resize', this._onScrollMeasure);
+    }
     requestAnimationFrame(() => {
       if (this._spy) this._spy.disconnect();
       const secs = this.shadowRoot.querySelectorAll('.pick-section');
@@ -1412,6 +1435,40 @@ class KygoPicks extends HTMLElement {
       .feature .f-main > .card-logo.prod-img { width: 96px; height: 96px; flex-basis: 96px; padding: 6px; border: 0; }
       .cards-next .card-logo.prod-img { width: 44px; height: 44px; flex-basis: 44px; }
       @media (max-width: 719px) { .feature .f-main > .card-logo.prod-img { width: 72px; height: 72px; flex-basis: 72px; } }
+
+      /* Review fixes 2026-10-24 */
+      .chips { top: var(--host-top, 0px); }
+      @media (min-width: 1000px) { .side { top: calc(var(--host-top, 0px) + 20px); max-height: calc(100vh - var(--host-top, 0px) - 40px); overflow-y: auto; } }
+      .pick-section, .group { scroll-margin-top: calc(var(--host-top, 0px) + 72px); }
+      .hero { padding: 36px 0 28px; }
+      /* Runner-up cards: compact, aligned, one quiet Amazon link */
+      .cards-next .card { gap: 8px; box-shadow: none; }
+      .cards-next .card-top { min-height: 48px; align-items: flex-start; }
+      .cards-next .card-title { line-height: 1.2; padding-top: 4px; }
+      .cards-next .card-top .place { margin-left: auto; flex: none; }
+      .cards-next .stat { margin-top: auto; }
+      .cards-next .card { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "top top" "stat stat" "tested tested" "why link"; align-items: center; row-gap: 8px; }
+      .cards-next .card-top { grid-area: top; }
+      .cards-next .stat { grid-area: stat; }
+      .cards-next .tested { grid-area: tested; margin: 0; }
+      .cards-next .why { grid-area: why; }
+      .cards-next .why[open] { grid-column: 1 / -1; grid-row: 5; }
+      .buy-link { grid-area: link; justify-self: end; display: inline-flex; align-items: center; gap: 5px; min-height: 32px; padding: 0 12px; border-radius: 999px; border: 1.5px solid var(--border-subtle); background: #fff; color: var(--fg-1); font-size: 13px; font-weight: 600; text-decoration: none; }
+      .buy-link svg { width: 13px; height: 13px; }
+      .buy-link:hover { border-color: var(--fg-1); }
+      /* Winner card: names up to ~22 chars stay on two lines */
+      .f-name { font-size: clamp(26px, 2.8vw, 34px); }
+      @media (min-width: 720px) { .feature { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); } }
+      /* Phones: runner-ups stack as rows instead of a sideways scroller */
+      @media (max-width: 999px) {
+        .cards-next { display: flex; flex-direction: column; gap: 10px; overflow: visible; margin: 0; padding: 0; }
+        .cards-next .card { flex: none; width: auto; padding: 12px 14px; row-gap: 6px; }
+        .cards-next .card-top { min-height: 0; align-items: center; }
+        .cards-next .card-title { padding-top: 0; font-size: 16px; }
+        .cards-next .stat { flex-direction: row; align-items: baseline; gap: 8px; padding: 0; margin: 0; }
+        .cards-next .stat-num { font-size: 22px; }
+        .cards-next .tested { font-size: 11.5px; }
+      }
     `;
   }
 }
