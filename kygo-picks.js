@@ -644,10 +644,14 @@ class KygoPicks extends HTMLElement {
     return out.sort((a, b) => a.rank - b.rank).slice(0, 3);
   }
 
+  // One short line per rank: "#1 Steps, VO2 max" / "#2 Exercise HR".
   _ranksHtml(list) {
     if (!list || !list.length) return '';
     const e = v => this._esc(v);
-    return `<ul class="ranks">${list.map(r => `<li><span class="rk rk-${r.rank}">#${r.rank}</span>${e(r.nav)}</li>`).join('')}</ul>`;
+    const by = {};
+    list.forEach(r => { (by[r.rank] = by[r.rank] || []).push(r.nav); });
+    const parts = Object.keys(by).sort().map(k => `<span class="rk-part"><strong class="rk-n rk-${k}">#${k}</strong> ${e(by[k].join(', '))}</span>`);
+    return `<p class="ranks">${parts.join('')}</p>`;
   }
 
   // Amazon requires the time of the price and a change notice wherever API prices are shown.
@@ -1516,15 +1520,16 @@ class KygoPicks extends HTMLElement {
       .place.grade-strong { background: var(--kygo-green); color: #0F172A; }
       .place.grade-moderate { background: #0F172A; color: #fff; }
 
-      /* "#1 Sleep stages" placements for the Best-for roll-ups */
-      .ranks { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-      .ranks li { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px 4px 4px; border-radius: 8px; background: var(--bg-raised); font-size: 13px; font-weight: 600; color: var(--fg-1); }
-      .rk { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 20px; padding: 0 5px; border-radius: 5px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; background: #0F172A; color: #fff; }
-      .rk.rk-1 { background: var(--kygo-green); color: #0F172A; }
-      .feature .ranks { margin-top: 8px; }
-      .feature .ranks li { background: rgba(255,255,255,0.1); color: #fff; }
-      .feature .rk { background: #fff; color: #0F172A; }
-      .feature .rk.rk-1 { background: var(--kygo-green); }
+      /* "#1 Steps, VO2 max · #2 Exercise HR" placements for the Best-for roll-ups */
+      .ranks { margin: 0; display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: 1.4; color: var(--fg-1); font-weight: 500; }
+      .rk-part { white-space: normal; }
+      .rk-n { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--fg-1); }
+      .rk-n.rk-1 { color: var(--kygo-green-dark); }
+      .rk-sep { color: var(--fg-3); }
+      .feature .ranks { margin-top: 8px; font-size: 15px; color: rgba(255,255,255,0.85); }
+      .feature .rk-n { color: #fff; }
+      .feature .rk-n.rk-1 { color: var(--kygo-green); }
+      .feature .rk-sep { color: rgba(255,255,255,0.4); }
       .price-note { margin: 0; font-size: 12px; color: var(--fg-3); }
     `;
   }
