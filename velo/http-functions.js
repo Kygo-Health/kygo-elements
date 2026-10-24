@@ -53,7 +53,8 @@ const PARTNER_TAG = 'kygohealthapp-20';
 const MARKETPLACE = 'www.amazon.com';
 const API = 'https://creatorsapi.amazon/catalog/v1/getItems';
 
-// Keep in sync with the asin fields in kygo-picks.js (_products).
+// Default list. The page sends its own list as ?asins=A,B,... (validated below), so adding a
+// product only needs a kygo-picks.js change.
 const ASINS = [
   'B0HJ9YNRW7', // Apple Watch Series 12
   'B0HJB6C34Y', // Apple Watch Ultra 4
@@ -67,7 +68,7 @@ const ASINS = [
 
 // Amazon allows product data to be cached for up to 24 hours. We refresh hourly.
 const TTL_MS = 60 * 60 * 1000;
-let cache = { at: 0, items: null };
+const cacheByKey = {};
 let tokenCache = { at: 0, token: null, version: null };
 
 // Credential versions: 3.x use Login with Amazon, 2.x use Cognito.
@@ -107,14 +108,25 @@ async function getToken() {
 // Field names are lowerCamelCase in the Creators API; tolerate PA-API casing too.
 const pick = (o, ...keys) => { for (const k of keys) if (o && o[k] != null) return o[k]; return null; };
 
-async function fetchItems() {
+async function fetchItems(asins) {
   const t = await getToken();
+  const items = {};
+  let errors = [];
+  for (let i = 0; i < asins.length; i += 10) {
+    const part = await fetchBatch(t, asins.slice(i, i + 10));
+    Object.assign(items, part.items);
+    errors = errors.concat(part.errors || []);
+  }
+  return { items, errors };
+}
+
+async function fetchBatch(t, batch) {
   const auth = t.version.startsWith('2') ? 'Bearer ' + t.token + ', Version ' + t.version : 'Bearer ' + t.token;
   const res = await fetch(API, {
     method: 'post',
     headers: { 'Content-Type': 'application/json', 'Authorization': auth, 'x-marketplace': MARKETPLACE },
     body: JSON.stringify({
-      itemIds: ASINS,
+      itemIds: batch,
       itemIdType: 'ASIN',
       partnerTag: PARTNER_TAG,
       marketplace: MARKETPLACE,
@@ -155,10 +167,17 @@ async function fetchItems() {
 
 export async function get_amazonPicks(request) {
   const headers = { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=3600' };
+  const asked = String((request.query && request.query.asins) || '').split(',').map(a => a.trim().toUpperCase())
+    .filter(a => /^[A-Z0-9]{10}$/.test(a)).slice(0, 30);
+  const asins = asked.length ? [...new Set(asked)].sort() : ASINS;
+  const key = asins.join(',');
+  // Bound memory and API use if someone sends many different lists.
+  if (!cacheByKey[key] && Object.keys(cacheByKey).length >= 10) delete cacheByKey[Object.keys(cacheByKey)[0]];
+  let cache = cacheByKey[key] || { at: 0, items: null };
   try {
     if (!cache.items || Date.now() - cache.at > TTL_MS) {
-      const { items, errors } = await fetchItems();
-      cache = { at: Date.now(), items, errors };
+      const { items, errors } = await fetchItems(asins);
+      cache = cacheByKey[key] = { at: Date.now(), items, errors };
     }
     return ok({ headers, body: { updated: new Date(cache.at).toISOString(), items: cache.items, errors: cache.errors } });
   } catch (err) {

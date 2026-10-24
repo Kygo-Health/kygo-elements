@@ -211,7 +211,7 @@ Direct `amazon.com/dp/<ASIN>?tag=kygohealthapp-20` links built from the `asin` f
 loads, each href is replaced with the feed's `detailPageURL` (same ASIN and tag, plus Amazon's
 `linkCode`). `data-track-label` = the model name, `data-track-position` = the section id.
 Buttons show the live Amazon price from the feed ("$399 on Amazon"), else "View on Amazon".
-The same ASIN list lives in `backend/http-functions.js` (`ASINS`); keep both in sync.
+The page sends its ASIN list to the backend as `?asins=` (since 2026-10-24), so adding a product needs only a `_products` change; `ASINS` in `backend/http-functions.js` is just the default.
 
 | Product key | Model | ASIN |
 |---|---|---|
@@ -223,6 +223,8 @@ The same ASIN list lives in `backend/http-functions.js` (`ASINS`); keep both in 
 | `fitbit` | Google Pixel Watch 5, 45mm Wi-Fi | `B0H7X38W5B` |
 | `samsung` | Samsung Galaxy Watch 9, 40mm Bluetooth | `B0H1DG7XRW` |
 | `polar` | Polar Grit X2 Pro | `B0CXHJRWN9` |
+| `fitbit-air` | Google Fitbit Air (No subscription #1) | `B0GTMTZF3V` |
+| `fitbit-charge` | Fitbit Charge 6 (Breathing rate #1) | `B0CC62ZG1M` |
 
 ## B. Supplements & sleep/recovery products
 

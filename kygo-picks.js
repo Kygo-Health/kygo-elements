@@ -97,7 +97,12 @@ class KygoPicks extends HTMLElement {
   _dp(asin) { return 'https://www.amazon.com/dp/' + asin + '?tag=' + KY_AMZ_TAG; }
 
   // Live Amazon data from the Wix backend (/_functions/amazonPicks): { ASIN: { title, image, url } }.
-  get _feedUrl() { return this.getAttribute('amazon-feed') || '/_functions/amazonPicks'; }
+  get _feedUrl() {
+    const own = this.getAttribute('amazon-feed');
+    if (own) return own;
+    const asins = [...new Set(Object.values(this._products).map(p => p.asin).filter(Boolean))];
+    return '/_functions/amazonPicks?asins=' + asins.join(',');
+  }
 
   async _loadAmazon() {
     if (this._amzLoaded || this.hasAttribute('no-feed')) return;
@@ -143,6 +148,8 @@ class KygoPicks extends HTMLElement {
       'garmin': { name: 'Garmin', current: 'Garmin Forerunner 970', asin: 'B0F8QWPVNK', img: '273a63_c545c093c04d4ca4ade77e5ca43fd433', store: 'amazon' },
       'whoop': { name: 'WHOOP', current: 'WHOOP 5.0', asin: 'B0FPML7DJC', img: '273a63_c52aaaca1f7243f3818cf51d9374dbd4', store: 'amazon' },
       'fitbit': { name: 'Fitbit / Google', current: 'Google Pixel Watch 5', asin: 'B0H7X38W5B', img: '273a63_c12bab319dc34737a386c7449f5f92c7', store: 'amazon' },
+      'fitbit-air': { name: 'Fitbit / Google', current: 'Google Fitbit Air', asin: 'B0GTMTZF3V', img: '273a63_c12bab319dc34737a386c7449f5f92c7', store: 'amazon' },
+      'fitbit-charge': { name: 'Fitbit / Google', current: 'Fitbit Charge 6', asin: 'B0CC62ZG1M', img: '273a63_c12bab319dc34737a386c7449f5f92c7', store: 'amazon' },
       'samsung': { name: 'Samsung Galaxy Watch', current: 'Samsung Galaxy Watch 9', asin: 'B0H1DG7XRW', img: '273a63_21fd42e4a5d1459bb6db751a0ea5e161', store: 'amazon' },
       'polar': { name: 'Polar', current: 'Polar Grit X2 Pro', asin: 'B0CXHJRWN9', img: '', store: 'amazon' }
     };
@@ -187,12 +194,11 @@ class KygoPicks extends HTMLElement {
               { product: 'oura', rank: 3, stat: '4 of 10', statLabel: 'metrics won, the most 1st places', reason: 'Best sleep data in our rankings, first on sleep stages, sleep timing, HRV and resting HR.', catch: 'A ring, not a watch. Needs a membership.', source: 'Kygo roll-up of the rankings below' },
               { product: 'samsung', rank: 4, stat: '3 of 10', statLabel: 'metrics on the podium', reason: 'Passed the blood oxygen standard in a low-oxygen lab test.', catch: 'Some health features need a Samsung phone.', source: 'Kygo roll-up of the rankings below' }
             ] },
-          { id: 'best-no-sub', nav: 'No subscription', icon: 'pulse', title: 'No subscription, any phone', lede: 'Full data without a monthly fee.', tool: accTool, metrics: 'all', picks: [
-              { product: 'garmin', rank: 1, stat: '5 of 10', statLabel: 'metrics on the podium, no membership', reason: 'Closest step count across 59 studies, with every metric free to see.', catch: 'Sleep tracking trails Oura and Apple.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'apple-watch', rank: 2, stat: '7 of 10', statLabel: 'metrics on the podium', reason: 'Most accurate workout heart rate and blood oxygen, with no fee.', catch: 'iPhone only.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'fitbit', rank: 3, stat: '6 of 10', statLabel: 'metrics on the podium', reason: 'Closest calorie estimate across three lab tests.', catch: 'Check which insights need a paid plan.', source: 'Kygo roll-up of the rankings below' },
-              { product: 'samsung', rank: 4, stat: '3 of 10', statLabel: 'metrics on the podium', reason: 'Passed the blood oxygen standard in a low-oxygen lab test, with no fee.', catch: 'Some features need a Samsung phone.', source: 'Kygo roll-up of the rankings below' }
-            ], note: 'Oura and WHOOP need a paid membership.' }
+          { id: 'best-no-sub', nav: 'No subscription', icon: 'pulse', title: 'No subscription, any phone', lede: 'No monthly fee, and works with iPhone or Android.', tool: accTool, metrics: 'all', picks: [
+              { product: 'fitbit-air', rank: 1, reason: 'From Fitbit, first for calories and breathing rate in our rankings. $99 with no required subscription.', catch: 'No screen, and it does not track VO2 max.', source: 'Kygo roll-up of the rankings below', model: 'Other Fitbit models' },
+              { product: 'garmin', rank: 2, reason: 'Closest step count across 59 studies, with every metric free to see.', catch: 'A premium running watch, priced like one.', source: 'Kygo roll-up of the rankings below' },
+              { product: 'polar', rank: 3, reason: 'Resting heart rate within 2.7% of a chest-strap ECG overnight, with no fee.', catch: 'Fewer independent tests than the others.', source: 'Kygo roll-up of the rankings below' }
+            ], note: 'Oura and WHOOP need a paid membership. Apple Watch, Pixel Watch and Samsung have no fee but tie you to one phone.' }
         ] },
       { id: 'wearables', label: 'By metric', kicker: 'Most accurate for', heading: 'Wearables, by metric',
         lede: 'Oura wins what is measured overnight at rest. Apple, Garmin and Fitbit split the daytime metrics. Each section ranks brands on published validation studies.',
@@ -282,9 +288,7 @@ class KygoPicks extends HTMLElement {
               { product: 'samsung', rank: 2, badge: 'Passes the standard', stat: '3.8', statLabel: 'points off, same lab test',
                 reason: 'Passed the standard in the same lab test.',
                 catch: 'Read about 2.6 points low.', source: 'Walzel 2023', model: 'Galaxy Watch 5' },
-              { product: 'garmin', rank: 3, badge: 'Third', stat: '3.5', statLabel: 'points off arterial blood, hospital patients',
-                reason: 'Within the standard against arterial blood in hospital patients.',
-                catch: 'Read 2.7 points low, and failed a finger-oximeter comparison.', source: 'Hospital study, 109 patients', model: 'Fenix 6 Pro' }
+              { product: 'garmin', rank: 3, stat: '5.8 points off', statLabel: 'a medical oximeter, 49 hospital patients', reason: 'Third behind Apple and Samsung. Read low in a 49-patient hospital study.', catch: 'In the same study, 28% of Fenix 6 Pro readings failed.', source: 'Jiang 2023', model: 'Venu 2s' }
             ] },
           { id: 'steps', nav: 'Steps', icon: 'steps', title: 'Steps', confidence: 'Medium',
             lede: 'Daily life, against a research step counter.',
@@ -310,7 +314,7 @@ class KygoPicks extends HTMLElement {
                 catch: 'Wrist-only it was far worse in one study of older women.', source: 'Engel 2026; Carrier 2025', model: 'Forerunner 245' },
               { product: 'fitbit', rank: 2, badge: 'Second', stat: '8.7%', statLabel: 'error vs a lab test',
                 reason: 'Second, from a Pixel Watch 3 test.',
-                catch: 'That test was linked to Google.', source: 'Pixel Watch 3 study (Google-linked)', model: 'Pixel Watch 3' },
+                catch: 'That test was linked to Google.', source: 'Lambe 2026 (Pixel Watch 3)', model: 'Pixel Watch 3' },
               { product: 'apple-watch', rank: 3, badge: 'Third', stat: '13%', statLabel: 'error vs a lab test',
                 reason: 'Third. Reads low in every independent test.',
                 catch: 'Underestimates most in fit women.', source: 'Lambe 2026; Caserman 2024', model: 'Series 10' }
@@ -334,7 +338,7 @@ class KygoPicks extends HTMLElement {
             lede: 'Few tests, so treat this one loosely.',
             tool: accTool,
             picks: [
-              { product: 'fitbit', rank: 1, badge: 'Best for breathing rate', stat: '0.3 to 1.0', statLabel: 'breaths a minute off',
+              { product: 'fitbit-charge', rank: 1, badge: 'Best for breathing rate', stat: '0.3 to 1.0', statLabel: 'breaths a minute off',
                 reason: 'Closest in an independent overnight test.',
                 catch: 'Only the older Charge 4 was tested.', source: 'Hermans 2024', model: 'Charge 4' },
               { product: 'whoop', rank: 2, badge: 'Second', stat: '0.1', statLabel: 'breaths a minute off',
@@ -676,9 +680,9 @@ class KygoPicks extends HTMLElement {
     const title = pr.current || pr.name;
     const live = pr.asin && this._amzData ? this._amzData[pr.asin] : null;
     const link = (live && live.url) || pr.link || (pr.asin ? this._dp(pr.asin) : this._amz(title));
-    const short = (pr.current || '').replace(/^(Apple Watch|Oura Ring|Garmin|Google|Samsung Galaxy Watch|Polar|WHOOP)\s*/, '');
+    const short = (pr.current || '').replace(/^(Apple Watch|Oura Ring|Garmin|Google Fitbit|Fitbit|Google|Samsung Galaxy Watch|Polar|WHOOP)\s*/, '');
     const tested = pick.model && pick.model !== short && pick.model !== pr.current
-      ? (pick.model === 'Several models' ? 'Tested across several models' : 'Tested on ' + (/^[0-9]/.test(pick.model) ? pr.name + ' ' : '') + pick.model) : '';
+      ? (pick.model === 'Several models' ? 'Tested across several models' : pick.model === 'Other Fitbit models' ? 'Not tested yet: rankings come from other Fitbit models' : 'Tested on ' + (/^[0-9]/.test(pick.model) ? pr.name + ' ' : '') + pick.model) : '';
     const e = v => this._esc(v);
     const logo = live && live.image
       ? `<a class="card-logo prod-img" href="${e(link)}" target="_blank" rel="sponsored nofollow noopener" data-pick="${e(pr.asin)}" data-section="${e(sectionId)}" data-track-label="${e(title)}" data-track-position="${e(sectionId)}"><img src="${e(live.image)}" alt="${e(title)}" loading="lazy" decoding="async" /></a>`
@@ -751,6 +755,52 @@ class KygoPicks extends HTMLElement {
         </div>` : ''}
         ${skip ? `<p class="skip-line"><span class="imp-h">Skip</span> ${skip}</p>` : ''}
       </div>`;
+  }
+
+  // Studies behind the wearable rankings (Kygo Research Library, State of Wearable Accuracy sources).
+  get _studyRefs() {
+    const d = x => 'https://doi.org/' + x;
+    return {
+      'Berryhill 2020': [['Berryhill S, et al. Effect of wearables on sleep in healthy individuals. J Clin Sleep Med, 2020. WHOOP-funded.', d('10.5664/jcsm.8356')]],
+      'Carrier 2025': [['Carrier B, et al. Validation of aerobic capacity (VO2max) and pulse oximetry in wearable technology. Sensors, 2025.', d('10.3390/s25010275')]],
+      'Caserman 2024': [['Caserman P, et al. Apple Watch VO2 max estimation. JMIR Biomedical Engineering, 2024.', d('10.2196/59459')]],
+      'Dial 2025': [['Dial MB, et al. Validation of nocturnal resting heart rate and HRV in consumer wearables. Physiological Reports, 2025.', d('10.14814/phy2.70527')]],
+      'Engel 2026': [['Engel FA, et al. Forerunner 245 VO2 max in highly vs moderately trained runners. Eur J Appl Physiol, 2026.', d('10.1007/s00421-025-05923-x')]],
+      'Gielen 2026': [['Gielen J, et al. Ten-device wrist heart rate validation. JMIR Formative Research, 2026.', d('10.2196/85186')]],
+      'Hermans 2024': [['Hermans F, et al. Consumer wearable clinical parameters in COPD and healthy controls. JMIR mHealth and uHealth, 2024.', d('10.2196/56027')]],
+      'Hong 2024': [['Hong KR, et al. Apple Watch 6 vs Galaxy Watch 4: step-count estimation in daily activities. Sensors, 2024.', d('10.3390/s24144658')]],
+      'Jiang 2023': [['Jiang Y, et al. Accuracy of blood oxygen saturation in common consumer smartwatches. PLOS Digital Health, 2023.', d('10.1371/journal.pdig.0000296')]],
+      'Kostrna 2026': [['Kostrna, et al. Four smartwatches vs indirect calorimetry for calories. PLOS ONE, 2026.', d('10.1371/journal.pone.0353261')], ['Kostrna, et al. Four smartwatches vs a chest strap for heart rate during cycling, 58 adults. Sensors, 2026.', d('10.3390/s26102922')]],
+      'Lambe 2026': [['Lambe R, et al. The accuracy of Apple Watch measurements: a living systematic review and meta-analysis. npj Digital Medicine, 2026.', d('10.1038/s41746-025-02238-1')]],
+      'Lambe 2026 (Pixel Watch 3)': [['Lambe R, et al. Validity of the Google Pixel Watch 3 for estimating VO2 max and heart rate. PLOS ONE, 2026. Google-funded.', d('10.1371/journal.pone.0356808')]],
+      'Lee 2026': [['Lee TH, et al. Four smartwatches during endurance and resistance exercise vs indirect calorimetry. Sensors, 2026.', d('10.3390/s26082526')]],
+      'Miller 2022': [['Miller DJ, et al. Six wearables vs polysomnography and ECG for sleep, heart rate and HRV. Sensors, 2022.', d('10.3390/s22166317')]],
+      "O'Grady 2024": [["O'Grady B, et al. Apple Watch Series 9 and Ultra 2 for heart rate variability and resting heart rate. Sensors, 2024.", d('10.3390/s24196220')]],
+      'Paluch 2026': [['Paluch, et al. Network meta-analysis of wearable step-count accuracy, 59 studies. J Sport Health Sci, 2026.', d('10.1016/j.jshs.2026.101162')]],
+      'Robbins 2024': [['Robbins R, et al. Accuracy of three commercial wearable devices for sleep tracking in healthy adults. Sensors, 2024. Oura-funded.', d('10.3390/s24206532')]],
+      'Rowe 2025': [['Rowe G, et al. Apple Watch step counting during slow and shuffling gait. PLOS ONE, 2025.', d('10.1371/journal.pone.0333504')]],
+      'Svensson 2024': [['Svensson T, et al. Validity of the Oura Ring Gen 3 against polysomnography over multiple nights. Sleep Medicine, 2024. Oura-funded.', d('10.1016/j.sleep.2024.01.020')]],
+      'Walzel 2023': [['Walzel S, et al. Evaluation of leading smartwatches for the detection of hypoxemia. Sensors, 2023.', d('10.3390/s23229164')]],
+      'Yun 2026': [['Yun, Ko, Lee. Four smartwatches during resistance exercise. Bioengineering, 2026.', d('10.3390/bioengineering13101099')]]
+    };
+  }
+
+  _renderSources(groups) {
+    const refs = this._studyRefs;
+    const used = new Set();
+    groups.forEach(g => g.sections.forEach(sec => (sec.picks || []).forEach(p => String(p.source || '').split(';').forEach(raw => {
+      const k = raw.trim().replace(/, independent$/, '').replace(/ \((Oura|WHOOP)-funded\)$/, '');
+      if (refs[k]) used.add(k);
+    }))));
+    if (!used.size) return '';
+    const e = v => this._esc(v);
+    const items = [...used].sort().flatMap(k => refs[k]).map(([cite, url]) =>
+      `<li><a href="${e(url)}" target="_blank" rel="noopener nofollow" data-action="source-link">${e(cite)}</a></li>`).join('');
+    return `<section class="sources-list" id="sources" aria-labelledby="h-sources">
+        <h2 id="h-sources">Sources</h2>
+        <p class="sources-note">Rankings use the studies below, read from each paper. Brand-funded studies are marked.</p>
+        <ol>${items}</ol>
+      </section>`;
   }
 
   _renderSponsor(sp) {
@@ -902,6 +952,7 @@ class KygoPicks extends HTMLElement {
                 ${g.sections.map(s => this._renderSection(g, s)).join('')}
                 ${this._renderCross()}
                 ${this._renderAppCta()}
+                ${gi === groups.length - 1 && this._page === 'wearables' ? this._renderSources(this._groups.filter(x => (x.page || x.id) === 'wearables')) : ''}
               </div>`).join('')}
           </div>
         </div>
@@ -1496,6 +1547,16 @@ class KygoPicks extends HTMLElement {
       .place.grade-moderate { background: #0F172A; color: #fff; }
 
       .price-note { margin: 0; font-size: 12px; color: var(--fg-3); }
+
+      /* Sources */
+      .sources-list { margin-top: 8px; padding: 28px; border-radius: 24px; background: #fff; border: 1px solid var(--border-subtle); }
+      @media (max-width: 719px) { .sources-list { padding: 20px 16px; } }
+      .sources-list h2 { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700; color: var(--fg-1); margin: 0 0 6px; }
+      .sources-note { margin: 0 0 14px; font-size: 13.5px; color: var(--fg-2); }
+      .sources-list ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; }
+      .sources-list li { font-size: 13px; line-height: 1.45; color: var(--fg-2); }
+      .sources-list a { color: var(--fg-2); text-decoration: none; }
+      .sources-list a:hover { color: var(--kygo-green-dark); text-decoration: underline; }
     `;
   }
 }
