@@ -630,30 +630,6 @@ class KygoPicks extends HTMLElement {
     return this._card(Object.assign(this._pickData(pick, sectionId), { pill: place, pillCls: 'place-' + pick.rank }, extra || {}));
   }
 
-  // Where a product placed in the metric rankings ("#1 Sleep stages"), for the Best-for roll-ups.
-  _placements(productKey, metrics) {
-    const g = this._groups.find(x => x.id === 'wearables');
-    if (!g) return [];
-    const key = productKey === 'apple-ultra' ? 'apple-watch' : productKey;
-    const out = [];
-    g.sections.forEach(sec => {
-      if (metrics !== 'all' && !metrics.includes(sec.id)) return;
-      const p = (sec.picks || []).find(x => x.product === key);
-      if (p && p.rank <= 3) out.push({ rank: p.rank, nav: sec.nav });
-    });
-    return out.sort((a, b) => a.rank - b.rank).slice(0, 3);
-  }
-
-  // One short line per rank: "#1 Steps, VO2 max" / "#2 Exercise HR".
-  _ranksHtml(list) {
-    if (!list || !list.length) return '';
-    const e = v => this._esc(v);
-    const by = {};
-    list.forEach(r => { (by[r.rank] = by[r.rank] || []).push(r.nav); });
-    const parts = Object.keys(by).sort().map(k => `<span class="rk-part"><strong class="rk-n rk-${k}">#${k}</strong> ${e(by[k].join(', '))}</span>`);
-    return `<p class="ranks">${parts.join('')}</p>`;
-  }
-
   // Amazon requires the time of the price and a change notice wherever API prices are shown.
   _priceNote() {
     if (!this._amzData || !Object.values(this._amzData).some(x => x && x.price)) return '';
@@ -674,8 +650,7 @@ class KygoPicks extends HTMLElement {
   // The winner: one wide card with everything visible.
   _feature(c) {
     const e = v => this._esc(v);
-    const facts = c.ranks && c.ranks.length ? this._ranksHtml(c.ranks)
-      : `<p class="f-stat"><strong>${e(c.stat)}</strong> ${e(c.statLabel)}</p>`;
+    const facts = c.plain ? '' : `<p class="f-stat"><strong>${e(c.stat)}</strong> ${e(c.statLabel)}</p>`;
     return `
       <article class="feature">
         <div class="f-main">
@@ -717,8 +692,7 @@ class KygoPicks extends HTMLElement {
   // Secondary card: name, one fact, one short line, one button. Same size everywhere.
   _card(c) {
     const e = v => this._esc(v);
-    const facts = c.ranks && c.ranks.length ? this._ranksHtml(c.ranks)
-      : `<p class="c-stat"><strong>${e(c.stat)}</strong> ${e(c.statLabel)}</p>`;
+    const facts = c.plain ? '' : `<p class="c-stat"><strong>${e(c.stat)}</strong> ${e(c.statLabel)}</p>`;
     return `
       <article class="card">
         <div class="card-top">
@@ -796,7 +770,7 @@ class KygoPicks extends HTMLElement {
     const body = s.levers ? this._renderImprove(s, a)
       : isGear ? this._renderGear(s, a)
       : s.picks && s.picks.length
-      ? `${this._feature(Object.assign(this._pickData(s.picks[0], a), { kicker: g.pickLabel || '#1 most accurate' }, s.metrics ? { ranks: this._placements(s.picks[0].product, s.metrics), catch: s.picks[0].catch } : { catch: s.picks[0].catch }))}${s.picks.length > 1 ? `<h4 class="next-h">${s.metrics ? 'Also good' : 'Next closest'}</h4><div class="cards cards-next">${s.picks.slice(1).map(p => this._renderCard(p, a, s.metrics ? { ranks: this._placements(p.product, s.metrics), pill: '' } : null)).join('')}</div>` : ''}`
+      ? `${this._feature(Object.assign(this._pickData(s.picks[0], a), { kicker: g.pickLabel || '#1 most accurate' }, s.metrics ? { plain: true, catch: s.picks[0].catch } : { catch: s.picks[0].catch }))}${s.picks.length > 1 ? `<h4 class="next-h">${s.metrics ? 'Also good' : 'Next closest'}</h4><div class="cards cards-next">${s.picks.slice(1).map(p => this._renderCard(p, a, s.metrics ? { plain: true, pill: '' } : null)).join('')}</div>` : ''}`
       : `<div class="nopick">${this._icon('minus')}<p>${e(s.noPick || '')}</p></div>`;
     return `
       <section class="pick-section animate-on-scroll${isGear ? ' is-gear' : ''}" id="${a}" data-anchor="${a}" aria-labelledby="h-${a}">
@@ -1512,7 +1486,7 @@ class KygoPicks extends HTMLElement {
       .c-stat strong { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 24px; line-height: 1.1; color: var(--fg-1); }
       .c-reason { margin: 0; font-size: 14px; line-height: 1.45; color: var(--fg-1); }
       .cards-next .tested { margin: -4px 0 0; font-size: 12px; color: var(--fg-3); }
-      @media (min-width: 720px) { .cards-next .card-top { min-height: 44px; } .c-reason { min-height: 2.9em; } }
+      @media (min-width: 720px) { .cards-next .card-top { min-height: 44px; } .c-reason { min-height: 4.35em; } .c-stat { min-height: 3.3em; } }
 
       /* Rank badges: solid, readable, square-cornered */
       .place { flex: none; display: inline-flex; align-items: center; justify-content: center; min-width: 34px; height: 26px; padding: 0 8px; border-radius: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; background: #0F172A; color: #fff; }
@@ -1520,16 +1494,6 @@ class KygoPicks extends HTMLElement {
       .place.grade-strong { background: var(--kygo-green); color: #0F172A; }
       .place.grade-moderate { background: #0F172A; color: #fff; }
 
-      /* "#1 Steps, VO2 max · #2 Exercise HR" placements for the Best-for roll-ups */
-      .ranks { margin: 0; display: flex; flex-direction: column; gap: 2px; font-size: 14px; line-height: 1.4; color: var(--fg-1); font-weight: 500; }
-      .rk-part { white-space: normal; }
-      .rk-n { font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--fg-1); }
-      .rk-n.rk-1 { color: var(--kygo-green-dark); }
-      .rk-sep { color: var(--fg-3); }
-      .feature .ranks { margin-top: 8px; font-size: 15px; color: rgba(255,255,255,0.85); }
-      .feature .rk-n { color: #fff; }
-      .feature .rk-n.rk-1 { color: var(--kygo-green); }
-      .feature .rk-sep { color: rgba(255,255,255,0.4); }
       .price-note { margin: 0; font-size: 12px; color: var(--fg-3); }
     `;
   }
