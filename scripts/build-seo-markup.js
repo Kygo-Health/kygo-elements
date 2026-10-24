@@ -64,6 +64,7 @@ const TOOLS = {
   'kygo-vo2max-accuracy':         { file: 'kygo-vo2max-accuracy.js',           path: '/tools/vo2-max-accuracy' },
   'kygo-vo2max-factors':          { file: 'kygo-vo2max-factors.js',            path: '/tools/vo2-max-factors' },
   'kygo-wearable-accuracy':       { file: 'kygo-wearable-accuracy.js',         path: '/tools/wearable-accuracy' },
+  'kygo-picks':                   { file: 'kygo-picks.js',                     path: '/best-wearables' },
 };
 
 // Content that only renders after a click (category tabs, device pickers, "show sources",
@@ -143,8 +144,13 @@ function serialise(tag) {
       if (kids.some(k => k.block)) return kids; // a link wrapping a card: keep the card, drop the link
       const inner = kids.map(k => k.html).join('').trim();
       if (name !== 'a') return [{ block: false, html: `<${name}>${inner}</${name}>` }];
-      const href = abs(node.getAttribute('href') || '');
-      return [{ block: false, html: href && /^https?:/.test(href) ? `<a href="${esc(href)}">${inner}</a>` : inner }];
+      const raw = node.getAttribute('href') || '';
+      // In-page jump links (#section) would resolve to the homepage; keep their text only.
+      const href = raw.startsWith('#') ? null : abs(raw);
+      // Keep rel (sponsored/nofollow on affiliate links) so the crawler copy matches the page.
+      const rel = node.getAttribute('rel');
+      const relAttr = rel ? ` rel="${esc(rel)}"` : '';
+      return [{ block: false, html: href && /^https?:/.test(href) ? `<a href="${esc(href)}"${relAttr}>${inner}</a>` : inner }];
     }
     if (KEEP_BLOCK.has(name)) {
       const leaf = /^(h[1-6]|p|li|th|td|dt|dd)$/.test(name);

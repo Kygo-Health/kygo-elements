@@ -40,7 +40,8 @@ const PAGES = {
   "/tools/supplements-by-metric": "kygo-supplements-by-metric",
   "/tools/vo2-max-accuracy": "kygo-vo2max-accuracy",
   "/tools/vo2-max-factors": "kygo-vo2max-factors",
-  "/tools/wearable-accuracy": "kygo-wearable-accuracy"
+  "/tools/wearable-accuracy": "kygo-wearable-accuracy",
+  "/best-wearables": "kygo-picks"
 };
 
 export const getSeoMarkup = webMethod(Permissions.Anyone, async (pathOrTag) => {

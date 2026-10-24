@@ -204,6 +204,25 @@ buy links are affiliate links.
 
 ---
 
+### `kygo-picks.js` (/best-wearables), added 2026-10-24
+
+Direct `amazon.com/dp/<ASIN>?tag=kygohealthapp-20` links built from the `asin` field in
+`_products` (one per brand, the **current** model). When the Wix feed `GET /_functions/amazonPicks`
+loads, each href is replaced with the feed's `detailPageURL` (same ASIN and tag, plus Amazon's
+`linkCode`). `data-track-label` = the model name, `data-track-position` = the section id.
+The same ASIN list lives in `backend/http-functions.js` (`ASINS`); keep both in sync.
+
+| Product key | Model | ASIN |
+|---|---|---|
+| `apple-watch` | Apple Watch Series 12 GPS 42mm | `B0HJ9YNRW7` |
+| `apple-ultra` | Apple Watch Ultra 4 49mm | `B0HJB6C34Y` |
+| `oura` | Oura Ring 5, Silver, size 9 | `B0GRJVBPH3` |
+| `garmin` | Garmin Forerunner 970, 47mm Titanium | `B0F8QWPVNK` |
+| `whoop` | WHOOP 5.0 One bundle, 12-month membership | `B0FPML7DJC` |
+| `fitbit` | Google Pixel Watch 5, 45mm Wi-Fi | `B0H7X38W5B` |
+| `samsung` | Samsung Galaxy Watch 9, 40mm Bluetooth | `B0H1DG7XRW` |
+| `polar` | Polar Grit X2 Pro | `B0CXHJRWN9` |
+
 ## B. Supplements & sleep/recovery products
 
 Rendered inline on the "factors" pages as `affiliate:{url,label}` chips under each factor.

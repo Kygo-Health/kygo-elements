@@ -25,6 +25,7 @@ This is the canonical list of every live URL on kygo.app. Tool descriptions and 
 | Privacy Policy | https://www.kygo.app/privacy-policy |
 | Terms & Conditions | https://www.kygo.app/terms-conditions |
 | Accessibility Statement | https://www.kygo.app/accessibility-statement |
+| Best Wearables (buying guide, `kygo-picks`) | https://www.kygo.app/best-wearables (page not created yet, 2026-10-24) |
 
 **Machine-readable endpoints (not pages, not in sitemap):**
 

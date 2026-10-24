@@ -67,6 +67,8 @@ Components are isolated in Shadow DOM and communicate with the Wix host two ways
   `tool-wearable-accuracy`). Fields: `email` (Text), `source` (Text), `subscribedAt` (Date & Time).
 - **`Blog/Posts`, `Blog/Categories`** — native Wix Blog collections (blog + blog-post pages).
 - **Secret `GEMINI_API_KEY`** — Gemini API key for the food scanner (gemini backend).
+- **Secrets `AMZ_CREATOR_ID`, `AMZ_CREATOR_SECRET`** (optional `AMZ_CREATOR_VERSION`) — Amazon
+  Creators API credentials for `GET /_functions/amazonPicks` (best-wearables page).
 
 ---
 
@@ -219,6 +221,17 @@ export async function post_subscribe(request) {
 > `Subscribers` collection, (b) remove the old blog-post page `subscribe` handler, (c) deploy the
 > two snippet changes (footer strip + the site-wide `kygo-inline-subscribe.js` loader in the GA4
 > head snippet), (d) re-point the tool/blog embeds at the new commit.
+
+### `backend/http-functions.js` — `get_amazonPicks` — ✅ LIVE (2026-10-24)
+Same file as `post_subscribe` above (both live in it; the live file also has an `options_subscribe`
+CORS handler). `GET /_functions/amazonPicks` gets a Creators API token (Login with Amazon v3.1,
+falling back to Cognito v2.1), calls `POST https://creatorsapi.amazon/catalog/v1/getItems` for the
+`ASINS` list with resources `images.primary.large` + `itemInfo.title`, and returns
+`{ updated, items: { <ASIN>: { title, image, url } }, errors }`. Cached in memory for 1 hour
+(Amazon allows 24 h) and served with `Cache-Control: public, max-age=3600`; on failure it serves the
+last good copy, else `500 {error:'amazon_unavailable'}`. Read by `kygo-picks.js` (same origin).
+Verified live 2026-10-24: 8/8 items with image + title, no errors. Full code: the
+`handoffs/best-wearables/http-functions.js` copy in the Kygo Research Library.
 
 ### `backend/contactForm.web.js` — ✅ KEEP (live, required)
 Validates the contact form and inserts into the **`ContactSubmissions`** collection
