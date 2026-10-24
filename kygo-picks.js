@@ -132,7 +132,7 @@ class KygoPicks extends HTMLElement {
 
   get _preview() { return this.hasAttribute('preview'); }
 
-  get _updated() { return { page: 'Oct 2026', iso: '2026-10-15' }; }
+  get _updated() { return { page: 'Oct 2026', iso: '2026-10-24' }; }
 
   // ── Data: products ────────────────────────────────────────────────────
   // One entry per product. `img` is a Wix media id. `link` is the outbound
@@ -541,7 +541,7 @@ class KygoPicks extends HTMLElement {
         h1: 'Best wearables, <span class="hl">ranked by research</span>',
         lede: 'The best pick for how you train, sleep and which phone you use, plus the most accurate brand for each metric, ranked on published validation studies.',
         ldName: 'Best wearables 2026, ranked by accuracy',
-        ldDesc: 'The most accurate wearable brands for sleep stages, sleep timing, HRV, resting heart rate, exercise heart rate, SpO2, steps, calories, VO2 max and breathing rate, ranked on published validation studies.',
+        ldDesc: 'The best wearable for sleep, training, iPhone and Android, plus the most accurate brand for HRV, heart rate, SpO2, steps and VO2 max, ranked on real studies.',
         cross: { kicker: 'Next step', title: 'Improve your numbers', text: 'What actually moves deep sleep, HRV, resting HR and VO2 max, free levers first.' }
       },
       improve: {
@@ -1090,19 +1090,27 @@ class KygoPicks extends HTMLElement {
 
   _injectStructuredData() {
     if (document.querySelector('script[data-kygo-picks-ld]')) return;
+    // The Wix SEO panel serves the same CollectionPage + ItemList server-side (the copy crawlers see).
+    // Skip the runtime copy when it is there; keep the two in sync when sections change.
+    if ([...document.querySelectorAll('script[type="application/ld+json"]')].some(x => /"CollectionPage"/.test(x.textContent))) return;
     const items = [];
     this._visibleGroups.forEach(g => g.sections.forEach(s => {
       if (s.status === 'draft') return;
-      items.push({ '@type': 'ListItem', position: items.length + 1, name: s.title, url: this._pages[this._page].url + '#' + this._anchor(g, s) });
+      items.push({ '@type': 'ListItem', position: items.length + 1, name: (g.kicker ? g.kicker + ': ' : '') + s.title, url: this._pages[this._page].url + '#' + this._anchor(g, s) });
     }));
     const ld = {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
+      '@id': this._pages[this._page].url + '#webpage',
       name: this._pages[this._page].ldName,
       description: this._pages[this._page].ldDesc,
       url: this._pages[this._page].url,
       dateModified: this._updated.iso,
       publisher: { '@type': 'Organization', name: 'Kygo Health', url: 'https://www.kygo.app' },
+      breadcrumb: { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.kygo.app/' },
+        { '@type': 'ListItem', position: 2, name: this._page === 'wearables' ? 'Best Wearables' : 'Improve Your Numbers', item: this._pages[this._page].url }
+      ] },
       mainEntity: { '@type': 'ItemList', itemListElement: items }
     };
     const script = document.createElement('script');

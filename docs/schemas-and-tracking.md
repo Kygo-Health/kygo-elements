@@ -38,7 +38,7 @@ Every content component implements `_injectStructuredData()`, called once from
 | `kygo-bundle.js` | — | **none** — the homepage `Organization` + `SoftwareApplication` JSON-LD is served from the Wix head (`wix-global-code.md` Blocks 2 & 3), which is the single source of truth. The `kygo-hero-section` element used to inject duplicate, stale copies (`data-kygo-bundle-ld` SoftwareApplication + `data-kygo-org-ld` Organization); both injections were removed. |
 | `kygo-hiw-bundle.js` | `data-kygo-hiw-ld`, `data-kygo-hiw-faq-ld` | HowTo + HowToStep; FAQPage (6 Q&A) |
 | `kygo-contact.js` | `data-kygo-contact-ld` | ContactPage, Organization, ContactPoint |
-| `kygo-picks.js` | `data-kygo-picks-ld` | CollectionPage + ItemList (one ListItem per section, `url` = page + `#anchor`) |
+| `kygo-picks.js` | `data-kygo-picks-ld` | CollectionPage (+ BreadcrumbList, ItemList of the 15 sections). **Server copy lives in the Wix SEO panel for `/best-wearables` (page id `o97rs`) since 2026-10-24**; the component skips its runtime copy when a server CollectionPage is present. Change sections → update both. |
 | `kygo-tools.js` | `data-kygo-tools-ld` | CollectionPage, ItemList, ListItem, Organization |
 | `kygo-blog.js` | `data-kygo-blog-ld` | CollectionPage, Organization, ImageObject |
 | `kygo-calorie-burn-accuracy.js` | `data-kygo-calorie-burn-ld` | WebApplication, **HowTo + HowToStep + HowToTool**, FAQPage, BreadcrumbList, **7× ScholarlyArticle**, Offer, Organization |
