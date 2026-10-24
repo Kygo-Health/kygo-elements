@@ -103,7 +103,8 @@ class KygoPicks extends HTMLElement {
     if (this._amzLoaded || this.hasAttribute('no-feed')) return;
     this._amzLoaded = true;
     try {
-      const res = await fetch(this._feedUrl, { credentials: 'omit' });
+      // no-cache: always revalidate, so a browser never holds an older feed (the backend caches for us).
+      const res = await fetch(this._feedUrl, { credentials: 'omit', cache: 'no-cache' });
       if (!res.ok) return;
       const data = await res.json();
       if (data && data.items && Object.keys(data.items).length) {
