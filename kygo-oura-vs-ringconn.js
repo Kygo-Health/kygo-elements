@@ -410,8 +410,8 @@ class KygoOuraVsRingConn extends HTMLElement {
         blurb: 'Forty percent smaller, starting at $399, and no independent accuracy data yet. What changed, and who should actually buy it.',
         cat: 'Wearables & Data', min: 7, img: '273a63_5b1f7436802f4db3896917ad31e36cf3~mv2.png' },
       { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
-        title: 'What\'s the Most Accurate Wearable? 17 Studies, 6 Devices, Ranked (2026)',
-        blurb: 'Seventeen independent studies on sleep, HRV, heart rate and step accuracy, with the actual numbers behind each device.',
+        title: 'What’s the Most Accurate Wearable? 45+ Studies, 6 Devices, Ranked (2026)',
+        blurb: 'Independent peer-reviewed studies reveal which wearables deliver the most accurate sleep, HRV, heart rate, and step data. We break down the actual numbers so you know what to trust.',
         cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' }
     ];
   }
@@ -557,7 +557,7 @@ class KygoOuraVsRingConn extends HTMLElement {
   // The dark conversion card, on its own section, directly after the first
   // content section. Self-contained under `kc-*` names with a literal fallback
   // behind every custom property, so the same block renders identically on
-  // either palette. Nothing else belongs in this section — the email capture
+  // either palette. Nothing else belongs in this section, the email capture
   // is a separate band further down the page.
   // Pass 'gray' to sit the section on the tinted band.
 
@@ -634,7 +634,7 @@ class KygoOuraVsRingConn extends HTMLElement {
 
   // ── Email CTA · Kygo standard module ────────────────────────────────────
   // The inline email capture, on its own band. It never sits directly under the
-  // app CTA — a page content section always separates the two conversion
+  // app CTA, a page content section always separates the two conversion
   // touchpoints. Self-contained under `ke-*` names so it drops into either
   // palette. Pass 'gray' to sit on the tinted band.
 
@@ -984,7 +984,7 @@ class KygoOuraVsRingConn extends HTMLElement {
       { key: 'gen2air', img: ringconnImg, name: 'RingConn Gen 2 Air', link: gen2airLink, slug: 'ringconn-gen2-air' },
     ];
     const rows = this._specs[this._activeTab];
-    const storeLink = (url, label) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored" data-track-position="ranking" data-track-label="${label}">View on Amazon ${this._icon('arrowRight')}</a>`;
+    const storeLink = (url, label) => `<a class="amazon-link" href="${url}" target="_blank" rel="sponsored nofollow noopener" data-track-position="ranking" data-track-label="${label}">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
       <div class="tbl-scroll">
       <table class="tbl">
@@ -1007,7 +1007,7 @@ class KygoOuraVsRingConn extends HTMLElement {
           <tr class="aff-row">
             <td colspan="6">
               <div class="aff-row-inner">
-                ${cols.map(c => `<a class="aff-btn" href="${c.link}" target="_blank" rel="noopener sponsored" data-track-position="ranking" data-track-label="${c.slug}"><img src="${c.img}" alt="" /> ${c.name} on Amazon ${this._icon('arrowRight')}</a>`).join('')}
+                ${cols.map(c => `<a class="aff-btn" href="${c.link}" target="_blank" rel="sponsored nofollow noopener" data-track-position="ranking" data-track-label="${c.slug}"><img src="${c.img}" alt="" /> ${c.name} on Amazon ${this._icon('arrowRight')}</a>`).join('')}
               </div>
             </td>
           </tr>
@@ -1315,7 +1315,7 @@ class KygoOuraVsRingConn extends HTMLElement {
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'datePublished': '2026-07-22',
-        'dateModified': '2026-07-22',
+        'dateModified': '2026-10-25',
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
