@@ -767,7 +767,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
             </tbody>
           </table>
         </div>
-        <p class="cmp-legend">${this._icon('info')} <strong>A different, smaller device set.</strong> Overnight validation exists only for these models (Dial 2025, 536 nights vs single-lead ECG) — most watches in the daytime chart have simply never been tested at night, so we cannot re-rank the same ten here. Every device measured overnight lands near 1–3% error: the still body is the easy case, and it is where nearly every "99% accurate" marketing claim is actually taken. <sup>†</sup>Polar reports a 4-hour window, so it is not directly comparable to the others.</p>
+        <p class="cmp-legend">${this._icon('info')} <strong>A different, smaller device set.</strong> Overnight validation exists only for these models (Dial 2025, 536 nights vs single-lead ECG) — most watches in the daytime chart have simply never been tested at night, so we cannot re-rank the same ten here. Every device measured overnight lands near 1–3% error: the still body is the easy case, and it is where nearly every "99% accurate" marketing claim is actually taken. <sup>†</sup>Polar's figure covers the first four hours of sleep. Ranked on these figures, Oura is first, Polar second on 2.71% and WHOOP third on 3.00%.</p>
       </div>`;
   }
 
@@ -1603,7 +1603,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Optical wrist and ring heart rate is an estimate, not a clinical measurement, and can be inaccurate during exercise or with an irregular heart rhythm. Consult a qualified healthcare provider before making health decisions based on wearable data.</p>
-          <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation. Last updated August 2026.</p>
+          <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation. Last updated October 25, 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
@@ -1648,7 +1648,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         'operatingSystem': 'Web',
         'url': 'https://www.kygo.app/tools/heart-rate-accuracy',
         'datePublished': '2026-08-04',
-        'dateModified': '2026-08-08',
+        'dateModified': '2026-10-25',
         'softwareVersion': '2.0',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
