@@ -304,7 +304,7 @@ class KygoWearableAccuracy extends HTMLElement {
         'polar': ['weak', '72% daily life (Vantage V / M); 6.6 to 9.6% lab (A360)']
       },
       calories: {
-        'apple-watch': ['weak', '26% treadmill, 36% cycling, 112% weights'], 'oura': ['none', 'No calorimetry test'], 'garmin': ['weak', '15% treadmill, 78% cycling, 115% weights'],
+        'apple-watch': ['weak', '26% treadmill, 36% cycling, 112% weights'], 'oura': ['none', '21.1% in METs, one lab test (Ring Gen 2), not ranked'], 'garmin': ['weak', '15% treadmill, 78% cycling, 115% weights'],
         'whoop': ['none', 'No study'], 'fitbit': ['weak', '14% treadmill, 32% cycling, 42% weights'], 'samsung': ['weak', '9% treadmill, 67% cycling, 85% weights'],
         'polar': ['weak', '21% treadmill (Vantage M3)']
       },
@@ -367,7 +367,7 @@ class KygoWearableAccuracy extends HTMLElement {
         studies: ['hong2024', 'miwa2026', 'rowe2025', 'deleon2026', 'rider2025', 'cheung2025', 'ozel2026', 'giurgiu2023', 'kristiansson2023', 'svarre2020', 'nielavilen2022', 'an2017', 'montes2020'] },
       { id: 'calories', nav: 'Calories', name: 'Calories burned', icon: 'flame', gold: 'Indirect calorimetry (lab gas analysis)',
         short: 'The least accurate number on any wearable. Fitbit is least bad, Samsung second, Apple third, and no brand came within 9% on the max treadmill test.',
-        verdict: 'The least accurate number on any wearable. Across four head-to-head lab tests on the same people, Fitbit wins three of five comparisons and has the smallest worst case (42% on weights, where it reads only 4% high); Samsung is the most accurate on steady running and walking but roughly doubles true burn on weights; Apple and Garmin are off by 112% and 115% on weights. No brand came within 9% on the max treadmill test. Oura has never been tested against lab calorimetry and WHOOP has no calorie study.',
+        verdict: 'The least accurate number on any wearable. Across four head-to-head lab tests on the same people, Fitbit wins three of five comparisons and has the smallest worst case (42% on weights, where it reads only 4% high); Samsung is the most accurate on steady running and walking but roughly doubles true burn on weights; Apple and Garmin are off by 112% and 115% on weights. No brand came within 9% on the max treadmill test. Oura has one lab test against gas analysis (21.1% error for Oura Ring Gen 2, an older model, measured as METs), listed as context and not ranked; WHOOP has no calorie study.',
         studies: ['kostrna2026', 'yun2026', 'lee2026', 'perez2025', 'shook2022', 'henriksen2022', 'miwa2026', 'ferreira2026', 'apple2024wp', 'shcherbina2017'] },
       { id: 'vo2max', nav: 'VO2 max', name: 'VO2 max', icon: 'lungs', gold: 'Lab metabolic cart (CPET)',
         short: 'Garmin has the most validation at about 7% error. Apple reads low in all three independent studies, and Fitbit\'s Pixel Watch 3 came in at 8.7% in a Google-funded test.',
