@@ -581,7 +581,7 @@ class KygoWearableAccuracy extends HTMLElement {
   }
   _amazon(dk, position) {
     const l = this._devices[dk].affiliateLinks[0];
-    return `<a class="amz-link" href="${l.url}" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${l.slug}" data-track-position="${position}">Amazon ${this._icon('arrowRight')}</a>`;
+    return `<a class="amz-link" href="${l.url}" target="_blank" rel="sponsored nofollow noopener" data-action="affiliate-click" data-track-label="${l.slug}" data-track-position="${position}">Amazon ${this._icon('arrowRight')}</a>`;
   }
   _grade(level) {
     return ({
@@ -1631,8 +1631,8 @@ class KygoWearableAccuracy extends HTMLElement {
   _relatedPosts() {
     return [
       { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
-        title: 'What\'s the Most Accurate Wearable? 17 Studies, 6 Devices, Ranked (2026)',
-        blurb: 'Seventeen independent studies on sleep, HRV, heart rate and step accuracy, with the actual numbers behind each device.',
+        title: 'What’s the Most Accurate Wearable? 45+ Studies, 6 Devices, Ranked (2026)',
+        blurb: 'Independent peer-reviewed studies reveal which wearables deliver the most accurate sleep, HRV, heart rate, and step data. We break down the actual numbers so you know what to trust.',
         cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' },
       { slug: 'how-accurate-is-your-heart-rate-monitor',
         title: 'How Accurate Is Your Heart Rate Monitor? 10 Devices Ranked',
@@ -2093,7 +2093,7 @@ class KygoWearableAccuracy extends HTMLElement {
 
   // ── Hub: metric index + one stacked section per metric ───────────────
 
-  get _updated() { return { page: '25 Oct 2026', pageIso: '2026-10-25' }; }
+  get _updated() { return { page: 'Oct 25, 2026', pageIso: '2026-10-25' }; }
 
   // "Checked" = last verification date of the library doc behind each section.
   // Spokes = the dedicated tool that goes deeper on that metric.
@@ -2291,7 +2291,7 @@ class KygoWearableAccuracy extends HTMLElement {
       + devs.map(([k, d]) => cell(medals[sec.id] && medals[sec.id][k], sc[sec.id][k][0], sec.name, d, '', sc[sec.id][k][1])).join('')
       + (subs[sec.id] || []).map(([id, name, m, g]) => `<div class="sb-lab sb-sub"><span>${name}</span></div>` + devs.map(([k, d]) => cell(m[k], g[k] || 'none', name, d, ' sb-xs')).join('')).join('')).join('');
     const fda = `<div class="sb-lab">${this._icon('shieldPlus')}<span>FDA-cleared</span></div>` + devs.map(([k, d]) => { const n = this._fdaCounts[k]; return k in this._fdaCounts ? `<div class="sb-c"><span class="pill-n ${n ? 'fair' : 'zero'}">${n}</span></div>` : `<div class="sb-c"><span class="sb-g sb-none" role="img" aria-label="${d.short}, FDA-cleared: Not checked" title="Not checked"></span></div>`; }).join('');
-    const buy = `<div class="sb-lab sb-buy-lab"><span>Buy</span></div>` + devs.map(([k, d]) => { const l = d.affiliateLinks[0]; return `<div class="sb-c"><a class="sb-buy" href="${l.url}" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${l.slug}" data-track-position="scoreboard" aria-label="View ${d.short} on Amazon">Amazon</a></div>`; }).join('');
+    const buy = `<div class="sb-lab sb-buy-lab"><span>Buy</span></div>` + devs.map(([k, d]) => { const l = d.affiliateLinks[0]; return `<div class="sb-c"><a class="sb-buy" href="${l.url}" target="_blank" rel="sponsored nofollow noopener" data-action="affiliate-click" data-track-label="${l.slug}" data-track-position="scoreboard" aria-label="View ${d.short} on Amazon">Amazon</a></div>`; }).join('');
     const detail = devs.map(([k, d]) => `
       <div class="sbd">
         <div class="sbd-head">${this._logo(k, 'sm')}<strong>${d.name}</strong></div>
