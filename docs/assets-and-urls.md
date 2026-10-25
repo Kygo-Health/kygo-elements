@@ -123,6 +123,14 @@ Larger device photos, used in comparison tables and device cards.
 The Oura comparison table (`kygo-oura-ring-comparison.js`) uses the **Oura logo**
 (`56ac2eb5`) for all three rings (Gen 3 / Ring 4 / Ring 5) rather than per-ring photos.
 
+### State of Wearable Accuracy report images (GitHub Pages, `assets/sowa/`)
+Report page renders from the approved capture design canvas, resized to 1280x720 WebP. Used by
+`kygo-report-landing.js` (all five) and `kygo-report-download.js` (cover only):
+`sowa-cover.webp` (report cover), `sowa-medal-table.webp` (medal table page),
+`sowa-metric-chart.webp` (sleep stages chart page), `sowa-brand-profile.webp` (Oura brand page),
+`sowa-buyers-guide.webp` (buyer's guide page). Served from
+`https://kygo-health.github.io/kygo-elements/assets/sowa/<file>`.
+
 ## 3. Dynamic / templated images
 
 - **Blog post images** — `kygo-blog-post.js:286` builds Wix media URLs at runtime from a matched

@@ -47,6 +47,8 @@ Components are isolated in Shadow DOM and communicate with the Wix host two ways
 | `kygo-inline-subscribe` | *(none — nested in tool, self-posts)* | POSTs `{email, source:"tool-<name>"}` to `/_functions/subscribe`; fires `subscribe` doc event for GA4 | — | `backend/http-functions.js` → `Subscribers` |
 | *footer subscribe strip* (plain HTML in snippet 6) | *(none)* | POSTs `{email, source:"footer"}` to `/_functions/subscribe`; fires `subscribe` doc event for GA4 | — | `backend/http-functions.js` → `Subscribers` |
 | `calories-in-anything` | `#caloriesElement` | `imageUploaded` → `analyzing`/`result`/`error` | calls `analyzeImage` (Gemini) | `backend/gemini.web.js` (secret `GEMINI_API_KEY`) |
+| `kygo-report-landing` (`/state-of-wearable-accuracy`) | `CustomElement` (only element on the page) | `reportSubscribe` {email, source:"report-landing"} → `data-form-result` | page code POSTs `{email, source}` to `/_functions/subscribe`, sets `success` / `error:…`; component then fires `subscribe` (GA4 `email_subscribe`) and redirects to `/report-download` | `backend/http-functions.js` → `Subscribers` |
+| `kygo-report-download` (`/report-download`, noindex) | `CustomElement` | Wix sets `pdf-url`; component fires `reportDownload` → GA4 `report_download` | page code sets `pdf-url` (button stays disabled while it is empty) | — |
 | `kygo-faq-section` | `#kygoFaq` | (Wix set `app-store-url`/`email`) | — | — *(now defaults in-component; Wix wiring removable)* |
 
 > **Email capture — native POST model (email-capture pass, spec 24).** All three subscribe
@@ -96,6 +98,14 @@ $w.onReady(function () {
   });
 });
 ```
+
+### State of Wearable Accuracy capture pages (built 2026-10-25, not yet live)
+Landing `/state-of-wearable-accuracy` (`kygo-report-landing`) and thank-you `/report-download`
+(`kygo-report-download`). Full page code for both (merged with the seoMarkup snippet, one
+`$w.onReady` each) is in the library hand-off
+`37-State-of-Wearable-Accuracy/capture/WIX-HANDOFF.md`. The landing page code POSTs to the existing
+`post_subscribe` endpoint; no backend change. The download page code holds a `PDF_URL` constant;
+fill it in once the PDF is uploaded.
 
 ### Tools page — ❌ REMOVE all (tools list now baked into the component)
 The 14-tool grid is now the **built-in default** in `kygo-tools.js` (`_defaultTools()`), so the

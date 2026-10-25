@@ -65,6 +65,8 @@ const TOOLS = {
   'kygo-vo2max-factors':          { file: 'kygo-vo2max-factors.js',            path: '/tools/vo2-max-factors' },
   'kygo-wearable-accuracy':       { file: 'kygo-wearable-accuracy.js',         path: '/tools/wearable-accuracy' },
   'kygo-picks':                   { file: 'kygo-picks.js',                     path: '/best-wearables' },
+  'kygo-report-landing':          { file: 'kygo-report-landing.js',            path: '/state-of-wearable-accuracy' },
+  'kygo-report-download':         { file: 'kygo-report-download.js',           path: '/report-download' },
 };
 
 // Content that only renders after a click (category tabs, device pickers, "show sources",

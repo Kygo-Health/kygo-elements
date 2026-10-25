@@ -215,12 +215,13 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | `page_exit` | `visibilitychange` → hidden | `page_path` |
 | `email_subscribe` **(key event)** | `subscribe` CustomEvent (any subscribe form) → mirrored to GA4 | `lead_type` (`newsletter`), `component`, **`source`**, `page_path` |
 | `contact_submit` **(key event)** | `contactSubmit` CustomEvent (contact form) → mirrored to GA4 | `lead_type` (`contact_form`), `component`, `page_path`. **No PII** — email/name/message are never read from `detail` |
+| `report_download` **(key event)** | `reportDownload` CustomEvent ("Download the PDF" on `/report-download`, `kygo-report-download.js`) → mirrored to GA4 | `lead_type` (`report`), `component`, `source` (`report-download`), `page_path` |
 | `tool_result` | `kygo-calorie-calculation` CustomEvent (calculator produced a result) | `tool_name` (= component tag), `page_path` |
 
 **`email_subscribe` source taxonomy** (email-capture pass, spec 24). Every subscribe form sets
 `detail.source`, which `kygo-tracking.js` copies to the GA4 `source` param, and the Velo endpoint
 writes to the `Subscribers.source` field — the two always match. Values:
-`blog-post` (blog post template), `footer` (site-wide footer strip), and `tool-<name>` — one per
+`blog-post` (blog post template), `report-landing` (State of Wearable Accuracy landing page, via page code), `footer` (site-wide footer strip), and `tool-<name>` — one per
 tool, e.g. `tool-wearable-accuracy`, `tool-hrv-factors`, `tool-oura-ring-comparison`. The event
 fires **only after a `200` from `/_functions/subscribe`**, so `email_subscribe` counts confirmed
 subscribers only. (Watch that `cta_click` doesn't regress on pages where a subscribe strip was

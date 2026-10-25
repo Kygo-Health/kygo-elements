@@ -41,7 +41,9 @@ const PAGES = {
   "/tools/vo2-max-accuracy": "kygo-vo2max-accuracy",
   "/tools/vo2-max-factors": "kygo-vo2max-factors",
   "/tools/wearable-accuracy": "kygo-wearable-accuracy",
-  "/best-wearables": "kygo-picks"
+  "/best-wearables": "kygo-picks",
+  "/state-of-wearable-accuracy": "kygo-report-landing",
+  "/report-download": "kygo-report-download"
 };
 
 export const getSeoMarkup = webMethod(Permissions.Anyone, async (pathOrTag) => {

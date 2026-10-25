@@ -290,7 +290,9 @@
   // email or any other PII out of e.detail — only non-identifying context.
   const CONVERSION_EVENTS = {
     subscribe:     { ga: 'email_subscribe', lead: 'newsletter' },
-    contactSubmit: { ga: 'contact_submit',  lead: 'contact_form' }
+    contactSubmit: { ga: 'contact_submit',  lead: 'contact_form' },
+    // kygo-report-download.js: a click on "Download the PDF" (State of Wearable Accuracy 2026).
+    reportDownload: { ga: 'report_download', lead: 'report' }
   };
 
   Object.keys(CONVERSION_EVENTS).forEach(function (domEvent) {
@@ -304,7 +306,7 @@
                    (e.target && e.target.tagName ? e.target.tagName.toLowerCase() : 'unknown'),
         page_path: window.location.pathname
       };
-      // Only the subscribe form ever carries a `source`; contact detail is PII
+      // Only the subscribe form and reportDownload carry a `source`; contact detail is PII
       // (firstName/lastName/email/subject/message) and is deliberately ignored.
       if (detail.source) params.source = detail.source;
       track(cfg.ga, params);
