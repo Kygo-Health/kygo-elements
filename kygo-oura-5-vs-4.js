@@ -1,7 +1,7 @@
 /**
- * Kygo Health — Oura Ring 5 vs Oura Ring 4 Comparison Tool
+ * Kygo Health: Oura Ring 5 vs Oura Ring 4 Comparison Tool
  * Tag: kygo-oura-5-vs-4
- * Head-to-head comparison of Oura Ring Gen 5 and Gen 4 — differences, upgrade advice,
+ * Head-to-head comparison of Oura Ring Gen 5 and Gen 4, differences, upgrade advice,
  * peer-reviewed accuracy, and true 3-year cost with membership.
  *
  * Design system intentionally mirrors kygo-oura-ring-comparison.js (the sibling Oura tool)
@@ -90,13 +90,13 @@ class KygoOura5vs4 extends HTMLElement {
         tagLabel: 'Save your money'
       },
       {
-        icon: 'arrowRight', who: 'Current Gen 3 owner', verdict: 'Upgrade — to the Ring 4',
+        icon: 'arrowRight', who: 'Current Gen 3 owner', verdict: 'Upgrade: to the Ring 4',
         body: 'Gen 3 is discontinued and both newer rings are a real step up in sensor design. The Ring 4 is the safer buy: it’s $50–150 cheaper, independently validated (CCC 0.98 RHR, 0.99 HRV vs ECG), and keeps the wider 4–15 sizing. Choose Ring 5 over Ring 4 only if the smallest, lightest possible ring is your top priority.',
         tagLabel: 'Best value'
       },
       {
         icon: 'wallet', who: 'First-time buyer', verdict: 'Ring 4 for most people',
-        body: 'The Ring 4 is cheaper (~$559 vs ~$609 over 3 years), fully validated, and fits fingers Ring 5 can’t (sizes 4–5, 14–15). Pick the Ring 5 if comfort and near-invisibility matter more than proven accuracy — it’s about 40% smaller and lighter (2–2.6 g vs 3.3–5.2 g) — and you’re comfortable being an early adopter of unvalidated hardware.',
+        body: 'The Ring 4 is cheaper (~$559 vs ~$609 over 3 years), fully validated, and fits fingers Ring 5 can’t (sizes 4–5, 14–15). Pick the Ring 5 if comfort and near-invisibility matter more than proven accuracy: it’s about 40% smaller and lighter (2–2.6 g vs 3.3–5.2 g), and you’re comfortable being an early adopter of unvalidated hardware.',
         tagLabel: 'Start here'
       }
     ];
@@ -111,23 +111,23 @@ class KygoOura5vs4 extends HTMLElement {
         desc: 'How accurately the ring classifies Wake, Light, Deep, and REM against an in-lab sleep study.',
         ring4: { result: 'Inferred from Gen 3', detail: '76.3% overall 4-stage agreement; ~92–95% sleep/wake. Ring 4 shares the Gen 3/4 PPG pipeline, so validated Gen 3 figures are the best available.', studyId: 'robbins2024' },
         ring5: { result: 'Not tested', detail: 'No peer-reviewed sleep-staging study exists for Ring 5. Oura has published no independent sleep validation for the new hardware.' },
-        insight: 'Since PSG inter-rater reliability is only ~80%, mid-70s 4-stage agreement is near the practical ceiling. Neither ring beats the other on any published sleep test — because Ring 5 has none.'
+        insight: 'Since PSG inter-rater reliability is only ~80%, mid-70s 4-stage agreement is near the practical ceiling. Neither ring beats the other on any published sleep test, because Ring 5 has none.'
       },
       hr: {
         name: 'Heart Rate',
         goldStandard: 'ECG chest strap',
         desc: 'Overnight and resting heart-rate accuracy versus a medical ECG reference.',
-        ring4: { result: 'CCC 0.98 · MAPE 1.94%', detail: 'Independently validated head-to-head vs ECG in Dial 2025 — the best resting-HR agreement of any ring tested, ahead of Gen 3, WHOOP 4.0, Garmin, and Polar.', studyId: 'dial2025' },
-        ring5: { result: 'Inherited claim only', detail: 'The “99% HR accuracy” line on the Ring 5 store page traces to Kinnunen 2020, an Oura-authored paper on pre-Gen-3 hardware — not Ring 5. Oura’s internal study claims +24% workout HR, but it is not peer-reviewed.' },
+        ring4: { result: 'CCC 0.98 · MAPE 1.94%', detail: 'Independently validated head-to-head vs ECG in Dial 2025, the best resting-HR agreement of any ring tested, ahead of Gen 3, WHOOP 4.0, Garmin, and Polar.', studyId: 'dial2025' },
+        ring5: { result: 'Inherited claim only', detail: 'The “99% HR accuracy” line on the Ring 5 store page traces to Kinnunen 2020, an Oura-authored paper on pre-Gen-3 hardware, not Ring 5. Oura’s internal study claims +24% workout HR, but it is not peer-reviewed.' },
         insight: 'Ring 4 is the only Oura ring with independent, current-hardware heart-rate validation. Treat every Ring 5 heart-rate number as a manufacturer claim until independent data lands.'
       },
       hrv: {
         name: 'Heart Rate Variability',
         goldStandard: 'ECG chest strap',
-        desc: 'Nocturnal HRV — a core recovery and stress signal — measured against ECG.',
+        desc: 'Nocturnal HRV: a core recovery and stress signal, measured against ECG.',
         ring4: { result: 'CCC 0.99 · MAPE 5.96%', detail: 'Near-perfect agreement with ECG in Dial 2025 (independent), edging out Gen 3 (CCC 0.97). This is the strongest evidence-backed reason to trust Ring 4 for recovery.', studyId: 'dial2025' },
         ring5: { result: 'Not tested', detail: 'Oura’s internal study claims +12% overnight HRV vs Ring 4, but the 60-percentage-point figure is not independently verified and Ring 5 has no published HRV validation.' },
-        insight: 'For HRV, the validated ring is the Ring 4. Ring 5’s HRV improvement is plausible but unproven — exactly the kind of claim independent studies routinely trim.'
+        insight: 'For HRV, the validated ring is the Ring 4. Ring 5’s HRV improvement is plausible but unproven, exactly the kind of claim independent studies routinely trim.'
       },
       energy: {
         name: 'Energy Expenditure',
@@ -161,15 +161,15 @@ class KygoOura5vs4 extends HTMLElement {
     return [
       {
         q: 'Is the Oura Ring 5 worth upgrading from the 4?',
-        a: 'For most Ring 4 owners, not yet. The Ring 5 is a form-factor and signal-quality refinement — Oura’s claim is that it’s about 40% smaller (thinner and narrower), and it’s also lighter at 2–2.6 g versus the Ring 4’s 3.3–5.2 g, with a marginally longer battery — not a new-metric leap. Every new software feature rolls back to the Ring 4 with an active membership, the Ring 5 has no independent accuracy validation, its size range shrinks to 6–13, and its signal pathways drop from 18 to 12. If your Ring 4 fits and works, there is little evidence-based reason to pay again.'
+        a: 'For most Ring 4 owners, not yet. The Ring 5 is a form-factor and signal-quality refinement (Oura’s claim is that it’s about 40% smaller (thinner and narrower), and it’s also lighter at 2–2.6 g versus the Ring 4’s 3.3–5.2 g, with a marginally longer battery), not a new-metric leap. Every new software feature rolls back to the Ring 4 with an active membership, the Ring 5 has no independent accuracy validation, its size range shrinks to 6–13, and its signal pathways drop from 18 to 12. If your Ring 4 fits and works, there is little evidence-based reason to pay again.'
       },
       {
         q: 'What’s new in the Oura Ring 5?',
-        a: 'The headline change is size: the Ring 5 is the world’s smallest smart ring at 2–2.6 g and 2.28 mm thick — Oura says it’s roughly 40% smaller than the Ring 4, which is 3.3–5.2 g and 2.88 mm thick. It adds an optional $99 charging case that extends total time between wall charges to about a month, a 6–9 day battery, redesigned optics (LEDs rotated 180° with a larger photodiode), and a digital temperature sensor. Sensor signal pathways drop from 18 to 12, which Oura describes as fewer but individually stronger.'
+        a: 'The headline change is size: the Ring 5 is the world’s smallest smart ring at 2–2.6 g and 2.28 mm thick; Oura says it’s roughly 40% smaller than the Ring 4, which is 3.3–5.2 g and 2.88 mm thick. It adds an optional $99 charging case that extends total time between wall charges to about a month, a 6–9 day battery, redesigned optics (LEDs rotated 180° with a larger photodiode), and a digital temperature sensor. Sensor signal pathways drop from 18 to 12, which Oura describes as fewer but individually stronger.'
       },
       {
         q: 'Does the Oura Ring 5 need a subscription?',
-        a: 'Yes. Like every current Oura ring, the Ring 5 requires an Oura Membership ($5.99/month or $69.99/year) for full features. Without it, the app shows only your Sleep, Readiness, and Activity scores. Trends, detailed HRV, temperature deviations, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools are all gated behind membership. That subscription is why the real 3-year cost of a Ring 5 is roughly $609 for a base finish — or about $709 for the $499 premium finishes — not $399.'
+        a: 'Yes. Like every current Oura ring, the Ring 5 requires an Oura Membership ($5.99/month or $69.99/year) for full features. Without it, the app shows only your Sleep, Readiness, and Activity scores. Trends, detailed HRV, temperature deviations, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools are all gated behind membership. That subscription is why the real 3-year cost of a Ring 5 is roughly $609 for a base finish, or about $709 for the $499 premium finishes, not $399.'
       },
       {
         q: 'Is the Oura Ring 5 more accurate than the Ring 4?',
@@ -185,7 +185,7 @@ class KygoOura5vs4 extends HTMLElement {
       },
       {
         q: 'Should a first-time buyer get the Ring 4 or Ring 5?',
-        a: 'For most first-time buyers, the Ring 4 is the better pick: it is cheaper over three years, independently validated for heart rate and HRV, and fits the widest range of fingers. Choose the Ring 5 if all-day comfort and a nearly invisible ring matter more to you than proven accuracy — it is noticeably lighter and thinner — and you are comfortable buying hardware that has not yet been independently tested.'
+        a: 'For most first-time buyers, the Ring 4 is the better pick: it is cheaper over three years, independently validated for heart rate and HRV, and fits the widest range of fingers. Choose the Ring 5 if all-day comfort and a nearly invisible ring matter more to you than proven accuracy: it is noticeably lighter and thinner, and you are comfortable buying hardware that has not yet been independently tested.'
       }
     ];
   }
@@ -227,8 +227,8 @@ class KygoOura5vs4 extends HTMLElement {
           <tr class="aff-row">
             <td colspan="3">
               <div class="aff-row-inner">
-                <a class="aff-btn" href="${this._ring4Amazon}" target="_blank" rel="noopener sponsored" data-track-label="oura-ring-4"><img src="${ouraImg}" alt="" /> Ring 4 on Amazon ${this._icon('arrowRight')}</a>
-                <a class="aff-btn" href="${this._ring5Amazon}" target="_blank" rel="noopener sponsored" data-track-label="oura-ring-5"><img src="${ouraImg}" alt="" /> Ring 5 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${this._ring4Amazon}" target="_blank" rel="sponsored nofollow noopener" data-track-label="oura-ring-4"><img src="${ouraImg}" alt="" /> Ring 4 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${this._ring5Amazon}" target="_blank" rel="sponsored nofollow noopener" data-track-label="oura-ring-5"><img src="${ouraImg}" alt="" /> Ring 5 on Amazon ${this._icon('arrowRight')}</a>
               </div>
             </td>
           </tr>
@@ -333,8 +333,8 @@ class KygoOura5vs4 extends HTMLElement {
             <div class="breakdown">$${r.hardware} hardware + ${fmt(r.mem)} membership${r.caseAdd ? ` + $${r.caseAdd} case` : ''}</div>
           </div>
         `).join('')}
-        <div class="calc-savings">The <strong>Ring 4</strong> costs <strong>${fmt(gap)} less</strong> over 3 years than the Ring 5 at this setup — and it’s the only Oura ring with independent accuracy validation. The Ring 5 buys you a smaller, lighter body, not proven data.</div>
-        <a class="calc-amazon" href="${this._ring4Amazon}" target="_blank" rel="noopener sponsored" data-track-label="oura-ring-4">View Oura Ring 4 on Amazon ${this._icon('arrowRight')}</a>
+        <div class="calc-savings">The <strong>Ring 4</strong> costs <strong>${fmt(gap)} less</strong> over 3 years than the Ring 5 at this setup, and it’s the only Oura ring with independent accuracy validation. The Ring 5 buys you a smaller, lighter body, not proven data.</div>
+        <a class="calc-amazon" href="${this._ring4Amazon}" target="_blank" rel="sponsored nofollow noopener" data-track-label="oura-ring-4">View Oura Ring 4 on Amazon ${this._icon('arrowRight')}</a>
       </div>
     `;
   }
@@ -673,7 +673,7 @@ class KygoOura5vs4 extends HTMLElement {
   // The dark conversion card, on its own section, directly after the first
   // content section. Self-contained under `kc-*` names with a literal fallback
   // behind every custom property, so the same block renders identically on
-  // either palette. Nothing else belongs in this section — the email capture
+  // either palette. Nothing else belongs in this section, the email capture
   // is a separate band further down the page.
   // Pass 'gray' to sit the section on the tinted band.
 
@@ -750,7 +750,7 @@ class KygoOura5vs4 extends HTMLElement {
 
   // ── Email CTA · Kygo standard module ────────────────────────────────────
   // The inline email capture, on its own band. It never sits directly under the
-  // app CTA — a page content section always separates the two conversion
+  // app CTA, a page content section always separates the two conversion
   // touchpoints. Self-contained under `ke-*` names so it drops into either
   // palette. Pass 'gray' to sit on the tinted band.
 
@@ -797,7 +797,7 @@ class KygoOura5vs4 extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-pill"><span class="dot"></span> RING 5 vs RING 4 · 2026</div>
               <h1>Oura Ring 5 vs Oura Ring 4 <span class="hl">(2026)</span></h1>
-              <p class="hero-lede">The two-generation comparison, decided on the numbers: what actually changed, the peer-reviewed accuracy neither reviewer site has, and the real 3-year cost with membership. Just comparing Gen 5 and Gen 4 — <a class="hero-link" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">need Gen 3 too?</a></p>
+              <p class="hero-lede">The two-generation comparison, decided on the numbers: what actually changed, the peer-reviewed accuracy neither reviewer site has, and the real 3-year cost with membership. Just comparing Gen 5 and Gen 4; <a class="hero-link" href="https://www.kygo.app/tools/oura-ring-comparison-tool" target="_self" rel="noopener">need Gen 3 too?</a></p>
             </div>
             <div class="hero-vis">
               <div class="hero-vis-head">
@@ -823,7 +823,7 @@ class KygoOura5vs4 extends HTMLElement {
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><div class="num">40<span class="unit">%</span></div><div class="lbl">Smaller than Ring 4 (Oura's claim)</div></div>
-            <div class="hero-stat"><div class="num">2<span class="unit">g</span></div><div class="lbl">Ring 5 — world's smallest smart ring</div></div>
+            <div class="hero-stat"><div class="num">2<span class="unit">g</span></div><div class="lbl">Ring 5: world's smallest smart ring</div></div>
             <div class="hero-stat"><div class="num">$609</div><div class="lbl">Real 3-yr Ring 5 cost, base finish</div></div>
             <div class="hero-stat"><div class="num">0</div><div class="lbl">Independent Ring 5 validation studies</div></div>
           </div>
@@ -837,12 +837,12 @@ class KygoOura5vs4 extends HTMLElement {
             <div class="kicker">The short answer</div>
             <h2>Is the Ring 5 worth it over the Ring 4? <span class="hl">For most people, no.</span></h2>
           </div>
-          <p class="tldr-lead animate-on-scroll">The <strong>Oura Ring 5</strong> is smaller and lighter — Oura’s headline claim is about 40% smaller than the Ring 4, and it drops to 2–2.6 g (from 3.3–5.2 g) — with a longer battery and an optional charging case. But it costs more, shrinks the size range to 6–13, and has <strong>no independent accuracy validation</strong>. The Ring 4 stays the smarter buy for most people; upgrade only if comfort matters more than proven data.</p>
+          <p class="tldr-lead animate-on-scroll">The <strong>Oura Ring 5</strong> is smaller and lighter: Oura’s headline claim is about 40% smaller than the Ring 4, and it drops to 2–2.6 g (from 3.3–5.2 g), with a longer battery and an optional charging case. But it costs more, shrinks the size range to 6–13, and has <strong>no independent accuracy validation</strong>. The Ring 4 stays the smarter buy for most people; upgrade only if comfort matters more than proven data.</p>
           <div class="gaps">
             <div class="gap animate-on-scroll">
               <h4>What Ring 5 gains</h4>
               <ul>
-                <li><span class="num-tag">1</span><span><strong>Smaller and lighter.</strong> 2–2.6 g and 2.28 mm thick — Oura’s smallest ring, ~40% smaller than Ring 4 (down from 3.3–5.2 g).</span></li>
+                <li><span class="num-tag">1</span><span><strong>Smaller and lighter.</strong> 2–2.6 g and 2.28 mm thick: Oura’s smallest ring, ~40% smaller than Ring 4 (down from 3.3–5.2 g).</span></li>
                 <li><span class="num-tag">2</span><span><strong>Longer battery + case.</strong> 6–9 days claimed, plus an optional $99 charging case (~1 month between wall charges).</span></li>
                 <li><span class="num-tag">3</span><span><strong>Refined optics.</strong> LEDs rotated 180° with a larger photodiode and a digital temperature sensor.</span></li>
               </ul>
@@ -884,7 +884,7 @@ class KygoOura5vs4 extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Should you upgrade?</div>
             <h2>A direct verdict for <span class="hl">where you're starting from.</span></h2>
-            <p class="lede">Three buyer profiles, decided on the evidence — not the marketing.</p>
+            <p class="lede">Three buyer profiles, decided on the evidence, not the marketing.</p>
           </div>
           <div class="bestfor-grid animate-on-scroll">${this._renderUpgrade()}</div>
         </div>
@@ -896,7 +896,7 @@ class KygoOura5vs4 extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Accuracy</div>
             <h2>What the research <span class="hl">actually shows.</span></h2>
-            <p class="lede">Reviewers publish spec sheets. We add the peer-reviewed validation — with every study’s funding flagged. See our full <a class="lede-link" href="https://www.kygo.app/tools/sleep-tracker-accuracy" target="_self" rel="noopener">sleep tracker accuracy comparison</a>.</p>
+            <p class="lede">Reviewers publish spec sheets. We add the peer-reviewed validation, with every study’s funding flagged. See our full <a class="lede-link" href="https://www.kygo.app/tools/sleep-tracker-accuracy" target="_self" rel="noopener">sleep tracker accuracy comparison</a>.</p>
           </div>
           <div class="acc-wrap animate-on-scroll">
             <div class="acc-tabs" data-metric-tabs role="tablist">${this._renderMetricTabs()}</div>
@@ -912,7 +912,7 @@ class KygoOura5vs4 extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">3-year cost</div>
             <h2>What you'll <span class="hl">actually spend.</span></h2>
-            <p class="lede">Both rings need an Oura Membership for full features. Most comparisons quote sticker price only — here’s the real total to own each.</p>
+            <p class="lede">Both rings need an Oura Membership for full features. Most comparisons quote sticker price only; here’s the real total to own each.</p>
           </div>
           <div class="calc animate-on-scroll" data-calc>${this._renderCost()}</div>
         </div>
@@ -927,7 +927,7 @@ class KygoOura5vs4 extends HTMLElement {
             <span class="blog-cta-tag">All 3 gens</span>
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Own a Gen 3, or weighing all three?</div>
-              <div class="blog-cta-title">Compare all three generations <span class="yr">— Ring 5 vs 4 vs 3</span></div>
+              <div class="blog-cta-title">Compare all three generations <span class="yr">(Ring 5 vs 4 vs 3)</span></div>
               <div class="blog-cta-sub">Full spec table, peer-reviewed accuracy, and a 3-year cost calculator across every current Oura generation.</div>
             </div>
             <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
