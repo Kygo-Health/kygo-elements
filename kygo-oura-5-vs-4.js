@@ -28,6 +28,18 @@ function __ensureKygoCta() {
   document.head.appendChild(s);
 }
 
+/** Loads the shared kygo-picks-card element on demand. Wix embeds this file on its
+ *  own, so the card script has to come along rather than be assumed present. */
+function __ensureKygoPicksCard() {
+  if (customElements.get('kygo-picks-card')) return;
+  if (document.querySelector('script[data-kygo-picks-card-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-picks-card.js';
+  s.setAttribute('data-kygo-picks-card-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
 class KygoOura5vs4 extends HTMLElement {
   constructor() {
     super();
@@ -770,6 +782,27 @@ class KygoOura5vs4 extends HTMLElement {
       </section>`;
   }
 
+  // ── Kygo Picks card · shared <kygo-picks-card> ───────────────────────────
+  // The /best-wearables promo (sleep card), placed right after this tool's buy
+  // buttons. Its links carry data-action="related-tool", so kygo-tracking.js files
+  // every click in GA4 as a cta_click (related_tool_click, to_tool best-wearables).
+  // The line under it is this tool's link up to the wearable accuracy hub.
+  _renderPicksCard() {
+    __ensureKygoPicksCard();
+    return `
+      <style>
+      .kp-wrap{margin:32px 0 0}
+      .kp-wrap kygo-picks-card{display:block}
+      .kp-hub{margin:14px 0 0;font-size:14px;line-height:1.5;color:#475569}
+      .kp-hub a{color:#16A34A;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+      .kp-hub a:hover{color:#0F172A}
+      </style>
+      <div class="kp-wrap">
+        <kygo-picks-card focus="sleep" slug="oura-ring-5-vs-4"></kygo-picks-card>
+        <p class="kp-hub">Want every brand on every metric in one place? <a href="https://www.kygo.app/tools/wearable-accuracy" data-action="related-tool" data-tool-slug="wearable-accuracy" data-track-position="picks-hub-link" data-track-label="wearable-accuracy-hub">Open the wearable accuracy hub</a></p>
+      </div>`;
+  }
+
   render() {
     const logoUrl = this._logoUrl;
     const ouraImg = this._ouraImg;
@@ -870,6 +903,7 @@ class KygoOura5vs4 extends HTMLElement {
             <p class="lede">Two generations, spec by spec. Swipe the table on mobile. Green marks the generation that wins each row.</p>
           </div>
           <div class="tbl-wrap animate-on-scroll">${this._renderDiffTable()}</div>
+          ${this._renderPicksCard()}
         </div>
       </section>
       ${this._renderEmailCta()}
