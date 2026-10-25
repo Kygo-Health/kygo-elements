@@ -1,10 +1,10 @@
 /**
- * Kygo Health — Wearable Sensor & Health Metric Comparison Tool
+ * Kygo Health: Wearable Sensor & Health Metric Comparison Tool
  * Tag: kygo-sensor-comparison
  * Interactive comparison of sensor hardware, health metrics, and software algorithms across 6 wearable devices (2025 latest gen)
  */
 
-/** SEO helper — injects visible text outside Shadow DOM for crawlers */
+/** SEO helper, injects visible text outside Shadow DOM for crawlers */
 if (typeof __seo === 'undefined') {
   var __seo = function(el, text) {
     if (el.querySelector('[data-seo]')) return;
@@ -74,7 +74,7 @@ class KygoSensorComparison extends HTMLElement {
     this._setupAnimations();
     this._injectStructuredData();
     this._drawCharts();
-    __seo(this, 'Wearable Hardware and Software Differences Tool by Kygo Health. See exactly what makes Garmin Venu 4, Whoop 5.0, Oura Ring 4, Apple Watch Series 10, Apple Watch Ultra 3, and Fitbit Charge 6 different under the hood. Sensor counts: Apple Watch Ultra 3 has 11 sensors (most), Garmin Venu 4 has 10, Apple Watch S10 has 10, Fitbit Charge 6 has 7, Whoop 5.0 has 4, Oura Ring 4 has 4. Hardware differences across 16 sensor types: PPG optical heart rate, ECG, SpO2, skin temperature, EDA stress sensor, accelerometer, gyroscope, barometric altimeter, GPS, depth gauge, NFC, mic/speaker, ambient light, noise level, LED flashlight, compass. Key hardware facts: Oura has 18-path PPG on the finger for best signal quality. Whoop has fastest PPG sampling at 26 Hz. Garmin has best GPS with multi-band GNSS L1/L5. Fitbit is the only device with a dedicated EDA stress sensor. Only Apple Watch detects sleep apnea using accelerometer (FDA-authorized). Only Apple Watch Ultra 3 has hypertension alerts via PPG pulse wave analysis. ECG available on Garmin, Apple Watch S10, Apple Watch Ultra 3, and Fitbit — not on Whoop 5.0 or Oura Ring 4. How hardware differences affect health metrics: HRV heart rate variability, sleep apnea detection, stress measurement, hypertension alerts, fall detection, blood oxygen SpO2, respiratory rate, skin temperature trends, cycle tracking. FDA-cleared features: Apple Watch Ultra 3 has 3 (ECG, Apnea, Hypertension), Apple Watch S10 has 2 (ECG, Apnea), Garmin has 1 (ECG/AFib), Fitbit has 1 (ECG/AFib), Whoop has 0, Oura has 0. Software differences across 25 proprietary algorithms: Garmin has 6 algorithms including Body Battery and Training Readiness and HRV Status and Health Status and Sleep Coach and Lifestyle Habit Logging. Whoop has 8 algorithms including Recovery Score and Strain Score and VO2 Max and Healthspan/Whoop Age and Hormonal Insights and Journal and Sleep Coach and Whoop Coach AI powered by OpenAI. Oura has 4 algorithms including Readiness Score and Cardiovascular Age and Cardio Capacity VO2 Max and Resilience. Apple has 4 algorithms including Sleep Score and Vitals App and Cardio Fitness VO2 Max and Hearing Health. Fitbit has 3 algorithms including Daily Readiness and Stress Management Score with EDA and Active Zone Minutes. Brand focus areas rated 0-10: Garmin strongest in Training (10) and Recovery (9). Whoop strongest in Recovery (10) and Longevity (10). Oura strongest in Sleep (10). Apple strongest in Medical (10). Fitbit strongest in Stress (9). Whoop vs Oura vs Garmin vs Apple Watch vs Fitbit — what is actually different about each wearable. Data verified March 2026.');
+    __seo(this, 'Wearable Hardware and Software Differences Tool by Kygo Health. See exactly what makes Garmin Venu 4, Whoop 5.0, Oura Ring 4, Apple Watch Series 10, Apple Watch Ultra 3, and Fitbit Charge 6 different under the hood. Sensor counts: Apple Watch Ultra 3 has 11 sensors (most), Garmin Venu 4 has 10, Apple Watch S10 has 10, Fitbit Charge 6 has 7, Whoop 5.0 has 4, Oura Ring 4 has 4. Hardware differences across 16 sensor types: PPG optical heart rate, ECG, SpO2, skin temperature, EDA stress sensor, accelerometer, gyroscope, barometric altimeter, GPS, depth gauge, NFC, mic/speaker, ambient light, noise level, LED flashlight, compass. Key hardware facts: Oura has 18-path PPG on the finger for best signal quality. Whoop has fastest PPG sampling at 26 Hz. Garmin has best GPS with multi-band GNSS L1/L5. Fitbit is the only device with a dedicated EDA stress sensor. Only Apple Watch detects sleep apnea using accelerometer (FDA-authorized). Only Apple Watch Ultra 3 has hypertension alerts via PPG pulse wave analysis. ECG available on Garmin, Apple Watch S10, Apple Watch Ultra 3, and Fitbit, not on Whoop 5.0 or Oura Ring 4. How hardware differences affect health metrics: HRV heart rate variability, sleep apnea detection, stress measurement, hypertension alerts, fall detection, blood oxygen SpO2, respiratory rate, skin temperature trends, cycle tracking. FDA-cleared features: Apple Watch Ultra 3 has 3 (ECG, Apnea, Hypertension), Apple Watch S10 has 2 (ECG, Apnea), Garmin has 1 (ECG/AFib), Fitbit has 1 (ECG/AFib), Whoop has 0, Oura has 0. Software differences across 25 proprietary algorithms: Garmin has 6 algorithms including Body Battery and Training Readiness and HRV Status and Health Status and Sleep Coach and Lifestyle Habit Logging. Whoop has 8 algorithms including Recovery Score and Strain Score and VO2 Max and Healthspan/Whoop Age and Hormonal Insights and Journal and Sleep Coach and Whoop Coach AI powered by OpenAI. Oura has 4 algorithms including Readiness Score and Cardiovascular Age and Cardio Capacity VO2 Max and Resilience. Apple has 4 algorithms including Sleep Score and Vitals App and Cardio Fitness VO2 Max and Hearing Health. Fitbit has 3 algorithms including Daily Readiness and Stress Management Score with EDA and Active Zone Minutes. Brand focus areas rated 0-10: Garmin strongest in Training (10) and Recovery (9). Whoop strongest in Recovery (10) and Longevity (10). Oura strongest in Sleep (10). Apple strongest in Medical (10). Fitbit strongest in Stress (9). Whoop vs Oura vs Garmin vs Apple Watch vs Fitbit: what is actually different about each wearable. Data verified March 2026.');
   }
 
   disconnectedCallback() {
@@ -169,7 +169,7 @@ class KygoSensorComparison extends HTMLElement {
 
   get _sensors() {
     return [
-      { key: 'ppg', name: 'Optical HR (PPG)', garmin: 'Elevate Gen 5 — green + red + IR LEDs', whoop: 'Custom PPG — 26 Hz sampling', oura: '18-path — green + red + IR, 3 photodiodes', appleS10: '3rd-gen optical', appleU3: '3rd-gen optical', fitbit: 'Optical HR' },
+      { key: 'ppg', name: 'Optical HR (PPG)', garmin: 'Elevate Gen 5: green + red + IR LEDs', whoop: 'Custom PPG: 26 Hz sampling', oura: '18-path: green + red + IR, 3 photodiodes', appleS10: '3rd-gen optical', appleU3: '3rd-gen optical', fitbit: 'Optical HR' },
       { key: 'ecg', name: 'ECG', garmin: 'Single-lead', whoop: null, oura: null, appleS10: 'Single-lead', appleU3: 'Single-lead', fitbit: 'Single-lead', whoopNote: 'MG only' },
       { key: 'spo2', name: 'SpO2 (Blood Oxygen)', garmin: 'Pulse Ox (red + IR)', whoop: 'Optical', oura: 'Red + IR LEDs', appleS10: 'Optical', appleU3: 'Optical', fitbit: 'SpO2 sensor' },
       { key: 'temp', name: 'Skin Temperature', garmin: 'Dedicated sensor', whoop: 'Digital temp sensor (±1°C)', oura: 'Digital temp sensor', appleS10: 'Wrist temp (sleep)', appleU3: 'Wrist temp (sleep)', fitbit: 'Skin temp sensor' },
@@ -216,7 +216,7 @@ class KygoSensorComparison extends HTMLElement {
   get _algorithms() {
     return [
       { key: 'body_battery', name: 'Body Battery', brand: 'Garmin', brandKey: 'garmin', inputs: 'HRV + stress + sleep + activity', what: '0–100 energy score. Charges during rest, drains with activity/stress. Real-time updates.', diff: 'Only score showing live energy drain throughout the day. Built with Firstbeat Analytics.' },
-      { key: 'training_readiness', name: 'Training Readiness', brand: 'Garmin', brandKey: 'garmin', inputs: 'HRV + sleep + recovery + multi-day load', what: 'Tells you if your body can handle a hard workout today.', diff: 'Factors in training load across multiple days — not just last night\'s sleep.' },
+      { key: 'training_readiness', name: 'Training Readiness', brand: 'Garmin', brandKey: 'garmin', inputs: 'HRV + sleep + recovery + multi-day load', what: 'Tells you if your body can handle a hard workout today.', diff: 'Factors in training load across multiple days, not just last night\'s sleep.' },
       { key: 'hrv_status', name: 'HRV Status', brand: 'Garmin', brandKey: 'garmin', inputs: 'Overnight HRV over weeks', what: 'Shows your HRV baseline trend: balanced, low, or improving.', diff: 'Long-term trend view rather than a single nightly number.' },
       { key: 'health_status', name: 'Health Status', brand: 'Garmin', brandKey: 'garmin', inputs: 'HR + HRV + sleep + SpO2 + resp rate', what: 'Integrates 5 key health metrics into one view.', diff: 'New to Venu 4. Quick daily health check-in.' },
       { key: 'garmin_sleep_coach', name: 'Sleep Coach', brand: 'Garmin', brandKey: 'garmin', inputs: 'Sleep data + circadian rhythm', what: 'Personalized sleep schedule suggestions with consistency scores.', diff: 'Tracks sleep regularity and circadian alignment.' },
@@ -226,16 +226,16 @@ class KygoSensorComparison extends HTMLElement {
       { key: 'whoop_vo2', name: 'VO2 Max', brand: 'Whoop', brandKey: 'whoop', inputs: 'HR + activity data', what: 'Estimates cardiovascular fitness from heart rate and exercise.', diff: 'Added in 2025. Linked to Healthspan as a longevity indicator.' },
       { key: 'healthspan', name: 'Healthspan / Whoop Age', brand: 'Whoop', brandKey: 'whoop', inputs: '9 metrics including HRV, RHR, sleep, temp', what: 'Estimates biological age and "Pace of Aging."', diff: 'Only device with a longevity metric. Built with Buck Institute.' },
       { key: 'hormonal', name: 'Hormonal Insights', brand: 'Whoop', brandKey: 'whoop', inputs: 'Temp + HRV + sleep + cycle data', what: 'Shows how menstrual cycle phases affect recovery and sleep.', diff: 'Correlates hormonal phases with performance data.' },
-      { key: 'journal', name: 'Journal', brand: 'Whoop', brandKey: 'whoop', inputs: 'User-logged behaviors (160+)', what: 'Tracks daily habits and correlates them with recovery/sleep.', diff: 'Most extensive behavior tracking — 160+ habits.' },
+      { key: 'journal', name: 'Journal', brand: 'Whoop', brandKey: 'whoop', inputs: 'User-logged behaviors (160+)', what: 'Tracks daily habits and correlates them with recovery/sleep.', diff: 'Most extensive behavior tracking: 160+ habits.' },
       { key: 'whoop_sleep_coach', name: 'Sleep Coach / Planner', brand: 'Whoop', brandKey: 'whoop', inputs: 'Sleep data + circadian rhythm', what: 'Recommends optimal bedtime. Haptic alarm at ideal wake time.', diff: 'Personalized sleep scheduling with vibration-based wake-up.' },
       { key: 'whoop_ai', name: 'Whoop Coach (AI)', brand: 'Whoop', brandKey: 'whoop', inputs: 'All biometric data', what: 'AI assistant answering natural-language health questions.', diff: 'Only device with a conversational AI coach (powered by OpenAI).' },
       { key: 'readiness', name: 'Readiness Score', brand: 'Oura', brandKey: 'oura', inputs: 'Temp + HRV + RHR + sleep + activity', what: 'Daily score: how prepared your body is.', diff: 'Benefits from finger-based signal. Leans on temp deviations.' },
       { key: 'cardio_age', name: 'Cardiovascular Age', brand: 'Oura', brandKey: 'oura', inputs: 'RHR + HRV + VO2 Max + age', what: 'Estimates your heart\'s biological age.', diff: 'Paired with Cardio Capacity. Oura-only metric.' },
       { key: 'oura_vo2', name: 'Cardio Capacity (VO2 Max)', brand: 'Oura', brandKey: 'oura', inputs: 'Accel + PPG during walking test', what: 'Estimates VO2 Max from a guided walking test.', diff: 'Requires manual walking test to calibrate.' },
       { key: 'resilience', name: 'Resilience', brand: 'Oura', brandKey: 'oura', inputs: 'HRV + sleep + activity + stress', what: 'Long-term score of stress-recovery patterns.', diff: 'Tracks recovery patterns over weeks/months. Oura Labs.' },
-      { key: 'apple_sleep', name: 'Sleep Score', brand: 'Apple', brandKey: 'appleS10', inputs: 'Accel + PPG + temp', what: 'Rates overall sleep quality.', diff: 'Newer feature — less mature than Oura or Whoop sleep algorithms.' },
+      { key: 'apple_sleep', name: 'Sleep Score', brand: 'Apple', brandKey: 'appleS10', inputs: 'Accel + PPG + temp', what: 'Rates overall sleep quality.', diff: 'Newer feature: less mature than Oura or Whoop sleep algorithms.' },
       { key: 'vitals', name: 'Vitals App', brand: 'Apple', brandKey: 'appleS10', inputs: 'HR + resp rate + temp + SpO2 + sleep', what: 'Dashboard of overnight health metrics with alerts.', diff: 'Consolidates multiple sensors into one daily health view.' },
-      { key: 'apple_vo2', name: 'Cardio Fitness (VO2 Max)', brand: 'Apple', brandKey: 'appleS10', inputs: 'GPS + accel + PPG', what: 'Estimates VO2 Max from outdoor walks/runs.', diff: 'Passive — calculates automatically. Requires GPS.' },
+      { key: 'apple_vo2', name: 'Cardio Fitness (VO2 Max)', brand: 'Apple', brandKey: 'appleS10', inputs: 'GPS + accel + PPG', what: 'Estimates VO2 Max from outdoor walks/runs.', diff: 'Passive: calculates automatically. Requires GPS.' },
       { key: 'hearing_health', name: 'Hearing Health', brand: 'Apple', brandKey: 'appleS10', inputs: 'Microphone', what: 'Monitors noise levels. Alerts when exposure could damage hearing.', diff: 'Only wearable with hearing protection alerts.' },
       { key: 'fitbit_readiness', name: 'Daily Readiness', brand: 'Fitbit', brandKey: 'fitbit', inputs: 'HRV + RHR + sleep + activity', what: '1–100 score: push hard or rest.', diff: 'Requires Fitbit Premium ($9.99/mo) for full insights.' },
       { key: 'stress_mgmt', name: 'Stress Management Score', brand: 'Fitbit', brandKey: 'fitbit', inputs: 'EDA + HRV + RHR + sleep + activity', what: '1–100 from 3 sub-scores: Responsiveness (30), Exertion Balance (40), Sleep Patterns (30).', diff: 'Only score using hardware stress sensor (EDA) alongside HRV.' },
@@ -247,12 +247,12 @@ class KygoSensorComparison extends HTMLElement {
 
   get _insights() {
     return [
-      { title: 'Heart Rate & HRV', icon: 'heart', text: 'Oura\'s 18-path PPG on the finger reads through thinner skin with less motion noise — 31% fewer nighttime gaps vs Gen 3. Whoop counters with 26 Hz sampling (fastest here) for better exercise tracking. Garmin\'s Elevate Gen 5 added red + IR LEDs alongside green for better accuracy across skin tones.' },
+      { title: 'Heart Rate & HRV', icon: 'heart', text: 'Oura\'s 18-path PPG on the finger reads through thinner skin with less motion noise: 31% fewer nighttime gaps vs Gen 3. Whoop counters with 26 Hz sampling (fastest here) for better exercise tracking. Garmin\'s Elevate Gen 5 added red + IR LEDs alongside green for better accuracy across skin tones.' },
       { title: 'SpO2 (Blood Oxygen)', icon: 'wind', text: 'All six use red + IR light, but Oura\'s finger placement and 18-path design gets 120% better signal quality than Gen 3. Whoop runs continuous overnight SpO2. Everyone else does periodic or on-demand checks.' },
-      { title: 'Sleep Apnea', icon: 'moon', text: 'Only Apple Watch (S10, Ultra 3). Uses the accelerometer, not SpO2 — detects tiny wrist movements from interrupted breathing. Needs 30 nights of data. 89% accurate for severe apnea, 43% for moderate. FDA-authorized.' },
-      { title: 'Stress Measurement', icon: 'battery', text: 'Fitbit is the only device with a dedicated stress sensor (EDA) that reads sweat gland activity via skin conductance — a direct nervous system signal. Requires 90-sec manual scan. Garmin, Whoop, and Oura estimate stress from HRV (indirect). Apple has no stress feature.' },
-      { title: 'Hypertension', icon: 'gauge', text: 'Only Apple Watch Ultra 3. Analyzes how blood vessels respond to heartbeats via PPG. Does NOT give BP numbers — flags 30-day trends. Algorithm trained on 100,000+ participants.' },
-      { title: 'Fall Detection', icon: 'shield', text: 'Garmin and both Apple Watches use accelerometer + gyroscope — the gyro adds rotational data to tell real falls from arm drops. Whoop and Oura lack gyroscopes so can\'t do this.' }
+      { title: 'Sleep Apnea', icon: 'moon', text: 'Only Apple Watch (S10, Ultra 3). Uses the accelerometer, not SpO2: detects tiny wrist movements from interrupted breathing. Needs 30 nights of data. 89% accurate for severe apnea, 43% for moderate. FDA-authorized.' },
+      { title: 'Stress Measurement', icon: 'battery', text: 'Fitbit is the only device with a dedicated stress sensor (EDA) that reads sweat gland activity via skin conductance, a direct nervous system signal. Requires 90-sec manual scan. Garmin, Whoop, and Oura estimate stress from HRV (indirect). Apple has no stress feature.' },
+      { title: 'Hypertension', icon: 'gauge', text: 'Only Apple Watch Ultra 3. Analyzes how blood vessels respond to heartbeats via PPG. Does NOT give BP numbers; flags 30-day trends. Algorithm trained on 100,000+ participants.' },
+      { title: 'Fall Detection', icon: 'shield', text: 'Garmin and both Apple Watches use accelerometer + gyroscope; the gyro adds rotational data to tell real falls from arm drops. Whoop and Oura lack gyroscopes so can\'t do this.' }
     ];
   }
 
@@ -274,35 +274,35 @@ class KygoSensorComparison extends HTMLElement {
   get _srcByBrand() {
     return {
       garmin: [
-        { label: 'Garmin Newsroom — Venu 4 Announcement', url: 'https://www.garmin.com/en-US/newsroom/press-release/sports-fitness/take-steps-towards-a-healthier-lifestyle-with-the-venu-4-from-garmin/' },
-        { label: 'DC Rainmaker — Venu 4 Hands-On', url: 'https://www.dcrainmaker.com/2025/09/garmin-venu-4-hands-on-everything.html' },
-        { label: 'The5kRunner — Elevate Gen 5 Sensor Details', url: 'https://the5krunner.com/2023/05/13/new-garmin-elevate-gen-5/' },
-        { label: 'Garmin Wiki — Venu 4 Full Specs', url: 'https://wiki.garminrumors.com/Venu_4' }
+        { label: 'Garmin Newsroom: Venu 4 Announcement', url: 'https://www.garmin.com/en-US/newsroom/press-release/sports-fitness/take-steps-towards-a-healthier-lifestyle-with-the-venu-4-from-garmin/' },
+        { label: 'DC Rainmaker: Venu 4 Hands-On', url: 'https://www.dcrainmaker.com/2025/09/garmin-venu-4-hands-on-everything.html' },
+        { label: 'The5kRunner: Elevate Gen 5 Sensor Details', url: 'https://the5krunner.com/2023/05/13/new-garmin-elevate-gen-5/' },
+        { label: 'Garmin Wiki: Venu 4 Full Specs', url: 'https://wiki.garminrumors.com/Venu_4' }
       ],
       whoop: [
-        { label: 'Whoop Press Release — Whoop 5.0 and MG', url: 'https://www.whoop.com/us/en/press-center/whoop-unveils-5.0-MG/' },
-        { label: 'Whoop Blog — Everything Launched in 2025', url: 'https://www.whoop.com/us/en/thelocker/everything-whoop-launched-in-2025/' },
-        { label: 'Whoop — AI Coach (OpenAI)', url: 'https://www.whoop.com/eu/en/press-center/whoop-unveils-the-new-whoop-coach-powered-by-openai/' },
-        { label: 'The5kRunner — Whoop 4.0 vs 5.0 Architecture', url: 'https://the5krunner.com/2025/06/16/whoop-4-0-vs-whoop-5-0-sensor-architecture-changes-detailed-technical-content/' }
+        { label: 'Whoop Press Release: Whoop 5.0 and MG', url: 'https://www.whoop.com/us/en/press-center/whoop-unveils-5.0-MG/' },
+        { label: 'Whoop Blog: Everything Launched in 2025', url: 'https://www.whoop.com/us/en/thelocker/everything-whoop-launched-in-2025/' },
+        { label: 'Whoop: AI Coach (OpenAI)', url: 'https://www.whoop.com/eu/en/press-center/whoop-unveils-the-new-whoop-coach-powered-by-openai/' },
+        { label: 'The5kRunner: Whoop 4.0 vs 5.0 Architecture', url: 'https://the5krunner.com/2025/06/16/whoop-4-0-vs-whoop-5-0-sensor-architecture-changes-detailed-technical-content/' }
       ],
       oura: [
-        { label: 'Oura Support — Ring 4 Specs', url: 'https://support.ouraring.com/hc/en-us/articles/33045011508115-Oura-Ring-4' },
-        { label: 'Oura Blog — Technology in Ring 4', url: 'https://ouraring.com/blog/technology-in-oura-ring-4/' },
-        { label: 'Oura Blog — Smart Sensing (18-path)', url: 'https://ouraring.com/blog/smart-sensing/' },
-        { label: 'DC Rainmaker — Oura 4 What\'s Changed', url: 'https://www.dcrainmaker.com/2024/10/oura-announces-oura-4-heres-whats-actually-changed.html' }
+        { label: 'Oura Support: Ring 4 Specs', url: 'https://support.ouraring.com/hc/en-us/articles/33045011508115-Oura-Ring-4' },
+        { label: 'Oura Blog: Technology in Ring 4', url: 'https://ouraring.com/blog/technology-in-oura-ring-4/' },
+        { label: 'Oura Blog: Smart Sensing (18-path)', url: 'https://ouraring.com/blog/smart-sensing/' },
+        { label: 'DC Rainmaker: Oura 4 What\'s Changed', url: 'https://www.dcrainmaker.com/2024/10/oura-announces-oura-4-heres-whats-actually-changed.html' }
       ],
       apple: [
-        { label: 'Apple Newsroom — Apple Watch Ultra 3', url: 'https://www.apple.com/newsroom/2025/09/introducing-apple-watch-ultra-3/' },
-        { label: 'Apple Support — Sleep Apnea Notifications', url: 'https://support.apple.com/en-us/120031' },
-        { label: '9to5Mac — Accelerometer-Based Sleep Apnea', url: 'https://9to5mac.com/2024/09/16/apple-details-how-apple-watch-accelerometer-based-sleep-apnea-feature-works/' },
-        { label: 'Apple Newsroom — Blood Oxygen Update (Aug 2025)', url: 'https://www.apple.com/newsroom/2025/08/an-update-on-blood-oxygen-for-apple-watch-in-the-us/' },
-        { label: 'Cardiovascular Business — Ultra 3 Hypertension', url: 'https://cardiovascularbusiness.com/topics/clinical/hypertension/new-apple-watch-ultra-3-makes-early-hypertension-detection-priority' }
+        { label: 'Apple Newsroom: Apple Watch Ultra 3', url: 'https://www.apple.com/newsroom/2025/09/introducing-apple-watch-ultra-3/' },
+        { label: 'Apple Support: Sleep Apnea Notifications', url: 'https://support.apple.com/en-us/120031' },
+        { label: '9to5Mac: Accelerometer-Based Sleep Apnea', url: 'https://9to5mac.com/2024/09/16/apple-details-how-apple-watch-accelerometer-based-sleep-apnea-feature-works/' },
+        { label: 'Apple Newsroom: Blood Oxygen Update (Aug 2025)', url: 'https://www.apple.com/newsroom/2025/08/an-update-on-blood-oxygen-for-apple-watch-in-the-us/' },
+        { label: 'Cardiovascular Business: Ultra 3 Hypertension', url: 'https://cardiovascularbusiness.com/topics/clinical/hypertension/new-apple-watch-ultra-3-makes-early-hypertension-detection-priority' }
       ],
       fitbit: [
-        { label: 'Google Blog — Introducing Charge 6', url: 'https://blog.google/products/fitbit/fitness-tracker-charge-6/' },
-        { label: 'DC Rainmaker — Charge 6 In-Depth Review', url: 'https://www.dcrainmaker.com/2023/10/fitbit-charge-depth-review.html' },
-        { label: 'Fitbit Support — ECG App', url: 'https://support.google.com/fitbit/answer/14236718' },
-        { label: 'Fitbit — Stress Management Technology', url: 'https://www.fitbit.com/global/us/technology/stress' }
+        { label: 'Google Blog: Introducing Charge 6', url: 'https://blog.google/products/fitbit/fitness-tracker-charge-6/' },
+        { label: 'DC Rainmaker: Charge 6 In-Depth Review', url: 'https://www.dcrainmaker.com/2023/10/fitbit-charge-depth-review.html' },
+        { label: 'Fitbit Support: ECG App', url: 'https://support.google.com/fitbit/answer/14236718' },
+        { label: 'Fitbit: Stress Management Technology', url: 'https://www.fitbit.com/global/us/technology/stress' }
       ]
     };
   }
@@ -424,7 +424,7 @@ class KygoSensorComparison extends HTMLElement {
       ctx.textAlign = 'center';
       ctx.fillText(d.value.toString(), x + barWidth / 2, y - 5);
 
-      // Label — rotate on mobile to prevent overlap
+      // Label, rotate on mobile to prevent overlap
       ctx.fillStyle = '#475569';
       ctx.font = `${isMobile ? 10 : 11}px DM Sans, sans-serif`;
       if (isMobile) {
@@ -824,7 +824,7 @@ class KygoSensorComparison extends HTMLElement {
             `).join('')}
             <tr class="amazon-row">
               <td class="cell-label"></td>
-              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored" data-track-label="${devices[dk].trackLabel}">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
+              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="sponsored nofollow noopener" data-track-label="${devices[dk].trackLabel}">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
             </tr>
           </tbody>
         </table>
@@ -866,7 +866,7 @@ class KygoSensorComparison extends HTMLElement {
             <tr class="amazon-row">
               <td class="cell-label"></td>
               <td></td>
-              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="noopener sponsored" data-track-label="${devices[dk].trackLabel}">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
+              ${deviceKeys.map(dk => `<td><a href="${devices[dk].affiliateUrl}" class="amazon-link" target="_blank" rel="sponsored nofollow noopener" data-track-label="${devices[dk].trackLabel}">View on Amazon <span class="amazon-arrow">${this._icon('arrowRight')}</span></a></td>`).join('')}
             </tr>
           </tbody>
         </table>
@@ -1191,8 +1191,8 @@ class KygoSensorComparison extends HTMLElement {
         blurb: 'Every wearable tracks heart rate and sleep, but the hardware and software doing the work are wildly different.',
         cat: 'Wearables & Data', min: 8, img: '273a63_e3b6fec04fa9434e89320a3dba67b9c8~mv2.png' },
       { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
-        title: 'What\'s the Most Accurate Wearable? 17 Studies, 6 Devices, Ranked (2026)',
-        blurb: 'Seventeen independent studies on sleep, HRV, heart rate and step accuracy, with the actual numbers behind each device.',
+        title: 'What’s the Most Accurate Wearable? 45+ Studies, 6 Devices, Ranked (2026)',
+        blurb: 'Independent peer-reviewed studies reveal which wearables deliver the most accurate sleep, HRV, heart rate, and step data. We break down the actual numbers so you know what to trust.',
         cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' },
       { slug: 'centralize-health-data-multiple-devices',
         title: 'Centralize Health Data From Multiple Devices: The Complete Guide',
@@ -1337,7 +1337,7 @@ class KygoSensorComparison extends HTMLElement {
   // The dark conversion card, on its own section, directly after the first
   // content section. Self-contained under `kc-*` names with a literal fallback
   // behind every custom property, so the same block renders identically on
-  // either palette. Nothing else belongs in this section — the email capture
+  // either palette. Nothing else belongs in this section, the email capture
   // is a separate band further down the page.
   // Pass 'gray' to sit the section on the tinted band.
 
@@ -1414,7 +1414,7 @@ class KygoSensorComparison extends HTMLElement {
 
   // ── Email CTA · Kygo standard module ────────────────────────────────────
   // The inline email capture, on its own band. It never sits directly under the
-  // app CTA — a page content section always separates the two conversion
+  // app CTA, a page content section always separates the two conversion
   // touchpoints. Self-contained under `ke-*` names so it drops into either
   // palette. Pass 'gray' to sit on the tinted band.
 
@@ -1932,13 +1932,13 @@ class KygoSensorComparison extends HTMLElement {
     const ld = {
       '@context': 'https://schema.org',
       '@type': 'WebApplication',
-      'name': 'Wearable Hardware & Software Differences — Garmin vs Whoop vs Oura vs Apple Watch vs Fitbit',
+      'name': 'Wearable Hardware & Software Differences: Garmin vs Whoop vs Oura vs Apple Watch vs Fitbit',
       'description': 'See exactly what hardware and software makes each wearable different. Compare Garmin Venu 4, Whoop 5.0, Oura Ring 4, Apple Watch Series 10, Apple Watch Ultra 3, and Fitbit Charge 6 side by side.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/sensor-comparison',
       'datePublished': '2026-03-01',
-      'dateModified': '2026-03-18',
+      'dateModified': '2026-10-25',
       'softwareVersion': '1.0',
       'inLanguage': 'en',
       'isAccessibleForFree': true,
@@ -1979,7 +1979,7 @@ class KygoSensorComparison extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'Which wearable is best for stress tracking?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Fitbit Charge 6 is the only device with a dedicated EDA (electrodermal activity) stress sensor that measures sweat gland activity — a direct nervous system signal. Garmin, Whoop, and Oura estimate stress indirectly from HRV. Apple Watch has no stress feature.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Fitbit Charge 6 is the only device with a dedicated EDA (electrodermal activity) stress sensor that measures sweat gland activity, a direct nervous system signal. Garmin, Whoop, and Oura estimate stress indirectly from HRV. Apple Watch has no stress feature.' }
         },
         {
           '@type': 'Question',
