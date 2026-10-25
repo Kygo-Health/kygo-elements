@@ -25,7 +25,9 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to Ubuntu 26 (Oct 2026), where `playwright install --with-deps`
+    # (1.56.1) exits 1 in seconds. Move off 24.04 only together with a Playwright bump.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
