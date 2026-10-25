@@ -21,6 +21,7 @@
 | 4 | Head | **Kygo GA4 Tracking** | loads `kygo-tracking.js` with `data-ga-id` |
 | 5 | Body – start | **Kygo Custom Header** | fixed nav bar (logo, links, iOS/Android CTAs, mobile menu) |
 | 6 | Body – end | **Kygo Custom Footer** | dark footer (brand, socials, link columns, CTAs, legal disclaimer) |
+| 7 | Body – end | **Kygo Promo Card Sizing** (added 2026-10-25, ESSENTIAL, all pages, load on each page) | sizes the blog promo card iframes (Kygo Picks, report card) to their content from `{kygo:'promo', type:'height'}` messages; tracks nothing, so it runs without consent. Source: `docs/wix-snippets/promo-card-bridge.html`. Card clicks are filed by `kygo-tracking.js` (`gate_blog`, `cta_click` related_tool_click), which the **Kygo Consent Banner** embed loads after analytics consent |
 
 > Blocks 5 & 6 are full HTML/CSS/JS embeds (not Shadow DOM) — their `.kygo-nav-*` / `.kygo-footer-*`
 > classes are **global** and could collide with page CSS, so keep the `kygo-` prefixes.

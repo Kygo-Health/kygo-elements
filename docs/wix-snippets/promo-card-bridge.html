@@ -1,25 +1,19 @@
 <!--
-  Promo card bridge (picks + report clicks). Wix site-wide custom embed, BODY_END, all pages.
-  NOT YET INSTALLED (2026-10-25): creating it by API was blocked pending approval. Paste in
-  Wix: Settings > Custom code > Add custom code, all pages, Body - end, load on each page.
+  Kygo Promo Card Sizing. Wix site-wide custom embed: BODY_END, category ESSENTIAL, all pages,
+  load on each page (loadOnce false). Installed 2026-10-25 by the custom-embeds API.
 
-  The blog promo cards (blog-picks-card-*.html, blog-report-card.html) render inside Wix
-  "HTML code" iframes, where the page's GA4 cannot see them. Each card posts
-  {kygo:'promo', card, type, slug, label, url} to the top window; this script:
-    - click, card 'report' -> GA4 event gate_blog
-    - click, card 'picks'  -> GA4 cta_click, cta_category related_tool_click, to_tool best-wearables
-                              (same shape kygo-tracking.js gives the picks card on tool pages)
-    (views are not handled here: the cards send them to kygo-tracking.js as cta_view)
-    - height               -> sizes the iframe and Wix's fixed-height wrappers to the card
-  Events go through gtag when GA4 has loaded (consent given). Without consent they are pushed
-  to the dataLayer as plain objects, which gtag.js never sends.
-  Only fixed-set or sanitised strings are read out of the message.
+  Sizes the blog promo cards (blog-picks-card-*.html, blog-report-card.html) to their content.
+  Each card sits in a Wix "HTML code" iframe with a fixed height and posts
+  {kygo:'promo', card, type:'height', height} to the top window; this sets the iframe and
+  Wix's fixed-height wrappers to that height. It tracks nothing, so it runs without
+  analytics consent. Click tracking for these cards lives in kygo-tracking.js
+  (gate_blog, and cta_click related_tool_click to best-wearables), which loads only after
+  consent. Keep click or GA4 code out of this embed so nothing double-fires.
 -->
 <script>
 (function () {
-  function str(v, max) {
-    return typeof v === 'string' ? v.replace(/[^\w\-:\/.?=&%+~#@ ]/g, '').slice(0, max) : '';
-  }
+  if (window.__kygoPromoSizing) return;
+  window.__kygoPromoSizing = true;
   function frameFor(source) {
     var frames = document.getElementsByTagName('iframe');
     for (var i = 0; i < frames.length; i++) {
@@ -29,52 +23,22 @@
     }
     return null;
   }
-  function track(name, params) {
-    params.page_path = window.location.pathname;
-    params.component = 'kygo-blog-embed';
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', name, params);
-    } else {
-      window.dataLayer = window.dataLayer || [];
-      var o = { event: name };
-      for (var k in params) o[k] = params[k];
-      window.dataLayer.push(o);
-    }
-  }
   window.addEventListener('message', function (e) {
     var d = e.data;
-    if (!d || typeof d !== 'object' || d.kygo !== 'promo' || !e.source) return;
-    var card = d.card === 'report' ? 'report' : d.card === 'picks' ? 'picks' : '';
-    if (!card) return;
-    var slug = str(d.slug, 60) || 'unknown';
-
-    if (d.type === 'height') {
-      var f = frameFor(e.source);
-      var h = Math.ceil(Number(d.height));
-      if (!f || !(h > 0 && h < 3000)) return;
-      f.style.height = h + 'px';
-      var box = f.parentElement;
-      for (var up = 0; up < 4 && box && box !== document.body; up++) {
-        if (box.style && (box.style.height || box.style.maxHeight)) {
-          box.style.height = h + 'px';
-          box.style.maxHeight = h + 'px';
-        }
-        box = box.parentElement;
+    if (!d || typeof d !== 'object' || d.kygo !== 'promo' || d.type !== 'height' || !e.source) return;
+    if (d.card !== 'report' && d.card !== 'picks') return;
+    var h = Math.ceil(Number(d.height));
+    if (!(h > 0 && h < 3000)) return;
+    var f = frameFor(e.source);
+    if (!f) return;
+    f.style.height = h + 'px';
+    var box = f.parentElement;
+    for (var up = 0; up < 4 && box && box !== document.body; up++) {
+      if (box.style && (box.style.height || box.style.maxHeight)) {
+        box.style.height = h + 'px';
+        box.style.maxHeight = h + 'px';
       }
-      return;
-    }
-    if (d.type !== 'click') return;
-    var url = str(d.url, 300);
-    if (card === 'report') {
-      track('gate_blog', { cta_label: slug, cta_url: url, position: 'blog-embed' });
-    } else {
-      track('cta_click', {
-        cta_category: 'related_tool_click',
-        cta_label: str(d.label, 60),
-        cta_url: url,
-        to_tool: 'best-wearables',
-        position: 'picks-card-' + slug
-      });
+      box = box.parentElement;
     }
   });
 })();

@@ -10,6 +10,7 @@
  *   - android_download  (component via cta_click)
  *   - tool_interaction  (tool_name, action)
  *   - cta_view         (blog HTML-embed cards only: one per card seen)
+ *   - gate_blog        (blog report card click, via postMessage from its Wix HTML iframe)
  */
 (function () {
   'use strict';
@@ -387,6 +388,46 @@
       track('cta_view', base);
     }
   });
+
+  /* ── Blog promo cards (Kygo Picks, report) → GA4 ─── */
+
+  // The blog promo cards (docs/wix-snippets/blog-picks-card-*.html and
+  // blog-report-card.html) sit in Wix "HTML code" iframes and post
+  // {kygo:'promo', card, type:'click', slug, label, url} to the top window.
+  // Report card -> gate_blog; Picks card -> cta_click as related_tool_click to
+  // best-wearables (the same shape the picks card gets on tool pages). Height
+  // messages are handled by the "Kygo Promo Card Sizing" custom embed, not here.
+  // Guarded so a second copy of this script cannot register it twice.
+  if (!window.__kygoPromoClicks) {
+    window.__kygoPromoClicks = true;
+    window.addEventListener('message', function (e) {
+      var d = e.data;
+      if (!d || typeof d !== 'object' || d.kygo !== 'promo' || d.type !== 'click' || !e.source) return;
+      var card = d.card === 'report' ? 'report' : d.card === 'picks' ? 'picks' : '';
+      if (!card) return;
+      var slug = embedStr(d.slug, 60) || 'unknown';
+      var url = embedStr(d.url, 300);
+      if (card === 'report') {
+        track('gate_blog', {
+          cta_label: slug,
+          cta_url: url,
+          component: 'kygo-blog-embed',
+          position: 'blog-embed',
+          page_path: window.location.pathname
+        });
+      } else {
+        track('cta_click', {
+          cta_category: 'related_tool_click',
+          cta_label: typeof d.label === 'string' ? d.label.replace(/[^\w\-. ]/g, '').slice(0, 60) : '',
+          cta_url: url,
+          to_tool: 'best-wearables',
+          component: 'kygo-blog-embed',
+          position: 'picks-card-' + slug,
+          page_path: window.location.pathname
+        });
+      }
+    });
+  }
 
   // Optional (non-key): calculator completion on the calorie-burn tool.
   // The component dispatches 'kygo-calorie-calculation' (not 'kygo-calculation').

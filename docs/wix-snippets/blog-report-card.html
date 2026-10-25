@@ -2,7 +2,7 @@
   State of Wearable Accuracy report card for the Wix Blog "HTML code" block (GateBlog design,
   text from the approved canvas GateBlog artboard). Only data-slug on .card changes per
   placement. The link stays untagged (no UTM); the click reaches GA4 as the gate_blog event
-  through the site-wide "Promo card bridge" custom embed (docs/wix-snippets/promo-card-bridge.html).
+  through kygo-tracking.js; height through the "Kygo Promo Card Sizing" embed (promo-card-bridge.html).
 -->
 <style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -44,13 +44,13 @@ a{text-decoration:none}
     if (!top) return;
     try { top.postMessage(msg, '*'); } catch (e) { /* no page to report to */ }
   }
-  // Clicks: {kygo:'promo'} for the promo card bridge (docs/wix-snippets/promo-card-bridge.html).
+  // Clicks: {kygo:'promo'}, filed in GA4 by kygo-tracking.js.
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
     if (!a) return;
     post({ kygo: 'promo', card: CARD, type: 'click', slug: slug, label: a.getAttribute('data-label') || '', url: a.href });
   }, true);
-  // Height: understood by kygo-tracking.js, the HLTH bridge and the promo card bridge.
+  // Height: read by the Kygo Promo Card Sizing embed, kygo-tracking.js and the HLTH bridge.
   function reportHeight() {
     if (!root) return;
     var h = Math.ceil(root.getBoundingClientRect().bottom + (window.scrollY || 0)) + 2;
