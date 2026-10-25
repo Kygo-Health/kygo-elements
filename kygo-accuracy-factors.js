@@ -764,7 +764,7 @@ class KygoAccuracyFactors extends HTMLElement {
       'operatingSystem': 'Web',
       'url': url,
       'datePublished': '2026-08-20',
-      'dateModified': '2026-09-24',
+      'dateModified': '2026-10-25',
       'softwareVersion': '2.0',
       'inLanguage': 'en',
       'isAccessibleForFree': true,
@@ -977,8 +977,8 @@ class KygoAccuracyFactors extends HTMLElement {
         blurb: '1.2% error during a run and 16.2% during badminton, on the same watch. What breaks wrist heart rate is not how hard you work.',
         cat: 'HRV & Recovery', min: 13, img: '273a63_9cf51f2ccc2b492fb52f1e15958fe3e1~mv2.png' },
       { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
-        title: 'What\'s the Most Accurate Wearable? 17 Studies, 6 Devices, Ranked (2026)',
-        blurb: 'Seventeen independent studies on sleep, HRV, heart rate and step accuracy, with the actual numbers behind each device.',
+        title: 'What’s the Most Accurate Wearable? 45+ Studies, 6 Devices, Ranked (2026)',
+        blurb: 'Independent peer-reviewed studies reveal which wearables deliver the most accurate sleep, HRV, heart rate, and step data. We break down the actual numbers so you know what to trust.',
         cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' }
     ];
   }
