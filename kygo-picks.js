@@ -132,7 +132,7 @@ class KygoPicks extends HTMLElement {
 
   get _preview() { return this.hasAttribute('preview'); }
 
-  get _updated() { return { page: 'Oct 2026', iso: '2026-10-24' }; }
+  get _updated() { return { page: 'Oct 2026', iso: '2026-10-25' }; }
 
   // ── Data: products ────────────────────────────────────────────────────
   // One entry per product. `img` is a Wix media id. `link` is the outbound
@@ -317,7 +317,8 @@ class KygoPicks extends HTMLElement {
                 catch: 'That test was linked to Google.', source: 'Lambe 2026 (Pixel Watch 3)', model: 'Pixel Watch 3' },
               { product: 'apple-watch', rank: 3, badge: 'Third', stat: '13%', statLabel: 'error vs a lab test',
                 reason: 'Third. Reads low in every independent test.',
-                catch: 'Underestimates most in fit women.', source: 'Lambe 2026; Caserman 2024', model: 'Series 10' }
+                catch: 'Underestimates most in fit women.', source: 'Lambe 2026; Caserman 2024', model: 'Series 10' },
+              { product: 'polar', rank: 4, stat: '13.7%', statLabel: 'error vs a lab test', reason: 'Fourth. Reads about 1.0 mL/kg/min high on the resting Fitness Test.', catch: 'One small test of 24 adults, mostly patients.', source: 'Neudorfer 2025', model: 'Vantage M2' }
             ] },
           { id: 'calories', nav: 'Calories', icon: 'flame', title: 'Calories burned', confidence: 'Medium',
             lede: 'Every brand is 10%+ off. Use it as a trend.',
@@ -775,6 +776,7 @@ class KygoPicks extends HTMLElement {
       'Lambe 2026 (Pixel Watch 3)': [['Lambe R, et al. Validity of the Google Pixel Watch 3 for estimating VO2 max and heart rate. PLOS ONE, 2026. Google-funded.', d('10.1371/journal.pone.0356808')]],
       'Lee 2026': [['Lee TH, et al. Four smartwatches during endurance and resistance exercise vs indirect calorimetry. Sensors, 2026.', d('10.3390/s26082526')]],
       'Miller 2022': [['Miller DJ, et al. Six wearables vs polysomnography and ECG for sleep, heart rate and HRV. Sensors, 2022.', d('10.3390/s22166317')]],
+      'Neudorfer 2025': [['Neudorfer M, et al. Validation of the Polar Fitness Test for estimation of VO2 max at rest in medically supervised exercise training. Sensors, 2025.', d('10.3390/s25185649')]],
       "O'Grady 2024": [["O'Grady B, et al. Apple Watch Series 9 and Ultra 2 for heart rate variability and resting heart rate. Sensors, 2024.", d('10.3390/s24196220')]],
       'Paluch 2026': [['Paluch, et al. Network meta-analysis of wearable step-count accuracy, 59 studies. J Sport Health Sci, 2026.', d('10.1016/j.jshs.2026.101162')]],
       'Robbins 2024': [['Robbins R, et al. Accuracy of three commercial wearable devices for sleep tracking in healthy adults. Sensors, 2024. Oura-funded.', d('10.3390/s24206532')]],
