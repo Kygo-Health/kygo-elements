@@ -151,7 +151,7 @@ class KygoPicks extends HTMLElement {
       'fitbit-air': { name: 'Fitbit / Google', current: 'Google Fitbit Air', asin: 'B0GTMTZF3V', img: '273a63_c12bab319dc34737a386c7449f5f92c7', store: 'amazon' },
       'fitbit-charge': { name: 'Fitbit / Google', current: 'Fitbit Charge 6', asin: 'B0CC62ZG1M', img: '273a63_c12bab319dc34737a386c7449f5f92c7', store: 'amazon' },
       'samsung': { name: 'Samsung Galaxy Watch', current: 'Samsung Galaxy Watch 9', asin: 'B0H1DG7XRW', img: '273a63_21fd42e4a5d1459bb6db751a0ea5e161', store: 'amazon' },
-      'polar': { name: 'Polar', current: 'Polar Grit X2 Pro', asin: 'B0CXHJRWN9', img: '', store: 'amazon' }
+      'polar': { name: 'Polar', current: 'Polar Grit X2 Pro', asin: 'B0CXHJRWN9', img: '273a63_e7e3c05ed0bc4cec8f456cd7f995e70b', store: 'amazon' }
     };
   }
 

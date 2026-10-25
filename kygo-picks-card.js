@@ -62,14 +62,15 @@ class KygoPicksCard extends HTMLElement {
   get _href() { return this._getSetting('href', 'https://www.kygo.app/best-wearables'); }
   get _focus() { const f = this._getSetting('focus', 'all'); return this._sets[f] ? f : 'all'; }
 
-  // Wix media ids for brand logos. Polar has none yet, so it gets a monogram.
+  // Wix media ids for brand logos (a missing one falls back to a monogram).
   get _logos() {
     return {
       oura: '273a63_722e50e1a554453eb4c71a2e7a58925d',
       garmin: '273a63_c545c093c04d4ca4ade77e5ca43fd433',
       apple: '273a63_68b4900c356b4d0c8982e5ecd10f04fe',
       fitbit: '273a63_c12bab319dc34737a386c7449f5f92c7',
-      whoop: '273a63_c52aaaca1f7243f3818cf51d9374dbd4'
+      whoop: '273a63_c52aaaca1f7243f3818cf51d9374dbd4',
+      polar: '273a63_e7e3c05ed0bc4cec8f456cd7f995e70b'
     };
   }
 
