@@ -665,8 +665,8 @@ class KygoSmartRingComparison extends HTMLElement {
         blurb: 'Forty percent smaller, starting at $399, and no independent accuracy data yet. What changed, and who should actually buy it.',
         cat: 'Wearables & Data', min: 7, img: '273a63_5b1f7436802f4db3896917ad31e36cf3~mv2.png' },
       { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
-        title: 'What\'s the Most Accurate Wearable? 17 Studies, 6 Devices, Ranked (2026)',
-        blurb: 'Seventeen independent studies on sleep, HRV, heart rate and step accuracy, with the actual numbers behind each device.',
+        title: 'What’s the Most Accurate Wearable? 45+ Studies, 6 Devices, Ranked (2026)',
+        blurb: 'Independent peer-reviewed studies reveal which wearables deliver the most accurate sleep, HRV, heart rate, and step data. We break down the actual numbers so you know what to trust.',
         cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' }
     ];
   }
@@ -1160,7 +1160,7 @@ class KygoSmartRingComparison extends HTMLElement {
     const { cards: top, rest, showBest, note } = this._finderCards(this._priority);
     const cards = top.map((r, i) => {
       const b = this._brands[r.m.brand];
-      const rel = r.m.buy.aff ? 'noopener sponsored' : 'noopener';
+      const rel = r.m.buy.aff ? 'sponsored nofollow noopener' : 'noopener';
       return `
         <div class="fr-card${showBest && i === 0 ? ' fr-win' : ''}">
           ${showBest ? `<div class="fr-rank">${i === 0 ? 'Best match' : `#${i + 1}`}</div>` : ''}
@@ -1196,7 +1196,7 @@ class KygoSmartRingComparison extends HTMLElement {
   // The no-priority state. Deliberately not a ranking.
   _renderFinderEmpty() {
     const rows = [...this._models].sort((a, b) => a.hw - b.hw).map(m => {
-      const rel = m.buy.aff ? 'noopener sponsored' : 'noopener';
+      const rel = m.buy.aff ? 'sponsored nofollow noopener' : 'noopener';
       return `
         <div class="fr-row fr-row-plain">
           <span class="fr-row-logo">${this._brandMark(m.brand)}</span>
@@ -1244,7 +1244,7 @@ class KygoSmartRingComparison extends HTMLElement {
     const cols = this._cols.map(k => this._model(k)).filter(Boolean);
     const rows = this._specs[this._activeTab];
     const storeLink = (m) => {
-      const rel = m.buy.aff ? 'noopener sponsored' : 'noopener';
+      const rel = m.buy.aff ? 'sponsored nofollow noopener' : 'noopener';
       return `<a class="amazon-link" href="${m.buy.url}" target="_blank" rel="${rel}" data-track-position="ranking" data-track-label="${m.buy.slug}">View on ${m.buy.label} ${this._icon('arrowRight')}</a>`;
     };
     const notes = {
@@ -1278,7 +1278,7 @@ class KygoSmartRingComparison extends HTMLElement {
       </table>
       </div>
       <div class="aff-row-inner">
-        ${cols.map(m => `<a class="aff-btn" href="${m.buy.url}" target="_blank" rel="${m.buy.aff ? 'noopener sponsored' : 'noopener'}" data-track-position="ranking" data-track-label="${m.buy.slug}">${this._brandMark(m.brand)} ${m.name} on ${m.buy.label} ${this._icon('arrowRight')}</a>`).join('')}
+        ${cols.map(m => `<a class="aff-btn" href="${m.buy.url}" target="_blank" rel="${m.buy.aff ? 'sponsored nofollow noopener' : 'noopener'}" data-track-position="ranking" data-track-label="${m.buy.slug}">${this._brandMark(m.brand)} ${m.name} on ${m.buy.label} ${this._icon('arrowRight')}</a>`).join('')}
       </div>
       ${notes[this._activeTab] ? `<p class="tbl-note">${notes[this._activeTab]}</p>` : ''}
     `;
@@ -1724,7 +1724,7 @@ class KygoSmartRingComparison extends HTMLElement {
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'datePublished': '2026-09-02',
-        'dateModified': '2026-09-02',
+        'dateModified': '2026-10-25',
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
