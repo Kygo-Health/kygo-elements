@@ -118,95 +118,96 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       apple: {
         name: 'Apple Watch', short: 'Apple', key: 'apple',
         affiliate: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search',
-        headline: '~28%', headlineLabel: 'error, pooled across studies*',
-        headlineSrc: 'Choe & Kang 2025, Physiological Measurement, 56-study meta-analysis. The 27.96% figure is not in the abstract and traces to the university press release, not the paper.',
-        bias: 'Varies by activity type and intensity. Sex is not a tested moderator.',
+        headline: '25.95%', headlineLabel: 'max treadmill test (Ultra 2), 3rd of four brands head to head',
+        headlineSrc: 'Perez et al. 2025, IJES Conference Proceedings 14(5):102 (Ultra 2, about 20 adults, TrueOne 2400; conference abstract, not peer reviewed). Also 35.7% cycling (Series 8, Kostrna 2026) and 112.2% weight training (Series 8, Yun 2026).',
+        bias: 'Reads high in the newest head-to-head studies: about 14% high on endurance and 112% high on weights (Lee 2026). Sex is not a tested moderator.',
         algorithm: 'Proprietary ML neural networks trained on metabolic-chamber studies. Combines heart rate, motion, GPS speed, elevation and your profile. Active + Resting calories are summed for the total.',
         sensors: 'Optical HR (green-LED PPG), 3-axis accelerometer, gyroscope, GPS, barometric altimeter.',
         bmr: 'Resting rate likely from the Harris-Benedict equation (Apple does not disclose it).',
         strengths: ['Most-studied device, a 56-study meta-analysis (Choe &amp; Kang 2025)', 'Reasonable for steady-state cardio and walking', 'Heart rate itself is strong: no subgroup in that meta-analysis exceeded the 10% error threshold*'],
-        weaknesses: ['The ~28% headline is pooled bout-level, not a daily total: the paper\'s own pooled figure is 0.30 kcal/min (limits -2.09 to 2.69)*', 'Resistance training has never been metabolically validated on any Apple Watch', 'No body-composition input'],
+        weaknesses: ['Weight training 112.2% off (Series 8, Yun 2026, n=70), and it reads high: +112% in Lee 2026', 'Cycling 35.7% off, reading 21.6 kcal high (Series 8, Kostrna 2026, n=58)', 'The often-quoted ~28% from the meta-analysis traces to a press release and is pooled bout-level, not a daily total: the paper\'s own pooled figure is 0.30 kcal/min (limits -2.09 to 2.69)'],
         source: 'Choe & Kang 2025, Physiological Measurement (56-study meta-analysis)',
         sourceUrl: 'https://pubmed.ncbi.nlm.nih.gov/40199339/',
         acc: {
           'steady-cardio': { mape: 18, lo: 15, hi: 22, dir: 'mixed', ev: 'estimated' },
-          'running':       { mape: 24, lo: 18, hi: 30, dir: 'mixed', ev: 'measured', src: 'Le et al. 2022, Front Physiol 13:995575 (Apple Watch Series 6, n=20, vs COSMED K5). Huawei Terminal Co. funded this study.' },
+          'running':       { mape: 24, lo: 18, hi: 30, dir: 'mixed', ev: 'measured', src: 'Le et al. 2022, Front Physiol 13:995575 (Apple Watch Series 6, n=20, vs COSMED K5). Huawei Terminal Co. funded this study. On a max treadmill test the Ultra 2 was 25.95% off (Perez et al. 2025, conference abstract, about 20 adults)' },
           'walking':       { mape: 20, lo: 15, hi: 25, dir: 'over',  ev: 'measured', src: 'Le et al. 2022, Front Physiol 13:995575 (Apple Watch Series 6, n=20, 19.8%). Huawei Terminal Co. funded this study.' },
-          'cycling':       { mape: 45, lo: 35, hi: 55, dir: 'mixed', ev: 'estimated' },
+          'cycling':       { mape: 35.7, lo: 0, hi: 35.7, dir: 'over', ev: 'measured', src: 'Kostrna et al. 2026, PLOS ONE (Apple Watch Series 8, n=58, 10-minute cycling vs COSMED K5): 35.7% typical miss, reading 21.6 kcal high' },
           'hiit':          { mape: 30, lo: 20, hi: 45, dir: 'mixed', ev: 'estimated' },
-          'strength':      { mape: null, dir: 'mixed', ev: 'untested', note: 'No Apple Watch has ever been metabolically tested during resistance training. The 52.95% figure often attributed to Apple belongs to the <strong>Polar A360</strong> (Boudreaux et al. 2018, n=50); the J Sci Med Sport 2023 Apple Watch 6 study (n=11) contained rest and running protocols only.' },
+          'strength':      { mape: 112.2, lo: 0, hi: 112.2, dir: 'over', ev: 'measured', src: 'Yun et al. 2026, Bioengineering (Apple Watch Series 8, n=70 men, 34-minute weight training vs TrueOne 2400): 112.2% MAPE. Lee et al. 2026 found the same direction, about 112% high' },
           'swimming':      { mape: null, lo: 17, hi: 152, disp: '17 to 152%', dir: 'mixed', ev: 'measured', src: 'A single 2018 study (n=78, abstract level). The range is enormous and accuracy improves with speed, so no point estimate exists.' }
         }
       },
       fitbit: {
         name: 'Fitbit', short: 'Fitbit', key: 'fitbit',
         affiliate: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search',
-        headline: '16 ± 8%', headlineLabel: 'over roughly one day, vs an accelerometer',
-        headlineSrc: 'Chowdhury et al. 2017, PLoS ONE 12(2):e0171720, n=30, Charge HR vs a calibrated Actiheart over ~36 hours. Daily bias -405 ± 944 kcal/day.',
+        headline: '13.97%', headlineLabel: 'max treadmill test (Charge 6), 1st of four brands head to head',
+        headlineSrc: 'Perez et al. 2025, IJES Conference Proceedings 14(5):102 (Charge 6, about 20 adults, TrueOne 2400; conference abstract, not peer reviewed). Also 31.7% cycling (Sense 2, Kostrna 2026) and 41.7% weight training (Charge 5, Yun 2026).',
         bias: 'Near-zero average bias, but wide individual swing (-5 to +6 kcal/min). Chevance\'s own framing: 3 kcal/min over an hour is about 180 kcal, roughly a 40% miss.',
         algorithm: 'Heart rate is the primary driver: each minute in an HR zone becomes METs, then calories using your weight. Steps only matter indirectly by raising HR.',
         sensors: '3-axis accelerometer, optical HR, altimeter, gyroscope; Charge 6 adds ECG, SpO2, EDA and skin temperature.',
         bmr: 'A standard metabolic equation (likely Mifflin-St Jeor, undisclosed).',
-        strengths: ['Bias near zero on all comparisons in a 52-study meta-analysis (k=49: 0.19 kcal/min, SD 2.53, limits -5.32 to 5.70)', 'The only one of four devices close on resistance training (Lee 2026: 145.95 kcal vs a 140.79 kcal criterion)', 'SmartTrack auto-detects common activities'],
-        weaknesses: ['Walking overestimated by 69% (Charge 2, O\'Driscoll 2020, n=59)', 'Remove the low-quality studies from that meta-analysis and the same table gives k=29: -2.77 kcal/min, limits -12.75 to 7.41', 'No independent Charge 6 / Sense 2 calorie validation yet'],
+        strengths: ['Lowest error of four brands in the newest head-to-head studies: 13.97% on a max treadmill test (Charge 6), 31.7% cycling (Sense 2) and 41.7% weight training (Charge 5)', 'Closest of four devices on weights in Lee 2026: 145.95 kcal vs a 140.79 kcal criterion, about 4% high', 'Bias near zero on all comparisons in a 52-study meta-analysis (k=49: 0.19 kcal/min, SD 2.53, limits -5.32 to 5.70)'],
+        weaknesses: ['Walking overestimated by 69% (Charge 2, O\'Driscoll 2020, n=59)', 'The 31.7% cycling figure holds only after 7 implausible readings were removed; with them the Sense 2 read 128.6 kcal high (Kostrna 2026)', 'Remove the low-quality studies from that meta-analysis and the same table gives k=29: -2.77 kcal/min, limits -12.75 to 7.41'],
         source: 'O\'Driscoll et al. 2020, Health and Technology 10(3):637-648 (n=59, Vyntus CPX metabolic cart)',
         sourceUrl: 'https://link.springer.com/article/10.1007/s12553-019-00392-7',
         acc: {
           'steady-cardio': { mape: 20, lo: 15, hi: 28, dir: 'mixed', ev: 'estimated' },
           'running':       { mape: null, lo: 12, hi: 15, disp: '12 to 15%', dir: 'mixed', ev: 'measured', src: 'O\'Driscoll et al. 2020, Health and Technology 10(3):637-648 (Charge 2, n=59): 15% flat, 12% incline' },
           'walking':       { mape: 69, lo: 60, hi: 78, dir: 'over',  ev: 'measured', src: 'O\'Driscoll et al. 2020 (Charge 2, n=59), walk at 4 km/h: device 7.10 vs criterion 4.27 kcal/min = 69% MAPE' },
-          'cycling':       { mape: 40, lo: 39, hi: 40, dir: 'over',  ev: 'measured', src: 'O\'Driscoll et al. 2020 (Charge 2, n=59)' },
+          'cycling':       { mape: 31.7, lo: 31.7, hi: 31.7, dir: 'mixed', ev: 'measured', src: 'Kostrna et al. 2026, PLOS ONE (Fitbit Sense 2, 44 analysed, 10-minute cycling vs COSMED K5): 31.7% typical miss after 7 implausible readings were removed; with them the bias was +128.6 kcal. O\'Driscoll 2020 gave about 40% for the older Charge 2' },
           'hiit':          { mape: 35, lo: 25, hi: 50, dir: 'mixed', ev: 'estimated' },
-          'strength':      { mape: 4,  lo: 1,  hi: 9,  disp: 'near zero', dir: 'over', ev: 'measured', src: 'Lee et al. 2026, Sensors 26(8):2526 (n=62): Fitbit 145.95 kcal vs a 140.79 kcal criterion, +5.16. SOLUM-funded with an employed co-author, and the abstract contradicts the tables, so Tables 1 and 2 only.' },
+          'strength':      { mape: 41.7, lo: 4, hi: 41.7, dir: 'mixed', ev: 'measured', src: 'Yun et al. 2026, Bioengineering (Fitbit Charge 5, n=70 men, 34-minute weight training vs TrueOne 2400): 41.7% MAPE. Lee et al. 2026, Sensors 26(8):2526 (n=62) put the session total about 4% high (145.95 vs 140.79 kcal; SOLUM-funded, cite Tables 1 and 2 only)' },
           'swimming':      { mape: 45, lo: 35, hi: 55, dir: 'mixed', ev: 'estimated' }
         }
       },
       garmin: {
         name: 'Garmin', short: 'Garmin', key: 'garmin',
         affiliate: 'https://www.amazon.com/s?k=garmin%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'garmin-search',
-        headline: '19.1%', headlineLabel: 'treadmill running, best verified case',
-        headlineSrc: 'de Leon et al. 2026, Applied Sciences 16(3):1286 (Vivoactive 4, n=18, no funding, no declared conflict). Le et al. 2022 gives 21.8% for outdoor running.',
-        bias: 'Not stable. A 2020 lab review found underestimation; newer work finds the opposite.',
+        headline: '14.65%', headlineLabel: 'max treadmill test (Forerunner 265S), unplaced on calories',
+        headlineSrc: 'Perez et al. 2025, IJES Conference Proceedings 14(5):102 (Forerunner 265S, about 20 adults, TrueOne 2400; conference abstract, not peer reviewed). Also 77.6% cycling (Forerunner 955, Kostrna 2026) and 114.9% weight training (Vivosmart 5, Yun 2026).',
+        bias: 'Reads high in the newest studies: +30.5% on endurance and +116.4% on weights (Lee 2026). A 2020 lab review on older hardware found underestimation.',
         algorithm: 'Firstbeat engine: beat-by-beat R-R interval analysis derives respiration rate from HRV, estimates VO2, then converts to METs → calories. Adding respiration lifts accuracy over HR-only methods.',
         sensors: 'PPG optical HR (Elevate Gen 4 red/IR; Gen 5 adds green LEDs), accelerometer, GPS, ANT+/BLE chest-strap compatible.',
         bmr: 'A standard metabolic equation (undisclosed); nudged up for light daily movement.',
-        strengths: ['Most sophisticated engine (Firstbeat HRV modeling)', 'Best verified case is 19.1% on the treadmill (Vivoactive 4, n=18, de Leon 2026)', 'A paired chest strap sharply improves accuracy'],
-        weaknesses: ['Resting calories widely reported ~15 to 20% too high', 'Direction of error is not stable: Fuller 2020 (lab only, 51 non-independent comparisons on 2013 to 2019 hardware, one author employed by Garmin during publication) found underestimation in 69% of observations, while Lee 2026 found Garmin over-reading by +30.5% on endurance and +116.4% on resistance', 'Strength training ~57% off (Vivosmart HR, n=50, Boudreaux 2018)'],
+        strengths: ['Most sophisticated engine (Firstbeat HRV modeling)', 'Treadmill running holds up: 14.65% on a max treadmill test (Forerunner 265S, Perez 2025) and 19.1% in de Leon 2026 (Vivoactive 4, n=18, unfunded)', 'A paired chest strap sharply improves accuracy'],
+        weaknesses: ['Cycling 77.6% off, reading 68.6 kcal high (Forerunner 955, Kostrna 2026)', 'Weight training 114.9% off (Vivosmart 5, Yun 2026, n=70), and Lee 2026 found it reading +116.4% high on weights', 'Fuller 2020 (lab only, 51 non-independent comparisons on 2013 to 2019 hardware, one author employed by Garmin during publication) found underestimation, the opposite of the newer studies'],
         source: 'de Leon et al. 2026, Applied Sciences 16(3):1286 (Vivoactive 4 treadmill, n=18)',
         sourceUrl: 'https://www.mdpi.com/2076-3417/16/3/1286',
         acc: {
-          // No Garmin best-case cardio figure exists. The 6.7% previously shown here was a
+          // No Garmin steady-cardio study exists. A figure once shown here came from a
           // PulseOn (Parak 2017, two authors PulseOn employees); no Garmin was in that study.
           'steady-cardio': { mape: 25, lo: 18, hi: 33, dir: 'mixed', ev: 'estimated' },
           'running':       { mape: 22, lo: 15, hi: 28, dir: 'mixed', ev: 'measured', src: 'Le et al. 2022, Front Physiol 13:995575 (n=20, 21.8% outdoor running; Huawei Terminal Co. funded). de Leon et al. 2026 gives 19.1% on the treadmill (Vivoactive 4, n=18, unfunded).' },
           'walking':       { mape: 32, lo: 22, hi: 43, dir: 'mixed', ev: 'measured', src: 'Le et al. 2022, Front Physiol 13:995575 (n=20, 32.0%). Huawei Terminal Co. funded this study.' },
-          'cycling':       { mape: 40, lo: 30, hi: 52, dir: 'mixed', ev: 'estimated' },
+          'cycling':       { mape: 77.6, lo: 0, hi: 77.6, dir: 'over', ev: 'measured', src: 'Kostrna et al. 2026, PLOS ONE (Garmin Forerunner 955, 51 analysed, 10-minute cycling vs COSMED K5): 77.6% typical miss, reading 68.6 kcal high' },
           'hiit':          { mape: 25, lo: 15, hi: 35, dir: 'mixed', ev: 'estimated' },
-          'strength':      { mape: 57, lo: 45, hi: 65, dir: 'mixed', ev: 'measured', src: 'Boudreaux et al. 2018, Med Sci Sports Exerc 50(3):624-633, PMID 29189666 (Vivosmart HR, n=50, 57.02%). Its conclusion: no device was valid for energy expenditure during cycling or resistance exercise.' },
+          'strength':      { mape: 114.9, lo: 0, hi: 116.4, dir: 'over', ev: 'measured', src: 'Yun et al. 2026, Bioengineering (Garmin Vivosmart 5, n=70 men, 34-minute weight training vs TrueOne 2400): 114.9% MAPE. Lee et al. 2026 found the Vivosmart 5 reading +116.4% high on weights. The older Vivosmart HR was 57.02% off (Boudreaux 2018, n=50)' },
           'swimming':      { mape: null, lo: 18, hi: 33, disp: '18 to 33%', dir: 'mixed', ev: 'measured', src: 'A single 2018 study (17.9 to 32.7%). No point estimate is published, so we show the range.' }
         }
       },
       whoop: {
         name: 'WHOOP', short: 'WHOOP', key: 'whoop',
         affiliate: 'https://www.amazon.com/s?k=whoop%20fitness%20tracker&tag=kygohealthapp-20', trackLabel: 'whoop-search',
-        headline: '~12%*', headlineLabel: 'best case, steady cardio',
-        headlineSrc: 'Attributed to a University of Colorado Boulder 2022 study. No primary publication (authors, DOI or PubMed record) has been located.',
-        bias: 'Recovery-coupled, so the same workout can read differently by day',
+        headline: 'No study', headlineLabel: 'no WHOOP calorie validation has been published',
+        headlineSrc: 'No calorie validation of any WHOOP model has been published. Bellenger et al. 2021 validated heart rate and HRV only.',
+        bias: 'Unknown. With no calorie study there is no measured direction. The estimate is recovery-coupled, so the same workout can read differently by day.',
         algorithm: 'ACSM metabolic equations extended by Keytel et al. 2005: Calories = BMR + f(heart rate), activating once HR rises above your resting baseline. Recovery status shifts the estimate.',
         sensors: 'Advanced PPG (MAX86171 on 4.0), accelerometer, skin temperature, SpO2; 5.0 adds ~26 Hz sampling + respiratory rate.',
         bmr: 'Age, sex, height, weight; 5.0 adds a 30-day personalized calibration window.',
         strengths: ['Built for relative strain and recovery trends', 'The HR and HRV signal itself is well-validated by Bellenger et al. 2021, which validated <strong>HR and HRV only, never calories</strong>', '5.0 adds a 30-day personalized calibration window'],
-        weaknesses: ['No primary publication has been located for any WHOOP calorie figure on this page*', 'HIIT ~13% and resistance ~29% trace to that same unlocated study*', 'The widely-cited 18.4% TDEE figure has the same problem: no primary publication has been located*'],
-        source: 'Attributed to University of Colorado Boulder 2022, not located (Bellenger 2021 validates HR and HRV only)',
+        weaknesses: ['No calorie study of any WHOOP model has been published, so this tool publishes no WHOOP calorie figure', 'Calorie percentages that circulate online for WHOOP trace to no primary publication (no authors, DOI or PubMed record)', 'No GPS and no screen, so workouts rely on heart rate alone'],
+        source: 'No WHOOP calorie study exists (Bellenger 2021 validates HR and HRV only)',
         sourceUrl: 'https://www.whoop.com/us/en/thelocker/calorie-tracking-science/',
         acc: {
-          'steady-cardio': { mape: 12, lo: 8,  hi: 18, dir: 'mixed', ev: 'measured', unsourced: true, src: 'Attributed to a University of Colorado Boulder 2022 study. No primary publication has been located, so this is shown for completeness, not as study-backed.' },
-          'running':       { mape: 18, lo: 12, hi: 25, dir: 'mixed', ev: 'estimated' },
-          'walking':       { mape: 25, lo: 18, hi: 35, dir: 'mixed', ev: 'estimated' },
-          'cycling':       { mape: 35, lo: 25, hi: 45, dir: 'mixed', ev: 'estimated' },
-          'hiit':          { mape: 13, lo: 6,  hi: 30, dir: 'over',  ev: 'measured', unsourced: true, src: 'From the same attributed 2022 source. No primary publication has been located, so this is shown for completeness, not as study-backed.' },
-          'strength':      { mape: 29, lo: 20, hi: 40, dir: 'mixed', ev: 'measured', unsourced: true, src: 'From the same attributed 2022 source. No primary publication has been located, so this is shown for completeness, not as study-backed.' },
-          'swimming':      { mape: 40, lo: 30, hi: 50, dir: 'mixed', ev: 'estimated' }
+          // No WHOOP calorie study exists, so every cell is untested and no number is published.
+          'steady-cardio': { mape: null, dir: 'mixed', ev: 'untested', note: 'No calorie validation of any WHOOP model has been published.' },
+          'running':       { mape: null, dir: 'mixed', ev: 'untested', note: 'No calorie validation of any WHOOP model has been published.' },
+          'walking':       { mape: null, dir: 'mixed', ev: 'untested', note: 'No calorie validation of any WHOOP model has been published.' },
+          'cycling':       { mape: null, dir: 'mixed', ev: 'untested', note: 'No calorie validation of any WHOOP model has been published.' },
+          'hiit':          { mape: null, dir: 'mixed', ev: 'untested', note: 'No calorie validation of any WHOOP model has been published.' },
+          'strength':      { mape: null, dir: 'mixed', ev: 'untested', note: 'No calorie validation of any WHOOP model has been published.' },
+          'swimming':      { mape: null, dir: 'mixed', ev: 'untested', note: 'No calorie validation of any WHOOP model has been published.' }
         }
       },
       oura: {
@@ -239,23 +240,23 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       samsung: {
         name: 'Samsung Galaxy Watch', short: 'Samsung', key: 'samsung',
         affiliate: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20', trackLabel: 'samsung-watch-search',
-        headline: '~3%', headlineLabel: 'in one small study, intermittent running only',
-        headlineSrc: 'JMIR Formative Research 2026: Galaxy Watch 6 logged 219.53 kcal vs a 213.60 kcal criterion. One small study, a single intermittent-running protocol.',
-        bias: 'Too few studies to establish a pattern',
+        headline: '10 to 13%', headlineLabel: 'running (Galaxy Watch 6, 7)†, 2nd of four brands head to head',
+        headlineSrc: 'Ferreira et al. 2026, JMIR Formative Research (n=148, 27-minute intermittent running vs COSMED K5): 10.10% MAPE (Galaxy Watch 6), 12.55% (Galaxy Watch 7). † Samsung-funded; all authors at Samsung partner Sidia.',
+        bias: 'Close on running and walking, but reads high on cycling and weights (+83% on weights, Lee 2026).',
         algorithm: 'HR-VO2 relationships combined with accelerometer and GPS; MET tables applied to recognized activities. Watch 7 adds a BIA body-composition sensor whose role in the calorie model is undocumented.',
         sensors: 'Optical HR (PPG), 3-axis accelerometer, gyroscope, barometer, GPS; Watch 7 adds the BioActive sensor (ECG, BIA body composition).',
         bmr: 'A standard metabolic equation (undisclosed, Harris-Benedict or Mifflin-St Jeor).',
-        strengths: ['~3% in one small study of intermittent running (Galaxy Watch 6: 219.53 kcal vs a 213.60 kcal criterion)', 'BioActive sensor can read body composition (Watch 7+)', 'Tight Samsung Health integration'],
-        weaknesses: ['That ~3% is one small study on a single intermittent-running protocol, not a general accuracy claim', 'Far less independent research than Apple/Fitbit/Garmin', 'No published calorie white papers'],
-        source: 'Samsung Galaxy Watch 6/7 intermittent-running validation (2026), JMIR Formative Research',
+        strengths: ['Lowest error of five brands on a max treadmill test: 9.42% (Galaxy Watch 7, Perez 2025, conference abstract)', 'Running 10 to 13% (Galaxy Watch 6, 7, Ferreira 2026, n=148)†', 'Walking within 0.5% of the criterion total (Galaxy Watch 5, Oh 2024, 27 men, 30-minute walk)'],
+        weaknesses: ['Cycling 66.5% off, reading 56.8 kcal high (Galaxy Watch 5, Kostrna 2026)', 'Weight training 84.5% off (Galaxy Watch 5, Yun 2026, n=70), reading 83% high in Lee 2026', '† The running study was Samsung-funded and all its authors work at Samsung partner Sidia'],
+        source: 'Ferreira et al. 2026, JMIR Formative Research (Galaxy Watch 6 and 7, n=148)',
         sourceUrl: 'https://formative.jmir.org/2026/1/e83090',
         acc: {
           'steady-cardio': { mape: 15, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' },
-          'running':       { mape: 3,  lo: 2,  hi: 9,  dir: 'mixed', ev: 'measured', src: 'JMIR Formative Research 2026 (Galaxy Watch 6: 219.53 vs 213.60 kcal). One small study, intermittent running only.' },
+          'running':       { mape: null, lo: 10, hi: 13, disp: '10 to 13%', dir: 'mixed', ev: 'measured', funded: true, src: 'Ferreira et al. 2026, JMIR Formative Research (Galaxy Watch 6 10.10%, Galaxy Watch 7 12.55% MAPE; n=148, 27-minute intermittent running vs COSMED K5). Samsung-funded; all authors at Samsung partner Sidia. On a max treadmill test the Galaxy Watch 7 was 9.42% off (Perez et al. 2025, conference abstract)' },
           'walking':       { mape: 15, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' },
-          'cycling':       { mape: 18, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' },
+          'cycling':       { mape: 66.5, lo: 0, hi: 66.5, dir: 'over', ev: 'measured', src: 'Kostrna et al. 2026, PLOS ONE (Galaxy Watch 5, n=58, 10-minute cycling vs COSMED K5): 66.5% typical miss, reading 56.8 kcal high' },
           'hiit':          { mape: 18, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' },
-          'strength':      { mape: 20, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' },
+          'strength':      { mape: 84.5, lo: 0, hi: 84.5, dir: 'over', ev: 'measured', src: 'Yun et al. 2026, Bioengineering (Galaxy Watch 5, n=70 men, 34-minute weight training vs TrueOne 2400): 84.5% MAPE. Lee et al. 2026 found Samsung reading 83% high on weights' },
           'swimming':      { mape: 20, lo: 9,  hi: 21, dir: 'mixed', ev: 'estimated' }
         }
       }
@@ -278,17 +279,17 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   get _faqs() {
     return [
       { q: 'How accurate is Apple Watch calorie burn?',
-        a: 'A 56-study meta-analysis (Choe and Kang 2025) is usually quoted as putting Apple Watch calorie error around 28%, though that figure traces to a press release rather than the paper, and it is pooled across bouts, not a daily total. The paper\'s own pooled estimate is 0.30 kcal/min (limits -2.09 to 2.69). Heart rate is the part it gets right: no subgroup in that meta-analysis exceeded the 10% error threshold. It reads best for walking (~20%) and running (~24%). Resistance training has never been validated on any Apple Watch, so we publish no figure for it.' },
+        a: 'Apple Watch placed third of four brands in the newest head-to-head studies: 25.95% off on a max treadmill test (Ultra 2, Perez 2025, conference abstract), 35.7% on cycling (Series 8, Kostrna 2026) and 112.2% on weight training (Series 8, Yun 2026), where it reads high. It reads best for walking (~20%) and running (~24%) in Le 2022. A 56-study meta-analysis (Choe and Kang 2025) is often quoted at around 28%, but that figure traces to a press release and is pooled across bouts, not a daily total; the paper\'s own pooled estimate is 0.30 kcal/min (limits -2.09 to 2.69). Heart rate is the part it gets right: no subgroup in that meta-analysis exceeded the 10% error threshold.' },
       { q: 'Which wearable is most accurate for calories?',
-        a: 'No brand wins, and the daily figures cannot be leaderboarded because each was measured against a different reference. The one defensible cross-brand statement comes from the Fuller 2020 review: no brand was within 3% of the criterion more than 13% of the time. The Stanford seven-device study (Shcherbina 2017) adds something more useful than a ranking: pooled across those devices, calorie error was lowest for walking (31.8%) and running (31.0%) and highest for sitting (52.4%). The worst calorie errors happen at rest, not during exercise. Activity type matters more than brand.' },
+        a: 'Fitbit, then Samsung, then Apple Watch, but every brand is more than 10% off. In head-to-head studies that tested the brands on the same people against lab gas analysis, Fitbit was 13.97% off on a max treadmill test (Charge 6), 31.7% on cycling (Sense 2) and 41.7% on weight training (Charge 5). Samsung was 9.42% on the treadmill (Galaxy Watch 7) but 66.5% on cycling and 84.5% on weights (Galaxy Watch 5). Apple Watch was 25.95%, 35.7% and 112.2%, and Garmin 14.65%, 77.6% and 114.9%. WHOOP has no calorie study and Oura has only accelerometer comparisons. The Fuller 2020 review adds that no brand was within 3% of the criterion more than 13% of the time. The Stanford seven-device study (Shcherbina 2017) adds something more useful than a ranking: pooled across those devices, calorie error was lowest for walking (31.8%) and running (31.0%) and highest for sitting (52.4%). The worst calorie errors happen at rest, not during exercise. Activity type matters more than brand.' },
       { q: 'Why does my wearable overestimate or underestimate calories?',
         a: 'Wearables do not measure calories directly. They infer them from heart rate, motion and your profile, so the conversion carries the error. Sex, skin tone, body composition, medications (beta-blockers, stimulants), tattoos and band fit all shift the result. Static, low-motion work like strength training is the hardest case for every brand.' },
       { q: 'Is the calorie number on my watch good enough for a diet?',
         a: 'Not for precise nutrition math. Real-world calorie error runs 15 to 40%+, and the Stanford 2017 study found some devices off by up to 93%. Use the number for week-over-week trends and relative effort, not as an exact figure to eat back.' },
       { q: 'How accurate is Oura, WHOOP or Garmin for exercise calories?',
-        a: 'Oura\'s 13% free-living figure was measured against a wrist accelerometer, not calorimetry; against actual indirect calorimetry in the lab it was 21.1%. It was never metabolically tested for cycling, HIIT, strength or swimming, so we publish no figure for those. Every WHOOP calorie figure in circulation, including the widely-quoted 18.4% TDEE number and the HIIT ~13% and resistance ~29% figures, has no primary publication that anyone has been able to locate; Bellenger 2021 validated WHOOP\'s heart rate and HRV only, never its calories. Garmin\'s best verified case is 19.1% on the treadmill (Vivoactive 4, n=18), and it is about 57% off for resistance training (Vivosmart HR, n=50).' },
+        a: 'Oura\'s 13% free-living figure was measured against a wrist accelerometer, not calorimetry; against actual indirect calorimetry in the lab it was 21.1%. It was never metabolically tested for cycling, HIIT, strength or swimming, so we publish no figure for those. No calorie study of any WHOOP model has been published, so we publish no WHOOP calorie figure; Bellenger 2021 validated WHOOP\'s heart rate and HRV only, never its calories. Garmin is close on treadmill running, 14.65% on a max treadmill test (Forerunner 265S, Perez 2025) and 19.1% in de Leon 2026 (Vivoactive 4, n=18), but reads high on cycling (77.6%, Forerunner 955, Kostrna 2026) and weight training (114.9%, Vivosmart 5, Yun 2026).' },
       { q: 'How does this calculator work?',
-        a: 'Pick your device and activity, enter the calories it reported, and the tool applies the published per-activity error and bias direction for that exact combination to show your likely actual range. Every figure names its device model and sample size. Where no direct per-activity study exists the result is flagged as an estimate; where a figure circulates without a locatable primary publication it is flagged too, and where a source publishes only a range we show the range instead of inventing a midpoint.' }
+        a: 'Pick your device and activity, enter the calories it reported, and the tool applies the published per-activity error and bias direction for that exact combination to show your likely actual range. Every figure names its device model and sample size. Where no direct per-activity study exists the result is flagged as an estimate, a brand-funded study is marked with a dagger, and where a source publishes only a range we show the range instead of inventing a midpoint.' }
     ];
   }
 
@@ -311,7 +312,10 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       { group: 'cross', tag: 'Fitbit / Apple / Garmin', title: 'JMIR mHealth 2017: Charge HR comparison', cite: 'n=62 · error rises with intensity', url: 'https://mhealth.jmir.org/2017/3/e34/' },
       { group: 'cross', tag: 'Gold standard', title: 'Murakami et al. 2019: 12-device DLW validation', cite: 'JMIR mHealth · only 2 of 12 acceptable free-living', url: 'https://mhealth.jmir.org/2019/8/e13938' },
       { group: 'cross', tag: 'Multi-device review', title: 'Fuller et al. 2020, JMIR mHealth: wrist-wearable review', cite: '⚠️ Laboratory only · 51 non-independent comparisons on 2013 to 2019 hardware · one author was employed by Garmin during the publication process. Headline finding: no brand was within 3% of criterion more than 13% of the time. Underestimation in 69% of observations applies to the lab data only.', url: 'https://mhealth.jmir.org/2020/9/e18694' },
-      { group: 'cross', tag: '⚠️ Funded · brand attribution', title: 'Lee et al. 2026, Sensors 26(8):2526: four-device energy expenditure', cite: '⚠️ n=62 · SOLUM-funded with an employed co-author, and the abstract contradicts its own tables, so cite Tables 1 and 2 only. Fitbit 145.95 kcal vs a 140.79 kcal criterion; Garmin +30.5% on endurance and +116.4% on resistance.', url: 'https://www.mdpi.com/1424-8220/26/8/2526' },
+      { group: 'cross', tag: '⚠️ Funded · brand attribution', title: 'Lee et al. 2026, Sensors 26(8):2526: four-device energy expenditure', cite: '⚠️ n=62 men · SOLUM-funded with an employed co-author, and the abstract contradicts its own tables, so cite Tables 1 and 2 only. Reads high on endurance and weights: Fitbit +21% and +4% (145.95 vs 140.79 kcal), Samsung +9% and +83%, Apple Watch +14% and +112%, Garmin +30.5% and +116.4%.', url: 'https://www.mdpi.com/1424-8220/26/8/2526' },
+      { group: 'cross', tag: 'Head to head · conference abstract', title: 'Perez et al. 2025, IJES Conference Proceedings 14(5):102: max treadmill test', cite: 'About 20 adults vs TrueOne 2400 · conference abstract, not peer reviewed. MAPE: Galaxy Watch 7 9.42%, Fitbit Charge 6 13.97%, Garmin Forerunner 265S 14.65%, Polar Vantage M3 21.10%, Apple Watch Ultra 2 25.95%.' },
+      { group: 'cross', tag: 'Head to head · cycling', title: 'Kostrna et al. 2026, PLOS ONE: four watches on a 10-minute cycle', cite: 'n=58 Hispanic adults vs COSMED K5 · NSF grant, no device conflict. Typical miss: Fitbit Sense 2 31.7% (after 7 implausible readings removed), Apple Watch Series 8 35.7%, Galaxy Watch 5 66.5%, Garmin Forerunner 955 77.6%.', url: 'https://doi.org/10.1371/journal.pone.0353261' },
+      { group: 'cross', tag: 'Head to head · weight training', title: 'Yun et al. 2026, Bioengineering: four watches in weight training', cite: 'n=70 men, 34-minute session vs TrueOne 2400 · no funding declared. MAPE: Fitbit Charge 5 41.7%, Galaxy Watch 5 84.5%, Apple Watch Series 8 112.2%, Garmin Vivosmart 5 114.9%.', url: 'https://doi.org/10.3390/bioengineering13101099' },
       { group: 'cross', tag: 'Why brand attribution matters', title: 'Parak et al. 2017, JMIR mHealth: Firstbeat modeling in a PulseOn', cite: 'Often mis-cited as a Garmin result. No Garmin device was tested; the device is a PulseOn and two authors were PulseOn employees. Stanford ranked PulseOn worst of seven devices for energy expenditure (92.6%).', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5548984/' },
       { group: 'apple', tag: 'Anchor · Apple', title: 'Choe & Kang 2025: Apple Watch meta-analysis', cite: 'Physiological Measurement · 56 studies · pooled 0.30 kcal/min (limits -2.09 to 2.69). The 27.96% figure is not in the abstract and traces to the university press release. Moderators tested: age, health status, device series, activity intensity, activity type. Sex is not among them.', url: 'https://pubmed.ncbi.nlm.nih.gov/40199339/' },
       { group: 'apple', tag: 'Apple', title: 'Sun et al. 2023, J Sci Med Sport: Apple Watch 6 running', cite: 'n=11 · rest and running protocols only, no resistance protocol. Treadmill 447.91 vs a 367.14 kcal criterion, bias +80.77. Sun defines MAPE as (criterion - estimate)/criterion, so a positive signed value there means underestimation.', url: 'https://www.jsams.org/article/S1440-2440(23)00177-9/fulltext' },
@@ -319,25 +323,25 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       { group: 'apple', tag: 'Apple', title: 'Apple: Heart Rate & Calorimetry white paper (2024)', cite: 'Manufacturer method documentation', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
       { group: 'fitbit', tag: 'Anchor · Fitbit', title: 'O\'Driscoll et al. 2020, Health and Technology 10(3):637-648', cite: 'n=59 · Charge 2 vs a Vyntus CPX metabolic cart. Walk at 4 km/h: 69% MAPE (7.10 vs 4.27 kcal/min). Running: 15% flat, 12% incline. No manufacturer funding.', url: 'https://link.springer.com/article/10.1007/s12553-019-00392-7' },
       { group: 'fitbit', tag: 'Fitbit', title: 'Chevance et al. 2022, JMIR mHealth: Fitbit meta-analysis', cite: '52 studies · Table 2, all comparisons (k=49): bias 0.19 kcal/min (SD 2.53), limits -5.32 to 5.70. Low-quality studies removed (k=29): bias -2.77 (SD 4.12), limits -12.75 to 7.41. The authors note 3 kcal/min over an hour is about 180 kcal, roughly a 40% miss.', url: 'https://mhealth.jmir.org/2022/4/e35626' },
-      { group: 'fitbit', tag: 'Fitbit', title: 'Chowdhury et al. 2017, PLoS ONE 12(2):e0171720', cite: 'n=30 · Charge HR vs a calibrated Actiheart over ~36 hours. 16 ± 8%, daily bias -405 ± 944 kcal/day. The source of the daily Fitbit figure.', url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0171720' },
+      { group: 'fitbit', tag: 'Fitbit', title: 'Chowdhury et al. 2017, PLoS ONE 12(2):e0171720', cite: 'n=30 · Charge HR vs a calibrated Actiheart over ~36 hours, daily bias -405 ± 944 kcal/day. An accelerometer reference, not calorimetry, so it is no longer used as a headline here.', url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0171720' },
       { group: 'fitbit', tag: 'Fitbit', title: 'Fitbit: how calorie burn is calculated', cite: 'Manufacturer method documentation', url: 'https://support.google.com/fitbit/answer/14237111' },
-      { group: 'garmin', tag: 'Garmin', title: 'Boudreaux et al. 2018, Med Sci Sports Exerc 50(3):624-633', cite: 'PMID 29189666 · n=50 · Vivosmart HR 57.02% MAPE for resistance. Its own conclusion: no device was valid for energy expenditure during cycling or resistance exercise. Also the true home of the 52.95% figure, which belongs to the Polar A360.', url: 'https://pubmed.ncbi.nlm.nih.gov/29189666/' },
+      { group: 'garmin', tag: 'Garmin', title: 'Boudreaux et al. 2018, Med Sci Sports Exerc 50(3):624-633', cite: 'PMID 29189666 · n=50 · Vivosmart HR 57.02% MAPE for resistance. Its own conclusion: no device was valid for energy expenditure during cycling or resistance exercise. Also the true source of a resistance figure often misattributed to Apple, which belongs to the Polar A360.', url: 'https://pubmed.ncbi.nlm.nih.gov/29189666/' },
       { group: 'garmin', tag: 'Garmin', title: 'de Leon et al. 2026, MDPI Applied Sciences 16(3):1286', cite: 'Vivoactive 4 treadmill · n=18 · 19.1% MAPE · no funding, no declared conflict. Published 27 January 2026.', url: 'https://www.mdpi.com/2076-3417/16/3/1286' },
       { group: 'garmin', tag: 'Garmin', title: 'Firstbeat: energy expenditure white paper', cite: 'Manufacturer method documentation', url: 'https://assets.firstbeat.com/firstbeat/uploads/2015/10/white_paper_energy_expenditure_estimation.pdf' },
-      { group: 'whoop', tag: 'WHOOP ⚠️ not located', title: 'The attributed University of Colorado Boulder 2022 study', cite: '⚠️ Every WHOOP calorie figure on this page (steady cardio ~12%, HIIT ~13%, resistance ~29%, and the widely-cited 18.4% TDEE figure) is attributed to this source. No primary publication (authors, DOI or PubMed record) has been located. Shown for completeness, not as study-backed.' },
       { group: 'whoop', tag: 'WHOOP', title: 'Bellenger et al. 2021: HR/HRV validation', cite: 'Sensors · validates heart rate and HRV only, never calories', url: 'https://www.mdpi.com/1424-8220/21/10/3571' },
       { group: 'whoop', tag: 'WHOOP', title: 'Keytel et al. 2005: HR-to-EE equation', cite: 'J Sports Sciences · the basis of WHOOP\'s algorithm', url: 'https://pubmed.ncbi.nlm.nih.gov/15966347/' },
       { group: 'whoop', tag: 'WHOOP', title: 'WHOOP: how calories are calculated', cite: 'Manufacturer method documentation. The page, updated 9 May 2025, now states that WHOOP prioritizes accuracy over overestimation.', url: 'https://support.whoop.com/hc/en-us/articles/360033775513-How-does-WHOOP-calculate-calories-burned-' },
       { group: 'oura', tag: 'Oura', title: 'Andersson-Hall et al. 2023: Oura energy expenditure validation', cite: 'BMC Med Res Methodology (cite the 9 September 2023 correction; Kristiansson is the second author). Free-living 13% was measured against Axivity AX3 wrist accelerometers, not calorimetry. Hip 42.2% and thigh 44.7% in the same table, the three placements disagreeing by about 850 kcal/day. Lab MAPE against actual indirect calorimetry: 21.1%.', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9950693/' },
       { group: 'oura', tag: 'Oura', title: 'Oura: activity improvements (Nov 2024)', cite: 'HR integration cut median active-calorie error 53%', url: 'https://ouraring.com/blog/activity-improvements/' },
-      { group: 'samsung', tag: 'Samsung', title: 'JMIR Formative Research 2026: Galaxy Watch 6/7', cite: 'One small study, intermittent running only. Galaxy Watch 6 logged 219.53 kcal vs a 213.60 kcal criterion, no significant difference vs calorimetry.', url: 'https://formative.jmir.org/2026/1/e83090' }
+      { group: 'samsung', tag: 'Samsung ⚠️ funded', title: 'Ferreira et al. 2026, JMIR Formative Research: Galaxy Watch 6 and 7', cite: '⚠️ n=148 adults, 27-minute intermittent running vs COSMED K5. MAPE 10.10% (Galaxy Watch 6) and 12.55% (Galaxy Watch 7). Samsung-funded; all authors at Samsung partner Sidia.', url: 'https://formative.jmir.org/2026/1/e83090' },
+      { group: 'samsung', tag: 'Samsung', title: 'Oh et al. 2024, Asian J Kinesiology: Galaxy Watch 5 walking', cite: 'n=27 men, 30-minute walk vs COSMED Quark CPET. 180.3 vs 179.5 kcal, 0.5% high; r 0.95.', url: 'https://doi.org/10.15758/ajk.2024.26.1.60' }
     ];
   }
 
   // ── SEO light-DOM summary ───────────────────────────────────────────────
 
   _seoText() {
-    return 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\'s calorie burn? No wearable measures calories directly. They estimate energy expenditure from heart rate, motion and your profile, and that conversion carries 15 to 40%+ error in the real world (Stanford 2017, Shcherbina et al., found 27 to 93% across seven devices), even though heart rate itself is measured well (~96%). Enter the calories your device reported for a given activity and see the likely actual range, the typical error, and whether that device and activity tend to over- or under-estimate. Devices compared: Apple Watch (Choe and Kang 2025, 56-study meta-analysis; the widely-quoted ~28% is pooled across bouts, not a daily total, and traces to a press release rather than the paper, whose own pooled figure is 0.30 kcal/min with limits -2.09 to 2.69; walking ~20% and running ~24% from Le et al. 2022, n=20, Huawei-funded; resistance training has never been metabolically validated on any Apple Watch, and the 52.95% figure often attributed to Apple belongs to the Polar A360 in Boudreaux et al. 2018; swimming 17 to 152% in a single 2018 study, n=78), Fitbit (16 plus or minus 8% over roughly one day vs a calibrated Actiheart, Chowdhury et al. 2017, n=30, daily bias -405 plus or minus 944 kcal/day; walking 69% and running 12 to 15% from O\'Driscoll et al. 2020, Health and Technology, n=59, vs a Vyntus CPX metabolic cart; cycling ~40%; resistance training near zero, 145.95 kcal vs a 140.79 kcal criterion in Lee et al. 2026, Sensors, n=62; Chevance et al. 2022 meta-analysis gives bias 0.19 kcal/min on all comparisons k=49 but -2.77 kcal/min once low-quality studies are removed, k=29), Garmin (Firstbeat engine; best verified case 19.1% treadmill running, de Leon et al. 2026, Vivoactive 4, n=18, unfunded, and 21.8% outdoor running in Le et al. 2022; walking ~32%; resistance 57.02%, Vivosmart HR, n=50, Boudreaux et al. 2018; swimming 18 to 33%; the direction of Garmin error is not stable, and the 6.7% best-case cardio figure once attributed to Garmin is a PulseOn, Parak et al. 2017, in which no Garmin device was tested), WHOOP (ACSM/Keytel 2005 equation; steady cardio ~12%, HIIT ~13%, resistance ~29% and the widely-cited 18.4% TDEE figure all circulate without any primary publication that has been located, so they are shown for completeness rather than as study-backed; Bellenger et al. 2021 validated WHOOP heart rate and HRV only, never calories), Oura Ring (Andersson-Hall et al. 2023, BMC Medical Research Methodology, cite the 9 September 2023 correction; the 13% free-living figure was measured against Axivity AX3 wrist accelerometers, not calorimetry, and the same table gives hip 42.2% and thigh 44.7%, with the three reference placements disagreeing by about 850 kcal/day; lab MAPE against actual indirect calorimetry was 21.1%; walking ~19% and running ~24% are calculated floors from mean MET underestimation, not MAPEs, so the true error is higher; never metabolically tested for cycling, HIIT, strength or swimming), and Samsung Galaxy Watch (~3% for intermittent running in one small study, JMIR Formative Research 2026, Galaxy Watch 6 at 219.53 kcal vs a 213.60 kcal criterion; limited independent research). The daily figures cannot be ranked against each other because each was measured against a different reference method. The one defensible cross-brand statement comes from Fuller et al. 2020: no brand was within 3% of criterion more than 13% of the time. Pooled across the seven Stanford devices, calorie error was lowest for walking (31.8%) and running (31.0%) and highest for sitting (52.4%), so the worst calorie errors happen at rest, not during exercise. Factors that skew every device: body composition and BMI, medications (beta-blockers, stimulants), tattoos, band fit, skin tone, sex, age, caffeine and hormonal state. Shcherbina 2017 found sex a significant predictor of heart-rate error, about 4% higher in men than women, but no calorie meta-analysis has tested sex as a moderator. Bottom line: use wearable calories for week-over-week trends and relative effort, not precise nutrition math. Apple Watch vs Fitbit vs Garmin vs WHOOP vs Oura vs Samsung calorie accuracy. Figures re-verified against primary sources September 2026.';
+    return 'Calorie Burn Accuracy Calculator by Kygo Health. How accurate is your wearable\'s calorie burn? No wearable measures calories directly. They estimate energy expenditure from heart rate, motion and your profile, and that conversion carries 15 to 40%+ error in the real world (Stanford 2017, Shcherbina et al., found 27 to 93% across seven devices), even though heart rate itself is measured well (~96%). Enter the calories your device reported for a given activity and see the likely actual range, the typical error, and whether that device and activity tend to over- or under-estimate. Most accurate for calories: Fitbit first, Samsung second, Apple Watch third, and every brand is more than 10% off. In head-to-head studies that tested the brands on the same people against lab gas analysis: on a max treadmill test (Perez et al. 2025, IJES conference abstract, about 20 adults) Galaxy Watch 7 was 9.42% off, Fitbit Charge 6 13.97%, Garmin Forerunner 265S 14.65%, Polar Vantage M3 21.10% and Apple Watch Ultra 2 25.95%; on a 10-minute cycle (Kostrna et al. 2026, PLOS ONE, n=58) Fitbit Sense 2 was 31.7% off (after 7 implausible readings were removed), Apple Watch Series 8 35.7%, Galaxy Watch 5 66.5% and Garmin Forerunner 955 77.6%, the last three reading high; in weight training (Yun et al. 2026, Bioengineering, n=70 men) Fitbit Charge 5 was 41.7% off, Galaxy Watch 5 84.5%, Apple Watch Series 8 112.2% and Garmin Vivosmart 5 114.9%. Lee et al. 2026 (Sensors, n=62, SOLUM-funded) found all four reading high on weights: Fitbit +4%, Samsung +83%, Apple Watch +112%, Garmin +116.4%. Devices compared: Apple Watch (walking ~20% and running ~24% from Le et al. 2022, n=20, Huawei-funded; swimming 17 to 152% in a single 2018 study, n=78; the often-quoted ~28% from the Choe and Kang 2025 meta-analysis traces to a press release and is pooled across bouts, and the paper\'s own pooled figure is 0.30 kcal/min with limits -2.09 to 2.69), Fitbit (walking 69% and running 12 to 15% for the older Charge 2 in O\'Driscoll et al. 2020, n=59, vs a Vyntus CPX metabolic cart; the Chevance et al. 2022 meta-analysis gives bias 0.19 kcal/min on all comparisons k=49 but -2.77 kcal/min once low-quality studies are removed, k=29), Garmin (Firstbeat engine; 19.1% treadmill running in de Leon et al. 2026, Vivoactive 4, n=18, unfunded, and 21.8% outdoor running in Le et al. 2022; walking ~32%; swimming 18 to 33%; reads high on cycling and weights in the newest studies), WHOOP (no calorie validation of any WHOOP model has been published, so no WHOOP calorie figure is shown; Bellenger et al. 2021 validated WHOOP heart rate and HRV only), Oura Ring (Andersson-Hall et al. 2023, BMC Medical Research Methodology, cite the 9 September 2023 correction; the 13% free-living figure was measured against Axivity AX3 wrist accelerometers, not calorimetry, and the same table gives hip 42.2% and thigh 44.7%; lab MAPE against indirect calorimetry was 21.1%; walking ~19% and running ~24% are calculated floors, not MAPEs; never metabolically tested for cycling, HIIT, strength or swimming), and Samsung Galaxy Watch (10 to 13% running, Galaxy Watch 6 10.10% and Galaxy Watch 7 12.55%, Ferreira et al. 2026, JMIR Formative Research, n=148, Samsung-funded; 0.5% high on a 30-minute walk, Galaxy Watch 5, Oh et al. 2024; 66.5% cycling and 84.5% weight training). The one defensible older cross-brand statement comes from Fuller et al. 2020: no brand was within 3% of criterion more than 13% of the time. Pooled across the seven Stanford devices, calorie error was lowest for walking (31.8%) and running (31.0%) and highest for sitting (52.4%), so the worst calorie errors happen at rest, not during exercise. Factors that skew every device: body composition and BMI, medications (beta-blockers, stimulants), tattoos, band fit, skin tone, sex, age, caffeine and hormonal state. Shcherbina 2017 found sex a significant predictor of heart-rate error, about 4% higher in men than women, but no calorie meta-analysis has tested sex as a moderator. Bottom line: use wearable calories for week-over-week trends and relative effort, not precise nutrition math. Apple Watch vs Fitbit vs Garmin vs WHOOP vs Oura vs Samsung calorie accuracy. Figures updated October 2026.';
   }
 
   // ── Icons ───────────────────────────────────────────────────────────────
@@ -385,16 +389,19 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     // An error range wider than 100% cannot be turned into a meaningful calorie band
     // (the low end collapses to zero). Show the published error range instead of a
     // number we would have to invent.
-    if (a.hi >= 100) return { tooWide: true, disp: a.disp || `${a.lo} to ${a.hi}%`, src: a.src || null };
+    // An overestimate of any size inverts cleanly (actual = reported / (1 + error)), so
+    // only a wide two-way range is refused.
+    if (a.hi >= 100 && a.dir !== 'over') return { tooWide: true, disp: a.disp || `${a.lo} to ${a.hi}%`, src: a.src || null };
 
     // A cell with mape null publishes a range only, so we never invent a midpoint.
     const hasMid = a.mape != null;
     const lo = a.lo / 100, hi = a.hi / 100, mid = hasMid ? a.mape / 100 : null;
     let low, high, best;
     if (a.dir === 'over') {
-      low = Math.round(reported * (1 - hi));
-      high = Math.round(reported * (1 - lo));
-      best = hasMid ? Math.round(reported * (1 - mid)) : null;
+      // The device reads high by the error, so actual = reported / (1 + error).
+      low = Math.round(reported / (1 + hi));
+      high = Math.round(reported / (1 + lo));
+      best = hasMid ? Math.round(reported / (1 + mid)) : null;
     } else if (a.dir === 'under') {
       low = Math.round(reported * (1 + lo));
       high = Math.round(reported * (1 + hi));
@@ -408,7 +415,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       untested: false, low: Math.max(0, low), high: Math.max(0, high),
       best: best == null ? null : Math.max(0, best),
       mape: a.mape, disp: a.disp || null, lo: a.lo, hi: a.hi, dir: a.dir, ev: a.ev,
-      unsourced: !!a.unsourced, floor: !!a.floor, src: a.src || null
+      unsourced: !!a.unsourced, floor: !!a.floor, funded: !!a.funded, src: a.src || null
     };
   }
 
@@ -447,8 +454,10 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       ? `<span class="ev-chip ev-flag">${this._icon('info')} No primary publication located for this figure</span>`
       : r.floor
         ? `<span class="ev-chip ev-flag">${this._icon('info')} Calculated floor, not a MAPE. True error is higher.</span>`
+        : r.ev === 'measured' && r.funded
+          ? `<span class="ev-chip ev-flag">${this._icon('info')} Brand-funded study</span>`
         : r.ev === 'measured'
-          ? `<span class="ev-chip ev-measured">${this._icon('check')} Peer-reviewed data</span>`
+          ? `<span class="ev-chip ev-measured">${this._icon('check')} Published study data</span>`
           : `<span class="ev-chip ev-est">Estimated. No direct study for this pairing.</span>`;
 
     return `
@@ -548,7 +557,9 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
       ? '<sup class="mk-flag" title="No primary publication has been located for this figure">*</sup>'
       : a.floor
         ? '<sup class="mk-flag" title="Calculated floor, not a MAPE. True error is higher.">c</sup>'
-        : '';
+        : a.funded
+          ? '<sup class="mk-flag" title="Brand-funded study">†</sup>'
+          : '';
     return `<td><span class="mk-val ${dm.cls}">${this._icon(dm.icon)}<b>${val}</b>${mark}</span></td>`;
   }
 
@@ -581,15 +592,15 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
           <span class="lg"><span class="mk-val over">${this._icon('arrowUp')}</span> Overestimates</span>
           <span class="lg"><span class="mk-val mixed">${this._icon('swap')}</span> Variable</span>
           <span class="lg"><span class="mk-na">${this._icon('minus')}</span> No peer-reviewed per-activity data</span>
-          <span class="lg"><sup class="mk-flag">*</sup> No primary publication located</span>
+          <span class="lg"><sup class="mk-flag">†</sup> Brand-funded study</span>
           <span class="lg"><sup class="mk-flag">c</sup> Calculated floor, not a MAPE</span>
         </p>
         <p class="cmp-foot">
-          <strong>*</strong> WHOOP figures circulate widely but no primary publication (authors, DOI or PubMed record) has been located for them, including the 18.4% TDEE figure. Shown for completeness, not as study-backed.<br />
+          <strong>†</strong> Samsung running is from Ferreira et al. 2026, funded by Samsung, with all authors at Samsung partner Sidia. WHOOP has no published calorie study, so its row is blank.<br />
           <strong>c</strong> Oura walking and running are calculated from mean MET underestimation divided by the activity reference MET (Andersson-Hall et al. 2023), so they are a floor, not the real spread. The study's overall lab MAPE was 21.1% while its overall mean bias was only -0.4 MET. The true error is higher.
         </p>
       </div>
-      <div class="callout animate-on-scroll">${this._icon('info')} <span>Unless marked, every filled cell is a named peer-reviewed study and the value is a MAPE (mean absolute percentage error). Where a source publishes a range only, we show the range rather than invent a midpoint. Blank cells mean no per-activity study exists for that pairing, including <strong>Oura for cycling, HIIT, strength and swimming</strong> and <strong>Apple Watch for resistance training</strong>, none of which have ever been metabolically tested.</span></div>`;
+      <div class="callout animate-on-scroll">${this._icon('info')} <span>Unless marked, every filled cell is a named study and the value is the percent error it published (a MAPE, or the study's typical miss). Cycling and strength come from the newest head-to-head studies, Kostrna 2026 and Yun 2026, which tested four brands on the same people. Where a source publishes a range only, we show the range rather than invent a midpoint. Blank cells mean no per-activity study exists for that pairing, including <strong>Oura for cycling, HIIT, strength and swimming</strong> and <strong>WHOOP for any activity</strong>, none of which have ever been metabolically tested.</span></div>`;
   }
 
   // ── Device detail accordion ─────────────────────────────────────────────
@@ -599,8 +610,10 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
     return `<div class="dev-acc">${Object.values(this._devices).map(d => {
       // Unsourced and calculated-floor cells are excluded: the card must not assert them
       // as this device's best or worst measured activity.
-      const measured = Object.entries(d.acc).filter(([, a]) => a.ev === 'measured' && a.mape != null && !a.unsourced && !a.floor);
-      const sorted = measured.slice().sort((x, y) => x[1].mape - y[1].mape);
+      // Range-only cells sort by their midpoint but always display their published range.
+      const key = a => a.mape != null ? a.mape : (a.lo + a.hi) / 2;
+      const measured = Object.entries(d.acc).filter(([, a]) => a.ev === 'measured' && (a.mape != null || a.lo != null) && !a.unsourced && !a.floor);
+      const sorted = measured.slice().sort((x, y) => key(x[1]) - key(y[1]));
       const best = sorted[0];
       const worst = sorted[sorted.length - 1];
       return `
@@ -1297,7 +1310,7 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This calculator is for educational purposes only and is not medical or nutrition advice. Wearable calorie estimates vary by individual, environment and algorithm updates. Always consult a qualified professional before making health decisions based on wearable data.</p>
-          <p class="footer-copyright">Data from peer-reviewed studies, meta-analyses and manufacturer documentation. Last updated September 2026.</p>
+          <p class="footer-copyright">Data from peer-reviewed studies, meta-analyses and manufacturer documentation. Last updated October 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links. We may earn a commission at no extra cost to you.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
@@ -1419,19 +1432,19 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         '@type': 'WebApplication',
         'name': 'Calorie Burn Accuracy Calculator',
         'alternateName': 'Kygo Wearable Calorie Burn Accuracy Tool',
-        'description': 'Enter your wearable\'s reported calorie burn and see the likely actual range. Compares Apple Watch, Fitbit, Garmin, WHOOP, Oura Ring and Samsung Galaxy Watch across 7 activity types using published per-activity accuracy data, with each figure named to its device model and sample size (Choe and Kang 2025, Chevance 2022, O\'Driscoll 2020, Boudreaux 2018, Andersson-Hall 2023, Shcherbina 2017 and others). Figures without a locatable primary publication are flagged rather than presented as study-backed.',
+        'description': 'Enter your wearable\'s reported calorie burn and see the likely actual range. Compares Apple Watch, Fitbit, Garmin, WHOOP, Oura Ring and Samsung Galaxy Watch across 7 activity types using published per-activity accuracy data, with each figure named to its device model and sample size (Perez 2025, Kostrna 2026, Yun 2026, Lee 2026, Ferreira 2026, O\'Driscoll 2020, Choe and Kang 2025, Andersson-Hall 2023, Shcherbina 2017 and others). Brand-funded studies are flagged, and WHOOP, which has no published calorie study, gets no figure.',
         'applicationCategory': 'HealthApplication',
         'operatingSystem': 'Web',
         'url': 'https://www.kygo.app/tools/calorie-burn-accuracy',
         'datePublished': '2026-03-01',
-        'dateModified': '2026-09-10',
+        'dateModified': '2026-10-25',
         'softwareVersion': '2.1',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
-        'featureList': 'Compare 6 wearable brands across 7 activity types, published per-activity accuracy data with device model and sample size named, personalized calorie range calculator, bias-direction indicator, evidence-level flagging, unsourced-figure and calculated-floor disclosure',
+        'featureList': 'Compare 6 wearable brands across 7 activity types, published per-activity accuracy data with device model and sample size named, personalized calorie range calculator, bias-direction indicator, evidence-level flagging, brand-funding and calculated-floor disclosure',
         'keywords': 'calorie burn accuracy, wearable calorie burn, Apple Watch calorie accuracy, Fitbit calorie accuracy, Garmin calorie accuracy, WHOOP calorie accuracy, Oura Ring calorie accuracy, Samsung Galaxy Watch calorie accuracy, fitness tracker energy expenditure error, how accurate is Apple Watch calories'
       };
       const s = document.createElement('script');
