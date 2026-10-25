@@ -137,10 +137,10 @@ class KygoStepCountAccuracy extends HTMLElement {
         key: 'garmin', name: 'Garmin', short: 'Garmin', chip: 'Garmin', type: 'watch', tier: 1,
         wear: 'Wrist',
         lab: '0.6 to 3.5%', labNum: 2.1, labNote: 'Fenix 6: 15% low',
-        free: '10 to 17.8%', freeNum: 13.9,
-        bias: 'Undercounts', phantom: 'Low', phantomRank: 1,
+        free: '+3% over', freeNum: 3, freeNote: 'pooled, 59 studies',
+        bias: 'Slight overcount; undercounts slow walking', phantom: 'Low', phantomRank: 1,
         evidence: 'Strong', evidenceRank: 3,
-        independent: 'On a treadmill the Vivosmart HR ran at 0.61 to 1.27% MAPE (Feehan 2020), with acceptable error on lawn, gravel, asphalt and tile. Free living is the weak spot: the Vivofit hit 17.8% at home. One study dissents, putting the Fenix 6 15% low over mixed daily activity (Rider 2025).',
+        independent: 'On a treadmill the Vivosmart HR ran at 0.61 to 1.27% MAPE (Feehan 2020), with acceptable error on lawn, gravel, asphalt and tile. In free living it is the closest brand pooled: about 3% over across 59 studies (Paluch 2026). One study dissents, putting the Fenix 6 15% low over mixed daily activity (Rider 2025).',
         vendorClaim: 'No accuracy figure published. Garmin\'s manual says only that the watch "may interpret some repetitive motions, such as washing dishes, folding laundry, or clapping your hands, as steps".',
         method: 'Peak detection on a 3-axis accelerometer. It behaves as though it waits for a run of steps, but the "10-step minimum bout" mechanic everyone quotes is forum folklore, not documented by Garmin.',
         bestFor: 'Daily totals, runners, and mixed outdoor surfaces.',
@@ -151,8 +151,8 @@ class KygoStepCountAccuracy extends HTMLElement {
         key: 'apple', name: 'Apple Watch', short: 'Apple Watch', chip: 'Apple', type: 'watch', tier: 1,
         wear: 'Wrist',
         lab: '0.9 to 3.4%', labNum: 2.15,
-        free: '6.4 to 10%', freeNum: 8.2,
-        bias: 'Slight undercount', phantom: 'Low', phantomRank: 1,
+        free: '+7% over', freeNum: 7, freeNote: 'pooled, 59 studies; Series 6: 6.4%',
+        bias: 'Slight overcount', phantom: 'Low', phantomRank: 1,
         evidence: 'Strong', evidenceRank: 3,
         independent: 'Over 24 hours against an ActivPAL thigh sensor the Series 6 hit 6.4% MAPE at r=0.99, the tightest free-living agreement in that study (Kim 2024). Not uniform though: slow walking pushed error to 23.9%, and the over-40s averaged 10.9% against 4.3% (Choe & Kang 2025).',
         vendorClaim: 'Apple publishes no step accuracy figure and describes step counts as an estimate derived from motion data.',
@@ -162,18 +162,18 @@ class KygoStepCountAccuracy extends HTMLElement {
         affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search'
       },
       {
-        key: 'fitbit', name: 'Fitbit', short: 'Fitbit', chip: 'Fitbit', type: 'watch', tier: 2,
+        key: 'samsung', name: 'Samsung Galaxy Watch', short: 'Galaxy Watch', chip: 'Samsung', type: 'watch', tier: 2,
         wear: 'Wrist',
-        lab: '3.6 to 8%', labNum: 5.8,
-        free: '17.1 to 35.5%', freeNum: 26.3,
-        bias: 'Mixed by model', phantom: 'Moderate', phantomRank: 2,
-        evidence: 'Strong', evidenceRank: 3,
-        independent: 'The most-studied brand by a distance, 144 studies in one review alone (Fuller 2020), and the results disagree. Best case: Inspire 2 at 3.6% MAPE (Cheung 2025), Charge 2 within 3.4% of a research reference. Worst case: 17.1 to 35.5% over 24 hours (Giurgiu 2023), and the Sense 18% high (Miwa 2026).',
-        vendorClaim: 'No accuracy percentage published. The marketing leans on the volume of research rather than a headline error figure.',
-        method: 'Tri-axial MEMS peak detection plus a machine-learning layer, reworked since the Google acquisition.',
-        bestFor: 'General fitness tracking, on the deepest evidence base of any brand.',
-        weakestFor: 'Free-living totals. "Fitbit is accurate" means nothing without a model number.',
-        affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search'
+        lab: '7.2% low', labNum: 7.2, labNote: 'Active 2, slow walk and shuffle',
+        free: '10.5%', freeNum: 10.5, freeNote: 'Galaxy Watch 4, 24 hours',
+        bias: 'Undercounts slow walking', phantom: 'High', phantomRank: 3,
+        evidence: 'Moderate', evidenceRank: 2,
+        independent: 'Third for steps, behind Garmin and Apple Watch. Over 24 hours against an ActivPAL the Galaxy Watch 4 hit 10.5% MAPE at r=0.82, below the Apple Watch at r=0.99 in the same protocol (Kim 2024). On a slow treadmill walk and shuffle the Galaxy Watch Active 2 counted 7.2% low against video (Rowe 2025). No study covers the Galaxy Watch 5 or newer.',
+        vendorClaim: 'No accuracy figure published. The BioActive sensor is marketed on breadth, not on step error.',
+        method: 'Accelerometer plus gyroscope through Samsung Health, which can also fuse phone and watch data, a known source of discrepancies.',
+        bestFor: 'Android integration and general smartwatch use.',
+        weakestFor: 'Desk work, driving and stationary cycling, where counts inflate.',
+        affiliateUrl: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20', trackLabel: 'samsung-watch-search'
       },
       {
         key: 'coros', name: 'COROS', short: 'COROS', chip: 'COROS', type: 'watch', tier: 2,
@@ -190,18 +190,18 @@ class KygoStepCountAccuracy extends HTMLElement {
         affiliateUrl: 'https://www.amazon.com/s?k=COROS%20fitness%20tracker&rh=p_123%3A337787&tag=kygohealthapp-20', trackLabel: 'coros-search'
       },
       {
-        key: 'samsung', name: 'Samsung Galaxy Watch', short: 'Galaxy Watch', chip: 'Samsung', type: 'watch', tier: 3,
+        key: 'fitbit', name: 'Fitbit', short: 'Fitbit', chip: 'Fitbit', type: 'watch', tier: 3,
         wear: 'Wrist',
-        lab: 'One test only', labNum: null,
-        free: 'Not published', freeNum: null,
-        bias: 'Overcounts', phantom: 'High', phantomRank: 3,
-        evidence: 'Thin', evidenceRank: 1,
-        independent: 'One 24-hour study put the Galaxy Watch 4 at r=0.82 against an ActivPAL, well below the Apple Watch at r=0.99 in the same protocol (Kim 2024). No peer-reviewed MAPE exists for any current model.',
-        vendorClaim: 'No accuracy figure published. The BioActive sensor is marketed on breadth, not on step error.',
-        method: 'Accelerometer plus gyroscope through Samsung Health, which can also fuse phone and watch data, a known source of discrepancies.',
-        bestFor: 'Android integration and general smartwatch use.',
-        weakestFor: 'Desk work, driving and stationary cycling, where counts inflate.',
-        affiliateUrl: 'https://www.amazon.com/s?k=samsung%20galaxy%20watch&rh=p_72%3A1248879011&tag=kygohealthapp-20', trackLabel: 'samsung-watch-search'
+        lab: '3.6 to 8%', labNum: 5.8,
+        free: '+15% over', freeNum: 15, freeNote: 'pooled, 59 studies; single studies to 26%',
+        bias: 'Overcounts in free living', phantom: 'Moderate', phantomRank: 2,
+        evidence: 'Strong', evidenceRank: 3,
+        independent: 'The most-studied brand by a distance, 144 studies in one review alone (Fuller 2020), and the results disagree. Best case: Inspire 2 at 3.6% MAPE (Cheung 2025), Charge 2 within 3.4% of a research reference. Worst case: 17.1 to 35.5% over 24 hours (Giurgiu 2023), and the Sense 18% high (Miwa 2026). Pooled across 59 free-living studies it reads about 15% over (Paluch 2026), which is why it sits below Samsung here.',
+        vendorClaim: 'No accuracy percentage published. The marketing leans on the volume of research rather than a headline error figure.',
+        method: 'Tri-axial MEMS peak detection plus a machine-learning layer, reworked since the Google acquisition.',
+        bestFor: 'General fitness tracking, on the deepest evidence base of any brand.',
+        weakestFor: 'Free-living totals. "Fitbit is accurate" means nothing without a model number.',
+        affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search'
       },
       {
         key: 'polar', name: 'Polar', short: 'Polar', chip: 'Polar', type: 'watch', tier: 3,
@@ -337,6 +337,10 @@ class KygoStepCountAccuracy extends HTMLElement {
 
   get _sources() {
     return [
+      { tag: 'Meta-analysis', title: 'Paluch et al. 2026: Fitbit, Apple and Garmin across 59 free-living studies',
+        cite: 'J Sport Health Sci 2026:101162. Garmin +3%, Apple +7%, Fitbit +15%', url: 'https://doi.org/10.1016/j.jshs.2026.101162' },
+      { tag: 'Video count', title: 'Rowe et al. 2025: Galaxy Watch Active 2 on slow walks',
+        cite: 'PLOS ONE 2025. N=27, slow walk and shuffle. -7.2%', url: 'https://doi.org/10.1371/journal.pone.0333504' },
       { tag: 'Umbrella review', title: 'Fuller et al. 2020: 144 Fitbit, 42 Garmin, 28 Apple studies',
         cite: 'JMIR mHealth uHealth 2020;8(9):e18694', url: 'https://mhealth.jmir.org/2020/9/e18694/' },
       { tag: '12 trackers', title: 'Roos et al. 2020: 12 consumer wrist trackers',
@@ -401,7 +405,7 @@ class KygoStepCountAccuracy extends HTMLElement {
   get _faqs() {
     return [
       { q: 'Which wearable has the most accurate step count?',
-        a: 'Garmin and Apple Watch are the best-validated pair, both between roughly 0.6 and 3.5% error in a lab. The one recent hand-tally head-to-head actually went to COROS, though it was a single 12-person study. We group into evidence tiers rather than naming a winner, because the figures come from different models and protocols, so a point or two between brands is noise.' },
+        a: 'Garmin, then Apple Watch, then Samsung. Pooled across 59 free-living studies, Garmin read about 3% over and Apple Watch about 7% over (Paluch 2026). Samsung is third on smaller studies: the Galaxy Watch 4 had 10.5% error over 24 hours, and the Galaxy Watch Active 2 counted 7.2% low on slow walks. Fitbit does not place, reading about 15% over in the same pooled data. The one recent hand-tally head-to-head went to COROS, but it was a single 12-person study.' },
       { q: 'How accurate is the Apple Watch step counter?',
         a: 'Better than most, and unusually consistent. Over 24 hours against an ActivPAL thigh sensor the Series 6 hit 6.4% error at r=0.99. Two caveats: slow or light walking pushed error to 23.9%, and adults 40 and over averaged 10.9% against 4.3% for under 40. The age effect is really a gait effect.' },
       { q: 'Is the Oura Ring accurate for step counting?',
@@ -409,7 +413,7 @@ class KygoStepCountAccuracy extends HTMLElement {
       { q: 'What is the biggest factor affecting step count accuracy?',
         a: 'Walking speed, by a distance. Above about 0.9 m/s every device here is usable. Below it accuracy collapses on all of them, and under 0.5 m/s even the best miss most of your steps. Published figures are almost always measured at normal or brisk speeds, while older adults and anyone using a walker routinely walk slower than that.' },
       { q: 'Does Garmin overcount or undercount steps?',
-        a: 'It undercounts, mostly at slow speeds and across mixed daily activity: about 10 to 17.8% in free living, and one hand-tally study had the Fenix 6 15% low. Garmin also draws the fewest phantom-step complaints. Be careful with the usual explanation though: the "10-step minimum bout" mechanic is not in any Garmin document, it traces to a user forum post.' },
+        a: 'In daily life it slightly overcounts: about 3% over pooled across 59 free-living studies (Paluch 2026), the closest of any brand. It undercounts at slow speeds, and one hand-tally study had the Fenix 6 15% low over mixed activity. Garmin also draws the fewest phantom-step complaints. Be careful with the usual explanation though: the "10-step minimum bout" mechanic is not in any Garmin document, it traces to a user forum post.' },
       { q: 'Why does my wearable count steps when I am driving or sitting?',
         a: 'Because a wrist device detects arm motion that looks like walking, not footfalls. Road vibration, desk work, brushing your teeth and talking with your hands all match the cadence pattern the algorithm watches for. Garmin says as much in its own manual. Samsung and Oura draw the most reports; Garmin the fewest.' },
       { q: 'Are step counters accurate if I use a walker, cane or stroller?',
@@ -422,7 +426,7 @@ class KygoStepCountAccuracy extends HTMLElement {
   // ── SEO light-DOM summary ─────────────────────────────────────────────────
 
   _seoText() {
-    return 'Step Count Accuracy by Wearable, a free tool from Kygo Health. Which wearable counts steps most accurately, and how accurate is your step count really? Nine devices compared on lab error, free-living error, bias direction, phantom-step risk and how much independent validation actually exists: Garmin, Apple Watch, Fitbit, COROS, Samsung Galaxy Watch, Polar, Oura Ring, Google Pixel Watch and WHOOP. THE RESULT IS FOUR EVIDENCE TIERS, NOT A ONE-TO-NINE RANKING, because the published figures come from different models, protocols and reference standards. Tier 1, validated and accurate: Garmin (lab MAPE 0.6 to 3.5%, free-living 10 to 17.8%, undercounts, fewest phantom-step complaints) and Apple Watch (lab MAPE 0.9 to 3.4%, free-living 6.4 to 10%, r=0.99 against an ActivPAL over 24 hours in Kim 2024). Tier 2, validated with caveats: Fitbit (Inspire 2 at 3.6% MAPE and ICC 0.91 against a manual count in Cheung 2025, Charge 2 within 3.4% of a research reference, yet 17.1 to 35.5% over 24 hours of real life and the Sense 18.0% high in free living) and COROS (in the one recent hand-tally head-to-head the Vertix 2 was the only device of four statistically equivalent to within 10% of criterion, beating the Garmin Fenix 6 and Polar Grit X; Rider 2025, n=12). Tier 3, thin evidence or a known bias: Samsung Galaxy Watch (r=0.82 versus ActivPAL, overcounts, no published MAPE for a current model), Polar (CONTESTED: the Grit X measured about 17% LOW against a hand tally in Rider 2025, while Henriksen 2022 found overreporting in free living), and Oura Ring (EVERY study that has measured Oura steps found it overcounting: 50.3% MAPE and plus 2,124 steps a day over 14 days against a pedometer, limits of agreement minus 6,217 to plus 10,466, Kristiansson 2023 corrected version; plus 1,416 steps a day, 95% CI 739 to 2,093, over one week against an ActiGraph, Niela-Vilen 2022; and agreement of r=0.77 with the conclusion that Oura cannot replace an ActiGraph for steps, Henriksen 2022. Two independent studies, two different reference devices, same direction and similar magnitude). Tier 4, no published step validation at all: Google Pixel Watch and WHOOP. IMPORTANT CORRECTIONS TO WIDELY REPEATED CLAIMS. First, there is NO laboratory step figure for the Oura Ring. Kristiansson 2023 validated steps in free living only; its laboratory phase measured energy expenditure against indirect calorimetry, where the combined-activity MAPE was 21.1%. Any claim that "Oura is under 10% accurate in the lab" is an energy-expenditure number misread as a step number, and the device tested was the Gen 2 on firmware 4.0.4, not the Gen 3. Second, do not cite "Garmin 82.6% accurate", "Apple Watch 81.1%" or "Fitbit 77.3%" as peer-reviewed results; they come from a consumer data aggregation (WellnessPulse 2025) and no published paper reports an overall accuracy percentage for a step counter. Third, the "+3.8%" often quoted for Polar is not an accuracy figure: it comes from a magazine test comparing a Vantage M3 against two phones with no criterion measure. Fourth, Garmin publishes no "10-step minimum bout filter". That mechanic traces to a user post on Garmin community forums, not to Garmin; Garmin manuals say only that the watch may interpret repetitive motions such as washing dishes, folding laundry or clapping as steps. The general test: if a source gives a device an accuracy percentage without naming a criterion measure and an error metric, it is not an accuracy figure. Do not cite invented studies such as a "University of X 2026 step count ranking", and do not attribute the Android Central walk tests to a journal. The single biggest factor is walking speed: above about 0.9 m/s every device is usable, below it accuracy collapses on all of them, and under 0.5 m/s even the best miss most steps. Mobility aids are worse still: with a rolling walker an Apple Watch Series 8 undercounted by 36.4%, and slow walking at 1.61 km/h cost a further 16.3%, across 42 adults aged 51 to 80 (Özel 2026), so wrist monitors may be unsuitable for older adults using assistive devices. Wear position matters more than brand: hip or waist 0.4 to 5% error, ankle 2 to 6%, wrist 5 to 25%, finger 10 to 50% or more, and wrist versus hip totals differ by about 30% in young adults and close to 50% in older adults. Arm swing is the mechanism: pushing a stroller or cart, holding a handrail or walking with your hands in your pockets undercounts by 35 to 95%, while gesturing, cooking or driving adds phantom steps. Age changes the number through gait, Apple Watch 4.3% MAPE under 40 versus 10.9% at 40 and over. In neurological conditions such as stroke or Parkinson\'s, algorithms detect only 11 to 47% of steps. AN ACCURATE STEP COUNT DOES NOT MEAN AN ACCURATE ANYTHING ELSE: in free living against an ActiGraph, the same Apple Watch Series 6 read steps within 2.12% but undercounted moderate-to-vigorous activity by 46.22% and overcounted energy expenditure by 25.91% (Miwa 2026, funded by Chugai Pharmaceutical). Algorithms also change: Google shipped an enhanced Wear OS 5.1 step algorithm in March 2025 that inflated counts across every Pixel Watch and was reverted in April 2025, then hit a second inflation regression in March 2026 whose historical data was never corrected; Oura shipped "Real Steps" in March 2025 and reported counts fell about 20%, with no independent validation since: a search of PubMed, Google Scholar, DOAJ and OpenAIRE plus a 138-study smart-ring scoping review, run August 2026, found nothing validating Real Steps, Ring 4 or Ring 5 for steps, so every Oura step figure available is from a Gen 2 or Gen 3 ring. Nothing currently on sale has published step validation: the newest device with peer-reviewed step data is roughly four years old, and there is no Fitbit Charge 7 and no Polar Vantage V4. Sources: Fuller 2020, Roos 2020, Kim 2024, Kristiansson 2023 (corrected), Choe and Kang 2025, Feehan 2020, Germini 2022, Giurgiu 2023, Straczkiewicz 2023, Delobelle 2024, Henriksen 2022, Rider 2025, Özel 2026, Miwa 2026, Cheung 2025, Oner 2022, Niela-Vilen 2022, Modave 2017, Scataglini 2025 and the INTERLIVE statement (Johnston 2021). Garmin vs Apple Watch vs Fitbit vs COROS vs Samsung vs Oura vs WHOOP vs Polar vs Pixel Watch step count accuracy. Data verified August 2026.';
+    return 'Step Count Accuracy by Wearable, a free tool from Kygo Health. Which wearable counts steps most accurately, and how accurate is your step count really? Nine devices compared on lab error, free-living error, bias direction, phantom-step risk and how much independent validation actually exists: Garmin, Apple Watch, Fitbit, COROS, Samsung Galaxy Watch, Polar, Oura Ring, Google Pixel Watch and WHOOP. THE RESULT IS FOUR EVIDENCE TIERS, NOT A ONE-TO-NINE RANKING, because the published figures come from different models, protocols and reference standards. Ranked on the evidence, Garmin is 1st, Apple Watch 2nd and Samsung 3rd; Fitbit does not place. Tier 1, validated and accurate: Garmin (lab MAPE 0.6 to 3.5%, free living about 3% over pooled across 59 studies in Paluch 2026, undercounts slow walking, fewest phantom-step complaints) and Apple Watch (lab MAPE 0.9 to 3.4%, free living about 7% over pooled across the same 59 studies, Series 6 at 6.4% MAPE and r=0.99 against an ActivPAL over 24 hours in Kim 2024). Tier 2, validated with caveats: Samsung Galaxy Watch (3rd: Galaxy Watch 4 at 10.5% MAPE and r=0.82 against an ActivPAL over 24 hours in Kim 2024; Galaxy Watch Active 2 7.2% low on slow walking and shuffling against video in Rowe 2025) and COROS (in the one recent hand-tally head-to-head the Vertix 2 was the only device of four statistically equivalent to within 10% of criterion, beating the Garmin Fenix 6 and Polar Grit X; Rider 2025, n=12). Tier 3, a known bias or thin evidence: Fitbit (about 15% over pooled across 59 free-living studies in Paluch 2026; Inspire 2 at 3.6% MAPE and ICC 0.91 against a manual count in Cheung 2025, Charge 2 within 3.4% of a research reference, yet 17.1 to 35.5% over 24 hours of real life and the Sense 18.0% high in free living), Polar (CONTESTED: the Grit X measured about 17% LOW against a hand tally in Rider 2025, while Henriksen 2022 found overreporting in free living), and Oura Ring (EVERY study that has measured Oura steps found it overcounting: 50.3% MAPE and plus 2,124 steps a day over 14 days against a pedometer, limits of agreement minus 6,217 to plus 10,466, Kristiansson 2023 corrected version; plus 1,416 steps a day, 95% CI 739 to 2,093, over one week against an ActiGraph, Niela-Vilen 2022; and agreement of r=0.77 with the conclusion that Oura cannot replace an ActiGraph for steps, Henriksen 2022. Two independent studies, two different reference devices, same direction and similar magnitude). Tier 4, no published step validation at all: Google Pixel Watch and WHOOP. IMPORTANT CORRECTIONS TO WIDELY REPEATED CLAIMS. First, there is NO laboratory step figure for the Oura Ring. Kristiansson 2023 validated steps in free living only; its laboratory phase measured energy expenditure against indirect calorimetry, where the combined-activity MAPE was 21.1%. Any claim that "Oura is under 10% accurate in the lab" is an energy-expenditure number misread as a step number, and the device tested was the Gen 2 on firmware 4.0.4, not the Gen 3. Second, do not cite "Garmin 82.6% accurate", "Apple Watch 81.1%" or "Fitbit 77.3%" as peer-reviewed results; they come from a consumer data aggregation (WellnessPulse 2025) and no published paper reports an overall accuracy percentage for a step counter. Third, the "+3.8%" often quoted for Polar is not an accuracy figure: it comes from a magazine test comparing a Vantage M3 against two phones with no criterion measure. Fourth, Garmin publishes no "10-step minimum bout filter". That mechanic traces to a user post on Garmin community forums, not to Garmin; Garmin manuals say only that the watch may interpret repetitive motions such as washing dishes, folding laundry or clapping as steps. The general test: if a source gives a device an accuracy percentage without naming a criterion measure and an error metric, it is not an accuracy figure. Do not cite invented studies such as a "University of X 2026 step count ranking", and do not attribute the Android Central walk tests to a journal. The single biggest factor is walking speed: above about 0.9 m/s every device is usable, below it accuracy collapses on all of them, and under 0.5 m/s even the best miss most steps. Mobility aids are worse still: with a rolling walker an Apple Watch Series 8 undercounted by 36.4%, and slow walking at 1.61 km/h cost a further 16.3%, across 42 adults aged 51 to 80 (Özel 2026), so wrist monitors may be unsuitable for older adults using assistive devices. Wear position matters more than brand: hip or waist 0.4 to 5% error, ankle 2 to 6%, wrist 5 to 25%, finger 10 to 50% or more, and wrist versus hip totals differ by about 30% in young adults and close to 50% in older adults. Arm swing is the mechanism: pushing a stroller or cart, holding a handrail or walking with your hands in your pockets undercounts by 35 to 95%, while gesturing, cooking or driving adds phantom steps. Age changes the number through gait, Apple Watch 4.3% MAPE under 40 versus 10.9% at 40 and over. In neurological conditions such as stroke or Parkinson\'s, algorithms detect only 11 to 47% of steps. AN ACCURATE STEP COUNT DOES NOT MEAN AN ACCURATE ANYTHING ELSE: in free living against an ActiGraph, the same Apple Watch Series 6 read steps within 2.12% but undercounted moderate-to-vigorous activity by 46.22% and overcounted energy expenditure by 25.91% (Miwa 2026, funded by Chugai Pharmaceutical). Algorithms also change: Google shipped an enhanced Wear OS 5.1 step algorithm in March 2025 that inflated counts across every Pixel Watch and was reverted in April 2025, then hit a second inflation regression in March 2026 whose historical data was never corrected; Oura shipped "Real Steps" in March 2025 and reported counts fell about 20%, with no independent validation since: a search of PubMed, Google Scholar, DOAJ and OpenAIRE plus a 138-study smart-ring scoping review, run August 2026, found nothing validating Real Steps, Ring 4 or Ring 5 for steps, so every Oura step figure available is from a Gen 2 or Gen 3 ring. Nothing currently on sale has published step validation: the newest device with peer-reviewed step data is roughly four years old, and there is no Fitbit Charge 7 and no Polar Vantage V4. Sources: Paluch 2026, Rowe 2025, Fuller 2020, Roos 2020, Kim 2024, Kristiansson 2023 (corrected), Choe and Kang 2025, Feehan 2020, Germini 2022, Giurgiu 2023, Straczkiewicz 2023, Delobelle 2024, Henriksen 2022, Rider 2025, Özel 2026, Miwa 2026, Cheung 2025, Oner 2022, Niela-Vilen 2022, Modave 2017, Scataglini 2025 and the INTERLIVE statement (Johnston 2021). Garmin vs Apple Watch vs Fitbit vs COROS vs Samsung vs Oura vs WHOOP vs Polar vs Pixel Watch step count accuracy. Data verified August 2026; rankings updated October 25, 2026.';
   }
 
   // ── Icons ─────────────────────────────────────────────────────────────────
@@ -1033,8 +1037,8 @@ class KygoStepCountAccuracy extends HTMLElement {
         blurb: 'Walking speed, arm swing and where you wear the device matter more than the brand. Every factor ranked by how much it moves the count.',
         cat: 'Wearables & Data', min: 7, img: '273a63_555e30a7fca44d14bf995a7e320a93dd~mv2.png' },
       { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
-        title: 'What\'s the Most Accurate Wearable? 17 Studies, 6 Devices, Ranked (2026)',
-        blurb: 'Seventeen independent studies on sleep, HRV, heart rate and step accuracy, with the actual numbers behind each device.',
+        title: 'What’s the Most Accurate Wearable? 45+ Studies, 6 Devices, Ranked (2026)',
+        blurb: 'Independent peer-reviewed studies reveal which wearables deliver the most accurate sleep, HRV, heart rate, and step data. We break down the actual numbers so you know what to trust.',
         cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' }
     ];
   }
@@ -1473,7 +1477,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
-            <p>If the step total matters to you, wear a <strong>Garmin</strong> or an <strong>Apple Watch</strong>. <strong>COROS</strong> is the surprise, beating both in the one recent hand-tally test. Do not buy an <strong>Oura Ring</strong> for steps, or judge it by them. <strong>Polar</strong> is contested, and nobody has measured <strong>the Pixel Watch or WHOOP</strong> at all.</p>
+            <p>If the step total matters to you, wear a <strong>Garmin</strong> or an <strong>Apple Watch</strong>, with <strong>Samsung</strong> third. <strong>Fitbit</strong> reads about 15% over in daily life. <strong>COROS</strong> is the surprise, beating both in the one recent hand-tally test. Do not buy an <strong>Oura Ring</strong> for steps, or judge it by them. <strong>Polar</strong> is contested, and nobody has measured <strong>the Pixel Watch or WHOOP</strong> at all.</p>
             <p>But no purchase fixes the real limits: nothing is accurate below <strong>0.9 m/s</strong>, a walker costs you a third of your steps, where you wear it matters more than what you buy, and an accurate step count still buys you a calorie number that is 26% out. Use it as a trend against your own yesterday, not a measurement against someone else's watch.</p>
           </div>
         </div>
@@ -1501,7 +1505,7 @@ class KygoStepCountAccuracy extends HTMLElement {
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
             <h2>Every claim, <span class="hl">traceable.</span></h2>
-            <p class="lede">Every figure checked against the primary record. ${sourceCount} sources in all — ${peerReviewed} have a permanent link; the rest are manufacturer posts and consumer tests, listed unlinked rather than dropped. Verified August 2026.</p>
+            <p class="lede">Every figure checked against the primary record. ${sourceCount} sources in all, and ${peerReviewed} have a permanent link; the rest are manufacturer posts and consumer tests, listed unlinked rather than dropped. Verified August 2026; rankings updated October 25, 2026.</p>
           </div>
           <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
@@ -1523,7 +1527,7 @@ class KygoStepCountAccuracy extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Consumer step counters are estimates, not clinical measurements, and they are not validated for clinical populations or for gait assessment. Consult a qualified healthcare provider before making health decisions based on wearable data.</p>
-          <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation, with non-peer-reviewed sources labelled as such. Last updated August 2026.</p>
+          <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation, with non-peer-reviewed sources labelled as such. Last updated October 25, 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
@@ -1568,7 +1572,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         'operatingSystem': 'Web',
         'url': 'https://www.kygo.app/tools/step-count-accuracy',
         'datePublished': '2026-02-15',
-        'dateModified': '2026-08-18',
+        'dateModified': '2026-10-25',
         'softwareVersion': '2.1',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
