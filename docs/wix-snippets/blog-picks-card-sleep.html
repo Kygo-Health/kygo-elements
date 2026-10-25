@@ -1,0 +1,88 @@
+<!--
+  Kygo Picks card (sleep) for the Wix Blog "HTML code" block.
+  Only data-slug on .card changes per placement (lowercase-dashes, max 40 chars).
+  Clicks reach GA4 through the site-wide "Promo card bridge" custom embed
+  (docs/wix-snippets/promo-card-bridge.html). Keep tiles in sync with kygo-picks.js.
+-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;color:#0f172a;line-height:1.5}
+a{text-decoration:none}
+.card{display:grid;gap:20px;padding:22px;border-radius:20px}
+.copy{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.kicker{font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.title{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,4vw,28px);line-height:1.15;font-weight:700;letter-spacing:-.01em}
+.sub{font-size:15px;line-height:1.5;max-width:40ch}
+.btn{margin-top:8px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;background:#22c55e;color:#0f172a;font-size:15px;font-weight:700;transition:background .2s}
+.btn:hover{background:#4ade80}
+@media(min-width:600px){.card{padding:28px;gap:24px}}
+@media(min-width:760px){.card{gap:28px;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center}}
+.card{background:#0f172a;color:#fff}
+.kicker{color:#6ee7a0}
+.title{color:#fff}
+.sub{color:rgba(255,255,255,.75)}
+.tiles{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:440px){.tiles{grid-template-columns:1fr 1fr}}
+.tile{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:#fff;color:#0f172a;transition:transform .2s,box-shadow .2s}
+.tile:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.img{flex:0 0 48px;width:48px;height:48px;border-radius:10px;overflow:hidden;background:#f1f5f9}
+.img img{display:block;width:48px;height:48px;object-fit:cover}
+.txt{flex:1;min-width:0;display:flex;flex-direction:column}
+.lbl{font-size:12px;font-weight:600;color:#15803d}
+.nm{font-family:'Space Grotesk',sans-serif;font-size:15px;line-height:1.2;font-weight:700}
+.go{flex:none}
+</style>
+<aside class="card" aria-label="Kygo Picks" data-slug="SLUG">
+  <div class="copy">
+    <p class="kicker">Kygo Picks</p>
+    <h3 class="title">Shopping for a sleep tracker?</h3>
+    <p class="sub">The most accurate picks, ranked against sleep labs in published studies.</p>
+    <a class="btn" href="https://www.kygo.app/best-wearables#best-sleep" target="_top" data-label="see-all">See sleep picks<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+  <div class="tiles">
+    <a class="tile" href="https://www.kygo.app/best-wearables#sleep-stages" target="_top" data-label="Oura Ring 5"><span class="img"><img src="https://static.wixstatic.com/media/273a63_722e50e1a554453eb4c71a2e7a58925d~mv2.png/v1/fill/w_96,h_96,al_c/273a63_722e50e1a554453eb4c71a2e7a58925d.png" alt="" width="48" height="48"></span><span class="txt"><span class="lbl">Best overall</span><span class="nm">Oura Ring 5</span></span><svg aria-hidden="true" class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+    <a class="tile" href="https://www.kygo.app/best-wearables#hrv" target="_top" data-label="WHOOP 5.0"><span class="img"><img src="https://static.wixstatic.com/media/273a63_c52aaaca1f7243f3818cf51d9374dbd4~mv2.png/v1/fill/w_96,h_96,al_c/273a63_c52aaaca1f7243f3818cf51d9374dbd4.png" alt="" width="48" height="48"></span><span class="txt"><span class="lbl">Overnight HRV</span><span class="nm">WHOOP 5.0</span></span><svg aria-hidden="true" class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+    <a class="tile" href="https://www.kygo.app/best-wearables#sleep-timing" target="_top" data-label="Google Pixel Watch 5"><span class="img"><img src="https://static.wixstatic.com/media/273a63_c12bab319dc34737a386c7449f5f92c7~mv2.png/v1/fill/w_96,h_96,al_c/273a63_c12bab319dc34737a386c7449f5f92c7.png" alt="" width="48" height="48"></span><span class="txt"><span class="lbl">Sleep timing</span><span class="nm">Google Pixel Watch 5</span></span><svg aria-hidden="true" class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+    <a class="tile" href="https://www.kygo.app/best-wearables#sleep-stages" target="_top" data-label="Apple Watch Series 12"><span class="img"><img src="https://static.wixstatic.com/media/273a63_68b4900c356b4d0c8982e5ecd10f04fe~mv2.png/v1/fill/w_96,h_96,al_c/273a63_68b4900c356b4d0c8982e5ecd10f04fe.png" alt="" width="48" height="48"></span><span class="txt"><span class="lbl">REM sleep</span><span class="nm">Apple Watch Series 12</span></span><svg aria-hidden="true" class="go" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+  </div>
+</aside>
+<script>
+(function () {
+  var CARD = 'picks';
+  var top = window.top && window.top !== window ? window.top : null;
+  var root = document.querySelector('.card');
+  var slug = (root && root.getAttribute('data-slug')) || '';
+  function post(msg) {
+    if (!top) return;
+    try { top.postMessage(msg, '*'); } catch (e) { /* no page to report to */ }
+  }
+  // Clicks: {kygo:'promo'} for the promo card bridge (docs/wix-snippets/promo-card-bridge.html).
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    post({ kygo: 'promo', card: CARD, type: 'click', slug: slug, label: a.getAttribute('data-label') || '', url: a.href });
+  }, true);
+  // Height: understood by kygo-tracking.js, the HLTH bridge and the promo card bridge.
+  function reportHeight() {
+    if (!root) return;
+    var h = Math.ceil(root.getBoundingClientRect().bottom + (window.scrollY || 0)) + 2;
+    post({ kygo: 'embed', type: 'height', height: h });
+    post({ type: 'kygo-embed-height', height: h });
+    post({ kygo: 'promo', card: CARD, type: 'height', slug: slug, height: h });
+  }
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(reportHeight).observe(root || document.documentElement);
+  window.addEventListener('load', reportHeight);
+  reportHeight();
+  // One impression, filed by kygo-tracking.js as GA4 cta_view (label picks-<slug>).
+  if (typeof IntersectionObserver !== 'undefined' && root) {
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries.some(function (x) { return x.isIntersecting; })) return;
+      io.disconnect();
+      post({ kygo: 'embed', type: 'view', slug: CARD + '-' + slug });
+    }, { threshold: 0.5 });
+    io.observe(root);
+  }
+})();
+</script>

@@ -1,0 +1,75 @@
+<!--
+  State of Wearable Accuracy report card for the Wix Blog "HTML code" block (GateBlog design,
+  copy from the Capture copy doc, "Blog posts"). Only data-slug on .card changes per
+  placement. The link stays untagged (no UTM); the click reaches GA4 as the gate_blog event
+  through the site-wide "Promo card bridge" custom embed (docs/wix-snippets/promo-card-bridge.html).
+-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:transparent}
+body{font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;color:#0f172a;line-height:1.5}
+a{text-decoration:none}
+.card{display:grid;gap:20px;padding:22px;border-radius:20px}
+.copy{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.kicker{font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase}
+.title{font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,4vw,28px);line-height:1.15;font-weight:700;letter-spacing:-.01em}
+.sub{font-size:15px;line-height:1.5;max-width:40ch}
+.btn{margin-top:8px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;background:#22c55e;color:#0f172a;font-size:15px;font-weight:700;transition:background .2s}
+.btn:hover{background:#4ade80}
+@media(min-width:600px){.card{padding:28px;gap:24px}}
+@media(min-width:600px){.card{gap:28px;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);align-items:center}}
+.card{background:#fff;border:1.5px solid #e2e8f0;box-shadow:0 8px 24px rgba(15,23,42,.06)}
+.kicker{color:#15803d}
+.sub{color:#475569}
+.cover{display:block;border-radius:12px;overflow:hidden;box-shadow:0 12px 28px rgba(15,23,42,.18);background:#0f172a}
+.cover img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+</style>
+<aside class="card" aria-label="Free report" data-slug="SLUG">
+  <div class="copy">
+    <p class="kicker">Free report</p>
+    <h3 class="title">Is your wearable on the podium?</h3>
+    <p class="sub">I ranked seven brands on eleven metrics using 71 peer-reviewed studies. No brand won them all.</p>
+    <p class="sub">The full 77-page report is free, with every figure taken from the study tables.</p>
+    <a class="btn" href="https://www.kygo.app/state-of-wearable-accuracy" target="_top" data-label="button">Get the free report<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </div>
+  <a class="cover" href="https://www.kygo.app/state-of-wearable-accuracy" target="_top" data-label="cover" tabindex="-1" aria-hidden="true"><img src="https://kygo-health.github.io/kygo-elements/assets/sowa/sowa-cover.webp" alt="" width="1280" height="720"></a>
+</aside>
+<script>
+(function () {
+  var CARD = 'report';
+  var top = window.top && window.top !== window ? window.top : null;
+  var root = document.querySelector('.card');
+  var slug = (root && root.getAttribute('data-slug')) || '';
+  function post(msg) {
+    if (!top) return;
+    try { top.postMessage(msg, '*'); } catch (e) { /* no page to report to */ }
+  }
+  // Clicks: {kygo:'promo'} for the promo card bridge (docs/wix-snippets/promo-card-bridge.html).
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    post({ kygo: 'promo', card: CARD, type: 'click', slug: slug, label: a.getAttribute('data-label') || '', url: a.href });
+  }, true);
+  // Height: understood by kygo-tracking.js, the HLTH bridge and the promo card bridge.
+  function reportHeight() {
+    if (!root) return;
+    var h = Math.ceil(root.getBoundingClientRect().bottom + (window.scrollY || 0)) + 2;
+    post({ kygo: 'embed', type: 'height', height: h });
+    post({ type: 'kygo-embed-height', height: h });
+    post({ kygo: 'promo', card: CARD, type: 'height', slug: slug, height: h });
+  }
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(reportHeight).observe(root || document.documentElement);
+  window.addEventListener('load', reportHeight);
+  reportHeight();
+  // One impression, filed by kygo-tracking.js as GA4 cta_view (label report-<slug>).
+  if (typeof IntersectionObserver !== 'undefined' && root) {
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries.some(function (x) { return x.isIntersecting; })) return;
+      io.disconnect();
+      post({ kygo: 'embed', type: 'view', slug: CARD + '-' + slug });
+    }, { threshold: 0.5 });
+    io.observe(root);
+  }
+})();
+</script>
