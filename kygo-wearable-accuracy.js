@@ -34,6 +34,18 @@ function __ensureKygoCta() {
   document.head.appendChild(s);
 }
 
+/** Loads the shared kygo-picks-card element on demand. Wix embeds this file on its
+ *  own, so the card script has to come along rather than be assumed present. */
+function __ensureKygoPicksCard() {
+  if (customElements.get('kygo-picks-card')) return;
+  if (document.querySelector('script[data-kygo-picks-card-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-picks-card.js';
+  s.setAttribute('data-kygo-picks-card-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
 /** Appends a JSON-LD script unless the page already serves that @type from the Wix SEO panel */
 function __kygoAppendLdOnce(script) {
   let type;
@@ -2312,6 +2324,76 @@ class KygoWearableAccuracy extends HTMLElement {
 
   // ── Main render ───────────────────────────────────────────────────────
 
+  // ── Report band · State of Wearable Accuracy 2026 (hub only) ───────────
+  // The email-gate offer, a full-width band after the scoreboard and before the
+  // first metric section (canvas artboards GateTools + GateMobile). The link is
+  // untagged on purpose: internal UTMs would overwrite the visitor's real source.
+  // Clicks fire the GA4 event gate_hub (_trackGate, wired in _wire).
+  _renderReportBand() {
+    const cover = 'https://kygo-health.github.io/kygo-elements/assets/sowa/sowa-cover.webp';
+    return `
+      <style>
+      .kr-section{padding:8px 20px 12px;background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.kr-section{padding:16px 24px 20px}}
+      .kr-inner{max-width:1100px;margin:0 auto}
+      .kr-card{display:flex;flex-direction:column;gap:20px;padding:22px;border:1.5px solid #E2E8F0;border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.06);color:#0F172A}
+      @media(min-width:720px){.kr-card{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:center;padding:28px}}
+      .kr-copy{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+      .kr-eyebrow{margin:0;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#15803D}
+      .kr-title{margin:0;font-family:'Space Grotesk',sans-serif;font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em;color:#0F172A}
+      @media(min-width:720px){.kr-title{font-size:28px}}
+      .kr-sub{margin:0;font-size:15px;line-height:1.5;color:#475569}
+      @media(min-width:720px){.kr-sub{max-width:40ch}}
+      .kr-btn{margin-top:8px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;background:#22C55E;color:#0F172A;font-size:15px;font-weight:700;text-decoration:none;transition:background .2s}
+      .kr-btn:hover{background:#4ADE80;color:#0F172A}
+      .kr-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+      .kr-cover{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:12px;box-shadow:0 12px 28px rgba(15,23,42,.18);background:#0F172A}
+      </style>
+      <section class="kr-section" id="free-report">
+        <div class="kr-inner">
+          <aside class="kr-card" aria-label="Free report">
+            <div class="kr-copy">
+              <p class="kr-eyebrow">Free report</p>
+              <h2 class="kr-title">Take every ranking on this page with you</h2>
+              <p class="kr-sub">The State of Wearable Accuracy 2026 puts all eleven metrics into one 77-page PDF, with brand profiles and a buyer's guide by goal.</p>
+              <p class="kr-sub">Free. 71 peer-reviewed studies, no brand funding, every figure from the paper's own tables.</p>
+              <a class="kr-btn" href="https://www.kygo.app/state-of-wearable-accuracy" data-gate="gate_hub" data-track-position="hub-band" data-track-label="report-gate">Get the free report<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+            <img class="kr-cover" src="${cover}" alt="Report cover: State of Wearable Accuracy 2026" width="1280" height="720" loading="lazy" decoding="async" />
+          </aside>
+        </div>
+      </section>`;
+  }
+
+  /** GA4 click event for a report gate placement (gate_hub here). Uses gtag when
+   *  kygo-tracking.js has defined it, else queues the event on the dataLayer. */
+  _trackGate(name) {
+    const params = { cta_url: 'https://www.kygo.app/state-of-wearable-accuracy', component: 'kygo-wearable-accuracy', position: 'hub-band', page_path: window.location.pathname };
+    try {
+      if (typeof window.gtag === 'function') window.gtag('event', name, params);
+      else (window.dataLayer = window.dataLayer || []).push(Object.assign({ event: name }, params));
+    } catch (e) { /* tracking must never block the link */ }
+  }
+
+  // ── Kygo Picks card · shared <kygo-picks-card> ───────────────────────────
+  // The /best-wearables promo (all card), placed right after this tool's buy
+  // buttons. Its links carry data-action="related-tool", so kygo-tracking.js files
+  // every click in GA4 as a cta_click (related_tool_click, to_tool best-wearables).
+  _renderPicksCard() {
+    __ensureKygoPicksCard();
+    return `
+      <style>
+      .kp-wrap{margin:32px 0 0}
+      .kp-wrap kygo-picks-card{display:block}
+      .kp-hub{margin:14px 0 0;font-size:14px;line-height:1.5;color:#475569}
+      .kp-hub a{color:#16A34A;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+      .kp-hub a:hover{color:#0F172A}
+      </style>
+      <div class="kp-wrap">
+        <kygo-picks-card focus="all" slug="wearable-accuracy"></kygo-picks-card>
+      </div>`;
+  }
+
   render() {
     const hs = this._heroStats;
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
@@ -2366,6 +2448,7 @@ class KygoWearableAccuracy extends HTMLElement {
           </div>
           <div class="animate-on-scroll">${this._renderBrandCards()}</div>
           <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The Amazon links are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases, at no extra cost to you.</span></p>
+          ${this._renderPicksCard()}
         </div>
       </section>
 
@@ -2380,6 +2463,8 @@ class KygoWearableAccuracy extends HTMLElement {
           <div class="animate-on-scroll">${this._renderFactCards()}</div>
         </div>
       </section>
+
+      ${this._renderReportBand()}
 
       <section class="section bg-light jn-sec" id="metrics">
         <div class="section-inner">
@@ -3719,6 +3804,8 @@ class KygoWearableAccuracy extends HTMLElement {
       if (sl) this._setCmpSlot(+sl.dataset.cxSlot, sl.value);
     });
     root.addEventListener('click', (e) => {
+      const gate = e.target.closest('[data-gate]');
+      if (gate) { this._trackGate(gate.dataset.gate); return; }
       const jump = e.target.closest('[data-jump]');
       if (jump) { e.preventDefault(); this._jumpTo(jump.dataset.jump); return; }
       const ft = e.target.closest('[data-fact]');
