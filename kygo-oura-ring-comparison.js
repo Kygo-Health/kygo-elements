@@ -1,5 +1,5 @@
 /**
- * Kygo Health — Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool
+ * Kygo Health: Oura Ring 5 vs Ring 4 vs Gen 3 Comparison Tool
  * Tag: kygo-oura-ring-comparison
  * URL: /tools/oura-ring-comparison-tool
  * Mobile-first side-by-side comparison of Oura Ring Gen 3, Ring 4, and Ring 5.
@@ -69,7 +69,7 @@ class KygoOuraRingComparison extends HTMLElement {
 
   // ── HLTH Code affiliate banner (Refersion dynamic creative) ──────────
   // Refersion's creative.js injects into a real document element by id, which
-  // can't reach shadow DOM — so the banner lives in light DOM and is projected
+  // can't reach shadow DOM, so the banner lives in light DOM and is projected
   // into the layout via <slot name="hlth-ad">. Click tracking mirrors the
   // cta_click taxonomy in kygo-tracking.js under a dedicated affiliate_banner
   // category so this placement test can be isolated in GA4.
@@ -96,7 +96,7 @@ class KygoOuraRingComparison extends HTMLElement {
       document.head.appendChild(css);
     }
 
-    // Refersion injects the <a> asynchronously — tag it for FTC/SEO (sponsored,
+    // Refersion injects the <a> asynchronously, tag it for FTC/SEO (sponsored,
     // nofollow) and open in a new tab once it appears.
     const tagAnchor = () => {
       const a = target.querySelector('a');
@@ -109,7 +109,7 @@ class KygoOuraRingComparison extends HTMLElement {
     this._bannerObserver = new MutationObserver(tagAnchor);
     this._bannerObserver.observe(target, { childList: true, subtree: true });
 
-    // GA4 click tracking — fires the shared cta_click event (gtag is loaded by
+    // GA4 click tracking, fires the shared cta_click event (gtag is loaded by
     // kygo-tracking.js). cta_url captures the actual generated Refersion link.
     this._onBannerClick = (e) => {
       const a = e.target.closest && e.target.closest('a');
@@ -193,9 +193,9 @@ class KygoOuraRingComparison extends HTMLElement {
       ],
       Accuracy: [
         { name: 'Independent validation', info: 'Peer-reviewed, non-Oura', gen3: y('Extensive (Gen 3 explicit, 2024–25)'), ring4: y('Head-to-head vs Gen 3 (Dial 2025)'), ring5: n('None yet · zero studies') },
-        { name: "Oura's Ring 5 accuracy claim", info: 'Oura internal study, not peer-reviewed', gen3: '—', ring4: 'Baseline', ring5: n('+12% HRV, +24% workout HR (60 ppts, not independent)') },
-        { name: 'RHR vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 1.67%', ring4: '0.98 · MAPE 1.94%', ring5: n('Not tested on Ring 5') },
-        { name: 'HRV vs ECG (Dial 2025)', info: 'CCC — higher is better', gen3: '0.97 · MAPE 7.15%', ring4: '0.99 · MAPE 5.96%', ring5: n('Not tested on Ring 5') },
+        { name: "Oura's Ring 5 accuracy claim", info: 'Oura internal study, not peer-reviewed', gen3: '-', ring4: 'Baseline', ring5: n('+12% HRV, +24% workout HR (60 ppts, not independent)') },
+        { name: 'RHR vs ECG (Dial 2025)', info: 'CCC: higher is better', gen3: '0.97 · MAPE 1.67%', ring4: '0.98 · MAPE 1.94%', ring5: n('Not tested on Ring 5') },
+        { name: 'HRV vs ECG (Dial 2025)', info: 'CCC: higher is better', gen3: '0.97 · MAPE 7.15%', ring4: '0.99 · MAPE 5.96%', ring5: n('Not tested on Ring 5') },
         { name: 'Sleep/wake vs PSG', info: '2-stage agreement', gen3: '~92% (Robbins/Svensson)', ring4: 'Inferred (shared PPG)', ring5: n('Not tested on Ring 5') },
         { name: '4-stage sleep vs PSG', info: 'REM/Deep/Light/Wake', gen3: '76.3% (Robbins, Gen 3)', ring4: 'Inferred', ring5: n('Not tested on Ring 5') },
         { name: '"99% HR accuracy" claim', info: 'On Ring 5 store page', gen3: 'Kinnunen 2020 (Oura-authored, r²)', ring4: 'Same source', ring5: n('Inherited, not independent') },
@@ -224,7 +224,7 @@ class KygoOuraRingComparison extends HTMLElement {
   get _bestFor() {
     return [
       { icon: 'shield', label: 'For proven accuracy', pick: 'Oura Ring 4', reason: 'The only ring with an independent head-to-head study (Dial 2025): CCC 0.98 RHR and 0.99 HRV vs ECG, beating Gen 3, WHOOP 4.0, Garmin, and Polar. Ring 5 has zero peer-reviewed validation yet.', price: '$349', yrly: '· ~$559 / 3 yrs' },
-      { icon: 'moon', label: 'For the smallest ring', pick: 'Oura Ring 5', reason: '40% smaller than Ring 4 at 2–2.6 g and 2.28 mm thick — the world\'s smallest smart ring. 6–9 day battery and an optional $99 charging case for ~1 month between wall charges.', price: '$399', yrly: '· ships June 4' },
+      { icon: 'moon', label: 'For the smallest ring', pick: 'Oura Ring 5', reason: '40% smaller than Ring 4 at 2–2.6 g and 2.28 mm thick, the world\'s smallest smart ring. 6–9 day battery and an optional $99 charging case for ~1 month between wall charges.', price: '$399', yrly: '· ships June 4' },
       { icon: 'wallet', label: 'For the value buyer', pick: 'Oura Ring 4', reason: 'Cheapest current ring at $349 (~$559 over 3 years vs ~$609 for Ring 5), fully validated, and it keeps the wider 4–15 size range. Every Ring 5 software feature rolls back to it with membership.', price: '$349', yrly: '· no Ring 5 lock-in' },
       { icon: 'ruler', label: 'For small or large fingers', pick: 'Oura Ring 4', reason: 'Ring 5 shrinks the size range to 6–13. Ring 4 still spans sizes 4–15, so very small and very large fingers keep an Oura option that Ring 5 drops at launch.', price: '$349', yrly: '· sizes 4–15' },
     ];
@@ -232,12 +232,12 @@ class KygoOuraRingComparison extends HTMLElement {
 
   get _faqs() {
     return [
-      { q: 'Is the Ring 5\'s "99% HR accuracy" claim real?', a: 'It needs context. The "99%" footnote on the Ring 5 store page traces back to Kinnunen 2020, a paper authored by Oura employees (including Chief Scientist Hannu Kinnunen), tested on pre-Gen 3 hardware in 49 adults — not Ring 5. The 0.996 figure is an r² correlation strength, not an error percentage. The independent equivalent is Cao 2022 (University of Turku + UC Irvine), which reported a Pearson r of 0.99968 for nightly heart rate — still very strong, but properly attributed. Treat the store-page number as an inherited, Oura-influenced claim, not independent Ring 5 validation.' },
-      { q: 'Is the "95% sleep staging accuracy" number accurate?', a: 'It\'s misleading as usually quoted. The ~94–95% figure is the 2-stage sleep/wake sensitivity from Svensson 2024 (which tested Gen 3 and had 3 of 5 authors disclose Oura funding). Full 4-stage classification — REM, deep, light, wake — was 75.5–90.6% by stage in Svensson and 76.3% overall in Robbins 2024. Since PSG inter-rater reliability is only ~80%, mid-70s is near the practical ceiling. The right number depends on which claim is being made.' },
-      { q: 'Should I upgrade from Ring 4 to Ring 5?', a: 'For most Ring 4 owners, not yet. Ring 5 is a form-factor and signal-quality refinement, not a new-metric leap — it\'s smaller, lighter, and has slightly longer battery, plus Oura\'s internal study claims 12% better overnight HRV and 24% better workout HR. But all the new software features roll back to Ring 4 with an active membership, Ring 5 has no independent validation yet, the size range shrinks to 6–13, and signal pathways drop from 18 to 12. If your Ring 4 fits and works, there\'s little evidence-based reason to pay again.' },
+      { q: 'Is the Ring 5\'s "99% HR accuracy" claim real?', a: 'It needs context. The "99%" footnote on the Ring 5 store page traces back to Kinnunen 2020, a paper authored by Oura employees (including Chief Scientist Hannu Kinnunen), tested on pre-Gen 3 hardware in 49 adults, not Ring 5. The 0.996 figure is an r² correlation strength, not an error percentage. The independent equivalent is Cao 2022 (University of Turku + UC Irvine), which reported a Pearson r of 0.99968 for nightly heart rate: still very strong, but properly attributed. Treat the store-page number as an inherited, Oura-influenced claim, not independent Ring 5 validation.' },
+      { q: 'Is the "95% sleep staging accuracy" number accurate?', a: 'It\'s misleading as usually quoted. The ~94–95% figure is the 2-stage sleep/wake sensitivity from Svensson 2024 (which tested Gen 3 and had 3 of 5 authors disclose Oura funding). Full 4-stage classification (REM, deep, light, wake) was 75.5–90.6% by stage in Svensson and 76.3% overall in Robbins 2024. Since PSG inter-rater reliability is only ~80%, mid-70s is near the practical ceiling. The right number depends on which claim is being made.' },
+      { q: 'Should I upgrade from Ring 4 to Ring 5?', a: 'For most Ring 4 owners, not yet. Ring 5 is a form-factor and signal-quality refinement, not a new-metric leap: it\'s smaller, lighter, and has slightly longer battery, plus Oura\'s internal study claims 12% better overnight HRV and 24% better workout HR. But all the new software features roll back to Ring 4 with an active membership, Ring 5 has no independent validation yet, the size range shrinks to 6–13, and signal pathways drop from 18 to 12. If your Ring 4 fits and works, there\'s little evidence-based reason to pay again.' },
       { q: 'Do I still need the Oura Membership?', a: 'For almost everything useful, yes. Without an active membership ($5.99/mo or $69.99/yr) the app shows only Sleep, Readiness, and Activity scores plus battery and Explore content. Trends, HRV detail, temperature deviations, period prediction, Advisor AI, Health Radar, Blood Pressure Signals, and GLP-1 tools are all gated. That\'s why the real 3-year cost of a Ring 5 is roughly $609, not $399. Subscription-free rivals like RingConn Gen 2 ($299) and Ultrahuman Ring Air ($349) are genuine alternatives if you only want sleep and HRV.' },
-      { q: 'Why did the signal pathway count drop from 18 to 12?', a: 'Because the ring got smaller. Oura\'s engineering blog confirms Ring 5 shrank the battery, PCB, and structural components, so fewer total signal pathways fit in the smaller footprint. Oura frames the 12 pathways as individually "stronger" — LEDs were rotated 180° for shorter optical paths and the photodiode was enlarged to compensate. Whether stronger-but-fewer beats Ring 4\'s 18-pathway Smart Sensing in real-world gap reduction is exactly the kind of claim that has no independent validation yet.' },
-      { q: 'Does Kygo work with Oura?', a: 'Yes — Kygo connects to Oura, plus Apple Health, Fitbit, Garmin, WHOOP, and Samsung Galaxy Watch. Whichever ring (or watch) you wear, Kygo cross-checks your sleep, HRV, and recovery data against what you actually eat and train, so you can see which metrics are genuinely predictive for your body.' },
+      { q: 'Why did the signal pathway count drop from 18 to 12?', a: 'Because the ring got smaller. Oura\'s engineering blog confirms Ring 5 shrank the battery, PCB, and structural components, so fewer total signal pathways fit in the smaller footprint. Oura frames the 12 pathways as individually "stronger": LEDs were rotated 180° for shorter optical paths and the photodiode was enlarged to compensate. Whether stronger-but-fewer beats Ring 4\'s 18-pathway Smart Sensing in real-world gap reduction is exactly the kind of claim that has no independent validation yet.' },
+      { q: 'Does Kygo work with Oura?', a: 'Yes: Kygo connects to Oura, plus Apple Health, Fitbit, Garmin, WHOOP, and Samsung Galaxy Watch. Whichever ring (or watch) you wear, Kygo cross-checks your sleep, HRV, and recovery data against what you actually eat and train, so you can see which metrics are genuinely predictive for your body.' },
     ];
   }
 
@@ -585,7 +585,7 @@ class KygoOuraRingComparison extends HTMLElement {
   // The dark conversion card, on its own section, directly after the first
   // content section. Self-contained under `kc-*` names with a literal fallback
   // behind every custom property, so the same block renders identically on
-  // either palette. Nothing else belongs in this section — the email capture
+  // either palette. Nothing else belongs in this section, the email capture
   // is a separate band further down the page.
   // Pass 'gray' to sit the section on the tinted band.
 
@@ -662,7 +662,7 @@ class KygoOuraRingComparison extends HTMLElement {
 
   // ── Email CTA · Kygo standard module ────────────────────────────────────
   // The inline email capture, on its own band. It never sits directly under the
-  // app CTA — a page content section always separates the two conversion
+  // app CTA, a page content section always separates the two conversion
   // touchpoints. Self-contained under `ke-*` names so it drops into either
   // palette. Pass 'gray' to sit on the tinted band.
 
@@ -712,7 +712,7 @@ class KygoOuraRingComparison extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-pill"><span class="dot"></span> UPDATED JUNE 2026</div>
               <h1>Oura Ring 5 vs 4 vs 3 Comparison <span class="hl">(2026)</span></h1>
-              <p class="hero-lede"><strong>Is the upgrade worth it?</strong> Ring 5 is smaller, lighter, and longer-lasting — but it has <strong>zero independent validation</strong>, a shrunken size range, and a membership that makes the real 3-year cost ~$609. Compare every spec across Gen 3 (Ring 3), Ring 4, and Ring 5 — plus the peer-reviewed accuracy data and your true cost.</p>
+              <p class="hero-lede"><strong>Is the upgrade worth it?</strong> Ring 5 is smaller, lighter, and longer-lasting, but it has <strong>zero independent validation</strong>, a shrunken size range, and a membership that makes the real 3-year cost ~$609. Compare every spec across Gen 3 (Ring 3), Ring 4, and Ring 5, plus the peer-reviewed accuracy data and your true cost.</p>
             </div>
             <div class="hero-vis" aria-hidden="true">
               <div class="hero-vis-head">
@@ -742,7 +742,7 @@ class KygoOuraRingComparison extends HTMLElement {
                 <ellipse cx="305" cy="230" rx="58" ry="8" fill="#0F172A" opacity="0.06"/>
                 <ellipse cx="460" cy="230" rx="58" ry="8" fill="#0F172A" opacity="0.06"/>
 
-                <!-- Gen 3 — same outer size, medium wall -->
+                <!-- Gen 3: same outer size, medium wall -->
                 <g filter="url(#ouraDrop)">
                   <circle cx="150" cy="158" r="51" fill="none" stroke="url(#ouraSlate)" stroke-width="18"/>
                 </g>
@@ -750,7 +750,7 @@ class KygoOuraRingComparison extends HTMLElement {
                 <text x="150" y="250" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">GEN 3</text>
                 <text x="150" y="270" fill="#94A3B8" font-size="12" text-anchor="middle">2.6–3.2 mm · 2021</text>
 
-                <!-- Ring 4 — same outer size, thickest wall -->
+                <!-- Ring 4: same outer size, thickest wall -->
                 <g filter="url(#ouraDrop)">
                   <circle cx="305" cy="158" r="50" fill="none" stroke="url(#ouraSlate)" stroke-width="20"/>
                 </g>
@@ -758,7 +758,7 @@ class KygoOuraRingComparison extends HTMLElement {
                 <text x="305" y="250" fill="#64748B" font-size="14" font-weight="600" text-anchor="middle">RING 4</text>
                 <text x="305" y="270" fill="#94A3B8" font-size="12" text-anchor="middle">2.88 mm · 2024</text>
 
-                <!-- Ring 5 — same outer size, thinnest wall -->
+                <!-- Ring 5: same outer size, thinnest wall -->
                 <g filter="url(#ouraGlow)">
                   <circle cx="460" cy="158" r="52" fill="none" stroke="url(#ouraGreen)" stroke-width="16"/>
                 </g>
@@ -776,7 +776,7 @@ class KygoOuraRingComparison extends HTMLElement {
           </div>
           <div class="hero-stats">
             <div class="hero-stat"><div class="num">40<span class="unit">%</span></div><div class="lbl">Ring 5 smaller than Ring 4</div></div>
-            <div class="hero-stat"><div class="num">2<span class="unit">g</span></div><div class="lbl">Ring 5 — world's smallest smart ring</div></div>
+            <div class="hero-stat"><div class="num">2<span class="unit">g</span></div><div class="lbl">Ring 5: world's smallest smart ring</div></div>
             <div class="hero-stat"><div class="num">$609</div><div class="lbl">Real 3-yr cost with membership</div></div>
             <div class="hero-stat"><div class="num">0</div><div class="lbl">Independent Ring 5 validation studies</div></div>
           </div>
@@ -858,7 +858,7 @@ class KygoOuraRingComparison extends HTMLElement {
             <span class="blog-cta-tag">Ring 5 vs 4</span>
             <div class="blog-cta-body">
               <div class="blog-cta-kicker">Just comparing Gen 5 and Gen 4?</div>
-              <div class="blog-cta-title">Oura Ring 5 vs Ring 4 <span class="yr">— the two-generation tool</span></div>
+              <div class="blog-cta-title">Oura Ring 5 vs Ring 4 <span class="yr">(the two-generation tool)</span></div>
               <div class="blog-cta-sub">Skip Gen 3 and go head-to-head on the two newest rings: every spec difference, a direct upgrade verdict, peer-reviewed accuracy, and the real 3-year cost with membership.</div>
             </div>
             <span class="blog-cta-arrow">${this._icon('arrowRight')}</span>
@@ -876,7 +876,7 @@ class KygoOuraRingComparison extends HTMLElement {
             <div class="gap animate-on-scroll">
               <h4>Improvements</h4>
               <ul>
-                <li><span class="num-tag">1</span><span><strong>Thinner and lighter.</strong> ~21% thinner in profile (2.28 mm) and down to 2–2.6 g — Oura's smallest ring to date.</span></li>
+                <li><span class="num-tag">1</span><span><strong>Thinner and lighter.</strong> ~21% thinner in profile (2.28 mm) and down to 2–2.6 g, Oura's smallest ring to date.</span></li>
                 <li><span class="num-tag">2</span><span><strong>Better battery + charging case.</strong> 6–9 days claimed, plus an optional $99 case that holds ~5 charges (~1 month between wall plugs).</span></li>
                 <li><span class="num-tag">3</span><span><strong>Oura's internal study.</strong> 12% better overnight HRV, 24% better workout HR signal, 19% better running/cycling/walking accuracy (60 participants, not yet peer-reviewed).</span></li>
               </ul>
@@ -947,12 +947,12 @@ class KygoOuraRingComparison extends HTMLElement {
     `;
   }
 
-  // Static, crawlable comparison summary — explicit blocks for the long-tail
+  // Static, crawlable comparison summary, explicit blocks for the long-tail
   // matchups this page ranks for (3-vs-5 and the 3-way 3-vs-4-vs-5), featured
   // because the interactive table renders in JS where crawlers may not read it.
   _renderTLDR() {
     return `
-      <p class="tldr-lead">The <strong>Oura Ring 5</strong> (announced May 28, 2026, shipping June 4) is the smallest, lightest Oura yet — but it launches with <strong>no independent validation</strong> and a narrower size range. Here's how the three generations actually stack up.</p>
+      <p class="tldr-lead">The <strong>Oura Ring 5</strong> (announced May 28, 2026, shipping June 4) is the smallest, lightest Oura yet, but it launches with <strong>no independent validation</strong> and a narrower size range. Here's how the three generations actually stack up.</p>
       <div class="cmp-blocks">
         <div class="cmp-block">
           <h3>Oura Ring 5 vs Ring 4</h3>
@@ -961,13 +961,13 @@ class KygoOuraRingComparison extends HTMLElement {
         </div>
         <div class="cmp-block">
           <h3>Oura Ring 5 vs Gen 3 (Ring 3)</h3>
-          <p class="cmp-verdict">A big jump — if you want to buy again.</p>
+          <p class="cmp-verdict">A big jump, if you want to buy again.</p>
           <p>Versus a Gen 3 (often searched as "Ring 3"), Ring 5 is roughly half the weight, slimmer, and adds the full 2026 feature set. Gen 3 is discontinued and resale-only, but remains the most validated sleep tracker against polysomnography.</p>
         </div>
         <div class="cmp-block cmp-block-wide">
           <h3>Oura Ring 3 vs 4 vs 5: the three-way verdict</h3>
           <p class="cmp-verdict">Gen 3 proven · Ring 4 best value · Ring 5 smallest.</p>
-          <p>All three share the same optical (PPG) sensing platform, so sleep, HRV, and heart-rate accuracy are broadly comparable. Choose on size, price, and fit — not on a dramatic accuracy gap.</p>
+          <p>All three share the same optical (PPG) sensing platform, so sleep, HRV, and heart-rate accuracy are broadly comparable. Choose on size, price, and fit, not on a dramatic accuracy gap.</p>
         </div>
       </div>
     `;
@@ -1023,7 +1023,7 @@ class KygoOuraRingComparison extends HTMLElement {
     const ring4Link = 'https://www.amazon.com/dp/B0D9WT1S2T?tag=kygohealthapp-20&th=1';
     const ring5Link = 'https://www.amazon.com/dp/B0GRK1N94H?tag=kygohealthapp-20&th=1';
     const rows = this._specs[this._activeTab];
-    const storeLink = (url, label) => `<a class="amazon-link" href="${url}" target="_blank" rel="noopener sponsored" data-track-label="${label}">View on Amazon ${this._icon('arrowRight')}</a>`;
+    const storeLink = (url, label) => `<a class="amazon-link" href="${url}" target="_blank" rel="sponsored nofollow noopener" data-track-label="${label}">View on Amazon ${this._icon('arrowRight')}</a>`;
     return `
       <table class="tbl">
         <thead>
@@ -1049,15 +1049,15 @@ class KygoOuraRingComparison extends HTMLElement {
           <tr class="aff-row">
             <td colspan="4">
               <div class="aff-row-inner">
-                <a class="aff-btn" href="${gen3Link}" target="_blank" rel="noopener sponsored" data-track-label="oura-ring-gen3"><img src="${ouraImg}" alt="" /> Gen 3 on Amazon ${this._icon('arrowRight')}</a>
-                <a class="aff-btn" href="${ring4Link}" target="_blank" rel="noopener sponsored" data-track-label="oura-ring-4"><img src="${ouraImg}" alt="" /> Ring 4 on Amazon ${this._icon('arrowRight')}</a>
-                <a class="aff-btn" href="${ring5Link}" target="_blank" rel="noopener sponsored" data-track-label="oura-ring-5"><img src="${ouraImg}" alt="" /> Ring 5 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${gen3Link}" target="_blank" rel="sponsored nofollow noopener" data-track-label="oura-ring-gen3"><img src="${ouraImg}" alt="" /> Gen 3 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${ring4Link}" target="_blank" rel="sponsored nofollow noopener" data-track-label="oura-ring-4"><img src="${ouraImg}" alt="" /> Ring 4 on Amazon ${this._icon('arrowRight')}</a>
+                <a class="aff-btn" href="${ring5Link}" target="_blank" rel="sponsored nofollow noopener" data-track-label="oura-ring-5"><img src="${ouraImg}" alt="" /> Ring 5 on Amazon ${this._icon('arrowRight')}</a>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
-      ${this._activeTab === 'Accuracy' ? `<p class="tbl-note">Note: CCC scores of 0.97–0.99 are statistically equivalent in everyday use — treat Gen 3 and Ring 4 as effectively tied on heart-rate accuracy. Ring 5 has no independent validation; its figures are inherited from earlier rings, not measured.</p>` : ''}
+      ${this._activeTab === 'Accuracy' ? `<p class="tbl-note">Note: CCC scores of 0.97–0.99 are statistically equivalent in everyday use; treat Gen 3 and Ring 4 as effectively tied on heart-rate accuracy. Ring 5 has no independent validation; its figures are inherited from earlier rings, not measured.</p>` : ''}
     `;
   }
 
@@ -1080,7 +1080,7 @@ class KygoOuraRingComparison extends HTMLElement {
     const pickSub = pick === 'ring4' ? '$349 hardware' : pick === 'ring5' ? '$399 hardware' : '$499 hardware';
     const gap = ouraTotal - rivalTotal;
     const gapMsg = gap > 0
-      ? `Oura costs <strong>${fmt(gap)} more</strong> than ${rivalName} over ${years} ${years === 1 ? 'year' : 'years'} — almost entirely membership. You're paying for the strongest peer-reviewed validation, Health Radar, and app polish; ${rivalName} has no subscription${rival === 'ringconn' ? ' and 3–4 days more battery' : ' and CGM integration'}.`
+      ? `Oura costs <strong>${fmt(gap)} more</strong> than ${rivalName} over ${years} ${years === 1 ? 'year' : 'years'}: almost entirely membership. You're paying for the strongest peer-reviewed validation, Health Radar, and app polish; ${rivalName} has no subscription${rival === 'ringconn' ? ' and 3–4 days more battery' : ' and CGM integration'}.`
       : gap < 0
         ? `${rivalName} costs <strong>${fmt(-gap)} more</strong> at this setup.`
         : `Both options total <strong>${fmt(ouraTotal)}</strong> here.`;
@@ -1124,7 +1124,7 @@ class KygoOuraRingComparison extends HTMLElement {
           <div class="breakdown">$${rivalHardware} hardware + $0 sub</div>
         </div>
         <div class="calc-savings">${gapMsg}</div>
-        <a class="calc-amazon" href="${ouraAmazon}" target="_blank" rel="noopener sponsored" data-track-label="${ouraSlug}">View Oura ${pickName} on Amazon ${this._icon('arrowRight')}</a>
+        <a class="calc-amazon" href="${ouraAmazon}" target="_blank" rel="sponsored nofollow noopener" data-track-label="${ouraSlug}">View Oura ${pickName} on Amazon ${this._icon('arrowRight')}</a>
       </div>
     `;
   }
@@ -1156,36 +1156,36 @@ class KygoOuraRingComparison extends HTMLElement {
       {
         group: 'Peer-reviewed validation',
         links: [
-          { t: 'Khan 2025 — meta-analysis (OTO Open)', u: 'https://aao-hnsfjournals.onlinelibrary.wiley.com/doi/full/10.1002/oto2.70181' },
-          { t: 'Svensson 2024 (Sleep Med) — Oura COI', u: 'https://pubmed.ncbi.nlm.nih.gov/38382312/' },
-          { t: 'Kinnunen 2020 — source of "99%" (Oura-authored)', u: 'https://pubmed.ncbi.nlm.nih.gov/32217820/' },
-          { t: 'Cao 2022 — independent (JMIR)', u: 'https://www.jmir.org/2022/1/e27487' },
+          { t: 'Khan 2025: meta-analysis (OTO Open)', u: 'https://aao-hnsfjournals.onlinelibrary.wiley.com/doi/full/10.1002/oto2.70181' },
+          { t: 'Svensson 2024 (Sleep Med): Oura COI', u: 'https://pubmed.ncbi.nlm.nih.gov/38382312/' },
+          { t: 'Kinnunen 2020: source of "99%" (Oura-authored)', u: 'https://pubmed.ncbi.nlm.nih.gov/32217820/' },
+          { t: 'Cao 2022: independent (JMIR)', u: 'https://www.jmir.org/2022/1/e27487' },
           { t: 'Robbins 2024 (Sensors)', u: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11511193/' },
           { t: 'Liang, Yilmaz, Soon 2024 (Sensors)', u: 'https://www.mdpi.com/1424-8220/24/23/7475' },
-          { t: 'Dial 2025 — Ring 4 vs Gen 3 head-to-head', u: 'https://pubmed.ncbi.nlm.nih.gov/40834291/' },
+          { t: 'Dial 2025: Ring 4 vs Gen 3 head-to-head', u: 'https://pubmed.ncbi.nlm.nih.gov/40834291/' },
         ],
       },
       {
         group: 'Ring 5 launch coverage',
         links: [
-          { t: 'Business Wire — Ring 5 press release', u: 'https://www.businesswire.com/news/home/20260528686853/en/URA-Introduces-The-Worlds-Smallest-Smart-Ring-Oura-Ring-5' },
+          { t: 'Business Wire: Ring 5 press release', u: 'https://www.businesswire.com/news/home/20260528686853/en/URA-Introduces-The-Worlds-Smallest-Smart-Ring-Oura-Ring-5' },
           { t: 'TechCrunch', u: 'https://techcrunch.com/2026/05/28/oura-unveils-its-ring-5-with-a-thinner-lighter-design-starting-at-399/' },
           { t: 'Wareable', u: 'https://www.wareable.com/wearable-tech/oura-ring-5-announcement-official-features-design-pricing-availability' },
           { t: "Tom's Guide hands-on", u: 'https://www.tomsguide.com/wellness/smart-rings/ive-worn-the-oura-ring-5-and-it-really-is-tiny-heres-why-i-think-its-the-wearable-to-beat-in-2026' },
-          { t: 'AppleInsider — GLP-1 + BP', u: 'https://appleinsider.com/articles/26/05/28/blood-pressure-tracking-glp-1-tools-central-to-new-oura-ring-5' },
-          { t: 'The 5k Runner — Ring 4 vs Ring 5', u: 'https://the5krunner.com/2026/05/28/oura-ring-5-vs-ring-4-worth-it-review-opinion/' },
+          { t: 'AppleInsider: GLP-1 + BP', u: 'https://appleinsider.com/articles/26/05/28/blood-pressure-tracking-glp-1-tools-central-to-new-oura-ring-5' },
+          { t: 'The 5k Runner: Ring 4 vs Ring 5', u: 'https://the5krunner.com/2026/05/28/oura-ring-5-vs-ring-4-worth-it-review-opinion/' },
         ],
       },
       {
         group: 'Background & competitors',
         links: [
-          { t: 'Wareable — Ring 4 vs Ring 3', u: 'https://www.wareable.com/wearable-tech/oura-ring-4-vs-ring-3-key-differences-compared' },
-          { t: 'TechInsights — Ring 4 teardown', u: 'https://www.techinsights.com/blog/oura-ring-gen-4-teardown' },
-          { t: 'r/SmartRings — Gen 3 Heritage vs Horizon measured specs', u: 'https://www.reddit.com/r/SmartRings/s/z7g4Hl6VcE' },
-          { t: 'DC Rainmaker — Ring 4 breakdown', u: 'https://www.dcrainmaker.com/2024/10/oura-announces-oura-4-heres-whats-actually-changed.html' },
+          { t: 'Wareable: Ring 4 vs Ring 3', u: 'https://www.wareable.com/wearable-tech/oura-ring-4-vs-ring-3-key-differences-compared' },
+          { t: 'TechInsights: Ring 4 teardown', u: 'https://www.techinsights.com/blog/oura-ring-gen-4-teardown' },
+          { t: 'r/SmartRings: Gen 3 Heritage vs Horizon measured specs', u: 'https://www.reddit.com/r/SmartRings/s/z7g4Hl6VcE' },
+          { t: 'DC Rainmaker: Ring 4 breakdown', u: 'https://www.dcrainmaker.com/2024/10/oura-announces-oura-4-heres-whats-actually-changed.html' },
           { t: 'RingConn Gen 2 product page', u: 'https://ringconn.com/products/ringconn-gen-2' },
           { t: 'Samsung Galaxy Ring support', u: 'https://www.samsung.com/us/support/answer/ANS10003278/' },
-          { t: 'Wareable — Best smart rings 2026', u: 'https://www.wareable.com/fashion/best-smart-rings-1340' },
+          { t: 'Wareable: Best smart rings 2026', u: 'https://www.wareable.com/fashion/best-smart-rings-1340' },
         ],
       },
     ];
@@ -1310,7 +1310,7 @@ class KygoOuraRingComparison extends HTMLElement {
         'inLanguage': 'en',
         'isAccessibleForFree': true,
         'datePublished': '2026-05-28',
-        'dateModified': '2026-06-12',
+        'dateModified': '2026-10-25',
         'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'USD' },
         'author': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app' },
         'publisher': { '@type': 'Organization', 'name': 'Kygo Health', 'url': 'https://www.kygo.app', 'logo': 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png' },
