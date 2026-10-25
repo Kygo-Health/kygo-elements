@@ -371,7 +371,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
   _na() { return `<span class="mk off"><span class="dash"></span></span>`; }
   _amazonLink(d, position) {
     if (!d.affiliateUrl) return '';
-    return `<a class="amz-link" href="${d.affiliateUrl}" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="${position}">Amazon ${this._icon('arrowRight')}</a>`;
+    return `<a class="amz-link" href="${d.affiliateUrl}" target="_blank" rel="sponsored nofollow noopener" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="${position}">Amazon ${this._icon('arrowRight')}</a>`;
   }
 
   _kHealthyPill(d) {
@@ -622,7 +622,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
             <li><span class="fct-ico">${this._icon('minus')}</span><span><strong>Weakest for</strong> ${d.weakestFor}</span></li>
           </ul>
           ${d.affiliateUrl
-            ? `<a href="${d.affiliateUrl}" class="dev-amazon" target="_blank" rel="noopener sponsored" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
+            ? `<a href="${d.affiliateUrl}" class="dev-amazon" target="_blank" rel="sponsored nofollow noopener" data-action="affiliate-click" data-track-label="${d.trackLabel}" data-track-position="device-card">View ${d.short} on Amazon ${this._icon('arrowRight')}</a>`
             : ''}
         </div>
       </details>`;
@@ -1023,7 +1023,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
   // The dark conversion card, on its own section, directly after the first
   // content section. Self-contained under `kc-*` names with a literal fallback
   // behind every custom property, so the same block renders identically on
-  // either palette. Nothing else belongs in this section — the email capture
+  // either palette. Nothing else belongs in this section, the email capture
   // is a separate band further down the page.
   // Pass 'gray' to sit the section on the tinted band.
 
@@ -1100,7 +1100,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
 
   // ── Email CTA · Kygo standard module ────────────────────────────────────
   // The inline email capture, on its own band. It never sits directly under the
-  // app CTA — a page content section always separates the two conversion
+  // app CTA, a page content section always separates the two conversion
   // touchpoints. Self-contained under `ke-*` names so it drops into either
   // palette. Pass 'gray' to sit on the tinted band.
 
@@ -1202,7 +1202,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">The full ranking</div>
-            <h2>All seven, ranked on <span class="hl">the headline metric.</span></h2>
+            <h2>All nine, ranked on <span class="hl">the headline metric.</span></h2>
             <p class="lede">Sleep staging (light / deep / REM / wake) is the hard task and the number people quote. Here's every device ranked by healthy-adult agreement, with how it holds up in clinical patients. Devices tested only in a mixed or clinical sample come last. Scroll sideways on mobile.</p>
           </div>
           <div class="animate-on-scroll">${this._renderStagingMatrix()}</div>
