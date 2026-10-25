@@ -161,7 +161,7 @@ class KygoOura5vs4 extends HTMLElement {
     return [
       {
         q: 'Is the Oura Ring 5 worth upgrading from the 4?',
-        a: 'For most Ring 4 owners, not yet. The Ring 5 is a form-factor and signal-quality refinement (Oura’s claim is that it’s about 40% smaller (thinner and narrower), and it’s also lighter at 2–2.6 g versus the Ring 4’s 3.3–5.2 g, with a marginally longer battery), not a new-metric leap. Every new software feature rolls back to the Ring 4 with an active membership, the Ring 5 has no independent accuracy validation, its size range shrinks to 6–13, and its signal pathways drop from 18 to 12. If your Ring 4 fits and works, there is little evidence-based reason to pay again.'
+        a: 'For most Ring 4 owners, not yet. The Ring 5 is a form-factor and signal-quality refinement; Oura’s claim is that it’s about 40% smaller (thinner and narrower), and it’s also lighter at 2–2.6 g versus the Ring 4’s 3.3–5.2 g, with a marginally longer battery; not a new-metric leap. Every new software feature rolls back to the Ring 4 with an active membership, the Ring 5 has no independent accuracy validation, its size range shrinks to 6–13, and its signal pathways drop from 18 to 12. If your Ring 4 fits and works, there is little evidence-based reason to pay again.'
       },
       {
         q: 'What’s new in the Oura Ring 5?',
