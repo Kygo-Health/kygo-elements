@@ -194,4 +194,4 @@ class KygoPicksCard extends HTMLElement {
   }
 }
 
-customElements.define('kygo-picks-card', KygoPicksCard);
+if (!customElements.get('kygo-picks-card')) customElements.define('kygo-picks-card', KygoPicksCard);
