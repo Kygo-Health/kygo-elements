@@ -74,7 +74,7 @@ class KygoSensorComparison extends HTMLElement {
     this._setupAnimations();
     this._injectStructuredData();
     this._drawCharts();
-    __seo(this, 'Wearable Hardware and Software Differences Tool by Kygo Health. See exactly what makes Garmin Venu 4, Whoop 5.0, Oura Ring 4, Apple Watch Series 10, Apple Watch Ultra 3, and Fitbit Charge 6 different under the hood. Sensor counts: Apple Watch Ultra 3 has 11 sensors (most), Garmin Venu 4 has 10, Apple Watch S10 has 10, Fitbit Charge 6 has 7, Whoop 5.0 has 4, Oura Ring 4 has 4. Hardware differences across 16 sensor types: PPG optical heart rate, ECG, SpO2, skin temperature, EDA stress sensor, accelerometer, gyroscope, barometric altimeter, GPS, depth gauge, NFC, mic/speaker, ambient light, noise level, LED flashlight, compass. Key hardware facts: Oura has 18-path PPG on the finger for best signal quality. Whoop has fastest PPG sampling at 26 Hz. Garmin has best GPS with multi-band GNSS L1/L5. Fitbit is the only device with a dedicated EDA stress sensor. Only Apple Watch detects sleep apnea using accelerometer (FDA-authorized). Only Apple Watch Ultra 3 has hypertension alerts via PPG pulse wave analysis. ECG available on Garmin, Apple Watch S10, Apple Watch Ultra 3, and Fitbit, not on Whoop 5.0 or Oura Ring 4. How hardware differences affect health metrics: HRV heart rate variability, sleep apnea detection, stress measurement, hypertension alerts, fall detection, blood oxygen SpO2, respiratory rate, skin temperature trends, cycle tracking. FDA-cleared features: Apple Watch Ultra 3 has 3 (ECG, Apnea, Hypertension), Apple Watch S10 has 2 (ECG, Apnea), Garmin has 1 (ECG/AFib), Fitbit has 1 (ECG/AFib), Whoop has 0, Oura has 0. Software differences across 25 proprietary algorithms: Garmin has 6 algorithms including Body Battery and Training Readiness and HRV Status and Health Status and Sleep Coach and Lifestyle Habit Logging. Whoop has 8 algorithms including Recovery Score and Strain Score and VO2 Max and Healthspan/Whoop Age and Hormonal Insights and Journal and Sleep Coach and Whoop Coach AI powered by OpenAI. Oura has 4 algorithms including Readiness Score and Cardiovascular Age and Cardio Capacity VO2 Max and Resilience. Apple has 4 algorithms including Sleep Score and Vitals App and Cardio Fitness VO2 Max and Hearing Health. Fitbit has 3 algorithms including Daily Readiness and Stress Management Score with EDA and Active Zone Minutes. Brand focus areas rated 0-10: Garmin strongest in Training (10) and Recovery (9). Whoop strongest in Recovery (10) and Longevity (10). Oura strongest in Sleep (10). Apple strongest in Medical (10). Fitbit strongest in Stress (9). Whoop vs Oura vs Garmin vs Apple Watch vs Fitbit: what is actually different about each wearable. Data verified March 2026.');
+    __seo(this, 'Wearable Hardware and Software Differences Tool by Kygo Health. See exactly what makes Garmin Venu 4, Whoop 5.0, Oura Ring 4, Apple Watch Series 10, Apple Watch Ultra 3, and Fitbit Charge 6 different under the hood. Sensor counts: Apple Watch Ultra 3 has 11 sensors (most), Garmin Venu 4 has 10, Apple Watch S10 has 10, Fitbit Charge 6 has 7, Whoop 5.0 has 4, Oura Ring 4 has 4. Hardware differences across 16 sensor types: PPG optical heart rate, ECG, SpO2, skin temperature, EDA stress sensor, accelerometer, gyroscope, barometric altimeter, GPS, depth gauge, NFC, mic/speaker, ambient light, noise level, LED flashlight, compass. Key hardware facts: Oura has 18-path PPG on the finger for best signal quality. Whoop has fastest PPG sampling at 26 Hz. Garmin has best GPS with multi-band GNSS L1/L5. Fitbit is the only device with a dedicated EDA stress sensor. Only Apple Watch detects sleep apnea using accelerometer (FDA-authorized). Only Apple Watch Ultra 3 has hypertension alerts via PPG pulse wave analysis. ECG available on Garmin, Apple Watch S10, Apple Watch Ultra 3, and Fitbit, not on Whoop 5.0 or Oura Ring 4. How hardware differences affect health metrics: HRV heart rate variability, sleep apnea detection, stress measurement, hypertension alerts, fall detection, blood oxygen SpO2, respiratory rate, skin temperature trends, cycle tracking. FDA-cleared features: Apple Watch Ultra 3 has 3 (ECG, Apnea, Hypertension), Apple Watch S10 has 2 (ECG, Apnea), Garmin has 1 (ECG/AFib), Fitbit has 1 (ECG/AFib), Whoop has 0, Oura has 0. Software differences across 25 proprietary algorithms: Garmin has 6 algorithms including Body Battery and Training Readiness and HRV Status and Health Status and Sleep Coach and Lifestyle Habit Logging. Whoop has 8 algorithms including Recovery Score and Strain Score and VO2 Max and Healthspan/Whoop Age and Hormonal Insights and Journal and Sleep Coach and Whoop Coach AI powered by OpenAI. Oura has 4 algorithms including Readiness Score and Cardiovascular Age and Cardio Capacity VO2 Max and Resilience. Apple has 4 algorithms including Sleep Score and Vitals App and Cardio Fitness VO2 Max and Hearing Health. Fitbit has 3 algorithms including Daily Readiness and Stress Management Score with EDA and Active Zone Minutes. Brand focus areas rated 0-10: Garmin strongest in Training (10) and Recovery (9). Whoop strongest in Recovery (10) and Longevity (10). Oura strongest in Sleep (10). Apple strongest in Medical (10). Fitbit strongest in Stress (9). Whoop vs Oura vs Garmin vs Apple Watch vs Fitbit: what is actually different about each wearable. Data verified March 2026.' + ' Common questions. ' + this._faqs.map(f => f.q + ' ' + f.a).join(' '));
   }
 
   disconnectedCallback() {
@@ -1543,6 +1543,14 @@ class KygoSensorComparison extends HTMLElement {
         </div>
       </section>
 
+      <!-- FAQ (same Q&As as the FAQPage JSON-LD) -->
+      <section class="faq-section" id="faq">
+        <div class="container">
+          <h2 class="section-title animate-on-scroll">Common questions</h2>
+          <div class="faq-list animate-on-scroll">${this._renderFaq()}</div>
+        </div>
+      </section>
+
       <!-- Sources -->
 
       <section class="sources-section">
@@ -1570,7 +1578,7 @@ class KygoSensorComparison extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making health decisions based on wearable data.</p>
-          <p class="footer-copyright">Data sourced from official manufacturer specs, support documentation, and independent reviews. Last updated March 2026.</p>
+          <p class="footer-copyright">Data sourced from official manufacturer specs, support documentation, and independent reviews. Last updated October 25, 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
@@ -1752,6 +1760,19 @@ class KygoSensorComparison extends HTMLElement {
       .fda-bar { height: 100%; border-radius: 4px; transition: width 0.6s ease-out; }
       .fda-features { font-size: 12px; color: var(--gray-400); }
 
+      /* FAQ */
+      .faq-section { padding: 48px 0; background: var(--bg-canvas, #fff); }
+      .faq-list { display: flex; flex-direction: column; gap: 8px; max-width: 820px; }
+      .faq-item { background: var(--bg-canvas, #fff); border: 1px solid var(--border-subtle, var(--gray-200)); border-radius: var(--radius-sm); overflow: hidden; transition: box-shadow 0.2s; }
+      .faq-item:hover { box-shadow: var(--shadow); }
+      .faq-q { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 18px; cursor: pointer; list-style: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; line-height: 1.35; color: var(--fg-1, var(--dark)); }
+      .faq-q::-webkit-details-marker { display: none; }
+      .faq-q:focus-visible { outline: 2px solid var(--green); outline-offset: -2px; }
+      .faq-chev { display: inline-flex; flex-shrink: 0; width: 18px; height: 18px; color: var(--fg-3, var(--gray-400)); transition: transform 0.2s; }
+      .faq-chev svg { width: 100%; height: 100%; }
+      .faq-item[open] .faq-chev { transform: rotate(180deg); color: var(--green-dark); }
+      .faq-a { padding: 0 18px 16px; font-size: 14px; line-height: 1.6; color: var(--fg-2, var(--gray-600)); }
+
       /* Algorithm Cards */
       .algo-card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; transition: box-shadow 0.2s; }
       .algo-card:hover { box-shadow: var(--shadow); }
@@ -1925,6 +1946,32 @@ class KygoSensorComparison extends HTMLElement {
     });
   }
 
+  // ── FAQ (one source for the visible section, the FAQPage JSON-LD and __seo) ──
+
+  get _faqs() {
+    return [
+      { q: 'Which wearable has the most sensors?',
+        a: 'Apple Watch Ultra 3 has the most sensors at 11, followed by Garmin Venu 4 and Apple Watch S10 at 10 each. Whoop 5.0 and Oura Ring 4 have 4 sensors each.' },
+      { q: 'Which wearable has the most FDA-cleared features?',
+        a: 'Apple Watch Ultra 3 leads with 3 FDA-cleared features (ECG/AFib, Sleep Apnea, Hypertension). Apple Watch S10 has 2 (ECG, Apnea). Garmin and Fitbit each have 1 (ECG/AFib). Whoop and Oura have none.' },
+      { q: 'What is the difference between hardware and software features on wearables?',
+        a: 'Hardware features are physical sensors (PPG, ECG, accelerometer, EDA) that collect raw biometric data. Software features are proprietary algorithms (Body Battery, Recovery Score, Readiness Score) that process sensor data into actionable health insights. The same sensor can produce very different results depending on the algorithm.' },
+      { q: 'Which wearable is best for stress tracking?',
+        a: 'Fitbit Charge 6 is the only device with a dedicated EDA (electrodermal activity) stress sensor that measures sweat gland activity, a direct nervous system signal. Garmin, Whoop, and Oura estimate stress indirectly from HRV. Apple Watch has no stress feature.' },
+      { q: 'Which wearable has the best heart rate sensor?',
+        a: 'It depends on when heart rate is measured. In independent studies, Apple Watch is the most accurate during exercise, followed by Garmin and Fitbit. Oura Ring 4 is the most accurate overnight at rest, for resting heart rate and HRV, reading from an 18-path PPG sensor on the finger. Whoop 5.0 has the fastest sampling rate at 26 Hz.' }
+    ];
+  }
+
+  _renderFaq() {
+    const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return this._faqs.map((f, i) => `
+      <details class="faq-item"${i === 0 ? ' open' : ''}>
+        <summary class="faq-q"><span class="faq-q-text">${esc(f.q)}</span><span class="faq-chev" aria-hidden="true">${this._icon('chevDown')}</span></summary>
+        <p class="faq-a">${esc(f.a)}</p>
+      </details>`).join('');
+  }
+
   // ── JSON-LD ────────────────────────────────────────────────────────────
 
   _injectStructuredData() {
@@ -1960,33 +2007,11 @@ class KygoSensorComparison extends HTMLElement {
     const faq = {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      'mainEntity': [
-        {
-          '@type': 'Question',
-          'name': 'Which wearable has the most sensors?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch Ultra 3 has the most sensors at 11, followed by Garmin Venu 4 and Apple Watch S10 at 10 each. Whoop 5.0 and Oura Ring 4 have 4 sensors each.' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'Which wearable has the most FDA-cleared features?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Apple Watch Ultra 3 leads with 3 FDA-cleared features (ECG/AFib, Sleep Apnea, Hypertension). Apple Watch S10 has 2 (ECG, Apnea). Garmin and Fitbit each have 1 (ECG/AFib). Whoop and Oura have none.' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'What is the difference between hardware and software features on wearables?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Hardware features are physical sensors (PPG, ECG, accelerometer, EDA) that collect raw biometric data. Software features are proprietary algorithms (Body Battery, Recovery Score, Readiness Score) that process sensor data into actionable health insights. The same sensor can produce very different results depending on the algorithm.' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'Which wearable is best for stress tracking?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Fitbit Charge 6 is the only device with a dedicated EDA (electrodermal activity) stress sensor that measures sweat gland activity, a direct nervous system signal. Garmin, Whoop, and Oura estimate stress indirectly from HRV. Apple Watch has no stress feature.' }
-        },
-        {
-          '@type': 'Question',
-          'name': 'Which wearable has the best heart rate sensor?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Oura Ring 4 has the best PPG signal quality with its 18-path finger-based sensor (120% better signal vs Gen 3). Whoop 5.0 has the fastest sampling rate at 26 Hz. Garmin Elevate Gen 5 added multi-LED (green + red + IR) for better accuracy across skin tones.' }
-        }
-      ]
+      'mainEntity': this._faqs.map(f => ({
+        '@type': 'Question',
+        'name': f.q,
+        'acceptedAnswer': { '@type': 'Answer', 'text': f.a }
+      }))
     };
     const faqScript = document.createElement('script');
     faqScript.type = 'application/ld+json';
