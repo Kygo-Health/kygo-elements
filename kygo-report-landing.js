@@ -63,7 +63,7 @@ function __seo(el, text) {
     { n: '5.96%', text: 'Oura Ring 4 overnight HRV error vs chest-strap ECG (Dial 2025).' },
     { n: '52.4%', text: 'Share of awake time Apple Watch Series 8 caught in a lab sleep study (Robbins 2024, Oura-funded).' },
     { n: '+43.8 min', text: 'Extra sleep Garmin Forerunner 245 Music counted per night vs a sleep lab.' },
-    { n: 'Over 10%', text: "Every brand's calorie error. Even the winner, Fitbit / Google, was 13.97% off." },
+    { n: 'Over 9%', text: 'Calories: no brand came within 9% on the max treadmill test, and weight training errors ran from 41.7% to 114.9%.' },
     { n: '6.7% vs 56%', text: 'Garmin VO2 max error with a chest strap vs wrist only.' }
   ];
 
@@ -97,7 +97,7 @@ function __seo(el, text) {
         'Five numbers from the report: Oura Ring 4 overnight HRV error was 5.96% vs chest-strap ECG (Dial 2025). ' +
         'Apple Watch Series 8 caught 52.4% of awake time in a lab sleep study (Robbins 2024, Oura-funded). ' +
         'Garmin Forerunner 245 Music counted 43.8 extra minutes of sleep per night vs a sleep lab. ' +
-        "Every brand's calorie error was over 10%; even the winner, Fitbit / Google, was 13.97% off. " +
+        'Calories: no brand came within 9% on the max treadmill test, and weight training errors ran from 41.7% to 114.9%. ' +
         'Garmin VO2 max error was 6.7% with a chest strap vs 56% wrist only. ' +
         'How the medals were decided: numbers decide, brand-funded studies are marked, only the feature a buyer gets and only peer-reviewed tests, ' +
         'newest model with a published number, head-to-head studies beat single-brand studies, healthy adults decide the order. ' +
@@ -497,6 +497,7 @@ function __seo(el, text) {
             about: 'Accuracy of consumer wearables (Oura, Apple Watch, Fitbit / Google, Garmin, Samsung, WHOOP, Polar) on eleven metrics, from 71 peer-reviewed validation studies',
             numberOfPages: 77,
             datePublished: '2026-10-25',
+            dateModified: '2026-10-25',
             inLanguage: 'en',
             isAccessibleForFree: true,
             encodingFormat: 'application/pdf',
