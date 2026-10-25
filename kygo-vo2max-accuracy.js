@@ -137,7 +137,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         needs: 'Nothing for the resting test; a run for Running Index or the Running Performance Test', needsRun: false,
         vendorClaim: 'Polar white paper: r 0.97 and 6.5% mean error in development; current version 8.2% (3.7 mL/kg/min) mean error',
         validation: 'validated',
-        independent: 'Neudorfer 2025 found a slight underestimate vs CPET (bias −1.0 mL/kg/min, MAPE 13.7%, ICC 0.74, LoA ±11.4) in 24 adults in medically supervised exercise training (mean age 57, some on heart rate limiting meds). It tested the resting Fitness Test only; Running Index and the Running Performance Test have no independent study.',
+        independent: 'Neudorfer 2025 found the resting test reads about 1.0 mL/kg/min high vs CPET (bias +1.0 mL/kg/min, MAPE 13.7%, ICC 0.74, LoA ±11.4) in 24 adults in medically supervised exercise training (mean age 57, some on heart rate limiting meds). It tested the resting Fitness Test only; Running Index and the Running Performance Test have no independent study.',
         classNote: 'Resting-based algorithms as a group overestimate by ~+2.2 mL/kg/min, with wide limits of agreement (−13.1 to +17.4) — INTERLIVE 2022 meta-analysis.',
         bestFor: 'A quick estimate with no run',
         weakestFor: 'Wide individual error; run-based modes unvalidated',
@@ -152,9 +152,9 @@ class KygoVo2maxAccuracy extends HTMLElement {
         needs: 'A 10-min outdoor GPS run (up to 3 runs in 30 days)', needsRun: true,
         vendorClaim: 'Proprietary; no public numeric accuracy figure',
         validation: 'validated',
-        independent: 'Two Charge 2 studies, both small overestimates but disagreeing on significance (Freeberg 2019; Klepin 2019). Both validated an algorithm Google retired on 2026-05-19 — the current GPS-run method has no validation.',
+        independent: 'Second to Garmin. Pixel Watch 3, current GPS run method: MAPE 8.65%, bias −0.53 mL/kg/min in 26 adults (Lambe 2026, PLOS ONE; Google-funded, authors say Google had no role). Charge 2: MAPE 9.1%, bias +0.30 (Klepin 2019, independent), and a separate Charge 2 study found a significant overestimate (Freeberg 2019). The Charge 2 resting algorithm was retired on 2026-05-19.',
         bestFor: 'Casual trend tracking',
-        weakestFor: 'Overestimates the absolute number',
+        weakestFor: 'One current-method study, Google-funded; nothing on Fitbit Air',
         subscription: false, subLabel: 'Free metric (Premium = coaching only)',
         affiliateUrl: 'https://www.amazon.com/s?k=Fitbit%3A&rh=p_123%3A213215&tag=kygohealthapp-20', trackLabel: 'fitbit-search',
         hrSource: 'Wrist optical', gps: true, hrv: false, restingHr: true, profile: true, maxHr: 'Undisclosed'
@@ -286,11 +286,14 @@ class KygoVo2maxAccuracy extends HTMLElement {
         detail: 'Apple’s own whitepaper. Reports a mean error of 1.2 ± 4.4 mL/kg/min and ICC 0.89 against a laboratory reference across two cohorts (n=755). The near-zero bias is the opposite of what all three independent studies found.',
         cite: 'Apple Inc. whitepaper, May 2021.', url: 'https://www.apple.com/healthcare/docs/site/Using_Apple_Watch_to_Estimate_Cardio_Fitness_with_VO2_max.pdf' },
       { id: 40, tag: 'Polar (independent)', title: 'Neudorfer et al. 2025 — Polar Fitness Test vs CPET',
-        detail: 'n=24, resting Polar Fitness Test vs CPET and 6MWT. MAPE 13.7%, ICC 0.743, bias −1.0 mL/min/kg, LoA ±11.4. The Porcari 6MWT equation performed similarly.',
+        detail: 'n=24, resting Polar Fitness Test vs CPET and 6MWT. MAPE 13.7%, ICC 0.743, bias +1.0 mL/kg/min (reads about 1.0 high), LoA ±11.4. The Porcari 6MWT equation performed similarly.',
         cite: 'Sensors. 2025;25(18):5649.', url: 'https://doi.org/10.3390/s25185649' },
       { id: 55, tag: 'Polar (vendor)', title: 'Polar: Fitness Test white paper',
         detail: 'Vendor white paper, Nov 2019. Development r 0.97, mean error 6.5%; OwnIndexS r 0.96, mean error 8.2% (3.7 mL/kg/min), 95% of errors under 9.4.',
         cite: 'Polar Electro white paper, 2019.', url: 'https://polar.com/img/static/whitepapers/pdf/polar-fitness-test-white-paper.pdf' },
+      { id: 56, tag: 'Fitbit (Google-funded)', title: 'Lambe et al. 2026, Google Pixel Watch 3 VO2 max accuracy',
+        detail: 'n=26 adults, mostly very fit, outdoor GPS runs vs maximal treadmill CPET. Bias −0.53 mL/kg/min, MAPE 8.65%, MAE 4.42, LoA −12.6 to 11.5; fitness band right 30% of the time. Google-funded; the authors say Google had no role. Tests the current GPS run method and places Fitbit / Google second behind Garmin.',
+        cite: 'PLOS ONE. 2026.', url: 'https://doi.org/10.1371/journal.pone.0356808' },
       { id: 38, tag: 'Fitbit (independent)', title: 'Freeberg et al. 2019 — Fitbit Charge 2 cardio fitness score',
         detail: 'n=30, 7 days wear then treadmill VO2 max with verification. Consistent/unbiased estimate but significantly overestimates absolute VO2 max (52.5 vs 49.9 mL/kg/min, p=0.03).',
         cite: 'mHealth. 2019;5:39. PMID 31620466.', url: 'https://pubmed.ncbi.nlm.nih.gov/31620466/' },
@@ -319,11 +322,11 @@ class KygoVo2maxAccuracy extends HTMLElement {
       { q: 'Do wearables actually measure VO2 max?',
         a: 'No. The lab gold standard (CPET) analyzes the oxygen and carbon dioxide in your breath. Watches, rings, and straps have no gas analysis, so they estimate VO2 max from heart rate, motion, GPS pace, and your profile (age, sex, weight). Treat it as a fitness trend, not a clinical value.' },
       { q: 'Which wearable has the most accurate VO2 max?',
-        a: 'Garmin (Firstbeat) from a hard outdoor run with a chest strap is the most trustworthy — the best-validated of the four brands that have independent validation (Garmin, Apple, Polar, Fitbit), at about 7 percent error in general populations. Apple has three independent studies and all show it underestimates by roughly 13 to 16 percent.' },
+        a: 'Garmin (Firstbeat) from a hard outdoor run with a chest strap is the most trustworthy, at about 7 percent error in general populations. Fitbit / Google is second: the Pixel Watch 3 came in at 8.65 percent error in a Google-funded study (Lambe 2026). Apple Watch is third, with three independent studies that all show it underestimates, by 13.2 to 15.8 percent error.' },
       { q: 'Does the Apple Watch overestimate or underestimate VO2 max?',
         a: 'Three independent studies show the Apple Watch underestimates VO2 max: by 6.07 mL/kg/min (MAPE 13.3%, Lambe 2025), predicting about 41 versus a measured 46 mL/kg/min on the Series 7 (MAPE 15.8%, Caserman 2024), and by 6.25 mL/kg/min on the Series 10 (MAPE 13.2%, Lambe 2026).' },
       { q: 'Why are resting VO2 max estimates less accurate?',
-        a: 'Resting-based estimates, such as the Polar Fitness Test, use resting heart rate plus age, sex and weight with no workout. The INTERLIVE meta-analysis found resting methods as a group overestimate by about +2.17 mL/kg/min on average, versus near-zero bias for exercise-based estimates from an actual run. That is a class average: an independent lab study found Polar’s Fitness Test read slightly low (−1.0 mL/kg/min), though with wide error for any one person.' },
+        a: 'Resting-based estimates, such as the Polar Fitness Test, use resting heart rate plus age, sex and weight with no workout. The INTERLIVE meta-analysis found resting methods as a group overestimate by about +2.17 mL/kg/min on average, versus near-zero bias for exercise-based estimates from an actual run. That is a class average: an independent lab study found Polar’s Fitness Test reads about 1.0 mL/kg/min high, with wide error for any one person.' },
       { q: 'Do you need a subscription to see your VO2 max?',
         a: 'Most watches show VO2 max for free (Garmin, Apple, Polar, Samsung, Coros, Suunto; Fitbit shows the metric free with Premium adding coaching only). WHOOP requires a paid membership, and Oura requires its membership to see Cardio Capacity.' }
     ];
@@ -332,7 +335,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
   // ── SEO light-DOM summary ───────────────────────────────────────────────
 
   _seoText() {
-    return 'Wearable VO2 Max Accuracy Comparison by Kygo Health. How accurate is your watch or ring at estimating VO2 max versus a lab CPET test? Consumer wearables do not measure VO2 max — they estimate it from heart rate, GPS pace, and your profile (age, sex, weight). Key finding (INTERLIVE meta-analysis, Molina-García 2022): exercise-based estimates from an actual workout had near-zero average bias vs lab (−0.09 mL/kg/min), while resting-based estimates overestimated by +2.17 mL/kg/min, with large individual error (limits of agreement roughly ±13 to 17 mL/kg/min). Compare 9 devices: Garmin (Firstbeat), Apple Watch, Polar, Fitbit/Google, Samsung Galaxy Watch, WHOOP, Oura Ring, Coros, and Suunto on method, what each needs, vendor accuracy claim, independent validation, best/weakest use, and whether VO2 max sits behind a subscription. Independent (non-vendor) peer-reviewed VO2 max validation exists only for Garmin (Carrier 2025 Fēnix 6 MAPE 7.05%, CCC 0.73; Engel 2026 Forerunner 245 MAPE 6.7%, underestimates 9.4–10.4% in highly trained), Apple (three studies, all underestimating: Lambe 2025 MAPE 13.3%, −6.07 mL/kg/min; Caserman 2024 Series 7 MAPE 15.8%; Lambe 2026 Series 10 MAPE 13.2%, −6.25 mL/kg/min), Polar (Neudorfer 2025 resting Fitness Test MAPE 13.7%, ICC 0.74, bias −1.0 mL/kg/min — a slight underestimate), and Fitbit (two Charge 2 studies, Freeberg 2019 and Klepin 2019, both small overestimates but disagreeing on significance — and both of an algorithm Google retired on 2026-05-19, leaving the current 10-minute GPS-run method unvalidated). Samsung, WHOOP, Oura, and Coros rely on vendor or company-funded claims with no independent VO2 max validation; the often-cited Galaxy Watch ±4.7 mL/kg/min figure could not be traced to a real study and is excluded. Garmin with a chest strap on an outdoor run is the most trustworthy setup. Apple underestimates broadly. Fitbit overestimates; the Polar resting test reads slightly low vs CPET even though resting methods as a class read high. Accuracy degrades in highly trained people, with wrist-only optical heart rate, in heat, and when the assumed max heart rate (220 minus age) is wrong. Use the number to track your own trend over time, not to compare people or hit a clinical threshold. What each device feeds in: heart-rate source (wrist optical, chest strap, or ring PPG), GPS pace, HRV, resting HR, profile, and an assumed maximum HR. How good those inputs are: chest-strap HR is ECG-grade (Gilgen-Ammann 2019); wrist optical HR is decent at steady effort but degrades during hard exercise (active-HR agreement ~0.80 Apple to ~0.52 Garmin wrist); Oura ring PPG is excellent at rest but has no validated active-exercise HR; GPS pace MAPE 3.2–6.1%. Garmin vs Apple Watch vs Whoop vs Oura vs Polar vs Fitbit VO2 max accuracy. Data verified September 2026.';
+    return 'Wearable VO2 Max Accuracy Comparison by Kygo Health. How accurate is your watch or ring at estimating VO2 max versus a lab CPET test? Consumer wearables do not measure VO2 max — they estimate it from heart rate, GPS pace, and your profile (age, sex, weight). Key finding (INTERLIVE meta-analysis, Molina-García 2022): exercise-based estimates from an actual workout had near-zero average bias vs lab (−0.09 mL/kg/min), while resting-based estimates overestimated by +2.17 mL/kg/min, with large individual error (limits of agreement roughly ±13 to 17 mL/kg/min). Compare 9 devices: Garmin (Firstbeat), Apple Watch, Polar, Fitbit/Google, Samsung Galaxy Watch, WHOOP, Oura Ring, Coros, and Suunto on method, what each needs, vendor accuracy claim, independent validation, best/weakest use, and whether VO2 max sits behind a subscription. Peer-reviewed VO2 max validation against a lab test exists for four brands, ranked Garmin first, Fitbit / Google second and Apple third: Garmin (Carrier 2025 Fēnix 6 MAPE 7.05%, CCC 0.73; Engel 2026 Forerunner 245 MAPE 6.7%, underestimates 9.4–10.4% in highly trained), Apple (three studies, all underestimating: Lambe 2025 MAPE 13.3%, −6.07 mL/kg/min; Caserman 2024 Series 7 MAPE 15.8%; Lambe 2026 Series 10 MAPE 13.2%, −6.25 mL/kg/min), Fitbit / Google (Pixel Watch 3 on the current GPS run method: Lambe 2026 MAPE 8.65%, bias −0.53 mL/kg/min, Google-funded; Charge 2: Klepin 2019 MAPE 9.1%, bias +0.30, on an algorithm retired 2026-05-19), and Polar (Neudorfer 2025 resting Fitness Test MAPE 13.7%, ICC 0.74, reads about 1.0 mL/kg/min high). Samsung, WHOOP, Oura, and Coros rely on vendor or company-funded claims with no independent VO2 max validation; the often-cited Galaxy Watch ±4.7 mL/kg/min figure could not be traced to a real study and is excluded. Garmin with a chest strap on an outdoor run is the most trustworthy setup. Fitbit / Google is second and close to the lab on average. Apple underestimates broadly and is third. The Polar resting test reads about 1.0 mL/kg/min high vs CPET. Accuracy degrades in highly trained people, with wrist-only optical heart rate, in heat, and when the assumed max heart rate (220 minus age) is wrong. Use the number to track your own trend over time, not to compare people or hit a clinical threshold. What each device feeds in: heart-rate source (wrist optical, chest strap, or ring PPG), GPS pace, HRV, resting HR, profile, and an assumed maximum HR. How good those inputs are: chest-strap HR is ECG-grade (Gilgen-Ammann 2019); wrist optical HR is decent at steady effort but degrades during hard exercise (active-HR agreement ~0.80 Apple to ~0.52 Garmin wrist); Oura ring PPG is excellent at rest but has no validated active-exercise HR; GPS pace MAPE 3.2–6.1%. Garmin vs Apple Watch vs Whoop vs Oura vs Polar vs Fitbit VO2 max accuracy. Data verified October 25, 2026.';
   }
 
   // ── Icons ───────────────────────────────────────────────────────────────
@@ -384,7 +387,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
   _renderComparisonMatrix() {
     const rank = { validated: 0, indirect: 1, none: 2 };
-    const rows = this._devices.slice().sort((a, b) => (rank[a.validation] - rank[b.validation]) || a.name.localeCompare(b.name));
+    const podium = { garmin: 1, fitbit: 2, apple: 3, polar: 4 };
+    const rows = this._devices.slice().sort((a, b) => (rank[a.validation] - rank[b.validation]) || ((podium[a.key] || 9) - (podium[b.key] || 9)) || a.name.localeCompare(b.name));
     const valMark = (v) => v === 'validated'
       ? `<span class="mk on">${this._icon('check')}</span>`
       : (v === 'indirect' ? `<span class="mk approx">≈</span>` : `<span class="mk off"><span class="dash"></span></span>`);
@@ -426,7 +430,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
 
   _renderDeviceDetails() {
     const rank = { validated: 0, indirect: 1, none: 2 };
-    const rows = this._devices.slice().sort((a, b) => (rank[a.validation] - rank[b.validation]) || a.name.localeCompare(b.name));
+    const podium = { garmin: 1, fitbit: 2, apple: 3, polar: 4 };
+    const rows = this._devices.slice().sort((a, b) => (rank[a.validation] - rank[b.validation]) || ((podium[a.key] || 9) - (podium[b.key] || 9)) || a.name.localeCompare(b.name));
     const valDot = (v) => v === 'validated'
       ? `<span class="dacc-vdot yes" title="Independently validated">${this._icon('check')}</span>`
       : (v === 'indirect' ? `<span class="dacc-vdot mid" title="Shares Garmin's Firstbeat engine">≈</span>` : `<span class="dacc-vdot no" title="Vendor claims only"><span class="dash"></span></span>`);
@@ -1130,8 +1135,8 @@ class KygoVo2maxAccuracy extends HTMLElement {
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
-            <p>A VO2 max estimate from a hard outdoor run with a chest strap — <strong>Garmin / Firstbeat, the best-validated of four brands with independent validation (Garmin, Apple, Polar, Fitbit), at ~7% error in general populations</strong> — is the most trustworthy. <strong>Apple</strong> has three independent studies and all show it <em>underestimates</em> (~13–16%; Series 10 MAPE 13.2%, −6.25 mL/kg/min, Lambe 2026). <strong>Fitbit</strong> overestimates, and <strong>Polar's</strong> resting test reads slightly low against CPET even though resting methods as a class read high. <strong>Samsung, WHOOP, Oura, and Coros</strong> rely on company claims with little or no independent peer-reviewed VO2 max validation — and on <a href="https://www.kygo.app/post/whoop-vo2-max-accuracy-why-yours-looks-wrong" target="_self" rel="noopener" data-action="blog-post" data-post-slug="whoop-vo2-max-accuracy-why-yours-looks-wrong" data-track-position="bottom-line" data-track-label="whoop-vo2-max-accuracy-why-yours-looks-wrong">WHOOP VO2 max accuracy</a>, the company's own data says the error is worst at the extremes.</p>
-            <p class="verify-note">${this._icon('info')} <strong>Verification note.</strong> Independent VO2 max validation exists only for Garmin, Apple, Polar, and Fitbit. A frequently-repeated "Galaxy Watch ±4.7 mL/kg/min" figure appears only on marketing/AI-content sites and could not be traced to a real indexed study — it is deliberately excluded here.</p>
+            <p>A VO2 max estimate from a hard outdoor run with a chest strap on <strong>Garmin / Firstbeat, at about 7% error in general populations</strong>, is the most trustworthy. <strong>Fitbit / Google</strong> is second: the Pixel Watch 3 came in at 8.65% error in a Google-funded study (Lambe 2026). <strong>Apple</strong> is third, with three independent studies that all show it <em>underestimates</em> (13.2 to 15.8% error; Series 10 MAPE 13.2%, −6.25 mL/kg/min, Lambe 2026). <strong>Polar's</strong> resting test reads about 1.0 mL/kg/min high against CPET. <strong>Samsung, WHOOP, Oura, and Coros</strong> rely on company claims with little or no independent peer-reviewed VO2 max validation — and on <a href="https://www.kygo.app/post/whoop-vo2-max-accuracy-why-yours-looks-wrong" target="_self" rel="noopener" data-action="blog-post" data-post-slug="whoop-vo2-max-accuracy-why-yours-looks-wrong" data-track-position="bottom-line" data-track-label="whoop-vo2-max-accuracy-why-yours-looks-wrong">WHOOP VO2 max accuracy</a>, the company's own data says the error is worst at the extremes.</p>
+            <p class="verify-note">${this._icon('info')} <strong>Verification note.</strong> Peer-reviewed VO2 max validation exists only for Garmin, Fitbit / Google, Apple, and Polar; the Pixel Watch 3 study is Google-funded. A frequently-repeated "Galaxy Watch ±4.7 mL/kg/min" figure appears only on marketing/AI-content sites and could not be traced to a real indexed study, so it is deliberately excluded here.</p>
           </div>
         </div>
       </section>
@@ -1189,7 +1194,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
             <a href="https://www.kygo.app/terms-conditions">Terms</a>
           </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Wearable VO2 max is an estimate, not a clinical measurement. Always consult a qualified healthcare provider before making health decisions based on wearable data.</p>
-          <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation. Last updated September 2026.</p>
+          <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation. Last updated October 25, 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
           <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
@@ -1234,7 +1239,7 @@ class KygoVo2maxAccuracy extends HTMLElement {
         'operatingSystem': 'Web',
         'url': 'https://www.kygo.app/tools/vo2-max-accuracy',
         'datePublished': '2026-06-03',
-        'dateModified': '2026-06-03',
+        'dateModified': '2026-10-25',
         'softwareVersion': '1.0',
         'inLanguage': 'en',
         'isAccessibleForFree': true,
