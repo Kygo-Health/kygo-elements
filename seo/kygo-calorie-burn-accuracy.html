@@ -50,7 +50,7 @@
 <tr><th>Oura Ring</th></tr>
 <tr><th>Samsung Galaxy Watch</th><td><b>10 to 13%</b> †</td><td><b>66.5%</b></td><td><b>84.5%</b></td></tr>
 </tbody></table>
-<p>Underestimates Overestimates Variable No peer-reviewed per-activity data † Brand-funded study</p><p><strong>†</strong> Samsung running is from Ferreira et al. 2026, funded by Samsung, with all authors at Samsung partner Sidia. WHOOP has no published calorie study and Oura has no calorimetry study, so their rows are blank.</p><p>Unless marked, every filled cell is a named study and the value is the percent error it published (a MAPE, or the study's typical miss). Cycling and strength come from the newest head-to-head studies, Kostrna 2026 and Yun 2026, which tested four brands on the same people. Where a source publishes a range only, we show the range rather than invent a midpoint. Blank cells mean no per-activity study exists for that pairing, including <strong>Oura for cycling, HIIT, strength and swimming</strong> and <strong>WHOOP for any activity</strong>, none of which have ever been metabolically tested.</p>
+<p>Underestimates Overestimates Variable No peer-reviewed per-activity data † Brand-funded study</p><p><strong>†</strong> Samsung running is from Ferreira et al. 2026, funded by Samsung, with all authors at Samsung partner Sidia. WHOOP has no published calorie study, so its row is blank. Oura's one lab test (Ring Gen 2, Kristiansson 2023) was 21.1% off against lab gas analysis averaged over eight activities, but it reported error in METs, not calories, so its row is blank too.</p><p>Unless marked, every filled cell is a named study and the value is the percent error it published (a MAPE, or the study's typical miss). Cycling and strength come from the newest head-to-head studies, Kostrna 2026 and Yun 2026, which tested four brands on the same people. Where a source publishes a range only, we show the range rather than invent a midpoint. Blank cells mean no per-activity calorie figure exists for that pairing, including <strong>Oura for cycling, HIIT, strength and swimming</strong> and <strong>WHOOP for any activity</strong>, none of which have ever been metabolically tested.</p>
 <p>Brand by brand</p>
 <h2>How each device gets its number.</h2>
 <p>Tap any wearable for its method, sensors, best and worst measured activities, and where it breaks down.</p><p>Apple Watch</p>
@@ -132,11 +132,11 @@
 </ul>
 <p><a href="https://www.whoop.com/us/en/thelocker/calorie-tracking-science/" rel="noopener nofollow">Read the study</a> <a href="https://www.amazon.com/s?k=whoop%20fitness%20tracker&amp;tag=kygohealthapp-20" rel="sponsored nofollow noopener">View WHOOP on Amazon</a></p>
 <p>Affiliate link. We may earn a commission at no extra cost to you.</p><p>Oura Ring</p>
-<p><b>No lab study</b> only accelerometer comparisons, no calorimetry</p>
+<p><b>21.1%</b> lab average of 8 activities (Ring Gen 2, 2023), not ranked</p>
 <p>How it calculates</p>
 <p>BMR + activity calories via METs across the day (resets at 4 AM). A Nov 2024 update folded in HR intensity, cutting median active-calorie error by 53%. Recognizes 40+ activity types.</p><ul><li><strong>Sensors</strong> 18-path multi-wavelength PPG (red/IR/green LEDs), 3D accelerometer, 2 precision thermistors.</li>
 <li><strong>Resting rate</strong> A standard metabolic equation using age, sex, height and weight.</li>
-<li><strong>Tendency</strong> Unknown. With no calorimetry study there is no measured direction.</li>
+<li><strong>Tendency</strong> Underestimates as effort rises: 0.4 MET low on average in the one lab test, and 3.5 MET low when running at 15 km/h (Ring Gen 2, Kristiansson 2023).</li>
 </ul>
 <p>Strengths</p>
 <ul><li>Built for daily activity and recovery trends</li>
@@ -144,8 +144,8 @@
 <li>A Nov 2024 update folded heart rate into activity calories (an Oura figure, not a study)</li>
 </ul>
 <p>Watch-outs</p>
-<ul><li>No calorimetry study of any Oura ring has been published, so this tool publishes no Oura calorie figure</li>
-<li>Its published comparisons used accelerometers as the reference, not lab gas analysis</li>
+<ul><li>21.1% off against lab gas analysis on average, with the miss growing as running speed rose (Ring Gen 2, Kristiansson 2023)</li>
+<li>Its only daily-total comparison used a wrist accelerometer as the reference, not lab gas analysis, so this tool does not use it</li>
 <li>No GPS; poor for cycling/elliptical (no hand motion)</li>
 </ul>
 <p><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9950693/" rel="noopener nofollow">Read the study</a> <a href="https://www.amazon.com/s?k=Oura%20Ring&amp;tag=kygohealthapp-20" rel="sponsored nofollow noopener">View Oura on Amazon</a></p>
@@ -218,13 +218,13 @@
 <p>How accurate is Apple Watch calorie burn?</p>
 <p>Apple Watch placed third of four brands head to head: 25.95% off on a max treadmill test (Ultra 2, Perez 2025, conference abstract), 35.7% on cycling (Series 8, Kostrna 2026) and 112.2% on weight training (Series 8, Yun 2026), where it reads high. It reads best for walking (~20%) and running (~24%) in Le 2022. The often-quoted ~28% from a 56-study meta-analysis (Choe and Kang 2025) traces to a press release and is pooled across bouts; the paper's own figure is 0.30 kcal/min (limits -2.09 to 2.69).</p>
 <p>Which wearable is most accurate for calories?</p>
-<p>Fitbit, then Samsung, then Apple Watch, but every brand is more than 10% off. In head-to-head lab studies, Fitbit was 13.97% off on a max treadmill test (Charge 6), 31.7% on cycling (Sense 2) and 41.7% on weights (Charge 5). Samsung was 9.42% on the treadmill (Galaxy Watch 7) but 66.5% on cycling and 84.5% on weights (Galaxy Watch 5). Apple Watch was 25.95%, 35.7% and 112.2%; Garmin 14.65%, 77.6% and 114.9%. WHOOP has no calorie study and Oura has only accelerometer comparisons. Fuller 2020 found no brand within 3% of the criterion more than 13% of the time. In the Stanford seven-device study (Shcherbina 2017), calorie error was lowest for walking (31.8%) and running (31.0%) and highest for sitting (52.4%), so the worst errors happen at rest.</p>
+<p>Fitbit, then Samsung, then Apple Watch, but every brand is more than 10% off. In head-to-head lab studies, Fitbit was 13.97% off on a max treadmill test (Charge 6), 31.7% on cycling (Sense 2) and 41.7% on weights (Charge 5). Samsung was 9.42% on the treadmill (Galaxy Watch 7) but 66.5% on cycling and 84.5% on weights (Galaxy Watch 5). Apple Watch was 25.95%, 35.7% and 112.2%; Garmin 14.65%, 77.6% and 114.9%. WHOOP has no calorie study, and Oura's one lab test (Ring Gen 2) was 21.1% off averaged over eight activities, a different protocol that is not ranked. Fuller 2020 found no brand within 3% of the criterion more than 13% of the time. In the Stanford seven-device study (Shcherbina 2017), calorie error was lowest for walking (31.8%) and running (31.0%) and highest for sitting (52.4%), so the worst errors happen at rest.</p>
 <p>Why does my wearable overestimate or underestimate calories?</p>
 <p>Wearables do not measure calories directly. They infer them from heart rate, motion and your profile, so the conversion carries the error. Sex, skin tone, body composition, medications (beta-blockers, stimulants), tattoos and band fit all shift the result. Static, low-motion work like strength training is the hardest case for every brand.</p>
 <p>Is the calorie number on my watch good enough for a diet?</p>
 <p>Not for precise nutrition math. Real-world calorie error runs 15 to 40%+, and the Stanford 2017 study found some devices off by up to 93%. Use the number for week-over-week trends and relative effort, not as an exact figure to eat back.</p>
 <p>How accurate is Oura, WHOOP or Garmin for exercise calories?</p>
-<p>Oura has no lab calorie figure: its published comparisons used accelerometers as the reference, not calorimetry, so this tool shows none. No calorie study of any WHOOP model has been published; Bellenger 2021 validated WHOOP's heart rate and HRV only, never its calories. Garmin is close on treadmill running, 14.65% on a max treadmill test (Forerunner 265S, Perez 2025) and 19.1% in de Leon 2026 (Vivoactive 4, n=18), but reads high on cycling (77.6%, Forerunner 955, Kostrna 2026) and weight training (114.9%, Vivosmart 5, Yun 2026).</p>
+<p>Oura has one lab test against gas analysis: Ring Gen 2 was 21.1% off averaged over eight activities from sitting to running (Kristiansson 2023, n=28), reading lower as running speed rose. It was measured in METs on a different protocol, so it is not ranked against the head-to-head studies. No calorie study of any WHOOP model has been published; Bellenger 2021 validated WHOOP's heart rate and HRV only, never its calories. Garmin is close on treadmill running, 14.65% on a max treadmill test (Forerunner 265S, Perez 2025) and 19.1% in de Leon 2026 (Vivoactive 4, n=18), but reads high on cycling (77.6%, Forerunner 955, Kostrna 2026) and weight training (114.9%, Vivosmart 5, Yun 2026).</p>
 <p>How does this calculator work?</p>
 <p>Pick your device and activity, enter the calories it reported, and the tool applies the published per-activity error and bias direction for that exact combination to show your likely actual range. Every figure names its device model and sample size. With no direct per-activity study the result is flagged as an estimate, a brand-funded study is marked with a dagger, and a source that publishes only a range shows the range, not an invented midpoint.</p>
 <p>Sources</p>
@@ -302,8 +302,8 @@
 <p>WHOOP: how calories are calculated</p>
 <p>Manufacturer method documentation. The page, updated 9 May 2025, now states that WHOOP prioritizes accuracy over overestimation.</p>
 <p>Oura</p>
-<p>Andersson-Hall et al. 2023: Oura energy expenditure validation</p>
-<p>BMC Med Res Methodology (cite the 9 September 2023 correction; Kristiansson is the second author). Free-living energy expenditure compared against Axivity AX3 accelerometers, not calorimetry, so no figure from it is tabled here.</p>
+<p>Kristiansson et al. 2023: Oura energy expenditure validation</p>
+<p>BMC Med Res Methodology 23:50, corrected 9 September 2023 · Oura Ring Gen 2 · n=28 healthy adults vs Oxycon Pro lab gas analysis: 21.1% MAPE in METs averaged over 8 activities, rising with running speed. Its 13.0% free-living figure used a wrist accelerometer as the reference, so it is not used here. University and foundation funded, no competing interests.</p>
 <p>Oura</p>
 <p>Oura: activity improvements (Nov 2024)</p>
 <p>HR integration cut median active-calorie error 53%</p>
