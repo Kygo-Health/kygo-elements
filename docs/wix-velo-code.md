@@ -22,6 +22,11 @@ Every component page now runs the `seoMarkup` code (see `docs/seo-markup-poc.md`
 - **Blog** (`#kygoBlog`): builds its own markup from the post list (`<h1>` + one `<li>` per post
   with a link, category, date and excerpt) during the server render; not in `TOOLS`.
 - **Blog Post**: unchanged (native Wix content is already server-rendered).
+- **Best wearables** (`/best-wearables`, `kygo-picks`): crawler markup verified served 2026-10-26
+  (`check-seo-markup.sh`: browser 0 words, 5 crawler agents 2,506 words). No page code of its own
+  (it reads `/_functions/amazonPicks` itself), so its page code is the snippet alone, selected by
+  element ID (`$w('#customElementN')`). Hand-off: library
+  `37-State-of-Wearable-Accuracy/capture/WIX-HANDOFF-best-wearables.md`.
 
 The per-page sections below that predate this still describe each page's own handlers; where
 they show an empty `$w.onReady`, the page now carries the snippet instead.
