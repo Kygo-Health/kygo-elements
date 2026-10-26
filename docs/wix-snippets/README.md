@@ -40,3 +40,14 @@ whose listener swaps in a visitor's inbound `utm_*` and forwards `fbclid` / `gcl
 ## If the live site ever drifts from these files
 The live Wix editor is the source of truth for what's deployed; these files are a mirror. When you
 change one in Wix, update the matching file here so they stay in sync.
+
+## Blog in-content cards (shared components, 2026-10-26)
+Every card inside blog post copy is now a short HTML block that loads a hosted component, so a design
+change is one commit (GitHub Pages refresh up to 10 min) and no post edits:
+| Card | Component | Block template |
+|---|---|---|
+| App download | `kygo-app-card.js` | `blog-app-card.html` |
+| State of Wearable Accuracy report | `kygo-report-card.js` | `<kygo-report-card slug="POST-SLUG">` + script |
+| Kygo Picks | `kygo-picks-card.js` (blog embed mode when framed) | `<kygo-picks-card focus="all|sleep|training" slug="POST-SLUG">` + script |
+Rules: max 3 cards per post, one app card (mid-post), Picks at the end of the buying section or the end of the post, never directly above the FAQ.
+The pasted `blog-cta-card.html`, `blog-report-card.html` and `blog-picks-card-*.html` are retired; HLTH stays pasted (`kygo-hlth-code-affiliate`).
