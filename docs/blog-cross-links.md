@@ -104,6 +104,7 @@ Cover-image ids are the `273a63_…~mv2.png` suffix of
 
 | Slug | Title | Category | min | Cover image id |
 |---|---|---|---|---|
+| `are-fitness-trackers-accurate` | Are Fitness Trackers Accurate? What 71 Studies Show | Devices & Buying Guides | 9 | `273a63_1d4de66e8d4a4a29b53a2602d289c130~mv2.png` |
 | `how-food-affects-your-sleep` | How Food Affects Your Sleep | Sleep | 15 | `273a63_b9ab03e5e03747329debcd66d2687e50~mv2.png` |
 | `where-to-wear-your-fitness-tracker-tattoos-hairy-arms-and-placement` | Where to Wear Your Fitness Tracker: Tattoos, Hairy Arms and Placement | Wearables & Data | 13 | `273a63_33970522217646cda0376c230a923d81~mv2.png` |
 | `best-smart-ring-oura-vs-ringconn-vs-ultrahuman-vs-cudis` | Best Smart Ring: Oura vs RingConn vs Ultrahuman vs CUDIS | Wearables & Data | 14 | `273a63_0f91ff715c524a77a516eab0d1c45111~mv2.png` |
