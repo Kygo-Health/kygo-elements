@@ -1398,10 +1398,6 @@ class KygoStepCountAccuracy extends HTMLElement {
       ${this._renderAppCta()}
 
 
-      <section class="kearly-section bg-light">
-        <div class="section-inner">
-        </div>
-      </section>
       ${this._renderEmailCta()}
 
 
@@ -1479,12 +1475,8 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="kearly-section bg-white">
-        <div class="section-inner">
-        </div>
-      </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Claim vs reality</div>
@@ -1496,7 +1488,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Beyond the step count</div>
@@ -1507,7 +1499,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="bottomline animate-on-scroll">
             <div class="bottomline-tag">The bottom line</div>
@@ -1517,10 +1509,6 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
-        <div class="section-inner">
-        </div>
-      </section>
 
       ${this._renderRelatedTools('gray')}
 
@@ -1567,7 +1555,7 @@ class KygoStepCountAccuracy extends HTMLElement {
         </div>
       </footer>
 
-      ${this._renderRelatedPosts('gray')}
+      ${this._renderRelatedPosts()}
     `;
   }
 

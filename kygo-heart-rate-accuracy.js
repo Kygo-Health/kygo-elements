@@ -1481,10 +1481,6 @@ class KygoHeartRateAccuracy extends HTMLElement {
       ${this._renderAppCta()}
 
 
-      <section class="section bg-light">
-        <div class="section-inner">
-        </div>
-      </section>
       ${this._renderEmailCta()}
 
 
@@ -1595,14 +1591,10 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light">
-        <div class="section-inner">
-        </div>
-      </section>
 
-      ${this._renderRelatedTools()}
+      ${this._renderRelatedTools('gray')}
 
-      <section class="section bg-light">
+      <section class="section bg-white">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">FAQ</div>
@@ -1612,7 +1604,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-white">
+      <section class="section bg-light">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
             <div class="kicker">Sources</div>
