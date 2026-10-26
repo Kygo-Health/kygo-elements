@@ -76,6 +76,7 @@ shows three near-duplicates. "In" is how many tool pages link that post under th
 | `/tools/vo2-max-accuracy` | `kygo-vo2max-accuracy.js` | `most-accurate-vo2-max-wearable`, `whoop-vo2-max-accuracy-why-yours-looks-wrong`, `fitbit-air-vo2-max-why-it-says-not-tracked` | *(also linked in-prose from the bottom line, anchor "WHOOP VO2 max accuracy")*
 | `/tools/vo2-max-factors` | `kygo-vo2max-factors.js` | `what-affects-vo2-max`, `most-accurate-vo2-max-wearable`, `how-to-improve-hrv-factors-ranked-by-evidence` |
 | `/tools/wearable-accuracy` | `kygo-wearable-accuracy.js` | `what-s-the-most-accurate-wearable-data-…`, `how-accurate-is-your-heart-rate-monitor`, `most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026` |
+| `/report-download` (thank-you, noindex) | `kygo-report-download.js` | `are-fitness-trackers-accurate`, `what-s-the-most-accurate-wearable-data-…`, `most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026` |
 
 ### Inbound counts (posts linked from 2+ tools)
 
