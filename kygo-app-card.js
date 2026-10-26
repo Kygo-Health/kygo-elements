@@ -40,7 +40,7 @@
  *       page_path = the post)
  *   {kygo:'embed', type:'view', slug, content}  -> GA4 cta_view, once per card
  *   {kygo:'embed', type:'height', height}       -> the page sizes the iframe
- * The store buttons are <kygo-cta apps>, pointed at the standard Tenjin
+ * The store buttons use the standard Tenjin links owned by kygo-cta.js (loaded first)
  * Website-channel links with site_id and creative_name appended.
  */
 
@@ -83,6 +83,9 @@
       log: { name: 'Coffee', meta: '2:30 PM · 95mg' }
     }
   };
+
+  const APPLE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 12.5c-.02-2.1 1.71-3.11 1.79-3.16-.98-1.43-2.5-1.62-3.03-1.64-1.29-.13-2.52.76-3.17.76-.65 0-1.66-.74-2.73-.72-1.4.02-2.7.82-3.42 2.07-1.46 2.54-.37 6.3 1.05 8.36.7 1.01 1.53 2.14 2.62 2.1 1.05-.04 1.45-.68 2.72-.68 1.27 0 1.63.68 2.74.66 1.13-.02 1.85-1.03 2.54-2.04.8-1.17 1.13-2.3 1.15-2.36-.03-.01-2.2-.84-2.22-3.35zM15.02 5.9c.58-.7.97-1.68.86-2.65-.83.03-1.84.55-2.44 1.25-.53.62-1 1.61-.88 2.56.93.07 1.88-.47 2.46-1.16z"/></svg>';
+  const ANDROID = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 9v7a1 1 0 001 1h1v3a1 1 0 002 0v-3h4v3a1 1 0 002 0v-3h1a1 1 0 001-1V9H6zM4.5 9A1.5 1.5 0 003 10.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 004.5 9zm15 0a1.5 1.5 0 00-1.5 1.5v4a1.5 1.5 0 003 0v-4A1.5 1.5 0 0019.5 9zM15.5 4.2l1-1.4a.3.3 0 00-.5-.35l-1.1 1.53a5.9 5.9 0 00-3.8 0L9.99 2.45a.3.3 0 00-.5.35l1 1.4A5.28 5.28 0 006 8.2h12a5.28 5.28 0 00-2.5-4zM9.5 6.4a.6.6 0 110-1.2.6.6 0 010 1.2zm5 0a.6.6 0 110-1.2.6.6 0 010 1.2z"/></svg>';
 
   /** One real App Store review, shown under the buttons on wider cards. */
   const REVIEW = 'Strikes the balance of seamlessness and data analytics perfectly.';
@@ -146,16 +149,31 @@
       try { top.postMessage(msg, '*'); } catch (e) { /* no page to report to */ }
     }
 
-    /** Store links: the standard Tenjin Website-channel links (owned by
-     *  kygo-cta.js) with the post as site_id and variant-position as
-     *  creative_name, so installs read per post and per design in Tenjin. */
+    /** ios | android | desktop, the same test kygo-cta.js uses. */
+    _platform() {
+      try {
+        const ua = navigator.userAgent || '';
+        if (/iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) return 'ios';
+        if (/Android/i.test(ua)) return 'android';
+      } catch (e) { /* desktop */ }
+      return 'desktop';
+    }
+
+    /** Store buttons. The Tenjin Website-channel links are owned by kygo-cta.js
+     *  (loaded first, read here as TENJIN_IOS / TENJIN_ANDROID); this adds the
+     *  post as site_id and variant-position as creative_name, so installs read
+     *  per post and per design in Tenjin. A phone gets its own store alone,
+     *  desktop gets iPhone filled plus Android. */
     _wireStoreLinks() {
-      const cta = this.shadowRoot.querySelector('kygo-cta');
-      if (!cta || typeof TENJIN_IOS === 'undefined' || typeof TENJIN_ANDROID === 'undefined') return;
+      const box = this.shadowRoot.querySelector('.btns');
+      if (!box || typeof TENJIN_IOS === 'undefined' || typeof TENJIN_ANDROID === 'undefined') return;
       const q = '?site_id=' + encodeURIComponent(this._post) +
         '&creative_name=' + encodeURIComponent('app-card-' + this._variant + '-' + this._position);
-      if (cta.getAttribute('ios-link') !== TENJIN_IOS + q) cta.setAttribute('ios-link', TENJIN_IOS + q);
-      if (cta.getAttribute('android-link') !== TENJIN_ANDROID + q) cta.setAttribute('android-link', TENJIN_ANDROID + q);
+      const ios = (cls) => `<a class="btn ${cls}" href="${esc(TENJIN_IOS + q)}" data-destination="ios" target="_blank" rel="noopener" aria-label="Start your free trial on the App Store">${APPLE}<span>${cls === 'primary' ? 'Start your free trial' : 'iPhone'}</span></a>`;
+      const android = (cls) => `<a class="btn ${cls}" href="${esc(TENJIN_ANDROID + q)}" data-destination="android" target="_blank" rel="noopener" aria-label="Start your free trial on Google Play">${ANDROID}<span>${cls === 'primary' ? 'Start your free trial' : 'Android'}</span></a>`;
+      const pf = this._platform();
+      box.classList.toggle('solo', pf !== 'desktop');
+      box.innerHTML = pf === 'ios' ? ios('primary') : pf === 'android' ? android('primary') : ios('primary') + android('secondary');
     }
 
     _onClick(e) {
@@ -227,7 +245,14 @@
           .kicker { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #6EE7A0; margin-bottom: 8px; }
           .title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; color: #fff; margin-bottom: 6px; }
           .sub { font-size: 14px; line-height: 1.45; color: rgba(255,255,255,.72); }
-          .btns { margin-top: 16px; }
+          .btns { margin-top: 16px; display: flex; gap: 10px; min-height: 48px; }
+          .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 18px; border-radius: 10px; font-size: 15px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: background .2s, border-color .2s; }
+          .btn svg { width: 16px; height: 16px; flex: none; }
+          .btn.primary { background: #22C55E; color: #0F172A; }
+          .btn.primary:hover { background: #4ADE80; }
+          .btn.secondary { color: #fff; border: 1px solid rgba(255,255,255,.22); font-weight: 600; }
+          .btn.secondary:hover { border-color: #22C55E; }
+          .btns.solo .btn { flex: 1; }
           .review { display: none; }
 
           .phone { position: relative; width: 236px; height: 400px; margin: 20px auto -210px; padding: 7px; border-radius: 40px;
@@ -258,12 +283,13 @@
           .p-ok { font-size: 10px; font-weight: 700; color: #16A34A; }
 
           @media (min-width: 600px) {
-            .card { padding: 28px 300px 28px 32px; min-height: 300px; border-radius: 20px;
+            .card { padding: 28px 286px 28px 32px; border-radius: 20px;
               background: radial-gradient(420px 300px at 85% 110%, rgba(34,197,94,.28), transparent 70%), #0F172A; }
             .title { font-size: 26px; line-height: 1.15; }
             .sub { font-size: 15px; line-height: 1.5; }
             .btns { margin-top: 18px; }
-            .phone { position: absolute; right: 36px; top: 26px; margin: 0; }
+            .btn { min-height: 44px; }
+            .phone { position: absolute; right: 32px; top: 28px; height: 460px; margin: 0; }
             .review { display: block; margin-top: 16px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); }
             .r-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
             .stars { color: #FBBF24; font-size: 12px; letter-spacing: 1px; }
@@ -276,8 +302,6 @@
           <h3 class="title">${esc(headline)}</h3>
           <p class="sub">${esc(sub)}</p>
           <div class="btns">
-            <kygo-cta apps theme="dark" align="left" note="" surface="blog"
-              slug="${esc(this._slug)}" content="${esc(this._variant)}"></kygo-cta>
           </div>
           <figure class="review">
             <div class="r-top"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><figcaption>App Store review</figcaption></div>
