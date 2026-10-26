@@ -266,6 +266,17 @@ above never sees it. The card snippet loads `<kygo-cta>` inside the iframe and `
 Only fixed-set or sanitised strings are read from the message. Installs are still attributed by
 Tenjin, since the store buttons are the standard Tenjin links.
 
+## Shared blog app card (`kygo-app-card.js`, 2026-10-26)
+
+Replaces the pasted `blog-cta-card.html` card, one post at a time (test: how-accurate-is-your-heart-rate-monitor, mid card). The HTML block holds only `<kygo-app-card post position slug variant focus headline sub>` plus the script tag (`docs/wix-snippets/blog-app-card.html`). It posts the same `{kygo:'embed'}` messages as the old card, so `kygo-tracking.js` needs no change:
+
+| Where | What identifies the card |
+|---|---|
+| GA4 `cta_click` / `cta_view` | `cta_label` = `slug` (placement), `cta_content` = `variant`, `page_path` = the post, `component: 'kygo-blog-embed'` |
+| Tenjin | store links are the standard Website-channel links plus `?site_id=<post>&creative_name=app-card-<variant>-<position>`; read installs with reporting `group_by=site` / `creative` |
+
+`cta_content` must be registered as a GA4 event-scoped custom dimension to be reportable.
+
 ## How components opt into tracking
 
 Tracking is **convention-based** — components don't call the tracker, they just use the right
