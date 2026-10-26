@@ -2355,7 +2355,7 @@ class KygoWearableAccuracy extends HTMLElement {
             <div class="kr-copy">
               <p class="kr-eyebrow">Free report</p>
               <h2 class="kr-title">Take every ranking on this page with you</h2>
-              <p class="kr-sub">The State of Wearable Accuracy 2026 puts all eleven metrics into one 77-page PDF, with brand profiles and a buyer's guide by goal.</p>
+              <p class="kr-sub">The State of Wearable Accuracy 2026 puts all eleven metrics into one 78-page PDF, with brand profiles and a buyer's guide by goal.</p>
               <p class="kr-sub">Free. 71 peer-reviewed studies, no brand funding, every figure from the paper's own tables.</p>
               <a class="kr-btn" href="https://www.kygo.app/state-of-wearable-accuracy" data-gate="gate_hub" data-track-position="hub-band" data-track-label="report-gate">Get the free report<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
             </div>

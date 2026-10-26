@@ -54,7 +54,7 @@ function __seo(el, text) {
       this._parseWixAttributes();
       this.render();
       this._attachEventListeners();
-      __seo(this, 'Your State of Wearable Accuracy 2026 report is ready. The free 77-page report from Kygo Health ranks seven wearable brands on eleven metrics from 71 peer-reviewed studies. ' +
+      __seo(this, 'Your State of Wearable Accuracy 2026 report is ready. The free 78-page report from Kygo Health ranks seven wearable brands on eleven metrics from 71 peer-reviewed studies. ' +
         'Start with the verdict on page 7, find your brand, then go straight to the metrics you care about. ' +
         'Shopping for a wearable? Kygo Picks lists the most accurate pick for each metric, ranked on published studies: ' +
         'Oura Ring 5 for sleep and HRV, Apple Watch Series 12 for workout heart rate, Garmin Forerunner 970 for steps and VO2 max, and Google Pixel Watch 5 for calories.');
@@ -193,7 +193,7 @@ function __seo(el, text) {
             <div class="copy">
               <p class="pill"><span class="dot" aria-hidden="true"></span>Also sent to your inbox</p>
               <h1 id="rd-h1">Your report is <span>ready.</span></h1>
-              <p class="lede">The State of Wearable Accuracy 2026 is 77 pages. Start with the verdict on page 7, find your brand, then go straight to the metrics you care about.</p>
+              <p class="lede">The State of Wearable Accuracy 2026 is 78 pages. Start with the verdict on page 7, find your brand, then go straight to the metrics you care about.</p>
               <div class="dl-wrap">
                 <span data-dl-slot>${this._downloadHtml()}</span>
                 <p class="dl-note">We also emailed you this link, so you can come back to it.</p>

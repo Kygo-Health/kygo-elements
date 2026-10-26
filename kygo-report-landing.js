@@ -43,7 +43,7 @@ function __seo(el, text) {
   const ERROR_MSG = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
 
   const STATS = [
-    { n: '77', label: 'Pages of findings' },
+    { n: '78', label: 'Pages of findings' },
     { n: '71', label: 'Peer-reviewed studies' },
     { n: '7', label: 'Wearable brands ranked' },
     { n: '11', label: 'Metrics compared' }
@@ -90,7 +90,7 @@ function __seo(el, text) {
       this._parseWixAttributes();
       this.render();
       this._attachEventListeners();
-      __seo(this, 'State of Wearable Accuracy 2026: a free 77-page report from Kygo Health. ' +
+      __seo(this, 'State of Wearable Accuracy 2026: a free 78-page report from Kygo Health. ' +
         'Seven wearable brands (Oura, Apple Watch, Fitbit / Google, Garmin, Samsung, WHOOP and Polar) ranked on eleven metrics ' +
         'using only the numbers from 71 peer-reviewed validation studies. Inside: metric charts with every brand on one chart ranked by its error, ' +
         "brand profiles showing where each brand is best, worst and untested, and a buyer's guide with the pick for sleep, recovery, training and more. " +
@@ -344,7 +344,7 @@ function __seo(el, text) {
 
         <section class="sec hero" aria-labelledby="rl-h1">
           <div class="wrap hero-grid">
-            <p class="pill"><span class="dot" aria-hidden="true"></span>Free 77-page report</p>
+            <p class="pill"><span class="dot" aria-hidden="true"></span>Free 78-page report</p>
             <h1 id="rl-h1">Your wearable gives you a number.<br class="br"> This report shows how far off it is.</h1>
             <div class="lead">
               <p class="l1">Seven brands ranked on eleven metrics, using only the numbers from 71 peer-reviewed validation studies.</p>
@@ -397,8 +397,8 @@ function __seo(el, text) {
             <div class="cta">
               <div class="glow glow-a" aria-hidden="true"></div>
               <div class="glow glow-b" aria-hidden="true"></div>
-              <p class="cta-pill"><span class="dot" aria-hidden="true"></span>Free 77-page report</p>
-              <h2 id="rl-cta">77 pages, seven brands, one rule: <span>the numbers decide.</span></h2>
+              <p class="cta-pill"><span class="dot" aria-hidden="true"></span>Free 78-page report</p>
+              <h2 id="rl-cta">78 pages, seven brands, one rule: <span>the numbers decide.</span></h2>
               <p class="cta-sub">Get the full ranking, every brand profile and the buyer's guide in one PDF.</p>
               ${this._form('rl-email-bottom', true)}
             </div>
@@ -487,7 +487,7 @@ function __seo(el, text) {
           '@id': PAGE_URL,
           url: PAGE_URL,
           name: 'State of Wearable Accuracy 2026 | Free Kygo Report',
-          description: 'A free 77-page report ranking Oura, Apple Watch, Fitbit, Garmin, Samsung, WHOOP and Polar on 11 metrics. 71 peer-reviewed studies, no brand funding.',
+          description: 'A free 78-page report ranking Oura, Apple Watch, Fitbit, Garmin, Samsung, WHOOP and Polar on 11 metrics. 71 peer-reviewed studies, no brand funding.',
           inLanguage: 'en',
           isPartOf: { '@type': 'WebSite', name: 'Kygo Health', url: 'https://www.kygo.app/' },
           primaryImageOfPage: ASSETS + 'sowa-cover.webp',
@@ -495,7 +495,7 @@ function __seo(el, text) {
             '@type': 'Report',
             name: 'State of Wearable Accuracy 2026',
             about: 'Accuracy of consumer wearables (Oura, Apple Watch, Fitbit / Google, Garmin, Samsung, WHOOP, Polar) on eleven metrics, from 71 peer-reviewed validation studies',
-            numberOfPages: 77,
+            numberOfPages: 78,
             datePublished: '2026-10-25',
             dateModified: '2026-10-25',
             inLanguage: 'en',
