@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Email 5, the 7-day trial</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#15803d}a:hover{color:#0f172a}
+</style>
+</helmet>
+<div style="width: 600px; height: 1750px; box-sizing: border-box; padding: 28px 24px; background: #f8fafc; display: flex; flex-direction: column; gap: 18px; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; color: #475569">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<span style="font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: #475569">Subject</span>
+<p style="margin: 0; font-size: 18px; line-height: 1.35; font-weight: 600; color: #0f172a">Use each wearable for what it's best at</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #475569">Kygo Pro, free for 7 days.</p>
+</div>
+<div style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 18px; box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06); overflow: hidden">
+<div style="padding: 18px 28px; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between; gap: 12px">
+<span style="font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #0f172a">Kygo</span>
+<span style="font-size: 13px; color: #475569">From Ryan at Kygo</span>
+</div>
+<div style="padding: 28px; display: flex; flex-direction: column; gap: 18px; font-size: 16px; line-height: 1.65; color: #475569">
+<p style="margin: 0">Hi,</p>
+<p style="margin: 0">If you read the medal table and realized your device is strong on some metrics and weak on others, you're reading it right. Oura Ring wins HRV. Garmin wins steps. Apple Watch wins exercise heart rate.</p>
+<a href="https://app.kygo.app?utm_source=email&amp;utm_medium=nurture&amp;utm_campaign=sowa-2026&amp;utm_content=email-5-image" style="align-self: center; display: block"><img src="/_blob/1ef3bbd4c408dc54095828b7a31c3736" data-email-src="https://static.wixstatic.com/media/273a63_ff0ebaf660ad419290ca28a0a12132f0~mv2.png" alt="Kygo app logging a meal with Oura and Apple Health connected" style="display: block; width: 280px; height: auto; aspect-ratio: 680 / 970"></a>
+<p style="margin: 0">No brand wins every metric. Kygo connects them all and uses the most accurate source for each.</p>
+<p style="margin: 0">It connects Oura, Apple Health, Health Connect, Fitbit, Garmin, WHOOP and Polar at the same time, picks the most accurate source for each metric automatically, then correlates those numbers with what you eat. If you only wear one device, you still get the food side.</p>
+<p style="margin: 0">Food logging is free, and Kygo Pro comes with a 7-day free trial.</p>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<p style="margin: 0"><strong style="color: #0f172a">Start your free trial:</strong></p>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<a href="https://kygo.app/iOSemail?utm_source=email&amp;utm_medium=nurture&amp;utm_campaign=sowa-2026&amp;utm_content=email-5-ios" style="display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 10px; background: {{accent}}; color: #0f172a; font-size: 15px; font-weight: 600; text-decoration: none">iPhone</a>
+<a href="https://kygo.app/androidemail?utm_source=email&amp;utm_medium=nurture&amp;utm_campaign=sowa-2026&amp;utm_content=email-5-android" style="display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 10px; background: {{accent}}; color: #0f172a; font-size: 15px; font-weight: 600; text-decoration: none">Android</a>
+<a href="https://app.kygo.app?utm_source=email&amp;utm_medium=nurture&amp;utm_campaign=sowa-2026&amp;utm_content=email-5-web" style="display: flex; align-items: center; justify-content: center; min-height: 48px; border-radius: 10px; background: {{accent}}; color: #0f172a; font-size: 15px; font-weight: 600; text-decoration: none">Web</a>
+</div>
+</div>
+<p style="margin: 0">Thanks for reading the report.</p>
+<p style="margin: 0">Ryan</p>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; line-height: 1.5; color: #475569; text-align: center">
+<span>Kygo Health LLC, Jersey City NJ</span>
+<a href="https://www.kygo.app/unsubscribe" style="color: #15803d; text-decoration: underline">Unsubscribe</a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#22c55e","options":["#22c55e","#16a34a"]},"$preview":{"width":600,"height":1750}}'>
+class Component extends DCLogic {
+renderVals() {
+return { accent: this.props.accent ?? '#22c55e' };
+}
+}
+</script>
+</body>
+</html>

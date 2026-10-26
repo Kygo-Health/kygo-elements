@@ -237,6 +237,13 @@ export async function post_subscribe(request) {
 > two snippet changes (footer strip + the site-wide `kygo-inline-subscribe.js` loader in the GA4
 > head snippet), (d) re-point the tool/blog embeds at the new commit.
 
+### `backend/data.js` + `backend/http-functions.js` `get_go` — PENDING (SOWA nurture emails, built 2026-10-26, not deployed)
+`Subscribers_afterInsert` POSTs report-* sign-ups `{secret, email, source, createdAt}` to the Apps Script
+nurture web app; `GET /_functions/go?id=&e=&l=` 302-redirects nurture-email links to a fixed key map and logs
+the click. Secrets `SOWA_NURTURE_URL`, `SOWA_NURTURE_SECRET`. Full files, tests and setup steps:
+`docs/email-automation/` (SETUP.md). Move this into the live sections (and update `velo/http-functions.js`)
+once Ryan has pasted and published them.
+
 ### `backend/http-functions.js` — `get_amazonPicks` — ✅ LIVE (2026-10-24)
 Same file as `post_subscribe` above (both live in it; the live file also has an `options_subscribe`
 CORS handler). `GET /_functions/amazonPicks` gets a Creators API token (Login with Amazon v3.1,

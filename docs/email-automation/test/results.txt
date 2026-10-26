@@ -1,0 +1,22 @@
+PASS  setup builds Subscribers, Clicks and Summary tabs and one daily 9:00 ET trigger (idempotent)
+PASS  setup refuses to run without SHARED_SECRET / SHEET_ID
+PASS  sign-up appends a row, sends email 1 immediately with the right headers and MIME
+PASS  rejects a bad secret, a non-report source and an invalid email (nothing written or sent)
+PASS  duplicate sign-up (any case) keeps one row and one sequence
+PASS  day 0 to 16 schedule with a simulated clock: emails go out on days 0, 2, 5, 9, 14 only
+PASS  rerunning the daily job (3 times in a row, every day) never double-sends
+PASS  a stale snapshot cannot double-send (row re-read under the lock)
+PASS  Gmail failure records last_error and the next run retries; no skipped emails
+PASS  unsubscribe mid-sequence via the link stops the sequence and shows a confirmation page
+PASS  RFC 8058 one-click POST and mailto unsubscribes (token in subject, or plain reply) both stop sends
+PASS  bounce check marks bounced rows (X-Failed-Recipients and DSN body), ignores delays and never-emailed addresses
+PASS  click via Wix get_go: real 302 to the exact destination (UTMs unchanged), logged in Clicks
+PASS  unknown or mismatched link keys are rejected everywhere (no redirect, no log)
+PASS  Wix data.js hook: report-* sign-ups reach Apps Script end to end; other sources do not
+PASS  Wix data.js hook never fails or blocks the insert (network error, bad reply, hang, missing secret)
+PASS  daily cap: sends stop at DAILY_CAP and the rest catch up on the next run; PAUSED stops all sends
+PASS  copy, subjects, preview text, links and UTMs match the design canvas (Oct 26, 78 pages)
+PASS  Summary formulas cover per-email sent, unique clickers, click rate, unsubscribes and totals by source
+
+19/19 passed
+Run at 2026-10-26T15:14:29.925Z on Node v22.23.4
