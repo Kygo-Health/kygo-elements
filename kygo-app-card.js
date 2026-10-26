@@ -24,8 +24,8 @@
  *   variant   design/copy variant id, default "v1". Goes to GA4 as cta_content
  *             and to Tenjin as part of creative_name (<variant>-<position>), so
  *             designs can be compared once more than one exists.
- *   focus     which example finding shows on the right: hrv (default). More
- *             visuals (sleep, heart, food) get added to VISUALS below.
+ *   focus     which insight the phone mockup shows: hrv (default). More
+ *             (sleep, heart, food) get added to VISUALS below.
  *   headline  the post's own hook. Never reused across posts.
  *   sub       one sentence under the headline.
  *
@@ -70,24 +70,24 @@
     return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
-  /** Example findings, the same sample data the homepage uses. One per focus. */
+  /** The insight shown on the phone mockup, one per focus. Sample data, the same
+   *  example the homepage uses. */
   const VISUALS = {
     hrv: {
-      label: 'Example Kygo finding: over 95mg of caffeine after 2pm drops HRV by 8 ms the next day',
-      eyebrow: 'LATE CAFFEINE → HRV',
-      title: 'Over 95mg of caffeine after 2pm drops HRV by 8ms next day',
-      delta: '−8 ms',
+      eyebrow: 'CAFFEINE → HRV',
+      title: 'Caffeine after 2pm lowers next-day HRV',
       rows: [
-        { label: 'Under 95mg', days: '31 days', width: 72, color: '#64748B', value: '32 ms' },
-        { label: 'Over 95mg', days: '16 days', width: 48, color: '#EF4444', value: '24 ms' }
+        { label: 'Under 95mg', width: 72, color: '#64748B', value: '32 ms' },
+        { label: 'Over 95mg', width: 48, color: '#EF4444', value: '24 ms' }
       ],
-      chips: ['47 days', 'Next-day effect']
+      log: { name: 'Coffee', meta: '2:30 PM · 95mg' }
     }
   };
 
-  const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>';
+  /** One real App Store review, shown under the buttons on wider cards. */
+  const REVIEW = 'Strikes the balance of seamlessness and data analytics perfectly.';
 
-  class KygoAppCard extends HTMLElement {
+    class KygoAppCard extends HTMLElement {
     constructor() {
       super();
       this.attachShadow({ mode: 'open' });
@@ -194,29 +194,24 @@
 
     /* ── Render ───────────────────────────────────────────────────────── */
 
-    _visual() {
+    _phone() {
       const v = VISUALS[clean(this._getSetting('focus', 'hrv'), 10)] || VISUALS.hrv;
       const rows = v.rows.map((r) => `
-        <div class="crow">
-          <span class="crow-label">${esc(r.label)} <span class="days">· ${esc(r.days)}</span></span>
-          <span class="crow-track"><span class="crow-fill" style="width:${Number(r.width)}%;background:${esc(r.color)}"></span></span>
-          <span class="crow-val">${esc(r.value)}</span>
-        </div>`).join('');
+        <div class="p-row"><span class="p-lbl">${esc(r.label)}</span><span class="p-track"><span style="width:${Number(r.width)}%;background:${esc(r.color)}"></span></span><span class="p-val">${esc(r.value)}</span></div>`).join('');
       return `
-        <div class="finding" role="img" aria-label="${esc(v.label)}">
-          <div class="f-head">
-            <div>
-              <p class="f-eyebrow">${esc(v.eyebrow)}</p>
-              <p class="f-title">${esc(v.title)}</p>
+        <div class="phone" aria-hidden="true"><div class="screen">
+          <div class="island"></div>
+          <div class="status"><span>9:41</span><span class="batt"></span></div>
+          <div class="p-body">
+            <div class="p-head"><span class="p-title">Insights</span><span class="p-sub">Last 47 days</span></div>
+            <div class="p-card">
+              <div class="p-top"><span class="p-eye">${esc(v.eyebrow)}</span><span class="p-real">Likely real</span></div>
+              <p class="p-find">${esc(v.title)}</p>
+              ${rows}
             </div>
-            <span class="delta">${esc(v.delta)}</span>
+            <div class="p-log"><span class="p-ic"><span></span></span><span class="p-logtxt"><b>${esc(v.log.name)}</b><span>${esc(v.log.meta)}</span></span><span class="p-ok">Logged</span></div>
           </div>
-          <div class="compare">${rows}</div>
-          <div class="chips">
-            <span class="chip real">${CHECK}Likely real</span>
-            ${v.chips.map((c) => `<span class="chip">${esc(c)}</span>`).join('')}
-          </div>
-        </div>`;
+        </div></div>`;
     }
 
     render() {
@@ -225,46 +220,70 @@
       this.shadowRoot.innerHTML = `
         <style>
           @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-          :host { display: block; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; color: #0F172A; line-height: 1.5; }
+          :host { display: block; padding: 24px 0; font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; color: #0F172A; line-height: 1.5; }
           *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-          .card { display: grid; gap: 20px; padding: 22px; border-radius: 20px; background: #0F172A; color: #fff; }
-          @media (min-width: 600px) { .card { padding: 28px; gap: 28px; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; } }
-          .copy { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; }
-          .kicker { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #6EE7A0; }
-          .title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(22px, 4vw, 28px); line-height: 1.15; font-weight: 700; letter-spacing: -.01em; color: #fff; }
-          .sub { font-size: 15px; line-height: 1.5; color: rgba(255,255,255,.75); max-width: 40ch; }
-          .btns { margin-top: 8px; width: 100%; min-width: 0; }
+          .card { position: relative; overflow: hidden; border-radius: 18px; padding: 22px 20px 0; color: #fff;
+            background: radial-gradient(300px 200px at 100% 100%, rgba(34,197,94,.22), transparent 70%), #0F172A; }
+          .kicker { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #6EE7A0; margin-bottom: 8px; }
+          .title { font-family: 'Space Grotesk', sans-serif; font-size: 22px; line-height: 1.2; font-weight: 700; letter-spacing: -.01em; color: #fff; margin-bottom: 6px; }
+          .sub { font-size: 14px; line-height: 1.45; color: rgba(255,255,255,.72); }
+          .btns { margin-top: 16px; }
+          .review { display: none; }
 
-          .finding { background: #fff; color: #0F172A; border-radius: 16px; padding: 16px; box-shadow: 0 20px 40px -20px rgba(0,0,0,.5); min-width: 0; }
-          .f-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-          .f-eyebrow { font-size: 10.5px; font-weight: 700; letter-spacing: .6px; color: #64748B; margin-bottom: 4px; }
-          .f-title { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15.5px; line-height: 1.25; }
-          .delta { flex-shrink: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 12.5px; color: #DC2626; background: #FEF2F2; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
-          .compare { display: flex; flex-direction: column; gap: 10px; background: #F5F7FA; border-radius: 12px; padding: 12px; }
-          .crow { display: flex; align-items: center; gap: 10px; }
-          .crow-label { width: 96px; flex-shrink: 0; font-size: 12px; line-height: 1.3; color: #475569; }
-          .days { color: #64748B; display: block; font-size: 11px; }
-          .crow-track { flex: 1; min-width: 30px; height: 8px; background: #E2E8F0; border-radius: 99px; overflow: hidden; }
-          .crow-fill { display: block; height: 100%; border-radius: 99px; }
-          .crow-val { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13.5px; width: 44px; text-align: right; }
-          .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-          .chip { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; padding: 4px 9px; border-radius: 999px; background: #F1F5F9; color: #475569; white-space: nowrap; }
-          .chip.real { background: #ECFDF5; color: #15803D; font-weight: 700; }
-          .chip svg { width: 11px; height: 11px; }
-          @media (min-width: 420px) { .days { display: inline; font-size: 12px; } .crow-label { width: 132px; } }
-          @media (min-width: 600px) { .days { display: block; font-size: 11px; } .crow-label { width: 84px; } }
+          .phone { position: relative; width: 236px; height: 400px; margin: 20px auto -210px; padding: 7px; border-radius: 40px;
+            background: linear-gradient(160deg, #334155, #0B1220); box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 40px 70px -24px rgba(0,0,0,.75); }
+          .screen { position: relative; height: 100%; border-radius: 33px; background: #F8FAFC; overflow: hidden; color: #0F172A; }
+          .island { position: absolute; top: 8px; left: 50%; margin-left: -38px; width: 76px; height: 22px; border-radius: 12px; background: #0B1220; }
+          .status { display: flex; justify-content: space-between; align-items: center; padding: 11px 20px 0; font-size: 11px; font-weight: 700; }
+          .batt { width: 14px; height: 7px; border-radius: 2px; background: #0F172A; }
+          .p-body { padding: 20px 14px 0; }
+          .p-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+          .p-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
+          .p-sub { font-size: 10px; font-weight: 600; color: #64748B; }
+          .p-card { padding: 12px; border-radius: 14px; background: #fff; border: 1px solid #E2E8F0; box-shadow: 0 6px 16px -10px rgba(15,23,42,.25); }
+          .p-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+          .p-eye { font-size: 9.5px; font-weight: 700; letter-spacing: .5px; color: #64748B; }
+          .p-real { padding: 2px 7px; border-radius: 99px; background: #ECFDF5; color: #15803D; font-size: 9.5px; font-weight: 700; }
+          .p-find { font-family: 'Space Grotesk', sans-serif; font-size: 13px; line-height: 1.25; font-weight: 700; margin-bottom: 10px; }
+          .p-row { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
+          .p-lbl { width: 62px; font-size: 10px; color: #475569; }
+          .p-track { flex: 1; height: 7px; border-radius: 99px; background: #E2E8F0; overflow: hidden; }
+          .p-track span { display: block; height: 100%; }
+          .p-val { width: 34px; text-align: right; font-size: 11px; font-weight: 700; }
+          .p-log { margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: #fff; border: 1px solid #E2E8F0; }
+          .p-ic { width: 28px; height: 28px; border-radius: 8px; background: #FEF3C7; display: flex; align-items: center; justify-content: center; }
+          .p-ic span { width: 10px; height: 10px; border-radius: 3px; background: #D97706; }
+          .p-logtxt { flex: 1; display: flex; flex-direction: column; font-size: 10px; color: #64748B; }
+          .p-logtxt b { font-size: 11.5px; font-weight: 600; color: #0F172A; }
+          .p-ok { font-size: 10px; font-weight: 700; color: #16A34A; }
+
+          @media (min-width: 600px) {
+            .card { padding: 28px 300px 28px 32px; min-height: 300px; border-radius: 20px;
+              background: radial-gradient(420px 300px at 85% 110%, rgba(34,197,94,.28), transparent 70%), #0F172A; }
+            .title { font-size: 26px; line-height: 1.15; }
+            .sub { font-size: 15px; line-height: 1.5; }
+            .btns { margin-top: 18px; }
+            .phone { position: absolute; right: 36px; top: 26px; margin: 0; }
+            .review { display: block; margin-top: 16px; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); }
+            .r-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+            .stars { color: #FBBF24; font-size: 12px; letter-spacing: 1px; }
+            .review figcaption { font-size: 11.5px; color: rgba(255,255,255,.5); }
+            .review blockquote { font-size: 13px; line-height: 1.4; color: rgba(255,255,255,.88); }
+          }
         </style>
         <aside class="card" aria-label="Kygo app">
-          <div class="copy">
-            <p class="kicker">Kygo app</p>
-            <h3 class="title">${esc(headline)}</h3>
-            <p class="sub">${esc(sub)}</p>
-            <div class="btns">
-              <kygo-cta apps theme="dark" align="left" note="" surface="blog"
-                slug="${esc(this._slug)}" content="${esc(this._variant)}"></kygo-cta>
-            </div>
+          <p class="kicker">Kygo app</p>
+          <h3 class="title">${esc(headline)}</h3>
+          <p class="sub">${esc(sub)}</p>
+          <div class="btns">
+            <kygo-cta apps theme="dark" align="left" note="" surface="blog"
+              slug="${esc(this._slug)}" content="${esc(this._variant)}"></kygo-cta>
           </div>
-          ${this._visual()}
+          <figure class="review">
+            <div class="r-top"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><figcaption>App Store review</figcaption></div>
+            <blockquote>“${esc(REVIEW)}”</blockquote>
+          </figure>
+          ${this._phone()}
         </aside>`;
     }
   }
