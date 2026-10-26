@@ -38,6 +38,7 @@ class KygoPicksCard extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
+    if (this._embedded) { this.setAttribute('embed', ''); this._wireEmbed(); }
     const c = this._sets[this._focus];
     __seo(this, c.title + ': ' + c.tiles.map(t => t.name + ' (' + t.label + '): ' + t.line).join(' ') + ' Ranked on published validation studies at kygo.app/best-wearables.');
   }
@@ -58,6 +59,49 @@ class KygoPicksCard extends HTMLElement {
   }
 
   _getSetting(key, fallback) { return this._settings[key] || this.getAttribute(key) || fallback; }
+
+  /* ── Blog embed mode ──────────────────────────────────────────────────
+   * Inside a Wix Blog "HTML code" block the card runs in a sandboxed iframe,
+   * where the page's kygo-tracking.js cannot see it. There the links open in
+   * the top window and the card posts the same {kygo:'promo'} messages the old
+   * pasted snippet did (click -> GA4 related_tool_click, view -> cta_view,
+   * height -> the page sizes the iframe). On a tool page nothing changes. */
+  get _embedded() {
+    try { return window.top !== window; } catch (e) { return true; }
+  }
+
+  _post(msg) {
+    try { window.top.postMessage(msg, '*'); } catch (e) { /* no page to report to */ }
+  }
+
+  _wireEmbed() {
+    if (this._wired) return;
+    this._wired = true;
+    const slug = String(this._getSetting('slug', 'card')).slice(0, 40);
+    this.shadowRoot.addEventListener('click', (ev) => {
+      const a = ev.composedPath().filter(n => n.tagName === 'A')[0];
+      if (!a) return;
+      this._post({ kygo: 'promo', card: 'picks', type: 'click', slug, label: a.getAttribute('data-track-label') || '', url: a.href });
+    }, true);
+    const report = () => {
+      const h = Math.ceil(this.getBoundingClientRect().bottom + (window.scrollY || 0)) + 2;
+      if (h < 40) return;
+      this._post({ kygo: 'embed', type: 'height', height: h });
+      this._post({ type: 'kygo-embed-height', height: h });
+      this._post({ kygo: 'promo', card: 'picks', type: 'height', slug, height: h });
+    };
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(report).observe(this);
+    window.addEventListener('load', report);
+    setTimeout(report, 0);
+    if (typeof IntersectionObserver !== 'undefined') {
+      const io = new IntersectionObserver((entries) => {
+        if (!entries.some(x => x.isIntersecting)) return;
+        io.disconnect();
+        this._post({ kygo: 'embed', type: 'view', slug: 'picks-' + slug });
+      }, { threshold: 0.5 });
+      io.observe(this);
+    }
+  }
 
   get _href() { return this._getSetting('href', 'https://www.kygo.app/best-wearables'); }
   get _focus() { const f = this._getSetting('focus', 'all'); return this._sets[f] ? f : 'all'; }
@@ -122,7 +166,7 @@ class KygoPicksCard extends HTMLElement {
     const e = v => this._esc(v);
     const slug = this._getSetting('slug', 'card');
     return `<a class="${cls}" href="${e(this._href + (anchor ? '#' + anchor : ''))}" data-action="related-tool" data-tool-slug="best-wearables"
-      data-track-position="picks-card-${e(slug)}" data-track-label="${e(label)}">${inner}</a>`;
+      data-track-position="picks-card-${e(slug)}" data-track-label="${e(label)}"${this._embedded ? ' target="_top"' : ''}>${inner}</a>`;
   }
 
   _logo(t) {
@@ -158,6 +202,7 @@ class KygoPicksCard extends HTMLElement {
   _styles() {
     return `
       @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+      :host([embed]) { padding: 24px 0; }
       :host {
         --fg-1: #0F172A; --fg-2: #475569; --fg-3: #94A3B8;
         --bg-surface: #F8FAFC; --bg-raised: #F1F5F9; --border-subtle: #E2E8F0;
