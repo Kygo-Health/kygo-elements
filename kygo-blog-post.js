@@ -493,13 +493,13 @@
   // ══════════════════════════════════════════════════════════════════════
   // 3. <kygo-blog-subscribe>
   // ──────────────────────────────────────────────────────────────────────
-  // Newsletter signup. Sits between related posts and big app CTA, on a
-  // grey band so it breaks from the white sections above/below. Dispatches
+  // Newsletter signup card ("The Kygo brief"): copy and form on the left, an
+  // email preview on the right from 768px. Dispatches
   // a `subscribe` event with { email }. Wix page code wires that up to
   // the Blog Subscribers collection via wix-data.
   //
   // Attributes:
-  //   heading       – default "Stop Guessing. Start Knowing."
+  //   heading       - default "Wearable research, without the hype"
   //   subheading    – default subhead copy
   //   success-message – text shown after submit (default set below)
   //   state         – "success" to pre-render the success view (e.g. after
@@ -518,7 +518,7 @@
     connectedCallback() {
       this._state = this.getAttribute('state') || 'idle';
       this.render();
-      seoText(this, 'Subscribe to Kygo Health — research-backed insights on sleep, HRV, nutrition, and the wearables that track them, straight to your inbox.');
+      seoText(this, 'The Kygo brief: wearable research without the hype. One email a month with the newest studies on sleep, HRV and nutrition, and what they mean for your numbers.');
     }
 
     attributeChangedCallback(name, oldV, newV) {
@@ -534,146 +534,102 @@
     }
 
     render() {
-      const heading = this.getAttribute('heading') || 'Stop Guessing. <span class="hl">Start Knowing.</span>';
+      const heading = this.getAttribute('heading') || 'Wearable research, without the hype';
       const sub     = this.getAttribute('subheading') ||
-        'Get more research-backed insights on sleep, HRV, and the wearables that track them, straight to your inbox.';
+        'One email a month with the newest studies on sleep, HRV and nutrition, and what they mean for your numbers.';
       const successMsg = this.getAttribute('success-message') ||
-        "You're in — new insights are on the way.";
+        "You're in. The next brief is on its way.";
 
       this.shadowRoot.innerHTML = `
         <style>
           ${BASE_RESET}
-          :host { ${CORE_TOKENS} background: var(--light); display: block; }
-          .wrap {
-            max-width: 720px; margin: 0 auto;
-            padding: 36px 20px;
-            text-align: center;
+          :host { ${CORE_TOKENS} display: block; }
+          .wrap { max-width: 1040px; margin: 0 auto; padding: 24px 16px; }
+          @media (min-width: 768px) { .wrap { padding: 32px 24px; } }
+          .card {
+            display: grid; gap: 28px; align-items: center;
+            padding: 22px 20px; border-radius: 20px; background: #fff;
+            border: 1.5px solid var(--gray-200); box-shadow: 0 8px 24px rgba(15,23,42,.06);
           }
-          @media (min-width: 768px) { .wrap { padding: 44px 24px; } }
-
+          @media (min-width: 768px) { .card { grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); gap: 40px; padding: 32px; } }
           .kicker {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 6px 14px;
-            background: var(--green-light);
-            color: var(--green-dark);
-            font-size: 11.5px; font-weight: 600;
-            letter-spacing: 0.06em; text-transform: uppercase;
-            border-radius: 9999px;
-            margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+            font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 700;
+            letter-spacing: .8px; text-transform: uppercase; color: #15803D;
           }
-          .kicker svg { width: 14px; height: 14px; }
-
-          h2 {
-            font-size: clamp(24px, 5vw, 34px);
-            color: var(--dark);
-            line-height: 1.2;
-            margin: 0 0 12px;
-          }
-          h2 .hl { color: var(--green); }
-
-          .lead {
-            font-size: 15px; line-height: 1.6;
-            color: var(--gray-600);
-            max-width: 500px; margin: 0 auto 24px;
-          }
-          @media (min-width: 768px) { .lead { font-size: 16px; } }
-
-          form {
-            display: flex; flex-direction: column; gap: 10px;
-            max-width: 520px; margin: 0 auto;
-            background: #fff;
-            padding: 10px;
-            border-radius: 14px;
-            border: 1.5px solid var(--gray-200);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            transition: border-color 200ms ease, box-shadow 200ms ease;
-          }
-          form:focus-within {
-            border-color: var(--green);
-            box-shadow: 0 0 0 4px var(--green-light);
-          }
+          .kicker img { width: 22px; height: 22px; object-fit: contain; }
+          h2 { font-size: clamp(22px, 3vw, 26px); font-weight: 700; color: #0F172A; max-width: 20ch; margin-bottom: 6px; }
+          .lead { font-size: 14px; line-height: 1.5; color: var(--gray-600); max-width: 46ch; }
+          @media (min-width: 768px) { .lead { font-size: 15px; } }
+          form { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; max-width: 440px; }
+          @media (min-width: 520px) { form { flex-direction: row; } input { flex: 1; width: auto; } }
           input {
-            flex: 1; min-width: 0;
-            border: 0; outline: none;
-            background: transparent;
-            padding: 14px;
-            font-family: inherit; font-size: 15px;
-            color: var(--dark);
+            flex: none; width: 100%; height: 48px; padding: 0 14px; border: 1.5px solid var(--gray-200); border-radius: 10px;
+            font-family: inherit; font-size: 15px; color: #0F172A; background: #fff; outline: none;
+            transition: border-color 180ms ease, box-shadow 180ms ease;
           }
+          input:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-light); }
           input::placeholder { color: var(--gray-400); }
           button {
-            border: 0;
-            height: 48px;
-            padding: 0 22px;
-            border-radius: 10px;
-            background: var(--green);
-            color: #fff;
-            font-weight: 600; font-size: 15px;
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-            transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
-            white-space: nowrap;
+            height: 48px; padding: 0 20px; border: 0; border-radius: 10px;
+            background: var(--green); color: #0F172A; font-weight: 700; font-size: 15px; white-space: nowrap;
+            transition: background 180ms ease;
           }
-          button:hover { background: var(--green-dark); box-shadow: 0 8px 20px rgba(34,197,94,0.3); }
-          button:active { transform: translateY(1px); }
-          button[disabled] { opacity: 0.6; cursor: not-allowed; }
-          button svg { width: 14px; height: 14px; }
-
-          @media (min-width: 520px) {
-            form { flex-direction: row; gap: 6px; padding: 6px; }
-            input { padding: 12px 14px; }
-          }
-
-          .trust {
-            display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
-            margin-top: 18px;
-            font-size: 12px; color: var(--gray-600);
-          }
-          .trust span { display: inline-flex; align-items: center; gap: 6px; }
-          .trust svg { width: 12px; height: 12px; color: var(--green); }
-
-          .error {
-            margin-top: 10px;
-            font-size: 13px; color: #DC2626;
-          }
-
+          @media (min-width: 520px) { input, button { height: 44px; } }
+          button:hover { background: #4ADE80; }
+          button[disabled] { opacity: .6; cursor: not-allowed; }
+          .error { margin-top: 10px; font-size: 13px; color: #DC2626; }
           .success {
-            max-width: 520px; margin: 0 auto;
-            padding: 22px 24px;
-            background: #fff;
-            border: 2px solid var(--green);
-            border-radius: 14px;
-            color: var(--dark);
-            font-weight: 500;
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            margin-top: 16px; max-width: 440px; display: flex; align-items: center; gap: 10px;
+            padding: 12px 14px; border-radius: 10px; background: #F0FDF4; border: 1.5px solid #BBF7D0;
+            font-size: 14px; font-weight: 600; color: #14532D;
           }
-          .success svg { width: 32px; height: 32px; color: var(--green); }
-          .success .title { font-size: 16px; font-weight: 600; }
+          .success svg { width: 20px; height: 20px; color: var(--green-dark); flex: none; }
+          .mail {
+            display: none; width: 100%; max-width: 360px; margin-left: auto; border-radius: 14px; overflow: hidden;
+            background: #fff; border: 1px solid var(--gray-200); box-shadow: 0 18px 40px -14px rgba(15,23,42,.25);
+          }
+          @media (min-width: 768px) { .mail { display: block; } }
+          .mail-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--gray-100); }
+          .mail-head img { width: 22px; height: 22px; object-fit: contain; }
+          .mail-from { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; }
+          .mail-when { margin-left: auto; font-size: 11px; color: var(--gray-400); }
+          .mail-cover { width: 100%; height: 92px; object-fit: cover; background: var(--gray-200); }
+          .mail-body { padding: 14px 16px 16px; }
+          .mail-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; line-height: 1.3; font-weight: 700; margin-bottom: 6px; }
+          .mail-text { font-size: 12.5px; line-height: 1.45; color: var(--gray-600); margin-bottom: 12px; }
+          .mail-btn { display: inline-block; padding: 6px 12px; border-radius: 8px; background: var(--green); color: #0F172A; font-size: 12px; font-weight: 700; }
         </style>
         <section class="wrap" aria-labelledby="subscribe-heading">
-          <h2 id="subscribe-heading">${heading}</h2>
-          <p class="lead">${sub}</p>
-
-          ${this._state === 'success' ? `
-            <div class="success" role="status" aria-live="polite">
-              ${svg('checkCircle', 32)}
-              <div class="title">${successMsg}</div>
+          <div class="card">
+            <div>
+              <p class="kicker"><img src="${BRAND_LOGO}" alt="Kygo" width="22" height="22">The Kygo brief</p>
+              <h2 id="subscribe-heading">${heading}</h2>
+              <p class="lead">${sub}</p>
+              ${this._state === 'success' ? `
+                <div class="success" role="status" aria-live="polite">${svg('checkCircle', 20)}<span>${successMsg}</span></div>
+              ` : `
+                <form novalidate data-form>
+                  <input type="email" required placeholder="you@email.com"
+                         aria-label="Email address" autocomplete="email"
+                         ${this._state === 'loading' ? 'disabled' : ''} />
+                  <button type="submit" ${this._state === 'loading' ? 'disabled' : ''}>
+                    ${this._state === 'loading' ? 'Subscribing…' : 'Subscribe'}
+                  </button>
+                </form>
+                ${this._error ? `<div class="error">${this._error}</div>` : ''}
+              `}
             </div>
-          ` : `
-            <form novalidate data-form>
-              <input type="email" required placeholder="you@email.com"
-                     aria-label="Email address" autocomplete="email"
-                     ${this._state === 'loading' ? 'disabled' : ''} />
-              <button type="submit" ${this._state === 'loading' ? 'disabled' : ''}>
-                ${this._state === 'loading' ? 'Subscribing…' : `Subscribe ${svg('arrowRight', 14)}`}
-              </button>
-            </form>
-            ${this._error ? `<div class="error">${this._error}</div>` : ''}
-            <div class="trust">
-              <span>${svg('check', 12)} No spam</span>
-              <span>${svg('check', 12)} Unsubscribe anytime</span>
-              <span>${svg('check', 12)} Research-backed only</span>
+            <div class="mail" aria-hidden="true">
+              <div class="mail-head"><img src="${BRAND_LOGO}" alt=""><span class="mail-from">Kygo Health</span><span class="mail-when">Monthly brief</span></div>
+              <img class="mail-cover" src="https://static.wixstatic.com/media/273a63_4c319b0df429425296d15711c577310b~mv2.png/v1/fill/w_720,h_184,al_c/c.png" alt="" loading="lazy">
+              <div class="mail-body">
+                <p class="mail-title">Most accurate sleep tracker? Oura vs Apple vs Fitbit vs Garmin vs Whoop</p>
+                <p class="mail-text">What the sleep lab studies found, and how far off your deep sleep number can be.</p>
+                <span class="mail-btn">Read the study</span>
+              </div>
             </div>
-          `}
+          </div>
         </section>
       `;
 
@@ -708,7 +664,7 @@
       this._submitTimeout = setTimeout(() => {
         if (this._state === 'loading') {
           this._state = 'idle';
-          this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+          this._error = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
           this.render();
         }
       }, 10000);
@@ -730,14 +686,14 @@
             }));
           } else {
             this._state = 'idle';
-            this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+            this._error = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
             this.render();
           }
         })
         .catch(() => {
           clearTimeout(this._submitTimeout);
           this._state = 'idle';
-          this._error = "Hmm — that didn't go through. Please try again, or email support@kygo.app.";
+          this._error = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
           this.render();
         });
     }
@@ -817,131 +773,80 @@
 
     render() {
       const ctx = this._contextCopy();
-      const heading = this.getAttribute('heading')    || ctx.heading;
-      const sub = this.getAttribute('subheading') || ctx.sub;
+      const heading = this.getAttribute('heading') || 'Now test it on your own data';
       const hook = (this.getAttribute('hook') || ctx.hook).replace(/"/g, '&quot;');
       const slug = postSlug(this, 'end');
-      const pill = this.getAttribute('pill-text') || 'iPhone, Android, and web';
+      const G = "font-family:'Space Grotesk',sans-serif";
 
       this.shadowRoot.innerHTML = `
         <style>
           ${BASE_RESET}
           :host { ${CORE_TOKENS} background: #fff; display: block; }
-          .wrap { max-width: 1100px; margin: 0 auto; padding: 48px 20px; }
-          @media (min-width: 768px) { .wrap { padding: 72px 24px; } }
-
+          .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px; }
+          @media (min-width: 768px) { .wrap { padding: 48px 24px; } }
           .promo {
-            background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
-            border-radius: 24px;
-            padding: 40px 24px;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 12px 32px rgba(15,23,42,0.25);
+            position: relative; overflow: hidden; border-radius: 20px; color: #fff;
+            padding: 22px 20px 0;
+            background: radial-gradient(300px 220px at 100% 100%, rgba(34,197,94,.22), transparent 70%), #0F172A;
           }
-          @media (min-width: 768px) { .promo { padding: 56px 40px; } }
-
-          .promo::before {
-            content: '';
-            position: absolute; top: -60px; right: -60px;
-            width: 220px; height: 220px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(34,197,94,0.28) 0%, transparent 65%);
-            pointer-events: none;
+          .copy { position: relative; z-index: 1; }
+          .kicker { ${G}; font-size: 11.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #6EE7A0; margin-bottom: 8px; }
+          h2 { font-size: 22px; font-weight: 700; line-height: 1.2; color: #fff; margin-bottom: 4px; }
+          .phone-crop { width: 246px; height: 236px; margin: 20px auto 0; overflow: hidden; }
+          .phone {
+            width: 300px; transform: scale(.82); transform-origin: top left;
+            padding: 11px; border-radius: 44px; background: #0F172A;
+            box-shadow: 0 44px 84px -34px rgba(0,0,0,.75), 0 0 0 1px rgba(255,255,255,.10);
           }
-          .inner { position: relative; text-align: center; }
-
-          .platform-pill {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(34,197,94,0.15);
-            color: var(--green);
-            border: 1px solid rgba(34,197,94,0.3);
-            padding: 5px 12px; border-radius: 9999px;
-            font-size: 12px; font-weight: 600;
-            margin-bottom: 18px;
+          @media (min-width: 768px) {
+            .promo { min-height: 292px; padding: 28px 32px; display: flex; align-items: center;
+              background: radial-gradient(420px 300px at 85% 110%, rgba(34,197,94,.28), transparent 70%), #0F172A; }
+            .copy { max-width: calc(100% - 300px); }
+            h2 { font-size: 26px; }
+            .phone-crop { position: absolute; right: 18px; top: 26px; margin: 0; height: auto; overflow: visible; }
           }
-          .platform-pill .d {
-            width: 6px; height: 6px; border-radius: 9999px;
-            background: var(--green); display: inline-block;
-          }
-
-          h2 {
-            font-size: 26px;
-            color: #fff; margin: 0 0 12px; line-height: 1.15;
-          }
-          @media (min-width: 768px) { h2 { font-size: 34px; } }
-          h2 .hl { color: var(--green); }
-
-          p {
-            font-size: 14px; line-height: 1.55;
-            color: rgba(255,255,255,0.7);
-            max-width: 420px; margin: 0 auto 22px;
-          }
-          @media (min-width: 768px) { p { font-size: 15px; max-width: 500px; } }
-
-          .btns {
-            display: flex; flex-direction: column; gap: 10px;
-            max-width: 340px; margin: 0 auto 22px;
-          }
-          @media (min-width: 520px) {
-            .btns { flex-direction: row; justify-content: center; max-width: none; }
-            .btn { min-width: 220px; }
-          }
-          .btn {
-            background: var(--green); color: #fff;
-            border: none; border-radius: 12px;
-            padding: 14px 16px;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            font-weight: 700; font-size: 15px;
-            box-shadow: 0 8px 20px rgba(34,197,94,0.25);
-            transition: background 180ms ease, transform 180ms ease;
-            white-space: nowrap;
-          }
-          .btn:hover { background: var(--green-dark); transform: translateY(-1px); }
-          .btn svg { width: 18px; height: 18px; }
-
-          .works {
-            display: flex; align-items: center; justify-content: center;
-            gap: 10px; flex-wrap: wrap;
-          }
-          .works-label {
-            font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 500;
-          }
-          /* Logo tile + brand label, matching the homepage step-2 chips. Always one line. */
-          .dots { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 6px; row-gap: 12px; }
-          .wd { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 0 0 auto; transition: transform 150ms ease; }
-          .wd:hover { transform: translateY(-2px); }
-          .wd-tile {
-            width: 40px; height: 40px; border-radius: 11px; background: #fff;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden; flex-shrink: 0;
-          }
-          .wd-tile img { width: 100%; height: 100%; object-fit: cover; border-radius: 11px; display: block; }
-          .wd-label { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.6); white-space: nowrap; }
-          @media (max-width: 449px) { .dots { gap: 4px; } .wd-tile { width: 36px; height: 36px; } .wd-label { font-size: 9.5px; } }
-          @media (max-width: 403px) { .dots { gap: 3px; } .wd-tile { width: 30px; height: 30px; } .wd-label { font-size: 8px; } }
-          @media (max-width: 360px) { .dots { gap: 2px; } .wd-tile { width: 28px; height: 28px; } .wd-label { font-size: 7.5px; } }
-          @media (max-width: 340px) { .dots { gap: 2px; } .wd-tile { width: 26px; height: 26px; } .wd-label { font-size: 7px; } }
+          .scr { position: relative; height: 604px; border-radius: 34px; overflow: hidden; background: #F5F7FA; color: #0F172A; }
+          .notch { position: absolute; top: 9px; left: 50%; margin-left: -52px; width: 104px; height: 26px; border-radius: 99px; background: #0F172A; }
+          .s-head { background: #fff; padding: 42px 15px 10px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+          .s-title { ${G}; font-weight: 700; font-size: 17px; }
+          .s-day { justify-self: end; background: #22C55E; color: #fff; ${G}; font-weight: 700; font-size: 11px; padding: 5px 10px; border-radius: 999px; }
+          .s-tabs { background: #fff; display: flex; justify-content: center; gap: 18px; padding: 0 15px; border-bottom: 1px solid #F1F5F9; font-size: 11px; font-weight: 700; color: #94A3B8; }
+          .s-tabs span { padding: 8px 0 10px; }
+          .s-tabs .on { color: #0F172A; border-bottom: 2px solid #22C55E; }
+          .s-body { padding: 13px 14px; display: flex; flex-direction: column; gap: 12px; }
+          .s-src { font-size: 10.5px; font-weight: 600; color: #94A3B8; }
+          .s-card { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 4px 14px rgba(15,23,42,.06); }
+          .s-cap { font-size: 9.5px; font-weight: 700; letter-spacing: .5px; color: #94A3B8; margin-bottom: 8px; }
+          .s-see { ${G}; font-weight: 700; font-size: 19px; line-height: 1.22; margin-bottom: 16px; }
+          .s-stats { display: flex; justify-content: space-between; border-top: 1px solid #F1F5F9; padding-top: 13px; }
+          .s-lbl { display: block; font-size: 9px; font-weight: 700; letter-spacing: .4px; color: #94A3B8; }
+          .s-val { ${G}; font-weight: 700; font-size: 15px; }
         </style>
         <section class="wrap" aria-labelledby="cta-heading">
           <div class="promo">
-            <div class="inner">
-              <div class="platform-pill"><span class="d"></span> ${pill}</div>
+            <div class="copy">
+              <p class="kicker">Kygo app</p>
               <h2 id="cta-heading">${heading}</h2>
-              <p>${sub}</p>
-              <kygo-cta theme="dark" slug="${slug}" surface="blog" hook="${hook}"
-                note="Free plan available on web or in the app. Save 58% on yearly. Cancel anytime."></kygo-cta>
-              <div class="works">
-                <span class="works-label">Works with</span>
-                <div class="dots">
-                  ${WEARABLE_BADGES.map(w => `
-                    <span class="wd" title="${w.name}">
-                      <span class="wd-tile"${w.bg ? ` style="background:${w.bg}"` : ''}><img src="${w.src}" alt="${w.name}" loading="lazy" /></span>
-                      <span class="wd-label">${w.label}</span>
-                    </span>
-                  `).join('')}
+              <kygo-cta theme="dark" align="left" slug="${slug}" surface="blog" hook="${hook}"
+                note="7-day free trial. Free plan on web or in the app. Cancel anytime."></kygo-cta>
+            </div>
+            <div class="phone-crop" aria-hidden="true"><div class="phone"><div class="scr">
+              <div class="notch"></div>
+              <div class="s-head"><svg viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.4" style="width:17px;height:17px"><path d="M15 18l-6-6 6-6"/></svg><span class="s-title">HRV</span><span class="s-day">Day 52</span></div>
+              <div class="s-tabs"><span class="on">Helping <span style="color:#16A34A">3</span></span><span>Hurting <span style="color:#EF4444">2</span></span><span>Developing 54</span></div>
+              <div class="s-body">
+                <span class="s-src">Data from Oura &middot; Apple Health</span>
+                <div class="s-card">
+                  <div class="s-cap">WHAT WE SEE</div>
+                  <div class="s-see">Magnesium at night is your <span style="color:#22C55E">biggest boost</span> to HRV.</div>
+                  <div class="s-stats">
+                    <span><span class="s-lbl">TRACKING</span><span class="s-val">47 days</span></span>
+                    <span><span class="s-lbl">AVERAGE</span><span class="s-val">34 ms</span></span>
+                    <span><span class="s-lbl">RANGE</span><span class="s-val">18&ndash;58</span></span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </div></div></div>
           </div>
         </section>
       `;
