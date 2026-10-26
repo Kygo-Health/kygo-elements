@@ -11,6 +11,7 @@
  *   - tool_interaction  (tool_name, action)
  *   - cta_view         (blog HTML-embed cards only: one per card seen)
  *   - gate_blog        (blog report card click, via postMessage from its Wix HTML iframe)
+ *   - gate_companion   (the same card on the State of Wearable Accuracy companion post)
  */
 (function () {
   'use strict';
@@ -394,10 +395,13 @@
   // The blog promo cards (docs/wix-snippets/blog-picks-card-*.html and
   // blog-report-card.html) sit in Wix "HTML code" iframes and post
   // {kygo:'promo', card, type:'click', slug, label, url} to the top window.
-  // Report card -> gate_blog; Picks card -> cta_click as related_tool_click to
+  // Report card -> gate_blog, or gate_companion when its data-slug is the SOWA
+  // companion post's (GATE_COMPANION_SLUGS); Picks card -> cta_click as related_tool_click to
   // best-wearables (the same shape the picks card gets on tool pages). Height
   // messages are handled by the "Kygo Promo Card Sizing" custom embed, not here.
   // Guarded so a second copy of this script cannot register it twice.
+  // data-slug values (post slug cut to 40 chars) whose report card is the companion gate.
+  var GATE_COMPANION_SLUGS = ['state-of-wearable-accuracy-2026-medal-ta'];
   if (!window.__kygoPromoClicks) {
     window.__kygoPromoClicks = true;
     window.addEventListener('message', function (e) {
@@ -408,7 +412,7 @@
       var slug = embedStr(d.slug, 60) || 'unknown';
       var url = embedStr(d.url, 300);
       if (card === 'report') {
-        track('gate_blog', {
+        track(GATE_COMPANION_SLUGS.indexOf(slug) !== -1 ? 'gate_companion' : 'gate_blog', {
           cta_label: slug,
           cta_url: url,
           component: 'kygo-blog-embed',
