@@ -1643,11 +1643,11 @@ class KygoWearableAccuracy extends HTMLElement {
   _relatedPosts() {
     return [
       { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
-        title: 'What’s the Most Accurate Wearable? 45+ Studies, 6 Devices, Ranked (2026)',
-        blurb: 'Independent peer-reviewed studies reveal which wearables deliver the most accurate sleep, HRV, heart rate, and step data. We break down the actual numbers so you know what to trust.',
+        title: 'What’s the Most Accurate Wearable? 45+ Studies, 7 Brands, Ranked (2026)',
+        blurb: '45+ independent studies, seven brands, one podium per metric. Which wearable reads closest to the lab for sleep, HRV, heart rate and steps.',
         cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' },
       { slug: 'how-accurate-is-your-heart-rate-monitor',
-        title: 'How Accurate Is Your Heart Rate Monitor? 10 Devices Ranked',
+        title: 'How Accurate Is Your Heart Rate Monitor? 10 Devices Tested',
         blurb: 'Ten wearables, the same 45 wrists, the same day, and error running from 5.5% to 16.5%. Which device you own matters less than you think.',
         cat: 'Wearables & Data', min: 12, img: '273a63_0160a65e547b4b539b2b8be66e2749cf~mv2.png' },
       { slug: 'most-accurate-sleep-tracker-oura-vs-apple-vs-fitbit-2026',

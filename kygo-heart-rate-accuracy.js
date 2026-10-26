@@ -1126,7 +1126,7 @@ class KygoHeartRateAccuracy extends HTMLElement {
   _relatedPosts() {
     return [
       { slug: 'how-accurate-is-your-heart-rate-monitor',
-        title: 'How Accurate Is Your Heart Rate Monitor? 10 Devices Ranked',
+        title: 'How Accurate Is Your Heart Rate Monitor? 10 Devices Tested',
         blurb: 'Ten wearables, the same 45 wrists, the same day, and error running from 5.5% to 16.5%. Which device you own matters less than you think.',
         cat: 'Wearables & Data', min: 12, img: '273a63_0160a65e547b4b539b2b8be66e2749cf~mv2.png' },
       { slug: 'heart-rate-accuracy-by-activity-type',

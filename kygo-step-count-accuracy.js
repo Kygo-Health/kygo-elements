@@ -1041,16 +1041,16 @@ class KygoStepCountAccuracy extends HTMLElement {
   _relatedPosts() {
     return [
       { slug: 'which-wearable-has-the-most-accurate-step-count-a-2024-2025-research-analysis',
-        title: 'Which Wearable Has the Most Accurate Step Count? A 2024-2025 Research Analysis',
-        blurb: 'Twenty-plus peer-reviewed studies, plus consumer testing for the devices nobody has studied. Every source flagged so you can judge it yourself.',
+        title: 'Which Wearable Counts Steps Most Accurately? 59 Studies Say Garmin (2026)',
+        blurb: '59 peer-reviewed studies, plus consumer testing for the devices nobody has studied. Every source flagged so you can judge it yourself.',
         cat: 'Wearables & Data', min: 8, img: '273a63_274f98119a1547799ecdfd849e893e4f~mv2.png' },
       { slug: 'step-count-accuracy-factors',
         title: 'What Actually Affects Your Wearable\'s Step Count Accuracy, Ranked by Impact',
         blurb: 'Walking speed, arm swing and where you wear the device matter more than the brand. Every factor ranked by how much it moves the count.',
         cat: 'Wearables & Data', min: 7, img: '273a63_555e30a7fca44d14bf995a7e320a93dd~mv2.png' },
       { slug: 'what-s-the-most-accurate-wearable-data-a-2024-2025-study-breakdown-by-device',
-        title: 'What’s the Most Accurate Wearable? 45+ Studies, 6 Devices, Ranked (2026)',
-        blurb: 'Independent peer-reviewed studies reveal which wearables deliver the most accurate sleep, HRV, heart rate, and step data. We break down the actual numbers so you know what to trust.',
+        title: 'What’s the Most Accurate Wearable? 45+ Studies, 7 Brands, Ranked (2026)',
+        blurb: '45+ independent studies, seven brands, one podium per metric. Which wearable reads closest to the lab for sleep, HRV, heart rate and steps.',
         cat: 'Wearables & Data', min: 10, img: '273a63_f6d12b66837342a6a552e4e3d9297fef~mv2.png' }
     ];
   }

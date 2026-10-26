@@ -1107,7 +1107,7 @@ class KygoRemSleep extends HTMLElement {
   _relatedPosts() {
     return [
       { slug: 'what-influences-rem-sleep-factors-ranked',
-        title: 'What Influences REM Sleep? Factors Ranked by Evidence (2026)',
+        title: 'What Influences REM Sleep? 37 Factors Checked Against the Research',
         blurb: 'REM is the most chemistry-sensitive stage of your night. What moves it, from alcohol to room temperature, ranked by evidence.',
         cat: 'Sleep', min: 10, img: '273a63_be7638af00034117a0366d56b59127ae~mv2.png' },
       { slug: 'how-to-increase-deep-sleep-factors-ranked',

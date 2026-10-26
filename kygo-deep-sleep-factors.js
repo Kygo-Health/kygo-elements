@@ -893,7 +893,7 @@ class KygoDeepSleepFactors extends HTMLElement {
         blurb: 'Deep sleep is the most restorative stage and most people get less than they should. 38 factors, 50+ studies, with doses.',
         cat: 'Sleep', min: 11, img: '273a63_5a16c04aa1b9489da2cc42da679e913a~mv2.png' },
       { slug: 'what-influences-rem-sleep-factors-ranked',
-        title: 'What Influences REM Sleep? Factors Ranked by Evidence (2026)',
+        title: 'What Influences REM Sleep? 37 Factors Checked Against the Research',
         blurb: 'REM is the most chemistry-sensitive stage of your night. What moves it, from alcohol to room temperature, ranked by evidence.',
         cat: 'Sleep', min: 10, img: '273a63_be7638af00034117a0366d56b59127ae~mv2.png' },
       { slug: 'why-is-my-sleep-score-low-when-i-slept-8-hours',

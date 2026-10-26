@@ -1249,11 +1249,11 @@ class KygoSleepLatencyFactors extends HTMLElement {
   _relatedPosts() {
     return [
       { slug: 'how-to-fall-asleep-faster-factors-ranked-by-evidence',
-        title: 'How to Fall Asleep Faster: 33 Factors Ranked by Evidence (2026)',
-        blurb: 'Thirty-three factors that change sleep latency, from caffeine and melatonin to warm baths and bedroom temperature, each graded.',
+        title: 'How to Fall Asleep Faster: 57 Sleep Latency Factors Checked',
+        blurb: 'Fifty-seven factors that change sleep latency, from caffeine and melatonin to warm baths and bedroom temperature, each graded.',
         cat: 'Sleep', min: 10, img: '273a63_301e6ab1c01a477aad452b8ae4373b98~mv2.png' },
       { slug: 'caffeine-sleep-correlation-personal-cutoff-time',
-        title: 'Caffeine and Sleep: Finding Your Personal Cutoff Time',
+        title: 'Caffeine and Sleep: Finding Your Personal Cutoff Time (It\'s Not 2PM for Everyone)',
         blurb: 'The standard advice is to stop by 2 PM. The research says your personal cutoff can sit hours either side of that rule.',
         cat: 'Sleep', min: 11, img: '273a63_ce85cf859543430dbf4604fed94bedbe~mv2.png' },
       { slug: 'how-to-stay-asleep-factors-ranked-by-evidence',

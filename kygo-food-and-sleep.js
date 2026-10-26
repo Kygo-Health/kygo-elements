@@ -325,7 +325,7 @@ class KygoFoodAndSleep extends HTMLElement {
         blurb: 'Foods, drinks and eating patterns tested against each part of sleep, one table per stage, with every finding graded.',
         cat: 'Sleep', min: 15, img: '273a63_b9ab03e5e03747329debcd66d2687e50~mv2.png' },
       { slug: 'caffeine-sleep-correlation-personal-cutoff-time',
-        title: 'Caffeine and Sleep: Finding Your Personal Cutoff Time',
+        title: 'Caffeine and Sleep: Finding Your Personal Cutoff Time (It\'s Not 2PM for Everyone)',
         blurb: 'The standard advice is to stop by 2 PM. The research says your personal cutoff can sit hours either side of that rule.',
         cat: 'Sleep', min: 11, img: '273a63_ce85cf859543430dbf4604fed94bedbe~mv2.png' },
       { slug: 'why-does-alcohol-crush-your-hrv-and-how-long-until-it-recovers',
