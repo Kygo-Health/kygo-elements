@@ -95,9 +95,9 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    scores across 12 wearables"). Meta title/description themselves are **Wix page-SEO settings**,
    not component-injected — hand them to the client; the component only controls the visible copy
    + JSON-LD.
-3. **App CTA** — the **standard app-CTA module** (see §3 "App CTA (the standard module)").
-   The dark card, on **its own section, directly after the first content section**. Nothing
-   else goes in that band — not the email capture, not a secondary link.
+3. **App CTA**: the **standard app-CTA module** (see §3 "App CTA (the standard module)"):
+   the shared `<kygo-app-card>`, on **its own section, directly after the first content
+   section**. Nothing else goes in that band.
 
    > **Store links.** Clickable store buttons use the Tenjin attribution links (Website
    > channel): iOS → `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`, Android →
@@ -109,9 +109,9 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    > hooks `kygo-tracking.js` classifies on; don't strip them.
 
 4. **Content sections** — each: `kicker` pill + `<h2>` (with `.hl`) + `lede`, then the module.
-5. **Email CTA** — the **standard email-CTA module** (see §3 "Email CTA (the standard module)").
-   Its own section, with **at least one page content section between it and the app CTA** —
-   the two conversion touchpoints never touch.
+5. **Report card** (accuracy and comparison tools only): the **standard report module**
+   (see §3 "Promo order"), after the first content section that follows the app card.
+   Tool pages carry **no email capture** (dropped 2026-10-27).
 6. **Related tools** — the **standard related-tools module** (see §3 "Related tools (the
    standard module)"). Three cross-link cards. **Tools come before the blog on every page**:
    a reader who is done with this tool is offered another tool first, and the article second.
@@ -181,35 +181,33 @@ If a list exceeds ~12 items, it must **not** render as a flat column of cards on
 - Stat/value cards stay **side-by-side (2-up) on mobile** — don't let them stack into three
   tall blocks.
 
-### Email CTA (the standard module)
+### Promo order (the standard modules)
 
-`<kygo-inline-subscribe>` has a transparent host, so dropped in bare it inherits whatever band
-it lands beside and reads as part of that section. Wrap it in the standard module instead —
-its own `<section>`, its own band, part of the page rhythm:
+Tool pages carry at most three promos, always in this order and **never two back to back**
+(a page content section sits between each):
 
-```js
-_emailCta() { return { source: 'tool-<slug>', variant: 'comparison' }; }   // per page
-${this._renderEmailCta()}                                                  // call site
-```
+1. **App card** `${this._renderAppCta(bg)}`, after the first content section.
+2. **Report card** `${this._renderReportCard()}`, the free State of Wearable Accuracy report,
+   **only on accuracy and comparison tools** (device rankings). Placed after the first content
+   section that follows the app card. Its links carry `data-gate="gate_tool"`, which
+   `kygo-tracking.js` files as the GA4 event `gate_tool` (`cta_label` = `report-<slug>`).
+   The wearable-accuracy hub keeps its own `_renderReportBand()` (`gate_hub`).
+3. **Picks card** `${this._renderPicksBand()}` (wraps `_renderPicksCard()` in its own band),
+   **only on device tools**, last: directly above the FAQ section, or above Sources when the
+   page has no FAQ.
 
-`source` is what GA4 and the Velo endpoint record for the subscriber — **never change it** when
-moving the section. `variant` is `comparison` on the accuracy/comparison tools and `factors` on
-the explorers.
-
-**Placement:** after the first page content section that follows the app CTA. A content section
-always separates the two conversion touchpoints; they must never be adjacent, and the email
-capture must never sit inside the app CTA's band.
+There is **no email capture on tool pages** any more (the `kygo-inline-subscribe` band and the
+`_emailCta()` / `_renderEmailCta()` module were removed on 2026-10-27). Email signup lives on
+the blog template and the footer.
 
 ### App CTA (the standard module)
 
-**One dark card, one section, same place on every page**: immediately after the first
-content section, before everything else. That band contains the card and nothing else —
-the email capture (`<kygo-inline-subscribe>`) is a separate band further down, never
-directly above or below it, and never inside it.
-
-Self-contained under `kc-*` names with a literal fallback behind every custom property,
-so it renders identically on both palettes. Copy `_renderAppCta(bg)` verbatim; the only
-per-page part is:
+**One app card, one section, same place on every page**: immediately after the first
+content section. It is the shared `<kygo-app-card>` (`kygo-app-card.js`), the same card the
+blog posts use: kicker, headline, sub, store buttons (the visitor's own store on a phone,
+iPhone plus Android on desktop), an "Or start on the web" link (`web` attribute), the App
+Store review on desktop, and the app's Insights screen on a phone mockup. Copy
+`_renderAppCta(bg)` and the `__ensureKygoAppCard()` loader verbatim; the only per-page part is:
 
 ```js
 _appCta() {
@@ -219,9 +217,11 @@ _appCta() {
 }
 ```
 
-`headline` carries exactly one `<span>` for the green phrase. Everything else — pill,
-buttons, "Free plan available…" line, the six "Works with" badges, and the tracking
-attributes — is shared and should not be edited per page.
+Tags are stripped from `headline`/`sub` (the card sets its own type). Tracking: the card is
+in the page (not an iframe), so `kygo-tracking.js` reads its clicks directly, like
+`<kygo-cta>`: `cta_click` as `ios_download` / `android_download` / `web_signup`,
+`cta_label` = slug, `position` = `tool`, `cta_content` = variant. Tenjin gets
+`site_id=tool-<slug>` and `creative_name=app-card-v1-mid`.
 
 **The thin `kband` is retired.** It used to be the early conversion surface on about half
 the tools; the card replaces it. One app-download surface per page.
@@ -660,15 +660,11 @@ The page carries **three** conversion touchpoints beyond the nav buttons — don
   on about half the tools and has been replaced everywhere by the standard app-CTA card (§3).
   One app-download surface per page. Don't add it back; the CSS still lingers in some files and
   should be removed when you next touch them.
-- **CTA rhythm — spread them out.** Never place two conversion touchpoints back to back, and never
-  put the email capture in or beside the CTA band. Put a content section between each. The spine
-  every tool now follows: hero → first content section → **app CTA card** → content →
-  **email CTA** → content → FAQ → blog cross-link → related tools → sources.
-- **Inline email capture** — use the standard email-CTA module (§3), which wraps the shared
-  `<kygo-inline-subscribe>` sibling element in its own section. Don't drop the element in bare:
-  its host is transparent, so it takes on whatever band it lands beside and reads as part of that
-  section. The element renders its own capture UI and handles the submit; you set only `source`
-  (unique per tool, recorded by GA4 and Velo) and `variant`.
+- **CTA rhythm: spread them out.** Never place two promos back to back; put a content section
+  between each. The spine every tool now follows: hero → first content section → **app card** →
+  content → **report card** (accuracy/comparison tools) → content → … → **Picks card** (device
+  tools) → FAQ → sources. See §3 "Promo order".
+- **No inline email capture on tool pages** (removed 2026-10-27); don't add one back.
 - **Blog cross-link** (§2.5) is the fourth touchpoint — the read-more card to the matching
   `kygo.app/post/...` article, plus per-section `section-readmore` links for a multi-post cluster.
 
@@ -839,8 +835,8 @@ Pre-commit checklist:
       card only — no email capture in that band — and **exactly one app-download card on the
       page**: no `kband`, and no legacy `blog-cta-section` dark card. Verify with
       `grep -c '_renderAppCta(' file.js` (1) and `grep -c 'blog-cta-section' file.js` (0).
-- [ ] Email CTA: standard module (§3), its own section, at least one content section below
-      the app CTA, `source`/`variant` unchanged.
+- [ ] Promo order (§3): app card, then report card (accuracy/comparison tools only), then Picks
+      above the FAQ (device tools only); a content section between each; no email capture.
 - [ ] Band rhythm: no two adjacent sections share a background, including around the app CTA,
       email CTA, related-tools and related-reading bands.
 - [ ] No malformed section tags: `grep -n '<section c[^l]' kygo-*.js` returns nothing. A bad

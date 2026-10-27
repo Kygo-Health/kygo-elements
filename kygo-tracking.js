@@ -12,6 +12,7 @@
  *   - cta_view         (blog HTML-embed cards only: one per card seen)
  *   - gate_blog        (blog report card click, via postMessage from its Wix HTML iframe)
  *   - gate_companion   (the same card on the State of Wearable Accuracy companion post)
+ *   - gate_tool        (report card on a tool page, data-gate attribute; the hub band is gate_hub)
  */
 (function () {
   'use strict';
@@ -87,7 +88,7 @@
     try {
       var root = el.getRootNode && el.getRootNode();
       var host = root && root.host;
-      return host && host.tagName === 'KYGO-CTA' ? host : null;
+      return host && (host.tagName === 'KYGO-CTA' || host.tagName === 'KYGO-APP-CARD') ? host : null;
     } catch (e) { return null; }
   }
 
@@ -106,7 +107,9 @@
         category: destination === 'web' ? 'web_signup' : destination + '_download',
         label: (host && host.getAttribute('slug')) || getLabel(el),
         url: href,
-        position: host && host.getAttribute('surface')
+        position: host && host.getAttribute('surface'),
+        // <kygo-app-card> carries a design variant; GA4 custom dimension cta_content.
+        content: host && host.tagName === 'KYGO-APP-CARD' ? (host.getAttribute('variant') || '') : ''
       };
     }
 
@@ -242,10 +245,25 @@
 
     if (!clickable) return;
 
+    var component = getComponentName(path);
+
+    // Report gate links on tool pages carry data-gate="gate_tool" (the hub
+    // band: gate_hub). Filed as their own event, like gate_blog.
+    var gate = clickable.getAttribute('data-gate');
+    if (gate && /^gate_[a-z_]{2,20}$/.test(gate)) {
+      track(gate, {
+        cta_label: (clickable.getAttribute('data-track-label') || '').slice(0, 60),
+        cta_url: clickable.getAttribute('href') || '',
+        component: component,
+        position: clickable.getAttribute('data-track-position') || 'body',
+        page_path: window.location.pathname
+      });
+      return;
+    }
+
     var info = classifyClick(clickable);
     if (!info) return;
 
-    var component = getComponentName(path);
     var position = clickable.getAttribute('data-track-position') || info.position || 'body';
 
     if (info.category === 'tool_interaction') {
@@ -268,6 +286,7 @@
         position: position,
         page_path: window.location.pathname
       };
+      if (info.content) ctaParams.cta_content = info.content;
       if (info.affiliate) ctaParams.affiliate = info.affiliate;
       if (info.affiliate_marketplace) ctaParams.affiliate_marketplace = info.affiliate_marketplace;
       if (info.to_tool) ctaParams.to_tool = info.to_tool;

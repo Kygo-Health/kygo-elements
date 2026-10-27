@@ -277,6 +277,23 @@ Replaces the pasted `blog-cta-card.html` card, one post at a time (test: how-acc
 
 `cta_content` must be registered as a GA4 event-scoped custom dimension to be reportable.
 
+## Tool-page promos (2026-10-27)
+
+Every tool page runs at most three promos, in this order: the app card, the State of Wearable
+Accuracy report card (accuracy and comparison tools only), the Picks card (device tools, above
+the FAQ). The inline email band was removed from all tool pages.
+
+- **App card**: the shared `<kygo-app-card surface="tool" web post="tool-<slug>" slug="<slug>">`
+  in the page itself (not an iframe). `kygo-tracking.js` treats it like `<kygo-cta>`:
+  `cta_click` with `cta_category` ios_download / android_download / web_signup,
+  `cta_label` = slug, `position` = tool, `cta_content` = variant (v1). Tenjin: `site_id=tool-<slug>`,
+  `creative_name=app-card-v1-mid`. No `cta_view` on tool pages (that comes only from iframes).
+- **Report card**: links carry `data-gate="gate_tool"`; `kygo-tracking.js` files any
+  `data-gate="gate_*"` click as that GA4 event (`cta_label` = `report-<slug>`, `position` =
+  report-card / report-cover). The wearable-accuracy hub band is now `gate_hub` (it was a plain
+  `cta_click` before). Mark `gate_tool` and `gate_hub` as key events in GA4 if wanted.
+- **Picks card**: unchanged (`related_tool_click` to best-wearables).
+
 ## How components opt into tracking
 
 Tracking is **convention-based** — components don't call the tracker, they just use the right

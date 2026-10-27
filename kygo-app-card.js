@@ -28,6 +28,14 @@
  *             (sleep, heart, food) get added to VISUALS below.
  *   headline  the post's own hook. Never reused across posts.
  *   sub       one sentence under the headline.
+ *   surface   blog (default) | tool. Goes to GA4 as the click position and to
+ *             the web link's utm_medium.
+ *   web       boolean. Adds an "Or start on the web" link under the store
+ *             buttons (tool pages, where all three platforms stay on screen).
+ *
+ * On a tool page the card is not in an iframe: there are no messages to post,
+ * and kygo-tracking.js reads the clicks straight from the page (it treats this
+ * element like <kygo-cta>: cta_label = slug, cta_content = variant).
  *
  * The light-DOM <a> inside the element is a fallback: it shows only if this
  * file fails to load, so a post never shows an empty box.
@@ -98,7 +106,7 @@
       this._onClick = this._onClick.bind(this);
     }
 
-    static get observedAttributes() { return ['wixsettings', 'post', 'position', 'slug', 'variant', 'focus', 'headline', 'sub']; }
+    static get observedAttributes() { return ['wixsettings', 'post', 'position', 'slug', 'variant', 'focus', 'headline', 'sub', 'surface', 'web']; }
 
     connectedCallback() {
       this._parseWixAttributes();
@@ -137,6 +145,7 @@
     get _position() { return clean(this._getSetting('position', 'mid'), 10) || 'mid'; }
     get _slug() { return clean(this._getSetting('slug', this._post.slice(0, 25) + '-' + this._position), 30); }
     get _variant() { return clean(this._getSetting('variant', 'v1'), 20) || 'v1'; }
+    get _surface() { return clean(this._getSetting('surface', 'blog'), 10) || 'blog'; }
 
     /* ── Tracking ─────────────────────────────────────────────────────── */
 
@@ -254,6 +263,9 @@
           .btn.secondary:hover { border-color: #22C55E; }
           .btns.solo .btn { flex: 1; }
           .review { display: none; }
+          .web { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.6); }
+          .web a { color: #fff; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+          .web a:hover { color: #6EE7A0; }
 
           .phone { position: relative; width: 236px; height: 400px; margin: 20px auto -210px; padding: 7px; border-radius: 40px;
             background: linear-gradient(160deg, #334155, #0B1220); box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 40px 70px -24px rgba(0,0,0,.75); }
@@ -303,6 +315,7 @@
           <p class="sub">${esc(sub)}</p>
           <div class="btns">
           </div>
+          ${this.hasAttribute('web') ? `<p class="web">Or start on the <a href="https://app.kygo.app/start?utm_source=kygo.app&amp;utm_medium=${esc(this._surface)}&amp;utm_campaign=${esc(this._slug)}" data-destination="web" target="_blank" rel="noopener">web</a></p>` : ''}
           <figure class="review">
             <div class="r-top"><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><figcaption>App Store review</figcaption></div>
             <blockquote>“${esc(REVIEW)}”</blockquote>

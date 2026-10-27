@@ -31,6 +31,17 @@ function __ensureKygoCta() {
   document.head.appendChild(s);
 }
 
+/** Loads the shared <kygo-app-card> element (the in-page app card) once. */
+function __ensureKygoAppCard() {
+  if (customElements.get('kygo-app-card')) return;
+  if (document.querySelector('script[data-kygo-app-card-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-app-card.js';
+  s.setAttribute('data-kygo-app-card-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
 /** Appends a JSON-LD script unless the page already serves that @type from the Wix SEO panel */
 function __kygoAppendLdOnce(script) {
   let type;
@@ -903,75 +914,35 @@ class KygoVo2maxFactors extends HTMLElement {
   // is a separate band further down the page.
   // Pass 'gray' to sit the section on the tinted band.
 
+  // ── App CTA · Kygo standard module ──────────────────────────────────────
+  // The shared <kygo-app-card> (kygo-app-card.js), the same card the blog posts
+  // use: copy and store buttons on the left, the app's Insights screen on a
+  // phone to the right. This tool's own words come from _appCta(). Tenjin gets
+  // the tool as site_id; GA4 files clicks as cta_click with cta_label = slug.
+  // Promo order on every tool: app card first, the State of Wearable Accuracy
+  // report card second (accuracy and comparison tools only), the Picks card
+  // last (just above the FAQ), never two promos back to back.
   _renderAppCta(bg) {
     __ensureKygoCta();
+    __ensureKygoAppCard();
     const c = this._appCta();
-    const badges = [
-      ['273a63_56ac2eb53faf43fab1903643b29c0bce', 'Oura Ring', 'Oura'],
-      ['273a63_1a1ba0e735ea4d4d865c04f7c9540e69', 'Apple Health', 'Apple'],
-      ['273a63_c451e954ff8740338204915f904d8798', 'Fitbit', 'Fitbit'],
-      ['273a63_0a60d1d6c15b421e9f0eca5c4c9e592b', 'Garmin', 'Garmin'],
-      ['273a63_874a026381ad469698b84e11a2736609', 'WHOOP', 'WHOOP', '#000'],
-      ['273a63_e7e3c05ed0bc4cec8f456cd7f995e70b', 'Polar', 'Polar'],
-      ['273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e', 'Google Health', 'Google'],
-      ['273a63_0c0e48cc065d4ee3bf506f6d47440518', 'Health Connect', 'Health']
-    ].map(([id, name, label, bg]) => `<span class="kc-chip"><span class="kc-chip-tile"${bg ? ` style="background:${bg}"` : ''}><img src="https://static.wixstatic.com/media/${id}~mv2.png" alt="${name}" title="${name}" loading="lazy" /></span><span class="kc-chip-label">${label}</span></span>`).join('');
+    const txt = (s) => String(s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().replace(/"/g, '&quot;');
     return `
       <style>
-      .kc-section{padding:56px 20px;background:#fff}
+      .kc-section{padding:16px 20px;background:#fff}
       .kc-section.kc-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
-      @media(min-width:720px){.kc-section{padding:72px 24px}}
+      @media(min-width:720px){.kc-section{padding:24px 24px}}
       .kc-inner{max-width:1100px;margin:0 auto}
-      .kc-card{position:relative;overflow:hidden;background:#0F172A;border-radius:24px;padding:40px 24px;color:#fff;text-align:center;display:flex;flex-direction:column;align-items:center}
-      @media(min-width:720px){.kc-card{padding:56px 40px}}
-      .kc-card::before{content:'';position:absolute;top:-160px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(34,197,94,.30),transparent);pointer-events:none}
-      .kc-card::after{content:'';position:absolute;bottom:-180px;left:-180px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(34,197,94,.12),transparent);pointer-events:none}
-      .kc-pill{position:relative;display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.16);color:#6EE7A0;padding:6px 14px;border-radius:999px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:12px;font-weight:600;border:1px solid rgba(34,197,94,.25)}
-      .kc-pill .kc-dot{width:6px;height:6px;border-radius:50%;background:#22C55E;box-shadow:0 0 8px #22C55E}
-      .kc-h{position:relative;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;color:#fff;font-size:clamp(26px,4.5vw,42px);line-height:1.05;letter-spacing:-.01em;margin:18px 0 14px;max-width:22ch}
-      .kc-h span{color:#22C55E}
-      .kc-p{position:relative;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.72);font-size:clamp(14px,1.6vw,16px);line-height:1.6;max-width:56ch;margin:0 auto 24px}
-      .kc-p em{font-style:italic}
-      .kc-btns{position:relative;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;width:100%}
-      .kc-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 22px;border-radius:12px;background:#22C55E;color:#fff;font-family:var(--font-body,'DM Sans',sans-serif);font-weight:600;font-size:15px;text-decoration:none;box-shadow:0 4px 12px rgba(34,197,94,.25);transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
-      .kc-btn:hover{background:#16A34A;transform:translateY(-1px);box-shadow:0 10px 24px rgba(34,197,94,.32)}
-      .kc-btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
-      .kc-btn svg{width:18px;height:18px;flex:none}
-      @media(max-width:560px){.kc-btn{width:100%}}
-      .kc-note{position:relative;margin:16px 0 0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;line-height:1.5;color:rgba(255,255,255,.72)}
-      .kc-works{position:relative;margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:var(--font-body,'DM Sans',sans-serif);color:rgba(255,255,255,.6);font-size:13px}
-      /* Logo tile + brand label, matching the homepage step-2 chips. Always one line. */
-      .kc-badges{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:center;gap:6px;row-gap:12px}
-      .kc-chip{display:flex;flex-direction:column;align-items:center;gap:6px;flex:0 0 auto}
-      .kc-chip-tile{width:40px;height:40px;flex-shrink:0;border-radius:11px;background:#fff;overflow:hidden;display:flex;align-items:center;justify-content:center}
-      .kc-chip-tile img{width:100%;height:100%;object-fit:cover;border-radius:11px;display:block}
-      .kc-chip-label{font-size:10px;font-weight:600;color:rgba(255,255,255,.6);white-space:nowrap}
-      @media(max-width:449px){.kc-badges{gap:4px}.kc-chip-tile{width:36px;height:36px}.kc-chip-label{font-size:9.5px}}
-      @media(max-width:403px){.kc-badges{gap:3px}.kc-chip-tile{width:30px;height:30px}.kc-chip-label{font-size:8px}}
-      @media(max-width:360px){.kc-badges{gap:2px}.kc-chip-tile{width:28px;height:28px}.kc-chip-label{font-size:7.5px}}
-      @media(max-width:340px){.kc-badges{gap:2px}.kc-chip-tile{width:26px;height:26px}.kc-chip-label{font-size:7px}}
+      .kc-inner kygo-app-card{display:block}
       </style>
       <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
         <div class="kc-inner">
-          <div class="kc-card animate-on-scroll">
-            <div class="kc-pill"><span class="kc-dot"></span> Free 7-Day Trial</div>
-            <h3 class="kc-h">${c.headline}</h3>
-            <p class="kc-p">${c.sub}</p>
-            <kygo-cta theme="dark" slug="${c.slug}" surface="tool" hook="${c.hook}"
-              note="Free plan available on web or in the app. Save 58% on yearly. Cancel anytime."></kygo-cta>
-            <div class="kc-works">
-              <span>Works with</span>
-              <div class="kc-badges">${badges}</div>
-            </div>
-          </div>
+          <kygo-app-card surface="tool" web post="tool-${c.slug}" position="mid" slug="${c.slug}" variant="v1"
+            headline="${txt(c.headline)}" sub="${txt(c.sub)}">
+            <a href="https://app.kygo.app/start">Get the Kygo app</a>
+          </kygo-app-card>
         </div>
       </section>`;
-  }
-
-  // Identifiers for the email capture. `source` is what GA4 and the Velo
-  // endpoint record, so it must not change.
-  _emailCta() {
-    return { source: 'tool-vo2max-factors', variant: 'factors' };
   }
 
   // ── Email CTA · Kygo standard module ────────────────────────────────────
@@ -979,22 +950,6 @@ class KygoVo2maxFactors extends HTMLElement {
   // app CTA — a page content section always separates the two conversion
   // touchpoints. Self-contained under `ke-*` names so it drops into either
   // palette. Pass 'gray' to sit on the tinted band.
-
-  _renderEmailCta(bg) {
-    const c = this._emailCta();
-    return `
-      <style>
-      .ke-section{padding:8px 20px 12px;background:#fff}
-      .ke-section.ke-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
-      @media(min-width:720px){.ke-section{padding:16px 24px 20px}}
-      .ke-inner{max-width:1100px;margin:0 auto}
-      </style>
-      <section class="ke-section${bg === 'gray' ? ' ke-gray' : ''}" id="email-signup">
-        <div class="ke-inner">
-          <kygo-inline-subscribe source="${c.source}" variant="${c.variant}"></kygo-inline-subscribe>
-        </div>
-      </section>`;
-  }
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
@@ -1087,7 +1042,6 @@ class KygoVo2maxFactors extends HTMLElement {
           <div class="fx-groups animate-on-scroll">${this._renderFactorGroups(all)}</div>
         </div>
       </section>
-      ${this._renderEmailCta()}
 
 
       <section class="section bg-light">
