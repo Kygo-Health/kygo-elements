@@ -288,7 +288,13 @@ the FAQ). The inline email band was removed from all tool pages.
   `cta_click` with `cta_category` ios_download / android_download / web_signup,
   `cta_label` = slug, `position` = tool, `cta_content` = variant (v1). Tenjin: `site_id=tool-<slug>`,
   `creative_name=app-card-v1-mid`. No `cta_view` on tool pages (that comes only from iframes).
-- **Report card**: links carry `data-gate="gate_tool"`; `kygo-tracking.js` files any
+- **Report card** (since 2026-10-27 the shared `<kygo-report-card>`, also on blog posts and the
+  homepage): captures the email in the card, POSTs `{email, source}` to `/_functions/subscribe`
+  (source `report-<blog|tool|home>-<slug>`), then sends the visitor to `/report-download`. GA4:
+  `email_subscribe` with `lead_type` report and that source (blog iframes post
+  `{kygo:'embed', type:'subscribe', source}` up; no email ever leaves the frame that way).
+  The cover image still links to the landing page: on tools/home its link carries
+  `data-gate="gate_tool"` / `gate_home`; `kygo-tracking.js` files any
   `data-gate="gate_*"` click as that GA4 event (`cta_label` = `report-<slug>`, `position` =
   report-card / report-cover). The wearable-accuracy hub band is now `gate_hub` (it was a plain
   `cta_click` before). Mark `gate_tool` and `gate_hub` as key events in GA4 if wanted.

@@ -330,6 +330,7 @@
       // Only the subscribe form and reportDownload carry a `source`; contact detail is PII
       // (firstName/lastName/email/subject/message) and is deliberately ignored.
       if (detail.source) params.source = detail.source;
+      if (domEvent === 'subscribe' && /^report-/.test(detail.source || '')) params.lead_type = 'report';
       track(cfg.ga, params);
     }, true);
   });
@@ -406,6 +407,15 @@
       track('cta_click', base);
     } else if (d.type === 'view') {
       track('cta_view', base);
+    } else if (d.type === 'subscribe') {
+      // kygo-report-card in a blog iframe: the email went to /_functions/subscribe
+      // from the frame; only the source string comes up here, never the address.
+      track('email_subscribe', {
+        lead_type: 'report',
+        source: embedStr(d.source, 60),
+        component: 'kygo-report-card',
+        page_path: window.location.pathname
+      });
     }
   });
 

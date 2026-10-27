@@ -1931,9 +1931,10 @@ customElements.define('kygo-works-everywhere', KygoWorksEverywhere);
 /* ========================================
    KYGO HOME REPORT
    Tag: kygo-home-report
-   The free State of Wearable Accuracy report card, the same card the blog
-   posts and tool pages use. Sits directly above the FAQ (see kygo-home order).
-   GA4: the click is filed as gate_home (kygo-tracking.js reads data-gate).
+   The shared <kygo-report-card surface="home"> (kygo-report-card.js), the
+   same email-capture card the blog posts and tool pages use. Sits directly
+   above the FAQ (see kygo-home order). GA4: email_subscribe with source
+   report-home-home; a click on the cover is gate_home.
 ======================================== */
 class KygoHomeReport extends HTMLElement {
   constructor() {
@@ -1941,52 +1942,26 @@ class KygoHomeReport extends HTMLElement {
     this.attachShadow({ mode: 'open' });
   }
   connectedCallback() {
-    this.render();
-    this._io = __revealOnScroll(this.shadowRoot.querySelector('.hr'));
-    __seo(this, 'Free report: The State of Wearable Accuracy 2026. Every brand\'s result on all 11 metrics from 71 peer-reviewed validation studies, plus brand profiles and a buyer\'s guide. Get it free at kygo.app/state-of-wearable-accuracy.');
-  }
-  disconnectedCallback() {
-    if (this._io) this._io.disconnect();
-  }
-  render() {
-    const url = 'https://www.kygo.app/state-of-wearable-accuracy';
-    const cover = 'https://kygo-health.github.io/kygo-elements/assets/sowa/sowa-cover.webp';
+    if (!customElements.get('kygo-report-card') && !document.querySelector('script[data-kygo-report-card-loader]')) {
+      const s = document.createElement('script');
+      s.src = 'https://kygo-health.github.io/kygo-elements/kygo-report-card.js';
+      s.setAttribute('data-kygo-report-card-loader', '');
+      s.async = true;
+      document.head.appendChild(s);
+    }
     this.shadowRoot.innerHTML = `
       <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-        :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#0F172A;line-height:1.5}
-        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-        .hr{padding:clamp(40px,5vw,64px) 20px 8px}
+        :host{display:block;background:#fff}
+        .hr{padding:clamp(24px,4vw,48px) 20px 0}
         .hr-inner{max-width:1100px;margin:0 auto}
-        .hr.reveal .hr-card{animation:hiwUp .6s ease-out both}
-        @keyframes hiwUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-        .hr-card{display:flex;flex-direction:column;gap:20px;padding:22px;border:1.5px solid #E2E8F0;border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.06)}
-        @media(min-width:720px){.hr-card{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:center;padding:28px}}
-        .hr-copy{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-        .hr-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#15803D}
-        .hr-title{font-family:'Space Grotesk',sans-serif;font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em}
-        @media(min-width:720px){.hr-title{font-size:28px}}
-        .hr-sub{font-size:15px;line-height:1.5;color:#475569}
-        @media(min-width:720px){.hr-sub{max-width:40ch}}
-        .hr-btn{margin-top:8px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;background:#22C55E;color:#0F172A;font-size:15px;font-weight:700;text-decoration:none;transition:background .2s}
-        .hr-btn:hover{background:#4ADE80}
-        .hr-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-        .hr-cover{display:block;border-radius:12px;overflow:hidden;box-shadow:0 12px 28px rgba(15,23,42,.18);background:#0F172A}
-        .hr-cover img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+        kygo-report-card{display:block}
       </style>
       <section class="hr" aria-label="Free report">
         <div class="hr-inner">
-          <aside class="hr-card">
-            <div class="hr-copy">
-              <p class="hr-eyebrow">Free report</p>
-              <h2 class="hr-title">How accurate is your wearable, really?</h2>
-              <p class="hr-sub">Every brand's result on all 11 metrics, from 71 peer-reviewed studies, plus brand profiles and a buyer's guide.</p>
-              <a class="hr-btn" href="${url}" data-gate="gate_home" data-track-position="home-report" data-track-label="report-home">Get the free report<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            </div>
-            <a class="hr-cover" href="${url}" data-gate="gate_home" data-track-position="home-report-cover" data-track-label="report-home" tabindex="-1" aria-hidden="true"><img src="${cover}" alt="" width="1280" height="720" loading="lazy" decoding="async" /></a>
-          </aside>
+          <kygo-report-card surface="home" slug="home"></kygo-report-card>
         </div>
       </section>`;
+    __seo(this, 'Free report: The State of Wearable Accuracy 2026. Every brand\'s result on all 11 metrics from 71 peer-reviewed validation studies, plus brand profiles and a buyer\'s guide. Enter your email to get the PDF free.');
   }
 }
 customElements.define('kygo-home-report', KygoHomeReport);

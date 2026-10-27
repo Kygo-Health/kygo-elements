@@ -41,6 +41,17 @@ function __ensureKygoAppCard() {
   s.async = true;
   document.head.appendChild(s);
 }
+/** Loads the shared <kygo-report-card> element (the free-report card) once. */
+function __ensureKygoReportCard() {
+  if (customElements.get('kygo-report-card')) return;
+  if (document.querySelector('script[data-kygo-report-card-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-report-card.js';
+  s.setAttribute('data-kygo-report-card-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
 
 /** Loads the shared kygo-picks-card element on demand. Wix embeds this file on its
  *  own, so the card script has to come along rather than be assumed present. */
@@ -1106,42 +1117,26 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
   }
 
   // ── Report card · Kygo standard module ──────────────────────────────────
-  // The free State of Wearable Accuracy report, the same card the blog posts
-  // use. Second promo on accuracy and comparison tools, never next to another.
-  // GA4: the click is filed as gate_tool (kygo-tracking.js reads data-gate).
+  // The shared <kygo-report-card> (kygo-report-card.js): the free State of
+  // Wearable Accuracy report, captured by email right in the card, then the
+  // visitor goes to /report-download. Second promo on accuracy and comparison
+  // tools, never next to another. GA4: email_subscribe, source
+  // report-tool-<slug>; a click on the cover is gate_tool.
   _renderReportCard() {
+    __ensureKygoReportCard();
     const slug = this._appCta().slug;
-    const cover = 'https://kygo-health.github.io/kygo-elements/assets/sowa/sowa-cover.webp';
     return `
       <style>
       .krc-section{padding:16px 20px;background:#fff}
       @media(min-width:720px){.krc-section{padding:24px 24px}}
       .krc-inner{max-width:1100px;margin:0 auto}
-      .krc-card{display:flex;flex-direction:column;gap:20px;padding:22px;border:1.5px solid #E2E8F0;border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.06);color:#0F172A}
-      @media(min-width:720px){.krc-card{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:center;padding:28px}}
-      .krc-copy{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-      .krc-eyebrow{margin:0;font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#15803D}
-      .krc-title{margin:0;font-family:'Space Grotesk',sans-serif;font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em;color:#0F172A}
-      @media(min-width:720px){.krc-title{font-size:28px}}
-      .krc-sub{margin:0;font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;color:#475569}
-      @media(min-width:720px){.krc-sub{max-width:40ch}}
-      .krc-btn{margin-top:8px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;background:#22C55E;color:#0F172A;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;text-decoration:none;transition:background .2s}
-      .krc-btn:hover{background:#4ADE80;color:#0F172A}
-      .krc-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
-      .krc-cover{display:block;border-radius:12px;overflow:hidden;box-shadow:0 12px 28px rgba(15,23,42,.18);background:#0F172A}
-      .krc-cover img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+      .krc-inner kygo-report-card{display:block}
       </style>
       <section class="krc-section" id="free-report">
         <div class="krc-inner">
-          <aside class="krc-card" aria-label="Free report">
-            <div class="krc-copy">
-              <p class="krc-eyebrow">Free report</p>
-              <h2 class="krc-title">Get the full rankings behind this tool</h2>
-              <p class="krc-sub">Every brand's result on all 11 metrics, plus brand profiles and a buyer's guide.</p>
-              <a class="krc-btn" href="https://www.kygo.app/state-of-wearable-accuracy" data-gate="gate_tool" data-track-position="report-card" data-track-label="report-${slug}">Get the free report<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            </div>
-            <a class="krc-cover" href="https://www.kygo.app/state-of-wearable-accuracy" data-gate="gate_tool" data-track-position="report-cover" data-track-label="report-${slug}" tabindex="-1" aria-hidden="true"><img src="${cover}" alt="" width="1280" height="720" loading="lazy" decoding="async" /></a>
-          </aside>
+          <kygo-report-card surface="tool" slug="${slug}" topic="accuracy">
+            <a href="https://www.kygo.app/state-of-wearable-accuracy">Get the free State of Wearable Accuracy report</a>
+          </kygo-report-card>
         </div>
       </section>`;
   }
