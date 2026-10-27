@@ -292,6 +292,8 @@ the FAQ). The inline email band was removed from all tool pages.
   `data-gate="gate_*"` click as that GA4 event (`cta_label` = `report-<slug>`, `position` =
   report-card / report-cover). The wearable-accuracy hub band is now `gate_hub` (it was a plain
   `cta_click` before). Mark `gate_tool` and `gate_hub` as key events in GA4 if wanted.
+- **Homepage**: the same report card sits directly above the FAQ (`kygo-home-report` in
+  `kygo-bundle.js`), filed as `gate_home` (`cta_label` = report-home).
 - **Picks card**: unchanged (`related_tool_click` to best-wearables).
 
 ## How components opt into tracking

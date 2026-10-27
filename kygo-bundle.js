@@ -1929,6 +1929,69 @@ class KygoWorksEverywhere extends HTMLElement {
 customElements.define('kygo-works-everywhere', KygoWorksEverywhere);
 
 /* ========================================
+   KYGO HOME REPORT
+   Tag: kygo-home-report
+   The free State of Wearable Accuracy report card, the same card the blog
+   posts and tool pages use. Sits directly above the FAQ (see kygo-home order).
+   GA4: the click is filed as gate_home (kygo-tracking.js reads data-gate).
+======================================== */
+class KygoHomeReport extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+  connectedCallback() {
+    this.render();
+    this._io = __revealOnScroll(this.shadowRoot.querySelector('.hr'));
+    __seo(this, 'Free report: The State of Wearable Accuracy 2026. Every brand\'s result on all 11 metrics from 71 peer-reviewed validation studies, plus brand profiles and a buyer\'s guide. Get it free at kygo.app/state-of-wearable-accuracy.');
+  }
+  disconnectedCallback() {
+    if (this._io) this._io.disconnect();
+  }
+  render() {
+    const url = 'https://www.kygo.app/state-of-wearable-accuracy';
+    const cover = 'https://kygo-health.github.io/kygo-elements/assets/sowa/sowa-cover.webp';
+    this.shadowRoot.innerHTML = `
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        :host{display:block;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#0F172A;line-height:1.5}
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        .hr{padding:clamp(40px,5vw,64px) 20px 8px}
+        .hr-inner{max-width:1100px;margin:0 auto}
+        .hr.reveal .hr-card{animation:hiwUp .6s ease-out both}
+        @keyframes hiwUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+        .hr-card{display:flex;flex-direction:column;gap:20px;padding:22px;border:1.5px solid #E2E8F0;border-radius:20px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.06)}
+        @media(min-width:720px){.hr-card{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;align-items:center;padding:28px}}
+        .hr-copy{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+        .hr-eyebrow{font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#15803D}
+        .hr-title{font-family:'Space Grotesk',sans-serif;font-size:22px;line-height:1.15;font-weight:700;letter-spacing:-.01em}
+        @media(min-width:720px){.hr-title{font-size:28px}}
+        .hr-sub{font-size:15px;line-height:1.5;color:#475569}
+        @media(min-width:720px){.hr-sub{max-width:40ch}}
+        .hr-btn{margin-top:8px;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:10px;background:#22C55E;color:#0F172A;font-size:15px;font-weight:700;text-decoration:none;transition:background .2s}
+        .hr-btn:hover{background:#4ADE80}
+        .hr-btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+        .hr-cover{display:block;border-radius:12px;overflow:hidden;box-shadow:0 12px 28px rgba(15,23,42,.18);background:#0F172A}
+        .hr-cover img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}
+      </style>
+      <section class="hr" aria-label="Free report">
+        <div class="hr-inner">
+          <aside class="hr-card">
+            <div class="hr-copy">
+              <p class="hr-eyebrow">Free report</p>
+              <h2 class="hr-title">How accurate is your wearable, really?</h2>
+              <p class="hr-sub">Every brand's result on all 11 metrics, from 71 peer-reviewed studies, plus brand profiles and a buyer's guide.</p>
+              <a class="hr-btn" href="${url}" data-gate="gate_home" data-track-position="home-report" data-track-label="report-home">Get the free report<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            </div>
+            <a class="hr-cover" href="${url}" data-gate="gate_home" data-track-position="home-report-cover" data-track-label="report-home" tabindex="-1" aria-hidden="true"><img src="${cover}" alt="" width="1280" height="720" loading="lazy" decoding="async" /></a>
+          </aside>
+        </div>
+      </section>`;
+  }
+}
+customElements.define('kygo-home-report', KygoHomeReport);
+
+/* ========================================
    KYGO HOME (single-embed wrapper)
    Tag: kygo-home
    Renders all homepage sections in order so the page needs only ONE Wix
@@ -1939,7 +2002,7 @@ customElements.define('kygo-works-everywhere', KygoWorksEverywhere);
    Each child also gets id=tag so in-page anchors (e.g. the hero's
    "See how it works" → #kygo-insights-steps) resolve within the light DOM.
    Page order: Hero → Stats → Why Kygo → How it works → Correlations →
-   Features Users Love → Testimonials → Inline CTA → Works Everywhere → FAQ →
+   Features Users Love → Testimonials → Inline CTA → Works Everywhere → Report → FAQ →
    Final CTA → Founder.
 ======================================== */
 // Wix also hands the page's seoMarkup (the crawler copy of this page, seo/kygo-home.html) to the
@@ -1968,6 +2031,7 @@ class KygoHome extends HTMLElement {
       'kygo-testimonials',
       'kygo-inline-cta',
       'kygo-works-everywhere',
+      'kygo-home-report',
       'kygo-faq',
       'kygo-final-cta'
     ].forEach(tag => {
