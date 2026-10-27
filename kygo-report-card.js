@@ -123,7 +123,7 @@
       }
       return {
         title: 'The State of Wearable Accuracy 2026',
-        sub: 'How accurate every major wearable really is on 11 metrics, from 71 peer-reviewed studies, in one free PDF.'
+        sub: 'How accurate every major wearable really is on 11 metrics, from 71 peer-reviewed studies.'
       };
     }
 
@@ -240,7 +240,7 @@
              <input id="rc-email" type="email" required placeholder="you@email.com" autocomplete="email" ${loading ? 'disabled' : ''}>
              <button class="btn" type="submit" ${loading ? 'disabled' : ''}>${loading ? 'Sending…' : 'Get the free report'}</button>
            </form>
-           ${this._error ? `<p class="err">${esc(this._error)}</p>` : `<p class="fine">Free PDF. No spam, unsubscribe anytime.</p>`}`;
+           ${this._error ? `<p class="err">${esc(this._error)}</p>` : ''}`;
       this.shadowRoot.innerHTML = `
         <style>
           @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -248,7 +248,7 @@
           *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
           a { text-decoration: none; }
           .card { display: grid; gap: 20px; padding: 22px; border-radius: 20px; background: #fff; border: 1.5px solid #E2E8F0; box-shadow: 0 8px 24px rgba(15,23,42,.06); }
-          .copy { display: flex; flex-direction: column; align-items: stretch; gap: 8px; }
+          .copy { display: flex; flex-direction: column; align-items: stretch; gap: 8px; min-width: 0; }
           .kicker { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #15803D; }
           .title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(22px, 4vw, 28px); line-height: 1.15; font-weight: 700; letter-spacing: -.01em; }
           .sub { font-size: 15px; line-height: 1.5; max-width: 42ch; color: #475569; }
@@ -268,11 +268,11 @@
           .cover { display: block; border-radius: 12px; overflow: hidden; box-shadow: 0 12px 28px rgba(15,23,42,.18); background: #0F172A; }
           .cover img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
           @media (min-width: 520px) { form { flex-direction: row; flex-wrap: wrap; } input, .btn { min-height: 44px; height: 44px; } input { flex: 1 1 190px; width: auto; } .btn { flex: 1 0 auto; } }
-          @media (min-width: 600px) { .card { padding: 28px; gap: 28px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; } }
+          @media (min-width: 600px) { .card { padding: 28px; gap: 36px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; } }
         </style>
         <aside class="card" aria-label="Free report">
           <div class="copy">
-            <p class="kicker">Free report</p>
+            <p class="kicker">Free PDF report</p>
             <h3 class="title">${esc(c.title)}</h3>
             <p class="sub">${esc(c.sub)}</p>
             ${form}
