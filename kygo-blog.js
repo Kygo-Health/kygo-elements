@@ -1454,7 +1454,7 @@ class KygoBlog extends HTMLElement {
     d.style.cssText = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
 
     const summary = document.createElement('p');
-    summary.textContent = 'Kygo Health Blog — Research-backed articles across sleep, heart rate and HRV, devices and buying guides, stress and recovery, calories and energy burn, activity and fitness, nutrition and food logging, and Kygo product updates. Covers Apple Watch, Oura Ring, Garmin, WHOOP, and Fitbit accuracy, sleep optimization, heart rate variability, calorie-burn and step-count accuracy, VO2 max, food-body correlations, and AI-powered nutrition analysis.';
+    summary.textContent = 'Kygo Health Blog: Research-backed articles across sleep, heart rate and HRV, devices and buying guides, stress and recovery, calories and energy burn, activity and fitness, nutrition and food logging, and Kygo product updates. Covers Apple Watch, Oura Ring, Garmin, WHOOP, and Fitbit accuracy, sleep optimization, heart rate variability, calorie-burn and step-count accuracy, VO2 max, food-body correlations, and AI-powered nutrition analysis.';
     d.appendChild(summary);
 
     this._buildCategoryIndex();

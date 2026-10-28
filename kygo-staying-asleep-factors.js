@@ -70,7 +70,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Staying Asleep Factor Explorer by Kygo Health. Explore 31 research-backed factors that affect sleep maintenance — wake after sleep onset (WASO), nighttime arousals, sleep fragmentation, and sleep efficiency — across 5 categories: Nutrition & Substances, Supplements, Exercise & Movement, Environment & Sleep Hygiene, and Demographics & Physiology. Nutrition factors include dietary fiber (reduces arousals per St-Onge 2016), sugar and refined carbs (increases arousals), caffeine (+12 min WASO per Gardiner 2023 meta-analysis), alcohol-driven sleep fragmentation (Spadola 2019 Jackson Heart Study), late eating (2–2.6× WASO odds per Crispim 2022), and tart cherry juice (−17 min WASO per Pigeon 2010 RCT). Supplements include immediate-release melatonin (no WASO effect per Menczel Schrire 2022), ashwagandha 600 mg (SMD −0.39 for WASO per Cheah 2021), glycine 3 g (PSG-verified WASO reduction), magnesium 500 mg, L-theanine, and valerian root (no consistent objective WASO benefit). Exercise factors include moderate aerobic exercise (−10 min WASO per Riedel 2024), resistance training, yoga, evening moderate exercise, and vigorous exercise within one hour of bedtime (+21.9 min WASO per Stutz 2019). Environment factors include bedroom temperature 20–25°C, light at night (even 5–10 lux increases WASO per Cho 2016), noise above 50 dBA (+30 min WASO per Basner 2018 WHO review), CO2 above 1000 ppm (Kang 2024 ventilation study), and mattress firmness. Demographics and physiology factors include aging (+10 min WASO per decade per Ohayon 2004), female sex subjective–objective paradox, menopausal hot flashes (Joffe 2013 GnRH model, 69% of flashes cause awakenings), obesity BMI 30 or higher (Zhao 2021 Sleep Heart Health Study), shift work sleep disorder, nocturia with two or more episodes (+34 min WASO per Fung 2017 SOF study), obstructive sleep apnea, chronic pain (Mathias 2018 meta-analysis of 37 studies), and psychological stress via cortisol elevation. Each factor includes evidence grade (Strong, Moderate, Limited, or Weak), direction of effect, mechanism, dosage or context, and peer-reviewed citation. How to stay asleep through the night. What causes waking up at night. WASO wake after sleep onset. Best supplements for staying asleep. Data sourced from peer-reviewed studies and meta-analyses.');
+    __seo(this, 'Staying Asleep Factor Explorer by Kygo Health. Explore 31 research-backed factors that affect sleep maintenance (wake after sleep onset (WASO), nighttime arousals, sleep fragmentation, and sleep efficiency) across 5 categories: Nutrition & Substances, Supplements, Exercise & Movement, Environment & Sleep Hygiene, and Demographics & Physiology. Nutrition factors include dietary fiber (reduces arousals per St-Onge 2016), sugar and refined carbs (increases arousals), caffeine (+12 min WASO per Gardiner 2023 meta-analysis), alcohol-driven sleep fragmentation (Spadola 2019 Jackson Heart Study), late eating (2–2.6× WASO odds per Crispim 2022), and tart cherry juice (−17 min WASO per Pigeon 2010 RCT). Supplements include immediate-release melatonin (no WASO effect per Menczel Schrire 2022), ashwagandha 600 mg (SMD −0.39 for WASO per Cheah 2021), glycine 3 g (PSG-verified WASO reduction), magnesium 500 mg, L-theanine, and valerian root (no consistent objective WASO benefit). Exercise factors include moderate aerobic exercise (−10 min WASO per Riedel 2024), resistance training, yoga, evening moderate exercise, and vigorous exercise within one hour of bedtime (+21.9 min WASO per Stutz 2019). Environment factors include bedroom temperature 20–25°C, light at night (even 5–10 lux increases WASO per Cho 2016), noise above 50 dBA (+30 min WASO per Basner 2018 WHO review), CO2 above 1000 ppm (Kang 2024 ventilation study), and mattress firmness. Demographics and physiology factors include aging (+10 min WASO per decade per Ohayon 2004), female sex subjective–objective paradox, menopausal hot flashes (Joffe 2013 GnRH model, 69% of flashes cause awakenings), obesity BMI 30 or higher (Zhao 2021 Sleep Heart Health Study), shift work sleep disorder, nocturia with two or more episodes (+34 min WASO per Fung 2017 SOF study), obstructive sleep apnea, chronic pain (Mathias 2018 meta-analysis of 37 studies), and psychological stress via cortisol elevation. Each factor includes evidence grade (Strong, Moderate, Limited, or Weak), direction of effect, mechanism, dosage or context, and peer-reviewed citation. How to stay asleep through the night. What causes waking up at night. WASO wake after sleep onset. Best supplements for staying asleep. Data sourced from peer-reviewed studies and meta-analyses.');
   }
 
   disconnectedCallback() {
@@ -106,7 +106,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (↑ arousals)',
           keyFinding: 'St-Onge 2016; significant independent predictor of arousals',
-          whatThisMeans: 'In the same PSG-verified study, higher sugar intake directly increased nighttime arousals — independently of fiber. Refined carb–heavy days fragment sleep even when total sleep time is unchanged.',
+          whatThisMeans: 'In the same PSG-verified study, higher sugar intake directly increased nighttime arousals, independently of fiber. Refined carb–heavy days fragment sleep even when total sleep time is unchanged.',
           mechanism: 'Overnight glucose swings trigger sympathetic arousal; insulin/cortisol counter-regulation produces mid-night awakenings.',
           dosage: 'Minimize added sugar, especially after dinner',
           source: { url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384', label: 'St-Onge et al. 2016' }
@@ -116,7 +116,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (+12 min WASO)',
           keyFinding: 'Meta-analysis of 24 studies, 13 reporting WASO (Gardiner 2023)',
-          whatThisMeans: 'The most robust evidence for a sleep-maintenance disruptor. Pooled across 24 studies, caffeine added roughly 12 minutes of time awake after sleep onset — on top of lengthening sleep latency. Slow metabolizers and late-day intake see larger effects.',
+          whatThisMeans: 'The most robust evidence for a sleep-maintenance disruptor. Pooled across 24 studies, caffeine added roughly 12 minutes of time awake after sleep onset, on top of lengthening sleep latency. Slow metabolizers and late-day intake see larger effects.',
           mechanism: 'Adenosine receptor antagonism blocks the homeostatic pressure that keeps you in consolidated sleep, producing lighter sleep and more spontaneous arousals.',
           dosage: 'Stop ≥8 hours before bed; slow metabolizers may need 10+ hours',
           source: { url: 'https://www.sciencedirect.com/science/article/pii/S1087079223000205', label: 'Gardiner et al. 2023 meta-analysis' }
@@ -126,7 +126,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (↑ fragmentation)',
           keyFinding: 'Jackson Heart Study, n=785, actigraphy (Spadola 2019)',
-          whatThisMeans: "Alcohol may help you fall asleep faster at high doses, but it wrecks the second half of the night. As it metabolizes, sleep breaks apart — more awakenings, lower sleep efficiency, and lighter sleep. The effect scales with dose.",
+          whatThisMeans: "Alcohol may help you fall asleep faster at high doses, but it wrecks the second half of the night. As it metabolizes, sleep breaks apart: more awakenings, lower sleep efficiency, and lighter sleep. The effect scales with dose.",
           mechanism: 'Initial GABA-A sedation is followed by rebound glutamate activity and disrupted REM as alcohol clears, producing mid-night arousals and shallower sleep.',
           dosage: 'Avoid within 3+ hours of bed; lower the dose or skip entirely',
           source: { url: 'https://academic.oup.com/sleep/article/42/11/zsz136/5535848', label: 'Spadola et al. 2019' }
@@ -159,7 +159,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'variable', evidence: 'strong',
           effect: 'Null (no WASO effect)',
           keyFinding: 'Meta-analysis of RCTs (Menczel Schrire 2022)',
-          whatThisMeans: "The form of melatonin most people buy does not help you stay asleep. A 2022 meta-analysis in Neuropsychopharmacology found no significant WASO benefit for immediate-release melatonin. It shortens sleep onset and shifts circadian timing — but it won't keep you asleep.",
+          whatThisMeans: "The form of melatonin most people buy does not help you stay asleep. A 2022 meta-analysis in Neuropsychopharmacology found no significant WASO benefit for immediate-release melatonin. It shortens sleep onset and shifts circadian timing, but it won't keep you asleep.",
           mechanism: 'Short half-life (~45 min) means exogenous melatonin is largely cleared before the second half of the night, so it cannot suppress overnight arousals.',
           dosage: 'Use for sleep onset or circadian shift, not maintenance',
           source: { url: 'https://www.nature.com/articles/s41386-022-01278-5', label: 'Menczel Schrire et al. 2022' }
@@ -169,7 +169,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'positive', evidence: 'strong',
           effect: 'Positive (SMD −0.39 for WASO)',
           keyFinding: 'Meta-analysis of 3 WASO trials, n=281 (Cheah 2021)',
-          whatThisMeans: 'The strongest supplement-specific evidence for staying asleep. Pooled across 3 RCTs with 281 participants, ashwagandha produced a standardized mean difference of −0.39 for WASO — meaningfully less nighttime waking. 600 mg/day of standardized extract shows the largest effect.',
+          whatThisMeans: 'The strongest supplement-specific evidence for staying asleep. Pooled across 3 RCTs with 281 participants, ashwagandha produced a standardized mean difference of −0.39 for WASO: meaningfully less nighttime waking. 600 mg/day of standardized extract shows the largest effect.',
           mechanism: 'Withanolides reduce cortisol and overnight sympathetic tone; GABAergic activity dampens the arousals that fragment sleep.',
           dosage: '600 mg/day standardized extract, split AM/PM or taken evening',
           source: { url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843', label: 'Cheah et al. 2021 meta-analysis' },
@@ -245,7 +245,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'positive', evidence: 'limited',
           effect: 'Positive (−56 min WASO, likely inflated)',
           keyFinding: 'Network meta-analysis of 22 RCTs, n=1,348 (Bu 2025)',
-          whatThisMeans: 'Yoga showed the largest raw WASO reduction in the 2025 network meta-analysis — about 56 minutes in insomnia patients. Flagged as low-certainty because of small samples and heterogeneity, so the effect size is likely inflated. Still worth trying given the low downside.',
+          whatThisMeans: 'Yoga showed the largest raw WASO reduction in the 2025 network meta-analysis: about 56 minutes in insomnia patients. Flagged as low-certainty because of small samples and heterogeneity, so the effect size is likely inflated. Still worth trying given the low downside.',
           mechanism: 'Pranayama breathing reduces sympathetic tone; gentle physical load supports circadian amplitude; mindfulness reduces rumination-driven arousals.',
           dosage: 'Regular practice; 3+ sessions per week',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/40664502/', label: 'Bu et al. 2025 network meta-analysis' }
@@ -255,7 +255,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'positive', evidence: 'moderate',
           effect: 'Positive (↓ WASO)',
           keyFinding: 'Narrative review of 34 studies (Dolezal 2017)',
-          whatThisMeans: "Moderate-intensity evening exercise reduced WASO across a broad review — contrary to the old 'never train at night' advice. Only vigorous, close-to-bedtime sessions carry risk; ordinary evening workouts help you stay asleep.",
+          whatThisMeans: "Moderate-intensity evening exercise reduced WASO across a broad review, contrary to the old 'never train at night' advice. Only vigorous, close-to-bedtime sessions carry risk; ordinary evening workouts help you stay asleep.",
           mechanism: 'Moderate post-exercise cooling and parasympathetic rebound support the overnight core-temperature drop and reduced sympathetic tone needed for consolidated sleep.',
           dosage: 'Moderate intensity, finish 1.5+ hrs before bed',
           source: { url: 'https://onlinelibrary.wiley.com/doi/10.1155/2017/1364387', label: 'Dolezal et al. 2017 review' }
@@ -265,7 +265,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'moderate',
           effect: 'Negative (+21.9 min WASO)',
           keyFinding: 'Meta-analysis of 23 studies (Stutz 2019)',
-          whatThisMeans: 'Vigorous training that ends within an hour of bedtime measurably fragments sleep — particularly when intensity exceeds your usual level (b = +21.9 min WASO, p = 0.044). Any exercise during the day is fine; just keep the hardest effort away from bedtime.',
+          whatThisMeans: 'Vigorous training that ends within an hour of bedtime measurably fragments sleep, particularly when intensity exceeds your usual level (b = +21.9 min WASO, p = 0.044). Any exercise during the day is fine; just keep the hardest effort away from bedtime.',
           mechanism: 'Sympathetic activation, catecholamine surge, and elevated core temperature oppose the physiological drop needed to stay in consolidated sleep.',
           dosage: 'Avoid high-intensity exercise in the hour before bed',
           source: { url: 'https://link.springer.com/article/10.1007/s40279-018-1015-0', label: 'Stutz et al. 2019 meta-analysis' }
@@ -287,7 +287,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (↑ WASO)',
           keyFinding: 'PSG study, n=23, 5–10 lux (Cho 2016)',
-          whatThisMeans: "Even dim light during sleep — roughly a nightlight at 5–10 lux — significantly increased WASO and shallow REM on polysomnography. You don't have to be looking at a screen; ambient bedroom light is enough to fragment sleep.",
+          whatThisMeans: "Even dim light during sleep (roughly a nightlight at 5–10 lux) significantly increased WASO and shallow REM on polysomnography. You don't have to be looking at a screen; ambient bedroom light is enough to fragment sleep.",
           mechanism: 'Melanopsin-containing retinal ganglion cells detect light through the eyelids, suppressing melatonin and raising cortical arousal.',
           dosage: 'Bedroom as dark as possible; cover electronics, use blackout',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/', label: 'Cho et al. 2016 PSG study' },
@@ -333,7 +333,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (+10 min WASO/decade)',
           keyFinding: 'Meta-analysis of 65 studies, n=3,577 (Ohayon 2004)',
-          whatThisMeans: 'The definitive reference on normal sleep architecture. WASO increases roughly 10 minutes per decade between age 30 and 60, then plateaus. Expected, not pathological — but it compounds with other age-related changes like lighter sleep and more frequent bathroom trips.',
+          whatThisMeans: 'The definitive reference on normal sleep architecture. WASO increases roughly 10 minutes per decade between age 30 and 60, then plateaus. Expected, not pathological, but it compounds with other age-related changes like lighter sleep and more frequent bathroom trips.',
           mechanism: 'Reduced SCN amplitude, blunted nocturnal melatonin, and thinner cortical sleep architecture all increase spontaneous arousals.',
           dosage: 'Non-modifiable; offset with morning light, exercise, sleep hygiene',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/', label: 'Ohayon et al. 2004 meta-analysis' }
@@ -363,7 +363,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (↑ WASO)',
           keyFinding: 'Sleep Heart Health Study, n=5,723 PSG (Zhao 2021)',
-          whatThisMeans: 'A large PSG-based cohort found WASO was independently associated with obesity after full adjustment (OR 1.003 per minute, P=0.007). Cross-sectional — so directionality is uncertain — but the link is well-established and bi-directional with sleep apnea.',
+          whatThisMeans: 'A large PSG-based cohort found WASO was independently associated with obesity after full adjustment (OR 1.003 per minute, P=0.007). Cross-sectional, so directionality is uncertain, but the link is well-established and bi-directional with sleep apnea.',
           mechanism: 'Upper-airway loading (even without OSA), increased inflammation, and altered thermoregulation all raise overnight arousals.',
           dosage: 'Weight management; screen for OSA if BMI ≥30',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/34196121/', label: 'Zhao et al. 2021 SHHS' }
@@ -373,7 +373,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'moderate',
           effect: 'Negative (↑ WASO, ↓ efficiency)',
           keyFinding: 'Narrative review of SWSD patients (Wickwire 2017)',
-          whatThisMeans: 'Shift workers — especially those with diagnosable shift work sleep disorder — show more fragmented daytime sleep, higher WASO, and lower efficiency. The mismatch between sleep time and circadian phase is the core issue.',
+          whatThisMeans: 'Shift workers, especially those with diagnosable shift work sleep disorder, show more fragmented daytime sleep, higher WASO, and lower efficiency. The mismatch between sleep time and circadian phase is the core issue.',
           mechanism: 'Daytime sleep attempts fight the circadian alerting signal; light, noise, and social obligations interrupt the rest window.',
           dosage: 'Strategic light, blackout sleep environment, timed melatonin, naps',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/28012806/', label: 'Wickwire et al. 2017 Chest review' }
@@ -383,8 +383,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (+34 min WASO)',
           keyFinding: 'SOF study, n=1,520 actigraphy (Fung 2017)',
-          whatThisMeans: 'One of the most impactful real-world WASO drivers and commonly overlooked. WASO climbed from 55.5 min (0 episodes) to 89.8 min (3–4 episodes) — a 34-minute swing. Nocturia frequency explained 6% additional variance in WASO beyond all other factors.',
-          mechanism: 'Each bathroom trip is a full arousal plus ambient light exposure plus cold sheets on return — compounding sleep fragmentation.',
+          whatThisMeans: 'One of the most impactful real-world WASO drivers and commonly overlooked. WASO climbed from 55.5 min (0 episodes) to 89.8 min (3–4 episodes), a 34-minute swing. Nocturia frequency explained 6% additional variance in WASO beyond all other factors.',
+          mechanism: 'Each bathroom trip is a full arousal plus ambient light exposure plus cold sheets on return, compounding sleep fragmentation.',
           dosage: 'Limit evening fluids; rule out BPH, overactive bladder, OSA-driven ANP',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/28914959/', label: 'Fung et al. 2017 SOF study' }
         },
@@ -393,7 +393,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (↑ WASO, ↑ arousals with severity)',
           keyFinding: 'Comprehensive review, PSG data (Patel 2019)',
-          whatThisMeans: 'Among the most well-established causes of sleep fragmentation in medicine. Every obstructive breathing event triggers an arousal — by definition. WASO and arousal index scale directly with apnea-hypopnea index. Diagnosis and treatment (CPAP, oral appliance) produce large WASO reductions.',
+          whatThisMeans: 'Among the most well-established causes of sleep fragmentation in medicine. Every obstructive breathing event triggers an arousal, by definition. WASO and arousal index scale directly with apnea-hypopnea index. Diagnosis and treatment (CPAP, oral appliance) produce large WASO reductions.',
           mechanism: 'Repeated airway collapse triggers cortical arousal to restore airway patency; each event fragments NREM and prevents consolidated sleep.',
           dosage: 'Screen with home sleep test if suspected; treat with CPAP or oral appliance',
           source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8340897/', label: 'Patel 2019 Annals IM review' }
@@ -403,7 +403,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'strong',
           effect: 'Negative (large effect)',
           keyFinding: 'Meta-analysis of 37 studies, PSG (Mathias 2018)',
-          whatThisMeans: 'PSG-measured WASO roughly doubles in people with chronic pain versus healthy controls across 37 studies. Pain directly interrupts sleep, and the resulting fatigue lowers pain tolerance the next day — a vicious cycle that CBT-I and pain-focused therapy can both break.',
+          whatThisMeans: 'PSG-measured WASO roughly doubles in people with chronic pain versus healthy controls across 37 studies. Pain directly interrupts sleep, and the resulting fatigue lowers pain tolerance the next day, a vicious cycle that CBT-I and pain-focused therapy can both break.',
           mechanism: 'Nociceptive input continues through sleep, producing repeated arousals; central sensitization amplifies even minor stimuli into full awakenings.',
           dosage: 'Treat underlying pain; CBT-I improves both pain and sleep outcomes',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/30314881/', label: 'Mathias et al. 2018 meta-analysis' }
@@ -413,7 +413,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           direction: 'negative', evidence: 'moderate',
           effect: 'Negative (↑ WASO via cortisol)',
           keyFinding: '24-hr cortisol + PSG, n=24 (Vgontzas 2001)',
-          whatThisMeans: "The foundational paper for the 'hyperarousal' model of sleep-maintenance insomnia. Chronic insomnia patients showed elevated 24-hour cortisol — particularly pre-sleep and during the first half of the night — directly fragmenting sleep. Stress hormones are a real, measurable WASO driver.",
+          whatThisMeans: "The foundational paper for the 'hyperarousal' model of sleep-maintenance insomnia. Chronic insomnia patients showed elevated 24-hour cortisol, particularly pre-sleep and during the first half of the night, directly fragmenting sleep. Stress hormones are a real, measurable WASO driver.",
           mechanism: 'HPA axis activation elevates cortisol and sympathetic tone, which lowers arousal threshold and produces spontaneous mid-night awakenings.',
           dosage: 'CBT-I, mindfulness, cognitive restructuring; address chronic stressors',
           source: { url: 'https://pubmed.ncbi.nlm.nih.gov/11502812/', label: 'Vgontzas et al. 2001' }
@@ -425,12 +425,12 @@ class KygoStayingAsleepFactors extends HTMLElement {
   get _topPicks() {
     // Six headlines from the data — non-expanding editorial cards
     return [
-      { label: 'Biggest hurter',     stat: '+34 min',   answer: 'Nocturia (≥2 trips)',        note: 'SOF study, n=1,520 — WASO climbs from 55.5 → 89.8 min as trips go 0 → 3–4.',                             cls: 'warn' },
+      { label: 'Biggest hurter',     stat: '+34 min',   answer: 'Nocturia (≥2 trips)',        note: 'SOF study, n=1,520: WASO climbs from 55.5 → 89.8 min as trips go 0 → 3–4.',                             cls: 'warn' },
       { label: 'Biggest helper',     stat: '−17 min',   answer: 'Tart cherry juice',          note: 'Pigeon 2010 RCT crossover, n=15 insomnia adults. Needs replication, but the signal is clean.',            cls: '' },
       { label: 'Hidden environment', stat: '+30 min',   answer: 'Noise over 50 dBA',          note: 'WHO review of 74 studies. Even intermittent neighborhood noise shows dose-response effects.',            cls: 'warn' },
       { label: 'Reliable daily win', stat: '−10 min',   answer: 'Moderate aerobic exercise',  note: 'Riedel 2024 meta-analysis of insomnia RCTs. MD = −10.16 min WASO, p < .001.',                             cls: '' },
-      { label: 'Myth, busted',       stat: '±0 min',    answer: 'Melatonin (standard)',       note: 'Menczel Schrire 2022 meta-analysis — no significant WASO effect. Use for onset, not maintenance.',        cls: 'neutral' },
-      { label: 'Quickest fix',       stat: 'Tonight',   answer: 'Kill dim bedroom light',     note: 'Cho 2016 PSG — even 5–10 lux (nightlight-level) measurably raises WASO. Blackout the bedroom.',          cls: '' }
+      { label: 'Myth, busted',       stat: '±0 min',    answer: 'Melatonin (standard)',       note: 'Menczel Schrire 2022 meta-analysis: no significant WASO effect. Use for onset, not maintenance.',        cls: 'neutral' },
+      { label: 'Quickest fix',       stat: 'Tonight',   answer: 'Kill dim bedroom light',     note: 'Cho 2016 PSG: even 5–10 lux (nightlight-level) measurably raises WASO. Blackout the bedroom.',          cls: '' }
     ];
   }
 
@@ -556,7 +556,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
   }
 
   _wasoDisplay(f) {
-    if (f.waso === null || f.waso === undefined) return { text: '—', cls: 'na', label: 'No numeric' };
+    if (f.waso === null || f.waso === undefined) return { text: '–', cls: 'na', label: 'No numeric' };
     if (f.waso === 0) return { text: '±0 min', cls: 'zero', label: '±0 min' };
     if (f.waso < 0) return { text: `${f.waso} min`, cls: 'pos', label: `${f.waso} min` };
     return { text: `+${f.waso} min`, cls: 'neg', label: `+${f.waso} min` };
@@ -564,11 +564,11 @@ class KygoStayingAsleepFactors extends HTMLElement {
 
   get _timeSlots() {
     return [
-      { key: 'day',       time: '6A–6P',  label: 'Daytime',            desc: 'Sets the stage — circadian, pressure, cortisol tone.' },
-      { key: 'evening',   time: '6–9P',   label: 'Evening',            desc: 'Wind-down window — the last chance to shape the night.' },
+      { key: 'day',       time: '6A–6P',  label: 'Daytime',            desc: 'Sets the stage: circadian, pressure, cortisol tone.' },
+      { key: 'evening',   time: '6–9P',   label: 'Evening',            desc: 'Wind-down window: the last chance to shape the night.' },
       { key: 'bedtime',   time: '9–11P',  label: 'Bedtime',            desc: 'The hour before lights-out. Highest-leverage window.' },
       { key: 'overnight', time: '11P–6A', label: 'Overnight',          desc: "What's in the room matters more than what's in your head." },
-      { key: 'chronic',   time: 'Always', label: 'Chronic / Baseline', desc: 'Always-on — demographics, disorders, baseline stress.' }
+      { key: 'chronic',   time: 'Always', label: 'Chronic / Baseline', desc: 'Always-on: demographics, disorders, baseline stress.' }
     ];
   }
 
@@ -576,7 +576,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
     return [
       { k: 'chart',    label: 'Impact chart',   sub: 'Ranked by magnitude',      step: '01', lede: 'Bar length = minutes of Wake After Sleep Onset added or removed per night. Only factors with numeric WASO figures appear in the chart. Tap a bar for the mechanism and source.' },
       { k: 'list',     label: 'Leaderboard',    sub: 'Every factor, sortable',   step: '02', lede: 'All 31 factors, sortable by impact, evidence, direction, or category. Tap a row for the key finding, mechanism, and source link.' },
-      { k: 'timeline', label: 'Night timeline', sub: 'Grouped by time of day',   step: '03', lede: 'Factors arranged by when they matter most — from daytime habits, through bedtime rituals, to what is happening in your bedroom overnight.' }
+      { k: 'timeline', label: 'Night timeline', sub: 'Grouped by time of day',   step: '03', lede: 'Factors arranged by when they matter most, from daytime habits, through bedtime rituals, to what is happening in your bedroom overnight.' }
     ];
   }
 
@@ -745,7 +745,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
     }
 
     const evColor = { strong: 'var(--green-dark)', moderate: '#B45309', limited: '#4338CA', weak: 'var(--gray-600)' };
-    const dirLabel = (d) => d === 'positive' ? '↓ Helps' : d === 'negative' ? '↑ Hurts' : '— Neutral';
+    const dirLabel = (d) => d === 'positive' ? '↓ Helps' : d === 'negative' ? '↑ Hurts' : '– Neutral';
 
     const sortBtns = [
       { k: 'impact',    l: 'Impact' },
@@ -1316,43 +1316,43 @@ class KygoStayingAsleepFactors extends HTMLElement {
   get _srcGroups() {
     const groups = {
       'Nutrition & Substances': [
-        { label: 'St-Onge et al. 2016 — Fiber, saturated fat & sleep arousals (J Clin Sleep Med)', url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384' },
-        { label: 'Gardiner et al. 2023 — Caffeine & WASO meta-analysis (24 studies)', url: 'https://www.sciencedirect.com/science/article/pii/S1087079223000205' },
-        { label: 'Spadola et al. 2019 — Evening alcohol & sleep fragmentation (Jackson Heart Study, n=785)', url: 'https://academic.oup.com/sleep/article/42/11/zsz136/5535848' },
-        { label: 'Crispim et al. 2022 — Bedtime eating & WASO (British J Nutrition)', url: 'https://www.cambridge.org/core/journals/british-journal-of-nutrition/article/associations-between-bedtime-eating-or-drinking-sleep-duration-and-wake-after-sleep-onset-findings-from-the-american-time-use-survey/72A5D22C25A35FA975A5B50991431E0C' },
-        { label: 'Pigeon et al. 2010 — Tart cherry juice & WASO pilot RCT', url: 'https://journals.sagepub.com/doi/full/10.1089/jmf.2009.0096' }
+        { label: 'St-Onge et al. 2016: Fiber, saturated fat & sleep arousals (J Clin Sleep Med)', url: 'https://jcsm.aasm.org/doi/10.5664/jcsm.5384' },
+        { label: 'Gardiner et al. 2023: Caffeine & WASO meta-analysis (24 studies)', url: 'https://www.sciencedirect.com/science/article/pii/S1087079223000205' },
+        { label: 'Spadola et al. 2019: Evening alcohol & sleep fragmentation (Jackson Heart Study, n=785)', url: 'https://academic.oup.com/sleep/article/42/11/zsz136/5535848' },
+        { label: 'Crispim et al. 2022: Bedtime eating & WASO (British J Nutrition)', url: 'https://www.cambridge.org/core/journals/british-journal-of-nutrition/article/associations-between-bedtime-eating-or-drinking-sleep-duration-and-wake-after-sleep-onset-findings-from-the-american-time-use-survey/72A5D22C25A35FA975A5B50991431E0C' },
+        { label: 'Pigeon et al. 2010: Tart cherry juice & WASO pilot RCT', url: 'https://journals.sagepub.com/doi/full/10.1089/jmf.2009.0096' }
       ],
       'Supplements': [
-        { label: 'Menczel Schrire et al. 2022 — Melatonergic agents meta-analysis (Neuropsychopharmacology)', url: 'https://www.nature.com/articles/s41386-022-01278-5' },
-        { label: 'Cheah et al. 2021 — Ashwagandha & sleep meta-analysis (5 RCTs, n=400)', url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843' },
-        { label: 'Yamadera et al. 2007 — Glycine 3 g & PSG sleep-quality study', url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x' },
-        { label: 'Abbasi et al. 2012 — Magnesium & insomnia in elderly RCT', url: 'https://pubmed.ncbi.nlm.nih.gov/23853635/' },
-        { label: '2025 Systematic Review — L-theanine & sleep dietary trials (Nutritional Neuroscience)', url: 'https://www.tandfonline.com/doi/full/10.1080/1028415X.2025.2556925' },
-        { label: 'Shinjyo et al. 2020 — Valerian root & sleep meta-analysis (60 studies)', url: 'https://journals.sagepub.com/doi/10.1177/2515690X20967323' }
+        { label: 'Menczel Schrire et al. 2022: Melatonergic agents meta-analysis (Neuropsychopharmacology)', url: 'https://www.nature.com/articles/s41386-022-01278-5' },
+        { label: 'Cheah et al. 2021: Ashwagandha & sleep meta-analysis (5 RCTs, n=400)', url: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257843' },
+        { label: 'Yamadera et al. 2007: Glycine 3 g & PSG sleep-quality study', url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x' },
+        { label: 'Abbasi et al. 2012: Magnesium & insomnia in elderly RCT', url: 'https://pubmed.ncbi.nlm.nih.gov/23853635/' },
+        { label: '2025 Systematic Review: L-theanine & sleep dietary trials (Nutritional Neuroscience)', url: 'https://www.tandfonline.com/doi/full/10.1080/1028415X.2025.2556925' },
+        { label: 'Shinjyo et al. 2020: Valerian root & sleep meta-analysis (60 studies)', url: 'https://journals.sagepub.com/doi/10.1177/2515690X20967323' }
       ],
       'Exercise & Movement': [
-        { label: 'Riedel et al. 2024 — Exercise & insomnia meta-analysis (−10.16 min WASO)', url: 'https://www.sciencedirect.com/science/article/pii/S1087079224000522' },
-        { label: 'Kovacevic et al. 2018 — Resistance exercise & sleep review (13 studies)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S1087079216301526' },
-        { label: 'Bu et al. 2025 — Exercise interventions in insomnia network meta-analysis (22 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/40664502/' },
-        { label: 'Dolezal et al. 2017 — Sleep & exercise interrelationship review', url: 'https://onlinelibrary.wiley.com/doi/10.1155/2017/1364387' },
-        { label: 'Stutz et al. 2019 — Evening exercise & sleep meta-analysis (Sports Med)', url: 'https://link.springer.com/article/10.1007/s40279-018-1015-0' }
+        { label: 'Riedel et al. 2024: Exercise & insomnia meta-analysis (−10.16 min WASO)', url: 'https://www.sciencedirect.com/science/article/pii/S1087079224000522' },
+        { label: 'Kovacevic et al. 2018: Resistance exercise & sleep review (13 studies)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S1087079216301526' },
+        { label: 'Bu et al. 2025: Exercise interventions in insomnia network meta-analysis (22 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/40664502/' },
+        { label: 'Dolezal et al. 2017: Sleep & exercise interrelationship review', url: 'https://onlinelibrary.wiley.com/doi/10.1155/2017/1364387' },
+        { label: 'Stutz et al. 2019: Evening exercise & sleep meta-analysis (Sports Med)', url: 'https://link.springer.com/article/10.1007/s40279-018-1015-0' }
       ],
       'Environment & Sleep Hygiene': [
-        { label: 'Akiyama 2021 — Thermal environment & sleep quality in actual bedrooms', url: 'https://onlinelibrary.wiley.com/doi/full/10.1002/2475-8876.12187' },
-        { label: 'Cho et al. 2016 — Dim light at night & REM/awakenings (Chronobiology Int)', url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/' },
-        { label: 'Basner et al. 2018 — WHO environmental noise & sleep review (74 studies)', url: 'https://www.mdpi.com/1660-4601/15/3/519' },
-        { label: 'Kang et al. 2024 — CO₂ concentration & sleep (Building & Environment)', url: 'https://www.sciencedirect.com/science/article/pii/S0360132323011459' },
-        { label: 'Hu et al. 2025 — Mattress firmness & sleep architecture (PSG)', url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222' }
+        { label: 'Akiyama 2021: Thermal environment & sleep quality in actual bedrooms', url: 'https://onlinelibrary.wiley.com/doi/full/10.1002/2475-8876.12187' },
+        { label: 'Cho et al. 2016: Dim light at night & REM/awakenings (Chronobiology Int)', url: 'https://pubmed.ncbi.nlm.nih.gov/26654880/' },
+        { label: 'Basner et al. 2018: WHO environmental noise & sleep review (74 studies)', url: 'https://www.mdpi.com/1660-4601/15/3/519' },
+        { label: 'Kang et al. 2024: CO₂ concentration & sleep (Building & Environment)', url: 'https://www.sciencedirect.com/science/article/pii/S0360132323011459' },
+        { label: 'Hu et al. 2025: Mattress firmness & sleep architecture (PSG)', url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S503222' }
       ],
       'Demographics & Physiology': [
-        { label: 'Ohayon et al. 2004 — Normative sleep parameters meta-analysis (65 studies)', url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/' },
-        { label: 'Joffe et al. 2013 — GnRH model: hot flashes interrupt objective sleep', url: 'https://pubmed.ncbi.nlm.nih.gov/24293774/' },
-        { label: 'Zhao et al. 2021 — Sleep fragmentation & obesity (Sleep Heart Health Study, n=5,723)', url: 'https://pubmed.ncbi.nlm.nih.gov/34196121/' },
-        { label: 'Wickwire et al. 2017 — Shift work & shift work sleep disorder (Chest)', url: 'https://pubmed.ncbi.nlm.nih.gov/28012806/' },
-        { label: 'Fung et al. 2017 — Nocturia & sleep quality in older women (SOF, n=1,520)', url: 'https://pubmed.ncbi.nlm.nih.gov/28914959/' },
-        { label: 'Patel 2019 — Obstructive sleep apnea review (Annals Internal Medicine)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8340897/' },
-        { label: 'Mathias et al. 2018 — Sleep disturbances in chronic pain meta-analysis (37 studies)', url: 'https://pubmed.ncbi.nlm.nih.gov/30314881/' },
-        { label: 'Vgontzas et al. 2001 — Chronic insomnia & HPA axis activation', url: 'https://pubmed.ncbi.nlm.nih.gov/11502812/' }
+        { label: 'Ohayon et al. 2004: Normative sleep parameters meta-analysis (65 studies)', url: 'https://pubmed.ncbi.nlm.nih.gov/15586779/' },
+        { label: 'Joffe et al. 2013, GnRH model: hot flashes interrupt objective sleep', url: 'https://pubmed.ncbi.nlm.nih.gov/24293774/' },
+        { label: 'Zhao et al. 2021: Sleep fragmentation & obesity (Sleep Heart Health Study, n=5,723)', url: 'https://pubmed.ncbi.nlm.nih.gov/34196121/' },
+        { label: 'Wickwire et al. 2017: Shift work & shift work sleep disorder (Chest)', url: 'https://pubmed.ncbi.nlm.nih.gov/28012806/' },
+        { label: 'Fung et al. 2017: Nocturia & sleep quality in older women (SOF, n=1,520)', url: 'https://pubmed.ncbi.nlm.nih.gov/28914959/' },
+        { label: 'Patel 2019: Obstructive sleep apnea review (Annals Internal Medicine)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8340897/' },
+        { label: 'Mathias et al. 2018: Sleep disturbances in chronic pain meta-analysis (37 studies)', url: 'https://pubmed.ncbi.nlm.nih.gov/30314881/' },
+        { label: 'Vgontzas et al. 2001: Chronic insomnia & HPA axis activation', url: 'https://pubmed.ncbi.nlm.nih.gov/11502812/' }
       ]
     };
     return groups;
@@ -1482,8 +1482,8 @@ class KygoStayingAsleepFactors extends HTMLElement {
       <section class="hero section-bg-white">
         <div class="container hero-inner">
           <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>31 Factors • 28 Studies • Updated Apr 2026</div>
-          <h1 class="hero-title animate-on-scroll">The things <em>keeping you up</em> at 3&nbsp;AM — ranked.</h1>
-          <p class="hero-sub animate-on-scroll">Every nutrition choice, supplement, habit, and environmental variable with measurable impact on <strong>staying asleep</strong> — sorted by the minutes of wake time it adds or removes from your night. No guessing. Just the data.</p>
+          <h1 class="hero-title animate-on-scroll">The things <em>keeping you up</em> at 3&nbsp;AM, ranked.</h1>
+          <p class="hero-sub animate-on-scroll">Every nutrition choice, supplement, habit, and environmental variable with measurable impact on <strong>staying asleep</strong>, sorted by the minutes of wake time it adds or removes from your night. No guessing. Just the data.</p>
           <div class="animate-on-scroll">${this._renderHeroMeta()}</div>
           ${this._sleepWaveSvg()}
         </div>
@@ -1519,7 +1519,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
           <div class="bd-head animate-on-scroll">
             <span class="dash-eyebrow">The full breakdown</span>
             <h2 class="dash-h2">Every factor, <em>explained</em>.</h2>
-            <p class="bd-lede">Browse all 31 by category — direction, evidence grade, mechanism, what to do, and the source. Tap a card to expand.</p>
+            <p class="bd-lede">Browse all 31 by category: direction, evidence grade, mechanism, what to do, and the source. Tap a card to expand.</p>
           </div>
           <div class="bd-groups animate-on-scroll">${this._renderFactorBreakdown()}</div>
         </div>
@@ -1654,7 +1654,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'Staying Asleep Factor Explorer',
       'alternateName': 'Kygo Sleep Maintenance Factors Tool',
-      'description': 'Explore 31 research-backed factors that affect sleep maintenance — nutrition, supplements, exercise, environment, and physiology ranked by evidence strength. Focused on WASO, arousals, and sleep fragmentation.',
+      'description': 'Explore 31 research-backed factors that affect sleep maintenance: nutrition, supplements, exercise, environment, and physiology ranked by evidence strength. Focused on WASO, arousals, and sleep fragmentation.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/staying-asleep-factors',
@@ -1677,12 +1677,12 @@ class KygoStayingAsleepFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What is WASO and why does it matter?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'WASO (Wake After Sleep Onset) is the total minutes spent awake after you first fall asleep. Clinically it matters more than sleep latency for sleep maintenance insomnia — high WASO fragments the night, cuts deep sleep, and drives next-day fatigue even when total time in bed looks normal. Healthy adults typically have WASO under 30 minutes; over 45 minutes is a common threshold for sleep-maintenance insomnia.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'WASO (Wake After Sleep Onset) is the total minutes spent awake after you first fall asleep. Clinically it matters more than sleep latency for sleep maintenance insomnia: high WASO fragments the night, cuts deep sleep, and drives next-day fatigue even when total time in bed looks normal. Healthy adults typically have WASO under 30 minutes; over 45 minutes is a common threshold for sleep-maintenance insomnia.' }
         },
         {
           '@type': 'Question',
           'name': 'Does melatonin help you stay asleep?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Standard immediate-release melatonin — the form most people buy — does not significantly reduce WASO according to a 2022 meta-analysis in Neuropsychopharmacology (Menczel Schrire). Its half-life is too short to suppress overnight arousals. Extended-release formulations and prescription ramelteon have better evidence for maintenance. Melatonin shortens sleep onset and shifts circadian timing but is not a reliable fix for waking up at night.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Standard immediate-release melatonin, the form most people buy, does not significantly reduce WASO according to a 2022 meta-analysis in Neuropsychopharmacology (Menczel Schrire). Its half-life is too short to suppress overnight arousals. Extended-release formulations and prescription ramelteon have better evidence for maintenance. Melatonin shortens sleep onset and shifts circadian timing but is not a reliable fix for waking up at night.' }
         },
         {
           '@type': 'Question',
@@ -1692,7 +1692,7 @@ class KygoStayingAsleepFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'How does caffeine affect staying asleep?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Caffeine adds about 12 minutes to WASO on top of lengthening sleep latency, per a 2023 meta-analysis of 24 studies (Gardiner). Adenosine receptor antagonism lowers the arousal threshold, producing lighter sleep and more spontaneous awakenings. The effect is larger in slow metabolizers and with later-day intake — stop at least 8 hours before bed, or 10+ if you metabolize caffeine slowly.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Caffeine adds about 12 minutes to WASO on top of lengthening sleep latency, per a 2023 meta-analysis of 24 studies (Gardiner). Adenosine receptor antagonism lowers the arousal threshold, producing lighter sleep and more spontaneous awakenings. The effect is larger in slow metabolizers and with later-day intake. Stop at least 8 hours before bed, or 10+ if you metabolize caffeine slowly.' }
         },
         {
           '@type': 'Question',

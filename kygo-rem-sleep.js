@@ -728,7 +728,7 @@ class KygoRemSleep extends HTMLElement {
             <div class="detail-row"><span class="detail-label">Mechanism</span><span class="detail-value">${f.mechanism}</span></div>
             <div class="detail-row"><span class="detail-label">Dose / context</span><span class="detail-value">${f.dosage}</span></div>
             <div class="detail-row"><span class="detail-label">Source</span><a href="${f.source.url}" class="factor-src" target="_blank" rel="noopener nofollow" data-action="source-link">${f.source.label} ${this._icon('externalLink')}</a></div>
-            ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate" data-track-label="${f.affiliate.slug}">Check it out on Amazon ${this._icon('externalLink')}</a><span class="factor-affiliate-note">Affiliate link — we may earn a commission at no extra cost to you.</span>` : ''}
+            ${f.affiliate ? `<a href="${f.affiliate.url}" class="factor-affiliate" target="_blank" rel="noopener nofollow sponsored" data-action="affiliate" data-track-label="${f.affiliate.slug}">Check it out on Amazon ${this._icon('externalLink')}</a><span class="factor-affiliate-note">Affiliate link: we may earn a commission at no extra cost to you.</span>` : ''}
           </div>
         </div>
       </div>`;
@@ -1334,7 +1334,7 @@ class KygoRemSleep extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-pill"><span class="dot"></span> ${factorCount} FACTORS · 5 CATEGORIES · PEER-REVIEWED</div>
               <h1>What actually influences your <span class="hl">REM sleep?</span></h1>
-              <p class="hero-lede">REM is the stage tied to dreaming, emotional processing, and memory — and it's unusually sensitive to chemistry and body temperature. We dug into the research on what really moves dream sleep, <strong>ranked by evidence strength.</strong> Here's what helps, what hurts, and what's just hype.</p>
+              <p class="hero-lede">REM is the stage tied to dreaming, emotional processing, and memory, and it's unusually sensitive to chemistry and body temperature. We dug into the research on what really moves dream sleep, <strong>ranked by evidence strength.</strong> Here's what helps, what hurts, and what's just hype.</p>
             </div>
             <div class="hero-vis">
               <div class="hero-vis-head">
@@ -1344,7 +1344,7 @@ class KygoRemSleep extends HTMLElement {
               <div class="hv-body">
                 <div class="hv-big">140%</div>
                 <div class="hv-text">
-                  <p>of baseline <strong>REM on the first recovery night</strong> after REM loss — your brain pays back its dream-sleep debt automatically.</p>
+                  <p>of baseline <strong>REM on the first recovery night</strong> after REM loss; your brain pays back its dream-sleep debt automatically.</p>
                   <span class="hv-src">Endo et al. 1998</span>
                 </div>
               </div>
@@ -1793,7 +1793,7 @@ class KygoRemSleep extends HTMLElement {
         'name': p.label + '?',
         'acceptedAnswer': {
           '@type': 'Answer',
-          'text': p.answer + ' — ' + p.note
+          'text': p.answer + ': ' + p.note
         }
       }))
     };

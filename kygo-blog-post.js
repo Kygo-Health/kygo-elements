@@ -157,7 +157,7 @@
     connectedCallback() {
       this._parse();
       this.render();
-      seoText(this, 'Kygo Health Blog categories — filter articles by topic: nutrition, sleep, HRV, wearables, recovery, health tech.');
+      seoText(this, 'Kygo Health Blog categories: filter articles by topic: nutrition, sleep, HRV, wearables, recovery, health tech.');
     }
 
     attributeChangedCallback(name, oldV, newV) {
@@ -274,7 +274,7 @@
     connectedCallback() {
       this._parse();
       this.render();
-      seoText(this, 'Related Kygo Health articles — evidence-first guides on nutrition, sleep, HRV, and wearable accuracy.');
+      seoText(this, 'Related Kygo Health articles: evidence-first guides on nutrition, sleep, HRV, and wearable accuracy.');
     }
 
     attributeChangedCallback(name, oldV, newV) {
@@ -461,7 +461,7 @@
               `).join('')}
             </div>
           ` : `
-            <div class="empty">No related posts yet — check back soon.</div>
+            <div class="empty">No related posts yet. Check back soon.</div>
           `}
         </section>
       `;
@@ -739,14 +739,14 @@
       if (has(/hrv|recovery|readiness|resting-heart|\bstress\b|whoop/)) {
         return {
           heading: 'Read the research.<br/><span class="hl">Track what moves YOUR HRV.</span>',
-          sub: 'Articles show you what the science says about HRV and recovery. Kygo shows you what your own body says — connect your wearable, log your meals, and see which habits actually move your numbers.',
+          sub: 'Articles show you what the science says about HRV and recovery. Kygo shows you what your own body says: connect your wearable, log your meals, and see which habits actually move your numbers.',
           hook: 'Find out which of your own habits moves your HRV, and by how many milliseconds.'
         };
       }
       if (has(/sleep|\brem\b|deep-sleep|latency|insomnia|melatonin|circadian/)) {
         return {
           heading: 'Read the research.<br/><span class="hl">Find YOUR sleep disruptors.</span>',
-          sub: "Articles show you what the science says about sleep. Kygo shows you what your own body says — correlate your meals, caffeine, and alcohol with your sleep stages to find what's really keeping you up.",
+          sub: "Articles show you what the science says about sleep. Kygo shows you what your own body says: correlate your meals, caffeine, and alcohol with your sleep stages to find what's really keeping you up.",
           hook: 'See which of your evenings cost you deep sleep, and what to change tonight.'
         };
       }
@@ -760,7 +760,7 @@
       if (has(/nutrition|food|meal|diet|protein|supplement|caffeine|alcohol|sugar|carb/)) {
         return {
           heading: 'Read the research.<br/><span class="hl">Log meals in seconds, see the effect.</span>',
-          sub: 'Articles show you what the science says about nutrition. Kygo makes it personal — log what you eat in seconds and watch how it moves your sleep, energy, HRV, and recovery.',
+          sub: 'Articles show you what the science says about nutrition. Kygo makes it personal: log what you eat in seconds and watch how it moves your sleep, energy, HRV, and recovery.',
           hook: 'Log a week of meals and find the foods that are quietly costing you sleep and energy.'
         };
       }
@@ -874,7 +874,7 @@
       const heading = this.getAttribute('heading') ||
         'See how your food affects your <span class="hl">sleep, energy, and recovery</span>';
       const sub = this.getAttribute('subheading') ||
-        'Kygo connects your wearable data with AI-powered nutrition tracking—then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.';
+        'Kygo connects your wearable data with AI-powered nutrition tracking, then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.';
       const pill = this.getAttribute('pill-text') || 'Free 7-Day Trial';
       const hook = (this.getAttribute('hook') ||
         'Keep reading, then let your own data answer the same question for you.').replace(/"/g, '&quot;');

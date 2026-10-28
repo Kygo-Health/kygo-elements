@@ -63,7 +63,7 @@ class KygoHeroSection extends HTMLElement {
     __ensureKygoCta();
     this.render();
     this.setupEvents();
-    __seo(this, 'Kygo Health \u2014 See how your food affects your sleep, energy, and recovery. Kygo runs on iOS, Android, and the web at app.kygo.app, with one account and one plan across all three. The free app connects nutrition data with Apple Watch, Oura Ring, Garmin, WHOOP, Polar, Fitbit, and Samsung Galaxy Watch to reveal food-body correlations. AI photo logging identifies meals in seconds from over 5 million foods. Unlike MyFitnessPal or Lose It, Kygo shows how what you eat impacts deep sleep, HRV, resting heart rate, and recovery \u2014 not just calorie totals. Correlations appear after 7 days of logging. Free forever plan available.');
+    __seo(this, 'Kygo Health: See how your food affects your sleep, energy, and recovery. Kygo runs on iOS, Android, and the web at app.kygo.app, with one account and one plan across all three. The free app connects nutrition data with Apple Watch, Oura Ring, Garmin, WHOOP, Polar, Fitbit, and Samsung Galaxy Watch to reveal food-body correlations. AI photo logging identifies meals in seconds from over 5 million foods. Unlike MyFitnessPal or Lose It, Kygo shows how what you eat impacts deep sleep, HRV, resting heart rate, and recovery, not just calorie totals. Correlations appear after 7 days of logging. Free forever plan available.');
     // No structured-data injection here: the homepage Organization + SoftwareApplication
     // JSON-LD is the single source of truth in the Wix head (see docs/wix-global-code.md,
     // Blocks 2 & 3). This component previously injected duplicate, stale copies.
@@ -467,7 +467,7 @@ class KygoSocialProofSection extends HTMLElement {
   connectedCallback() {
     this._parseWixAttributes();
     this.render();
-    __seo(this, 'Kygo Health \u2014 Trusted by health-conscious individuals tracking how nutrition impacts sleep quality, heart rate variability, energy levels, and recovery. Users discover personal patterns like which foods improve deep sleep or raise resting heart rate within their first two weeks.');
+    __seo(this, 'Kygo Health: Trusted by health-conscious individuals tracking how nutrition impacts sleep quality, heart rate variability, energy levels, and recovery. Users discover personal patterns like which foods improve deep sleep or raise resting heart rate within their first two weeks.');
   }
   _parseWixAttributes() {
     try {
@@ -575,7 +575,7 @@ class KygoProblemSection extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupScrollAnimations();
-    __seo(this, 'Stop guessing how food affects your body. Kygo Health uses AI to connect your nutrition data with wearable health metrics including sleep stages, HRV, resting heart rate, blood oxygen, skin temperature, and respiratory rate. The app identifies statistically significant correlations between specific foods and health outcomes \u2014 for example, showing that high-glycemic meals before bed reduce your deep sleep by a measurable percentage.');
+    __seo(this, 'Stop guessing how food affects your body. Kygo Health uses AI to connect your nutrition data with wearable health metrics including sleep stages, HRV, resting heart rate, blood oxygen, skin temperature, and respiratory rate. The app identifies statistically significant correlations between specific foods and health outcomes, for example, showing that high-glycemic meals before bed reduce your deep sleep by a measurable percentage.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
@@ -728,7 +728,7 @@ class KygoInsightsSteps extends HTMLElement {
     __ensureKygoCta();
     this.render();
     this.setupAnimations();
-    __seo(this, 'How Kygo works: Step 1 \u2014 Log your food with AI photo scanning. Step 2 \u2014 Sync your wearable data automatically. Step 3 \u2014 Discover how food affects your sleep, HRV, energy, and recovery.');
+    __seo(this, 'How Kygo works: Step 1: Log your food with AI photo scanning. Step 2: Sync your wearable data automatically. Step 3: Discover how food affects your sleep, HRV, energy, and recovery.');
   }
   disconnectedCallback() {
     if (this.animationObserver) this.animationObserver.disconnect();
@@ -973,7 +973,7 @@ class KygoCorrelationsOverview extends HTMLElement {
     this.render();
     this._setupReveal();
     this._setupContributorPanel();
-    __seo(this, 'How Kygo correlations work — Kygo finds personal food-body patterns from your own logged data, not generic studies. Example: caffeine over 95mg after 2pm lowers HRV by about 8 ms (32 ms on low-caffeine days vs 24 ms on high-caffeine days), based on 47 days compared and measured one day later. Findings build confidence over time — Developing, then Emerging, then Likely Real — and every correlation opens to the meals behind it (coffee 62%, pre-workout 28%, chocolate 10%).');
+    __seo(this, 'How Kygo correlations work: Kygo finds personal food-body patterns from your own logged data, not generic studies. Example: caffeine over 95mg after 2pm lowers HRV by about 8 ms (32 ms on low-caffeine days vs 24 ms on high-caffeine days), based on 47 days compared and measured one day later. Findings build confidence over time (Developing, then Emerging, then Likely Real), and every correlation opens to the meals behind it (coffee 62%, pre-workout 28%, chocolate 10%).');
   }
   disconnectedCallback() {
     if (this._revealObserver) this._revealObserver.disconnect();
@@ -1199,7 +1199,7 @@ class KygoFeaturesUsersLove extends HTMLElement {
     this._parseWixAttributes();
     this.render();
     this._setupReveal();
-    __seo(this, 'Features Kygo users love — the everyday details that keep you logging past week two. Dietitian Verified Database: over 5 million foods cross-checked against USDA, with full vitamin and mineral detail, not just macros. Track Your Supplement Stack by voice and see whether it moved anything. Water and Weight sit next to your macros on the Today screen. Best Source Wins: when two wearables disagree, Kygo knows which one to trust for each metric. Run an Experiment: put one food on trial for two weeks and get a verdict. One Tap Repeats for saved foods, reusable meals, and yesterday’s dinner.');
+    __seo(this, 'Features Kygo users love: the everyday details that keep you logging past week two. Dietitian Verified Database: over 5 million foods cross-checked against USDA, with full vitamin and mineral detail, not just macros. Track Your Supplement Stack by voice and see whether it moved anything. Water and Weight sit next to your macros on the Today screen. Best Source Wins: when two wearables disagree, Kygo knows which one to trust for each metric. Run an Experiment: put one food on trial for two weeks and get a verdict. One Tap Repeats for saved foods, reusable meals, and yesterday’s dinner.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
@@ -1338,7 +1338,7 @@ class KygoFounder extends HTMLElement {
     this.render();
     this.setupToggle();
     this._observer = __revealOnScroll(this.shadowRoot.querySelector('.founder-story'));
-    __seo(this, 'Why I built Kygo — a note from Ryan, Founder of Kygo Health. I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That is why I built Kygo. "Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That is not from a study — that is YOUR body telling you something specifically. Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data. I hope Kygo can make a positive impact in your life as well.');
+    __seo(this, 'Why I built Kygo: a note from Ryan, Founder of Kygo Health. I wanted logging that takes seconds, not minutes, and insights that align to your individual metrics and diet, not generic advice. That is why I built Kygo. "Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That is not from a study; that is YOUR body telling you something specifically. Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data. I hope Kygo can make a positive impact in your life as well.');
   }
   disconnectedCallback() {
     if (this._observer) this._observer.disconnect();
@@ -1405,10 +1405,10 @@ class KygoFounder extends HTMLElement {
                   <h4>${founderName} <span>· ${founderTitle}</span></h4>
                 </div>
               </div>
-              <p class="founder-lead">I wanted logging that takes seconds, not minutes — and insights that align to your individual metrics and diet, not generic advice. That's why I built Kygo.</p>
+              <p class="founder-lead">I wanted logging that takes seconds, not minutes, and insights that align to your individual metrics and diet, not generic advice. That's why I built Kygo.</p>
               <div class="founder-more">
                 <div class="founder-quote">
-                  <p>"Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That's not from a study—that's YOUR body telling you something specifically.</p>
+                  <p>"Your sleep latency increases 8 minutes when you consume caffeine after 3pm." That's not from a study; that's YOUR body telling you something specifically.</p>
                 </div>
                 <p>Kygo brings everything together and automatically finds the correlations that matter. No more guessing. No more generic advice. Just personalized insights based on YOUR data.</p>
                 <p>I hope Kygo can make a positive impact in your life as well.</p>
@@ -1663,7 +1663,7 @@ class KygoFaq extends HTMLElement {
   connectedCallback() {
     this.render();
     this._observer = __revealOnScroll(this.shadowRoot.querySelector('.faq'));
-    __seo(this, 'Frequently asked questions about Kygo Health — nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Oura Ring, Garmin, Fitbit, WHOOP, Polar, Apple Health, and Health Connect), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (about seven days of consistent logging).');
+    __seo(this, 'Frequently asked questions about Kygo Health: nutrition tracking, wearable integration, AI-powered food logging, and personalized health insights. What is Kygo? Most apps show you a sleep or HRV score and stop there. Kygo, available on iPhone and Android, connects your wearable data to your food and supplements so you can see why your numbers move, not just what they are. Logging is effortless: snap a photo, use your voice, type it, or scan, with no manual database searching. Connect Garmin, Fitbit, Oura, Apple Health, and Health Connect to pull the most accurate metrics from each device, and Kygo correlates them with your sleep, HRV, energy, and recovery to reveal what actually works for you. Other common questions include how Kygo differs from calorie-only trackers (it shows food-body correlations), which wearables are supported (Oura Ring, Garmin, Fitbit, WHOOP, Polar, Apple Health, and Health Connect), how the AI food scanner works (photo recognition with over 5 million foods), and how long it takes to see correlations (about seven days of consistent logging).');
   }
   _faqData() {
     return [

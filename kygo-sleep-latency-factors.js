@@ -1466,7 +1466,7 @@ class KygoSleepLatencyFactors extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-pill animate-on-scroll"><span class="dot"></span> ${hs.total} FACTORS · ${hs.cats} CATEGORIES · PEER-REVIEWED</div>
               <h1 class="animate-on-scroll">What actually helps you <span class="hl">fall asleep faster?</span></h1>
-              <p class="hero-lede animate-on-scroll">Every nutrition choice, supplement, habit and environmental tweak with a measured effect on sleep onset — <strong>ranked by evidence strength</strong>, in the minutes it adds to or removes from the time it takes you to drop off.</p>
+              <p class="hero-lede animate-on-scroll">Every nutrition choice, supplement, habit and environmental tweak with a measured effect on sleep onset, <strong>ranked by evidence strength</strong>, in the minutes it adds to or removes from the time it takes you to drop off.</p>
             </div>
             <div class="hero-vis animate-on-scroll">
               <div class="hero-vis-head">
