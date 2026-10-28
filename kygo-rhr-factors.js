@@ -70,7 +70,7 @@ class KygoRhrFactors extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'RHR Factor Explorer by Kygo Health. Explore 37 research-backed factors that influence resting heart rate (RHR) across 4 modifiable categories — Nutrition, Supplements, Exercise, and Environment — plus 7 demographic baseline factors. Nutrition factors include omega-3 EPA/DHA (lowers RHR by 1.6 bpm per Hidayat 2018 meta-analysis of 51 RCTs), habitual coffee (no significant effect), acute high-dose caffeine, alcohol (raises RHR 2.4 bpm per drink above average per 5.1M person-day wearables study), weight loss (Look AHEAD trial), Mediterranean diet (lowers 2.2 bpm in SUN cohort n=15,863), and reduced sodium (raises 1.65 bpm per Graudal meta-analysis). Supplements include omega-3 fish oil, soluble fiber, chromium, potassium (null), vitamin D (null per BEST-D RCT), L-arginine (null), and melatonin (mixed). Exercise factors include endurance training (lowers 8.4 bpm with 30+ weeks per Huang 2005), HIIT (lowers 3.9 bpm per Edwards 2023 meta-analysis of 97 RCTs), yoga (lowers 5.27 bpm per Cramer 2014), VO2max fitness, resistance training alone (null), tai chi, sedentary behavior, and overtraining. Environment factors include heat, cold, altitude, air pollution, nighttime traffic noise, time of day, and season. Demographics include age, female sex, genetics, obesity, pregnancy, menstrual cycle, and ethnicity. Includes Common Myths section with 33 popular factors that lack RHR-specific evidence including dark chocolate, beetroot juice, magnesium, CoQ10, ashwagandha for RHR, and creatine. Every claim backed by RCTs and meta-analyses. What affects resting heart rate. How to lower resting heart rate naturally. Best supplements for heart rate. Data sourced from peer-reviewed studies.');
+    __seo(this, 'RHR Factor Explorer by Kygo Health. Explore 37 research-backed factors that influence resting heart rate (RHR) across 4 modifiable categories (Nutrition, Supplements, Exercise, and Environment) plus 7 demographic baseline factors. Nutrition factors include omega-3 EPA/DHA (lowers RHR by 1.6 bpm per Hidayat 2018 meta-analysis of 51 RCTs), habitual coffee (no significant effect), acute high-dose caffeine, alcohol (raises RHR 2.4 bpm per drink above average per 5.1M person-day wearables study), weight loss (Look AHEAD trial), Mediterranean diet (lowers 2.2 bpm in SUN cohort n=15,863), and reduced sodium (raises 1.65 bpm per Graudal meta-analysis). Supplements include omega-3 fish oil, soluble fiber, chromium, potassium (null), vitamin D (null per BEST-D RCT), L-arginine (null), and melatonin (mixed). Exercise factors include endurance training (lowers 8.4 bpm with 30+ weeks per Huang 2005), HIIT (lowers 3.9 bpm per Edwards 2023 meta-analysis of 97 RCTs), yoga (lowers 5.27 bpm per Cramer 2014), VO2max fitness, resistance training alone (null), tai chi, sedentary behavior, and overtraining. Environment factors include heat, cold, altitude, air pollution, nighttime traffic noise, time of day, and season. Demographics include age, female sex, genetics, obesity, pregnancy, menstrual cycle, and ethnicity. Includes Common Myths section with 33 popular factors that lack RHR-specific evidence including dark chocolate, beetroot juice, magnesium, CoQ10, ashwagandha for RHR, and creatine. Every claim backed by RCTs and meta-analyses. What affects resting heart rate. How to lower resting heart rate naturally. Best supplements for heart rate. Data sourced from peer-reviewed studies.');
   }
 
   disconnectedCallback() {
@@ -104,7 +104,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 1.6,
         effect: 'Lowers RHR (↓)',
         keyFinding: 'Meta-analysis of 51 RCTs: −1.6 bpm; −2.5 bpm if baseline ≥69',
-        whatThisMeans: 'Eating fatty fish or supplementing with EPA/DHA reliably slows your resting heart rate. The effect is small but rock-solid — pooled across 51 randomized trials, it averages about 1.6 bpm lower, and gets stronger if your starting RHR is already elevated. One of the cleanest dietary signals in the entire RHR literature.',
+        whatThisMeans: 'Eating fatty fish or supplementing with EPA/DHA reliably slows your resting heart rate. The effect is small but rock-solid: pooled across 51 randomized trials, it averages about 1.6 bpm lower, and gets stronger if your starting RHR is already elevated. One of the cleanest dietary signals in the entire RHR literature.',
         mechanism: 'EPA/DHA incorporate into cardiomyocyte membranes, modulating ion channels and slowing sinoatrial node firing; also enhance vagal tone.',
         dosage: '1–2 g/day combined EPA+DHA from fatty fish or supplement',
         source: { url: 'https://www.nature.com/articles/s41430-017-0052-3', label: 'Hidayat 2018 meta-analysis (PMC5988646)' }
@@ -114,7 +114,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'variable', evidence: 'strong', effectSize: null,
         effect: 'No effect (→)',
         keyFinding: 'Meta-analysis 6 RCTs: +0.40 bpm RHR, not significant',
-        whatThisMeans: "Daily coffee drinkers — relax. The pooled evidence across 6 controlled trials shows habitual coffee doesn't move your resting heart rate in either direction. The +0.4 bpm change wasn't statistically significant. This is a documented null finding, not a recommendation.",
+        whatThisMeans: "Daily coffee drinkers, relax. The pooled evidence across 6 controlled trials shows habitual coffee doesn't move your resting heart rate in either direction. The +0.4 bpm change wasn't statistically significant. This is a documented null finding, not a recommendation.",
         mechanism: 'Tolerance develops to caffeine\'s adenosine receptor blockade with repeated exposure; chronic heart-rate response normalizes within weeks.',
         dosage: 'Up to 3–4 cups/day appears neutral for chronic RHR',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/37647856/', label: '2023 meta-analysis of 6 RCTs (PubMed 37647856)' }
@@ -124,7 +124,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'moderate', effectSize: null,
         effect: 'Raises RHR (↑)',
         keyFinding: 'Narrative review: dose-dependent; high doses raise HR',
-        whatThisMeans: "A single big caffeine dose — pre-workout scoop, double espresso on an empty stomach — does temporarily raise heart rate in a dose-dependent way. This is the acute response, not the chronic one. Low doses (under 3 mg/kg) typically don't.",
+        whatThisMeans: "A single big caffeine dose (pre-workout scoop, double espresso on an empty stomach) does temporarily raise heart rate in a dose-dependent way. This is the acute response, not the chronic one. Low doses (under 3 mg/kg) typically don't.",
         mechanism: 'Adenosine receptor antagonism removes baseline inhibition on sympathetic activity; catecholamine release elevates HR transiently.',
         dosage: 'Effect emerges above ~3 mg/kg single dose',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/24203773/', label: 'Mesas 2014 review (PubMed 24203773)' }
@@ -134,7 +134,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 2.4,
         effect: 'Raises RHR (+2.4 bpm)',
         keyFinding: 'Wearables study n=20,968 (5.1M person-days): +2.4 bpm M / +2.8 bpm F per drink',
-        whatThisMeans: 'The largest real-world dataset on alcohol and heart rate ever assembled. Each additional drink above your personal average raised overnight RHR by about 2.4–2.8 bpm. This is the kind of effect your wearable will catch the morning after a few drinks — and the data confirms it is real, dose-related, and consistent across millions of person-days.',
+        whatThisMeans: 'The largest real-world dataset on alcohol and heart rate ever assembled. Each additional drink above your personal average raised overnight RHR by about 2.4–2.8 bpm. This is the kind of effect your wearable will catch the morning after a few drinks, and the data confirms it is real, dose-related, and consistent across millions of person-days.',
         mechanism: 'Sympathetic activation, vagal withdrawal, and dehydration during alcohol metabolism elevate overnight HR; effect persists into the next morning.',
         dosage: 'Each drink above baseline matters; abstinence days produce the cleanest RHR',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12970902/', label: '2026 wearables study (PMC12970902)' }
@@ -144,7 +144,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 5,
         effect: 'Lowers RHR (≈5 bpm)',
         keyFinding: 'Look AHEAD RCT yr 1: intensive lifestyle 72.8 vs 77.7 bpm; bariatric: −13 bpm at 2 yrs',
-        whatThisMeans: 'Losing weight through a structured lifestyle program lowers RHR by about 5 bpm in the first year — not a small change. Bariatric surgery patients drop closer to 13 bpm over two years. Among the largest, most reliable RHR-modifiers available, and one of the few that compounds with cardiovascular benefit.',
+        whatThisMeans: 'Losing weight through a structured lifestyle program lowers RHR by about 5 bpm in the first year, not a small change. Bariatric surgery patients drop closer to 13 bpm over two years. Among the largest, most reliable RHR-modifiers available, and one of the few that compounds with cardiovascular benefit.',
         mechanism: 'Reduced sympathetic drive, lower circulating catecholamines, improved cardiac efficiency; less metabolic load on the heart at rest.',
         dosage: 'Sustained lifestyle program (caloric + activity); 7–10% weight loss yields measurable change',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3512322/', label: 'Look AHEAD 2012 (PMC3512322)' }
@@ -164,7 +164,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 1.65,
         effect: 'Raises RHR (+1.65 bpm)',
         keyFinding: 'Meta-analysis 63 RCTs: low-sodium raises HR by 1.65 bpm',
-        whatThisMeans: "A counter-intuitive but well-replicated finding. Cutting sodium meaningfully lowers blood pressure — but it nudges resting heart rate up by about 1.65 bpm across 63 controlled trials. The body compensates for reduced volume by raising HR. Doesn't negate sodium reduction's BP benefit, just worth knowing.",
+        whatThisMeans: "A counter-intuitive but well-replicated finding. Cutting sodium meaningfully lowers blood pressure, but it nudges resting heart rate up by about 1.65 bpm across 63 controlled trials. The body compensates for reduced volume by raising HR. Doesn't negate sodium reduction's BP benefit, just worth knowing.",
         mechanism: 'Reduced extracellular volume triggers compensatory sympathetic activation and renin–angiotensin response, modestly raising HR.',
         dosage: 'Moderate reduction (not extreme); BP benefit still outweighs RHR effect for most',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4805644/', label: 'Graudal 2016 meta-analysis (PMC4805644)' }
@@ -179,7 +179,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 1.6,
         effect: 'Lowers RHR (−1.6 bpm)',
         keyFinding: 'Meta-analysis 51 RCTs: −1.6 bpm; −2.5 bpm at baseline ≥69',
-        whatThisMeans: 'The single supplement with strong, replicated RHR-specific evidence. Across 51 randomized trials, fish-oil supplementation lowered resting heart rate by about 1.6 bpm — and by 2.5 bpm if your starting RHR was already 69 or higher. If you only take one supplement for cardiovascular markers, this is the one with the data.',
+        whatThisMeans: 'The single supplement with strong, replicated RHR-specific evidence. Across 51 randomized trials, fish-oil supplementation lowered resting heart rate by about 1.6 bpm, and by 2.5 bpm if your starting RHR was already 69 or higher. If you only take one supplement for cardiovascular markers, this is the one with the data.',
         mechanism: 'EPA/DHA modify cardiac ion channels and membrane fluidity, slowing sinoatrial firing; vagal-tone enhancement is a secondary mechanism.',
         dosage: '1–2 g/day combined EPA+DHA; standardized triglyceride form',
         source: { url: 'https://www.nature.com/articles/s41430-017-0052-3', label: 'Hidayat 2018 meta-analysis (PMC5988646)' }
@@ -189,7 +189,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'emerging', effectSize: null,
         effect: 'Lowers RHR (HTN only)',
         keyFinding: 'Single RCT n=70 over 3 mo: significant 24-h HR reduction vs DASH-only control',
-        whatThisMeans: 'A single 3-month trial in hypertensive patients found 30 g/day of oat bran on top of a DASH diet meaningfully reduced 24-hour heart rate compared to DASH alone. Specific to a clinical population — not yet replicated in healthy adults — but a clean, hypothesis-generating result.',
+        whatThisMeans: 'A single 3-month trial in hypertensive patients found 30 g/day of oat bran on top of a DASH diet meaningfully reduced 24-hour heart rate compared to DASH alone. Specific to a clinical population, not yet replicated in healthy adults, but a clean, hypothesis-generating result.',
         mechanism: 'Soluble fiber improves glycemic stability, lowers LDL, and shifts gut microbiome toward short-chain fatty acid producers that support vagal tone.',
         dosage: '30 g/day oat bran (or equivalent soluble fiber)',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9370281/', label: 'Nutrients 2022 RCT (PMC9370281)' }
@@ -199,7 +199,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'emerging', effectSize: null,
         effect: 'Lowers RHR (MetS only)',
         keyFinding: 'Single RCT in MetS/IGT: only RHR significantly reduced',
-        whatThisMeans: 'In one RCT in metabolic syndrome / impaired glucose tolerance patients, chromium yeast was the only intervention that significantly reduced RHR among the markers tested. Population-specific, single trial — interesting signal but not generalizable yet.',
+        whatThisMeans: 'In one RCT in metabolic syndrome / impaired glucose tolerance patients, chromium yeast was the only intervention that significantly reduced RHR among the markers tested. Population-specific, single trial. Interesting signal but not generalizable yet.',
         mechanism: 'Chromium improves insulin sensitivity; reduced hyperinsulinemia may indirectly lower sympathetic tone in metabolically impaired individuals.',
         dosage: 'Chromium yeast supplementation (per trial protocol); only studied in MetS/IGT',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/28856601/', label: 'Chromium MetS RCT (PubMed 28856601)' }
@@ -209,7 +209,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'variable', evidence: 'strong', effectSize: null,
         effect: 'No effect (→)',
         keyFinding: 'Meta-analysis 22 RCTs, n=1,086: +0.19 bpm, not significant',
-        whatThisMeans: "A documented null finding. Pooled across 22 RCTs and over 1,000 participants, potassium supplements changed resting heart rate by 0.19 bpm — not statistically different from zero. Useful for blood pressure in some people, but it's not an RHR lever.",
+        whatThisMeans: "A documented null finding. Pooled across 22 RCTs and over 1,000 participants, potassium supplements changed resting heart rate by 0.19 bpm, not statistically different from zero. Useful for blood pressure in some people, but it's not an RHR lever.",
         mechanism: 'No clear chronic chronotropic mechanism at supplementation doses; HR effect appears neutral.',
         dosage: 'Not recommended for RHR; consider for BP under clinician guidance',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/27289164/', label: 'Gijsbers 2016 meta-analysis (PubMed 27289164)' }
@@ -219,7 +219,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'variable', evidence: 'strong', effectSize: null,
         effect: 'No effect (→)',
         keyFinding: 'BEST-D RCT, n=305, 12 mo: no HR effect at any dose',
-        whatThisMeans: 'A clean, year-long, dose-response RCT — and vitamin D produced zero change in heart rate at any dose tested. One of the most over-supplemented compounds in the wellness world; for resting heart rate specifically, the evidence says it does nothing.',
+        whatThisMeans: 'A clean, year-long, dose-response RCT, and vitamin D produced zero change in heart rate at any dose tested. One of the most over-supplemented compounds in the wellness world; for resting heart rate specifically, the evidence says it does nothing.',
         mechanism: 'No demonstrated direct chronotropic effect at any tested dose over 12 months.',
         dosage: 'Not recommended for RHR; supplement only if clinically deficient',
         source: { url: 'https://www.ahajournals.org/doi/10.1161/JAHA.117.005707', label: 'BEST-D RCT 2017 (PMC5721827)' }
@@ -254,7 +254,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 8.37,
         effect: 'Lowers RHR (−8.4 bpm)',
         keyFinding: 'Huang 2005 meta-analysis (older adults): SES −0.58 (−8.4%); −8.37 bpm if >30 wk vs −4.86 bpm if <30 wk',
-        whatThisMeans: "The single largest, cleanest RHR-lowering intervention in the literature. Sustained aerobic training drops resting heart rate by about 8.4 bpm — but only after 30+ weeks of consistent work. Shorter programs still deliver about 4.9 bpm. There's no other modifiable factor with this kind of effect size.",
+        whatThisMeans: "The single largest, cleanest RHR-lowering intervention in the literature. Sustained aerobic training drops resting heart rate by about 8.4 bpm, but only after 30+ weeks of consistent work. Shorter programs still deliver about 4.9 bpm. There's no other modifiable factor with this kind of effect size.",
         mechanism: 'Cardiac remodeling increases stroke volume; enhanced vagal tone and reduced intrinsic sinus rate produce sustained lower RHR.',
         dosage: '150+ min/week moderate aerobic activity; 30+ weeks for maximal effect',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/16118586/', label: 'Huang 2005 meta-analysis (PubMed 16118586)' }
@@ -264,7 +264,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 3.9,
         effect: 'Lowers RHR (−3.9 bpm)',
         keyFinding: '97-RCT meta-analysis: −3.9 bpm; long-term (≥12 wk) SMD −0.33',
-        whatThisMeans: 'Across 97 RCTs and over 3,000 participants, HIIT lowered resting heart rate by about 3.9 bpm. Smaller absolute effect than long-term endurance training, but it shows up faster — meaningful change within 12 weeks. The most time-efficient way to drop RHR.',
+        whatThisMeans: 'Across 97 RCTs and over 3,000 participants, HIIT lowered resting heart rate by about 3.9 bpm. Smaller absolute effect than long-term endurance training, but it shows up faster: meaningful change within 12 weeks. The most time-efficient way to drop RHR.',
         mechanism: 'Repeated supramaximal stimulus drives cardiac autonomic remodeling, vagal reactivation, and improved stroke volume in shorter timeframes.',
         dosage: '2–3 sessions/week for ≥12 weeks; e.g. 4×4 min intervals',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/37204620/', label: 'Edwards 2023 meta-analysis (PubMed 37204620)' }
@@ -274,7 +274,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 5.27,
         effect: 'Lowers RHR (−5.3 bpm)',
         keyFinding: 'Cramer 2014 meta-analysis: −5.27 bpm (95% CI −9.55 to −1.00) vs non-exercise control',
-        whatThisMeans: 'A robust meta-analysis found regular yoga practice lowers RHR by about 5.27 bpm versus non-exercise controls. The effect rivals dedicated cardio in some trials — likely because the breathwork directly drives parasympathetic tone, on top of the modest physical demand.',
+        whatThisMeans: 'A robust meta-analysis found regular yoga practice lowers RHR by about 5.27 bpm versus non-exercise controls. The effect rivals dedicated cardio in some trials, likely because the breathwork directly drives parasympathetic tone, on top of the modest physical demand.',
         mechanism: 'Pranayama breathing activates the vagus nerve and parasympathetic nervous system; postural work supports cardiovascular conditioning.',
         dosage: '3+ sessions/week of regular practice',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/24636547/', label: 'Cramer 2014 meta-analysis (PubMed 24636547)' }
@@ -284,7 +284,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: null,
         effect: 'Lowers RHR (↓)',
         keyFinding: 'Fenland Study, n=10,865: inverse RHR–fitness relationship; β ≈ −0.30',
-        whatThisMeans: 'In a population-level study of nearly 11,000 adults, RHR tracked tightly inversely with VO₂max. Higher fitness, lower RHR — at the population level, RHR is essentially a proxy for cardiorespiratory fitness. This is why your morning RHR is one of the most informative single numbers your wearable produces.',
+        whatThisMeans: 'In a population-level study of nearly 11,000 adults, RHR tracked tightly inversely with VO₂max. Higher fitness, lower RHR. At the population level, RHR is essentially a proxy for cardiorespiratory fitness. This is why your morning RHR is one of the most informative single numbers your wearable produces.',
         mechanism: 'Higher VO₂max reflects greater cardiac stroke volume and vagal dominance, both of which reduce required HR at rest.',
         dosage: 'Build VO₂max via consistent aerobic + interval training',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10174582/', label: 'Gonzales 2023 Fenland Study (PMC10174582)' }
@@ -294,7 +294,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'variable', evidence: 'strong', effectSize: 0.08,
         effect: 'No effect (→)',
         keyFinding: 'Reimers 2018 (43 strength trials); isometric meta-analysis: −0.08 bpm, n.s.',
-        whatThisMeans: "Lifting weights is great for many things — RHR isn't really one of them. Across 43 strength-training trials and an isometric meta-analysis, the change was 0.08 bpm and not statistically significant. If you want lower RHR, add cardio. Strength alone doesn't move the number meaningfully.",
+        whatThisMeans: "Lifting weights is great for many things; RHR isn't really one of them. Across 43 strength-training trials and an isometric meta-analysis, the change was 0.08 bpm and not statistically significant. If you want lower RHR, add cardio. Strength alone doesn't move the number meaningfully.",
         mechanism: 'Pure strength training produces minimal cardiac remodeling and limited vagal activation versus aerobic work.',
         dosage: 'Combine with aerobic training for RHR benefit; resistance alone is insufficient',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/30624369/', label: 'López-Valenciano 2019 meta-analysis (PubMed 30624369)' }
@@ -304,7 +304,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'moderate', effectSize: null,
         effect: 'Lowers RHR (↓)',
         keyFinding: 'Reimers 2018 subgroups (5 tai chi + 3 qigong): consistent ↓ direction, smaller magnitude',
-        whatThisMeans: 'Subgroup analyses across 8 trials of tai chi and qigong consistently lowered RHR — the magnitude was smaller than yoga or aerobic exercise, but the direction was consistent. A reasonable option for low-impact RHR support, especially in older adults.',
+        whatThisMeans: 'Subgroup analyses across 8 trials of tai chi and qigong consistently lowered RHR; the magnitude was smaller than yoga or aerobic exercise, but the direction was consistent. A reasonable option for low-impact RHR support, especially in older adults.',
         mechanism: 'Slow movement plus deep diaphragmatic breathing engage parasympathetic tone; modest cardiovascular load conditions the sinoatrial response.',
         dosage: 'Regular practice; 3+ sessions/week',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/', label: 'Reimers 2018 (PMC6306777)' }
@@ -314,7 +314,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'moderate', effectSize: null,
         effect: 'Raises RHR (↑)',
         keyFinding: 'Cohort + cross-sectional: more leisure sitting → elevated RHR + reduced HRV',
-        whatThisMeans: "Cohort and cross-sectional data agree: more leisure sitting time tracks with higher resting heart rate (and lower HRV). It's not just the absence of exercise — prolonged inactivity itself appears to push RHR up. Standing breaks and step counts do help.",
+        whatThisMeans: "Cohort and cross-sectional data agree: more leisure sitting time tracks with higher resting heart rate (and lower HRV). It's not just the absence of exercise; prolonged inactivity itself appears to push RHR up. Standing breaks and step counts do help.",
         mechanism: 'Prolonged sitting reduces venous return and skeletal-muscle pump activity, blunting cardiovascular conditioning and elevating sympathetic tone.',
         dosage: 'Break sitting hourly; integrate movement throughout the day',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6406480/', label: 'Hallman 2019 (PMC6406480)' }
@@ -324,7 +324,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'moderate', effectSize: null,
         effect: 'Raises RHR (↑)',
         keyFinding: 'Systematic review (Bosquet 2008): morning HR can rise with overtraining, small amplitude limits utility',
-        whatThisMeans: "Pushing volume past your recovery capacity raises morning RHR — but the change is often small enough that it's an unreliable single marker. Watch for trends over weeks alongside HRV and perceived recovery, not single-day spikes.",
+        whatThisMeans: "Pushing volume past your recovery capacity raises morning RHR, but the change is often small enough that it's an unreliable single marker. Watch for trends over weeks alongside HRV and perceived recovery, not single-day spikes.",
         mechanism: 'Sympathetic overactivation, suppressed parasympathetic tone, and unrecovered cardiovascular load elevate baseline HR.',
         dosage: 'Schedule recovery weeks; track 7-day average RHR for trends',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/18308872/', label: 'Bosquet 2008 review (PubMed 18308872)' }
@@ -339,7 +339,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 0.11,
         effect: 'Raises RHR (+0.11/°C)',
         keyFinding: 'Madaniyazi 2016, Chinese cohort n=47,591: +0.11 bpm per 1 °C increase in mean daily temp',
-        whatThisMeans: 'In a cohort of nearly 48,000 adults, heart rate rose about 0.11 bpm for every 1 °C increase in mean daily temperature. Small per-degree but adds up across summer or in hot bedrooms — a measurable real-world signal.',
+        whatThisMeans: 'In a cohort of nearly 48,000 adults, heart rate rose about 0.11 bpm for every 1 °C increase in mean daily temperature. Small per-degree but adds up across summer or in hot bedrooms: a measurable real-world signal.',
         mechanism: 'Heat dilates peripheral vasculature for cooling; HR rises to maintain blood pressure and dissipate heat through skin perfusion.',
         dosage: 'Cool the bedroom; hydrate in heat; expect higher RHR readings in summer',
         source: { url: 'https://www.nature.com/articles/srep21003', label: 'Madaniyazi 2016 (PMC4753475)' }
@@ -355,17 +355,17 @@ class KygoRhrFactors extends HTMLElement {
         source: { url: 'https://www.nature.com/articles/srep21003', label: 'Madaniyazi 2016 (PMC4753475)' }
       },
       {
-        key: 'altitude-acute', name: 'High Altitude — Acute',
+        key: 'altitude-acute', name: 'High Altitude: Acute',
         direction: 'negative', evidence: 'strong', effectSize: null,
         effect: 'Raises RHR (↑)',
         keyFinding: 'Bärtsch & Gibbs 2007 (Circulation): hypobaric hypoxia → sympathetic activation → RHR rises',
-        whatThisMeans: 'In the first hours-to-days at altitude, your resting heart rate rises measurably as the body responds to lower oxygen pressure. Expect this on ski trips, mountain hikes, or after flights to high-altitude cities — it normalizes with acclimatization.',
+        whatThisMeans: 'In the first hours-to-days at altitude, your resting heart rate rises measurably as the body responds to lower oxygen pressure. Expect this on ski trips, mountain hikes, or after flights to high-altitude cities; it normalizes with acclimatization.',
         mechanism: 'Hypobaric hypoxia activates chemoreceptors and the sympathetic nervous system; HR rises to maintain oxygen delivery.',
         dosage: 'Expect transient RHR elevation; expect normalization within weeks of acclimatization',
         source: { url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.106.650796', label: 'Bärtsch & Gibbs 2007 (PubMed 17984389)' }
       },
       {
-        key: 'altitude-chronic', name: 'High Altitude — Acclimatized',
+        key: 'altitude-chronic', name: 'High Altitude: Acclimatized',
         direction: 'variable', evidence: 'strong', effectSize: null,
         effect: 'No effect (→)',
         keyFinding: 'Bärtsch & Gibbs 2007: RHR returns toward sea-level values with acclimatization (weeks)',
@@ -389,7 +389,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 9,
         effect: 'Raises RHR (+9 bpm)',
         keyFinding: 'Griefahn 2008 lab study, n=24: +9 bpm during noise without awakening; +30 bpm with awakening',
-        whatThisMeans: 'A controlled lab study showed nighttime traffic noise spikes heart rate by 9 bpm even when you don\'t consciously wake up — and 30 bpm when you do. Your sleeping cardiovascular system is registering the noise even when your brain isn\'t. Soundproofing is RHR work.',
+        whatThisMeans: 'A controlled lab study showed nighttime traffic noise spikes heart rate by 9 bpm even when you don\'t consciously wake up, and 30 bpm when you do. Your sleeping cardiovascular system is registering the noise even when your brain isn\'t. Soundproofing is RHR work.',
         mechanism: 'Acoustic stimuli activate the autonomic nervous system through brainstem pathways; sympathetic surge spikes HR within seconds.',
         dosage: 'White noise, earplugs, soundproofing; aim for bedroom <30 dB',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2279756/', label: 'Griefahn 2008 (PMC2279756)' }
@@ -399,8 +399,8 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'mixed', evidence: 'strong', effectSize: null,
         effect: 'Mixed (↕)',
         keyFinding: 'Boudreau 2012: RHR peaks afternoon (~16:36), trough during biological night',
-        whatThisMeans: "Your RHR isn't a single number — it follows a daily rhythm with a peak around 4:30 PM and a trough during biological night. This is why morning RHR is the cleanest measurement for tracking. Afternoon spikes are normal physiology, not a problem.",
-        mechanism: 'Circadian regulation of autonomic tone — sympathetic activity rises through the day, peaks in late afternoon, and falls during sleep.',
+        whatThisMeans: "Your RHR isn't a single number: it follows a daily rhythm with a peak around 4:30 PM and a trough during biological night. This is why morning RHR is the cleanest measurement for tracking. Afternoon spikes are normal physiology, not a problem.",
+        mechanism: 'Circadian regulation of autonomic tone: sympathetic activity rises through the day, peaks in late afternoon, and falls during sleep.',
         dosage: 'Track RHR at consistent time (typically just after waking) for cleanest signal',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/22734576/', label: 'Boudreau 2012 (PubMed 22734576)' }
       },
@@ -409,8 +409,8 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 2,
         effect: 'Raises RHR in winter (+2 bpm)',
         keyFinding: 'Wearable cohort n=92,457 (PMC7001906): ~2 bpm higher in winter vs midsummer minimum',
-        whatThisMeans: "A wearable study of over 92,000 adults showed RHR is about 2 bpm higher in winter than at midsummer's minimum. Real, but small — don't panic if your January readings tick up. It's a normal seasonal pattern, not a health red flag.",
-        mechanism: 'Winter combines cold thermal load, reduced activity, lower light exposure, and higher infection rates — all nudge RHR upward.',
+        whatThisMeans: "A wearable study of over 92,000 adults showed RHR is about 2 bpm higher in winter than at midsummer's minimum. Real, but small. Don't panic if your January readings tick up. It's a normal seasonal pattern, not a health red flag.",
+        mechanism: 'Winter combines cold thermal load, reduced activity, lower light exposure, and higher infection rates; all nudge RHR upward.',
         dosage: 'Expect seasonal variation; compare year-over-year same-month rather than month-to-month',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7001906/', label: 'PLOS ONE 2020 wearable cohort (PMC7001906)' }
       }
@@ -424,7 +424,7 @@ class KygoRhrFactors extends HTMLElement {
         evidence: 'strong',
         effect: 'Lowers RHR (−1.47 bpm/decade)',
         keyFinding: 'Health eHeart Study n=66,788: −1.47 bpm per 10 years of age',
-        whatThisMeans: "In the largest real-world dataset of its kind, RHR drops by about 1.47 bpm per decade of age. Counter to the common assumption that aging raises every cardiovascular marker — for resting heart rate specifically, the trend is gently downward in healthy adults.",
+        whatThisMeans: "In the largest real-world dataset of its kind, RHR drops by about 1.47 bpm per decade of age. Counter to the common assumption that aging raises every cardiovascular marker: for resting heart rate specifically, the trend is gently downward in healthy adults.",
         mechanism: 'Reduced intrinsic sinus node firing rate and decreased β-adrenergic responsiveness with age, balanced against age-related vagal decline.',
         source: { url: 'https://www.nature.com/articles/s41746-019-0134-9', label: 'Avram 2019 Health eHeart (PMC6592896)' }
       },
@@ -433,7 +433,7 @@ class KygoRhrFactors extends HTMLElement {
         evidence: 'strong',
         effect: 'Higher RHR (+6 to +14 bpm vs men)',
         keyFinding: 'Gillum 1988 NHANES: women +6 to +14 bpm vs men at each age (adjusted)',
-        whatThisMeans: "A consistent finding across decades of national surveys: women have measurably higher resting heart rate than men at every age, even after adjusting for body size and activity. Doesn't reflect worse health — it's baseline physiology.",
+        whatThisMeans: "A consistent finding across decades of national surveys: women have measurably higher resting heart rate than men at every age, even after adjusting for body size and activity. Doesn't reflect worse health; it's baseline physiology.",
         mechanism: 'Smaller heart size means lower stroke volume per beat, requiring higher HR to maintain cardiac output; hormonal influences also play a role.',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/2969182/', label: 'Gillum 1988 NHANES (PubMed 2969182)' }
       },
@@ -442,7 +442,7 @@ class KygoRhrFactors extends HTMLElement {
         evidence: 'strong',
         effect: 'Intrinsic (h² ≈ 0.23)',
         keyFinding: 'Jensen 2018 Danish twins n=4,282: h² = 0.23; 2023 GWAS n=835,465 identified 493 variants',
-        whatThisMeans: "About a quarter of the variation in resting heart rate between people is genetic — confirmed in twin studies and a massive GWAS that identified 493 genetic variants. Some of your RHR is just inherited. The other ~77% is everything else on this list.",
+        whatThisMeans: "About a quarter of the variation in resting heart rate between people is genetic, confirmed in twin studies and a massive GWAS that identified 493 genetic variants. Some of your RHR is just inherited. The other ~77% is everything else on this list.",
         mechanism: 'Multiple genetic variants influence ion channel function, autonomic tone, and cardiac structure, collectively setting individual baseline HR.',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5831408/', label: 'Jensen 2018 (PMC5831408) + 2023 GWAS' }
       },
@@ -460,7 +460,7 @@ class KygoRhrFactors extends HTMLElement {
         evidence: 'strong',
         effect: 'Raises RHR (+10 to +20 bpm)',
         keyFinding: 'Sanghavi & Rutherford 2014 Circulation review: HR rises 10–20 bpm progressively, peak in 3rd trimester',
-        whatThisMeans: "Pregnancy progressively raises resting heart rate by 10–20 bpm, peaking in the third trimester. This is the single largest physiological RHR change in healthy adults — and it's expected, not pathological. RHR returns to baseline within weeks of delivery.",
+        whatThisMeans: "Pregnancy progressively raises resting heart rate by 10–20 bpm, peaking in the third trimester. This is the single largest physiological RHR change in healthy adults, and it's expected, not pathological. RHR returns to baseline within weeks of delivery.",
         mechanism: 'Increased blood volume, lower vascular resistance, and elevated metabolic demand all drive cardiac output and HR upward through gestation.',
         source: { url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.114.009029', label: 'Sanghavi 2014 Circulation (PubMed 25223771)' }
       },
@@ -509,11 +509,11 @@ class KygoRhrFactors extends HTMLElement {
       // Exercise
       { name: 'Single bouts of exercise (acute)', cat: 'Exercise', why: 'Transient response, not a chronic determinant of RHR.' },
       { name: 'Stretching alone', cat: 'Exercise', why: 'No chronic RHR effect demonstrated in trials.' },
-      { name: 'HERITAGE Family Study findings', cat: 'Exercise', why: 'Found "minimal effect" in a single 20-week cohort — outlier contradicted by Reimers 2018 meta-analysis of 121 endurance trials.' },
+      { name: 'HERITAGE Family Study findings', cat: 'Exercise', why: 'Found "minimal effect" in a single 20-week cohort. Outlier contradicted by Reimers 2018 meta-analysis of 121 endurance trials.' },
       { name: 'Walking specifically', cat: 'Exercise', why: 'Covered under endurance/aerobic; no separate meta-analysis on walking-only RHR.' },
       { name: 'HRV training as RHR proxy', cat: 'Exercise', why: 'Different physiological measure; intentionally separate from RHR-specific evidence.' },
       // Environment
-      { name: 'Sleep deprivation', cat: 'Environment', why: 'Mixed evidence — Kato 2000 found no HR change despite raised BP. HRV effects clearer than RHR.' },
+      { name: 'Sleep deprivation', cat: 'Environment', why: 'Mixed evidence: Kato 2000 found no HR change despite raised BP. HRV effects clearer than RHR.' },
       { name: 'Indoor temperature / heating', cat: 'Environment', why: 'Covered under heat/cold; no separate controlled-exposure RHR data of comparable scale.' },
       { name: 'Humidity (isolated)', cat: 'Environment', why: 'Affects thermoregulation but isolated humidity → RHR data is sparse.' },
       { name: 'UV / sunlight exposure', cat: 'Environment', why: 'No direct RHR-specific evidence beyond temperature confounding.' },
@@ -530,10 +530,10 @@ class KygoRhrFactors extends HTMLElement {
 
   get _topPicks() {
     return [
-      { label: 'Best single habit',     stat: '−8.4 bpm', answer: 'Aerobic Exercise',     icon: 'trophy',   note: '30+ weeks of training. Huang 2005 meta-analysis in older adults — largest single modifier in the literature.', cls: '' },
+      { label: 'Best single habit',     stat: '−8.4 bpm', answer: 'Aerobic Exercise',     icon: 'trophy',   note: '30+ weeks of training. Huang 2005 meta-analysis in older adults. Largest single modifier in the literature.', cls: '' },
       { label: 'Best supplement',       stat: '−1.6 bpm', answer: 'Omega-3 / Fish Oil',  icon: 'pill',     note: 'Hidayat 2018 meta-analysis of 51 RCTs. The only supplement with strong, replicated RHR-specific evidence.', cls: '' },
       { label: 'Best diet',             stat: '−2.2 bpm', answer: 'Mediterranean Diet',  icon: 'droplet',  note: 'García-López 2014 SUN cohort (n=15,863). High vs low adherence: 2.2 bpm lower (95% CI 1.4–3.1).', cls: '' },
-      { label: 'Quickest impact',       stat: '−3.9 bpm', answer: 'HIIT',                icon: 'dumbbell', note: 'Edwards 2023 meta-analysis of 97 RCTs. Measurable change within 12 weeks — far faster than endurance training.', cls: '' },
+      { label: 'Quickest impact',       stat: '−3.9 bpm', answer: 'HIIT',                icon: 'dumbbell', note: 'Edwards 2023 meta-analysis of 97 RCTs. Measurable change within 12 weeks, far faster than endurance training.', cls: '' },
       { label: 'Biggest RHR killer',    stat: '+2.4 bpm', answer: 'Alcohol',             icon: 'alert',    note: 'Per drink above your average. 2026 wearables study (n=20,968; 5.1M person-days). Effect persists overnight.', cls: 'warn' },
       { label: 'Biggest myth',          stat: '±0 bpm',   answer: 'Vitamin D',           icon: 'ghost',    note: 'BEST-D: a year-long, dose-response RCT showed zero RHR effect at any dose. Heavily marketed, no signal.',     cls: 'myth' }
     ];
@@ -670,7 +670,7 @@ class KygoRhrFactors extends HTMLElement {
           <div>
             <span class="imp-eyebrow">Top movers</span>
             <h3 class="imp-title">By measured bpm impact</h3>
-            <p class="imp-sub">Every modifiable factor with a clean numeric effect size from a meta-analysis or RCT — sorted by magnitude.</p>
+            <p class="imp-sub">Every modifiable factor with a clean numeric effect size from a meta-analysis or RCT, sorted by magnitude.</p>
           </div>
           <div class="imp-meta">${signed.length} quantified</div>
         </div>
@@ -814,7 +814,7 @@ class KygoRhrFactors extends HTMLElement {
               </div>
               <div class="fact-body-row">
                 <span class="lbl">What to do</span>
-                <p>${f.dosage || '—'}</p>
+                <p>${f.dosage || '–'}</p>
               </div>
               <div class="fact-body-row">
                 <span class="lbl">Source</span>
@@ -859,7 +859,7 @@ class KygoRhrFactors extends HTMLElement {
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('users')}</span>Your baseline</span>
-            <h2 class="section-h2" id="baseline-title">What you can't change — <em>but should know</em></h2>
+            <h2 class="section-h2" id="baseline-title">What you can't change, <em>but should know</em></h2>
             <p class="section-lede">${this._factorsDemographics.length} demographic and physiological factors that set your starting RHR. Tap any factor for the full study and mechanism.</p>
           </div>
           <div class="base-grid">${cards}</div>
@@ -966,52 +966,52 @@ class KygoRhrFactors extends HTMLElement {
   get _srcGroups() {
     const groups = {
       'Nutrition': [
-        { label: 'Alexander 2022 — Factors affecting RHR in healthy humans (Front Physiol)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
-        { label: 'Palatini 2008 — RHR as a modifiable prognostic indicator (Drugs)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2787005/' },
-        { label: 'Hidayat 2018 — Omega-3 & heart rate meta-analysis of 51 RCTs (Eur J Clin Nutr)', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
-        { label: '2023 meta-analysis — Coffee consumption & heart rate (6 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/37647856/' },
-        { label: 'Mesas 2014 — Caffeine, BP & HR review (Nutr Hosp)', url: 'https://pubmed.ncbi.nlm.nih.gov/24203773/' },
-        { label: '2026 wearables study — Alcohol effects on HR (n=20,968; 5.1M person-days)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12970902/' },
-        { label: 'Look AHEAD 2012 — Lifestyle intervention & HR recovery (n=4,503)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3512322/' },
-        { label: 'Wasmund 2011 — Bariatric surgery & HR recovery (Heart Rhythm)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3019138/' },
-        { label: 'García-López 2014 — Mediterranean diet & HR (SUN cohort, n=15,863)', url: 'https://pubmed.ncbi.nlm.nih.gov/23144202/' },
-        { label: 'Graudal 2016 — Reduced sodium intake & HR (63 RCTs)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4805644/' }
+        { label: 'Alexander 2022: Factors affecting RHR in healthy humans (Front Physiol)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
+        { label: 'Palatini 2008: RHR as a modifiable prognostic indicator (Drugs)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2787005/' },
+        { label: 'Hidayat 2018: Omega-3 & heart rate meta-analysis of 51 RCTs (Eur J Clin Nutr)', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
+        { label: '2023 meta-analysis: Coffee consumption & heart rate (6 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/37647856/' },
+        { label: 'Mesas 2014: Caffeine, BP & HR review (Nutr Hosp)', url: 'https://pubmed.ncbi.nlm.nih.gov/24203773/' },
+        { label: '2026 wearables study: Alcohol effects on HR (n=20,968; 5.1M person-days)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12970902/' },
+        { label: 'Look AHEAD 2012: Lifestyle intervention & HR recovery (n=4,503)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3512322/' },
+        { label: 'Wasmund 2011: Bariatric surgery & HR recovery (Heart Rhythm)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3019138/' },
+        { label: 'García-López 2014: Mediterranean diet & HR (SUN cohort, n=15,863)', url: 'https://pubmed.ncbi.nlm.nih.gov/23144202/' },
+        { label: 'Graudal 2016: Reduced sodium intake & HR (63 RCTs)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4805644/' }
       ],
       'Supplements': [
-        { label: 'Hidayat 2018 — Omega-3 supplementation & heart rate (51 RCTs)', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
-        { label: 'Nutrients 2022 — Oat bran fiber & HR in hypertension RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9370281/' },
-        { label: 'Chromium MetS RCT — RHR reduction in metabolic syndrome', url: 'https://pubmed.ncbi.nlm.nih.gov/28856601/' },
-        { label: 'Gijsbers 2016 — Potassium supplementation & HR meta-analysis (22 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/27289164/' },
-        { label: 'BEST-D 2017 — Vitamin D & cardiovascular function (12 mo RCT)', url: 'https://www.ahajournals.org/doi/10.1161/JAHA.117.005707' },
-        { label: 'Rector 1996 — L-arginine in heart failure RCT (Circulation)', url: 'https://www.ahajournals.org/doi/10.1161/01.CIR.93.12.2135' },
-        { label: 'Tobeiha 2022 — Melatonin & cardiovascular disease review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9251346/' }
+        { label: 'Hidayat 2018: Omega-3 supplementation & heart rate (51 RCTs)', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
+        { label: 'Nutrients 2022: Oat bran fiber & HR in hypertension RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9370281/' },
+        { label: 'Chromium MetS RCT: RHR reduction in metabolic syndrome', url: 'https://pubmed.ncbi.nlm.nih.gov/28856601/' },
+        { label: 'Gijsbers 2016: Potassium supplementation & HR meta-analysis (22 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/27289164/' },
+        { label: 'BEST-D 2017: Vitamin D & cardiovascular function (12 mo RCT)', url: 'https://www.ahajournals.org/doi/10.1161/JAHA.117.005707' },
+        { label: 'Rector 1996: L-arginine in heart failure RCT (Circulation)', url: 'https://www.ahajournals.org/doi/10.1161/01.CIR.93.12.2135' },
+        { label: 'Tobeiha 2022: Melatonin & cardiovascular disease review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9251346/' }
       ],
       'Exercise': [
-        { label: 'Reimers 2018 — Exercise & RHR meta-analysis of 191 trials (J Clin Med)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' },
-        { label: 'Huang 2005 — Endurance training & RHR in older adults meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/16118586/' },
-        { label: 'Edwards 2023 — HIIT & cardiometabolic health (97 RCTs, n=3,399)', url: 'https://pubmed.ncbi.nlm.nih.gov/37204620/' },
-        { label: 'Cramer 2014 — Yoga & cardiovascular disease risk meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/24636547/' },
-        { label: 'Gonzales 2023 — RHR as biomarker of fitness, Fenland Study (n=10,865)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10174582/' },
-        { label: 'López-Valenciano 2019 — Isometric resistance training meta-analysis (16 trials)', url: 'https://pubmed.ncbi.nlm.nih.gov/30624369/' },
-        { label: 'Hallman 2019 — Sitting & autonomic cardiac modulation (n=490)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6406480/' },
-        { label: 'Bosquet 2008 — Heart rate as overreaching marker, systematic review', url: 'https://pubmed.ncbi.nlm.nih.gov/18308872/' }
+        { label: 'Reimers 2018: Exercise & RHR meta-analysis of 191 trials (J Clin Med)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' },
+        { label: 'Huang 2005: Endurance training & RHR in older adults meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/16118586/' },
+        { label: 'Edwards 2023: HIIT & cardiometabolic health (97 RCTs, n=3,399)', url: 'https://pubmed.ncbi.nlm.nih.gov/37204620/' },
+        { label: 'Cramer 2014: Yoga & cardiovascular disease risk meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/24636547/' },
+        { label: 'Gonzales 2023: RHR as biomarker of fitness, Fenland Study (n=10,865)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10174582/' },
+        { label: 'López-Valenciano 2019: Isometric resistance training meta-analysis (16 trials)', url: 'https://pubmed.ncbi.nlm.nih.gov/30624369/' },
+        { label: 'Hallman 2019: Sitting & autonomic cardiac modulation (n=490)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6406480/' },
+        { label: 'Bosquet 2008: Heart rate as overreaching marker, systematic review', url: 'https://pubmed.ncbi.nlm.nih.gov/18308872/' }
       ],
       'Environment': [
-        { label: 'Madaniyazi 2016 — Outdoor temperature, HR & BP (Kailuan cohort, n=47,591)', url: 'https://www.nature.com/articles/srep21003' },
-        { label: 'Bärtsch & Gibbs 2007 — Effect of altitude on heart and lungs (Circulation)', url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.106.650796' },
-        { label: '2025 — Air pollution & RHR in COPD (54,487 hourly observations)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11796267/' },
-        { label: 'Griefahn 2008 — Traffic noise & autonomic arousals during sleep', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2279756/' },
-        { label: 'Boudreau 2012 — Circadian rhythm in HRV & sympathovagal response', url: 'https://pubmed.ncbi.nlm.nih.gov/22734576/' },
-        { label: 'PLOS ONE 2020 — Daily RHR variability across seasons (n=92,457)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7001906/' }
+        { label: 'Madaniyazi 2016: Outdoor temperature, HR & BP (Kailuan cohort, n=47,591)', url: 'https://www.nature.com/articles/srep21003' },
+        { label: 'Bärtsch & Gibbs 2007: Effect of altitude on heart and lungs (Circulation)', url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.106.650796' },
+        { label: '2025: Air pollution & RHR in COPD (54,487 hourly observations)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11796267/' },
+        { label: 'Griefahn 2008: Traffic noise & autonomic arousals during sleep', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2279756/' },
+        { label: 'Boudreau 2012: Circadian rhythm in HRV & sympathovagal response', url: 'https://pubmed.ncbi.nlm.nih.gov/22734576/' },
+        { label: 'PLOS ONE 2020: Daily RHR variability across seasons (n=92,457)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7001906/' }
       ],
       'Demographics': [
-        { label: 'Avram 2019 — Real-world heart rate norms, Health eHeart (n=66,788)', url: 'https://www.nature.com/articles/s41746-019-0134-9' },
-        { label: 'Gillum 1988 — Epidemiology of RHR in NHANES national sample', url: 'https://pubmed.ncbi.nlm.nih.gov/2969182/' },
-        { label: 'Jensen 2018 — Heritability of RHR in Danish twins (n=4,282)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5831408/' },
-        { label: '2023 GWAS — RHR variants, Nature Communications (n=835,465)', url: 'https://www.nature.com/articles/s41467-023-39521-2' },
-        { label: '2023 — Higher HR & abnormal BMI in J-shape pattern', url: 'https://pubmed.ncbi.nlm.nih.gov/37249904/' },
-        { label: 'Sanghavi & Rutherford 2014 — Cardiovascular physiology of pregnancy', url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.114.009029' },
-        { label: 'Premenopausal women study — Cardiovascular function across menstrual cycle (n=49)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9572726/' }
+        { label: 'Avram 2019: Real-world heart rate norms, Health eHeart (n=66,788)', url: 'https://www.nature.com/articles/s41746-019-0134-9' },
+        { label: 'Gillum 1988: Epidemiology of RHR in NHANES national sample', url: 'https://pubmed.ncbi.nlm.nih.gov/2969182/' },
+        { label: 'Jensen 2018: Heritability of RHR in Danish twins (n=4,282)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5831408/' },
+        { label: '2023 GWAS: RHR variants, Nature Communications (n=835,465)', url: 'https://www.nature.com/articles/s41467-023-39521-2' },
+        { label: '2023: Higher HR & abnormal BMI in J-shape pattern', url: 'https://pubmed.ncbi.nlm.nih.gov/37249904/' },
+        { label: 'Sanghavi & Rutherford 2014: Cardiovascular physiology of pregnancy', url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.114.009029' },
+        { label: 'Premenopausal women study: Cardiovascular function across menstrual cycle (n=49)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9572726/' }
       ]
     };
     return groups;
@@ -1495,14 +1495,15 @@ class KygoRhrFactors extends HTMLElement {
         </div>
       </section>
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts()}
+
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated April 2026.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts('gray')}
     `;
   }
 
@@ -1616,7 +1617,7 @@ class KygoRhrFactors extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'RHR Factor Explorer',
       'alternateName': 'Kygo Resting Heart Rate Factors Tool',
-      'description': 'Explore 37 research-backed factors that affect resting heart rate — nutrition, supplements, exercise, environment, and demographics — every claim backed by RCTs and meta-analyses.',
+      'description': 'Explore 37 research-backed factors that affect resting heart rate (nutrition, supplements, exercise, environment, and demographics), every claim backed by RCTs and meta-analyses.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/resting-heart-rate-factors',
@@ -1639,7 +1640,7 @@ class KygoRhrFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What affects resting heart rate the most?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise has the largest single effect — sustained endurance training drops resting heart rate by about 8.4 bpm after 30+ weeks (Huang 2005 meta-analysis). HIIT delivers about 3.9 bpm in under 12 weeks (Edwards 2023 meta-analysis of 97 RCTs). Among modifiable factors, sustained cardio is the most powerful lever for lowering RHR.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise has the largest single effect: sustained endurance training drops resting heart rate by about 8.4 bpm after 30+ weeks (Huang 2005 meta-analysis). HIIT delivers about 3.9 bpm in under 12 weeks (Edwards 2023 meta-analysis of 97 RCTs). Among modifiable factors, sustained cardio is the most powerful lever for lowering RHR.' }
         },
         {
           '@type': 'Question',
@@ -1649,12 +1650,12 @@ class KygoRhrFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What supplement actually lowers resting heart rate?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Omega-3 fish oil is the only supplement with strong, replicated RHR-specific evidence. The Hidayat 2018 meta-analysis of 51 RCTs found omega-3 supplementation lowered RHR by 1.6 bpm on average — and 2.5 bpm in people with starting RHR ≥69. Most other popular supplements (magnesium, CoQ10, ashwagandha for RHR, L-theanine, creatine) lack RHR-specific evidence.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Omega-3 fish oil is the only supplement with strong, replicated RHR-specific evidence. The Hidayat 2018 meta-analysis of 51 RCTs found omega-3 supplementation lowered RHR by 1.6 bpm on average, and 2.5 bpm in people with starting RHR ≥69. Most other popular supplements (magnesium, CoQ10, ashwagandha for RHR, L-theanine, creatine) lack RHR-specific evidence.' }
         },
         {
           '@type': 'Question',
           'name': 'Does alcohol raise resting heart rate?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes — clearly and dose-dependently. A 2026 wearables study (n=20,968 adults, 5.1 million person-days) found each drink above your personal average raised overnight RHR by about 2.4 bpm in men and 2.8 bpm in women. The effect is the morning-after spike that wearables routinely capture.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, clearly and dose-dependently. A 2026 wearables study (n=20,968 adults, 5.1 million person-days) found each drink above your personal average raised overnight RHR by about 2.4 bpm in men and 2.8 bpm in women. The effect is the morning-after spike that wearables routinely capture.' }
         },
         {
           '@type': 'Question',

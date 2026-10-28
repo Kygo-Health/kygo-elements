@@ -584,7 +584,7 @@
       const rows = [
         ['♡', 'Resting heart rate', '↑ 2%', '', '56 bpm daily average', '7/7 days recorded · Similar to the previous week'],
         ['👣', 'Steps', '↓ 19%', 'neg', '2,569 steps lower on average', '10,804 steps vs 13,373 steps the previous week'],
-        ['🍎', 'Food logging', '— Same', '', 'Food logged on 7 of 7 days', '122 g protein per logged day']
+        ['🍎', 'Food logging', '– Same', '', 'Food logged on 7 of 7 days', '122 g protein per logged day']
       ];
       return `
           <div class="p-body">

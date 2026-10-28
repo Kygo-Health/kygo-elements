@@ -950,15 +950,16 @@ class KygoOuraRingComparison extends HTMLElement {
         </div>
       </section>
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts('gray')}
+
+      <footer class="tool-footer" style="background:#fff">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making decisions based on wearable data. Oura's Blood Pressure Signals and Nighttime Breathing are not FDA-cleared and do not diagnose any condition.</p>
           <p class="footer-copyright">Data sourced from official Oura specifications, peer-reviewed validation studies (Khan 2025, Robbins 2024, Svensson 2024, Dial 2025, Cao 2022, Kinnunen 2020, Liang 2024), and Ring 5 launch coverage. Last updated June 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts()}
     `;
   }
 

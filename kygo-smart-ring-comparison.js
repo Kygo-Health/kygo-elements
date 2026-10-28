@@ -1104,15 +1104,16 @@ class KygoSmartRingComparison extends HTMLElement {
         </div>
       </section>
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts()}
+
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making decisions based on wearable data. None of these rings is a medical device and none of these brands holds an FDA clearance for the features described. RingConn's sleep apnea and vascular features do not diagnose any condition or measure blood pressure; Oura's Blood Pressure Signals and breathing features are not FDA-cleared; Ultrahuman's AFib feature runs on FibriCheck's clearance (K173872), not Ultrahuman's own.</p>
           <p class="footer-copyright">Prices, specs, warranty terms and availability read on the manufacturers' own pages and verified September 2, 2026. Regulatory facts from the Federal Register (ITC 337-TA-1398), CBP ruling HQ H354023 and the openFDA API. Sale pricing, promotions and stock change without notice. Last updated September 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts('gray')}
     `;
   }
 

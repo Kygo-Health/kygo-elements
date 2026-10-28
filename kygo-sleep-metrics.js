@@ -107,7 +107,7 @@ class KygoSleepMetrics extends HTMLElement {
         totalMetrics: 22,
         affiliateUrl: 'https://www.amazon.com/s?k=Oura%20Ring&tag=kygohealthapp-20', trackLabel: 'oura-ring-search',
         exclusive: [
-          { metric: 'Sleep Onset Latency', desc: 'Time from lying down to first detected sleep — flags sleep issues' },
+          { metric: 'Sleep Onset Latency', desc: 'Time from lying down to first detected sleep; flags sleep issues' },
           { metric: 'Sleep Efficiency', desc: 'Percentage of time in bed actually spent asleep' },
           { metric: 'Circadian Alignment', desc: 'Scores how well your sleep midpoint aligns to your circadian rhythm' },
           { metric: 'Readiness Score', desc: 'Combines HR, HRV, temp, recovery, and activity balance' },
@@ -138,7 +138,7 @@ class KygoSleepMetrics extends HTMLElement {
         totalMetrics: 20,
         affiliateUrl: 'https://www.amazon.com/s?k=Apple%20Watch&rh=p_123%3A110955&tag=kygohealthapp-20', trackLabel: 'apple-watch-search',
         exclusive: [
-          { metric: 'Sleep Apnea Notifications', desc: 'FDA-authorized — 30-day evaluation, accelerometer-based' },
+          { metric: 'Sleep Apnea Notifications', desc: 'FDA-authorized, 30-day evaluation, accelerometer-based' },
           { metric: 'Breathing Disturbances', desc: 'ML-classified wrist micro-movements detect respiratory effort' },
           { metric: 'Nighttime Awakenings', desc: 'Count of wake epochs, feeds Interruptions sub-score' },
           { metric: 'Interruptions Score', desc: 'Sub-score based on number and duration of awake periods' },
@@ -272,10 +272,10 @@ class KygoSleepMetrics extends HTMLElement {
       sleepStages: [
         {
           key: 'lightSleep', name: 'Light / Core Sleep',
-          oura: { has: true, desc: "Called 'Light Sleep' \u2014 OSSA 2.0 multi-sensor" },
-          fitbit: { has: true, desc: "Called 'Light Sleep' \u2014 HR and movement classified" },
-          appleWatch: { has: true, desc: "Called 'Core Sleep' \u2014 ML model in 30-sec epochs" },
-          garmin: { has: true, desc: "Called 'Light Sleep' \u2014 HR variability and motion" }
+          oura: { has: true, desc: "Called 'Light Sleep', OSSA 2.0 multi-sensor" },
+          fitbit: { has: true, desc: "Called 'Light Sleep', HR and movement classified" },
+          appleWatch: { has: true, desc: "Called 'Core Sleep', ML model in 30-sec epochs" },
+          garmin: { has: true, desc: "Called 'Light Sleep', HR variability and motion" }
         },
         {
           key: 'deepSleep', name: 'Deep Sleep (NREM Stage 3)',
@@ -302,10 +302,10 @@ class KygoSleepMetrics extends HTMLElement {
       sleepQuality: [
         {
           key: 'restfulness', name: 'Restfulness / Restlessness',
-          oura: { has: true, desc: "Called 'Restfulness' \u2014 wake-ups and tossing events" },
-          fitbit: { has: true, desc: "Called 'Restoration' \u2014 combines HR and tossing" },
+          oura: { has: true, desc: "Called 'Restfulness', wake-ups and tossing events" },
+          fitbit: { has: true, desc: "Called 'Restoration', combines HR and tossing" },
           appleWatch: { has: false },
-          garmin: { has: true, desc: "Called 'Restlessness' \u2014 tossing and turning count" }
+          garmin: { has: true, desc: "Called 'Restlessness', tossing and turning count" }
         },
         {
           key: 'nightAwakenings', name: 'Nighttime Awakenings (count)',
@@ -478,41 +478,41 @@ class KygoSleepMetrics extends HTMLElement {
   get _srcByDevice() {
     return {
       oura: [
-        { label: 'Oura Support \u2014 Sleep Score', url: 'https://support.ouraring.com/hc/en-us/articles/360025445574-Sleep-Score' },
-        { label: 'Oura Support \u2014 Sleep Contributors', url: 'https://support.ouraring.com/hc/en-us/articles/360057792293-Sleep-Contributors' },
-        { label: 'Oura Support \u2014 Readiness Contributors', url: 'https://support.ouraring.com/hc/en-us/articles/360057791533-Readiness-Contributors' },
-        { label: 'Oura Support \u2014 Heart Rate Variability', url: 'https://support.ouraring.com/hc/en-us/articles/360025441974-Heart-Rate-Variability' },
-        { label: 'Oura Support \u2014 Nap Detection', url: 'https://support.ouraring.com/hc/en-us/articles/1500009653181-Nap-Detection' },
-        { label: 'Oura Blog \u2014 Sleep Score', url: 'https://ouraring.com/blog/sleep-score/' },
-        { label: 'ScienceDirect \u2014 Oura OSSA 2.0 Validation', url: 'https://www.sciencedirect.com/science/article/pii/S1389945724000200' }
+        { label: 'Oura Support: Sleep Score', url: 'https://support.ouraring.com/hc/en-us/articles/360025445574-Sleep-Score' },
+        { label: 'Oura Support: Sleep Contributors', url: 'https://support.ouraring.com/hc/en-us/articles/360057792293-Sleep-Contributors' },
+        { label: 'Oura Support: Readiness Contributors', url: 'https://support.ouraring.com/hc/en-us/articles/360057791533-Readiness-Contributors' },
+        { label: 'Oura Support: Heart Rate Variability', url: 'https://support.ouraring.com/hc/en-us/articles/360025441974-Heart-Rate-Variability' },
+        { label: 'Oura Support: Nap Detection', url: 'https://support.ouraring.com/hc/en-us/articles/1500009653181-Nap-Detection' },
+        { label: 'Oura Blog: Sleep Score', url: 'https://ouraring.com/blog/sleep-score/' },
+        { label: 'ScienceDirect: Oura OSSA 2.0 Validation', url: 'https://www.sciencedirect.com/science/article/pii/S1389945724000200' }
       ],
       fitbit: [
-        { label: 'Google Support \u2014 Sleep Score', url: 'https://support.google.com/fitbit/answer/14236513?hl=en' },
-        { label: 'Google Support \u2014 Sleep Stages', url: 'https://support.google.com/fitbit/answer/14236712?hl=en' },
-        { label: 'Google Support \u2014 Sleep Profile', url: 'https://support.google.com/fitbit/answer/14236407?hl=en' },
-        { label: 'Google Blog \u2014 Sleep Profile', url: 'https://blog.google/products/fitbit/sleep-profile/' },
-        { label: 'Fitbit \u2014 Sleep Technology', url: 'https://www.fitbit.com/global/us/technology/sleep' },
-        { label: 'Android Police \u2014 Sleep Score Calculation', url: 'https://www.androidpolice.com/fitbit-sleep-score-calculation-explainer/' },
-        { label: "Tom's Guide \u2014 Snore Detection", url: 'https://www.tomsguide.com/news/fitbit-is-rolling-out-snore-and-noise-detection' },
-        { label: 'My Healthy Apple \u2014 Snoring Features', url: 'https://www.myhealthyapple.com/how-to-setup-and-use-fitbit-snoring-detection-features/' }
+        { label: 'Google Support: Sleep Score', url: 'https://support.google.com/fitbit/answer/14236513?hl=en' },
+        { label: 'Google Support: Sleep Stages', url: 'https://support.google.com/fitbit/answer/14236712?hl=en' },
+        { label: 'Google Support: Sleep Profile', url: 'https://support.google.com/fitbit/answer/14236407?hl=en' },
+        { label: 'Google Blog: Sleep Profile', url: 'https://blog.google/products/fitbit/sleep-profile/' },
+        { label: 'Fitbit: Sleep Technology', url: 'https://www.fitbit.com/global/us/technology/sleep' },
+        { label: 'Android Police: Sleep Score Calculation', url: 'https://www.androidpolice.com/fitbit-sleep-score-calculation-explainer/' },
+        { label: "Tom's Guide: Snore Detection", url: 'https://www.tomsguide.com/news/fitbit-is-rolling-out-snore-and-noise-detection' },
+        { label: 'My Healthy Apple: Snoring Features', url: 'https://www.myhealthyapple.com/how-to-setup-and-use-fitbit-snoring-detection-features/' }
       ],
       appleWatch: [
-        { label: 'Apple Support \u2014 Sleep Score', url: 'https://support.apple.com/guide/watch/view-your-sleep-score-apded441a669/watchos' },
-        { label: 'The5kRunner \u2014 Sleep Score Calculation', url: 'https://the5krunner.com/2025/10/06/how-apple-watchs-sleep-score-is-calculated-all-you-need-to-know-to-improve-sleep-health/' },
-        { label: 'Apple Support \u2014 Sleep Tracking', url: 'https://support.apple.com/en-us/102674' },
-        { label: 'Apple \u2014 Sleep Apnea Whitepaper (PDF)', url: 'https://www.apple.com/health/pdf/sleep-apnea/Sleep_Apnea_Notifications_on_Apple_Watch_September_2024.pdf' },
-        { label: 'Empirical Health \u2014 Sleep Apnea', url: 'https://www.empirical.health/blog/apple-watch-sleep-apnea/' },
-        { label: 'SimplyMac \u2014 Nap Tracking', url: 'https://www.simplymac.com/apple-watch/does-apple-watch-track-naps' },
-        { label: 'Wareable \u2014 Sleep Tracking Guide', url: 'https://www.wareable.com/apple/apple-watch-sleep-tracking-guide-8356' }
+        { label: 'Apple Support: Sleep Score', url: 'https://support.apple.com/guide/watch/view-your-sleep-score-apded441a669/watchos' },
+        { label: 'The5kRunner: Sleep Score Calculation', url: 'https://the5krunner.com/2025/10/06/how-apple-watchs-sleep-score-is-calculated-all-you-need-to-know-to-improve-sleep-health/' },
+        { label: 'Apple Support: Sleep Tracking', url: 'https://support.apple.com/en-us/102674' },
+        { label: 'Apple: Sleep Apnea Whitepaper (PDF)', url: 'https://www.apple.com/health/pdf/sleep-apnea/Sleep_Apnea_Notifications_on_Apple_Watch_September_2024.pdf' },
+        { label: 'Empirical Health: Sleep Apnea', url: 'https://www.empirical.health/blog/apple-watch-sleep-apnea/' },
+        { label: 'SimplyMac: Nap Tracking', url: 'https://www.simplymac.com/apple-watch/does-apple-watch-track-naps' },
+        { label: 'Wareable: Sleep Tracking Guide', url: 'https://www.wareable.com/apple/apple-watch-sleep-tracking-guide-8356' }
       ],
       garmin: [
-        { label: 'Garmin Blog \u2014 Sleep Tracking & Score', url: 'https://www.garmin.com/en-US/blog/fitness/how-garmin-watches-track-your-sleep-calculate-sleep-score/' },
-        { label: 'Garmin Blog \u2014 Sleep Score & Insights', url: 'https://www.garmin.com/en-US/blog/health/garmin-sleep-score-and-sleep-insights/' },
-        { label: 'Garmin Support \u2014 Pulse Ox', url: 'https://support.garmin.com/en-US/?faq=mBRMf4ks7XAQ03qtsbI8J6' },
-        { label: 'Garmin Support \u2014 Body Battery', url: 'https://support.garmin.com/en-US/?faq=DWcdBazhr097VgqFufsTk8' },
-        { label: 'Garmin \u2014 Sleep Tracking Technology', url: 'https://www.garmin.com/en-US/garmin-technology/health-science/sleep-tracking/' },
-        { label: 'Wareable \u2014 Garmin Sleep Guide', url: 'https://www.wareable.com/garmin/garmin-sleep-tracking-guide-7529' },
-        { label: 'ComputerCity \u2014 Garmin Sleep Score', url: 'https://computercity.com/watches/garmin-sleep-score' }
+        { label: 'Garmin Blog: Sleep Tracking & Score', url: 'https://www.garmin.com/en-US/blog/fitness/how-garmin-watches-track-your-sleep-calculate-sleep-score/' },
+        { label: 'Garmin Blog: Sleep Score & Insights', url: 'https://www.garmin.com/en-US/blog/health/garmin-sleep-score-and-sleep-insights/' },
+        { label: 'Garmin Support: Pulse Ox', url: 'https://support.garmin.com/en-US/?faq=mBRMf4ks7XAQ03qtsbI8J6' },
+        { label: 'Garmin Support: Body Battery', url: 'https://support.garmin.com/en-US/?faq=DWcdBazhr097VgqFufsTk8' },
+        { label: 'Garmin: Sleep Tracking Technology', url: 'https://www.garmin.com/en-US/garmin-technology/health-science/sleep-tracking/' },
+        { label: 'Wareable: Garmin Sleep Guide', url: 'https://www.wareable.com/garmin/garmin-sleep-tracking-guide-7529' },
+        { label: 'ComputerCity: Garmin Sleep Score', url: 'https://computercity.com/watches/garmin-sleep-score' }
       ]
     };
   }
@@ -1168,7 +1168,7 @@ class KygoSleepMetrics extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-pill animate-on-scroll"><span class="dot"></span> ${hs.metrics} METRICS · ${hs.cats} CATEGORIES · ${hs.devices} DEVICES</div>
               <h1 class="animate-on-scroll">What does your wearable <span class="hl">track while you sleep?</span></h1>
-              <p class="hero-lede animate-on-scroll">Every sleep metric across Oura, Fitbit, Apple Watch and Garmin — <strong>what each device records, what's exclusive to one brand, and how it's measured</strong>. All of it from official documentation.</p>
+              <p class="hero-lede animate-on-scroll">Every sleep metric across Oura, Fitbit, Apple Watch and Garmin: <strong>what each device records, what's exclusive to one brand, and how it's measured</strong>. All of it from official documentation.</p>
             </div>
             <div class="hero-vis animate-on-scroll">
               <div class="hero-vis-head">
@@ -1178,7 +1178,7 @@ class KygoSleepMetrics extends HTMLElement {
               <div class="hv-body">
                 <div class="hv-big">${hs.bestN}<span class="unit">/${hs.metrics}</span></div>
                 <div class="hv-text">
-                  <p>metrics tracked by <strong>${hs.bestName}</strong>, the widest coverage of any device here — and still barely half the list.</p>
+                  <p>metrics tracked by <strong>${hs.bestName}</strong>, the widest coverage of any device here, and still barely half the list.</p>
                   <span class="hv-src">Counted from each brand's own documentation</span>
                 </div>
               </div>
@@ -1213,7 +1213,7 @@ class KygoSleepMetrics extends HTMLElement {
       <section class="exclusive-section">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Exclusive Sleep Features</h2>
-          <p class="section-sub animate-on-scroll">Features only one device offers \u2014 the biggest differentiators for your purchase decision.</p>
+          <p class="section-sub animate-on-scroll">Features only one device offers, the biggest differentiators for your purchase decision.</p>
           <div class="excl-grid animate-on-scroll">${this._renderExclusiveCards()}</div>
         </div>
       </section>
@@ -1245,14 +1245,15 @@ class KygoSleepMetrics extends HTMLElement {
 
       <!-- CTA -->
       <!-- Footer -->
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts()}
+
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
           <p class="footer-copyright">Data sourced from official manufacturer documentation. Last updated February 2025.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts('gray')}
     `;
   }
 

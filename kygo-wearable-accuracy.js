@@ -2455,9 +2455,9 @@ class KygoWearableAccuracy extends HTMLElement {
         </div>
       </section>
 
-      ${this._renderRelatedPosts('white')}
+      ${this._renderRelatedPosts()}
 
-      <footer class="tool-footer">
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Wearable readings are estimates, not clinical measurements. Consult a qualified healthcare provider before making health decisions based on wearable data.</p>
           <p class="footer-copyright">Data from peer-reviewed validation studies, preprints, FDA records and manufacturer documentation. Last updated ${this._updated.page}.</p>

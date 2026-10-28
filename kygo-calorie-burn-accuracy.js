@@ -1320,15 +1320,16 @@ class KygoCalorieBurnAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts('gray')}
+
+      <footer class="tool-footer" style="background:#fff">
         <div class="container">
           <p class="footer-disclaimer">This calculator is for educational purposes only and is not medical or nutrition advice. Wearable calorie estimates vary by individual, environment and algorithm updates. Always consult a qualified professional before making health decisions based on wearable data.</p>
           <p class="footer-copyright">Data from peer-reviewed studies, meta-analyses and manufacturer documentation. Last updated October 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts()}
     `;
   }
 

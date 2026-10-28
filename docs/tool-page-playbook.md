@@ -119,7 +119,14 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    shipped FAQ JSON-LD with **no** visible FAQ; don't copy that omission).
 8. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
    Every tool with sources uses it, unchanged. Copy it; don't design a new one.
-9. **Footer** — a slim disclaimer strip, **no brand, tagline, links or copyright** (the Wix site
+9. **Related reading** — the **standard related-reading module** (see §3 "Related reading (the
+   standard module)"). Three blog cards with the posts' real cover images, **the last content
+   block, directly above the disclaimer strip**, on the band opposite the section above it. Every
+   tool page has one, and this is the *only* place a tool page links the blog as a section.
+   Inside a content section, a small `section-readmore` text link to that section's own matching
+   post is still fine — that's the hub-and-spoke micro-pattern, not a second blog section.
+10. **Footer** — a slim disclaimer strip, **the very last block** (straight above the Wix site
+   footer), on the band opposite related reading, **no brand, tagline, links or copyright** (the Wix site
    footer below the page carries all of those). Keep only what is specific to this page: the
    tool's medical disclaimer (`footer-disclaimer`), the data-source + "Last updated <month year>"
    line (`footer-copyright`), and, **if the page has any affiliate links, the Amazon Associates
@@ -128,12 +135,6 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    affiliate links; we may earn a commission at no extra cost to you." (Note the semicolon —
    em-dashes are banned in shipped copy, see §5.) Add a tool-specific medical/FDA disclaimer line
    when a device claims a regulated feature (e.g. Oura BP/breathing).
-10. **Related reading** — the **standard related-reading module** (see §3 "Related reading (the
-   standard module)"). Three blog cards with the posts' real cover images, **the last block on
-   the page, below the footer and its disclaimer**, on the band opposite the footer's. Every
-   tool page has one, and this is the *only* place a tool page links the blog as a section.
-   Inside a content section, a small `section-readmore` text link to that section's own matching
-   post is still fine — that's the hub-and-spoke micro-pattern, not a second blog section.
 
 Also required: `__seo(this, …)` light-DOM summary, and `_injectStructuredData()` injecting
 `WebApplication` + `FAQPage` **+ `BreadcrumbList`** JSON-LD (three scripts, each guarded by its
@@ -331,8 +332,8 @@ attributes.
 
 ### Related reading (the standard module)
 
-**One design, every tool page**, sitting **below the footer as the very last block on the
-page**, on the band opposite the footer's. Three blog cards in a
+**One design, every tool page**, sitting **directly above the disclaimer strip, as the last
+content block**, on the band opposite the section above it. Three blog cards in a
 grid (1 col mobile → 3 col ≥720px), each with the post's **real Wix cover image** on a 16/10
 panel, then a green category eyebrow, the post title, a two-line blurb, and a footer of read
 time + "Read →". It shares the card geometry of the related-tools module
@@ -355,30 +356,27 @@ _relatedPosts()          // this page's 3 cards — the only part you write
 _renderRelatedPosts(bg)  // section + styles; pass 'gray' for the tinted band
 ```
 
-**Placement is a hard rule: it is the last block on the page, below the footer.** Its own
-`<section>`, rendered *after* `</footer>` — under the brand, links, disclaimer and copyright —
-on the band **opposite the footer's**. That keeps it clear of the app CTA, the email capture and
-the related-tools section by construction, and it reads as a "before you go" strip rather than
-another exit link competing with the tool's own content.
+**Placement is a hard rule: it is the last content block, directly above the disclaimer
+strip.** Its own `<section>`, rendered just before `<footer class="tool-footer">`, so it stays
+clear of the app CTA and the related-tools section and reads as a "before you go" strip. (Until
+2026-10-28 it sat *below* the footer, when the footer was a full brand footer; once the footer
+became a slim disclaimer strip, a blog section under it looked cut off, so it moved above.)
 
 ```html
-      </footer>
+      ${this._renderRelatedPosts('gray')}
 
-      ${this._renderRelatedPosts()}
-    `;
+      <footer class="tool-footer" style="background:#fff">
 ```
 
 ```
-… content → Related tools → FAQ → Sources → Footer (disclaimer) → Related reading
+… content → Related tools → FAQ → Sources → Related reading → Footer (disclaimer strip) → Wix site footer
 ```
 
-**Set the band against the footer, not against the section above it.** Footers vary: some declare
-`background: var(--kygo-light)`, some are transparent and pick up the host's `--light`, some are
-`#fff`. A grey footer takes `_renderRelatedPosts()`; a white footer takes
-`_renderRelatedPosts('gray')`. Read the footer's *computed* background in the browser rather
-than trusting the CSS — a transparent `.tool-footer` still paints grey through `:host`. And
-because the blog no longer sits mid-page, the section that used to be above it now meets the
-footer directly: re-check that pair too.
+**Bands:** related reading takes the band opposite the section above it (a white section above
+takes `_renderRelatedPosts('gray')`, a grey one `_renderRelatedPosts()`), and the disclaimer strip
+takes the band opposite related reading, set with an inline `style="background:…"` on the
+`<footer>` where the file's own CSS gives the wrong one. Read *computed* backgrounds in the
+browser rather than trusting the CSS: a transparent section still paints grey through `:host`.
 
 **Choosing the three.** The page's **own companion post first** (the primary spoke), then a
 **near neighbour** in the same topic family, then a **bridge** to another family — so a page
@@ -846,9 +844,9 @@ Pre-commit checklist:
 - [ ] Related tools: standard module verbatim (§3), 3 cards, above the sources section, no
       self-link, no Food Scanner, tracking attributes intact, and the cross-link table in
       `docs/internal-and-app-store-links.md` updated.
-- [ ] Related reading: standard module verbatim (§3), 3 cards, **rendered after `</footer>` as
-      the last block on the page**, on the band opposite the footer's *computed* background —
-      and re-check the section now sitting directly above the footer. Titles / categories /
+- [ ] Related reading: standard module verbatim (§3), 3 cards, **rendered directly above the
+      disclaimer-strip `<footer>`**, on the band opposite the section above it, with the strip on
+      the opposite band again (check *computed* backgrounds). Titles / categories /
       read times / cover-image ids match the live Wix Blog values (re-pull, don't paraphrase),
       images render, `data-action="blog-post"` + `data-post-slug` intact, and the map in
       `docs/blog-cross-links.md` updated. No `blog-cta` / `article-card` / `blog-link-card`

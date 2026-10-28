@@ -71,7 +71,7 @@ class KygoWearableStress extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Samsung Galaxy Watch (GW4–GW8), Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring (Gen 3 / Ring 4), Apple Watch, Polar, COROS, and Amazfit measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only — but every wearable is detecting autonomic arousal, not stress directly. Explore lifestyle factors that move each underlying signal — alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure — with device-specific mechanisms, hardware-generation context (Garmin Elevate Gen 4 vs Gen 5, Samsung BioActive Sensor, Apple HealthKit SDNN, WHOOP lnRMSSD), validation data versus Polar H10 chest strap, and evidence-based actions. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024, the Trier Social Stress Test meta-analysis, and the npj Digital Medicine 2025 living meta-analysis of Apple Watch accuracy.');
+    __seo(this, 'Wearable Stress Research by Kygo Health. Compare how Garmin, Samsung Galaxy Watch (GW4–GW8), Google Pixel Watch, Fitbit Sense 2, WHOOP, Oura Ring (Gen 3 / Ring 4), Apple Watch, Polar, COROS, and Amazfit measure stress. Each device uses a different mix of signals: HRV, electrodermal activity (EDA), skin temperature, respiratory rate, and SpO2. Multi-signal devices show ~82% accuracy versus ~77% for HRV-only, but every wearable is detecting autonomic arousal, not stress directly. Explore lifestyle factors that move each underlying signal (alcohol, sleep, caffeine, exercise, illness, hydration, meditation, cold exposure) with device-specific mechanisms, hardware-generation context (Garmin Elevate Gen 4 vs Gen 5, Samsung BioActive Sensor, Apple HealthKit SDNN, WHOOP lnRMSSD), validation data versus Polar H10 chest strap, and evidence-based actions. Every claim sourced from peer-reviewed research including Frontiers in Physiology 2024, the Trier Social Stress Test meta-analysis, and the npj Digital Medicine 2025 living meta-analysis of Apple Watch accuracy.');
   }
 
   _injectStructuredData() {
@@ -115,17 +115,17 @@ class KygoWearableStress extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'Does Apple Watch have a native stress score?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. As of watchOS 11 / 12 / 26 there is no native Apple Watch stress feature. Apple HealthKit exposes HRV as SDNN (Standard Deviation of NN intervals — not RMSSD), sampled approximately every 4 hours by default, every 2 hours with Irregular Rhythm Notifications enabled, or every 15 minutes with AFib History enabled. Third-party apps like Athlytic and Welltory read this data and compute their own stress and recovery scores on top.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'No. As of watchOS 11 / 12 / 26 there is no native Apple Watch stress feature. Apple HealthKit exposes HRV as SDNN (Standard Deviation of NN intervals, not RMSSD), sampled approximately every 4 hours by default, every 2 hours with Irregular Rhythm Notifications enabled, or every 15 minutes with AFib History enabled. Third-party apps like Athlytic and Welltory read this data and compute their own stress and recovery scores on top.' }
         },
         {
           '@type': 'Question',
           'name': 'How accurate is Apple Watch HRV compared to a chest strap?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'A 2024 peer-reviewed validation (Sensors, n=39 healthy adults, 316 measurements) found Apple Watch Series 9 / Ultra 2 underestimates SDNN by a mean of 8.31 ms versus a Polar H10 chest strap with Kubios — failing the ±10 ms equivalence margin. Resting heart rate is far more accurate: MAPE 5.91%, MAE 3.73 bpm. The widely-cited "1–4% error" is the low end of a 1.16%–6.46% MAPE range per the 2025 npj Digital Medicine living meta-analysis.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'A 2024 peer-reviewed validation (Sensors, n=39 healthy adults, 316 measurements) found Apple Watch Series 9 / Ultra 2 underestimates SDNN by a mean of 8.31 ms versus a Polar H10 chest strap with Kubios, failing the ±10 ms equivalence margin. Resting heart rate is far more accurate: MAPE 5.91%, MAE 3.73 bpm. The widely-cited "1–4% error" is the low end of a 1.16%–6.46% MAPE range per the 2025 npj Digital Medicine living meta-analysis.' }
         },
         {
           '@type': 'Question',
           'name': 'What is the most universal factor that raises wearable stress scores?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Sleep deprivation. Every wearable that scores stress reads HRV, and short or fragmented sleep suppresses parasympathetic tone — so HRV drops and stress climbs the next morning on every device.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Sleep deprivation. Every wearable that scores stress reads HRV, and short or fragmented sleep suppresses parasympathetic tone, so HRV drops and stress climbs the next morning on every device.' }
         },
         {
           '@type': 'Question',
@@ -135,12 +135,12 @@ class KygoWearableStress extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'Are multi-signal wearables more accurate at measuring stress?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Generally yes. The 2024 JMIR systematic review and meta-analysis found pooled accuracy of ~82% for multi-signal approaches (HRV + EDA + skin temperature) versus ~77% for HRV alone. But the larger caveat is that wearables detect autonomic arousal, not stress per se — EDA cannot distinguish positive from negative arousal, and accuracy degrades significantly from lab paradigms (Trier Social Stress Test) to real-world daily use.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Generally yes. The 2024 JMIR systematic review and meta-analysis found pooled accuracy of ~82% for multi-signal approaches (HRV + EDA + skin temperature) versus ~77% for HRV alone. But the larger caveat is that wearables detect autonomic arousal, not stress per se: EDA cannot distinguish positive from negative arousal, and accuracy degrades significantly from lab paradigms (Trier Social Stress Test) to real-world daily use.' }
         },
         {
           '@type': 'Question',
           'name': 'Do wearables actually measure stress?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'They measure autonomic arousal — sympathetic nervous system activation — and infer stress on top. EDA fires the same way whether you are anxious, excited, or scared. HRV drops the same way from a stressful email, a cold drink, exercise, or caffeine. The closest reference standards are the Trier Social Stress Test (cortisol response), 12-lead ECG-derived HRV per Task Force 1996, and validated questionnaires like PSS-10. Wearable scores are inferences layered on arousal detection.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'They measure autonomic arousal (sympathetic nervous system activation) and infer stress on top. EDA fires the same way whether you are anxious, excited, or scared. HRV drops the same way from a stressful email, a cold drink, exercise, or caffeine. The closest reference standards are the Trier Social Stress Test (cortisol response), 12-lead ECG-derived HRV per Task Force 1996, and validated questionnaires like PSS-10. Wearable scores are inferences layered on arousal detection.' }
         },
         {
           '@type': 'Question',
@@ -150,7 +150,7 @@ class KygoWearableStress extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What chronic-stress metrics does the Samsung Galaxy Watch 8 add?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'GW8 / GW8 Classic (launched July 2025) added two new chronic-stress markers on top of the existing acute Stress Score and the GW7-introduced AGEs Index and Energy Score: Vascular Load (overnight PPG waveform analysis of blood volume and vascular stiffness, requires ≥3 nights of sleep in 14 days) and Antioxidant Index (multi-wavelength absorption spectroscopy of skin carotenoids — thumb on the rear sensor for ~5 seconds, scored 0–100). Antioxidant Index is GW8-series exclusive; it is not on GW Ultra or GW7.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'GW8 / GW8 Classic (launched July 2025) added two new chronic-stress markers on top of the existing acute Stress Score and the GW7-introduced AGEs Index and Energy Score: Vascular Load (overnight PPG waveform analysis of blood volume and vascular stiffness, requires ≥3 nights of sleep in 14 days) and Antioxidant Index (multi-wavelength absorption spectroscopy of skin carotenoids; thumb on the rear sensor for ~5 seconds, scored 0–100). Antioxidant Index is GW8-series exclusive; it is not on GW Ultra or GW7.' }
         },
         {
           '@type': 'Question',
@@ -190,12 +190,12 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Cumulative Stress',
         modelLine: 'Daytime + Resilience + Cumulative Stress',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: false, rr: false, sleep: true },
-        algorithm: 'Three stacked layers. Daytime Stress reads HRV in real time when you\'re still. Resilience scores recovery capacity across 14 days (5 tiers: Exceptional → Strong → Solid → Adequate → Limited). Cumulative Stress, released Nov 2025 with the University of Southern Denmark, scans the last 31 days across five named contributors: sleep continuity, heart stress-response (HR + HRV), sleep micromotions, overnight temperature regulation, and daily activity impact. Restorative Time captures daytime windows where HR drops and HRV rises — active waking recovery, separate from sleep.',
+        algorithm: 'Three stacked layers. Daytime Stress reads HRV in real time when you\'re still. Resilience scores recovery capacity across 14 days (5 tiers: Exceptional → Strong → Solid → Adequate → Limited). Cumulative Stress, released Nov 2025 with the University of Southern Denmark, scans the last 31 days across five named contributors: sleep continuity, heart stress-response (HR + HRV), sleep micromotions, overnight temperature regulation, and daily activity impact. Restorative Time captures daytime windows where HR drops and HRV rises: active waking recovery, separate from sleep.',
         scale: 'Daytime Stress: Low / Medium / High + trend  ·  Resilience: 5 tiers  ·  Cumulative Stress: levelled output over the 31-day window.',
         baseline: 'Resilience needs a 14-day average with ≥5 complete days (10 for new members). Cumulative Stress needs ≥21 days of data in the last 31. Sleep architecture is the heaviest single input.',
         coverage: 'Daytime Stress is continuous when still; Cumulative is a daily rollup; Resilience updates daily once thresholds are met.',
-        hardware: 'Gen 3 ring or Ring 4 — finger PPG, NTC skin-temp sensor, motion (sleep micromotion).',
-        strength: 'Finger-site skin temperature is the cleanest signal in the consumer market — Oura uses it deliberately for period prediction and early illness flags. Cumulative + Resilience is the only chronic-stress layer in any consumer wearable.',
+        hardware: 'Gen 3 ring or Ring 4: finger PPG, NTC skin-temp sensor, motion (sleep micromotion).',
+        strength: 'Finger-site skin temperature is the cleanest signal in the consumer market; Oura uses it deliberately for period prediction and early illness flags. Cumulative + Resilience is the only chronic-stress layer in any consumer wearable.',
         limitation: 'No EDA. Daytime spikes lean on HRV alone; sleep dominates the score, so a single bad night drags Cumulative more than it probably should.',
         color: '#475569'
       },
@@ -204,13 +204,13 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Stress Score',
         modelLine: 'Stress Score · Body Battery · optional HRV Stress Test',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
-        algorithm: 'Firstbeat Analytics — RMSSD-derived, sampled every few minutes from the Elevate optical sensor. Pauses during exercise. Body Battery is a derived 0–100 "energy tank" aggregator that combines the same stress signal with sleep, activity, and recovery — it is not a separate measurement. High-end models (Fenix, top Forerunner) also support an optional 3-minute HRV Stress Test taken while standing still with a Garmin chest HRM (HRM-Pro): uses ECG-derived R-R intervals — closer to lab quality than wrist PPG — and is tracked over time as a training-readiness signal.',
+        algorithm: 'Firstbeat Analytics: RMSSD-derived, sampled every few minutes from the Elevate optical sensor. Pauses during exercise. Body Battery is a derived 0–100 "energy tank" aggregator that combines the same stress signal with sleep, activity, and recovery; it is not a separate measurement. High-end models (Fenix, top Forerunner) also support an optional 3-minute HRV Stress Test taken while standing still with a Garmin chest HRM (HRM-Pro): uses ECG-derived R-R intervals, closer to lab quality than wrist PPG, and is tracked over time as a training-readiness signal.',
         scale: 'Stress: 0–100 (rest 0–25 / low 26–50 / med 51–75 / high 76–100)  ·  Body Battery: 0–100 energy aggregator',
         baseline: 'Multi-week personal rolling baseline; each reading is compared to your own history.',
         coverage: 'All-day, pauses during workouts. HRV Stress Test is a manual on-demand reading.',
-        hardware: 'Elevate Gen 4 (2022 launch — Fenix 7 base/Solar, Forerunner 955, Venu 2 Plus, Venu 3) added red + IR LEDs alongside green for deeper penetration. Elevate Gen 5 (2023+ — Fenix 7 Pro, Epix Pro Gen 2, Fenix 8, Forerunner 965, Venu 4) expanded ECG support and improved signal fidelity.',
+        hardware: 'Elevate Gen 4 (2022 launch: Fenix 7 base/Solar, Forerunner 955, Venu 2 Plus, Venu 3) added red + IR LEDs alongside green for deeper penetration. Elevate Gen 5 (2023+: Fenix 7 Pro, Epix Pro Gen 2, Fenix 8, Forerunner 965, Venu 4) expanded ECG support and improved signal fidelity.',
         strength: 'Long-running Firstbeat partnership with a dependable, well-validated HRV pipeline. Only major brand offering an optional ECG-strap HRV test, which is genuinely lab-grade.',
-        limitation: 'HRV-only at the wrist. Can\'t separate exercise arousal or excitement from psychological stress. Common error: people confuse Elevate Gen 4 (FR 955) with Gen 5 (FR 965) — they are different sensors, not the same.',
+        limitation: 'HRV-only at the wrist. Can\'t separate exercise arousal or excitement from psychological stress. Common error: people confuse Elevate Gen 4 (FR 955) with Gen 5 (FR 965); they are different sensors, not the same.',
         color: '#1E293B'
       },
       samsung: {
@@ -218,13 +218,13 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Stress Score',
         modelLine: 'BioActive Sensor (PPG + ECG + BIA) + EDA',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: false, spo2: false, rr: false, sleep: false },
-        algorithm: 'The BioActive Sensor (introduced GW4) is a 3-in-1 chip — Optical Heart Rate / PPG + Electrical Heart / ECG + Bioelectrical Impedance Analysis / BIA. The acute Stress Score pairs HRV with EDA (skin conductance) and, on GW7 Ultra+, runs an AI pattern-recognition layer. Newer models layer chronic-stress markers on top of the acute score: AGEs Index (Advanced Glycation End-products, a metabolic-aging marker) and Energy Score on GW7 / GW Ultra / GW8; Vascular Load (overnight PPG waveform analysis of blood volume and vascular stiffness) and Antioxidant Index (multi-wavelength absorption spectroscopy of skin carotenoids — thumb on rear sensor for ~5 sec) on the GW8 series only.',
+        algorithm: 'The BioActive Sensor (introduced GW4) is a 3-in-1 chip: Optical Heart Rate / PPG + Electrical Heart / ECG + Bioelectrical Impedance Analysis / BIA. The acute Stress Score pairs HRV with EDA (skin conductance) and, on GW7 Ultra+, runs an AI pattern-recognition layer. Newer models layer chronic-stress markers on top of the acute score: AGEs Index (Advanced Glycation End-products, a metabolic-aging marker) and Energy Score on GW7 / GW Ultra / GW8; Vascular Load (overnight PPG waveform analysis of blood volume and vascular stiffness) and Antioxidant Index (multi-wavelength absorption spectroscopy of skin carotenoids; thumb on rear sensor for ~5 sec) on the GW8 series only.',
         scale: 'Acute Stress: 0–100  ·  AGEs Index, Vascular Load, Antioxidant Index: separate 0–100 chronic-stress / metabolic markers',
         baseline: 'Proprietary AI baseline that adapts over time. Vascular Load needs ≥3 nights of sleep within a 14-day window before it surfaces.',
         coverage: 'Acute Stress is continuous all day; chronic markers update on their own cadence (overnight or on-demand for Antioxidant).',
         hardware: 'GW4 / GW5 / GW6: core BioActive (PPG + ECG + BIA). GW7 / GW Ultra (2024): enhanced BioActive + AGEs + Energy Score. GW8 / GW8 Classic (July 2025): adds Vascular Load and Antioxidant Index.',
         strength: 'Dual HRV + EDA on the same chip catches sympathetic arousal HRV-only watches miss. Only consumer wearable measuring skin carotenoids and vascular stiffness.',
-        limitation: 'EDA can\'t tell positive arousal (excitement) from negative arousal (anxiety) — detects activation, not valence. Common errors: Antioxidant Index is GW8 series only (not GW Ultra, not GW7); the new chronic-stress markers have limited independent validation.',
+        limitation: 'EDA can\'t tell positive arousal (excitement) from negative arousal (anxiety): detects activation, not valence. Common errors: Antioxidant Index is GW8 series only (not GW Ultra, not GW7); the new chronic-stress markers have limited independent validation.',
         color: '#22C55E'
       },
       google: {
@@ -232,13 +232,13 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Stress Management Score',
         modelLine: 'cEDA + ML across 4 signals',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
-        algorithm: 'Continuous EDA (cEDA) + skin temperature + HRV + HR feed into a machine-learning model trained on lab-induced social stress tests (mock interviews, surprise math tests — Trier-style protocols). First consumer all-day on-wrist EDA, introduced in 2022. The model distinguishes exercise from stress automatically; Body Response alerts surface acute sympathetic spikes in real time.',
+        algorithm: 'Continuous EDA (cEDA) + skin temperature + HRV + HR feed into a machine-learning model trained on lab-induced social stress tests (mock interviews, surprise math tests; Trier-style protocols). First consumer all-day on-wrist EDA, introduced in 2022. The model distinguishes exercise from stress automatically; Body Response alerts surface acute sympathetic spikes in real time.',
         scale: 'Body Response alerts + 1–100 daily Stress Management Score across 12 sub-metrics in 3 categories (exertion balance, sleep patterns, responsiveness).',
         baseline: 'ML baseline built over your first month of wear.',
         coverage: 'Continuous all-day cEDA.',
-        hardware: 'Pixel Watch 1 (2022) shipped without an EDA sensor — only HRV and Stress Management Score. Pixel Watch 2 (2023) and Pixel Watch 3 (2024) added the same cEDA hardware Fitbit Sense 2 uses.',
+        hardware: 'Pixel Watch 1 (2022) shipped without an EDA sensor: only HRV and Stress Management Score. Pixel Watch 2 (2023) and Pixel Watch 3 (2024) added the same cEDA hardware Fitbit Sense 2 uses.',
         strength: 'Continuous on-wrist EDA paired with skin temp catches stress events HRV-only devices miss entirely. ML model trained on real social-evaluative threat tasks, not just self-report.',
-        limitation: 'cEDA is sensitive to ambient heat and humidity, which shows up as elevated tonic stress on hot days. Like all EDA, it reads sympathetic activation — it cannot tell anxiety from excitement.',
+        limitation: 'cEDA is sensitive to ambient heat and humidity, which shows up as elevated tonic stress on hot days. Like all EDA, it reads sympathetic activation; it cannot tell anxiety from excitement.',
         color: '#16A34A'
       },
       fitbit: {
@@ -246,12 +246,12 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Stress Management Score',
         modelLine: 'cEDA + ML Stress Management Score',
         sensors: { hrv: true, hr: true, eda: true, skinTemp: true, spo2: false, rr: false, sleep: false },
-        algorithm: 'Identical cEDA + ML pipeline to Pixel Watch 2/3 — Google\'s engineering across both product lines. Daily Stress Management Score blends 12 metrics across exertion balance, sleep patterns, and responsiveness; Body Response alerts fire for acute sympathetic spikes.',
+        algorithm: 'Identical cEDA + ML pipeline to Pixel Watch 2/3: Google\'s engineering across both product lines. Daily Stress Management Score blends 12 metrics across exertion balance, sleep patterns, and responsiveness; Body Response alerts fire for acute sympathetic spikes.',
         scale: 'Body Response alerts + 1–100 daily Stress Management Score.',
         baseline: 'ML baseline built over your first month of wear.',
         coverage: 'Continuous all-day cEDA. Premium subscription unlocks deeper analysis breakdowns.',
-        hardware: 'Fitbit Sense (Gen 1, 2020) was sEDA only — a manual 2-minute palm-on-watch spot-check. Fitbit Sense 2 (2022) introduced cEDA, the same hardware shared with Pixel Watch 2/3.',
-        strength: 'Same cEDA hardware as Pixel Watch with a richer Fitbit dashboard — historically the most polished daily stress breakdown in consumer wearables.',
+        hardware: 'Fitbit Sense (Gen 1, 2020) was sEDA only: a manual 2-minute palm-on-watch spot-check. Fitbit Sense 2 (2022) introduced cEDA, the same hardware shared with Pixel Watch 2/3.',
+        strength: 'Same cEDA hardware as Pixel Watch with a richer Fitbit dashboard, historically the most polished daily stress breakdown in consumer wearables.',
         limitation: 'Same heat/humidity confounder as Pixel Watch. Best signal quality and full insights require Premium subscription.',
         color: '#16A34A'
       },
@@ -260,29 +260,29 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Stress Monitor',
         modelLine: 'Recovery + Stress Monitor (lnRMSSD)',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: true, spo2: true, rr: true, sleep: false },
-        algorithm: 'RMSSD is measured during the deepest period of overnight sleep, then natural-log-transformed (lnRMSSD) — standard practice for longitudinal HRV monitoring, since raw RMSSD is heteroscedastic. Recovery blends lnRMSSD, RHR, respiratory rate, sleep performance, and (on 4.0+) SpO2 and skin temperature. Stress Monitor compares live HR + HRV to a 14-day baseline. Motion-aware: a February 2026 re-architecture of the motion-artifact separation layer materially sharpened HR accuracy during running and reduced spurious spikes outside activity, with downstream cleanups to Recovery, Strain, and Sleep. The in-app Journal logs 160+ behaviors and perceived stress; Recovery Impacts surfaces correlations between logged behaviors and next-day HRV, RHR, recovery, and sleep-stage durations. Research on 11,000+ members showed that stress mindset (challenge vs. threat) measurably shifts recovery.',
+        algorithm: 'RMSSD is measured during the deepest period of overnight sleep, then natural-log-transformed (lnRMSSD), standard practice for longitudinal HRV monitoring, since raw RMSSD is heteroscedastic. Recovery blends lnRMSSD, RHR, respiratory rate, sleep performance, and (on 4.0+) SpO2 and skin temperature. Stress Monitor compares live HR + HRV to a 14-day baseline. Motion-aware: a February 2026 re-architecture of the motion-artifact separation layer materially sharpened HR accuracy during running and reduced spurious spikes outside activity, with downstream cleanups to Recovery, Strain, and Sleep. The in-app Journal logs 160+ behaviors and perceived stress; Recovery Impacts surfaces correlations between logged behaviors and next-day HRV, RHR, recovery, and sleep-stage durations. Research on 11,000+ members showed that stress mindset (challenge vs. threat) measurably shifts recovery.',
         scale: 'Stress Monitor 0–3 (0–1 low / 1–2 med / 2–3 high)  ·  Recovery 0–100%',
         baseline: '14-day rolling personal lnRMSSD and respiratory-rate baseline.',
         coverage: 'Real-time. Stress Monitor requires Peak or Life membership (not on base WHOOP One). Recovery is the overnight calc.',
-        hardware: 'WHOOP 4.0 / 5.0 / MG — high-frequency wrist PPG + skin temp + SpO2. Strapless form factor enables overnight skin-contact uptime that wrist watches can\'t match.',
-        validation: 'WHOOP-derived lnRMSSD day-to-day variability sits within or below alternative reference-protocol ranges (PMC9505647, Olympic water polo cohort). PPG-based HR/HRV validated vs ECG (PMC8160717), with strong agreement at rest and degraded agreement under motion pre-Feb-2026 — that update specifically targeted the motion failure mode.',
+        hardware: 'WHOOP 4.0 / 5.0 / MG: high-frequency wrist PPG + skin temp + SpO2. Strapless form factor enables overnight skin-contact uptime that wrist watches can\'t match.',
+        validation: 'WHOOP-derived lnRMSSD day-to-day variability sits within or below alternative reference-protocol ranges (PMC9505647, Olympic water polo cohort). PPG-based HR/HRV validated vs ECG (PMC8160717), with strong agreement at rest and degraded agreement under motion pre-Feb-2026; that update specifically targeted the motion failure mode.',
         strength: 'Overnight respiratory rate is one of the cleanest overtraining and illness flags in any consumer wearable. lnRMSSD math is the most rigorous longitudinal HRV pipeline shipped on a consumer device. Journal + Recovery Impacts is the only built-in behavior-to-physiology correlation system.',
-        limitation: 'No EDA — daytime sympathetic spikes only show up indirectly via HR + HRV. Common error: WHOOP\'s Stress Monitor is 0–3, not 0–100; Recovery is 0–100%. The two are different metrics on different scales.',
+        limitation: 'No EDA: daytime sympathetic spikes only show up indirectly via HR + HRV. Common error: WHOOP\'s Stress Monitor is 0–3, not 0–100; Recovery is 0–100%. The two are different metrics on different scales.',
         color: '#0F766E'
       },
       apple: {
         name: 'Apple Watch',
-        scoreName: 'HRV (HealthKit SDNN) — no native stress score',
+        scoreName: 'HRV (HealthKit SDNN), no native stress score',
         modelLine: 'SDNN in HealthKit · third-party apps build scores',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
-        algorithm: 'No native stress score as of watchOS 11 / 12 / 26. HealthKit exposes HRV as SDNN (Standard Deviation of NN intervals — not RMSSD), measured automatically when the user is still. Third-party apps build scores on top: Athlytic computes RMSSD if enabled (else SDNN) plus RHR against a 60-day rolling baseline; Welltory runs frequency-domain analysis (LF / HF / VLF power) on ≥300 RR-interval measurements against personal + population norms.',
+        algorithm: 'No native stress score as of watchOS 11 / 12 / 26. HealthKit exposes HRV as SDNN (Standard Deviation of NN intervals, not RMSSD), measured automatically when the user is still. Third-party apps build scores on top: Athlytic computes RMSSD if enabled (else SDNN) plus RHR against a 60-day rolling baseline; Welltory runs frequency-domain analysis (LF / HF / VLF power) on ≥300 RR-interval measurements against personal + population norms.',
         scale: 'N/A native. Athlytic / Welltory / StressWatch / Livity each apply their own scale.',
         baseline: 'No native baseline. Athlytic\'s 60-day rolling baseline is computed on iPhone and synced; Welltory blends personal and population norms.',
-        coverage: 'HRV is sampled approximately every 4 hours by default, only when the user is still. Bumps to every 2 hours with Irregular Rhythm Notifications enabled, every 15 minutes with AFib History enabled. The default cadence is too sparse for tight stress tracking — frequent users typically force readings via Mindfulness sessions.',
-        hardware: 'Series 6+ — green/red/IR PPG. Series 4+ supports ECG (single-lead, on-demand). Series 9 / Ultra 2 are the validation-study reference points in recent literature.',
-        validation: 'Series 9 / Ultra 2 vs Polar H10 + Kubios (Sensors 2024, n=39, 316 measurements): SDNN underestimated by mean 8.31 ms; MAPE 28.88%; MAE 20.46 ms — failed the ±10 ms equivalence margin. RHR was much closer: MAPE 5.91%, MAE 3.73 bpm, mean difference −0.1 bpm. Heart rate accuracy (Series 6+, npj Digital Medicine 2025 living meta): BPM MAPE 1.16% to 6.46%, limits of agreement −3.68 to 2.59 bpm — activity-dependent. Apple Watch ECG for stress detection: F1-weighted scores 52–64% (Mishra et al. 2022, pilot).',
-        strength: 'Largest third-party app ecosystem and the most flexible HealthKit data plumbing — pair it with Athlytic, Welltory, or Bevel for the score you actually want.',
-        limitation: 'No native stress feature, so every "Apple Watch stress score" you see is a third-party computation. HRV is reported as SDNN, not RMSSD — the two are different summary statistics. The widely repeated "Apple Watch error is 1–4%" line cherry-picks the low end of a 1.16–6.46% range. Default 4-hour sampling is too coarse for stress without manual readings.',
+        coverage: 'HRV is sampled approximately every 4 hours by default, only when the user is still. Bumps to every 2 hours with Irregular Rhythm Notifications enabled, every 15 minutes with AFib History enabled. The default cadence is too sparse for tight stress tracking; frequent users typically force readings via Mindfulness sessions.',
+        hardware: 'Series 6+: green/red/IR PPG. Series 4+ supports ECG (single-lead, on-demand). Series 9 / Ultra 2 are the validation-study reference points in recent literature.',
+        validation: 'Series 9 / Ultra 2 vs Polar H10 + Kubios (Sensors 2024, n=39, 316 measurements): SDNN underestimated by mean 8.31 ms; MAPE 28.88%; MAE 20.46 ms, failed the ±10 ms equivalence margin. RHR was much closer: MAPE 5.91%, MAE 3.73 bpm, mean difference −0.1 bpm. Heart rate accuracy (Series 6+, npj Digital Medicine 2025 living meta): BPM MAPE 1.16% to 6.46%, limits of agreement −3.68 to 2.59 bpm, activity-dependent. Apple Watch ECG for stress detection: F1-weighted scores 52–64% (Mishra et al. 2022, pilot).',
+        strength: 'Largest third-party app ecosystem and the most flexible HealthKit data plumbing; pair it with Athlytic, Welltory, or Bevel for the score you actually want.',
+        limitation: 'No native stress feature, so every "Apple Watch stress score" you see is a third-party computation. HRV is reported as SDNN, not RMSSD; the two are different summary statistics. The widely repeated "Apple Watch error is 1–4%" line cherry-picks the low end of a 1.16–6.46% range. Default 4-hour sampling is too coarse for stress without manual readings.',
         color: '#18181B'
       },
       polar: {
@@ -290,9 +290,9 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Nightly Recharge',
         modelLine: 'Nightly Recharge / ANS Charge',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: true, sleep: false },
-        algorithm: 'Nightly Recharge measures the first ~4 hours of sleep using HR + RMSSD + breathing rate against a 28-day baseline. ANS Charge is the autonomic component on a −10 to +10 scale; Sleep Charge is the architectural component. There is no daytime stress score — Polar\'s entire framing is recovery from the prior day.',
+        algorithm: 'Nightly Recharge measures the first ~4 hours of sleep using HR + RMSSD + breathing rate against a 28-day baseline. ANS Charge is the autonomic component on a −10 to +10 scale; Sleep Charge is the architectural component. There is no daytime stress score; Polar\'s entire framing is recovery from the prior day.',
         scale: 'ANS Charge −10 to +10  ·  Sleep Charge component score',
-        baseline: '28-day personal ANS Charge baseline anchored to your own overnight history — the most personalized baseline window in consumer wearables.',
+        baseline: '28-day personal ANS Charge baseline anchored to your own overnight history, the most personalized baseline window in consumer wearables.',
         coverage: 'Overnight only. No continuous daytime tracking.',
         hardware: 'Vantage V3 and Grit X2 Pro use wrist PPG; the optional H10 chest strap is the lab-reference standard used in most peer-reviewed wearable validation studies.',
         strength: 'Overnight RR + HRV + HR together is a strong, clean recovery signal. The 28-day baseline anchors readings to your own physiology rather than a population norm. Pairing with H10 chest strap upgrades the pipeline to lab quality.',
@@ -304,13 +304,13 @@ class KygoWearableStress extends HTMLElement {
         scoreName: 'Daily Stress',
         modelLine: 'HRV + HR every 5 min vs individual baseline',
         sensors: { hrv: true, hr: true, eda: false, skinTemp: false, spo2: false, rr: false, sleep: false },
-        algorithm: 'Proprietary stress model — HR + HRV sampled every 5 minutes during inactivity, compared to an individual baseline. Pairs with COROS Training Readiness to feed into next-workout decisions.',
+        algorithm: 'Proprietary stress model: HR + HRV sampled every 5 minutes during inactivity, compared to an individual baseline. Pairs with COROS Training Readiness to feed into next-workout decisions.',
         scale: '0–100 Daily Stress · Training Readiness composite',
         baseline: 'Individual personal baseline; tightly coupled to training load.',
         coverage: 'Every 5 minutes when still. Pauses during workouts (the data feeds Training Readiness instead).',
-        hardware: 'PACE 3, APEX 2, VERTIX 2 series — wrist optical PPG.',
-        strength: 'Tight integration with Training Readiness for endurance athletes. Less marketing-driven than competitors — the framing is performance, not "wellness."',
-        limitation: 'HRV + HR only — no EDA, no skin temp, no SpO2 in the stress pipeline. Less independent peer-reviewed validation than Garmin / WHOOP / Apple. Best fit for athletes already tracking training load.',
+        hardware: 'PACE 3, APEX 2, VERTIX 2 series: wrist optical PPG.',
+        strength: 'Tight integration with Training Readiness for endurance athletes. Less marketing-driven than competitors; the framing is performance, not "wellness."',
+        limitation: 'HRV + HR only: no EDA, no skin temp, no SpO2 in the stress pipeline. Less independent peer-reviewed validation than Garmin / WHOOP / Apple. Best fit for athletes already tracking training load.',
         color: '#DC2626'
       },
       amazfit: {
@@ -322,9 +322,9 @@ class KygoWearableStress extends HTMLElement {
         scale: '0–100 Stress Index',
         baseline: 'Personalized rolling baseline.',
         coverage: 'Every 5 minutes when still.',
-        hardware: 'GTR / GTS / T-Rex / Balance series — wrist optical PPG.',
-        strength: 'The most affordable serious HRV-based stress tracking on the market — usable HRV pipeline at sub-$200 price points.',
-        limitation: 'HRV + HR only, minimal independent validation in peer-reviewed literature. Best treated as a longitudinal personal-baseline tool — don\'t over-interpret single readings.',
+        hardware: 'GTR / GTS / T-Rex / Balance series: wrist optical PPG.',
+        strength: 'The most affordable serious HRV-based stress tracking on the market: usable HRV pipeline at sub-$200 price points.',
+        limitation: 'HRV + HR only, minimal independent validation in peer-reviewed literature. Best treated as a longitudinal personal-baseline tool; don\'t over-interpret single readings.',
         color: '#F97316'
       }
     };
@@ -364,7 +364,7 @@ class KygoWearableStress extends HTMLElement {
     // the May 2026 revision and replaced with primary research.
     const SRC = {
       // HRV — generalist references
-      frontiers2024:     { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024 — Factors Influencing HRV (PMC11333334)' },
+      frontiers2024:     { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/', label: 'Frontiers in Physiology 2024: Factors Influencing HRV (PMC11333334)' },
       hrvExercise:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/',  label: 'HRV & exercise meta-analysis (PMC8950456)' },
       chronicStress:     { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/',  label: 'Chronic stress & HRV (PMC9974008)' },
       hrvFactorsReview:  { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11439429/', label: 'HRV measurement & influencing factors (PMC11439429)' },
@@ -374,26 +374,26 @@ class KygoWearableStress extends HTMLElement {
       rhrExercise:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/',  label: 'Exercise & RHR meta-analysis (PMC6306777)' },
       sedentaryMeta:     { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8391190/',  label: 'Sedentary time & HR/HRV meta-analysis (PMC8391190)' },
       stressAcute:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6821413/',  label: 'Acute psychosocial stress & HRV (PMC6821413)' },
-      liebermeister:     { url: 'https://pubmed.ncbi.nlm.nih.gov/31345594/',         label: 'Body temperature & heart rate — Liebermeister (PubMed 31345594)' },
+      liebermeister:     { url: 'https://pubmed.ncbi.nlm.nih.gov/31345594/',         label: 'Body temperature & heart rate, Liebermeister (PubMed 31345594)' },
 
       // Alcohol
-      alcoholRmssd:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4971776/',  label: 'Alcohol dose-response on RMSSD — Brunetti (PMC4971776)' },
-      alcoholReal:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5878366/',  label: 'Real-world alcohol effect on overnight HRV — Pietilä (PMC5878366)' },
+      alcoholRmssd:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4971776/',  label: 'Alcohol dose-response on RMSSD, Brunetti (PMC4971776)' },
+      alcoholReal:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5878366/',  label: 'Real-world alcohol effect on overnight HRV, Pietilä (PMC5878366)' },
       alcoholThermo:     { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11391823/', label: 'Alcohol & thermoregulation review (PMC11391823)' },
-      alcoholSleep:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5821259/',  label: 'Alcohol & the sleeping brain — Colrain (PMC5821259)' },
+      alcoholSleep:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5821259/',  label: 'Alcohol & the sleeping brain, Colrain (PMC5821259)' },
       alcoholSleepMeta:  { url: 'https://www.sciencedirect.com/science/article/pii/S1087079224001345', label: 'Alcohol & sleep meta-analysis 2024 (S1087079224001345)' },
 
       // Caffeine
-      caffeineHrv:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/', label: 'Caffeine & HRV meta-analysis — Costa (PMC11284693)' },
-      caffeineCohort:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5537855/',  label: 'Coffee & HRV — ELSA-Brasil cohort (PMC5537855)' },
+      caffeineHrv:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/', label: 'Caffeine & HRV meta-analysis, Costa (PMC11284693)' },
+      caffeineCohort:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5537855/',  label: 'Coffee & HRV, ELSA-Brasil cohort (PMC5537855)' },
       caffeineCardio:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11648991/', label: 'Caffeine cardiovascular response review (PMC11648991)' },
       caffeineHrPub:     { url: 'https://pubmed.ncbi.nlm.nih.gov/24203773/',         label: 'Caffeine effects on BP & HR (PubMed 24203773)' },
-      caffeineRr:        { url: 'https://pubmed.ncbi.nlm.nih.gov/2312473/',          label: 'Caffeine & ventilatory responses — D\'Urzo (PubMed 2312473)' },
-      caffeineSleep:     { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9541543/',  label: 'Adenosine, caffeine & sleep regulation — Reichert (PMC9541543)' },
+      caffeineRr:        { url: 'https://pubmed.ncbi.nlm.nih.gov/2312473/',          label: 'Caffeine & ventilatory responses, D\'Urzo (PubMed 2312473)' },
+      caffeineSleep:     { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9541543/',  label: 'Adenosine, caffeine & sleep regulation, Reichert (PMC9541543)' },
 
       // Hydration
-      hydrationCardio:   { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2343381/',  label: 'Hydration & post-exercise cardiovascular control — Charkoudian (PMC2343381)' },
-      hydrationNature:   { url: 'https://www.nature.com/articles/s41598-019-52775-5', label: 'Hydration, autonomic adaptation & mood — Nature 2019' },
+      hydrationCardio:   { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2343381/',  label: 'Hydration & post-exercise cardiovascular control, Charkoudian (PMC2343381)' },
+      hydrationNature:   { url: 'https://www.nature.com/articles/s41598-019-52775-5', label: 'Hydration, autonomic adaptation & mood, Nature 2019' },
 
       // Body weight
       weightHrv:         { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8072942/',  label: 'Obesity, nutrition & HRV review (PMC8072942)' },
@@ -401,16 +401,16 @@ class KygoWearableStress extends HTMLElement {
       obesityRhr:        { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8260607/',  label: 'Elevated RHR, inflammation & CV risk in obesity (PMC8260607)' },
 
       // Cold exposure
-      coldHrv:           { url: 'https://www.sciencedirect.com/science/article/abs/pii/S0306456524000755', label: 'Cold exposure & cardiac autonomic control — Bouzigon meta-analysis 2024' },
+      coldHrv:           { url: 'https://www.sciencedirect.com/science/article/abs/pii/S0306456524000755', label: 'Cold exposure & cardiac autonomic control, Bouzigon meta-analysis 2024' },
 
       // Skin temperature
       skinTempStress:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/',  label: 'Skin temperature & acute stress (PMC4664114)' },
       skinTempAmbient:   { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/',  label: 'Skin temp & ambient confounds (PMC9690349)' },
-      skinTempSleep:     { url: 'https://www.nature.com/articles/s41746-026-02633-2', label: 'Wearable skin temp during sleep — Nature 2026' },
-      skinTempDepression:{ url: 'https://www.sciencedirect.com/science/article/pii/S2666915325000071', label: 'EDA & skin temp in depression — ScienceDirect 2025' },
+      skinTempSleep:     { url: 'https://www.nature.com/articles/s41746-026-02633-2', label: 'Wearable skin temp during sleep, Nature 2026' },
+      skinTempDepression:{ url: 'https://www.sciencedirect.com/science/article/pii/S2666915325000071', label: 'EDA & skin temp in depression, ScienceDirect 2025' },
       vasodilation:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5356216/',  label: 'Active vasodilation in human skin (PMC5356216)' },
       heatStress:        { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9394784/',  label: 'Human temperature regulation under heat stress (PMC9394784)' },
-      menstrualBaker:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7575238/',  label: 'Temperature regulation across the menstrual cycle — Baker (PMC7575238)' },
+      menstrualBaker:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7575238/',  label: 'Temperature regulation across the menstrual cycle, Baker (PMC7575238)' },
       menstrualWrist:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11452339/', label: 'Wrist skin temp across the menstrual cycle (PMC11452339)' },
 
       // Fever / illness HR & RR
@@ -419,47 +419,47 @@ class KygoWearableStress extends HTMLElement {
       // EDA
       edaSenses:         { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/', label: 'Five senses evoke EDA (PMC10575214)' },
       edaArousal:        { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9333288/',  label: 'EDA characterizes autonomic NS in real time (PMC9333288)' },
-      edaCognitive:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9573480/',  label: 'EDA features for mental effort — Posada-Quintero (PMC9573480)' },
-      edaArousalBradley: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6287044/',  label: 'Arousal, pupil, HR & skin conductance — Bradley (PMC6287044)' },
-      edaThermo:         { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4977170/',  label: 'Preoptic activation & thermal sweating — Farrell (PMC4977170)' },
-      edaMindfulness:    { url: 'https://pubmed.ncbi.nlm.nih.gov/32367339/',         label: 'Mindfulness predicts SCR to stress — Lin (PubMed 32367339)' },
-      edaHabituation:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3883934/',  label: 'EDA habituation — latent class approach (PMC3883934)' },
-      edaDehydration:    { url: 'https://pubmed.ncbi.nlm.nih.gov/39294847/',         label: 'Mild dehydration does not alter sweat electrolytes — Baker (PubMed 39294847)' },
+      edaCognitive:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9573480/',  label: 'EDA features for mental effort, Posada-Quintero (PMC9573480)' },
+      edaArousalBradley: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6287044/',  label: 'Arousal, pupil, HR & skin conductance, Bradley (PMC6287044)' },
+      edaThermo:         { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4977170/',  label: 'Preoptic activation & thermal sweating, Farrell (PMC4977170)' },
+      edaMindfulness:    { url: 'https://pubmed.ncbi.nlm.nih.gov/32367339/',         label: 'Mindfulness predicts SCR to stress, Lin (PubMed 32367339)' },
+      edaHabituation:    { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3883934/',  label: 'EDA habituation: latent class approach (PMC3883934)' },
+      edaDehydration:    { url: 'https://pubmed.ncbi.nlm.nih.gov/39294847/',         label: 'Mild dehydration does not alter sweat electrolytes, Baker (PubMed 39294847)' },
 
       // Respiratory rate
-      rrStress:          { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5577533/',  label: 'Ventilatory response to stress — Grassmann (PMC5577533)' },
-      rrPain:            { url: 'https://pubmed.ncbi.nlm.nih.gov/28240995/',         label: 'Pain & respiration systematic review — Jafari (PubMed 28240995)' },
+      rrStress:          { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5577533/',  label: 'Ventilatory response to stress, Grassmann (PMC5577533)' },
+      rrPain:            { url: 'https://pubmed.ncbi.nlm.nih.gov/28240995/',         label: 'Pain & respiration systematic review, Jafari (PubMed 28240995)' },
       rrPainSci:         { url: 'https://www.sciencedirect.com/science/article/abs/pii/S0735675719300385', label: 'RR most strongly reflects pain intensity (S0735675719300385)' },
-      rrMeditation:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10741869/', label: 'Breathing practices for stress & anxiety — Hopper (PMC10741869)' },
+      rrMeditation:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10741869/', label: 'Breathing practices for stress & anxiety, Hopper (PMC10741869)' },
       rrCardioFit:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6465339/',  label: 'Pulse-respiration quotient (PMC6465339)' },
       rrCardioFreq:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5732209/',  label: 'Respiratory frequency review (PMC5732209)' },
-      rrSleepVar:        { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5027356/',  label: 'RR variability in healthy sleep — Lechat (PMC5027356)' },
-      overtraining:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11235883/', label: 'Monitoring fatigue with HR & subjective measures — Schmitt (PMC11235883)' },
+      rrSleepVar:        { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5027356/',  label: 'RR variability in healthy sleep, Lechat (PMC5027356)' },
+      overtraining:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11235883/', label: 'Monitoring fatigue with HR & subjective measures, Schmitt (PMC11235883)' },
 
       // SpO2
       altitudeSpo2:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9697047/',  label: 'High-altitude SpO2 review (PMC9697047)' },
       apneaOdi:          { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10250969/', label: 'Oxygen Desaturation Index as OSA marker (PMC10250969)' },
       spo2Pneumonia:     { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10044291/', label: 'Pulse oximetry & pneumonia (PMC10044291)' },
       spo2Bts:           { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5531304/',  label: 'BTS guideline for oxygen use in adults (PMC5531304)' },
-      smokingCohb:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6013732/',  label: 'Carboxyhemoglobin in smokers — Hampson (PMC6013732)' },
+      smokingCohb:       { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6013732/',  label: 'Carboxyhemoglobin in smokers, Hampson (PMC6013732)' },
 
       // Sleep architecture
       mealsSleep:        { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8131073/',  label: 'Dinner timing & sleep stages (PMC8131073)' },
       mealsSleepReview:  { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11293727/', label: 'Meal timing & sleep quality review (PMC11293727)' },
-      screensSleep:      { url: 'https://pubmed.ncbi.nlm.nih.gov/21164152/',         label: 'Blue light & dose-dependent melatonin suppression — Brainard (PubMed 21164152)' },
+      screensSleep:      { url: 'https://pubmed.ncbi.nlm.nih.gov/21164152/',         label: 'Blue light & dose-dependent melatonin suppression, Brainard (PubMed 21164152)' },
       screensSleepRev:   { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9424753/',  label: 'Blue light, sleep & wellbeing systematic review (PMC9424753)' },
 
       // Manufacturer / official documentation
-      polarRR:           { url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement', label: 'Polar — Nightly Recharge' },
-      whoopRecovery:     { url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/', label: 'WHOOP — Recovery 101' },
-      ouraCumulative:    { url: 'https://ouraring.com/blog/what-is-cumulative-stress/', label: 'Oura — Cumulative Stress' }
+      polarRR:           { url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement', label: 'Polar: Nightly Recharge' },
+      whoopRecovery:     { url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/', label: 'WHOOP: Recovery 101' },
+      ouraCumulative:    { url: 'https://ouraring.com/blog/what-is-cumulative-stress/', label: 'Oura: Cumulative Stress' }
     };
 
     return {
       hrv: [
         {
           key: 'hrv-sleep', name: 'Consistent sleep (7–9 hrs)', direction: 'positive', impact: 'high',
-          plainEnglish: 'Sleep is the single biggest lever you have for HRV. Your overnight reading is essentially a scoreboard for how well your nervous system reset — short or fragmented sleep means it didn\'t, and your stress score climbs the next day. Chronic short sleepers see HRV depressed for weeks, but consistency rebuilds the baseline fast.',
+          plainEnglish: 'Sleep is the single biggest lever you have for HRV. Your overnight reading is essentially a scoreboard for how well your nervous system reset; short or fragmented sleep means it didn\'t, and your stress score climbs the next day. Chronic short sleepers see HRV depressed for weeks, but consistency rebuilds the baseline fast.',
           magnitude: 'Roughly 15–30% RMSSD increase within 4 weeks of consistent 7–9 hour sleep. Effect compounds over months.',
           mechanism: 'During deep and REM sleep, parasympathetic (vagal) tone takes over and beat-to-beat variability widens. Cut sleep short and you wake up locked in sympathetic dominance, which suppresses HRV all day.',
           whatToDo: 'Protect 7–9 hours, with consistent bed and wake times. Keep the room cool and dark, no caffeine after 2 PM, and screen-light off in the last hour before bed.',
@@ -467,41 +467,41 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'hrv-aerobic', name: 'Aerobic exercise (150 min/wk)', direction: 'positive', impact: 'high',
-          plainEnglish: 'Of everything you can do for HRV, consistent aerobic training has the most evidence behind it. It physically remodels your heart and your autonomic nervous system over weeks and months — there\'s no app, supplement, or cold plunge with anywhere near this much data.',
-          magnitude: 'Significant long-term HRV gain — typically 10–20% over 8–12 weeks of consistent training, with continued improvement past 6 months.',
+          plainEnglish: 'Of everything you can do for HRV, consistent aerobic training has the most evidence behind it. It physically remodels your heart and your autonomic nervous system over weeks and months; there\'s no app, supplement, or cold plunge with anywhere near this much data.',
+          magnitude: 'Significant long-term HRV gain: typically 10–20% over 8–12 weeks of consistent training, with continued improvement past 6 months.',
           mechanism: 'Aerobic training increases stroke volume (more blood per beat) and shifts your autonomic balance toward parasympathetic dominance. Both raise resting HRV and lower resting heart rate.',
-          whatToDo: '150 min/week of moderate cardio (zone 2 — conversational pace) is the floor. Mix in 1–2 higher-intensity sessions for VO₂max gains. Build slowly to avoid overtraining.',
+          whatToDo: '150 min/week of moderate cardio (zone 2, conversational pace) is the floor. Mix in 1–2 higher-intensity sessions for VO₂max gains. Build slowly to avoid overtraining.',
           source: SRC.hrvExercise
         },
         {
           key: 'hrv-meditation', name: 'Meditation / breathwork', direction: 'positive', impact: 'med',
-          plainEnglish: 'Slow breathing isn\'t woo — it\'s a direct line to your vagus nerve. Five to ten minutes of breathwork at around six breaths per minute can bump your HRV measurably within minutes, and consistent practice raises your baseline over weeks.',
+          plainEnglish: 'Slow breathing isn\'t woo; it\'s a direct line to your vagus nerve. Five to ten minutes of breathwork at around six breaths per minute can bump your HRV measurably within minutes, and consistent practice raises your baseline over weeks.',
           magnitude: 'Acute HRV bump within minutes of practice; chronic baseline lift of 5–10% over 4–8 weeks of daily practice.',
-          mechanism: 'Breathing at ~6 breaths/min synchronizes heart rhythm with breath rhythm — a state called resonance — which maximally engages the vagus nerve and parasympathetic output.',
+          mechanism: 'Breathing at ~6 breaths/min synchronizes heart rhythm with breath rhythm, a state called resonance, which maximally engages the vagus nerve and parasympathetic output.',
           whatToDo: '5–10 min of slow-paced breathing daily. Box breathing (4-4-4-4), 4-7-8, or any app that paces you to ~6 breaths/min. Pre-bed timing compounds with sleep benefits.',
           source: SRC.frontiers2024
         },
         {
           key: 'hrv-weight', name: 'Healthy body weight', direction: 'positive', impact: 'med',
-          plainEnglish: 'Carrying excess body weight keeps your sympathetic nervous system slightly elevated all the time, even at rest. Sustainable weight loss — not crash dieting — restores autonomic balance and lifts HRV measurably over months.',
+          plainEnglish: 'Carrying excess body weight keeps your sympathetic nervous system slightly elevated all the time, even at rest. Sustainable weight loss, not crash dieting, restores autonomic balance and lifts HRV measurably over months.',
           magnitude: 'Modest weight loss (~3.9 kg) produces measurable HRV improvement. Larger effects in those starting from higher BMI.',
           mechanism: 'Adipose tissue produces inflammatory cytokines and raises sympathetic tone. Sustainable loss restores sympathovagal balance: more parasympathetic, less sympathetic.',
-          whatToDo: 'Protein-forward eating, daily walks, gradual caloric deficit (≤1% body weight per week). Crash diets temporarily lower HRV — slow and steady wins here.',
+          whatToDo: 'Protein-forward eating, daily walks, gradual caloric deficit (≤1% body weight per week). Crash diets temporarily lower HRV; slow and steady wins here.',
           source: SRC.weightHrv
         },
         {
           key: 'hrv-hydration', name: 'Hydration', direction: 'positive', impact: 'low',
-          plainEnglish: 'Being chronically under-hydrated keeps your blood volume low, which forces your heart to work a little harder all day and bumps HRV down. The effect is small but consistent — easy win if your overnight readings are mediocre and you\'re routinely thirsty.',
+          plainEnglish: 'Being chronically under-hydrated keeps your blood volume low, which forces your heart to work a little harder all day and bumps HRV down. The effect is small but consistent: easy win if your overnight readings are mediocre and you\'re routinely thirsty.',
           magnitude: 'Hypohydration raises resting HR by ~5.8 bpm and lowers HRV; rehydration restores parasympathetic balance.',
           mechanism: 'Reduced plasma volume increases sympathetic drive to maintain blood pressure. Adequate hydration restores stroke volume and vagal tone.',
-          whatToDo: 'Drink to thirst plus a baseline — rough rule, half your body weight in ounces per day. Add electrolytes (sodium, potassium) if you sweat heavily or train in heat.',
+          whatToDo: 'Drink to thirst plus a baseline: rough rule, half your body weight in ounces per day. Add electrolytes (sodium, potassium) if you sweat heavily or train in heat.',
           source: SRC.hydrationCardio
         },
         {
           key: 'hrv-cold', name: 'Cold exposure (controlled)', direction: 'positive', impact: 'low',
-          plainEnglish: 'A brief cold shower or face-dunk gives your vagus nerve a quick jolt — useful as an acute stress-management tool, but not a long-term HRV builder. Don\'t overdo it; chronic cold exposure can backfire and raise sympathetic tone.',
-          magnitude: 'Acute vagal stimulation — meta-analysis (Bouzigon 2024) shows transient HRV bump that fades within hours. No durable baseline change from cold alone.',
-          mechanism: 'Cold water on the face triggers the mammalian dive reflex — heart rate drops sharply and parasympathetic output spikes within seconds.',
+          plainEnglish: 'A brief cold shower or face-dunk gives your vagus nerve a quick jolt, useful as an acute stress-management tool, but not a long-term HRV builder. Don\'t overdo it; chronic cold exposure can backfire and raise sympathetic tone.',
+          magnitude: 'Acute vagal stimulation: meta-analysis (Bouzigon 2024) shows transient HRV bump that fades within hours. No durable baseline change from cold alone.',
+          mechanism: 'Cold water on the face triggers the mammalian dive reflex: heart rate drops sharply and parasympathetic output spikes within seconds.',
           whatToDo: '30–60 seconds of cold water (face splash or whole-body) in the morning is plenty. Skip if you have cardiovascular conditions or untreated hypertension.',
           source: SRC.coldHrv
         },
@@ -509,29 +509,29 @@ class KygoWearableStress extends HTMLElement {
           key: 'hrv-alcohol', name: 'Alcohol', direction: 'negative', impact: 'high',
           plainEnglish: 'Alcohol crushes HRV harder than almost anything else you can do. Even one drink suppresses your nervous system through the night, and the bigger the dose, the bigger the hit. If your HRV is suddenly tanking with no other explanation, look here first.',
           magnitude: 'Dose-dependent RMSSD drop: ~2.0 ms (low dose), ~5.7 ms (moderate), ~12.9 ms (high dose). Acute autonomic effect persists up to ~10 hours.',
-          mechanism: 'Alcohol directly suppresses parasympathetic activity and disrupts deep sleep — both crater overnight HRV. Liver metabolism keeps sympathetic tone elevated for hours after the last drink.',
+          mechanism: 'Alcohol directly suppresses parasympathetic activity and disrupts deep sleep; both crater overnight HRV. Liver metabolism keeps sympathetic tone elevated for hours after the last drink.',
           whatToDo: 'Treat each drink as an overnight HRV cost. A few alcohol-free nights per week recover the most. Cut off 3+ hours before bed if you do drink.',
           source: SRC.alcoholRmssd
         },
         {
           key: 'hrv-sleep-dep', name: 'Sleep deprivation', direction: 'negative', impact: 'high',
-          plainEnglish: 'Pull a short night and your HRV the next morning will show it — sometimes for several days, especially if it\'s a pattern. Sleep debt is the most common reason recovery scores look bad even when you didn\'t do anything else wrong.',
+          plainEnglish: 'Pull a short night and your HRV the next morning will show it, sometimes for several days, especially if it\'s a pattern. Sleep debt is the most common reason recovery scores look bad even when you didn\'t do anything else wrong.',
           magnitude: 'Significant acute RMSSD reduction the next morning; cumulative effect across consecutive short nights.',
           mechanism: 'Short or fragmented sleep stops the nightly autonomic reset. You wake up locked in sympathetic dominance, which suppresses HRV all day and keeps cortisol elevated.',
-          whatToDo: 'Protect 7–9 hours. If you can\'t, even a 20-minute daytime nap recovers some autonomic ground. Don\'t try to "make up" sleep on weekends — consistency beats catch-up.',
+          whatToDo: 'Protect 7–9 hours. If you can\'t, even a 20-minute daytime nap recovers some autonomic ground. Don\'t try to "make up" sleep on weekends; consistency beats catch-up.',
           source: SRC.frontiers2024
         },
         {
           key: 'hrv-overtraining', name: 'Overtraining', direction: 'negative', impact: 'high',
-          plainEnglish: 'Pushing past your recovery capacity will tank HRV — and your wearable will see it days before you feel burned out. Watch for HRV trending down across a week or two of hard training; that\'s the actual overtraining signal, not how tired you feel today.',
+          plainEnglish: 'Pushing past your recovery capacity will tank HRV, and your wearable will see it days before you feel burned out. Watch for HRV trending down across a week or two of hard training; that\'s the actual overtraining signal, not how tired you feel today.',
           magnitude: 'Progressive HRV decline over days to weeks of accumulated load. Recovery requires reducing volume, not just one rest day.',
           mechanism: 'Excessive training without recovery keeps cortisol and sympathetic tone elevated. Vagal tone drops, HRV drops with it, and the longer it goes the harder the rebound.',
-          whatToDo: 'If your 7-day HRV trend is down 10%+, take a deload week — easier zone-2 sessions, more sleep, more protein. Keep training at 50–70% of normal volume until HRV rebounds.',
+          whatToDo: 'If your 7-day HRV trend is down 10%+, take a deload week: easier zone-2 sessions, more sleep, more protein. Keep training at 50–70% of normal volume until HRV rebounds.',
           source: SRC.hrvExercise
         },
         {
           key: 'hrv-chronic-stress', name: 'Chronic psychological stress', direction: 'negative', impact: 'high',
-          plainEnglish: 'The grind — work pressure, relationship stress, financial worry — sits on your nervous system 24/7. Unlike acute stress, which spikes and resolves, chronic stress keeps HRV suppressed for weeks or months until you address the source. Your wearable can\'t fix this, but it will tell you when it\'s real.',
+          plainEnglish: 'The grind (work pressure, relationship stress, financial worry) sits on your nervous system 24/7. Unlike acute stress, which spikes and resolves, chronic stress keeps HRV suppressed for weeks or months until you address the source. Your wearable can\'t fix this, but it will tell you when it\'s real.',
           magnitude: 'Sustained RMSSD/SDNN reduction lasting weeks to months. Larger effects with longer duration and higher subjective intensity.',
           mechanism: 'Chronic cortisol exposure and sustained sympathetic activation suppress vagal output. Brain-body inflammation can compound the effect.',
           whatToDo: 'Address the source where you can. Otherwise: daily breathwork, regular cardio, social connection, and therapy. Don\'t expect HRV to recover until the stressor eases.',
@@ -539,7 +539,7 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'hrv-illness', name: 'Illness / inflammation', direction: 'negative', impact: 'high',
-          plainEnglish: 'Your immune system burns through resources fighting infection — including the autonomic resources that keep HRV up. A sudden HRV drop with no obvious lifestyle cause is often the first sign you\'re getting sick, sometimes 24–48 hours before symptoms appear.',
+          plainEnglish: 'Your immune system burns through resources fighting infection, including the autonomic resources that keep HRV up. A sudden HRV drop with no obvious lifestyle cause is often the first sign you\'re getting sick, sometimes 24–48 hours before symptoms appear.',
           magnitude: 'Significant drop during acute illness, often 1–2 days before subjective symptoms. Recovery tracks with illness resolution.',
           mechanism: 'Cytokines and inflammatory signaling activate the sympathetic nervous system. The body redirects resources toward immune response, which suppresses vagal output.',
           whatToDo: 'Take HRV drops as a real signal. Rest, hydrate, eat well, and skip hard training even before you "feel" sick. Most people would catch illness earlier if they trusted the data.',
@@ -547,52 +547,52 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'hrv-caffeine', name: 'Caffeine', direction: 'variable', impact: 'low',
-          plainEnglish: 'Caffeine\'s effect on HRV is more nuanced than the wellness internet suggests. Moderate doses don\'t reliably move HRV in healthy adults; the bigger risk is timing — late caffeine compresses sleep, and bad sleep is what actually crushes HRV. Heavy chronic intake (3+ cups/day) shows a possible reduction, but it\'s confounded by sleep, stress, and CYP1A2 genetics.',
+          plainEnglish: 'Caffeine\'s effect on HRV is more nuanced than the wellness internet suggests. Moderate doses don\'t reliably move HRV in healthy adults; the bigger risk is timing: late caffeine compresses sleep, and bad sleep is what actually crushes HRV. Heavy chronic intake (3+ cups/day) shows a possible reduction, but it\'s confounded by sleep, stress, and CYP1A2 genetics.',
           magnitude: 'Mixed/inconsistent. Acute moderate doses: minimal direct HRV effect. Chronic high intake (≥3 cups/day) shows possible reduction in some cohorts, confounded by other habits.',
-          mechanism: 'Caffeine blocks adenosine receptors and stimulates sympathetic activity. Half-life is 5–6 hours, so a 3 PM coffee still has half its dose at 9 PM — meaning the overnight HRV hit usually comes via degraded sleep, not direct autonomic suppression.',
-          whatToDo: 'Cap at ~400 mg/day (≈3 cups), nothing past 2 PM. If you\'re shaky or anxious from coffee, your dose is too high. Track your own HRV on coffee vs no-coffee days — sensitivity varies a lot by genotype.',
+          mechanism: 'Caffeine blocks adenosine receptors and stimulates sympathetic activity. Half-life is 5–6 hours, so a 3 PM coffee still has half its dose at 9 PM, meaning the overnight HRV hit usually comes via degraded sleep, not direct autonomic suppression.',
+          whatToDo: 'Cap at ~400 mg/day (≈3 cups), nothing past 2 PM. If you\'re shaky or anxious from coffee, your dose is too high. Track your own HRV on coffee vs no-coffee days; sensitivity varies a lot by genotype.',
           source: SRC.caffeineHrv
         }
       ],
       hr: [
         {
           key: 'hr-cardio-fit', name: 'Cardio fitness', direction: 'positive', impact: 'high',
-          plainEnglish: 'Resting heart rate is essentially a fitness scoreboard. Trained athletes run 40–55 bpm at rest, sedentary adults 70–80. Lower is generally better — it means your heart pumps more blood per beat and works less to keep you alive.',
-          magnitude: 'Strongest single factor — every additional ~10 ml/kg/min of VO₂max drops resting HR roughly 3 bpm. Trained adults often sit 15–25 bpm below sedentary peers.',
+          plainEnglish: 'Resting heart rate is essentially a fitness scoreboard. Trained athletes run 40–55 bpm at rest, sedentary adults 70–80. Lower is generally better; it means your heart pumps more blood per beat and works less to keep you alive.',
+          magnitude: 'Strongest single factor: every additional ~10 ml/kg/min of VO₂max drops resting HR roughly 3 bpm. Trained adults often sit 15–25 bpm below sedentary peers.',
           mechanism: 'Endurance training thickens the heart wall and expands stroke volume. Each beat moves more blood, so fewer beats are needed at rest. Vagal tone also rises, slowing the resting rate further.',
-          whatToDo: 'Build aerobic base — zone 2 (conversational pace) cardio, 150+ min/week. Resting HR drops within 4–8 weeks of consistent training and continues for months.',
+          whatToDo: 'Build aerobic base: zone 2 (conversational pace) cardio, 150+ min/week. Resting HR drops within 4–8 weeks of consistent training and continues for months.',
           source: SRC.rhrExercise
         },
         {
           key: 'hr-sleep', name: 'Adequate sleep', direction: 'positive', impact: 'med',
-          plainEnglish: 'Bad sleep raises your morning heart rate — sometimes more after a really short night. Your wearable\'s morning RHR is essentially a sleep-quality readout that shows up before you\'ve even had coffee.',
+          plainEnglish: 'Bad sleep raises your morning heart rate, sometimes more after a really short night. Your wearable\'s morning RHR is essentially a sleep-quality readout that shows up before you\'ve even had coffee.',
           magnitude: 'Elevated next-day RHR after poor sleep. Effect compounds across consecutive short nights.',
           mechanism: 'Sleep deprivation shifts autonomic balance toward sympathetic dominance, raising baseline heart rate even at rest. Cortisol stays elevated, which keeps HR elevated with it.',
-          whatToDo: 'Protect 7–9 hours. Watch your morning RHR — if it\'s a few bpm above baseline, your sleep was poor regardless of what your sleep score says.',
+          whatToDo: 'Protect 7–9 hours. Watch your morning RHR: if it\'s a few bpm above baseline, your sleep was poor regardless of what your sleep score says.',
           source: SRC.rhrFactors
         },
         {
           key: 'hr-weight', name: 'Healthy body weight', direction: 'positive', impact: 'med',
-          plainEnglish: 'Carrying excess body weight elevates resting heart rate at every age — and weight loss reliably brings it back down. The mechanism runs through both reduced sympathetic overactivity and lower inflammatory load on the cardiovascular system.',
+          plainEnglish: 'Carrying excess body weight elevates resting heart rate at every age, and weight loss reliably brings it back down. The mechanism runs through both reduced sympathetic overactivity and lower inflammatory load on the cardiovascular system.',
           magnitude: 'RHR is significantly higher in obese vs non-obese adults. Weight loss reduces RHR; effect proportional to amount lost.',
           mechanism: 'Adipose tissue raises sympathetic tone and circulating inflammatory markers, which together push the resting heart to work harder. Sustainable loss reverses both.',
-          whatToDo: 'Protein-forward eating, daily walks, gradual caloric deficit (≤1% body weight per week). Crash diets temporarily raise HR — slow and steady wins.',
+          whatToDo: 'Protein-forward eating, daily walks, gradual caloric deficit (≤1% body weight per week). Crash diets temporarily raise HR; slow and steady wins.',
           source: SRC.obesityRhr
         },
         {
           key: 'hr-hydration', name: 'Hydration', direction: 'positive', impact: 'low',
-          plainEnglish: 'Being chronically under-hydrated keeps blood volume low, which makes the heart work harder to maintain output — and bumps RHR up. The fix is small but immediate: rehydrate and your morning reading drops back to baseline.',
+          plainEnglish: 'Being chronically under-hydrated keeps blood volume low, which makes the heart work harder to maintain output, and bumps RHR up. The fix is small but immediate: rehydrate and your morning reading drops back to baseline.',
           magnitude: 'Hypohydration raises resting HR by ~5.8 bpm; rehydration restores stroke volume and lowers HR back to baseline.',
           mechanism: 'Reduced plasma volume increases sympathetic drive to maintain blood pressure. Hydration restores stroke volume so each beat moves more blood, requiring fewer beats.',
-          whatToDo: 'Drink to thirst plus a baseline — rough rule, half your body weight in ounces per day. Add electrolytes (sodium, potassium) if you sweat heavily or train in heat.',
+          whatToDo: 'Drink to thirst plus a baseline: rough rule, half your body weight in ounces per day. Add electrolytes (sodium, potassium) if you sweat heavily or train in heat.',
           source: SRC.hydrationCardio
         },
         {
           key: 'hr-sedentary', name: 'Sedentary lifestyle', direction: 'negative', impact: 'high',
-          plainEnglish: 'Sitting all day deconditions your heart. Resting heart rate creeps up over weeks and months, which is why most desk-workers see RHR in the 70s while their athletic friends sit in the 50s. The fix isn\'t one workout — it\'s consistent movement.',
+          plainEnglish: 'Sitting all day deconditions your heart. Resting heart rate creeps up over weeks and months, which is why most desk-workers see RHR in the 70s while their athletic friends sit in the 50s. The fix isn\'t one workout; it\'s consistent movement.',
           magnitude: 'Meta-analysis: each additional hour of sedentary time raises RHR by ~0.24 bpm. Effect compounds across a typical workday.',
-          mechanism: 'Without aerobic stress, the heart doesn\'t develop stroke volume capacity. Smaller stroke volume means more beats per minute to push the same blood — both at rest and during activity. Sedentary time also reduces parasympathetic modulation.',
-          whatToDo: 'Daily walks (8K+ steps), structured cardio 3–4x/week. Stand up and move every 30–60 minutes during desk work — even brief breaks shift the day.',
+          mechanism: 'Without aerobic stress, the heart doesn\'t develop stroke volume capacity. Smaller stroke volume means more beats per minute to push the same blood, both at rest and during activity. Sedentary time also reduces parasympathetic modulation.',
+          whatToDo: 'Daily walks (8K+ steps), structured cardio 3–4x/week. Stand up and move every 30–60 minutes during desk work; even brief breaks shift the day.',
           source: SRC.sedentaryMeta
         },
         {
@@ -608,30 +608,30 @@ class KygoWearableStress extends HTMLElement {
           plainEnglish: 'Alcohol raises heart rate the night you drink AND the morning after. Your wearable\'s morning RHR will show every late-night session, sometimes for more than a day.',
           magnitude: 'Acute and next-day HR elevation. Heavier drinking sessions keep RHR elevated longer.',
           mechanism: 'Alcohol triggers vasodilation, which forces the heart to work harder to maintain blood pressure. Recovery (liver metabolism, dehydration) requires extra cardiac work for hours after the last drink.',
-          whatToDo: 'Treat each drink as an overnight HR cost. Hydrate during and after — water helps but doesn\'t eliminate the effect. A few alcohol-free nights/week recover the most.',
+          whatToDo: 'Treat each drink as an overnight HR cost. Hydrate during and after; water helps but doesn\'t eliminate the effect. A few alcohol-free nights/week recover the most.',
           source: SRC.rhrFactors
         },
         {
           key: 'hr-heat', name: 'Heat / dehydration', direction: 'negative', impact: 'med',
-          plainEnglish: 'Hot weather and dehydration both raise heart rate at rest. Athletes call it "cardiac drift" — same effort, higher HR. If your morning readings spike on hot days, this is why; it\'s not stress.',
+          plainEnglish: 'Hot weather and dehydration both raise heart rate at rest. Athletes call it "cardiac drift": same effort, higher HR. If your morning readings spike on hot days, this is why; it\'s not stress.',
           magnitude: 'Hypohydration alone raises resting HR by ~5.8 bpm. Heat compounds the effect via thermoregulatory load.',
           mechanism: 'Heat triggers sweating and dilation of skin vessels for cooling. Dehydration thickens blood and lowers blood volume. Both increase cardiac workload to deliver the same oxygen.',
-          whatToDo: 'Pre-hydrate (16–20 oz fluid 1–2 hours before activity in heat). Add electrolytes when sweating heavily. Sleep cool — bedroom 65–68°F is the sweet spot.',
+          whatToDo: 'Pre-hydrate (16–20 oz fluid 1–2 hours before activity in heat). Add electrolytes when sweating heavily. Sleep cool: bedroom 65–68°F is the sweet spot.',
           source: SRC.hydrationCardio
         },
         {
           key: 'hr-fever', name: 'Illness / fever', direction: 'negative', impact: 'high',
-          plainEnglish: 'Fever raises heart rate proportionally to temperature — Liebermeister\'s rule. Your morning RHR jumping 5+ bpm with no other explanation is often the first sign you\'re getting sick, sometimes before symptoms.',
+          plainEnglish: 'Fever raises heart rate proportionally to temperature: Liebermeister\'s rule. Your morning RHR jumping 5+ bpm with no other explanation is often the first sign you\'re getting sick, sometimes before symptoms.',
           magnitude: 'About 7–10 bpm per 1°C of fever (roughly 4–6 bpm per 1°F). Sustained for the duration of illness.',
           mechanism: 'Immune activation raises metabolic demand, and fever requires extra cardiac work for thermoregulation. Both push HR up and keep it elevated until the body clears the infection.',
-          whatToDo: 'Treat sudden RHR spikes as a real signal. Rest, hydrate, skip hard workouts. Pushing through usually extends illness — and your data will tell you when it\'s actually back to baseline.',
+          whatToDo: 'Treat sudden RHR spikes as a real signal. Rest, hydrate, skip hard workouts. Pushing through usually extends illness, and your data will tell you when it\'s actually back to baseline.',
           source: SRC.liebermeister
         },
         {
           key: 'hr-stress', name: 'Stress / anxiety', direction: 'negative', impact: 'high',
           plainEnglish: 'Acute stress (a tough meeting, an argument) spikes heart rate within seconds. Chronic stress (long-term work pressure, family stress) keeps it elevated through the day, every day, until the source eases.',
           magnitude: 'Acute psychosocial stress raises HR by ~25%, systolic BP by ~13%, and norepinephrine by ~60%. Chronic stress sustains a smaller baseline elevation.',
-          mechanism: 'SAM-axis activation releases catecholamines (adrenaline, norepinephrine) and HPA-axis activation releases cortisol — both directly raise heart rate. Chronic stress maintains this state at lower intensity even during "rest" periods.',
+          mechanism: 'SAM-axis activation releases catecholamines (adrenaline, norepinephrine) and HPA-axis activation releases cortisol; both directly raise heart rate. Chronic stress maintains this state at lower intensity even during "rest" periods.',
           whatToDo: 'Daily breathwork (4-7-8, box breathing), regular cardio for the chronic baseline, address stressors at the source where possible. Therapy if it\'s not lifting on its own.',
           source: SRC.stressAcute
         }
@@ -639,15 +639,15 @@ class KygoWearableStress extends HTMLElement {
       eda: [
         {
           key: 'eda-arousal', name: 'Emotional arousal (anxiety, fear, anger)', direction: 'negative', impact: 'high',
-          plainEnglish: 'EDA is the cleanest acute-stress signal in consumer wearables. Anxiety, fear, anger — within seconds of the emotional spike, your skin starts producing tiny amounts of sweat that the sensor reads as a conductance jump. This is why EDA-equipped watches catch stress events that HRV-only devices miss.',
-          magnitude: 'Strong and immediate — measurable phasic response within 1–4 seconds of an emotional trigger.',
+          plainEnglish: 'EDA is the cleanest acute-stress signal in consumer wearables. Anxiety, fear, anger: within seconds of the emotional spike, your skin starts producing tiny amounts of sweat that the sensor reads as a conductance jump. This is why EDA-equipped watches catch stress events that HRV-only devices miss.',
+          magnitude: 'Strong and immediate: measurable phasic response within 1–4 seconds of an emotional trigger.',
           mechanism: 'The sympathetic nervous system triggers eccrine sweat glands almost instantly during emotional arousal. Sweat raises the skin\'s electrical conductance, which the sensor measures as a microsiemen change.',
-          whatToDo: 'Treat repeated EDA spikes during the day as a real signal. The fastest counter is slow-paced breathing — EDA tonic level often drops within 60–90 seconds of starting.',
+          whatToDo: 'Treat repeated EDA spikes during the day as a real signal. The fastest counter is slow-paced breathing; EDA tonic level often drops within 60–90 seconds of starting.',
           source: SRC.edaArousal
         },
         {
           key: 'eda-cognitive', name: 'Cognitive load / mental effort', direction: 'negative', impact: 'med',
-          plainEnglish: 'Sustained mental effort — coding, deep writing, hard problem-solving — raises tonic skin conductance even when you don\'t feel emotionally stressed. EDA-equipped watches will read a long deep-focus block as elevated stress, which is technically accurate at the physiology level even if the work feels rewarding.',
+          plainEnglish: 'Sustained mental effort (coding, deep writing, hard problem-solving) raises tonic skin conductance even when you don\'t feel emotionally stressed. EDA-equipped watches will read a long deep-focus block as elevated stress, which is technically accurate at the physiology level even if the work feels rewarding.',
           magnitude: 'Moderate sustained tonic rise that persists for the duration of demanding mental work (Posada-Quintero et al.).',
           mechanism: 'Mental exertion activates sympathetic output to support attention and working memory. The same sweat-gland activation that signals emotional arousal kicks in for cognitive load.',
           whatToDo: 'Pomodoro-style breaks (25 min focus, 5 min off) drop EDA back toward baseline. A 90-second breathing reset between tasks compounds.',
@@ -655,31 +655,31 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'eda-sensory', name: 'Sensory stimulation (sounds, pain, surprise)', direction: 'negative', impact: 'med',
-          plainEnglish: 'Loud sounds, pain, sudden bright lights — even surprises that aren\'t threatening — trigger an immediate EDA spike. This is why your stress score might jump during a movie scene or a noisy commute even though you\'re not anxious.',
-          magnitude: 'Acute orienting response — sharp phasic spike within 2–3 seconds of stimulus, then decays back over 10–20 seconds.',
+          plainEnglish: 'Loud sounds, pain, sudden bright lights, even surprises that aren\'t threatening, trigger an immediate EDA spike. This is why your stress score might jump during a movie scene or a noisy commute even though you\'re not anxious.',
+          magnitude: 'Acute orienting response: sharp phasic spike within 2–3 seconds of stimulus, then decays back over 10–20 seconds.',
           mechanism: 'The brain\'s startle/orienting response sends rapid sympathetic activation to sweat glands as part of "what was that?" assessment, regardless of whether the stimulus is threatening.',
           whatToDo: 'These spikes are normal and brief. If your environment has constant sensory load (open offices, noisy commute), noise-canceling headphones meaningfully reduce tonic EDA.',
           source: SRC.edaSenses
         },
         {
           key: 'eda-heat', name: 'Ambient heat & humidity', direction: 'negative', impact: 'med',
-          plainEnglish: 'EDA reads thermoregulatory sweating the same way it reads emotional sweating — it can\'t tell the difference. On hot or humid days, your stress score will run higher even if you\'re calm. This is the single biggest false-positive on Pixel/Fitbit cEDA.',
+          plainEnglish: 'EDA reads thermoregulatory sweating the same way it reads emotional sweating; it can\'t tell the difference. On hot or humid days, your stress score will run higher even if you\'re calm. This is the single biggest false-positive on Pixel/Fitbit cEDA.',
           magnitude: 'Tonic skin conductance rises measurably with environmental heat. Effect strongest above 75°F and in high humidity.',
           mechanism: 'Eccrine sweat glands are activated by both emotional sympathetic output and thermoregulatory drive (preoptic activation). The sensor sees the same conductance change either way.',
-          whatToDo: 'Cross-check elevated EDA against your HRV trend on hot days — if HRV is normal but EDA is up, it\'s probably heat. Cool environment, fan, or A/C resolves it.',
+          whatToDo: 'Cross-check elevated EDA against your HRV trend on hot days: if HRV is normal but EDA is up, it\'s probably heat. Cool environment, fan, or A/C resolves it.',
           source: SRC.edaThermo
         },
         {
           key: 'eda-excitement', name: 'Excitement / positive arousal', direction: 'variable', impact: 'med',
-          plainEnglish: 'EDA cannot tell anxiety from excitement — both look identical to the sensor. The same spike fires whether you\'re scared, surprised in a good way, or genuinely excited about something. This is a fundamental limit, not an algorithm problem.',
+          plainEnglish: 'EDA cannot tell anxiety from excitement; both look identical to the sensor. The same spike fires whether you\'re scared, surprised in a good way, or genuinely excited about something. This is a fundamental limit, not an algorithm problem.',
           magnitude: 'Indistinguishable from negative arousal at the signal level. Same magnitude and timing as a fear or anger spike (Bradley et al.).',
-          mechanism: 'EDA reads sympathetic activation only. The brain produces the same activation pattern for "good" and "bad" arousal — the valence (positive/negative) lives in higher cortical areas the sensor can\'t see.',
+          mechanism: 'EDA reads sympathetic activation only. The brain produces the same activation pattern for "good" and "bad" arousal; the valence (positive/negative) lives in higher cortical areas the sensor can\'t see.',
           whatToDo: 'When your wearable flags "stress," sanity-check what you were actually doing. Watching a thriller, riding a roller coaster, or finishing a big project all spike EDA but aren\'t bad for you.',
           source: SRC.edaArousalBradley
         },
         {
           key: 'eda-meditation', name: 'Relaxation / meditation', direction: 'positive', impact: 'med',
-          plainEnglish: 'Slow, deliberate breathing or meditation drops EDA tonic level within minutes. Pixel/Fitbit users will literally see the line going down on the cEDA chart during a breathwork session — it\'s one of the cleanest real-time biofeedback signals consumer wearables produce.',
+          plainEnglish: 'Slow, deliberate breathing or meditation drops EDA tonic level within minutes. Pixel/Fitbit users will literally see the line going down on the cEDA chart during a breathwork session; it\'s one of the cleanest real-time biofeedback signals consumer wearables produce.',
           magnitude: 'An 8-week MBSR program reduced EDA roughly 64% in trial data; higher state mindfulness consistently associates with lower SCR to stress.',
           mechanism: 'Parasympathetic activation reduces sympathetic drive to sweat glands. Slow breathing in particular engages the vagus nerve and dampens the sympathetic baseline.',
           whatToDo: 'When your wearable fires a Body Response or stress alert, treat it as a cue: 5 minutes of slow-paced breathing. Watch the cEDA line drop in real time.',
@@ -687,7 +687,7 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'eda-cool', name: 'Cool ambient temperature', direction: 'positive', impact: 'low',
-          plainEnglish: 'Cool conditions reduce thermoregulatory sweating, which drops the EDA tonic baseline. If your stress score reads lower in air-conditioned spaces, this is part of the reason — not necessarily that you\'re less stressed there.',
+          plainEnglish: 'Cool conditions reduce thermoregulatory sweating, which drops the EDA tonic baseline. If your stress score reads lower in air-conditioned spaces, this is part of the reason, not necessarily that you\'re less stressed there.',
           magnitude: 'Modest tonic-level reduction in cool environments. Effect most visible in people who sweat heavily at room temperature.',
           mechanism: 'Less thermoregulatory sweat output means less skin conductance change. The sensor reads a lower tonic baseline.',
           whatToDo: 'Bedroom 65–68°F supports lower overnight EDA along with deeper sleep. Office cool-side is fine if it doesn\'t make you uncomfortable.',
@@ -695,7 +695,7 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'eda-habituation', name: 'Habituation (repeated stimuli)', direction: 'positive', impact: 'low',
-          plainEnglish: 'Your nervous system stops reacting to repeated harmless stimuli — the third loud noise barely registers compared to the first. This is why anxiety-provoking situations (public speaking, hard conversations) get easier with practice: your EDA literally responds less.',
+          plainEnglish: 'Your nervous system stops reacting to repeated harmless stimuli: the third loud noise barely registers compared to the first. This is why anxiety-provoking situations (public speaking, hard conversations) get easier with practice: your EDA literally responds less.',
           magnitude: 'Progressive reduction per exposure (Lissek et al.). Most of the dampening happens in the first 5–10 exposures.',
           mechanism: 'The brain learns that a stimulus isn\'t threatening and dampens the orienting response on subsequent exposures. Less sympathetic drive means less EDA spike.',
           whatToDo: 'Exposure works. If something spikes you, repeated controlled exposure (presentations, hard runs, cold showers) trains the response down over time.',
@@ -705,7 +705,7 @@ class KygoWearableStress extends HTMLElement {
           key: 'eda-dehydration', name: 'Dehydration', direction: 'variable', impact: 'low',
           plainEnglish: 'You\'ll see "hydration affects EDA" repeated all over the wellness internet, but the underlying evidence is thin. Mild dehydration doesn\'t substantially shift sweat electrolyte concentrations during exercise, and the effect on wrist-based EDA specifically is poorly characterized.',
           magnitude: 'Limited evidence. Mild dehydration does not substantially alter sweat Na⁺/Cl⁻/K⁺ concentrations; effect on wrist EDA is poorly characterized.',
-          mechanism: 'EDA conductance depends on sweat ion content. The assumption was that dehydration would shift those ions enough to move the reading — recent research (Baker 2024) shows that\'s not the case at typical dehydration levels.',
+          mechanism: 'EDA conductance depends on sweat ion content. The assumption was that dehydration would shift those ions enough to move the reading; recent research (Baker 2024) shows that\'s not the case at typical dehydration levels.',
           whatToDo: 'Stay normally hydrated for general health reasons, but don\'t blame weird EDA readings on hydration. Heat, cognitive load, or emotional state are more likely culprits.',
           source: SRC.edaDehydration
         }
@@ -713,10 +713,10 @@ class KygoWearableStress extends HTMLElement {
       skinTemp: [
         {
           key: 'st-stress', name: 'Acute psychological stress', direction: 'negative', impact: 'med',
-          plainEnglish: 'When you\'re acutely stressed, your body shunts blood away from the skin and toward core organs — the same "fight or flight" response that makes your hands cold during anxiety. Your wearable\'s peripheral skin-temp sensor catches the drop in real time.',
+          plainEnglish: 'When you\'re acutely stressed, your body shunts blood away from the skin and toward core organs, the same "fight or flight" response that makes your hands cold during anxiety. Your wearable\'s peripheral skin-temp sensor catches the drop in real time.',
           magnitude: 'Measurable peripheral drop at the wrist or finger within minutes of stress onset. Often 0.2–0.5°C below baseline.',
           mechanism: 'Sympathetic activation triggers vasoconstriction in peripheral blood vessels, redirecting blood to the core. The skin surface cools as less blood flows there.',
-          whatToDo: 'Don\'t fight the response — acknowledge the stress, then engage parasympathetic recovery (slow breathing, brief walk). Skin temp returns to baseline within 10–20 minutes once the stressor eases.',
+          whatToDo: 'Don\'t fight the response; acknowledge the stress, then engage parasympathetic recovery (slow breathing, brief walk). Skin temp returns to baseline within 10–20 minutes once the stressor eases.',
           source: SRC.skinTempStress
         },
         {
@@ -724,7 +724,7 @@ class KygoWearableStress extends HTMLElement {
           plainEnglish: 'Skin temp rises during exercise as your body dumps heat through skin vessels, then drops below baseline post-workout. Most wearables filter this out so it doesn\'t inflate your stress score, but it can confound overnight readings if you train late.',
           magnitude: 'Rises during exercise via active vasodilation, then drops below baseline post-workout. Effect resolves within 1–2 hours.',
           mechanism: 'Working muscle generates heat. The body actively vasodilates skin vessels to dissipate it, which raises the surface temperature the sensor reads.',
-          whatToDo: 'Avoid hard training within 2 hours of bed — your overnight skin-temp baseline can\'t settle and Oura/WHOOP will read it as a deviation.',
+          whatToDo: 'Avoid hard training within 2 hours of bed; your overnight skin-temp baseline can\'t settle and Oura/WHOOP will read it as a deviation.',
           source: SRC.vasodilation
         },
         {
@@ -737,15 +737,15 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'st-fever', name: 'Illness / fever', direction: 'negative', impact: 'high',
-          plainEnglish: 'Skin temperature rising clearly above your baseline is one of the earliest signs of infection your wearable will catch — sometimes 1–2 days before fever or symptoms register. Take it seriously.',
+          plainEnglish: 'Skin temperature rising clearly above your baseline is one of the earliest signs of infection your wearable will catch, sometimes 1–2 days before fever or symptoms register. Take it seriously.',
           magnitude: 'Significant rise during infection. Tracks with severity of the immune response.',
           mechanism: 'Cytokines and immune signaling raise the hypothalamic temperature setpoint. The body produces and retains more heat to make the environment hostile to pathogens.',
-          whatToDo: 'A clear skin-temp spike with no exercise, alcohol, or hot-room explanation is a real illness signal. Rest and hydrate before symptoms hit — most people would catch flu earlier if they trusted this data.',
+          whatToDo: 'A clear skin-temp spike with no exercise, alcohol, or hot-room explanation is a real illness signal. Rest and hydrate before symptoms hit; most people would catch flu earlier if they trusted this data.',
           source: SRC.heatStress
         },
         {
           key: 'st-alcohol', name: 'Alcohol', direction: 'negative', impact: 'med',
-          plainEnglish: 'Alcohol opens up your skin blood vessels — that warm flush you feel after a drink is real. Your peripheral skin temp rises for several hours, which Oura and WHOOP both pick up overnight.',
+          plainEnglish: 'Alcohol opens up your skin blood vessels; that warm flush you feel after a drink is real. Your peripheral skin temp rises for several hours, which Oura and WHOOP both pick up overnight.',
           magnitude: 'Acute peripheral rise lasting hours after drinking. Compounds with HRV suppression and disrupted thermoregulation.',
           mechanism: 'Alcohol triggers peripheral vasodilation, sending more warm blood to the skin surface. The sensor reads the rise as a baseline deviation.',
           whatToDo: 'Cut off alcohol 3+ hours before bed if you want clean overnight skin-temp readings. The effect compounds with HRV suppression to make recovery scores look extra bad.',
@@ -753,17 +753,17 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'st-ambient', name: 'Ambient temperature', direction: 'variable', impact: 'high',
-          plainEnglish: 'Wrist-based skin temp is heavily influenced by the room you\'re in. Hot rooms inflate readings; cold rooms deflate them. This is the biggest accuracy issue with wrist devices — finger-site sensors (Oura) are insulated better but still affected.',
+          plainEnglish: 'Wrist-based skin temp is heavily influenced by the room you\'re in. Hot rooms inflate readings; cold rooms deflate them. This is the biggest accuracy issue with wrist devices; finger-site sensors (Oura) are insulated better but still affected.',
           magnitude: 'Major confounder for wrist devices. Hot/cold rooms can shift readings 0.5–1.5°C from your true baseline.',
           mechanism: 'External air temperature directly affects surface sensor readings, especially on a wrist where the sensor sits close to the skin and to ambient air.',
-          whatToDo: 'Stable bedroom temperature is the single biggest fix — 65–68°F is Oura\'s recommended range. If your skin-temp deviation looks weird, check your thermostat before assuming illness.',
+          whatToDo: 'Stable bedroom temperature is the single biggest fix; 65–68°F is Oura\'s recommended range. If your skin-temp deviation looks weird, check your thermostat before assuming illness.',
           source: SRC.skinTempAmbient
         },
         {
           key: 'st-sleep-onset', name: 'Sleep onset', direction: 'positive', impact: 'low',
-          plainEnglish: 'When you\'re falling asleep, blood vessels in your hands and feet dilate to dump heat — that\'s why warm hands and feet make you sleepy. The sensor reads a rise at the extremities, which is actually a sign of healthy sleep onset.',
+          plainEnglish: 'When you\'re falling asleep, blood vessels in your hands and feet dilate to dump heat; that\'s why warm hands and feet make you sleepy. The sensor reads a rise at the extremities, which is actually a sign of healthy sleep onset.',
           magnitude: 'Normal extremity-temp rise of 0.3–0.5°C as you transition into sleep.',
-          mechanism: 'Distal vasodilation initiates the sleep-onset cascade — your core cools while extremities warm. This redistribution is essential for falling asleep.',
+          mechanism: 'Distal vasodilation initiates the sleep-onset cascade: your core cools while extremities warm. This redistribution is essential for falling asleep.',
           whatToDo: 'If you have trouble falling asleep, warm hands/feet (warm bath, socks) before bed accelerates the process. Cold extremities = harder to drop off.',
           source: SRC.skinTempSleep
         },
@@ -772,14 +772,14 @@ class KygoWearableStress extends HTMLElement {
           plainEnglish: 'Long-term depression and chronic stress show up as more day-to-day variability in skin temperature, not a constant high or low. The body\'s autonomic regulation gets less stable, so readings swing more from one day to the next.',
           magnitude: 'Higher day-to-day temperature variability over weeks. Effect tracks with subjective severity.',
           mechanism: 'Disrupted autonomic regulation under chronic stress destabilizes thermoregulation. The body has a harder time holding a steady setpoint, so readings drift more.',
-          whatToDo: 'Address the underlying issue — therapy, exercise, social connection, sleep. Skin-temp variability stabilizes as autonomic regulation recovers, often over months.',
+          whatToDo: 'Address the underlying issue: therapy, exercise, social connection, sleep. Skin-temp variability stabilizes as autonomic regulation recovers, often over months.',
           source: SRC.skinTempDepression
         }
       ],
       rr: [
         {
           key: 'rr-stress', name: 'Stress / anxiety', direction: 'negative', impact: 'high',
-          plainEnglish: 'Stress and anxiety raise breathing rate and make it shallower — even when you\'re not aware you\'re doing it. WHOOP and Polar pick this up overnight as elevated respiratory rate, which is one of the cleanest markers of unresolved daytime stress carrying into sleep.',
+          plainEnglish: 'Stress and anxiety raise breathing rate and make it shallower, even when you\'re not aware you\'re doing it. WHOOP and Polar pick this up overnight as elevated respiratory rate, which is one of the cleanest markers of unresolved daytime stress carrying into sleep.',
           magnitude: 'Acute rate increase under stress (Grassmann et al.); sustained baseline elevation in chronic anxiety.',
           mechanism: 'Sympathetic activation increases respiratory drive directly. Your brain\'s breathing center gets a "speed up" signal alongside the cardiovascular spike.',
           whatToDo: 'Slow-paced breathing in the evening (4-7-8, box breathing, or any 6-breath/min pattern) drops the carryover into sleep. Start 30+ minutes before bed for the best overnight rate.',
@@ -787,15 +787,15 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'rr-pain', name: 'Pain', direction: 'negative', impact: 'med',
-          plainEnglish: 'Pain — chronic injury pain, post-surgery, even bad muscle soreness — raises your respiratory rate the same way emotional stress does. In prehospital studies, RR is actually the vital sign most strongly correlated with pain intensity.',
+          plainEnglish: 'Pain (chronic injury pain, post-surgery, even bad muscle soreness) raises your respiratory rate the same way emotional stress does. In prehospital studies, RR is actually the vital sign most strongly correlated with pain intensity.',
           magnitude: 'RR is the vital sign most strongly correlated with prehospital pain intensity; RR > 25/min predicts severe pain.',
           mechanism: 'Pain signaling triggers sympathetic activation, which changes breathing pattern toward faster and shallower.',
-          whatToDo: 'Treat the pain source where you can. If injured, expect overnight RR to stay elevated until healing — don\'t over-interpret it as overtraining or stress.',
+          whatToDo: 'Treat the pain source where you can. If injured, expect overnight RR to stay elevated until healing; don\'t over-interpret it as overtraining or stress.',
           source: SRC.rrPain
         },
         {
           key: 'rr-fever', name: 'Fever / illness', direction: 'negative', impact: 'med',
-          plainEnglish: 'Fever raises your respiratory rate proportionally — your body needs more oxygen to fuel the immune fight. WHOOP and Polar will catch elevated overnight RR before you\'re aware you\'re sick.',
+          plainEnglish: 'Fever raises your respiratory rate proportionally; your body needs more oxygen to fuel the immune fight. WHOOP and Polar will catch elevated overnight RR before you\'re aware you\'re sick.',
           magnitude: 'Fever raises both HR and RR proportionally to temperature elevation (prospective study).',
           mechanism: 'Higher core temperature raises metabolic rate, which requires more oxygen delivery and CO₂ removal. The respiratory center responds with faster breathing.',
           whatToDo: 'Elevated overnight RR with no other explanation is a real early-illness signal. Rest, hydrate, skip hard training even before symptoms hit.',
@@ -803,7 +803,7 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'rr-overtraining', name: 'Overtraining', direction: 'negative', impact: 'high',
-          plainEnglish: 'Elevated overnight respiratory rate is often described as a textbook overtraining marker. The strongest direct evidence is actually for elevated nocturnal HR and reduced HRV, but breathing rate moves alongside them — and WHOOP and Polar are the consumer wearables that surface it.',
+          plainEnglish: 'Elevated overnight respiratory rate is often described as a textbook overtraining marker. The strongest direct evidence is actually for elevated nocturnal HR and reduced HRV, but breathing rate moves alongside them, and WHOOP and Polar are the consumer wearables that surface it.',
           magnitude: 'Limited direct RR evidence. Overtraining is best documented via elevated nocturnal HR and reduced HRV (Schmitt et al.); RR typically tracks alongside.',
           mechanism: 'Incomplete recovery leaves sympathetic tone elevated through the night. Cortisol stays high, which keeps respiratory drive up even during deep sleep.',
           whatToDo: 'Watch your 7-day overnight HR + RR trend together. Sustained rises over a week of hard training are a deload signal. Ease volume by 30–50% for 5–7 days.',
@@ -811,15 +811,15 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'rr-caffeine', name: 'Late caffeine', direction: 'variable', impact: 'low',
-          plainEnglish: 'You\'ll see "caffeine raises breathing rate" in a lot of wellness writeups, but the actual adult-study evidence shows little or no change in respiratory rate — caffeine\'s effect is mostly on tidal volume (how deeply you breathe) and minute ventilation, not rate. The overnight RR cost of late caffeine usually comes via worse sleep, not direct stimulation.',
+          plainEnglish: 'You\'ll see "caffeine raises breathing rate" in a lot of wellness writeups, but the actual adult-study evidence shows little or no change in respiratory rate; caffeine\'s effect is mostly on tidal volume (how deeply you breathe) and minute ventilation, not rate. The overnight RR cost of late caffeine usually comes via worse sleep, not direct stimulation.',
           magnitude: 'Adult studies report "little if any change" in respiratory rate from caffeine. Primary effect is on tidal volume and minute ventilation, not rate.',
           mechanism: 'Adenosine antagonism stimulates the brainstem respiratory center, but in adults the response shows up as deeper breathing rather than faster breathing.',
-          whatToDo: 'No caffeine after 2 PM is still the cleanest rule — but the overnight RR risk is mostly through degraded sleep architecture rather than direct respiratory stimulation.',
+          whatToDo: 'No caffeine after 2 PM is still the cleanest rule, but the overnight RR risk is mostly through degraded sleep architecture rather than direct respiratory stimulation.',
           source: SRC.caffeineRr
         },
         {
           key: 'rr-meditation', name: 'Relaxation / meditation', direction: 'positive', impact: 'high',
-          plainEnglish: 'Slow-paced breathing literally trains your nervous system to default to slower, deeper breaths — the effect persists past the practice window. Consistent practice drops your overnight respiratory rate over weeks, which lifts WHOOP recovery and Polar Nightly Recharge.',
+          plainEnglish: 'Slow-paced breathing literally trains your nervous system to default to slower, deeper breaths; the effect persists past the practice window. Consistent practice drops your overnight respiratory rate over weeks, which lifts WHOOP recovery and Polar Nightly Recharge.',
           magnitude: 'Significant acute drop during slow-breathing protocols (Hopper et al. systematic review). Chronic baseline drop builds over 4–8 weeks of daily practice.',
           mechanism: 'Slow breathing engages the vagus nerve and shifts autonomic balance toward parasympathetic dominance. The respiratory center recalibrates to a lower default rate.',
           whatToDo: '5–10 minutes of slow breathing daily. Pre-bed timing carries the effect into sleep. Apps that pace you to ~6 breaths/min work best.',
@@ -827,18 +827,18 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'rr-cardio-fit', name: 'Cardio fitness', direction: 'positive', impact: 'med',
-          plainEnglish: 'Trained athletes breathe less at rest — same oxygen delivery, fewer breaths needed. Building aerobic fitness drops your baseline respiratory rate the same way it drops your resting heart rate.',
+          plainEnglish: 'Trained athletes breathe less at rest: same oxygen delivery, fewer breaths needed. Building aerobic fitness drops your baseline respiratory rate the same way it drops your resting heart rate.',
           magnitude: 'Spontaneous adult RR is 12–20/min; the pulse-respiration quotient varies with fitness, with trained adults sitting at the lower end.',
           mechanism: 'Higher VO₂max means efficient gas exchange and a lower metabolic cost per breath. Fewer breaths cover the same demand.',
-          whatToDo: 'Same prescription as for HRV and resting HR — 150+ min/week of zone-2 cardio, with some higher-intensity work for VO₂max gains.',
+          whatToDo: 'Same prescription as for HRV and resting HR: 150+ min/week of zone-2 cardio, with some higher-intensity work for VO₂max gains.',
           source: SRC.rrCardioFit
         },
         {
           key: 'rr-sleep', name: 'Quality sleep', direction: 'positive', impact: 'med',
-          plainEnglish: 'Your respiratory rate variability is lowest during deep sleep — that\'s when parasympathetic tone is fully in control. The absolute rate doesn\'t change as much across stages as you\'d think; what matters is how stable it is overnight.',
+          plainEnglish: 'Your respiratory rate variability is lowest during deep sleep; that\'s when parasympathetic tone is fully in control. The absolute rate doesn\'t change as much across stages as you\'d think; what matters is how stable it is overnight.',
           magnitude: 'RR variability is lowest in N3 (deep sleep); absolute rate is similar across sleep stages (Lechat et al.).',
           mechanism: 'Parasympathetic dominance during NREM3 produces stable, regular breathing. Sleep fragmentation pulls you into lighter stages with more variable breathing.',
-          whatToDo: 'Sleep hygiene basics — cool dark room, consistent timing, no late alcohol. Polar Nightly Recharge is essentially a respiratory readout of how cleanly you slept the first 4 hours.',
+          whatToDo: 'Sleep hygiene basics: cool dark room, consistent timing, no late alcohol. Polar Nightly Recharge is essentially a respiratory readout of how cleanly you slept the first 4 hours.',
           source: SRC.rrSleepVar
         }
       ],
@@ -853,15 +853,15 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'spo2-apnea', name: 'Sleep apnea', direction: 'negative', impact: 'high',
-          plainEnglish: 'Sleep apnea causes your airway to repeatedly close during sleep, which drops oxygen and forces brief micro-arousals. WHOOP\'s overnight SpO₂ trace will show repeated dips — sometimes the first time anyone sees apnea data is on a wearable.',
+          plainEnglish: 'Sleep apnea causes your airway to repeatedly close during sleep, which drops oxygen and forces brief micro-arousals. WHOOP\'s overnight SpO₂ trace will show repeated dips; sometimes the first time anyone sees apnea data is on a wearable.',
           magnitude: 'Repeated overnight desaturation events. The Oxygen Desaturation Index (ODI) tracks with apnea-hypopnea severity.',
-          mechanism: 'Airway obstruction during sleep causes intermittent hypoxia — oxygen briefly drops, the brain wakes you slightly to breathe, and the cycle repeats dozens or hundreds of times a night.',
+          mechanism: 'Airway obstruction during sleep causes intermittent hypoxia: oxygen briefly drops, the brain wakes you slightly to breathe, and the cycle repeats dozens or hundreds of times a night.',
           whatToDo: 'If you see a "sawtooth" SpO₂ pattern overnight, see a sleep doctor. CPAP or oral appliance therapy resolves it cleanly. Untreated apnea is a major cardiovascular risk.',
           source: SRC.apneaOdi
         },
         {
           key: 'spo2-illness', name: 'Respiratory illness', direction: 'negative', impact: 'med',
-          plainEnglish: 'Anything that affects your lungs — flu, COVID, pneumonia, bronchitis, asthma flare — reduces how efficiently you absorb oxygen. WHOOP\'s overnight SpO₂ will dip below your usual baseline; severity tracks with how sick you actually are.',
+          plainEnglish: 'Anything that affects your lungs (flu, COVID, pneumonia, bronchitis, asthma flare) reduces how efficiently you absorb oxygen. WHOOP\'s overnight SpO₂ will dip below your usual baseline; severity tracks with how sick you actually are.',
           magnitude: 'Pneumonia produces lower SpO₂ than other acute infections. SpO₂ ≤90% has good specificity for adverse outcomes in community-acquired pneumonia. BTS long-term oxygen threshold for COPD is <92%.',
           mechanism: 'Impaired gas exchange in the lungs (inflammation, fluid, congestion) reduces how much oxygen reaches the bloodstream per breath.',
           whatToDo: 'Sustained SpO₂ below 92% with respiratory symptoms warrants medical attention, especially if breathing feels labored. Track your trend; recovery means returning to your normal baseline.',
@@ -869,7 +869,7 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'spo2-smoking', name: 'Smoking', direction: 'negative', impact: 'high',
-          plainEnglish: 'Smoking creates a tricky situation for SpO₂. Carbon monoxide from smoke binds hemoglobin and elevates carboxyhemoglobin (COHb) — and consumer pulse oximeters can\'t tell COHb from oxygen-bound hemoglobin, which means your SpO₂ reading is inflated even though your tissues are getting less oxygen.',
+          plainEnglish: 'Smoking creates a tricky situation for SpO₂. Carbon monoxide from smoke binds hemoglobin and elevates carboxyhemoglobin (COHb), and consumer pulse oximeters can\'t tell COHb from oxygen-bound hemoglobin, which means your SpO₂ reading is inflated even though your tissues are getting less oxygen.',
           magnitude: 'Pulse-oximetry SpO₂ is inflated by ~5% in smokers (vs ~2% in non-smokers) due to chronic carboxyhemoglobin elevation. Reading looks better than the truth.',
           mechanism: 'Carbon monoxide binds to hemoglobin ~200x more tightly than oxygen, forming carboxyhemoglobin that pulse oximeters misread as oxygenated hemoglobin.',
           whatToDo: 'Quit. The SpO₂ inflation reverses within weeks of quitting as COHb clears; actual tissue oxygenation improves immediately. WHOOP recovery scores improve noticeably even in the first month.',
@@ -877,7 +877,7 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'spo2-cardio-fit', name: 'Cardio fitness', direction: 'positive', impact: 'low',
-          plainEnglish: 'Healthy cardiovascular systems maintain SpO₂ near 95–100% almost effortlessly — there\'s a ceiling effect, so fitness doesn\'t push the number higher. It just keeps it stable. If your SpO₂ trends down at rest, fitness probably isn\'t the issue.',
+          plainEnglish: 'Healthy cardiovascular systems maintain SpO₂ near 95–100% almost effortlessly; there\'s a ceiling effect, so fitness doesn\'t push the number higher. It just keeps it stable. If your SpO₂ trends down at rest, fitness probably isn\'t the issue.',
           magnitude: 'Healthy individuals maintain 95–100% saturation at rest at sea level. Limited room to improve from here.',
           mechanism: 'Efficient cardiovascular and respiratory systems deliver and exchange oxygen reliably, keeping hemoglobin saturation near maximum.',
           whatToDo: 'If your SpO₂ is in the high 90s, you\'re fine. Focus on other levers (HRV, RR, sleep). Drops below 95% at rest deserve attention.',
@@ -885,25 +885,25 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'spo2-breathing', name: 'Proper breathing during sleep', direction: 'positive', impact: 'low',
-          plainEnglish: 'Sleeping with a clear airway — no nasal blockage, no severe snoring, no positional collapse — keeps SpO₂ stable through the night. Most people don\'t realize how much positional sleep affects their oxygen until they see the data.',
+          plainEnglish: 'Sleeping with a clear airway (no nasal blockage, no severe snoring, no positional collapse) keeps SpO₂ stable through the night. Most people don\'t realize how much positional sleep affects their oxygen until they see the data.',
           magnitude: 'Fewer overnight desaturation events on the ODI. Steady saturation through the sleep cycle.',
           mechanism: 'An unobstructed airway throughout the sleep cycle allows uninterrupted gas exchange and stable hemoglobin saturation.',
-          whatToDo: 'Side-sleep if you snore on your back. Address nasal congestion (nose strips, allergy treatment). Avoid late alcohol — it relaxes airway muscles and worsens snoring.',
+          whatToDo: 'Side-sleep if you snore on your back. Address nasal congestion (nose strips, allergy treatment). Avoid late alcohol; it relaxes airway muscles and worsens snoring.',
           source: SRC.apneaOdi
         }
       ],
       sleep: [
         {
           key: 'sl-schedule', name: 'Consistent sleep schedule', direction: 'positive', impact: 'high',
-          plainEnglish: 'Sleeping at the same time every night — including weekends — is more important than how many hours you log. Your circadian rhythm runs on regularity, and consistent timing produces deeper sleep stages and cleaner architecture than catching up on weekends.',
+          plainEnglish: 'Sleeping at the same time every night, including weekends, is more important than how many hours you log. Your circadian rhythm runs on regularity, and consistent timing produces deeper sleep stages and cleaner architecture than catching up on weekends.',
           magnitude: 'Improves deep sleep percentage, REM continuity, and onset latency. Effect compounds over 2–4 weeks of consistency.',
           mechanism: 'Circadian rhythm alignment optimizes melatonin and cortisol timing. The body anticipates sleep and wake, producing the right hormones at the right hour.',
-          whatToDo: 'Pick a fixed bed and wake time within 30 minutes, 7 days a week. Avoid weekend sleep-ins of more than an hour — they reset your circadian timing.',
+          whatToDo: 'Pick a fixed bed and wake time within 30 minutes, 7 days a week. Avoid weekend sleep-ins of more than an hour; they reset your circadian timing.',
           source: SRC.ouraCumulative
         },
         {
           key: 'sl-cool', name: 'Cool bedroom (65–68°F)', direction: 'positive', impact: 'med',
-          plainEnglish: 'Your body has to drop its core temperature about 1°C to initiate deep sleep — and it can\'t do that in a warm room. Most adults sleep best in a 65–68°F room; warmer than that and deep sleep percentage drops measurably.',
+          plainEnglish: 'Your body has to drop its core temperature about 1°C to initiate deep sleep, and it can\'t do that in a warm room. Most adults sleep best in a 65–68°F room; warmer than that and deep sleep percentage drops measurably.',
           magnitude: 'Increases deep sleep duration in most adults. Effect strongest at the cool end of the range (65–66°F).',
           mechanism: 'Core temperature drop triggers the deep-sleep cascade. A warm bedroom blocks the drop, keeping you in lighter sleep stages longer.',
           whatToDo: 'Set the thermostat 65–68°F. Use breathable bedding. If you can\'t cool the room, a fan helps; cooling mattress pads work too.',
@@ -911,7 +911,7 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'sl-exercise', name: 'Regular exercise (not late)', direction: 'positive', impact: 'med',
-          plainEnglish: 'Daily exercise improves nearly every sleep metric — but timing matters. Vigorous training within 2 hours of bed delays onset and pushes back deep sleep. Morning or early evening cardio is the sweet spot.',
+          plainEnglish: 'Daily exercise improves nearly every sleep metric, but timing matters. Vigorous training within 2 hours of bed delays onset and pushes back deep sleep. Morning or early evening cardio is the sweet spot.',
           magnitude: 'Increases deep sleep percentage and reduces sleep onset latency. Effect strongest with consistent daily exercise.',
           mechanism: 'Physical fatigue promotes sleep drive (adenosine accumulation). Exercise also lowers core body temperature in the hours after, which supports deep-sleep initiation.',
           whatToDo: 'Train earlier in the day if possible. If late training is unavoidable, finish 2+ hours before bed and prioritize a cool-down (shower, slow walk) to drop core temperature.',
@@ -919,7 +919,7 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'sl-alcohol-bed', name: 'Alcohol before bed', direction: 'negative', impact: 'high',
-          plainEnglish: 'Alcohol feels like it helps you fall asleep — and the first half of the night actually shows more slow-wave sleep — but it sabotages REM and fragments the second half of sleep as it metabolizes. Net effect on your wearable\'s sleep score: clearly worse.',
+          plainEnglish: 'Alcohol feels like it helps you fall asleep, and the first half of the night actually shows more slow-wave sleep, but it sabotages REM and fragments the second half of sleep as it metabolizes. Net effect on your wearable\'s sleep score: clearly worse.',
           magnitude: 'Increases SWS in the first half of sleep but decreases REM and disrupts the second half (more wake-ups, lower efficiency). Effect proportional to dose.',
           mechanism: 'Alcohol initially sedates but disrupts the brain\'s normal sleep architecture as it metabolizes through the night. The second half of sleep becomes fragmented.',
           whatToDo: 'Cut off alcohol 3+ hours before bed if you do drink. Hydrate with water alongside. Several alcohol-free nights/week recover the most sleep architecture.',
@@ -927,9 +927,9 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'sl-late-caffeine', name: 'Late caffeine (after 2 PM)', direction: 'negative', impact: 'high',
-          plainEnglish: 'Caffeine\'s half-life is 5–6 hours — meaning a 3 PM coffee still has half its dose at 9 PM and a quarter at 3 AM. It delays sleep onset, reduces total sleep, and shows up as a worse Oura sleep score even if you don\'t feel wired at bedtime.',
+          plainEnglish: 'Caffeine\'s half-life is 5–6 hours, meaning a 3 PM coffee still has half its dose at 9 PM and a quarter at 3 AM. It delays sleep onset, reduces total sleep, and shows up as a worse Oura sleep score even if you don\'t feel wired at bedtime.',
           magnitude: 'Delays onset, reduces total sleep, and reduces deep sleep proportion (Reichert et al., 2022).',
-          mechanism: 'Caffeine blocks adenosine receptors — the molecule that builds up sleep pressure. Even when you don\'t feel jittery, the receptors are still partially blocked.',
+          mechanism: 'Caffeine blocks adenosine receptors, the molecule that builds up sleep pressure. Even when you don\'t feel jittery, the receptors are still partially blocked.',
           whatToDo: 'No caffeine after 2 PM is the cleanest rule. If you\'re sensitive, push it to noon. Cycle off occasionally to reset receptor sensitivity.',
           source: SRC.caffeineSleep
         },
@@ -943,7 +943,7 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'sl-screens', name: 'Screen time before bed', direction: 'negative', impact: 'med',
-          plainEnglish: 'Phone, laptop, and TV screens emit blue light that suppresses melatonin — your sleep-onset hormone. Beyond the chemistry, scrolling is mentally activating, which keeps cognitive load (and EDA, if your watch tracks it) elevated past your bedtime.',
+          plainEnglish: 'Phone, laptop, and TV screens emit blue light that suppresses melatonin, your sleep-onset hormone. Beyond the chemistry, scrolling is mentally activating, which keeps cognitive load (and EDA, if your watch tracks it) elevated past your bedtime.',
           magnitude: 'Dose-dependent melatonin suppression from blue light (Brainard et al.); prolongs sleep latency and reduces total sleep when severe.',
           mechanism: 'Blue-enriched light (460–480 nm) hits the retina\'s melanopsin (ipRGC) cells, which signal the suprachiasmatic nucleus and suppress pineal melatonin.',
           whatToDo: 'No screens 60 minutes before bed is the gold standard. If you can\'t, dim the screen, turn on Night Shift / blue-light filter, and avoid stimulating content (news, work email).',
@@ -951,10 +951,10 @@ class KygoWearableStress extends HTMLElement {
         },
         {
           key: 'sl-stress', name: 'Chronic stress / anxiety', direction: 'negative', impact: 'high',
-          plainEnglish: 'Stress doesn\'t turn off when you go to bed — it keeps cortisol elevated through the night and fragments your sleep architecture. You\'ll fall asleep, but you\'ll wake more, get less deep sleep, and feel less rested even at the same hours logged.',
+          plainEnglish: 'Stress doesn\'t turn off when you go to bed; it keeps cortisol elevated through the night and fragments your sleep architecture. You\'ll fall asleep, but you\'ll wake more, get less deep sleep, and feel less rested even at the same hours logged.',
           magnitude: 'Fragmented sleep, less deep sleep, more frequent night wake-ups. Effect persists as long as the stressor is unresolved.',
           mechanism: 'Elevated cortisol disrupts the normal nightly drop that supports deep sleep. Hyperarousal keeps the brain in lighter stages and pulls you out of REM.',
-          whatToDo: 'Pre-bed wind-down: low light, slow breathing, journaling, no work email. If chronic, address the source — therapy, lifestyle changes. Sleep aids are short-term band-aids only.',
+          whatToDo: 'Pre-bed wind-down: low light, slow breathing, journaling, no work email. If chronic, address the source: therapy, lifestyle changes. Sleep aids are short-term band-aids only.',
           source: SRC.ouraCumulative
         }
       ]
@@ -1108,7 +1108,7 @@ class KygoWearableStress extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How your device measures stress</span>
             <h2 class="section-h2">Every wearable, <em>side by side</em>.</h2>
-            <p class="section-lede">Stress scores aren't comparable across brands. Each device pulls a different mix of HRV, EDA, skin temperature, and breathing rate — and uses a different scale, baseline window, and reference frame. Here's exactly what each one reads, ranked by signal coverage.</p>
+            <p class="section-lede">Stress scores aren't comparable across brands. Each device pulls a different mix of HRV, EDA, skin temperature, and breathing rate, and uses a different scale, baseline window, and reference frame. Here's exactly what each one reads, ranked by signal coverage.</p>
           </div>
 
           <div class="device-chart">
@@ -1116,7 +1116,7 @@ class KygoWearableStress extends HTMLElement {
               <div>
                 <span class="dc-eyebrow">Signal coverage</span>
                 <h3 class="dc-title">Sensors fed into stress, by device</h3>
-                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only (JMIR 2024 meta-analysis) — and lab numbers degrade meaningfully in real-world daily use.</p>
+                <p class="dc-sub">Multi-signal devices average ~82% accuracy in lab studies versus ~77% for HRV-only (JMIR 2024 meta-analysis), and lab numbers degrade meaningfully in real-world daily use.</p>
               </div>
               <div class="dc-meta">${ranked.length} wearables · ${totalSensors} signals</div>
             </div>
@@ -1192,12 +1192,12 @@ class KygoWearableStress extends HTMLElement {
     return [
       { label: 'What wearables actually measure', stat: 'Arousal', answer: 'Not stress directly', icon: 'bolt', note: 'Every device detects sympathetic nervous system activation. EDA fires the same way for anxiety, excitement, fear, or surprise. HRV drops the same way for a stressful email, a cold drink, exercise, or caffeine. "Stress" is an inference layered on arousal detection.', cls: 'myth' },
       { label: 'Most universal mover', stat: '10 / 10', answer: 'Sleep deprivation', icon: 'moon', note: 'Hits every device because all 10 read HRV and sleep deprivation suppresses parasympathetic tone immediately. The next-morning RHR bump and HRV drop show up on Garmin, Samsung, Oura, WHOOP, Apple, Polar, COROS, and Amazfit alike.', cls: '' },
-      { label: 'Only-on-EDA signal',   stat: '3 devices', answer: 'Cognitive load', icon: 'brain', note: 'Sustained mental effort raises tonic skin conductance — invisible to HRV-only watches. Samsung Galaxy Watch, Pixel Watch 2/3, and Fitbit Sense 2 only. Pixel Watch 1 had no EDA; Sense Gen 1 was manual spot-check.', cls: '' },
-      { label: 'Accuracy ceiling', stat: '~82% vs ~77%', answer: 'Multi-signal beats HRV-only', icon: 'target', note: 'Pooled lab accuracy from the 2024 JMIR meta-analysis: ~82% for HRV + EDA + skin temp combined, ~77% for HRV alone. Real-world daily-life accuracy degrades meaningfully from these lab numbers — the field\'s biggest unsolved problem.', cls: '' },
+      { label: 'Only-on-EDA signal',   stat: '3 devices', answer: 'Cognitive load', icon: 'brain', note: 'Sustained mental effort raises tonic skin conductance, invisible to HRV-only watches. Samsung Galaxy Watch, Pixel Watch 2/3, and Fitbit Sense 2 only. Pixel Watch 1 had no EDA; Sense Gen 1 was manual spot-check.', cls: '' },
+      { label: 'Accuracy ceiling', stat: '~82% vs ~77%', answer: 'Multi-signal beats HRV-only', icon: 'target', note: 'Pooled lab accuracy from the 2024 JMIR meta-analysis: ~82% for HRV + EDA + skin temp combined, ~77% for HRV alone. Real-world daily-life accuracy degrades meaningfully from these lab numbers: the field\'s biggest unsolved problem.', cls: '' },
       { label: 'Oura specialty', stat: '0.3–0.7°C', answer: 'Cycle skin temp', icon: 'thermometer', note: 'Finger-site skin temp catches the luteal-phase rise so cleanly that Oura uses it for period prediction. Cumulative Stress (released Nov 2025 with the University of Southern Denmark) layers this on top of sleep continuity, heart stress-response, sleep micromotions, and activity impact.', cls: '' },
-      { label: 'Hot-day false positive', stat: 'cEDA', answer: 'Ambient heat', icon: 'sun', note: 'Continuous EDA reads thermoregulatory sweating as stress. Pixel/Fitbit users: cross-check elevated EDA against HRV before reacting — if HRV is normal but EDA is up, it\'s probably the weather.', cls: 'warn' },
-      { label: 'Apple Watch ≠ RMSSD', stat: 'SDNN', answer: 'HealthKit reports SDNN', icon: 'watch', note: 'Apple HealthKit exposes HRV as Standard Deviation of NN intervals, not RMSSD. Default sampling is every ~4 hours (2 hours with IRN, 15 min with AFib History). Sensors 2024 found Apple Watch underestimates SDNN by 8.31 ms vs Polar H10 — RHR was much closer (MAE 3.73 bpm).', cls: 'warn' },
-      { label: 'The biggest myth', stat: 'Don\'t', answer: 'Compare scores across brands', icon: 'ghost', note: 'A "55" on Garmin doesn\'t mean a "55" on Samsung. WHOOP\'s Stress Monitor is 0–3, not 0–100. Apple has no native score at all. Each algorithm uses a different sensor mix, scale, and personal baseline — only same-brand longitudinal tracking is defensible.', cls: 'myth' }
+      { label: 'Hot-day false positive', stat: 'cEDA', answer: 'Ambient heat', icon: 'sun', note: 'Continuous EDA reads thermoregulatory sweating as stress. Pixel/Fitbit users: cross-check elevated EDA against HRV before reacting: if HRV is normal but EDA is up, it\'s probably the weather.', cls: 'warn' },
+      { label: 'Apple Watch ≠ RMSSD', stat: 'SDNN', answer: 'HealthKit reports SDNN', icon: 'watch', note: 'Apple HealthKit exposes HRV as Standard Deviation of NN intervals, not RMSSD. Default sampling is every ~4 hours (2 hours with IRN, 15 min with AFib History). Sensors 2024 found Apple Watch underestimates SDNN by 8.31 ms vs Polar H10; RHR was much closer (MAE 3.73 bpm).', cls: 'warn' },
+      { label: 'The biggest myth', stat: 'Don\'t', answer: 'Compare scores across brands', icon: 'ghost', note: 'A "55" on Garmin doesn\'t mean a "55" on Samsung. WHOOP\'s Stress Monitor is 0–3, not 0–100. Apple has no native score at all. Each algorithm uses a different sensor mix, scale, and personal baseline; only same-brand longitudinal tracking is defensible.', cls: 'myth' }
     ];
   }
 
@@ -1365,129 +1365,129 @@ class KygoWearableStress extends HTMLElement {
   get _srcGroups() {
     const groups = {
       'HRV, heart rate & autonomic regulation': [
-        { label: 'Frontiers in Physiology 2024 — Factors Influencing HRV (PMC11333334)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
-        { label: 'PMC8950456 — HRV & Different Factors (Exercise, Sleep, Training Load)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/' },
-        { label: 'PMC9974008 — HRV as a Measure of Chronic Stress', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/' },
-        { label: 'PMC11439429 — HRV Measurement & Influencing Factors', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11439429/' },
-        { label: 'PMC9549087 — Factors Affecting Resting Heart Rate in Free-Living Adults', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
-        { label: 'PMC6306777 — Effects of Exercise on Resting Heart Rate (Reimers 2018, meta-analysis)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' },
-        { label: 'PMC8391190 — Sedentary Time, HR & HRV Meta-Analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8391190/' },
-        { label: 'PMC6821413 — Acute Psychosocial Stress & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6821413/' },
-        { label: 'PubMed 31345594 — Body Temperature & Heart Rate (Liebermeister)', url: 'https://pubmed.ncbi.nlm.nih.gov/31345594/' }
+        { label: 'Frontiers in Physiology 2024: Factors Influencing HRV (PMC11333334)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11333334/' },
+        { label: 'PMC8950456: HRV & Different Factors (Exercise, Sleep, Training Load)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8950456/' },
+        { label: 'PMC9974008: HRV as a Measure of Chronic Stress', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9974008/' },
+        { label: 'PMC11439429: HRV Measurement & Influencing Factors', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11439429/' },
+        { label: 'PMC9549087: Factors Affecting Resting Heart Rate in Free-Living Adults', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
+        { label: 'PMC6306777: Effects of Exercise on Resting Heart Rate (Reimers 2018, meta-analysis)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' },
+        { label: 'PMC8391190: Sedentary Time, HR & HRV Meta-Analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8391190/' },
+        { label: 'PMC6821413: Acute Psychosocial Stress & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6821413/' },
+        { label: 'PubMed 31345594: Body Temperature & Heart Rate (Liebermeister)', url: 'https://pubmed.ncbi.nlm.nih.gov/31345594/' }
       ],
       'Alcohol, caffeine, hydration & body weight': [
-        { label: 'PMC4971776 — Alcohol Dose-Response on RMSSD (Brunetti)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4971776/' },
-        { label: 'PMC5878366 — Real-World Alcohol Effect on Overnight HRV (Pietilä)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5878366/' },
-        { label: 'PMC11391823 — Alcohol & Thermoregulation Systematic Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11391823/' },
-        { label: 'PMC5821259 — Alcohol & the Sleeping Brain (Colrain)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5821259/' },
-        { label: 'ScienceDirect 2024 — Alcohol & Sleep Meta-Analysis', url: 'https://www.sciencedirect.com/science/article/pii/S1087079224001345' },
-        { label: 'PMC11284693 — Caffeine & HRV Meta-Analysis (Costa)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
-        { label: 'PMC5537855 — Coffee & HRV in the ELSA-Brasil Cohort', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5537855/' },
-        { label: 'PMC11648991 — Caffeine Cardiovascular Response Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11648991/' },
-        { label: 'PubMed 24203773 — Caffeine Effects on BP & HR', url: 'https://pubmed.ncbi.nlm.nih.gov/24203773/' },
-        { label: 'PubMed 2312473 — Caffeine & Ventilatory Responses (D\'Urzo)', url: 'https://pubmed.ncbi.nlm.nih.gov/2312473/' },
-        { label: 'PMC9541543 — Adenosine, Caffeine & Sleep Regulation (Reichert)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9541543/' },
-        { label: 'PMC2343381 — Hydration & Cardiovascular Control (Charkoudian)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2343381/' },
-        { label: 'Nature 2019 — Hydration, Autonomic Adaptation & Mood', url: 'https://www.nature.com/articles/s41598-019-52775-5' },
-        { label: 'PMC8072942 — Obesity, Nutrition & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8072942/' },
-        { label: 'PMC8260607 — Elevated RHR, Inflammation & CV Risk in Obesity', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8260607/' },
-        { label: 'ScienceDirect — Weight Loss & HRV Systematic Review', url: 'https://www.sciencedirect.com/science/article/abs/pii/S026156142200334X' },
-        { label: 'ScienceDirect — Cold Exposure & Cardiac Autonomic Control (Bouzigon meta-analysis 2024)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0306456524000755' }
+        { label: 'PMC4971776: Alcohol Dose-Response on RMSSD (Brunetti)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4971776/' },
+        { label: 'PMC5878366: Real-World Alcohol Effect on Overnight HRV (Pietilä)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5878366/' },
+        { label: 'PMC11391823: Alcohol & Thermoregulation Systematic Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11391823/' },
+        { label: 'PMC5821259: Alcohol & the Sleeping Brain (Colrain)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5821259/' },
+        { label: 'ScienceDirect 2024: Alcohol & Sleep Meta-Analysis', url: 'https://www.sciencedirect.com/science/article/pii/S1087079224001345' },
+        { label: 'PMC11284693: Caffeine & HRV Meta-Analysis (Costa)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11284693/' },
+        { label: 'PMC5537855: Coffee & HRV in the ELSA-Brasil Cohort', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5537855/' },
+        { label: 'PMC11648991: Caffeine Cardiovascular Response Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11648991/' },
+        { label: 'PubMed 24203773: Caffeine Effects on BP & HR', url: 'https://pubmed.ncbi.nlm.nih.gov/24203773/' },
+        { label: 'PubMed 2312473: Caffeine & Ventilatory Responses (D\'Urzo)', url: 'https://pubmed.ncbi.nlm.nih.gov/2312473/' },
+        { label: 'PMC9541543: Adenosine, Caffeine & Sleep Regulation (Reichert)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9541543/' },
+        { label: 'PMC2343381: Hydration & Cardiovascular Control (Charkoudian)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2343381/' },
+        { label: 'Nature 2019: Hydration, Autonomic Adaptation & Mood', url: 'https://www.nature.com/articles/s41598-019-52775-5' },
+        { label: 'PMC8072942: Obesity, Nutrition & HRV', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8072942/' },
+        { label: 'PMC8260607: Elevated RHR, Inflammation & CV Risk in Obesity', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8260607/' },
+        { label: 'ScienceDirect: Weight Loss & HRV Systematic Review', url: 'https://www.sciencedirect.com/science/article/abs/pii/S026156142200334X' },
+        { label: 'ScienceDirect: Cold Exposure & Cardiac Autonomic Control (Bouzigon meta-analysis 2024)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0306456524000755' }
       ],
       'EDA & skin conductance (peer-reviewed)': [
-        { label: 'PMC9333288 — EDA Characterizes Autonomic NS in Real Time', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9333288/' },
-        { label: 'PMC9573480 — EDA Features for Mental Effort (Posada-Quintero)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9573480/' },
-        { label: 'PMC10575214 — Five Basic Senses Evoke EDA', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/' },
-        { label: 'PMC6287044 — Arousal, Pupil, HR & Skin Conductance (Bradley)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6287044/' },
-        { label: 'PMC4977170 — Preoptic Activation & Thermal Sweating (Farrell)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4977170/' },
-        { label: 'PubMed 32367339 — Mindfulness Predicts SCR to Stress (Lin)', url: 'https://pubmed.ncbi.nlm.nih.gov/32367339/' },
-        { label: 'PMC3883934 — EDA Habituation Latent Class Analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3883934/' },
-        { label: 'PubMed 39294847 — Dehydration Does Not Alter Sweat Electrolytes (Baker)', url: 'https://pubmed.ncbi.nlm.nih.gov/39294847/' }
+        { label: 'PMC9333288: EDA Characterizes Autonomic NS in Real Time', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9333288/' },
+        { label: 'PMC9573480: EDA Features for Mental Effort (Posada-Quintero)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9573480/' },
+        { label: 'PMC10575214: Five Basic Senses Evoke EDA', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10575214/' },
+        { label: 'PMC6287044: Arousal, Pupil, HR & Skin Conductance (Bradley)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6287044/' },
+        { label: 'PMC4977170: Preoptic Activation & Thermal Sweating (Farrell)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4977170/' },
+        { label: 'PubMed 32367339: Mindfulness Predicts SCR to Stress (Lin)', url: 'https://pubmed.ncbi.nlm.nih.gov/32367339/' },
+        { label: 'PMC3883934: EDA Habituation Latent Class Analysis', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3883934/' },
+        { label: 'PubMed 39294847: Dehydration Does Not Alter Sweat Electrolytes (Baker)', url: 'https://pubmed.ncbi.nlm.nih.gov/39294847/' }
       ],
       'Skin temperature, respiratory rate & SpO₂': [
-        { label: 'PMC4664114 — Skin Temperature Reveals the Intensity of Acute Stress', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/' },
-        { label: 'PMC9690349 — Skin Temp & Ambient Confounds', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/' },
-        { label: 'Nature 2026 — Wearable Skin Temperature Dynamics During Sleep', url: 'https://www.nature.com/articles/s41746-026-02633-2' },
-        { label: 'ScienceDirect 2025 — EDA & Skin Temp in Stress and Depression', url: 'https://www.sciencedirect.com/science/article/pii/S2666915325000071' },
-        { label: 'PMC5356216 — Active Vasodilation in Human Skin', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5356216/' },
-        { label: 'PMC9394784 — Human Temperature Regulation Under Heat Stress', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9394784/' },
-        { label: 'PMC7575238 — Temperature Regulation Across the Menstrual Cycle (Baker)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7575238/' },
-        { label: 'PMC11452339 — Wrist Skin Temp Across the Menstrual Cycle', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11452339/' },
-        { label: 'PubMed 31536050 — Fever Raises HR & RR (Prospective Study)', url: 'https://pubmed.ncbi.nlm.nih.gov/31536050/' },
-        { label: 'PMC5577533 — Ventilatory Response to Stress (Grassmann)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5577533/' },
-        { label: 'PubMed 28240995 — Pain & Respiration Systematic Review (Jafari)', url: 'https://pubmed.ncbi.nlm.nih.gov/28240995/' },
-        { label: 'ScienceDirect — RR Most Strongly Reflects Pain Intensity', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0735675719300385' },
-        { label: 'PMC10741869 — Breathing Practices for Stress & Anxiety (Hopper)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10741869/' },
-        { label: 'PMC6465339 — Pulse-Respiration Quotient', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6465339/' },
-        { label: 'PMC5732209 — Respiratory Frequency Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5732209/' },
-        { label: 'PMC5027356 — RR Variability in Healthy Sleep (Lechat)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5027356/' },
-        { label: 'PMC11235883 — Monitoring Fatigue with HR & Subjective Measures (Schmitt)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11235883/' },
-        { label: 'PMC9697047 — High-Altitude SpO₂ Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9697047/' },
-        { label: 'PMC10250969 — Oxygen Desaturation Index as OSA Marker', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10250969/' },
-        { label: 'PMC10044291 — Pulse Oximetry & Pneumonia', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10044291/' },
-        { label: 'PMC5531304 — BTS Guideline for Oxygen Use in Adults', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5531304/' },
-        { label: 'PMC6013732 — Carboxyhemoglobin in Smokers (Hampson)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6013732/' }
+        { label: 'PMC4664114: Skin Temperature Reveals the Intensity of Acute Stress', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4664114/' },
+        { label: 'PMC9690349: Skin Temp & Ambient Confounds', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9690349/' },
+        { label: 'Nature 2026: Wearable Skin Temperature Dynamics During Sleep', url: 'https://www.nature.com/articles/s41746-026-02633-2' },
+        { label: 'ScienceDirect 2025: EDA & Skin Temp in Stress and Depression', url: 'https://www.sciencedirect.com/science/article/pii/S2666915325000071' },
+        { label: 'PMC5356216: Active Vasodilation in Human Skin', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5356216/' },
+        { label: 'PMC9394784: Human Temperature Regulation Under Heat Stress', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9394784/' },
+        { label: 'PMC7575238: Temperature Regulation Across the Menstrual Cycle (Baker)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7575238/' },
+        { label: 'PMC11452339: Wrist Skin Temp Across the Menstrual Cycle', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11452339/' },
+        { label: 'PubMed 31536050: Fever Raises HR & RR (Prospective Study)', url: 'https://pubmed.ncbi.nlm.nih.gov/31536050/' },
+        { label: 'PMC5577533: Ventilatory Response to Stress (Grassmann)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5577533/' },
+        { label: 'PubMed 28240995: Pain & Respiration Systematic Review (Jafari)', url: 'https://pubmed.ncbi.nlm.nih.gov/28240995/' },
+        { label: 'ScienceDirect: RR Most Strongly Reflects Pain Intensity', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0735675719300385' },
+        { label: 'PMC10741869: Breathing Practices for Stress & Anxiety (Hopper)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10741869/' },
+        { label: 'PMC6465339: Pulse-Respiration Quotient', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6465339/' },
+        { label: 'PMC5732209: Respiratory Frequency Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5732209/' },
+        { label: 'PMC5027356: RR Variability in Healthy Sleep (Lechat)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5027356/' },
+        { label: 'PMC11235883: Monitoring Fatigue with HR & Subjective Measures (Schmitt)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11235883/' },
+        { label: 'PMC9697047: High-Altitude SpO₂ Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9697047/' },
+        { label: 'PMC10250969: Oxygen Desaturation Index as OSA Marker', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10250969/' },
+        { label: 'PMC10044291: Pulse Oximetry & Pneumonia', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10044291/' },
+        { label: 'PMC5531304: BTS Guideline for Oxygen Use in Adults', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5531304/' },
+        { label: 'PMC6013732: Carboxyhemoglobin in Smokers (Hampson)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6013732/' }
       ],
       'Sleep architecture': [
-        { label: 'PMC8131073 — Dinner Timing & Sleep Stages', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8131073/' },
-        { label: 'PMC11293727 — Meal Timing & Sleep Quality Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11293727/' },
-        { label: 'PubMed 21164152 — Blue Light, Dose-Dependent Melatonin Suppression (Brainard)', url: 'https://pubmed.ncbi.nlm.nih.gov/21164152/' },
-        { label: 'PMC9424753 — Blue Light, Sleep & Wellbeing Systematic Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9424753/' }
+        { label: 'PMC8131073: Dinner Timing & Sleep Stages', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8131073/' },
+        { label: 'PMC11293727: Meal Timing & Sleep Quality Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11293727/' },
+        { label: 'PubMed 21164152: Blue Light, Dose-Dependent Melatonin Suppression (Brainard)', url: 'https://pubmed.ncbi.nlm.nih.gov/21164152/' },
+        { label: 'PMC9424753: Blue Light, Sleep & Wellbeing Systematic Review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9424753/' }
       ],
       'Manufacturer documentation': [
-        { label: 'Garmin Support — What Is the Stress Level Feature?', url: 'https://support.garmin.com/en-US/?faq=WT9BmhjacO4ZpxbCc0EKn9' },
-        { label: 'Garmin — HRV Stress Test Technology', url: 'https://www.garmin.com/en-US/garmin-technology/cycling-science/physiological-measurements/hrv-stress-test/' },
-        { label: 'Garmin Elevate Wiki — Sensor Generations', url: 'https://wiki.garminrumors.com/Garmin_Elevate' },
-        { label: 'the5krunner 2023 — New Garmin Elevate Gen 5', url: 'https://the5krunner.com/2023/05/13/new-garmin-elevate-gen-5/' },
-        { label: 'Samsung Developer — BioActive Sensor Overview', url: 'https://developer.samsung.com/health/sensor/overview.html' },
-        { label: 'Samsung Developer — Galaxy Watch EDA Sensor', url: 'https://developer.samsung.com/health/blog/en/how-the-galaxy-watchs-eda-sensor-enhances-your-health-monitoring' },
-        { label: 'Samsung Newsroom — Galaxy Watch 8 Unpacked 2025', url: 'https://news.samsung.com/global/galaxy-unpacked-2025-a-first-look-at-the-galaxy-watch8-series-streamlining-sleep-exercise-and-everything-in-between' },
-        { label: 'Samsung IE — Health Features on Galaxy Watch 8 / 8 Classic', url: 'https://www.samsung.com/ie/support/mobile-devices/health-features-on-the-galaxy-watch8-and-watch8-classic/' },
-        { label: 'Samsung Community — Antioxidant Index Availability (GW8 Only)', url: 'https://us.community.samsung.com/t5/Galaxy-Watch/Antioxidant-portion-not-available-on-the-Galaxy-watch-Ultra/td-p/3303935' },
-        { label: 'Google Research — Pixel Watch / Fitbit Sense 2 EDA', url: 'https://research.google/blog/what-does-electrodermal-sensing-reveal-insights-from-the-pixel-watch-fitbit-sense-2/' },
-        { label: 'Google Blog — How We Trained Fitbit Body Response', url: 'https://blog.google/products/fitbit/how-we-trained-fitbits-body-response-feature-to-detect-stress/' },
-        { label: 'WHOOP Support — Get to Know the Stress Monitor', url: 'https://support.whoop.com/s/article/Get-to-Know-the-Stress-Monitor' },
-        { label: 'WHOOP Support — HRV Insights & WHOOP Metrics', url: 'https://support.whoop.com/s/article/Heart-Rate-Variability-HRV-Insights-WHOOP-Metrics' },
-        { label: 'WHOOP Blog — How Does WHOOP Recovery Work 101', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
-        { label: 'WHOOP — A Look Behind the Data: How WHOOP Measures Heart Rate', url: 'https://www.whoop.com/us/en/thelocker/a-look-behind-the-data-how-whoop-measures-heart-rate/' },
-        { label: 'the5krunner Feb 2026 — WHOOP HR Algorithm Update', url: 'https://the5krunner.com/2026/02/28/whoop-heart-rate-accuracy-update/' },
-        { label: 'WHOOP Research — How Stress Mindset Shapes Recovery (n=11,000+)', url: 'https://www.whoop.com/us/en/thelocker/new-whoop-research-on-stress-perception/' },
-        { label: 'WHOOP Support — Journal Overview (160+ Behaviors)', url: 'https://support.whoop.com/s/article/WHOOP-Journal-Overview' },
-        { label: 'WHOOP Support — Recovery Impacts', url: 'https://support.whoop.com/s/article/Recovery-Insights' },
-        { label: 'Oura Help — Resilience', url: 'https://support.ouraring.com/hc/en-us/articles/25358829055251-Resilience' },
-        { label: 'Oura Help — Cumulative Stress', url: 'https://support.ouraring.com/hc/en-us/articles/45979919957395-Cumulative-Stress' },
-        { label: 'Oura Blog 2025 — Introducing Cumulative Stress', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' },
-        { label: 'Oura Blog — Discover Oura\'s Daytime Stress Feature', url: 'https://ouraring.com/blog/daytime-stress-feature/' },
-        { label: 'Oura — Inside the Ring: Quantifying Chronic Stress', url: 'https://ouraring.com/blog/inside-the-ring-cumulative-stress/' },
-        { label: 'Apple Developer — HealthKit heartRateVariabilitySDNN', url: 'https://developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/heartratevariabilitysdnn' },
-        { label: 'Apple Nov 2024 — Heart Rate, Calorimetry & Activity on Apple Watch (PDF)', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
-        { label: 'Athlytic Help — Understanding Recovery (RMSSD + RHR, 60-day Baseline)', url: 'https://athlyticapp.helpscoutdocs.com/article/20-understanding-recovery' },
-        { label: 'Welltory Help — Frequency-Domain HRV Scores (LF / HF / VLF)', url: 'https://help.welltory.com/en/articles/3878862-frequency-domain-scores-of-your-heart-rate-variability' },
-        { label: 'Polar Support — Nightly Recharge Recovery Measurement', url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement' },
-        { label: 'Polar — Vantage V3 Manual: Nightly Recharge', url: 'https://support.polar.com/e_manuals/vantage-v3/polar-vantage-v3-user-manual-english/nightly-recharge.htm' },
-        { label: 'COROS Help Center — Daily Stress', url: 'https://support.coros.com/hc/en-us/articles/22933434857108-Daily-Stress' },
-        { label: 'Amazfit Support — What Is Stress Monitoring?', url: 'https://support.amazfit.com/en/faq/4133' },
-        { label: 'Amazfit — What is Heart Rate Variability (HRV)?', url: 'https://us.amazfit.com/pages/what-is-heart-rate-variability-hrv' }
+        { label: 'Garmin Support: What Is the Stress Level Feature?', url: 'https://support.garmin.com/en-US/?faq=WT9BmhjacO4ZpxbCc0EKn9' },
+        { label: 'Garmin: HRV Stress Test Technology', url: 'https://www.garmin.com/en-US/garmin-technology/cycling-science/physiological-measurements/hrv-stress-test/' },
+        { label: 'Garmin Elevate Wiki: Sensor Generations', url: 'https://wiki.garminrumors.com/Garmin_Elevate' },
+        { label: 'the5krunner 2023: New Garmin Elevate Gen 5', url: 'https://the5krunner.com/2023/05/13/new-garmin-elevate-gen-5/' },
+        { label: 'Samsung Developer: BioActive Sensor Overview', url: 'https://developer.samsung.com/health/sensor/overview.html' },
+        { label: 'Samsung Developer: Galaxy Watch EDA Sensor', url: 'https://developer.samsung.com/health/blog/en/how-the-galaxy-watchs-eda-sensor-enhances-your-health-monitoring' },
+        { label: 'Samsung Newsroom: Galaxy Watch 8 Unpacked 2025', url: 'https://news.samsung.com/global/galaxy-unpacked-2025-a-first-look-at-the-galaxy-watch8-series-streamlining-sleep-exercise-and-everything-in-between' },
+        { label: 'Samsung IE: Health Features on Galaxy Watch 8 / 8 Classic', url: 'https://www.samsung.com/ie/support/mobile-devices/health-features-on-the-galaxy-watch8-and-watch8-classic/' },
+        { label: 'Samsung Community: Antioxidant Index Availability (GW8 Only)', url: 'https://us.community.samsung.com/t5/Galaxy-Watch/Antioxidant-portion-not-available-on-the-Galaxy-watch-Ultra/td-p/3303935' },
+        { label: 'Google Research: Pixel Watch / Fitbit Sense 2 EDA', url: 'https://research.google/blog/what-does-electrodermal-sensing-reveal-insights-from-the-pixel-watch-fitbit-sense-2/' },
+        { label: 'Google Blog: How We Trained Fitbit Body Response', url: 'https://blog.google/products/fitbit/how-we-trained-fitbits-body-response-feature-to-detect-stress/' },
+        { label: 'WHOOP Support: Get to Know the Stress Monitor', url: 'https://support.whoop.com/s/article/Get-to-Know-the-Stress-Monitor' },
+        { label: 'WHOOP Support: HRV Insights & WHOOP Metrics', url: 'https://support.whoop.com/s/article/Heart-Rate-Variability-HRV-Insights-WHOOP-Metrics' },
+        { label: 'WHOOP Blog: How Does WHOOP Recovery Work 101', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
+        { label: 'WHOOP, A Look Behind the Data: How WHOOP Measures Heart Rate', url: 'https://www.whoop.com/us/en/thelocker/a-look-behind-the-data-how-whoop-measures-heart-rate/' },
+        { label: 'the5krunner Feb 2026: WHOOP HR Algorithm Update', url: 'https://the5krunner.com/2026/02/28/whoop-heart-rate-accuracy-update/' },
+        { label: 'WHOOP Research: How Stress Mindset Shapes Recovery (n=11,000+)', url: 'https://www.whoop.com/us/en/thelocker/new-whoop-research-on-stress-perception/' },
+        { label: 'WHOOP Support: Journal Overview (160+ Behaviors)', url: 'https://support.whoop.com/s/article/WHOOP-Journal-Overview' },
+        { label: 'WHOOP Support: Recovery Impacts', url: 'https://support.whoop.com/s/article/Recovery-Insights' },
+        { label: 'Oura Help: Resilience', url: 'https://support.ouraring.com/hc/en-us/articles/25358829055251-Resilience' },
+        { label: 'Oura Help: Cumulative Stress', url: 'https://support.ouraring.com/hc/en-us/articles/45979919957395-Cumulative-Stress' },
+        { label: 'Oura Blog 2025: Introducing Cumulative Stress', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' },
+        { label: 'Oura Blog: Discover Oura\'s Daytime Stress Feature', url: 'https://ouraring.com/blog/daytime-stress-feature/' },
+        { label: 'Oura, Inside the Ring: Quantifying Chronic Stress', url: 'https://ouraring.com/blog/inside-the-ring-cumulative-stress/' },
+        { label: 'Apple Developer: HealthKit heartRateVariabilitySDNN', url: 'https://developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/heartratevariabilitysdnn' },
+        { label: 'Apple Nov 2024: Heart Rate, Calorimetry & Activity on Apple Watch (PDF)', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
+        { label: 'Athlytic Help: Understanding Recovery (RMSSD + RHR, 60-day Baseline)', url: 'https://athlyticapp.helpscoutdocs.com/article/20-understanding-recovery' },
+        { label: 'Welltory Help: Frequency-Domain HRV Scores (LF / HF / VLF)', url: 'https://help.welltory.com/en/articles/3878862-frequency-domain-scores-of-your-heart-rate-variability' },
+        { label: 'Polar Support: Nightly Recharge Recovery Measurement', url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement' },
+        { label: 'Polar Vantage V3 Manual: Nightly Recharge', url: 'https://support.polar.com/e_manuals/vantage-v3/polar-vantage-v3-user-manual-english/nightly-recharge.htm' },
+        { label: 'COROS Help Center: Daily Stress', url: 'https://support.coros.com/hc/en-us/articles/22933434857108-Daily-Stress' },
+        { label: 'Amazfit Support: What Is Stress Monitoring?', url: 'https://support.amazfit.com/en/faq/4133' },
+        { label: 'Amazfit: What is Heart Rate Variability (HRV)?', url: 'https://us.amazfit.com/pages/what-is-heart-rate-variability-hrv' }
       ],
       'Wearable accuracy & methodology': [
-        { label: 'Frontiers in Computer Science 2024 — Stress Detection Using Wearables (Systematic Review)', url: 'https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2024.1478851/full' },
-        { label: 'JMIR 2024 — Wearable AI in Detecting Stress: Systematic Review and Meta-Analysis (~82% multi-signal vs ~77% HRV)', url: 'https://www.jmir.org/2024/1/e52622' },
-        { label: 'Springer 2025 — Stress in Action Wearables Database', url: 'https://link.springer.com/article/10.3758/s13428-025-02685-4' },
-        { label: 'Nature Communications Medicine 2025 — Wearables for Anxiety Assessment', url: 'https://www.nature.com/articles/s43856-025-01234-6' },
-        { label: 'PMC11230864 — Real-Time Stress Prediction Models Using Wearables', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11230864/' },
-        { label: 'ScienceDirect 2025 — From Lab to Real-Life: Three-Stage Validation', url: 'https://www.sciencedirect.com/science/article/pii/S2215016125000536' },
-        { label: 'ScienceDirect 2025 — Meta-Analysis of 171 TSST Studies (n=8,452)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0306453025002896' },
-        { label: 'ScienceDirect — The Trier Social Stress Test: Principles and Practice', url: 'https://www.sciencedirect.com/science/article/pii/S2352289516300224' },
-        { label: 'PMC7739033 — Systematic Review of TSST Methodology', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7739033/' },
-        { label: 'arXiv 2025 — Extending Stress Detection Reproducibility to Consumer Wearables', url: 'https://arxiv.org/html/2505.05694v1' },
-        { label: 'ScienceDirect — Machine Learning for Predicting Stress Episodes', url: 'https://www.sciencedirect.com/science/article/pii/S0010482525015197' },
-        { label: 'MDPI Algorithms 2025 — Smartwatches in Stress Management & Well-Being', url: 'https://www.mdpi.com/1999-4893/18/7/419' },
-        { label: 'JMIR mHealth 2026 — Wearables for Stress Measurement in College Students', url: 'https://mhealth.jmir.org/2026/1/e64144' },
-        { label: 'Frontiers Digital Health 2022 (PMC9780663) — Apple Watch ECG for Stress Prediction (F1 52–64%)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9780663/' },
-        { label: 'Sensors / MDPI 2024 — Apple Watch Series 9 / Ultra 2 HRV Validity vs Polar H10 + Kubios', url: 'https://www.mdpi.com/1424-8220/24/19/6220' },
-        { label: 'npj Digital Medicine 2025 — Apple Watch Measurements Living Systematic Review & Meta-Analysis', url: 'https://www.nature.com/articles/s41746-025-02238-1' },
-        { label: 'PMC9505647 — WHOOP-Derived lnRMSSD Day-to-Day Variability (Olympic Water Polo)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9505647/' },
-        { label: 'PMC8160717 — Wrist PPG Assessment of HR & HRV: WHOOP Validation vs ECG', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8160717/' }
+        { label: 'Frontiers in Computer Science 2024: Stress Detection Using Wearables (Systematic Review)', url: 'https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2024.1478851/full' },
+        { label: 'JMIR 2024, Wearable AI in Detecting Stress: Systematic Review and Meta-Analysis (~82% multi-signal vs ~77% HRV)', url: 'https://www.jmir.org/2024/1/e52622' },
+        { label: 'Springer 2025: Stress in Action Wearables Database', url: 'https://link.springer.com/article/10.3758/s13428-025-02685-4' },
+        { label: 'Nature Communications Medicine 2025: Wearables for Anxiety Assessment', url: 'https://www.nature.com/articles/s43856-025-01234-6' },
+        { label: 'PMC11230864: Real-Time Stress Prediction Models Using Wearables', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11230864/' },
+        { label: 'ScienceDirect 2025, From Lab to Real-Life: Three-Stage Validation', url: 'https://www.sciencedirect.com/science/article/pii/S2215016125000536' },
+        { label: 'ScienceDirect 2025: Meta-Analysis of 171 TSST Studies (n=8,452)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0306453025002896' },
+        { label: 'ScienceDirect, The Trier Social Stress Test: Principles and Practice', url: 'https://www.sciencedirect.com/science/article/pii/S2352289516300224' },
+        { label: 'PMC7739033: Systematic Review of TSST Methodology', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7739033/' },
+        { label: 'arXiv 2025: Extending Stress Detection Reproducibility to Consumer Wearables', url: 'https://arxiv.org/html/2505.05694v1' },
+        { label: 'ScienceDirect: Machine Learning for Predicting Stress Episodes', url: 'https://www.sciencedirect.com/science/article/pii/S0010482525015197' },
+        { label: 'MDPI Algorithms 2025: Smartwatches in Stress Management & Well-Being', url: 'https://www.mdpi.com/1999-4893/18/7/419' },
+        { label: 'JMIR mHealth 2026: Wearables for Stress Measurement in College Students', url: 'https://mhealth.jmir.org/2026/1/e64144' },
+        { label: 'Frontiers Digital Health 2022 (PMC9780663): Apple Watch ECG for Stress Prediction (F1 52–64%)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9780663/' },
+        { label: 'Sensors / MDPI 2024: Apple Watch Series 9 / Ultra 2 HRV Validity vs Polar H10 + Kubios', url: 'https://www.mdpi.com/1424-8220/24/19/6220' },
+        { label: 'npj Digital Medicine 2025: Apple Watch Measurements Living Systematic Review & Meta-Analysis', url: 'https://www.nature.com/articles/s41746-025-02238-1' },
+        { label: 'PMC9505647: WHOOP-Derived lnRMSSD Day-to-Day Variability (Olympic Water Polo)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9505647/' },
+        { label: 'PMC8160717, Wrist PPG Assessment of HR & HRV: WHOOP Validation vs ECG', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8160717/' }
       ]
     };
     return groups;
@@ -1938,7 +1938,7 @@ class KygoWearableStress extends HTMLElement {
         <div class="container hero-inner">
           <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalFactors} Factors · ${totalDevices} Wearables</div>
           <h1 class="hero-title animate-on-scroll">How does <em>your wearable</em> measure stress?</h1>
-          <p class="hero-sub animate-on-scroll">Every wearable measures <strong>autonomic arousal</strong>, not stress directly — through HRV, EDA, skin temp, and breathing rate. We compare <strong>10 brands</strong> head-to-head, with hardware-generation context and validation versus the Polar H10 chest-strap reference. Pick your device and the factor list re-sorts around what actually moves <strong>your</strong> score.</p>
+          <p class="hero-sub animate-on-scroll">Every wearable measures <strong>autonomic arousal</strong>, not stress directly, through HRV, EDA, skin temp, and breathing rate. We compare <strong>10 brands</strong> head-to-head, with hardware-generation context and validation versus the Polar H10 chest-strap reference. Pick your device and the factor list re-sorts around what actually moves <strong>your</strong> score.</p>
           <div class="animate-on-scroll">
             <div class="hero-meta">
               <div class="hero-cell"><span class="hero-num">${totalDevices}</span><span class="hero-lbl">Wearables</span></div>
@@ -1960,14 +1960,15 @@ class KygoWearableStress extends HTMLElement {
       ${this._renderTopPicks()}
       ${this._renderSourcesSection()}
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts('gray')}
+
+      <footer class="tool-footer" style="background:#fff">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before changing supplement, exercise, or lifestyle routines.</p>
           <p class="footer-copyright">Data from peer-reviewed primary research and official device documentation. Last updated May 2026.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts()}
     `;
   }
 
