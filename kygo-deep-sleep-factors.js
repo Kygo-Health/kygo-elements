@@ -38,6 +38,16 @@ function __ensureKygoAppCard() {
   s.async = true;
   document.head.appendChild(s);
 }
+/** Loads the shared <kygo-report-card> element (the free-report card) once. */
+function __ensureKygoReportCard() {
+  if (customElements.get('kygo-report-card')) return;
+  if (document.querySelector('script[data-kygo-report-card-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-report-card.js';
+  s.setAttribute('data-kygo-report-card-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
 
 /** Appends a JSON-LD script unless the page already serves that @type from the Wix SEO panel */
 function __kygoAppendLdOnce(script) {
@@ -914,6 +924,30 @@ class KygoDeepSleepFactors extends HTMLElement {
     ];
   }
 
+  // ── Report card · Kygo standard module ──────────────────────────────────
+  // The shared <kygo-report-card> (kygo-report-card.js): the free State of
+  // Wearable Accuracy report, captured by email right in the card, then the
+  // visitor goes to /report-download. Second promo, between the factor library
+  // and related tools, never next to another. GA4: email_subscribe, source
+  // report-tool-<slug>; a click on the cover is gate_tool.
+  _renderReportCard() {
+    __ensureKygoReportCard();
+    const slug = this._appCta().slug;
+    return `
+      <style>
+      .krc-section{padding:16px 20px;background:#fff}
+      @media(min-width:720px){.krc-section{padding:24px 24px}}
+      .krc-inner{max-width:1100px;margin:0 auto}
+      .krc-inner kygo-report-card{display:block}
+      </style>
+      <section class="krc-section" id="free-report">
+        <div class="krc-inner">
+          <kygo-report-card surface="tool" slug="${slug}" topic="general">
+            <a href="https://www.kygo.app/state-of-wearable-accuracy">Get the free State of Wearable Accuracy report</a>
+          </kygo-report-card>
+        </div>
+      </section>`;
+  }
   // -- Related reading (the standard module) -------------------------------
   // One design, every tool page: three blog cards in a grid (1 col mobile ->
   // 3 col >=720px) with the post's real cover image, category, title, a
@@ -1161,9 +1195,6 @@ class KygoDeepSleepFactors extends HTMLElement {
       </section>
       ${this._renderAppCta()}
 
-
-
-
       <section class="section bg-light" id="explore">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
@@ -1176,6 +1207,7 @@ class KygoDeepSleepFactors extends HTMLElement {
         </div>
       </section>
 
+      ${this._renderReportCard()}
 
       ${this._renderRelatedTools('gray')}
 
