@@ -26,7 +26,7 @@
  *             designs can be compared once more than one exists.
  *   focus     which insight the phone mockup shows, matched to the page's
  *             topic: hrv (default), deep, rem, latency, awake, rhr, sleep, food,
- *             supplement, training, readiness, stress. See VISUALS below.
+ *             supplement, training, steps, nutrition, readiness, stress. See VISUALS below.
  *   headline  the post's own hook. Never reused across posts.
  *   sub       one sentence under the headline.
  *   surface   blog (default) | tool. Goes to GA4 as the click position and to
@@ -183,6 +183,24 @@
           rows: [['Under 31.2g', '82 pts', 82], ['Over 31.2g', '73 pts', 58]], ev: '44 days · r −0.64' },
         { name: 'Last meal timing', delta: '−5', unit: 'pts', cond: 'eat within <b>2 hours</b> of bed', change: '−5 pts lower', when: 'the next day',
           rows: [['Earlier', '81 pts', 80], ['Within 2h', '76 pts', 64]], ev: '44 days · r −0.38' }
+      ]
+    },
+    steps: {
+      metric: 'Sleep Score', tab: 'helping', counts: [4, 7],
+      cards: [
+        { name: 'Daily steps', delta: '+5', unit: 'pts', cond: 'walk <b>9,000+ steps</b>', change: '+5 pts higher', when: 'that night',
+          rows: [['Under 9,000', '75 pts', 62], ['Over 9,000', '80 pts', 80]], ev: '45 days · r 0.44' },
+        { name: 'Strength training', delta: '+6', unit: 'pts', cond: 'lift <b>53+ min</b>', change: '+6 pts higher', when: 'that day',
+          rows: [['Under 53min', '76 pts', 60], ['Over 53min', '82 pts', 82]], ev: '45 days · r 0.48' }
+      ]
+    },
+    nutrition: {
+      metric: 'Readiness', tab: 'helping', counts: [4, 7],
+      cards: [
+        { name: 'Protein', delta: '+5', unit: 'pts', cond: 'eat <b>120 g+</b> protein', change: '+5 pts higher', when: 'the next day',
+          rows: [['Under 120g', '76 pts', 62], ['Over 120g', '81 pts', 80]], ev: '44 days · r 0.41' },
+        { name: 'Water', delta: '+3', unit: 'pts', cond: 'drink <b>2.5 L+</b>', change: '+3 pts higher', when: 'the next day',
+          rows: [['Under 2.5L', '77 pts', 66], ['Over 2.5L', '80 pts', 76]], ev: '42 days · r 0.33' }
       ]
     },
     stress: {
