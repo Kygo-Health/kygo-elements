@@ -924,15 +924,16 @@ class KygoOuraVsRingConn extends HTMLElement {
         </div>
       </section>
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts()}
+
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making decisions based on wearable data. Neither Oura nor RingConn is a medical device. RingConn's sleep apnea and vascular features are not FDA-cleared and do not diagnose any condition or measure blood pressure; Oura's Blood Pressure Signals and breathing features are likewise not FDA-cleared.</p>
           <p class="footer-copyright">Prices and specs sourced from official Oura and RingConn pages (verified July 2026), with the Ruijin Hospital OSAHS feasibility study (IEEE AICAS 2024) cited for RingConn's apnea research. Sale pricing and promotions can change. Last updated July 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts('gray')}
     `;
   }
 

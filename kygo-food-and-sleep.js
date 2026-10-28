@@ -802,14 +802,15 @@ class KygoFoodAndSleep extends HTMLElement {
         </div>
       </section>
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts()}
+
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. The findings are averages from study groups, many of them small, and may not apply to you. Talk to a qualified healthcare provider before changing your diet, especially if you have a sleep disorder or a medical condition.</p>
           <p class="footer-copyright">Data from peer-reviewed studies, meta-analyses and reviews, each linked above. Last updated October 2026.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts('gray')}
     `;
   }
 

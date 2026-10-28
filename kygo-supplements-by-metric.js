@@ -1141,15 +1141,16 @@ class KygoSupplementsByMetric extends HTMLElement {
       ${this._renderFaqSection()}
       ${this._renderSourcesSection()}
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts()}
+
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Effect sizes are study findings under specific conditions, often small relative to wearable night-to-night noise; doses cited are study doses, not recommendations. Always consult a qualified healthcare provider before starting or changing any supplement.</p>
           <p class="footer-copyright">Data from peer-reviewed trials and meta-analyses, with industry-funded, non-peer-reviewed and preclinical evidence flagged as such. Last updated August 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts('gray')}
     `;
   }
 

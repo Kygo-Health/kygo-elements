@@ -978,14 +978,15 @@ class KygoOura5vs4 extends HTMLElement {
       </section>
 
       <!-- Footer -->
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts('gray')}
+
+      <footer class="tool-footer" style="background:#fff">
         <div class="container">
           <p class="footer-disclaimer">Spec and pricing reflect Oura’s May 2026 Ring 5 launch materials and the Ring 4. Accuracy claims cite peer-reviewed research (Dial 2025, Robbins 2024) with funding disclosed. Ring 5 has no independent validation as of publication. Kygo is an informational tool, not medical advice.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts()}
     `;
   }
 

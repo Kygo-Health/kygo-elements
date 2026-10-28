@@ -1070,14 +1070,15 @@ class KygoVo2maxFactors extends HTMLElement {
         </div>
       </section>
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts('gray')}
+
+      <footer class="tool-footer" style="background:#fff">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making health or training decisions.</p>
           <p class="footer-copyright">Anchored to peer-reviewed research, each source verified against the primary record. Last updated August 2026.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts()}
     `;
   }
 

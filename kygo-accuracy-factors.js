@@ -1321,14 +1321,15 @@ class KygoAccuracyFactors extends HTMLElement {
       ${this._renderFaqSection()}
       ${this._renderSourcesSection()}
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts('gray')}
+
+      <footer class="tool-footer" style="background:#fff">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Every figure here comes from a published study under specific conditions, with sample sizes as small as ten people where noted, and accuracy findings do not transfer automatically to your device, your body or your firmware version. Consumer wearables are wellness products, not diagnostic instruments. Consult a qualified healthcare provider for any medical question.</p>
           <p class="footer-copyright">Figures drawn from peer-reviewed validation studies, with preprints, conference abstracts and manufacturer documentation labelled as such throughout. Manufacturer support pages are cited as guidance, never as evidence. Last updated September 2026.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts()}
     `;
   }
 

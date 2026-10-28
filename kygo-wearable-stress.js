@@ -1960,14 +1960,15 @@ class KygoWearableStress extends HTMLElement {
       ${this._renderTopPicks()}
       ${this._renderSourcesSection()}
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts('gray')}
+
+      <footer class="tool-footer" style="background:#fff">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before changing supplement, exercise, or lifestyle routines.</p>
           <p class="footer-copyright">Data from peer-reviewed primary research and official device documentation. Last updated May 2026.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts()}
     `;
   }
 

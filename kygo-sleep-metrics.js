@@ -1245,14 +1245,15 @@ class KygoSleepMetrics extends HTMLElement {
 
       <!-- CTA -->
       <!-- Footer -->
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts()}
+
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
           <p class="footer-copyright">Data sourced from official manufacturer documentation. Last updated February 2025.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts('gray')}
     `;
   }
 

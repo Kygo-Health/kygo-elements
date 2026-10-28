@@ -1320,15 +1320,16 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts()}
+
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Wearable sleep staging is an estimate, not a clinical measurement. Consult a qualified healthcare provider before making health decisions based on wearable data.</p>
           <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation. Last updated October 25, 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
-
-      ${this._renderRelatedPosts('gray')}
     `;
   }
 
