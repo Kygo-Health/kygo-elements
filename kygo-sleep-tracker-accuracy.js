@@ -1169,17 +1169,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <header class="nav">
-        <div class="nav-inner">
-          <a href="https://www.kygo.app" class="nav-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" loading="lazy" />
-            <span>Kygo Health</span>
-          </a>
-          <div class="nav-cta-group">
-            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
-          </div>
-        </div>
-      </header>
 
       <section class="hero-light">
         <div class="hero-light-inner">
@@ -1333,23 +1322,9 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            <span>Kygo Health</span>
-          </a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
-          <div class="footer-links">
-            <a href="https://www.kygo.app">Home</a>
-            <a href="https://www.kygo.app/how-it-works">How It Works</a>
-            <a href="https://www.kygo.app/blog">Blog</a>
-            <a href="https://www.kygo.app/contact">Contact</a>
-            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
-            <a href="https://www.kygo.app/terms-conditions">Terms</a>
-          </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Wearable sleep staging is an estimate, not a clinical measurement. Consult a qualified healthcare provider before making health decisions based on wearable data.</p>
           <p class="footer-copyright">Data from peer-reviewed validation studies and manufacturer documentation. Last updated October 25, 2026.</p>
           <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
-          <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
 
@@ -1467,12 +1442,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       .animate-on-scroll.visible { opacity: 1; transform: none; }
 
       /* Nav */
-      .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--border-subtle); }
-      .nav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
-      .nav-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: -0.01em; color: var(--fg-1); text-transform: uppercase; }
-      .nav-brand img { width: 26px; height: 26px; }
-      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
-      @media (max-width: 480px) { .nav-brand span { display: none; } }
 
       /* Buttons */
       .btn { font-family: var(--font-body); font-weight: 600; font-size: 14px; padding: 10px 18px; border-radius: 10px; border: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all .2s var(--ease-out); white-space: nowrap; }
@@ -1777,12 +1746,6 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
       /* Footer */
       .tool-footer { padding: 56px 20px 40px; background: #fff; color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
       .tool-footer .container { max-width: 720px; margin: 0 auto; text-align: center; padding: 0; }
-      .footer-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--fg-1); font-family: var(--font-display); font-weight: 700; font-size: 17px; }
-      .footer-logo { width: 28px; height: 28px; }
-      .footer-tagline { color: var(--fg-3); font-size: 14px; margin: 10px 0 22px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 28px; font-size: 14px; }
-      .footer-links a { color: var(--fg-2); }
-      .footer-links a:hover { color: var(--kygo-green-dark); }
       .footer-disclaimer { font-size: 12px; color: var(--fg-3); line-height: 1.6; max-width: 620px; margin: 0 auto 14px; }
       .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
       .footer-affiliate { font-style: italic; }

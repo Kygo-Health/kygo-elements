@@ -1160,18 +1160,6 @@ class KygoSleepMetrics extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <!-- Header -->
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
-            Sleep Metrics
-          </a>
-          <div class="nav-cta-group">
-            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
-          </div>
-        </div>
-      </header>
 
       <!-- Hero -->
       <section class="hero-light">
@@ -1259,19 +1247,8 @@ class KygoSleepMetrics extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
-          </a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
-          <div class="footer-links">
-            <a href="https://www.kygo.app" target="_blank" rel="noopener">Kygo App</a>
-            <a href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://www.kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
-          </div>
           <p class="footer-copyright">Data sourced from official manufacturer documentation. Last updated February 2025.</p>
-          <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
-          <p class="footer-copyright">\u00A9 ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
 
@@ -1316,11 +1293,6 @@ class KygoSleepMetrics extends HTMLElement {
       .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
       /* ── Header ── */
-      .header { background: white; border-bottom: 1px solid var(--gray-200); padding: 12px 16px; position: sticky; top: 0; z-index: 50; }
-      .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-      .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: var(--dark); text-decoration: none; }
-      .logo-img { height: 28px; width: auto; }
-      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
 
       /* ── Hero ── */
       .hero-light { background: #fff; border-bottom: 1px solid var(--gray-200); }
@@ -1515,21 +1487,11 @@ class KygoSleepMetrics extends HTMLElement {
 
       /* ── Footer ── */
       .tool-footer { padding: 32px 0; text-align: center; background: #fff; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); font-weight: 600; text-decoration: none; margin-bottom: 6px; font-size: 14px; }
-      .footer-brand:hover { color: var(--green); }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { color: var(--gray-600); font-size: 12px; margin-bottom: 12px; }
-      .footer-links { display: flex; justify-content: center; gap: 16px; font-size: 12px; margin-bottom: 12px; flex-wrap: wrap; }
-      .footer-links a { color: var(--gray-400); text-decoration: none; }
-      .footer-links a:hover { color: var(--dark); }
       .footer-copyright { font-size: 11px; color: var(--gray-400); margin-bottom: 4px; line-height: 1.6; }
       .footer-affiliate { font-style: italic; }
 
       /* ── Tablet ── */
       @media (min-width: 768px) {
-        .header { padding: 14px 24px; }
-        .logo { font-size: 16px; gap: 10px; }
-        .logo-img { height: 32px; }
         .section-title { font-size: 32px; }
         .matrix-section, .exclusive-section, .usecase-section, .sources-section, .cta-section { padding: 64px 0; }
         .stats-bar { grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -1555,8 +1517,6 @@ class KygoSleepMetrics extends HTMLElement {
         .cta-box h2 { font-size: 28px; }
         .cta-box p { font-size: 16px; }
         .cta-features { flex-direction: row; gap: 24px; font-size: 14px; }
-        .footer-brand { font-size: 16px; gap: 10px; }
-        .footer-logo { height: 28px; }
       }
 
       /* ── Desktop ── */

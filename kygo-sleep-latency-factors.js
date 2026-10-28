@@ -1458,18 +1458,6 @@ class KygoSleepLatencyFactors extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <!-- Header -->
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
-            Sleep Latency
-          </a>
-          <div class="nav-cta-group">
-            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
-          </div>
-        </div>
-      </header>
 
       <!-- Hero -->
       <section class="hero-light">
@@ -1557,22 +1545,9 @@ class KygoSleepLatencyFactors extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
-          </a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
-          <div class="footer-links">
-            <a href="https://www.kygo.app">Home</a>
-            <a href="https://www.kygo.app/how-it-works">How It Works</a>
-            <a href="https://www.kygo.app/blog">Blog</a>
-            <a href="https://www.kygo.app/contact">Contact</a>
-            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
-            <a href="https://www.kygo.app/terms-conditions">Terms</a>
-          </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated October 2026.</p>
-          <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
 
@@ -1623,11 +1598,6 @@ class KygoSleepLatencyFactors extends HTMLElement {
       .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
       /* ── Header ── */
-      .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; max-width: 1200px; margin: 0 auto; }
-      .logo { display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; }
-      .logo-img { height: 28px; width: auto; }
-      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
 
       /* ── Hero ── */
       .hero-light { background: #fff; border-bottom: 1px solid var(--gray-200); }
@@ -1868,18 +1838,11 @@ class KygoSleepLatencyFactors extends HTMLElement {
 
       /* ── Footer ── */
       .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
-      .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; white-space: nowrap; }
-      .footer-links a:hover { color: var(--green); }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
 
       /* ── Responsive ── */
       @media (min-width: 768px) {
-        .header-inner { padding: 14px 24px; }
         .picks-grid { grid-template-columns: 1fr 1fr; }
         .factor-cards { grid-template-columns: 1fr 1fr; }
         .picks-section, .explore-section { padding: 64px 0; }

@@ -1477,18 +1477,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <!-- Header -->
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
-            Staying Asleep
-          </a>
-          <div class="nav-cta-group">
-            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
-          </div>
-        </div>
-      </header>
 
       <!-- Hero -->
       <section class="hero section-bg-white">
@@ -1567,22 +1555,9 @@ class KygoStayingAsleepFactors extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
-          </a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
-          <div class="footer-links">
-            <a href="https://www.kygo.app">Home</a>
-            <a href="https://www.kygo.app/how-it-works">How It Works</a>
-            <a href="https://www.kygo.app/blog">Blog</a>
-            <a href="https://www.kygo.app/contact">Contact</a>
-            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
-            <a href="https://www.kygo.app/terms-conditions">Terms</a>
-          </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated April 2026.</p>
-          <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
 
@@ -1788,11 +1763,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
       .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; transition-delay: var(--delay, 0ms); }
       .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
-      .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; max-width: 1200px; margin: 0 auto; }
-      .logo { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); text-decoration: none; white-space: nowrap; min-width: 0; line-height: 1.2; }
-      .logo-img { height: 26px; width: auto; flex-shrink: 0; }
-      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
 
       /* ========== HERO (mobile-first) ========== */
       .hero { padding: 40px 0 28px; }
@@ -2152,12 +2122,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
       @media (min-width: 768px) { .subscribe-section { padding: 24px 0; } }
 
       .tool-footer { padding: 48px 0 32px; text-align: center; background: #fff; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
-      .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; white-space: nowrap; }
-      .footer-links a:hover { color: var(--green); }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
 
@@ -2183,9 +2147,6 @@ class KygoStayingAsleepFactors extends HTMLElement {
         .tl-slots { grid-template-columns: repeat(2, 1fr); }
       }
       @media (min-width: 768px) {
-        .header-inner { padding: 14px 24px; }
-        .logo { font-size: 16px; }
-        .logo-img { height: 28px; }
         .hero { padding: 72px 0 48px; }
         .picks-grid { grid-template-columns: 1fr 1fr; }
         .picks-section { padding: 64px 0; }
