@@ -120,10 +120,10 @@
     latency: {
       metric: 'Sleep Latency', tab: 'hurting', counts: [2, 6, 11], avg: '17 min', range: '6–38',
       cards: [
-        { name: 'Caffeine after 2 PM', delta: '+11', unit: 'min', cond: 'have caffeine <b>after 2 PM</b>', change: '+11 min longer', when: 'to fall asleep',
-          rows: [['Before 2 PM', '14 min', 46], ['After 2 PM', '25 min', 82]], ev: '42 days · r 0.55' },
-        { name: 'Last meal timing', delta: '+6', unit: 'min', cond: 'eat within <b>2 hours</b> of bed', change: '+6 min longer', when: 'to fall asleep',
-          rows: [['Earlier', '15 min', 50], ['Within 2h', '21 min', 70]], ev: '44 days · r 0.39' }
+        { name: 'Last meal timing', delta: '+12', unit: 'min', cond: 'eat within <b>2 hours</b> of bed', change: '+12 min longer', when: 'to fall asleep',
+          rows: [['Earlier', '14 min', 46], ['Within 2h', '26 min', 84]], ev: '44 days · r 0.57' },
+        { name: 'Caffeine after 2 PM', delta: '+7', unit: 'min', cond: 'have caffeine <b>after 2 PM</b>', change: '+7 min longer', when: 'to fall asleep',
+          rows: [['Before 2 PM', '15 min', 50], ['After 2 PM', '22 min', 72]], ev: '42 days · r 0.41' }
       ]
     },
     awake: {
@@ -136,12 +136,12 @@
       ]
     },
     rhr: {
-      metric: 'Resting HR', tab: 'hurting', counts: [3, 6, 10], avg: '56 bpm', range: '51–62',
+      metric: 'Resting HR', tab: 'helping', counts: [3, 6, 10], avg: '56 bpm', range: '51–62',
       cards: [
-        { name: 'Alcohol', delta: '+4', unit: 'bpm', cond: 'go over <b>31.2 g</b>', change: '+4 bpm higher', when: 'the next day',
-          rows: [['Under 31.2g', '54 bpm', 62], ['Over 31.2g', '58 bpm', 80]], ev: '44 days · r 0.68' },
-        { name: 'Last meal timing', delta: '+2', unit: 'bpm', cond: 'eat within <b>2 hours</b> of bed', change: '+2 bpm higher', when: 'that night',
-          rows: [['Earlier', '55 bpm', 66], ['Within 2h', '57 bpm', 76]], ev: '44 days · r 0.40' }
+        { name: 'Aerobic activity', icon: 'run', delta: '−2', unit: 'bpm', cond: 'log <b>30+ min</b> of aerobic activity', change: '−2 bpm lower', when: 'the next day',
+          rows: [['Under 30min', '57 bpm', 76], ['Over 30min', '55 bpm', 64]], ev: '45 days · r −0.46' },
+        { name: 'Daily steps', icon: 'run', delta: '−1', unit: 'bpm', cond: 'walk <b>9,000+ steps</b>', change: '−1 bpm lower', when: 'the next day',
+          rows: [['Under 9,000', '57 bpm', 74], ['Over 9,000', '56 bpm', 68]], ev: '45 days · r −0.33' }
       ]
     },
     sleep: {
@@ -165,16 +165,16 @@
     supplement: {
       metric: 'Sleep Score', tab: 'helping', counts: [3, 8, 12], avg: '74 pts', range: '55–91',
       cards: [
-        { name: 'Magnesium Glycinate', delta: '+9', unit: 'pts', cond: 'take <b>Magnesium Glycinate</b>', change: '+9 pts higher', when: 'the next day',
+        { name: 'Magnesium Glycinate', icon: 'supp', delta: '+9', unit: 'pts', cond: 'take <b>Magnesium Glycinate</b>', change: '+9 pts higher', when: 'the next day',
           rows: [['Not taken', '71 pts', 52], ['Taken', '80 pts', 82]], ev: '43 days · r 0.56' },
-        { name: 'Strength training', delta: '+6', unit: 'pts', cond: 'lift <b>53+ min</b>', change: '+6 pts higher', when: 'that day',
+        { name: 'Strength training', icon: 'lift', delta: '+6', unit: 'pts', cond: 'lift <b>53+ min</b>', change: '+6 pts higher', when: 'that day',
           rows: [['Under 53min', '76 pts', 60], ['Over 53min', '82 pts', 82]], ev: '45 days · r 0.48' }
       ]
     },
     training: {
       metric: 'Sleep Score', tab: 'helping', counts: [3, 8, 12], avg: '74 pts', range: '55–91',
       cards: [
-        { name: 'Strength training', delta: '+6', unit: 'pts', cond: 'lift <b>53+ min</b>', change: '+6 pts higher', when: 'that day',
+        { name: 'Strength training', icon: 'lift', delta: '+6', unit: 'pts', cond: 'lift <b>53+ min</b>', change: '+6 pts higher', when: 'that day',
           rows: [['Under 53min', '76 pts', 60], ['Over 53min', '82 pts', 82]], ev: '45 days · r 0.48' },
         { name: 'Protein', delta: '+4', unit: 'pts', cond: 'eat <b>120 g+</b> protein', change: '+4 pts higher', when: 'the next day',
           rows: [['Under 120g', '75 pts', 62], ['Over 120g', '79 pts', 76]], ev: '44 days · r 0.37' }
@@ -194,7 +194,7 @@
       cards: [
         { name: 'Daily steps', delta: '+5', unit: 'pts', cond: 'walk <b>9,000+ steps</b>', change: '+5 pts higher', when: 'that night',
           rows: [['Under 9,000', '75 pts', 62], ['Over 9,000', '80 pts', 80]], ev: '45 days · r 0.44' },
-        { name: 'Strength training', delta: '+6', unit: 'pts', cond: 'lift <b>53+ min</b>', change: '+6 pts higher', when: 'that day',
+        { name: 'Strength training', icon: 'lift', delta: '+6', unit: 'pts', cond: 'lift <b>53+ min</b>', change: '+6 pts higher', when: 'that day',
           rows: [['Under 53min', '76 pts', 60], ['Over 53min', '82 pts', 82]], ev: '45 days · r 0.48' }
       ]
     },
@@ -440,7 +440,7 @@
       const c0 = v.cards[0];
       const card = (c, i) => `
               <div class="p-card">
-                <div class="p-ct"><span class="p-name">${esc(c.name)}</span><span class="p-pill ${neg ? 'neg' : 'pos'}">${esc(c.delta)}<small>${esc(c.unit)}</small></span></div>
+                <div class="p-ct"><span class="p-name">${c.icon ? `<i class="fi fi-${c.icon}"></i>` : ''}${esc(c.name)}</span><span class="p-pill ${neg ? 'neg' : 'pos'}">${esc(c.delta)}<small>${esc(c.unit)}</small></span></div>
                 <p class="p-txt">Days you ${c.cond}, your ${esc(v.metric)} runs <b class="${neg ? 'neg' : 'pos'}">${esc(c.change)}</b> ${esc(c.when)}.</p>
                 <div class="p-cmp">${c.rows.map((r, j) => `
                   <div class="p-row"><span class="p-lbl">${esc(r[0])}</span><span class="p-track"><span class="${j ? (neg ? 'neg' : 'pos') : 'base'}" style="width:${Number(r[2])}%"></span></span><span class="p-val">${esc(r[1])}</span></div>`).join('')}
@@ -698,6 +698,11 @@
           .p-stats.box { margin-top: 6px; padding: 5px 4px; border: 0; border-radius: 7px; background: #F1F4F8; text-align: center; }
           .p-ct { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
           .p-name { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; line-height: 1.2; }
+          .fi { display: inline-block; position: relative; width: 9px; height: 8px; margin-right: 4px; vertical-align: -0.5px; }
+          .fi-supp { border: 1.1px solid #475569; border-radius: 2px; }
+          .fi-supp::after { content: '+'; position: absolute; inset: 0; font-size: 7px; line-height: 6px; text-align: center; font-weight: 700; color: #475569; }
+          .fi-lift { height: 2px; vertical-align: 2px; background: #475569; box-shadow: -1px 0 0 1px #475569, 1px 0 0 1px #475569; border-radius: 1px; }
+          .fi-run { width: 8px; height: 8px; border-radius: 50%; border: 1.3px solid #475569; }
           .p-pill { flex: none; padding: 2px 7px; border-radius: 99px; font-size: 10px; font-weight: 700; }
           .p-pill small { font-size: 8px; font-weight: 600; margin-left: 1px; }
           .p-pill.neg { background: #FEE2E2; color: #EF4444; } .p-pill.pos { background: #DCFCE7; color: #16A34A; }
