@@ -91,7 +91,7 @@ class KygoRecoveryScores extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Wearable Recovery & Readiness Scores Research by Kygo Health. Compare how 12 brands build a single morning recovery score: WHOOP Recovery, Oura Readiness, Garmin Training Readiness, Fitbit/Pixel Readiness, Samsung Energy Score, Polar Nightly Recharge (ANS Charge), Ultrahuman Dynamic Recovery, COROS Recovery, Amazfit/Zepp HybridCharge, Suunto Recovery, Apple Watch Readiness (Series 12 / Ultra 4), and RingConn Wellness Balance. They are NOT interchangeable — different inputs, baselines, and scales mean two devices on one wrist will disagree. The common spine is HRV + resting heart rate + sleep, differenced against a personal baseline; training-load scores (Coros, Suunto, Garmin) weight workload instead. Explore 35 factors that move your score — alcohol (HRV down ~15%), sleep loss, hard training, illness onset, late and high-glycemic meals, caffeine timing, dehydration, altitude, plus what raises it (consistent sleep, aerobic fitness, slow breathing, cold immersion) and evidence-graded supplements (magnesium, glycine, tart cherry, L-theanine, ashwagandha, saffron, omega-3, melatonin) and baseline modifiers (age, sex, body fat, menstrual cycle). Validation: only WHOOP and Oura have ever been tested against an external reference (WHOOP weak, Oura moderate); the signals (HRV/RHR) are validated in some devices but the composite scores are largely unvalidated black boxes. Cite the signal, never the score. Sourced from the De Gruyter composite-scores evaluation (Doherty/Altini 2025), Dial 2025 nocturnal HRV/RHR validation, brand documentation, and peer-reviewed factor and supplement research.');
+    __seo(this, 'Wearable Recovery & Readiness Scores Research by Kygo Health. Compare how 12 brands build a single morning recovery score: WHOOP Recovery, Oura Readiness, Garmin Training Readiness, Fitbit/Pixel Readiness, Samsung Energy Score, Polar Nightly Recharge (ANS Charge), Ultrahuman Dynamic Recovery, COROS Recovery, Amazfit/Zepp HybridCharge, Suunto Recovery, Apple Watch Readiness (Series 12 / Ultra 4), and RingConn Wellness Balance. They are NOT interchangeable: different inputs, baselines, and scales mean two devices on one wrist will disagree. The common spine is HRV + resting heart rate + sleep, differenced against a personal baseline; training-load scores (Coros, Suunto, Garmin) weight workload instead. Explore 35 factors that move your score: alcohol (HRV down ~15%), sleep loss, hard training, illness onset, late and high-glycemic meals, caffeine timing, dehydration, altitude, plus what raises it (consistent sleep, aerobic fitness, slow breathing, cold immersion) and evidence-graded supplements (magnesium, glycine, tart cherry, L-theanine, ashwagandha, saffron, omega-3, melatonin) and baseline modifiers (age, sex, body fat, menstrual cycle). Validation: only WHOOP and Oura have ever been tested against an external reference (WHOOP weak, Oura moderate); the signals (HRV/RHR) are validated in some devices but the composite scores are largely unvalidated black boxes. Cite the signal, never the score. Sourced from the De Gruyter composite-scores evaluation (Doherty/Altini 2025), Dial 2025 nocturnal HRV/RHR validation, brand documentation, and peer-reviewed factor and supplement research.');
   }
 
   _injectStructuredData() {
@@ -156,14 +156,14 @@ class KygoRecoveryScores extends HTMLElement {
 
   _faqs() {
     return [
-      { q: 'Can I compare a recovery score across different brands?', a: 'No. Every brand uses different inputs, baselines, and scales, so a "75" on one device does not mean a "75" on another. Polar is not even on a 0–100 scale (ANS Charge runs −10 to +10). Two devices on the same wrist will routinely disagree. Only the trend versus your own personal baseline is meaningful — never the cross-brand number.' },
-      { q: 'Are wearable recovery scores actually validated?', a: 'Mostly no. Of 12 brands, only WHOOP and Oura have ever been tested against an external reference, and WHOOP\'s came out weak — the raw HRV carried the signal while the composite Recovery score added no consistent association. Oura has moderate support. Everyone else has at most component validation or vendor white papers, not an independent test of the score itself. There is no clinical gold standard for "recovery" the way polysomnography is for sleep, so brands validate their inputs, not the output. A recovery score is a modeled opinion, not a measurement.' },
+      { q: 'Can I compare a recovery score across different brands?', a: 'No. Every brand uses different inputs, baselines, and scales, so a "75" on one device does not mean a "75" on another. Polar is not even on a 0–100 scale (ANS Charge runs −10 to +10). Two devices on the same wrist will routinely disagree. Only the trend versus your own personal baseline is meaningful, never the cross-brand number.' },
+      { q: 'Are wearable recovery scores actually validated?', a: 'Mostly no. Of 12 brands, only WHOOP and Oura have ever been tested against an external reference, and WHOOP\'s came out weak: the raw HRV carried the signal while the composite Recovery score added no consistent association. Oura has moderate support. Everyone else has at most component validation or vendor white papers, not an independent test of the score itself. There is no clinical gold standard for "recovery" the way polysomnography is for sleep, so brands validate their inputs, not the output. A recovery score is a modeled opinion, not a measurement.' },
       { q: 'Which brands have a free recovery score?', a: 'Free: Garmin Training Readiness, Fitbit/Pixel Readiness, Samsung Energy Score, Polar Nightly Recharge, Ultrahuman Dynamic Recovery, COROS Recovery, Amazfit HybridCharge, Suunto Recovery, and RingConn. Paid: WHOOP (band requires a membership). Oura\'s score is visible free, but its breakdown and trends need a membership ($5.99/mo). Apple Watch Readiness is free with no subscription stated, but only on Series 12 and Ultra 4; older Apple Watches still need a third-party app.' },
-      { q: 'What lowers your recovery score the most?', a: 'Alcohol is the biggest single controllable hit — Oura\'s 600,000-member data shows HRV down about 15% (~10.8 ms) and heart rate up about 9.6%, and WHOOP found a single drink cuts next-day recovery roughly 8%. Sleep loss, hard training or overreaching, and the onset of illness are the other strong-evidence drops. Late or high-glycemic meals near bed, evening caffeine, dehydration, altitude, and nicotine are moderate hits.' },
+      { q: 'What lowers your recovery score the most?', a: 'Alcohol is the biggest single controllable hit: Oura\'s 600,000-member data shows HRV down about 15% (~10.8 ms) and heart rate up about 9.6%, and WHOOP found a single drink cuts next-day recovery roughly 8%. Sleep loss, hard training or overreaching, and the onset of illness are the other strong-evidence drops. Late or high-glycemic meals near bed, evening caffeine, dehydration, altitude, and nicotine are moderate hits.' },
       { q: 'Does the Apple Watch have a recovery score?', a: 'Yes, since September 2026, but only on Apple Watch Series 12 and Ultra 4. Apple\'s Readiness score runs from 0 to 10 (Recover, Pace Yourself, Ready, Go for it) and combines your recent activity and Training Load, your overnight and daytime vitals, and your Sleep Score, all against your own baseline. It updates through the day and needs at least 7 nights of sleep data before it appears. Apple has published no validation of the score. Older Apple Watches still rely on third-party apps like Athlytic, Bevel, Gentler Streak and Training Today.' },
-      { q: 'Which supplements actually help recovery?', a: 'The defensible ones, by evidence: magnesium (bisglycinate), glycine, tart cherry, L-theanine, ashwagandha, and saffron. Omega-3 (DHA) modestly lowers resting heart rate. Melatonin is a circadian timing aid, not a recovery booster. Do not rely on the trendy isolated apigenin (it has no human sleep RCT — the evidence is for whole chamomile extract), or on valerian, GABA, CBD, or creatine as recovery aids. Trial quality across this whole category is often low; doses are study doses, not recommendations, and this is not medical advice.' },
+      { q: 'Which supplements actually help recovery?', a: 'The defensible ones, by evidence: magnesium (bisglycinate), glycine, tart cherry, L-theanine, ashwagandha, and saffron. Omega-3 (DHA) modestly lowers resting heart rate. Melatonin is a circadian timing aid, not a recovery booster. Do not rely on the trendy isolated apigenin (it has no human sleep RCT; the evidence is for whole chamomile extract), or on valerian, GABA, CBD, or creatine as recovery aids. Trial quality across this whole category is often low; doses are study doses, not recommendations, and this is not medical advice.' },
       { q: 'Why do my two wearables show different recovery numbers?', a: 'Because they are not measuring the same thing the same way. The common spine is HRV + resting heart rate + sleep differenced against a personal baseline, but each brand weights those differently, uses a different window (Polar reads only the first ~4 hours of sleep; Garmin and Coros lean on training load), and anchors to a different baseline length. The scores are inferences, not measurements, so disagreement is expected.' },
-      { q: 'How does what I eat and drink affect my recovery score?', a: 'Alcohol, late or heavy meals within ~3 hours of bed, high-glycemic spikes near bedtime, evening caffeine, and dehydration all move the HRV + RHR + sleep signals your score is built on. These are the levers a food-logging user can actually see and change, and the brands\' own blogs tend to underplay them — which is exactly why connecting nutrition to your recovery trend is the highest-value angle.' }
+      { q: 'How does what I eat and drink affect my recovery score?', a: 'Alcohol, late or heavy meals within ~3 hours of bed, high-glycemic spikes near bedtime, evening caffeine, and dehydration all move the HRV + RHR + sleep signals your score is built on. These are the levers a food-logging user can actually see and change, and the brands\' own blogs tend to underplay them, which is exactly why connecting nutrition to your recovery trend is the highest-value angle.' }
     ];
   }
 
@@ -181,12 +181,12 @@ class KygoRecoveryScores extends HTMLElement {
         modelLine: 'Recovery · percentage (green/yellow/red) · membership',
         sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: true, load: false, subj: false },
         free: false,
-        algorithm: 'A single morning percentage built from HRV (weighted above sleep), resting heart rate, sleep performance, and respiratory rate, plus blood oxygen and skin temperature on WHOOP 4.0 and newer — all measured during sleep and scored against your own personal baseline rather than population norms. Color bands: green 67–99%, yellow 34–66%, red 1–33% (the average member sits around 58%). Designed to be paired with Strain: "match today\'s strain to your recovery."',
+        algorithm: 'A single morning percentage built from HRV (weighted above sleep), resting heart rate, sleep performance, and respiratory rate, plus blood oxygen and skin temperature on WHOOP 4.0 and newer, all measured during sleep and scored against your own personal baseline rather than population norms. Color bands: green 67–99%, yellow 34–66%, red 1–33% (the average member sits around 58%). Designed to be paired with Strain: "match today\'s strain to your recovery."',
         scale: 'Percentage · green 67–99 / yellow 34–66 / red 1–33',
         inputs: 'HRV, resting heart rate, sleep performance, respiratory rate; blood oxygen and skin temperature also included (WHOOP 4.0 and newer)',
         window: 'Calculated once each morning from sleep data',
         strength: 'A lean input model, transparent by consumer standards, and Recovery is one of only two scores ever tested against an external reference.',
-        limitation: 'Requires a paid membership. When tested in NCAA swimmers, the raw HRV carried the signal — the composite Recovery score did not add to it.',
+        limitation: 'Requires a paid membership. When tested in NCAA swimmers, the raw HRV carried the signal; the composite Recovery score did not add to it.',
         validation: { score: 'weak', signal: 'moderate', evidence: 'Tested in NCAA swimmers (Lundstrom 2024): raw HRV carried the signal, the composite did not. Signals OK (Dial 2025, HRV CCC 0.94).' },
         color: ACC
       },
@@ -197,13 +197,13 @@ class KygoRecoveryScores extends HTMLElement {
         modelLine: 'Readiness · 0–100 · 9 contributors · score free, details need membership',
         sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: false, load: true, subj: false },
         free: false,
-        algorithm: 'A 0–100 morning score built from NINE contributors: resting heart rate, HRV balance (past 14 days vs your 3-month average), body temperature, recovery index (how much sleep you got AFTER your HR hit its overnight low — 6h+ is optimal), sleep, sleep balance, sleep regularity, previous-day activity, and activity balance. "Long-term" means your past two months. Ratings: 85+ optimal, 70–84 good, 60–69 fair, under 60 pay attention.',
+        algorithm: 'A 0–100 morning score built from NINE contributors: resting heart rate, HRV balance (past 14 days vs your 3-month average), body temperature, recovery index (how much sleep you got AFTER your HR hit its overnight low; 6h+ is optimal), sleep, sleep balance, sleep regularity, previous-day activity, and activity balance. "Long-term" means your past two months. Ratings: 85+ optimal, 70–84 good, 60–69 fair, under 60 pay attention.',
         scale: '0–100 · 85+ optimal / 70–84 good / 60–69 fair / 0–59 pay attention',
         inputs: 'RHR, HRV balance, body temp, recovery index, sleep, sleep balance, sleep regularity, prev-day activity, activity balance',
         window: 'Overnight',
         strength: 'Finger-site temperature plus nine contributors is the richest input set in the market, and Oura\'s signals are the most accurate tested (Dial CCC 0.97–0.99). The only score with even moderate independent support.',
         limitation: 'The score is visible free; contributors, trends and insights need a membership ($5.99/mo or $69.99/yr). Validation is "moderate," and some of the supporting work is Oura-affiliated.',
-        validation: { score: 'moderate', signal: 'strong', evidence: 'Readiness correlated with subjective recovery in endurance athletes (2025). Signals most accurate tested — Dial 2025, HRV CCC 0.97–0.99.' },
+        validation: { score: 'moderate', signal: 'strong', evidence: 'Readiness correlated with subjective recovery in endurance athletes (2025). Signals most accurate tested: Dial 2025, HRV CCC 0.97–0.99.' },
         color: ACC
       },
       garmin: {
@@ -245,12 +245,12 @@ class KygoRecoveryScores extends HTMLElement {
         modelLine: 'Energy Score · 0–100 · Galaxy Watch 4 or newer and Galaxy Ring · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: false, rr: false, load: true, subj: false },
         free: true,
-        algorithm: 'A 0–100 overnight score from activity, sleep, sleeping heart rate, and sleeping HRV, with age and gender weighting the factors. Activity uses an Acute:Chronic Workload Ratio; sleep uses an "energy reservoir" model. Built with Prof. Patrick O\'Connor (University of Georgia) as "Overall Capacity" — physical plus cognitive. Needs 24h of wear for a first score; 7 days recommended. Galaxy Watch 4 or newer and Galaxy Ring (Samsung Health app).',
+        algorithm: 'A 0–100 overnight score from activity, sleep, sleeping heart rate, and sleeping HRV, with age and gender weighting the factors. Activity uses an Acute:Chronic Workload Ratio; sleep uses an "energy reservoir" model. Built with Prof. Patrick O\'Connor (University of Georgia) as "Overall Capacity": physical plus cognitive. Needs 24h of wear for a first score; 7 days recommended. Galaxy Watch 4 or newer and Galaxy Ring (Samsung Health app).',
         scale: '0–100',
         inputs: 'Activity, sleep, sleeping HR, sleeping HRV (age & gender weighted)',
         window: 'Overnight + 24h wear',
         strength: 'Built with an academic collaborator and free across the Galaxy Watch line.',
-        limitation: 'The only validation is company-affiliated (UGA correlated it to cognitive-test performance) — no independent test of the score.',
+        limitation: 'The only validation is company-affiliated (UGA correlated it to cognitive-test performance); no independent test of the score.',
         validation: { score: 'none', signal: 'yes', evidence: 'Only company-affiliated work (UGA, cognitive performance). No independent score test.' },
         color: ACC
       },
@@ -276,7 +276,7 @@ class KygoRecoveryScores extends HTMLElement {
         modelLine: 'Dynamic Recovery · 0–100 · re-adjusts intraday · free',
         sensors: { hrv: true, rhr: true, sleep: true, temp: true, rr: false, load: false, subj: false },
         free: true,
-        algorithm: 'A 0–100 score from five factors — Sleep Index, Stress Rhythm, Temperature, RHR, and HRV Form — that re-adjusts through the day rather than locking a single morning number. Stress Rhythm can move it up to about 10 points either way during the day. Above 85 is optimal, 67 to 85 high. No mandatory subscription, which is its wedge against Oura.',
+        algorithm: 'A 0–100 score from five factors (Sleep Index, Stress Rhythm, Temperature, RHR, and HRV Form) that re-adjusts through the day rather than locking a single morning number. Stress Rhythm can move it up to about 10 points either way during the day. Above 85 is optimal, 67 to 85 high. No mandatory subscription, which is its wedge against Oura.',
         scale: '0–100 · above 85 optimal / 67–85 high',
         inputs: 'Sleep Index, resting heart rate, HRV Form, skin temperature, Stress Rhythm',
         window: 'Overnight + daytime',
@@ -292,11 +292,11 @@ class KygoRecoveryScores extends HTMLElement {
         modelLine: 'Recovery % · training load only · free',
         sensors: { hrv: false, rhr: false, sleep: false, temp: false, rr: false, load: true, subj: false },
         free: true,
-        algorithm: 'The genuine outlier: no physiological recovery score. Recovery is a percentage built from base fitness, training load and the energy remaining since your last workout, updated hourly. Purely training-load and fitness math — no HRV, temperature, or sleep in the model. COROS measures overnight HRV and a Sleep Score (Aug 2026) separately; neither feeds Recovery.',
+        algorithm: 'The genuine outlier: no physiological recovery score. Recovery is a percentage built from base fitness, training load and the energy remaining since your last workout, updated hourly. Purely training-load and fitness math: no HRV, temperature, or sleep in the model. COROS measures overnight HRV and a Sleep Score (Aug 2026) separately; neither feeds Recovery.',
         scale: '0–19% exhausted / 20–69% fatigued / 70–89% normal / 90–100% fresh',
         inputs: 'Base fitness, training load, remaining energy since last workout. HRV and sleep are tracked but excluded',
         window: 'Real-time (hourly)',
-        strength: 'Honest, performance-framed training-load math for endurance athletes — no "wellness" overreach.',
+        strength: 'Honest, performance-framed training-load math for endurance athletes, no "wellness" overreach.',
         limitation: 'Not a physiological recovery score at all, so there is nothing to validate as one. The De Gruyter paper lists its composite as "Daily Stress."',
         validation: { score: 'na', signal: 'na', evidence: 'Not a recovery score, so nothing to validate as one. No HRV input.' },
         color: ACC
@@ -408,8 +408,8 @@ class KygoRecoveryScores extends HTMLElement {
     // modifier = shifts your baseline (neither good nor bad). impact = how much it
     // moves the number; evidence = strength of the underlying research.
     const SRC = {
-      alcoholOura:   { url: 'https://ouraring.com/blog/how-does-alcohol-impact-oura-members/', label: 'Oura — alcohol’s impact on members’ sleep & HRV (brand data, 600k members)' },
-      alcoholWhoop:  { url: 'https://www.whoop.com/us/en/thelocker/alcohol-affects-body-hrv-sleep/', label: 'WHOOP — alcohol effects on HRV, sleep & recovery (brand data)' },
+      alcoholOura:   { url: 'https://ouraring.com/blog/how-does-alcohol-impact-oura-members/', label: 'Oura: alcohol’s impact on members’ sleep & HRV (brand data, 600k members)' },
+      alcoholWhoop:  { url: 'https://www.whoop.com/us/en/thelocker/alcohol-affects-body-hrv-sleep/', label: 'WHOOP: alcohol effects on HRV, sleep & recovery (brand data)' },
       alcoholHrv:    { url: 'https://journals.physiology.org/doi/full/10.1152/ajpheart.00700.2009', label: 'Dose-related effects of alcohol on HRV (Am J Physiol Heart Circ, 2009)' },
       trainingLoad:  { url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6026827/', label: 'Next-day recovery after acute low vs high training load (PMC6026827)' },
       sleepDep:      { url: 'https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2025.1556784/full', label: 'Sleep deprivation & HRV: systematic review & meta-analysis (Frontiers, 2025)' },
@@ -425,7 +425,7 @@ class KygoRecoveryScores extends HTMLElement {
       bedroomTemp:   { url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12751657/', label: 'Bedroom temperature & HRV in older adults (PMC)' },
       circadian:     { url: 'https://pubmed.ncbi.nlm.nih.gov/9005885/', label: 'Circadian HRV rhythm in shift workers (PubMed)' },
       nicotine:      { url: 'https://academic.oup.com/ntr/article/13/5/369/1168539', label: 'Single 4 mg nicotine dose reduces HRV in nonsmokers (Nicotine & Tobacco Research)' },
-      thcWhoop:      { url: 'https://www.whoop.com/us/en/thelocker/impact-of-marijuana-sleep-resting-heart-rate-hrv/', label: 'WHOOP — marijuana (THC) effects on sleep, RHR & HRV (brand data)' },
+      thcWhoop:      { url: 'https://www.whoop.com/us/en/thelocker/impact-of-marijuana-sleep-resting-heart-rate-hrv/', label: 'WHOOP: marijuana (THC) effects on sleep, RHR & HRV (brand data)' },
       thcSleep:      { url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640', label: 'THC before bed reduces nocturnal parasympathetic control (SLEEP, 2023)' },
       breathing:     { url: 'https://www.sciencedirect.com/science/article/abs/pii/S0149763422002007', label: 'Voluntary slow breathing & HRV: systematic review & meta-analysis (2022)' },
       coldImmersion: { url: 'https://onlinelibrary.wiley.com/doi/abs/10.1002/pri.70033', label: 'Cold water immersion, HRV & post-exercise recovery: systematic review (2025)' },
@@ -443,7 +443,7 @@ class KygoRecoveryScores extends HTMLElement {
       ashwagandha:   { url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6750292/', label: 'Ashwagandha reduces cortisol & anxiety: RCT (PMC)' },
       saffron:       { url: 'https://pubmed.ncbi.nlm.nih.gov/35325766/', label: 'Saffron & sleep quality: meta-analysis of 21 RCTs (Sleep Medicine, 2022)' },
       chamomile:     { url: 'https://onlinelibrary.wiley.com/doi/10.1002/ptr.6349', label: 'Chamomile for sleep & anxiety: systematic review & meta-analysis (Phytotherapy Research)' },
-      apigenin:      { url: 'https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2024.1359176/full', label: 'Apigenin at the sleep/aging intersection — notes NO human sleep RCT (Frontiers, 2024)' },
+      apigenin:      { url: 'https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2024.1359176/full', label: 'Apigenin at the sleep/aging intersection: notes NO human sleep RCT (Frontiers, 2024)' },
       melatonin:     { url: 'https://www.nature.com/articles/s44323-024-00007-z', label: 'Melatonin in the cardiovascular system, dose-dependent effects (npj Biol Timing & Sleep, 2024)' },
       nitrate:       { url: 'https://journals.physiology.org/doi/full/10.1152/ajpheart.00163.2017', label: 'Beetroot nitrate decreases central sympathetic outflow: RCT (Am J Physiol, 2017)' },
       valerian:      { url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4394901/', label: 'Valerian for sleep: systematic review & meta-analysis (Am J Medicine)' }
@@ -452,28 +452,28 @@ class KygoRecoveryScores extends HTMLElement {
     return [
       // ---- WHAT LOWERS YOUR SCORE (negative) ----
       { key: 'alcohol', cat: 'substances', name: 'Alcohol', direction: 'negative', impact: 'high', evidence: 'Strong',
-        plainEnglish: 'The biggest single controllable hit to your score. Even one drink suppresses your nervous system through the night, and the effect is dose-dependent — mixed drinks and liquor are the worst. If your number suddenly tanks with no other explanation, look here first.',
+        plainEnglish: 'The biggest single controllable hit to your score. Even one drink suppresses your nervous system through the night, and the effect is dose-dependent: mixed drinks and liquor are the worst. If your number suddenly tanks with no other explanation, look here first.',
         effect: 'HRV down ~15% (~10.8 ms) and HR up ~9.6% [Oura, 600k-member data]; a single drink: HRV −7 ms, RHR +3 bpm, next-day recovery ~8% lower [WHOOP data].',
         mechanism: 'Alcohol suppresses parasympathetic (vagal) activity and disrupts deep sleep, and the liver keeps sympathetic tone elevated for hours after the last drink.',
         whatToDo: 'Treat each drink as an overnight cost. A few alcohol-free nights per week recover the most; cut off 3+ hours before bed if you do drink.',
         source: SRC.alcoholOura },
       { key: 'sleep-loss', cat: 'sleep', name: 'Sleep loss / sleep debt', direction: 'negative', impact: 'high', evidence: 'Strong',
-        plainEnglish: 'The most common reason a recovery score looks bad even when you did nothing else wrong. One short night shows up the next morning — and a pattern of them compounds.',
+        plainEnglish: 'The most common reason a recovery score looks bad even when you did nothing else wrong. One short night shows up the next morning, and a pattern of them compounds.',
         effect: 'RMSSD down, RHR up; persists into the next day. One 4-hour night can take 2–3 nights to fully clear.',
         mechanism: 'Short or fragmented sleep stops the nightly autonomic reset, so you wake up locked in sympathetic dominance with cortisol still elevated.',
-        whatToDo: 'Protect 7–9 hours with consistent times. Don\'t try to "make up" sleep on weekends — regularity beats catch-up.',
+        whatToDo: 'Protect 7–9 hours with consistent times. Don\'t try to "make up" sleep on weekends; regularity beats catch-up.',
         source: SRC.sleepDep },
       { key: 'overreaching', cat: 'training', name: 'Hard training / overreaching', direction: 'negative', impact: 'high', evidence: 'Strong',
-        plainEnglish: 'Pushing past your recovery capacity drops the score — and on training-load brands this is the intended signal, not a bug. Watch for a multi-day decline, not how tired you feel today.',
+        plainEnglish: 'Pushing past your recovery capacity drops the score, and on training-load brands this is the intended signal, not a bug. Watch for a multi-day decline, not how tired you feel today.',
         effect: 'Large RHR rise and a moderate HRV drop (rMSSD, lnSDNN) the next day. A 5–7 day decline signals functional overreaching.',
         mechanism: 'Accumulated load without recovery keeps cortisol and sympathetic tone elevated, so vagal tone and HRV fall together.',
-        whatToDo: 'If your 7-day trend is down, take a deload — easier sessions, more sleep, more protein — until it rebounds.',
+        whatToDo: 'If your 7-day trend is down, take a deload (easier sessions, more sleep, more protein) until it rebounds.',
         source: SRC.trainingLoad },
       { key: 'illness', cat: 'stress', name: 'Illness onset', direction: 'negative', impact: 'high', evidence: 'Strong',
         plainEnglish: 'A sudden red day can precede feeling sick by 1–3 days. If the score drops with no lifestyle cause, your body may already be fighting something.',
-        effect: 'RHR rises, skin temperature rises, HRV drops — often 1–3 days before symptoms. A 1°C temperature rise adds about 8.5 bpm (classic 1986 figure; a 2019 study of 4,493 patients found ~7.2).',
+        effect: 'RHR rises, skin temperature rises, HRV drops, often 1–3 days before symptoms. A 1°C temperature rise adds about 8.5 bpm (classic 1986 figure; a 2019 study of 4,493 patients found ~7.2).',
         mechanism: 'Cytokines and inflammatory signaling activate the sympathetic nervous system and raise metabolic and thermoregulatory demand.',
-        whatToDo: 'Take the drop as a real signal — rest, hydrate, and skip hard training even before you "feel" sick. (Exact night-by-night staging varies and isn\'t from a controlled study.)',
+        whatToDo: 'Take the drop as a real signal: rest, hydrate, and skip hard training even before you "feel" sick. (Exact night-by-night staging varies and isn\'t from a controlled study.)',
         source: SRC.feverClassic },
       { key: 'psych-stress', cat: 'stress', name: 'Psychological stress', direction: 'negative', impact: 'med', evidence: 'Moderate–strong',
         plainEnglish: 'Work pressure, conflict, or worry sits on your nervous system and can keep the score down even after you feel calm again.',
@@ -494,13 +494,13 @@ class KygoRecoveryScores extends HTMLElement {
         whatToDo: 'Favor lower-GI evening meals; pair carbs with protein, fat, or fiber; avoid sugar spikes close to bed.',
         source: SRC.glucoseGI },
       { key: 'evening-caffeine', cat: 'substances', name: 'Evening caffeine', direction: 'negative', impact: 'med', evidence: 'Moderate',
-        plainEnglish: 'Caffeine\'s long half-life means an afternoon or evening dose still has half its punch at bedtime — and the recovery hit usually comes via worse sleep.',
+        plainEnglish: 'Caffeine\'s long half-life means an afternoon or evening dose still has half its punch at bedtime, and the recovery hit usually comes via worse sleep.',
         effect: 'Worse sleep, higher sympathetic tone, delayed HRV recovery. Afternoon and evening doses matter most.',
         mechanism: 'Caffeine blocks adenosine and stimulates sympathetic activity; with a 5–6h half-life, a 3 PM coffee still has half its dose at 9 PM.',
-        whatToDo: 'Cap intake and stop by early afternoon (roughly 8–10 hours before bed). Track your own on- vs off-caffeine nights — sensitivity is genetic.',
+        whatToDo: 'Cap intake and stop by early afternoon (roughly 8–10 hours before bed). Track your own on- vs off-caffeine nights; sensitivity is genetic.',
         source: SRC.caffeineSleep },
       { key: 'dehydration', cat: 'nutrition', name: 'Dehydration', direction: 'negative', impact: 'med', evidence: 'Moderate',
-        plainEnglish: 'Being under-hydrated keeps blood volume low, forcing the heart to work harder — HRV down, RHR up — especially after exercise or in the heat.',
+        plainEnglish: 'Being under-hydrated keeps blood volume low, forcing the heart to work harder (HRV down, RHR up), especially after exercise or in the heat.',
         effect: 'HRV down, RHR up (especially post-exercise or in heat, around 3.4% body-mass loss). Rehydrating restores HRV within ~24h.',
         mechanism: 'Reduced plasma volume increases sympathetic drive to maintain blood pressure, lowering stroke volume and vagal tone.',
         whatToDo: 'Drink to thirst plus a baseline; add electrolytes (sodium, potassium) if you sweat heavily or train in heat.',
@@ -513,44 +513,44 @@ class KygoRecoveryScores extends HTMLElement {
         source: SRC.bedroomTemp },
       { key: 'altitude', cat: 'stress', name: 'High altitude (acute)', direction: 'negative', impact: 'high', evidence: 'Strong at altitude',
         plainEnglish: 'Travel to elevation tanks the score for days until you acclimate. It\'s a real physiological load, not a measurement error.',
-        effect: 'Marked HRV drop, higher LF/HF ratio, worse sleep — until acclimatization.',
+        effect: 'Marked HRV drop, higher LF/HF ratio, worse sleep, until acclimatization.',
         mechanism: 'Lower oxygen availability drives a sustained sympathetic response and hypoxia-disrupted sleep.',
         whatToDo: 'Expect lower numbers for several days after arriving at altitude; ease training and prioritize sleep and hydration.',
         source: SRC.altitude },
       { key: 'circadian', cat: 'sleep', name: 'Circadian disruption (jet lag, shift work)', direction: 'negative', impact: 'med', evidence: 'Moderate',
-        plainEnglish: 'Late nights, time-zone travel, and rotating shifts misalign the body clock the score depends on — so the recovery window lands at the wrong time.',
+        plainEnglish: 'Late nights, time-zone travel, and rotating shifts misalign the body clock the score depends on, so the recovery window lands at the wrong time.',
         effect: 'HRV rhythm disrupted, sympathetic dominance, a worse recovery window.',
         mechanism: 'Circadian misalignment desynchronizes autonomic rhythm from the sleep period, blunting overnight parasympathetic recovery.',
         whatToDo: 'Anchor wake time and morning light; shift gradually before travel where possible.',
         source: SRC.circadian },
       { key: 'nicotine', cat: 'substances', name: 'Nicotine', direction: 'negative', impact: 'high', evidence: 'Strong',
-        plainEnglish: 'Nicotine is a direct sympathetic stimulant — and that includes vaping and pouches, not just cigarettes.',
+        plainEnglish: 'Nicotine is a direct sympathetic stimulant, and that includes vaping and pouches, not just cigarettes.',
         effect: 'HRV down (vagal withdrawal), heart rate and blood pressure up.',
         mechanism: 'Nicotine triggers catecholamine release, raising sympathetic tone and suppressing vagal output.',
-        whatToDo: 'Avoid nicotine, especially in the evening. Any form counts — vape, pouch, gum, or cigarette.',
+        whatToDo: 'Avoid nicotine, especially in the evening. Any form counts: vape, pouch, gum, or cigarette.',
         source: SRC.nicotine },
       { key: 'thc', cat: 'substances', name: 'THC / cannabis', direction: 'negative', impact: 'low', evidence: 'Minor',
-        plainEnglish: 'Despite small signal shifts, WHOOP found NO significant change to next-day recovery — so the effect on the score itself is minimal, even though it disrupts sleep architecture.',
-        effect: 'RHR +~1 bpm, HRV −~2.8 ms, suppresses REM [WHOOP data] — but no significant change to next-day recovery.',
+        plainEnglish: 'Despite small signal shifts, WHOOP found NO significant change to next-day recovery, so the effect on the score itself is minimal, even though it disrupts sleep architecture.',
+        effect: 'RHR +~1 bpm, HRV −~2.8 ms, suppresses REM [WHOOP data], but no significant change to next-day recovery.',
         mechanism: 'THC alters sleep architecture (notably REM suppression) and produces small autonomic shifts that mostly wash out by morning.',
         whatToDo: 'Don\'t expect cannabis to wreck the score, but know it does disrupt REM. Judge by your own trend.',
         source: SRC.thcWhoop },
 
       // ---- WHAT RAISES YOUR SCORE (positive) ----
       { key: 'consistent-sleep', cat: 'sleep', name: 'Adequate, consistent sleep', direction: 'positive', impact: 'high', evidence: 'Strong',
-        plainEnglish: 'The single biggest lever you have. Across every brand, adequate and regular sleep is the dominant positive input — and regularity matters as much as duration.',
+        plainEnglish: 'The single biggest lever you have. Across every brand, adequate and regular sleep is the dominant positive input, and regularity matters as much as duration.',
         effect: 'The dominant positive input across every brand. Regularity matters as much as total hours.',
         mechanism: 'Deep and REM sleep are when vagal tone takes over and beat-to-beat variability widens; consistent timing keeps the circadian recovery window aligned.',
-        whatToDo: 'Protect 7–9 hours with consistent bed and wake times — even on weekends.',
+        whatToDo: 'Protect 7–9 hours with consistent bed and wake times, even on weekends.',
         source: SRC.sleepDep },
       { key: 'aerobic-fitness', cat: 'training', name: 'Aerobic fitness (long-term)', direction: 'positive', impact: 'high', evidence: 'Strong',
-        plainEnglish: 'Consistent aerobic training raises your whole baseline — higher resting HRV and lower RHR over weeks to months — not just one night.',
+        plainEnglish: 'Consistent aerobic training raises your whole baseline (higher resting HRV and lower RHR over weeks to months), not just one night.',
         effect: 'Higher resting HRV and lower RHR over weeks to months; it lifts the baseline the score compares against.',
         mechanism: 'Endurance training expands stroke volume and shifts autonomic balance toward parasympathetic dominance.',
-        whatToDo: 'Build an aerobic base — ~150 min/week of zone-2 cardio — and let the baseline rise over months.',
+        whatToDo: 'Build an aerobic base (~150 min/week of zone-2 cardio) and let the baseline rise over months.',
         source: SRC.hrvDeterm },
       { key: 'breathing', cat: 'stress', name: 'Slow breathing / meditation', direction: 'positive', impact: 'med', evidence: 'Moderate–strong',
-        plainEnglish: 'Slow breathing is a direct line to the vagus nerve — it works acutely and is trainable over weeks.',
+        plainEnglish: 'Slow breathing is a direct line to the vagus nerve; it works acutely and is trainable over weeks.',
         effect: 'Higher vagally-mediated HRV, both acutely and as a trained baseline lift.',
         mechanism: 'Breathing at ~6 breaths/min creates cardiorespiratory resonance that maximally engages vagal output.',
         whatToDo: '5–10 min/day of slow-paced breathing (~6 breaths/min). Pre-bed timing compounds with sleep benefits.',
@@ -559,16 +559,16 @@ class KygoRecoveryScores extends HTMLElement {
         plainEnglish: 'The opposite of a one-off hot night: repeated heat exposure expands plasma volume and nudges morning HRV up.',
         effect: 'Plasma volume up, morning HRV up after a block of repeated heat exposure.',
         mechanism: 'Heat adaptation increases plasma volume and improves cardiovascular efficiency, supporting vagal tone.',
-        whatToDo: 'Structured, progressive heat exposure (e.g. heat training blocks) — distinct from a single hot, sleepless night.',
+        whatToDo: 'Structured, progressive heat exposure (e.g. heat training blocks), distinct from a single hot, sleepless night.',
         source: SRC.saunaPos },
       { key: 'cold-immersion', cat: 'training', name: 'Cold water immersion (post-exercise)', direction: 'positive', impact: 'med', evidence: 'Moderate',
-        plainEnglish: 'Clearest in the post-exercise window — it accelerates parasympathetic reactivation and raises HRV acutely. But it\'s an acute effect, not a proven overnight-score lever.',
+        plainEnglish: 'Clearest in the post-exercise window: it accelerates parasympathetic reactivation and raises HRV acutely. But it\'s an acute effect, not a proven overnight-score lever.',
         effect: 'Accelerates parasympathetic reactivation and raises HRV acutely (e.g. ~11°C for ~6 min). Gone by ~4h; immersion at any temperature helps somewhat.',
         mechanism: 'Cold triggers a parasympathetic rebound after exercise, speeding the return of vagal tone.',
         whatToDo: 'Use it post-session for acute recovery if you like it; don\'t count on it moving the overnight number.',
         source: SRC.coldImmersion },
       { key: 'sauna', cat: 'training', name: 'Sauna (acute session)', direction: 'positive', impact: 'low', evidence: 'Mixed',
-        plainEnglish: 'HRV dips during a sauna then rebounds above baseline after, with lower RHR into the next morning — but the long-term benefit is unproven.',
+        plainEnglish: 'HRV dips during a sauna then rebounds above baseline after, with lower RHR into the next morning, but the long-term benefit is unproven.',
         effect: 'HRV dips during, rebounds above baseline after; RHR lower post-session, often into the next morning. A 2025 RCT found regular post-exercise sauna does NOT improve HRV long-term.',
         mechanism: 'Acute heat stress is followed by a parasympathetic rebound; the durable adaptation seen for heat training doesn\'t reliably appear for sauna alone.',
         whatToDo: 'Fine as an acute recovery ritual; don\'t expect a lasting HRV gain from sauna by itself.',
@@ -576,7 +576,7 @@ class KygoRecoveryScores extends HTMLElement {
 
       // ---- SUPPLEMENTS (positive, unless noted) ----
       { key: 'magnesium', cat: 'supplements', name: 'Magnesium (bisglycinate)', direction: 'positive', impact: 'med', evidence: 'Moderate–weak',
-        plainEnglish: 'A defensible pick: faster sleep onset and a small HRV/readiness benefit — but the evidence is weaker than blogs claim.',
+        plainEnglish: 'A defensible pick: faster sleep onset and a small HRV/readiness benefit, but the evidence is weaker than blogs claim.',
         effect: 'Sleep onset ~17 min faster; a small HRV/readiness benefit.',
         mechanism: 'Magnesium supports GABAergic and NMDA balance involved in sleep onset; the autonomic effect is modest.',
         note: 'CORRECTED: the meta-analysis (Mah 2021) had only 3 small trials (n=151) with low-quality evidence, NOT the "27 RCTs / 2,496" figure circulating on blogs. A separate small Oura crossover (n=31) improved readiness and deep-sleep scores. Typical study dose ~200–360 mg.',
@@ -586,18 +586,18 @@ class KygoRecoveryScores extends HTMLElement {
         plainEnglish: 'Small but PSG-correlated: faster sleep onset and better quality, partly by lowering core temperature.',
         effect: 'Faster sleep onset, better sleep quality; lowers core temperature ~0.28°C.',
         mechanism: 'Glycine promotes peripheral vasodilation and a core-temperature drop that helps initiate sleep.',
-        note: 'Typical study dose 3 g pre-bed (Inagawa 2006 / Yamadera 2007) — PSG-correlated but small samples.',
+        note: 'Typical study dose 3 g pre-bed (Inagawa 2006 / Yamadera 2007); PSG-correlated but small samples.',
         amazon: { url: 'https://www.amazon.com/s?k=Glycine%20Powder&rh=p_72%3A1248903011&tag=kygohealthapp-20', label: 'Glycine Powder' , slug: 'glycine-search' },
         source: SRC.glycine },
       { key: 'tart-cherry', cat: 'supplements', name: 'Tart cherry (Montmorency)', direction: 'positive', impact: 'med', evidence: 'Moderate (small pilots)',
-        plainEnglish: 'Adds sleep time and eases muscle soreness — handy as a double-duty training-recovery aid, though the trials are small.',
+        plainEnglish: 'Adds sleep time and eases muscle soreness, handy as a double-duty training-recovery aid, though the trials are small.',
         effect: '+34 to 84 min sleep, raises melatonin, eases muscle soreness. The +84 min figure is from an 8-person pilot; Pigeon 2010 (n=15) cut insomnia severity.',
         mechanism: 'Naturally contains melatonin and anti-inflammatory anthocyanins.',
         note: 'Typical dose 60 mL concentrate 2×/day or juice. Small pilots (n=8–15).',
         amazon: { url: 'https://www.amazon.com/dp/B007RC6J72?tag=kygohealthapp-20&th=1', label: 'Tart Cherry Juice' , slug: 'tart-cherry-juice' },
         source: SRC.tartCherry },
       { key: 'l-theanine', cat: 'supplements', name: 'L-theanine', direction: 'positive', impact: 'med', evidence: 'Moderate',
-        plainEnglish: 'Lowers heart rate and cortisol under acute stress and improves sleep — and it pairs well with caffeine to blunt the jitters.',
+        plainEnglish: 'Lowers heart rate and cortisol under acute stress and improves sleep, and it pairs well with caffeine to blunt the jitters.',
         effect: 'Lowers HR and cortisol under acute stress; improves sleep.',
         mechanism: 'Promotes alpha-wave activity and dampens the sympathetic stress response.',
         note: 'Typical dose 200 mg. Often paired with caffeine to blunt its sympathetic effect.',
@@ -611,7 +611,7 @@ class KygoRecoveryScores extends HTMLElement {
         amazon: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' },
         source: SRC.ashwagandha },
       { key: 'omega3', cat: 'supplements', name: 'Omega-3 (DHA)', direction: 'positive', impact: 'low', evidence: 'Moderate (RHR)',
-        plainEnglish: 'A small, reliable resting-heart-rate drop — and notably the effect is from DHA, not EPA.',
+        plainEnglish: 'A small, reliable resting-heart-rate drop, and notably the effect is from DHA, not EPA.',
         effect: 'Lowers resting heart rate ~2.2 bpm; HRV evidence mixed.',
         mechanism: 'DHA incorporates into cardiac membranes and modulates autonomic control of heart rate.',
         note: '51-RCT meta-analysis. Effect from DHA, not EPA.',
@@ -625,7 +625,7 @@ class KygoRecoveryScores extends HTMLElement {
         amazon: { url: 'https://www.amazon.com/dp/B097TKQSQD?tag=kygohealthapp-20', label: 'Saffron Extract', slug: 'saffron-extract' },
         source: SRC.saffron },
       { key: 'chamomile', cat: 'supplements', name: 'Chamomile extract', direction: 'positive', impact: 'low', evidence: 'Moderate',
-        plainEnglish: 'Whole-extract chamomile improves sleep and anxiety — but the trendy isolated apigenin does not have the evidence people assume.',
+        plainEnglish: 'Whole-extract chamomile improves sleep and anxiety, but the trendy isolated apigenin does not have the evidence people assume.',
         effect: 'Improves sleep quality and anxiety.',
         mechanism: 'Apigenin and other flavonoids bind benzodiazepine and GABA receptors, but the human evidence is for whole extract.',
         note: 'IMPORTANT: isolated apigenin (the trendy ~50 mg version) has NO human sleep RCT; the evidence is for whole chamomile extract. Typical dose 200–560 mg.',
@@ -639,14 +639,14 @@ class KygoRecoveryScores extends HTMLElement {
         amazon: { url: 'https://www.amazon.com/dp/B08666GMWG?tag=kygohealthapp-20&th=1', label: 'Melatonin Supplement' , slug: 'melatonin-gummies' },
         source: SRC.melatonin },
       { key: 'nitrate', cat: 'supplements', name: 'Dietary nitrate / beetroot', direction: 'positive', impact: 'low', evidence: 'Moderate / mixed',
-        plainEnglish: 'Raises HRV and lowers sympathetic outflow and blood pressure — clearest acutely, and it varies by population.',
+        plainEnglish: 'Raises HRV and lowers sympathetic outflow and blood pressure, clearest acutely, and it varies by population.',
         effect: 'Raises SDNN, lowers sympathetic outflow and blood pressure.',
         mechanism: 'Dietary nitrate boosts nitric-oxide availability, improving vascular function and autonomic balance.',
         note: 'Clearest acutely; varies by population.',
         amazon: { url: 'https://www.amazon.com/dp/B01GJS8VX4?tag=kygohealthapp-20&th=1', label: 'Beetroot Juice Shots' , slug: 'beet-nitrate-shots' },
         source: SRC.nitrate },
       { key: 'weak-tier', cat: 'supplements', name: 'Weak / don’t rely on (valerian, GABA, CBD, creatine)', direction: 'positive', impact: 'low', evidence: 'Weak',
-        plainEnglish: 'Kept here as one line on purpose so recovery content doesn\'t recommend these as recovery aids — the evidence doesn\'t support it.',
+        plainEnglish: 'Kept here as one line on purpose so recovery content doesn\'t recommend these as recovery aids: the evidence doesn\'t support it.',
         effect: 'Valerian: subjective improvement only, objective measures unconvincing. GABA: poor oral absorption. CBD: WHOOP data shows no meaningful recovery change. Creatine: a cognitive buffer when underslept, not an HRV/recovery aid.',
         note: 'Taurine was dropped (no recovery audience; clinical/animal evidence only). Do not feature these in recovery or affiliate content.',
         source: SRC.valerian },
@@ -659,12 +659,12 @@ class KygoRecoveryScores extends HTMLElement {
         whatToDo: 'Judge your score against your own history and age-appropriate norms.',
         source: SRC.hrvDeterm },
       { key: 'sex', cat: 'baseline', name: 'Sex', direction: 'modifier', impact: 'med', evidence: 'Moderate',
-        plainEnglish: 'Women tend to run higher vagal tone, men higher sympathetic — and the gap narrows after about 55 (menopause).',
+        plainEnglish: 'Women tend to run higher vagal tone, men higher sympathetic, and the gap narrows after about 55 (menopause).',
         effect: 'Women: higher vagal tone; men: higher sympathetic. The gap narrows after ~55 (menopause).',
         mechanism: 'Sex hormones modulate autonomic balance; the difference attenuates post-menopause.',
         source: SRC.hrvDeterm },
       { key: 'body-comp', cat: 'baseline', name: 'Body composition (body fat %)', direction: 'modifier', impact: 'med', evidence: 'Moderate',
-        plainEnglish: 'Body fat percentage — not weight or BMI — is the informative measure: higher body fat tracks lower HRV and higher RHR, and it improves with fat loss.',
+        plainEnglish: 'Body fat percentage, not weight or BMI, is the informative measure: higher body fat tracks lower HRV and higher RHR, and it improves with fat loss.',
         effect: 'Higher body fat tracks lower HRV and higher RHR; BMI alone is not independently associated.',
         mechanism: 'Adipose tissue raises sympathetic tone and inflammatory load; fat loss restores autonomic balance.',
         whatToDo: 'Track body fat %, not the scale; sustainable fat loss lifts the baseline.',
@@ -824,7 +824,7 @@ class KygoRecoveryScores extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('compare')}</span>How each brand measures recovery</span>
             <h2 class="section-h2">Every recovery score, <em>side by side</em>.</h2>
-            <p class="section-lede">Two devices on one wrist will disagree — different inputs, baselines, and scales. Here's what each score actually reads, ranked by input coverage.</p>
+            <p class="section-lede">Two devices on one wrist will disagree: different inputs, baselines, and scales. Here's what each score actually reads, ranked by input coverage.</p>
             ${this._readMore(this._posts.compared, 'Full breakdown: WHOOP vs Oura vs Garmin compared')}
           </div>
 
@@ -833,7 +833,7 @@ class KygoRecoveryScores extends HTMLElement {
               <div>
                 <span class="dc-eyebrow">Input coverage</span>
                 <h3 class="dc-title">Signals fed into the recovery score, by brand</h3>
-                <p class="dc-sub">Same core ingredients — HRV (86% of scores), resting HR (79%), sleep (71%). The difference between brands is weighting, not raw signals.</p>
+                <p class="dc-sub">Same core ingredients: HRV (86% of scores), resting HR (79%), sleep (71%). The difference between brands is weighting, not raw signals.</p>
               </div>
               <div class="dc-meta">${ranked.length} brands · ${totalSensors} signals</div>
             </div>
@@ -886,7 +886,7 @@ class KygoRecoveryScores extends HTMLElement {
                 <div class="dd-callout watch"><span class="dd-callout-head"><span class="dd-callout-icon">${this._icon('alert')}</span>Watch out for</span><p>${d.limitation}</p></div>
               </div>
               ${d.post ? this._readMore(d.post.url, d.post.label) : ''}
-              ${d.amazon ? `<div class="dd-buy-row"><a class="dd-buy" href="${d.amazon}" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>View ${d.name} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission.</span></div>` : ''}
+              ${d.amazon ? `<div class="dd-buy-row"><a class="dd-buy" href="${d.amazon}" target="_blank" rel="noopener sponsored" data-track-label="${d.trackLabel}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>View ${d.name} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link: we may earn a commission.</span></div>` : ''}
             </div>
           </div>
         </div>`;
@@ -910,14 +910,14 @@ class KygoRecoveryScores extends HTMLElement {
 
   _topPicks() {
     return [
-      { label: 'What you\'re buying', stat: 'One number', answer: 'A modeled opinion, not a measurement', icon: 'bolt', note: 'Almost every brand now sells a single morning number for "how recovered are you." But there\'s no clinical gold standard for recovery the way polysomnography exists for sleep — so brands validate their inputs, not the output. A recovery score is a modeled opinion layered on real signals.', cls: '' },
-      { label: 'Cross-brand comparison', stat: 'Don\'t', answer: 'An "80" means different things', icon: 'ghost', note: 'Different inputs, baselines, and scales. Polar isn\'t even on 0–100 (it\'s ANS Charge, −10 to +10). Two devices on one wrist will routinely disagree. Only the trend versus your own baseline is meaningful — never the cross-brand number.', cls: '' },
-      { label: 'Scores independently validated', stat: '2 / 12', answer: 'Only WHOOP & Oura', icon: 'shield', note: 'And WHOOP\'s came out weak — the raw HRV carried the signal, the composite didn\'t add to it. Everyone else has at most component validation or vendor white papers. "2 of 12" is the headline finding, not a coverage gap.', cls: '' },
+      { label: 'What you\'re buying', stat: 'One number', answer: 'A modeled opinion, not a measurement', icon: 'bolt', note: 'Almost every brand now sells a single morning number for "how recovered are you." But there\'s no clinical gold standard for recovery the way polysomnography exists for sleep, so brands validate their inputs, not the output. A recovery score is a modeled opinion layered on real signals.', cls: '' },
+      { label: 'Cross-brand comparison', stat: 'Don\'t', answer: 'An "80" means different things', icon: 'ghost', note: 'Different inputs, baselines, and scales. Polar isn\'t even on 0–100 (it\'s ANS Charge, −10 to +10). Two devices on one wrist will routinely disagree. Only the trend versus your own baseline is meaningful, never the cross-brand number.', cls: '' },
+      { label: 'Scores independently validated', stat: '2 / 12', answer: 'Only WHOOP & Oura', icon: 'shield', note: 'And WHOOP\'s came out weak: the raw HRV carried the signal, the composite didn\'t add to it. Everyone else has at most component validation or vendor white papers. "2 of 12" is the headline finding, not a coverage gap.', cls: '' },
       { label: 'The common spine', stat: 'HRV+RHR+sleep', answer: 'Same ingredients, different recipe', icon: 'activity', note: 'Across the De Gruyter catalogue: HRV in 86% of scores, RHR 79%, activity 71%, sleep 71%. The differences between brands are weighting and window length, not the raw ingredients.', cls: '' },
       { label: 'Biggest controllable hit', stat: '~15%', answer: 'Alcohol drops HRV overnight', icon: 'droplet', note: 'Oura\'s 600,000-member data: HRV down ~15% (~10.8 ms), HR up ~9.6%. WHOOP: a single drink cuts next-day recovery ~8%. Dose-dependent, and the clearest lever a food-logging user can actually see and change.', cls: '' },
-      { label: 'Single biggest lever up', stat: 'Sleep', answer: 'Consistency = duration', icon: 'moon', note: 'Adequate, regular sleep is the dominant positive input across every brand. Regularity matters as much as hours. Everything else — supplements, cold plunges, breathwork — is a rounding error next to it.', cls: '' },
+      { label: 'Single biggest lever up', stat: 'Sleep', answer: 'Consistency = duration', icon: 'moon', note: 'Adequate, regular sleep is the dominant positive input across every brand. Regularity matters as much as hours. Everything else (supplements, cold plunges, breathwork) is a rounding error next to it.', cls: '' },
       { label: 'Signals beat scores', stat: 'Oura best', answer: 'Cite the signal, not the score', icon: 'target', note: 'Dial 2025 (536 nights vs ECG): Oura HRV CCC 0.97–0.99, WHOOP 0.94, Garmin and Polar poor. The ingredients are reasonably sound (best in Oura); the recipe layered on top is the unvalidated part.', cls: '' },
-      { label: 'The independence problem', stat: 'Double-count', answer: 'One bad night hits 3 inputs', icon: 'alert', note: 'Poor sleep lowers next-day HRV and raises RHR — so a score "combining" sleep + HRV + RHR partly counts the same event twice. This can overstate a single bad night, a known critique of every composite score.', cls: '' }
+      { label: 'The independence problem', stat: 'Double-count', answer: 'One bad night hits 3 inputs', icon: 'alert', note: 'Poor sleep lowers next-day HRV and raises RHR, so a score "combining" sleep + HRV + RHR partly counts the same event twice. This can overstate a single bad night, a known critique of every composite score.', cls: '' }
     ];
   }
 
@@ -973,7 +973,7 @@ class KygoRecoveryScores extends HTMLElement {
             <span class="fact-source-lbl">Source</span>
             <a href="${f.source.url}" target="_blank" rel="noopener" class="source-link">${f.source.label} ${this._icon('externalLink')}</a>
           </div>
-          ${f.amazon ? `<div class="fact-buy-row"><a class="dd-buy dd-buy--sm" href="${f.amazon.url}" target="_blank" rel="noopener sponsored" data-track-label="${f.amazon.slug}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>${f.amazon.label} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission.</span></div>` : ''}
+          ${f.amazon ? `<div class="fact-buy-row"><a class="dd-buy dd-buy--sm" href="${f.amazon.url}" target="_blank" rel="noopener sponsored" data-track-label="${f.amazon.slug}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>${f.amazon.label} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link: we may earn a commission.</span></div>` : ''}
         </div>`;
     }
 
@@ -1059,10 +1059,10 @@ class KygoRecoveryScores extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('activity')}</span>What moves your score</span>
             <h2 class="section-h2">${total} <em>factors</em> that move your recovery score.</h2>
-            <p class="section-lede">Anything that moves HRV, resting heart rate or sleep moves your score — always relative to your own baseline.</p>
+            <p class="section-lede">Anything that moves HRV, resting heart rate or sleep moves your score, always relative to your own baseline.</p>
             ${this._readMore(this._posts.lowers, 'Read: what lowers your recovery score')}
           </div>
-          <span class="metric-tiles-label">Filter by category — ${this._factorCategories.length} groups</span>
+          <span class="metric-tiles-label">Filter by category: ${this._factorCategories.length} groups</span>
           ${this._renderCategoryTiles()}
           <div class="picker-panel">
             <div class="picker-panel-head">
@@ -1077,76 +1077,76 @@ class KygoRecoveryScores extends HTMLElement {
   get _srcGroups() {
     const groups = {
       'Recovery & composite-score validation': [
-        { label: 'De Gruyter 2025 — Readiness, recovery & strain: evaluation of composite health scores (Doherty / Altini et al.)', url: 'https://www.degruyterbrill.com/document/doi/10.1515/teb-2025-0001/html' },
-        { label: 'Marco Altini — summary of the composite-scores paper (Substack)', url: 'https://marcoaltini.substack.com/p/paper-readiness-recovery-and-strain' },
-        { label: 'Dial et al. 2025 — nocturnal RHR/HRV validation, 536 nights vs ECG (Physiological Reports)', url: 'https://physoc.onlinelibrary.wiley.com/doi/10.14814/phy2.70527' },
-        { label: 'Bellenger et al. 2021 — WHOOP wrist-PPG HR/HRV validation vs ECG (Sensors, MDPI)', url: 'https://www.mdpi.com/1424-8220/21/10/3571' },
-        { label: 'Lundstrom et al. 2024 — WHOOP metrics vs energy deficiency in elite swimmers (Sage)', url: 'https://journals.sagepub.com/doi/10.1177/17479541231206424' },
-        { label: 'Penn State thesis — WHOOP score vs metabolism/recovery in D1 swimmers', url: 'https://etda.libraries.psu.edu/catalog/18210eal259' },
-        { label: 'CTS / TrainRight — analysis of the swimmer wearable-score study', url: 'https://trainright.com/new-study-reveals-holes-in-wearable-device-scores/' },
-        { label: 'Sports Medicine Open 2025 — validating subjective ratings with Oura data in elite endurance athletes', url: 'https://link.springer.com/article/10.1186/s40798-025-00958-y' },
-        { label: 'SciTePress 2025 — Recovery & Readiness Monitoring Using Wearable Technology', url: 'https://www.scitepress.org/Papers/2025/137331/137331.pdf' }
+        { label: 'De Gruyter 2025, Readiness, recovery & strain: evaluation of composite health scores (Doherty / Altini et al.)', url: 'https://www.degruyterbrill.com/document/doi/10.1515/teb-2025-0001/html' },
+        { label: 'Marco Altini: summary of the composite-scores paper (Substack)', url: 'https://marcoaltini.substack.com/p/paper-readiness-recovery-and-strain' },
+        { label: 'Dial et al. 2025: nocturnal RHR/HRV validation, 536 nights vs ECG (Physiological Reports)', url: 'https://physoc.onlinelibrary.wiley.com/doi/10.14814/phy2.70527' },
+        { label: 'Bellenger et al. 2021: WHOOP wrist-PPG HR/HRV validation vs ECG (Sensors, MDPI)', url: 'https://www.mdpi.com/1424-8220/21/10/3571' },
+        { label: 'Lundstrom et al. 2024: WHOOP metrics vs energy deficiency in elite swimmers (Sage)', url: 'https://journals.sagepub.com/doi/10.1177/17479541231206424' },
+        { label: 'Penn State thesis: WHOOP score vs metabolism/recovery in D1 swimmers', url: 'https://etda.libraries.psu.edu/catalog/18210eal259' },
+        { label: 'CTS / TrainRight: analysis of the swimmer wearable-score study', url: 'https://trainright.com/new-study-reveals-holes-in-wearable-device-scores/' },
+        { label: 'Sports Medicine Open 2025: validating subjective ratings with Oura data in elite endurance athletes', url: 'https://link.springer.com/article/10.1186/s40798-025-00958-y' },
+        { label: 'SciTePress 2025: Recovery & Readiness Monitoring Using Wearable Technology', url: 'https://www.scitepress.org/Papers/2025/137331/137331.pdf' }
       ],
       'Brand documentation': [
-        { label: 'WHOOP — Recovery: How It Works (Recovery 101)', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
-        { label: 'Oura — Readiness Contributors (Oura Help)', url: 'https://support.ouraring.com/hc/en-us/articles/360057791533-Readiness-Contributors' },
-        { label: 'Garmin — Training Readiness (owner\'s manual)', url: 'https://www8.garmin.com/manuals/webhelp/GUID-C001C335-A8EC-4A41-AB0E-BAC434259F92/EN-US/GUID-C21BE0C8-A08E-4DA1-B6C6-2E0E2DDDB372.html' },
-        { label: 'Fitbit / Google — Readiness score (Google Health Help)', url: 'https://support.google.com/fitbit/answer/14236710?hl=en' },
-        { label: 'Samsung × University of Georgia — Energy Score (Samsung Newsroom)', url: 'https://news.samsung.com/global/samsung-collaborates-with-the-university-of-georgia-to-define-and-measure-energy-for-innovative-digital-health-experiences' },
-        { label: 'Polar — Nightly Recharge / ANS Charge (Polar Support)', url: 'https://support.polar.com/en/nightly-recharge-recovery-measurement' },
-        { label: 'Ultrahuman — Recovery score explainer (Ultrahuman Science)', url: 'https://www.ultrahuman.com/science/explainers/recovery-score/' },
-        { label: 'COROS — EvoLab Metrics (COROS Help)', url: 'https://support.coros.com/hc/en-us/articles/360061452651-EvoLab-Metrics' },
-        { label: 'COROS — Understanding the Recovery Widget (COROS Help)', url: 'https://support.coros.com/hc/en-us/articles/15406707571732-Understanding-the-Recovery-Widget' },
-        { label: 'Zepp — What is HybridCharge? (Zepp OS news)', url: 'https://os.zepp.com/news/what-is-hybridcharge' },
-        { label: 'Suunto — Recovery widget (Suunto Run support)', url: 'https://www.suunto.com/Support/Product-support/suunto_run/suunto_run/widgets/recovery/' },
-        { label: 'Apple — Track Your Training Load on Apple Watch (Apple Support)', url: 'https://support.apple.com/guide/watch/track-your-training-load-apde4c07a6cf/watchos' },
-        { label: 'Apple — Understand your readiness score on Apple Watch (Apple Support)', url: 'https://support.apple.com/en-us/128112' },
-        { label: 'Apple — Use the Readiness app on Apple Watch (watchOS User Guide)', url: 'https://support.apple.com/guide/watch/flx4gnzby346/watchos' },
-        { label: 'RingConn — Health Scores Explained (RingConn)', url: 'https://ringconn.com/blogs/news/guide-ringconn-health-scores' }
+        { label: 'WHOOP, Recovery: How It Works (Recovery 101)', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
+        { label: 'Oura: Readiness Contributors (Oura Help)', url: 'https://support.ouraring.com/hc/en-us/articles/360057791533-Readiness-Contributors' },
+        { label: 'Garmin: Training Readiness (owner\'s manual)', url: 'https://www8.garmin.com/manuals/webhelp/GUID-C001C335-A8EC-4A41-AB0E-BAC434259F92/EN-US/GUID-C21BE0C8-A08E-4DA1-B6C6-2E0E2DDDB372.html' },
+        { label: 'Fitbit / Google: Readiness score (Google Health Help)', url: 'https://support.google.com/fitbit/answer/14236710?hl=en' },
+        { label: 'Samsung × University of Georgia: Energy Score (Samsung Newsroom)', url: 'https://news.samsung.com/global/samsung-collaborates-with-the-university-of-georgia-to-define-and-measure-energy-for-innovative-digital-health-experiences' },
+        { label: 'Polar: Nightly Recharge / ANS Charge (Polar Support)', url: 'https://support.polar.com/en/nightly-recharge-recovery-measurement' },
+        { label: 'Ultrahuman: Recovery score explainer (Ultrahuman Science)', url: 'https://www.ultrahuman.com/science/explainers/recovery-score/' },
+        { label: 'COROS: EvoLab Metrics (COROS Help)', url: 'https://support.coros.com/hc/en-us/articles/360061452651-EvoLab-Metrics' },
+        { label: 'COROS: Understanding the Recovery Widget (COROS Help)', url: 'https://support.coros.com/hc/en-us/articles/15406707571732-Understanding-the-Recovery-Widget' },
+        { label: 'Zepp: What is HybridCharge? (Zepp OS news)', url: 'https://os.zepp.com/news/what-is-hybridcharge' },
+        { label: 'Suunto: Recovery widget (Suunto Run support)', url: 'https://www.suunto.com/Support/Product-support/suunto_run/suunto_run/widgets/recovery/' },
+        { label: 'Apple: Track Your Training Load on Apple Watch (Apple Support)', url: 'https://support.apple.com/guide/watch/track-your-training-load-apde4c07a6cf/watchos' },
+        { label: 'Apple: Understand your readiness score on Apple Watch (Apple Support)', url: 'https://support.apple.com/en-us/128112' },
+        { label: 'Apple: Use the Readiness app on Apple Watch (watchOS User Guide)', url: 'https://support.apple.com/guide/watch/flx4gnzby346/watchos' },
+        { label: 'RingConn: Health Scores Explained (RingConn)', url: 'https://ringconn.com/blogs/news/guide-ringconn-health-scores' }
       ],
-      'What moves your score — lifestyle factors': [
-        { label: 'Oura — alcohol\'s impact on members\' sleep & HRV (brand data, 600k members)', url: 'https://ouraring.com/blog/how-does-alcohol-impact-oura-members/' },
-        { label: 'WHOOP — alcohol effects on HRV, sleep & recovery (brand data)', url: 'https://www.whoop.com/us/en/thelocker/alcohol-affects-body-hrv-sleep/' },
-        { label: 'WHOOP — marijuana (THC) effects on sleep, RHR & HRV (brand data)', url: 'https://www.whoop.com/us/en/thelocker/impact-of-marijuana-sleep-resting-heart-rate-hrv/' },
-        { label: 'Am J Physiol Heart Circ 2009 — dose-related effects of alcohol on HRV', url: 'https://journals.physiology.org/doi/full/10.1152/ajpheart.00700.2009' },
-        { label: 'Frontiers in Neurology 2025 — sleep deprivation & HRV: systematic review & meta-analysis', url: 'https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2025.1556784/full' },
-        { label: 'PMC6026827 — next-day recovery after acute low vs high training load (rugby)', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6026827/' },
-        { label: 'Egyptian Heart Journal (PMC6821413) — persistent effect of acute psychosocial stress on HRV', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6821413/' },
-        { label: 'MDPI Sensors 2024 — wearable fever / illness detection physiology', url: 'https://www.mdpi.com/1424-8220/24/6/1818' },
-        { label: 'PubMed 2424378 — fever & cardiac rhythm: ~8.5 bpm per 1°C (classic)', url: 'https://pubmed.ncbi.nlm.nih.gov/2424378/' },
-        { label: 'PubMed 33426778 — late-night eating: sleep, HPA axis & autonomic function', url: 'https://pubmed.ncbi.nlm.nih.gov/33426778/' },
-        { label: 'PubMed 38042028 — heart rate variations & glucose fluctuations during sleep', url: 'https://pubmed.ncbi.nlm.nih.gov/38042028/' },
-        { label: 'Chronobiology Int 2024 — high-glycemic-index breakfast & HRV by chronotype', url: 'https://www.tandfonline.com/doi/full/10.1080/07420528.2024.2428203' },
-        { label: 'PubMed 16184581 — caffeine effects on heart rate & QT variability during sleep', url: 'https://pubmed.ncbi.nlm.nih.gov/16184581/' },
-        { label: 'PubMed 25726222 — hydration status affects RMR & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/25726222/' },
-        { label: 'PMC12812737 — acute high-altitude exposure & HRV: meta-analysis', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12812737/' },
-        { label: 'PMC12751657 — bedroom temperature & HRV in older adults', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12751657/' },
-        { label: 'PubMed 9005885 — circadian HRV rhythm in shift workers', url: 'https://pubmed.ncbi.nlm.nih.gov/9005885/' },
-        { label: 'Nicotine & Tobacco Research — single 4 mg nicotine dose reduces HRV in nonsmokers', url: 'https://academic.oup.com/ntr/article/13/5/369/1168539' },
-        { label: 'SLEEP 2023 — THC before bed reduces nocturnal parasympathetic control', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
-        { label: 'ScienceDirect 2022 — voluntary slow breathing & HRV: systematic review & meta-analysis', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0149763422002007' },
-        { label: 'Wiley 2025 — cold water immersion, HRV & post-exercise recovery: systematic review', url: 'https://onlinelibrary.wiley.com/doi/abs/10.1002/pri.70033' },
-        { label: 'J Sci Med Sport — recovery from sauna favorably modulates cardiac autonomic system', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0965229919301943' },
-        { label: 'Physiological Reports 2025 — regular post-exercise sauna does NOT improve HRV: RCT', url: 'https://physoc.onlinelibrary.wiley.com/doi/abs/10.14814/phy2.70449' },
-        { label: 'Eur J Clin Nutr 2018 — omega-3 & resting heart rate: meta-analysis of RCTs', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
-        { label: 'PMC6686273 — age, sex & fitness differences in HRV', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6686273/' },
-        { label: 'PMC3743431 — body fat percentage & HRV sympathovagal balance', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3743431/' },
-        { label: 'PMC5588411 — menstrual cycle & cardiac autonomic function / HRV', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5588411/' }
+      'What moves your score: lifestyle factors': [
+        { label: 'Oura: alcohol\'s impact on members\' sleep & HRV (brand data, 600k members)', url: 'https://ouraring.com/blog/how-does-alcohol-impact-oura-members/' },
+        { label: 'WHOOP: alcohol effects on HRV, sleep & recovery (brand data)', url: 'https://www.whoop.com/us/en/thelocker/alcohol-affects-body-hrv-sleep/' },
+        { label: 'WHOOP: marijuana (THC) effects on sleep, RHR & HRV (brand data)', url: 'https://www.whoop.com/us/en/thelocker/impact-of-marijuana-sleep-resting-heart-rate-hrv/' },
+        { label: 'Am J Physiol Heart Circ 2009: dose-related effects of alcohol on HRV', url: 'https://journals.physiology.org/doi/full/10.1152/ajpheart.00700.2009' },
+        { label: 'Frontiers in Neurology 2025, sleep deprivation & HRV: systematic review & meta-analysis', url: 'https://www.frontiersin.org/journals/neurology/articles/10.3389/fneur.2025.1556784/full' },
+        { label: 'PMC6026827: next-day recovery after acute low vs high training load (rugby)', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6026827/' },
+        { label: 'Egyptian Heart Journal (PMC6821413): persistent effect of acute psychosocial stress on HRV', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6821413/' },
+        { label: 'MDPI Sensors 2024: wearable fever / illness detection physiology', url: 'https://www.mdpi.com/1424-8220/24/6/1818' },
+        { label: 'PubMed 2424378, fever & cardiac rhythm: ~8.5 bpm per 1°C (classic)', url: 'https://pubmed.ncbi.nlm.nih.gov/2424378/' },
+        { label: 'PubMed 33426778, late-night eating: sleep, HPA axis & autonomic function', url: 'https://pubmed.ncbi.nlm.nih.gov/33426778/' },
+        { label: 'PubMed 38042028: heart rate variations & glucose fluctuations during sleep', url: 'https://pubmed.ncbi.nlm.nih.gov/38042028/' },
+        { label: 'Chronobiology Int 2024: high-glycemic-index breakfast & HRV by chronotype', url: 'https://www.tandfonline.com/doi/full/10.1080/07420528.2024.2428203' },
+        { label: 'PubMed 16184581: caffeine effects on heart rate & QT variability during sleep', url: 'https://pubmed.ncbi.nlm.nih.gov/16184581/' },
+        { label: 'PubMed 25726222: hydration status affects RMR & HRV', url: 'https://pubmed.ncbi.nlm.nih.gov/25726222/' },
+        { label: 'PMC12812737, acute high-altitude exposure & HRV: meta-analysis', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12812737/' },
+        { label: 'PMC12751657: bedroom temperature & HRV in older adults', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12751657/' },
+        { label: 'PubMed 9005885: circadian HRV rhythm in shift workers', url: 'https://pubmed.ncbi.nlm.nih.gov/9005885/' },
+        { label: 'Nicotine & Tobacco Research: single 4 mg nicotine dose reduces HRV in nonsmokers', url: 'https://academic.oup.com/ntr/article/13/5/369/1168539' },
+        { label: 'SLEEP 2023: THC before bed reduces nocturnal parasympathetic control', url: 'https://academic.oup.com/sleep/article/46/Supplement_1/A59/7181640' },
+        { label: 'ScienceDirect 2022, voluntary slow breathing & HRV: systematic review & meta-analysis', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0149763422002007' },
+        { label: 'Wiley 2025, cold water immersion, HRV & post-exercise recovery: systematic review', url: 'https://onlinelibrary.wiley.com/doi/abs/10.1002/pri.70033' },
+        { label: 'J Sci Med Sport: recovery from sauna favorably modulates cardiac autonomic system', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0965229919301943' },
+        { label: 'Physiological Reports 2025, regular post-exercise sauna does NOT improve HRV: RCT', url: 'https://physoc.onlinelibrary.wiley.com/doi/abs/10.14814/phy2.70449' },
+        { label: 'Eur J Clin Nutr 2018, omega-3 & resting heart rate: meta-analysis of RCTs', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
+        { label: 'PMC6686273: age, sex & fitness differences in HRV', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6686273/' },
+        { label: 'PMC3743431: body fat percentage & HRV sympathovagal balance', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3743431/' },
+        { label: 'PMC5588411: menstrual cycle & cardiac autonomic function / HRV', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5588411/' }
       ],
       'Sleep & recovery supplements': [
-        { label: 'PMC8053283 — magnesium for insomnia: systematic review & meta-analysis (Mah 2021)', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8053283/' },
-        { label: 'Nature & Science of Sleep 2025 — magnesium bisglycinate in adults with poor sleep: RCT', url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S524348' },
-        { label: 'Sleep & Biological Rhythms 2007 — glycine improves sleep quality: PSG evidence', url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x' },
-        { label: 'PMC — Montmorency tart cherry & sleep: systematic review', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12438961/' },
-        { label: 'Sleep Medicine 2022 — saffron & sleep quality: meta-analysis of 21 RCTs', url: 'https://pubmed.ncbi.nlm.nih.gov/35325766/' },
-        { label: 'Phytotherapy Research — chamomile for sleep & anxiety: systematic review & meta-analysis', url: 'https://onlinelibrary.wiley.com/doi/10.1002/ptr.6349' },
-        { label: 'Frontiers 2024 — apigenin at the sleep/aging intersection (notes NO human sleep RCT)', url: 'https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2024.1359176/full' },
-        { label: 'npj Biological Timing & Sleep 2024 — melatonin in the cardiovascular system, dose-dependent effects', url: 'https://www.nature.com/articles/s44323-024-00007-z' },
-        { label: 'Am J Physiol 2017 — beetroot nitrate decreases central sympathetic outflow: RCT', url: 'https://journals.physiology.org/doi/full/10.1152/ajpheart.00163.2017' },
-        { label: 'Am J Medicine (PMC4394901) — valerian for sleep: systematic review & meta-analysis', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4394901/' },
-        { label: 'MDPI Foods 2025 — GABA mechanism in improving sleep: review', url: 'https://www.mdpi.com/2304-8158/14/22/3856' },
-        { label: 'PMC6836118 — L-theanine reduces stress responses & improves sleep: RCT', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6836118/' },
-        { label: 'PMC6750292 — ashwagandha reduces cortisol & anxiety: RCT', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6750292/' }
+        { label: 'PMC8053283, magnesium for insomnia: systematic review & meta-analysis (Mah 2021)', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8053283/' },
+        { label: 'Nature & Science of Sleep 2025, magnesium bisglycinate in adults with poor sleep: RCT', url: 'https://www.tandfonline.com/doi/full/10.2147/NSS.S524348' },
+        { label: 'Sleep & Biological Rhythms 2007, glycine improves sleep quality: PSG evidence', url: 'https://onlinelibrary.wiley.com/doi/10.1111/j.1479-8425.2007.00262.x' },
+        { label: 'PMC, Montmorency tart cherry & sleep: systematic review', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12438961/' },
+        { label: 'Sleep Medicine 2022, saffron & sleep quality: meta-analysis of 21 RCTs', url: 'https://pubmed.ncbi.nlm.nih.gov/35325766/' },
+        { label: 'Phytotherapy Research, chamomile for sleep & anxiety: systematic review & meta-analysis', url: 'https://onlinelibrary.wiley.com/doi/10.1002/ptr.6349' },
+        { label: 'Frontiers 2024: apigenin at the sleep/aging intersection (notes NO human sleep RCT)', url: 'https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2024.1359176/full' },
+        { label: 'npj Biological Timing & Sleep 2024: melatonin in the cardiovascular system, dose-dependent effects', url: 'https://www.nature.com/articles/s44323-024-00007-z' },
+        { label: 'Am J Physiol 2017, beetroot nitrate decreases central sympathetic outflow: RCT', url: 'https://journals.physiology.org/doi/full/10.1152/ajpheart.00163.2017' },
+        { label: 'Am J Medicine (PMC4394901), valerian for sleep: systematic review & meta-analysis', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4394901/' },
+        { label: 'MDPI Foods 2025, GABA mechanism in improving sleep: review', url: 'https://www.mdpi.com/2304-8158/14/22/3856' },
+        { label: 'PMC6836118, L-theanine reduces stress responses & improves sleep: RCT', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6836118/' },
+        { label: 'PMC6750292, ashwagandha reduces cortisol & anxiety: RCT', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6750292/' }
       ]
     };
     return groups;
@@ -1226,7 +1226,7 @@ class KygoRecoveryScores extends HTMLElement {
       moderate: { cls: 'vp-good',  text: 'Moderate' },
       strong:   { cls: 'vp-good',  text: 'Strong' },
       yes:      { cls: 'vp-good',  text: 'Validated' },
-      weak:     { cls: 'vp-weak',  text: 'Tested — weak' },
+      weak:     { cls: 'vp-weak',  text: 'Tested: weak' },
       poor:     { cls: 'vp-none',  text: 'Poor' },
       none:     { cls: 'vp-none',  text: 'None located' },
       na:       { cls: 'vp-na',    text: 'n/a' }
@@ -1264,7 +1264,7 @@ class KygoRecoveryScores extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('shield')}</span>Can you trust the number?</span>
             <h2 class="section-h2"><em>${validated} of ${ranked.length}</em> scores have any independent validation.</h2>
-            <p class="section-lede">The <strong>scores</strong> are mostly unvalidated black boxes; the underlying <strong>HRV/RHR signals</strong> are validated in some devices. Only WHOOP and Oura have been tested against a reference — and WHOOP's came out weak. Trust the signal, not the score.</p>
+            <p class="section-lede">The <strong>scores</strong> are mostly unvalidated black boxes; the underlying <strong>HRV/RHR signals</strong> are validated in some devices. Only WHOOP and Oura have been tested against a reference, and WHOOP's came out weak. Trust the signal, not the score.</p>
             ${this._readMore(this._posts.trust, 'Read: can you trust your recovery score?')}
           </div>
 
@@ -1272,8 +1272,8 @@ class KygoRecoveryScores extends HTMLElement {
             <div class="dc-head">
               <div>
                 <span class="dc-eyebrow">Score vs signal</span>
-                <h3 class="dc-title">Is it validated — the score, or just the signals?</h3>
-                <p class="dc-sub">"None located" is a real finding, not a gap — each brand was searched individually for a study testing its score.</p>
+                <h3 class="dc-title">Is it validated: the score, or just the signals?</h3>
+                <p class="dc-sub">"None located" is a real finding, not a gap: each brand was searched individually for a study testing its score.</p>
               </div>
               <div class="dc-meta">${ranked.length} brands</div>
             </div>
@@ -1759,7 +1759,7 @@ class KygoRecoveryScores extends HTMLElement {
         <div class="container hero-inner">
           <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${totalDevices} Wearables · ${totalFactors} Factors</div>
           <h1 class="hero-title animate-on-scroll">Compare recovery scores across <em>12 wearables</em>.</h1>
-          <p class="hero-sub animate-on-scroll">See the <strong>${totalFactors} factors</strong> that move yours, and which scores are actually <strong>validated</strong>. They aren't interchangeable — two devices on one wrist disagree — and only <strong>2 of 12</strong> are validated.</p>
+          <p class="hero-sub animate-on-scroll">See the <strong>${totalFactors} factors</strong> that move yours, and which scores are actually <strong>validated</strong>. They aren't interchangeable (two devices on one wrist disagree), and only <strong>2 of 12</strong> are validated.</p>
           <div class="animate-on-scroll">
             <div class="hero-meta">
               <div class="hero-cell"><span class="hero-num">${totalDevices}</span><span class="hero-lbl">Brands compared</span></div>

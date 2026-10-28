@@ -69,7 +69,7 @@ class KygoSupplementsByMetric extends HTMLElement {
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'Supplements by Metric Explorer by Kygo Health. The metrics your wearable tracks — sleep latency (falling asleep faster), deep sleep (N3 / slow-wave), REM sleep (REM% / REM duration), staying asleep (lower WASO), HRV (higher RMSSD / HF power), resting heart rate (lower RHR), and recovery/readiness scores — mapped to what 28 supplements actually do to them, graded by evidence (Strong / Moderate / Weak / tested-no-effect) with industry-funding flags. What is genuinely backed: omega-3 (RHR −2.23 bpm and HRV, Hidayat 2018 + PMC5882295), ashwagandha (sleep latency, WASO and HRV, Cheah 2021 + Witholytin 2023, industry-funded), glycine 3g (latency, deep sleep, WASO, Yamadera 2007), magnesium (latency −17 min, Mah & Pitre 2021), saffron (sleep quality PSQI −2.14), tart cherry (WASO, recovery), L-theanine (acute-stress HRV), melatonin (latency −7 min). REM sleep is the thinnest literature of any metric here and nothing reaches Strong: melatonin raised REM duration only in people whose REM was 25% or more below the age norm (Kunz 2004, PSG), magnesium L-threonate raised the Oura REM Sleep Score (Hausenblas 2024, manufacturer-funded, a score rather than PSG minutes), 5-HTP raised REM% in Parkinson\'s patients only, glycine left REM architecture unchanged, and vitamin B6 raises dream recall without raising measured REM. Ashwagandha, valerian, plain magnesium, L-theanine, GABA, saffron, chamomile, tryptophan and CBD have no published REM% on PSG at all. The clearest REM effects are suppressors: alcohol delays REM by about 18 minutes and cuts about 11 minutes of it, plus cannabis and nicotine. The honest myth-busts: the magnesium "27 RCTs / 2,496 people" figure is really 3 small trials (n=151); standard melatonin does nothing for staying asleep (Moon 2022); CBD shows no meaningful recovery change on WHOOP; apigenin has zero human sleep RCTs (use whole chamomile extract); passionflower evidence was subjective and industry-funded; L-theanine HRV is acute-stress only, not a resting gain. Nearly every supplement-specific RCT here is industry-funded — flagged openly. Effect sizes are small relative to night-to-night wearable noise and most were measured on Oura, so treat as "research shows X affects this metric," never "take X to fix your number." Not medical advice.');
+    __seo(this, 'Supplements by Metric Explorer by Kygo Health. The metrics your wearable tracks: sleep latency (falling asleep faster), deep sleep (N3 / slow-wave), REM sleep (REM% / REM duration), staying asleep (lower WASO), HRV (higher RMSSD / HF power), resting heart rate (lower RHR), and recovery/readiness scores, mapped to what 28 supplements actually do to them, graded by evidence (Strong / Moderate / Weak / tested-no-effect) with industry-funding flags. What is genuinely backed: omega-3 (RHR −2.23 bpm and HRV, Hidayat 2018 + PMC5882295), ashwagandha (sleep latency, WASO and HRV, Cheah 2021 + Witholytin 2023, industry-funded), glycine 3g (latency, deep sleep, WASO, Yamadera 2007), magnesium (latency −17 min, Mah & Pitre 2021), saffron (sleep quality PSQI −2.14), tart cherry (WASO, recovery), L-theanine (acute-stress HRV), melatonin (latency −7 min). REM sleep is the thinnest literature of any metric here and nothing reaches Strong: melatonin raised REM duration only in people whose REM was 25% or more below the age norm (Kunz 2004, PSG), magnesium L-threonate raised the Oura REM Sleep Score (Hausenblas 2024, manufacturer-funded, a score rather than PSG minutes), 5-HTP raised REM% in Parkinson\'s patients only, glycine left REM architecture unchanged, and vitamin B6 raises dream recall without raising measured REM. Ashwagandha, valerian, plain magnesium, L-theanine, GABA, saffron, chamomile, tryptophan and CBD have no published REM% on PSG at all. The clearest REM effects are suppressors: alcohol delays REM by about 18 minutes and cuts about 11 minutes of it, plus cannabis and nicotine. The honest myth-busts: the magnesium "27 RCTs / 2,496 people" figure is really 3 small trials (n=151); standard melatonin does nothing for staying asleep (Moon 2022); CBD shows no meaningful recovery change on WHOOP; apigenin has zero human sleep RCTs (use whole chamomile extract); passionflower evidence was subjective and industry-funded; L-theanine HRV is acute-stress only, not a resting gain. Nearly every supplement-specific RCT here is industry-funded, flagged openly. Effect sizes are small relative to night-to-night wearable noise and most were measured on Oura, so treat as "research shows X affects this metric," never "take X to fix your number." Not medical advice.');
   }
 
   disconnectedCallback() {
@@ -121,7 +121,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       nitrate:      { url: 'https://journals.physiology.org/doi/full/10.1152/ajpheart.00163.2017', label: 'Beetroot nitrate decreases central sympathetic outflow: RCT (Notay 2017)' },
       valerian:     { url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4394901/', label: 'Valerian for sleep: systematic review & meta-analysis' },
       micronutrient:{ url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7231600/', label: 'Micronutrients & HRV: review (Advances in Nutrition 2022)' },
-      apigenin:     { url: 'https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2024.1359176/full', label: 'Apigenin at the sleep/aging intersection — notes NO human sleep RCT (Frontiers 2024)' },
+      apigenin:     { url: 'https://www.frontiersin.org/journals/nutrition/articles/10.3389/fnut.2024.1359176/full', label: 'Apigenin at the sleep/aging intersection: notes NO human sleep RCT (Frontiers 2024)' },
       kunz:         { url: 'https://academic.oup.com/jcem/article/89/1/128/2840303', label: 'Melatonin & REM in people with reduced REM: 2 randomized PSG trials (Kunz 2004, JCEM)' },
       mt1:          { url: 'https://www.jneurosci.org/content/44/29/e0914232024', label: 'Melatonin MT1 receptor selectively enhances REM sleep: mechanism (J Neurosci 2024)' },
       htp5rem:      { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9418091/', label: '5-HTP raises REM%: randomized crossover in Parkinson\'s patients, n=18 (Sleep & Breathing 2021)' },
@@ -140,15 +140,15 @@ class KygoSupplementsByMetric extends HTMLElement {
     return [
       { key: 'omega3', name: 'Omega-3 (EPA/DHA)', amazon: { url: 'https://www.amazon.com/dp/B002CQU564?tag=kygohealthapp-20&th=1', label: 'Omega-3 Fish Oil' , slug: 'omega-3-fish-oil' }, m: {
         deep:     { g: 'W', effect: 'Improves sleep efficiency (+1.88 pp pooled); no isolated deep-sleep (N3) gain.', study: 'DHA/EPA RCT (n=84, 26 wks) + meta-analysis (PMC11579846).' },
-        hrv:      { g: 'S', effect: 'Consistently raises HF power — the most-studied dietary HRV factor.', study: 'Multiple meta-analyses.', src: 'omega3hrv' },
+        hrv:      { g: 'S', effect: 'Consistently raises HF power, the most-studied dietary HRV factor.', study: 'Multiple meta-analyses.', src: 'omega3hrv' },
         rhr:      { g: 'S', effect: 'Lowers resting HR ~2.23 bpm overall; DHA alone −2.47 bpm, EPA no effect. The only Strong RHR supplement.', study: 'Hidayat 2018 meta, 51 RCTs, ~3,000 people.', src: 'omega3rhr' },
         recovery: { g: 'M', effect: 'Lowers RHR ~2.2 bpm (DHA, not EPA), which feeds the recovery score; HRV evidence mixed.', study: 'Hidayat 2018 meta, 51 RCTs.', src: 'omega3rhr' }
       } },
       { key: 'magnesium', name: 'Magnesium (oral)', amazon: { url: 'https://www.amazon.com/dp/B00151G8L8?tag=kygohealthapp-20&th=1', label: 'Magnesium Glycinate' , slug: 'magnesium-glycinate' }, m: {
-        latency:  { g: 'M', effect: 'Sleep onset ~17 min faster (−17.36 min, p=0.0006).', study: 'Mah & Pitre 2021 meta, 3 RCTs, n=151 older adults — low-quality-evidence caveat.', src: 'mag' },
-        deep:     { g: 'W', effect: 'Slow-wave sleep ~+6 min; raises delta + sigma power — in older adults.', study: 'Held 2002, n=12, ages 60–80, 20-day crossover.' },
+        latency:  { g: 'M', effect: 'Sleep onset ~17 min faster (−17.36 min, p=0.0006).', study: 'Mah & Pitre 2021 meta, 3 RCTs, n=151 older adults; low-quality-evidence caveat.', src: 'mag' },
+        deep:     { g: 'W', effect: 'Slow-wave sleep ~+6 min; raises delta + sigma power, in older adults.', study: 'Held 2002, n=12, ages 60–80, 20-day crossover.' },
         waso:     { g: 'W', effect: 'Improves sleep efficiency in the elderly; WASO not directly measured.', study: 'Abbasi 2012 RCT, n=46, age 65+.' },
-        hrv:      { g: '~', effect: 'One small RCT showed an increase (n=36); results vary by form — hype is ahead of the data.', study: 'Micronutrient review (PMC7231600).', src: 'micronutrient' },
+        hrv:      { g: '~', effect: 'One small RCT showed an increase (n=36); results vary by form; hype is ahead of the data.', study: 'Micronutrient review (PMC7231600).', src: 'micronutrient' },
         rhr:      { g: 'X', effect: 'No magnesium-specific RHR meta-analysis exists; no reliable resting-rate effect.', study: 'No RHR meta located.' },
         recovery: { g: 'W', effect: 'Faster onset plus a small readiness / deep-sleep gain on Oura.', study: 'Mah & Pitre 2021 (n=151) + Breus 2024 Oura (n=31).', src: 'mag' }
       } },
@@ -167,7 +167,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       } },
       { key: 'ashwagandha', name: 'Ashwagandha', flag: true, amazon: { url: 'https://www.amazon.com/dp/B073DN2YG9?tag=kygohealthapp-20&th=1', label: 'Ashwagandha Extract' , slug: 'ashwagandha-600mg' }, m: {
         latency:  { g: 'S', flag: true, effect: 'Sleep onset SMD −0.53 (p<0.001); 600 mg most effective.', study: 'Cheah 2021 meta, 5 RCTs, n=400.', src: 'cheah', flagNote: 'Underlying RCTs industry-funded.' },
-        deep:     { g: 'W', flag: true, effect: 'Raises delta power + GABA-A expression — in vitro / animal only.', study: 'Prev Nutr Food Sci 2022 (PMC9007714).', flagNote: 'Preclinical, not human PSG.' },
+        deep:     { g: 'W', flag: true, effect: 'Raises delta power + GABA-A expression, in vitro / animal only.', study: 'Prev Nutr Food Sci 2022 (PMC9007714).', flagNote: 'Preclinical, not human PSG.' },
         waso:     { g: 'S', flag: true, effect: 'WASO SMD −0.39 (3 trials, n=281).', study: 'Cheah 2021 meta.', src: 'cheah', flagNote: 'Underlying RCTs industry-funded.' },
         hrv:      { g: 'S', flag: true, effect: 'RMSSD rose vs a decline in placebo (time×group p=0.003).', study: 'Smith/Lopresti 2023 (Witholytin) RCT, n=111, 12 wks.', src: 'ashhrv', flagNote: 'Single proprietary-extract RCT in overweight adults.' },
         rhr:      { g: 'X', effect: 'There is an HRV effect, but no resting-heart-rate change.', study: 'Cheah / Witholytin trials (HRV side, not RHR).' },
@@ -177,21 +177,21 @@ class KygoSupplementsByMetric extends HTMLElement {
         latency:  { g: 'S', effect: 'Sleep onset −7.06 min (p<0.001); peaks around 4 mg.', study: 'Ferracioli-Oda 2013 meta, 19 studies, n=1,683.', src: 'mela' },
         deep:     { g: 'M', effect: 'MT2 activation in the reticular thalamus raises NREM + delta power.', study: 'Comai 2024, J Pineal Research (mechanism).' },
         rem:      { g: 'M', effect: 'Significantly increased REM duration, but only in people whose REM was at least 25% below the age norm. No demonstrated effect in normal sleepers.', study: 'Kunz 2004, two randomized double-blind placebo-controlled PSG trials, n=14, mean age 50. MT1-receptor work (J Neurosci 2024) supports the mechanism.', src: 'kunz' },
-        waso:     { g: 'X', effect: 'No significant effect on wake after sleep onset — the most-bought form does NOT aid maintenance.', study: 'Moon 2022 meta, Neuropsychopharmacology 47:1523-1536.' },
+        waso:     { g: 'X', effect: 'No significant effect on wake after sleep onset; the most-bought form does NOT aid maintenance.', study: 'Moon 2022 meta, Neuropsychopharmacology 47:1523-1536.' },
         rhr:      { g: '~', effect: 'Mixed: some lower nocturnal HR; one CAD trial raised 24-h HR. Emerging heart-failure safety signal.', study: 'Tobeiha 2022 review.' },
         recovery: { g: 'W', effect: 'A timing aid, not a recovery booster: 2 mg modestly raises HRV / lowers overnight HR, peaks ~day 3–5 then fades.', study: 'npj Biological Timing & Sleep 2024.', src: 'melacv' }
       } },
       { key: 'gaba', name: 'GABA', flag: true, amazon: { url: 'https://www.amazon.com/dp/B0FT6GB5MB?tag=kygohealthapp-20&th=1', label: 'GABA Supplement' , slug: 'gaba-500mg' }, m: {
         latency:  { g: 'M', effect: 'Sleep onset 13.4 → 5.7 min (p=0.001).', study: 'Byun 2018, PSG, n=40.', src: 'gaba' },
         hrv:      { g: 'M', flag: true, effect: 'Raises HRV via parasympathetic predominance.', study: 'Guimarães 2024 RCT, n=30, 200 mg / 90 d.', flagNote: 'All-female sample + exercise co-intervention.' },
-        recovery: { g: 'X', effect: 'Poor oral absorption — no reliable recovery-score effect.', study: 'Per recovery-factor review.' }
+        recovery: { g: 'X', effect: 'Poor oral absorption; no reliable recovery-score effect.', study: 'Per recovery-factor review.' }
       } },
       { key: 'l-theanine', name: 'L-Theanine', amazon: { url: 'https://www.amazon.com/dp/B000H7P9M0?tag=kygohealthapp-20&th=1', label: 'L-Theanine 200mg' , slug: 'l-theanine-200mg' }, m: {
-        latency:  { g: 'M', effect: 'Subjective sleep onset SMD 0.15 (p=0.04); no objective effect.', study: 'Bulman 2025 meta, 10 RCTs, n=897 — subjective only.' },
-        deep:     { g: 'W', effect: 'Raises delta and reverses caffeine’s delta suppression — animal ECoG model.', study: 'Frontiers Nutr 2022 (PMC9017334) — preclinical.' },
+        latency:  { g: 'M', effect: 'Subjective sleep onset SMD 0.15 (p=0.04); no objective effect.', study: 'Bulman 2025 meta, 10 RCTs, n=897; subjective only.' },
+        deep:     { g: 'W', effect: 'Raises delta and reverses caffeine’s delta suppression, animal ECoG model.', study: 'Frontiers Nutr 2022 (PMC9017334), preclinical.' },
         waso:     { g: '~', effect: 'Mixed WASO results when used alone.', study: 'Systematic review 2025.' },
         hrv:      { g: 'M', effect: 'Attenuates sympathetic activation during acute stress.', study: 'Kimura 2007 (PubMed 16930802).', src: 'theanine' },
-        rhr:      { g: 'X', effect: 'Acute-stress effect only — not a baseline resting-rate change.', study: 'Kimura 2007 (acute stress, not resting).' },
+        rhr:      { g: 'X', effect: 'Acute-stress effect only, not a baseline resting-rate change.', study: 'Kimura 2007 (acute stress, not resting).' },
         recovery: { g: 'M', effect: 'Lowers HR + cortisol under acute stress; improves sleep.', study: 'Kimura 2007.', src: 'theanine' }
       } },
       { key: 'tart-cherry', name: 'Tart Cherry (Montmorency)', amazon: { url: 'https://www.amazon.com/dp/B007RC6J72?tag=kygohealthapp-20&th=1', label: 'Tart Cherry Juice' , slug: 'tart-cherry-juice' }, m: {
@@ -199,7 +199,7 @@ class KygoSupplementsByMetric extends HTMLElement {
         deep:     { g: 'W', effect: '+84 min total sleep time on PSG (p=0.0182).', study: 'Losso 2018, n=8 insomnia.', src: 'tart' },
         rem:      { g: 'W', flag: true, effect: 'REM went 117 to 122 minutes (+5 min) on Oura, taken as tart cherry 800 mg plus magnesium L-threonate 800 mg twice nightly for 30 days. A combination result, not tart cherry alone.', study: 'JCMAH 2024, 13(2), n=7, Oura Ring.', src: 'tartrem', flagLabel: 'Very weak pilot', flagNote: 'n=7, open label, no placebo, no blinding, low-impact journal. Do not read as causal.' },
         waso:     { g: 'M', effect: 'Cuts WASO ~17 min vs placebo.', study: 'Pigeon 2010, RCT crossover, n=15 insomnia.', src: 'pigeon' },
-        recovery: { g: 'M', effect: '+34 to 84 min sleep, raises melatonin, eases muscle soreness — double-duty training aid.', study: 'Losso 2018 (n=8) + Pigeon 2010 (n=15).', src: 'tart' }
+        recovery: { g: 'M', effect: '+34 to 84 min sleep, raises melatonin, eases muscle soreness: double-duty training aid.', study: 'Losso 2018 (n=8) + Pigeon 2010 (n=15).', src: 'tart' }
       } },
       { key: 'saffron', name: 'Saffron', amazon: { url: 'https://www.amazon.com/dp/B097TKQSQD?tag=kygohealthapp-20', label: 'Saffron Extract', slug: 'saffron-extract' }, m: {
         recovery: { g: 'M', effect: 'Sleep quality PSQI −2.14 (95% CI −2.86 to −1.42, p<0.01).', study: 'Sleep Medicine 2022 meta (PubMed 35325766).', src: 'saffron' }
@@ -209,8 +209,8 @@ class KygoSupplementsByMetric extends HTMLElement {
       } },
       { key: 'nitrate', name: 'Dietary nitrate / beetroot', amazon: { url: 'https://www.amazon.com/dp/B01GJS8VX4?tag=kygohealthapp-20&th=1', label: 'Beetroot Juice Shots' , slug: 'beet-nitrate-shots' }, m: {
         hrv:      { g: '~', effect: 'Raises SDNN acutely; lowers sympathetic outflow.', study: 'Notay 2017 + SDNN RCTs.', src: 'nitrate' },
-        rhr:      { g: 'X', effect: 'No resting-rate change — the effect is autonomic/HRV-side, not a resting-rate drop.', study: '6 RCTs, n=181, null for RHR.' },
-        recovery: { g: '~', effect: 'Raises SDNN, lowers sympathetic outflow + BP — acute and population-dependent.', study: 'Notay 2017 (Am J Physiol).', src: 'nitrate' }
+        rhr:      { g: 'X', effect: 'No resting-rate change; the effect is autonomic/HRV-side, not a resting-rate drop.', study: '6 RCTs, n=181, null for RHR.' },
+        recovery: { g: '~', effect: 'Raises SDNN, lowers sympathetic outflow + BP, acute and population-dependent.', study: 'Notay 2017 (Am J Physiol).', src: 'nitrate' }
       } },
       { key: 'passionflower', name: 'Passionflower', flag: true, m: {
         deep:     { g: 'W', flag: true, effect: 'Raises self-reported total sleep time; no PSG, N3 never measured.', study: 'Harit 2024, Cureus, n=65, 30-day.', flagNote: 'Subjective + industry-funded (JK Botanicals).' }
@@ -218,13 +218,13 @@ class KygoSupplementsByMetric extends HTMLElement {
       { key: 'valerian', name: 'Valerian', m: {
         latency:  { g: 'X', effect: 'Pooled sleep-onset difference 0.70 min (NS).', study: 'Shinjyo 2020 meta, 60 studies.', src: 'valerian' },
         waso:     { g: 'X', effect: 'No consistent objective WASO benefit (subjective only; raised WASO in older women).', study: 'Shinjyo 2020 meta, n=6,894.', src: 'valerian' },
-        recovery: { g: 'X', effect: 'Subjective improvement only — objective measures unconvincing.', study: 'Shinjyo 2020 meta.', src: 'valerian' }
+        recovery: { g: 'X', effect: 'Subjective improvement only; objective measures unconvincing.', study: 'Shinjyo 2020 meta.', src: 'valerian' }
       } },
       { key: 'tryptophan', name: 'Tryptophan (≥1 g)', m: {
         latency:  { g: 'W', effect: 'Shortens sleep onset in older trials.', study: 'Hartmann 1979 + Sutanto 2021.' }
       } },
       { key: '5htp', name: '5-HTP', m: {
-        latency:  { g: 'W', effect: 'Possible faster onset — only tiny RCTs.', study: 'Small pilot RCTs.' },
+        latency:  { g: 'W', effect: 'Possible faster onset, only tiny RCTs.', study: 'Small pilot RCTs.' },
         rem:      { g: 'W', effect: 'Raised total REM% at 50 mg/day for 4 weeks, in Parkinson\'s patients only. Unconfirmed in healthy sleepers, though the serotonin-to-melatonin precursor mechanism is plausible.', study: 'Randomized double-blind placebo-controlled crossover, n=18 Parkinson\'s patients, Sleep & Breathing 2021.', src: 'htp5rem' }
       } },
       { key: 'cbd', name: 'CBD', flag: true, m: {
@@ -247,7 +247,7 @@ class KygoSupplementsByMetric extends HTMLElement {
         hrv:      { g: 'W', effect: 'Prenatal zinc linked to better offspring HRV; adult data limited.', study: 'Micronutrient review (PMC7231600).', src: 'micronutrient' }
       } },
       { key: 'multivitamin', name: 'Multivitamin', amazon: { url: 'https://www.amazon.com/dp/B0FR5QMD5Y?tag=kygohealthapp-20&th=1', label: 'Daily Multivitamin' , slug: 'thorne-multivitamin' }, m: {
-        hrv:      { g: 'M', effect: 'One RCT prevented HRV decline — a buffer, not a booster.', study: 'Micronutrient review (PMC7231600).', src: 'micronutrient' }
+        hrv:      { g: 'M', effect: 'One RCT prevented HRV decline: a buffer, not a booster.', study: 'Micronutrient review (PMC7231600).', src: 'micronutrient' }
       } },
       { key: 'potassium', name: 'Potassium', m: {
         rhr:      { g: 'X', effect: '+0.2 bpm (95% CI −0.4, 0.8), NS.', study: 'Gijsbers 2016 meta, 22 RCTs, n=1,086.' }
@@ -256,17 +256,17 @@ class KygoSupplementsByMetric extends HTMLElement {
         rhr:      { g: 'X', effect: 'No consistent resting-rate change.', study: 'Rector 1996 + multiple RCTs.' }
       } },
       { key: 'chromium', name: 'Chromium', flag: true, m: {
-        rhr:      { g: 'W', flag: true, effect: 'RHR reduced — but only in metabolic-syndrome / IGT patients.', study: 'Single RCT (PubMed 28856601).', flagNote: 'Specific population only.' }
+        rhr:      { g: 'W', flag: true, effect: 'RHR reduced, but only in metabolic-syndrome / IGT patients.', study: 'Single RCT (PubMed 28856601).', flagNote: 'Specific population only.' }
       } },
       { key: 'oat-bran', name: 'Oat bran fiber', m: {
-        rhr:      { g: 'W', effect: '24-h heart-rate reduction vs DASH control — hypertensive patients only.', study: 'Single RCT, n=70, 3 mo (PMC9370281).' }
+        rhr:      { g: 'W', effect: '24-h heart-rate reduction vs DASH control, hypertensive patients only.', study: 'Single RCT, n=70, 3 mo (PMC9370281).' }
       } },
       { key: 'creatine', name: 'Creatine', flag: true, m: {
-        recovery: { g: 'X', flag: true, effect: 'A cognitive buffer when underslept — not an HRV / recovery aid.', study: 'Recovery review; Oura n=21 sleep-duration only.', flagNote: 'Small / female-only sleep data.' }
+        recovery: { g: 'X', flag: true, effect: 'A cognitive buffer when underslept, not an HRV / recovery aid.', study: 'Recovery review; Oura n=21 sleep-duration only.', flagNote: 'Small / female-only sleep data.' }
       } },
       { key: 'peptisleep', name: 'PeptiSleep', flag: true, m: {
-        latency:  { g: 'W', flag: true, effect: 'Claimed faster onset — manufacturer data only.', study: 'Nuritas NCT06267586.', flagNote: 'Not peer-reviewed.' },
-        deep:     { g: 'W', flag: true, effect: 'Claimed deep-sleep gain — manufacturer data only.', study: 'Nuritas NCT06267586.', flagNote: 'Not peer-reviewed.' },
+        latency:  { g: 'W', flag: true, effect: 'Claimed faster onset, manufacturer data only.', study: 'Nuritas NCT06267586.', flagNote: 'Not peer-reviewed.' },
+        deep:     { g: 'W', flag: true, effect: 'Claimed deep-sleep gain, manufacturer data only.', study: 'Nuritas NCT06267586.', flagNote: 'Not peer-reviewed.' },
         hrv:      { g: 'W', flag: true, effect: '+32% HRV claim (Oura).', study: 'Nuritas NCT06267586.', flagNote: 'Not peer-reviewed; conflicting 32% vs 350% claims.' }
       } }
     ];
@@ -279,7 +279,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       W:   { full: 'Weak',      short: 'W',  cls: 'g-w',   w: 2 },
       '~': { full: 'Mixed',     short: '~',  cls: 'g-mix', w: 1 },
       X:   { full: 'No effect', short: '✗',  cls: 'g-x',   w: 0 }
-    })[g] || { full: '—', short: '—', cls: 'g-none', w: -1 };
+    })[g] || { full: '–', short: '–', cls: 'g-none', w: -1 };
   }
 
   _suppScore(s) {
@@ -288,17 +288,17 @@ class KygoSupplementsByMetric extends HTMLElement {
 
   _faqs() {
     return [
-      { q: 'Which supplements are actually backed for wearable metrics?', a: 'The defensible ones, by evidence: omega-3 (resting heart rate −2.23 bpm and HRV), ashwagandha (sleep latency, staying asleep and HRV — though the trials are industry-funded), glycine 3 g (latency, deep sleep and staying asleep), magnesium (latency ~17 min faster), saffron (sleep quality, PSQI −2.14), and tart cherry (less waking, recovery). L-theanine helps HRV under acute stress, and melatonin speeds sleep onset by about 7 minutes. Everything else is weaker, mixed, or tested-with-no-effect. Doses cited are study doses, not recommendations, and this is not medical advice.' },
+      { q: 'Which supplements are actually backed for wearable metrics?', a: 'The defensible ones, by evidence: omega-3 (resting heart rate −2.23 bpm and HRV), ashwagandha (sleep latency, staying asleep and HRV, though the trials are industry-funded), glycine 3 g (latency, deep sleep and staying asleep), magnesium (latency ~17 min faster), saffron (sleep quality, PSQI −2.14), and tart cherry (less waking, recovery). L-theanine helps HRV under acute stress, and melatonin speeds sleep onset by about 7 minutes. Everything else is weaker, mixed, or tested-with-no-effect. Doses cited are study doses, not recommendations, and this is not medical advice.' },
       { q: 'Do any supplements actually increase REM sleep?', a: 'Barely, and nothing earns a Strong grade. Melatonin significantly increased REM duration in two randomized PSG trials, but only in people whose REM was at least 25% below the age norm (Kunz 2004, n=14), with no demonstrated effect in normal sleepers. Magnesium L-threonate raised the Oura REM Sleep Score versus placebo in a 21-day RCT (Hausenblas 2024, n=80), though that is a ring score rather than PSG REM minutes and the trial was funded by the Magtein distributor. 5-HTP raised REM% at 50 mg over 4 weeks in Parkinson\'s patients only. Everything else is weaker: a tart cherry plus magnesium L-threonate pilot found REM going 117 to 122 minutes on Oura in 7 people with no placebo. Glycine is a useful null, speeding sleep onset without disturbing REM. Ashwagandha, valerian, plain magnesium, L-theanine, GABA, saffron, chamomile, tryptophan and CBD have never had REM% measured on PSG, so treat any "boosts REM" claim as unproven unless it cites REM% on PSG. Not medical advice.' },
       { q: 'Does vitamin B6 give you more REM sleep?', a: 'No. B6 at 250 mg raises dream recall and dream vividness (Ebben 2002, Aspy 2018), but measured sleep variables, including REM, did not significantly change. Remembering more dreams feels like more REM sleep, which is why the claim spreads, but the trials never showed a longer REM stage. If your wearable shows more REM on a B6 night, that is far more likely to be night-to-night noise in the device estimate.' },
       { q: 'What actually reduces REM sleep?', a: 'The clearest REM effects in the literature come from suppressors, not supplements. A 27-study meta-analysis found alcohol pushed REM latency out by about 18 minutes and cut REM duration by about 11 minutes, and at 1 g/kg the effect grew to +30.1 minutes of latency, −40.4 minutes of duration and a 2.8 percentage-point drop in REM% (Gardiner 2024). Cannabis/THC and nicotine suppress REM as well. Removing a suppressor is a far bigger lever on your REM number than adding any supplement in this matrix.' },
-      { q: 'What is the biggest supplement myth here?', a: 'The magnesium "27 RCTs / 2,496 people" figure that circulates on blogs. The actual meta-analysis (Mah & Pitre 2021) is just 3 small trials totalling 151 older adults, rated low-quality evidence. Magnesium does help sleep onset modestly — but nowhere near as strongly as the marketing number implies.' },
-      { q: 'Does melatonin help you stay asleep?', a: 'No. Standard immediate-release melatonin — the most-bought form — shows no significant effect on wake after sleep onset (WASO) in meta-analysis (Moon 2022). Melatonin is a circadian timing aid that helps you fall asleep faster (about 7 minutes), not a sleep-maintenance aid. For staying asleep, the better-supported options are ashwagandha, tart cherry and glycine.' },
+      { q: 'What is the biggest supplement myth here?', a: 'The magnesium "27 RCTs / 2,496 people" figure that circulates on blogs. The actual meta-analysis (Mah & Pitre 2021) is just 3 small trials totalling 151 older adults, rated low-quality evidence. Magnesium does help sleep onset modestly, but nowhere near as strongly as the marketing number implies.' },
+      { q: 'Does melatonin help you stay asleep?', a: 'No. Standard immediate-release melatonin, the most-bought form, shows no significant effect on wake after sleep onset (WASO) in meta-analysis (Moon 2022). Melatonin is a circadian timing aid that helps you fall asleep faster (about 7 minutes), not a sleep-maintenance aid. For staying asleep, the better-supported options are ashwagandha, tart cherry and glycine.' },
       { q: 'What actually lowers resting heart rate (RHR)?', a: 'Omega-3 is the only supplement with strong RHR evidence: roughly −2.23 bpm overall, and −2.47 bpm for DHA specifically (EPA alone does nothing), across a 51-RCT meta-analysis. Potassium, vitamin D, L-arginine and dietary nitrate all came out null for resting heart rate. Chromium and oat-bran fiber only helped in specific patient groups.' },
-      { q: 'What raises HRV?', a: 'Omega-3 (raises HF power — the most-studied dietary HRV factor) and ashwagandha (RMSSD rose vs a placebo decline, though it is a single proprietary-extract trial). GABA and magnesium L-threonate have moderate but industry-funded evidence. L-theanine helps during acute stress but is not a resting-HRV gain, and the magnesium-for-HRV story is hype ahead of the data.' },
-      { q: 'Can I trust these supplement studies — who funds them?', a: 'Be skeptical. Nearly every supplement-specific RCT in this data is industry-funded, including every magnesium L-threonate, ashwagandha and PeptiSleep trial — they are flagged with a funding marker throughout. Industry funding does not automatically make a result wrong, but independent replication is the single biggest evidence gap across the whole category. Saying so openly is the point.' },
-      { q: 'Will a supplement noticeably change the number on my ring or watch?', a: 'Maybe not visibly. Many of these effect sizes — RHR −2.2 bpm, HRV +1.45 ms — are small relative to a wearable\'s night-to-night noise, and most were measured on Oura specifically. Read every claim as "research shows X affects this metric," never "take X to fix your number." Pair any change with the device-detectability caveat and check our wearable-accuracy tools.' },
-      { q: 'What about saffron and chamomile for recovery?', a: 'Saffron is surprisingly solid for a botanical — a meaningful sleep-quality improvement (PSQI −2.14) across a large meta-analysis. Whole-extract chamomile improves sleep quality and anxiety but does NOT fix clinical insomnia, and the trendy isolated apigenin version has zero human sleep RCTs — so use whole extract if you use it at all.' }
+      { q: 'What raises HRV?', a: 'Omega-3 (raises HF power, the most-studied dietary HRV factor) and ashwagandha (RMSSD rose vs a placebo decline, though it is a single proprietary-extract trial). GABA and magnesium L-threonate have moderate but industry-funded evidence. L-theanine helps during acute stress but is not a resting-HRV gain, and the magnesium-for-HRV story is hype ahead of the data.' },
+      { q: 'Can I trust these supplement studies: who funds them?', a: 'Be skeptical. Nearly every supplement-specific RCT in this data is industry-funded, including every magnesium L-threonate, ashwagandha and PeptiSleep trial; they are flagged with a funding marker throughout. Industry funding does not automatically make a result wrong, but independent replication is the single biggest evidence gap across the whole category. Saying so openly is the point.' },
+      { q: 'Will a supplement noticeably change the number on my ring or watch?', a: 'Maybe not visibly. Many of these effect sizes (RHR −2.2 bpm, HRV +1.45 ms) are small relative to a wearable\'s night-to-night noise, and most were measured on Oura specifically. Read every claim as "research shows X affects this metric," never "take X to fix your number." Pair any change with the device-detectability caveat and check our wearable-accuracy tools.' },
+      { q: 'What about saffron and chamomile for recovery?', a: 'Saffron is surprisingly solid for a botanical: a meaningful sleep-quality improvement (PSQI −2.14) across a large meta-analysis. Whole-extract chamomile improves sleep quality and anxiety but does NOT fix clinical insomnia, and the trendy isolated apigenin version has zero human sleep RCTs, so use whole extract if you use it at all.' }
     ];
   }
 
@@ -366,10 +366,10 @@ class KygoSupplementsByMetric extends HTMLElement {
             <div class="fact-fields--full"><dt>What the research found</dt><dd>${c.effect}</dd></div>
             <div><dt>Study</dt><dd>${c.study}</dd></div>
             <div><dt>Evidence grade</dt><dd>${gm.full}${c.g === 'X' ? ' (a useful null)' : ''}</dd></div>
-            ${flag ? `<div class="fact-fields--full"><dt>Funding / quality flag</dt><dd>${c.flagNote || 'Industry-funded, not peer-reviewed, preclinical, or very small N — read with caution.'}</dd></div>` : ''}
+            ${flag ? `<div class="fact-fields--full"><dt>Funding / quality flag</dt><dd>${c.flagNote || 'Industry-funded, not peer-reviewed, preclinical, or very small N: read with caution.'}</dd></div>` : ''}
           </dl>
           ${src ? `<div class="fact-source-row"><span class="fact-source-lbl">Source</span><a href="${src.url}" target="_blank" rel="noopener" class="source-link">${src.label} ${this._icon('externalLink')}</a></div>` : ''}
-          ${canBuy ? `<div class="fact-buy-row"><a class="dd-buy dd-buy--sm" href="${s.amazon.url}" target="_blank" rel="noopener sponsored" data-track-label="${s.amazon.slug}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>${s.amazon.label} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link — we may earn a commission. Not an endorsement or medical advice.</span></div>` : ''}
+          ${canBuy ? `<div class="fact-buy-row"><a class="dd-buy dd-buy--sm" href="${s.amazon.url}" target="_blank" rel="noopener sponsored" data-track-label="${s.amazon.slug}"><span class="dd-buy-cart" aria-hidden="true">${this._icon('cart')}</span>${s.amazon.label} on Amazon<span class="dd-buy-go" aria-hidden="true">${this._icon('externalLink')}</span></a><span class="dd-buy-aff">Affiliate link: we may earn a commission. Not an endorsement or medical advice.</span></div>` : ''}
         </div>`;
     }
 
@@ -410,7 +410,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       <div class="fact-groups">
         ${group('backed', 'What\'s backed', 'Strong & moderate evidence', backed)}
         ${group('weak', 'Weaker or mixed', 'Limited or inconsistent', weak)}
-        ${group('nul', 'Tested — no effect', 'Useful nulls', nul)}
+        ${group('nul', 'Tested: no effect', 'Useful nulls', nul)}
       </div>`;
   }
 
@@ -423,9 +423,9 @@ class KygoSupplementsByMetric extends HTMLElement {
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('flask')}</span>The metric-filtered explorer</span>
             <h2 class="section-h2">Pick a metric. See what <em>actually moves it</em>.</h2>
-            <p class="section-lede">Choose the number you stare at every morning, and get the supplements ranked by evidence — what's backed, what's weak, and what's been tested with no effect. Funding flags included.</p>
+            <p class="section-lede">Choose the number you stare at every morning, and get the supplements ranked by evidence: what's backed, what's weak, and what's been tested with no effect. Funding flags included.</p>
           </div>
-          <span class="metric-tiles-label">Choose your metric — ${this._metrics.length} to explore</span>
+          <span class="metric-tiles-label">Choose your metric: ${this._metrics.length} to explore</span>
           ${this._renderMetricTiles()}
           <div class="picker-panel">
             <div class="picker-panel-head">
@@ -513,12 +513,12 @@ class KygoSupplementsByMetric extends HTMLElement {
 
   _mythPicks() {
     return [
-      { label: 'Magnesium\'s "27 RCTs"', stat: '3 trials', answer: 'Really just n=151', icon: 'ban', note: 'The viral "27 RCTs / 2,496 people" figure is actually 3 small trials totalling 151 older adults, rated low-quality. Magnesium does help sleep onset — just nowhere near the marketing number.' },
+      { label: 'Magnesium\'s "27 RCTs"', stat: '3 trials', answer: 'Really just n=151', icon: 'ban', note: 'The viral "27 RCTs / 2,496 people" figure is actually 3 small trials totalling 151 older adults, rated low-quality. Magnesium does help sleep onset, just nowhere near the marketing number.' },
       { label: 'Melatonin & staying asleep', stat: 'No effect', answer: 'It won\'t keep you asleep', icon: 'moon', note: 'Standard immediate-release melatonin shows no significant effect on wake after sleep onset (Moon 2022). It\'s a timing aid for falling asleep, not a maintenance aid.' },
       { label: 'CBD & recovery', stat: 'No change', answer: 'WHOOP saw nothing', icon: 'flask', note: 'CBD shows no meaningful recovery change on WHOOP, and CBD isolate 150 mg was null for sleep onset (Narayan 2024). Don\'t rely on it for your score.' },
-      { label: 'Apigenin (the trendy one)', stat: '0 RCTs', answer: 'No human sleep trial exists', icon: 'ban', note: 'Isolated apigenin — the trendy ~50 mg version — has zero human sleep RCTs. The evidence people cite is for whole chamomile extract. Use the extract, not the isolate.' },
+      { label: 'Apigenin (the trendy one)', stat: '0 RCTs', answer: 'No human sleep trial exists', icon: 'ban', note: 'Isolated apigenin, the trendy ~50 mg version, has zero human sleep RCTs. The evidence people cite is for whole chamomile extract. Use the extract, not the isolate.' },
       { label: 'Passionflower', stat: 'Subjective', answer: 'Self-report, industry-funded', icon: 'alert', note: 'The "evidence" was self-reported total sleep time with no PSG, in an industry-funded trial (JK Botanicals). Deep sleep was never actually measured.' },
-      { label: 'L-theanine & resting HRV', stat: 'Acute only', answer: 'Not a baseline gain', icon: 'activity', note: 'L-theanine blunts sympathetic activation during acute stress (Kimura 2007) — it is not a resting-HRV or baseline resting-heart-rate improvement.' },
+      { label: 'L-theanine & resting HRV', stat: 'Acute only', answer: 'Not a baseline gain', icon: 'activity', note: 'L-theanine blunts sympathetic activation during acute stress (Kimura 2007); it is not a resting-HRV or baseline resting-heart-rate improvement.' },
       { label: 'Vitamin B6 & "more REM"', stat: 'Dreams only', answer: 'Vivid, not longer', icon: 'moon', note: 'B6 raises dream recall and vividness (Ebben 2002, Aspy 2018), but measured sleep variables did not change. Remembering more dreams feels like more REM. It is not the same thing.' },
       { label: 'Supplements that "boost REM"', stat: '9 untested', answer: 'No PSG data at all', icon: 'ban', note: 'Ashwagandha, valerian, plain magnesium, L-theanine, GABA, saffron, chamomile, tryptophan and CBD have never been measured for REM% on PSG. The honest grade for REM is usually "not tested", not "works".' }
     ];
@@ -557,7 +557,7 @@ class KygoSupplementsByMetric extends HTMLElement {
             <span class="callout-icon" aria-hidden="true">${this._icon('info')}</span>
             <div class="callout-body">
               <h3>Read this before you buy anything</h3>
-              <p>Frame every row as <em>"research shows X affects this metric,"</em> never <em>"take X to fix your number."</em> Many of these effect sizes — RHR −2.2 bpm, HRV +1.45 ms — are small next to a wearable's night-to-night noise, and most were measured on Oura specifically (see <a href="https://www.kygo.app/tools/wearable-accuracy" target="_blank" rel="noopener">how accurate your wearable is</a> and the <a href="https://www.kygo.app/tools/sensor-comparison" target="_blank" rel="noopener">sensor comparison</a>). Nearly every supplement-specific trial here is industry-funded. Doses are study doses, not recommendations. This is not medical advice — talk to a clinician before changing your routine.</p>
+              <p>Frame every row as <em>"research shows X affects this metric,"</em> never <em>"take X to fix your number."</em> Many of these effect sizes (RHR −2.2 bpm, HRV +1.45 ms) are small next to a wearable's night-to-night noise, and most were measured on Oura specifically (see <a href="https://www.kygo.app/tools/wearable-accuracy" target="_blank" rel="noopener">how accurate your wearable is</a> and the <a href="https://www.kygo.app/tools/sensor-comparison" target="_blank" rel="noopener">sensor comparison</a>). Nearly every supplement-specific trial here is industry-funded. Doses are study doses, not recommendations. This is not medical advice. Talk to a clinician before changing your routine.</p>
             </div>
           </div>
         </div>
@@ -662,7 +662,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
-          <p class="section-sub animate-on-scroll">Every supplement claim verified against primary research (2026-06-12 pass, REM sleep added 2026-08-19). Funding flags are part of the data — they travel with each claim.</p>
+          <p class="section-sub animate-on-scroll">Every supplement claim verified against primary research (2026-06-12 pass, REM sleep added 2026-08-19). Funding flags are part of the data: they travel with each claim.</p>
           <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>`;
@@ -678,7 +678,7 @@ class KygoSupplementsByMetric extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'Supplements by Metric Explorer',
       'alternateName': 'Kygo Supplement × Wearable Metric Evidence Tool',
-      'description': 'Pick a wearable metric — sleep latency, deep sleep, REM sleep, staying asleep, HRV, resting heart rate, or recovery/readiness — and see which of 28 supplements the research actually supports, graded by evidence with industry-funding flags and the popular options that do not work.',
+      'description': 'Pick a wearable metric (sleep latency, deep sleep, REM sleep, staying asleep, HRV, resting heart rate, or recovery/readiness) and see which of 28 supplements the research actually supports, graded by evidence with industry-funding flags and the popular options that do not work.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/supplements-by-metric',
@@ -1096,7 +1096,7 @@ class KygoSupplementsByMetric extends HTMLElement {
             <div class="hero-copy">
               <div class="hero-kicker animate-on-scroll"><span class="hero-dot" aria-hidden="true"></span>${metricCount} Metrics · ${supCount} Supplements</div>
               <h1 class="hero-title animate-on-scroll">What supplements actually move <em>the numbers on your wearable</em>.</h1>
-              <p class="hero-sub animate-on-scroll">Sleep latency, deep sleep, REM, staying asleep, HRV, resting heart rate, recovery — graded by real evidence, with the <strong>funding flags</strong> and the popular stuff that <strong>doesn't work</strong>.</p>
+              <p class="hero-sub animate-on-scroll">Sleep latency, deep sleep, REM, staying asleep, HRV, resting heart rate, recovery: graded by real evidence, with the <strong>funding flags</strong> and the popular stuff that <strong>doesn't work</strong>.</p>
             </div>
             <div class="hero-vis animate-on-scroll">
               <div class="hero-vis-head">
@@ -1125,7 +1125,7 @@ class KygoSupplementsByMetric extends HTMLElement {
               <div class="hero-cell"><span class="hero-num">${metricCount}</span><span class="hero-lbl">Wearable metrics</span></div>
               <div class="hero-cell"><span class="hero-num">${supCount}</span><span class="hero-lbl">Supplements graded</span></div>
               <div class="hero-cell"><span class="hero-num">${backedCount}</span><span class="hero-lbl">Backed for a metric</span></div>
-              <div class="hero-cell"><span class="hero-num">${nullCount}</span><span class="hero-lbl">Tested — no effect</span></div>
+              <div class="hero-cell"><span class="hero-num">${nullCount}</span><span class="hero-lbl">Tested: no effect</span></div>
             </div>
           </div>
         </div>

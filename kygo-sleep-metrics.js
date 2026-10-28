@@ -493,7 +493,7 @@ class KygoSleepMetrics extends HTMLElement {
         { label: 'Google Blog: Sleep Profile', url: 'https://blog.google/products/fitbit/sleep-profile/' },
         { label: 'Fitbit: Sleep Technology', url: 'https://www.fitbit.com/global/us/technology/sleep' },
         { label: 'Android Police: Sleep Score Calculation', url: 'https://www.androidpolice.com/fitbit-sleep-score-calculation-explainer/' },
-        { label: "Tom's Guide \u2014 Snore Detection", url: 'https://www.tomsguide.com/news/fitbit-is-rolling-out-snore-and-noise-detection' },
+        { label: "Tom's Guide: Snore Detection", url: 'https://www.tomsguide.com/news/fitbit-is-rolling-out-snore-and-noise-detection' },
         { label: 'My Healthy Apple: Snoring Features', url: 'https://www.myhealthyapple.com/how-to-setup-and-use-fitbit-snoring-detection-features/' }
       ],
       appleWatch: [
