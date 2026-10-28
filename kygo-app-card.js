@@ -24,8 +24,9 @@
  *   variant   design/copy variant id, default "v1". Goes to GA4 as cta_content
  *             and to Tenjin as part of creative_name (<variant>-<position>), so
  *             designs can be compared once more than one exists.
- *   focus     which insight the phone mockup shows: hrv (default). More
- *             (sleep, heart, food) get added to VISUALS below.
+ *   focus     which insight the phone mockup shows, matched to the page's
+ *             topic: hrv (default), deep, rem, latency, awake, rhr, sleep, food,
+ *             supplement, training, readiness, stress. See VISUALS below.
  *   headline  the post's own hook. Never reused across posts.
  *   sub       one sentence under the headline.
  *   surface   blog (default) | tool. Goes to GA4 as the click position and to
@@ -78,17 +79,120 @@
     return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
-  /** The insight shown on the phone mockup, one per focus. Sample data, the same
-   *  example the homepage uses. */
+  /** The phone mockup: the app's metric screen (Helping / Hurting tabs and
+   *  factor cards), one per focus so each page shows an insight on its own
+   *  topic. Sample data in the app's own phrasing, pointing the same way as the
+   *  research on the page that uses it. Each card: name, delta pill, the
+   *  sentence (cond, change, when), the two compared groups as [label, value,
+   *  bar width %] (base first), and the evidence line. */
   const VISUALS = {
     hrv: {
-      eyebrow: 'CAFFEINE → HRV',
-      title: 'Caffeine after 2pm lowers next-day HRV',
-      rows: [
-        { label: 'Under 95mg', width: 72, color: '#64748B', value: '32 ms' },
-        { label: 'Over 95mg', width: 48, color: '#EF4444', value: '24 ms' }
-      ],
-      log: { name: 'Coffee', meta: '2:30 PM · 95mg' }
+      metric: 'HRV', tab: 'hurting', counts: [4, 6],
+      cards: [
+        { name: 'Caffeine after 2 PM', delta: '−8', unit: 'ms', cond: 'go over <b>95 mg</b> after 2 PM', change: '−8 ms lower', when: 'the next day',
+          rows: [['Under 95mg', '52 ms', 82], ['Over 95mg', '44 ms', 58]], ev: '41 days · r −0.61' },
+        { name: 'Alcohol', delta: '−6', unit: 'ms', cond: 'go over <b>31.2 g</b>', change: '−6 ms lower', when: 'the next day',
+          rows: [['Under 31.2g', '51 ms', 80], ['Over 31.2g', '45 ms', 60]], ev: '44 days · r −0.52' }
+      ]
+    },
+    deep: {
+      metric: 'Deep Sleep', tab: 'hurting', counts: [3, 7],
+      cards: [
+        { name: 'Caffeine after 2 PM', delta: '−18', unit: 'min', cond: 'have caffeine <b>after 2 PM</b>', change: '−18 min lower', when: 'that night',
+          rows: [['Before 2 PM', '72 min', 82], ['After 2 PM', '54 min', 58]], ev: '42 days · r −0.58' },
+        { name: 'Alcohol', delta: '−11', unit: 'min', cond: 'go over <b>31.2 g</b>', change: '−11 min lower', when: 'that night',
+          rows: [['Under 31.2g', '70 min', 80], ['Over 31.2g', '59 min', 62]], ev: '44 days · r −0.47' }
+      ]
+    },
+    rem: {
+      metric: 'REM Sleep', tab: 'hurting', counts: [3, 8],
+      cards: [
+        { name: 'Alcohol', delta: '−20', unit: 'min', cond: 'go over <b>31.2 g</b>', change: '−20 min lower', when: 'that night',
+          rows: [['Under 31.2g', '96 min', 84], ['Over 31.2g', '76 min', 60]], ev: '44 days · r −0.76' },
+        { name: 'Last meal timing', delta: '−9', unit: 'min', cond: 'eat within <b>2 hours</b> of bed', change: '−9 min lower', when: 'that night',
+          rows: [['Earlier', '93 min', 82], ['Within 2h', '84 min', 66]], ev: '44 days · r −0.42' }
+      ]
+    },
+    latency: {
+      metric: 'Sleep Latency', tab: 'hurting', counts: [2, 6],
+      cards: [
+        { name: 'Caffeine after 2 PM', delta: '+11', unit: 'min', cond: 'have caffeine <b>after 2 PM</b>', change: '+11 min longer', when: 'to fall asleep',
+          rows: [['Before 2 PM', '14 min', 46], ['After 2 PM', '25 min', 82]], ev: '42 days · r 0.55' },
+        { name: 'Last meal timing', delta: '+6', unit: 'min', cond: 'eat within <b>2 hours</b> of bed', change: '+6 min longer', when: 'to fall asleep',
+          rows: [['Earlier', '15 min', 50], ['Within 2h', '21 min', 70]], ev: '44 days · r 0.39' }
+      ]
+    },
+    awake: {
+      metric: 'Awake Time', tab: 'hurting', counts: [2, 7],
+      cards: [
+        { name: 'Alcohol', delta: '+18', unit: 'min', cond: 'go over <b>31.2 g</b>', change: '+18 min more awake', when: 'that night',
+          rows: [['Under 31.2g', '24 min', 44], ['Over 31.2g', '42 min', 80]], ev: '44 days · r 0.63' },
+        { name: 'Caffeine after 2 PM', delta: '+9', unit: 'min', cond: 'have caffeine <b>after 2 PM</b>', change: '+9 min more awake', when: 'that night',
+          rows: [['Before 2 PM', '26 min', 48], ['After 2 PM', '35 min', 66]], ev: '42 days · r 0.41' }
+      ]
+    },
+    rhr: {
+      metric: 'Resting HR', tab: 'hurting', counts: [3, 6],
+      cards: [
+        { name: 'Alcohol', delta: '+4', unit: 'bpm', cond: 'go over <b>31.2 g</b>', change: '+4 bpm higher', when: 'the next day',
+          rows: [['Under 31.2g', '54 bpm', 62], ['Over 31.2g', '58 bpm', 80]], ev: '44 days · r 0.68' },
+        { name: 'Last meal timing', delta: '+2', unit: 'bpm', cond: 'eat within <b>2 hours</b> of bed', change: '+2 bpm higher', when: 'that night',
+          rows: [['Earlier', '55 bpm', 66], ['Within 2h', '57 bpm', 76]], ev: '44 days · r 0.40' }
+      ]
+    },
+    sleep: {
+      metric: 'Sleep Score', tab: 'hurting', counts: [3, 8],
+      cards: [
+        { name: 'Alcohol', delta: '−12', unit: 'pts', cond: 'go over <b>31.2 g</b>', change: '−12 pts lower', when: 'the next day',
+          rows: [['Under 31.2g', '81 pts', 82], ['Over 31.2g', '69 pts', 52]], ev: '44 days · r −0.76' },
+        { name: 'Last meal timing', delta: '−8', unit: 'pts', cond: 'eat within <b>2 hours</b> of bed', change: '−8 pts lower', when: 'the next day',
+          rows: [['Earlier', '82 pts', 82], ['Within 2h', '74 pts', 60]], ev: '44 days · r −0.42' }
+      ]
+    },
+    food: {
+      metric: 'Sleep Score', tab: 'hurting', counts: [4, 8],
+      cards: [
+        { name: 'Last meal timing', delta: '−8', unit: 'pts', cond: 'eat within <b>2 hours</b> of bed', change: '−8 pts lower', when: 'the next day',
+          rows: [['Earlier', '82 pts', 82], ['Within 2h', '74 pts', 60]], ev: '44 days · r −0.42' },
+        { name: 'Added sugar', delta: '−5', unit: 'pts', cond: 'go over <b>50 g</b>', change: '−5 pts lower', when: 'the next day',
+          rows: [['Under 50g', '80 pts', 80], ['Over 50g', '75 pts', 64]], ev: '43 days · r −0.36' }
+      ]
+    },
+    supplement: {
+      metric: 'Sleep Score', tab: 'helping', counts: [3, 8],
+      cards: [
+        { name: 'Magnesium Glycinate', delta: '+9', unit: 'pts', cond: 'take <b>Magnesium Glycinate</b>', change: '+9 pts higher', when: 'the next day',
+          rows: [['Not taken', '71 pts', 52], ['Taken', '80 pts', 82]], ev: '43 days · r 0.56' },
+        { name: 'Strength training', delta: '+6', unit: 'pts', cond: 'lift <b>53+ min</b>', change: '+6 pts higher', when: 'that day',
+          rows: [['Under 53min', '76 pts', 60], ['Over 53min', '82 pts', 82]], ev: '45 days · r 0.48' }
+      ]
+    },
+    training: {
+      metric: 'Sleep Score', tab: 'helping', counts: [3, 8],
+      cards: [
+        { name: 'Strength training', delta: '+6', unit: 'pts', cond: 'lift <b>53+ min</b>', change: '+6 pts higher', when: 'that day',
+          rows: [['Under 53min', '76 pts', 60], ['Over 53min', '82 pts', 82]], ev: '45 days · r 0.48' },
+        { name: 'Protein', delta: '+4', unit: 'pts', cond: 'eat <b>120 g+</b> protein', change: '+4 pts higher', when: 'the next day',
+          rows: [['Under 120g', '75 pts', 62], ['Over 120g', '79 pts', 76]], ev: '44 days · r 0.37' }
+      ]
+    },
+    readiness: {
+      metric: 'Readiness', tab: 'hurting', counts: [4, 7],
+      cards: [
+        { name: 'Alcohol', delta: '−9', unit: 'pts', cond: 'go over <b>31.2 g</b>', change: '−9 pts lower', when: 'the next day',
+          rows: [['Under 31.2g', '82 pts', 82], ['Over 31.2g', '73 pts', 58]], ev: '44 days · r −0.64' },
+        { name: 'Last meal timing', delta: '−5', unit: 'pts', cond: 'eat within <b>2 hours</b> of bed', change: '−5 pts lower', when: 'the next day',
+          rows: [['Earlier', '81 pts', 80], ['Within 2h', '76 pts', 64]], ev: '44 days · r −0.38' }
+      ]
+    },
+    stress: {
+      metric: 'Stress', tab: 'hurting', counts: [3, 6],
+      cards: [
+        { name: 'Alcohol', delta: '+9', unit: 'pts', cond: 'go over <b>31.2 g</b>', change: '+9 pts higher', when: 'the next day',
+          rows: [['Under 31.2g', '32 pts', 50], ['Over 31.2g', '41 pts', 74]], ev: '44 days · r 0.59' },
+        { name: 'Caffeine', delta: '+6', unit: 'pts', cond: 'go over <b>300 mg</b>', change: '+6 pts higher', when: 'that day',
+          rows: [['Under 300mg', '33 pts', 52], ['Over 300mg', '39 pts', 68]], ev: '41 days · r 0.44' }
+      ]
     }
   };
 
@@ -222,22 +326,27 @@
     /* ── Render ───────────────────────────────────────────────────────── */
 
     _phone() {
-      const v = VISUALS[clean(this._getSetting('focus', 'hrv'), 10)] || VISUALS.hrv;
-      const rows = v.rows.map((r) => `
-        <div class="p-row"><span class="p-lbl">${esc(r.label)}</span><span class="p-track"><span style="width:${Number(r.width)}%;background:${esc(r.color)}"></span></span><span class="p-val">${esc(r.value)}</span></div>`).join('');
+      const v = VISUALS[clean(this._getSetting('focus', 'hrv'), 12)] || VISUALS.hrv;
+      const neg = v.tab === 'hurting';
+      const card = (c, i) => `
+              <div class="p-card">
+                <div class="p-ct"><span class="p-name">${esc(c.name)}</span><span class="p-pill ${neg ? 'neg' : 'pos'}">${esc(c.delta)}<small>${esc(c.unit)}</small></span></div>
+                <p class="p-txt">Days you ${c.cond}, your ${esc(v.metric)} runs <b class="${neg ? 'neg' : 'pos'}">${esc(c.change)}</b> ${esc(c.when)}.</p>
+                <div class="p-cmp">${c.rows.map((r, j) => `
+                  <div class="p-row"><span class="p-lbl">${esc(r[0])}</span><span class="p-track"><span class="${j ? (neg ? 'neg' : 'pos') : 'base'}" style="width:${Number(r[2])}%"></span></span><span class="p-val">${esc(r[1])}</span></div>`).join('')}
+                </div>
+                <div class="p-ev"><span class="p-rank">#${i + 1}</span><b>Strong evidence</b><span> · ${esc(c.ev)}</span></div>
+              </div>`;
       return `
         <div class="phone" aria-hidden="true"><div class="screen">
           <div class="island"></div>
-          <div class="status"><span>9:41</span><span class="batt"></span></div>
+          <div class="status"><span>9:41</span><span class="sig"><i></i><i></i><i></i><i></i><span class="batt"></span></span></div>
+          <div class="p-nav"><span class="p-back"></span><span class="p-title">${esc(v.metric)}</span><span class="p-day">Day 45</span></div>
+          <div class="p-tabs"><span class="${neg ? '' : 'on pos'}">Helping <em>${v.counts[0]}</em></span><span class="${neg ? 'on neg' : ''}">Hurting <em>${v.counts[1]}</em></span></div>
           <div class="p-body">
-            <div class="p-head"><span class="p-title">Insights</span><span class="p-sub">Last 47 days</span></div>
-            <div class="p-card">
-              <div class="p-top"><span class="p-eye">${esc(v.eyebrow)}</span><span class="p-real">Likely real</span></div>
-              <p class="p-find">${esc(v.title)}</p>
-              ${rows}
-            </div>
-            <div class="p-log"><span class="p-ic"><span></span></span><span class="p-logtxt"><b>${esc(v.log.name)}</b><span>${esc(v.log.meta)}</span></span><span class="p-ok">Logged</span></div>
+            <p class="p-src">Data from Oura · Apple Health · Garmin</p>${v.cards.map(card).join('')}
           </div>
+          <div class="p-bar"><span>Today</span><span>Food</span><span class="p-plus">+</span><span>Trends</span><span class="on">Correlation</span></div>
         </div></div>`;
     }
 
@@ -269,30 +378,46 @@
 
           .phone { position: relative; width: 236px; height: 400px; margin: 20px auto -210px; padding: 7px; border-radius: 40px;
             background: linear-gradient(160deg, #334155, #0B1220); box-shadow: 0 0 0 1px rgba(255,255,255,.10), 0 40px 70px -24px rgba(0,0,0,.75); }
-          .screen { position: relative; height: 100%; border-radius: 33px; background: #F8FAFC; overflow: hidden; color: #0F172A; }
-          .island { position: absolute; top: 8px; left: 50%; margin-left: -38px; width: 76px; height: 22px; border-radius: 12px; background: #0B1220; }
-          .status { display: flex; justify-content: space-between; align-items: center; padding: 11px 20px 0; font-size: 11px; font-weight: 700; }
-          .batt { width: 14px; height: 7px; border-radius: 2px; background: #0F172A; }
-          .p-body { padding: 20px 14px 0; }
-          .p-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
-          .p-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
-          .p-sub { font-size: 10px; font-weight: 600; color: #64748B; }
-          .p-card { padding: 12px; border-radius: 14px; background: #fff; border: 1px solid #E2E8F0; box-shadow: 0 6px 16px -10px rgba(15,23,42,.25); }
-          .p-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-          .p-eye { font-size: 9.5px; font-weight: 700; letter-spacing: .5px; color: #64748B; }
-          .p-real { padding: 2px 7px; border-radius: 99px; background: #ECFDF5; color: #15803D; font-size: 9.5px; font-weight: 700; }
-          .p-find { font-family: 'Space Grotesk', sans-serif; font-size: 13px; line-height: 1.25; font-weight: 700; margin-bottom: 10px; }
-          .p-row { display: flex; align-items: center; gap: 8px; margin-top: 7px; }
-          .p-lbl { width: 62px; font-size: 10px; color: #475569; }
-          .p-track { flex: 1; height: 7px; border-radius: 99px; background: #E2E8F0; overflow: hidden; }
-          .p-track span { display: block; height: 100%; }
-          .p-val { width: 34px; text-align: right; font-size: 11px; font-weight: 700; }
-          .p-log { margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 14px; background: #fff; border: 1px solid #E2E8F0; }
-          .p-ic { width: 28px; height: 28px; border-radius: 8px; background: #FEF3C7; display: flex; align-items: center; justify-content: center; }
-          .p-ic span { width: 10px; height: 10px; border-radius: 3px; background: #D97706; }
-          .p-logtxt { flex: 1; display: flex; flex-direction: column; font-size: 10px; color: #64748B; }
-          .p-logtxt b { font-size: 11.5px; font-weight: 600; color: #0F172A; }
-          .p-ok { font-size: 10px; font-weight: 700; color: #16A34A; }
+          .screen { position: relative; height: 100%; border-radius: 33px; background: #F4F6F9; overflow: hidden; color: #0F172A; }
+          .island { position: absolute; top: 8px; left: 50%; margin-left: -38px; width: 76px; height: 22px; border-radius: 12px; background: #0B1220; z-index: 2; }
+          .status { display: flex; justify-content: space-between; align-items: center; padding: 11px 20px 0; height: 30px; font-size: 11px; font-weight: 700; background: #fff; }
+          .sig { display: inline-flex; align-items: flex-end; gap: 1.5px; }
+          .sig i { display: block; width: 2.5px; border-radius: 1px; background: #0F172A; }
+          .sig i:nth-child(1) { height: 4px; } .sig i:nth-child(2) { height: 5.5px; } .sig i:nth-child(3) { height: 7px; } .sig i:nth-child(4) { height: 8.5px; }
+          .batt { width: 15px; height: 7.5px; margin-left: 4px; border-radius: 2.5px; border: 1.2px solid #22C55E; background: linear-gradient(90deg, #22C55E 70%, transparent 70%); }
+          .p-nav { position: relative; display: flex; align-items: center; justify-content: center; height: 32px; background: #fff; }
+          .p-back { position: absolute; left: 14px; width: 7px; height: 7px; border-left: 1.6px solid #0F172A; border-bottom: 1.6px solid #0F172A; transform: rotate(45deg); }
+          .p-title { font-family: 'Space Grotesk', sans-serif; font-size: 12.5px; font-weight: 600; letter-spacing: .2px; }
+          .p-day { position: absolute; right: 10px; padding: 3px 8px; border-radius: 99px; background: #22C55E; color: #fff; font-size: 9px; font-weight: 700; }
+          .p-tabs { display: flex; background: #fff; box-shadow: 0 4px 8px -6px rgba(15,23,42,.18); }
+          .p-tabs span { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; padding: 6px 0 7px; font-size: 10px; font-weight: 600; color: #64748B; border-bottom: 2px solid transparent; }
+          .p-tabs em { font-style: normal; font-size: 8.5px; padding: 0 5px; border-radius: 99px; background: #EEF2F6; color: #475569; }
+          .p-tabs .on { color: #0F172A; }
+          .p-tabs .on.pos { border-color: #22C55E; } .p-tabs .on.pos em { background: #DCFCE7; color: #16A34A; }
+          .p-tabs .on.neg { border-color: #EF4444; } .p-tabs .on.neg em { background: #FEE2E2; color: #EF4444; }
+          .p-body { padding: 8px 9px 60px; }
+          .p-src { font-size: 8.5px; color: #64748B; margin: 0 2px 7px; }
+          .p-card { padding: 9px 9px 7px; margin-bottom: 8px; border-radius: 13px; background: #fff; border: 1px solid #E8EDF3; box-shadow: 0 4px 12px -8px rgba(15,23,42,.22); }
+          .p-ct { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+          .p-name { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; line-height: 1.2; }
+          .p-pill { flex: none; padding: 2px 7px; border-radius: 99px; font-size: 10px; font-weight: 700; }
+          .p-pill small { font-size: 8px; font-weight: 600; margin-left: 1px; }
+          .p-pill.neg { background: #FEE2E2; color: #EF4444; } .p-pill.pos { background: #DCFCE7; color: #16A34A; }
+          .p-txt { margin: 4px 0 6px; font-size: 9px; line-height: 1.4; color: #1E293B; }
+          .p-txt b { font-weight: 600; } .p-txt b.neg { color: #EF4444; } .p-txt b.pos { color: #16A34A; }
+          .p-cmp { padding: 5px 7px; border-radius: 9px; background: #F1F4F8; border: 1px solid #E5EAF0; }
+          .p-row { display: flex; align-items: center; gap: 6px; margin: 2px 0; }
+          .p-lbl { width: 54px; font-size: 8.5px; color: #1E293B; white-space: nowrap; }
+          .p-track { flex: 1; height: 5px; border-radius: 99px; background: #fff; overflow: hidden; }
+          .p-track span { display: block; height: 100%; border-radius: 99px; }
+          .p-track .base { background: #64748B; } .p-track .neg { background: #EF4444; } .p-track .pos { background: #22C55E; }
+          .p-val { width: 38px; text-align: right; font-size: 8.5px; font-weight: 600; white-space: nowrap; }
+          .p-ev { display: flex; align-items: center; gap: 4px; margin-top: 6px; padding-top: 5px; border-top: 1px solid #EEF2F6; font-size: 7.5px; color: #64748B; white-space: nowrap; overflow: hidden; }
+          .p-ev b { color: #0F172A; font-weight: 600; }
+          .p-rank { padding: 1px 4px; border-radius: 4px; background: #0F172A; color: #fff; font-weight: 700; }
+          .p-bar { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-around; height: 44px; padding: 0 6px 6px; background: #fff; border-top: 1px solid #E8EDF3; font-size: 7.5px; font-weight: 500; color: #0F172A; }
+          .p-bar .p-plus { width: 30px; height: 30px; border-radius: 9px; background: #22C55E; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 300; }
+          .p-bar .on { padding: 4px 5px; border-radius: 8px; background: #F1F5F9; color: #16A34A; font-weight: 600; }
 
           @media (min-width: 600px) {
             .card { padding: 28px 286px 28px 32px; border-radius: 20px;
