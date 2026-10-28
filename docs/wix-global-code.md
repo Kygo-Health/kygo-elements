@@ -179,9 +179,14 @@ Fixed top nav rendered into `<div id="kygo-header-root">` by an IIFE. Key facts:
 - **Nav links:** `/how-it-works`, `/faq`, `/blog`, `/tools`, **`/contact-8`**.
 - **No Log in link.** Returning users sign in from `/start`, which shows "Already have an account?
   Sign in", so the header carries only the signup path.
-- **Open web app** → `https://app.kygo.app/start?utm_source=kygo.app&utm_medium=header` (no
-  `utm_campaign`: the snippet runs on every page). The snippet also loads `kygo-cta.js`, whose
-  document listener swaps in inbound `utm_*` and forwards `fbclid` / `gclid` on press.
+- **Open web app** → `https://app.kygo.app/start?utm_source=kygo.app&utm_medium=header`, plus
+  `utm_campaign=<page slug>` (last path segment, `home` on `/`) set on press by a window-level
+  capture listener, so header signups are attributed per page (revision 13, 2026-10-28; it
+  replaced the per-tool sub-nav CTAs removed that day). The snippet also loads `kygo-cta.js`,
+  whose document listener then swaps in inbound `utm_*` (a visitor's ad campaign wins over the
+  page slug) and forwards `fbclid` / `gclid` on press.
+- **Mixpanel:** every header CTA press sends `cta_clicked {slug:'nav', surface:'header',
+  destination, page}`, `page` being the same page slug.
   This replaced the desktop iOS/Android store buttons in the web-platform pass (2026-09-14).
 - Mobile menu carries "Open web app" and both store CTAs
   (Tenjin iOS `…/cD7zgIPLuiZMMWmWkXLsvy`, Tenjin Android `…/eMjS3ZkseCvs2lO9AVESkO`); hamburger toggles via global

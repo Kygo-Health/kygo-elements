@@ -956,7 +956,9 @@ class KygoPicks extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Wearable readings are estimates, not clinical measurements. As an Amazon Associate, Kygo earns from qualifying purchases. Last reviewed ${e(this._updated.page)}.</p>
+          <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Wearable readings are estimates, not clinical measurements.</p>
+          <p class="footer-copyright">Every pick restates a finding shown, with its sources, on our wearable accuracy tool. Last reviewed ${e(this._updated.page)}.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>`;
   }
@@ -1266,6 +1268,8 @@ class KygoPicks extends HTMLElement {
 
       .tool-footer { padding: 40px 0; background: #fff; border-top: 1px solid var(--border-subtle); text-align: center; }
       .footer-disclaimer { margin: 0 auto; max-width: 720px; font-size: 12px; line-height: 1.55; color: var(--fg-2); }
+      .footer-copyright { margin: 8px auto 0; max-width: 720px; font-size: 12px; line-height: 1.55; color: var(--fg-3); }
+      .footer-affiliate { font-style: italic; }
 
       .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }
       .animate-on-scroll.visible { opacity: 1; transform: none; }
