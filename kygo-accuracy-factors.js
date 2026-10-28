@@ -1288,17 +1288,6 @@ class KygoAccuracyFactors extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
-            Accuracy Factors
-          </a>
-          <div class="nav-cta-group">
-            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
-          </div>
-        </div>
-      </header>
 
       <section class="hero section-bg-white">
         <div class="container hero-inner">
@@ -1334,23 +1323,8 @@ class KygoAccuracyFactors extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
-          </a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
-          <div class="footer-links">
-            <a href="https://www.kygo.app" target="_blank" rel="noopener">Home</a>
-            <a href="https://www.kygo.app/how-it-works" target="_blank" rel="noopener">How It Works</a>
-            <a href="https://www.kygo.app/tools" target="_blank" rel="noopener">Tools</a>
-            <a href="https://www.kygo.app/blog" target="_blank" rel="noopener">Blog</a>
-            <a href="https://www.kygo.app/contact" target="_blank" rel="noopener">Contact</a>
-            <a href="https://www.kygo.app/privacy-policy" target="_blank" rel="noopener">Privacy</a>
-            <a href="https://www.kygo.app/terms-conditions" target="_blank" rel="noopener">Terms</a>
-          </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Every figure here comes from a published study under specific conditions, with sample sizes as small as ten people where noted, and accuracy findings do not transfer automatically to your device, your body or your firmware version. Consumer wearables are wellness products, not diagnostic instruments. Consult a qualified healthcare provider for any medical question.</p>
           <p class="footer-copyright">Figures drawn from peer-reviewed validation studies, with preprints, conference abstracts and manufacturer documentation labelled as such throughout. Manufacturer support pages are cited as guidance, never as evidence. Last updated September 2026.</p>
-          <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
 
@@ -1461,13 +1435,6 @@ class KygoAccuracyFactors extends HTMLElement {
       button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 6px; }
 
       /* HEADER */
-      .header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; max-width: 1200px; margin: 0 auto; }
-      .logo { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); white-space: nowrap; min-width: 0; }
-      .logo-img { height: 26px; width: auto; flex-shrink: 0; }
-      .nav-cta-group { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; }
-      @media (max-width: 360px) { .nav-cta-group .nav-store-btn span { display: none; } .nav-cta-group .nav-store-btn { padding: 8px 10px; } }
-      .header-inner { flex-wrap: wrap; }
 
       /* HERO */
       .hero { padding: 40px 0 28px; background: #fff; }
@@ -1672,12 +1639,6 @@ class KygoAccuracyFactors extends HTMLElement {
 
       /* FOOTER */
       .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); background: var(--gray-100); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin-bottom: 8px; }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 18px; margin-bottom: 24px; font-size: 14px; }
-      .footer-links a { color: var(--gray-600); }
-      .footer-links a:hover { color: var(--green-dark); }
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 640px; margin: 0 auto 12px; }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
 

@@ -923,12 +923,6 @@ class KygoPicks extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
       <div id="top"></div>
-      <header class="nav">
-        <div class="nav-inner">
-          <a href="https://www.kygo.app" class="nav-brand"><img src="${logo}" alt="Kygo" /><span>Kygo Health</span></a>
-          <div class="nav-cta-group"><kygo-cta mini slug="best-wearables-subnav" surface="tool"></kygo-cta></div>
-        </div>
-      </header>
 
       <section class="hero">
         <div class="container hero-inner">
@@ -962,16 +956,6 @@ class KygoPicks extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://www.kygo.app" class="footer-brand"><img src="${logo}" alt="Kygo Health" class="footer-logo" /><span>Kygo Health</span></a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
-          <div class="footer-links">
-            <a href="https://www.kygo.app">Home</a>
-            <a href="https://www.kygo.app/tools">Tools</a>
-            <a href="https://www.kygo.app/blog">Blog</a>
-            <a href="https://www.kygo.app/contact">Contact</a>
-            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
-            <a href="https://www.kygo.app/terms-conditions">Terms</a>
-          </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Wearable readings are estimates, not clinical measurements. As an Amazon Associate, Kygo earns from qualifying purchases. Last reviewed ${e(this._updated.page)}.</p>
         </div>
       </footer>`;
@@ -1145,10 +1129,6 @@ class KygoPicks extends HTMLElement {
       svg { width: 16px; height: 16px; flex: 0 0 auto; }
       .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-      .nav { border-bottom: 1px solid var(--border-subtle); background: #fff; }
-      .nav-inner { max-width: 1200px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-      .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg-1); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; white-space: nowrap; }
-      .nav-brand img { width: 32px; height: 32px; border-radius: 8px; }
 
       .hero { padding: 48px 0 32px; }
       .hero-inner { display: flex; flex-direction: column; gap: 18px; }
@@ -1285,11 +1265,6 @@ class KygoPicks extends HTMLElement {
       .kc-p { margin: 0; font-size: 15.5px; line-height: 1.6; color: rgba(255,255,255,0.72); max-width: 54ch; }
 
       .tool-footer { padding: 40px 0; background: #fff; border-top: 1px solid var(--border-subtle); text-align: center; }
-      .footer-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg-1); font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
-      .footer-logo { width: 28px; height: 28px; border-radius: 7px; }
-      .footer-tagline { margin: 8px 0 14px; color: var(--fg-2); font-size: 14px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin-bottom: 14px; }
-      .footer-links a { color: var(--fg-2); text-decoration: none; font-size: 13.5px; }
       .footer-disclaimer { margin: 0 auto; max-width: 720px; font-size: 12px; line-height: 1.55; color: var(--fg-2); }
 
       .animate-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out); }

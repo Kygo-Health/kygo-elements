@@ -61,7 +61,7 @@ Variants, for placements the default cluster does not fit:
 | Attribute | Where | What it renders |
 |---|---|---|
 | `compact` | thin `kband` bands (`/faq`, `/tools`, `/blog`, the calorie scanner), the homepage inline band | the same three buttons, smaller |
-| `mini` | the tool-page sticky sub-nav | one nowrap row of header pills, no hook or note, labels dropping away as the header narrows |
+| `mini` | nowhere at present (the tool-page sub-navs it was built for were removed 2026-10-28; the Wix site header is the nav) | one nowrap row of header pills, no hook or note, labels dropping away as the header narrows |
 | `single` | a card whose whole point is one action (the `/how-it-works` pricing plans) | the visitor's own destination alone; takes `label`, `block` and `variant="outline"` |
 | `apps` | blog HTML-embed CTA cards | app stores only, no web button: phones get their own store alone, desktop gets iPhone filled plus Android; primary reads "Start your free trial" unless `label` is set |
 

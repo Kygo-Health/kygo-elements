@@ -1476,18 +1476,6 @@ class KygoSensorComparison extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <!-- Header -->
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" loading="lazy" />
-            Sensor Comparison
-          </a>
-          <div class="nav-cta-group">
-            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
-          </div>
-        </div>
-      </header>
 
       <!-- Hero -->
       <section class="hero-light">
@@ -1602,23 +1590,9 @@ class KygoSensorComparison extends HTMLElement {
       <!-- Footer -->
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
-          </a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
-          <div class="footer-links">
-            <a href="https://www.kygo.app">Home</a>
-            <a href="https://www.kygo.app/how-it-works">How It Works</a>
-            <a href="https://www.kygo.app/blog">Blog</a>
-            <a href="https://www.kygo.app/contact">Contact</a>
-            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
-            <a href="https://www.kygo.app/terms-conditions">Terms</a>
-          </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before making health decisions based on wearable data.</p>
           <p class="footer-copyright">Data sourced from official manufacturer specs, support documentation, and independent reviews. Last updated October 25, 2026.</p>
-          <p class="footer-copyright footer-affiliate">As an Amazon Associate, I earn from qualifying purchases.</p>
-          <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
 
@@ -1669,11 +1643,6 @@ class KygoSensorComparison extends HTMLElement {
       .animate-on-scroll.visible { opacity: 1; transform: translateY(0); }
 
       /* Header */
-      .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; max-width: 1200px; margin: 0 auto; gap: 10px; }
-      .logo { display: flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; min-width: 0; }
-      .logo-img { height: 28px; width: auto; flex-shrink: 0; }
-      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
 
       /* Hero */
       .hero-light { background: #fff; border-bottom: 1px solid var(--gray-200); }
@@ -1892,12 +1861,6 @@ class KygoSensorComparison extends HTMLElement {
 
       /* Footer */
       .tool-footer { padding: 24px 0 16px; text-align: center; background: #fff; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; color: var(--dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { color: var(--gray-400); font-size: 13px; margin-bottom: 12px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
-      .footer-links a { color: var(--gray-600); font-size: 13px; white-space: nowrap; }
-      .footer-links a:hover { color: var(--green-dark); }
       .footer-copyright { color: var(--gray-400); font-size: 12px; margin-top: 4px; }
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
       .footer-affiliate { font-style: italic; }

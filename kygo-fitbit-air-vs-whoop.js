@@ -628,17 +628,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <header class="nav">
-        <div class="nav-inner">
-          <a href="https://www.kygo.app" class="nav-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" loading="lazy" />
-            <span>Kygo Health</span>
-          </a>
-          <div class="nav-cta-group">
-            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
-          </div>
-        </div>
-      </header>
 
 
       <section class="hero-light">
@@ -811,23 +800,9 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://www.kygo.app" class="footer-brand">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            <span>Kygo Health</span>
-          </a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
-          <div class="footer-links">
-            <a href="https://www.kygo.app">Home</a>
-            <a href="https://www.kygo.app/how-it-works">How It Works</a>
-            <a href="https://www.kygo.app/blog">Blog</a>
-            <a href="https://www.kygo.app/contact">Contact</a>
-            <a href="https://www.kygo.app/privacy-policy">Privacy</a>
-            <a href="https://www.kygo.app/terms-conditions">Terms</a>
-          </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from official manufacturer specifications, peer-reviewed validation studies (Dial 2025, Schyvens/Antwerp 2025, Robbins 2024), and independent meta-analyses. Last updated June 2026.</p>
-          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases.</p>
-          <p class="footer-copyright">&copy; ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
 
@@ -1213,12 +1188,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       .animate-on-scroll.in { opacity: 1; transform: none; }
 
       /* Nav */
-      .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.92); backdrop-filter: saturate(160%) blur(14px); -webkit-backdrop-filter: saturate(160%) blur(14px); border-bottom: 1px solid var(--border-subtle); }
-      .nav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 20px; display: flex; align-items: center; gap: 16px; }
-      .nav-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700; font-size: 14px; letter-spacing: -0.01em; color: var(--fg-1); text-transform: uppercase; }
-      .nav-brand img { width: 26px; height: 26px; }
-      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
-      @media (max-width: 480px) { .nav-brand span { display: none; } }
 
       /* Toolbar */
       .toolbar { border-bottom: 1px solid var(--border-subtle); background: var(--bg-surface); }
@@ -1452,12 +1421,6 @@ class KygoFitbitAirVsWhoop extends HTMLElement {
       /* Footer (light disclaimer style) */
       .tool-footer { padding: 56px 20px 40px; background: var(--kygo-light); color: var(--fg-2); border-top: 1px solid var(--border-subtle); }
       .tool-footer .container { max-width: 720px; margin: 0 auto; text-align: center; }
-      .footer-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--fg-1); font-family: var(--font-display); font-weight: 700; font-size: 17px; }
-      .footer-logo { width: 28px; height: 28px; }
-      .footer-tagline { color: var(--fg-3); font-size: 14px; margin: 10px 0 22px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; margin-bottom: 28px; font-size: 14px; }
-      .footer-links a { color: var(--fg-2); }
-      .footer-links a:hover { color: var(--kygo-green-dark); }
       .footer-disclaimer { font-size: 12px; color: var(--fg-3); line-height: 1.6; max-width: 620px; margin: 0 auto 14px; }
       .footer-copyright { font-size: 12px; color: var(--fg-3); margin: 4px 0; }
       .footer-affiliate { font-style: italic; }

@@ -56,8 +56,6 @@ Use the **semantic palette only**. Copy this `:host` block verbatim:
   "winner" card only. For **brand-specific cards** (e.g. an "Oura's posture" vs "RingConn's posture"
   pair), use the actual brand logo in the card's icon slot (a white, bordered tile), not a generic
   line icon.
-- **Frosted sticky nav:** `background:rgba(255,255,255,.92); backdrop-filter:saturate(160%) blur(14px)`
-  (include the `-webkit-backdrop-filter` prefix).
 - **Green radial glow on dark** (the glow the CTA / keystone cards use): a `::before`/`::after`
   with `radial-gradient(closest-side, rgba(34,197,94,.30), transparent)` and large negative offsets.
   Reuse it on the CTA card, hero-vis, calculator result panel, and keystone bands.
@@ -67,7 +65,7 @@ Use the **semantic palette only**. Copy this `:host` block verbatim:
   `@media (prefers-reduced-motion:reduce){ .animate-on-scroll{opacity:1;transform:none;transition:none} }`.
 - **Icons:** wrap in `<span class="ico">` and size by context via `.ico svg{width:1em;height:1em}`.
 - **Breakpoints are plural.** Mobile-first, but the real ladder in use is ~**560 / 720 / 880 / 1000px**
-  (hero flips ~880, stat & section grids ~720, card grids 560→1000, nav collapses at 480/360), not a
+  (hero flips ~880, stat & section grids ~720, card grids 560→1000), not a
   single 768. Pick the breakpoint per module; don't force everything to 768.
 - **Section padding:** `.section{padding:56px 20px}` → `80px 24px` at the ≥720px breakpoint.
 
@@ -79,12 +77,13 @@ Every tool page is the same spine. Sections **alternate backgrounds** `bg-light`
 with **no two adjacent the same**, and **each distinct content block is its own `<section>`**
 (don't stack two modules in one section — that was a fix on the VO2 accuracy tool).
 
-1. **Sticky nav** — brand (logo + short tool name) left; the CTA right:
-   **`<kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool">`** wrapped in
-   `.nav-cta-group`. It renders three header pills (the visitor's own platform filled, the other
-   two outlined), drops the secondary labels below 520px and every label below 360px. The old
-   hand-written `.nav-store-ios` / `.nav-store-android` Tenjin pair is **retired** — don't
-   reintroduce store anchors here.
+1. **No page header.** The Wix site header (`Kygo Custom Header`, a fixed bar with the page links
+   and the iOS / Android / web buttons) sits on every page, so a tool renders **no nav of its own**
+   and starts at the hero. The old per-tool sticky nav (`<header class="nav">` /
+   `<header class="header">` holding `<kygo-cta mini … -subnav>`) was removed from every tool on
+   2026-10-28: it slid under the fixed site header once you scrolled, so it only ever showed as a
+   second bar at the top. Don't add it back. If the page scrolls to an anchor itself, offset by
+   the site header's height, published as `--kygo-nav-h` on `<html>`.
 2. **Hero** — the **standard hero anatomy** (see §3 "Hero (the standard anatomy)"). Every tool
    page has all five parts: `hero-pill` kicker, `<h1>` with a green `.hl` span, a `hero-lede`,
    a **`hero-vis`** supporting visual, and a **`hero-stats`** strip of 4 numbers (2×2 mobile,
@@ -120,12 +119,15 @@ with **no two adjacent the same**, and **each distinct content block is its own 
    shipped FAQ JSON-LD with **no** visible FAQ; don't copy that omission).
 8. **Sources** — the **standard sources module** (see §3 "Sources (the standard module)").
    Every tool with sources uses it, unchanged. Copy it; don't design a new one.
-9. **Footer** — brand, tagline, links, disclaimer, copyright. **If the page has any affiliate
-   links, add the Amazon Associates disclosure line** (`footer-affiliate`), full two-sentence
-   canonical wording: "As an Amazon Associate, Kygo Health earns from qualifying purchases.
-   Product links on this page are affiliate links; we may earn a commission at no extra cost to
-   you." (Note the semicolon — em-dashes are banned in shipped copy, see §5.) Add a tool-specific
-   medical/FDA disclaimer line when a device claims a regulated feature (e.g. Oura BP/breathing).
+9. **Footer** — a slim disclaimer strip, **no brand, tagline, links or copyright** (the Wix site
+   footer below the page carries all of those). Keep only what is specific to this page: the
+   tool's medical disclaimer (`footer-disclaimer`), the data-source + "Last updated <month year>"
+   line (`footer-copyright`), and, **if the page has any affiliate links, the Amazon Associates
+   disclosure line** (`footer-affiliate`), full two-sentence canonical wording: "As an Amazon
+   Associate, Kygo Health earns from qualifying purchases. Product links on this page are
+   affiliate links; we may earn a commission at no extra cost to you." (Note the semicolon —
+   em-dashes are banned in shipped copy, see §5.) Add a tool-specific medical/FDA disclaimer line
+   when a device claims a regulated feature (e.g. Oura BP/breathing).
 10. **Related reading** — the **standard related-reading module** (see §3 "Related reading (the
    standard module)"). Three blog cards with the posts' real cover images, **the last block on
    the page, below the footer and its disclaimer**, on the band opposite the footer's. Every
@@ -649,7 +651,7 @@ separate full-width button row (`.aff-row`, `display:none` → shown on mobile) 
 large on phones. Keep `rel="noopener sponsored"` on every affiliate anchor.
 
 ### Conversion modules (CTA / app band / email capture)
-The page carries **three** conversion touchpoints beyond the nav buttons — don't skip any:
+The page carries **three** conversion touchpoints beyond the site header's buttons — don't skip any:
 - **Big Kygo CTA card** (§2.4) — the primary dark conversion card near the end: green radial glow,
   pill, headline, iOS + Android **Tenjin** buttons (`cta-primary`/`cta-android`), "Works with"
   badge row. Keep the `data-action`/`data-track-position="footer-cta"`/`data-track-label` attrs.
@@ -824,7 +826,7 @@ Pre-commit checklist:
 - [ ] Tool added to `kygo-tools.js` **and wired to a fitting green data-motif** (`_motifFor`);
       motif is a simplified teaser, on-palette. New assets documented in `docs/assets-and-urls.md`.
 - [ ] Reveal uses `.visible`; `@media (prefers-reduced-motion:reduce)` present.
-- [ ] Store icons are the two canonical SVGs (§4) — no robot Android glyph. Nav = two Tenjin store buttons.
+- [ ] Store icons are the two canonical SVGs (§4) — no robot Android glyph. No tool nav (the Wix site header is the nav).
 - [ ] `WebApplication` + `FAQPage` + `BreadcrumbList` JSON-LD injected, each with its own guard (§9).
 - [ ] `data-action` / `data-track-position` / `data-track-label` on CTA, affiliate, **and** source links (§9).
 - [ ] a11y pass (§8): `aria-pressed` on toggles, `role`/`aria-label` on pickers, `scope` on table cells,
@@ -855,7 +857,7 @@ Pre-commit checklist:
 - [ ] Sources use the standard module verbatim (§3): flat `_sources` of `{tag,title,cite,url}`,
       6 shown + "Show all N sources" toggle wired, no page-specific sources design. Unlinkable
       sources present as dashed cards, not dropped.
-- [ ] Footer affiliate disclosure is the full two-sentence form when affiliate links exist.
+- [ ] Footer is the slim strip (disclaimer, last updated, affiliate line): no brand, links or copyright. Affiliate disclosure is the full two-sentence form when affiliate links exist.
 - [ ] Zero runtime errors in the headless render.
 - [ ] Crawler markup: tag added to `TOOLS` in `scripts/build-seo-markup.js`, script run,
       `seo/<tag>.html` + regenerated `velo/seoMarkup.web.js` committed; light-DOM components hide

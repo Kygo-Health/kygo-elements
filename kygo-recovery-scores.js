@@ -1754,17 +1754,6 @@ class KygoRecoveryScores extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://www.kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
-            Recovery Scores
-          </a>
-          <div class="nav-cta-group">
-            <kygo-cta mini slug="${this._appCta().slug}-subnav" surface="tool"></kygo-cta>
-          </div>
-        </div>
-      </header>
 
       <section class="hero section-bg-white">
         <div class="container hero-inner">
@@ -1800,14 +1789,8 @@ class KygoRecoveryScores extends HTMLElement {
 
       <footer class="tool-footer">
         <div class="container">
-          <a href="https://www.kygo.app" class="footer-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
-          </a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before changing supplement, exercise, or lifestyle routines.</p>
-          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links — we may earn a commission at no extra cost to you.</p>
-          <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
+          <p class="footer-copyright footer-affiliate">As an Amazon Associate, Kygo Health earns from qualifying purchases. Product links on this page are affiliate links; we may earn a commission at no extra cost to you.</p>
         </div>
       </footer>
 
@@ -1952,11 +1935,6 @@ class KygoRecoveryScores extends HTMLElement {
       button:focus-visible, .source-link:focus-visible, select:focus-visible, a:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 6px; }
 
       /* HEADER */
-      .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; max-width: 1200px; margin: 0 auto; }
-      .logo { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); white-space: nowrap; min-width: 0; }
-      .logo-img { height: 26px; width: auto; flex-shrink: 0; }
-      .nav-cta-group { margin-left:auto; display:inline-flex; align-items:center; gap:8px; }
 
       /* HERO */
       .hero { padding: 40px 0 28px; background: #fff; }
@@ -2444,9 +2422,6 @@ class KygoRecoveryScores extends HTMLElement {
 
       /* FOOTER */
       .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
 
