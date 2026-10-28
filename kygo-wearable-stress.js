@@ -1449,7 +1449,7 @@ class KygoWearableStress extends HTMLElement {
         { label: 'WHOOP Support: Get to Know the Stress Monitor', url: 'https://support.whoop.com/s/article/Get-to-Know-the-Stress-Monitor' },
         { label: 'WHOOP Support: HRV Insights & WHOOP Metrics', url: 'https://support.whoop.com/s/article/Heart-Rate-Variability-HRV-Insights-WHOOP-Metrics' },
         { label: 'WHOOP Blog: How Does WHOOP Recovery Work 101', url: 'https://www.whoop.com/us/en/thelocker/how-does-whoop-recovery-work-101/' },
-        { label: 'WHOOP: A Look Behind the Data: How WHOOP Measures Heart Rate', url: 'https://www.whoop.com/us/en/thelocker/a-look-behind-the-data-how-whoop-measures-heart-rate/' },
+        { label: 'WHOOP, A Look Behind the Data: How WHOOP Measures Heart Rate', url: 'https://www.whoop.com/us/en/thelocker/a-look-behind-the-data-how-whoop-measures-heart-rate/' },
         { label: 'the5krunner Feb 2026: WHOOP HR Algorithm Update', url: 'https://the5krunner.com/2026/02/28/whoop-heart-rate-accuracy-update/' },
         { label: 'WHOOP Research: How Stress Mindset Shapes Recovery (n=11,000+)', url: 'https://www.whoop.com/us/en/thelocker/new-whoop-research-on-stress-perception/' },
         { label: 'WHOOP Support: Journal Overview (160+ Behaviors)', url: 'https://support.whoop.com/s/article/WHOOP-Journal-Overview' },
@@ -1458,26 +1458,26 @@ class KygoWearableStress extends HTMLElement {
         { label: 'Oura Help: Cumulative Stress', url: 'https://support.ouraring.com/hc/en-us/articles/45979919957395-Cumulative-Stress' },
         { label: 'Oura Blog 2025: Introducing Cumulative Stress', url: 'https://ouraring.com/blog/what-is-cumulative-stress/' },
         { label: 'Oura Blog: Discover Oura\'s Daytime Stress Feature', url: 'https://ouraring.com/blog/daytime-stress-feature/' },
-        { label: 'Oura: Inside the Ring: Quantifying Chronic Stress', url: 'https://ouraring.com/blog/inside-the-ring-cumulative-stress/' },
+        { label: 'Oura, Inside the Ring: Quantifying Chronic Stress', url: 'https://ouraring.com/blog/inside-the-ring-cumulative-stress/' },
         { label: 'Apple Developer: HealthKit heartRateVariabilitySDNN', url: 'https://developer.apple.com/documentation/healthkit/hkquantitytypeidentifier/heartratevariabilitysdnn' },
         { label: 'Apple Nov 2024: Heart Rate, Calorimetry & Activity on Apple Watch (PDF)', url: 'https://www.apple.com/health/pdf/Heart_Rate_Calorimetry_Activity_on_Apple_Watch_November_2024.pdf' },
         { label: 'Athlytic Help: Understanding Recovery (RMSSD + RHR, 60-day Baseline)', url: 'https://athlyticapp.helpscoutdocs.com/article/20-understanding-recovery' },
         { label: 'Welltory Help: Frequency-Domain HRV Scores (LF / HF / VLF)', url: 'https://help.welltory.com/en/articles/3878862-frequency-domain-scores-of-your-heart-rate-variability' },
         { label: 'Polar Support: Nightly Recharge Recovery Measurement', url: 'https://support.polar.com/us-en/nightly-recharge-recovery-measurement' },
-        { label: 'Polar: Vantage V3 Manual: Nightly Recharge', url: 'https://support.polar.com/e_manuals/vantage-v3/polar-vantage-v3-user-manual-english/nightly-recharge.htm' },
+        { label: 'Polar Vantage V3 Manual: Nightly Recharge', url: 'https://support.polar.com/e_manuals/vantage-v3/polar-vantage-v3-user-manual-english/nightly-recharge.htm' },
         { label: 'COROS Help Center: Daily Stress', url: 'https://support.coros.com/hc/en-us/articles/22933434857108-Daily-Stress' },
         { label: 'Amazfit Support: What Is Stress Monitoring?', url: 'https://support.amazfit.com/en/faq/4133' },
         { label: 'Amazfit: What is Heart Rate Variability (HRV)?', url: 'https://us.amazfit.com/pages/what-is-heart-rate-variability-hrv' }
       ],
       'Wearable accuracy & methodology': [
         { label: 'Frontiers in Computer Science 2024: Stress Detection Using Wearables (Systematic Review)', url: 'https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2024.1478851/full' },
-        { label: 'JMIR 2024: Wearable AI in Detecting Stress: Systematic Review and Meta-Analysis (~82% multi-signal vs ~77% HRV)', url: 'https://www.jmir.org/2024/1/e52622' },
+        { label: 'JMIR 2024, Wearable AI in Detecting Stress: Systematic Review and Meta-Analysis (~82% multi-signal vs ~77% HRV)', url: 'https://www.jmir.org/2024/1/e52622' },
         { label: 'Springer 2025: Stress in Action Wearables Database', url: 'https://link.springer.com/article/10.3758/s13428-025-02685-4' },
         { label: 'Nature Communications Medicine 2025: Wearables for Anxiety Assessment', url: 'https://www.nature.com/articles/s43856-025-01234-6' },
         { label: 'PMC11230864: Real-Time Stress Prediction Models Using Wearables', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11230864/' },
-        { label: 'ScienceDirect 2025: From Lab to Real-Life: Three-Stage Validation', url: 'https://www.sciencedirect.com/science/article/pii/S2215016125000536' },
+        { label: 'ScienceDirect 2025, From Lab to Real-Life: Three-Stage Validation', url: 'https://www.sciencedirect.com/science/article/pii/S2215016125000536' },
         { label: 'ScienceDirect 2025: Meta-Analysis of 171 TSST Studies (n=8,452)', url: 'https://www.sciencedirect.com/science/article/abs/pii/S0306453025002896' },
-        { label: 'ScienceDirect: The Trier Social Stress Test: Principles and Practice', url: 'https://www.sciencedirect.com/science/article/pii/S2352289516300224' },
+        { label: 'ScienceDirect, The Trier Social Stress Test: Principles and Practice', url: 'https://www.sciencedirect.com/science/article/pii/S2352289516300224' },
         { label: 'PMC7739033: Systematic Review of TSST Methodology', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7739033/' },
         { label: 'arXiv 2025: Extending Stress Detection Reproducibility to Consumer Wearables', url: 'https://arxiv.org/html/2505.05694v1' },
         { label: 'ScienceDirect: Machine Learning for Predicting Stress Episodes', url: 'https://www.sciencedirect.com/science/article/pii/S0010482525015197' },
@@ -1487,7 +1487,7 @@ class KygoWearableStress extends HTMLElement {
         { label: 'Sensors / MDPI 2024: Apple Watch Series 9 / Ultra 2 HRV Validity vs Polar H10 + Kubios', url: 'https://www.mdpi.com/1424-8220/24/19/6220' },
         { label: 'npj Digital Medicine 2025: Apple Watch Measurements Living Systematic Review & Meta-Analysis', url: 'https://www.nature.com/articles/s41746-025-02238-1' },
         { label: 'PMC9505647: WHOOP-Derived lnRMSSD Day-to-Day Variability (Olympic Water Polo)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9505647/' },
-        { label: 'PMC8160717: Wrist PPG Assessment of HR & HRV: WHOOP Validation vs ECG', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8160717/' }
+        { label: 'PMC8160717, Wrist PPG Assessment of HR & HRV: WHOOP Validation vs ECG', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8160717/' }
       ]
     };
     return groups;
