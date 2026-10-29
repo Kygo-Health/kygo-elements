@@ -12,7 +12,7 @@
  *   - cta_view         (blog HTML-embed cards only: one per card seen)
  *   - gate_blog        (blog report card click, via postMessage from its Wix HTML iframe)
  *   - gate_companion   (the same card on the State of Wearable Accuracy companion post)
- *   - gate_tool        (report card on a tool page, data-gate attribute; the hub band is gate_hub)
+ *   - gate_tool        (report card on a tool page, data-gate attribute)
  */
 (function () {
   'use strict';
@@ -247,8 +247,7 @@
 
     var component = getComponentName(path);
 
-    // Report gate links on tool pages carry data-gate="gate_tool" (the hub
-    // band: gate_hub). Filed as their own event, like gate_blog.
+    // Report gate links on tool pages carry data-gate="gate_tool". Filed as their own event, like gate_blog.
     var gate = clickable.getAttribute('data-gate');
     if (gate && /^gate_[a-z_]{2,20}$/.test(gate)) {
       track(gate, {
