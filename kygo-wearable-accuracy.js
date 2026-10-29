@@ -2436,18 +2436,6 @@ class KygoWearableAccuracy extends HTMLElement {
         </div>
       </section>
 
-      <section class="section bg-light cx-sec" id="compare">
-        <div class="section-inner">
-          <div class="section-head animate-on-scroll">
-            <div class="kicker">Build your comparison</div>
-            <h2>Compare wearables <span class="hl">head-to-head.</span></h2>
-            <p class="lede">Pick two brands and see every metric side by side. Open any metric for the full chart.</p>
-          </div>
-          <div class="animate-on-scroll" data-cmpr>${this._renderComparator()}</div>
-        </div>
-      </section>
-      ${this._renderAppCta()}
-
       <section class="section bg-light" id="brands">
         <div class="section-inner">
           <div class="section-head animate-on-scroll">
@@ -2457,6 +2445,18 @@ class KygoWearableAccuracy extends HTMLElement {
           </div>
           <div class="animate-on-scroll">${this._renderBrandCards()}</div>
           <p class="aff-disclosure animate-on-scroll">${this._icon('info')} <span>The Amazon links are affiliate links. As an Amazon Associate, Kygo Health earns from qualifying purchases, at no extra cost to you.</span></p>
+        </div>
+      </section>
+      ${this._renderAppCta()}
+
+      <section class="section bg-light cx-sec" id="compare">
+        <div class="section-inner">
+          <div class="section-head animate-on-scroll">
+            <div class="kicker">Build your comparison</div>
+            <h2>Compare wearables <span class="hl">head-to-head.</span></h2>
+            <p class="lede">Pick two brands and see every metric side by side. Open any metric for the full chart.</p>
+          </div>
+          <div class="animate-on-scroll" data-cmpr>${this._renderComparator()}</div>
         </div>
       </section>
 
