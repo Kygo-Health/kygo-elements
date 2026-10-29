@@ -194,7 +194,8 @@ Tool pages carry at most three promos, always in this order and **never two back
    **only on accuracy and comparison tools** (device rankings). Placed after the first content
    section that follows the app card. Its links carry `data-gate="gate_tool"`, which
    `kygo-tracking.js` files as the GA4 event `gate_tool` (`cta_label` = `report-<slug>`).
-   The wearable-accuracy hub keeps its own `_renderReportBand()` (`gate_hub`).
+   The wearable-accuracy hub uses the same card in its `_renderReportBand()` (slug
+   `wearable-accuracy`, Subscribers source `report-tool-wearable-accuracy`).
 3. **Picks card** `${this._renderPicksBand()}` (wraps `_renderPicksCard()` in its own band),
    **only on device tools**, last: directly above the FAQ section, or above Sources when the
    page has no FAQ.

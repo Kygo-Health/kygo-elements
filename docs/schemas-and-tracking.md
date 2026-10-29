@@ -216,7 +216,7 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | `email_subscribe` **(key event)** | `subscribe` CustomEvent (any subscribe form) → mirrored to GA4 | `lead_type` (`newsletter`), `component`, **`source`**, `page_path` |
 | `contact_submit` **(key event)** | `contactSubmit` CustomEvent (contact form) → mirrored to GA4 | `lead_type` (`contact_form`), `component`, `page_path`. **No PII** — email/name/message are never read from `detail` |
 | `report_download` **(key event)** | `reportDownload` CustomEvent ("Download the PDF" on `/report-download`, `kygo-report-download.js`) → mirrored to GA4 | `lead_type` (`report`), `component`, `source` (`report-download`), `page_path` |
-| `gate_hub` | Click on "Get the free report" in the State of Wearable Accuracy band on the hub `/tools/wearable-accuracy` (`kygo-wearable-accuracy.js` `_trackGate`; gtag, or a `dataLayer` push when gtag is absent). The link to `/state-of-wearable-accuracy` is untagged on purpose (no internal UTMs) | `cta_url`, `component`, `position` (`hub-band`), `page_path` |
+| `gate_hub` | **Retired 2026-10-29.** Was a click on the hub `/tools/wearable-accuracy` report band's link; the hub now embeds the email-capture `<kygo-report-card>` like every tool (`email_subscribe`, source `report-tool-wearable-accuracy`; cover click `gate_tool`) | — |
 | `tool_result` | `kygo-calorie-calculation` CustomEvent (calculator produced a result) | `tool_name` (= component tag), `page_path` |
 
 **`email_subscribe` source taxonomy** (email-capture pass, spec 24). Every subscribe form sets
@@ -296,8 +296,8 @@ the FAQ). The inline email band was removed from all tool pages.
   The cover image still links to the landing page: on tools/home its link carries
   `data-gate="gate_tool"` / `gate_home`; `kygo-tracking.js` files any
   `data-gate="gate_*"` click as that GA4 event (`cta_label` = `report-<slug>`, `position` =
-  report-card / report-cover). The wearable-accuracy hub band is now `gate_hub` (it was a plain
-  `cta_click` before). Mark `gate_tool` and `gate_hub` as key events in GA4 if wanted.
+  report-card / report-cover). The wearable-accuracy hub now uses the same card (it was a link band
+  firing `gate_hub` until 2026-10-29). Mark `gate_tool` as a key event in GA4 if wanted.
 - **Homepage**: the same report card sits directly above the FAQ (`kygo-home-report` in
   `kygo-bundle.js`), filed as `gate_home` (`cta_label` = report-home).
 - **Picks card**: unchanged (`related_tool_click` to best-wearables).
