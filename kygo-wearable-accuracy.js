@@ -540,12 +540,13 @@ class KygoWearableAccuracy extends HTMLElement {
     return {
       metrics: 10,
       devices: Object.keys(this._devices).length,
-      studies: studies.length,
+      // Set to the report's count (State of Wearable Accuracy 2026: 71 unique studies cited by the rankings), Ryan 2026-10-29.
+      studies: 71,
       funded: all.filter(s => s.type !== 'regulatory' && s.funder).length,
       fda: all.filter(s => s.type === 'regulatory').length,
-      independent: studies.filter(s => !s.funder).length,
-      fundedStudies: studies.filter(s => s.funder).length,
-      recent: studies.filter(s => s.year >= 2025).length
+      independent: 58, // of the report's 71: 58 independent, 13 brand-funded or brand-written
+      fundedStudies: 13,
+      recent: 34 // of the report's 71, published in 2025 or 2026
     };
   }
 
@@ -2097,7 +2098,11 @@ class KygoWearableAccuracy extends HTMLElement {
     const hs = this._heroStats;
     const st = this._studies;
     const isStudy = s => s && ['peer', 'preprint', 'abstract'].includes(s.type);
+    // Per-brand counts from the report's 71 ranking sources (studies covering each brand; [total, brand-funded]), set 2026-10-29.
+    const REPORT_COUNTS = { 'apple-watch': [29, 1], 'garmin': [28, 0], 'fitbit': [27, 2], 'samsung': [17, 4], 'oura': [16, 5], 'polar': [10, 0], 'whoop': [9, 1] };
     const rows = Object.entries(this._devices).map(([k, d]) => {
+      const rc = REPORT_COUNTS[k];
+      if (rc) return { k, d, ind: rc[0] - rc[1], fund: rc[1], n: rc[0] };
       const ss = d.studyIds.map(id => st[id]).filter(isStudy);
       const ind = ss.filter(s => !s.funder).length;
       return { k, d, ind, fund: ss.length - ind, n: ss.length };
