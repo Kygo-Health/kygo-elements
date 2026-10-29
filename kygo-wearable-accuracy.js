@@ -354,6 +354,28 @@ class KygoWearableAccuracy extends HTMLElement {
     };
   }
 
+  // Medals: one podium per metric, the "Finalized" tab of the Wearable Accuracy by Metric doc and the
+  // State of Wearable Accuracy report. Scoreboard, comparator and chart rank badges all read this.
+  get _medals() {
+    return {
+      sleep: { oura: 1, 'apple-watch': 2, fitbit: 3 },
+      sleepTiming: { oura: 1, fitbit: 2, 'apple-watch': 3 },
+      hrv: { oura: 1, whoop: 2, garmin: 3 },
+      rhr: { oura: 1, polar: 2, whoop: 3 },
+      activeHr: { 'apple-watch': 1, garmin: 2, fitbit: 3 },
+      spo2: { 'apple-watch': 1, samsung: 2, garmin: 3 },
+      steps: { garmin: 1, 'apple-watch': 2, samsung: 3 },
+      calories: { fitbit: 1, samsung: 2, 'apple-watch': 3 },
+      vo2max: { garmin: 1, fitbit: 2, 'apple-watch': 3 },
+      resp: { fitbit: 1, whoop: 2 }
+    };
+  }
+
+  _rankBadge(pos, dev) {
+    const m = (this._medals[pos] || {})[dev];
+    return m ? `<span class="sc-rk m${m}" title="${['', 'Gold', 'Silver', 'Bronze'][m]} for this metric">${m}</span>` : '';
+  }
+
   get _fdaCounts() { return { 'apple-watch': 5, 'samsung': 3, 'fitbit': 2, 'garmin': 1, 'whoop': 1, 'oura': 0 }; }
 
   // ── Data: metric sections (order = page order) ────────────────────────
@@ -715,7 +737,7 @@ class KygoWearableAccuracy extends HTMLElement {
         </div>`;
         const d = this._devices[r[0]];
         if (cfg.brandOnly) return `<div class="sc-row">
-          <div class="sc-dev sc-brand-cell">${this._logo(r[0], 'sm')}<span class="brand-name">${d.short}</span></div>
+          <div class="sc-dev sc-brand-cell"><span class="sc-lg">${this._rankBadge(cfg.pos, r[0])}${this._logo(r[0], 'sm')}</span><span class="brand-name">${d.short}</span></div>
           <div class="sc-bars">${bar(r[2], 'h', view)}${(view.keys || cfg.keys)[1] ? bar(r[3], 'c', view) : ''}</div>
         </div>`;
         return `<div class="sc-row">
@@ -765,7 +787,7 @@ class KygoWearableAccuracy extends HTMLElement {
       const two = view.keys.length > 1;
       const hasM = view.rows.some(r => (r.lines || []).some(l => l && l.m)), hasB = view.rows.some(r => (r.lines || []).some(l => l && l.b));
       const lineM = i => view.rows.some(r => r.lines && r.lines[i] && r.lines[i].m), lineB = i => view.rows.some(r => r.lines && r.lines[i] && r.lines[i].b);
-      const sw = i => lineM(i) && lineB(i) ? `<i class="sw ${i ? 'c' : 'h'}"></i><i class="sw band${i ? ' c' : ''}"></i>` : !lineM(i) && lineB(i) ? `<i class="sw band${i ? ' c' : ''}"></i>` : `<i class="sw ${i ? 'c' : 'h'}"></i>`;
+      const sw = i => { const c = i > 1 ? ' c2' : i ? ' c' : ''; return lineM(i) && lineB(i) ? `<i class="sw ${i ? 'c' : 'h'}${c}"></i><i class="sw band${c}"></i>` : !lineM(i) && lineB(i) ? `<i class="sw band${c}"></i>` : `<i class="sw ${i ? 'c' : 'h'}${c}"></i>`; };
       return `<div class="sc-key">${two ? view.keys.map((k, i) => `<span>${sw(i)}${k}</span>`).join('') : (hasM && !view.plain ? `<span><i class="sw h"></i>Average over or under</span>` : '')}${hasB && !two ? '<span><i class="sw band"></i>Typical miss</span>' : ''}</div>`;
     };
     const panels = cfg.views.map((view, vi) => {
@@ -779,7 +801,7 @@ class KygoWearableAccuracy extends HTMLElement {
         </div>`;
         const d = this._devices[r.dev];
         if (cfg.brandOnly) return `<div class="sc-row">
-          <div class="sc-dev sc-brand-cell">${this._logo(r.dev, 'sm')}<span class="brand-name">${this._devices[r.dev].short}</span></div>
+          <div class="sc-dev sc-brand-cell"><span class="sc-lg">${this._rankBadge(cfg.pos, r.dev)}${this._logo(r.dev, 'sm')}</span><span class="brand-name">${this._devices[r.dev].short}</span></div>
           <div class="sc-bars">${view.keys.map((k, li) => li && r.lines[li] === undefined ? '' : lineHtml(r.lines[li], li, view)).join('')}</div>
         </div>`;
         const more = r.more && r.more.length ? `<details class="sc-more"><summary>${this._icon('plus')}<span>${r.more.length} more ${r.more.length > 1 ? 'tests' : 'test'}</span></summary><ul>${r.more.map(x => `<li title="${x.src || ''}"><span class="scm-m">${x.model}</span><span class="scm-n">${x.note}</span><span class="scm-v">${x.txt}</span></li>`).join('')}</ul></details>` : '';
@@ -818,9 +840,9 @@ class KygoWearableAccuracy extends HTMLElement {
             ['apple-watch', 'Series 8', V([0.60], 'Robbins 2024 (Oura-funded)'), V([0.53], 'Schyvens 2025')],
             ['fitbit', 'Sense 2 / Charge 5', V([0.55], 'Robbins 2024 (Oura-funded)'), V([0.41], 'Schyvens 2025, Charge 5')],
             ['whoop', '3.0 / 4.0', V([0.44], 'Miller 2022, WHOOP 3.0'), V([0.37], 'Schyvens 2025, WHOOP 4.0')],
-            ['samsung', 'Galaxy Watch 5', null, V([0.42], 'Lee 2023')],
             ['polar', 'Vantage V', V([0.28], 'Miller 2022, Vantage V'), null],
-            ['garmin', 'Forerunner 245 / Vivosmart 4', V([0.25], 'Miller 2022, Forerunner 245'), V([0.21], 'Schyvens 2025, Vivosmart 4')]
+            ['garmin', 'Forerunner 245 / Vivosmart 4', V([0.25], 'Miller 2022, Forerunner 245'), V([0.21], 'Schyvens 2025, Vivosmart 4')],
+            ['samsung', 'Galaxy Watch 5', null, V([0.42], 'Lee 2023')]
           ] },
         { id: 'deep', tab: 'Deep sleep', tabS: 'Deep', icon: 'moon', unit: '%', max: 100, keys: K2,
           q: 'Deep sleep correctly caught',
@@ -861,11 +883,11 @@ class KygoWearableAccuracy extends HTMLElement {
           rows: [
             ['oura', 'Ring 3', V([73.0], 'Svensson 2024 (Oura-funded)'), V([46.2], 'Herberger 2025')],
             ['fitbit', 'Sense 2 / Charge 5', V([67.7], 'Robbins 2024 (Oura-funded)'), V([47.5], 'Schyvens 2025')],
-            ['apple-watch', 'Series 8', V([52.4], 'Robbins 2024 (Oura-funded)'), V([52.2], 'Schyvens 2025')],
             ['whoop', '3.0 / 4.0', V([56], 'Miller 2022'), V([40.1], 'Schyvens 2025')],
-            ['samsung', 'Galaxy Watch 5', null, V([48.1], 'Lee 2023')],
+            ['apple-watch', 'Series 8', V([52.4], 'Robbins 2024 (Oura-funded)'), V([52.2], 'Schyvens 2025')],
             ['polar', 'Vantage V', V([51], 'Miller 2022, Vantage V'), null],
-            ['garmin', 'Forerunner 245 / Vivosmart 4', V([27], 'Miller 2022'), V([29.4], 'Schyvens 2025')]
+            ['garmin', 'Forerunner 245 / Vivosmart 4', V([27], 'Miller 2022'), V([29.4], 'Schyvens 2025')],
+            ['samsung', 'Galaxy Watch 5', null, V([48.1], 'Lee 2023')]
           ] },
         Object.assign({ id: 'tst', tab: 'Total sleep time', tabS: 'Total', icon: 'clock', unit: 'min', max: 85,
           q: 'Total sleep time vs a lab study, in minutes (closer to 0 is better)',
@@ -929,6 +951,14 @@ class KygoWearableAccuracy extends HTMLElement {
       pos: 'hrv', brandOnly: true,
       legend: 'Agreement: 1 is perfect; one independent study (Dial 2025, 13 people, 536 nights) sets the medals. Polar (Grit X Pro), marked lighter, was in the same study but scored on the first 4 hours of sleep only, and has no reads high or low figure there. Fitbit (Hermans 2024) and Apple (Miller 2022) are marked as different studies that report the closely related ICC; Samsung has no agreement figure. Reads high or low: the average gap from a chest strap or ECG in milliseconds. Oura, WHOOP and Garmin come from Dial 2025; Apple (O\'Grady 2024, morning readings), Fitbit (Hermans 2024, healthy adults) and Samsung (Sarhaddi 2022, research software, not the watch feature) are separate studies, so compare direction more than size. For scale: Oura read 1 to 2.5 ms low in Dial but an older Oura (Gen 2) read 10 ms low in a one-night lab study.',
       views: [
+        { id: 'err', tab: 'Error', tabS: 'Error', icon: 'barChart', unit: '%', max: 20, keys: ['Average error'],
+          q: 'Overnight HRV, average error against a chest-strap ECG (sets the medals)',
+          rows: [
+            ['oura', 'Ring 4', V([5.96], 'Ring 4, Dial 2025, 139 nights', '5.96%')],
+            ['whoop', '4.0', V([8.17], 'WHOOP 4.0, Dial 2025, 289 nights', '8.17%')],
+            ['garmin', 'Fenix 6', V([10.52], 'Fenix 6, Dial 2025, 150 nights', '10.52%')],
+            ['polar', 'Grit X Pro', V([16.32], 'Grit X Pro, Dial 2025, 206 nights, first 4 h of sleep only', '16.32%', 'first 4 h of sleep')]
+          ] },
         { id: 'agree', tab: 'Agreement', tabS: 'Agreement', icon: 'heartPulse', unit: 'k', max: 1, keys: ['Agreement with ECG'],
           q: 'Overnight HRV, agreement with a chest-strap ECG',
           rows: [
@@ -996,10 +1026,25 @@ class KygoWearableAccuracy extends HTMLElement {
     const V = (v, src, txt, alt) => ({ v, src, txt, alt });
     return this._dualChart({
       pos: 'activeHr', brandOnly: true,
-      legend: 'Typical error, shorter is better. Fitbit, Garmin, Apple, Polar and Oura: one ten-device test against a chest strap (Gielen 2026), read as tiers: Fitbit and Garmin Tier 1, Apple Tier 2, Oura Tier 4; Polar Ignite 3 11.2% and Pacer 13.1%, not on the podium. Medals combine this test with two other head-to-heads on the same people: cycling against a chest strap (Kostrna 2026: Apple 2.5 bpm, Garmin 2.9, Samsung 3.4, Fitbit 3.9) and a treadmill against a 12-lead ECG (Van Oost 2025), which puts Apple first, Garmin second, Fitbit third; the four are within 2 to 7% of each other. WHOOP, marked as a different study: Van Oost 2025. Samsung is not charted: its own test was heart patients in a hospital stress test (Kim 2023, under 2%), and it was 3rd of 4 cycling and worst of 4 on a treadmill (Jeong 2026). By sport: one Fitbit in real training (Ceugniez 2025).',
+      legend: 'Shorter is better. Medals combine three head-to-head tests on the same people: cycling against a chest strap (Kostrna 2026), a treadmill against a 12-lead ECG (Van Oost 2025; Apple was not in it) and ten devices from rest to walking against a chest strap (Gielen 2026, read as tiers: Fitbit and Garmin Tier 1, Apple Tier 2, Oura Tier 4; Polar Ignite 3 11.2% and Pacer 13.1%, not on the podium). Together they put Apple first, Garmin second, Fitbit third; the four are within 2 to 7% of each other. WHOOP on the ten-device tab, marked as a different study: Van Oost 2025. Samsung is not on the ten-device tab: its own test was heart patients in a hospital stress test (Kim 2023, under 2%), and it was 3rd of 4 cycling and worst of 4 on a treadmill (Jeong 2026). By sport: one Fitbit in real training (Ceugniez 2025).',
       views: [
-        { id: 'day', tab: 'Daytime', tabS: 'Daytime', icon: 'activity', unit: '%', max: 18, keys: ['Typical error'],
-          q: 'Heart rate during daytime activity',
+        { id: 'cyc', tab: 'Cycling', tabS: 'Cycling', icon: 'activity', unit: 'bpm', max: 5, keys: ['Beats off'],
+          q: 'Cycling, same 58 people on four watches, beats per minute off a chest strap (sets the medals)',
+          rows: [
+            ['apple-watch', 'Series 8', V([2.51], 'Series 8, Kostrna 2026', '2.51 bpm')],
+            ['garmin', 'Forerunner 955', V([2.93], 'Forerunner 955, Kostrna 2026', '2.93 bpm')],
+            ['samsung', 'Galaxy Watch 5', V([3.38], 'Galaxy Watch 5, Kostrna 2026', '3.38 bpm')],
+            ['fitbit', 'Sense 2', V([3.89], 'Sense 2, Kostrna 2026', '3.89 bpm')]
+          ] },
+        { id: 'tread', tab: 'Treadmill', tabS: 'Treadmill', icon: 'run', unit: '%', max: 10, keys: ['Typical error'],
+          q: 'Treadmill, same people, percent error against a 12-lead ECG',
+          rows: [
+            ['garmin', 'Vivosmart 4', V([4.40], 'Vivosmart 4, Van Oost 2025: 50% of readings missing', '4.40%')],
+            ['fitbit', 'Sense 2', V([5.61], 'Sense 2, Van Oost 2025 (Charge 5 in the same test: 5.65%)', '5.61%')],
+            ['whoop', '4.0', V([8.52], 'WHOOP 4.0, Van Oost 2025', '8.52%')]
+          ] },
+        { id: 'day', tab: 'Ten devices', tabS: '10 devices', icon: 'activity', unit: '%', max: 18, keys: ['Typical error'],
+          q: 'Ten devices on the same people, rest to walking, typical error against a chest strap',
           rows: [
             ['fitbit', 'Charge 6', V([5.5], 'Charge 6, Gielen 2026, Tier 1')],
             ['garmin', 'Vivoactive 5', V([6.3], 'Vivoactive 5, Gielen 2026, Tier 1')],
@@ -1028,14 +1073,22 @@ class KygoWearableAccuracy extends HTMLElement {
       pos: 'steps', brandOnly: true,
       legend: 'Separate studies, so read each brand on its own. Medals follow the pooled free-living result across 59 studies (Paluch 2026: Garmin +3%, Apple +7%, Fitbit +15%), with Samsung third on its single 24-hour study. Daily life: Miwa 2026, Hong 2024 (Apple and Samsung in the same 24-hour study: 6.4% vs 10.5%), Kristiansson 2023; Oura figures predate its 2025 step update. Garmin: Vivofit, a 2014 model, at home (An 2017). Polar: Vantage V / M (Henriksen 2022) and A360 (Montes 2020). Lab: Fitbit and Garmin on normal treadmill walks (Cheung 2025, de Leon 2026); Apple on slow and shuffle walks (Rowe 2025), which is harder.',
       views: [
-        { id: 'life', tab: 'Daily life', tabS: 'Daily life', icon: 'steps', max: 75, keys: ['Daily count'], axis: ['Reads low', 'Reads high'],
-          q: 'Steps over whole days of normal life',
+        { id: 'pooled', tab: 'Daily life, 59 studies', tabS: '59 studies', icon: 'steps', max: 20, keys: ['Daily count'], axis: ['Reads low', 'Reads high'], noMiss: true,
+          q: 'Daily life, pooled across 59 studies: average overcount (sets the medals)',
+          callout: 'Samsung takes third on its single 24-hour study (10.5% off, next tab); it has no pooled figure.',
+          rows: [
+            { dev: 'garmin', model: '', lines: [{ m: M(3, 'Paluch 2026 network meta-analysis, 59 free-living studies: 3% over'), txt: '+3%' }] },
+            { dev: 'apple-watch', model: '', lines: [{ m: M(7, 'Paluch 2026 network meta-analysis: 7% over'), txt: '+7%' }] },
+            { dev: 'fitbit', model: '', lines: [{ m: M(15, 'Paluch 2026 network meta-analysis: 15% over'), txt: '+15%' }] }
+          ] },
+        { id: 'life', tab: 'Single studies', tabS: 'Single', icon: 'steps', max: 75, keys: ['Daily count'], axis: ['Reads low', 'Reads high'],
+          q: 'Steps over whole days of normal life, one study per brand',
           rows: [
             { dev: 'apple-watch', model: '', lines: [{ m: M(2.12, 'Series 6, Miwa 2026, 3 weeks'), b: B(6.4, 'Series 6, Hong 2024, 24 hours'), txt: '+2% · ±6%' }] },
+            { dev: 'samsung', model: '', lines: [{ b: B(10.5, 'Galaxy Watch 4, Hong 2024, 24 hours vs ActivPAL; Apple Watch 6 in the same study: 6.4%'), txt: '±10.5%' }] },
             { dev: 'garmin', model: '', lines: [{ b: B(17.8, 'Vivofit (2014 model) worn at home vs a pedometer, An 2017 (via the Evenson & Spade 2020 Garmin review); no newer Garmin daily-life study'), txt: '±18%' }] },
             { dev: 'fitbit', model: '', lines: [{ m: M(18.0, 'Sense, Miwa 2026, 3 weeks'), txt: '+18%' }] },
             { dev: 'oura', model: '', lines: [{ m: M(18.8, 'Gen 2, Kristiansson 2023: +2,124 steps a day'), b: B(50.3, 'Gen 2, Kristiansson 2023, typical daily miss'), txt: '+19% · ±50%' }] },
-            { dev: 'samsung', model: '', lines: [{ b: B(10.5, 'Galaxy Watch 4, Hong 2024, 24 hours vs ActivPAL; Apple Watch 6 in the same study: 6.4%'), txt: '±10.5%' }] },
             { dev: 'polar', model: '', lines: [{ b: B(72, 'Vantage V / M, Henriksen 2022, 57 free-living days vs a hip ActiGraph'), txt: '±72%' }] }
           ] },
         { id: 'lab', tab: 'Lab walking', tabS: 'Lab', icon: 'run', max: 40, keys: ['Step count'], axis: ['Reads low', 'Reads high'],
@@ -1054,15 +1107,16 @@ class KygoWearableAccuracy extends HTMLElement {
     const M = (v, src) => ({ v, src }), B = (v, src, hi) => ({ v, src, hi });
     return this._divChart({
       pos: 'calories', brandOnly: true,
-      legend: 'Typical miss either way (striped) and average over or under (solid). Workouts: cycling with the same 58 people on all four brands (Kostrna 2026) and weight training, 70 men (Yun 2026). Reads high or low: 62 men wore all four through endurance and weight sessions (Lee 2026; its abstract says "underestimated" but its tables show all four reading high). Daily: each brand used a different reference, so do not compare them.',
+      legend: 'Typical miss either way (striped) and average over or under (solid). Workouts, in medal order: a max treadmill test (Perez 2025, conference abstract, about 20 adults), cycling with the same 58 people on all four brands (Kostrna 2026) and weight training, 70 men (Yun 2026). Reads high or low: 62 men wore all four through endurance and weight sessions (Lee 2026; its abstract says "underestimated" but its tables show all four reading high). Daily: each brand used a different reference, so do not compare them.',
       views: [
-        { id: 'work', tab: 'Workouts', tabS: 'Workouts', icon: 'flame', max: 120, keys: ['Cycling', 'Weight training'], axis: ['Reads low', 'Reads high'],
-          q: 'Workout calories, typical miss either way (the studies give no direction)',
+        { id: 'work', tab: 'Workouts', tabS: 'Workouts', icon: 'flame', max: 120, keys: ['Max treadmill', 'Cycling', 'Weight training'], axis: ['Reads low', 'Reads high'],
+          q: 'Workout calories, typical miss either way, in medal order (the studies give no direction)',
           rows: [
-            { dev: 'fitbit', model: '', lines: [{ b: B(31.7, 'Sense 2, Kostrna 2026: average only +3 kcal, after 7 implausible readings were removed'), txt: '±32%' }, { b: B(41.7, 'Charge 5, Yun 2026'), txt: '±42%' }] },
-            { dev: 'apple-watch', model: '', lines: [{ b: B(35.7, 'Series 8, Kostrna 2026: averaged +21.6 kcal high'), txt: '±36%' }, { b: B(112.2, 'Series 8, Yun 2026'), txt: '±112%' }] },
-            { dev: 'samsung', model: '', lines: [{ b: B(66.5, 'Galaxy Watch 5, Kostrna 2026: averaged +56.8 kcal high'), txt: '±67%' }, { b: B(84.5, 'Galaxy Watch 5, Yun 2026'), txt: '±85%' }] },
-            { dev: 'garmin', model: '', lines: [{ b: B(77.6, 'Forerunner 955, Kostrna 2026: averaged +68.6 kcal high'), txt: '±78%' }, { b: B(114.9, 'Vivosmart 5, Yun 2026'), txt: '±115%' }] }
+            { dev: 'fitbit', model: '', lines: [{ b: B(13.97, 'Charge 6, Perez 2025 (conference abstract), max treadmill test'), txt: '±14%' }, { b: B(31.7, 'Sense 2, Kostrna 2026: average only +3 kcal, after 7 implausible readings were removed'), txt: '±32%' }, { b: B(41.7, 'Charge 5, Yun 2026'), txt: '±42%' }] },
+            { dev: 'samsung', model: '', lines: [{ b: B(9.42, 'Galaxy Watch 7, Perez 2025, max treadmill test'), txt: '±9%' }, { b: B(66.5, 'Galaxy Watch 5, Kostrna 2026: averaged +56.8 kcal high'), txt: '±67%' }, { b: B(84.5, 'Galaxy Watch 5, Yun 2026'), txt: '±85%' }] },
+            { dev: 'apple-watch', model: '', lines: [{ b: B(25.95, 'Ultra 2, Perez 2025, max treadmill test'), txt: '±26%' }, { b: B(35.7, 'Series 8, Kostrna 2026: averaged +21.6 kcal high'), txt: '±36%' }, { b: B(112.2, 'Series 8, Yun 2026'), txt: '±112%' }] },
+            { dev: 'garmin', model: '', lines: [{ b: B(14.65, 'Forerunner 265S, Perez 2025, max treadmill test'), txt: '±15%' }, { b: B(77.6, 'Forerunner 955, Kostrna 2026: averaged +68.6 kcal high'), txt: '±78%' }, { b: B(114.9, 'Vivosmart 5, Yun 2026'), txt: '±115%' }] },
+            { dev: 'polar', model: '', lines: [{ b: B(21.1, 'Vantage M3, Perez 2025, max treadmill test'), txt: '±21%' }, { na: 'Not tested' }, { na: 'Not tested' }] }
           ] },
         { id: 'bias', tab: 'Reads high or low', tabS: 'High or low', icon: 'arrowsLR', max: 120, keys: ['Endurance', 'Weight training'], axis: ['Reads low', 'Reads high'],
           q: 'Average over or under the real burn, same 62 people',
@@ -1105,12 +1159,13 @@ class KygoWearableAccuracy extends HTMLElement {
     const V = (v, src, txt) => ({ v, src, txt });
     return this._dualChart({
       pos: 'resp', brandOnly: true,
-      legend: 'Breaths per minute off, shorter is better. Different tests and measures (average error, RMSE, bias), so not a ranking. Company tests are mostly healthy sleepers; independent tests include hospital patients. Samsung\'s figure is a research algorithm, not the watch feature. Garmin\'s readings tracked the reference poorly (correlation 0.28). Not charted: Apple Watch Series 7 gave no readings in two independent tests (Helmer 2024, AbiMansour 2024), and WHOOP has only a bias figure (Berryhill 2020, 1.8%).',
+      legend: 'Breaths per minute off, shorter is better. Rows follow the medal order: Fitbit first (independent test of the shipped feature), WHOOP second (WHOOP-funded, peer reviewed); different tests and measures (average error, RMSE, bias), so compare with care. Company tests are mostly healthy sleepers; independent tests include hospital patients. Samsung\'s figure is a research algorithm, not the watch feature. Garmin\'s readings tracked the reference poorly (correlation 0.28). Not charted: Apple Watch Series 7 gave no readings in two independent tests (Helmer 2024, AbiMansour 2024).',
       views: [
         { id: 'resp', tab: 'Breathing rate', tabS: 'Breathing', icon: 'wind', unit: 'bpm', max: 5, keys: ['Independent test', 'Company-run test'],
           q: 'Overnight breathing rate, breaths per minute off',
           rows: [
             ['fitbit', '', V([0.3, 1], 'Charge 4, Hermans 2024: reads 0.3 high in COPD, 1 high in healthy adults (ECG-derived reference)', '0.3 to 1/min'), V([0.46], 'Breathing Rate feature, Natarajan 2021 (Fitbit employees, 28 people), average error', '0.5/min')],
+            ['whoop', '', null, V([0.1], 'Strap 2.0, Berryhill 2020, WHOOP-funded but peer reviewed, sleep lab: reads 0.1 high', '+0.1/min')],
             ['garmin', '', V([1.46], 'Fenix 6 Pro, Helmer 2024: reads 1.5 low, correlation only 0.28, ward patients', '1.5/min low'), null],
             ['oura', '', null, V([0.71], '2020 hardware, Oura blog 2020, 43 teenagers, not peer reviewed', '0.7/min')],
             ['samsung', '', null, V([1.13], 'Galaxy Watch 4/5 sensors, Jung 2023, Samsung-funded research algorithm, RMSE', '1.1/min')],
@@ -1123,14 +1178,14 @@ class KygoWearableAccuracy extends HTMLElement {
     const V = (v, src, txt, alt) => ({ v, src, txt, alt });
     return this._dualChart({
       pos: 'spo2', brandOnly: true,
-      legend: 'Typical error: oxygen points off, shorter is better; Apple and Samsung come from the same low-oxygen lab test (Walzel 2023), which sets the medals, and Garmin (clinic patients at rest, Jiang 2023) is marked as a different study. Reads high or low: the average gap in oxygen points; Fitbit (Hermans 2024, COPD patients overnight) and Garmin are separate studies, so compare direction more than size. Oura and WHOOP have no independent SpO2 study; Oura has only its own unpublished comparison. Polar produced no SpO2 readings.',
+      legend: 'Typical error: oxygen points off, shorter is better. Apple and Samsung come from the same low-oxygen lab test (Walzel 2023), which sets the medals; Garmin places third on ward patients against arterial blood (Fenix 6 Pro, 3.50); Venu 2s read 5.5 to 5.8 low in clinic patients at rest (Jiang 2023). Samsung\'s 1.8 against arterial blood is a Samsung-linked test of 12 adults (Browne 2025). Reads high or low: the average gap in oxygen points; Fitbit (Hermans 2024, COPD patients overnight) and Garmin are separate studies, so compare direction more than size. Oura and WHOOP have no independent SpO2 study; Oura has only its own unpublished comparison. Polar produced no SpO2 readings.',
       views: [
-        { id: 'spo2', tab: 'Typical error', tabS: 'Error', icon: 'droplet', unit: '%', max: 8, keys: ['Typical error'],
-          q: 'How far off a medical reference',
+        { id: 'spo2', tab: 'Typical error', tabS: 'Error', icon: 'droplet', unit: '%', max: 8, keys: ['Low-oxygen lab test', 'Vs arterial blood'],
+          q: 'Oxygen points off a medical reference',
           rows: [
-            ['apple-watch', 'Series 8', V([2.2], 'Series 8, Walzel 2023 (2.5% at 80% oxygen or below)'), null],
-            ['samsung', 'Galaxy Watch 5', V([3.8], 'Galaxy Watch 5, Walzel 2023: reads low (2.7% at 80% oxygen or below)'), null],
-            ['garmin', 'Venu 2s', V([5.8], 'Venu 2s, Jiang 2023: clinic patients at rest, reads low', null, true), null],
+            ['apple-watch', 'Series 8 / Series 7', V([2.2], 'Series 8, Walzel 2023, Arms (2.5 at 80% oxygen or below)', '2.2'), V([2.44], 'Series 7, 112 ward patients vs arterial blood (Helmer 2023)', '2.44')],
+            ['samsung', 'Galaxy Watch 5 / 4', V([3.8], 'Galaxy Watch 5, Walzel 2023, Arms: reads 2.6 low (2.7 at 80% oxygen or below)', '3.8'), V([1.8], 'Galaxy Watch 4, Browne 2025: 12 adults on an FDA protocol, Samsung-linked', '1.8', 'Samsung-linked')],
+            ['garmin', 'Fenix 6 Pro', null, V([3.50], 'Fenix 6 Pro, 109 ward patients vs arterial blood: reads 2.7 low (Helmer 2023)', '3.50')],
             ['oura', '', null, null], ['whoop', '', null, null]
           ] },
         { id: 'bias', tab: 'Reads high or low', tabS: 'High or low', icon: 'arrowsLR', div: true, max: 6, axis: ['Reads low', 'Reads high'], keys: ['Average gap, oxygen points'],
@@ -1979,11 +2034,14 @@ class KygoWearableAccuracy extends HTMLElement {
     const sc = this._scorecard;
     const opts = cur => Object.keys(d).map(k => `<option value="${k}"${k === cur ? ' selected' : ''}>${d[k].short}</option>`).join('');
     const card = (k, i) => {
-      const best = this._sections.filter(s => s.id !== 'fda' && ['strong', 'good'].includes(sc[s.id][k][0])).map(s => s.nav);
+      const md = this._medals;
+      const best = this._sections.filter(s => (md[s.id] || {})[k] === 1).map(s => s.nav);
+      const pods = this._sections.filter(s => [2, 3].includes((md[s.id] || {})[k])).map(s => s.nav);
+      const bestTxt = best.length ? 'Best for ' + best.join(', ') + (pods.length ? ` · top 3 for ${pods.join(', ')}` : '') : pods.length ? 'Top 3 for ' + pods.join(', ') : 'No podium places';
       return `${i ? '<span class="cx-vsb" aria-hidden="true">VS</span>' : ''}<div class="cx-card">
         ${this._logo(k)}
         <span class="cx-sel"><select data-cx-slot="${i}" aria-label="Brand ${i + 1}">${opts(k)}</select>${this._icon('chevronDown')}</span>
-        <span class="cx-card-best">${best.length ? 'Best for ' + best.join(', ') : 'Little independent data yet'}</span>
+        <span class="cx-card-best">${bestTxt}</span>
         <span class="cx-card-sub">${d[k].subscription}</span>
       </div>`;
     };
@@ -2004,6 +2062,11 @@ class KygoWearableAccuracy extends HTMLElement {
       let win = top >= (sec.id === 'fda' ? 1 : 3) && ranks.some(r => r < top);
       if (sec.id === 'temp' || (sec.id === 'fda' && sel.some(k => !(k in this._fdaCounts)))) win = false;
       let isWin = k => win && rank(k) === top;
+      const md = this._medals[sec.id];
+      if (md && sel.some(k => md[k])) {
+        const place = k => md[k] || 9, first = Math.min(...sel.map(place));
+        win = sel.some(k => place(k) !== first); isWin = k => win && place(k) === first;
+      } else
       // Sleep: compare study by study (higher kappa is better). A brand wins only if it matches or
       // beats every other pick in each study they share, and beats at least one; pairs with no shared
       // study fall back to the grade.
@@ -2242,18 +2305,7 @@ class KygoWearableAccuracy extends HTMLElement {
     // Medals: one podium per metric, ranked on the numbers across every sub-measure of that metric.
     // Brand-funded studies count (footnoted in each section); research algorithms, preprints and
     // unpublished company tests do not. Breathing rate has only two qualifying brands; skin temperature none.
-    const medals = {
-      sleep: { oura: 1, 'apple-watch': 2, fitbit: 3 },
-      sleepTiming: { oura: 1, fitbit: 2, 'apple-watch': 3 },
-      hrv: { oura: 1, whoop: 2, garmin: 3 },
-      rhr: { oura: 1, polar: 2, whoop: 3 },
-      activeHr: { 'apple-watch': 1, garmin: 2, fitbit: 3 },
-      spo2: { 'apple-watch': 1, samsung: 2, garmin: 3 },
-      steps: { garmin: 1, 'apple-watch': 2, samsung: 3 },
-      calories: { fitbit: 1, samsung: 2, 'apple-watch': 3 },
-      vo2max: { garmin: 1, fitbit: 2, 'apple-watch': 3 },
-      resp: { fitbit: 1, whoop: 2 }
-    };
+    const medals = this._medals;
     const subs = {};
     const place = ['', 'Gold', 'Silver', 'Bronze'];
     const cell = (m, lv, name, d, x, tip) => {
@@ -3716,6 +3768,11 @@ class KygoWearableAccuracy extends HTMLElement {
       .sb-medal svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 1px 1px rgba(15,23,42,.15)); }
       .sb-legend .sb-medal.m1, .sb-legend .sb-medal.m2, .sb-legend .sb-medal.m3 { width: 15px; height: 19px; }
       .sb-legend .sb-medal svg { filter: none; }
+      .sc-lg { position: relative; display: inline-flex; }
+      .sc-rk { position: absolute; left: -8px; top: -6px; z-index: 1; width: 17px; height: 17px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: 10px; line-height: 1; border: 1.5px solid #fff; }
+      .sc-rk.m1 { background: #F4C542; color: #5C4300; } .sc-rk.m2 { background: #DDE3EA; color: #334155; } .sc-rk.m3 { background: #E8B48A; color: #5A3418; }
+      .dv.l2 .dv-band { background: repeating-linear-gradient(135deg, rgba(217,119,6,0.6) 0 3px, rgba(217,119,6,0.12) 3px 6px); }
+      .sw.band.c2 { background: repeating-linear-gradient(135deg, rgba(217,119,6,0.7) 0 2px, rgba(217,119,6,0.14) 2px 4px); }
       @media (max-width: 767px) { .sb-medal, .sb-medal.m1, .sb-medal.m2, .sb-medal.m3 { width: 22px; height: 27px; } }
 
       /* ── v71: seventh brand (Polar). Scoreboard columns follow --sb-n; phone labels sized for 7 columns ── */
