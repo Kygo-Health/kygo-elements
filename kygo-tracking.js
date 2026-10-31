@@ -354,8 +354,9 @@
     return null;
   }
 
-  /** The visitor's inbound utm_* and click ids: kygo-cta.js's session record
-   *  when it is on the page, else this URL's own. */
+  /** The visitor's inbound utm_* and click ids (and, from kygo-cta.js, the
+   *  Reddit-organic landing path): kygo-cta.js's session record when it is on
+   *  the page, else this URL's own. */
   function embedAttribution() {
     try {
       if (window.KygoAttribution) return window.KygoAttribution.capture();
@@ -377,8 +378,14 @@
 
     if (d.type === 'hello') {
       var a = embedAttribution();
+      var reply = { kygo: 'embed', type: 'attr', utm: a.utm || null, click: a.click || {} };
+      // A Reddit-organic visit's landing path (kygo-cta.js capture, set only
+      // when the session has no utm_*), so a blog app card in the frame swaps
+      // to the Reddit Organic Tenjin links too. A path, never a utm_* value.
+      var reddit = !a.utm && typeof a.reddit === 'string' ? embedStr(a.reddit, 100).replace(/[?#&=].*$/, '') : '';
+      if (reddit && reddit.charAt(0) === '/') reply.reddit = reddit;
       try {
-        e.source.postMessage({ kygo: 'embed', type: 'attr', utm: a.utm || null, click: a.click || {} }, '*');
+        e.source.postMessage(reply, '*');
       } catch (err) { /* frame went away */ }
       return;
     }

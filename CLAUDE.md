@@ -55,7 +55,11 @@ link's own `creative_name`, else `utm_campaign`, else `organic`. **Reddit organi
 that lands from a Reddit referrer (reddit.com and subdomains, redd.it, the Android app) with no
 `utm_*` is stored as a separate `reddit` field (the landing path, never as `utm_*`), and its default
 store links swap to `REDDIT_ORGANIC_STORE_LINKS` with `creative_name` = that landing path; a paid
-campaign or any later `utm_*` visit wins. New paid campaign = create an iOS
+campaign or any later `utm_*` visit wins. **Cross-origin frames** (blog "HTML code" blocks, where
+`<kygo-app-card>` lives) cannot see the landing URL, so `kygo-cta.js` there posts
+`{kygo:'embed', type:'hello'}` to `window.top` and adopts the `attr` reply from `kygo-tracking.js`
+(`{utm, click, reddit}`) through `KygoAttribution.adopt()`, which replaces the frame's record and
+never invents a utm value; the frame's links then swap and tag exactly as on the top page. New paid campaign = create an iOS
 and an Android campaign in Tenjin under the **Website** account and add one row. All three
 platforms stay on screen: the visitor's device takes the filled primary button, the other two
 follow as outline buttons, on one row where there is room and two-up under the primary where

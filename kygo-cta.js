@@ -83,13 +83,16 @@ const TENJIN_ANDROID = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO
  *    from an ad and clicks a CTA two pages later still carries the ad campaign.
  *    Storage that throws or is blocked falls back to memory for this page.
  *
- *  Exposed as window.KygoAttribution { capture, decorate, webUrl } for the Wix
- *  header and footer snippets, which load this file for exactly that. */
+ *  Exposed as window.KygoAttribution { capture, decorate, webUrl, storeUrl,
+ *  adopt } for the Wix header and footer snippets, which load this file for
+ *  exactly that. In a cross-origin frame (a blog "HTML code" block) it asks
+ *  the top page for the visit's record and adopts it (see adopt below). */
 const __kygoAttr = window.KygoAttribution || (function () {
   const KEY = 'kygo_attr';
   const CLICK_IDS = ['fbclid', 'gclid'];
   const APP_ORIGIN = 'https://app.kygo.app';
   let mem = null;
+  let adopted = false;
 
   // A Wix custom element sits in the page document, but read the top window
   // when it is reachable so an iframe embed still sees the landing URL.
@@ -122,6 +125,10 @@ const __kygoAttr = window.KygoAttribution || (function () {
    *  untagged); it is kept apart from utm so the web app link and RevenueCat
    *  never see invented utm_* values. */
   function capture() {
+    // In a cross-origin frame that has adopted the top page's record, this
+    // frame's own URL and referrer say nothing about the visit, so the
+    // adopted record is the whole answer.
+    if (adopted && mem) return mem;
     const stored = mem || load();
     let params;
     try { params = new URLSearchParams(page().location.search); } catch (e) { params = new URLSearchParams(); }
@@ -269,8 +276,68 @@ const __kygoAttr = window.KygoAttribution || (function () {
   };
   ['pointerdown', 'click', 'auxclick'].forEach((t) => document.addEventListener(t, onPress, true));
 
+  /** Seeds this window's record from the top page's, for a copy of this file
+   *  running in a cross-origin frame (a Wix Blog "HTML code" block, where
+   *  <kygo-app-card> lives). Such a frame cannot read the landing URL or the
+   *  referrer, so without this a paid or Reddit visitor's press would leave
+   *  with the default Website links. attr is the {utm, click, reddit} that
+   *  kygo-tracking.js sends in its {kygo:'embed', type:'attr'} reply; it
+   *  REPLACES this window's record, so the frame never holds a utm_* value the
+   *  top page did not have, and an organic top page clears anything the frame
+   *  stored earlier. Only utm_* keys, fbclid / gclid and a path-shaped reddit
+   *  string are kept. Returns true when the record was taken. Links are
+   *  rewritten as they are pressed, so adopting before the first press is
+   *  enough; a link already pressed is rebuilt from its original href. */
+  function adopt(attr) {
+    if (!attr || typeof attr !== 'object') return false;
+    const str = (v, max) => (typeof v === 'string' ? v.slice(0, max) : '');
+    let utm = null;
+    if (attr.utm && typeof attr.utm === 'object') {
+      Object.keys(attr.utm).forEach((k) => {
+        const v = str(attr.utm[k], 200);
+        if (/^utm_[a-z_]{1,30}$/.test(k) && v) (utm = utm || {})[k] = v;
+      });
+    }
+    const click = {};
+    if (attr.click && typeof attr.click === 'object') {
+      CLICK_IDS.forEach((k) => {
+        const v = str(attr.click[k], 300).replace(/[^\w\-.~]/g, '');
+        if (v) click[k] = v;
+      });
+    }
+    const next = { utm, click };
+    const reddit = str(attr.reddit, 100).replace(/[^\w\-\/.~%]/g, '');
+    if (!utm && reddit && reddit.charAt(0) === '/') next.reddit = reddit;
+    mem = next;
+    adopted = true;
+    save(next);
+    return true;
+  }
+
+  // A copy running in a cross-origin frame asks the top page for the visit's
+  // attribution (kygo-tracking.js answers) and adopts the reply. Only a reply
+  // from the top window in the exact {kygo:'embed', type:'attr'} shape counts.
+  const framed = (() => { try { return window.top !== window && page() === window; } catch (e) { return false; } })();
+  if (framed) {
+    const ATTR_KEYS = ['kygo', 'type', 'utm', 'click', 'reddit'];
+    window.addEventListener('message', (e) => {
+      const d = e.data;
+      if (e.source !== window.top || !d || typeof d !== 'object' || d.kygo !== 'embed' || d.type !== 'attr') return;
+      if (Object.keys(d).some((k) => ATTR_KEYS.indexOf(k) < 0)) return;
+      if (d.utm !== null && d.utm !== undefined && typeof d.utm !== 'object') return;
+      if (d.reddit !== undefined && typeof d.reddit !== 'string') return;
+      adopt(d);
+    });
+    const hello = () => {
+      if (adopted) return;
+      try { window.top.postMessage({ kygo: 'embed', type: 'hello' }, '*'); } catch (e) { /* no page to ask */ }
+    };
+    hello();
+    [700, 2000, 5000].forEach((t) => setTimeout(hello, t));
+  }
+
   capture();
-  return (window.KygoAttribution = { capture, decorate, webUrl, storeUrl });
+  return (window.KygoAttribution = { capture, decorate, webUrl, storeUrl, adopt });
 })();
 
 /** Injects accessible text into light DOM so crawlers and AI tools can read component content */

@@ -54,6 +54,14 @@
  *   {kygo:'embed', type:'height', height}       -> the page sizes the iframe
  * The store buttons use the standard Tenjin links owned by kygo-cta.js (loaded first)
  * Website-channel links with site_id and creative_name appended.
+ *
+ * Attribution in the iframe: the frame cannot see the landing URL or referrer,
+ * so kygo-cta.js (loaded here) sends {kygo:'embed', type:'hello'} to the top
+ * window and adopts the {utm, click, reddit} reply from kygo-tracking.js
+ * (KygoAttribution.adopt). A paid or Reddit-organic visitor's press then gets
+ * the same campaign links and creative_name as on the top page, and the web
+ * link gets the visitor's utm_*. With no reply, or an organic one, the card
+ * keeps site_id=<post> and creative_name=app-card-<variant>-<position>.
  */
 
 (function () {
