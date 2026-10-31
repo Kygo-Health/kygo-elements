@@ -273,7 +273,7 @@ Replaces the pasted `blog-cta-card.html` card, one post at a time (test: how-acc
 | Where | What identifies the card |
 |---|---|
 | GA4 `cta_click` / `cta_view` | `cta_label` = `slug` (placement), `cta_content` = `variant`, `page_path` = the post, `component: 'kygo-blog-embed'` |
-| Tenjin | store links are the standard Website-channel links plus `?site_id=<post>&creative_name=app-card-<variant>-<position>`. `KygoAttribution.storeUrl` keeps both at press time, except that a paid session (utm_campaign listed in `CAMPAIGN_STORE_LINKS`) swaps in the campaign link and sets `creative_name` to its `utm_content`, else its `utm_campaign`; `site_id` stays the post. Read installs with reporting `group_by=site` / `creative` |
+| Tenjin | store links are the standard Website-channel links plus `?site_id=<post>&creative_name=app-card-<variant>-<position>`. `KygoAttribution.storeUrl` keeps both at press time, except that a paid session (utm_campaign listed in `CAMPAIGN_STORE_LINKS`) swaps in the campaign link and sets `creative_name` to its `utm_content`, else its `utm_campaign`; a Reddit-organic session (Reddit referrer, no `utm_*`) swaps in the Reddit Organic links (`REDDIT_ORGANIC_STORE_LINKS`) and sets `creative_name` to the page it landed on from Reddit; `site_id` stays the post in both. Read installs with reporting `group_by=site` / `creative` |
 
 `cta_content` must be registered as a GA4 event-scoped custom dimension to be reportable.
 
@@ -288,7 +288,8 @@ the FAQ). The inline email band was removed from all tool pages.
   `cta_click` with `cta_category` ios_download / android_download / web_signup,
   `cta_label` = slug, `position` = tool, `cta_content` = variant (v1). Tenjin: `site_id=tool-<slug>`,
   `creative_name=app-card-v1-mid` (in a paid session: the session's `utm_content`, else its
-  `utm_campaign`, on the campaign link). No `cta_view` on tool pages (that comes only from iframes).
+  `utm_campaign`, on the campaign link; in a Reddit-organic session: the landing path, on the
+  Reddit Organic link). No `cta_view` on tool pages (that comes only from iframes).
 - **Report card** (since 2026-10-27 the shared `<kygo-report-card>`, also on blog posts and the
   homepage): captures the email in the card, POSTs `{email, source}` to `/_functions/subscribe`
   (source `report-<blog|tool|home>-<slug>`), then sends the visitor to `/report-download`. GA4:

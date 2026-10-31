@@ -98,6 +98,21 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 > Apple `ct`) of our own to a store link: it would replace Tenjin's click id, and Tenjin's iOS
 > redirect drops query params before the App Store anyway.
 >
+> **Reddit organic (2026-10-31).** Organic Reddit posts link to tool pages with no UTMs (tagged
+> links read as promotional and risk the post being flagged). `capture()` records a visit as
+> Reddit organic when the landing page has no `utm_*`, the session has none stored, and the
+> referrer (top window) is `reddit.com` or a subdomain, `redd.it`, or
+> `android-app://com.reddit.frontpage` (host matched exactly or as a dot suffix). It is kept in
+> the same sessionStorage record as a separate `reddit` field holding the landing path, never as
+> `utm_*`, so the app.kygo.app web link and RevenueCat see nothing new. A later visit with `utm_*`
+> clears it. In such a session with no listed paid campaign, `storeUrl` swaps the default Website
+> links for `REDDIT_ORGANIC_STORE_LINKS` and sets `creative_name` = the landing path (overriding a
+> card's own creative); `site_id` follows the rule above.
+>
+> | Session | Tenjin campaign | iOS click URL | Android click URL |
+> |---|---|---|---|
+> | Reddit referrer, no utm | Reddit Post Link - iOS / - Android (Reddit Organic channel) | `https://track.tenjin.com/v0/click/TEmyDcRQIVRM8VUAxfh4` | `https://track.tenjin.com/v0/click/heO9OuoP6tG8lENadDof4n` |
+>
 > A short-lived Wix embed ("Kygo Store Link Attribution", `69519f9b-…`) that sent tagged
 > sessions straight to the stores, bypassing Tenjin, was disabled the same day in favour of this.
 >

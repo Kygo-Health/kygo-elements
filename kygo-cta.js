@@ -49,7 +49,8 @@
  * is listed there gets that campaign's Tenjin links on every store button.
  * Every Tenjin link on the site also leaves tagged with site_id (the link's
  * own, else the page) and creative_name (a paid session's utm_content or
- * utm_campaign; otherwise the link's own, else utm_campaign, else "organic"),
+ * utm_campaign; a Reddit-organic visit's landing path, on the Reddit Organic
+ * links; otherwise the link's own, else utm_campaign, else "organic"),
  * so Tenjin can split installs by page, card and campaign.
  *
  * Layout: all three platforms are always on screen. The visitor's own device
@@ -103,15 +104,41 @@ const __kygoAttr = window.KygoAttribution || (function () {
     try { page().sessionStorage.setItem(KEY, JSON.stringify(v)); } catch (e) { /* memory only */ }
   };
 
+  /** True for a referrer from Reddit: reddit.com or any subdomain of it,
+   *  redd.it, or the Reddit Android app. Host matched exactly or as a dot
+   *  suffix, so notreddit.com and reddit.com.evil.io do not count. */
+  function isRedditReferrer(ref) {
+    if (!ref) return false;
+    if (/^android-app:\/\/com\.reddit\.frontpage(\/|$)/i.test(ref)) return true;
+    let h;
+    try { h = new URL(ref).hostname.toLowerCase(); } catch (e) { return false; }
+    return ['reddit.com', 'redd.it'].some((d) => h === d || h.slice(-(d.length + 1)) === '.' + d);
+  }
+
   /** Folds the current page's utm_* and click ids into the session and returns
-   *  {utm, click}. A page with any utm_* replaces the stored set as a whole. */
+   *  {utm, click, reddit}. A page with any utm_* replaces the stored set as a
+   *  whole (and clears reddit). reddit is the landing path of a visit that came
+   *  from Reddit with no utm_* at all (an organic Reddit post links to the page
+   *  untagged); it is kept apart from utm so the web app link and RevenueCat
+   *  never see invented utm_* values. */
   function capture() {
     const stored = mem || load();
     let params;
     try { params = new URLSearchParams(page().location.search); } catch (e) { params = new URLSearchParams(); }
     const utm = {};
     params.forEach((v, k) => { if (/^utm_/.test(k) && v) utm[k] = v; });
-    const next = { utm: Object.keys(utm).length ? utm : (stored.utm || null), click: Object.assign({}, stored.click) };
+    const hasUtm = Object.keys(utm).length > 0;
+    const next = { utm: hasUtm ? utm : (stored.utm || null), click: Object.assign({}, stored.click) };
+    if (!hasUtm && !next.utm) {
+      if (stored.reddit) next.reddit = stored.reddit;
+      else {
+        let ref = '';
+        let path = '/';
+        try { ref = page().document.referrer || ''; } catch (e) { /* no referrer */ }
+        try { path = page().location.pathname || '/'; } catch (e) { /* keep root */ }
+        if (isRedditReferrer(ref)) next.reddit = path.slice(0, 100);
+      }
+    }
     CLICK_IDS.forEach((k) => { const v = params.get(k); if (v) next.click[k] = v; });
     mem = next;
     save(next);
@@ -168,6 +195,14 @@ const __kygoAttr = window.KygoAttribution || (function () {
     },
   };
 
+  /** Reddit Organic channel links (Tenjin "Reddit Post Link - iOS" / "- Android").
+   *  A session that came from Reddit with no utm_* (see capture) and no listed
+   *  paid campaign gets these in place of the default Website links. */
+  const REDDIT_ORGANIC_STORE_LINKS = {
+    ios: 'https://track.tenjin.com/v0/click/TEmyDcRQIVRM8VUAxfh4',
+    android: 'https://track.tenjin.com/v0/click/heO9OuoP6tG8lENadDof4n',
+  };
+
   /** Rewrites a Tenjin store link as it is pressed. A default Website-channel
    *  link is first swapped for the session campaign's own link (a placement
    *  that set its own campaign link keeps it). Then every Tenjin link, default
@@ -181,6 +216,10 @@ const __kygoAttr = window.KygoAttribution || (function () {
    *                  own creative on purpose. Any other session: the link's own
    *                  creative_name (the app card's app-card-<variant>-<position>),
    *                  else the session's utm_campaign, else "organic".
+   *                  A Reddit-organic session (Reddit referrer, no utm_*, see
+   *                  capture) instead gets the Reddit Organic links in place of
+   *                  the default Website links, and creative_name = the page it
+   *                  landed on from Reddit, overriding a card's own creative.
    *  Tenjin carries them through to the install (on Android inside the Play
    *  referrer it builds itself, which is why the store URL is never given a
    *  referrer of our own). Anything not on track.tenjin.com comes back
@@ -204,11 +243,12 @@ const __kygoAttr = window.KygoAttribution || (function () {
     const camp = a.utm && a.utm.utm_campaign ? String(a.utm.utm_campaign).toLowerCase() : '';
     const content = a.utm && a.utm.utm_content ? String(a.utm.utm_content) : '';
     const paid = !!camp && Object.prototype.hasOwnProperty.call(CAMPAIGN_STORE_LINKS, camp);
-    const row = plat && paid ? CAMPAIGN_STORE_LINKS[camp] : null;
+    const reddit = !paid && a.reddit ? String(a.reddit) : '';
+    const row = plat && paid ? CAMPAIGN_STORE_LINKS[camp] : plat && reddit ? REDDIT_ORGANIC_STORE_LINKS : null;
     const out = new URL((row && row[plat]) || base);
     let path = '/';
     try { path = page().location.pathname || '/'; } catch (e) { /* keep root */ }
-    const creative = paid ? (content || camp) : (ownCreative || camp || 'organic');
+    const creative = paid ? (content || camp) : reddit ? reddit : (ownCreative || camp || 'organic');
     out.searchParams.set('site_id', (ownSite || path).slice(0, 100));
     out.searchParams.set('creative_name', creative.slice(0, 100));
     const res = out.toString();

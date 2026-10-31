@@ -51,7 +51,11 @@ for that campaign's links as it is pressed. Every Tenjin link also leaves with `
 link's own, as the app card sets the post, else the page path) and `creative_name`: in a listed
 paid session the session's `utm_content`, else its `utm_campaign` (overriding a card's own creative
 on purpose, so an ad and a comment link under one campaign stay apart); in any other session the
-link's own `creative_name`, else `utm_campaign`, else `organic`. New paid campaign = create an iOS
+link's own `creative_name`, else `utm_campaign`, else `organic`. **Reddit organic:** a visit
+that lands from a Reddit referrer (reddit.com and subdomains, redd.it, the Android app) with no
+`utm_*` is stored as a separate `reddit` field (the landing path, never as `utm_*`), and its default
+store links swap to `REDDIT_ORGANIC_STORE_LINKS` with `creative_name` = that landing path; a paid
+campaign or any later `utm_*` visit wins. New paid campaign = create an iOS
 and an Android campaign in Tenjin under the **Website** account and add one row. All three
 platforms stay on screen: the visitor's device takes the filled primary button, the other two
 follow as outline buttons, on one row where there is room and two-up under the primary where
