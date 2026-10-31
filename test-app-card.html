@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>kygo-app-card test</title>
+<style>body{margin:0;background:#fff;font-family:sans-serif}.col{max-width:680px;margin:40px auto;padding:0 16px}iframe{width:100%;border:0;height:470px;display:block}pre{font-size:12px;background:#f1f5f9;padding:8px;white-space:pre-wrap}</style>
+</head><body><div class="col">
+<p>Mimics a Wix Blog HTML block: the card renders in an iframe, messages land here.</p>
+<iframe id="f" srcdoc='<style>html,body{margin:0;background:transparent}</style>
+<kygo-app-card post="how-accurate-is-your-heart-rate-monitor" position="mid" slug="hr-monitor-mid" focus="hrv" variant="v1"
+ headline="Separate real patterns from noise." sub="Kygo matches your heart rate, HRV and sleep to what you actually ate.">
+ <a href="https://www.kygo.app" target="_top">Get the Kygo app</a></kygo-app-card>
+<script src="kygo-cta.js?v=1"></script><script src="kygo-app-card.js?v=1"></script>'></iframe>
+<pre id="log"></pre></div>
+<script>
+window.__msgs=[];
+addEventListener('message',e=>{const d=e.data;if(!d||typeof d!=='object')return;window.__msgs.push(d);
+ if(d.kygo==='embed'&&d.type==='height')document.getElementById('f').style.height=d.height+'px';
+ document.getElementById('log').textContent=window.__msgs.map(m=>JSON.stringify(m)).join('\n');});
+</script></body></html>

@@ -17,6 +17,40 @@ if (typeof __seo === 'undefined') {
   };
 }
 
+/** Loads the shared <kygo-cta> element on demand. Wix embeds this file on its
+ *  own, so the CTA definition has to come along rather than be assumed present. */
+function __ensureKygoCta() {
+  if (customElements.get('kygo-cta')) return;
+  if (document.querySelector('script[data-kygo-cta-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+  s.setAttribute('data-kygo-cta-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
+/** Loads the shared <kygo-app-card> element (the in-page app card) once. */
+function __ensureKygoAppCard() {
+  if (customElements.get('kygo-app-card')) return;
+  if (document.querySelector('script[data-kygo-app-card-loader]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://kygo-health.github.io/kygo-elements/kygo-app-card.js';
+  s.setAttribute('data-kygo-app-card-loader', '');
+  s.async = true;
+  document.head.appendChild(s);
+}
+
+/** Appends a JSON-LD script unless the page already serves that @type from the Wix SEO panel */
+function __kygoAppendLdOnce(script) {
+  let type;
+  try { type = JSON.parse(script.textContent)['@type']; } catch (e) { /* malformed: append as-is */ }
+  const served = type && [...document.querySelectorAll('script[type="application/ld+json"]')].some(s => {
+    if ([...s.attributes].some(a => a.name.startsWith('data-kygo'))) return false;
+    try { return JSON.parse(s.textContent)['@type'] === type; } catch (e) { return false; }
+  });
+  if (!served) document.head.appendChild(script);
+}
+
 class KygoRhrFactors extends HTMLElement {
   constructor() {
     super();
@@ -31,11 +65,12 @@ class KygoRhrFactors extends HTMLElement {
   }
 
   connectedCallback() {
+    __ensureKygoCta();
     this.render();
     this._setupEventDelegation();
     this._setupAnimations();
     this._injectStructuredData();
-    __seo(this, 'RHR Factor Explorer by Kygo Health. Explore 37 research-backed factors that influence resting heart rate (RHR) across 4 modifiable categories — Nutrition, Supplements, Exercise, and Environment — plus 7 demographic baseline factors. Nutrition factors include omega-3 EPA/DHA (lowers RHR by 1.6 bpm per Hidayat 2018 meta-analysis of 51 RCTs), habitual coffee (no significant effect), acute high-dose caffeine, alcohol (raises RHR 2.4 bpm per drink above average per 5.1M person-day wearables study), weight loss (Look AHEAD trial), Mediterranean diet (lowers 2.2 bpm in SUN cohort n=15,863), and reduced sodium (raises 1.65 bpm per Graudal meta-analysis). Supplements include omega-3 fish oil, soluble fiber, chromium, potassium (null), vitamin D (null per BEST-D RCT), L-arginine (null), and melatonin (mixed). Exercise factors include endurance training (lowers 8.4 bpm with 30+ weeks per Huang 2005), HIIT (lowers 3.9 bpm per Edwards 2023 meta-analysis of 97 RCTs), yoga (lowers 5.27 bpm per Cramer 2014), VO2max fitness, resistance training alone (null), tai chi, sedentary behavior, and overtraining. Environment factors include heat, cold, altitude, air pollution, nighttime traffic noise, time of day, and season. Demographics include age, female sex, genetics, obesity, pregnancy, menstrual cycle, and ethnicity. Includes Common Myths section with 33 popular factors that lack RHR-specific evidence including dark chocolate, beetroot juice, magnesium, CoQ10, ashwagandha for RHR, and creatine. Every claim backed by RCTs and meta-analyses. What affects resting heart rate. How to lower resting heart rate naturally. Best supplements for heart rate. Data sourced from peer-reviewed studies.');
+    __seo(this, 'RHR Factor Explorer by Kygo Health. Explore 37 research-backed factors that influence resting heart rate (RHR) across 4 modifiable categories (Nutrition, Supplements, Exercise, and Environment) plus 7 demographic baseline factors. Nutrition factors include omega-3 EPA/DHA (lowers RHR by 1.6 bpm per Hidayat 2018 meta-analysis of 51 RCTs), habitual coffee (no significant effect), acute high-dose caffeine, alcohol (raises RHR 2.4 bpm per drink above average per 5.1M person-day wearables study), weight loss (Look AHEAD trial), Mediterranean diet (lowers 2.2 bpm in SUN cohort n=15,863), and reduced sodium (raises 1.65 bpm per Graudal meta-analysis). Supplements include omega-3 fish oil, soluble fiber, chromium, potassium (null), vitamin D (null per BEST-D RCT), L-arginine (null), and melatonin (mixed). Exercise factors include endurance training (lowers 8.4 bpm with 30+ weeks per Huang 2005), HIIT (lowers 3.9 bpm per Edwards 2023 meta-analysis of 97 RCTs), yoga (lowers 5.27 bpm per Cramer 2014), VO2max fitness, resistance training alone (null), tai chi, sedentary behavior, and overtraining. Environment factors include heat, cold, altitude, air pollution, nighttime traffic noise, time of day, and season. Demographics include age, female sex, genetics, obesity, pregnancy, menstrual cycle, and ethnicity. Includes Common Myths section with 33 popular factors that lack RHR-specific evidence including dark chocolate, beetroot juice, magnesium, CoQ10, ashwagandha for RHR, and creatine. Every claim backed by RCTs and meta-analyses. What affects resting heart rate. How to lower resting heart rate naturally. Best supplements for heart rate. Data sourced from peer-reviewed studies.');
   }
 
   disconnectedCallback() {
@@ -69,7 +104,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 1.6,
         effect: 'Lowers RHR (↓)',
         keyFinding: 'Meta-analysis of 51 RCTs: −1.6 bpm; −2.5 bpm if baseline ≥69',
-        whatThisMeans: 'Eating fatty fish or supplementing with EPA/DHA reliably slows your resting heart rate. The effect is small but rock-solid — pooled across 51 randomized trials, it averages about 1.6 bpm lower, and gets stronger if your starting RHR is already elevated. One of the cleanest dietary signals in the entire RHR literature.',
+        whatThisMeans: 'Eating fatty fish or supplementing with EPA/DHA reliably slows your resting heart rate. The effect is small but rock-solid: pooled across 51 randomized trials, it averages about 1.6 bpm lower, and gets stronger if your starting RHR is already elevated. One of the cleanest dietary signals in the entire RHR literature.',
         mechanism: 'EPA/DHA incorporate into cardiomyocyte membranes, modulating ion channels and slowing sinoatrial node firing; also enhance vagal tone.',
         dosage: '1–2 g/day combined EPA+DHA from fatty fish or supplement',
         source: { url: 'https://www.nature.com/articles/s41430-017-0052-3', label: 'Hidayat 2018 meta-analysis (PMC5988646)' }
@@ -79,7 +114,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'variable', evidence: 'strong', effectSize: null,
         effect: 'No effect (→)',
         keyFinding: 'Meta-analysis 6 RCTs: +0.40 bpm RHR, not significant',
-        whatThisMeans: "Daily coffee drinkers — relax. The pooled evidence across 6 controlled trials shows habitual coffee doesn't move your resting heart rate in either direction. The +0.4 bpm change wasn't statistically significant. This is a documented null finding, not a recommendation.",
+        whatThisMeans: "Daily coffee drinkers, relax. The pooled evidence across 6 controlled trials shows habitual coffee doesn't move your resting heart rate in either direction. The +0.4 bpm change wasn't statistically significant. This is a documented null finding, not a recommendation.",
         mechanism: 'Tolerance develops to caffeine\'s adenosine receptor blockade with repeated exposure; chronic heart-rate response normalizes within weeks.',
         dosage: 'Up to 3–4 cups/day appears neutral for chronic RHR',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/37647856/', label: '2023 meta-analysis of 6 RCTs (PubMed 37647856)' }
@@ -89,7 +124,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'moderate', effectSize: null,
         effect: 'Raises RHR (↑)',
         keyFinding: 'Narrative review: dose-dependent; high doses raise HR',
-        whatThisMeans: "A single big caffeine dose — pre-workout scoop, double espresso on an empty stomach — does temporarily raise heart rate in a dose-dependent way. This is the acute response, not the chronic one. Low doses (under 3 mg/kg) typically don't.",
+        whatThisMeans: "A single big caffeine dose (pre-workout scoop, double espresso on an empty stomach) does temporarily raise heart rate in a dose-dependent way. This is the acute response, not the chronic one. Low doses (under 3 mg/kg) typically don't.",
         mechanism: 'Adenosine receptor antagonism removes baseline inhibition on sympathetic activity; catecholamine release elevates HR transiently.',
         dosage: 'Effect emerges above ~3 mg/kg single dose',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/24203773/', label: 'Mesas 2014 review (PubMed 24203773)' }
@@ -99,7 +134,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 2.4,
         effect: 'Raises RHR (+2.4 bpm)',
         keyFinding: 'Wearables study n=20,968 (5.1M person-days): +2.4 bpm M / +2.8 bpm F per drink',
-        whatThisMeans: 'The largest real-world dataset on alcohol and heart rate ever assembled. Each additional drink above your personal average raised overnight RHR by about 2.4–2.8 bpm. This is the kind of effect your wearable will catch the morning after a few drinks — and the data confirms it is real, dose-related, and consistent across millions of person-days.',
+        whatThisMeans: 'The largest real-world dataset on alcohol and heart rate ever assembled. Each additional drink above your personal average raised overnight RHR by about 2.4–2.8 bpm. This is the kind of effect your wearable will catch the morning after a few drinks, and the data confirms it is real, dose-related, and consistent across millions of person-days.',
         mechanism: 'Sympathetic activation, vagal withdrawal, and dehydration during alcohol metabolism elevate overnight HR; effect persists into the next morning.',
         dosage: 'Each drink above baseline matters; abstinence days produce the cleanest RHR',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12970902/', label: '2026 wearables study (PMC12970902)' }
@@ -109,7 +144,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 5,
         effect: 'Lowers RHR (≈5 bpm)',
         keyFinding: 'Look AHEAD RCT yr 1: intensive lifestyle 72.8 vs 77.7 bpm; bariatric: −13 bpm at 2 yrs',
-        whatThisMeans: 'Losing weight through a structured lifestyle program lowers RHR by about 5 bpm in the first year — not a small change. Bariatric surgery patients drop closer to 13 bpm over two years. Among the largest, most reliable RHR-modifiers available, and one of the few that compounds with cardiovascular benefit.',
+        whatThisMeans: 'Losing weight through a structured lifestyle program lowers RHR by about 5 bpm in the first year, not a small change. Bariatric surgery patients drop closer to 13 bpm over two years. Among the largest, most reliable RHR-modifiers available, and one of the few that compounds with cardiovascular benefit.',
         mechanism: 'Reduced sympathetic drive, lower circulating catecholamines, improved cardiac efficiency; less metabolic load on the heart at rest.',
         dosage: 'Sustained lifestyle program (caloric + activity); 7–10% weight loss yields measurable change',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3512322/', label: 'Look AHEAD 2012 (PMC3512322)' }
@@ -129,7 +164,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 1.65,
         effect: 'Raises RHR (+1.65 bpm)',
         keyFinding: 'Meta-analysis 63 RCTs: low-sodium raises HR by 1.65 bpm',
-        whatThisMeans: "A counter-intuitive but well-replicated finding. Cutting sodium meaningfully lowers blood pressure — but it nudges resting heart rate up by about 1.65 bpm across 63 controlled trials. The body compensates for reduced volume by raising HR. Doesn't negate sodium reduction's BP benefit, just worth knowing.",
+        whatThisMeans: "A counter-intuitive but well-replicated finding. Cutting sodium meaningfully lowers blood pressure, but it nudges resting heart rate up by about 1.65 bpm across 63 controlled trials. The body compensates for reduced volume by raising HR. Doesn't negate sodium reduction's BP benefit, just worth knowing.",
         mechanism: 'Reduced extracellular volume triggers compensatory sympathetic activation and renin–angiotensin response, modestly raising HR.',
         dosage: 'Moderate reduction (not extreme); BP benefit still outweighs RHR effect for most',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4805644/', label: 'Graudal 2016 meta-analysis (PMC4805644)' }
@@ -144,7 +179,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 1.6,
         effect: 'Lowers RHR (−1.6 bpm)',
         keyFinding: 'Meta-analysis 51 RCTs: −1.6 bpm; −2.5 bpm at baseline ≥69',
-        whatThisMeans: 'The single supplement with strong, replicated RHR-specific evidence. Across 51 randomized trials, fish-oil supplementation lowered resting heart rate by about 1.6 bpm — and by 2.5 bpm if your starting RHR was already 69 or higher. If you only take one supplement for cardiovascular markers, this is the one with the data.',
+        whatThisMeans: 'The single supplement with strong, replicated RHR-specific evidence. Across 51 randomized trials, fish-oil supplementation lowered resting heart rate by about 1.6 bpm, and by 2.5 bpm if your starting RHR was already 69 or higher. If you only take one supplement for cardiovascular markers, this is the one with the data.',
         mechanism: 'EPA/DHA modify cardiac ion channels and membrane fluidity, slowing sinoatrial firing; vagal-tone enhancement is a secondary mechanism.',
         dosage: '1–2 g/day combined EPA+DHA; standardized triglyceride form',
         source: { url: 'https://www.nature.com/articles/s41430-017-0052-3', label: 'Hidayat 2018 meta-analysis (PMC5988646)' }
@@ -154,7 +189,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'emerging', effectSize: null,
         effect: 'Lowers RHR (HTN only)',
         keyFinding: 'Single RCT n=70 over 3 mo: significant 24-h HR reduction vs DASH-only control',
-        whatThisMeans: 'A single 3-month trial in hypertensive patients found 30 g/day of oat bran on top of a DASH diet meaningfully reduced 24-hour heart rate compared to DASH alone. Specific to a clinical population — not yet replicated in healthy adults — but a clean, hypothesis-generating result.',
+        whatThisMeans: 'A single 3-month trial in hypertensive patients found 30 g/day of oat bran on top of a DASH diet meaningfully reduced 24-hour heart rate compared to DASH alone. Specific to a clinical population, not yet replicated in healthy adults, but a clean, hypothesis-generating result.',
         mechanism: 'Soluble fiber improves glycemic stability, lowers LDL, and shifts gut microbiome toward short-chain fatty acid producers that support vagal tone.',
         dosage: '30 g/day oat bran (or equivalent soluble fiber)',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9370281/', label: 'Nutrients 2022 RCT (PMC9370281)' }
@@ -164,7 +199,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'emerging', effectSize: null,
         effect: 'Lowers RHR (MetS only)',
         keyFinding: 'Single RCT in MetS/IGT: only RHR significantly reduced',
-        whatThisMeans: 'In one RCT in metabolic syndrome / impaired glucose tolerance patients, chromium yeast was the only intervention that significantly reduced RHR among the markers tested. Population-specific, single trial — interesting signal but not generalizable yet.',
+        whatThisMeans: 'In one RCT in metabolic syndrome / impaired glucose tolerance patients, chromium yeast was the only intervention that significantly reduced RHR among the markers tested. Population-specific, single trial. Interesting signal but not generalizable yet.',
         mechanism: 'Chromium improves insulin sensitivity; reduced hyperinsulinemia may indirectly lower sympathetic tone in metabolically impaired individuals.',
         dosage: 'Chromium yeast supplementation (per trial protocol); only studied in MetS/IGT',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/28856601/', label: 'Chromium MetS RCT (PubMed 28856601)' }
@@ -174,7 +209,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'variable', evidence: 'strong', effectSize: null,
         effect: 'No effect (→)',
         keyFinding: 'Meta-analysis 22 RCTs, n=1,086: +0.19 bpm, not significant',
-        whatThisMeans: "A documented null finding. Pooled across 22 RCTs and over 1,000 participants, potassium supplements changed resting heart rate by 0.19 bpm — not statistically different from zero. Useful for blood pressure in some people, but it's not an RHR lever.",
+        whatThisMeans: "A documented null finding. Pooled across 22 RCTs and over 1,000 participants, potassium supplements changed resting heart rate by 0.19 bpm, not statistically different from zero. Useful for blood pressure in some people, but it's not an RHR lever.",
         mechanism: 'No clear chronic chronotropic mechanism at supplementation doses; HR effect appears neutral.',
         dosage: 'Not recommended for RHR; consider for BP under clinician guidance',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/27289164/', label: 'Gijsbers 2016 meta-analysis (PubMed 27289164)' }
@@ -184,7 +219,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'variable', evidence: 'strong', effectSize: null,
         effect: 'No effect (→)',
         keyFinding: 'BEST-D RCT, n=305, 12 mo: no HR effect at any dose',
-        whatThisMeans: 'A clean, year-long, dose-response RCT — and vitamin D produced zero change in heart rate at any dose tested. One of the most over-supplemented compounds in the wellness world; for resting heart rate specifically, the evidence says it does nothing.',
+        whatThisMeans: 'A clean, year-long, dose-response RCT, and vitamin D produced zero change in heart rate at any dose tested. One of the most over-supplemented compounds in the wellness world; for resting heart rate specifically, the evidence says it does nothing.',
         mechanism: 'No demonstrated direct chronotropic effect at any tested dose over 12 months.',
         dosage: 'Not recommended for RHR; supplement only if clinically deficient',
         source: { url: 'https://www.ahajournals.org/doi/10.1161/JAHA.117.005707', label: 'BEST-D RCT 2017 (PMC5721827)' }
@@ -219,7 +254,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 8.37,
         effect: 'Lowers RHR (−8.4 bpm)',
         keyFinding: 'Huang 2005 meta-analysis (older adults): SES −0.58 (−8.4%); −8.37 bpm if >30 wk vs −4.86 bpm if <30 wk',
-        whatThisMeans: "The single largest, cleanest RHR-lowering intervention in the literature. Sustained aerobic training drops resting heart rate by about 8.4 bpm — but only after 30+ weeks of consistent work. Shorter programs still deliver about 4.9 bpm. There's no other modifiable factor with this kind of effect size.",
+        whatThisMeans: "The single largest, cleanest RHR-lowering intervention in the literature. Sustained aerobic training drops resting heart rate by about 8.4 bpm, but only after 30+ weeks of consistent work. Shorter programs still deliver about 4.9 bpm. There's no other modifiable factor with this kind of effect size.",
         mechanism: 'Cardiac remodeling increases stroke volume; enhanced vagal tone and reduced intrinsic sinus rate produce sustained lower RHR.',
         dosage: '150+ min/week moderate aerobic activity; 30+ weeks for maximal effect',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/16118586/', label: 'Huang 2005 meta-analysis (PubMed 16118586)' }
@@ -229,7 +264,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 3.9,
         effect: 'Lowers RHR (−3.9 bpm)',
         keyFinding: '97-RCT meta-analysis: −3.9 bpm; long-term (≥12 wk) SMD −0.33',
-        whatThisMeans: 'Across 97 RCTs and over 3,000 participants, HIIT lowered resting heart rate by about 3.9 bpm. Smaller absolute effect than long-term endurance training, but it shows up faster — meaningful change within 12 weeks. The most time-efficient way to drop RHR.',
+        whatThisMeans: 'Across 97 RCTs and over 3,000 participants, HIIT lowered resting heart rate by about 3.9 bpm. Smaller absolute effect than long-term endurance training, but it shows up faster: meaningful change within 12 weeks. The most time-efficient way to drop RHR.',
         mechanism: 'Repeated supramaximal stimulus drives cardiac autonomic remodeling, vagal reactivation, and improved stroke volume in shorter timeframes.',
         dosage: '2–3 sessions/week for ≥12 weeks; e.g. 4×4 min intervals',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/37204620/', label: 'Edwards 2023 meta-analysis (PubMed 37204620)' }
@@ -239,7 +274,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: 5.27,
         effect: 'Lowers RHR (−5.3 bpm)',
         keyFinding: 'Cramer 2014 meta-analysis: −5.27 bpm (95% CI −9.55 to −1.00) vs non-exercise control',
-        whatThisMeans: 'A robust meta-analysis found regular yoga practice lowers RHR by about 5.27 bpm versus non-exercise controls. The effect rivals dedicated cardio in some trials — likely because the breathwork directly drives parasympathetic tone, on top of the modest physical demand.',
+        whatThisMeans: 'A robust meta-analysis found regular yoga practice lowers RHR by about 5.27 bpm versus non-exercise controls. The effect rivals dedicated cardio in some trials, likely because the breathwork directly drives parasympathetic tone, on top of the modest physical demand.',
         mechanism: 'Pranayama breathing activates the vagus nerve and parasympathetic nervous system; postural work supports cardiovascular conditioning.',
         dosage: '3+ sessions/week of regular practice',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/24636547/', label: 'Cramer 2014 meta-analysis (PubMed 24636547)' }
@@ -249,7 +284,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'strong', effectSize: null,
         effect: 'Lowers RHR (↓)',
         keyFinding: 'Fenland Study, n=10,865: inverse RHR–fitness relationship; β ≈ −0.30',
-        whatThisMeans: 'In a population-level study of nearly 11,000 adults, RHR tracked tightly inversely with VO₂max. Higher fitness, lower RHR — at the population level, RHR is essentially a proxy for cardiorespiratory fitness. This is why your morning RHR is one of the most informative single numbers your wearable produces.',
+        whatThisMeans: 'In a population-level study of nearly 11,000 adults, RHR tracked tightly inversely with VO₂max. Higher fitness, lower RHR. At the population level, RHR is essentially a proxy for cardiorespiratory fitness. This is why your morning RHR is one of the most informative single numbers your wearable produces.',
         mechanism: 'Higher VO₂max reflects greater cardiac stroke volume and vagal dominance, both of which reduce required HR at rest.',
         dosage: 'Build VO₂max via consistent aerobic + interval training',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10174582/', label: 'Gonzales 2023 Fenland Study (PMC10174582)' }
@@ -259,7 +294,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'variable', evidence: 'strong', effectSize: 0.08,
         effect: 'No effect (→)',
         keyFinding: 'Reimers 2018 (43 strength trials); isometric meta-analysis: −0.08 bpm, n.s.',
-        whatThisMeans: "Lifting weights is great for many things — RHR isn't really one of them. Across 43 strength-training trials and an isometric meta-analysis, the change was 0.08 bpm and not statistically significant. If you want lower RHR, add cardio. Strength alone doesn't move the number meaningfully.",
+        whatThisMeans: "Lifting weights is great for many things; RHR isn't really one of them. Across 43 strength-training trials and an isometric meta-analysis, the change was 0.08 bpm and not statistically significant. If you want lower RHR, add cardio. Strength alone doesn't move the number meaningfully.",
         mechanism: 'Pure strength training produces minimal cardiac remodeling and limited vagal activation versus aerobic work.',
         dosage: 'Combine with aerobic training for RHR benefit; resistance alone is insufficient',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/30624369/', label: 'López-Valenciano 2019 meta-analysis (PubMed 30624369)' }
@@ -269,7 +304,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'positive', evidence: 'moderate', effectSize: null,
         effect: 'Lowers RHR (↓)',
         keyFinding: 'Reimers 2018 subgroups (5 tai chi + 3 qigong): consistent ↓ direction, smaller magnitude',
-        whatThisMeans: 'Subgroup analyses across 8 trials of tai chi and qigong consistently lowered RHR — the magnitude was smaller than yoga or aerobic exercise, but the direction was consistent. A reasonable option for low-impact RHR support, especially in older adults.',
+        whatThisMeans: 'Subgroup analyses across 8 trials of tai chi and qigong consistently lowered RHR; the magnitude was smaller than yoga or aerobic exercise, but the direction was consistent. A reasonable option for low-impact RHR support, especially in older adults.',
         mechanism: 'Slow movement plus deep diaphragmatic breathing engage parasympathetic tone; modest cardiovascular load conditions the sinoatrial response.',
         dosage: 'Regular practice; 3+ sessions/week',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/', label: 'Reimers 2018 (PMC6306777)' }
@@ -279,7 +314,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'moderate', effectSize: null,
         effect: 'Raises RHR (↑)',
         keyFinding: 'Cohort + cross-sectional: more leisure sitting → elevated RHR + reduced HRV',
-        whatThisMeans: "Cohort and cross-sectional data agree: more leisure sitting time tracks with higher resting heart rate (and lower HRV). It's not just the absence of exercise — prolonged inactivity itself appears to push RHR up. Standing breaks and step counts do help.",
+        whatThisMeans: "Cohort and cross-sectional data agree: more leisure sitting time tracks with higher resting heart rate (and lower HRV). It's not just the absence of exercise; prolonged inactivity itself appears to push RHR up. Standing breaks and step counts do help.",
         mechanism: 'Prolonged sitting reduces venous return and skeletal-muscle pump activity, blunting cardiovascular conditioning and elevating sympathetic tone.',
         dosage: 'Break sitting hourly; integrate movement throughout the day',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6406480/', label: 'Hallman 2019 (PMC6406480)' }
@@ -289,7 +324,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'moderate', effectSize: null,
         effect: 'Raises RHR (↑)',
         keyFinding: 'Systematic review (Bosquet 2008): morning HR can rise with overtraining, small amplitude limits utility',
-        whatThisMeans: "Pushing volume past your recovery capacity raises morning RHR — but the change is often small enough that it's an unreliable single marker. Watch for trends over weeks alongside HRV and perceived recovery, not single-day spikes.",
+        whatThisMeans: "Pushing volume past your recovery capacity raises morning RHR, but the change is often small enough that it's an unreliable single marker. Watch for trends over weeks alongside HRV and perceived recovery, not single-day spikes.",
         mechanism: 'Sympathetic overactivation, suppressed parasympathetic tone, and unrecovered cardiovascular load elevate baseline HR.',
         dosage: 'Schedule recovery weeks; track 7-day average RHR for trends',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/18308872/', label: 'Bosquet 2008 review (PubMed 18308872)' }
@@ -304,7 +339,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 0.11,
         effect: 'Raises RHR (+0.11/°C)',
         keyFinding: 'Madaniyazi 2016, Chinese cohort n=47,591: +0.11 bpm per 1 °C increase in mean daily temp',
-        whatThisMeans: 'In a cohort of nearly 48,000 adults, heart rate rose about 0.11 bpm for every 1 °C increase in mean daily temperature. Small per-degree but adds up across summer or in hot bedrooms — a measurable real-world signal.',
+        whatThisMeans: 'In a cohort of nearly 48,000 adults, heart rate rose about 0.11 bpm for every 1 °C increase in mean daily temperature. Small per-degree but adds up across summer or in hot bedrooms: a measurable real-world signal.',
         mechanism: 'Heat dilates peripheral vasculature for cooling; HR rises to maintain blood pressure and dissipate heat through skin perfusion.',
         dosage: 'Cool the bedroom; hydrate in heat; expect higher RHR readings in summer',
         source: { url: 'https://www.nature.com/articles/srep21003', label: 'Madaniyazi 2016 (PMC4753475)' }
@@ -320,17 +355,17 @@ class KygoRhrFactors extends HTMLElement {
         source: { url: 'https://www.nature.com/articles/srep21003', label: 'Madaniyazi 2016 (PMC4753475)' }
       },
       {
-        key: 'altitude-acute', name: 'High Altitude — Acute',
+        key: 'altitude-acute', name: 'High Altitude: Acute',
         direction: 'negative', evidence: 'strong', effectSize: null,
         effect: 'Raises RHR (↑)',
         keyFinding: 'Bärtsch & Gibbs 2007 (Circulation): hypobaric hypoxia → sympathetic activation → RHR rises',
-        whatThisMeans: 'In the first hours-to-days at altitude, your resting heart rate rises measurably as the body responds to lower oxygen pressure. Expect this on ski trips, mountain hikes, or after flights to high-altitude cities — it normalizes with acclimatization.',
+        whatThisMeans: 'In the first hours-to-days at altitude, your resting heart rate rises measurably as the body responds to lower oxygen pressure. Expect this on ski trips, mountain hikes, or after flights to high-altitude cities; it normalizes with acclimatization.',
         mechanism: 'Hypobaric hypoxia activates chemoreceptors and the sympathetic nervous system; HR rises to maintain oxygen delivery.',
         dosage: 'Expect transient RHR elevation; expect normalization within weeks of acclimatization',
         source: { url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.106.650796', label: 'Bärtsch & Gibbs 2007 (PubMed 17984389)' }
       },
       {
-        key: 'altitude-chronic', name: 'High Altitude — Acclimatized',
+        key: 'altitude-chronic', name: 'High Altitude: Acclimatized',
         direction: 'variable', evidence: 'strong', effectSize: null,
         effect: 'No effect (→)',
         keyFinding: 'Bärtsch & Gibbs 2007: RHR returns toward sea-level values with acclimatization (weeks)',
@@ -354,7 +389,7 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 9,
         effect: 'Raises RHR (+9 bpm)',
         keyFinding: 'Griefahn 2008 lab study, n=24: +9 bpm during noise without awakening; +30 bpm with awakening',
-        whatThisMeans: 'A controlled lab study showed nighttime traffic noise spikes heart rate by 9 bpm even when you don\'t consciously wake up — and 30 bpm when you do. Your sleeping cardiovascular system is registering the noise even when your brain isn\'t. Soundproofing is RHR work.',
+        whatThisMeans: 'A controlled lab study showed nighttime traffic noise spikes heart rate by 9 bpm even when you don\'t consciously wake up, and 30 bpm when you do. Your sleeping cardiovascular system is registering the noise even when your brain isn\'t. Soundproofing is RHR work.',
         mechanism: 'Acoustic stimuli activate the autonomic nervous system through brainstem pathways; sympathetic surge spikes HR within seconds.',
         dosage: 'White noise, earplugs, soundproofing; aim for bedroom <30 dB',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2279756/', label: 'Griefahn 2008 (PMC2279756)' }
@@ -364,8 +399,8 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'mixed', evidence: 'strong', effectSize: null,
         effect: 'Mixed (↕)',
         keyFinding: 'Boudreau 2012: RHR peaks afternoon (~16:36), trough during biological night',
-        whatThisMeans: "Your RHR isn't a single number — it follows a daily rhythm with a peak around 4:30 PM and a trough during biological night. This is why morning RHR is the cleanest measurement for tracking. Afternoon spikes are normal physiology, not a problem.",
-        mechanism: 'Circadian regulation of autonomic tone — sympathetic activity rises through the day, peaks in late afternoon, and falls during sleep.',
+        whatThisMeans: "Your RHR isn't a single number: it follows a daily rhythm with a peak around 4:30 PM and a trough during biological night. This is why morning RHR is the cleanest measurement for tracking. Afternoon spikes are normal physiology, not a problem.",
+        mechanism: 'Circadian regulation of autonomic tone: sympathetic activity rises through the day, peaks in late afternoon, and falls during sleep.',
         dosage: 'Track RHR at consistent time (typically just after waking) for cleanest signal',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/22734576/', label: 'Boudreau 2012 (PubMed 22734576)' }
       },
@@ -374,8 +409,8 @@ class KygoRhrFactors extends HTMLElement {
         direction: 'negative', evidence: 'strong', effectSize: 2,
         effect: 'Raises RHR in winter (+2 bpm)',
         keyFinding: 'Wearable cohort n=92,457 (PMC7001906): ~2 bpm higher in winter vs midsummer minimum',
-        whatThisMeans: "A wearable study of over 92,000 adults showed RHR is about 2 bpm higher in winter than at midsummer's minimum. Real, but small — don't panic if your January readings tick up. It's a normal seasonal pattern, not a health red flag.",
-        mechanism: 'Winter combines cold thermal load, reduced activity, lower light exposure, and higher infection rates — all nudge RHR upward.',
+        whatThisMeans: "A wearable study of over 92,000 adults showed RHR is about 2 bpm higher in winter than at midsummer's minimum. Real, but small. Don't panic if your January readings tick up. It's a normal seasonal pattern, not a health red flag.",
+        mechanism: 'Winter combines cold thermal load, reduced activity, lower light exposure, and higher infection rates; all nudge RHR upward.',
         dosage: 'Expect seasonal variation; compare year-over-year same-month rather than month-to-month',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7001906/', label: 'PLOS ONE 2020 wearable cohort (PMC7001906)' }
       }
@@ -389,7 +424,7 @@ class KygoRhrFactors extends HTMLElement {
         evidence: 'strong',
         effect: 'Lowers RHR (−1.47 bpm/decade)',
         keyFinding: 'Health eHeart Study n=66,788: −1.47 bpm per 10 years of age',
-        whatThisMeans: "In the largest real-world dataset of its kind, RHR drops by about 1.47 bpm per decade of age. Counter to the common assumption that aging raises every cardiovascular marker — for resting heart rate specifically, the trend is gently downward in healthy adults.",
+        whatThisMeans: "In the largest real-world dataset of its kind, RHR drops by about 1.47 bpm per decade of age. Counter to the common assumption that aging raises every cardiovascular marker: for resting heart rate specifically, the trend is gently downward in healthy adults.",
         mechanism: 'Reduced intrinsic sinus node firing rate and decreased β-adrenergic responsiveness with age, balanced against age-related vagal decline.',
         source: { url: 'https://www.nature.com/articles/s41746-019-0134-9', label: 'Avram 2019 Health eHeart (PMC6592896)' }
       },
@@ -398,7 +433,7 @@ class KygoRhrFactors extends HTMLElement {
         evidence: 'strong',
         effect: 'Higher RHR (+6 to +14 bpm vs men)',
         keyFinding: 'Gillum 1988 NHANES: women +6 to +14 bpm vs men at each age (adjusted)',
-        whatThisMeans: "A consistent finding across decades of national surveys: women have measurably higher resting heart rate than men at every age, even after adjusting for body size and activity. Doesn't reflect worse health — it's baseline physiology.",
+        whatThisMeans: "A consistent finding across decades of national surveys: women have measurably higher resting heart rate than men at every age, even after adjusting for body size and activity. Doesn't reflect worse health; it's baseline physiology.",
         mechanism: 'Smaller heart size means lower stroke volume per beat, requiring higher HR to maintain cardiac output; hormonal influences also play a role.',
         source: { url: 'https://pubmed.ncbi.nlm.nih.gov/2969182/', label: 'Gillum 1988 NHANES (PubMed 2969182)' }
       },
@@ -407,7 +442,7 @@ class KygoRhrFactors extends HTMLElement {
         evidence: 'strong',
         effect: 'Intrinsic (h² ≈ 0.23)',
         keyFinding: 'Jensen 2018 Danish twins n=4,282: h² = 0.23; 2023 GWAS n=835,465 identified 493 variants',
-        whatThisMeans: "About a quarter of the variation in resting heart rate between people is genetic — confirmed in twin studies and a massive GWAS that identified 493 genetic variants. Some of your RHR is just inherited. The other ~77% is everything else on this list.",
+        whatThisMeans: "About a quarter of the variation in resting heart rate between people is genetic, confirmed in twin studies and a massive GWAS that identified 493 genetic variants. Some of your RHR is just inherited. The other ~77% is everything else on this list.",
         mechanism: 'Multiple genetic variants influence ion channel function, autonomic tone, and cardiac structure, collectively setting individual baseline HR.',
         source: { url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5831408/', label: 'Jensen 2018 (PMC5831408) + 2023 GWAS' }
       },
@@ -425,7 +460,7 @@ class KygoRhrFactors extends HTMLElement {
         evidence: 'strong',
         effect: 'Raises RHR (+10 to +20 bpm)',
         keyFinding: 'Sanghavi & Rutherford 2014 Circulation review: HR rises 10–20 bpm progressively, peak in 3rd trimester',
-        whatThisMeans: "Pregnancy progressively raises resting heart rate by 10–20 bpm, peaking in the third trimester. This is the single largest physiological RHR change in healthy adults — and it's expected, not pathological. RHR returns to baseline within weeks of delivery.",
+        whatThisMeans: "Pregnancy progressively raises resting heart rate by 10–20 bpm, peaking in the third trimester. This is the single largest physiological RHR change in healthy adults, and it's expected, not pathological. RHR returns to baseline within weeks of delivery.",
         mechanism: 'Increased blood volume, lower vascular resistance, and elevated metabolic demand all drive cardiac output and HR upward through gestation.',
         source: { url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.114.009029', label: 'Sanghavi 2014 Circulation (PubMed 25223771)' }
       },
@@ -474,11 +509,11 @@ class KygoRhrFactors extends HTMLElement {
       // Exercise
       { name: 'Single bouts of exercise (acute)', cat: 'Exercise', why: 'Transient response, not a chronic determinant of RHR.' },
       { name: 'Stretching alone', cat: 'Exercise', why: 'No chronic RHR effect demonstrated in trials.' },
-      { name: 'HERITAGE Family Study findings', cat: 'Exercise', why: 'Found "minimal effect" in a single 20-week cohort — outlier contradicted by Reimers 2018 meta-analysis of 121 endurance trials.' },
+      { name: 'HERITAGE Family Study findings', cat: 'Exercise', why: 'Found "minimal effect" in a single 20-week cohort. Outlier contradicted by Reimers 2018 meta-analysis of 121 endurance trials.' },
       { name: 'Walking specifically', cat: 'Exercise', why: 'Covered under endurance/aerobic; no separate meta-analysis on walking-only RHR.' },
       { name: 'HRV training as RHR proxy', cat: 'Exercise', why: 'Different physiological measure; intentionally separate from RHR-specific evidence.' },
       // Environment
-      { name: 'Sleep deprivation', cat: 'Environment', why: 'Mixed evidence — Kato 2000 found no HR change despite raised BP. HRV effects clearer than RHR.' },
+      { name: 'Sleep deprivation', cat: 'Environment', why: 'Mixed evidence: Kato 2000 found no HR change despite raised BP. HRV effects clearer than RHR.' },
       { name: 'Indoor temperature / heating', cat: 'Environment', why: 'Covered under heat/cold; no separate controlled-exposure RHR data of comparable scale.' },
       { name: 'Humidity (isolated)', cat: 'Environment', why: 'Affects thermoregulation but isolated humidity → RHR data is sparse.' },
       { name: 'UV / sunlight exposure', cat: 'Environment', why: 'No direct RHR-specific evidence beyond temperature confounding.' },
@@ -495,10 +530,10 @@ class KygoRhrFactors extends HTMLElement {
 
   get _topPicks() {
     return [
-      { label: 'Best single habit',     stat: '−8.4 bpm', answer: 'Aerobic Exercise',     icon: 'trophy',   note: '30+ weeks of training. Huang 2005 meta-analysis in older adults — largest single modifier in the literature.', cls: '' },
+      { label: 'Best single habit',     stat: '−8.4 bpm', answer: 'Aerobic Exercise',     icon: 'trophy',   note: '30+ weeks of training. Huang 2005 meta-analysis in older adults. Largest single modifier in the literature.', cls: '' },
       { label: 'Best supplement',       stat: '−1.6 bpm', answer: 'Omega-3 / Fish Oil',  icon: 'pill',     note: 'Hidayat 2018 meta-analysis of 51 RCTs. The only supplement with strong, replicated RHR-specific evidence.', cls: '' },
       { label: 'Best diet',             stat: '−2.2 bpm', answer: 'Mediterranean Diet',  icon: 'droplet',  note: 'García-López 2014 SUN cohort (n=15,863). High vs low adherence: 2.2 bpm lower (95% CI 1.4–3.1).', cls: '' },
-      { label: 'Quickest impact',       stat: '−3.9 bpm', answer: 'HIIT',                icon: 'dumbbell', note: 'Edwards 2023 meta-analysis of 97 RCTs. Measurable change within 12 weeks — far faster than endurance training.', cls: '' },
+      { label: 'Quickest impact',       stat: '−3.9 bpm', answer: 'HIIT',                icon: 'dumbbell', note: 'Edwards 2023 meta-analysis of 97 RCTs. Measurable change within 12 weeks, far faster than endurance training.', cls: '' },
       { label: 'Biggest RHR killer',    stat: '+2.4 bpm', answer: 'Alcohol',             icon: 'alert',    note: 'Per drink above your average. 2026 wearables study (n=20,968; 5.1M person-days). Effect persists overnight.', cls: 'warn' },
       { label: 'Biggest myth',          stat: '±0 bpm',   answer: 'Vitamin D',           icon: 'ghost',    note: 'BEST-D: a year-long, dose-response RCT showed zero RHR effect at any dose. Heavily marketed, no signal.',     cls: 'myth' }
     ];
@@ -635,7 +670,7 @@ class KygoRhrFactors extends HTMLElement {
           <div>
             <span class="imp-eyebrow">Top movers</span>
             <h3 class="imp-title">By measured bpm impact</h3>
-            <p class="imp-sub">Every modifiable factor with a clean numeric effect size from a meta-analysis or RCT — sorted by magnitude.</p>
+            <p class="imp-sub">Every modifiable factor with a clean numeric effect size from a meta-analysis or RCT, sorted by magnitude.</p>
           </div>
           <div class="imp-meta">${signed.length} quantified</div>
         </div>
@@ -779,7 +814,7 @@ class KygoRhrFactors extends HTMLElement {
               </div>
               <div class="fact-body-row">
                 <span class="lbl">What to do</span>
-                <p>${f.dosage || '—'}</p>
+                <p>${f.dosage || '–'}</p>
               </div>
               <div class="fact-body-row">
                 <span class="lbl">Source</span>
@@ -824,7 +859,7 @@ class KygoRhrFactors extends HTMLElement {
         <div class="container">
           <div class="section-header">
             <span class="section-eyebrow"><span class="section-eyebrow-icon" aria-hidden="true">${this._icon('users')}</span>Your baseline</span>
-            <h2 class="section-h2" id="baseline-title">What you can't change — <em>but should know</em></h2>
+            <h2 class="section-h2" id="baseline-title">What you can't change, <em>but should know</em></h2>
             <p class="section-lede">${this._factorsDemographics.length} demographic and physiological factors that set your starting RHR. Tap any factor for the full study and mechanism.</p>
           </div>
           <div class="base-grid">${cards}</div>
@@ -928,92 +963,485 @@ class KygoRhrFactors extends HTMLElement {
       </svg>`;
   }
 
-  _renderSources() {
+  get _srcGroups() {
     const groups = {
       'Nutrition': [
-        { label: 'Alexander 2022 — Factors affecting RHR in healthy humans (Front Physiol)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
-        { label: 'Palatini 2008 — RHR as a modifiable prognostic indicator (Drugs)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2787005/' },
-        { label: 'Hidayat 2018 — Omega-3 & heart rate meta-analysis of 51 RCTs (Eur J Clin Nutr)', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
-        { label: '2023 meta-analysis — Coffee consumption & heart rate (6 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/37647856/' },
-        { label: 'Mesas 2014 — Caffeine, BP & HR review (Nutr Hosp)', url: 'https://pubmed.ncbi.nlm.nih.gov/24203773/' },
-        { label: '2026 wearables study — Alcohol effects on HR (n=20,968; 5.1M person-days)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12970902/' },
-        { label: 'Look AHEAD 2012 — Lifestyle intervention & HR recovery (n=4,503)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3512322/' },
-        { label: 'Wasmund 2011 — Bariatric surgery & HR recovery (Heart Rhythm)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3019138/' },
-        { label: 'García-López 2014 — Mediterranean diet & HR (SUN cohort, n=15,863)', url: 'https://pubmed.ncbi.nlm.nih.gov/23144202/' },
-        { label: 'Graudal 2016 — Reduced sodium intake & HR (63 RCTs)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4805644/' }
+        { label: 'Alexander 2022: Factors affecting RHR in healthy humans (Front Physiol)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9549087/' },
+        { label: 'Palatini 2008: RHR as a modifiable prognostic indicator (Drugs)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2787005/' },
+        { label: 'Hidayat 2018: Omega-3 & heart rate meta-analysis of 51 RCTs (Eur J Clin Nutr)', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
+        { label: '2023 meta-analysis: Coffee consumption & heart rate (6 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/37647856/' },
+        { label: 'Mesas 2014: Caffeine, BP & HR review (Nutr Hosp)', url: 'https://pubmed.ncbi.nlm.nih.gov/24203773/' },
+        { label: '2026 wearables study: Alcohol effects on HR (n=20,968; 5.1M person-days)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC12970902/' },
+        { label: 'Look AHEAD 2012: Lifestyle intervention & HR recovery (n=4,503)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3512322/' },
+        { label: 'Wasmund 2011: Bariatric surgery & HR recovery (Heart Rhythm)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3019138/' },
+        { label: 'García-López 2014: Mediterranean diet & HR (SUN cohort, n=15,863)', url: 'https://pubmed.ncbi.nlm.nih.gov/23144202/' },
+        { label: 'Graudal 2016: Reduced sodium intake & HR (63 RCTs)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC4805644/' }
       ],
       'Supplements': [
-        { label: 'Hidayat 2018 — Omega-3 supplementation & heart rate (51 RCTs)', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
-        { label: 'Nutrients 2022 — Oat bran fiber & HR in hypertension RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9370281/' },
-        { label: 'Chromium MetS RCT — RHR reduction in metabolic syndrome', url: 'https://pubmed.ncbi.nlm.nih.gov/28856601/' },
-        { label: 'Gijsbers 2016 — Potassium supplementation & HR meta-analysis (22 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/27289164/' },
-        { label: 'BEST-D 2017 — Vitamin D & cardiovascular function (12 mo RCT)', url: 'https://www.ahajournals.org/doi/10.1161/JAHA.117.005707' },
-        { label: 'Rector 1996 — L-arginine in heart failure RCT (Circulation)', url: 'https://www.ahajournals.org/doi/10.1161/01.CIR.93.12.2135' },
-        { label: 'Tobeiha 2022 — Melatonin & cardiovascular disease review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9251346/' }
+        { label: 'Hidayat 2018: Omega-3 supplementation & heart rate (51 RCTs)', url: 'https://www.nature.com/articles/s41430-017-0052-3' },
+        { label: 'Nutrients 2022: Oat bran fiber & HR in hypertension RCT', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9370281/' },
+        { label: 'Chromium MetS RCT: RHR reduction in metabolic syndrome', url: 'https://pubmed.ncbi.nlm.nih.gov/28856601/' },
+        { label: 'Gijsbers 2016: Potassium supplementation & HR meta-analysis (22 RCTs)', url: 'https://pubmed.ncbi.nlm.nih.gov/27289164/' },
+        { label: 'BEST-D 2017: Vitamin D & cardiovascular function (12 mo RCT)', url: 'https://www.ahajournals.org/doi/10.1161/JAHA.117.005707' },
+        { label: 'Rector 1996: L-arginine in heart failure RCT (Circulation)', url: 'https://www.ahajournals.org/doi/10.1161/01.CIR.93.12.2135' },
+        { label: 'Tobeiha 2022: Melatonin & cardiovascular disease review', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9251346/' }
       ],
       'Exercise': [
-        { label: 'Reimers 2018 — Exercise & RHR meta-analysis of 191 trials (J Clin Med)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' },
-        { label: 'Huang 2005 — Endurance training & RHR in older adults meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/16118586/' },
-        { label: 'Edwards 2023 — HIIT & cardiometabolic health (97 RCTs, n=3,399)', url: 'https://pubmed.ncbi.nlm.nih.gov/37204620/' },
-        { label: 'Cramer 2014 — Yoga & cardiovascular disease risk meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/24636547/' },
-        { label: 'Gonzales 2023 — RHR as biomarker of fitness, Fenland Study (n=10,865)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10174582/' },
-        { label: 'López-Valenciano 2019 — Isometric resistance training meta-analysis (16 trials)', url: 'https://pubmed.ncbi.nlm.nih.gov/30624369/' },
-        { label: 'Hallman 2019 — Sitting & autonomic cardiac modulation (n=490)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6406480/' },
-        { label: 'Bosquet 2008 — Heart rate as overreaching marker, systematic review', url: 'https://pubmed.ncbi.nlm.nih.gov/18308872/' }
+        { label: 'Reimers 2018: Exercise & RHR meta-analysis of 191 trials (J Clin Med)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6306777/' },
+        { label: 'Huang 2005: Endurance training & RHR in older adults meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/16118586/' },
+        { label: 'Edwards 2023: HIIT & cardiometabolic health (97 RCTs, n=3,399)', url: 'https://pubmed.ncbi.nlm.nih.gov/37204620/' },
+        { label: 'Cramer 2014: Yoga & cardiovascular disease risk meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/24636547/' },
+        { label: 'Gonzales 2023: RHR as biomarker of fitness, Fenland Study (n=10,865)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC10174582/' },
+        { label: 'López-Valenciano 2019: Isometric resistance training meta-analysis (16 trials)', url: 'https://pubmed.ncbi.nlm.nih.gov/30624369/' },
+        { label: 'Hallman 2019: Sitting & autonomic cardiac modulation (n=490)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6406480/' },
+        { label: 'Bosquet 2008: Heart rate as overreaching marker, systematic review', url: 'https://pubmed.ncbi.nlm.nih.gov/18308872/' }
       ],
       'Environment': [
-        { label: 'Madaniyazi 2016 — Outdoor temperature, HR & BP (Kailuan cohort, n=47,591)', url: 'https://www.nature.com/articles/srep21003' },
-        { label: 'Bärtsch & Gibbs 2007 — Effect of altitude on heart and lungs (Circulation)', url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.106.650796' },
-        { label: '2025 — Air pollution & RHR in COPD (54,487 hourly observations)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11796267/' },
-        { label: 'Griefahn 2008 — Traffic noise & autonomic arousals during sleep', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2279756/' },
-        { label: 'Boudreau 2012 — Circadian rhythm in HRV & sympathovagal response', url: 'https://pubmed.ncbi.nlm.nih.gov/22734576/' },
-        { label: 'PLOS ONE 2020 — Daily RHR variability across seasons (n=92,457)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7001906/' }
+        { label: 'Madaniyazi 2016: Outdoor temperature, HR & BP (Kailuan cohort, n=47,591)', url: 'https://www.nature.com/articles/srep21003' },
+        { label: 'Bärtsch & Gibbs 2007: Effect of altitude on heart and lungs (Circulation)', url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.106.650796' },
+        { label: '2025: Air pollution & RHR in COPD (54,487 hourly observations)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC11796267/' },
+        { label: 'Griefahn 2008: Traffic noise & autonomic arousals during sleep', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC2279756/' },
+        { label: 'Boudreau 2012: Circadian rhythm in HRV & sympathovagal response', url: 'https://pubmed.ncbi.nlm.nih.gov/22734576/' },
+        { label: 'PLOS ONE 2020: Daily RHR variability across seasons (n=92,457)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC7001906/' }
       ],
       'Demographics': [
-        { label: 'Avram 2019 — Real-world heart rate norms, Health eHeart (n=66,788)', url: 'https://www.nature.com/articles/s41746-019-0134-9' },
-        { label: 'Gillum 1988 — Epidemiology of RHR in NHANES national sample', url: 'https://pubmed.ncbi.nlm.nih.gov/2969182/' },
-        { label: 'Jensen 2018 — Heritability of RHR in Danish twins (n=4,282)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5831408/' },
-        { label: '2023 GWAS — RHR variants, Nature Communications (n=835,465)', url: 'https://www.nature.com/articles/s41467-023-39521-2' },
-        { label: '2023 — Higher HR & abnormal BMI in J-shape pattern', url: 'https://pubmed.ncbi.nlm.nih.gov/37249904/' },
-        { label: 'Sanghavi & Rutherford 2014 — Cardiovascular physiology of pregnancy', url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.114.009029' },
-        { label: 'Premenopausal women study — Cardiovascular function across menstrual cycle (n=49)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9572726/' }
+        { label: 'Avram 2019: Real-world heart rate norms, Health eHeart (n=66,788)', url: 'https://www.nature.com/articles/s41746-019-0134-9' },
+        { label: 'Gillum 1988: Epidemiology of RHR in NHANES national sample', url: 'https://pubmed.ncbi.nlm.nih.gov/2969182/' },
+        { label: 'Jensen 2018: Heritability of RHR in Danish twins (n=4,282)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC5831408/' },
+        { label: '2023 GWAS: RHR variants, Nature Communications (n=835,465)', url: 'https://www.nature.com/articles/s41467-023-39521-2' },
+        { label: '2023: Higher HR & abnormal BMI in J-shape pattern', url: 'https://pubmed.ncbi.nlm.nih.gov/37249904/' },
+        { label: 'Sanghavi & Rutherford 2014: Cardiovascular physiology of pregnancy', url: 'https://www.ahajournals.org/doi/10.1161/circulationaha.114.009029' },
+        { label: 'Premenopausal women study: Cardiovascular function across menstrual cycle (n=49)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC9572726/' }
       ]
     };
-    const totalCount = Object.values(groups).reduce((s, g) => s + g.length, 0);
-    return `<div class="src-accordion">
-      <div class="src-count-badge">${totalCount} sources cited</div>
-      ${Object.entries(groups).map(([cat, items]) => `
-        <div class="src-group">
-          <button class="src-group-toggle" aria-expanded="false">
-            <span class="src-group-name">${cat}</span>
-            <span class="src-group-count">${items.length}</span>
-            <span class="src-group-chevron">${this._icon('chevDown')}</span>
-          </button>
-          <div class="src-group-body">
-            ${items.map(s => `<a href="${s.url}" class="src-item" target="_blank" rel="noopener"><span class="src-dot"></span><span class="src-text">${s.label}</span><span class="src-ext">${this._icon('externalLink')}</span></a>`).join('')}
-          </div>
-        </div>`).join('')}
-    </div>`;
+    return groups;
   }
+
+  // Flat source list for the standard sources module: the topic group becomes
+  // the card's tag, and a trailing "(…)" in the label becomes the citation line.
+  get _sources() {
+    const out = [];
+    for (const [tag, items] of Object.entries(this._srcGroups)) {
+      for (const s of items) {
+        const m = s.label.match(/^(.*\S)\s*\(([^()]*)\)\s*$/);
+        out.push({ tag, title: m ? m[1] : s.label, cite: m ? m[2] : '', url: s.url });
+      }
+    }
+    return out;
+  }
+
+  // ── Sources · Kygo standard module (compact cards + show-all toggle) ────
+  // Source shape: { tag, title, cite, url }. `tag` doubles as the group label
+  // on tools whose sources are grouped by topic; `cite` is optional; a source
+  // with no `url` renders as a dashed, non-clickable card rather than being
+  // dropped. First 6 show, the rest sit behind "Show all N sources".
+
+  _renderSourceCards(list) {
+    return list.map(s => {
+      const tag = `<span class="src-tag">${s.tag}</span>`;
+      const title = `<span class="src-title">${s.title}</span>`;
+      if (!s.url) {
+        return `<div class="src src--nolink">${tag}${title}<span class="src-cite">${s.cite || ''}</span></div>`;
+      }
+      // With no citation line, fall back to the host so every card keeps the
+      // same three-line rhythm and the link icon never sits on its own row.
+      const cite = s.cite || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0];
+      return `<a class="src" href="${s.url}" target="_blank" rel="noopener nofollow" data-action="source-link" data-track-label="${s.title}" data-track-position="sources">${tag}${title}<span class="src-cite">${cite} <span class="src-go">${this._icon('externalLink')}</span></span></a>`;
+    }).join('');
+  }
+
+  _renderSources() {
+    const list = this._sources;
+    const rest = list.slice(6);
+    return `
+      <div class="sources">${this._renderSourceCards(list.slice(0, 6))}</div>
+      ${rest.length ? `
+      <div class="sources src-extra" data-src-extra hidden>${this._renderSourceCards(rest)}</div>
+      <div class="src-toggle-wrap">
+        <button type="button" class="src-toggle" data-src-toggle aria-expanded="false">${this._icon('arrowRight')} <span data-src-toggle-label>Show all ${list.length} sources</span></button>
+      </div>` : ''}`;
+  }
+
+  _toggleSources() {
+    const root = this.shadowRoot;
+    const extra = root.querySelector('[data-src-extra]');
+    const btn = root.querySelector('[data-src-toggle]');
+    const lbl = root.querySelector('[data-src-toggle-label]');
+    if (!extra) return;
+    const open = extra.hasAttribute('hidden');
+    if (open) extra.removeAttribute('hidden'); else extra.setAttribute('hidden', '');
+    if (btn) { btn.classList.toggle('open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+    if (lbl) lbl.textContent = open ? 'Show fewer sources' : `Show all ${this._sources.length} sources`;
+  }
+
+  // Related tools · Kygo standard module ────────────────────────────────
+  // Exactly 3 cards: a near neighbour, a bridge between accuracy and
+  // physiology, and one from another family. Never links this page to
+  // itself, and never links the Food Scanner.
+
+  _relatedTools() {
+    return [
+      {
+        title: 'HRV Factor Explorer',
+        blurb: '43 research-backed factors that affect Heart Rate Variability, ranked by evidence.',
+        url: 'https://www.kygo.app/tools/hrv-factors',
+        meta: 'Recovery · 43 factors',
+        motif: { motif: 'pulse', caption: 'HRV, beat-to-beat' }
+      },
+      {
+        title: 'Most Accurate Heart Rate Wearable',
+        blurb: '10 wearables ranked against an ECG or chest strap, and why arm motion is what breaks them.',
+        url: 'https://www.kygo.app/tools/heart-rate-accuracy',
+        meta: 'Wearables · 10 devices',
+        motif: { motif: 'compare', caption: 'Error vs chest strap', rows: [{ label: 'Fitbit', pct: 92 }, { label: 'Apple', pct: 86 }, { label: 'Oura', pct: 62 }, { label: 'Xiaomi', pct: 44 }] }
+      },
+      {
+        title: 'Stress Factor Explorer',
+        blurb: 'What actually moves your wearable stress score, broken down by device and signal type.',
+        url: 'https://www.kygo.app/tools/stress-factors',
+        meta: 'Recovery · 10 wearables',
+        motif: { motif: 'donut', caption: 'Signals behind the score' }
+      }
+    ];
+  }
+
+  _relatedMotif(c) {
+    const m = c.motif || 'compare';
+    if (m === 'compare') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.rows) ? c.rows : [];
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const w = Math.max(0, Math.min(100, r.pct));
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:48px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.label}</span><span style="flex:1;height:9px;border-radius:5px;background:#EEF1F4;overflow:hidden;"><span style="display:block;height:100%;border-radius:5px;background:${fill};width:${w}%;"></span></span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:8px;padding:2px 0;">${body}</div>`;
+    }
+    if (m === 'ring') {
+      const v = c.ringValue != null ? c.ringValue : 72;
+      const off = (238.8 * (1 - v / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 96 96" width="80" height="80"><circle cx="48" cy="48" r="38" fill="none" stroke="#E2E8F0" stroke-width="11"/><circle cx="48" cy="48" r="38" fill="none" stroke="#22C55E" stroke-width="11" stroke-linecap="round" stroke-dasharray="238.8" stroke-dashoffset="${off}" transform="rotate(-90 48 48)"/><text x="48" y="46" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="26" fill="#1E293B">${v}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" letter-spacing="0.5" fill="#94A3B8">SCORE</text></svg><div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13px;color:#16A34A;">&#8593; ${c.ringNote || 'Validated'}</div></div>`;
+    }
+    if (m === 'pulse') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><path d="M0 48 L34 48 L44 48 L52 18 L60 60 L70 30 L80 48 L118 48 L128 48 L136 14 L144 58 L154 34 L164 48 L200 48" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="136" cy="14" r="4" fill="#22C55E"/>${c.bpm ? `<text x="200" y="68" text-anchor="end" font-family="Space Grotesk" font-weight="700" font-size="13" fill="#1E293B">${c.bpm}</text>` : ''}</svg>`;
+    }
+    if (m === 'gauge') {
+      const pct = c.gaugePct != null ? c.gaugePct : 70;
+      const off = (125.7 * (1 - pct / 100)).toFixed(1);
+      return `<div style="display:flex;align-items:center;justify-content:center;padding:2px 0;"><svg viewBox="0 0 96 64" width="118" height="78"><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#E2E8F0" stroke-width="10" stroke-linecap="round"/><path d="M8 56 A40 40 0 0 1 88 56" fill="none" stroke="#22C55E" stroke-width="10" stroke-linecap="round" stroke-dasharray="125.7" stroke-dashoffset="${off}"/><text x="48" y="50" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="22" fill="#1E293B">${c.gaugeValue || ''}</text><text x="48" y="62" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">${c.gaugeUnit || ''}</text></svg></div>`;
+    }
+    if (m === 'decay') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtDecay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(34,197,94,0.22)"/><stop offset="1" stop-color="rgba(34,197,94,0)"/></linearGradient></defs><path d="M0 10 C40 10 46 58 96 66 L200 74 L200 88 L0 88 Z" fill="url(#mtDecay)"/><path d="M0 10 C40 10 46 58 96 66 L200 74" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round"/><circle cx="96" cy="66" r="4" fill="#22C55E"/></svg>`;
+    }
+    if (m === 'hypno') {
+      const rem = c.stage === 'rem', deep = c.stage === 'deep';
+      return `<svg viewBox="0 0 200 80" width="100%" style="display:block;"><g font-family="Space Grotesk" font-weight="600" font-size="7" fill="#94A3B8"><text x="0" y="11">Awake</text><text x="0" y="33">REM</text><text x="0" y="55">Light</text><text x="0" y="77">Deep</text></g><path d="M36 8 L54 8 L54 52 L80 52 L80 74 L106 74 L106 30 L128 30 L128 52 L152 52 L152 30 L176 30 L176 52 L200 52" fill="none" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${rem ? '<rect x="106" y="24" width="22" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}${deep ? '<rect x="80" y="68" width="26" height="12" rx="3" fill="rgba(34,197,94,0.16)"/>' : ''}</svg>`;
+    }
+    if (m === 'donut') {
+      return `<div style="display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 0;"><svg viewBox="0 0 84 84" width="78" height="78"><circle cx="42" cy="42" r="34" fill="none" stroke="#16A34A" stroke-width="12" stroke-dasharray="96 213.6" stroke-dashoffset="0" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#22C55E" stroke-width="12" stroke-dasharray="64 213.6" stroke-dashoffset="-96" transform="rotate(-90 42 42)"/><circle cx="42" cy="42" r="34" fill="none" stroke="#86EFAC" stroke-width="12" stroke-dasharray="53 213.6" stroke-dashoffset="-160" transform="rotate(-90 42 42)"/><text x="42" y="40" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="17" fill="#1E293B">540</text><text x="42" y="53" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="7" letter-spacing="0.5" fill="#94A3B8">KCAL</text></svg><div style="display:flex;flex-direction:column;gap:5px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#16A34A;"></span>Protein</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#22C55E;"></span>Carbs</span><span style="display:inline-flex;align-items:center;gap:5px;"><span style="width:8px;height:8px;border-radius:2px;background:#86EFAC;"></span>Fat</span></div></div>`;
+    }
+    if (m === 'range') {
+      return `<svg viewBox="0 0 200 74" width="100%" style="display:block;"><defs><linearGradient id="mtRange" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="6" y1="50" x2="194" y2="50" stroke="#E2E8F0" stroke-width="2"/><g stroke="#CBD5E1" stroke-width="2"><line x1="6" y1="46" x2="6" y2="54"/><line x1="100" y1="46" x2="100" y2="54"/><line x1="194" y1="46" x2="194" y2="54"/></g><rect x="78" y="22" width="76" height="16" rx="8" fill="rgba(34,197,94,0.18)"/><rect x="78" y="44" width="76" height="12" rx="6" fill="url(#mtRange)"/><circle cx="116" cy="50" r="7" fill="#16A34A" stroke="#fff" stroke-width="2.5"/><text x="116" y="16" text-anchor="middle" font-family="Space Grotesk" font-weight="700" font-size="12" fill="#1E293B">${c.rangeLabel || ''}</text></svg>`;
+    }
+    if (m === 'steps') {
+      return `<svg viewBox="0 0 200 88" width="100%" style="display:block;"><defs><linearGradient id="mtSteps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><g><rect x="2" y="50" width="20" height="34" rx="4" fill="#CBD5E1"/><rect x="30" y="40" width="20" height="44" rx="4" fill="#86EFAC"/><rect x="58" y="58" width="20" height="26" rx="4" fill="#CBD5E1"/><rect x="86" y="20" width="20" height="64" rx="4" fill="url(#mtSteps)"/><rect x="114" y="44" width="20" height="40" rx="4" fill="#86EFAC"/><rect x="142" y="34" width="20" height="50" rx="4" fill="#22C55E" opacity="0.8"/><rect x="170" y="54" width="20" height="30" rx="4" fill="#CBD5E1"/></g></svg>`;
+    }
+    if (m === 'radar') {
+      const vals = Array.isArray(c.radar) && c.radar.length === 5 ? c.radar : [0.92, 0.6, 0.78, 0.5, 0.85];
+      const cx = 100, cy = 52, R = 38;
+      const ang = k => (-90 + 72 * k) * Math.PI / 180;
+      const pt = (k, r) => [cx + r * Math.cos(ang(k)), cy + r * Math.sin(ang(k))];
+      const ring = r => 'M ' + [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, r); return x.toFixed(1) + ' ' + y.toFixed(1); }).join(' L ') + ' Z';
+      const dataPts = [0, 1, 2, 3, 4].map(k => pt(k, R * Math.max(0.08, Math.min(1, vals[k]))));
+      const dataPath = 'M ' + dataPts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L ') + ' Z';
+      const spokes = [0, 1, 2, 3, 4].map(k => { const [x, y] = pt(k, R); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#E2E8F0" stroke-width="1"/>`; }).join('');
+      const dots = dataPts.map(p => `<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2" fill="#22C55E"/>`).join('');
+      return `<svg viewBox="0 0 200 104" width="100%" style="display:block;"><path d="${ring(R)}" fill="none" stroke="#E2E8F0" stroke-width="1"/><path d="${ring(R * 0.5)}" fill="none" stroke="#EEF1F4" stroke-width="1"/>${spokes}<path d="${dataPath}" fill="rgba(34,197,94,0.18)" stroke="#16A34A" stroke-width="2" stroke-linejoin="round"/>${dots}</svg>`;
+    }
+    if (m === 'diverging') {
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const rows = Array.isArray(c.bars) ? c.bars : [];
+      const cx = 124, maxLen = 70;
+      const dmax = Math.max(20, ...rows.map(r => Math.abs(r.val || 0)));
+      const body = rows.map((r, i) => {
+        const fill = (i === rows.length - 1 && rows.length > 1) ? '#CBD5E1' : (fills[i] || '#86EFAC');
+        const v = r.val || 0;
+        const len = Math.max(5, Math.abs(v) / dmax * maxLen);
+        const x = v >= 0 ? cx : cx - len;
+        const y = 6 + i * 20;
+        return `<text x="0" y="${y + 11}" font-family="Space Grotesk" font-weight="600" font-size="9" fill="#475569">${r.label}</text><rect x="${x.toFixed(1)}" y="${y}" width="${len.toFixed(1)}" height="11" rx="3" fill="${fill}"/>`;
+      }).join('');
+      const h = 6 + rows.length * 20;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><line x1="${cx}" y1="2" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'rings') {
+      const r = Array.isArray(c.rings) ? c.rings : [];
+      const OE = 27, cy = 44;
+      const sw = [10, 12, 8];
+      const colors = ['#CBD5E1', '#94A3B8', '#16A34A'];
+      const lbl = ['#94A3B8', '#94A3B8', '#16A34A'];
+      const cxs = [34, 100, 166];
+      const body = r.map((rr, i) => {
+        const w = sw[i] != null ? sw[i] : 10;
+        const rad = OE - w / 2;
+        const cx = cxs[i] != null ? cxs[i] : (200 / r.length) * (i + 0.5);
+        return `<circle cx="${cx}" cy="${cy}" r="${rad.toFixed(1)}" fill="none" stroke="${colors[i] || '#16A34A'}" stroke-width="${w}"/><text x="${cx}" y="90" text-anchor="middle" font-family="Space Grotesk" font-weight="${i === r.length - 1 ? 700 : 600}" font-size="9" fill="${lbl[i] || '#94A3B8'}">${rr.label}</text>`;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;">${body}</svg>`;
+    }
+    if (m === 'versus') {
+      const a = c.versusA || 'A', b = c.versusB || 'B';
+      const rows = Array.isArray(c.versus) ? c.versus : [];
+      const cx = 100, maxLen = 84;
+      const body = rows.map((r, i) => {
+        const y = 24 + i * 22;
+        const la = Math.max(0, Math.min(100, r.a)) / 100 * maxLen;
+        const lb = Math.max(0, Math.min(100, r.b)) / 100 * maxLen;
+        return `<rect x="${(cx - la).toFixed(1)}" y="${y}" width="${la.toFixed(1)}" height="10" rx="5" fill="#16A34A"/><rect x="${cx}" y="${y}" width="${lb.toFixed(1)}" height="10" rx="5" fill="#86EFAC"/>`;
+      }).join('');
+      const h = 24 + rows.length * 22;
+      return `<svg viewBox="0 0 200 ${h}" width="100%" style="display:block;"><text x="2" y="12" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#16A34A">${a}</text><text x="198" y="12" text-anchor="end" font-family="Space Grotesk" font-weight="600" font-size="10" fill="#94A3B8">${b}</text><line x1="${cx}" y1="18" x2="${cx}" y2="${h - 2}" stroke="#E2E8F0" stroke-width="2"/>${body}</svg>`;
+    }
+    if (m === 'tiers') {
+      const t = Array.isArray(c.tiers) ? c.tiers : [];
+      const n = t.length || 3;
+      const gap = 16, colW = (200 - gap * (n + 1)) / n, base = 84;
+      const fills = ['#86EFAC', '#22C55E', '#16A34A'];
+      let x = gap;
+      const bars = t.map((tt, i) => {
+        const hh = Math.max(0.1, Math.min(1, tt.h)) * (base - 14);
+        const y = base - hh;
+        const fill = i === n - 1 ? 'url(#mtTier)' : (fills[i] || '#86EFAC');
+        const out = `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${colW.toFixed(1)}" height="${hh.toFixed(1)}" rx="6" fill="${fill}"/><text x="${(x + colW / 2).toFixed(1)}" y="96" text-anchor="middle" font-family="Space Grotesk" font-weight="600" font-size="8" fill="#94A3B8">${tt.label}</text>`;
+        x += colW + gap;
+        return out;
+      }).join('');
+      return `<svg viewBox="0 0 200 100" width="100%" style="display:block;"><defs><linearGradient id="mtTier" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><line x1="0" y1="84" x2="200" y2="84" stroke="#E2E8F0" stroke-width="1.5"/>${bars}</svg>`;
+    }
+    if (m === 'dots') {
+      const rows = Array.isArray(c.dots) ? c.dots : [];
+      const fills = ['#16A34A', '#22C55E', '#4ADE80', '#86EFAC'];
+      const TOT = 10;
+      const body = rows.map((r, i) => {
+        const fill = fills[i] || '#86EFAC';
+        const n = Math.max(0, Math.min(TOT, r.n || 0));
+        let dots = '';
+        for (let k = 0; k < TOT; k++) dots += `<span style="width:7px;height:7px;border-radius:50%;background:${k < n ? fill : '#E2E8F0'};display:block;"></span>`;
+        return `<div style="display:flex;align-items:center;gap:8px;"><span style="width:42px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:9px;color:#475569;">${r.label}</span><span style="display:flex;gap:4px;">${dots}</span></div>`;
+      }).join('');
+      return `<div style="display:flex;flex-direction:column;gap:7px;padding:2px 0;">${body}</div>`;
+    }
+    return `<svg viewBox="0 0 200 96" width="100%" style="display:block;"><defs><linearGradient id="mtRank" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#22C55E"/><stop offset="1" stop-color="#16A34A"/></linearGradient></defs><rect x="0" y="4" width="186" height="11" rx="5.5" fill="url(#mtRank)"/><rect x="0" y="25" width="150" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.85"/><rect x="0" y="46" width="116" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.7"/><rect x="0" y="67" width="82" height="11" rx="5.5" fill="url(#mtRank)" opacity="0.55"/><rect x="0" y="88" width="54" height="6" rx="3" fill="#CBD5E1"/></svg>`;
+  }
+
+  // Renderer + styles are self-contained under `rt-*` names, and every custom
+  // property carries a literal fallback, so the same block drops into either
+  // palette unchanged. Pass 'gray' to sit the section on the tinted band.
+
+  // The three posts this page links to. The only per-page part of the module.
+  // Card copy is defined once per post and reused wherever that post is linked,
+  // so it cannot drift between tools. Titles, excerpts and cover images come
+  // from the Wix Blog collection - see docs/blog-cross-links.md.
+  _relatedPosts() {
+    return [
+      { slug: 'resting-heart-rate-factors',
+        title: 'Resting Heart Rate Too High? 37 Factors Backed by Research (Most Are Fixable)',
+        blurb: 'Thirty-seven peer-reviewed factors that move resting heart rate, with effect sizes, evidence grades and what to do about each.',
+        cat: 'HRV & Recovery', min: 9, img: '273a63_d62672eff81a4208843d39b88102e8e9~mv2.png' },
+      { slug: 'why-is-my-resting-heart-rate-suddenly-higher-a-data-driven-breakdown',
+        title: 'Why Is My Resting Heart Rate Suddenly Higher? A Data-Driven Breakdown',
+        blurb: 'Your resting heart rate jumped overnight and your wearable cannot say why. The ten most common causes, from late meals to overtraining.',
+        cat: 'HRV & Recovery', min: 7, img: '273a63_03df52034a544018aef1e44af7e6afa7~mv2.png' },
+      { slug: 'how-to-improve-hrv-factors-ranked-by-evidence',
+        title: 'How to Improve HRV: 44 Factors Ranked by Evidence (2026)',
+        blurb: 'Forty-four factors that affect heart rate variability, ranked by how strong the peer-reviewed evidence really is.',
+        cat: 'HRV & Recovery', min: 12, img: '273a63_81b206b8ae5e45b69e091fcb7e65b870~mv2.png' }
+    ];
+  }
+
+  // -- Related reading (the standard module) -------------------------------
+  // One design, every tool page: three blog cards in a grid (1 col mobile ->
+  // 3 col >=720px) with the post's real cover image, category, title, a
+  // two-line blurb and read time - the same card the main blog page uses.
+  // Self-contained under `rp-*` names with a literal fallback behind every
+  // custom property, so the identical block renders the same on either
+  // palette. Copy this method verbatim; only `_relatedPosts()` is per page.
+  // Placement: its own section, directly above the related-tools section.
+  // A tool content section always separates it from the app CTA and from the
+  // email capture - it never sits directly above or below either one.
+  // Pass 'gray' to sit the section on the tinted band.
+  _renderRelatedPosts(bg) {
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+    const cards = this._relatedPosts().map(p => `
+      <a class="rp-card animate-on-scroll" href="https://www.kygo.app/post/${p.slug}" aria-label="${p.title}" data-action="blog-post" data-post-slug="${p.slug}" data-track-position="related-posts" data-track-label="${p.slug}">
+        <span class="rp-media"><img src="https://static.wixstatic.com/media/${p.img}" alt="${p.title}" loading="lazy" decoding="async" onerror="this.closest('.rp-media').classList.add('rp-noimg')"></span>
+        <span class="rp-body">
+          <span class="rp-cat">${p.cat}</span>
+          <span class="rp-title">${p.title}</span>
+          <span class="rp-blurb">${p.blurb}</span>
+          <span class="rp-foot"><span class="rp-meta">${p.min} min read</span><span class="rp-open">Read ${arrow}</span></span>
+        </span>
+      </a>`).join('');
+    return `
+      <style>
+      .rp-section{padding:56px 20px;background:#fff}
+      .rp-section.rp-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.rp-section{padding:80px 24px}}
+      .rp-inner{max-width:1200px;margin:0 auto}
+      .rp-head{margin-bottom:28px;max-width:720px}
+      .rp-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rp-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A))}
+      .rp-h2 .rp-hl{color:var(--kygo-green,var(--green,#22C55E))}
+      .rp-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,var(--gray-600,#475569));font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rp-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rp-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rp-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,var(--gray-200,#E2E8F0));border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rp-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,var(--green,#22C55E)),var(--kygo-green-dark,var(--green-dark,#16A34A)));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rp-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rp-card:hover::after{opacity:1}
+      .rp-card:focus-visible{outline:2px solid var(--kygo-green,var(--green,#22C55E));outline-offset:3px}
+      .rp-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,var(--gray-100,#F1F5F9))}
+      .rp-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s cubic-bezier(.16,1,.3,1)}
+      .rp-card:hover .rp-media img{transform:scale(1.03)}
+      .rp-media.rp-noimg img{display:none}
+      .rp-body{flex:1;padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rp-cat{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:10.5px;letter-spacing:.7px;text-transform:uppercase;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,var(--dark,#0F172A));display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,var(--gray-600,#475569));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rp-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:5px}
+      .rp-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,var(--gray-400,#94A3B8));overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rp-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,var(--green-dark,#16A34A))}
+      .rp-open svg{width:15px;height:15px}
+      </style>
+      <section class="rp-section${bg === 'gray' ? ' rp-gray' : ''}" id="related-reading">
+        <div class="rp-inner">
+          <div class="rp-head animate-on-scroll">
+            <div class="rp-kicker">From the blog</div>
+            <h2 class="rp-h2">Keep <span class="rp-hl">reading.</span></h2>
+            <p class="rp-lede">The long-form, evidence-based articles behind this tool.</p>
+          </div>
+          <div class="rp-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
+  _renderRelatedTools(bg) {
+    const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
+    const cards = this._relatedTools().map(t => {
+      const slug = t.url.split('/').filter(Boolean).pop();
+      return `
+      <a class="rt-card animate-on-scroll" href="${t.url}" aria-label="${t.title}" data-action="related-tool" data-tool-slug="${slug}" data-track-position="related-tools" data-track-label="${slug}">
+        <span class="rt-media"><span class="rt-panel"><span class="rt-cap">${t.motif.caption || ''}</span>${this._relatedMotif(t.motif)}</span></span>
+        <span class="rt-body">
+          <span class="rt-title">${t.title}</span>
+          <span class="rt-blurb">${t.blurb}</span>
+          <span class="rt-foot"><span class="rt-meta">${t.meta || ''}</span><span class="rt-open">Open ${arrow}</span></span>
+        </span>
+      </a>`;
+    }).join('');
+    return `
+      <style>
+      .rt-section{padding:56px 20px;background:#fff}
+      .rt-section.rt-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.rt-section{padding:80px 24px}}
+      .rt-inner{max-width:1200px;margin:0 auto}
+      .rt-head{margin-bottom:28px;max-width:720px}
+      .rt-kicker{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display,'Space Grotesk',sans-serif);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--kygo-green-dark,#16A34A);background:var(--kygo-green-light,rgba(34,197,94,.12));padding:6px 12px;border-radius:999px}
+      .rt-h2{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:clamp(26px,4vw,42px);line-height:1.1;margin:16px 0 10px;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-h2 .rt-hl{color:var(--kygo-green,#22C55E)}
+      .rt-lede{font-family:var(--font-body,'DM Sans',sans-serif);color:var(--fg-2,#475569);font-size:16px;line-height:1.55;max-width:62ch;margin:0}
+      .rt-grid{display:grid;grid-template-columns:1fr;gap:18px}
+      @media(min-width:720px){.rt-grid{grid-template-columns:repeat(3,1fr);gap:22px}}
+      .rt-card{position:relative;display:flex;flex-direction:column;background:var(--bg-canvas,#fff);border:1px solid var(--border-subtle,#E2E8F0);border-radius:18px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 2px 12px rgba(15,23,42,.05);transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s ease,border-color .25s ease}
+      .rt-card::after{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--kygo-green,#22C55E),var(--kygo-green-dark,#16A34A));opacity:0;transition:opacity .25s ease;pointer-events:none}
+      .rt-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.10);border-color:#CBD5E1}
+      .rt-card:hover::after{opacity:1}
+      .rt-card:focus-visible{outline:2px solid var(--kygo-green,#22C55E);outline-offset:3px}
+      .rt-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-raised,#F1F5F9);display:flex;align-items:center;justify-content:center}
+      .rt-panel{display:block;background:var(--bg-canvas,#fff);border:1px solid #EAECEF;border-radius:14px;box-shadow:0 6px 18px rgba(15,23,42,.08);padding:13px 15px;width:78%}
+      .rt-cap{display:block;font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:9px;letter-spacing:.6px;text-transform:uppercase;color:var(--fg-3,#94A3B8);margin-bottom:8px}
+      .rt-body{padding:16px 18px 18px;display:flex;flex-direction:column;gap:7px}
+      .rt-title{font-family:var(--font-display,'Space Grotesk',sans-serif);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em;color:var(--fg-1,#0F172A)}
+      .rt-blurb{font-family:var(--font-body,'DM Sans',sans-serif);font-size:13.5px;line-height:1.55;color:var(--fg-2,#475569);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .rt-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:5px}
+      .rt-meta{font-family:var(--font-body,'DM Sans',sans-serif);font-size:12px;font-weight:500;color:var(--fg-3,#94A3B8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .rt-open{display:inline-flex;align-items:center;gap:4px;flex-shrink:0;font-family:var(--font-body,'DM Sans',sans-serif);font-size:13px;font-weight:600;color:var(--kygo-green-dark,#16A34A)}
+      .rt-open svg{width:15px;height:15px}
+      </style>
+      <section class="rt-section${bg === 'gray' ? ' rt-gray' : ''}" id="related-tools">
+        <div class="rt-inner">
+          <div class="rt-head animate-on-scroll">
+            <div class="rt-kicker">Keep exploring</div>
+            <h2 class="rt-h2">Related <span class="rt-hl">tools.</span></h2>
+            <p class="rt-lede">More free, evidence-based tools to get the most out of your wearable.</p>
+          </div>
+          <div class="rt-grid">${cards}</div>
+        </div>
+      </section>`;
+  }
+
+  // Copy for the standard app CTA card. Headline carries one <span> for the
+  // green phrase; everything else about the card is shared.
+  _appCta() {
+    return {
+      slug: 'resting-heart-rate-factors',
+      hook: `Find out what pushed your resting heart rate up, from your own days.`,
+      headline: `Know why your <span>resting heart rate</span> moved.`,
+      sub: `A number without a cause is just a number. Kygo connects your RHR to the meals, training and sleep behind it.`
+    };
+  }
+
+  // ── App CTA · Kygo standard module ──────────────────────────────────────
+  // The dark conversion card, on its own section, directly after the first
+  // content section. Self-contained under `kc-*` names with a literal fallback
+  // behind every custom property, so the same block renders identically on
+  // either palette. Nothing else belongs in this section — the email capture
+  // is a separate band further down the page.
+  // Pass 'gray' to sit the section on the tinted band.
+
+  // ── App CTA · Kygo standard module ──────────────────────────────────────
+  // The shared <kygo-app-card> (kygo-app-card.js), the same card the blog posts
+  // use: copy and store buttons on the left, the app's Insights screen on a
+  // phone to the right. This tool's own words come from _appCta(). Tenjin gets
+  // the tool as site_id; GA4 files clicks as cta_click with cta_label = slug.
+  // Promo order on every tool: app card first, the State of Wearable Accuracy
+  // report card second (accuracy and comparison tools only), the Picks card
+  // last (just above the FAQ), never two promos back to back.
+  _renderAppCta(bg) {
+    __ensureKygoCta();
+    __ensureKygoAppCard();
+    const c = this._appCta();
+    const txt = (s) => String(s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().replace(/"/g, '&quot;');
+    return `
+      <style>
+      .kc-section{padding:16px 20px;background:#fff}
+      .kc-section.kc-gray{background:var(--kygo-light,var(--light,#F8FAFC))}
+      @media(min-width:720px){.kc-section{padding:24px 24px}}
+      .kc-inner{max-width:1100px;margin:0 auto}
+      .kc-inner kygo-app-card{display:block}
+      </style>
+      <section class="kc-section${bg === 'gray' ? ' kc-gray' : ''}" id="get-the-app">
+        <div class="kc-inner">
+          <kygo-app-card surface="tool" web post="tool-${c.slug}" position="mid" slug="${c.slug}" variant="v1" focus="rhr"
+            headline="${txt(c.headline)}" sub="${txt(c.sub)}">
+            <a href="https://app.kygo.app/start">Get the Kygo app</a>
+          </kygo-app-card>
+        </div>
+      </section>`;
+  }
+
+  // ── Email CTA · Kygo standard module ────────────────────────────────────
+  // The inline email capture, on its own band. It never sits directly under the
+  // app CTA — a page content section always separates the two conversion
+  // touchpoints. Self-contained under `ke-*` names so it drops into either
+  // palette. Pass 'gray' to sit on the tinted band.
 
   render() {
     const logoUrl = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-    const iosUrl = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
 
     this.shadowRoot.innerHTML = `
       <style>${this._styles()}</style>
 
-      <header class="header">
-        <div class="header-inner">
-          <a href="https://kygo.app" class="logo" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo" class="logo-img" />
-            RHR Factors
-          </a>
-          <a href="https://kygo.app" class="header-link" target="_blank" rel="noopener">
-            Get App ${this._icon('arrowRight')}
-          </a>
-        </div>
-      </header>
 
       <!-- 1. Hero (white) -->
       <section class="hero section-bg-white">
@@ -1029,58 +1457,11 @@ class KygoRhrFactors extends HTMLElement {
       <!-- 2. Evidence chart (gray) -->
       <div class="section-bg-gray">${this._renderEvidenceSection()}</div>
 
-      <!-- 3. App CTA "See What's Influencing Your RHR" (white) -->
-      <section class="blog-cta-section section-bg-white">
-        <div class="container">
-          <div class="blog-cta animate-on-scroll">
-            <div class="blog-cta-glow"></div>
-            <div class="blog-cta-content">
-              <div class="blog-cta-badge"><span class="pulse-dot"></span>Free Forever Plan</div>
-              <h2>See What's Influencing <span class="highlight">Your RHR</span></h2>
-              <p>Kygo Health connects your wearable data with nutrition tracking to pinpoint personal correlations between what you eat, how you move, and your resting heart rate.</p>
-              <div class="blog-cta-buttons">
-                <a href="${iosUrl}" class="blog-cta-btn" data-track-position="article-cta" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-                  Download for iOS
-                </a>
-                <a href="https://kygo.app/android" target="_blank" rel="noopener" class="cta-android" data-action="android-download">
-                  <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.523 2.246a.75.75 0 0 0-1.046 0l-1.817 1.818a8.212 8.212 0 0 0-5.32 0L7.523 2.246a.75.75 0 1 0-1.046 1.078L8.088 4.92A8.25 8.25 0 0 0 3.75 12v.75a8.25 8.25 0 0 0 16.5 0V12a8.25 8.25 0 0 0-4.338-7.08l1.611-1.596a.75.75 0 0 0 0-1.078zM9 10.5a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25zm6 0a1.125 1.125 0 1 1 0 2.25 1.125 1.125 0 0 1 0-2.25z"/></svg>
-                  Download for Android
-                </a>
-              </div>
-              <div class="blog-cta-tags">
-                <span class="blog-cta-tags-label">Works with</span>
-                <div class="blog-cta-tags-logos">
-                  <img src="https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png" alt="Oura" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png" alt="Apple" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png" alt="Fitbit" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png" alt="Garmin" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png" alt="Whoop" loading="lazy" />
-                  <img src="https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png" alt="Health Connect" loading="lazy" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      ${this._renderAppCta()}
 
       <!-- 4. Baseline "What you can't change" — expanded by default (gray) -->
       <div class="section-bg-gray">${this._renderBaselineSection()}</div>
 
-      <!-- 5. Blog CTA — Read the full article (white) -->
-      <section class="article-section section-bg-white">
-        <div class="container">
-          <a href="https://www.kygo.app/post/resting-heart-rate-factors" class="article-card animate-on-scroll" target="_blank" rel="noopener">
-            <span class="article-badge">Deep Dive</span>
-            <div class="article-body">
-              <span class="article-kicker">Read the full article</span>
-              <h3 class="article-title">Resting Heart Rate Factors: 37 Inputs Ranked by Evidence <span class="article-year">(2026)</span></h3>
-              <p class="article-desc">Every mechanism, dosage, and source in one long-form read.</p>
-            </div>
-            <span class="article-go" aria-hidden="true">${this._icon('arrowRight')}</span>
-          </a>
-        </div>
-      </section>
 
       <!-- 6. Every factor sortable — category picker (gray) -->
       <div class="section-bg-gray">${this._renderSortableFactorsSection()}</div>
@@ -1089,7 +1470,9 @@ class KygoRhrFactors extends HTMLElement {
       <div class="section-bg-white">${this._renderMythsSection()}</div>
 
       <!-- 8. Top picks (gray) -->
-      <section class="picks-section section-bg-gray" id="headlines">
+      ${this._renderRelatedTools('gray')}
+
+      <section class="picks-section section-bg-white" id="headlines">
         <div class="container">
           <div class="picks-card">
             <div class="picks-glow" aria-hidden="true"></div>
@@ -1103,32 +1486,22 @@ class KygoRhrFactors extends HTMLElement {
       </section>
 
       <!-- 9. Sources (white) -->
-      <section class="sources-section section-bg-white">
+
+      <section class="sources-section section-bg-gray">
         <div class="container">
           <h2 class="section-title animate-on-scroll">Sources</h2>
           <p class="section-sub animate-on-scroll">All data sourced from peer-reviewed studies and meta-analyses.</p>
-          <div class="sources-list animate-on-scroll">${this._renderSources()}</div>
+          <div class="sources-wrap animate-on-scroll">${this._renderSources()}</div>
         </div>
       </section>
 
-      <footer class="tool-footer">
+
+      ${this._renderRelatedPosts()}
+
+      <footer class="tool-footer" style="background:#F8FAFC">
         <div class="container">
-          <a href="https://kygo.app" class="footer-brand" target="_blank" rel="noopener">
-            <img src="${logoUrl}" alt="Kygo Health" class="footer-logo" loading="lazy" />
-            Kygo Health
-          </a>
-          <p class="footer-tagline">Stop Guessing. Start Knowing.</p>
-          <div class="footer-links">
-            <a href="https://kygo.app">Home</a>
-            <a href="https://kygo.app/how-it-works">How It Works</a>
-            <a href="https://kygo.app/blog">Blog</a>
-            <a href="https://kygo.app/contact">Contact</a>
-            <a href="https://kygo.app/privacy">Privacy</a>
-            <a href="https://kygo.app/terms">Terms</a>
-          </div>
           <p class="footer-disclaimer">This content is for informational purposes only and is not medical advice. Always consult a qualified healthcare provider before starting any supplement, exercise program, or lifestyle change.</p>
           <p class="footer-copyright">Data sourced from peer-reviewed studies and meta-analyses. Last updated April 2026.</p>
-          <p class="footer-copyright">© ${new Date().getFullYear()} Kygo Health LLC. All rights reserved.</p>
         </div>
       </footer>
     `;
@@ -1142,15 +1515,8 @@ class KygoRhrFactors extends HTMLElement {
     shadow.addEventListener('click', (e) => {
       if (e.target.closest('.source-link, a[href]')) return;
 
-      const srcToggle = e.target.closest('.src-group-toggle');
-      if (srcToggle) {
-        const group = srcToggle.closest('.src-group');
-        if (group) {
-          const isOpen = group.classList.toggle('open');
-          srcToggle.setAttribute('aria-expanded', isOpen);
-        }
-        return;
-      }
+      // Sources · show-all toggle
+      if (e.target.closest('[data-src-toggle]')) { this._toggleSources(); return; }
 
       const factorsTile = e.target.closest('[data-factors-cat]');
       if (factorsTile) {
@@ -1251,7 +1617,7 @@ class KygoRhrFactors extends HTMLElement {
       '@type': 'WebApplication',
       'name': 'RHR Factor Explorer',
       'alternateName': 'Kygo Resting Heart Rate Factors Tool',
-      'description': 'Explore 37 research-backed factors that affect resting heart rate — nutrition, supplements, exercise, environment, and demographics — every claim backed by RCTs and meta-analyses.',
+      'description': 'Explore 37 research-backed factors that affect resting heart rate (nutrition, supplements, exercise, environment, and demographics), every claim backed by RCTs and meta-analyses.',
       'applicationCategory': 'HealthApplication',
       'operatingSystem': 'Web',
       'url': 'https://www.kygo.app/tools/resting-heart-rate-factors',
@@ -1274,7 +1640,7 @@ class KygoRhrFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What affects resting heart rate the most?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise has the largest single effect — sustained endurance training drops resting heart rate by about 8.4 bpm after 30+ weeks (Huang 2005 meta-analysis). HIIT delivers about 3.9 bpm in under 12 weeks (Edwards 2023 meta-analysis of 97 RCTs). Among modifiable factors, sustained cardio is the most powerful lever for lowering RHR.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Aerobic exercise has the largest single effect: sustained endurance training drops resting heart rate by about 8.4 bpm after 30+ weeks (Huang 2005 meta-analysis). HIIT delivers about 3.9 bpm in under 12 weeks (Edwards 2023 meta-analysis of 97 RCTs). Among modifiable factors, sustained cardio is the most powerful lever for lowering RHR.' }
         },
         {
           '@type': 'Question',
@@ -1284,12 +1650,12 @@ class KygoRhrFactors extends HTMLElement {
         {
           '@type': 'Question',
           'name': 'What supplement actually lowers resting heart rate?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Omega-3 fish oil is the only supplement with strong, replicated RHR-specific evidence. The Hidayat 2018 meta-analysis of 51 RCTs found omega-3 supplementation lowered RHR by 1.6 bpm on average — and 2.5 bpm in people with starting RHR ≥69. Most other popular supplements (magnesium, CoQ10, ashwagandha for RHR, L-theanine, creatine) lack RHR-specific evidence.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Omega-3 fish oil is the only supplement with strong, replicated RHR-specific evidence. The Hidayat 2018 meta-analysis of 51 RCTs found omega-3 supplementation lowered RHR by 1.6 bpm on average, and 2.5 bpm in people with starting RHR ≥69. Most other popular supplements (magnesium, CoQ10, ashwagandha for RHR, L-theanine, creatine) lack RHR-specific evidence.' }
         },
         {
           '@type': 'Question',
           'name': 'Does alcohol raise resting heart rate?',
-          'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes — clearly and dose-dependently. A 2026 wearables study (n=20,968 adults, 5.1 million person-days) found each drink above your personal average raised overnight RHR by about 2.4 bpm in men and 2.8 bpm in women. The effect is the morning-after spike that wearables routinely capture.' }
+          'acceptedAnswer': { '@type': 'Answer', 'text': 'Yes, clearly and dose-dependently. A 2026 wearables study (n=20,968 adults, 5.1 million person-days) found each drink above your personal average raised overnight RHR by about 2.4 bpm in men and 2.8 bpm in women. The effect is the morning-after spike that wearables routinely capture.' }
         },
         {
           '@type': 'Question',
@@ -1314,13 +1680,13 @@ class KygoRhrFactors extends HTMLElement {
       script.type = 'application/ld+json';
       script.setAttribute('data-kygo-rhr-factors-ld', '');
       script.textContent = JSON.stringify(data);
-      document.head.appendChild(script);
+      __kygoAppendLdOnce(script);
     });
   }
 
   _styles() {
     return `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
       :host {
         --dark: #1E293B;
@@ -1365,21 +1731,11 @@ class KygoRhrFactors extends HTMLElement {
       .list-sort-btn:focus-visible,
       .fact-head:focus-visible,
       .base-head:focus-visible,
-      .src-group-toggle:focus-visible,
-      .header-link:focus-visible,
-      .blog-cta-btn:focus-visible,
+      .src-toggle:focus-visible,
       .cta-android:focus-visible,
-      .article-card:focus-visible,
       .source-link:focus-visible,
       .imp-label:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
 
-      .header { position: sticky; top: 0; z-index: 50; background: #fff; border-bottom: 1px solid var(--gray-200); }
-      .header-inner { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; max-width: 1200px; margin: 0 auto; }
-      .logo { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; color: var(--dark); text-decoration: none; white-space: nowrap; min-width: 0; line-height: 1.2; }
-      .logo-img { height: 26px; width: auto; flex-shrink: 0; }
-      .header-link { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 600; color: #fff; background: var(--green); padding: 7px 12px; border-radius: 50px; text-decoration: none; transition: background 0.2s; white-space: nowrap; flex-shrink: 0; line-height: 1; }
-      .header-link:hover { background: var(--green-dark); }
-      .header-link svg { width: 13px; height: 13px; }
 
       /* HERO */
       .hero { padding: 40px 0 28px; background: #fff; }
@@ -1552,7 +1908,7 @@ class KygoRhrFactors extends HTMLElement {
       .myth-why { margin: 4px 0 0; font-size: 12.5px; color: var(--gray-600); line-height: 1.5; }
 
       /* TOP PICKS */
-      .picks-section { padding: 40px 0; background: #fff; }
+      .picks-section { padding: 40px 0; }   /* band comes from the section-bg-* utility class */
       .picks-card { position: relative; background: var(--dark-card); color: #fff; border-radius: 24px; padding: 36px 22px; overflow: hidden; }
       /* Mobile: anchored radial in the top-right corner (was a tall narrow box centered on a circle, which read as a vertical stripe on long mobile cards). Tablet+ overrides to a wider spread. */
       .picks-glow { position: absolute; top: 0; right: 0; width: 90%; max-width: 520px; aspect-ratio: 1 / 1; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.22) 0%, rgba(34,197,94,0.08) 35%, transparent 70%); pointer-events: none; }
@@ -1579,77 +1935,43 @@ class KygoRhrFactors extends HTMLElement {
       .pick-note { margin: 10px 0 0; font-size: 13px; color: rgba(255,255,255,0.62); line-height: 1.5; }
 
       /* SOURCES */
+      /* ── Sources ── */
       .sources-section { padding: 48px 0; }
-      .src-accordion { max-width: 720px; margin: 0 auto; }
-      .src-count-badge { text-align: center; font-size: 13px; font-weight: 600; color: var(--gray-400); margin-bottom: 16px; }
-      .src-group { border: 1px solid var(--gray-200); border-radius: var(--radius-sm); margin-bottom: 8px; overflow: hidden; background: #fff; }
-      .src-group-toggle { display: flex; align-items: center; width: 100%; padding: 12px 16px; background: none; border: none; cursor: pointer; font-family: inherit; gap: 8px; }
-      .src-group-name { flex: 1; text-align: left; font-size: 14px; font-weight: 600; color: var(--dark); }
-      .src-group-count { font-size: 11px; font-weight: 600; color: var(--gray-400); background: var(--gray-100); padding: 2px 8px; border-radius: 50px; }
-      .src-group-chevron { width: 18px; height: 18px; color: var(--gray-400); transition: transform 0.3s; display: flex; }
-      .src-group-chevron svg { width: 18px; height: 18px; }
-      .src-group.open .src-group-chevron { transform: rotate(180deg); }
-      .src-group-body { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1); }
-      .src-group.open .src-group-body { max-height: 800px; }
-      .src-item { display: flex; align-items: center; gap: 8px; padding: 8px 16px; text-decoration: none; color: var(--gray-600); font-size: 13px; transition: background 0.2s; }
-      .src-item:last-child { padding-bottom: 12px; }
-      .src-item:hover { background: var(--gray-50); }
-      .src-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-      .src-text { flex: 1; }
-      .src-ext { width: 14px; height: 14px; color: var(--gray-400); flex-shrink: 0; }
-      .src-ext svg { width: 14px; height: 14px; }
+      /* Sources · Kygo standard module */
+      .sources { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      @media (min-width: 600px) { .sources { grid-template-columns: 1fr 1fr; } }
+      @media (min-width: 960px) { .sources { grid-template-columns: repeat(3, 1fr); } }
+      .src { display: flex; flex-direction: column; gap: 4px; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 12px; padding: 12px 14px; text-decoration: none; transition: border-color .15s, box-shadow .15s; }
+      a.src:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src--nolink { background: var(--gray-50); border-style: dashed; }
+      .src-tag { align-self: flex-start; font-family: 'Space Grotesk', sans-serif; font-size: 9.5px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; color: var(--green-dark); }
+      .src--nolink .src-tag { color: var(--gray-400); }
+      .src-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13.5px; color: var(--dark); line-height: 1.3; overflow-wrap: anywhere; }
+      a.src:hover .src-title { color: var(--green-dark); }
+      .src-cite { display: inline-flex; align-items: baseline; gap: 5px; flex-wrap: wrap; font-size: 11.5px; color: var(--gray-400); line-height: 1.35; overflow-wrap: anywhere; }
+      .src-go { display: inline-flex; align-self: center; flex-shrink: 0; color: var(--green-dark); }
+      .src-go svg { width: 12px; height: 12px; transition: transform .15s; }
+      a.src:hover .src-go svg { transform: translate(1px,-1px); }
+      .sources.src-extra { margin-top: 8px; }
+      .sources.src-extra[hidden] { display: none; }
+      .src-toggle-wrap { text-align: center; margin-top: 16px; }
+      .src-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--green-dark); font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: border-color .15s, box-shadow .15s; }
+      .src-toggle:hover { border-color: var(--green); box-shadow: 0 4px 14px rgba(15,23,42,.08); }
+      .src-toggle svg { width: 14px; height: 14px; transition: transform .2s; }
+      .src-toggle.open svg { transform: rotate(90deg); }
 
       /* ARTICLE CTA */
-      .article-section { padding: 40px 0; background: #fff; }
-      .article-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; max-width: 780px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #F6FBF7 0%, #EEF8F1 100%); border: 1px solid rgba(34,197,94,0.25); border-radius: 18px; text-decoration: none; overflow: hidden; transition: transform .2s ease-out, border-color .2s, box-shadow .2s; }
-      .article-card::before { content: ''; position: absolute; top: -40%; right: -10%; width: 55%; height: 180%; background: radial-gradient(ellipse at top right, rgba(34,197,94,0.18), transparent 65%); pointer-events: none; }
-      .article-card:hover { border-color: var(--green); transform: translateY(-1px); box-shadow: 0 10px 24px rgba(34,197,94,0.14); }
-      .article-badge { position: relative; z-index: 1; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--green-dark); background: #fff; padding: 5px 10px; border-radius: 9999px; border: 1px solid rgba(34,197,94,0.3); white-space: nowrap; }
-      .article-body { position: relative; z-index: 1; flex: 1; min-width: 0; width: 100%; }
-      .article-kicker { display: block; font-size: 11px; font-weight: 600; color: var(--green-dark); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
-      .article-title { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); margin: 0; line-height: 1.25; letter-spacing: -0.01em; }
-      .article-year { color: var(--gray-400); font-weight: 500; }
-      .article-desc { display: none; font-size: 13px; color: var(--gray-600); margin: 6px 0 0; line-height: 1.45; }
-      .article-go { position: absolute; top: 18px; right: 18px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; background: var(--green); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background .2s; }
-      .article-card:hover .article-go { background: var(--green-dark); }
-      .article-go svg { width: 16px; height: 16px; }
-      .article-body { padding-right: 50px; }
 
       /* APP CTA */
-      .blog-cta-section { padding: 48px 0; }
-      .blog-cta { position: relative; background: linear-gradient(135deg, var(--dark-card) 0%, var(--gray-700) 100%); border-radius: var(--radius); padding: 32px 24px; text-align: center; max-width: 680px; margin: 0 auto; overflow: hidden; }
-      .blog-cta-glow { position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(34,197,94,0.25) 0%, transparent 70%); pointer-events: none; }
-      .blog-cta-content { position: relative; z-index: 1; }
-      .blog-cta-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(34,197,94,0.15); color: var(--green); padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
       .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulseDot 2s infinite; }
       @keyframes pulseDot { 0%,100%{ opacity:1; } 50%{ opacity:0.4; } }
-      .blog-cta h2 { color: #fff; font-size: clamp(22px, 5vw, 30px); margin-bottom: 12px; }
-      .blog-cta .highlight { color: var(--green); }
-      .blog-cta p { color: var(--gray-400); font-size: 14px; margin-bottom: 20px; max-width: 480px; margin-left: auto; margin-right: auto; }
-      .blog-cta-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; }
-      .blog-cta-btn:hover { background: var(--green-dark); }
-      .blog-cta-btn svg { width: 18px; height: 18px; }
-      .blog-cta-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-      @media (max-width: 480px) { .blog-cta-buttons { flex-direction: column; align-items: stretch; } .blog-cta-buttons a, .blog-cta-buttons button { justify-content: center; text-align: center; } }
-      .blog-cta-tags { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 20px; flex-wrap: nowrap; }
-      .blog-cta-tags-label { color: var(--gray-400); font-size: 11px; font-weight: 500; white-space: nowrap; flex-shrink: 0; }
-      .blog-cta-tags-logos { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; overflow: hidden; }
-      .blog-cta-tags-logos img { height: 18px; width: auto; opacity: 0.75; flex-shrink: 1; min-width: 0; object-fit: contain; }
-      @media (min-width: 480px) { .blog-cta-tags-logos img { height: 20px; } .blog-cta-tags-label { font-size: 12px; } }
-      @media (min-width: 768px) { .blog-cta-tags-logos { gap: 8px; } .blog-cta-tags-logos img { height: 22px; } }
 
       .cta-android { display: inline-flex; align-items: center; gap: 8px; background: var(--green); color: #fff; padding: 12px 24px; border-radius: var(--radius-sm, 10px); font-weight: 600; font-size: 15px; text-decoration: none; transition: background 0.2s; border: none; cursor: pointer; }
       .cta-android:hover { background: var(--green-dark); color: #fff; }
       .cta-android svg { width: 18px; height: 18px; }
 
       /* FOOTER */
-      .tool-footer { padding: 48px 0 32px; text-align: center; border-top: 1px solid var(--gray-200); }
-      .footer-brand { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; color: var(--dark); text-decoration: none; margin-bottom: 8px; }
-      .footer-logo { height: 24px; width: auto; }
-      .footer-tagline { font-size: 13px; color: var(--gray-400); margin-bottom: 16px; }
-      .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; margin-bottom: 16px; padding: 0 16px; }
-      .footer-links a { font-size: 13px; color: var(--gray-600); text-decoration: none; white-space: nowrap; }
-      .footer-links a:hover { color: var(--green); }
+      .tool-footer { padding: 48px 0 32px; text-align: center; background: #fff; border-top: 1px solid var(--gray-200); }
       .footer-copyright { font-size: 12px; color: var(--gray-400); margin-bottom: 4px; }
       .footer-disclaimer { font-size: 11px; color: var(--gray-400); line-height: 1.5; max-width: 560px; margin: 0 auto 12px; }
 
@@ -1684,24 +2006,11 @@ class KygoRhrFactors extends HTMLElement {
         .imp-scale-spacer:first-of-type { grid-column: 1; }
         .imp-scale { grid-column: 2; }
         .imp-scale-spacer:last-of-type { grid-column: 3; }
-        .header-inner { padding: 14px 24px; }
-        .header-link { font-size: 13px; padding: 8px 16px; gap: 6px; }
-        .header-link svg { width: 14px; height: 14px; }
-        .logo { font-size: 16px; }
-        .logo-img { height: 28px; }
         .hero { padding: 72px 0 48px; }
         .factors-section, .baseline-section, .myths-section, .evidence-section { padding: 64px 0 72px; }
         .picks-grid { grid-template-columns: 1fr 1fr; }
         .picks-section { padding: 64px 0; }
         .picks-card { padding: 48px 36px; border-radius: 28px; }
-        .blog-cta { padding: 48px 40px; }
-        .article-section { padding: 56px 0; }
-        .article-card { flex-direction: row; align-items: center; padding: 24px 28px; gap: 18px; border-radius: 22px; }
-        .article-title { font-size: 19px; }
-        .article-desc { display: block; }
-        .article-go { position: static; width: 40px; height: 40px; }
-        .article-go svg { width: 18px; height: 18px; }
-        .article-body { padding-right: 0; }
         .picker-tile { min-height: 64px; padding: 16px 18px; }
         .picker-tile-name { font-size: 15.5px; }
         .picker-panel { padding: 24px 26px; border-radius: 22px; }

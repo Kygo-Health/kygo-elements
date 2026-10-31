@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kygo Inline Subscribe · Live Preview</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F8FAFC; color: #1E293B; }
+    .preview-banner {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: #0F172A; color: #fff; padding: 6px 14px;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      font-size: 12px; font-weight: 500;
+    }
+    .preview-banner b { color: #22C55E; }
+    .preview-banner button {
+      background: #22C55E; color: #fff; border: 0;
+      padding: 4px 12px; border-radius: 9999px;
+      font-size: 11px; font-weight: 700; cursor: pointer;
+    }
+    .preview-spacer { height: 40px; }
+    .label { max-width: 1000px; margin: 28px auto 0; padding: 0 20px; font-size: 13px; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.05em; }
+    .mock-note { max-width: 1000px; margin: 8px auto 0; padding: 0 20px; font-size: 13px; color: #475569; }
+  </style>
+</head>
+<body>
+  <div class="preview-banner">
+    <span>🟢 <b>LIVE PREVIEW</b> · &lt;kygo-inline-subscribe&gt;</span>
+    <button onclick="location.href = location.pathname + '?v=' + Date.now()">Hard refresh</button>
+    <label style="display:inline-flex;align-items:center;gap:6px;">
+      <input type="checkbox" id="mock" checked /> mock /_functions/subscribe (200 OK)
+    </label>
+  </div>
+  <div class="preview-spacer"></div>
+
+  <p class="mock-note">
+    Submits POST <code>/_functions/subscribe</code> and dispatches a <code>subscribe</code> document event
+    (watch the console). With the mock box checked, the endpoint is faked to return 200 so you can see the
+    success state; uncheck it to exercise the real error path (no endpoint on GitHub Pages).
+  </p>
+
+  <div class="label">factors variant</div>
+  <kygo-inline-subscribe source="tool-hrv-factors" variant="factors"></kygo-inline-subscribe>
+
+  <div class="label">comparison variant</div>
+  <kygo-inline-subscribe source="tool-wearable-accuracy" variant="comparison"></kygo-inline-subscribe>
+
+  <div class="label">explicit pitch + heading override</div>
+  <kygo-inline-subscribe source="tool-demo" heading="One more thing." pitch="Custom pitch text passed via the pitch attribute."></kygo-inline-subscribe>
+
+  <script>
+    // Optional mock so you can preview the success UI without a live Velo endpoint.
+    (function () {
+      var realFetch = window.fetch.bind(window);
+      window.fetch = function (url, opts) {
+        var mock = document.getElementById('mock');
+        if (mock && mock.checked && typeof url === 'string' && url.indexOf('/_functions/subscribe') !== -1) {
+          try { console.log('[mock] POST', url, JSON.parse(opts && opts.body || '{}')); } catch (e) {}
+          return Promise.resolve(new Response('{"ok":true}', { status: 200, headers: { 'Content-Type': 'application/json' } }));
+        }
+        return realFetch(url, opts);
+      };
+      document.addEventListener('subscribe', function (e) {
+        console.log('[subscribe event]', e.detail, '→ GA4 email_subscribe would fire with source =', e.detail && e.detail.source);
+      });
+    })();
+
+    // Cache-bust the component JS so you always see the latest commit.
+    var cacheBust = '?v=' + Date.now();
+    var s = document.createElement('script');
+    s.src = 'kygo-inline-subscribe.js' + cacheBust;
+    // Alternative (jsDelivr branch preview):
+    // s.src = 'https://cdn.jsdelivr.net/gh/Kygo-Health/kygo-elements@claude/email-capture-pass-spec-24-nxqyzb/kygo-inline-subscribe.js' + cacheBust;
+    document.body.appendChild(s);
+  </script>
+</body>
+</html>

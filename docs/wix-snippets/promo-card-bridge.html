@@ -1,0 +1,46 @@
+<!--
+  Kygo Promo Card Sizing. Wix site-wide custom embed: BODY_END, category ESSENTIAL, all pages,
+  load on each page (loadOnce false). NOT YET INSTALLED: the API create was refused by the
+  permission check on 2026-10-25; add it in Wix > Settings > Custom code with these settings.
+
+  Sizes the blog promo cards (blog-picks-card-*.html, blog-report-card.html) to their content.
+  Each card sits in a Wix "HTML code" iframe with a fixed height and posts
+  {kygo:'promo', card, type:'height', height} to the top window; this sets the iframe and
+  Wix's fixed-height wrappers to that height. It tracks nothing, so it runs without
+  analytics consent. Click tracking for these cards lives in kygo-tracking.js
+  (gate_blog, and cta_click related_tool_click to best-wearables), which loads only after
+  consent. Keep click or GA4 code out of this embed so nothing double-fires.
+-->
+<script>
+(function () {
+  if (window.__kygoPromoSizing) return;
+  window.__kygoPromoSizing = true;
+  function frameFor(source) {
+    var frames = document.getElementsByTagName('iframe');
+    for (var i = 0; i < frames.length; i++) {
+      var w = frames[i].contentWindow;
+      if (w === source) return frames[i];
+      try { if (source && w === source.parent) return frames[i]; } catch (e) { /* cross-origin */ }
+    }
+    return null;
+  }
+  window.addEventListener('message', function (e) {
+    var d = e.data;
+    if (!d || typeof d !== 'object' || d.kygo !== 'promo' || d.type !== 'height' || !e.source) return;
+    if (d.card !== 'report' && d.card !== 'picks') return;
+    var h = Math.ceil(Number(d.height));
+    if (!(h > 0 && h < 3000)) return;
+    var f = frameFor(e.source);
+    if (!f) return;
+    f.style.height = h + 'px';
+    var box = f.parentElement;
+    for (var up = 0; up < 4 && box && box !== document.body; up++) {
+      if (box.style && (box.style.height || box.style.maxHeight)) {
+        box.style.height = h + 'px';
+        box.style.maxHeight = h + 'px';
+      }
+      box = box.parentElement;
+    }
+  });
+})();
+</script>

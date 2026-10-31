@@ -28,15 +28,40 @@
   // Shared constants
   // ──────────────────────────────────────────────────────────────────────
   const BRAND_LOGO = 'https://static.wixstatic.com/media/273a63_7ac49e91323749f49cadfe795ff3680f~mv2.png';
-  const APP_IOS    = 'https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589';
-  const APP_ANDROID = 'https://kygo.app/android';
+
+  /** Loads the shared <kygo-cta> element on demand. Wix embeds this file on its
+   *  own, so the CTA definition has to come along rather than be assumed. */
+  function ensureCta() {
+    if (customElements.get('kygo-cta')) return;
+    if (document.querySelector('script[data-kygo-cta-loader]')) return;
+    const s = document.createElement('script');
+    s.src = 'https://kygo-health.github.io/kygo-elements/kygo-cta.js';
+    s.setAttribute('data-kygo-cta-loader', '');
+    s.async = true;
+    document.head.appendChild(s);
+  }
+
+  /** Campaign id for a CTA on this post. Wix passes `slug`; otherwise the post
+   *  slug in the URL is used, so no two posts share a campaign. Kept to 30
+   *  characters because Apple's `ct` field is capped there. */
+  function postSlug(el, suffix) {
+    const explicit = el.getAttribute('slug');
+    const path = (window.location.pathname || '').toLowerCase();
+    const fromPath = (path.split('/').filter(Boolean).pop() || 'blog');
+    const base = (explicit || fromPath).replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+    // Keep the suffix whole: a half-truncated one would read as part of the slug.
+    const full = base + '-' + suffix;
+    return (full.length <= 30 ? full : base.slice(0, 30)).replace(/-+$/, '');
+  }
   const WEARABLE_BADGES = [
-    { name: 'Oura Ring',     src: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png' },
-    { name: 'Apple Health',  src: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png' },
-    { name: 'Fitbit',        src: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png' },
-    { name: 'Garmin',        src: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png' },
-    { name: 'Whoop',         src: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png' },
-    { name: 'Health Connect',src: 'https://static.wixstatic.com/media/273a63_46b3b6ce5b4e4b0c9c1e0a681a79f9e7~mv2.png' }
+    { name: 'Oura Ring',     label: 'Oura',   src: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png' },
+    { name: 'Apple Health',  label: 'Apple',  src: 'https://static.wixstatic.com/media/273a63_1a1ba0e735ea4d4d865c04f7c9540e69~mv2.png' },
+    { name: 'Fitbit',        label: 'Fitbit', src: 'https://static.wixstatic.com/media/273a63_c451e954ff8740338204915f904d8798~mv2.png' },
+    { name: 'Garmin',        label: 'Garmin', src: 'https://static.wixstatic.com/media/273a63_0a60d1d6c15b421e9f0eca5c4c9e592b~mv2.png' },
+    { name: 'WHOOP',         label: 'WHOOP',  src: 'https://static.wixstatic.com/media/273a63_874a026381ad469698b84e11a2736609~mv2.png', bg: '#000' },
+    { name: 'Polar',         label: 'Polar',  src: 'https://static.wixstatic.com/media/273a63_e7e3c05ed0bc4cec8f456cd7f995e70b~mv2.png' },
+    { name: 'Google Health', label: 'Google', src: 'https://static.wixstatic.com/media/273a63_3f4fd0ee0a0d42dd9eecbeba00b8493e~mv2.png' },
+    { name: 'Health Connect',label: 'Health', src: 'https://static.wixstatic.com/media/273a63_0c0e48cc065d4ee3bf506f6d47440518~mv2.png' }
   ];
 
   const CORE_TOKENS = `
@@ -132,7 +157,7 @@
     connectedCallback() {
       this._parse();
       this.render();
-      seoText(this, 'Kygo Health Blog categories — filter articles by topic: nutrition, sleep, HRV, wearables, recovery, health tech.');
+      seoText(this, 'Kygo Health Blog categories: filter articles by topic: nutrition, sleep, HRV, wearables, recovery, health tech.');
     }
 
     attributeChangedCallback(name, oldV, newV) {
@@ -249,7 +274,7 @@
     connectedCallback() {
       this._parse();
       this.render();
-      seoText(this, 'Related Kygo Health articles — evidence-first guides on nutrition, sleep, HRV, and wearable accuracy.');
+      seoText(this, 'Related Kygo Health articles: evidence-first guides on nutrition, sleep, HRV, and wearable accuracy.');
     }
 
     attributeChangedCallback(name, oldV, newV) {
@@ -436,7 +461,7 @@
               `).join('')}
             </div>
           ` : `
-            <div class="empty">No related posts yet — check back soon.</div>
+            <div class="empty">No related posts yet. Check back soon.</div>
           `}
         </section>
       `;
@@ -468,13 +493,13 @@
   // ══════════════════════════════════════════════════════════════════════
   // 3. <kygo-blog-subscribe>
   // ──────────────────────────────────────────────────────────────────────
-  // Newsletter signup. Sits between related posts and big app CTA, on a
-  // grey band so it breaks from the white sections above/below. Dispatches
+  // Newsletter signup card ("The Kygo brief"): copy and form on the left, an
+  // email preview on the right from 768px. Dispatches
   // a `subscribe` event with { email }. Wix page code wires that up to
   // the Blog Subscribers collection via wix-data.
   //
   // Attributes:
-  //   heading       – default "Stop Guessing. Start Knowing."
+  //   heading       - default "Wearable research, without the hype"
   //   subheading    – default subhead copy
   //   success-message – text shown after submit (default set below)
   //   state         – "success" to pre-render the success view (e.g. after
@@ -493,157 +518,118 @@
     connectedCallback() {
       this._state = this.getAttribute('state') || 'idle';
       this.render();
-      seoText(this, 'Subscribe to Kygo Health research digest — weekly evidence-first guides on sleep, HRV, nutrition, and wearable accuracy.');
+      seoText(this, 'The Kygo brief: wearable research without the hype. One email a month with the newest studies on sleep, HRV and nutrition, and what they mean for your numbers.');
     }
 
     attributeChangedCallback(name, oldV, newV) {
       if (oldV === newV) return;
-      if (name === 'state' && newV) this._state = newV;
+      if (name === 'state' && newV) {
+        // Host (Wix Velo) has confirmed — cancel the safety timeout so it
+        // can't later overwrite a real success/idle with an error.
+        clearTimeout(this._submitTimeout);
+        this._state = newV;
+        if (newV !== 'idle') this._error = '';
+      }
       this.render();
     }
 
     render() {
-      const heading = this.getAttribute('heading') || 'Stop Guessing. <span class="hl">Start Knowing.</span>';
+      const heading = this.getAttribute('heading') || 'Wearable research, without the hype';
       const sub     = this.getAttribute('subheading') ||
-        'Evidence-first guides on sleep, HRV, nutrition, and the wearables that track them — delivered when we publish, never more.';
+        'One email a month with the newest studies on sleep, HRV and nutrition, and what they mean for your numbers.';
       const successMsg = this.getAttribute('success-message') ||
-        "You're in. Next issue lands in your inbox.";
+        "You're in. The next brief is on its way.";
 
       this.shadowRoot.innerHTML = `
         <style>
           ${BASE_RESET}
-          :host { ${CORE_TOKENS} background: var(--light); display: block; }
-          .wrap {
-            max-width: 720px; margin: 0 auto;
-            padding: 56px 20px;
-            text-align: center;
+          :host { ${CORE_TOKENS} display: block; }
+          .wrap { max-width: 1040px; margin: 0 auto; padding: 24px 16px; }
+          @media (min-width: 768px) { .wrap { padding: 32px 24px; } }
+          .card {
+            display: grid; gap: 28px; align-items: center;
+            padding: 22px 20px; border-radius: 20px; background: #fff;
+            border: 1.5px solid var(--gray-200); box-shadow: 0 8px 24px rgba(15,23,42,.06);
           }
-          @media (min-width: 768px) { .wrap { padding: 72px 24px; } }
-
+          @media (min-width: 768px) { .card { grid-template-columns: minmax(0, 1fr) minmax(0, .8fr); gap: 40px; padding: 32px; } }
           .kicker {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 6px 14px;
-            background: var(--green-light);
-            color: var(--green-dark);
-            font-size: 11.5px; font-weight: 600;
-            letter-spacing: 0.06em; text-transform: uppercase;
-            border-radius: 9999px;
-            margin-bottom: 16px;
+            display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+            font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 700;
+            letter-spacing: .8px; text-transform: uppercase; color: #15803D;
           }
-          .kicker svg { width: 14px; height: 14px; }
-
-          h2 {
-            font-size: clamp(24px, 5vw, 34px);
-            color: var(--dark);
-            line-height: 1.2;
-            margin: 0 0 12px;
-          }
-          h2 .hl { color: var(--green); }
-
-          .lead {
-            font-size: 15px; line-height: 1.6;
-            color: var(--gray-600);
-            max-width: 500px; margin: 0 auto 24px;
-          }
-          @media (min-width: 768px) { .lead { font-size: 16px; } }
-
-          form {
-            display: flex; flex-direction: column; gap: 10px;
-            max-width: 520px; margin: 0 auto;
-            background: #fff;
-            padding: 10px;
-            border-radius: 14px;
-            border: 1.5px solid var(--gray-200);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-            transition: border-color 200ms ease, box-shadow 200ms ease;
-          }
-          form:focus-within {
-            border-color: var(--green);
-            box-shadow: 0 0 0 4px var(--green-light);
-          }
+          .kicker img { width: 22px; height: 22px; object-fit: contain; }
+          h2 { font-size: clamp(22px, 3vw, 26px); font-weight: 700; color: #0F172A; max-width: 20ch; margin-bottom: 6px; }
+          .lead { font-size: 14px; line-height: 1.5; color: var(--gray-600); max-width: 46ch; }
+          @media (min-width: 768px) { .lead { font-size: 15px; } }
+          form { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; max-width: 440px; }
+          @media (min-width: 520px) { form { flex-direction: row; } input { flex: 1; width: auto; } }
           input {
-            flex: 1; min-width: 0;
-            border: 0; outline: none;
-            background: transparent;
-            padding: 14px;
-            font-family: inherit; font-size: 15px;
-            color: var(--dark);
+            flex: none; width: 100%; height: 48px; padding: 0 14px; border: 1.5px solid var(--gray-200); border-radius: 10px;
+            font-family: inherit; font-size: 15px; color: #0F172A; background: #fff; outline: none;
+            transition: border-color 180ms ease, box-shadow 180ms ease;
           }
+          input:focus { border-color: var(--green); box-shadow: 0 0 0 4px var(--green-light); }
           input::placeholder { color: var(--gray-400); }
           button {
-            border: 0;
-            height: 48px;
-            padding: 0 22px;
-            border-radius: 10px;
-            background: var(--green);
-            color: #fff;
-            font-weight: 600; font-size: 15px;
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-            transition: background 180ms ease, box-shadow 180ms ease, transform 180ms ease;
-            white-space: nowrap;
+            height: 48px; padding: 0 20px; border: 0; border-radius: 10px;
+            background: var(--green); color: #0F172A; font-weight: 700; font-size: 15px; white-space: nowrap;
+            transition: background 180ms ease;
           }
-          button:hover { background: var(--green-dark); box-shadow: 0 8px 20px rgba(34,197,94,0.3); }
-          button:active { transform: translateY(1px); }
-          button[disabled] { opacity: 0.6; cursor: not-allowed; }
-          button svg { width: 14px; height: 14px; }
-
-          @media (min-width: 520px) {
-            form { flex-direction: row; gap: 6px; padding: 6px; }
-            input { padding: 12px 14px; }
-          }
-
-          .trust {
-            display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
-            margin-top: 18px;
-            font-size: 12px; color: var(--gray-600);
-          }
-          .trust span { display: inline-flex; align-items: center; gap: 6px; }
-          .trust svg { width: 12px; height: 12px; color: var(--green); }
-
-          .error {
-            margin-top: 10px;
-            font-size: 13px; color: #DC2626;
-          }
-
+          @media (min-width: 520px) { input, button { height: 44px; } }
+          button:hover { background: #4ADE80; }
+          button[disabled] { opacity: .6; cursor: not-allowed; }
+          .error { margin-top: 10px; font-size: 13px; color: #DC2626; }
           .success {
-            max-width: 520px; margin: 0 auto;
-            padding: 22px 24px;
-            background: #fff;
-            border: 2px solid var(--green);
-            border-radius: 14px;
-            color: var(--dark);
-            font-weight: 500;
-            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            margin-top: 16px; max-width: 440px; display: flex; align-items: center; gap: 10px;
+            padding: 12px 14px; border-radius: 10px; background: #F0FDF4; border: 1.5px solid #BBF7D0;
+            font-size: 14px; font-weight: 600; color: #14532D;
           }
-          .success svg { width: 32px; height: 32px; color: var(--green); }
-          .success .title { font-size: 16px; font-weight: 600; }
+          .success svg { width: 20px; height: 20px; color: var(--green-dark); flex: none; }
+          .mail {
+            display: none; width: 100%; max-width: 360px; margin-left: auto; border-radius: 14px; overflow: hidden;
+            background: #fff; border: 1px solid var(--gray-200); box-shadow: 0 18px 40px -14px rgba(15,23,42,.25);
+          }
+          @media (min-width: 768px) { .mail { display: block; } }
+          .mail-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--gray-100); }
+          .mail-head img { width: 22px; height: 22px; object-fit: contain; }
+          .mail-from { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; }
+          .mail-when { margin-left: auto; font-size: 11px; color: var(--gray-400); }
+          .mail-cover { width: 100%; height: 92px; object-fit: cover; background: var(--gray-200); }
+          .mail-body { padding: 14px 16px 16px; }
+          .mail-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; line-height: 1.3; font-weight: 700; margin-bottom: 6px; }
+          .mail-text { font-size: 12.5px; line-height: 1.45; color: var(--gray-600); margin-bottom: 12px; }
+          .mail-btn { display: inline-block; padding: 6px 12px; border-radius: 8px; background: var(--green); color: #0F172A; font-size: 12px; font-weight: 700; }
         </style>
         <section class="wrap" aria-labelledby="subscribe-heading">
-          <div class="kicker">${svg('mail', 14)} Weekly research digest</div>
-          <h2 id="subscribe-heading">${heading}</h2>
-          <p class="lead">${sub}</p>
-
-          ${this._state === 'success' ? `
-            <div class="success" role="status" aria-live="polite">
-              ${svg('checkCircle', 32)}
-              <div class="title">${successMsg}</div>
+          <div class="card">
+            <div>
+              <p class="kicker"><img src="${BRAND_LOGO}" alt="Kygo" width="22" height="22">The Kygo brief</p>
+              <h2 id="subscribe-heading">${heading}</h2>
+              <p class="lead">${sub}</p>
+              ${this._state === 'success' ? `
+                <div class="success" role="status" aria-live="polite">${svg('checkCircle', 20)}<span>${successMsg}</span></div>
+              ` : `
+                <form novalidate data-form>
+                  <input type="email" required placeholder="you@email.com"
+                         aria-label="Email address" autocomplete="email"
+                         ${this._state === 'loading' ? 'disabled' : ''} />
+                  <button type="submit" ${this._state === 'loading' ? 'disabled' : ''}>
+                    ${this._state === 'loading' ? 'Subscribing…' : 'Subscribe'}
+                  </button>
+                </form>
+                ${this._error ? `<div class="error">${this._error}</div>` : ''}
+              `}
             </div>
-          ` : `
-            <form novalidate data-form>
-              <input type="email" required placeholder="you@email.com"
-                     aria-label="Email address" autocomplete="email"
-                     ${this._state === 'loading' ? 'disabled' : ''} />
-              <button type="submit" ${this._state === 'loading' ? 'disabled' : ''}>
-                ${this._state === 'loading' ? 'Subscribing…' : `Subscribe ${svg('arrowRight', 14)}`}
-              </button>
-            </form>
-            ${this._error ? `<div class="error">${this._error}</div>` : ''}
-            <div class="trust">
-              <span>${svg('check', 12)} No spam</span>
-              <span>${svg('check', 12)} Unsubscribe anytime</span>
-              <span>${svg('check', 12)} Research-backed only</span>
+            <div class="mail" aria-hidden="true">
+              <div class="mail-head"><img src="${BRAND_LOGO}" alt=""><span class="mail-from">Kygo Health</span><span class="mail-when">Monthly brief</span></div>
+              <img class="mail-cover" src="https://static.wixstatic.com/media/273a63_4c319b0df429425296d15711c577310b~mv2.png/v1/fill/w_720,h_184,al_c/c.png" alt="" loading="lazy">
+              <div class="mail-body">
+                <p class="mail-title">Most accurate sleep tracker? Oura vs Apple vs Fitbit vs Garmin vs Whoop</p>
+                <p class="mail-text">What the sleep lab studies found, and how far off your deep sleep number can be.</p>
+                <span class="mail-btn">Read the study</span>
+              </div>
             </div>
-          `}
+          </div>
         </section>
       `;
 
@@ -657,24 +643,59 @@
             this.render();
             return;
           }
-          this._error = '';
-          this._state = 'loading';
-          this.render();
-          // Detail must be plain-data only — Wix sends Custom Element
-          // events to Velo via postMessage / structured clone, which
-          // cannot serialize functions. The host (Wix Velo or other)
-          // flips state via setAttribute('state', 'success'|'idle').
-          this.dispatchEvent(new CustomEvent('subscribe', {
-            bubbles: true, composed: true,
-            detail: { email }
-          }));
-          // Fallback for non-Wix hosts that don't flip the state attr —
-          // assume success after 4s so the UI doesn't hang in "loading".
-          setTimeout(() => {
-            if (this._state === 'loading') { this._state = 'success'; this.render(); }
-          }, 4000);
+          this._subscribe(email);
         });
       }
+    }
+
+    // Native capture: POST { email, source } to the same-origin Velo endpoint
+    // and drive the UI straight from the HTTP response (200 → success). Also
+    // dispatch a `subscribe` document event so kygo-tracking.js mirrors
+    // email_subscribe → GA4 with the source param. Not medical advice, no PII
+    // leaves in the event beyond email/source (tracking.js never reads email).
+    _subscribe(email) {
+      const source = this.getAttribute('source') || 'blog-post';
+      const endpoint = this.getAttribute('endpoint') || '/_functions/subscribe';
+      this._error = '';
+      this._state = 'loading';
+      this.render();
+
+      clearTimeout(this._submitTimeout);
+      this._submitTimeout = setTimeout(() => {
+        if (this._state === 'loading') {
+          this._state = 'idle';
+          this._error = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
+          this.render();
+        }
+      }, 10000);
+
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source })
+      })
+        .then((res) => {
+          clearTimeout(this._submitTimeout);
+          if (res && res.ok) {
+            this._state = 'success';
+            this._error = '';
+            this.render();
+            this.dispatchEvent(new CustomEvent('subscribe', {
+              bubbles: true, composed: true,
+              detail: { email, source }
+            }));
+          } else {
+            this._state = 'idle';
+            this._error = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
+            this.render();
+          }
+        })
+        .catch(() => {
+          clearTimeout(this._submitTimeout);
+          this._state = 'idle';
+          this._error = "Hmm, that didn't go through. Please try again, or email support@kygo.app.";
+          this.render();
+        });
     }
   }
 
@@ -701,138 +722,131 @@
     constructor() { super(); this.attachShadow({ mode: 'open' }); }
 
     connectedCallback() {
+      ensureCta();
       this.render();
-      seoText(this, 'Download Kygo Health — evidence-first nutrition tracking connected to every wearable. Available free on iOS and Android. Works with Oura, Apple Health, Fitbit, Garmin, Whoop, and Health Connect.');
+      seoText(this, 'Kygo Health. Evidence-first nutrition tracking connected to every wearable. Start on the web at app.kygo.app, on iPhone, or on Android, with one account and one plan across all three. Works with Oura, Apple Health, Fitbit, Garmin, WHOOP, Polar, Google Health, and Health Connect.');
+    }
+
+    // Contextual default copy keyed to the post's category slug / tags / URL
+    // path, so the CTA speaks to the article the reader just finished. Wix may
+    // pass `category` (slug) or `tags`; we also sniff window.location.pathname.
+    _contextCopy() {
+      const cat  = (this.getAttribute('category') || this.getAttribute('tags') || '').toLowerCase();
+      const path = (window.location.pathname || '').toLowerCase();
+      const hay  = cat + ' ' + path;
+      const has  = (re) => re.test(hay);
+
+      if (has(/hrv|recovery|readiness|resting-heart|\bstress\b|whoop/)) {
+        return {
+          heading: 'Read the research.<br/><span class="hl">Track what moves YOUR HRV.</span>',
+          sub: 'Articles show you what the science says about HRV and recovery. Kygo shows you what your own body says: connect your wearable, log your meals, and see which habits actually move your numbers.',
+          hook: 'Find out which of your own habits moves your HRV, and by how many milliseconds.'
+        };
+      }
+      if (has(/sleep|\brem\b|deep-sleep|latency|insomnia|melatonin|circadian/)) {
+        return {
+          heading: 'Read the research.<br/><span class="hl">Find YOUR sleep disruptors.</span>',
+          sub: "Articles show you what the science says about sleep. Kygo shows you what your own body says: correlate your meals, caffeine, and alcohol with your sleep stages to find what's really keeping you up.",
+          hook: 'See which of your evenings cost you deep sleep, and what to change tonight.'
+        };
+      }
+      if (has(/calorie|accuracy|vo2|step-count|\bsensor\b|estimate|metabolism|tdee/)) {
+        return {
+          heading: 'Your wearable estimates.<br/><span class="hl">Kygo shows what the numbers mean.</span>',
+          sub: 'The numbers on your watch are estimates. Kygo connects them to what you actually eat, so you can see what those readings really mean for your energy, sleep, and recovery.',
+          hook: 'Turn the estimates on your wrist into changes you can act on this week.'
+        };
+      }
+      if (has(/nutrition|food|meal|diet|protein|supplement|caffeine|alcohol|sugar|carb/)) {
+        return {
+          heading: 'Read the research.<br/><span class="hl">Log meals in seconds, see the effect.</span>',
+          sub: 'Articles show you what the science says about nutrition. Kygo makes it personal: log what you eat in seconds and watch how it moves your sleep, energy, HRV, and recovery.',
+          hook: 'Log a week of meals and find the foods that are quietly costing you sleep and energy.'
+        };
+      }
+      return {
+        heading: 'Read the research.<br/><span class="hl">Live the results.</span>',
+        sub: 'Articles show you what the science says. Kygo shows you what your body says. Connect your wearable, log your meals, and see the personal correlations hiding in your own data.',
+        hook: 'Your own data already holds the answer. Kygo is what reads it back to you.'
+      };
     }
 
     render() {
-      const heading = this.getAttribute('heading') ||
-        'Read the research.<br/><span class="hl">Live the results.</span>';
-      const sub = this.getAttribute('subheading') ||
-        'Articles show you what the science says. Kygo shows you what your body says. Connect your wearable, log your meals, and see the personal correlations hiding in your own data.';
-      const iosUrl     = this.getAttribute('ios-url')     || APP_IOS;
-      const androidUrl = this.getAttribute('android-url') || APP_ANDROID;
-      const pill       = this.getAttribute('pill-text')   || 'iOS & Android';
+      const ctx = this._contextCopy();
+      const heading = this.getAttribute('heading') || 'Now test it on your own data';
+      const hook = (this.getAttribute('hook') || ctx.hook).replace(/"/g, '&quot;');
+      const slug = postSlug(this, 'end');
+      const G = "font-family:'Space Grotesk',sans-serif";
 
       this.shadowRoot.innerHTML = `
         <style>
           ${BASE_RESET}
           :host { ${CORE_TOKENS} background: #fff; display: block; }
-          .wrap { max-width: 1100px; margin: 0 auto; padding: 48px 20px; }
-          @media (min-width: 768px) { .wrap { padding: 72px 24px; } }
-
+          .wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px; }
+          @media (min-width: 768px) { .wrap { padding: 48px 24px; } }
           .promo {
-            background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
-            border-radius: 24px;
-            padding: 40px 24px;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 12px 32px rgba(15,23,42,0.25);
+            position: relative; overflow: hidden; border-radius: 20px; color: #fff;
+            padding: 22px 20px 0;
+            background: radial-gradient(300px 220px at 100% 100%, rgba(34,197,94,.22), transparent 70%), #0F172A;
           }
-          @media (min-width: 768px) { .promo { padding: 56px 40px; } }
-
-          .promo::before {
-            content: '';
-            position: absolute; top: -60px; right: -60px;
-            width: 220px; height: 220px; border-radius: 50%;
-            background: radial-gradient(circle, rgba(34,197,94,0.28) 0%, transparent 65%);
-            pointer-events: none;
+          .copy { position: relative; z-index: 1; }
+          .kicker { ${G}; font-size: 11.5px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: #6EE7A0; margin-bottom: 8px; }
+          h2 { font-size: 22px; font-weight: 700; line-height: 1.2; color: #fff; margin-bottom: 4px; }
+          .phone-crop { width: 246px; height: 236px; margin: 20px auto 0; overflow: hidden; }
+          .phone {
+            width: 300px; transform: scale(.82); transform-origin: top left;
+            padding: 11px; border-radius: 44px; background: #0F172A;
+            box-shadow: 0 44px 84px -34px rgba(0,0,0,.75), 0 0 0 1px rgba(255,255,255,.10);
           }
-          .inner { position: relative; text-align: center; }
-
-          .platform-pill {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: rgba(34,197,94,0.15);
-            color: var(--green);
-            border: 1px solid rgba(34,197,94,0.3);
-            padding: 5px 12px; border-radius: 9999px;
-            font-size: 12px; font-weight: 600;
-            margin-bottom: 18px;
+          @media (min-width: 768px) {
+            .promo { min-height: 292px; padding: 28px 32px; display: flex; align-items: center;
+              background: radial-gradient(420px 300px at 85% 110%, rgba(34,197,94,.28), transparent 70%), #0F172A; }
+            .copy { max-width: calc(100% - 300px); }
+            h2 { font-size: 26px; }
+            .phone-crop { position: absolute; right: 18px; top: 26px; margin: 0; height: auto; overflow: visible; }
           }
-          .platform-pill .d {
-            width: 6px; height: 6px; border-radius: 9999px;
-            background: var(--green); display: inline-block;
-          }
-
-          h2 {
-            font-size: 26px;
-            color: #fff; margin: 0 0 12px; line-height: 1.15;
-          }
-          @media (min-width: 768px) { h2 { font-size: 34px; } }
-          h2 .hl { color: var(--green); }
-
-          p {
-            font-size: 14px; line-height: 1.55;
-            color: rgba(255,255,255,0.7);
-            max-width: 420px; margin: 0 auto 22px;
-          }
-          @media (min-width: 768px) { p { font-size: 15px; max-width: 500px; } }
-
-          .btns {
-            display: flex; flex-direction: column; gap: 10px;
-            max-width: 340px; margin: 0 auto 22px;
-          }
-          @media (min-width: 520px) {
-            .btns { flex-direction: row; justify-content: center; max-width: none; }
-            .btn { min-width: 220px; }
-          }
-          .btn {
-            background: var(--green); color: #fff;
-            border: none; border-radius: 12px;
-            padding: 14px 16px;
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            font-weight: 700; font-size: 15px;
-            box-shadow: 0 8px 20px rgba(34,197,94,0.25);
-            transition: background 180ms ease, transform 180ms ease;
-          }
-          .btn:hover { background: var(--green-dark); transform: translateY(-1px); }
-          .btn svg { width: 18px; height: 18px; }
-
-          .works {
-            display: flex; align-items: center; justify-content: center;
-            gap: 10px; flex-wrap: wrap;
-          }
-          .works-label {
-            font-size: 11px; color: rgba(255,255,255,0.55); font-weight: 500;
-          }
-          .dots { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-          .wd {
-            width: 32px; height: 32px; border-radius: 8px;
-            background: rgba(255,255,255,0.08);
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden; flex-shrink: 0;
-            transition: background 150ms ease, transform 150ms ease;
-          }
-          .wd:hover { background: rgba(255,255,255,0.15); transform: scale(1.08); }
-          .wd img { width: 20px; height: 20px; object-fit: contain; border-radius: 4px; opacity: 0.85; }
-          .wd:hover img { opacity: 1; }
+          .scr { position: relative; height: 604px; border-radius: 34px; overflow: hidden; background: #F5F7FA; color: #0F172A; }
+          .notch { position: absolute; top: 9px; left: 50%; margin-left: -52px; width: 104px; height: 26px; border-radius: 99px; background: #0F172A; }
+          .s-head { background: #fff; padding: 42px 15px 10px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+          .s-title { ${G}; font-weight: 700; font-size: 17px; }
+          .s-day { justify-self: end; background: #22C55E; color: #fff; ${G}; font-weight: 700; font-size: 11px; padding: 5px 10px; border-radius: 999px; }
+          .s-tabs { background: #fff; display: flex; justify-content: center; gap: 18px; padding: 0 15px; border-bottom: 1px solid #F1F5F9; font-size: 11px; font-weight: 700; color: #94A3B8; }
+          .s-tabs span { padding: 8px 0 10px; }
+          .s-tabs .on { color: #0F172A; border-bottom: 2px solid #22C55E; }
+          .s-body { padding: 13px 14px; display: flex; flex-direction: column; gap: 12px; }
+          .s-src { font-size: 10.5px; font-weight: 600; color: #94A3B8; }
+          .s-card { background: #fff; border-radius: 16px; padding: 16px; box-shadow: 0 4px 14px rgba(15,23,42,.06); }
+          .s-cap { font-size: 9.5px; font-weight: 700; letter-spacing: .5px; color: #94A3B8; margin-bottom: 8px; }
+          .s-see { ${G}; font-weight: 700; font-size: 19px; line-height: 1.22; margin-bottom: 16px; }
+          .s-stats { display: flex; justify-content: space-between; border-top: 1px solid #F1F5F9; padding-top: 13px; }
+          .s-lbl { display: block; font-size: 9px; font-weight: 700; letter-spacing: .4px; color: #94A3B8; }
+          .s-val { ${G}; font-weight: 700; font-size: 15px; }
         </style>
         <section class="wrap" aria-labelledby="cta-heading">
           <div class="promo">
-            <div class="inner">
-              <div class="platform-pill"><span class="d"></span> ${pill}</div>
+            <div class="copy">
+              <p class="kicker">Kygo app</p>
               <h2 id="cta-heading">${heading}</h2>
-              <p>${sub}</p>
-              <div class="btns">
-                <a class="btn" href="${iosUrl}" target="_blank" rel="noopener">
-                  ${svg('apple', 18)} Download for iOS
-                </a>
-                <a class="btn" href="${androidUrl}" target="_blank" rel="noopener">
-                  ${svg('playstore', 18)} Download for Android
-                </a>
-              </div>
-              <div class="works">
-                <span class="works-label">Works with</span>
-                <div class="dots">
-                  ${WEARABLE_BADGES.map(w => `
-                    <span class="wd" title="${w.name}">
-                      <img src="${w.src}" alt="${w.name}" loading="lazy" />
-                    </span>
-                  `).join('')}
+              <kygo-cta theme="dark" align="left" slug="${slug}" surface="blog" hook="${hook}"
+                note="7-day free trial. Free plan on web or in the app. Cancel anytime."></kygo-cta>
+            </div>
+            <div class="phone-crop" aria-hidden="true"><div class="phone"><div class="scr">
+              <div class="notch"></div>
+              <div class="s-head"><svg viewBox="0 0 24 24" fill="none" stroke="#0F172A" stroke-width="2.4" style="width:17px;height:17px"><path d="M15 18l-6-6 6-6"/></svg><span class="s-title">HRV</span><span class="s-day">Day 52</span></div>
+              <div class="s-tabs"><span class="on">Helping <span style="color:#16A34A">3</span></span><span>Hurting <span style="color:#EF4444">2</span></span><span>Developing 54</span></div>
+              <div class="s-body">
+                <span class="s-src">Data from Oura &middot; Apple Health</span>
+                <div class="s-card">
+                  <div class="s-cap">WHAT WE SEE</div>
+                  <div class="s-see">Magnesium at night is your <span style="color:#22C55E">biggest boost</span> to HRV.</div>
+                  <div class="s-stats">
+                    <span><span class="s-lbl">TRACKING</span><span class="s-val">47 days</span></span>
+                    <span><span class="s-lbl">AVERAGE</span><span class="s-val">34 ms</span></span>
+                    <span><span class="s-lbl">RANGE</span><span class="s-val">18&ndash;58</span></span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </div></div></div>
           </div>
         </section>
       `;
@@ -854,16 +868,17 @@
   class KygoBlogPostInlineCta extends HTMLElement {
     constructor() { super(); this.attachShadow({ mode: 'open' }); }
 
-    connectedCallback() { this.render(); }
+    connectedCallback() { ensureCta(); this.render(); }
 
     render() {
       const heading = this.getAttribute('heading') ||
         'See how your food affects your <span class="hl">sleep, energy, and recovery</span>';
       const sub = this.getAttribute('subheading') ||
-        'Kygo connects your wearable data with AI-powered nutrition tracking—then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.';
-      const pill       = this.getAttribute('pill-text')   || 'Free Forever Plan';
-      const iosUrl     = this.getAttribute('ios-url')     || APP_IOS;
-      const androidUrl = this.getAttribute('android-url') || APP_ANDROID;
+        'Kygo connects your wearable data with AI-powered nutrition tracking, then surfaces the personal correlations between what you eat and how you sleep, recover, and perform.';
+      const pill = this.getAttribute('pill-text') || 'Free 7-Day Trial';
+      const hook = (this.getAttribute('hook') ||
+        'Keep reading, then let your own data answer the same question for you.').replace(/"/g, '&quot;');
+      const slug = postSlug(this, 'mid');
 
       this.shadowRoot.innerHTML = `
         <style>
@@ -939,23 +954,12 @@
           .trust span { display: inline-flex; align-items: center; gap: 4px; }
           .trust svg { width: 11px; height: 11px; color: var(--green); }
         </style>
-        <aside class="card" role="complementary" aria-label="Download the Kygo app">
+        <aside class="card" role="complementary" aria-label="Start using Kygo">
           <span class="pill">${pill}</span>
           <h3>${heading}</h3>
           <p>${sub}</p>
-          <div class="btns">
-            <a class="btn ios" href="${iosUrl}" target="_blank" rel="noopener">
-              ${svg('apple', 16)} Download for iOS
-            </a>
-            <a class="btn android" href="${androidUrl}" target="_blank" rel="noopener">
-              ${svg('playstore', 16)} Download for Android
-            </a>
-          </div>
-          <div class="trust">
-            <span>${svg('check', 11)} 2-min setup</span>
-            <span>${svg('check', 11)} Free forever plan</span>
-            <span>${svg('check', 11)} No credit card</span>
-          </div>
+          <kygo-cta theme="dark" slug="${slug}" surface="blog" hook="${hook}"
+            note="Free plan available on web or in the app. Save 58% on yearly. Cancel anytime."></kygo-cta>
         </aside>
       `;
     }
@@ -1013,31 +1017,33 @@
  *    });
  *
  *    // ------------------------------------------------------
- *    // 2. Related posts (uses the posts manually picked in the Wix
- *    //    Blog post editor under Settings → Advanced → Choose Posts).
- *    //    Manual picks are exposed on $w('#post1').getPost() as
- *    //    `relatedPostIds`. Falls back to 3 most-recent posts when
- *    //    no manual picks are set.
- *    //    NOTE: #post1 is the default ID of the Wix Blog Post widget.
- *    //    If your site uses a different ID, update it below.
+ *    // 2. Related posts — the posts you hand-pick per article in the
+ *    //    Wix Blog post settings ("Related Posts").
+ *    //
+ *    //    IMPORTANT: those picks are NOT on $w('#post1').getPost()
+ *    //    (the on-page Blog widget returns a limited post object with
+ *    //    no related-posts data). They live in the Blog/Posts
+ *    //    collection as the `relatedPosts` field, which is a
+ *    //    MULTI-REFERENCE — so we must look the current post up in the
+ *    //    collection by slug and `.include('relatedPosts')` to hydrate
+ *    //    the referenced posts. Order is preserved as picked.
+ *    //
+ *    //    Falls back to the 3 most-recent posts only when an article
+ *    //    has no hand-picked related posts.
  *    // ------------------------------------------------------
  *    try {
- *      const currentPost = await $w('#post1').getPost();
- *      const relatedIds = (currentPost && currentPost.relatedPostIds) || [];
+ *      const curRes = await wixData.query('Blog/Posts')
+ *        .eq('slug', currentSlug)
+ *        .include('relatedPosts')   // hydrate the multi-reference field
+ *        .limit(1)
+ *        .find();
  *
- *      let items = [];
- *      if (relatedIds.length > 0) {
- *        const relRes = await wixData.query('Blog/Posts')
- *          .hasSome('_id', relatedIds)
- *          .find();
- *        // Preserve the order the author picked
- *        items = relatedIds
- *          .map(id => relRes.items.find(p => p._id === id))
- *          .filter(Boolean);
- *      }
+ *      const currentPost = curRes.items[0];
+ *      // `relatedPosts` is an array of full Blog/Posts items (your picks)
+ *      let items = (currentPost && currentPost.relatedPosts) || [];
  *
- *      // Fallback: latest 3 (excluding current). No sort field — Wix's
- *      // default order is newest-first and firstPublishedDate errors.
+ *      // Fallback: latest 3 (excluding current). Wix's default order is
+ *      // newest-first; the collection date field is `publishedDate`.
  *      if (items.length === 0) {
  *        const recent = await wixData.query('Blog/Posts').limit(6).find();
  *        items = recent.items
@@ -1058,7 +1064,7 @@
  *          slug: p.slug,
  *          excerpt: p.excerpt || '',
  *          coverImage: img,
- *          publishedDate: p.firstPublishedDate || p.lastPublishedDate,
+ *          publishedDate: p.publishedDate || p.lastPublishedDate,
  *          category: '',
  *          readTime: p.timeToRead || Math.max(1, Math.ceil(wordCount / 200)),
  *          views: p.viewCount || null
@@ -1113,7 +1119,8 @@
  *         from Wix — we don't touch them)
  *      -- OPTIONAL: inside the post Rich Content, drop an HTML iframe
  *         block with <kygo-blog-post-inline-cta> for mid-article CTAs
- *   4. <kygo-blog-post-related>     — 3 recent posts on white
+ *   4. <kygo-blog-post-related>     — hand-picked related posts on white
+ *                                     (falls back to 3 recent posts)
  *   5. <kygo-blog-subscribe>        — grey band, keeps rhythm
  *   6. <kygo-blog-post-cta>         — big dark app CTA on white
  *   7. Sitewide FOOTER
