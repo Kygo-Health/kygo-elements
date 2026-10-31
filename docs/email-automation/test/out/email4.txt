@@ -1,0 +1,19 @@
+Hi,
+
+Say your HRV drops three nights in a row. Even on the most accurate HRV tracker in the report, Oura Ring 4 at 5.96% off a chest-strap ECG (Dial 2025, independent, 13 adults over 139 nights), the number only tells you it dropped. It can't tell you whether it was the afternoon coffee, the second glass of wine, or the short night before.
+
+That's where most people get stuck. You suspect something in your diet is affecting how you feel, but you can't figure out what.
+
+The report makes one point that helps here. A device that's a little off still shows you what changed, because you compare the same sensor with itself, night after night. Trends work even when single readings don't.
+
+Kygo lines up what you eat with your sleep, HRV and resting heart rate, and shows which foods and habits move your numbers. Food logging is free.
+
+Start logging on the web:
+https://www.kygo.app/_functions/go?id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&e=4&l=e4
+
+Ryan
+
+________
+
+Kygo Health LLC, Jersey City NJ
+Unsubscribe: https://script.google.com/macros/s/TESTDEPLOY/exec?a=u&id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

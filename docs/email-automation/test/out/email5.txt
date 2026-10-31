@@ -1,0 +1,23 @@
+Hi,
+
+If you read the medal table and realized your device is strong on some metrics and weak on others, you're reading it right. Oura Ring wins HRV. Garmin wins steps. Apple Watch wins exercise heart rate.
+
+No brand wins every metric. Kygo connects them all and uses the most accurate source for each.
+
+It connects Oura, Apple Health, Health Connect, Fitbit, Garmin, WHOOP and Polar at the same time, picks the most accurate source for each metric automatically, then correlates those numbers with what you eat. If you only wear one device, you still get the food side.
+
+Food logging is free, and Kygo Pro comes with a 7-day free trial.
+
+Start your free trial:
+iPhone: https://www.kygo.app/_functions/go?id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&e=5&l=e5-ios
+Android: https://www.kygo.app/_functions/go?id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&e=5&l=e5-android
+Web: https://www.kygo.app/_functions/go?id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&e=5&l=e5-web
+
+Thanks for reading the report.
+
+Ryan
+
+________
+
+Kygo Health LLC, Jersey City NJ
+Unsubscribe: https://script.google.com/macros/s/TESTDEPLOY/exec?a=u&id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

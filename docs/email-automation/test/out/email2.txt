@@ -1,0 +1,30 @@
+Hi,
+
+Most people buy a wearable for one reason, then trust it for everything. The rankings show why that doesn't hold up. Here's the podium for the ten ranked metrics:
+
+Sleep stages: Oura, Apple Watch, Fitbit / Google
+Sleep timing: Oura, Fitbit / Google, Apple Watch
+HRV: Oura, WHOOP, Garmin
+Resting heart rate: Oura, Polar, WHOOP
+Exercise heart rate: Apple Watch, Garmin, Fitbit / Google
+Blood oxygen: Apple Watch, Samsung, Garmin
+Steps: Garmin, Apple Watch, Samsung
+Calories: Fitbit / Google, Samsung, Apple Watch (no brand came within 9% on the max treadmill test)
+VO2 max: Garmin, Fitbit / Google, Apple Watch
+Breathing rate: Fitbit / Google, WHOOP, no qualifying third
+
+Skin temperature isn't ranked, because no brand's sensor has an independent test against a thermometer.
+
+Oura takes all four overnight golds and places on nothing else. Apple places on seven metrics, more than any brand, without a sleep gold.
+
+No brand wins every metric. Kygo connects them all and uses the most accurate source for each.
+
+See the figures behind every placing:
+https://www.kygo.app/_functions/go?id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&e=2&l=e2
+
+Ryan
+
+________
+
+Kygo Health LLC, Jersey City NJ
+Unsubscribe: https://script.google.com/macros/s/TESTDEPLOY/exec?a=u&id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

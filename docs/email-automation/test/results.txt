@@ -19,4 +19,4 @@ PASS  copy, subjects, preview text, links and UTMs match the design canvas (Oct 
 PASS  Summary formulas cover per-email sent, unique clickers, click rate, unsubscribes and totals by source
 
 19/19 passed
-Run at 2026-10-26T15:14:29.925Z on Node v22.23.4
+Run at 2026-10-31T18:00:27.324Z on Node v22.23.4

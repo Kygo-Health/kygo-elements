@@ -626,7 +626,14 @@ async function test(name, fn) {
       for (const p of ps.slice(2)) assert.ok(text.includes(p), `email ${n} is missing canvas copy: "${p}"`);
       for (const label of [...canvas.matchAll(/min-height: 48px[^>]*>([^<]+)<\/a>/g)].map((m) => m[1].trim())) assert.ok(text.includes(label), `email ${n} button "${label}"`);
       // every canvas destination (except the placeholder unsubscribe) is a tracked key with the same URL
-      const hrefs = [...canvas.matchAll(/href="(https:\/\/[^"]+)"/g)].map((m) => decodeEntities(m[1])).filter((h) => !/fonts\.googleapis|\/unsubscribe$/.test(h));
+      // The canvas predates two live changes: web buttons go to app.kygo.app/start, and the
+      // email 5 store buttons go through Tenjin's Email channel links instead of /iOSemail and
+      // /androidemail (which 404). Map the canvas hrefs to those live destinations.
+      const live = (h) => h
+        .replace(/^https:\/\/app\.kygo\.app\?/, 'https://app.kygo.app/start?')
+        .replace(/^https:\/\/kygo\.app\/iOSemail\?.*$/, 'https://track.tenjin.com/v0/click/cGxLgiFXo568zuRagtaj4P?site_id=sowa-2026&creative_name=email-5-ios')
+        .replace(/^https:\/\/kygo\.app\/androidemail\?.*$/, 'https://track.tenjin.com/v0/click/dqOjxxwQjbt0R8i6TJRLpO?site_id=sowa-2026&creative_name=email-5-android');
+      const hrefs = [...canvas.matchAll(/href="(https:\/\/[^"]+)"/g)].map((m) => live(decodeEntities(m[1]))).filter((h) => !/fonts\.googleapis|\/unsubscribe$/.test(h));
       const keys = [...html.matchAll(/_functions\/go\?id=a{32}&amp;e=(\d)&amp;l=([\w-]+)/g)].map((m) => { assert.strictEqual(m[1], String(n)); return app.ctx.LINKS[m[2]]; });
       deq(keys.sort(), hrefs.sort(), `email ${n} link destinations`);
       for (const src of [...canvas.matchAll(/data-email-src="([^"]+)"/g)].map((m) => m[1])) assert.ok(html.includes(`src="${src}"`), `email ${n} image ${src}`);

@@ -204,12 +204,12 @@ const NURTURE_LINKS = {
   'e2': 'https://www.kygo.app/tools/wearable-accuracy' + NURTURE_UTM + 'email-2',
   'e3-img': 'https://www.kygo.app/best-wearables' + NURTURE_UTM + 'email-3-image',
   'e3': 'https://www.kygo.app/best-wearables' + NURTURE_UTM + 'email-3',
-  'e4-img': 'https://app.kygo.app' + NURTURE_UTM + 'email-4-image',
-  'e4': 'https://app.kygo.app' + NURTURE_UTM + 'email-4',
-  'e5-img': 'https://app.kygo.app' + NURTURE_UTM + 'email-5-image',
-  'e5-ios': 'https://kygo.app/iOSemail' + NURTURE_UTM + 'email-5-ios',
-  'e5-android': 'https://kygo.app/androidemail' + NURTURE_UTM + 'email-5-android',
-  'e5-web': 'https://app.kygo.app' + NURTURE_UTM + 'email-5-web'
+  'e4-img': 'https://app.kygo.app/start' + NURTURE_UTM + 'email-4-image',
+  'e4': 'https://app.kygo.app/start' + NURTURE_UTM + 'email-4',
+  'e5-img': 'https://app.kygo.app/start' + NURTURE_UTM + 'email-5-image',
+  'e5-ios': 'https://track.tenjin.com/v0/click/cGxLgiFXo568zuRagtaj4P?site_id=sowa-2026&creative_name=email-5-ios',
+  'e5-android': 'https://track.tenjin.com/v0/click/dqOjxxwQjbt0R8i6TJRLpO?site_id=sowa-2026&creative_name=email-5-android',
+  'e5-web': 'https://app.kygo.app/start' + NURTURE_UTM + 'email-5-web'
 };
 // Longest a click waits for the log before redirecting. The log request keeps going after.
 const CLICK_WAIT_MS = 1500;

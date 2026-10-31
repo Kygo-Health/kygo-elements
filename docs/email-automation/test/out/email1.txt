@@ -1,0 +1,19 @@
+Hi,
+
+Here's the report you asked for.
+
+Download the State of Wearable Accuracy 2026:
+https://www.kygo.app/_functions/go?id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&e=1&l=e1
+
+A quick way to read it: start with the verdict on page 7, find your own brand, then jump to the metrics you actually use. Every figure comes from the study's own tables, and studies a brand paid for are marked †.
+
+The finding I keep coming back to is how much sleep trackers miss when you're awake in bed. Apple Watch Series 8 placed 2nd on sleep stages, yet caught 52.4% of awake time in a lab study (Robbins 2024, Oura-funded). Garmin Forerunner 245 Music caught 27% and counted 43.8 extra minutes of sleep. If your sleep total looks generous, that's a likely reason.
+
+Over the next two weeks I'll send four short follow-ups: the full medal table, a pick by goal if you're shopping, why an accurate number is only half the answer, and what Kygo does with yours.
+
+Ryan
+
+________
+
+Kygo Health LLC, Jersey City NJ
+Unsubscribe: https://script.google.com/macros/s/TESTDEPLOY/exec?a=u&id=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
