@@ -47,6 +47,9 @@
  * placement with its own campaign, and CAMPAIGN_STORE_LINKS (see __kygoAttr)
  * for a paid campaign that lands on a shared page: a session whose utm_campaign
  * is listed there gets that campaign's Tenjin links on every store button.
+ * Every Tenjin link on the site also leaves tagged with site_id (the page)
+ * and creative_name (the session's utm_campaign, or "organic"), so Tenjin
+ * can split installs by page and campaign.
  *
  * Layout: all three platforms are always on screen. The visitor's own device
  * takes the filled primary button and leads; the other two follow as outline
@@ -164,16 +167,32 @@ const __kygoAttr = window.KygoAttribution || (function () {
     },
   };
 
-  /** Maps a default Tenjin store link to the session campaign's own link.
-   *  Anything else, including a placement that already set its own campaign
-   *  link, comes back untouched. */
+  /** Rewrites a Tenjin store link as it is pressed. A default Website-channel
+   *  link is first swapped for the session campaign's own link (a placement
+   *  that set its own campaign link keeps it). Then every Tenjin link, default
+   *  or not, gets the two click dimensions Tenjin reports installs by:
+   *    site_id       the kygo.app page the button was pressed on
+   *    creative_name the session's inbound utm_campaign, or "organic"
+   *  Tenjin carries them through to the install (on Android inside the Play
+   *  referrer it builds itself, which is why the store URL is never given a
+   *  referrer of our own). Anything not on track.tenjin.com comes back
+   *  untouched. Rebuilt from the bare link on every press, so it is idempotent
+   *  and a link reused after a Wix page change reports the current page. */
   function storeUrl(href) {
-    const plat = href === TENJIN_IOS ? 'ios' : href === TENJIN_ANDROID ? 'android' : null;
-    if (!plat) return href;
+    let u;
+    try { u = new URL(href); } catch (e) { return href; }
+    if (u.origin !== 'https://track.tenjin.com' || u.pathname.indexOf('/v0/click/') !== 0) return href;
+    const base = u.origin + u.pathname;
+    const plat = base === TENJIN_IOS ? 'ios' : base === TENJIN_ANDROID ? 'android' : null;
     const a = capture();
     const camp = a.utm && a.utm.utm_campaign ? String(a.utm.utm_campaign).toLowerCase() : '';
-    const row = camp && Object.prototype.hasOwnProperty.call(CAMPAIGN_STORE_LINKS, camp) ? CAMPAIGN_STORE_LINKS[camp] : null;
-    return (row && row[plat]) || href;
+    const row = plat && camp && Object.prototype.hasOwnProperty.call(CAMPAIGN_STORE_LINKS, camp) ? CAMPAIGN_STORE_LINKS[camp] : null;
+    const out = new URL((row && row[plat]) || base);
+    let path = '/';
+    try { path = page().location.pathname || '/'; } catch (e) { /* keep root */ }
+    out.searchParams.set('site_id', path.slice(0, 100));
+    out.searchParams.set('creative_name', (camp || 'organic').slice(0, 100));
+    return out.toString();
   }
 
   // Rewrite an app or store link the moment it is pressed, wherever it lives
@@ -285,7 +304,8 @@ class KygoCta extends HTMLElement {
    *  JSON-LD and nowhere else. Overridable per placement via the ios-link /
    *  android-link attributes, for a campaign with its own Tenjin link. A
    *  default link is swapped at press time for a paid session's campaign link
-   *  (KygoAttribution.storeUrl / CAMPAIGN_STORE_LINKS). */
+   *  (KygoAttribution.storeUrl / CAMPAIGN_STORE_LINKS), and every store link
+   *  is tagged with site_id / creative_name for Tenjin as it is pressed. */
   get _iosUrl() { return this._getSetting('ios-link', TENJIN_IOS); }
 
   get _androidUrl() { return this._getSetting('android-link', TENJIN_ANDROID); }

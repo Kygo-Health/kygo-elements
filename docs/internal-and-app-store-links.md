@@ -87,6 +87,14 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 > |---|---|---|---|
 > | `deep-sleep-post` | Reddit Ad deep-sleep-post - iOS / - Android | `https://track.tenjin.com/v0/click/gFqSqqW0D7o69kO5yaV7k1` | `https://track.tenjin.com/v0/click/eQRLQj5018oTQjwGo72WqW` |
 >
+> **Page + campaign on every install (2026-10-31).** The same press listener also tags every
+> Tenjin link on the site (default, campaign or per-placement) with `site_id` = the kygo.app path
+> the button was pressed on and `creative_name` = the session's `utm_campaign` (lowercased) or
+> `organic`. Tenjin reports installs by both (Website channel -> breakdown by site / creative). On
+> Android Tenjin writes them into the Play `referrer` it builds, so never add a `referrer` (or an
+> Apple `ct`) of our own to a store link: it would replace Tenjin's click id, and Tenjin's iOS
+> redirect drops query params before the App Store anyway.
+>
 > A short-lived Wix embed ("Kygo Store Link Attribution", `69519f9b-…`) that sent tagged
 > sessions straight to the stores, bypassing Tenjin, was disabled the same day in favour of this.
 >
