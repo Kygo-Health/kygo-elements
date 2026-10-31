@@ -20,16 +20,32 @@ export async function post_subscribe(request) {
     return badRequest({ headers: cors(), body: { error: 'invalid email' } });
   }
 
+  const row = { email, source, subscribedAt: new Date() };
+  // A sign-up that arrives without a source still gets 'unknown', plus a
+  // sourceHint naming the page that sent it (referer host + path, no query
+  // string, so no utm values or addresses), so the surface can be found.
+  if (!body.source) row.sourceHint = sourceHint(request);
+
   try {
-    const inserted = await wixData.insert('Subscribers', {
-      email,
-      source,
-      subscribedAt: new Date()
-    }, { suppressAuth: true });
+    const inserted = await wixData.insert('Subscribers', row, { suppressAuth: true });
     return ok({ headers: cors(), body: { ok: true, id: inserted._id } });
   } catch (err) {
     return serverError({ headers: cors(), body: { error: String(err) } });
   }
+}
+
+function sourceHint(request) {
+  const h = (request && request.headers) || {};
+  const pick = (k) => String(h[k] || h[k.toLowerCase()] || '');
+  let where = '';
+  try {
+    const u = new URL(pick('referer'));
+    where = u.host + u.pathname;
+  } catch (e) {
+    where = pick('origin') || 'no-referer';
+  }
+  const type = pick('content-type').split(';')[0];
+  return (where + (type ? ' ' + type : '')).replace(/[^\w\-.\/: ]/g, '').slice(0, 120);
 }
 
 export function options_subscribe() {

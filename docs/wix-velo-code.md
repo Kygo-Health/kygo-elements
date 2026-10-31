@@ -237,6 +237,13 @@ export async function post_subscribe(request) {
 > two snippet changes (footer strip + the site-wide `kygo-inline-subscribe.js` loader in the GA4
 > head snippet), (d) re-point the tool/blog embeds at the new commit.
 
+### `backend/http-functions.js` `post_subscribe` sourceHint (2026-10-31, pending paste)
+`docs/email-automation/http-functions.js` (copied to `velo/http-functions.js`) is the live file
+(post_subscribe, options_subscribe, get_amazonPicks, get_go) plus one change: a row whose POST has
+no `source` still gets `source: 'unknown'` and also a `sourceHint` (referer host + path and content
+type, no query string). Wix adds the `sourceHint` field to `Subscribers` on the first such insert.
+See `docs/fixes-and-issues.md` #SUB1.
+
 ### `backend/data.js` + `backend/http-functions.js` `get_go` — PENDING (SOWA nurture emails, built 2026-10-26, not deployed)
 `Subscribers_afterInsert` POSTs report-* sign-ups `{secret, email, source, createdAt}` to the Apps Script
 nurture web app; `GET /_functions/go?id=&e=&l=` 302-redirects nurture-email links to a fixed key map and logs

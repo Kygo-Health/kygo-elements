@@ -1,4 +1,4 @@
-import { ok, badRequest, serverError } from 'wix-http-functions';
+import { ok, badRequest, serverError, notFound, response } from 'wix-http-functions';
 import wixData from 'wix-data';
 import { getSecret } from 'wix-secrets-backend';
 import { fetch } from 'wix-fetch';
@@ -20,16 +20,32 @@ export async function post_subscribe(request) {
     return badRequest({ headers: cors(), body: { error: 'invalid email' } });
   }
 
+  const row = { email, source, subscribedAt: new Date() };
+  // A sign-up that arrives without a source still gets 'unknown', plus a
+  // sourceHint naming the page that sent it (referer host + path, no query
+  // string, so no utm values or addresses), so the surface can be found.
+  if (!body.source) row.sourceHint = sourceHint(request);
+
   try {
-    const inserted = await wixData.insert('Subscribers', {
-      email,
-      source,
-      subscribedAt: new Date()
-    }, { suppressAuth: true });
+    const inserted = await wixData.insert('Subscribers', row, { suppressAuth: true });
     return ok({ headers: cors(), body: { ok: true, id: inserted._id } });
   } catch (err) {
     return serverError({ headers: cors(), body: { error: String(err) } });
   }
+}
+
+function sourceHint(request) {
+  const h = (request && request.headers) || {};
+  const pick = (k) => String(h[k] || h[k.toLowerCase()] || '');
+  let where = '';
+  try {
+    const u = new URL(pick('referer'));
+    where = u.host + u.pathname;
+  } catch (e) {
+    where = pick('origin') || 'no-referer';
+  }
+  const type = pick('content-type').split(';')[0];
+  return (where + (type ? ' ' + type : '')).replace(/[^\w\-.\/: ]/g, '').slice(0, 120);
 }
 
 export function options_subscribe() {
@@ -186,4 +202,64 @@ export async function get_amazonPicks(request) {
     if (cache.items) return ok({ headers, body: { updated: new Date(cache.at).toISOString(), items: cache.items, stale: true } });
     return serverError({ headers, body: { error: 'amazon_unavailable' } });
   }
+}
+
+// ── State of Wearable Accuracy nurture emails: tracked links ───────────
+// GET https://www.kygo.app/_functions/go?id=<row token>&e=<email 1-5>&l=<link key>
+// Every link in the nurture emails comes through here. Only the fixed keys below can be
+// reached, so this is never an open redirect. The click is logged to the Apps Script web app
+// (Wix secrets SOWA_NURTURE_URL and SOWA_NURTURE_SECRET), then a real 302 sends the reader to
+// the destination with its UTM parameters unchanged. Keep NURTURE_LINKS identical to LINKS
+// in the Apps Script Code.gs.
+
+const NURTURE_UTM = '?utm_source=email&utm_medium=nurture&utm_campaign=sowa-2026&utm_content=';
+const NURTURE_LINKS = {
+  'e1-img': 'https://www.kygo.app/report-download' + NURTURE_UTM + 'email-1-image',
+  'e1': 'https://www.kygo.app/report-download' + NURTURE_UTM + 'email-1',
+  'e2-img': 'https://www.kygo.app/tools/wearable-accuracy' + NURTURE_UTM + 'email-2-image',
+  'e2': 'https://www.kygo.app/tools/wearable-accuracy' + NURTURE_UTM + 'email-2',
+  'e3-img': 'https://www.kygo.app/best-wearables' + NURTURE_UTM + 'email-3-image',
+  'e3': 'https://www.kygo.app/best-wearables' + NURTURE_UTM + 'email-3',
+  'e4-img': 'https://app.kygo.app/start' + NURTURE_UTM + 'email-4-image',
+  'e4': 'https://app.kygo.app/start' + NURTURE_UTM + 'email-4',
+  'e5-img': 'https://app.kygo.app/start' + NURTURE_UTM + 'email-5-image',
+  'e5-ios': 'https://track.tenjin.com/v0/click/cGxLgiFXo568zuRagtaj4P?site_id=sowa-2026&creative_name=email-5-ios',
+  'e5-android': 'https://track.tenjin.com/v0/click/dqOjxxwQjbt0R8i6TJRLpO?site_id=sowa-2026&creative_name=email-5-android',
+  'e5-web': 'https://app.kygo.app/start' + NURTURE_UTM + 'email-5-web'
+};
+// Longest a click waits for the log before redirecting. The log request keeps going after.
+const CLICK_WAIT_MS = 1500;
+
+export async function get_go(request) {
+  const q = request.query || {};
+  const key = String(q.l || '');
+  const e = String(q.e || '');
+  const id = String(q.id || '');
+  const dest = Object.prototype.hasOwnProperty.call(NURTURE_LINKS, key) ? NURTURE_LINKS[key] : null;
+  if (!dest || !/^[1-5]$/.test(e) || key.charAt(1) !== e) {
+    return notFound({
+      headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' },
+      body: '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Link not found</title>'
+        + '<p style="font-family:sans-serif;margin:48px auto;max-width:520px;padding:0 20px">That link is not recognized. '
+        + '<a href="https://www.kygo.app/">Go to kygo.app</a></p>'
+    });
+  }
+  if (/^[a-f0-9]{32}$/.test(id)) {
+    const log = logNurtureClick(id, e, key).catch((err) => {
+      console.error('SOWA click log failed:', err && err.message ? err.message : String(err));
+    });
+    await Promise.race([log, new Promise((resolve) => setTimeout(resolve, CLICK_WAIT_MS))]);
+  }
+  return response({ status: 302, headers: { Location: dest, 'Cache-Control': 'no-store' } });
+}
+
+async function logNurtureClick(id, e, key) {
+  const url = await getSecret('SOWA_NURTURE_URL');
+  const secret = await getSecret('SOWA_NURTURE_SECRET');
+  const res = await fetch(url, {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ secret, action: 'click', id, e, l: key })
+  });
+  if (!res.ok) throw new Error('Apps Script HTTP ' + res.status);
 }

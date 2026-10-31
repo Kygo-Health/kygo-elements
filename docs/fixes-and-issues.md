@@ -7,6 +7,36 @@
 > Severity: **P1** = visibly broken in prod · **P2** = broken/meaningful · **P3** = polish ·
 > **Closed** = QA confirmed fine / not a bug · **Needs input** = blocked on you.
 
+## Tracking fixes 2026-10-31
+
+- **#ATT1 RESOLVED (2026-10-31) P1: blog app cards lost the visitor's attribution.** In a Wix Blog
+  "HTML code" iframe `KygoAttribution` read the frame's own window (no utm, no referrer), so a paid
+  or Reddit-organic visitor's press on `<kygo-app-card>` left with the default Website links and
+  `creative_name=app-card-<variant>-<position>`. Fix: `kygo-cta.js` sends `{kygo:'embed', type:'hello'}`
+  to `window.top` when framed cross-origin and adopts the reply with the new
+  `KygoAttribution.adopt(attr)`; `kygo-tracking.js` adds `reddit` (sanitised landing path) to the
+  `attr` reply. Tested with a two-origin Playwright harness (organic, paid, Reddit, a sibling frame
+  and malformed messages ignored, late reply, web link utm, GA4 classification).
+- **#SUB1 OPEN P2: Subscribers rows with source `unknown` (4 of 17 since Oct 25: Oct 25 21:10,
+  Oct 28 22:08, Oct 29 20:49, Oct 31 15:51 UTC).** All four carry `subscribedAt`, so they came
+  through `post_subscribe` with no `source` in the body. Every surface in this repo sends one:
+  `kygo-report-card` (`report-<surface>-<slug>`, both the CORS POST and its no-cors fallback carry
+  the same JSON body), `kygo-report-landing` (detail `report-landing`), `kygo-blog-subscribe`
+  (`blog-post`), the live footer (`footer`, checked in the served HTML), `kygo-inline-subscribe`
+  (was a bare `tool` without an attribute; now `tool-<last path segment>`). So the writer is Wix-side
+  code this repo cannot read. Candidates, most likely first: (1) the `/report-download` page code
+  (the Oct 31 unknown row lands 12 s after a `report-tool-wearable-accuracy` row, and that card
+  redirects to `/report-download` 0.5 s after the POST); (2) the `/state-of-wearable-accuracy`
+  page code from the library hand-off (built Oct 25, the day of the first unknown row); (3) the blog
+  post page code, if the retired `$w('#kygoSubscribe')` handler or a variant of it is still there;
+  (4) a direct POST to the public endpoint from outside the site. To close it: paste the backend
+  (`docs/email-automation/http-functions.js`, now also mirrored to `velo/http-functions.js`), which
+  keeps the `unknown` fallback and adds a `sourceHint` field (referer host + path, content type, no
+  query string, no address) on source-less rows; the next unknown row then names its page. Also
+  search the Wix Code panel (all pages, Ctrl/Cmd+Shift+F) for `_functions/subscribe` and
+  `Subscribers`: any hit whose body has no `source` is the culprit; add the page's own source
+  (`report-download`, `report-landing`, `blog-post`).
+
 ## 🆕 SEO audit 2026-10-14 — see `docs/seo-audit-2026-10.md`
 
 - **✅ RESOLVED (2026-10-14) P1 — duplicate + conflicting FAQ JSON-LD.** Wix panel synced + published;

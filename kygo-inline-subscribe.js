@@ -17,7 +17,7 @@
  *
  * Attributes:
  *   source   - conversion source string written to CMS + GA4 (e.g.
- *              "tool-wearable-accuracy"). Default "tool".
+ *              "tool-wearable-accuracy"). Default tool-<last path segment>.
  *   variant  - "factors" | "comparison" — selects the family pitch copy.
  *   pitch    - explicit pitch override (wins over `variant`).
  *   heading  - optional short lead-in shown bold before the pitch.
@@ -87,8 +87,16 @@
       return PITCH[variant] || PITCH.comparison;
     }
 
+    /** The Subscribers source. A placement without its own source attribute
+     *  still gets a specific one, tool-<last path segment> (for example
+     *  tool-calories-in-anything), never a bare "tool". */
     _source() {
-      return this.getAttribute('source') || 'tool';
+      const own = (this.getAttribute('source') || '').trim();
+      if (own) return own.slice(0, 60);
+      let seg = '';
+      try { seg = location.pathname.split('/').filter(Boolean).pop() || ''; } catch (e) { /* no path */ }
+      seg = seg.toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+      return ('tool-' + (seg || 'page')).slice(0, 60);
     }
 
     render() {

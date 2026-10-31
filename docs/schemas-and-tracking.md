@@ -222,8 +222,12 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 **`email_subscribe` source taxonomy** (email-capture pass, spec 24). Every subscribe form sets
 `detail.source`, which `kygo-tracking.js` copies to the GA4 `source` param, and the Velo endpoint
 writes to the `Subscribers.source` field — the two always match. Values:
-`blog-post` (blog post template), `report-landing` (State of Wearable Accuracy landing page, via page code), `footer` (site-wide footer strip), and `tool-<name>` — one per
-tool, e.g. `tool-wearable-accuracy`, `tool-hrv-factors`, `tool-oura-ring-comparison`. The event
+`blog-post` (blog post template), `report-landing` (State of Wearable Accuracy landing page, via page code), `report-<blog|tool|home>-<slug>` (`kygo-report-card`, e.g. `report-home-home`), `footer` (site-wide footer strip), and `tool-<name>`, one per
+tool, e.g. `tool-wearable-accuracy`, `tool-calories-in-anything` (`kygo-inline-subscribe` without a
+`source` attribute now falls back to `tool-<last path segment>`, never a bare `tool`). A POST with no
+source is saved as `unknown` (the backend fallback, kept on purpose) together with a `sourceHint`
+field: the referer host + path (no query string) and content type, so the sending surface can be
+found (backend change pending paste, see `docs/fixes-and-issues.md` #SUB1). The event
 fires **only after a `200` from `/_functions/subscribe`**, so `email_subscribe` counts confirmed
 subscribers only. (Watch that `cta_click` doesn't regress on pages where a subscribe strip was
 added — attention competition — but do not add any new GA4 event to measure it.)
@@ -260,7 +264,7 @@ above never sees it. The card snippet loads `<kygo-cta>` inside the iframe and `
 |---|---|
 | `click` | `cta_click` with `cta_category` `ios_download` / `android_download` / `web_signup`, `cta_label` = the card's `slug`, `component: 'kygo-blog-embed'`, `position: 'blog-embed'`, `page_path`, `cta_url`, `cta_content` if set |
 | `view` | `cta_view`, same params minus category/url: once per card when half of it is on screen (CTR = clicks ÷ views per slug) |
-| `hello` | page replies `attr` with the visitor's inbound `utm_*` / `fbclid` / `gclid` (`window.KygoAttribution` when loaded, else the URL), which the card puts on its web link |
+| `hello` | page replies `{kygo:'embed', type:'attr', utm, click, reddit?}`: the visitor's inbound `utm_*` / `fbclid` / `gclid` (`window.KygoAttribution` when loaded, else the URL), plus `reddit` (the Reddit-organic landing path, a path only, sanitised, sent only when the session has no `utm_*`). Since 2026-10-31 `kygo-cta.js` sends `hello` itself whenever it runs in a cross-origin frame and adopts the reply (`KygoAttribution.adopt`), so store and web links in the frame get the same swap and tags as on the top page. Only a reply from `window.top` in that exact shape is taken |
 | `height` | page sets the iframe's height to the card's, when it can find the iframe |
 
 Only fixed-set or sanitised strings are read from the message. Installs are still attributed by
@@ -274,6 +278,7 @@ Replaces the pasted `blog-cta-card.html` card, one post at a time (test: how-acc
 |---|---|
 | GA4 `cta_click` / `cta_view` | `cta_label` = `slug` (placement), `cta_content` = `variant`, `page_path` = the post, `component: 'kygo-blog-embed'` |
 | Tenjin | store links are the standard Website-channel links plus `?site_id=<post>&creative_name=app-card-<variant>-<position>`. `KygoAttribution.storeUrl` keeps both at press time, except that a paid session (utm_campaign listed in `CAMPAIGN_STORE_LINKS`) swaps in the campaign link and sets `creative_name` to its `utm_content`, else its `utm_campaign`; a Reddit-organic session (Reddit referrer, no `utm_*`) swaps in the Reddit Organic links (`REDDIT_ORGANIC_STORE_LINKS`) and sets `creative_name` to the page it landed on from Reddit; `site_id` stays the post in both. Read installs with reporting `group_by=site` / `creative` |
+| Attribution in the iframe | the frame cannot read the landing URL or referrer, so `kygo-cta.js` (loaded by the card) posts `hello` to the top window and adopts the `attr` reply from `kygo-tracking.js` with `KygoAttribution.adopt(attr)`. Adopt REPLACES the frame's record (utm_* keys, fbclid / gclid, a path-shaped `reddit`), so the frame never holds a utm value the page did not have, and an organic page clears anything stale. `hello` is retried at 0.7 s, 2 s and 5 s until a reply lands; links are rewritten at press time, so a reply before the first press is enough. With no reply or an organic one the card keeps `site_id=<post>` and `creative_name=app-card-<variant>-<position>`. The click still reaches GA4 through the `{kygo:'embed', type:'click', destination}` message, so a swapped campaign link files as `ios_download` / `android_download` by its `data-destination` |
 
 `cta_content` must be registered as a GA4 event-scoped custom dimension to be reportable.
 
