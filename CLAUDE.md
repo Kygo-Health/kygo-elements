@@ -47,8 +47,12 @@ direct `apps.apple.com` / `play.google.com` URLs belong in JSON-LD only. **Paid 
 that lands on a shared page (the homepage) gets its own Tenjin campaign links through
 `CAMPAIGN_STORE_LINKS` in `kygo-cta.js`, keyed by `utm_campaign`; a session carrying a listed
 campaign has every default store link on the site (header, footer, every `<kygo-cta>`) swapped
-for that campaign's links as it is pressed. New paid campaign = create an iOS and an Android
-campaign in Tenjin under the **Website** account and add one row. All three
+for that campaign's links as it is pressed. Every Tenjin link also leaves with `site_id` (the
+link's own, as the app card sets the post, else the page path) and `creative_name`: in a listed
+paid session the session's `utm_content`, else its `utm_campaign` (overriding a card's own creative
+on purpose, so an ad and a comment link under one campaign stay apart); in any other session the
+link's own `creative_name`, else `utm_campaign`, else `organic`. New paid campaign = create an iOS
+and an Android campaign in Tenjin under the **Website** account and add one row. All three
 platforms stay on screen: the visitor's device takes the filled primary button, the other two
 follow as outline buttons, on one row where there is room and two-up under the primary where
 there is not — measured from the element's own width, not the viewport. It fires Mixpanel

@@ -88,9 +88,12 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 > | `deep-sleep-post` | Reddit Ad deep-sleep-post - iOS / - Android | `https://track.tenjin.com/v0/click/gFqSqqW0D7o69kO5yaV7k1` | `https://track.tenjin.com/v0/click/eQRLQj5018oTQjwGo72WqW` |
 >
 > **Page + campaign on every install (2026-10-31).** The same press listener also tags every
-> Tenjin link on the site (default, campaign or per-placement) with `site_id` = the kygo.app path
-> the button was pressed on and `creative_name` = the session's `utm_campaign` (lowercased) or
-> `organic`. Tenjin reports installs by both (Website channel -> breakdown by site / creative). On
+> Tenjin link on the site (default, campaign or per-placement) with `site_id` = the link's own
+> (the app card sets the post) or else the kygo.app path the button was pressed on, and
+> `creative_name` = in a paid session (`utm_campaign` listed above) the session's `utm_content`,
+> else its `utm_campaign` (lowercased); in any other session the link's own `creative_name` (the
+> app card's `app-card-<variant>-<position>`), else `utm_campaign` (lowercased), else `organic`
+> (2026-10-31 fix: the first version dropped the card's own tags). Tenjin reports installs by both (Website channel -> breakdown by site / creative). On
 > Android Tenjin writes them into the Play `referrer` it builds, so never add a `referrer` (or an
 > Apple `ct`) of our own to a store link: it would replace Tenjin's click id, and Tenjin's iOS
 > redirect drops query params before the App Store anyway.
