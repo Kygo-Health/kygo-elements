@@ -66,16 +66,17 @@ follow as outline buttons, on one row where there is room and two-up under the p
 there is not — measured from the element's own width, not the viewport. It fires Mixpanel
 `cta_clicked` `{slug, surface, destination}`, mirrors it as a `kygo-cta-click` CustomEvent, and
 each anchor carries `data-destination` so `kygo-tracking.js` files the click in GA4 as
-`ios_download` / `android_download` / `web_signup`.
+`ios_download` / `android_download` / `web_signup`. A default or `compact` element in the page
+itself (not framed) also sends one GA4 `cta_view` when half of it is first on screen.
 
 Variants, for placements the default cluster does not fit:
 
 | Attribute | Where | What it renders |
 |---|---|---|
 | `compact` | thin `kband` bands (`/faq`, `/tools`, `/blog`, the calorie scanner), the homepage inline band | the same three buttons, smaller |
-| `mini` | nowhere at present (the tool-page sub-navs it was built for were removed 2026-10-28; the Wix site header is the nav) | one nowrap row of header pills, no hook or note, labels dropping away as the header narrows |
+| `mini` | the calorie scanner's sub-nav (`calories-custom-element.js`, `slug="calories-subnav"`), the one sub-nav left after the tool-page sub-navs were removed 2026-10-28 | one nowrap row of header pills, no hook or note, labels dropping away as the header narrows |
 | `single` | a card whose whole point is one action (the `/how-it-works` pricing plans) | the visitor's own destination alone; takes `label`, `block` and `variant="outline"` |
-| `apps` | blog HTML-embed CTA cards | app stores only, no web button: phones get their own store alone, desktop gets iPhone filled plus Android; primary reads "Start your free trial" unless `label` is set |
+| `apps` | no file at present (built for the blog HTML-embed CTA cards; `<kygo-app-card>` renders its own store buttons) | app stores only, no web button: phones get their own store alone, desktop gets iPhone filled plus Android; primary reads "Start your free trial" unless `label` is set |
 
 `single` is the one exception to "all three platforms on screen" — never use it for a page's
 main CTA. `theme="green"` is the palette for a Kygo-green card, where the filled button goes

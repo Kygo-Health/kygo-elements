@@ -37,7 +37,9 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 > Welcome, then the quiz at `/start/quiz`, then account creation). `https://app.kygo.app/login`
 > is for existing accounts, but the site does not link it: `/start` has its own "Sign in". Never link `/register` (skips the quiz, kept only so old
 > links resolve) or the bare root `https://app.kygo.app/` (the signed-in dashboard). The four
-> inline FAQ answer links use `utm_medium=faq&utm_campaign=faq-answer`.
+> inline FAQ answer links use `utm_medium=faq&utm_campaign=faq-answer` and carry
+> `data-destination="web"` (2026-11-01). Any other app.kygo.app link without a `data-destination`
+> (header, footer, inline tool-page links) is filed as GA4 `web_signup` by its href.
 >
 > **Attribution (2026-10-01).** Every app.kygo.app link leaves with the visitor's own inbound
 > `utm_*` when they arrived with any (an ad, a newsletter); the site's `kygo.app` tags are used only
@@ -57,11 +59,11 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 
 | Link | What it is | Notes |
 |---|---|---|
-| `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy` | **Tenjin → Apple App Store** (iOS CTA click) | Attribution redirect. Used by **every clickable iOS store button** (`cta-primary` / `kband-btn-ios`). Classified `ios_download` by `kygo-tracking.js`. |
-| `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO` | **Tenjin → Google Play** (Android CTA click) | Attribution redirect. Used by **every clickable Android store button** (`cta-android` / `kband-btn-android`) plus FAQ prose "Google Play" links. Classified `android_download`. |
+| `https://track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy` | **Tenjin → Apple App Store** (iOS CTA click) | Attribution redirect. Used by **every clickable iOS store button** (`cta-primary` / `kband-btn-ios`) plus the FAQ-answer "App Store" link (2026-11-01). Classified `ios_download` by `kygo-tracking.js`. |
+| `https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO` | **Tenjin → Google Play** (Android CTA click) | Attribution redirect. Used by **every clickable Android store button** (`cta-android` / `kband-btn-android`) plus the FAQ-answer "Google Play" link. Classified `android_download`. |
 | `https://apps.apple.com/us/app/kygo-nutrition-wearables/id6749870589` | **Apple App Store** listing (direct) | App ID `6749870589`. **JSON-LD / structured data only** now (e.g. homepage `SoftwareApplication.downloadUrl`, `Organization.sameAs`). Do **not** put this in a clickable anchor href. |
-| `https://www.kygo.app/android` | **Android / Google Play** download (redirect) | Superseded for CTA clicks by the Tenjin Android link above. The `/android` redirect page itself still lives Wix-side. No direct `play.google.com` link exists. |
-| `https://kygo.app/iOS` | **iOS** download (redirect) | Legacy capital-S `iOS` path; no longer in the component source after the Tenjin swap. |
+| `https://www.kygo.app/android` | **Android / Google Play** download (redirect) | Superseded for CTA clicks by the Tenjin Android link above. The `/android` redirect page itself still lives Wix-side. No direct `play.google.com` link exists. The FAQ answer "Where do I get Kygo" linked `https://kygo.app/android` until 2026-11-01; it now points at the Tenjin Android link. Still named (as text, not a link) in that page's `__seo` crawler summary. |
+| `https://kygo.app/iOS` | **iOS** download (redirect) | Legacy capital-S `iOS` path. The FAQ answer "Where do I get Kygo" linked it until 2026-11-01; it now points at the Tenjin iOS link. Still named (as text, not a link) in that page's `__seo` crawler summary. |
 
 > ### The Tenjin links now live in exactly one file (2026-09).
 > **Every CTA on the site renders `<kygo-cta>`**, and `kygo-cta.js` holds the two Tenjin click
@@ -119,14 +121,36 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 >
 > `kygo-tracking.js` classifies the Tenjin hrefs as before, and now also reads the
 > `data-destination` each `<kygo-cta>` button carries, which is what files the web button as
-> `web_signup`. The two FAQ-answer "Google Play" prose links in `kygo-faq-section.js` are prose,
-> not CTAs, and point at the store directly.
+> `web_signup`. Since 2026-11-01 it files **every known Tenjin id** by platform, not only the two
+> defaults, so a header / footer button whose link was swapped for a campaign or Reddit Organic
+> link on press still counts as `ios_download` / `android_download`. The id list is
+> `KygoAttribution.platformOf(url)` in `kygo-cta.js` (built from `TENJIN_*`,
+> `CAMPAIGN_STORE_LINKS`, `REDDIT_ORGANIC_STORE_LINKS` and the email links), with a copy in
+> `kygo-tracking.js` (`TENJIN_PLATFORM`) for pages where `kygo-cta.js` is not loaded. **Add a new
+> Tenjin link to both.** Known ids:
+>
+> | Source | iOS id | Android id |
+> |---|---|---|
+> | Website (default) | `cD7zgIPLuiZMMWmWkXLsvy` | `eMjS3ZkseCvs2lO9AVESkO` |
+> | `deep-sleep-post` | `gFqSqqW0D7o69kO5yaV7k1` | `eQRLQj5018oTQjwGo72WqW` |
+> | `apple-watch-sleep-post` | `cn5sS5sp0r3LtQ65D8ihiR` | `fd2h8tIhLyB3h0fwIWYElA` |
+> | Reddit Organic | `TEmyDcRQIVRM8VUAxfh4` | `heO9OuoP6tG8lENadDof4n` |
+> | Email (e5, `velo/http-functions.js`) | `cGxLgiFXo568zuRagtaj4P` | `dqOjxxwQjbt0R8i6TJRLpO` |
+>
+> No Instagram or Facebook Tenjin links are recorded in this repo; add them here and in both
+> tables if they go on the site.
+>
+> The FAQ answer links in `kygo-faq-section.js` (2026-11-01): the four `app.kygo.app` links carry
+> `data-destination="web"`, and "Where do I get Kygo" links its "App Store" / "Google Play" words
+> to the default Tenjin links with `data-destination="ios"` / `"android"`, so GA4 files them and
+> `KygoAttribution` tags them like any store button. Same words, same place.
 
 **Tenjin iOS CTA (`…/cD7zgIPLuiZMMWmWkXLsvy`) — file location:** `kygo-cta.js` (`TENJIN_IOS`),
 used by every CTA on the site through `<kygo-cta>`.
 
 **Tenjin Android CTA (`…/eMjS3ZkseCvs2lO9AVESkO`) — file location:** `kygo-cta.js`
-(`TENJIN_ANDROID`), plus the two FAQ-answer "Google Play" prose links in `kygo-faq-section.js`.
+(`TENJIN_ANDROID`), plus the FAQ-answer "Google Play" link in `kygo-faq-section.js` (and its iOS
+twin, "App Store", on the Tenjin iOS link).
 
 **Direct App Store URL — remaining (JSON-LD only):** homepage `SoftwareApplication.downloadUrl`
 and `Organization.sameAs` (see `docs/wix-snippets/3-homepage-jsonld-head.html` and

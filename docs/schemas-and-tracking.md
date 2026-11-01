@@ -175,15 +175,19 @@ Genuine notes to keep in mind:
 ## The only analytics: GA4 via `kygo-tracking.js`
 
 **Google Analytics 4 (gtag.js)**, loaded by the separate, optional script
-**`kygo-tracking.js`**, is the site-wide integration. No PostHog/Segment/Meta Pixel. Components
-contain **no** `gtag`/`dataLayer` calls themselves; tracking is delegated to this one script,
-which listens globally.
+**`kygo-tracking.js`**, is the site-wide integration. No PostHog/Segment/Meta Pixel. Clicks and
+conversions are delegated to this one script, which listens globally. The exceptions that call
+`window.gtag` themselves (only when it exists): the HLTH Code banner on
+`kygo-oura-ring-comparison.js` (below), and the in-page `cta_view` of `<kygo-cta>` and
+`<kygo-app-card>` (2026-11-01, see "In-page CTA impressions").
 
 **One exception (2026-09-14): `kygo-cta.js`.** The shared `<kygo-cta>` element fires
 **Mixpanel `cta_clicked`** itself on every button click, with
 `{ slug, surface, destination }` — `destination` being `web` / `ios` / `android`. It looks for
-`window.mixpanel`, falling back to `window.parent.mixpanel` (Wix renders custom elements inside
-an iframe) and doing nothing if neither exists, so the click is never blocked. The same payload
+`window.mixpanel`, falling back to `window.parent.mixpanel` and doing nothing if neither exists,
+so the click is never blocked. (A Wix custom element renders in the page document itself, not in
+an iframe; the parent fallback only matters where `kygo-cta.js` runs inside a blog "HTML code"
+iframe, such as the app card.) The same payload
 also goes out as a bubbling, composed **`kygo-cta-click`** CustomEvent, which is how Velo or a
 GA4 bridge can pick it up without a second wiring pass. Each anchor also carries
 **`data-destination`**, which `classifyClick()` reads first, so GA4 `cta_click` fires alongside
@@ -210,11 +214,12 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | Event | When | Key params |
 |---|---|---|
 | `page_view` | automatic on load (gtag config) | standard GA4 |
-| `cta_click` | any classified `<a>`/`<button>`/`[data-action]` click | `cta_category`, `cta_label`, `cta_url`, `component`, `position`, `page_path` (+ `affiliate`, `affiliate_marketplace` for Amazon; + `to_tool` for related-tools cards; + `to_post` for related-reading cards) |
+| `cta_click` | any classified `<a>`/`<button>`/`[data-action]` click, left click or middle click (`auxclick` with button 1, since 2026-11-01; a left click never fires `auxclick`, so nothing is counted twice) | `cta_category`, `cta_label`, `cta_url`, `component`, `position`, `page_path` (+ `affiliate`, `affiliate_marketplace` for Amazon; + `to_tool` for related-tools cards; + `to_post` for related-reading cards; + `action_type` = the `data-action` value for `other_action`) |
+| `cta_view` | a CTA half on screen, once per CTA: blog HTML-embed cards via `postMessage` (`component: 'kygo-blog-embed'`), and since 2026-11-01 `<kygo-app-card>` and `<kygo-cta>` in the page itself (see "In-page CTA impressions") | `cta_label`, `component`, `position`, `page_path` (+ `cta_content`) |
 | `tool_interaction` | calculate/compare/analyze buttons | `tool_name` (= component tag), `action`, `button_label` |
 | `page_exit` | `visibilitychange` → hidden | `page_path` |
 | `email_subscribe` **(key event)** | `subscribe` CustomEvent (any subscribe form) → mirrored to GA4 | `lead_type` (`newsletter`), `component`, **`source`**, `page_path` |
-| `contact_submit` **(key event)** | `contactSubmit` CustomEvent (contact form) → mirrored to GA4 | `lead_type` (`contact_form`), `component`, `page_path`. **No PII** — email/name/message are never read from `detail` |
+| `contact_submit` **(key event)** | `contactSubmitted` CustomEvent, which `kygo-contact.js` fires only when the host confirms the send (`data-form-result="success"`), since 2026-11-01. Before that it fired on `contactSubmit`, the attempt, so it counted sends that later failed | `lead_type` (`contact_form`), `component`, `page_path`. **No PII** — email/name/message are never read from `detail` |
 | `report_download` **(key event)** | `reportDownload` CustomEvent ("Download the PDF" on `/report-download`, `kygo-report-download.js`) → mirrored to GA4 | `lead_type` (`report`), `component`, `source` (`report-download`), `page_path` |
 | `gate_hub` | **Retired 2026-10-29.** Was a click on the hub `/tools/wearable-accuracy` report band's link; the hub now embeds the email-capture `<kygo-report-card>` like every tool (`email_subscribe`, source `report-tool-wearable-accuracy`; cover click `gate_tool`) | — |
 | `tool_result` | `kygo-calorie-calculation` CustomEvent (calculator produced a result) | `tool_name` (= component tag), `page_path` |
@@ -239,10 +244,10 @@ its `position` from the element's `surface`:
 
 | `cta_category` | Trigger |
 |---|---|
-| `ios_download` | **`data-destination="ios"` (any `<kygo-cta>` button)**, `data-action="ios-download"`, or `href` contains `apps.apple.com` **or the Tenjin iOS link `track.tenjin.com/v0/click/cD7zgIPLuiZMMWmWkXLsvy`**, or `.cta-primary` + apple href |
-| `android_download` | **`data-destination="android"`**, `data-action="android-download"`, `.cta-android`, or `href` contains **the Tenjin Android link `track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO`** (what every `<kygo-cta>` Android button points at), `play.google.com` or `kygo.app/android` |
-| `web_signup` | **`data-destination="web"`** — the "Start on the web" button on every `<kygo-cta>`, pointing at `app.kygo.app/start` with UTMs (or the visitor's inbound UTMs, plus `fbclid` / `gclid`) |
-| `see_how_it_works` | `.cta-secondary` or label contains "how it works" |
+| `ios_download` | **`data-destination="ios"` (any `<kygo-cta>` button)**, `data-action="ios-download"`, or `href` contains `apps.apple.com` **or any known iOS Tenjin link** (`track.tenjin.com/v0/click/<id>`: the default `cD7zgIPLuiZMMWmWkXLsvy`, and since 2026-11-01 the per-campaign, Reddit Organic and email links too, looked up with `KygoAttribution.platformOf(url)` or the fallback table in `kygo-tracking.js`), or `.cta-primary` + apple href / any Tenjin href |
+| `android_download` | **`data-destination="android"`**, `data-action="android-download"`, `.cta-android`, or `href` contains **any known Android Tenjin link** (the default `eMjS3ZkseCvs2lO9AVESkO`, what every `<kygo-cta>` Android button points at, plus the campaign, Reddit Organic and email links), `play.google.com` or `kygo.app/android` |
+| `web_signup` | **`data-destination="web"`** — the "Start on the web" button on every `<kygo-cta>`, pointing at `app.kygo.app/start` with UTMs (or the visitor's inbound UTMs, plus `fbclid` / `gclid`). Since 2026-11-01 also **any `href` on `https://app.kygo.app`** without a `data-destination` (the header "Open web app" button, the footer web links, inline tool-page links), checked before the class buckets below, so the footer's `kygo-footer-cta-btn` no longer files as `primary_cta` |
+| `see_how_it_works` | `.cta-secondary` only (since 2026-11-01; before that any label containing "how it works" matched, which filed the nav and footer "How it works" links here) |
 | `tool_interaction` | `data-action` = `calculate`/`compare`/`analyze`, or `.calculate-button` |
 | `header_cta` | `.header-cta` (nav "Get Kygo App") |
 | `blog_cta` | `.blog-cta-btn` |
@@ -251,7 +256,7 @@ its `position` from the element's `surface`:
 | `related_tool_click` | `data-action="related-tool"` — the standard related-tools cards on every tool page. Also carries **`to_tool`** (the destination slug from `data-tool-slug`), with `position: 'related-tools'`. Paired with `component` (the source tool's custom element) and `page_path`, this gives **source tool → destination tool**, which is how the cross-link section is measured as a retention surface |
 | `related_tool_click` (Kygo Picks card) | The shared `<kygo-picks-card>` placed after the buy buttons on 16 tool pages (general / sleep / training card per tool). Its links carry `data-action="related-tool"`, so they file as `related_tool_click` with `to_tool: 'best-wearables'` and `position: 'picks-card-<tool slug>'`; the hub line under it on spoke tools files as `to_tool: 'wearable-accuracy'`, `position: 'picks-hub-link'` |
 | `blog_post_click` | `data-action="blog-post"` — the standard related-reading cards on every tool page. Also carries **`to_post`** (the destination slug from `data-post-slug`), with `position: 'related-posts'`. The mirror of `related_tool_click`: with `component` and `page_path` it gives **source tool → destination blog post**, so the blog cross-link section is measured the same way the tool cross-link section is |
-| `other_action` | any other element with a `data-action` |
+| `other_action` | any other element with a `data-action`. Carries **`action_type`** (the `data-action` value, e.g. `source-link`) and `cta_url` (its `href`) since 2026-11-01 |
 | `affiliate_banner` | **not** from `classifyClick()` — fired directly by `kygo-oura-ring-comparison.js` for the HLTH Code banner (see below) |
 
 ## Blog HTML-embed cards (`docs/wix-snippets/blog-cta-card.html`)
@@ -269,6 +274,16 @@ above never sees it. The card snippet loads `<kygo-cta>` inside the iframe and `
 
 Only fixed-set or sanitised strings are read from the message. Installs are still attributed by
 Tenjin, since the store buttons are the standard Tenjin links.
+
+**Known external sender (not in this repo): the Wix "HLTH affiliate bridge" embed.** The HLTH
+blog card (`kygo-hlth-card.js`, in a blog "HTML code" iframe) posts
+`{type:'kygo-cta-click', action:'affiliate_hlth', position:'post-partner-card', label:<slug>}` to
+the top window on a button click (and `{type:'kygo-embed-height', height}` for sizing). That shape
+has no `kygo` key, so `kygo-tracking.js` ignores it **on purpose**: the bridge, a site-level Wix
+custom-code embed that lives only in the Wix editor, already forwards those clicks to GA4 as
+`affiliate_hlth`. Adding a handler here would count every HLTH click twice. If the bridge is ever
+removed, add the handler to `kygo-tracking.js` in the same change (`cta_click`,
+`cta_category: 'affiliate_hlth'`, `affiliate: 'hlth_code'`).
 
 ## Shared blog app card (`kygo-app-card.js`, 2026-10-26)
 
@@ -294,7 +309,8 @@ the FAQ). The inline email band was removed from all tool pages.
   `cta_label` = slug, `position` = tool, `cta_content` = variant (v1). Tenjin: `site_id=tool-<slug>`,
   `creative_name=app-card-v1-mid` (in a paid session: the session's `utm_content`, else its
   `utm_campaign`, on the campaign link; in a Reddit-organic session: the landing path, on the
-  Reddit Organic link). No `cta_view` on tool pages (that comes only from iframes).
+  Reddit Organic link). `cta_view`: since 2026-11-01 the card sends it to the page's GA4 itself
+  (see "In-page CTA impressions"); before that tool pages had none.
 - **Report card** (since 2026-10-27 the shared `<kygo-report-card>`, also on blog posts and the
   homepage): captures the email in the card, POSTs `{email, source}` to `/_functions/subscribe`
   (source `report-<blog|tool|home>-<slug>`), then sends the visitor to `/report-download`. GA4:
@@ -308,6 +324,23 @@ the FAQ). The inline email band was removed from all tool pages.
 - **Homepage**: the same report card sits directly above the FAQ (`kygo-home-report` in
   `kygo-bundle.js`), filed as `gate_home` (`cta_label` = report-home).
 - **Picks card**: unchanged (`related_tool_click` to best-wearables).
+
+## In-page CTA impressions (`cta_view`, 2026-11-01)
+
+A card in a blog iframe posts `{kygo:'embed', type:'view'}` and `kygo-tracking.js` files it. A
+card or CTA in the page itself has no frame to post from, so it calls the page's `window.gtag`
+directly (only when it exists, so a page without `kygo-tracking.js` sends nothing). One event per
+element, when half of it is first on screen (IntersectionObserver, threshold 0.5, disconnected
+after the first view and in `disconnectedCallback`):
+
+| Element | Params |
+|---|---|
+| `<kygo-app-card>` not in a frame (tool pages) | `cta_label` = slug, `component: 'kygo-app-card'`, `position` = surface (`tool`), `cta_content` = variant, `page_path` |
+| `<kygo-cta>` default and `compact` (not `mini`, not `single`, not in a frame) | `cta_label` = slug, `component: 'kygo-cta'`, `position` = surface, `page_path` |
+
+A framed app card still sends only the message, so there is no double count. `cta_view` totals
+rise from 2026-11-01 because of this; filter `component = kygo-blog-embed` to compare with earlier
+weeks.
 
 ## How components opt into tracking
 
@@ -358,9 +391,10 @@ plain-data `detail`) that the **Wix Velo** host listens for to drive backend act
 
 | Event | Component | Purpose |
 |---|---|---|
-| `contactSubmit` | `kygo-contact.js` | Contact form submission → Velo sends email |
+| `contactSubmit` | `kygo-contact.js` | Contact form submission → Velo sends email (the attempt; carries the form fields, never read by GA4) |
+| `contactSubmitted` | `kygo-contact.js` | Fired when the host sets `data-form-result="success"`; `detail: {component: 'kygo-contact'}`. Mirrored to GA4 `contact_submit`; Velo needs nothing for it |
 | `imageUploaded` | `calories-custom-element.js` | Food-scanner image upload |
-| `kygo-calculation` | `kygo-calorie-burn-accuracy.js` | Calculator run (could double as analytics signal) |
+| `kygo-calorie-calculation` | `kygo-calorie-burn-accuracy.js` | Calculator run (mirrored to GA4 `tool_result`) |
 | `postClick` | `kygo-blog.js`, `kygo-blog-post.js` | Navigate to a blog post |
 | `categoryClick` | `kygo-blog-post.js` | Filter by category |
 | `seeAllClick` | `kygo-blog-post.js` | "See all" related posts |
@@ -371,8 +405,8 @@ handled in `attributeChangedCallback` — never via a callback (Wix bridges even
 postMessage/structured clone, which can't serialize functions).
 
 > **These CustomEvents are now also mirrored into GA4** by `kygo-tracking.js` (a second set of
-> document-level, capture-phase listeners): `subscribe` → `email_subscribe`, `contactSubmit` →
-> `contact_submit` (both key events), and `kygo-calorie-calculation` → `tool_result`. The mirror
+> document-level, capture-phase listeners): `subscribe` → `email_subscribe`, `contactSubmitted` →
+> `contact_submit` (both key events; `contactSubmitted` is the confirmed send, since 2026-11-01), and `kygo-calorie-calculation` → `tool_result`. The mirror
 > reads only non-identifying context from `detail` — **never the email/name/message** — so no PII
 > reaches GA4. `postClick`/`categoryClick`/`seeAllClick` are **not** mirrored (the click listener
 > already covers those navigations).
@@ -383,7 +417,7 @@ postMessage/structured clone, which can't serialize functions).
    `kygo-tracking.js` with a valid `data-ga-id`. If it's missing on a page, that page has **no
    analytics** (events go to console only). Verify the script is present wherever components ship.
 2. ~~**Wix Velo events aren't sent to GA4**~~ **(addressed 2026-07)** — `subscribe`,
-   `contactSubmit`, and `kygo-calorie-calculation` are now mirrored to GA4 as `email_subscribe`,
+   `contactSubmitted` (confirmed send; `contactSubmit` until 2026-11-01), and `kygo-calorie-calculation` are now mirrored to GA4 as `email_subscribe`,
    `contact_submit`, and `tool_result` (see the Wix Velo section above). Remaining unmirrored
    CustomEvents (`imageUploaded`, `postClick`, `categoryClick`, `seeAllClick`) are navigation/host
    plumbing already covered by the click listener or not conversion-relevant.

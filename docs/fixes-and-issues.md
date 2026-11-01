@@ -511,9 +511,11 @@ watch" and renders Amazon's "Something went wrong" page. The other pages use `am
 
 ## P3 — polish / decisions
 
-### 8. [Opt-in] Conversion events not in GA4
-`contactSubmit`, `subscribe`, `kygo-calculation` fire as Wix events only. If you want them as GA4
-conversions, I can wire `kygo-tracking.js` to forward them. (Otherwise leave as-is.)
+### 8. ~~[Opt-in] Conversion events not in GA4~~ (done)
+Mirrored by `kygo-tracking.js`: `subscribe` → `email_subscribe`, `kygo-calorie-calculation` →
+`tool_result`, and the contact form → `contact_submit`, which since 2026-11-01 fires on the
+confirmed send (`contactSubmitted`, when the host sets `data-form-result="success"`), not on the
+`contactSubmit` attempt. See `docs/schemas-and-tracking.md`.
 
 ### 9. [Confirm to remove] Orphaned `kygo-blog-page.js`
 No live conflict — `/blog` uses `kygo-blog.js`, posts use `kygo-blog-post.js`. But
