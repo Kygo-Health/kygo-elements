@@ -63,6 +63,9 @@
  * Analytics: fires Mixpanel `cta_clicked` with {slug, surface, destination} on
  * every button click, and mirrors the same payload as a bubbling `kygo-cta-click`
  * CustomEvent so Wix Velo and GA4 can listen without a second wiring pass.
+ * A default or compact element in the page itself also sends one GA4
+ * `cta_view` {cta_label: slug, component: 'kygo-cta', position: surface,
+ * page_path} the first time half of it is on screen, when window.gtag exists.
  */
 
 /** Tenjin attribution click URLs (Website channel). They redirect to the App
@@ -84,7 +87,7 @@ const TENJIN_ANDROID = 'https://track.tenjin.com/v0/click/eMjS3ZkseCvs2lO9AVESkO
  *    Storage that throws or is blocked falls back to memory for this page.
  *
  *  Exposed as window.KygoAttribution { capture, decorate, webUrl, storeUrl,
- *  adopt } for the Wix header and footer snippets, which load this file for
+ *  adopt, platformOf } for the Wix header and footer snippets, which load this file for
  *  exactly that. In a cross-origin frame (a blog "HTML code" block) it asks
  *  the top page for the visit's record and adopts it (see adopt below). */
 const __kygoAttr = window.KygoAttribution || (function () {
@@ -340,8 +343,39 @@ const __kygoAttr = window.KygoAttribution || (function () {
     [700, 2000, 5000].forEach((t) => setTimeout(hello, t));
   }
 
+  /** Every Tenjin click id the site knows, by platform, so a tracker can tell
+   *  which store a swapped-in link goes to without a data-destination on it
+   *  (kygo-tracking.js reads it for the header / footer store buttons). Built
+   *  from the tables above plus the email sequence's links
+   *  (velo/http-functions.js e5-ios / e5-android). Add a row whenever a new
+   *  Tenjin link goes on the site. */
+  const STORE_PLATFORM = {};
+  const addPlatform = (url, plat) => {
+    const id = String(url || '').split('/v0/click/')[1];
+    if (id) STORE_PLATFORM[id.split(/[?#]/)[0]] = plat;
+  };
+  addPlatform(TENJIN_IOS, 'ios');
+  addPlatform(TENJIN_ANDROID, 'android');
+  Object.keys(CAMPAIGN_STORE_LINKS).forEach((k) => {
+    addPlatform(CAMPAIGN_STORE_LINKS[k].ios, 'ios');
+    addPlatform(CAMPAIGN_STORE_LINKS[k].android, 'android');
+  });
+  addPlatform(REDDIT_ORGANIC_STORE_LINKS.ios, 'ios');
+  addPlatform(REDDIT_ORGANIC_STORE_LINKS.android, 'android');
+  addPlatform('https://track.tenjin.com/v0/click/cGxLgiFXo568zuRagtaj4P', 'ios');      // Email (e5-ios)
+  addPlatform('https://track.tenjin.com/v0/click/dqOjxxwQjbt0R8i6TJRLpO', 'android');  // Email (e5-android)
+
+  /** 'ios' | 'android' for a known Tenjin click URL, else null. Read only. */
+  function platformOf(url) {
+    let u;
+    try { u = new URL(url); } catch (e) { return null; }
+    if (u.origin !== 'https://track.tenjin.com' || u.pathname.indexOf('/v0/click/') !== 0) return null;
+    const id = u.pathname.slice('/v0/click/'.length).replace(/\/+$/, '');
+    return Object.prototype.hasOwnProperty.call(STORE_PLATFORM, id) ? STORE_PLATFORM[id] : null;
+  }
+
   capture();
-  return (window.KygoAttribution = { capture, decorate, webUrl, storeUrl, adopt });
+  return (window.KygoAttribution = { capture, decorate, webUrl, storeUrl, adopt, platformOf });
 })();
 
 /** Injects accessible text into light DOM so crawlers and AI tools can read component content */
@@ -369,6 +403,7 @@ class KygoCta extends HTMLElement {
     this.render();
     this._attachEventListeners();
     this._observeSize();
+    this._watchView();
     // The header pill row repeats what the page's main CTA already spells out
     // for crawlers, so mini does not add a second copy of it.
     if (!this.hasAttribute('mini')) {
@@ -379,6 +414,7 @@ class KygoCta extends HTMLElement {
   disconnectedCallback() {
     if (this._root) this._root.removeEventListener('click', this._onClick);
     if (this._ro) { this._ro.disconnect(); this._ro = null; }
+    if (this._io) { this._io.disconnect(); this._io = null; }
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -478,6 +514,33 @@ class KygoCta extends HTMLElement {
       try { mp.track('cta_clicked', payload); } catch (err) { /* never block the click */ }
     }
     this.dispatchEvent(new CustomEvent('kygo-cta-click', { detail: payload, bubbles: true, composed: true }));
+  }
+
+  /** One GA4 cta_view per element, the first time half of it is on screen,
+   *  for the default and compact clusters in the page itself (not mini or
+   *  single, and not inside a frame, where the card posts its own view). Sent
+   *  only when the page's gtag (kygo-tracking.js) is there. */
+  _watchView() {
+    if (this._io || this._viewed || typeof IntersectionObserver === 'undefined') return;
+    if (this.hasAttribute('mini') || String(this._getSetting('mini', '')) === 'true') return;
+    if (this.hasAttribute('single') || String(this._getSetting('single', '')) === 'true') return;
+    try { if (window.top !== window) return; } catch (e) { return; }
+    this._io = new IntersectionObserver((entries) => {
+      if (!entries.some((x) => x.isIntersecting)) return;
+      this._io.disconnect();
+      this._io = null;
+      this._viewed = true;
+      if (typeof window.gtag !== 'function') return;
+      try {
+        window.gtag('event', 'cta_view', {
+          cta_label: this._slug,
+          component: 'kygo-cta',
+          position: this._surface,
+          page_path: window.location.pathname
+        });
+      } catch (err) { /* never break the page over analytics */ }
+    }, { threshold: 0.5 });
+    this._io.observe(this);
   }
 
   _attachEventListeners() {

@@ -9,7 +9,8 @@
  *   - cta_click        (category, label, url, component, position)
  *   - android_download  (component via cta_click)
  *   - tool_interaction  (tool_name, action)
- *   - cta_view         (blog HTML-embed cards only: one per card seen)
+ *   - cta_view         (one per CTA seen: blog HTML-embed cards via postMessage;
+ *                       <kygo-app-card> / <kygo-cta> in the page send their own)
  *   - gate_blog        (blog report card click, via postMessage from its Wix HTML iframe)
  *   - gate_companion   (the same card on the State of Wearable Accuracy companion post)
  *   - gate_tool        (report card on a tool page, data-gate attribute)
@@ -92,6 +93,31 @@
     } catch (e) { return null; }
   }
 
+  /** Tenjin click ids by platform, a fallback for pages where kygo-cta.js
+   *  (window.KygoAttribution.platformOf) has not loaded. Keep in sync with the
+   *  link tables in kygo-cta.js (TENJIN_*, CAMPAIGN_STORE_LINKS,
+   *  REDDIT_ORGANIC_STORE_LINKS) and docs/internal-and-app-store-links.md. */
+  const TENJIN_PLATFORM = {
+    cD7zgIPLuiZMMWmWkXLsvy: 'ios',     eMjS3ZkseCvs2lO9AVESkO: 'android', // Website (default)
+    gFqSqqW0D7o69kO5yaV7k1: 'ios',     eQRLQj5018oTQjwGo72WqW: 'android', // deep-sleep-post
+    cn5sS5sp0r3LtQ65D8ihiR: 'ios',     fd2h8tIhLyB3h0fwIWYElA: 'android', // apple-watch-sleep-post
+    TEmyDcRQIVRM8VUAxfh4: 'ios',       heO9OuoP6tG8lENadDof4n: 'android', // Reddit Organic
+    cGxLgiFXo568zuRagtaj4P: 'ios',     dqOjxxwQjbt0R8i6TJRLpO: 'android'  // Email (e5)
+  };
+
+  /** 'ios' | 'android' | null for a track.tenjin.com/v0/click/ link. */
+  function tenjinPlatform(href) {
+    try {
+      var ka = window.KygoAttribution;
+      if (ka && typeof ka.platformOf === 'function') {
+        var p = ka.platformOf(href);
+        if (p === 'ios' || p === 'android') return p;
+      }
+    } catch (e) { /* fall back to the local table */ }
+    var m = /track\.tenjin\.com\/v0\/click\/([A-Za-z0-9]+)/.exec(href);
+    return m && Object.prototype.hasOwnProperty.call(TENJIN_PLATFORM, m[1]) ? TENJIN_PLATFORM[m[1]] : null;
+  }
+
   function classifyClick(el) {
     var action = el.getAttribute('data-action');
     var href = el.getAttribute('href') || '';
@@ -111,6 +137,22 @@
         // <kygo-app-card> carries a design variant; GA4 custom dimension cta_content.
         content: host && host.tagName === 'KYGO-APP-CARD' ? (host.getAttribute('variant') || '') : ''
       };
+    }
+
+    // Any Tenjin store link the site knows (default, per-campaign, Reddit
+    // Organic, email). kygo-cta.js swaps a campaign link into the header /
+    // footer buttons on pointerdown, before this click handler sees it, and
+    // those buttons carry no data-destination.
+    if (href.indexOf('track.tenjin.com/v0/click/') !== -1) {
+      var plat = tenjinPlatform(href);
+      if (plat) return { category: plat + '_download', label: getLabel(el), url: href };
+    }
+
+    // Any link into the web app (the header "Open web app" button, the footer
+    // web links) is a web signup, ahead of the class-based buckets below
+    // (the footer's kygo-footer-cta-btn would otherwise match 'cta-btn').
+    if (/^https:\/\/app\.kygo\.app([\/?#]|$)/i.test(href)) {
+      return { category: 'web_signup', label: getLabel(el), url: href };
     }
 
     // iOS App Store download (direct App Store link, or the Tenjin
@@ -137,9 +179,9 @@
       return { category: 'android_download', label: getLabel(el), url: href || 'button-redirect' };
     }
 
-    // "See how it works" / scroll CTA
-    if (classList.indexOf('cta-secondary') !== -1 ||
-        getLabel(el).toLowerCase().indexOf('how it works') !== -1) {
+    // "See how it works" / scroll CTA. Only the .cta-secondary button: a nav
+    // or footer link that reads "How it works" is navigation, not this CTA.
+    if (classList.indexOf('cta-secondary') !== -1) {
       return { category: 'see_how_it_works', label: getLabel(el) };
     }
 
@@ -208,7 +250,7 @@
 
     // Any other data-action button
     if (action) {
-      return { category: 'other_action', label: getLabel(el), action_type: action };
+      return { category: 'other_action', label: getLabel(el), url: href, action_type: action };
     }
 
     return null;
@@ -233,8 +275,7 @@
 
   /* ── Event Listeners ──────────────────────────────── */
 
-  // Click tracking — uses composedPath to pierce Shadow DOM
-  document.addEventListener('click', function (e) {
+  function onClick(e) {
     var path = e.composedPath();
 
     // Find the closest clickable element (button, a, [data-action])
@@ -290,9 +331,21 @@
       if (info.affiliate_marketplace) ctaParams.affiliate_marketplace = info.affiliate_marketplace;
       if (info.to_tool) ctaParams.to_tool = info.to_tool;
       if (info.to_post) ctaParams.to_post = info.to_post;
+      if (info.action_type) ctaParams.action_type = info.action_type;
       track('cta_click', ctaParams);
     }
-  }, true); // capture phase to fire before any stopPropagation
+  }
+
+  // Click tracking — uses composedPath to pierce Shadow DOM.
+  // capture phase to fire before any stopPropagation.
+  document.addEventListener('click', onClick, true);
+  // Middle click (open in new tab) fires auxclick, not click, so it gets the
+  // same handling (event + Amazon ascsubtag). Only button 1: a right click
+  // also fires auxclick and is not a click on the link. A left click never
+  // fires auxclick, so nothing is counted twice.
+  document.addEventListener('auxclick', function (e) {
+    if (e.button === 1) onClick(e);
+  }, true);
 
   // Track page visibility for engagement
   document.addEventListener('visibilitychange', function () {
@@ -310,7 +363,10 @@
   // email or any other PII out of e.detail — only non-identifying context.
   const CONVERSION_EVENTS = {
     subscribe:     { ga: 'email_subscribe', lead: 'newsletter' },
-    contactSubmit: { ga: 'contact_submit',  lead: 'contact_form' },
+    // kygo-contact.js fires contactSubmitted once the host confirms the send
+    // (data-form-result="success"), so contact_submit counts delivered
+    // messages, not attempts. contactSubmit (the attempt) is Velo's cue to send.
+    contactSubmitted: { ga: 'contact_submit', lead: 'contact_form' },
     // kygo-report-download.js: a click on "Download the PDF" (State of Wearable Accuracy 2026).
     reportDownload: { ga: 'report_download', lead: 'report' }
   };
@@ -326,8 +382,9 @@
                    (e.target && e.target.tagName ? e.target.tagName.toLowerCase() : 'unknown'),
         page_path: window.location.pathname
       };
-      // Only the subscribe form and reportDownload carry a `source`; contact detail is PII
-      // (firstName/lastName/email/subject/message) and is deliberately ignored.
+      // Only the subscribe form and reportDownload carry a `source`; the contact
+      // form's contactSubmitted carries {component} only, and its contactSubmit
+      // detail (PII: name/email/subject/message) is never listened to here.
       if (detail.source) params.source = detail.source;
       if (domEvent === 'subscribe' && /^report-/.test(detail.source || '')) params.lead_type = 'report';
       track(cfg.ga, params);
