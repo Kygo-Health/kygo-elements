@@ -39,7 +39,10 @@
  *
  * On a tool page the card is not in an iframe: there are no messages to post,
  * and kygo-tracking.js reads the clicks straight from the page (it treats this
- * element like <kygo-cta>: cta_label = slug, cta_content = variant).
+ * element like <kygo-cta>: cta_label = slug, cta_content = variant). The view
+ * goes to the page's window.gtag directly instead: one GA4 cta_view
+ * {cta_label: slug, component: 'kygo-app-card', position: surface,
+ * cta_content: variant, page_path} per card, when half of it is on screen.
  *
  * The light-DOM <a> inside the element is a fallback: it shows only if this
  * file fails to load, so a post never shows an empty box.
@@ -381,12 +384,32 @@
       this._send({ type: 'click', destination: link.getAttribute('data-destination'), slug: this._slug, content: this._variant, url: link.href });
     }
 
+    /** One view per card, when half of it is on screen. In a blog iframe it
+     *  goes up to kygo-tracking.js as a message; in the page itself (a tool
+     *  page) there is no frame to post from, so it goes to the page's GA4
+     *  directly, when gtag is there. */
     _watchView() {
       if (typeof IntersectionObserver === 'undefined') return;
+      if (this._io) this._io.disconnect();
       this._io = new IntersectionObserver((entries) => {
         if (!entries.some((x) => x.isIntersecting)) return;
         this._io.disconnect();
-        this._send({ type: 'view', slug: this._slug, content: this._variant });
+        if (this._top()) {
+          this._send({ type: 'view', slug: this._slug, content: this._variant });
+          return;
+        }
+        if (this._viewed) return;
+        this._viewed = true;
+        if (typeof window.gtag !== 'function') return;
+        try {
+          window.gtag('event', 'cta_view', {
+            cta_label: this._slug,
+            component: 'kygo-app-card',
+            position: this._surface,
+            cta_content: this._variant,
+            page_path: window.location.pathname
+          });
+        } catch (e) { /* never break the card over analytics */ }
       }, { threshold: 0.5 });
       this._io.observe(this);
     }
