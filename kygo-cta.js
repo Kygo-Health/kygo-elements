@@ -200,6 +200,10 @@ const __kygoAttr = window.KygoAttribution || (function () {
       ios: 'https://track.tenjin.com/v0/click/gFqSqqW0D7o69kO5yaV7k1',
       android: 'https://track.tenjin.com/v0/click/eQRLQj5018oTQjwGo72WqW',
     },
+    'apple-watch-sleep-post': {
+      ios: 'https://track.tenjin.com/v0/click/cn5sS5sp0r3LtQ65D8ihiR',
+      android: 'https://track.tenjin.com/v0/click/fd2h8tIhLyB3h0fwIWYElA',
+    },
   };
 
   /** Reddit Organic channel links (Tenjin "Reddit Post Link - iOS" / "- Android").

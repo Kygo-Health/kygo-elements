@@ -86,6 +86,7 @@ Two host forms are used inconsistently across files: bare **`https://kygo.app`**
 > | utm_campaign | Tenjin campaign (Website account) | iOS click URL | Android click URL |
 > |---|---|---|---|
 > | `deep-sleep-post` | Reddit Ad deep-sleep-post - iOS / - Android | `https://track.tenjin.com/v0/click/gFqSqqW0D7o69kO5yaV7k1` | `https://track.tenjin.com/v0/click/eQRLQj5018oTQjwGo72WqW` |
+> | `apple-watch-sleep-post` | Reddit Ad apple-watch-sleep-post - iOS / - Android | `https://track.tenjin.com/v0/click/cn5sS5sp0r3LtQ65D8ihiR` | `https://track.tenjin.com/v0/click/fd2h8tIhLyB3h0fwIWYElA` |
 >
 > **Page + campaign on every install (2026-10-31).** The same press listener also tags every
 > Tenjin link on the site (default, campaign or per-placement) with `site_id` = the link's own
