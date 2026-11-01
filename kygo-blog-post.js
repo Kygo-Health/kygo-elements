@@ -49,9 +49,11 @@
     const path = (window.location.pathname || '').toLowerCase();
     const fromPath = (path.split('/').filter(Boolean).pop() || 'blog');
     const base = (explicit || fromPath).replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
-    // Keep the suffix whole: a half-truncated one would read as part of the slug.
+    // Keep the suffix whole, so the mid and end CTAs on a long post slug stay
+    // apart: the base is cut to make room for it, never the suffix.
     const full = base + '-' + suffix;
-    return (full.length <= 30 ? full : base.slice(0, 30)).replace(/-+$/, '');
+    if (full.length <= 30) return full;
+    return base.slice(0, 30 - suffix.length - 1).replace(/-+$/, '') + '-' + suffix;
   }
   const WEARABLE_BADGES = [
     { name: 'Oura Ring',     label: 'Oura',   src: 'https://static.wixstatic.com/media/273a63_56ac2eb53faf43fab1903643b29c0bce~mv2.png' },
