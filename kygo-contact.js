@@ -96,6 +96,13 @@ class KygoContactSection extends HTMLElement {
       clearTimeout(this._submitTimeout);
       
       if (newValue === 'success') {
+        // The send is confirmed: this, not the contactSubmit attempt, is what
+        // kygo-tracking.js files as GA4 contact_submit. Plain data, no PII.
+        this.dispatchEvent(new CustomEvent('contactSubmitted', {
+          detail: { component: 'kygo-contact' },
+          bubbles: true,
+          composed: true
+        }));
         this._showSuccess();
       } else if (newValue.startsWith('error:')) {
         const errorMsg = newValue.substring(6);
