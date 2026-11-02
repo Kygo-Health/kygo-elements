@@ -68,6 +68,15 @@
    *  page whose consentPolicyManager is not there yet, it waits. */
   function rdtConsent() {
     try {
+      // The site's own banner (Wix custom embed "Kygo Consent Banner") is the
+      // source of truth: window.KygoConsent.get() / the kygo_consent cookie
+      // ("v1.a1.d1"). Ads are opt-in there: only "Accept all" allows the
+      // pixel, and Global Privacy Control always blocks it. No choice yet =
+      // no pixel. Wix's own consentPolicyManager is only a fallback for
+      // pages without that banner.
+      if (navigator.globalPrivacyControl === true) return false;
+      var kc = rdtKygoConsent();
+      if (kc !== undefined) return kc;
       var cpm = window.consentPolicyManager;
       if (cpm && typeof cpm.getCurrentConsentPolicy === 'function') {
         var cur = cpm.getCurrentConsentPolicy();
@@ -76,6 +85,33 @@
       return !rdtOnWix();
     } catch (e) { return false; }
   }
+
+  /** true / false from the Kygo banner's stored choice; false while the
+   *  banner is on the page with no choice yet; undefined when the banner is
+   *  not on this page at all (fall back to Wix's policy). */
+  function rdtKygoConsent() {
+    try {
+      var c = null;
+      if (window.KygoConsent && typeof window.KygoConsent.get === 'function') c = window.KygoConsent.get();
+      if (!c) {
+        var m = document.cookie.match(/(?:^|; )kygo_consent=([^;]*)/);
+        var v = m ? decodeURIComponent(m[1]).split('.') : null;
+        if (v && v[0] === 'v1') c = { advertising: v[2] === 'd1' };
+      }
+      if (c) return c.advertising === true;
+      if (window.KygoConsent || document.getElementById('kygo-consent')) return false;
+      return undefined;
+    } catch (e) { return false; }
+  }
+
+  // A visitor who presses "Accept all" later gets the pixel then: the banner
+  // stores the choice on click, so re-check just after any banner button.
+  document.addEventListener('click', function (e) {
+    try {
+      var b = e.target && e.target.closest ? e.target.closest('#kygo-consent button[data-kc]') : null;
+      if (b) setTimeout(function () { try { rdtLoad(); } catch (x) {} }, 300);
+    } catch (x) { /* ignore */ }
+  }, true);
 
   function rdtOnWix() {
     try {
