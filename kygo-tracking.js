@@ -225,6 +225,7 @@
     cD7zgIPLuiZMMWmWkXLsvy: 'ios',     eMjS3ZkseCvs2lO9AVESkO: 'android', // Website (default)
     gFqSqqW0D7o69kO5yaV7k1: 'ios',     eQRLQj5018oTQjwGo72WqW: 'android', // deep-sleep-post
     cn5sS5sp0r3LtQ65D8ihiR: 'ios',     fd2h8tIhLyB3h0fwIWYElA: 'android', // apple-watch-sleep-post
+    e2yydW7Anla3ERtPOFVy1v: 'ios',     fqbmS0etZXkjp75PnUeczn: 'android', // reddit-factor-posts
     TEmyDcRQIVRM8VUAxfh4: 'ios',       heO9OuoP6tG8lENadDof4n: 'android', // Reddit Organic
     cGxLgiFXo568zuRagtaj4P: 'ios',     dqOjxxwQjbt0R8i6TJRLpO: 'android'  // Email (e5)
   };

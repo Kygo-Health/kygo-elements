@@ -207,6 +207,12 @@ const __kygoAttr = window.KygoAttribution || (function () {
       ios: 'https://track.tenjin.com/v0/click/cn5sS5sp0r3LtQ65D8ihiR',
       android: 'https://track.tenjin.com/v0/click/fd2h8tIhLyB3h0fwIWYElA',
     },
+    // Proven organic factor posts promoted in their own communities; utm_content
+    // names the post, so Tenjin's creative_name splits installs per post.
+    'reddit-factor-posts': {
+      ios: 'https://track.tenjin.com/v0/click/e2yydW7Anla3ERtPOFVy1v',
+      android: 'https://track.tenjin.com/v0/click/fqbmS0etZXkjp75PnUeczn',
+    },
   };
 
   /** Reddit Organic channel links (Tenjin "Reddit Post Link - iOS" / "- Android").
