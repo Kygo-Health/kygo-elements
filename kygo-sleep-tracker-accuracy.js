@@ -484,7 +484,7 @@ class KygoSleepTrackerAccuracy extends HTMLElement {
         <div class="picker" role="group" aria-label="Choose sleep trackers to compare">
           ${this._devices.map(d => {
             const id = this._did(d), on = this._selected.has(id);
-            return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-cmpr-id="${id}" aria-pressed="${on}">
+            return `<button type="button" class="pick-tile${on ? ' active' : ''}" data-cmpr-id="${id}" aria-pressed="${on}" data-tool-control="device-picker" data-tool-value="${id}">
               <span class="pick-check">${this._icon('check')}</span>
               ${this._deviceLogo(d, 'sm')}
               <span class="pick-name">${this._chip(d)}</span>

@@ -216,7 +216,7 @@ by walking the path for a registered custom-element tag (`customElements.get(...
 | `page_view` | automatic on load (gtag config) | standard GA4 |
 | `cta_click` | any classified `<a>`/`<button>`/`[data-action]` click, left click or middle click (`auxclick` with button 1, since 2026-11-01; a left click never fires `auxclick`, so nothing is counted twice) | `cta_category`, `cta_label`, `cta_url`, `component`, `position`, `page_path` (+ `affiliate`, `affiliate_marketplace` for Amazon; + `to_tool` for related-tools cards; + `to_post` for related-reading cards; + `action_type` = the `data-action` value for `other_action`) |
 | `cta_view` | a CTA half on screen, once per CTA: blog HTML-embed cards via `postMessage` (`component: 'kygo-blog-embed'`), and since 2026-11-01 `<kygo-app-card>` and `<kygo-cta>` in the page itself (see "In-page CTA impressions") | `cta_label`, `component`, `position`, `page_path` (+ `cta_content`) |
-| `tool_interaction` | calculate/compare/analyze buttons | `tool_name` (= component tag), `action`, `button_label` |
+| `tool_interaction` | any control a tool declares with `data-tool-control` (click, or `change` for a field), `window.KygoTrack.toolInteraction(...)`, and the legacy calculate/compare/analyze buttons (see "Tool interactions") | `tool_name` (= component tag), `action`, `page_path`, `visit_campaign` (+ `tool_control`, `tool_value`, `button_label`, `visit_content`) |
 | `page_exit` | `visibilitychange` → hidden | `page_path` |
 | `email_subscribe` **(key event)** | `subscribe` CustomEvent (any subscribe form) → mirrored to GA4 | `lead_type` (`newsletter`), `component`, **`source`**, `page_path` |
 | `contact_submit` **(key event)** | `contactSubmitted` CustomEvent, which `kygo-contact.js` fires only when the host confirms the send (`data-form-result="success"`), since 2026-11-01. Before that it fired on `contactSubmit`, the attempt, so it counted sends that later failed | `lead_type` (`contact_form`), `component`, `page_path`. **No PII** — email/name/message are never read from `detail` |
@@ -341,6 +341,47 @@ after the first view and in `disconnectedCallback`):
 A framed app card still sends only the message, so there is no double count. `cta_view` totals
 rise from 2026-11-01 because of this; filter `component = kygo-blog-embed` to compare with earlier
 weeks.
+
+## Tool interactions (`tool_interaction`, 2026-11-02)
+
+One shared path for every tool, so no tool writes its own GA4 call. Declare the control:
+
+```html
+<button data-tool-control="device-picker" data-tool-value="apple-watch-s8" aria-pressed="false">...</button>
+<select data-tool-control="metric">...</select>
+<input type="range" data-tool-control="nights" />
+```
+
+`kygo-tracking.js` reads a click on any element with `data-tool-control` (not a form field), and a
+`change` on a form field that has one, through shadow roots. Anything else (a drag, a custom
+widget) calls `window.KygoTrack.toolInteraction({tool, control, value, action, label})`.
+
+| Param | Value |
+|---|---|
+| `tool_name` | `data-tool-name`, else the component tag (`kygo-sleep-tracker-accuracy`) |
+| `tool_control` | `data-tool-control` (`device-picker`) |
+| `tool_value` | `data-tool-value`, else the field's value (checkbox: true/false), else the label; max 100 chars |
+| `action` | `data-tool-action`, else `select` / `deselect` from `aria-pressed` before the click, else `click` / `change`; legacy buttons keep `calculate` etc. |
+| `button_label` | the element's label (`data-track-label` or text) |
+| `page_path` | the page |
+| `visit_campaign` | the session's `utm_campaign`, `reddit-organic`, or `none` |
+| `visit_content` | the session's `utm_content`, when there is one |
+
+The legacy `data-action="calculate"` buttons (calorie-burn-accuracy) keep `tool_name`, `action` and
+`button_label` and since 2026-11-02 also carry `page_path` and `visit_campaign` / `visit_content`.
+
+A control that is clicked counts each attempt (the sleep picker's 2 to 4 limit can refuse one).
+Register `tool_control`, `tool_value`, `visit_campaign`, `visit_content` as GA4 event-scoped custom
+dimensions to report on them.
+
+Wired: `kygo-sleep-tracker-accuracy` device picker. Still to wire (their main control):
+heart-rate-accuracy and step-count-accuracy (brand picker), oura-5-vs-4, sleep-metrics and
+supplements-by-metric (metric tabs), hrv-factors, rem-sleep, sleep-latency-factors, wearable-accuracy
+and wearable-stress (select), fitbit-air-vs-whoop, oura-ring-comparison, oura-vs-ringconn,
+smart-ring-comparison and sensor-comparison (tabs, range sliders), vo2max-factors (filters),
+calorie-burn-accuracy (already sends the legacy calculate event), deep-sleep-factors,
+staying-asleep-factors, rhr-factors, recovery-scores, vo2max-accuracy, accuracy-factors and
+food-and-sleep (check each for a picker), tools hub (category filter).
 
 ## How components opt into tracking
 

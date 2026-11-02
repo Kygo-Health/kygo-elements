@@ -8,7 +8,9 @@
  * Events sent to GA4:
  *   - cta_click        (category, label, url, component, position)
  *   - android_download  (component via cta_click)
- *   - tool_interaction  (tool_name, action)
+ *   - tool_interaction  (tool_name, action; for declared controls also
+ *                        tool_control, tool_value, visit_campaign, visit_content:
+ *                        data-tool-control attributes or KygoTrack.toolInteraction)
  *   - cta_view         (one per CTA seen: blog HTML-embed cards via postMessage;
  *                       <kygo-app-card> / <kygo-cta> in the page send their own)
  *   - gate_blog        (blog report card click, via postMessage from its Wix HTML iframe)
@@ -273,6 +275,70 @@
     }
   }
 
+  /* ── Tool interactions (shared by every tool) ─────── */
+
+  /** The visit's campaign, carried on tool_interaction so engagement can be
+   *  split by ad vs organic: utm_campaign / utm_content (lowercase) when the
+   *  session has them, 'reddit-organic' for a Reddit-referrer visit with no
+   *  utm_*, else 'none'. Read from kygo-cta.js's session record when loaded. */
+  function visitCampaign() {
+    var a = embedAttribution() || {};
+    var utm = a.utm || {};
+    var clip = function (v) { return String(v || '').toLowerCase().replace(/[^\w\-.]/g, '').slice(0, 60); };
+    return {
+      visit_campaign: utm.utm_campaign ? clip(utm.utm_campaign) : (a.reddit ? 'reddit-organic' : 'none'),
+      visit_content: utm.utm_content ? clip(utm.utm_content) : ''
+    };
+  }
+
+  function toolStr(v, max) {
+    return String(v == null ? '' : v).replace(/\s+/g, ' ').trim().slice(0, max);
+  }
+
+  /** GA4 tool_interaction for one use of a tool control. p = {tool, control,
+   *  value, action, label}; tool defaults to the component tag. Public as
+   *  window.KygoTrack.toolInteraction for controls that are not clicks or
+   *  form fields (a drag, a custom slider). */
+  function toolInteraction(p) {
+    p = p || {};
+    var params = {
+      tool_name: toolStr(p.tool, 60) || 'unknown',
+      action: toolStr(p.action, 30) || 'use',
+      page_path: window.location.pathname
+    };
+    if (p.control) params.tool_control = toolStr(p.control, 60);
+    if (p.value != null && p.value !== '') params.tool_value = toolStr(p.value, 100);
+    if (p.label != null) params.button_label = toolStr(p.label, 80);
+    var vc = visitCampaign();
+    params.visit_campaign = vc.visit_campaign;
+    if (vc.visit_content) params.visit_content = vc.visit_content;
+    track('tool_interaction', params);
+  }
+
+  window.KygoTrack = window.KygoTrack || {};
+  window.KygoTrack.toolInteraction = toolInteraction;
+
+  /** A control declared with data-tool-control (any tool, any element: a
+   *  button, a tab, a select, a range input). Read here so no tool wires its
+   *  own GA4 call:
+   *    data-tool-control  what the control is, e.g. device-picker, metric-tab
+   *    data-tool-value    what was chosen (else the element's value, else its label)
+   *    data-tool-action   optional verb; a toggle button with aria-pressed gets
+   *                       select / deselect automatically, a field gets change
+   *    data-tool-name     optional; defaults to the component's tag */
+  function declaredTool(el, path, action) {
+    var pressed = el.getAttribute('aria-pressed');
+    toolInteraction({
+      tool: el.getAttribute('data-tool-name') || getComponentName(path),
+      control: el.getAttribute('data-tool-control'),
+      value: el.getAttribute('data-tool-value') ||
+             (el.type === 'checkbox' ? String(!!el.checked) : (el.value != null && el.value !== '' ? el.value : getLabel(el))),
+      action: el.getAttribute('data-tool-action') ||
+              (pressed === 'true' ? 'deselect' : pressed === 'false' ? 'select' : action),
+      label: getLabel(el)
+    });
+  }
+
   /* ── Event Listeners ──────────────────────────────── */
 
   function onClick(e) {
@@ -287,6 +353,16 @@
     if (!clickable) return;
 
     var component = getComponentName(path);
+
+    // A declared tool control. Form fields report on change (below), not on
+    // the click that focuses them, and a middle click is not a use.
+    if (e.type === 'click') {
+      var ctl = findInPath(path, function (el) { return el.hasAttribute('data-tool-control'); });
+      if (ctl && !/^(INPUT|SELECT|TEXTAREA)$/.test(ctl.tagName)) {
+        declaredTool(ctl, path, 'click');
+        return;
+      }
+    }
 
     // Report gate links on tool pages carry data-gate="gate_tool". Filed as their own event, like gate_blog.
     var gate = clickable.getAttribute('data-gate');
@@ -307,11 +383,9 @@
     var position = clickable.getAttribute('data-track-position') || info.position || 'body';
 
     if (info.category === 'tool_interaction') {
-      track('tool_interaction', {
-        tool_name: component,
-        action: info.action_type,
-        button_label: info.label
-      });
+      // Legacy calculate / compare / analyze buttons: same event and the
+      // same campaign fields as declared controls.
+      toolInteraction({ tool: component, action: info.action_type, label: info.label });
     } else {
       // Per-click Amazon attribution: rewrite the href (adds ascsubtag) before
       // the browser navigates, so cta_url reflects the tagged link we report.
@@ -345,6 +419,14 @@
   // fires auxclick, so nothing is counted twice.
   document.addEventListener('auxclick', function (e) {
     if (e.button === 1) onClick(e);
+  }, true);
+
+  // Declared form-field controls (select, range, checkbox) report the value
+  // they were changed to. composedPath()[0] is the field inside its shadow root.
+  document.addEventListener('change', function (e) {
+    var path = e.composedPath ? e.composedPath() : [e.target];
+    var el = path[0];
+    if (el && el.nodeType === 1 && el.hasAttribute('data-tool-control')) declaredTool(el, path, 'change');
   }, true);
 
   // Track page visibility for engagement
