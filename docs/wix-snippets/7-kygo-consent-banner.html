@@ -1,0 +1,70 @@
+<!--
+  Kygo Consent Banner (Wix: Settings > Custom Code, Body - end, all pages, load once).
+  Mirror of the live embed. v2 (2026-11-02):
+  - Europe (EU/EEA, UK, Switzerland; by browser time zone, unknown = Europe):
+    unchanged. Full three-button banner; analytics and ads only after a choice.
+  - Everywhere else: a compact notice ("OK" / "Privacy choices"). Analytics and
+    ad measurement run until the visitor opts out. "Privacy choices" and the
+    footer "Cookie settings" link open the full three-button panel.
+  - Global Privacy Control: ad measurement always off; such visitors get the
+    full panel (with the GPC note) instead of the compact notice, and nothing
+    loads until they choose (as before).
+  Stored choice: cookie + localStorage kygo_consent = "v1.a<0|1>.d<0|1>".
+  kygo-tracking.js (Reddit Pixel) reads the same choice through window.KygoConsent.
+-->
+<style>
+#kygo-consent{position:fixed;left:12px;right:12px;bottom:12px;z-index:2147483000;max-width:480px;margin:0 auto;background:#1E293B;color:#CBD5E1;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.3);padding:12px 14px;font-family:'DM Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:13px;line-height:1.45;box-sizing:border-box}
+#kygo-consent[hidden]{display:none}
+#kygo-consent p{margin:0 0 10px}
+#kygo-consent a{color:#22C55E;text-decoration:underline}
+#kygo-consent .kc-btns{display:flex;gap:6px}
+#kygo-consent button{flex:1 1 0;min-width:0;min-height:38px;padding:4px 6px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;line-height:1.2;cursor:pointer;border:1.5px solid #22C55E;background:transparent;color:#F8FAFC;white-space:normal}
+#kygo-consent button.kc-accept{background:#22C55E;color:#0F172A}
+#kygo-consent .kc-gpc{font-size:12px;color:#94A3B8;margin:-4px 0 10px}
+#kygo-consent.kc-compact{max-width:400px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.25);padding:8px 8px 8px 12px;font-size:12.5px;line-height:1.4;display:flex;align-items:center;gap:10px}
+#kygo-consent.kc-compact[hidden]{display:none}
+#kygo-consent.kc-compact p{margin:0;flex:1 1 auto}
+#kygo-consent.kc-compact button{flex:0 0 auto;min-height:34px;min-width:56px;padding:0 14px}
+</style>
+<script>
+(function(){
+var KEY='kygo_consent',VER='v1',GA='G-P2224N75KY',PIXEL='946932178471587';
+var GPC=navigator.globalPrivacyControl===true;
+// Europe (EU/EEA, UK, Switzerland) requires opt-in before analytics or ads load.
+// Detected from the browser time zone; anything unknown is treated as Europe.
+var OPTIN=(function(){try{var tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';if(!tz)return true;return tz.indexOf('Europe/')===0||['Atlantic/Canary','Atlantic/Madeira','Atlantic/Azores','Atlantic/Reykjavik','Atlantic/Faroe','Asia/Nicosia','Asia/Famagusta','Arctic/Longyearbyen'].indexOf(tz)>-1;}catch(e){return true;}})();
+var loaded={a:false,d:false},el=null;
+function read(){var m=document.cookie.match(/(?:^|; )kygo_consent=([^;]*)/);var v=m?decodeURIComponent(m[1]):null;if(!v){try{v=localStorage.getItem(KEY);}catch(e){}}if(!v)return null;var p=v.split('.');if(p[0]!==VER)return null;return{analytics:p[1]==='a1',advertising:p[2]==='d1'};}
+function write(c){var v=VER+'.'+(c.analytics?'a1':'a0')+'.'+(c.advertising?'d1':'d0');var dom=/(^|\.)kygo\.app$/.test(location.hostname)?'; domain=.kygo.app':'';document.cookie=KEY+'='+v+'; path=/; max-age=31536000; SameSite=Lax; Secure'+dom;try{localStorage.setItem(KEY,v);}catch(e){}}
+function clearCookies(prefixes){document.cookie.split('; ').forEach(function(kv){var n=kv.split('=')[0];for(var i=0;i<prefixes.length;i++){if(n.indexOf(prefixes[i])===0){['','; domain=.kygo.app','; domain=kygo.app','; domain=www.kygo.app'].forEach(function(d){document.cookie=n+'=; path=/; max-age=0'+d;});break;}}});}
+function isHome(){return location.pathname.replace(/\/+$/,'')==='';}
+function loadAnalytics(){if(loaded.a)return;loaded.a=true;var s=document.createElement('script');s.src='https://kygo-health.github.io/kygo-elements/kygo-tracking.js';s.setAttribute('data-ga-id',GA);document.head.appendChild(s);}
+function loadPixel(){if(loaded.d||GPC||!isHome())return;loaded.d=true;
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+window.fbq.disablePushState=true;
+fbq('set','autoConfig',false,PIXEL);fbq('init',PIXEL);fbq('track','PageView');}
+function apply(c){if(c.analytics)loadAnalytics();if(c.advertising)loadPixel();}
+function hide(){if(el)el.hidden=true;}
+function choose(c){if(GPC)c.advertising=false;write(c);hide();if(!c.analytics)clearCookies(['_ga','_gid','_gat']);if(!c.advertising)clearCookies(['_fbp','_fbc','_rdt_uuid']);if((loaded.a&&!c.analytics)||(loaded.d&&!c.advertising)){location.reload();return;}apply(c);}
+var FULL_EU='We use cookies for site analytics and, if you allow it, to measure our ads. No health data is shared.';
+var FULL_CHOICES='Choose what we use. Analytics shows us how the site is used. Ad measurement lets Reddit and Meta tell us which ads brought you here. No health data is shared.';
+function root(){if(!el){el=document.createElement('div');el.id='kygo-consent';el.setAttribute('role','dialog');el.hidden=true;
+el.addEventListener('click',function(e){var t=e.target;if(!t||!t.closest)return;var o=t.closest('[data-kc-full]');if(o){e.preventDefault();full(FULL_CHOICES);return;}var b=t.closest('button[data-kc]');if(!b)return;var k=b.getAttribute('data-kc');if(k==='ok'){choose({analytics:true,advertising:true});return;}choose({analytics:k!=='none',advertising:k==='all'});});
+document.body.appendChild(el);}return el;}
+function full(text){var r=root();r.className='';r.setAttribute('aria-label','Cookie choices');
+r.innerHTML='<p>'+text+' <a href="https://www.kygo.app/privacy-policy">Privacy Policy</a></p>'+(GPC?'<p class="kc-gpc">Your browser sends Global Privacy Control, so ad measurement stays off and analytics only runs if you choose it.</p>':'')+'<div class="kc-btns"><button type="button" class="kc-accept" data-kc="all">Accept all</button><button type="button" data-kc="analytics">Analytics only</button><button type="button" data-kc="none">Reject all</button></div>';
+r.hidden=false;}
+function compact(){var r=root();r.className='kc-compact';r.setAttribute('aria-label','Cookie notice');
+r.innerHTML='<p>We use cookies for analytics and ad measurement. <a href="#" data-kc-full>Privacy choices</a></p><button type="button" class="kc-accept" data-kc="ok">OK</button>';
+r.hidden=false;}
+function when(fn){if(document.body)fn();else document.addEventListener('DOMContentLoaded',fn);}
+function show(){when(function(){full(OPTIN?FULL_EU:FULL_CHOICES);});}
+window.KygoConsent={open:show,get:read};
+(function addFooterLink(){var t=0;(function tryAdd(){var box=document.querySelector('.kygo-footer-legal-links');if(box){if(!box.querySelector('[data-kc-open]')){var a=document.createElement('a');a.href='#';a.setAttribute('data-kc-open','');a.textContent='Cookie settings';a.addEventListener('click',function(e){e.preventDefault();show();});box.appendChild(a);}return;}if(++t<60)setTimeout(tryAdd,250);})();})();
+var c=read();
+if(c){if(GPC)c.advertising=false;apply(c);}
+else if(OPTIN){show();}
+else if(GPC){show();}
+else{apply({analytics:true,advertising:true});when(compact);}
+})();
+</script>
